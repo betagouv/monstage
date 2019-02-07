@@ -1,0 +1,15 @@
+.row
+  h1.col-8 Offres de stage
+  .col-4
+    = link_to 'Ajouter', new_internship_offers_path, class: 'btn btn-dark', style: 'width: 100%'
+
+- if @internship_offers.blank?
+  p.lead Aucune offre disponible
+- else
+  table.table
+    tbody
+      - @internship_offers.each do |internship_offer|
+        tr
+          h2= internship_offer.title
+          p = internship_offer.employer_city
+          p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}
