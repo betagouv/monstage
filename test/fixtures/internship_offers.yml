@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  can_be_applied_for: false
+  week_day_start: 2019-02-07
+  week_day_end: 2019-02-07
+  max_candidates: 1
+  max_weeks: 1
+
+two:
+  title: MyString
+  description: MyText
+  can_be_applied_for: false
+  week_day_start: 2019-02-07
+  week_day_end: 2019-02-07
+  max_candidates: 1
+  max_weeks: 1
