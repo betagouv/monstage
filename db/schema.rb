@@ -30,6 +30,9 @@ ActiveRecord::Schema.define(version: 2019_02_07_111844) do
     t.string "tutor_email"
     t.string "employer_website"
     t.text "employer_description"
+    t.text "employer_street"
+    t.string "employer_zipcode"
+    t.string "employer_city"
     t.string "supervisor_email"
     t.boolean "is_public"
     t.datetime "created_at", null: false

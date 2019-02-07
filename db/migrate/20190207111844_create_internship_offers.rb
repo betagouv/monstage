@@ -16,6 +16,9 @@ class CreateInternshipOffers < ActiveRecord::Migration[5.2]
       t.string  :tutor_email
       t.string  :employer_website
       t.text    :employer_description
+      t.text    :employer_street
+      t.string  :employer_zipcode
+      t.string  :employer_city
       t.string  :supervisor_email
       t.boolean :is_public
 
