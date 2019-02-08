@@ -4,6 +4,12 @@ class InternshipOffersController < ApplicationController
     @internship_offers = InternshipOffer.all
   end
 
+  def create
+    @internship_offer = InternshipOffer.create(internship_offer_params)
+
+    redirect_to root_path
+  end
+
   def new
     @internship_offer = InternshipOffer.new
     @sectors = ['Aérien, Aéronautique et Aéroportuaire',
@@ -53,5 +59,14 @@ class InternshipOffersController < ApplicationController
                 "Tourisme, Loisirs",
                 "Transport, Logistique",
                 "Multi-secteur"]
+  end
+
+  private
+
+  def internship_offer_params
+    params.require(:internship_offer)
+        .permit(:title, :description, :sector, :can_be_applied_for, :week_day_start, :week_day_end, :excluded_weeks,
+                :max_candidates, :max_weeks, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
+                :employer_description, :employer_street, :employer_zipcode, :employer_city, :supervisor_email, :is_public)
   end
 end
