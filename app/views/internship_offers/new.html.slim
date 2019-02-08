@@ -1,0 +1,28 @@
+h1 Déposer une offre de stage
+p Les champs avec * sont obligatoires
+
+= form_for @internship_offer do |form|
+  .form-group
+    = form.label :title, 'Intitulé'
+    = form.text_field :title, class: "form-control"
+  .form-group
+    = form.label :description, 'Description'
+    = form.text_area :description, class: "form-control", required: true
+  .form-group
+    = form.label :sector, "Secteur d'activité"
+    = form.select :sector
+      = options_for_select @sectors
+
+  h2 Où?
+  h3 Adresse du lieu où se déroule le stage
+  .form-group
+    = form.label :employer_street, 'Rue'
+    = form.text_field :employer_street, class: "form-control"
+  .form-group
+    = form.label :employer_zipcode, 'Code postal'
+    = form.text_field :employer_zipcode, class: "form-control"
+  .form-group
+    = form.label :employer_city, 'Ville'
+    = form.text_field :employer_city, class: "form-control"
+
+  = form.submit 'Soumettre', class: 'btn btn-primary'
