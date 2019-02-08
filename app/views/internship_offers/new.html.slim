@@ -25,4 +25,14 @@ p Les champs avec * sont obligatoires
     = form.label :employer_city, 'Ville'
     = form.text_field :employer_city, class: "form-control"
 
+  h2 Quoi ?
+  .form-group
+    = form.label :can_be_applied_for, 'Type de stage'
+    = form.select :can_be_applied_for, options_for_select({ 'Individuel' => 'true', 'Collectif' => 'false' }, 'true'), {}, class: "custom-select"
+  #max_candidates_group.form-group.d-none
+    = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
+    = form.number_field :max_candidates, value: 0, min: 1, step: 1, class: 'form-control'
+  .form-group
+    = form.label :max_weeks, "Nombre de stage proposés dans l'année"
+    = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control'
   = form.submit 'Soumettre', class: 'btn btn-primary'

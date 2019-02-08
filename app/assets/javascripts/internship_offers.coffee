@@ -4,4 +4,6 @@
 
 $ ->
   $('#internship_offer_sector').addClass 'custom-select'
+  $('#internship_offer_can_be_applied_for').change ->
+    $('#max_candidates_group').toggleClass 'd-none'
   return
