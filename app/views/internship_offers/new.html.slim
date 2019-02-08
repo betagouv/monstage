@@ -35,4 +35,29 @@ p Les champs avec * sont obligatoires
   .form-group
     = form.label :max_weeks, "Nombre de stage proposés dans l'année"
     = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control'
+
+  h2 Employer
+  h3 Tuteur
+  .form-group
+    = form.label :tutor_name, 'Nom'
+    = form.text_field :tutor_name, class: 'form-control'
+  .form-group
+    = form.label :tutor_phone, 'Téléphone'
+    = form.text_field :tutor_phone, class: 'form-control'
+  .form-group
+    = form.label :tutor_email, 'Adresse électronique'
+    = form.text_field :tutor_email, class: 'form-control'
+  h3 Entreprise ou Administration
+  .form-group
+    = form.label :employer_website, 'Site web'
+    = form.text_field :employer_website, class: 'form-control'
+  .form-group
+    = form.label :employer_wemployer_descriptionebsite, 'Site web'
+    = form.text_field :employer_description, class: 'form-control'
+
+  h3 Responsable de l'offre
+  .form-group
+    = form.label :supervisor_email, 'Adresse électronique'
+    = form.text_field :supervisor_email, class: 'form-control'
+
   = form.submit 'Soumettre', class: 'btn btn-primary'
