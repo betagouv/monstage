@@ -10,8 +10,7 @@ p Les champs avec * sont obligatoires
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité"
-    = form.select :sector
-      = options_for_select @sectors
+    = form.select :sector, options_for_select(@sectors), {}, class: "custom-select"
 
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
