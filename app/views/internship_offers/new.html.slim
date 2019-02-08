@@ -31,7 +31,7 @@ p Les champs avec * sont obligatoires
     = form.select :can_be_applied_for, options_for_select({ 'Individuel' => 'true', 'Collectif' => 'false' }, 'true'), {}, class: "custom-select"
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
-    = form.number_field :max_candidates, value: 0, min: 1, step: 1, class: 'form-control'
+    = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
   .form-group
     = form.label :max_weeks, "Nombre de stage proposés dans l'année"
     = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control'
@@ -52,7 +52,7 @@ p Les champs avec * sont obligatoires
     = form.label :employer_website, 'Site web'
     = form.text_field :employer_website, class: 'form-control'
   .form-group
-    = form.label :employer_wemployer_descriptionebsite, 'Site web'
+    = form.label :employer_description, 'Description'
     = form.text_field :employer_description, class: 'form-control'
 
   h3 Responsable de l'offre
