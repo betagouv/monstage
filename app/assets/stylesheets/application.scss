@@ -19,3 +19,13 @@ label.required:after {
   color:red;
   margin-left: 5px;
 }
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.gray-titles {
+  h2 {
+    color: gray;
+  }
+}

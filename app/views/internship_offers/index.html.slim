@@ -1,15 +1,15 @@
 .row
   h1.col-8 Offres de stage
   .col-4
-    = link_to 'Ajouter', new_internship_offers_path, class: 'btn btn-dark', style: 'width: 100%'
+    = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
 
 - if @internship_offers.blank?
   p.lead Aucune offre disponible
 - else
-  table.table
+  table.table.table-hover
     tbody
       - @internship_offers.each do |internship_offer|
-        tr
+        tr[data-href="#{internship_offer_url(internship_offer)}" class="clickable-row"]
           td
             h2 = internship_offer.title
             p = internship_offer.employer_city

@@ -17,3 +17,9 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require_tree .
+
+$(document).on('turbolinks:load', function (){
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
