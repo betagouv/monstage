@@ -3,6 +3,11 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $ ->
-  $('#internship_offer_can_be_applied_for').change ->
-    $('#max_candidates_group').toggleClass 'd-none'
-  return
+  $('#internship_offer_can_be_applied_for_true').change ->
+    toggleMaxCandidatesVisibility()
+  $('#internship_offer_can_be_applied_for_false').change ->
+    toggleMaxCandidatesVisibility()
+
+
+toggleMaxCandidatesVisibility = ->
+  $('#max_candidates_group').toggleClass 'd-none'

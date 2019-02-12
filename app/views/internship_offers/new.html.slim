@@ -26,8 +26,12 @@ p Les champs avec * sont obligatoires
 
   h2 Quoi ?
   .form-group
-    = form.label :can_be_applied_for, 'Type de stage'
-    = form.select :can_be_applied_for, options_for_select({ 'Individuel' => 'true', 'Collectif' => 'false' }, 'true'), {}, class: "custom-select"
+    .form-check
+      = form.radio_button :can_be_applied_for, true, class: 'form-check-input'
+      = form.label :can_be_applied_for, 'Individuel', class: 'form-check-label'
+    .form-check
+      = form.radio_button :can_be_applied_for, false, class: 'form-check-input'
+      = form.label :can_be_applied_for, 'Collectif', class: 'form-check-label'
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
