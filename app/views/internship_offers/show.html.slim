@@ -1,0 +1,20 @@
+h1 = @internship_offer.title
+
+.gray-titles
+  h2 Le stage
+  p = @internship_offer.description
+
+  / h2 Dates
+
+  h2 L'entreprise
+  p = @internship_offer.employer_description
+  p
+    a href=@internship_offer.employer_website
+
+  h2 Contact
+  p
+    b = @internship_offer.tutor_name
+    br
+    = link_to @internship_offer.tutor_phone, "tel:#{@internship_offer.tutor_phone}"
+    br
+    = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"

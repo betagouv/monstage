@@ -4,10 +4,14 @@ class InternshipOffersController < ApplicationController
     @internship_offers = InternshipOffer.all
   end
 
+  def show
+    @internship_offer = InternshipOffer.find(params[:id])
+  end
+
   def create
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
-    redirect_to root_path
+    redirect_to internship_offer_path(@internship_offer)
   end
 
   def new
