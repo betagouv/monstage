@@ -4,13 +4,13 @@ h1 Déposer une offre de stage
 = form_for @internship_offer do |form|
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
-    = form.text_field :title, class: "form-control"
+    = form.text_field :title, class: "form-control", required: true
   .form-group
     = form.label :description, 'Description', class: 'required'
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(@sectors), {}, class: "custom-select"
+    = form.select :sector, options_for_select(@sectors), {}, class: "custom-select", required: true
 
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
@@ -22,7 +22,7 @@ h1 Déposer une offre de stage
     = form.text_field :employer_zipcode, class: "form-control"
   .form-group
     = form.label :employer_city, 'Ville', class: 'required'
-    = form.text_field :employer_city, class: "form-control"
+    = form.text_field :employer_city, class: "form-control", required: true
 
   h2 Quoi ?
   .form-group
@@ -38,16 +38,16 @@ h1 Déposer une offre de stage
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
   .form-group
     = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
-    = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control'
+    = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control', required: true
 
   h2 Employeur
   h3 Tuteur
   .form-group
     = form.label :tutor_name, 'Nom', class: 'required'
-    = form.text_field :tutor_name, class: 'form-control'
+    = form.text_field :tutor_name, class: 'form-control', required: true
   .form-group
     = form.label :tutor_phone, 'Téléphone', class: 'required'
-    = form.text_field :tutor_phone, class: 'form-control'
+    = form.text_field :tutor_phone, class: 'form-control', required: true
   .form-group
     = form.label :tutor_email, 'Adresse électronique'
     = form.text_field :tutor_email, class: 'form-control'
@@ -62,6 +62,6 @@ h1 Déposer une offre de stage
   h3 Responsable de l'offre
   .form-group
     = form.label :supervisor_email, 'Adresse électronique', class: 'required'
-    = form.text_field :supervisor_email, class: 'form-control'
+    = form.text_field :supervisor_email, class: 'form-control', required: true
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
