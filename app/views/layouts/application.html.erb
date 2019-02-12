@@ -11,7 +11,10 @@
 
   <body>
     <div class="container">
-      <%= image_tag 'mon-stage-3e-logo', class: 'mx-auto d-block logo' %>
+      <%= link_to root_path do %>
+        <%= image_tag 'mon-stage-3e-logo', class: 'mx-auto d-block logo' %>
+      <% end %>
+
       <%= yield %>
     </div>
   </body>
