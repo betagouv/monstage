@@ -7,6 +7,12 @@ h1 Déposer une offre de stage
     = form.text_field :title, class: "form-control", required: true
   .form-group
     = form.label :description, 'Description', class: 'required'
+    i.help-sign.ml-1
+    ol.help-sign-content.d-none
+      li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
+      li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
+      li Donnez 3 qulités requises (aimer bricoler, être bavard, aimez écrire
+      li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
