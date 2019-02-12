@@ -4,8 +4,9 @@
     = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
 
 - if @internship_offers.blank?
-  p.lead Aucune offre disponible
+  p[style='color: gray'] Aucune offre disponible
 - else
+  p[style='color: gray'] #{@internship_offers.count} offres
   table.table.table-hover
     tbody
       - @internship_offers.each do |internship_offer|
