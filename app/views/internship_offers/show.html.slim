@@ -19,6 +19,14 @@ h1 = @internship_offer.title
   p
     a href=@internship_offer.employer_website
 
+  .d-flex
+    i.fa.fa-map-marker.mr-2
+    p
+      = @internship_offer.employer_street
+      br
+      = @internship_offer.employer_zipcode
+      = @internship_offer.employer_city
+
   h2 Contact
   p
     b = @internship_offer.tutor_name
