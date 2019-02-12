@@ -13,3 +13,9 @@
  */
 @import 'bootstrap_custom';
 @import 'layout';
+
+label.required:after {
+  content:"*";
+  color:red;
+  margin-left: 5px;
+}

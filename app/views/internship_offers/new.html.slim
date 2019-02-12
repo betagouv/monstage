@@ -1,15 +1,15 @@
 h1 Déposer une offre de stage
-p Les champs avec * sont obligatoires
+== '<p>Les champs avec <span style="color: red">*</span> sont obligatoires</p>'
 
 = form_for @internship_offer do |form|
   .form-group
-    = form.label :title, 'Intitulé'
+    = form.label :title, 'Intitulé', class: 'required'
     = form.text_field :title, class: "form-control"
   .form-group
-    = form.label :description, 'Description'
+    = form.label :description, 'Description', class: 'required'
     = form.text_area :description, class: "form-control", required: true
   .form-group
-    = form.label :sector, "Secteur d'activité"
+    = form.label :sector, "Secteur d'activité", class: 'required'
     = form.select :sector, options_for_select(@sectors), {}, class: "custom-select"
 
   h2 Où?
@@ -21,11 +21,12 @@ p Les champs avec * sont obligatoires
     = form.label :employer_zipcode, 'Code postal'
     = form.text_field :employer_zipcode, class: "form-control"
   .form-group
-    = form.label :employer_city, 'Ville'
+    = form.label :employer_city, 'Ville', class: 'required'
     = form.text_field :employer_city, class: "form-control"
 
   h2 Quoi ?
   .form-group
+    label.required Type de stage
     .form-check
       = form.radio_button :can_be_applied_for, true, class: 'form-check-input'
       = form.label :can_be_applied_for, 'Individuel', class: 'form-check-label'
@@ -36,16 +37,16 @@ p Les champs avec * sont obligatoires
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
   .form-group
-    = form.label :max_weeks, "Nombre de stage proposés dans l'année"
+    = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
     = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control'
 
-  h2 Employer
+  h2 Employeur
   h3 Tuteur
   .form-group
-    = form.label :tutor_name, 'Nom'
+    = form.label :tutor_name, 'Nom', class: 'required'
     = form.text_field :tutor_name, class: 'form-control'
   .form-group
-    = form.label :tutor_phone, 'Téléphone'
+    = form.label :tutor_phone, 'Téléphone', class: 'required'
     = form.text_field :tutor_phone, class: 'form-control'
   .form-group
     = form.label :tutor_email, 'Adresse électronique'
@@ -60,7 +61,7 @@ p Les champs avec * sont obligatoires
 
   h3 Responsable de l'offre
   .form-group
-    = form.label :supervisor_email, 'Adresse électronique'
+    = form.label :supervisor_email, 'Adresse électronique', class: 'required'
     = form.text_field :supervisor_email, class: 'form-control'
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
