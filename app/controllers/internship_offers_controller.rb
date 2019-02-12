@@ -1,7 +1,7 @@
 class InternshipOffersController < ApplicationController
 
   def index
-    @internship_offers = InternshipOffer.all
+    @internship_offers = InternshipOffer.kept
   end
 
   def show
@@ -12,6 +12,13 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
     redirect_to internship_offer_path(@internship_offer)
+  end
+
+  def destroy
+    @internship_offer = InternshipOffer.find(params[:id])
+    @internship_offer.discard
+
+    redirect_to root_path
   end
 
   def new

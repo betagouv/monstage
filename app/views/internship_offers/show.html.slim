@@ -1,9 +1,9 @@
 nav.navbar.bg-light
   a.icon-link.navbar-brand href=internship_offers_path
     .fa.fa-5x.fa-angle-left
-  a.nav-link.ml-auto
+  a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
     .fa.fa-5x.fa-trash
-  a.nav-link
+  a.nav-link.d-none
     .fa.fa-5x.fa-pencil
 
 h1 = @internship_offer.title
@@ -34,3 +34,13 @@ h1 = @internship_offer.title
     = link_to @internship_offer.tutor_phone, "tel:#{@internship_offer.tutor_phone}"
     br
     = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
+
+
+#delete-offer-modal.modal tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-body
+        p Souhaitez-vous réellement supprimer cette annonce ?
+      .modal-footer
+        = link_to "Oui", internship_offer_path(@internship_offer), class: "btn btn-secondary", method: :delete
+        button type="button" class="btn btn-primary" data-dismiss="modal" Non

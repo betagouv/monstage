@@ -1,4 +1,5 @@
 class InternshipOffer < ApplicationRecord
+  include Discard::Model
 
   validates :title, :description, :sector, :can_be_applied_for, :tutor_name, :tutor_phone, :supervisor_email, presence: true
 
