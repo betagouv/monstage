@@ -30,3 +30,15 @@ label.required:before {
     color: gray;
   }
 }
+
+.help-sign {
+  @extend .fa;
+  @extend .fa-question-circle
+}
+.help-sign-content {
+  @extend .border;
+  @extend .border-secondary;
+  @extend .rounded;
+
+  background-color: gainsboro;
+}
