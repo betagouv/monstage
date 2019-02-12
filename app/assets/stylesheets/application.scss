@@ -15,10 +15,10 @@
 @import 'layout';
 @import 'font-awesome';
 
-label.required:after {
+label.required:before {
   content:"*";
   color:red;
-  margin-left: 5px;
+  margin-right: 0.25rem;
 }
 
 .clickable-row {
