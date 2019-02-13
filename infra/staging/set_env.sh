@@ -9,7 +9,6 @@ if [ $? -eq 0 ]; then
   exit $?
 else
   echo "missing RAILS_MASTER_KEY remote $target"
-  echo "please add $target repo"
-  echo "-> git remote add $target https://git.heroku.com/wello-front-react.git"
+  echo "please add with heroku config:set RAILS_MASTER_KEY=${VALUE} -a betagouv-monstage"
   exit 1;
 fi
