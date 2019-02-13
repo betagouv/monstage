@@ -25,20 +25,20 @@ jobs: # a collection of steps
 
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-      - restore_cache:
-          keys:
-            - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
-            - monstage-bundle-cachebust
+      # - restore_cache:
+      #     keys:
+      #       - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
+      #       - monstage-bundle-cachebust
 
       - run: # Install Ruby dependencies
           name: Bundle Install
           command: bundle check || bundle install
 
       # Store bundle cache for Ruby dependencies
-      - save_cache:
-          key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+      # - save_cache:
+      #     key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
+      #     paths:
+      #       - ~/.bundle
 
       - run:
           name: Wait for DB
@@ -52,7 +52,7 @@ jobs: # a collection of steps
 
       - run:
           name: Run TestUnit
-          command: bundle install && bundle exec bin/rails test --trace
+          command: bundle exec bin/rails test --trace
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
