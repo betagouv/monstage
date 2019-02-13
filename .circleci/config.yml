@@ -1,14 +1,14 @@
 version: 2
 
 defaults: &defaults
-  working_directory: ~/tps
+  working_directory: ~/monstage
   docker:
     - image: circleci/ruby:2.5.2-node-browsers
     - image: circleci/postgres:10.6
       environment:
-        POSTGRES_USER: tps_test
-        POSTGRES_PASSWORD: tps_test
-        POSTGRES_DB: tps_test
+        POSTGRES_USER: monstage_test
+        POSTGRES_PASSWORD: monstage_test
+        POSTGRES_DB: monstage_test
 
 bundle_restore_cache: &bundle_restore_cache
   restore_cache:
@@ -44,12 +44,12 @@ jobs:
       - *bundle_install
       - run:
           environment:
-            DATABASE_URL: "postgres://tps_test@localhost:5432/tps_test"
+            DATABASE_URL: "postgres://monstage_test@localhost:5432/monstage_test"
           name: Create DB
           command: bundle exec rake db:create db:schema:load db:migrate RAILS_ENV=test
       - run:
           environment:
-            DATABASE_URL: "postgres://tps_test@localhost:5432/tps_test"
+            DATABASE_URL: "postgres://monstage_test@localhost:5432/monstage_test"
           name: Run Tests, Splitted by Timings
           command: |
             COMMAND="bundle exec rake"
