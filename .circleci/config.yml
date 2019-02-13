@@ -46,9 +46,9 @@ jobs: # a collection of steps
 
       - run:
           name: Database setup
+          environment:
+            DATABASE_URL: "postgres://monstage:monstage@localhost:5432/monstage"
           command: bin/rails db:create db:schema:load --trace
-        environment:
-          DATABASE_URL: "postgres://monstage:monstage@localhost:5432/monstage"
 
       - run:
           name: Run minitest
