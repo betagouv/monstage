@@ -42,3 +42,5 @@ gem 'webpacker'
 
 gem 'slim-rails'
 gem 'discard'
+
+gem 'sentry-raven'
