@@ -62,7 +62,6 @@ gem 'webpacker'
 
 gem 'autoprefixer-rails'
 gem 'bootstrap'
-gem 'jquery-rails'
 gem 'slim-rails'
 gem 'font-awesome-rails'
 gem 'discard'
