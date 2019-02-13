@@ -34,7 +34,7 @@ jobs: # a collection of steps
           name: Bundle Install
           command: bundle check || bundle install
 
-      Store bundle cache for Ruby dependencies
+      # Store bundle cache for Ruby dependencies
       - save_cache:
           key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
           paths:
