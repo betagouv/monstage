@@ -30,15 +30,29 @@ jobs: # a collection of steps
             - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
             - monstage-bundle-cachebust
 
+      - type: cache-restore
+        name: Restore yarn cache
+        key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
+
       - run: # Install Ruby dependencies
           name: Bundle Install
           command: bundle check || bundle install
+
+      - run:
+          name: Yarn Install
+          command: yarn install
 
       # Store bundle cache for Ruby dependencies
       - save_cache:
           key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
           paths:
             - ~/.bundle
+
+      - type: cache-save
+        name: Store yarn cache
+        key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
+        paths:
+          - ~/.yarn-cache
 
       - run:
           name: Wait for DB
