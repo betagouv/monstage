@@ -61,5 +61,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'webpacker'
 
 gem 'slim-rails'
-gem 'font-awesome-rails'
 gem 'discard'
