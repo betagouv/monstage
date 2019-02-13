@@ -57,9 +57,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: <%= Credentials.enc(:db, :database) %>
-  username: <%= Credentials.enc(:db, :username) %>
-  password: <%= Credentials.enc(:db, :password) %>
+  database: <%= Credentials.enc(:test, :db, :database, prefix_env: false) %>
+  username: <%= Credentials.enc(:test, :db, :username, prefix_env: false) %>
+  password: <%= Credentials.enc(:test, :db, :password, prefix_env: false) %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
