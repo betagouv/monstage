@@ -48,11 +48,11 @@ jobs: # a collection of steps
           name: Database setup
           environment:
             DATABASE_URL: "postgres://monstage:monstage@localhost:5432/monstage"
-          command: bundle exec bin/rails db:create db:schema:load --trace
+          command: bundle _1.16.6_ exec bin/rails db:create db:schema:load --trace
 
       - run:
-          name: Run minitest
-          command: bundle exec bin/rails test
+          name: Run TestUnit
+          command: bundle _1.16.6_ exec bin/rails test
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
