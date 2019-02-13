@@ -23,22 +23,22 @@ jobs: # a collection of steps
           name: Which bundler?
           command: bundle -v
 
-      # Restore bundle cache
-      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-      # - restore_cache:
-      #     keys:
-      #       - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
-      #       - monstage-bundle-cachebust
+      Restore bundle cache
+      Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+      - restore_cache:
+          keys:
+            - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
+            - monstage-bundle-cachebust
 
       - run: # Install Ruby dependencies
           name: Bundle Install
           command: bundle check || bundle install
 
-      # Store bundle cache for Ruby dependencies
-      # - save_cache:
-      #     key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
-      #     paths:
-      #       - ~/.bundle
+      Store bundle cache for Ruby dependencies
+      - save_cache:
+          key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.bundle
 
       - run:
           name: Wait for DB
