@@ -10,7 +10,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: monstage
           RAILS_ENV: test
-      - image: circleci/postgres:10.6-alpine # database image
+      - image: circleci/postgres:10.6 # database image
         environment: # environment variables for database
           POSTGRES_DB: monstage
           POSTGRES_USER: monstage
