@@ -52,7 +52,7 @@ jobs: # a collection of steps
 
       - run:
           name: Run minitest
-          command: bin/rails test
+          command: bundle _1.17.0_ exec bin/rails test
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
