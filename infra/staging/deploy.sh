@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+
 target='staging'
 git remote -vvv | grep $target
 
