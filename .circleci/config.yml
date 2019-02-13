@@ -24,7 +24,7 @@ jobs: # a collection of steps
           command: bundle -v
 
       # Restore bundle cache
-      Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+      # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
           keys:
             - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
