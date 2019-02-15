@@ -5,14 +5,14 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'styles' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'  %>
   </head>
 
   <body>
     <div class="container">
       <%= link_to root_path do %>
-        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), class: 'mx-auto d-block logo' %>
+        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt:"logo mon stage de 3ème", class: 'mx-auto d-block logo' %>
       <% end %>
       <%= yield %>
     </div>
