@@ -33,24 +33,16 @@ jobs: # a collection of steps
       - run:
           name: Which bundler?
           command: bundle -v
+
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
           keys:
             - monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
-            - monstage-bundle-cachebust
-
-      - type: cache-restore
-        name: Restore yarn cache
-        key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
 
       - run: # Install Ruby dependencies
           name: Bundle Install
           command: bundle check || bundle install
-
-      - run:
-          name: Yarn Install
-          command: yarn install
 
       # Store bundle cache for Ruby dependencies
       - save_cache:
@@ -58,11 +50,20 @@ jobs: # a collection of steps
           paths:
             - ~/.bundle
 
-      - type: cache-save
+      - restore_cache:
+        name: Restore yarn cache
+        keys:
+          - montage-yarn-cachebust{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Yarn Install
+          command: yarn install
+
+      - save_cache:
         name: Store yarn cache
         key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
         paths:
-          - ~/.yarn-cache
+            - ~/.cache/yarn
 
       - run:
           name: Wait for DB
