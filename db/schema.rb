@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_15_091447) do
+ActiveRecord::Schema.define(version: 2019_02_15_094300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,10 +51,11 @@ ActiveRecord::Schema.define(version: 2019_02_15_091447) do
   end
 
   create_table "weeks", force: :cascade do |t|
-    t.integer "week"
+    t.integer "number"
     t.integer "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["number", "year"], name: "index_weeks_on_number_and_year", unique: true
   end
 
   add_foreign_key "internship_offer_weeks", "internship_offers"
