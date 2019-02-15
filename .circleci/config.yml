@@ -27,9 +27,9 @@ jobs: # a collection of steps
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
       - run:
-        command: |
-          sudo pip install pipenv
-          pipenv install html5validator
+          command: |
+            sudo pip install pipenv
+            pipenv install html5validator
 
 
       # Which version of bundler?
