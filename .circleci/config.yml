@@ -16,15 +16,21 @@ jobs: # a collection of steps
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
       - image: circleci/python:3.6.4
+        environment: # environment variables for database
+          PIPENV_VENV_IN_PROJECT: true
       - image: circleci/openjdk:8-jdk-browsers
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
 
-      # install pip
-      - run:
-          name: install html5validator
-          command: pip install html5validator
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+
+       - run:
+          command: |
+            sudo pip install pipenv
+            pipenv install html5validator
+
 
       # Which version of bundler?
       - run:
@@ -77,7 +83,8 @@ jobs: # a collection of steps
 
       - run:
           name: w3c validation
-          command: html5validator --root ~/monstage/tmp/w3c
+          command: |
+            pipenv run html5validator --root ~/monstage/tmp/w3c
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
