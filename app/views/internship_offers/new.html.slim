@@ -31,10 +31,15 @@ h1 Déposer une offre de stage
     = form.text_field :employer_city, class: "form-control", required: true
 
   h2 Quand?
+  .form-group.form-check
+    = check_box_tag 'all_year_long', true, true, class: 'form-check-input'
+    = label_tag 'all_year_long', "tout au long de l'année", class: 'form-check-label'
   .form-group
-    = form.label :weeks
-    = form.select :week_ids, Week.where("year = ?", @current_year), {}, class: "custom-select"
-
+    = label_tag 'excluded_weeks_ids', '... sauf aux dates suivantes'
+    = select_tag 'excluded_week_ids', options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), multiple: true, class: "custom-select"
+  .form-group
+    = form.label :week_ids, '... uniquement aux dates suivantes'
+    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select"
   h2 Quoi ?
   .form-group
     label.required Type de stage
