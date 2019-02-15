@@ -1,15 +1,14 @@
 require 'test_helper'
 require 'fileutils'
 
-class HomeValidationTest < ActionDispatch::IntegrationTest
-  # CircleCI task w3c validation depends on this path
-  RESPONSE_STORED_DIR = Rails.root.join('tmp', 'w3c')
+# CircleCI task w3c validation depends on this path
+RESPONSE_STORED_DIR = Rails.root.join('tmp', 'w3c')
 
-  setup do
-    Dir["#{RESPONSE_STORED_DIR}/*"].map do |last_run|
-      FileUtils.rm(last_run)
-    end
-  end
+Dir["#{RESPONSE_STORED_DIR}/*"].map do |last_run|
+  FileUtils.rm(last_run)
+end
+
+class HomeValidationTest < ActionDispatch::IntegrationTest
 
   def w3c_validate!(report_as:)
     yield
@@ -27,7 +26,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'internship_offers_path'  do
+  test 'internship_offers_path' do
     w3c_validate!(report_as: 'internship_offers_path') do
       get internship_offers_path
     end
