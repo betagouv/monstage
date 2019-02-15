@@ -30,6 +30,11 @@ h1 Déposer une offre de stage
     = form.label :employer_city, 'Ville', class: 'required'
     = form.text_field :employer_city, class: "form-control", required: true
 
+  h2 Quand?
+  .form-group
+    = form.label :weeks
+    = form.select :week_ids, Week.where("year = ?", @current_year), {}, class: "custom-select"
+
   h2 Quoi ?
   .form-group
     label.required Type de stage

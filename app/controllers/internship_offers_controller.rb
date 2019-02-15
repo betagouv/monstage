@@ -23,6 +23,10 @@ class InternshipOffersController < ApplicationController
 
   def new
     @internship_offer = InternshipOffer.new
+
+    @current_year = Date.today.year
+
+
     @sectors = ['Aérien, Aéronautique et Aéroportuaire',
                 "Agriculture, Elevage, Pêche",
                 "Agroalimentaire, Industrie agroalimentaire",
