@@ -35,7 +35,7 @@ h1 Déposer une offre de stage
     = check_box_tag 'all_year_long', true, true, class: 'form-check-input'
     = label_tag 'all_year_long', "tout au long de l'année", class: 'form-check-label'
   .form-group
-    = label_tag 'excluded_weeks_ids', '... sauf ces semaines'
+    = label_tag 'excluded_week_ids', '... sauf ces semaines'
     = select_tag 'excluded_week_ids', options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), multiple: true, class: "custom-select"
   .form-group
     = form.label :week_ids, 'OU uniquement ces semaines'
@@ -45,10 +45,10 @@ h1 Déposer une offre de stage
     label.required Type de stage
     .form-check
       = form.radio_button :can_be_applied_for, true, class: 'form-check-input'
-      = form.label :can_be_applied_for, 'Individuel', class: 'form-check-label'
+      = form.label :can_be_applied_for_true, 'Individuel', class: 'form-check-label'
     .form-check
       = form.radio_button :can_be_applied_for, false, class: 'form-check-input'
-      = form.label :can_be_applied_for, 'Collectif', class: 'form-check-label'
+      = form.label :can_be_applied_for_false, 'Collectif', class: 'form-check-label'
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
