@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_12_163331) do
+ActiveRecord::Schema.define(version: 2019_02_15_085241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "internship_offer_weeks", force: :cascade do |t|
+    t.bigint "internship_offer_id"
+    t.bigint "week_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
+    t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
+  end
 
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
@@ -41,4 +50,13 @@ ActiveRecord::Schema.define(version: 2019_02_12_163331) do
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
   end
 
+  create_table "weeks", force: :cascade do |t|
+    t.integer "week"
+    t.integer "year"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "internship_offer_weeks", "internship_offers"
+  add_foreign_key "internship_offer_weeks", "weeks"
 end
