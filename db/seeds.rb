@@ -1,7 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+FIRST_YEAR = 2019
+LAST_YEAR = 2050
+
+FIRST_WEEK = 1
+LAST_WEEK = 53 # A 53 week exisits! https://fr.wikipedia.org/wiki/Semaine_53
+
+def populate_week_reference
+  FIRST_YEAR.upto(LAST_YEAR) do |year|
+    FIRST_WEEK.upto(LAST_WEEK) do |week| # number of the week
+      begin
+        if week == LAST_WEEK
+          Date.commercial(year, week, 1)
+          puts "Special year #{year}, this one have 53 weeks"
+        end
+
+        Week.create!(year: year, number: week)
+      rescue ArgumentError => e
+        puts "no week #{week} for year #{year}"
+      end
+    end
+  end
+end
+
+populate_week_reference
