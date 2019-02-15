@@ -24,7 +24,7 @@ jobs: # a collection of steps
       # install pip
       - run:
           name: install html5validator
-          command: pip install html5validator'
+          command: pip install html5validator
 
       # Which version of bundler?
       - run:
