@@ -26,10 +26,10 @@ jobs: # a collection of steps
       - run: sudo chown -R circleci:circleci /usr/local/bin
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
 
-       - run:
-          command: |
-            sudo pip install pipenv
-            pipenv install html5validator
+      - run:
+        command: |
+          sudo pip install pipenv
+          pipenv install html5validator
 
 
       # Which version of bundler?
@@ -83,8 +83,7 @@ jobs: # a collection of steps
 
       - run:
           name: w3c validation
-          command: |
-            pipenv run html5validator --root ~/monstage/tmp/w3c
+          command: pipenv run html5validator --root ~/monstage/tmp/w3c
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
