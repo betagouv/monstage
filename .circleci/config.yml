@@ -51,19 +51,19 @@ jobs: # a collection of steps
             - ~/.bundle
 
       - restore_cache:
-        name: Restore yarn cache
-        keys:
-          - montage-yarn-cachebust{{ checksum "yarn.lock" }}
+          name: Restore yarn cache
+          keys:
+            - montage-yarn-cachebust{{ checksum "yarn.lock" }}
 
       - run:
           name: Yarn Install
           command: yarn install
 
       - save_cache:
-        name: Store yarn cache
-        key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
-        paths:
-          - ~/.cache/yarn
+          name: Store yarn cache
+          key: montage-yarn-cachebust{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
 
       - run:
           name: Wait for DB
