@@ -6,7 +6,11 @@ class Week < ApplicationRecord
   #   where(year: Date.now.year)
   # }
   #
-  # scope :window_from_septembre_until_may_next_year, -> {
-  #   where(year: Date.now.year).where(number: Date.new(current_year, 9, 1).cweek..Date.new(current_year+1, 5, 1).cweek)
-  # }
+  scope :from_date_to_date_for_year, -> (from, to, year) {
+    where(year: year).where("number BETWEEN ? AND ?", from.cweek, to.cweek)
+  }
+
+  scope :from_date_until_end_of_year, -> (from, year) {
+    where(year: year).where("number > ?", from.cweek)
+  }
 end

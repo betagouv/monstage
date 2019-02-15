@@ -28,17 +28,16 @@ class InternshipOffersController < ApplicationController
     current_year = today.year
     current_month = today.month
 
-    if current_month < 5 # Before May, the available weeks are until May of the current year
-      first_of_may_week_number = Date.new(current_year, 5, 1).cweek
-      @current_weeks = Week.where("year = ? AND number > ? AND number <= ?", current_year, today.cweek, first_of_may_week_number)
-    else # After May, offers are valid for next year
-      first_week = if current_month < 9 # Between May and September, the first week should be the first week of september
-                     Date.new(current_year, 9, 1).cweek
-                   else # otherwise it is from the current week
-                     today.cweek
-                   end
-      @current_weeks = Week.where("year = ? AND number > ?", current_year, first_week)
-                           .or(Week.where("year = ? AND number < ?", current_year + 1, Date.new(current_year+1, 5, 1).cweek))
+    if current_month < 5 # Before May, offers should be available from now until May of the current year
+      @current_weeks = Week.from_date_to_date_for_year(today, Date.new(current_year, 5, 1), current_year)
+    else # After May, offers should be posted for next year
+      first_day_available = if current_month < 9 # Between May and September, the first week should be the first week of september
+                              Date.new(current_year, 9, 1)
+                            else
+                              today
+                            end
+      @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
+                           .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year))
     end
 
     @sectors = ['Aérien, Aéronautique et Aéroportuaire',
