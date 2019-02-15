@@ -16,14 +16,11 @@ jobs: # a collection of steps
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
       - image: python:3.6-stretch
+      - image: circleci/openjdk:8-jdk-browsers
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
 
-      # for w3c validation
-      - run:
-          name: install Java
-          command: apt-get update && apt-get install -y openjdk-8-jre
       # install pip
       - run:
           name: install html5validator
