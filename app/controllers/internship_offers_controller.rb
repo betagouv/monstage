@@ -37,7 +37,7 @@ class InternshipOffersController < ApplicationController
                               today
                             end
       @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
-                           .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year))
+                           .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year+1))
     end
 
     @sectors = ['Aérien, Aéronautique et Aéroportuaire',
