@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+stage_dev:
   title: MyString
   description: MyText
   can_be_applied_for: false
@@ -8,12 +8,9 @@ one:
   week_day_end: 2019-02-07
   max_candidates: 1
   max_weeks: 1
+  sector: "abc"
+  can_be_applied_for: true
+  tutor_name: Martin Fourcade
+  tutor_phone: 0669696969
+  supervisor_email: pere@noel.lol
 
-two:
-  title: MyString
-  description: MyText
-  can_be_applied_for: false
-  week_day_start: 2019-02-07
-  week_day_end: 2019-02-07
-  max_candidates: 1
-  max_weeks: 1

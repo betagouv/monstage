@@ -20,4 +20,10 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
       get new_internship_offer_path
     end
   end
+
+  test 'edit_internship_offer_path'  do
+    run_request_and_cache_response(report_as: 'new_internship_offer_path') do
+      get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
+    end
+  end
 end
