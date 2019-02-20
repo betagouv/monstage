@@ -5,7 +5,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     travel_to(Date.new(2019, 2, 15)) do
       get new_internship_offer_path
 
-      assert_select "select#excluded_week_ids option", 12
+      assert_select "select#internship_offer_week_ids option", 12
       assert_select "option", text: "Semaine 7 - du 11/02/19 au 17/02/19"
       assert_select "option", text: "Semaine 8 - du 18/02/19 au 24/02/19"
       assert_select "option", text: "Semaine 9 - du 25/02/19 au 03/03/19"

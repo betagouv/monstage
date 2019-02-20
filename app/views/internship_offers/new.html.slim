@@ -32,14 +32,11 @@ h1 Déposer une offre de stage
 
   h2 Quand?
   .form-group.form-check
-    = check_box_tag 'all_year_long', true, true, class: 'form-check-input'
+    = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
     = label_tag 'all_year_long', "tout au long de l'année", class: 'form-check-label'
   .form-group
-    = label_tag 'excluded_week_ids', '... sauf ces semaines'
-    = select_tag 'excluded_week_ids', options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), multiple: true, class: "custom-select"
-  .form-group
-    = form.label :week_ids, 'OU uniquement ces semaines'
-    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", disabled: true
+    = form.label :week_ids, 'OU sélection manuelle des semaines'
+    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
   h2 Quoi ?
   .form-group
     label.required Type de stage
