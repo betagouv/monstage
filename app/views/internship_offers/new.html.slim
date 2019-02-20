@@ -16,7 +16,7 @@ h1 Déposer une offre de stage
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(@sectors), {}, class: "custom-select", required: true
+    = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: intership_sectors_options_for_default, disabled: intership_sectors_options_for_default), { include_blank: false },class: "custom-select"
 
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
@@ -30,15 +30,23 @@ h1 Déposer une offre de stage
     = form.label :employer_city, 'Ville', class: 'required'
     = form.text_field :employer_city, class: "form-control", required: true
 
+  h2 Quand?
+  .form-group
+    = form.label :week_ids, "Choisissez les semaines d'accueil pour l'année scolaire #{@school_year}"
+    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
+  .form-group.form-check
+    = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
+    = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
+
   h2 Quoi ?
   .form-group
     label.required Type de stage
     .form-check
       = form.radio_button :can_be_applied_for, true, class: 'form-check-input'
-      = form.label :can_be_applied_for, 'Individuel', class: 'form-check-label'
+      = form.label :can_be_applied_for_true, 'Individuel', class: 'form-check-label'
     .form-check
       = form.radio_button :can_be_applied_for, false, class: 'form-check-input'
-      = form.label :can_be_applied_for, 'Collectif', class: 'form-check-label'
+      = form.label :can_be_applied_for_false, 'Collectif', class: 'form-check-label'
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
@@ -53,10 +61,10 @@ h1 Déposer une offre de stage
     = form.text_field :tutor_name, class: 'form-control', required: true
   .form-group
     = form.label :tutor_phone, 'Téléphone', class: 'required'
-    = form.text_field :tutor_phone, class: 'form-control', required: true
+    = form.phone_field :tutor_phone, class: 'form-control', required: true
   .form-group
     = form.label :tutor_email, 'Adresse électronique'
-    = form.text_field :tutor_email, class: 'form-control'
+    = form.email_field :tutor_email, class: 'form-control'
   h3 Entreprise ou Administration
   .form-group
     = form.label :employer_website, 'Site web'
@@ -68,6 +76,6 @@ h1 Déposer une offre de stage
   h3 Responsable de l'offre
   .form-group
     = form.label :supervisor_email, 'Adresse électronique', class: 'required'
-    = form.text_field :supervisor_email, class: 'form-control', required: true
+    = form.email_field :supervisor_email, class: 'form-control', required: true
 
   = form.submit 'Soumettre', class: 'btn btn-primary'

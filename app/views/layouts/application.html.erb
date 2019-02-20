@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <title>Monstage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -12,7 +13,7 @@
   <body>
     <div class="container">
       <%= link_to root_path do %>
-        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt:"logo mon stage de 3ème", class: 'mx-auto d-block logo' %>
+        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Logo - mon stage de 3ème", width: 270, height: 152, class: 'mx-auto d-block logo' %>
       <% end %>
       <%= yield %>
     </div>
