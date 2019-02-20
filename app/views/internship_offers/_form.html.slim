@@ -31,7 +31,7 @@
 
   h2 Quand?
   .form-group
-    = form.label :week_ids, "Choisissez les semaines d'accueil pour l'année scolaire #{@school_year}"
+    = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
     = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
   .form-group.form-check
     = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
@@ -49,9 +49,11 @@
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
+    .form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
   .form-group
     = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
     = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control', required: true
+    .form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
 
   h2 Employeur
   h3 Tuteur
@@ -76,5 +78,6 @@
   .form-group
     = form.label :supervisor_email, 'Adresse électronique', class: 'required'
     = form.email_field :supervisor_email, class: 'form-control', required: true
+    .form-text.text-muted Cette adresse vous servira à vous identifier pour le suivi des candidatures
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
