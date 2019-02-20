@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   delegate :current_user, to: :session_manager
+  before_action :current_user
 
   private
   def session_manager

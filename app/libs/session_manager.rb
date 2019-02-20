@@ -12,8 +12,9 @@ class SessionManager
     @session = session
   end
 
+
   def user_in_session
-    session[:user]
+    deserialize_from_session(session[:user])
   end
 
   def user_in_session?
@@ -27,8 +28,18 @@ class SessionManager
   end
 
   def change_user
-    session[:user] = User.const_get(request.params.fetch(:as))
+    session[:user] = serialize_in_session(User.const_get(request.params.fetch(:as)))
   end
 
+  #
+  # session in/out
+  #
+  def deserialize_from_session(user)
+    Marshal.load(user)
+  end
+
+  def serialize_in_session(user)
+    Marshal.dump(user)
+  end
 
 end
