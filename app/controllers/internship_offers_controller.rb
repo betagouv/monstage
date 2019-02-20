@@ -1,5 +1,4 @@
 class InternshipOffersController < ApplicationController
-
   def index
     @internship_offers = InternshipOffer.kept
   end
@@ -9,16 +8,25 @@ class InternshipOffersController < ApplicationController
   end
 
   def create
+    authorize! :create, InternshipOffer
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
     redirect_to internship_offer_path(@internship_offer)
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent poster une offre' })
   end
 
   def edit
+    authorize! :edit, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent modifier une offre' })
   end
 
   def update
+    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
 
     if @internship_offer.update(internship_offer_params)
@@ -26,16 +34,24 @@ class InternshipOffersController < ApplicationController
     else
       render :edit
     end
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent modifier une offre' })
   end
 
   def destroy
+    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.discard
 
     redirect_to root_path
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent supprimer leurs offres' })
   end
 
   def new
+    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.new
 
     today = Date.today
@@ -55,6 +71,9 @@ class InternshipOffersController < ApplicationController
                            .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year+1))
       @school_year = "#{current_year} / #{current_year + 1}"
     end
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent créer une offre' })
   end
 
   private
