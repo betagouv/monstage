@@ -30,6 +30,7 @@ class InternshipOffersController < ApplicationController
 
     if current_month < 5 # Before May, offers should be available from now until May of the current year
       @current_weeks = Week.from_date_to_date_for_year(today, Date.new(current_year, 5, 1), current_year)
+      @school_year = "#{current_year - 1} / #{current_year}"
     else # After May, offers should be posted for next year
       first_day_available = if current_month < 9 # Between May and September, the first week should be the first week of september
                               Date.new(current_year, 9, 1)
@@ -38,6 +39,7 @@ class InternshipOffersController < ApplicationController
                             end
       @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
                            .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year+1))
+      @school_year = "#{current_year} / #{current_year + 1}"
     end
   end
 
