@@ -11,7 +11,13 @@ class InternshipOffersController < ApplicationController
     authorize! :create, InternshipOffer
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
-    redirect_to internship_offer_path(@internship_offer)
+    if @internship_offer.valid?
+      redirect_to internship_offer_path(@internship_offer)
+    else
+      find_selectable_weeks
+      render 'internship_offers/new'
+    end
+
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent poster une offre' })
@@ -54,6 +60,15 @@ class InternshipOffersController < ApplicationController
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.new
 
+    find_selectable_weeks
+  rescue CanCan::AccessDenied
+    redirect_to(internship_offers_path,
+                flash: { error: 'Seul les employeurs peuvent créer une offre' })
+  end
+
+  private
+
+  def find_selectable_weeks
     today = Date.today
     current_year = today.year
     current_month = today.month
@@ -67,14 +82,9 @@ class InternshipOffersController < ApplicationController
                               today
                             end
       @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
-                           .or(Week.from_date_to_date_for_year( Date.new(current_year + 1), Date.new(current_year+1, 5, 1), current_year+1))
+                           .or(Week.from_date_to_date_for_year(Date.new(current_year + 1), Date.new(current_year + 1, 5, 1), current_year + 1))
     end
-  rescue CanCan::AccessDenied
-    redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent créer une offre' })
   end
-
-  private
 
   def internship_offer_params
     params.require(:internship_offer)
