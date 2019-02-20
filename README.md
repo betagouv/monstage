@@ -13,7 +13,8 @@ Things you may want to cover:
 - Create local db : createdb monstage
 - Start with : pg_ctl -D /usr/local/var/postgres start
 - Stop with : pg_ctl -D /usr/local/var/postgres stop
-
+- Install html5validator : pip install html5validator
+- 
 # build
 ## run dev env
 
