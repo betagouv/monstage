@@ -1,5 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
+require_relative './support/session_manager_test_helper'
+require 'minitest/autorun'
 require 'rails/test_help'
 
 class ActiveSupport::TestCase

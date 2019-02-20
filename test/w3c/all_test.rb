@@ -2,6 +2,7 @@ require 'test_helper'
 
 class HomeValidationTest < ActionDispatch::IntegrationTest
   include Html5Validator
+  include SessionManagerTestHelper
 
   test 'root_path' do
     run_request_and_cache_response(report_as: 'root_path') do
@@ -16,14 +17,19 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'new_internship_offer_path'  do
-    run_request_and_cache_response(report_as: 'new_internship_offer_path') do
-      get new_internship_offer_path
+    sign_in(as: User::Employer) do
+      run_request_and_cache_response(report_as: 'new_internship_offer_path') do
+        get new_internship_offer_path
+      end
     end
   end
 
   test 'edit_internship_offer_path'  do
-    run_request_and_cache_response(report_as: 'new_internship_offer_path') do
-      get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
+    stage_dev = internship_offers(:stage_dev)
+    sign_in(as: User::Employer) do
+      run_request_and_cache_response(report_as: 'new_internship_offer_path') do
+        get edit_internship_offer_path(id: stage_dev.to_param)
+      end
     end
   end
 end
