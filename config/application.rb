@@ -15,10 +15,5 @@ module Monstage
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-
-    # Sentry config
-    Raven.configure do |config|
-      config.dsn = Credentials.enc(:sentry_dns, prefix_env: false)
-    end
   end
 end
