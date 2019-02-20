@@ -14,6 +14,20 @@ class InternshipOffersController < ApplicationController
     redirect_to internship_offer_path(@internship_offer)
   end
 
+  def edit
+    @internship_offer = InternshipOffer.find(params[:id])
+  end
+
+  def update
+    @internship_offer = InternshipOffer.find(params[:id])
+
+    if @internship_offer.update(internship_offer_params)
+      redirect_to @internship_offer
+    else
+      render :edit
+    end
+  end
+
   def destroy
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.discard
