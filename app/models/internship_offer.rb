@@ -8,6 +8,7 @@ class InternshipOffer < ApplicationRecord
             :tutor_name,
             :tutor_phone,
             :supervisor_email,
+            :is_public,
             presence: true
 
   has_many :internship_offer_weeks, dependent: :destroy

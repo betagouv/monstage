@@ -70,6 +70,14 @@
     = form.label :tutor_email, 'Adresse électronique'
     = form.email_field :tutor_email, class: 'form-control'
   h3 Entreprise ou Administration
+  label.required Secteur
+  .form-group
+    .form-check
+      = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
+      = form.label :is_public_true, 'Public', class: 'form-check-label'
+    .form-check
+      = form.radio_button :is_public, false, class: 'form-check-input', required: true
+      = form.label :is_public_true, 'Privé', class: 'form-check-label'
   .form-group
     = form.label :employer_website, 'Site web'
     = form.text_field :employer_website, class: 'form-control'
