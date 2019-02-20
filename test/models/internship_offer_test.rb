@@ -10,4 +10,34 @@ class InternshipOfferTest < ActiveSupport::TestCase
     internship_offer = InternshipOffer.new
     assert_equal internship_offer.weeks, []
   end
+
+  test "test presence of fields" do
+    internship_offer = InternshipOffer.create
+
+    assert 0, InternshipOffer.count
+
+    assert internship_offer.invalid?
+    assert_not_empty internship_offer.errors[:title]
+    assert_not_empty internship_offer.errors[:description]
+    assert_not_empty internship_offer.errors[:sector]
+    assert_not_empty internship_offer.errors[:max_candidates]
+    assert_not_empty internship_offer.errors[:max_weeks]
+    assert_not_empty internship_offer.errors[:tutor_name]
+    assert_not_empty internship_offer.errors[:tutor_phone]
+    assert_not_empty internship_offer.errors[:supervisor_email]
+    assert_not_empty internship_offer.errors[:is_public]
+    assert_not_empty internship_offer.errors[:employer_street]
+    assert_not_empty internship_offer.errors[:employer_zipcode]
+    assert_not_empty internship_offer.errors[:employer_city]
+  end
+
+  test "number of candidates" do
+    internship_offer = InternshipOffer.create(max_candidates: 0)
+
+    assert internship_offer.invalid?
+    assert_not_empty internship_offer.errors[:max_candidates]
+
+    internship_offer = InternshipOffer.create(max_candidates: 20)
+    assert_empty internship_offer.errors[:max_candidates]
+  end
 end
