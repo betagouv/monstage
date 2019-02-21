@@ -14,8 +14,10 @@ def populate_week_reference
         end
 
         Week.create!(year: year, number: week)
-      rescue ArgumentError => e
+      rescue ArgumentError
         puts "no week #{week} for year #{year}"
+      rescue ActiveRecord::RecordNotUnique
+        puts "week #{week} - #{year} already exists"
       end
     end
   end
