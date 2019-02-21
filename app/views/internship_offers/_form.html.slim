@@ -36,7 +36,7 @@
   h2 Quand?
   .form-group
     = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
-    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
+    = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "custom-select", required: true
   .form-group.form-check
     = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
     = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
