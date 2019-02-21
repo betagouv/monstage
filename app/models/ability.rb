@@ -3,9 +3,9 @@ class Ability
 
   def initialize(user)
     case user.role
-    when User::Roles::Visitor then visitor_abilities(user: user)
-    when User::Roles::Student then student_abilities(user: user)
-    when User::Roles::Employer then employer_abilities(user: user)
+    when MockUser::Roles::Visitor then visitor_abilities(user: user)
+    when MockUser::Roles::Student then student_abilities(user: user)
+    when MockUser::Roles::Employer then employer_abilities(user: user)
     else fail ArgumentError, "Unknown role for user"
     end
   end

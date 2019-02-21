@@ -2,7 +2,7 @@ class SessionManager
   def change_or_restore_current_user
     change_user if change_user?
     return user_in_session if user_in_session?
-    return User::Visitor
+    return MockUser::Visitor
   end
 
   private

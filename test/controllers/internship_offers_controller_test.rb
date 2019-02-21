@@ -4,7 +4,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   include SessionManagerTestHelper
 
   test 'GET #new as employer show valid form' do
-    sign_in(as: User::Employer) do
+    sign_in(as: MockUser::Employer) do
       travel_to(Date.new(2019, 2, 15)) do
         get new_internship_offer_path
 
@@ -55,7 +55,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #edit as employer' do
-    sign_in(as: User::Employer) do
+    sign_in(as: MockUser::Employer) do
       get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
       assert_response :success
     end
@@ -72,7 +72,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     internship_offer = internship_offers(:stage_dev)
     new_title = 'new title'
 
-    sign_in(as: User::Employer) do
+    sign_in(as: MockUser::Employer) do
       patch(internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
                         title: new_title,
