@@ -12,10 +12,10 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
     if @internship_offer.valid?
-      redirect_to internship_offer_path(@internship_offer)
+      redirect_to internship_offer_path(@internship_offer), status: :created
     else
       find_selectable_weeks
-      render 'internship_offers/new'
+      render 'internship_offers/new', status: :bad_request
     end
 
   rescue CanCan::AccessDenied

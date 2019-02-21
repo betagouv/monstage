@@ -27,9 +27,27 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #new as visitor redirects to internship_offers' do
-    get new_internship_offer_path()
+    get new_internship_offer_path
     assert_redirected_to internship_offers_path
   end
+
+  test 'POST #create as visitor redirects to internship_offers' do
+    post internship_offers_path(params: {})
+    assert_redirected_to internship_offers_path
+  end
+
+  # test 'POST #create as employer creates the post' do
+  #   sign_in(as: User::Employer) do
+  #     assert_difference('InternshipOffer.count', 0) do
+  #       post(internship_offers_path,
+  #            params: {
+  #             internship_offer: internship_offers(:stage_dev).attributes
+  #                               .merge(weeks_ids: [weeks(:week_2019_1).id])
+  #            })
+  #     end
+  #     assert_response :created
+  #   end
+  # end
 
   test 'GET #edit as visitor redirects to internship_offers' do
     get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
@@ -56,7 +74,11 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
 
     sign_in(as: User::Employer) do
       patch(internship_offer_path(internship_offer.to_param),
-            params: { internship_offer: { title: new_title } })
+            params: { internship_offer: {
+                        title: new_title,
+                        weeks_ids: [weeks(:week_2019_1).id]
+                      }
+                    })
       assert_redirected_to(internship_offer,
                          'redirection should point to updated offer')
       assert_equal(new_title,
