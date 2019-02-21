@@ -76,7 +76,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
       patch(internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
                         title: new_title,
-                        weeks_ids: [weeks(:week_2019_1).id]
+                        week_ids: [weeks(:week_2019_1).id]
                       }
                     })
       assert_redirected_to(internship_offer,
