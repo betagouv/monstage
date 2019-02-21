@@ -17,8 +17,10 @@
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: intership_sectors_options_for_default, disabled: intership_sectors_options_for_default), { include_blank: false },class: "custom-select"
-
+    - if @internship_offer.new_record?
+      = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: intership_sectors_options_for_default, disabled: intership_sectors_options_for_default), { include_blank: false }, class: "custom-select"
+    - else
+      = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: @internship_offer.sector), {}, class: "custom-select"
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
   .form-group
