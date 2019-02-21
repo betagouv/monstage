@@ -14,11 +14,21 @@ def populate_week_reference
         end
 
         Week.create!(year: year, number: week)
-      rescue ArgumentError => e
+      rescue ArgumentError
         puts "no week #{week} for year #{year}"
+      rescue ActiveRecord::RecordNotUnique
+        puts "week #{week} - #{year} already exists"
       end
     end
   end
 end
 
 populate_week_reference
+
+def populate_operators
+  ["Clubs régionaux  d'entreprises pour l'insertion (CREPI)", "Dégun sans stage (Ecole centrale de Marseille)", "Fondation Agir contre l'Exclusion (FACE)", "JOB IRL", "Les entreprises pour la cité (LEPC)", "Un stage et après !", "Tous en stage", "Viens voir mon taf"].each do |operator|
+    User.find_or_create_by(operator: operator)
+  end
+end
+
+populate_operators

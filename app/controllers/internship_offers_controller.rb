@@ -15,7 +15,7 @@ class InternshipOffersController < ApplicationController
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing
     @internship_offer ||= InternshipOffer.new
-    find_selectable_weeks
+    find_selectable_content
     render 'internship_offers/new', status: :bad_request
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
@@ -25,7 +25,7 @@ class InternshipOffersController < ApplicationController
   def edit
     authorize! :edit, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
-    find_selectable_weeks
+    find_selectable_content
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent modifier une offre' })
@@ -39,7 +39,7 @@ class InternshipOffersController < ApplicationController
     redirect_to @internship_offer
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing => error
-    find_selectable_weeks
+    find_selectable_content
     render :edit, status: :bad_request
   rescue CanCan::AccessDenied,
     redirect_to(internship_offers_path,
@@ -60,7 +60,7 @@ class InternshipOffersController < ApplicationController
   def new
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.new
-    find_selectable_weeks
+    find_selectable_content
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent créer une offre' })
@@ -86,11 +86,20 @@ class InternshipOffersController < ApplicationController
     end
   end
 
+  def find_selectable_operators
+    @operators = User.where.not(operator_name: nil)
+  end
+
+  def find_selectable_content
+    find_selectable_weeks
+    find_selectable_operators
+  end
+
   def internship_offer_params
     params.require(:internship_offer)
         .permit(:title, :description, :sector, :can_be_applied_for, :week_day_start, :week_day_end, :excluded_weeks,
                 :max_candidates, :max_weeks, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
                 :employer_description, :employer_street, :employer_zipcode, :employer_city, :supervisor_email, :is_public,
-                week_ids: [])
+                :operator_id, week_ids: [])
   end
 end
