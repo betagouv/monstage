@@ -26,7 +26,7 @@ class InternshipOffersController < ApplicationController
   def edit
     authorize! :edit, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
-    set_current_weeks
+    find_selectable_weeks
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent modifier une offre' })
@@ -60,12 +60,7 @@ class InternshipOffersController < ApplicationController
   def new
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.new
-    set_current_weeks
-
-<<<<<<< HEAD
     find_selectable_weeks
-=======
->>>>>>> feat(edit): plug form
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent créer une offre' })
