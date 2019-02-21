@@ -39,6 +39,7 @@ class InternshipOffersController < ApplicationController
     if @internship_offer.update(internship_offer_params)
       redirect_to @internship_offer
     else
+      find_selectable_weeks
       render :edit
     end
   rescue CanCan::AccessDenied
