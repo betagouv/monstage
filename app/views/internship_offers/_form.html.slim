@@ -17,8 +17,10 @@
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: intership_sectors_options_for_default, disabled: intership_sectors_options_for_default), { include_blank: false },class: "custom-select"
-
+    - if @internship_offer.new_record?
+      = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: intership_sectors_options_for_default, disabled: intership_sectors_options_for_default), { include_blank: false }, class: "custom-select"
+    - else
+      = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: @internship_offer.sector), {}, class: "custom-select"
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
   .form-group
@@ -34,7 +36,7 @@
   h2 Quand?
   .form-group
     = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
-    = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
+    = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "custom-select", required: true
   .form-group.form-check
     = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
     = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
@@ -77,7 +79,7 @@
       = form.label :is_public_true, 'Public', class: 'form-check-label'
     .form-check
       = form.radio_button :is_public, false, class: 'form-check-input', required: true
-      = form.label :is_public_true, 'Privé', class: 'form-check-label'
+      = form.label :is_public_false, 'Privé', class: 'form-check-label'
   .form-group
     = form.label :employer_website, 'Site web'
     = form.text_field :employer_website, class: 'form-control'

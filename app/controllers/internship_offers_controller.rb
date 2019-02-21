@@ -12,10 +12,10 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.create(internship_offer_params)
 
     if @internship_offer.valid?
-      redirect_to internship_offer_path(@internship_offer)
+      redirect_to internship_offer_path(@internship_offer), status: :created
     else
       find_selectable_weeks
-      render 'internship_offers/new'
+      render 'internship_offers/new', status: :bad_request
     end
 
   rescue CanCan::AccessDenied
@@ -26,6 +26,7 @@ class InternshipOffersController < ApplicationController
   def edit
     authorize! :edit, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+    find_selectable_weeks
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent modifier une offre' })
@@ -38,6 +39,7 @@ class InternshipOffersController < ApplicationController
     if @internship_offer.update(internship_offer_params)
       redirect_to @internship_offer
     else
+      find_selectable_weeks
       render :edit
     end
   rescue CanCan::AccessDenied
@@ -59,7 +61,6 @@ class InternshipOffersController < ApplicationController
   def new
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.new
-
     find_selectable_weeks
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,

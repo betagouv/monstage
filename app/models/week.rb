@@ -8,4 +8,10 @@ class Week < ApplicationRecord
   scope :from_date_until_end_of_year, -> (from, year) {
     where(year: year).where("number > ?", from.cweek)
   }
+
+  def select_text_method
+    week_date = Date.commercial(year, number)
+    date_format = '%d/%m/%y'
+    "Semaine #{number} - du #{week_date.beginning_of_week.strftime(date_format)} au #{week_date.end_of_week.strftime(date_format)}"
+  end
 end

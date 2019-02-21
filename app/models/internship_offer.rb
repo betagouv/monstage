@@ -4,7 +4,6 @@ class InternshipOffer < ApplicationRecord
   validates :title,
             :description,
             :sector,
-            :can_be_applied_for,
             :max_candidates,
             :tutor_name,
             :tutor_phone,
@@ -15,7 +14,12 @@ class InternshipOffer < ApplicationRecord
             :employer_city,
             presence: true
 
-  validates :max_candidates, :max_weeks, numericality: { only_integer: true, greater_than: 0 }
+  validates :can_be_applied_for, inclusion: { in: [true, false] }
+
+  validates :max_candidates, numericality: { only_integer: true, greater_than: 0 },
+                             unless: :can_be_applied_for?
+  validates :max_weeks, numericality: { only_integer: true, greater_than: 0 }
+
   validate :at_least_one_week
 
   has_many :internship_offer_weeks, dependent: :destroy

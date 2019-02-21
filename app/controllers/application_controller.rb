@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
-  delegate :current_user, to: :session_manager
-  before_action :current_user
+  def current_user
+    @current_user ||= session_manager.change_or_restore_current_user
+  end
 
   private
   def session_manager

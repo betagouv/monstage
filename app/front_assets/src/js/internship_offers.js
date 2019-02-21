@@ -14,8 +14,5 @@ $(document).on('turbolinks:load', function() {
     $('#all_year_long').change(function () {
         $('#internship_offer_week_ids option').prop('selected', $('#all_year_long').prop('checked'));
     });
-
-    // By default the internship should be available all year
-    $('#all_year_long').click();
 });
 
