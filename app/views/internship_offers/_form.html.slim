@@ -95,6 +95,6 @@
 
   .form-group
     = form.label :operator_id, 'Opérateur'
-    = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator), {}, class: "custom-select"
+    = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator_name), {}, class: "custom-select"
 
   = form.submit 'Soumettre', class: 'btn btn-primary'

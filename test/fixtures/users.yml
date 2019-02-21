@@ -5,11 +5,11 @@ one:
   phone: 0123456789
   first_name: Mathilde
   last_name: Chaboche
-  operator: Dégun sans stage (Ecole centrale de Marseille)
+  operator_name: Dégun sans stage (Ecole centrale de Marseille)
 
 two:
   email: samira.djouadi@fakemail.com
   phone: 0123456789
   first_name: Samira
   last_name: Djouadi
-  operator: Tous en stage
+  operator_name: Tous en stage
