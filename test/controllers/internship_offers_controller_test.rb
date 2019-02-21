@@ -76,13 +76,6 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'PATCH #update as visitor fails' do
-    internship_offer = internship_offers(:stage_dev)
-    patch(internship_offer_path(internship_offer.to_param),
-          params: { internship_offer: { title: 'fail' } })
-    assert_redirected_to internship_offers_path
-  end
-
   test 'PATCH #update as employer updates internship_offer' do
     internship_offer = internship_offers(:stage_dev)
     new_title = 'new title'
