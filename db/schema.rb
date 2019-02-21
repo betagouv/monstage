@@ -47,9 +47,9 @@ ActiveRecord::Schema.define(version: 2019_02_21_092730) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
-    t.bigint "user_id"
+    t.bigint "operator_id"
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
-    t.index ["user_id"], name: "index_internship_offers_on_user_id"
+    t.index ["operator_id"], name: "index_internship_offers_on_operator_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -72,5 +72,5 @@ ActiveRecord::Schema.define(version: 2019_02_21_092730) do
 
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
-  add_foreign_key "internship_offers", "users"
+  add_foreign_key "internship_offers", "users", column: "operator_id"
 end
