@@ -17,7 +17,6 @@ class InternshipOffersController < ApplicationController
       find_selectable_weeks
       render 'internship_offers/new', status: :bad_request
     end
-
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent poster une offre' })

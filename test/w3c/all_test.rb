@@ -27,7 +27,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   test 'edit_internship_offer_path'  do
     stage_dev = internship_offers(:stage_dev)
     sign_in(as: MockUser::Employer) do
-      run_request_and_cache_response(report_as: 'new_internship_offer_path') do
+      run_request_and_cache_response(report_as: 'edit_internship_offer_path') do
         get edit_internship_offer_path(id: stage_dev.to_param)
       end
     end
