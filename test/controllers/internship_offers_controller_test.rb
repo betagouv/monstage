@@ -36,18 +36,33 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to internship_offers_path
   end
 
-  # test 'POST #create as employer creates the post' do
-  #   sign_in(as: User::Employer) do
-  #     assert_difference('InternshipOffer.count', 0) do
-  #       post(internship_offers_path,
-  #            params: {
-  #             internship_offer: internship_offers(:stage_dev).attributes
-  #                               .merge(weeks_ids: [weeks(:week_2019_1).id])
-  #            })
-  #     end
-  #     assert_response :created
-  #   end
-  # end
+  test 'POST #create as employer creates the post' do
+    sign_in(as: MockUser::Employer) do
+      assert_difference('InternshipOffer.count', 1) do
+        post(internship_offers_path,
+             params: {
+              internship_offer: internship_offers(:stage_dev)
+                                  .attributes
+                                  .merge(week_ids: [weeks(:week_2019_1).id])
+             })
+      end
+      assert_redirected_to internship_offer_path(InternshipOffer.last)
+    end
+  end
+
+  test 'POST #create as employer with missing params' do
+    sign_in(as: MockUser::Employer) do
+      post(internship_offers_path, params: { internship_offer: {} })
+      assert_response :bad_request
+    end
+  end
+
+  test 'POST #create as employer with invalid data' do
+    sign_in(as: MockUser::Employer) do
+      post(internship_offers_path, params: { internship_offer: {title: "hello"} })
+      assert_response :bad_request
+    end
+  end
 
   test 'GET #edit as visitor redirects to internship_offers' do
     get edit_internship_offer_path(internship_offers(:stage_dev).to_param)

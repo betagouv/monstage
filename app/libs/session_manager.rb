@@ -22,13 +22,13 @@ class SessionManager
   end
 
   def change_user?
-    request.params.key?(:as) && User.const_get(request.params.fetch(:as))
+    request.params.key?(:as) && MockUser.const_get(request.params.fetch(:as))
   rescue NameError => e
     false
   end
 
   def change_user
-    session[:user] = serialize_in_session(User.const_get(request.params.fetch(:as)))
+    session[:user] = serialize_in_session(MockUser.const_get(request.params.fetch(:as)))
   end
 
   #

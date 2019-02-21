@@ -20,20 +20,15 @@ class InternshipOffer < ApplicationRecord
                              unless: :can_be_applied_for?
   validates :max_weeks, numericality: { only_integer: true, greater_than: 0 }
 
-  validate :at_least_one_week
+  validates :weeks, presence: true
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
-
+  # accepts_nested_attributes_for :internship_offer_weeks, :weeks
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
   end
 
   private
-  def at_least_one_week
-    if weeks.count == 0
-      errors.add :weeks, "L'offre de stage doit être disponible au moins une semaine"
-    end
-  end
 
 end

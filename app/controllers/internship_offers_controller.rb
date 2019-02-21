@@ -9,14 +9,14 @@ class InternshipOffersController < ApplicationController
 
   def create
     authorize! :create, InternshipOffer
-    @internship_offer = InternshipOffer.create(internship_offer_params)
-
-    if @internship_offer.valid?
-      redirect_to internship_offer_path(@internship_offer), status: :created
-    else
-      find_selectable_weeks
-      render 'internship_offers/new', status: :bad_request
-    end
+    @internship_offer = InternshipOffer.new(internship_offer_params)
+    @internship_offer.save!
+    redirect_to internship_offer_path(@internship_offer)
+  rescue ActiveRecord::RecordInvalid,
+         ActionController::ParameterMissing
+    @internship_offer ||= InternshipOffer.new
+    find_selectable_weeks
+    render 'internship_offers/new', status: :bad_request
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent poster une offre' })
@@ -32,16 +32,16 @@ class InternshipOffersController < ApplicationController
   end
 
   def update
-    authorize! :update, InternshipOffer
+    authorize! :manage, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+    @internship_offer.update!(internship_offer_params)
 
-    if @internship_offer.update(internship_offer_params)
-      redirect_to @internship_offer
-    else
-      find_selectable_weeks
-      render :edit
-    end
-  rescue CanCan::AccessDenied
+    redirect_to @internship_offer
+  rescue ActiveRecord::RecordInvalid,
+         ActionController::ParameterMissing => error
+    find_selectable_weeks
+    render :edit, status: :bad_request
+  rescue CanCan::AccessDenied,
     redirect_to(internship_offers_path,
                 flash: { error: 'Seul les employeurs peuvent modifier une offre' })
   end
