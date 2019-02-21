@@ -25,6 +25,9 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
   # accepts_nested_attributes_for :internship_offer_weeks, :weeks
+
+  belongs_to :manager, class_name: 'User'
+
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
   end

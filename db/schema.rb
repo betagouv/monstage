@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_15_094300) do
+ActiveRecord::Schema.define(version: 2019_02_21_092730) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,7 +47,19 @@ ActiveRecord::Schema.define(version: 2019_02_15_094300) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
+    t.bigint "user_id"
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
+    t.index ["user_id"], name: "index_internship_offers_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "phone"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "operator"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "weeks", force: :cascade do |t|
@@ -59,4 +72,5 @@ ActiveRecord::Schema.define(version: 2019_02_15_094300) do
 
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
+  add_foreign_key "internship_offers", "users"
 end
