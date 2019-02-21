@@ -4,14 +4,16 @@
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
     = form.text_field :title, class: "form-control", required: true
+    small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
   .form-group
     = form.label :description, 'Description', class: 'required'
     i.help-sign.ml-1
-    ol.help-sign-content.d-none
-      li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
-      li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
-      li Donnez 3 qulités requises (aimer bricoler, être bavard, aimez écrire
-      li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
+    .help-sign-content.d-none
+      ol
+        li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
+        li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
+        li Donnez 3 qulités requises (aimer bricoler, être bavard, aimez écrire
+        li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
@@ -20,18 +22,18 @@
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
   .form-group
-    = form.label :employer_street, 'Rue'
-    = form.text_field :employer_street, class: "form-control"
+    = form.label :employer_street, 'Rue', class: 'required'
+    = form.text_field :employer_street, class: "form-control", required: true
   .form-group
-    = form.label :employer_zipcode, 'Code postal'
-    = form.text_field :employer_zipcode, class: "form-control"
+    = form.label :employer_zipcode, 'Code postal', class: 'required'
+    = form.text_field :employer_zipcode, class: "form-control", required: true
   .form-group
     = form.label :employer_city, 'Ville', class: 'required'
     = form.text_field :employer_city, class: "form-control", required: true
 
   h2 Quand?
   .form-group
-    = form.label :week_ids, "Choisissez les semaines d'accueil pour l'année scolaire #{@school_year}"
+    = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
     = form.select :week_ids, options_for_select(@current_weeks.collect { |w| [week_select_option_display(w), w.id] }), {}, multiple: true, class: "custom-select", required: true
   .form-group.form-check
     = check_box_tag 'all_year_long', false, false, class: 'form-check-input'
@@ -49,9 +51,11 @@
   #max_candidates_group.form-group.d-none
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
+    small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
   .form-group
     = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
-    = form.number_field :max_weeks, value: 1, min: 1, step: 1, class: 'form-control', required: true
+    = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control', required: true
+    small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
 
   h2 Employeur
   h3 Tuteur
@@ -61,20 +65,30 @@
   .form-group
     = form.label :tutor_phone, 'Téléphone', class: 'required'
     = form.phone_field :tutor_phone, class: 'form-control', required: true
+    small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
   .form-group
     = form.label :tutor_email, 'Adresse électronique'
     = form.email_field :tutor_email, class: 'form-control'
   h3 Entreprise ou Administration
+  label.required Secteur
+  .form-group
+    .form-check
+      = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
+      = form.label :is_public_true, 'Public', class: 'form-check-label'
+    .form-check
+      = form.radio_button :is_public, false, class: 'form-check-input', required: true
+      = form.label :is_public_true, 'Privé', class: 'form-check-label'
   .form-group
     = form.label :employer_website, 'Site web'
     = form.text_field :employer_website, class: 'form-control'
   .form-group
     = form.label :employer_description, 'Description'
-    = form.text_field :employer_description, class: 'form-control'
+    = form.text_area :employer_description, class: 'form-control'
 
   h3 Responsable de l'offre
   .form-group
     = form.label :supervisor_email, 'Adresse électronique', class: 'required'
     = form.email_field :supervisor_email, class: 'form-control', required: true
+    small.form-text.text-muted Cette adresse vous servira à vous identifier pour le suivi des candidatures
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
