@@ -72,6 +72,8 @@ GEM
       activerecord (>= 4.2, < 6)
     dotenv (0.7.0)
     erubi (1.8.0)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
     foreman (0.64.0)
       dotenv (~> 0.7.0)
@@ -98,6 +100,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     msgpack (1.2.6)
+    multipart-post (2.0.0)
     nio4r (2.3.1)
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
@@ -143,6 +146,8 @@ GEM
     selenium-webdriver (3.141.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2, >= 1.2.2)
+    sentry-raven (2.9.0)
+      faraday (>= 0.7.6, < 1.0)
     slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -202,6 +207,7 @@ DEPENDENCIES
   puma
   rails
   selenium-webdriver
+  sentry-raven
   slim-rails
   spring
   spring-watcher-listen
