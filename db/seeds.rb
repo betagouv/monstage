@@ -22,3 +22,11 @@ def populate_week_reference
 end
 
 populate_week_reference
+
+def populate_operators
+  ["Clubs régionaux  d'entreprises pour l'insertion (CREPI)", "Dégun sans stage (Ecole centrale de Marseille)", "Fondation Agir contre l'Exclusion (FACE)", "JOB IRL", "Les entreprises pour la cité (LEPC)", "Un stage et après !", "Tous en stage", "Viens voir mon taf"].each do |operator|
+    User.find_or_create_by(operator: operator)
+  end
+end
+
+populate_operators
