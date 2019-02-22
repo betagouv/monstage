@@ -9,34 +9,34 @@ nav.navbar.bg-light
     a.nav-link href=edit_internship_offer_path(@internship_offer.to_param)
       .fa.fa-2x.fa-pencil
 
-h1 = @internship_offer.title
+.yellow-background
+  h1 = @internship_offer.title
 
-.gray-titles
-  h2 Le stage
+  h2.gray Le stage
   p = @internship_offer.description
 
-  / h2 Dates
+/ h2 Dates
 
-  h2 L'entreprise
-  p = @internship_offer.employer_description
+h2.gray L'entreprise
+p = @internship_offer.employer_description
+p
+  a href=@internship_offer.employer_website
+
+.d-flex
+  i.fa.fa-map-marker.mr-2
   p
-    a href=@internship_offer.employer_website
-
-  .d-flex
-    i.fa.fa-map-marker.mr-2
-    p
-      = @internship_offer.employer_street
-      br
-      = @internship_offer.employer_zipcode
-      = @internship_offer.employer_city
-
-  h2 Contact
-  p
-    b = @internship_offer.tutor_name
+    = @internship_offer.employer_street
     br
-    = link_to @internship_offer.tutor_phone, "tel:#{@internship_offer.tutor_phone}"
-    br
-    = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
+    = @internship_offer.employer_zipcode
+    = @internship_offer.employer_city
+
+h2.gray Contact
+p
+  b = @internship_offer.tutor_name
+  br
+  = link_to @internship_offer.tutor_phone, "tel:#{@internship_offer.tutor_phone}"
+  br
+  = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
 
 
 #delete-offer-modal.modal tabindex="-1" role="dialog"
