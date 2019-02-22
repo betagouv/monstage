@@ -12,7 +12,7 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.new(internship_offer_params)
     @internship_offer.save!
     redirect_to(internship_offer_path(@internship_offer),
-                flash: {success: 'Votre annonce a bien été créée'}
+                flash: {success: 'Votre annonce a bien été créée'})
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing
     @internship_offer ||= InternshipOffer.new
@@ -20,7 +20,7 @@ class InternshipOffersController < ApplicationController
     render 'internship_offers/new', status: :bad_request
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à poster une annonce" })
+                flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" })
   end
 
   def edit
