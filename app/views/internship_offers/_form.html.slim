@@ -87,12 +87,7 @@
     = form.label :employer_description, 'Description'
     = form.text_area :employer_description, class: 'form-control'
 
-  h3 Responsable de l'offre
-  .form-group
-    = form.label :supervisor_email, 'Adresse électronique', class: 'required'
-    = form.email_field :supervisor_email, class: 'form-control', required: true
-    small.form-text.text-muted Cette adresse vous servira à vous identifier pour le suivi des candidatures
-
+  h3 Accompagnement
   .form-group
     = form.label :operator_id, 'Opérateur'
     = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator_name, @internship_offer.operator_id), { prompt: "-- Pas besoin d'opérateur, je gère mon offre moi-même --" }, class: "custom-select"
