@@ -1,7 +1,8 @@
 .row
   h1.col-8 Offres de stage
-  .col-4
-    = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
+  - if can? :manage, @internship_offer
+    .col-4
+      = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
 
 - if @internship_offers.blank?
   p[style='color: gray'] Aucune offre disponible
