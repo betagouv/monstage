@@ -1,0 +1,9 @@
+<% unless flash.keys.size.zero? %>
+  <div class="row">
+      <% if flash.keys.include?('error') %>
+        <div id="alert-error" class="alert alert-secondary" role="alert">
+          <%= flash['error'] %>
+        </div>
+      <% end %>
+  </div>
+<% end %>
