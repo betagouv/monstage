@@ -11,7 +11,8 @@ class InternshipOffersController < ApplicationController
     authorize! :create, InternshipOffer
     @internship_offer = InternshipOffer.new(internship_offer_params)
     @internship_offer.save!
-    redirect_to internship_offer_path(@internship_offer)
+    redirect_to(internship_offer_path(@internship_offer),
+                flash: {success: 'Votre annonce a bien été créée'}
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing
     @internship_offer ||= InternshipOffer.new
@@ -19,7 +20,7 @@ class InternshipOffersController < ApplicationController
     render 'internship_offers/new', status: :bad_request
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent poster une offre' })
+                flash: { danger: "Vous n'êtes pas autorisé à poster une annonce" })
   end
 
   def edit
@@ -28,7 +29,7 @@ class InternshipOffersController < ApplicationController
     find_selectable_content
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent modifier une offre' })
+                flash: { danger: "Vous n'êtes pas autorisé à modifier une annonce" })
   end
 
   def update
@@ -36,25 +37,26 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.update!(internship_offer_params)
 
-    redirect_to @internship_offer
+    redirect_to(@internship_offer,
+                flash: { success: 'Votre annonce a bien été modifiée'})
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing => error
     find_selectable_content
     render :edit, status: :bad_request
   rescue CanCan::AccessDenied,
     redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent modifier une offre' })
+                flash: { danger: "Vous n'êtes pas autorisé à modifier une annonce" })
   end
 
   def destroy
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.discard
-
-    redirect_to root_path
+    redirect_to(root_path,
+                flash: { success: 'Votre annonce a bien été supprimée' })
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent supprimer leurs offres' })
+                flash: { danger: "Vous n'êtes pas autorisé à supprimer leurs annonces" })
   end
 
   def new
@@ -63,7 +65,7 @@ class InternshipOffersController < ApplicationController
     find_selectable_content
   rescue CanCan::AccessDenied
     redirect_to(internship_offers_path,
-                flash: { error: 'Seul les employeurs peuvent créer une offre' })
+                flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" })
   end
 
   private

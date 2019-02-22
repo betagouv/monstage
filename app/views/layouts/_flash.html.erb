@@ -1,9 +1,15 @@
 <% unless flash.keys.size.zero? %>
   <div class="row">
-      <% if flash.keys.include?('error') %>
-        <div id="alert-error" class="alert alert-secondary" role="alert">
-          <%= flash['error'] %>
+    <% %w[primary secondary success danger warning info light dark].map do |bootstrap_flash_kind| %>
+      <% if flash.keys.include?(bootstrap_flash_kind) %>
+        <div
+          id="alert-<%= bootstrap_flash_kind %>"
+          class="alert alert-<%= bootstrap_flash_kind %> col-12 mt-3 mb-3"
+          role="alert">
+          <%= flash[bootstrap_flash_kind] %>
         </div>
-      <% end %>
+        <% end %>
+    <% end %>
+
   </div>
 <% end %>
