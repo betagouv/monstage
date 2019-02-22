@@ -53,13 +53,14 @@ ActiveRecord::Schema.define(version: 2019_02_22_073540) do
     t.index ["operator_id"], name: "index_internship_offers_on_operator_id"
   end
 
-  create_table "schools_tables", force: :cascade do |t|
+  create_table "schools", force: :cascade do |t|
     t.string "name"
     t.string "city"
-    t.string "region"
+    t.string "departement_name"
     t.string "postal_code"
+    t.string "code_uai"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
-    t.index ["coordinates"], name: "index_schools_tables_on_coordinates", using: :gist
+    t.index ["coordinates"], name: "index_schools_on_coordinates", using: :gist
   end
 
   create_table "users", force: :cascade do |t|

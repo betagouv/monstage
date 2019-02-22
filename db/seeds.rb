@@ -32,11 +32,13 @@ end
 
 def populate_schools
   CSV.foreach(Rails.root.join('db/college-rep-plus.csv'), {headers: { col_sep: ','}}) do |row, i|
-    puts row["Département"].inspect
-    puts row["Commune"].inspect
-    puts row["Code UAI"].inspect
-    puts row["ETABLISSEMENT"].inspect
-    puts i.inspect
+    school = School.find_or_create_by(
+      code_uai: row['Code UAI'],
+      name: row['ETABLISSEMENT'],
+      city: row['Commune'],
+      departement_name: row['Département']
+    )
+    puts "school created: #{school.inspect}"
   end
 end
 
