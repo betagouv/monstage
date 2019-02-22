@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_21_092730) do
+ActiveRecord::Schema.define(version: 2019_02_22_073540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "internship_offer_weeks", force: :cascade do |t|
     t.bigint "internship_offer_id"
@@ -50,6 +51,15 @@ ActiveRecord::Schema.define(version: 2019_02_21_092730) do
     t.bigint "operator_id"
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["operator_id"], name: "index_internship_offers_on_operator_id"
+  end
+
+  create_table "schools_tables", force: :cascade do |t|
+    t.string "name"
+    t.string "city"
+    t.string "region"
+    t.string "postal_code"
+    t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.index ["coordinates"], name: "index_schools_tables_on_coordinates", using: :gist
   end
 
   create_table "users", force: :cascade do |t|
