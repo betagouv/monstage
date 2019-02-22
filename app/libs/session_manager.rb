@@ -14,7 +14,7 @@ class SessionManager
 
 
   def user_in_session
-    "MockUser::#{request.params.fetch(:as)}".constantize
+    "MockUser::#{session[:user]}".constantize
   end
 
   def user_in_session?
@@ -22,7 +22,7 @@ class SessionManager
   end
 
   def change_user?
-    request.params.key?(:as) && MockUser::const_get(session[:user])
+    request.params.key?(:as) && session[:user] != request.params.fetch(:as)
   rescue NameError => e
     false
   end

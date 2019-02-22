@@ -4,8 +4,8 @@ class Ability
   def initialize(user)
     if user.present?
       case user.type
-      when 'student' then student_abilities(user: user)
-      when 'employer' then employer_abilities(user: user)
+      when 'Student' then student_abilities(user: user)
+      when 'Employer' then employer_abilities(user: user)
       else
       end
     else
