@@ -2,11 +2,14 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    case user.role
-    when MockUser::Roles::Visitor then visitor_abilities(user: user)
-    when MockUser::Roles::Student then student_abilities(user: user)
-    when MockUser::Roles::Employer then employer_abilities(user: user)
-    else fail ArgumentError, "Unknown role for user"
+    if user.present?
+      case user.type
+      when 'student' then student_abilities(user: user)
+      when 'employer' then employer_abilities(user: user)
+      else
+      end
+    else
+      visitor_abilities(user: user)
     end
   end
 

@@ -14,7 +14,7 @@ class SessionManager
 
 
   def user_in_session
-    deserialize_from_session(session[:user])
+    "MockUser::#{request.params.fetch(:as)}".constantize
   end
 
   def user_in_session?
@@ -22,24 +22,12 @@ class SessionManager
   end
 
   def change_user?
-    request.params.key?(:as) && MockUser.const_get(request.params.fetch(:as))
+    request.params.key?(:as) && MockUser::const_get(session[:user])
   rescue NameError => e
     false
   end
 
   def change_user
-    session[:user] = serialize_in_session(MockUser.const_get(request.params.fetch(:as)))
+    session[:user] = request.params.fetch(:as)
   end
-
-  #
-  # session in/out
-  #
-  def deserialize_from_session(user)
-    Marshal.load(user)
-  end
-
-  def serialize_in_session(user)
-    Marshal.dump(user)
-  end
-
 end
