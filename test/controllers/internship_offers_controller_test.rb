@@ -31,6 +31,14 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to internship_offers_path
   end
 
+  test 'flash presence' do
+    get new_internship_offer_path
+    follow_redirect!
+    assert_select("#alert-error",
+                  { text: 'Seul les employeurs peuvent créer une offre' },
+                  'missing flash rendering')
+  end
+
   test 'POST #create as visitor redirects to internship_offers' do
     post internship_offers_path(params: {})
     assert_redirected_to internship_offers_path
