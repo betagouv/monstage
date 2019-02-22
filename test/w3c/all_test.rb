@@ -16,6 +16,12 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'internship_offer_path' do
+    run_request_and_cache_response(report_as: 'internship_offer_path') do
+      get internship_offer_path(internship_offers(:stage_dev).to_param)
+    end
+  end
+
   test 'new_internship_offer_path'  do
     sign_in(as: MockUser::Employer) do
       run_request_and_cache_response(report_as: 'new_internship_offer_path') do
