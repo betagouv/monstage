@@ -1,5 +1,13 @@
 == '<p>Les champs avec <span style="color: red">*</span> sont obligatoires</p>'
 
+- if @internship_offer.errors.any?
+  .alert.alert-danger
+    p.mb-0
+      strong= "Veuillez corriger les errreures suivantes:"
+    ul.mb-0
+      - @internship_offer.errors.full_messages.each do |message|
+        li= message
+
 = form_for @internship_offer do |form|
   .form-group
     = form.label :title, 'Intitulé', class: 'required'

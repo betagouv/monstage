@@ -1,0 +1,17 @@
+fr:
+  activerecord:
+    attributes:
+      internship_offer:
+          can_be_applied_for: "Type de stage"
+          is_public: Secteur
+
+    errors:
+      messages:
+        bad_email: "just ain't right"
+      models:
+        internship_offer:
+          attributes:
+            can_be_applied_for:
+              blank: "doit être soit Individuel, soit Collectif"
+            is_public:
+              blank: "doit être soit Public, soit Privé"
