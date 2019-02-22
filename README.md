@@ -16,8 +16,8 @@ Things you may want to cover:
 - Start with : pg_ctl -D /usr/local/var/postgres start
 - Stop with : pg_ctl -D /usr/local/var/postgres stop
 - Install html5validator : pip install html5validator
--
-# build
+- Install postgis : brew install postgis
+
 ## run dev env
 
 ```
