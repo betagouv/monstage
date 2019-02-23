@@ -9,4 +9,4 @@
 
 import 'bootstrap/dist/js/bootstrap';
 import '../src/js/index'
-import '../src/js/internship_offers'
+import '../src/js/internship_offers.js.erb'

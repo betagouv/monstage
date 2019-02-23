@@ -1,0 +1,68 @@
+import places from 'places.js';
+
+const SELECTORS = {
+  CanBeAppliedCheckbox: ['#js-internship_offer_can_be_applied_for_true',
+                         '#js-internship_offer_can_be_applied_for_false'],
+
+  CheckboxSelectAllWeeks: '#js-all_year_long',
+
+  WeeksOptions: '#js-internship_offer_week_ids option',
+
+  MaxCandidateFields: '#js-max_candidates_group',
+
+  AutocompleteInput: '#js-autocomplete-address',
+
+  employerStreet: '#js-internship_offer_emplayer_street',
+  employerZipcode: '#js-internship_offer_employer_zipcode',
+  employerCity: '#js-internship_offer_emplayer_city',
+  employerCoordinatesLatitude: '#js-internship_offer_latitude',
+  employerCoordinatesLongitude: '#js-internship_offer_longitude'
+}
+
+const toggleMaxCandidatesVisibility = () => {
+  $(SELECTORS.MaxCandidateFields).toggleClass('d-none');
+}
+
+
+$(document).on('turbolinks:load', function() {
+  // show/hide group internship custom controls
+  $(SELECTORS.CanBeAppliedCheckbox.join(", ")).change(() => {
+    toggleMaxCandidatesVisibility()
+  });
+
+  // select/deselect internship weeks period
+  $(SELECTORS.CheckboxSelectAllWeeks).change(() => {
+      $(SELECTORS.WeeksOptions).prop('selected',
+                                     $(SELECTORS.CheckboxSelectAllWeeks).prop('checked'))
+  });
+
+  const domElement = $(SELECTORS.AutocompleteInput).get(0);
+  if (domElement) {
+    var placesAutocomplete = places({
+      appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
+      apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>',
+      container: domElement
+    });
+    placesAutocomplete.configure({
+      language: 'fr',
+      countries: ['fr'],
+      type: 'address'
+    })
+    placesAutocomplete.on("change", (event) => {
+      const suggestion = event.suggestion;
+
+      $(SELECTORS.employerStreet).val(suggestion.name)
+      $(SELECTORS.employerZipcode).val(suggestion.postcode)
+      $(SELECTORS.employerCity).val(suggestion.city)
+      $(SELECTORS.employerCoordinatesLatitude).val(suggestion.latlng.lat)
+      $(SELECTORS.employerCoordinatesLongitude).val(suggestion.latlng.lng)
+    })
+    placesAutocomplete.on("clean", () =>{
+      $(SELECTORS.employerStreet).val(null);
+      $(SELECTORS.employerZipcode).val(null);
+      $(SELECTORS.employerCity).val(null);
+      $(SELECTORS.employerCoordinatesLatitude).val(null);
+      $(SELECTORS.employerCoordinatesLongitude).val(null);
+    })
+  }
+})

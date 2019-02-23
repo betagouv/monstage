@@ -17,5 +17,5 @@ stage_dev:
   employer_street: 1 rue du poulet
   employer_zipcode: 75001
   employer_city: Paris
-
+  coordinates: <%= geo_point_factory(latitude: 48,longitude: 0) %>
 
