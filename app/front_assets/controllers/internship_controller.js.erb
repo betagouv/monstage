@@ -1,74 +1,81 @@
 import { Controller } from "stimulus"
 import places from 'places.js';
 
-const SELECTORS = {
-  CanBeAppliedCheckbox: ['#js-internship_offer_can_be_applied_for_true',
-                         '#js-internship_offer_can_be_applied_for_false'],
-
-  CheckboxSelectAllWeeks: '#js-all_year_long',
-
-  WeeksOptions: '#js-internship_offer_week_ids option',
-
-  MaxCandidateFields: '#js-max_candidates_group',
-
-  AutocompleteInput: '#js-autocomplete-address',
-
-  employerStreet: '#js-internship_offer_emplayer_street',
-  employerZipcode: '#js-internship_offer_employer_zipcode',
-  employerCity: '#js-internship_offer_emplayer_city',
-  employerCoordinatesLatitude: '#js-internship_offer_latitude',
-  employerCoordinatesLongitude: '#js-internship_offer_longitude'
-}
-
-const toggleMaxCandidatesVisibility = () => {
-  $(SELECTORS.MaxCandidateFields).toggleClass('d-none');
-}
-
 export default class extends Controller {
-  static targets = [ "output" ]
+  static targets = [ "maxCandidatesGroup",
+                     "selectWeeks",
+                     "autocompleteFormGroup",
+                     "autocompleteInput",
+                     "coordinatesInput",
+                     "employerStreet",
+                     "employerCity",
+                     "employerZipcode" ]
 
-  connect() {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
+  // show/hide group internship custom controls
+  toggleCanBeAppliedSection(event) {
+    $(this.maxCandidatesGroupTarget).toggleClass('d-none');
+  }
 
-    // show/hide group internship custom controls
-    $(SELECTORS.CanBeAppliedCheckbox.join(", ")).change(() => {
-      toggleMaxCandidatesVisibility()
-    });
+  // show/hide div next of element
+  toggleClosestHelpSign(event) {
+    $(event.target).next().toggleClass('d-none');
+  }
 
-    // select/deselect internship weeks period
-    $(SELECTORS.CheckboxSelectAllWeeks).change(() => {
-        $(SELECTORS.WeeksOptions).prop('selected',
-                                       $(SELECTORS.CheckboxSelectAllWeeks).prop('checked'))
-    });
+  // toggle all weeks options
+  toggleWeeks(event) {
+    $(this.selectWeeksTarget).find("option").each((i, el) => {
+      $(el).prop('selected', $(event.target).prop('checked'))
+    })
+  }
 
+  onAlgoliaSearchResultSelected = (selection) => {
+    const suggestion = selection.suggestion;
+
+    $(this.employerStreetTarget).val(suggestion.name);
+    $(this.employerCityTarget).val(suggestion.city);
+    $(this.employerZipcodeTarget).val(suggestion.postcode);
+    $(this.longitudeInputTarget).val(suggestion.latlng.lng);
+    $(this.latitudeInputTarget).val(suggestion.latlng.lat);
+  }
+
+  setupAutocomplete() {
+    // initialize algolia api
     var placesAutocomplete = places({
-      container: $(SELECTORS.AutocompleteInput).get(0),
+      container: this.autocompleteInputTarget,
       appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
       apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>'
     });
 
+
+    // configure algolia api
     placesAutocomplete.configure({
       language: 'fr',
       countries: ['fr'],
       type: 'address'
     })
-    placesAutocomplete.on("change", (event) => {
-      const suggestion = event.suggestion;
 
-      $(SELECTORS.employerStreet).val(suggestion.name)
-      $(SELECTORS.employerZipcode).val(suggestion.postcode)
-      $(SELECTORS.employerCity).val(suggestion.city)
-      $(SELECTORS.employerCoordinatesLatitude).val(suggestion.latlng.lat)
-      $(SELECTORS.employerCoordinatesLongitude).val(suggestion.latlng.lng)
-    })
+    // listen on algolia search result selection
+    placesAutocomplete.on("change", this.onAlgoliaSearchResultSelected)
+
+    // listen on clear address
+    /* fix: does not works
     placesAutocomplete.on("clean", () =>{
-      $(SELECTORS.employerStreet).val(null);
-      $(SELECTORS.employerZipcode).val(null);
-      $(SELECTORS.employerCity).val(null);
-      $(SELECTORS.employerCoordinatesLatitude).val(null);
-      $(SELECTORS.employerCoordinatesLongitude).val(null);
+      $(this.employerStreetTarget).val(null)
+      $(this.employerCityTarget).val(null)
+      $(this.employerZipcodeTarget).val(null)
+      $(this.longitudeInputTarget).val(null)
+      $(this.latitudeInputTarget).val(null)
     })
+    */
+
+    // when everything is ok ; show autocompleteTarget and makes default input readonly
+    $(this.autocompleteFormGroupTarget).removeClass('d-none')
+    $(this.employerStreetTarget).prop("readonly", true)
+    $(this.employerCityTarget).prop("readonly", true)
+    $(this.employerZipcodeTarget).prop("readonly", true)
+  }
+
+  connect() {
+    this.setupAutocomplete()
   }
 }
