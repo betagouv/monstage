@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
+    "algoliasearch": "^3.32.0",
     "bootstrap": "^4.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
