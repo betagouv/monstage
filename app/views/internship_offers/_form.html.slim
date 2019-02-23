@@ -25,7 +25,7 @@
   h3 Adresse du lieu où se déroule le stage
   .form-group
     = form.label :autocomplete, "Adresse"
-    input#js-autocomplete-address.form-control placeholder=("Saisir l'adresse du stage") type="text" required=true value=[@internship_offer.employer_street, @internship_offer.employer_city, @internship_offer.employer_zipcode].join(', ')
+    input#js-autocomplete-address.form-control placeholder=("Saisir l'adresse du stage") type="text" required=true value=[@internship_offer.employer_street, @internship_offer.employer_city, @internship_offer.employer_zipcode].compact.uniq.join(', ')
     input#js-internship_offer_latitude type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat)
     input#js-internship_offer_longitude type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lat)
   .form-row
