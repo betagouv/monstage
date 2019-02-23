@@ -1,6 +1,6 @@
 == '<p>Les champs avec <span style="color: red">*</span> sont obligatoires</p>'
 
-= form_for @internship_offer do |form|
+= form_for @internship_offer, {data: {controller: 'internship'}} do |form|
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
     = form.text_field :title, class: "form-control", required: true

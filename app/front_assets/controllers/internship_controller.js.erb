@@ -1,3 +1,4 @@
+import { Controller } from "stimulus"
 import places from 'places.js';
 
 const SELECTORS = {
@@ -23,26 +24,31 @@ const toggleMaxCandidatesVisibility = () => {
   $(SELECTORS.MaxCandidateFields).toggleClass('d-none');
 }
 
+export default class extends Controller {
+  static targets = [ "output" ]
 
-$(document).on('turbolinks:load', function() {
-  // show/hide group internship custom controls
-  $(SELECTORS.CanBeAppliedCheckbox.join(", ")).change(() => {
-    toggleMaxCandidatesVisibility()
-  });
-
-  // select/deselect internship weeks period
-  $(SELECTORS.CheckboxSelectAllWeeks).change(() => {
-      $(SELECTORS.WeeksOptions).prop('selected',
-                                     $(SELECTORS.CheckboxSelectAllWeeks).prop('checked'))
-  });
-
-  const domElement = $(SELECTORS.AutocompleteInput).get(0);
-  if (domElement) {
-    var placesAutocomplete = places({
-      appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
-      apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>',
-      container: domElement
+  connect() {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
     });
+
+    // show/hide group internship custom controls
+    $(SELECTORS.CanBeAppliedCheckbox.join(", ")).change(() => {
+      toggleMaxCandidatesVisibility()
+    });
+
+    // select/deselect internship weeks period
+    $(SELECTORS.CheckboxSelectAllWeeks).change(() => {
+        $(SELECTORS.WeeksOptions).prop('selected',
+                                       $(SELECTORS.CheckboxSelectAllWeeks).prop('checked'))
+    });
+
+    var placesAutocomplete = places({
+      container: $(SELECTORS.AutocompleteInput).get(0),
+      appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
+      apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>'
+    });
+
     placesAutocomplete.configure({
       language: 'fr',
       countries: ['fr'],
@@ -65,4 +71,4 @@ $(document).on('turbolinks:load', function() {
       $(SELECTORS.employerCoordinatesLongitude).val(null);
     })
   }
-})
+}
