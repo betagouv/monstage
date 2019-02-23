@@ -36,7 +36,6 @@ class InternshipOffersController < ApplicationController
     authorize! :manage, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.update!(internship_offer_params)
-
     redirect_to(@internship_offer,
                 flash: { success: 'Votre annonce a bien été modifiée'})
   rescue ActiveRecord::RecordInvalid,
