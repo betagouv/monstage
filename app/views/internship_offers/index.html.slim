@@ -10,7 +10,7 @@
   table.table.table-hover
     tbody
       - @internship_offers.each do |internship_offer|
-        tr[data-href="#{internship_offer_url(internship_offer)}" class="clickable-row"]
+        tr[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-controller="internship-index" data-action="click->internship-index#visit"]
           td
             h2 = internship_offer.title
             p = internship_offer.employer_city

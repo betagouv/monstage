@@ -1,13 +1,13 @@
 == '<p>Les champs avec <span style="color: red">*</span> sont obligatoires</p>'
 
-= form_for @internship_offer, {data: {controller: 'internship'}} do |form|
+= form_for @internship_offer, {data: {controller: 'internship-form'}} do |form|
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
     = form.text_field :title, class: "form-control", required: true
     small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
   .form-group
     = form.label :description, 'Description', class: 'required'
-    i.ml-1 data-action="click->internship#toggleClosestHelpSign"
+    i.ml-1 data-action="click->internship-form#toggleClosestHelpSign"
     .help-sign-content.d-none
       ol
         li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
@@ -23,32 +23,32 @@
       = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: @internship_offer.sector), {}, class: "custom-select"
   h2 Où?
   h3 Adresse du lieu où se déroule le stage
-  .form-group.d-none data={ target: 'internship.autocompleteFormGroup' }
+  .form-group.d-none data={ target: 'internship-form.autocompleteFormGroup' }
     = form.label :autocomplete, "Adresse"
-    = form.text_field :autocomplete, placeholder: "Saisir l'adresse", value: format_autocomplete_address(@internship_offer), data: {target: 'internship.autocompleteInput'}
-    input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({ target: 'internship.latitudeInput' })
-    input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({ target: 'internship.longitudeInput' })
+    = form.text_field :autocomplete, placeholder: "Saisir l'adresse", value: format_autocomplete_address(@internship_offer), data: {target: 'internship-form.autocompleteInput'}
+    input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({ target: 'internship-form.latitudeInput' })
+    input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({ target: 'internship-form.longitudeInput' })
   .form-row
     .col-sm-6
       .form-group
         = form.label :employer_street, 'Rue', class: 'required'
-        = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'internship.employerStreet'}
+        = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'internship-form.employerStreet'}
     .col-sm-4
       .form-group
         = form.label :employer_city, 'Ville', class: 'required'
-        = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'internship.employerCity'}
+        = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'internship-form.employerCity'}
     .col-sm-2
       .form-group
         = form.label :employer_zipcode, 'Code postal', class: 'required'
-        = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship.employerZipcode'}
+        = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship-form.employerZipcode'}
 
 
   h2 Quand?
   .form-group
     = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
-    = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "custom-select", required: true, data: { target: 'internship.selectWeeks' }
+    = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "custom-select", required: true, data: { target: 'internship-form.selectWeeks' }
   .form-group.form-check
-    = check_box_tag 'all_year_long', false, false, class: 'form-check-input', data: { action: "change->internship#toggleWeeks" }
+    = check_box_tag 'all_year_long', false, false, class: 'form-check-input', data: { action: "change->internship-form#toggleWeeks" }
     = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
 
   h2 Quoi ?
@@ -58,7 +58,7 @@
       = form.radio_button :can_be_applied_for,
                           true,
                           class: 'form-check-input',
-                          data: { action: "change->internship#toggleCanBeAppliedSection" }
+                          data: { action: "change->internship-form#toggleCanBeAppliedSection" }
       = form.label :can_be_applied_for_true,
                    'Individuel',
                    class: 'form-check-label'
@@ -66,11 +66,11 @@
       = form.radio_button :can_be_applied_for,
                           false,
                           class: 'form-check-input',
-                          data: { action: "change->internship#toggleCanBeAppliedSection" }
+                          data: { action: "change->internship-form#toggleCanBeAppliedSection" }
       = form.label :can_be_applied_for_false,
                    'Collectif',
                    class: 'form-check-label'
-  .form-group.d-none data-target= 'internship.maxCandidatesGroup'
+  .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
     = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
     = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
     small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
