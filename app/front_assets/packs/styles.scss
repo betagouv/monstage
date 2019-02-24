@@ -1,9 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
+
 $fa-font-path: "~font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome';
 
-@import '../src/stylesheets/common';
-@import '../src/stylesheets/layout';
 // would like to use tinytypo from npm / yarn not yet ready ;
 // once ready ; import nicely - follow https://github.com/tetue/tinytypo/issues/27
 // @import '../src/stylesheets/tinytypo';
+
+@import '../stylesheets/common';
+@import '../stylesheets/layout';
