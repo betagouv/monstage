@@ -26,8 +26,8 @@
   fieldset
     legend Adresse du lieu où se déroule le stage
     .form-group.d-none data={ target: 'internship-form.autocompleteFormGroup' }
-      = form.label :autocomplete, "Adresse complète"
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse", value: format_autocomplete_address(@internship_offer), data: {target: 'internship-form.autocompleteInput'}
+      = form.label :autocomplete, "Adresse complète", class: 'required'
+      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: format_autocomplete_address(@internship_offer), required: true, data: {target: 'internship-form.autocompleteInput'}
       input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({ target: 'internship-form.latitudeInput' })
       input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({ target: 'internship-form.longitudeInput' })
 
