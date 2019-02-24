@@ -38,28 +38,28 @@ export default class extends Controller {
     $(this.latitudeInputTarget).val(suggestion.latlng.lat);
   }
 
-  setupAutocomplete() {
+
+  connect() {
     // initialize algolia api
-    var placesAutocomplete = places({
+    this.placesAutocomplete = places({
       container: this.autocompleteInputTarget,
       appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
       apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>'
     });
 
-
     // configure algolia api
-    placesAutocomplete.configure({
+    this.placesAutocomplete.configure({
       language: 'fr',
       countries: ['fr'],
       type: 'address'
     })
 
     // listen on algolia search result selection
-    placesAutocomplete.on("change", this.onAlgoliaSearchResultSelected)
+    this.placesAutocomplete.on("change", this.onAlgoliaSearchResultSelected)
 
     // listen on clear address
     /* fix: does not works
-    placesAutocomplete.on("clean", () =>{
+    this.placesAutocomplete.on("clean", () =>{
       $(this.employerStreetTarget).val(null)
       $(this.employerCityTarget).val(null)
       $(this.employerZipcodeTarget).val(null)
@@ -75,7 +75,7 @@ export default class extends Controller {
     $(this.employerZipcodeTarget).prop("readonly", true)
   }
 
-  connect() {
-    this.setupAutocomplete()
+  disconnect() {
+    this.placesAutocomplete.destroy()
   }
 }
