@@ -13,9 +13,7 @@ label.required:before {
     color: gray;
 }
 
-.yellow-background {
-  background-color: #feb620;
-}
+$logo-color: #feb620;
 
 .help-sign {
   @extend .fa;
