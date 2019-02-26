@@ -40,4 +40,8 @@ class InternshipOffer < ApplicationRecord
     super(geo_point_factory(latitude: coordinates[:latitude],
                             longitude: coordinates[:longitude]))
   end
+
+  def is_individual?
+    max_candidates <= 1
+  end
 end

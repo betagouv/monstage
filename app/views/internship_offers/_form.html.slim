@@ -63,7 +63,7 @@
                      class: 'form-check-label'
     .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
       = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
-      = form.number_field :max_candidates, value: 0, min: 0, step: 1, class: 'form-control'
+      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control'
       small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
     .form-group
       = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
