@@ -7,8 +7,6 @@ class InternshipOffer < ApplicationRecord
             :max_candidates,
             :tutor_name,
             :tutor_phone,
-            :supervisor_email,
-            :is_public,
             :employer_street,
             :employer_zipcode,
             :employer_city,
@@ -16,6 +14,7 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :can_be_applied_for, inclusion: { in: [true, false] }
+  validates :is_public, inclusion: { in: [true, false] }
 
   validates :max_candidates, numericality: { only_integer: true, greater_than: 0 },
                              unless: :can_be_applied_for?

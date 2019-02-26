@@ -43,7 +43,6 @@ ActiveRecord::Schema.define(version: 2019_02_22_170419) do
     t.text "employer_street"
     t.string "employer_zipcode"
     t.string "employer_city"
-    t.string "supervisor_email"
     t.boolean "is_public"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -73,6 +72,7 @@ ActiveRecord::Schema.define(version: 2019_02_22_170419) do
     t.string "operator_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
   end
 
   create_table "weeks", force: :cascade do |t|

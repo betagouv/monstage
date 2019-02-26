@@ -1,7 +1,8 @@
 label.required:before {
   content:"*";
   color:red;
-  margin-right: 0.25rem;
+
+  // TINYTYPO: margin-right: 0.25rem;
 }
 
 .clickable-row {
@@ -26,7 +27,7 @@ label.required:before {
   @extend .rounded;
 
   background-color: gainsboro;
-  margin-bottom: 1rem;
+  // TINYTYPO: margin-bottom: 1rem;
 }
 
 .icon-link {
