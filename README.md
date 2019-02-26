@@ -16,7 +16,10 @@ Things you may want to cover:
 - Start with : pg_ctl -D /usr/local/var/postgres start
 - Stop with : pg_ctl -D /usr/local/var/postgres stop
 - Install html5validator : pip install html5validator
-- Install postgis : brew install postgis
+- Install postgis :
+  - If you are using Postgres.app, Postgis is already here
+  - If you installed postgres with Homebrew, run : brew install postgis
+- Setup Postgis : rake db:gis:setup
 
 ## run dev env
 
