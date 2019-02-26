@@ -1,8 +1,7 @@
-.row
-  h1.col-8 Offres de stage
+.clearfix
+  h2.float-left Offres de stage
   - if can? :create, InternshipOffer
-    .col-4
-      = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
+    = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark float-right'
 
 - if @internship_offers.blank?
   p[style='color: gray'] Aucune offre disponible
@@ -13,7 +12,7 @@
       - @internship_offers.each do |internship_offer|
         tr[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-controller="internship-index" data-action="click->internship-index#visit"]
           td
-            h2 = internship_offer.title
+            h3 = internship_offer.title
             p = internship_offer.employer_city
             - unless internship_offer.available_all_year?
               p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}
