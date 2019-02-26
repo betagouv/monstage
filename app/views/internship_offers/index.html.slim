@@ -1,6 +1,6 @@
 .row
   h1.col-8 Offres de stage
-  - if can? :manage, InternshipOffer
+  - if can? :create, InternshipOffer
     .col-4
       = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark', style: 'width: 100%'
 

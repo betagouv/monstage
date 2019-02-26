@@ -5,7 +5,7 @@ nav.navbar.bg-light
   - if can?(:destroy, @internship_offer)
     a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
       .fa.fa-2x.fa-trash
-  - if can?(:edit, @internship_offer)
+  - if can?(:update, @internship_offer)
     a.nav-link href=edit_internship_offer_path(@internship_offer.to_param)
       .fa.fa-2x.fa-pencil
 
@@ -35,6 +35,17 @@ p
     = @internship_offer.employer_zipcode
     = @internship_offer.employer_city
 
+- if can? :create, InternshipOffer
+  h2.gray Contact
+  p
+    b = @internship_offer.tutor_name
+    br
+    = link_to @internship_offer.tutor_phone, "tel:#{@internship_offer.tutor_phone}"
+    br
+    = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
+
+- if can?(:apply, InternshipOffer)
+  = button_tag 'Je candidate', disabled: true, class: 'btn btn-primary'
 
 #delete-offer-modal.modal tabindex="-1" role="dialog"
   .modal-dialog role="document"

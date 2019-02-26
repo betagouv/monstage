@@ -24,7 +24,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def edit
-    authorize! :edit, InternshipOffer
+    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     find_selectable_content
   rescue CanCan::AccessDenied
@@ -33,7 +33,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def update
-    authorize! :manage, InternshipOffer
+    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.update!(internship_offer_params)
     redirect_to(@internship_offer,
@@ -48,7 +48,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def destroy
-    authorize! :update, InternshipOffer
+    authorize! :destroy, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.discard
     redirect_to(root_path,
@@ -59,7 +59,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def new
-    authorize! :update, InternshipOffer
+    authorize! :create, InternshipOffer
     @internship_offer = InternshipOffer.new
     find_selectable_content
   rescue CanCan::AccessDenied
