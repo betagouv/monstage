@@ -19,9 +19,10 @@ class Ability
 
   def student_abilities(user:)
     can :read, InternshipOffer
+    can :apply, InternshipOffer
   end
 
   def employer_abilities(user:)
-    can :manage, InternshipOffer
+    can [:create, :read, :update, :destroy], InternshipOffer
   end
 end
