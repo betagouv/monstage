@@ -34,8 +34,8 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   test 'flash presence' do
     get new_internship_offer_path
     follow_redirect!
-    assert_select("#alert-error",
-                  { text: 'Seul les employeurs peuvent créer une offre' },
+    assert_select("#alert-danger",
+                  { text: "Vous n'êtes pas autorisé à créer une annonce" },
                   'missing flash rendering')
   end
 
@@ -92,7 +92,9 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
       patch(internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
                         title: new_title,
-                        week_ids: [weeks(:week_2019_1).id]
+                        week_ids: [weeks(:week_2019_1).id],
+                        is_public: false,
+                        can_be_applied_for: false
                       }
                     })
       assert_redirected_to(internship_offer,

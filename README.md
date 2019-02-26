@@ -1,4 +1,6 @@
+[![CircleCI](https://circleci.com/gh/betagouv/monstage.svg?style=svg)](https://circleci.com/gh/betagouv/monstage)
 # README
+
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
@@ -14,7 +16,7 @@ Things you may want to cover:
 - Start with : pg_ctl -D /usr/local/var/postgres start
 - Stop with : pg_ctl -D /usr/local/var/postgres stop
 - Install html5validator : pip install html5validator
-- 
+-
 # build
 ## run dev env
 
@@ -36,5 +38,5 @@ deployement automated via CI, can be done manually with ```infra/staging/deploy.
 
 ## run
 * ```infra/staging/console.sh``` : run rails console on heroku
-* ```infra/staging/set_env.sh``` : setup heroku env vars 
+* ```infra/staging/set_env.sh``` : setup heroku env vars
 * ```infra/staging/logs.sh``` : tail logs
