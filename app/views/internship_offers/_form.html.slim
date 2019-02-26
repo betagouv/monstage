@@ -2,13 +2,13 @@
 
 = form_for @internship_offer, {data: {controller: 'internship-form'}} do |form|
 
-- if @internship_offer.errors.any?
-  .alert.alert-danger
-    p.mb-0
-      strong= "Veuillez corriger les errreures suivantes:"
-    ul.mb-0
-      - @internship_offer.errors.full_messages.each do |message|
-        li= message
+  - if @internship_offer.errors.any?
+    .alert.alert-danger
+      p.mb-0
+        strong= "Veuillez corriger les errreures suivantes:"
+      ul.mb-0
+        - @internship_offer.errors.full_messages.each do |message|
+          li= message
 
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
