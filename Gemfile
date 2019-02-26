@@ -7,6 +7,8 @@ ruby '2.5.1'
 gem 'rails'
 gem 'turbolinks'
 gem 'pg'
+gem 'activerecord-postgis-adapter' # postgis extension
+
 # Use Puma as the app server
 gem 'puma'
 gem 'cancancan'

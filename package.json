@@ -3,11 +3,16 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
+    "@stimulus/polyfills": "^1.1.1",
+    "algoliasearch": "^3.32.0",
     "bootstrap": "^4.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
+    "places.js": "^1.15.5",
     "popper.js": "^1.14.7",
+    "rails-erb-loader": "^5.5.2",
     "rails-ujs": "^5.2.2",
+    "stimulus": "^1.1.1",
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {

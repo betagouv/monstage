@@ -10,6 +10,7 @@ class InternshipOffer < ApplicationRecord
             :employer_street,
             :employer_zipcode,
             :employer_city,
+            :coordinates,
             presence: true
 
   validates :can_be_applied_for, inclusion: { in: [true, false] }
@@ -29,10 +30,14 @@ class InternshipOffer < ApplicationRecord
                         foreign_key: 'operator_id',
                         optional: true
 
+  attr_reader :autocomplete
+
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
   end
 
-  private
-
+  def coordinates=(coordinates)
+    super(geo_point_factory(latitude: coordinates[:latitude],
+                            longitude: coordinates[:longitude]))
+  end
 end

@@ -10,7 +10,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: monstage_test
           RAILS_ENV: test
-      - image: circleci/postgres:10.6 # database image
+      - image: circleci/postgres:10.6-alpine-postgis # database image
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
@@ -72,7 +72,7 @@ jobs: # a collection of steps
       - run:
           name: Database setup
           environment:
-            DATABASE_URL: "postgres://monstage_test:monstage_test@localhost:5432/monstage_test"
+            DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
           command: bundle exec bin/rails db:create db:schema:load --trace
 
       - run:

@@ -36,7 +36,6 @@ class InternshipOffersController < ApplicationController
     authorize! :manage, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     @internship_offer.update!(internship_offer_params)
-
     redirect_to(@internship_offer,
                 flash: { success: 'Votre annonce a bien été modifiée'})
   rescue ActiveRecord::RecordInvalid,
@@ -102,6 +101,6 @@ class InternshipOffersController < ApplicationController
         .permit(:title, :description, :sector, :can_be_applied_for, :week_day_start, :week_day_end, :excluded_weeks,
                 :max_candidates, :max_weeks, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
                 :employer_description, :employer_street, :employer_zipcode, :employer_city, :is_public,
-                :operator_id, week_ids: [])
+                :operator_id, coordinates: {}, week_ids: [])
   end
 end

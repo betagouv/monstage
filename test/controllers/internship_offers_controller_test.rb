@@ -9,7 +9,7 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
         get new_internship_offer_path
 
         assert_response :success
-        assert_select 'select#internship_offer_week_ids option', 12
+        assert_select 'select[name="internship_offer[week_ids][]"] option', 12
         assert_select 'option', text: 'Semaine 7 - du 11/02/19 au 17/02/19'
         assert_select 'option', text: 'Semaine 8 - du 18/02/19 au 24/02/19'
         assert_select 'option', text: 'Semaine 9 - du 25/02/19 au 03/03/19'
@@ -47,12 +47,11 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   test 'POST #create as employer creates the post' do
     sign_in(as: MockUser::Employer) do
       assert_difference('InternshipOffer.count', 1) do
-        post(internship_offers_path,
-             params: {
-              internship_offer: internship_offers(:stage_dev)
-                                  .attributes
-                                  .merge(week_ids: [weeks(:week_2019_1).id])
-             })
+        params = internship_offers(:stage_dev)
+                  .attributes
+                  .merge(week_ids: [weeks(:week_2019_1).id],
+                         "coordinates" => {latitude: 1, longitude: 1})
+        post(internship_offers_path, params: { internship_offer: params })
       end
       assert_redirected_to internship_offer_path(InternshipOffer.last)
     end

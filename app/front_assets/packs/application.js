@@ -8,5 +8,5 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import 'bootstrap/dist/js/bootstrap';
-import '../src/js/index'
-import '../src/js/internship_offers'
+import '../bootapp'
+

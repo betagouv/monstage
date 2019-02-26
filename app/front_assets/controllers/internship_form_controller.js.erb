@@ -1,0 +1,81 @@
+import { Controller } from "stimulus"
+import places from 'places.js';
+
+export default class extends Controller {
+  static targets = [ "maxCandidatesGroup",
+                     "selectWeeks",
+                     "autocompleteFormGroup",
+                     "autocompleteInput",
+                     "coordinatesInput",
+                     "employerStreet",
+                     "employerCity",
+                     "employerZipcode" ]
+
+  // show/hide group internship custom controls
+  toggleCanBeAppliedSection(event) {
+    $(this.maxCandidatesGroupTarget).toggleClass('d-none');
+  }
+
+  // show/hide div next of element
+  toggleClosestHelpSign(event) {
+    $(event.target).next().toggleClass('d-none');
+  }
+
+  // toggle all weeks options
+  toggleWeeks(event) {
+    $(this.selectWeeksTarget).find("option").each((i, el) => {
+      $(el).prop('selected', $(event.target).prop('checked'))
+    })
+  }
+
+  onAlgoliaSearchResultSelected = (selection) => {
+    const suggestion = selection.suggestion;
+
+    $(this.employerStreetTarget).val(suggestion.name);
+    $(this.employerCityTarget).val(suggestion.city);
+    $(this.employerZipcodeTarget).val(suggestion.postcode);
+    $(this.longitudeInputTarget).val(suggestion.latlng.lng);
+    $(this.latitudeInputTarget).val(suggestion.latlng.lat);
+  }
+
+
+  connect() {
+    // initialize algolia api
+    this.placesAutocomplete = places({
+      container: this.autocompleteInputTarget,
+      appId: '<%= Credentials.enc(:algolia, :app_id, prefix_env: false) %>',
+      apiKey: '<%= Credentials.enc(:algolia, :api_key, prefix_env: false) %>'
+    });
+
+    // configure algolia api
+    this.placesAutocomplete.configure({
+      language: 'fr',
+      countries: ['fr'],
+      type: 'address'
+    })
+
+    // listen on algolia search result selection
+    this.placesAutocomplete.on("change", this.onAlgoliaSearchResultSelected)
+
+    // listen on clear address
+    /* fix: does not works
+    this.placesAutocomplete.on("clean", () =>{
+      $(this.employerStreetTarget).val(null)
+      $(this.employerCityTarget).val(null)
+      $(this.employerZipcodeTarget).val(null)
+      $(this.longitudeInputTarget).val(null)
+      $(this.latitudeInputTarget).val(null)
+    })
+    */
+
+    // when everything is ok ; show autocompleteTarget and makes default input readonly
+    $(this.autocompleteFormGroupTarget).removeClass('d-none')
+    $(this.employerStreetTarget).prop("readonly", true)
+    $(this.employerCityTarget).prop("readonly", true)
+    $(this.employerZipcodeTarget).prop("readonly", true)
+  }
+
+  disconnect() {
+    this.placesAutocomplete.destroy()
+  }
+}
