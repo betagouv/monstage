@@ -13,7 +13,6 @@ module InternshipOffersHelper
 
   def intership_sectors_options_for_select
     [
-      intership_sectors_options_for_default,
       'Aérien, Aéronautique et Aéroportuaire',
       "Agriculture, Elevage, Pêche",
       "Agroalimentaire, Industrie agroalimentaire",
