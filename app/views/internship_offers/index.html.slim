@@ -1,7 +1,7 @@
 - if can? :create, InternshipOffer
   .clearfix
     h2.float-left Offres de stage
-    = link_to 'Ajouter', new_internship_offer_path, class: 'btn btn-dark float-right'
+    = link_to 'Déposer une annonce', new_internship_offer_path, class: 'btn btn-dark float-right'
 - else
   h2 #{@internship_offers.count} offres de stage
 
