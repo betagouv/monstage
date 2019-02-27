@@ -33,7 +33,28 @@
       = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: @internship_offer.sector), {}, class: "custom-select"
 
   fieldset
-    legend Quand?
+    legend Où ?
+    .form-group.d-none data={target: 'internship-form.autocompleteFormGroup'}
+      = form.label :autocomplete, "Adresse du lieu où se déroule le stage", class: 'required'
+      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: format_autocomplete_address(@internship_offer), required: true, data: {target: 'internship-form.autocompleteInput'}
+      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'internship-form.latitudeInput'})
+      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'internship-form.longitudeInput'})
+    .form-group
+      .form-row
+        .col-sm-6
+          .form-group
+            = form.label :employer_street, 'Rue', class: 'required'
+            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'internship-form.employerStreet'}
+        .col-sm-4
+          .form-group
+            = form.label :employer_city, 'Ville', class: 'required'
+            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'internship-form.employerCity'}
+        .col-sm-2
+          .form-group
+            = form.label :employer_zipcode, 'Code postal', class: 'required'
+            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship-form.employerZipcode'}
+  fieldset
+    legend Quand ?
     .form-group
       = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
       .form-check.form-group
@@ -71,45 +92,6 @@
       small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
 
   fieldset
-    legend Où ?
-    label.required Secteur
-    .form-group
-      .form-check
-        = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
-        = form.label :is_public_true, 'Public', class: 'form-check-label'
-      .form-check
-        = form.radio_button :is_public, false, class: 'form-check-input', required: true
-        = form.label :is_public_false, 'Privé', class: 'form-check-label'
-    .form-group
-      = form.label :employer_website, 'Site web'
-      = form.text_field :employer_website, class: 'form-control'
-    .form-group
-      = form.label :employer_description, 'Description'
-      = form.text_area :employer_description, class: 'form-control'
-
-  fieldset
-    legend Adresse du lieu où se déroule le stage
-    .form-group.d-none data={target: 'internship-form.autocompleteFormGroup'}
-      = form.label :autocomplete, "Adresse complète", class: 'required'
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: format_autocomplete_address(@internship_offer), required: true, data: {target: 'internship-form.autocompleteInput'}
-      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'internship-form.latitudeInput'})
-      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'internship-form.longitudeInput'})
-    .form-group
-      .form-row
-        .col-sm-6
-          .form-group
-            = form.label :employer_street, 'Rue', class: 'required'
-            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'internship-form.employerStreet'}
-        .col-sm-4
-          .form-group
-            = form.label :employer_city, 'Ville', class: 'required'
-            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'internship-form.employerCity'}
-        .col-sm-2
-          .form-group
-            = form.label :employer_zipcode, 'Code postal', class: 'required'
-            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship-form.employerZipcode'}
-  h2 Avec qui ?
-  fieldset
     legend Tuteur
     .form-group
       = form.label :tutor_name, 'Nom', class: 'required'
@@ -123,48 +105,28 @@
       = form.email_field :tutor_email, class: 'form-control'
 
   fieldset
+    legend L'entreprise
+    label.required Secteur
+    .form-group
+      .form-check
+        = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
+        = form.label :is_public_true, 'Public', class: 'form-check-label'
+      .form-check
+        = form.radio_button :is_public, false, class: 'form-check-input', required: true
+        = form.label :is_public_false, 'Privé', class: 'form-check-label'
+    .form-group
+      = form.label :employer_description, "Description de l'entreprise"
+      = form.text_area :employer_description, class: 'form-control'
+    .form-group
+      = form.label :employer_website, 'Site web'
+      = form.text_field :employer_website, class: 'form-control'
+
+
+  fieldset
     legend Accompagnement
     .form-group
       = form.label :operator_id, 'Opérateur'
       = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator_name, @internship_offer.operator_id), {prompt: "-- Pas besoin d'opérateur, je gère mon offre moi-même --"}, class: "custom-select"
-  / h2 Où ?
-  / label.required Secteur
-  / .form-group
-  /   .form-check
-  /     = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
-  /     = form.label :is_public_true, 'Public', class: 'form-check-label'
-  /   .form-check
-  /     = form.radio_button :is_public, false, class: 'form-check-input', required: true
-  /     = form.label :is_public_false, 'Privé', class: 'form-check-label'
-  / .form-group
-  /   = form.label :employer_website, 'Site web'
-  /   = form.text_field :employer_website, class: 'form-control'
-  / .form-group
-  /   = form.label :employer_description, 'Description'
-  /   = form.text_area :employer_description, class: 'form-control'
 
-  / h3 Adresse du lieu où se déroule le stage
-  / .form-group
-  /   = form.label :employer_street, 'Rue', class: 'required'
-  /   = form.text_field :employer_street, class: "form-control", required: true
-  / .form-group
-  /   = form.label :employer_zipcode, 'Code postal', class: 'required'
-  /   = form.text_field :employer_zipcode, class: "form-control", required: true
-  / .form-group
-  /   = form.label :employer_city, 'Ville', class: 'required'
-  /   = form.text_field :employer_city, class: "form-control", required: true
-
-  / h2 Avec qui ?
-  / h3 Tuteur
-  / .form-group
-  /   = form.label :tutor_name, 'Nom', class: 'required'
-  /   = form.text_field :tutor_name, class: 'form-control', required: true
-  / .form-group
-  /   = form.label :tutor_phone, 'Téléphone', class: 'required'
-  /   = form.phone_field :tutor_phone, class: 'form-control', required: true
-  /   small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
-  / .form-group
-  /   = form.label :tutor_email, 'Adresse électronique'
-  /   = form.email_field :tutor_email, class: 'form-control'
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
