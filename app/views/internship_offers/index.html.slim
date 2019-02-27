@@ -1,7 +1,7 @@
 - if can? :create, InternshipOffer
   .clearfix
     h2.float-left Offres de stage
-    = link_to 'Déposer une annonce', new_internship_offer_path, class: 'btn btn-dark float-right'
+    = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
 - else
   h2 #{@internship_offers.count} offres de stage
 
@@ -14,14 +14,14 @@
       .filter-section.p-3
         fieldset
           legend Domaine d'activité
-          = select_tag "Domaine d'activité", options_for_select(intership_sectors_options_for_select), class: 'custom-select'
+          = select_tag "Domaine d'activité", options_for_select(intership_sectors_options_for_select), { prompt: intership_sectors_options_for_default, class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
-  table.table.table-hover.table-bordered
-    tbody
-      - @internship_offers.each do |internship_offer|
-        tr.clickable-row[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-controller="internship-index" data-action="click->internship-index#visit"]
-          td
-            h3 = internship_offer.title
-            p.text-muted = internship_offer.employer_city
-            - unless internship_offer.available_all_year?
-              p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}
+    table.table.table-hover.table-bordered
+      tbody
+        - @internship_offers.each do |internship_offer|
+          tr.offer-row.clickable-row[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-action="click->internship-index#visit" data-sector="#{internship_offer.sector}" data-target="internship-index.offer"]
+            td
+              h3 = internship_offer.title
+              p.text-muted = internship_offer.employer_city
+              - unless internship_offer.available_all_year?
+                p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}
