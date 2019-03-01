@@ -3,7 +3,6 @@
 stage_dev:
   title: MyString
   description: MyText
-  can_be_applied_for: false
   week_day_start: 2019-02-07
   week_day_end: 2019-02-07
   max_candidates: 1
@@ -19,4 +18,3 @@ stage_dev:
   employer_city: Paris
   employer_name: MaBoite
   coordinates: <%= geo_point_factory(latitude: 48,longitude: 0) %>
-
