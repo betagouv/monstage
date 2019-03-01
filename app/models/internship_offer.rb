@@ -7,6 +7,7 @@ class InternshipOffer < ApplicationRecord
             :max_candidates,
             :tutor_name,
             :tutor_phone,
+            :employer_name,
             :employer_street,
             :employer_zipcode,
             :employer_city,

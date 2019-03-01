@@ -112,8 +112,8 @@
         = form.radio_button :is_public, false, class: 'form-check-input', required: true
         = form.label :is_public_false, 'Privé', class: 'form-check-label'
     .form-group
-      = form.label :employer_description, "Description de l'entreprise"
-      = form.text_area :employer_description, class: 'form-control'
+      = form.label :employer_name, "Nom de l'entreprise", class: 'required'
+      = form.text_field :employer_name, class: 'form-control', required: true
     .form-group
       = form.label :employer_website, 'Site web'
       = form.text_field :employer_website, class: 'form-control'

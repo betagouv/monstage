@@ -28,6 +28,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:employer_street]
     assert_not_empty internship_offer.errors[:employer_zipcode]
     assert_not_empty internship_offer.errors[:employer_city]
+    assert_not_empty internship_offer.errors[:employer_name]
   end
 
   test "number of candidates required when can_be_applied_for is false" do
