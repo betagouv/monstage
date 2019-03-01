@@ -8,7 +8,7 @@ module InternshipOffersHelper
   end
 
   def intership_sectors_options_for_default
-    "-- Veuillez sélectionner un secteur --"
+    "-- Veuillez sélectionner un domaine --"
   end
 
   def intership_sectors_options_for_select

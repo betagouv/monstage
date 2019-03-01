@@ -9,10 +9,11 @@ export default class extends Controller {
   }
 
   filterOffersBySectors(event) {
-    let sector = event.target.options[event.target.selectedIndex].value;
+    // let sector = event.target.options[event.target.selectedIndex].value;
+    let sectors = $("#internship-offer-sector-filter option:selected").map(function() { return this.value }).get();
 
     $(this.offerTargets).each(function (index, offer) {
-      let shouldBeHidden = sector !== "" && $(offer).data('sector') !== sector;
+      let shouldBeHidden = sectors.length > 0 && !sectors.includes($(offer).data('sector'));
       $(offer).toggleClass('d-none', shouldBeHidden);
     });
   }
