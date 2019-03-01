@@ -15,7 +15,7 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.new(internship_offer_params)
     @internship_offer.save!
     redirect_to(internship_offer_path(@internship_offer),
-                flash: {success: 'Votre annonce a bien été créée'})
+                flash: {success: 'Votre annonce a été publiée, vous pouvez la modifier et la supprimer à tout moment'})
   rescue ActiveRecord::RecordInvalid,
          ActionController::ParameterMissing
     @internship_offer ||= InternshipOffer.new
