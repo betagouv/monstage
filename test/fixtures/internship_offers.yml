@@ -12,6 +12,7 @@ stage_dev:
   can_be_applied_for: true
   tutor_name: Martin Fourcade
   tutor_phone: 0669696969
+  tutor_email: martin@fourcade.fr
   is_public: true
   employer_street: 1 rue du poulet
   employer_zipcode: 75001
