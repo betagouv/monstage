@@ -118,12 +118,9 @@
       = form.label :employer_website, 'Site web'
       = form.text_field :employer_website, class: 'form-control'
 
-
-  fieldset
-    legend Accompagnement
     .form-group
-      = form.label :operator_id, 'Opérateur'
-      = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator_name, @internship_offer.operator_id), {prompt: "-- Pas besoin d'opérateur, je gère mon offre moi-même --"}, class: "custom-select"
+      = form.label :operator_id, "Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs"
+      = form.select :operator_id, options_from_collection_for_select(@operators, :id, :operator_name, @internship_offer.operator_id), {prompt: "-- Je n'ai pas besoin d'accompagnement --"}, class: "custom-select"
 
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
