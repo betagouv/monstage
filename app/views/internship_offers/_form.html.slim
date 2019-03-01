@@ -27,7 +27,7 @@
     = form.text_area :description, class: "form-control", required: true
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(intership_sectors_options_for_select, selected: @internship_offer.sector), { prompt: intership_sectors_options_for_default }, class: "custom-select"
+    = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "custom-select"
 
   fieldset
     legend Où ?

@@ -7,11 +7,11 @@ module InternshipOffersHelper
     ].compact.uniq.join(', ')
   end
 
-  def intership_sectors_options_for_default
+  def internship_sectors_options_for_default
     "-- Veuillez sélectionner un domaine --"
   end
 
-  def intership_sectors_options_for_select
+  def internship_sectors_options_for_select
     [
       'Aérien, Aéronautique et Aéroportuaire',
       "Agriculture, Elevage, Pêche",
