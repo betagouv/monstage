@@ -58,8 +58,7 @@ module InternshipOffersHelper
       "Spectacle, Métiers de la scène",
       "Sport, Animation",
       "Tourisme, Loisirs",
-      "Transport, Logistique",
-      "Multi-secteur"
+      "Transport, Logistique"
     ]
   end
 end
