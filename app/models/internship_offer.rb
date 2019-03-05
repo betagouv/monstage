@@ -28,10 +28,6 @@ class InternshipOffer < ApplicationRecord
   has_many :weeks, through: :internship_offer_weeks
   # accepts_nested_attributes_for :internship_offer_weeks, :weeks
 
-  belongs_to :operator, class_name: 'User',
-                        foreign_key: 'operator_id',
-                        optional: true
-
   attr_reader :autocomplete
 
   def available_all_year?

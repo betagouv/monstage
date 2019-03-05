@@ -90,13 +90,8 @@ class InternshipOffersController < ApplicationController
     end
   end
 
-  def find_selectable_operators
-    @operators = User.where.not(operator_name: nil)
-  end
-
   def find_selectable_content
     find_selectable_weeks
-    find_selectable_operators
   end
 
   def internship_offer_params
@@ -104,6 +99,6 @@ class InternshipOffersController < ApplicationController
         .permit(:title, :description, :sector, :can_be_applied_for, :week_day_start, :week_day_end, :excluded_weeks,
                 :max_candidates, :max_weeks, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
                 :employer_name, :employer_street, :employer_zipcode, :employer_city, :is_public,
-                :operator_id, coordinates: {}, week_ids: [])
+                operator_names: [], coordinates: {}, week_ids: [])
   end
 end
