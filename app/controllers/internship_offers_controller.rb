@@ -90,13 +90,8 @@ class InternshipOffersController < ApplicationController
     end
   end
 
-  def find_selectable_operators
-    @operators = User.where.not(operator_name: nil)
-  end
-
   def find_selectable_content
     find_selectable_weeks
-    find_selectable_operators
   end
 
   def internship_offer_params

@@ -46,13 +46,11 @@ ActiveRecord::Schema.define(version: 2019_03_05_103435) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
-    t.bigint "operator_id"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "employer_name"
     t.string "operator_names", array: true
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
-    t.index ["operator_id"], name: "index_internship_offers_on_operator_id"
   end
 
   create_table "schools", force: :cascade do |t|
@@ -86,5 +84,4 @@ ActiveRecord::Schema.define(version: 2019_03_05_103435) do
 
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
-  add_foreign_key "internship_offers", "users", column: "operator_id"
 end
