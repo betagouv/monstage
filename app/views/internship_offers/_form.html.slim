@@ -103,6 +103,12 @@
 
   fieldset
     legend L'entreprise
+    .form-group
+      = form.label :employer_name, "Nom de l'entreprise", class: 'required'
+      = form.text_field :employer_name, class: 'form-control', required: true
+    .form-group
+      = form.label :employer_website, 'Site web'
+      = form.text_field :employer_website, class: 'form-control'
     label.required Secteur
     .form-group
       .form-check
@@ -112,12 +118,8 @@
         = form.radio_button :is_public, false, class: 'form-check-input', required: true
         = form.label :is_public_false, 'Privé', class: 'form-check-label'
     .form-group
-      = form.label :employer_name, "Nom de l'entreprise", class: 'required'
-      = form.text_field :employer_name, class: 'form-control', required: true
-    .form-group
-      = form.label :employer_website, 'Site web'
-      = form.text_field :employer_website, class: 'form-control'
-
+      = form.label :group_name, "Groupe"
+      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "custom-select"
     .form-group
       = form.label :operator_names, "Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs"
       = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "custom-select", multiple: true
