@@ -61,4 +61,17 @@ module InternshipOffersHelper
       "Transport, Logistique"
     ]
   end
+
+  def operator_names
+    [
+        "Clubs régionaux  d'entreprises pour l'insertion (CREPI)",
+        "Dégun sans stage (Ecole centrale de Marseille)",
+        "Fondation Agir contre l'Exclusion (FACE)",
+        "JOB IRL",
+        "Les entreprises pour la cité (LEPC)",
+        "Un stage et après !",
+        "Tous en stage",
+        "Viens voir mon taf"
+    ]
+  end
 end

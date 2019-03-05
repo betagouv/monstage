@@ -24,11 +24,6 @@ def populate_week_reference
     end
   end
 end
-def populate_operators
-  ["Clubs régionaux  d'entreprises pour l'insertion (CREPI)", "Dégun sans stage (Ecole centrale de Marseille)", "Fondation Agir contre l'Exclusion (FACE)", "JOB IRL", "Les entreprises pour la cité (LEPC)", "Un stage et après !", "Tous en stage", "Viens voir mon taf"].each do |operator|
-    User.find_or_create_by(operator_name: operator)
-  end
-end
 
 def populate_schools
   CSV.foreach(Rails.root.join('db/college-rep-plus.csv'), {headers: { col_sep: ','}}) do |row, i|
@@ -43,5 +38,4 @@ def populate_schools
 end
 
 populate_week_reference
-populate_operators
 populate_schools
