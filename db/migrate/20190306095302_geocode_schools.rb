@@ -8,8 +8,7 @@ class GeocodeSchools < ActiveRecord::Migration[5.2]
         result = Geocoder.search(query)
         location = result&.first&.geometry&.dig("location")
         if location
-          school.coordinates = geo_point_factory(latitude: location["lat"],
-                                                 longitude: location["lng"])
+          school.coordinates = { latitude: location["lat"], longitude: location["lng"] }
           school.save!
           puts "ok: #{query}"
         else

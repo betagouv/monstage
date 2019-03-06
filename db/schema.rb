@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 2019_03_06_105656) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
+    t.bigint "school_id"
+    t.index ["school_id"], name: "index_users_on_school_id"
   end
 
   create_table "weeks", force: :cascade do |t|
