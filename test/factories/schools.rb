@@ -11,8 +11,8 @@ FactoryBot.define do
     end
 
     trait :at_bordeaux do
-      city { 'Marseille' }
-      departement_name { 'Marseille 007' }
+      city { 'bordeaux' }
+      departement_name { 'Gironde' }
       coordinates { Coordinates.bordeaux }
     end
   end
