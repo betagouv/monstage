@@ -101,7 +101,7 @@ jobs: # a collection of steps
               login $HEROKU_EMAIL
               password $HEROKU_API_KEY
             EOF
-          - chmod 600 ~/.netrc
+            chmod 600 ~/.netrc
       - run:
           name: Deploy Master to Heroku
           command: |
