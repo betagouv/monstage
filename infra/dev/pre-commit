@@ -1,0 +1,12 @@
+#!/bin/bash
+set -x
+command -v circleci >/dev/null 2>&1 || { echo "Git pre-commit must check circleci cli file before push ; please install it"; exit 1; }
+
+circleci config validate .circleci/config.yml
+
+if [ $? -eq 0 ]; then
+	exit 0; # allow commit
+else
+	echo "Circle ci file not valid!"
+	exit 1; # circle ci file not valid!
+fi
