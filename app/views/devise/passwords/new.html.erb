@@ -4,8 +4,8 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
+    <%= f.label :email, class: 'required' %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
   </div>
 
   <div class="actions">
