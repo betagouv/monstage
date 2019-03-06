@@ -47,10 +47,11 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST #create as employer creates the post' do
+    internship_offer = FactoryBot.create(:internship_offer)
+
     sign_in(as: MockUser::Employer) do
       assert_difference('InternshipOffer.count', 1) do
-        params = internship_offers(:stage_dev)
-                  .attributes
+        params = internship_offer.attributes
                   .merge(week_ids: [weeks(:week_2019_1).id],
                          "coordinates" => {latitude: 1, longitude: 1})
         post(internship_offers_path, params: { internship_offer: params })
@@ -74,19 +75,19 @@ class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #edit as visitor redirects to internship_offers' do
-    get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
+    get edit_internship_offer_path(FactoryBot.create(:internship_offer).to_param)
     assert_redirected_to internship_offers_path
   end
 
   test 'GET #edit as employer' do
     sign_in(as: MockUser::Employer) do
-      get edit_internship_offer_path(internship_offers(:stage_dev).to_param)
+      get edit_internship_offer_path(FactoryBot.create(:internship_offer).to_param)
       assert_response :success
     end
   end
 
   test 'PATCH #update as employer updates internship_offer' do
-    internship_offer = internship_offers(:stage_dev)
+    internship_offer = FactoryBot.create(:internship_offer)
     new_title = 'new title'
 
     sign_in(as: MockUser::Employer) do

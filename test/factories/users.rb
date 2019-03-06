@@ -6,5 +6,9 @@ FactoryBot.define do
     factory :student do
       type { 'Student' }
     end
+
+    trait :lafami do
+      # school { }
+    end
   end
 end
