@@ -8,7 +8,9 @@ class GeocodeSchools < ActiveRecord::Migration[5.2]
         result = Geocoder.search(query)
         location = result&.first&.geometry&.dig("location")
         if location
+          school.postal_code = result.first.postal_code
           school.coordinates = { latitude: location["lat"], longitude: location["lng"] }
+          school.name = school.name.strip.split(" ").map(&:capitalize).join(" ")
           school.save!
           puts "ok: #{query}"
         else
