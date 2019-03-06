@@ -1,0 +1,3 @@
+class SchoolManager < User
+
+end

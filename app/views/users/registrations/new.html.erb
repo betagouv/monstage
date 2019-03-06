@@ -4,7 +4,11 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group">
-    <%= f.label :email, class: 'required' %><br />
+    <%= f.label :type, 'Profil', class: 'required' %>
+    <%= f.select :type, options_for_select(user_types), {}, autofocus: true, class: 'custom-select' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, class: 'required' %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
   </div>
 
@@ -12,17 +16,17 @@
     <%= f.label :password, class: 'required' %>
     <% if @minimum_password_length %>
     <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
-    <% end %><br />
+    <% end %>
     <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, class: 'required' %><br />
+    <%= f.label :password_confirmation, class: 'required' %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit t('.sign_up'), class: 'btn btn-primary' %>
+    <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>
   </div>
 <% end %>
 
