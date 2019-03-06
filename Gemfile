@@ -53,3 +53,4 @@ gem 'discard'
 gem 'sentry-raven'
 
 gem 'devise'
+gem 'devise-i18n'

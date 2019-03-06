@@ -79,6 +79,8 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    devise-i18n (1.8.0)
+      devise (>= 4.6)
     discard (1.0.0)
       activerecord (>= 4.2, < 6)
     dotenv (0.7.0)
@@ -234,6 +236,7 @@ DEPENDENCIES
   capybara
   chromedriver-helper
   devise
+  devise-i18n
   discard
   factory_bot_rails
   foreman
