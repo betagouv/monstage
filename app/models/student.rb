@@ -7,4 +7,8 @@ class Student < User
     InternshipOffer.nearby(latitude: coordinates.latitude,
                            longitude: coordinates.longitude)
   end
+
+  def to_s
+    "#{super}, in school: #{school&.postal_code}"
+  end
 end
