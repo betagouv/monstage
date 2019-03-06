@@ -19,6 +19,7 @@ fr:
           attributes:
             email:
               blank: "ne doit pas être vide"
+              taken: "déjà pris"
             password:
               too_short: "trop court"
             password_confirmation:
