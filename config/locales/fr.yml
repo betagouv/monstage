@@ -24,3 +24,7 @@ fr:
               too_short: "trop court"
             password_confirmation:
               confirmation: "invalide"
+        school_manager:
+          attributes:
+            email:
+              invalid: "doit être votre adresse académique"
