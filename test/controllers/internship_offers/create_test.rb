@@ -10,7 +10,7 @@ module InternshipOffers
     end
 
     test 'POST #create as employer creates the post' do
-      internship_offer = FactoryBot.create(:internship_offer)
+      internship_offer = create(:internship_offer)
 
       sign_in(as: MockUser::Employer) do
         assert_difference('InternshipOffer.count', 1) do

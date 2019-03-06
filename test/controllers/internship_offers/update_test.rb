@@ -6,7 +6,7 @@ module InternshipOffers
     include SessionManagerTestHelper
 
     test 'PATCH #update as employer updates internship_offer' do
-      internship_offer = FactoryBot.create(:internship_offer)
+      internship_offer = create(:internship_offer)
       new_title = 'new title'
 
       sign_in(as: MockUser::Employer) do
