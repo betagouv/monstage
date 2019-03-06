@@ -15,11 +15,10 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path
 
         assert_response :success
-        assert_select 'select#internship-offer-sector-filter option', 4
+        assert_select 'select#internship-offer-sector-filter option', 3
         assert_select 'option', text: "Animaux"
         assert_select 'option', text: "Droit, Justice"
         assert_select 'option', text: "Mode, Luxe, Industrie textile"
-        assert_select 'option', text: "abc" # Comes from the offer created by fixture. Remove when we have fully migrated to FactoryBot
       end
     end
   end
