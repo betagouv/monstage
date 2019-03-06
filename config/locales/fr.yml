@@ -15,3 +15,12 @@ fr:
               blank: "doit être soit Individuel, soit Collectif"
             is_public:
               blank: "doit être soit Public, soit Privé"
+        user:
+          attributes:
+            email:
+              blank: "ne doit pas être vide"
+              taken: "déjà pris"
+            password:
+              too_short: "trop court"
+            password_confirmation:
+              confirmation: "invalide"
