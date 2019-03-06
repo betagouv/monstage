@@ -3,7 +3,7 @@ FactoryBot.define do
     first_name { 'Jean Claude' }
     last_name { 'Dus' }
 
-    factory :student do
+    factory :student, class: 'Student', parent: :user do
       type { 'Student' }
     end
   end

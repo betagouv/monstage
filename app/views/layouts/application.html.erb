@@ -10,12 +10,18 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container pb-3">
       <%= link_to root_path do %>
-        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Logo - mon stage de 3ème", width: 170, height: 96, class: 'mx-auto d-block logo' %>
+        <%= image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Logo - mon stage de 3ème", width: 170, height: 96, class: 'mx-auto my-3 d-block logo' %>
       <% end %>
       <%= render 'layouts/flash' %>
       <%= yield %>
     </div>
+
+    <% if Rails.env.development? %>
+      <script>
+        console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
+      </script>
+    <% end %>
   </body>
 </html>

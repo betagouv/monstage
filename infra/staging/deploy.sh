@@ -10,6 +10,6 @@ if [ $? -eq 0 ]; then
 else
   echo "missing git remote $target"
   echo "please add $target repo"
-  echo "-> git remote add $target https://git.heroku.com/wello-front-react-staging.git"
+  echo "-> git remote add $target https://git.heroku.com/betagouv-monstage.git"
   exit 1;
 fi

@@ -18,7 +18,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
 
   test 'internship_offer_path' do
     run_request_and_cache_response(report_as: 'internship_offer_path') do
-      get internship_offer_path(internship_offers(:stage_dev).to_param)
+      get internship_offer_path(create(:internship_offer).to_param)
     end
   end
 
@@ -31,7 +31,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'edit_internship_offer_path'  do
-    stage_dev = internship_offers(:stage_dev)
+    stage_dev = create(:internship_offer)
     sign_in(as: MockUser::Employer) do
       run_request_and_cache_response(report_as: 'edit_internship_offer_path') do
         get edit_internship_offer_path(id: stage_dev.to_param)
