@@ -94,6 +94,15 @@ jobs: # a collection of steps
     steps:
       - checkout
       - run:
+          command: |
+            curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+            cat >~/.netrc <<EOF
+            machine api.heroku.com
+              login $HEROKU_EMAIL
+              password $HEROKU_API_KEY
+            EOF
+          - chmod 600 ~/.netrc
+      - run:
           name: Deploy Master to Heroku
           command: |
             git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
