@@ -51,3 +51,5 @@ gem 'slim-rails'
 gem 'discard'
 
 gem 'sentry-raven'
+
+gem 'devise'
