@@ -32,8 +32,7 @@ p
   p
     = @internship_offer.employer_street
     br
-    = @internship_offer.employer_zipcode
-    = @internship_offer.employer_city
+    = "#{@internship_offer.employer_zipcode} #{@internship_offer.employer_city}"
 
 - if can? :create, InternshipOffer
   h2.gray Contact
