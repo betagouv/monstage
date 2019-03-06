@@ -1,4 +1,5 @@
 #!/bin/bash
+# usage: copy this file to .git/hooks/pre-commit
 set -x
 command -v circleci >/dev/null 2>&1 || { echo "Git pre-commit must check circleci cli file before push ; please install it"; exit 1; }
 

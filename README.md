@@ -27,6 +27,10 @@ Things you may want to cover:
 foreman start -f Procfile.dev
 ```
 
+## tooling: linting, etc...
+
+**ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+
 ## run test
 
 ```rake test```
