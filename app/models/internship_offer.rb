@@ -1,6 +1,6 @@
 class InternshipOffer < ApplicationRecord
   include Discard::Model
-
+  include Nearbyable
   validates :title,
             :description,
             :sector,
@@ -26,7 +26,11 @@ class InternshipOffer < ApplicationRecord
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
-  # accepts_nested_attributes_for :internship_offer_weeks, :weeks
+
+  scope :for_user, -> (user:) {
+    return all unless user # fuck it ; should have a User::Visitor type
+    merge(user.targeted_internship_offers)
+  }
 
   attr_reader :autocomplete
 

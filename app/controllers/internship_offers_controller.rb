@@ -3,7 +3,7 @@ class InternshipOffersController < ApplicationController
   DAY_OF_YEAR_SHIFT = 31
 
   def index
-    @internship_offers = InternshipOffer.kept
+    @internship_offers = InternshipOffer.kept.for_user(user: current_user)
   end
 
   def show
