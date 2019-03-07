@@ -1,6 +1,15 @@
 class ApplicationController < ActionController::Base
-  delegate :current_user, to: :session_manager
-  helper_method :current_user
+  # delegate :current_user, to: :session_manager
+  # helper_method :current_user
+
+
+  def after_sign_in_path_for(resource)
+    if resource.instance_of?(SchoolManager) && (resource.school.blank? || resource.school.weeks.empty?)
+      account_path
+    else
+      super
+    end
+  end
 
   protected
 
