@@ -10,4 +10,9 @@ module MockUser
                           first_name: 'Madame',
                           last_name: 'Accor',
                           email: 'madameaccor@fakeaccor.fr')
+  SchoolManager = SchoolManager.new(id: SecureRandom.hex,
+                                    first_name: 'Fred',
+                                    last_name: 'Fred',
+                                    email: 'fred@ac-ent.fr',
+                                    school: School.where(postal_code: 75019).first)
 end

@@ -8,17 +8,15 @@ label.required:before {
 .clickable-row {
   cursor: pointer;
 }
+.svg-inline--fa {
+  pointer-events: none
+}
 
 .gray {
     color: gray;
 }
 
 $logo-color: #feb620;
-
-.help-sign {
-  @extend .fa;
-  @extend .fa-question-circle
-}
 
 .help-sign-content {
   @extend .border;

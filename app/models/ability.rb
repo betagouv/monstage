@@ -6,6 +6,7 @@ class Ability
       case user.type
       when 'Student' then student_abilities(user: user)
       when 'Employer' then employer_abilities(user: user)
+      when 'SchoolManager' then school_manager_abilities(user: user)
       else
       end
     else
@@ -22,6 +23,9 @@ class Ability
     can :apply, InternshipOffer
   end
 
+  def school_manager_abilities(user:)
+    can [:create, :new], ClassRoom
+  end
   def employer_abilities(user:)
     can [:create, :read, :update, :destroy], InternshipOffer
   end

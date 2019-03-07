@@ -1,5 +1,6 @@
 class School < ApplicationRecord
   has_many :students
+  has_many :class_rooms
 
   def coordinates=(coordinates)
     super(geo_point_factory(latitude: coordinates[:latitude],
