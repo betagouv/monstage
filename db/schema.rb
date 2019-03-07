@@ -11,10 +11,17 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2019_03_07_102151) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "class_rooms", force: :cascade do |t|
+    t.string "name"
+    t.bigint "school_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_class_rooms_on_school_id"
+  end
 
   create_table "internship_offer_weeks", force: :cascade do |t|
     t.bigint "internship_offer_id"
@@ -110,6 +117,7 @@ ActiveRecord::Schema.define(version: 2019_03_07_102151) do
     t.index ["number", "year"], name: "index_weeks_on_number_and_year", unique: true
   end
 
+  add_foreign_key "class_rooms", "schools"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
   add_foreign_key "school_internship_weeks", "schools"

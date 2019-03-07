@@ -1,0 +1,8 @@
+<div class="form-group">
+  <%= form.label :school_id, 'Mon collège', class: 'required' %>
+  <%= form.select :school_id,
+                  grouped_options_for_select(School.grouped_by_short_postal_code),
+                  {},
+                  class: 'custom-select',
+                  required: true %>
+</div>

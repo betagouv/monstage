@@ -17,7 +17,9 @@
 
   .form-group
     = form.label :description, 'Description', class: 'required'
-    i.help-sign.ml-1 data-action="click->internship-form#toggleClosestHelpSign"
+    a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
+      i.fa.fa-question-circle
+
     .help-sign-content.d-none
       ol
         li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
