@@ -1,6 +1,7 @@
-<%= form_for ClassRoom.new do |form|  %>
+<%= form_for @class_room do |form|  %>
   <div class="form-group">
     <%= form.label :name, 'Nom de la classe', class: 'required' %>
     <%= form.text_field :name, required: true, class: 'form-control' %>
   </div>
+  <div class="actions"><%= form.submit 'Soumettre', class: 'btn btn-primary' %></div>
 <% end %>
