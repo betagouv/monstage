@@ -24,7 +24,7 @@
         li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
         li Donnez 3 qualités requises (aimer bricoler, être bavard, aimez écrire)
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
-    = form.text_area :description, class: "form-control", required: true, maxlength: 715
+    = form.text_area :description, class: "form-control", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
     = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "custom-select"

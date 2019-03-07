@@ -1,16 +1,19 @@
 class GeocodeSchools < ActiveRecord::Migration[5.2]
   GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache.dump')
 
-  def change
+  def up
     geocode_searches_with_caching do
       School.all.map do |school|
+        school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
+        school.name = school.name.strip.split(" ").map(&:capitalize).join(" ")
+        school.city = school.city.strip.split(" ").map(&:capitalize).join(" ")
+
         query = "#{school.name} #{school.city}"
         result = Geocoder.search(query)
         location = result&.first&.geometry&.dig("location")
         if location
           school.postal_code = result.first.postal_code
           school.coordinates = { latitude: location["lat"], longitude: location["lng"] }
-          school.name = school.name.strip.split(" ").map(&:capitalize).join(" ")
           school.save!
           puts "ok: #{query}"
         else
