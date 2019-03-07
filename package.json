@@ -2,6 +2,8 @@
   "name": "monstage",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.15",
+    "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@rails/webpacker": "3.5",
     "@stimulus/polyfills": "^1.1.1",
     "algoliasearch": "^3.32.0",
@@ -16,6 +18,7 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.7.2",
     "webpack-dev-server": "2.11.2"
   }
 }

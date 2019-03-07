@@ -1,13 +1,13 @@
 nav.navbar.bg-light
   a.icon-link.navbar-brand href=internship_offers_path
-    .fa.fa-2x.fa-angle-left
+    .fas.fa-2x.fa-angle-left
 
   - if can?(:destroy, @internship_offer)
     a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
-      .fa.fa-2x.fa-trash
+      .fas.fa-2x.fa-trash
   - if can?(:update, @internship_offer)
     a.nav-link href=edit_internship_offer_path(@internship_offer.to_param)
-      .fa.fa-2x.fa-pencil
+      .fas.fa-2x.fa-pen
 
 h1 = @internship_offer.title
 
@@ -28,7 +28,7 @@ p
   a href=@internship_offer.employer_website = @internship_offer.employer_website
 
 .d-flex
-  i.fa.fa-map-marker.mr-2
+  i.fas.fa-map-marker.mr-2
   p
     = @internship_offer.employer_street
     br
