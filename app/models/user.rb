@@ -4,6 +4,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
   has_many :internship_offers
 
+  def targeted_internship_offers
+    InternshipOffer.all
+  end
+
   def to_s
     "logged in as : #{type}"
   end
