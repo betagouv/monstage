@@ -2,7 +2,6 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
   validates :title,
-            :description,
             :sector,
             :max_candidates,
             :tutor_name,
@@ -23,6 +22,15 @@ class InternshipOffer < ApplicationRecord
   validates :max_weeks, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true
+
+  AVERAGE_CHAR_PER_WORD = 5.5
+  DESCRIPTION_MIN_WORD_COUNT = 50
+  DESCRIPTION_MAX_WORD_COUNT = 130
+  DESCRIPTION_MIN_CHAR_COUNT = (DESCRIPTION_MIN_WORD_COUNT * AVERAGE_CHAR_PER_WORD).ceil
+  DESCRIPTION_MAX_CHAR_COUNT = (DESCRIPTION_MAX_WORD_COUNT * AVERAGE_CHAR_PER_WORD).ceil
+  validates_length_of :description, minimum: DESCRIPTION_MIN_CHAR_COUNT,
+                                    maximum: DESCRIPTION_MAX_CHAR_COUNT,
+                                    allow_blank: false
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
