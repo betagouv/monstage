@@ -13,4 +13,13 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:school)
     assert_select 'select[name="user[school_id]"] option', School.count
   end
+
+  test "create school manager with school and weeks" do
+    school = create(:school)
+
+    post '/users', params: { user: { school_id: school.id }, internship_weeks:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]}
+
+    assert_not_empty school.weeks
+    assert_equal 2, school.weeks.count
+  end
 end
