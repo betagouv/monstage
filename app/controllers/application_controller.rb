@@ -1,7 +1,4 @@
 class ApplicationController < ActionController::Base
-  # delegate :current_user, to: :session_manager
-  # helper_method :current_user
-
 
   def after_sign_in_path_for(resource)
     if resource.instance_of?(SchoolManager) && (resource.school.blank? || resource.school.weeks.empty?)
@@ -32,11 +29,5 @@ class ApplicationController < ActionController::Base
       @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
                            .or(Week.from_date_to_date_for_year(Date.new(current_year + 1), Date.new(current_year + 1, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT), current_year + 1))
     end
-  end
-
-  private
-  def session_manager
-    @session_manager ||= SessionManager.new(request: request,
-                                            session: session)
   end
 end

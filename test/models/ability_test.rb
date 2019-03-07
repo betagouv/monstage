@@ -1,16 +1,16 @@
 require 'test_helper'
 
 class AbilityTest < ActiveSupport::TestCase
-  test "MockUser::Visitor" do
-    ability = Ability.new(MockUser::Visitor)
+  test "Visitor" do
+    ability = Ability.new()
     assert(ability.can?(:read, InternshipOffer.new),
            'visitors should be able to consult internships')
     assert(ability.cannot?(:manage, InternshipOffer.new),
            'visitors should not be able to con manage internships')
   end
 
-  test "MockUser::Student" do
-    ability = Ability.new(MockUser::Student)
+  test "Student" do
+    ability = Ability.new(create(:student))
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
     assert(ability.can?(:apply, InternshipOffer.new),
@@ -19,8 +19,8 @@ class AbilityTest < ActiveSupport::TestCase
            'students should not be able to con manage internships')
   end
 
-  test "MockUser::Employer" do
-    ability = Ability.new(MockUser::Employer)
+  test "Employer" do
+    ability = Ability.new(create(:employer))
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
     assert(ability.can?(:update, InternshipOffer.new),
