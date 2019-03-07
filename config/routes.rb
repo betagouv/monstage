@@ -4,5 +4,8 @@ Rails.application.routes.draw do
   }
   resources :internship_offers
 
+  get 'account', to: 'accounts#edit'
+  patch 'account', to: 'accounts#update'
+
   root to: "internship_offers#index"
 end

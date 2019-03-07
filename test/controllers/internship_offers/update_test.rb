@@ -3,13 +3,13 @@ require 'test_helper'
 
 module InternshipOffers
   class UpdateTest < ActionDispatch::IntegrationTest
-    include SessionManagerTestHelper
+    include Devise::Test::IntegrationHelpers
 
     test 'PATCH #update as employer updates internship_offer' do
       internship_offer = create(:internship_offer)
       new_title = 'new title'
 
-      sign_in(as: MockUser::Employer) do
+      sign_in(create(:employer)) do
         patch(internship_offer_path(internship_offer.to_param),
               params: { internship_offer: {
                           title: new_title,

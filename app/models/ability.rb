@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user=nil)
     if user.present?
       case user.type
       when 'Student' then student_abilities(user: user)

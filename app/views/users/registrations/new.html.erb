@@ -25,8 +25,6 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true %>
   </div>
 
-  <%= render("select_school", form: f) %>
-
   <div class="actions">
     <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>
   </div>

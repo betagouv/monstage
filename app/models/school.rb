@@ -1,6 +1,9 @@
 class School < ApplicationRecord
   has_many :students
 
+  has_many :school_internship_weeks
+  has_many :weeks, through: :school_internship_weeks
+
   def coordinates=(coordinates)
     super(geo_point_factory(latitude: coordinates[:latitude],
                             longitude: coordinates[:longitude]))
