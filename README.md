@@ -27,13 +27,10 @@ Things you may want to cover:
 foreman start -f Procfile.dev
 ```
 
-Launch Mailcatcher to see emails :
-- `gem install mailcatcher`
-- `mailcatcher`
-
 ## tooling: linting, etc...
 
-**ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **consult mails with mailcatcher**: ```open http://127.0.0.1:1080/```
 
 ## run test
 
