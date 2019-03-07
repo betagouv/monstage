@@ -2,7 +2,7 @@ require 'test_helper'
 
 class HomeValidationTest < ActionDispatch::IntegrationTest
   include Html5Validator
-  include SessionManagerTestHelper
+  include Devise::Test::IntegrationHelpers
 
   test 'root_path' do
     run_request_and_cache_response(report_as: 'root_path') do
@@ -23,7 +23,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'new_internship_offer_path'  do
-    sign_in(as: MockUser::Employer) do
+    sign_in(create(:employer)) do
       run_request_and_cache_response(report_as: 'new_internship_offer_path') do
         get new_internship_offer_path
       end
@@ -32,7 +32,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
 
   test 'edit_internship_offer_path'  do
     stage_dev = create(:internship_offer)
-    sign_in(as: MockUser::Employer) do
+    sign_in(create(:employer)) do
       run_request_and_cache_response(report_as: 'edit_internship_offer_path') do
         get edit_internship_offer_path(id: stage_dev.to_param)
       end

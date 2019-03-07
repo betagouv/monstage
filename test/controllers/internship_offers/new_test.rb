@@ -3,10 +3,10 @@ require 'test_helper'
 
 module InternshipOffers
   class NewTest < ActionDispatch::IntegrationTest
-    include SessionManagerTestHelper
+    include Devise::Test::IntegrationHelpers
 
     test 'GET #new as employer show valid form' do
-      sign_in(as: MockUser::Employer) do
+      sign_in(create(:employer)) do
         travel_to(Date.new(2019, 3, 1)) do
           get new_internship_offer_path
 

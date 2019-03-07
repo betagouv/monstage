@@ -8,5 +8,14 @@ FactoryBot.define do
     factory :student, class: 'Student', parent: :user do
       type { 'Student' }
     end
+
+    factory :employer, class: 'Employer', parent: :user do
+      type { 'Employer' }
+    end
+
+    factory :school_manager, class: 'SchoolManager', parent: :user do
+      sequence(:email) {|n| "jean#{n}-claude@ac-dus.fr" }
+      type { 'SchoolManager' }
+    end
   end
 end

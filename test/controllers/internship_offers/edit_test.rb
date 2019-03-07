@@ -3,7 +3,7 @@ require 'test_helper'
 
 module InternshipOffers
   class EditTest < ActionDispatch::IntegrationTest
-    include SessionManagerTestHelper
+    include Devise::Test::IntegrationHelpers
 
     test 'GET #edit as visitor redirects to internship_offers' do
       get edit_internship_offer_path(create(:internship_offer).to_param)
@@ -11,7 +11,7 @@ module InternshipOffers
     end
 
     test 'GET #edit as employer' do
-      sign_in(as: MockUser::Employer) do
+      sign_in(create(:employer)) do
         get edit_internship_offer_path(create(:internship_offer).to_param)
         assert_response :success
       end
