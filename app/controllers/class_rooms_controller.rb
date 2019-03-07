@@ -6,8 +6,7 @@ class ClassRoomsController < ApplicationController
     @class_room.save!
     redirect_to new_class_room_path
   rescue ActiveRecord::RecordInvalid => error
-    render :new,
-           flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" }
+    render :new
   end
 
   def edit
@@ -23,8 +22,7 @@ class ClassRoomsController < ApplicationController
     @class_room.update!(class_rooms_params)
     redirect_to new_class_room_path
   rescue ActiveRecord::RecordInvalid => error
-    render :edit,
-           flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" }
+    render :edit
   end
 
   def new
