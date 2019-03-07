@@ -32,7 +32,7 @@ module InternshipOffers
 
     test 'GET #new as visitor redirects to internship_offers' do
       get new_internship_offer_path
-      assert_redirected_to internship_offers_path
+      assert_redirected_to root_path
     end
   end
 end

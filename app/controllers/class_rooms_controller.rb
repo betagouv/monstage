@@ -1,9 +1,4 @@
 class ClassRoomsController < ApplicationController
-  rescue_from(CanCan::AccessDenied) do |error|
-    redirect_to(root_path,
-                flash: { danger: "Vous n'êtes pas autorisé à gérer les classes" })
-  end
-
   def create
     authorize! :create, ClassRoom
     @school = current_user.school
