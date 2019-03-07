@@ -19,18 +19,12 @@ class InternshipOffersController < ApplicationController
     @internship_offer ||= InternshipOffer.new
     find_selectable_content
     render 'internship_offers/new', status: :bad_request
-  rescue CanCan::AccessDenied
-    redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" })
   end
 
   def edit
     authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
     find_selectable_content
-  rescue CanCan::AccessDenied
-    redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à modifier une annonce" })
   end
 
   def update
@@ -43,9 +37,6 @@ class InternshipOffersController < ApplicationController
          ActionController::ParameterMissing => error
     find_selectable_content
     render :edit, status: :bad_request
-  rescue CanCan::AccessDenied,
-    redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à modifier une annonce" })
   end
 
   def destroy
@@ -54,18 +45,12 @@ class InternshipOffersController < ApplicationController
     @internship_offer.discard
     redirect_to(root_path,
                 flash: { success: 'Votre annonce a bien été supprimée' })
-  rescue CanCan::AccessDenied
-    redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à supprimer leurs annonces" })
   end
 
   def new
     authorize! :create, InternshipOffer
     @internship_offer = InternshipOffer.new
     find_selectable_content
-  rescue CanCan::AccessDenied
-    redirect_to(internship_offers_path,
-                flash: { danger: "Vous n'êtes pas autorisé à créer une annonce" })
   end
 
   private

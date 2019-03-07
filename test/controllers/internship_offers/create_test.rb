@@ -6,7 +6,7 @@ module InternshipOffers
 
     test 'POST #create as visitor redirects to internship_offers' do
       post internship_offers_path(params: {})
-      assert_redirected_to internship_offers_path
+      assert_redirected_to root_path
     end
 
     test 'POST #create as employer creates the post' do

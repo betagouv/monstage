@@ -1,4 +1,8 @@
 class ApplicationController < ActionController::Base
+  rescue_from(CanCan::AccessDenied) do |error|
+    redirect_to(root_path,
+                flash: { danger: "Vous n'êtes pas autorisé à effectuer cette action." })
+  end
 
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || resource.after_sign_in_path || super
