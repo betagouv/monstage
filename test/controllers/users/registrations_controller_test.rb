@@ -17,7 +17,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   test "create school manager with school and weeks" do
     school = create(:school)
 
-    post '/users', params: { user: { school_id: school.id }, internship_weeks:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]}
+    post '/users', params: { user: { type: 'SchoolManager', school_id: school.id }, internship_weeks:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]}
 
     assert_not_empty school.weeks
     assert_equal 2, school.weeks.count
