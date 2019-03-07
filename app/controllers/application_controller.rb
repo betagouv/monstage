@@ -1,11 +1,7 @@
 class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
-    if resource.instance_of?(SchoolManager) && (resource.school.blank? || resource.school.weeks.empty?)
-      account_path
-    else
-      super
-    end
+    stored_location_for(resource) || resource.after_sign_in_path || super
   end
 
   protected

@@ -11,4 +11,8 @@ class User < ApplicationRecord
   def to_s
     "logged in as : #{type}"
   end
+
+  def after_sign_in_path_for
+    raise 'not implemented'
+  end
 end
