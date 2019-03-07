@@ -1,6 +1,6 @@
 h1 Mon compte
 
-= form_for(current_user, as: :user, url: '/account', method: :patch) do |f|
+= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   .form-group
     = f.label :school_id, 'Mon collège', class: 'required'
     = f.select :school_id,
