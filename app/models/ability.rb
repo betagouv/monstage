@@ -24,7 +24,7 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can [:create, :new], ClassRoom
+    can [:create, :new, :edit, :update], ClassRoom
   end
   def employer_abilities(user:)
     can [:create, :read, :update, :destroy], InternshipOffer
