@@ -23,6 +23,6 @@ class SchoolsController < ApplicationController
   end
 
   def internship_weeks_params
-    params.require(:school).permit(week_ids: [])
+    params.require(:school).permit(:zipcode, :city, :street, coordinates: {}, week_ids: [])
   end
 end

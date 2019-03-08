@@ -9,6 +9,6 @@ class Student < User
   end
 
   def to_s
-    "#{super}, in school: #{school&.postal_code}"
+    "#{super}, in school: #{school&.zipcode}"
   end
 end

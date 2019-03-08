@@ -1,4 +1,4 @@
-<h1>Bienvenue romi</h1>
+<h1>Bienvenue <%= current_user.first_name %> <%= current_user.last_name %></h1>
 <div class="row">
   <% if can? :edit, User %>
     <%= render "edit_account_card" %>
