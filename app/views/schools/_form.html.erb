@@ -4,7 +4,7 @@
     <legend>Obligatoire</legend>
     <div class="form-group">
       <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', class: 'required' %>
-      <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "custom-select", required: true %>
+      <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
     </div>
   </fieldset>
 
@@ -12,7 +12,7 @@
     <legend>Donnée libres</legend>
     <div class="form-group">
       <%= f.label :name, 'Nom de votre établissement', class: 'required' %>
-      <%= f.text_field :name, class: 'form-control', required: true %>
+      <%= f.text_field :name, class: 'form-control col-lg-6', required: true %>
     </div>
   </fieldset>
 
@@ -20,17 +20,17 @@
     <legend>Donnée importée, non changeable pour le moment</legend>
     <div class="form-group">
       <%= f.label :code_uai, 'Code UAI', class: 'required' %>
-      <%= f.text_field :code_uai, class: 'form-control', required: true, disabled: true  %>
+      <%= f.text_field :code_uai, class: 'form-control col-lg-6', required: true, disabled: true  %>
     </div>
 
     <div class="form-group">
       <%= f.label :departement_name, 'Département', class: 'required' %>
-      <%= f.text_field :departement_name, class: 'form-control', required: true, disabled: true  %>
+      <%= f.text_field :departement_name, class: 'form-control col-lg-6', required: true, disabled: true  %>
     </div>
 
     <div class="form-group">
       <%= f.label :postal_code, 'Code Postal', class: 'required' %>
-      <%= f.text_field :postal_code, class: 'form-control', required: true, disabled: true  %>
+      <%= f.text_field :postal_code, class: 'form-control col-lg-6', required: true, disabled: true  %>
     </div>
   </fieldset>
   <%= f.submit 'Enregistrer', class: 'btn btn-primary' %>

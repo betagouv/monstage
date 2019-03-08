@@ -2,7 +2,7 @@
   <%= render "layouts/form_errors", object: @class_room %>
   <div class="form-group">
     <%= form.label :name, 'Nom de la classe', class: 'required' %>
-    <%= form.text_field :name, required: true, class: 'form-control' %>
+    <%= form.text_field :name, required: true, class: 'form-control col-lg-6' %>
   </div>
   <div class="actions"><%= form.submit 'Soumettre', class: 'btn btn-primary' %></div>
 <% end %>
