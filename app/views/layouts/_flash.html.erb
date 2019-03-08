@@ -6,7 +6,7 @@
         id="alert-<%= bootstrap_style %>"
         class="alert alert-<%= bootstrap_style %> col-12 my-3 alert-dismissible fade show"
         role="alert">
-        <%= flash[flash_kind] %>
+        <span id="alert-text"><%= flash[flash_kind] %></span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
