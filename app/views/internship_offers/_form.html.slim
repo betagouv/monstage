@@ -34,7 +34,7 @@
   fieldset
     legend Quand ?
     .form-group
-      = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
+      = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire", class: 'required'
       .form-check.form-group
         = check_box_tag 'all_year_long', false, false, class: 'form-check-input', data: {action: "change->internship-form#toggleWeeks"}
         = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
