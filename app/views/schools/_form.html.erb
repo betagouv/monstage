@@ -1,37 +1,61 @@
 <%= form_for @school do |f| %>
   <%= render "layouts/form_errors", object: @school %>
   <fieldset>
-    <legend>Obligatoire</legend>
     <div class="form-group">
       <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', class: 'required' %>
       <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
+      <small class="form-text text-muted">Les étudiants se veront proposé des stages sur ces dates uniquements.</small>
     </div>
   </fieldset>
 
   <fieldset>
-    <legend>Donnée libres</legend>
     <div class="form-group">
       <%= f.label :name, 'Nom de votre établissement', class: 'required' %>
       <%= f.text_field :name, class: 'form-control col-lg-6', required: true %>
     </div>
   </fieldset>
 
-  <fieldset>
-    <legend>Donnée importée, non changeable pour le moment</legend>
-    <div class="form-group">
-      <%= f.label :code_uai, 'Code UAI', class: 'required' %>
-      <%= f.text_field :code_uai, class: 'form-control col-lg-6', required: true, disabled: true  %>
-    </div>
+  <fieldset data-controller="algolia-place">
+    <div class="form-group d-none" data-target="algolia-place.autocompleteFormGroup" >
+      <%= f.label :autocomplete, "Adresse du collège", class: 'required' %>
+      <%= f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie",
+                                         value: @school.formatted_autocomplete_address,
+                                         required: true,
+                                         data: { target: 'algolia-place.autocompleteInput' } %>
 
-    <div class="form-group">
-      <%= f.label :departement_name, 'Département', class: 'required' %>
-      <%= f.text_field :departement_name, class: 'form-control col-lg-6', required: true, disabled: true  %>
+      <small class="form-text text-muted">Les étudiants se veront proposé des stages dans un rayon de 60km.</small>
+      <input type="hidden"
+             name="school[coordinates][latitude]"
+             value="<%= @school.coordinates&.lat %>"
+             data-target="algolia-place.latitudeInput" />
+      <input type="hidden"
+             name="school[coordinates][longitude]"
+             value="<%= @school.coordinates&.lon %>"
+             data-target="algolia-place.longitudeInput" />
     </div>
-
     <div class="form-group">
-      <%= f.label :postal_code, 'Code Postal', class: 'required' %>
-      <%= f.text_field :postal_code, class: 'form-control col-lg-6', required: true, disabled: true  %>
+      <div class="form-row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :street, 'Rue', class: 'required' %>
+            <%= f.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'} %>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+            <%= f.label :city, 'Ville', class: 'required' %>
+            <%= f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'} %>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <%= f.label :zipcode, 'Code postal', class: 'required' %>
+            <%= f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'} %>
+          </div>
+        </div>
+      </div>
     </div>
   </fieldset>
+
   <%= f.submit 'Enregistrer', class: 'btn btn-primary' %>
 <% end %>

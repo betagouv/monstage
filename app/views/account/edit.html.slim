@@ -6,7 +6,7 @@ h1 Mon compte
   .form-group
     = f.label :school_id, 'Mon collège', class: 'required'
     = f.select :school_id,
-      grouped_options_for_select(School.grouped_by_short_postal_code,  current_user.school_id),
+      grouped_options_for_select(School.grouped_by_short_zipcode,  current_user.school_id),
       {},
       class: 'form-control col-lg-6',
       required: true

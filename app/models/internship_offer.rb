@@ -11,7 +11,6 @@ class InternshipOffer < ApplicationRecord
             :employer_street,
             :employer_zipcode,
             :employer_city,
-            :coordinates,
             presence: true
 
   validates :can_be_applied_for, inclusion: { in: [true, false] }
@@ -40,18 +39,21 @@ class InternshipOffer < ApplicationRecord
     merge(user.targeted_internship_offers)
   }
 
-  attr_reader :autocomplete
+
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
   end
 
-  def coordinates=(coordinates)
-    super(geo_point_factory(latitude: coordinates[:latitude],
-                            longitude: coordinates[:longitude]))
-  end
-
   def is_individual?
     max_candidates <= 1
+  end
+
+  def formatted_autocomplete_address
+    [
+      employer_street,
+      employer_city,
+      employer_zipcode
+    ].compact.uniq.join(', ')
   end
 end

@@ -1,24 +1,28 @@
 class School < ApplicationRecord
+  include Nearbyable
   has_many :students, dependent: :nullify
   has_many :class_rooms, dependent: :destroy
 
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
 
-  def coordinates=(coordinates)
-    super(geo_point_factory(latitude: coordinates[:latitude],
-                            longitude: coordinates[:longitude]))
-  end
-
   def select_text_method
-    "#{name} - #{city} - #{postal_code}"
+    "#{name} - #{city} - #{zipcode}"
   end
 
-  def self.grouped_by_short_postal_code
-    School.all.order(:postal_code).inject({}) do |acc, school|
-      short_postal_code = "#{school.postal_code[0..1]} - #{school.departement_name}" rescue "?"
-      acc[short_postal_code] = [] unless acc[short_postal_code]
-      acc[short_postal_code].push([school.select_text_method, school.id ])
+  def formatted_autocomplete_address
+    [
+      street,
+      city,
+      zipcode
+    ].compact.uniq.join(', ')
+  end
+
+  def self.grouped_by_short_zipcode
+    School.all.order(:zipcode).inject({}) do |acc, school|
+      short_zipcode = "#{school.zipcode[0..1]} - #{school.departement_name}" rescue "?"
+      acc[short_zipcode] = [] unless acc[short_zipcode]
+      acc[short_zipcode].push([school.select_text_method, school.id ])
       acc
     end
   end

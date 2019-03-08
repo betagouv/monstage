@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_07_102151) do
+ActiveRecord::Schema.define(version: 2019_03_08_164116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,9 +75,10 @@ ActiveRecord::Schema.define(version: 2019_03_07_102151) do
     t.string "name"
     t.string "city"
     t.string "departement_name"
-    t.string "postal_code"
+    t.string "zipcode"
     t.string "code_uai"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.string "street"
     t.index ["coordinates"], name: "index_schools_on_coordinates", using: :gist
   end
 

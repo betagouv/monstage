@@ -14,7 +14,8 @@ FactoryBot.define do
     employer_zipcode { '75001' }
     employer_city { 'Paris' }
     employer_name { 'Octo' }
-    coordinates { { latitude: 48, longitude: 0 }  }
+    coordinates { Coordinates.paris }
     weeks { [ Week.first ] }
+
   end
 end

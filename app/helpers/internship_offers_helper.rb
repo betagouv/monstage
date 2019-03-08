@@ -1,12 +1,4 @@
 module InternshipOffersHelper
-  def format_autocomplete_address(internship_offer)
-    [
-      internship_offer.employer_street,
-      internship_offer.employer_city,
-      internship_offer.employer_zipcode
-    ].compact.uniq.join(', ')
-  end
-
   def internship_sectors_options_for_default
     "-- Veuillez sélectionner un domaine --"
   end
