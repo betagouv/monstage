@@ -1,6 +1,10 @@
 class Week < ApplicationRecord
-  has_many :internship_offer_weeks
+  has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_offers, through: :internship_offer_weeks
+
+  has_many :school_internship_weeks, dependent: :destroy
+  has_many :schools, through: :school_internship_weeks
+
   scope :from_date_to_date_for_year, -> (from, to, year) {
     where(year: year).where("number BETWEEN ? AND ?", from.cweek, to.cweek)
   }
