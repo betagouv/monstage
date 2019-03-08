@@ -2,7 +2,7 @@ class AccountController < ApplicationController
   before_action :authenticate_user!
 
   def show
-    authorize! :show, User
+    authorize! :show, :account
   end
 
   def edit

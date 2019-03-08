@@ -15,6 +15,13 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_template "account/_edit_account_card"
   end
 
+  test "GET index as Employer" do
+    sign_in(create(:employer))
+    get account_path
+
+    assert_response :success
+  end
+
   test "GET index as SchoolManager" do
     sign_in(create(:school_manager))
     get account_path
