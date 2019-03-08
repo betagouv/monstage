@@ -8,16 +8,16 @@ h1 Mon compte
     = f.select :school_id,
       grouped_options_for_select(School.grouped_by_short_postal_code,  current_user.school_id),
       {},
-      class: 'custom-select',
+      class: 'form-control col-lg-6',
       required: true
 
   .form-group
     = f.label :first_name, 'Mon Prénom', class: 'required'
-    = f.text_field :first_name, class: 'form-control',
+    = f.text_field :first_name, class: 'form-control col-lg-6',
       required: true
   .form-group
     = f.label :last_name, 'Mon Nom', class: 'required'
-    = f.text_field :last_name, class: 'form-control',
+    = f.text_field :last_name, class: 'form-control col-lg-6',
       required: true
 
   = f.submit 'Enregistrer', class: 'btn btn-primary'
