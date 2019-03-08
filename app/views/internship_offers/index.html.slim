@@ -9,7 +9,7 @@
 - if @internship_offers.blank?
   p[style='color: gray'] Aucune offre disponible
 - else
-  .div[data-controller="internship-index"]
+  div[data-controller="internship-index"]
     - if can? :apply, InternshipOffer
       .filter-section.p-3
         fieldset
