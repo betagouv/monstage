@@ -15,3 +15,7 @@ h1 Mon compte
       = select_tag :internship_weeks, options_from_collection_for_select(@current_weeks, :id, :select_text_method, selected: current_user.school.blank? ? nil : current_user.school.weeks.pluck(:id)), multiple: true, class: "custom-select", required: true
 
   = f.submit 'Enregistrer', class: 'btn btn-primary'
+
+
+- if current_user.instance_of? SchoolManager
+  = link_to "Veuillez renseigner les classes du collège", new_class_room_path
