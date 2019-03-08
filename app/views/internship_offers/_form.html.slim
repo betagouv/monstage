@@ -12,7 +12,7 @@
 
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
-    = form.text_field :title, class: "form-control", required: true
+    = form.text_field :title, class: "form-control col-lg-6", required: true
     small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
 
   .form-group
@@ -26,70 +26,70 @@
         li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
         li Donnez 3 qualités requises (aimer bricoler, être bavard, aimez écrire)
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
-    = form.text_area :description, class: "form-control", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+    = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
   .form-group
     = form.label :sector, "Secteur d'activité", class: 'required'
-    = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "custom-select"
+    = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
 
   fieldset
     legend Quand ?
     .form-group
       = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire", class: 'required'
-      .form-check.form-group
-        = check_box_tag 'all_year_long', false, false, class: 'form-check-input', data: {action: "change->internship-form#toggleWeeks"}
-        = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'form-check-label'
-      = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "custom-select", required: true, data: {target: 'internship-form.selectWeeks'}
+      .custom-control.custom-checkbox.mb-1
+        = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', data: {action: "change->internship-form#toggleWeeks"}
+        = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'custom-control-label'
+      = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true, data: {target: 'internship-form.selectWeeks'}
 
   fieldset
     legend Quoi ?
     .form-group
       label.required Type de stage
-      .form-check
+      .custom-control.custom-radio
         = form.radio_button :can_be_applied_for,
                             true,
-                            class: 'form-check-input',
+                            class: 'custom-control-input',
                             data: { action: "change->internship-form#toggleCanBeAppliedSection" }
         = form.label :can_be_applied_for_true,
                      'Individuel',
-                     class: 'form-check-label'
-      .form-check
+                     class: 'custom-control-label'
+      .custom-control.custom-radio
         = form.radio_button :can_be_applied_for,
                             false,
-                            class: 'form-check-input',
+                            class: 'custom-control-input',
                             data: { action: "change->internship-form#toggleCanBeAppliedSection" }
         = form.label :can_be_applied_for_false,
                      'Collectif',
-                     class: 'form-check-label'
+                     class: 'custom-control-label'
     .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
       = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
-      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control'
+      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control col-lg-6'
       small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
     .form-group
       = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
-      = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control', required: true
+      = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
       small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
 
   fieldset
     legend Tuteur
     .form-group
       = form.label :tutor_name, 'Prénom et nom', class: 'required'
-      = form.text_field :tutor_name, class: 'form-control', required: true
+      = form.text_field :tutor_name, class: 'form-control col-lg-6', required: true
     .form-group
       = form.label :tutor_email, 'Adresse électronique', class: 'required'
-      = form.email_field :tutor_email, class: 'form-control', required: true
+      = form.email_field :tutor_email, class: 'form-control col-lg-6', required: true
     .form-group
       = form.label :tutor_phone, 'Téléphone', class: 'required'
-      = form.phone_field :tutor_phone, class: 'form-control', required: true
+      = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
       small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
 
   fieldset
     legend L'entreprise
     .form-group
       = form.label :employer_name, "Nom de l'entreprise", class: 'required'
-      = form.text_field :employer_name, class: 'form-control', required: true
+      = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
     .form-group
       = form.label :employer_website, 'Site web'
-      = form.url_field :employer_website, class: 'form-control'
+      = form.url_field :employer_website, class: 'form-control col-lg-6'
 
     .form-group.d-none data={target: 'internship-form.autocompleteFormGroup'}
       = form.label :autocomplete, "Adresse du lieu où se déroule le stage", class: 'required'
@@ -112,18 +112,18 @@
             = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship-form.employerZipcode'}
     label.required Secteur
     .form-group
-      .form-check
-        = form.radio_button :is_public, true, class: 'form-check-input', required: true, checked: true
-        = form.label :is_public_true, 'Public', class: 'form-check-label'
-      .form-check
-        = form.radio_button :is_public, false, class: 'form-check-input', required: true
-        = form.label :is_public_false, 'Privé', class: 'form-check-label'
+      .custom-control.custom-radio
+        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: true
+        = form.label :is_public_true, 'Public', class: 'custom-control-label'
+      .custom-control.custom-radio
+        = form.radio_button :is_public, false, class: 'custom-control-input', required: true
+        = form.label :is_public_false, 'Privé', class: 'custom-control-label'
     .form-group
       = form.label :group_name, "Groupe"
-      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "custom-select"
+      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "form-control col-lg-6"
     .form-group
       = form.label :operator_names, "Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs"
-      = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "custom-select", multiple: true
+      = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
 
 
   = form.submit 'Soumettre', class: 'btn btn-primary'

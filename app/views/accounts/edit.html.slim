@@ -6,7 +6,7 @@ h1 Mon compte
     = f.select :school_id,
       grouped_options_for_select(School.grouped_by_short_postal_code, selected_key: current_user.school_id),
       {},
-      class: 'custom-select',
+      class: 'form-control col-lg-6',
       required: true
 
   - if current_user.instance_of? SchoolManager
