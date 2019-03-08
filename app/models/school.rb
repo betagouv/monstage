@@ -2,7 +2,7 @@ class School < ApplicationRecord
   has_many :students
   has_many :class_rooms
 
-  has_many :school_internship_weeks
+  has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
 
   def coordinates=(coordinates)
