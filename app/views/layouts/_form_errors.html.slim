@@ -1,0 +1,7 @@
+- if object.errors.any?
+  .alert.alert-danger
+    p.mb-0
+      strong= "Veuillez corriger les erreures suivantes :"
+    ul.mb-0
+      - object.errors.full_messages.each do |message|
+        li= message
