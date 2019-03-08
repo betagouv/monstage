@@ -3,12 +3,15 @@ Rails.application.routes.draw do
       registrations: 'users/registrations'
   }
   resources :internship_offers
-  resources :class_rooms, only: [:new, :create, :edit, :update]
 
-  resources :schools, only: [:edit, :update]
+
+  resources :schools, only: [:edit, :update] do
+    resources :class_rooms, only: [:new, :create, :edit, :update]
+  end
+
+  get 'account', to: 'account#show'
   get 'account/edit', to: 'account#edit'
   patch 'account', to: 'account#update'
-  get 'account', to: 'account#show'
 
   root to: "internship_offers#index"
 end

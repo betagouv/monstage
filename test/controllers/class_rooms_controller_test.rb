@@ -9,7 +9,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     class_room_name = SecureRandom.hex
     class_room = create(:class_room, name: class_room_name, school: school)
     sign_in(school_manager) do
-      get new_class_room_path
+      get new_school_class_room_path(school.to_param)
       assert_select '.class-room-name', text: class_room_name
       assert_response :success
     end
@@ -18,7 +18,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
   test 'GET new as Student responds with fail' do
     student = create(:student)
     sign_in(student) do
-      get new_class_room_path
+      get new_school_class_room_path(school.to_param)
       assert_redirected_to root_path
     end
   end
@@ -29,7 +29,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     sign_in(school_manager) do
       class_room_name = SecureRandom.hex
       assert_difference 'ClassRoom.count' do
-        post class_rooms_path, params: { class_room: { name: class_room_name } }
+        post school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
         assert_redirected_to new_class_room_path
       end
       assert_equal 1, ClassRoom.where(name: class_room_name).count
@@ -39,7 +39,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
   test 'POST create as Student responds with fail' do
     student = create(:student)
     sign_in(student) do
-      post class_rooms_path, params: { class_room: {name: 'test'} }
+      post school_class_rooms_path(school.to_param), params: { class_room: {name: 'test'} }
       assert_redirected_to root_path
     end
   end
@@ -50,7 +50,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     class_room = create(:class_room, school: school)
 
     sign_in(school_manager) do
-      get edit_class_room_path(class_room)
+      get edit_school_class_room_path(school.to_param, class_room.to_param)
       assert_response :success
     end
   end
