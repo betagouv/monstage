@@ -1,0 +1,12 @@
+<h1>Bienvenue romi</h1>
+<div class="row">
+  <% if can? :edit, User %>
+    <%= render "school_card" %>
+  <% end %>
+  <% if can? :edit, SchoolInternshipWeek %>
+    <%= render "school_internship_week_card" %>
+  <% end %>
+  <% if can? :new, ClassRoom %>
+    <%= render "class_room_card" %>
+  <% end %>
+</div>
