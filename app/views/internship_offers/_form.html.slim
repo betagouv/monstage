@@ -75,7 +75,7 @@
       = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
       small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
 
-  fieldset
+  fieldset data={controller: 'algolia-place'}
     legend L'entreprise
     .form-group
       = form.label :employer_name, "Nom de l'entreprise", class: 'required'
@@ -84,25 +84,25 @@
       = form.label :employer_website, 'Site web'
       = form.url_field :employer_website, class: 'form-control col-lg-6'
 
-    .form-group.d-none data={target: 'internship-form.autocompleteFormGroup'}
+    .form-group.d-none data={target: 'algolia-place.autocompleteFormGroup'}
       = form.label :autocomplete, "Adresse du lieu où se déroule le stage", class: 'required'
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: format_autocomplete_address(@internship_offer), required: true, data: {target: 'internship-form.autocompleteInput'}
-      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'internship-form.latitudeInput'})
-      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'internship-form.longitudeInput'})
+      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: format_autocomplete_address(@internship_offer), required: true, data: {target: 'algolia-place.autocompleteInput'}
+      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
     .form-group
       .form-row
         .col-sm-6
           .form-group
             = form.label :employer_street, 'Rue', class: 'required'
-            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'internship-form.employerStreet'}
+            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
         .col-sm-4
           .form-group
             = form.label :employer_city, 'Ville', class: 'required'
-            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'internship-form.employerCity'}
+            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
         .col-sm-2
           .form-group
             = form.label :employer_zipcode, 'Code postal', class: 'required'
-            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'internship-form.employerZipcode'}
+            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
     label.required Secteur
     .form-group
       .custom-control.custom-radio

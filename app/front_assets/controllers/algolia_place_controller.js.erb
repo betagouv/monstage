@@ -2,39 +2,20 @@ import { Controller } from "stimulus"
 import places from 'places.js';
 
 export default class extends Controller {
-  static targets = [ "maxCandidatesGroup",
-                     "selectWeeks",
-                     "autocompleteFormGroup",
+  static targets = [ "autocompleteFormGroup",
                      "autocompleteInput",
                      "longitudeInput",
                      "latitudeInput",
-                     "employerStreet",
-                     "employerCity",
-                     "employerZipcode" ]
-
-  // show/hide group internship custom controls
-  toggleCanBeAppliedSection(event) {
-    $(this.maxCandidatesGroupTarget).toggleClass('d-none');
-  }
-
-  // show/hide div next of element
-  toggleClosestHelpSign(event) {
-    $(event.target).next().toggleClass('d-none');
-  }
-
-  // toggle all weeks options
-  toggleWeeks(event) {
-    $(this.selectWeeksTarget).find("option").each((i, el) => {
-      $(el).prop('selected', $(event.target).prop('checked'))
-    })
-  }
+                     "streetInput",
+                     "cityInput",
+                     "zipcodeInput" ]
 
   onAlgoliaSearchResultSelected = (selection) => {
     const suggestion = selection.suggestion;
 
-    $(this.employerStreetTarget).val(suggestion.name);
-    $(this.employerCityTarget).val(suggestion.city);
-    $(this.employerZipcodeTarget).val(suggestion.postcode);
+    $(this.streetInputTarget).val(suggestion.name);
+    $(this.cityInputTarget).val(suggestion.city);
+    $(this.zipcodeInputTarget).val(suggestion.postcode);
     $(this.longitudeInputTarget).val(suggestion.latlng.lng);
     $(this.latitudeInputTarget).val(suggestion.latlng.lat);
   }
@@ -71,9 +52,9 @@ export default class extends Controller {
 
     // when everything is ok ; show autocompleteTarget and makes default input readonly
     $(this.autocompleteFormGroupTarget).removeClass('d-none')
-    $(this.employerStreetTarget).prop("readonly", true)
-    $(this.employerCityTarget).prop("readonly", true)
-    $(this.employerZipcodeTarget).prop("readonly", true)
+    $(this.streetInputTarget).prop("readonly", true)
+    $(this.cityInputTarget).prop("readonly", true)
+    $(this.zipcodeInputTarget).prop("readonly", true)
   }
 
   disconnect() {
