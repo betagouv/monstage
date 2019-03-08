@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
   has_many :internship_offers
 
+  validates :first_name, :last_name, presence: true
+
   def targeted_internship_offers
     InternshipOffer.all
   end
