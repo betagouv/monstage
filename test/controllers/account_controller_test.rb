@@ -12,16 +12,16 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     sign_in(create(:student))
     get account_path
 
-    assert_template "account/_school_card"
+    assert_template "account/_edit_account_card"
   end
 
   test "GET index as SchoolManager" do
     sign_in(create(:school_manager))
     get account_path
 
-    assert_template "account/_school_card"
-    assert_template "account/_school_internship_week_card"
-    assert_template "account/_class_room_card"
+    assert_template "account/_edit_account_card"
+    assert_template "account/_edit_school_card"
+    assert_template "account/_edit_school_class_rooms_card"
   end
 
   test "GET edit not logged redirects to sign in" do

@@ -1,7 +1,4 @@
 <h2>Liste des classes existantes :</h2>
 <% @school.class_rooms.reject(&:new_record?).each do |class_room| %>
-  <div class="class-room-name"><%= class_room.name %></div>
-  <%= link_to edit_class_room_path(class_room) do %>
-    <i class="fas fa-pen"></i>
-  <% end %>
+
 <% end %>
