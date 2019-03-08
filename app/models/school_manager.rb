@@ -3,6 +3,6 @@ class SchoolManager < User
   belongs_to :school, optional: true
 
   def after_sign_in_path
-    return account_path if resource.school.blank? || resource.school.weeks.empty?
+    return Rails.application.routes.url_helpers.account_path if school.blank? || school.weeks.empty?
   end
 end
