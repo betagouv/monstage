@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :internship_offers
   resources :class_rooms, only: [:new, :create, :edit, :update]
 
+  resources :schools, only: [:edit, :update]
   get 'account/edit', to: 'account#edit'
   patch 'account', to: 'account#update'
   get 'account', to: 'account#show'
