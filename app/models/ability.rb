@@ -28,8 +28,8 @@ class Ability
     can [:create, :new, :edit, :update], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
-    can :edit, SchoolInternshipWeek
   end
+
   def employer_abilities(user:)
     can [:create, :read, :update, :destroy], InternshipOffer
   end
