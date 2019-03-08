@@ -21,10 +21,13 @@ class Ability
   def student_abilities(user:)
     can :read, InternshipOffer
     can :apply, InternshipOffer
+    can :edit, User
   end
 
   def school_manager_abilities(user:)
     can [:create, :new, :edit, :update], ClassRoom
+    can :edit, User
+    can :edit, SchoolInternshipWeek
   end
   def employer_abilities(user:)
     can [:create, :read, :update, :destroy], InternshipOffer

@@ -3,23 +3,19 @@ require 'test_helper'
 class AccountsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "GET #edit render list of schools" do
-    sign_in(create(:school_manager))
-    create(:school)
-
+  test "GET index as Student" do
+    sign_in(create(:student))
     get account_path
 
-    assert_select 'select[name="user[school_id]"] option', School.count + 1
+    assert_template "accounts/_school_card"
   end
 
-  test "create school manager with school and weeks" do
+  test "GET index as SchoolManager" do
     sign_in(create(:school_manager))
+    get account_path
 
-    school = create(:school)
-
-    patch account_path, params: { user: { type: 'SchoolManager', school_id: school.id }, internship_weeks:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]}
-
-    assert_not_empty school.weeks
-    assert_equal 2, school.weeks.count
+    assert_template "accounts/_school_card"
+    assert_template "accounts/_school_internship_week_card"
+    assert_template "accounts/_class_room_card"
   end
 end
