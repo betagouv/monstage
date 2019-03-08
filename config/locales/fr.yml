@@ -4,6 +4,9 @@ fr:
       internship_offer:
           can_be_applied_for: "Type de stage"
           is_public: Secteur
+      user:
+        first_name: Prénom
+        last_name: Nom
 
     errors:
       messages:
@@ -18,12 +21,16 @@ fr:
         user:
           attributes:
             email:
-              blank: "ne doit pas être vide"
-              taken: "déjà pris"
+              blank: obligatoire
+              taken: déjà pris
             password:
-              too_short: "trop court"
+              too_short: trop court
             password_confirmation:
-              confirmation: "invalide"
+              confirmation: invalide
+            first_name:
+              blank: obligatoire
+            last_name:
+              blank: obligatoire
         school_manager:
           attributes:
             email:

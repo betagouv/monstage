@@ -4,6 +4,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
   has_many :internship_offers
 
+  validates :first_name, :last_name, presence: true
+
   def targeted_internship_offers
     InternshipOffer.all
   end
@@ -12,7 +14,11 @@ class User < ApplicationRecord
     "logged in as : #{type}"
   end
 
-  def after_sign_in_path_for
-    raise 'not implemented'
+  def name
+    "#{first_name} #{last_name}"
+  end
+
+  def after_sign_in_path
+    nil # I know you don't like it Martin but in this cas it makes sense
   end
 end
