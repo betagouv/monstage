@@ -10,7 +10,7 @@
        </ul>
       </p>
       <% if current_user&.school %>
-        <%= link_to "Changer les semaines de stages", edit_school_path(current_user.school), class: 'btn btn-primary' %>
+        <%= link_to "Modifier", edit_school_path(current_user.school), class: 'btn btn-primary' %>
       <% else %>
         Choisir un collège
       <% end %>
