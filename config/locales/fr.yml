@@ -18,6 +18,8 @@ fr:
               blank: "doit être soit Individuel, soit Collectif"
             is_public:
               blank: "doit être soit Public, soit Privé"
+            description:
+              too_short: minimum 275 caractères
         user:
           attributes:
             email:
