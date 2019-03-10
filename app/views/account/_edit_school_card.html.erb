@@ -1,19 +1,17 @@
-<div class="col-4">
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">Semaines de stage</h5>
-      <p class="card-text">
-       <ul>
-          <% Array(current_user&.school&.weeks).each do |week| %>
-          <li><%= week.select_text_method %></li>
-          <% end %>
-       </ul>
-      </p>
-      <% if current_user&.school %>
-        <%= link_to "Modifier", edit_school_path(current_user.school), class: 'btn btn-primary' %>
-      <% else %>
-        Choisir un collège
-      <% end %>
-    </div>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Semaines de stage</h5>
+    <p class="card-text">
+     <ul>
+        <% Array(current_user&.school&.weeks).each do |week| %>
+        <li><%= week.select_text_method %></li>
+        <% end %>
+     </ul>
+    </p>
+    <% if current_user&.school %>
+      <%= link_to "Modifier", edit_school_path(current_user.school), class: 'btn btn-primary' %>
+    <% else %>
+      Choisir un collège
+    <% end %>
   </div>
 </div>
