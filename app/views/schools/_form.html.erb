@@ -4,7 +4,7 @@
     <div class="form-group">
       <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', class: 'required' %>
       <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
-      <small class="form-text text-muted">Les étudiants se veront proposé des stages sur ces dates uniquements.</small>
+      <small class="form-text text-muted">Les étudiants se verront proposer des stages que sur ces dates.</small>
     </div>
   </fieldset>
 
@@ -23,7 +23,7 @@
                                          required: true,
                                          data: { target: 'algolia-place.autocompleteInput' } %>
 
-      <small class="form-text text-muted">Les étudiants se veront proposé des stages dans un rayon de 60km.</small>
+      <small class="form-text text-muted">Les étudiants se verront proposer des stages dans un rayon de 60km de votre ville.</small>
       <input type="hidden"
              name="school[coordinates][latitude]"
              value="<%= @school.coordinates&.lat %>"

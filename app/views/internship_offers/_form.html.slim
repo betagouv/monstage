@@ -30,7 +30,7 @@
       = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire", class: 'required'
       .custom-control.custom-checkbox.mb-1
         = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', data: {action: "change->internship-form#toggleWeeks"}
-        = label_tag 'all_year_long', "Tout sélectionner / dé sélectionner", class: 'custom-control-label'
+        = label_tag 'all_year_long', "Tout sélectionner / désélectionner", class: 'custom-control-label'
       = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true, data: {target: 'internship-form.selectWeeks'}
 
   fieldset
