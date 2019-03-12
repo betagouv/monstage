@@ -9,6 +9,9 @@
   <div class="form-group">
     <%= f.label :password, class: 'required' %>
     <%= f.password_field :password, autocomplete: "current-password", class: 'form-control', required: true %>
+    <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+      <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted' %>
+    <% end %>
   </div>
 
   <% if devise_mapping.rememberable? %>
