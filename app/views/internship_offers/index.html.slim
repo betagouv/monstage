@@ -21,7 +21,7 @@
         - @internship_offers.each do |internship_offer|
           tr.offer-row.clickable-row[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-action="click->internship-index#visit" data-sector="#{internship_offer.sector}" data-target="internship-index.offer"]
             td
-              h3 = internship_offer.title
+              h3= internship_offer.title
               p.text-muted = internship_offer.employer_city
               - unless internship_offer.available_all_year?
                 p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}

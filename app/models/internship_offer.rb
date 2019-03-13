@@ -36,11 +36,9 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer
 
   scope :for_user, -> (user:) {
-    return all unless user # fuck it ; should have a User::Visitor type
-    merge(user.targeted_internship_offers)
+    return merge(all) unless user # fuck it ; should have a User::Visitor type
+    merge(user.class.targeted_internship_offers(user: user))
   }
-
-
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?

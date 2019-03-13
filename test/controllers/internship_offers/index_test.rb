@@ -53,4 +53,15 @@ class IndexTest < ActionDispatch::IntegrationTest
       assert_select ".offer-row", 0
     end
   end
+
+  test 'GET #index as employer returns his internship_offers' do
+    employer = create(:employer)
+    included_internship_offer = create(:internship_offer, employer: employer, title: 'Hellow-me')
+    excluded_internship_offer = create(:internship_offer, title: 'Not hellow-me')
+    sign_in(employer)
+    get internship_offers_path
+    assert_response :success
+    assert_select 'h3', text: included_internship_offer.title, count: 1
+    assert_select 'h3', text: excluded_internship_offer.title, count: 0
+  end
 end

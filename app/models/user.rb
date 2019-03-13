@@ -2,13 +2,8 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
-  has_many :internship_offers
 
   validates :first_name, :last_name, presence: true
-
-  def targeted_internship_offers
-    InternshipOffer.all
-  end
 
   def to_s
     "logged in as : #{type}[##{id}]"
