@@ -1,18 +1,22 @@
 <h1>Mon compte</h1>
 <div class="row">
-  <% if can? :edit, User %>
-    <div class="col-sm-6 col-md-4">
-      <%= render "edit_account_card" %>
-    </div>
-  <% end %>
-  <% if can? :edit, School %>
-    <div class="col-sm-6 col-md-4">
-      <%= render "edit_school_card" %>
-    </div>
-  <% end %>
-  <% if can? :new, ClassRoom %>
-    <div class="col-sm-6 col-md-4">
-      <%= render "edit_school_class_rooms_card" %>
-    </div>
+  <% if current_user.is_a?(God) %>
+    <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
+  <% else %>
+    <% if can? :edit, User %>
+      <div class="col-sm-6 col-md-4">
+        <%= render "edit_account_card" %>
+      </div>
+    <% end %>
+    <% if can?(:edit, School) %>
+      <div class="col-sm-6 col-md-4">
+        <%= render "edit_school_card" %>
+      </div>
+    <% end %>
+    <% if can? :new, ClassRoom %>
+      <div class="col-sm-6 col-md-4">
+        <%= render "edit_school_class_rooms_card" %>
+      </div>
+    <% end %>
   <% end %>
 </div>

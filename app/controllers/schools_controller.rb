@@ -1,7 +1,12 @@
 class SchoolsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_school
+  before_action :set_school, only: [:edit, :update]
   before_action :find_selectable_weeks, only: [:edit, :update]
+
+  def index
+    authorize! :index, School
+    @schools = School.all.order(zipcode: :desc)
+  end
 
   def edit
     authorize! :edit, School
