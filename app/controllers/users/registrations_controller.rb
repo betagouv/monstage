@@ -4,10 +4,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-  # GET /resource/sign_up
-  # def new
-  #   super
+
+  # GET /users/choose_profile
+  # def choose_profile
+  #
   # end
+
+  # GET /resource/sign_up
+  def new
+    if params[:as].blank?
+      redirect_to users_choose_profile_path
+    else
+      super do |resource|
+        resource.type = params[:as]
+      end
+    end
+  end
 
   # POST /resource
   # def create

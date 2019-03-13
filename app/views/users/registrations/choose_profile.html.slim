@@ -1,0 +1,12 @@
+h1 Créer mon compte
+
+= link_to "J'ai déjà un compte", new_user_session_path
+
+.mt-3
+  = link_to "Je suis élève de 3e", new_user_registration_path(as: 'Student'), class: 'btn btn-primary'
+
+.mt-3
+  = link_to "Je veux déposer une offre", new_user_registration_path(as: 'Employer'), class: 'btn btn-primary'
+
+.mt-3
+  = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-primary'
