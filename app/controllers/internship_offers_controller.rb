@@ -1,4 +1,5 @@
 class InternshipOffersController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
 
   def index
     @internship_offers = InternshipOffer.kept.for_user(user: current_user)
@@ -22,14 +23,14 @@ class InternshipOffersController < ApplicationController
   end
 
   def edit
-    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+    authorize! :edit, @internship_offer
     find_selectable_content
   end
 
   def update
-    authorize! :update, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+    authorize! :update, @internship_offer
     @internship_offer.update!(internship_offer_params)
     redirect_to(@internship_offer,
                 flash: { success: 'Votre annonce a bien été modifiée'})
@@ -40,8 +41,8 @@ class InternshipOffersController < ApplicationController
   end
 
   def destroy
-    authorize! :destroy, InternshipOffer
     @internship_offer = InternshipOffer.find(params[:id])
+    authorize! :destroy, @internship_offer
     @internship_offer.discard
     redirect_to(root_path,
                 flash: { success: 'Votre annonce a bien été supprimée' })
@@ -64,6 +65,7 @@ class InternshipOffersController < ApplicationController
         .permit(:title, :description, :sector, :can_be_applied_for, :week_day_start, :week_day_end, :excluded_weeks,
                 :max_candidates, :max_weeks, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
                 :employer_name, :employer_street, :employer_zipcode, :employer_city, :is_public, :group_name,
+                :employer_id,
                 operator_names: [], coordinates: {}, week_ids: [])
   end
 end

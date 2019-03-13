@@ -33,6 +33,7 @@ class InternshipOffer < ApplicationRecord
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
+  belongs_to :employer
 
   scope :for_user, -> (user:) {
     return all unless user # fuck it ; should have a User::Visitor type
