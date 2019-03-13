@@ -1,9 +1,9 @@
 require 'test_helper'
 
 class RegistrationsControllerTest < ActionDispatch::IntegrationTest
-  test 'GET new responds with success' do
+  test 'GET new redirects if no type is chosen' do
     get new_user_registration_path
-    assert_response :success
+    assert_redirected_to users_choose_profile_path
   end
 
   test 'POST create School Manager responds with success' do
