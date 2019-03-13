@@ -1,31 +1,23 @@
-- if can? :create, InternshipOffer
-  .clearfix
-    h2.float-left Offres de stage
-    = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
-- else
-  h2 #{@internship_offers.count} offres de stage
-
+.row
+  .col-12
+    - if can? :create, InternshipOffer
+      .clearfix
+        h2.float-left Offres de stage
+        = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
+    - else
+      h2 #{@internship_offers.count} #{'offre'.pluralize(@internship_offers.count)} de stage
 
 - if @internship_offers.blank?
-  p[style='color: gray'] Aucune offre disponible
+  .row
+    p.col-12[style='color: gray'] Aucune offre disponible
 - else
-  div[data-controller="internship-index"]
-    - if can? :apply, InternshipOffer
-      .filter-section.p-3
-        fieldset
-          legend Domaine d'activité
-          = select_tag "Domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', multiple: true, data: { action: 'internship-index#filterOffersBySectors'} }
+  .controller-container[data-controller="internship-index"]
+    .row.bg-light
+      .col-12
+        - if can? :apply, InternshipOffer
+          .filter-section.py-3
+            fieldset
+              legend Domaine d'activité
+              = select_tag "Domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', multiple: true, data: { action: 'internship-index#filterOffersBySectors'} }
 
-    table.table.table-hover
-      tbody
-        - @internship_offers.each do |internship_offer|
-          tr.offer-row.clickable-row[
-            data-internship-index-href="#{internship_offer_url(internship_offer)}"
-            data-action="click->internship-index#visit" data-sector="#{internship_offer.sector}" data-target="internship-index.offer"
-            data-test-id="#{internship_offer.id}"
-          ]
-            td
-              h3= internship_offer.title
-              p.text-muted = internship_offer.employer_city
-              - unless internship_offer.available_all_year?
-                p Disponible du #{internship_offer.week_day_start.beginning_of_week} au #{internship_offer.week_day_end.end_of_week}
+    .row= render partial: "internship_offer", collection: @internship_offers

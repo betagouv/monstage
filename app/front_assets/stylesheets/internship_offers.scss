@@ -1,3 +1,8 @@
-.filter-section {
-  background-color: whitesmoke;
+.internship-item{
+  border-bottom: 1px solid $light;
+
+  &:hover{
+    text-decoration: none;
+    background-color: $light;
+  }
 }

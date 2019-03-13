@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
     <%= stylesheet_pack_tag 'styles' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'  %>
   </head>
 
   <body>
     <div class="container pb-3">
-      <%= render 'layouts/navbar' %>
+      <div class="row">
+        <div class="col-12"><%= render 'layouts/navbar' %></div>
+
+      </div>
       <%= render 'layouts/flash' %>
       <%= yield %>
     </div>

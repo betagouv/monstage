@@ -14,7 +14,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
 
   test "GET index as God" do
     sign_in(create(:god))
-    get account_path
+    get account_edit_path
 
     assert_select "a[href=?]", schools_path
   end

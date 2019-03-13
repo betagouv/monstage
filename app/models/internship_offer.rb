@@ -40,7 +40,7 @@ class InternshipOffer < ApplicationRecord
     merge(user.class.targeted_internship_offers(user: user))
   }
   scope :by_weeks, -> (weeks:) {
-    joins(:weeks).where(weeks: {id: weeks.ids})
+    joins(:weeks).where(weeks: {id: weeks.ids}).distinct
   }
 
   def available_all_year?

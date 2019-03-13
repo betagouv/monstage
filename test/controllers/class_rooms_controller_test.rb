@@ -28,7 +28,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     class_room_name = SecureRandom.hex
     assert_difference 'ClassRoom.count' do
       post school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
-      assert_redirected_to account_path
+      assert_redirected_to account_edit_path
     end
     assert_equal 1, ClassRoom.where(name: class_room_name).count
   end
@@ -57,7 +57,7 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     class_room = create(:class_room, school: school, name: SecureRandom.hex)
     sign_in(school_manager)
     patch school_class_room_path(school, class_room, params: {class_room: { name: 'new_name' }})
-    assert_redirected_to account_path
+    assert_redirected_to account_edit_path
     assert_equal 'new_name', class_room.reload.name
   end
 end
