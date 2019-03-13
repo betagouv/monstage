@@ -3,9 +3,7 @@
     <h5 class="card-title">Mes classes</h5>
     <p class="card-text">
       <ul>
-        <% Array(current_user&.school&.class_rooms).each do |class_room| %>
-          <li><%= render "class_rooms/item", school: current_user.school, class_room: class_room %></li>
-        <% end %>
+        <%= render partial: "class_rooms/class_room", collection: Array(current_user&.school&.class_rooms), locals: { school: current_user.school } %>
       </ul>
     </p>
     <% if current_user&.school %>

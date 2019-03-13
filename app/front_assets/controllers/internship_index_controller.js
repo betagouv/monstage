@@ -4,9 +4,6 @@ import Turbolinks from 'turbolinks';
 // should be a link, but have to check with Brice why ...
 export default class extends Controller {
   static targets = [ "offer" ];
-  visit(event) {
-    Turbolinks.visit(event.currentTarget.dataset["internshipIndexHref"])
-  }
 
   filterOffersBySectors(event) {
     // let sector = event.target.options[event.target.selectedIndex].value;
