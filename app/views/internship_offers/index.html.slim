@@ -19,7 +19,11 @@
     table.table.table-hover
       tbody
         - @internship_offers.each do |internship_offer|
-          tr.offer-row.clickable-row[data-internship-index-href="#{internship_offer_url(internship_offer)}" data-action="click->internship-index#visit" data-sector="#{internship_offer.sector}" data-target="internship-index.offer"]
+          tr.offer-row.clickable-row[
+            data-internship-index-href="#{internship_offer_url(internship_offer)}"
+            data-action="click->internship-index#visit" data-sector="#{internship_offer.sector}" data-target="internship-index.offer"
+            data-test-id="#{internship_offer.id}"
+          ]
             td
               h3= internship_offer.title
               p.text-muted = internship_offer.employer_city

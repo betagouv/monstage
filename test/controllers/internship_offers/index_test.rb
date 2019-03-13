@@ -3,6 +3,15 @@ require 'test_helper'
 class IndexTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  def assert_presence_of(internship_offer:)
+    assert_select "[data-test-id=#{internship_offer.id}]", 1
+  end
+
+  def assert_absence_of(internship_offer:)
+    assert_select "[data-test-id=#{internship_offer.id}]", 0
+  end
+
+
   test 'GET #index as student. check if filters are properly populated' do
     week = Week.find_by(year: 2019, number: 10)
     create(:internship_offer, sector: "Animaux", weeks: [week])
@@ -30,12 +39,13 @@ class IndexTest < ActionDispatch::IntegrationTest
                               weeks: [week],
                               coordinates: Coordinates.paris)
 
-    sign_in(student)
-    travel_to(Date.new(2019, 3, 1)) do
-      get internship_offers_path
-
-      assert_response :success
-      assert_select ".offer-row", 1
+    InternshipOffer.stub :by_weeks, InternshipOffer.all do
+      sign_in(student)
+      travel_to(Date.new(2019, 3, 1)) do
+        get internship_offers_path
+        assert_response :success
+        assert_select ".offer-row", 1
+      end
     end
   end
 
@@ -45,12 +55,30 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school_at_bordeaux)
     create(:internship_offer, sector: "Animaux", weeks: [week], coordinates: Coordinates.paris)
 
-    sign_in(student)
-    travel_to(Date.new(2019, 3, 1)) do
-      get internship_offers_path
+    InternshipOffer.stub :by_weeks, InternshipOffer.all do
+      sign_in(student)
+      travel_to(Date.new(2019, 3, 1)) do
+        get internship_offers_path
 
-      assert_response :success
-      assert_select ".offer-row", 0
+        assert_response :success
+        assert_select ".offer-row", 0
+      end
+    end
+  end
+
+  test 'GET #index as student ignores internship_offer not in school.weeks' do
+    week = Week.find_by(year: 2019, number: 10)
+    school = create(:school, weeks: [week])
+    student = create(:student, school: school)
+    offer_overlaping_school_weeks = create(:internship_offer, weeks: [week])
+    offer_not_overlaping_school_weeks = create(:internship_offer, weeks: [Week.find_by(year: 2019, number: 11)])
+    sign_in(student)
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      travel_to(Date.new(2019, 3, 1)) do
+        get internship_offers_path
+        assert_presence_of(internship_offer: offer_overlaping_school_weeks)
+        assert_absence_of(internship_offer: offer_not_overlaping_school_weeks)
+      end
     end
   end
 
@@ -61,8 +89,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(employer)
     get internship_offers_path
     assert_response :success
-    assert_select 'h3', text: included_internship_offer.title, count: 1
-    assert_select 'h3', text: excluded_internship_offer.title, count: 0
+    assert_presence_of(internship_offer: included_internship_offer)
+    assert_absence_of(internship_offer: excluded_internship_offer)
   end
 
   test 'GET #index as god returns all internship_offers' do
@@ -71,7 +99,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer_2 = create(:internship_offer, title: 'Not hellow-me')
     get internship_offers_path
     assert_response :success
-    assert_select 'h3', text: internship_offer_1.title, count: 1
-    assert_select 'h3', text: internship_offer_2.title, count: 1
+    assert_presence_of(internship_offer: internship_offer_1)
+    assert_presence_of(internship_offer: internship_offer_2)
   end
 end

@@ -39,6 +39,9 @@ class InternshipOffer < ApplicationRecord
     return merge(all) unless user # fuck it ; should have a User::Visitor type
     merge(user.class.targeted_internship_offers(user: user))
   }
+  scope :by_weeks, -> (weeks:) {
+    joins(:weeks).where(weeks: {id: weeks.ids})
+  }
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
