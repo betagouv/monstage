@@ -55,7 +55,7 @@ class SchoolInternshipWeeksControllerTest < ActionDispatch::IntegrationTest
                 week_ids: weeks_ids
               }
             })
-      assert_redirected_to account_path
+      assert_redirected_to account_edit_path
       follow_redirect!
       assert_select "#alert-success #alert-text", {text: "Collège mis à jour avec succès"}, 1
     end

@@ -30,7 +30,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
                                                      first_name: 'Chef',
                                                      last_name: 'Etablissement',
                                                      type: 'SchoolManager' }})
-      assert_redirected_to account_path
+      assert_redirected_to account_edit_path
     end
   end
 

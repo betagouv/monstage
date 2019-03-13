@@ -4,20 +4,23 @@ h1 Mon compte
   = render 'layouts/form_errors', object: current_user
 
   .form-group
-    = f.label :school_id, 'Mon collège', class: 'required'
-    = f.select :school_id,
-      grouped_options_for_select(School.grouped_by_short_zipcode,  current_user.school_id),
-      {},
-      class: 'form-control col-lg-6',
-      required: true
-
+    = f.label :first_name, 'Prénom'
+    = f.text_field :first_name, class: 'form-control col-lg-6'
   .form-group
-    = f.label :first_name, 'Mon Prénom', class: 'required'
-    = f.text_field :first_name, class: 'form-control col-lg-6',
-      required: true
-  .form-group
-    = f.label :last_name, 'Mon Nom', class: 'required'
-    = f.text_field :last_name, class: 'form-control col-lg-6',
-      required: true
+    = f.label :last_name, 'Nom'
+    = f.text_field :last_name, class: 'form-control col-lg-6'
+  - if can? :show, School
+    .form-group
+      = f.label :school_id, 'Mon collège', class: 'required'
+      = f.select :school_id,
+        grouped_options_for_select(School.grouped_by_short_zipcode,  current_user.school_id),
+        {},
+        class: 'form-control col-lg-6',
+        required: true
 
   = f.submit 'Enregistrer', class: 'btn btn-primary'
+
+- if can? :edit, School
+  = render "edit_school"
+- if can? :new, ClassRoom
+  = render "edit_school_class_rooms"

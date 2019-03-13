@@ -21,5 +21,5 @@ nav.navbar.navbar-light.bg-light.navbar-expand-lg.mb-3
             i.fas.fa-user.mr-1
             = current_user.name
           .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
-            = link_to 'Mon compte', account_path, class: 'dropdown-item'
+            = link_to 'Mon compte', account_edit_path, class: 'dropdown-item'
             = link_to 'Déconnexion', destroy_user_session_path, class: 'dropdown-item', method: :delete

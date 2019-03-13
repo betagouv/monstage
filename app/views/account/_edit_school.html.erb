@@ -1,0 +1,12 @@
+<h2 class="mt-3">Semaines de stage</h2>
+<ul>
+  <% Array(current_user&.school&.weeks).each do |week| %>
+  <li><%= week.select_text_method %></li>
+  <% end %>
+</ul>
+
+<% if current_user&.school %>
+  <%= link_to "Modifier", edit_school_path(current_user.school), class: 'btn btn-primary' %>
+<% else %>
+  Veuillez d'abord choisir un collège
+<% end %>

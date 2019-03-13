@@ -15,7 +15,7 @@ class SchoolsController < ApplicationController
   def update
     authorize! :update, School
     @school.update!(internship_weeks_params)
-    redirect_to(account_path,
+    redirect_to(account_edit_path,
                 flash: {success: "Collège mis à jour avec succès"})
   rescue ActiveRecord::RecordInvalid => error
     render :edit, status: :bad_request

@@ -1,0 +1,12 @@
+<h2 class="mt-3">Mes classes</h2>
+<ul>
+  <% Array(current_user&.school&.class_rooms).each do |class_room| %>
+    <li><%= render "class_rooms/item", school: current_user.school, class_room: class_room %></li>
+  <% end %>
+</ul>
+
+<% if current_user&.school %>
+  <%= link_to "Ajouter", new_school_class_room_path(current_user.school.to_param), class: 'btn btn-primary' %>
+<% else %>
+  Veuillez d'abord choisir un collège
+<% end %>
