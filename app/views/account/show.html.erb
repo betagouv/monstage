@@ -8,14 +8,14 @@
         <%= render "edit_account_card" %>
       </div>
     <% end %>
-    <% if can?(:update, School) %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_school_card" %>
-      </div>
-    <% end %>
-    <% if can? :new, ClassRoom %>
+     <% if can? :new, ClassRoom %>
       <div class="col-sm-6 col-md-4">
         <%= render "edit_school_class_rooms_card" %>
+      </div>
+    <% end %>
+     <% if can?(:update, School) %>
+      <div class="col-sm-6 col-md-4">
+        <%= render "edit_school_card" %>
       </div>
     <% end %>
   <% end %>
