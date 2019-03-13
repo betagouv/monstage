@@ -35,16 +35,16 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)
     student = create(:student, school: school_at_paris)
-    create(:internship_offer, sector: "Animaux",
-                              weeks: [week],
-                              coordinates: Coordinates.paris)
+    internship_offer = create(:internship_offer, sector: "Animaux",
+                                                 weeks: [week],
+                                                 coordinates: Coordinates.paris)
 
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
       sign_in(student)
       travel_to(Date.new(2019, 3, 1)) do
         get internship_offers_path
         assert_response :success
-        assert_select ".offer-row", 1
+        assert_presence_of(internship_offer: internship_offer)
       end
     end
   end

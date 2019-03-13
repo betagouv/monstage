@@ -1,7 +1,7 @@
 .row.bg-light
   .col-12
     nav.navbar
-      a.icon-link.navbar-brand href=internship_offers_path
+      a.icon-link href=internship_offers_path
         .fas.fa-2x.fa-angle-left
 
       - if can?(:destroy, @internship_offer)
@@ -13,7 +13,7 @@
 
 h2 = @internship_offer.title
 
-h3.gray Le stage
+h3 Le stage
 p = @internship_offer.description
 
 p.text-muted
@@ -22,10 +22,13 @@ p.text-muted
   - else
     | Stage collectif
 
-h3.gray L'entreprise
+h3 L'entreprise
 p = @internship_offer.employer_name
 p
-  a href=@internship_offer.employer_website = @internship_offer.employer_website
+  a href=@internship_offer.employer_website target="_blank"
+    = @internship_offer.employer_website
+    = " "
+    i.fas.fa-external-link-alt
 
 .d-flex
   i.fas.fa-map-marker.mr-2
@@ -35,7 +38,7 @@ p
     = "#{@internship_offer.employer_zipcode} #{@internship_offer.employer_city}"
 
 - if can? :create, InternshipOffer
-  h3.gray Contact
+  h3.bg-light Contact
   p
     b = @internship_offer.tutor_name
     br
