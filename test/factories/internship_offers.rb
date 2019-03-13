@@ -16,6 +16,6 @@ FactoryBot.define do
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     weeks { [ Week.first ] }
-
+    employer { create(:employer) }
   end
 end

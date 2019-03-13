@@ -23,19 +23,20 @@ class Ability
     can :show, :account
     can :read, InternshipOffer
     can :apply, InternshipOffer
-    can [:show, :edit, :update], User
+    can [:show, :update], User
   end
 
   def school_manager_abilities(user:)
     can :show, :account
-    can [:create, :new, :edit, :update], ClassRoom
+    can [:create, :new, :update], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
   end
 
   def employer_abilities(user:)
     can :show, :account
-    can [:create, :read, :update, :destroy], InternshipOffer
+    can :create, InternshipOffer
+    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
   end
 
   def god_abilities(user:)
