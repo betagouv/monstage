@@ -11,8 +11,8 @@ module InternshipOffers
 
     test 'POST #create as employer creates the post' do
       employer = create(:employer)
-      internship_offer = build(:internship_offer)
-      sign_in(employer)
+      internship_offer = build(:internship_offer, employer: employer)
+      sign_in(internship_offer.employer)
       assert_difference('InternshipOffer.count', 1) do
         params = internship_offer
                   .attributes
