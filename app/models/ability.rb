@@ -36,7 +36,7 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     can :create, InternshipOffer
-    can [:read, :edit, :update, :destroy], InternshipOffer, employer_id: user.id
+    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
   end
 
   def god_abilities(user:)

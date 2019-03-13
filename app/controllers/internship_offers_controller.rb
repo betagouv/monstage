@@ -24,7 +24,7 @@ class InternshipOffersController < ApplicationController
 
   def edit
     @internship_offer = InternshipOffer.find(params[:id])
-    authorize! :edit, @internship_offer
+    authorize! :update, @internship_offer
     find_selectable_content
   end
 
