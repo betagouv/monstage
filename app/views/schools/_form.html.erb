@@ -5,7 +5,7 @@
       <div class="form-group">
         <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', class: 'required' %>
         <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
-        <small class="form-text text-muted">Les étudiants se verront proposer des stages que sur ces dates.</small>
+        <small class="form-text text-muted">Si vous souhaitez choisir plusieurs semaines, utilisez la touche contrôle.</small>
       </div>
     </fieldset>
   <% end %>
