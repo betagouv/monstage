@@ -28,4 +28,14 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:destroy, InternshipOffer.new),
            'employers should be able to destroy internships')
   end
+
+  test "God" do
+    ability = Ability.new(create(:god))
+    assert(ability.can?(:show, :account),
+           'god should be able to see his account')
+    assert(ability.can?(:manage, School),
+           'god should be able to manage school')
+    assert(ability.cannot?(:edit, User),
+           'god should not be able to edit user')
+  end
 end
