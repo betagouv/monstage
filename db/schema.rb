@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_08_164116) do
+ActiveRecord::Schema.define(version: 2019_03_13_104908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_164116) do
     t.string "employer_name"
     t.string "operator_names", array: true
     t.string "group_name"
+    t.bigint "employer_id"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
   end
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(version: 2019_03_08_164116) do
   add_foreign_key "class_rooms", "schools"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
+  add_foreign_key "internship_offers", "users", column: "employer_id"
   add_foreign_key "school_internship_weeks", "schools"
   add_foreign_key "school_internship_weeks", "weeks"
 end
