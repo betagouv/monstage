@@ -64,4 +64,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select 'h3', text: included_internship_offer.title, count: 1
     assert_select 'h3', text: excluded_internship_offer.title, count: 0
   end
+
+  test 'GET #index as god returns all internship_offers' do
+    sign_in(create(:god))
+    internship_offer_1 = create(:internship_offer, title: 'Hellow-me')
+    internship_offer_2 = create(:internship_offer, title: 'Not hellow-me')
+    get internship_offers_path
+    assert_response :success
+    assert_select 'h3', text: internship_offer_1.title, count: 1
+    assert_select 'h3', text: internship_offer_2.title, count: 1
+  end
 end
