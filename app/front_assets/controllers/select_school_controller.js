@@ -111,12 +111,10 @@ export default class extends Controller {
     }
   }
 
-  // BUGGY, uncheck props fails
   resetSchoolsList() {
     $(this.schoolItemTargets).each((i, el) => {
       if (el.checked) {
         el.checked = false;
-        console.log('uncheck', el.name, el);
       }
 
     })
