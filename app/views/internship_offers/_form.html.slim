@@ -7,8 +7,8 @@
 
   .form-group
     = form.label :title, 'Intitulé', class: 'required'
-    = form.text_field :title, class: "form-control col-lg-6", required: true
     small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
+    = form.text_field :title, class: "form-control col-lg-6", required: true
 
   .form-group
     = form.label :description, 'Description', class: 'required'
@@ -57,12 +57,12 @@
                      class: 'custom-control-label'
     .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
       = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
-      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control col-lg-6'
       small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
+      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control col-lg-6'
     .form-group
       = form.label :max_weeks, "Nombre de stage proposés dans l'année", class: 'required'
-      = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
       small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
+      = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
 
   fieldset
     legend Tuteur
@@ -74,13 +74,13 @@
       = form.email_field :tutor_email, class: 'form-control col-lg-6', required: true
     .form-group
       = form.label :tutor_phone, 'Téléphone', class: 'required'
-      = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
       small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
+      = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
 
   fieldset data={controller: 'algolia-place'}
-    legend L'entreprise
+    legend L'entreprise ou Administration
     .form-group
-      = form.label :employer_name, "Nom de l'entreprise", class: 'required'
+      = form.label :employer_name, "Nom de l'entreprise ou de l'administration", class: 'required'
       = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
     .form-group
       = form.label :employer_website, 'Site web'
@@ -114,7 +114,7 @@
         = form.radio_button :is_public, false, class: 'custom-control-input', required: true
         = form.label :is_public_false, 'Privé', class: 'custom-control-label'
     .form-group
-      = form.label :group_name, "Groupe"
+      = form.label :group_name, "Groupe ou Institution de tutelle"
       = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "form-control col-lg-6"
     .form-group
       = form.label :operator_names, "Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs"
