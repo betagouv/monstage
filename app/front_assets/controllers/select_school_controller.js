@@ -22,11 +22,11 @@ export default class extends Controller {
   // event handlers
   // -
   onSearchCityKeystroke(event) {
-    const val = $(this.inputSearchCityTarget).val()
-    const searchRegExp = new RegExp(formatSearchStringForRegexp(val), 'i')
+    const searchValue = $(this.inputSearchCityTarget).val()
+    const searchRegExp = new RegExp(formatSearchStringForRegexp(searchValue), 'i')
     const startAutocompleteAtLength = 1;
 
-    if (val.length > startAutocompleteAtLength) {
+    if (searchValue.length > startAutocompleteAtLength) {
       this.showCitiesList();
     }
 
