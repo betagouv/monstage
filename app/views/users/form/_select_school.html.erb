@@ -71,7 +71,7 @@
     <%# SELECT CLASS_ROOM %>
     <% if select_class_room %>
       <div class="form-group">
-        <%= school_form.label :class_room_id, "Ma classe" %>
+        <%= form.label :class_room_id, "Ma classe" %>
         <%= form.select :class_room_id,
                         options_from_collection_for_select((resource.school || resource.build_school).class_rooms,
                                                            :id,
