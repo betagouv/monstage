@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_104908) do
+ActiveRecord::Schema.define(version: 2019_03_15_134228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 2019_03_13_104908) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_class_rooms_on_school_id"
+  end
+
+  create_table "internship_applications", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "internship_offer_week_id"
+    t.text "motivation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
+    t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
 
   create_table "internship_offer_weeks", force: :cascade do |t|
@@ -121,6 +131,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_104908) do
   end
 
   add_foreign_key "class_rooms", "schools"
+  add_foreign_key "internship_applications", "internship_offer_weeks"
+  add_foreign_key "internship_applications", "users"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
   add_foreign_key "internship_offers", "users", column: "employer_id"
