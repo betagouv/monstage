@@ -16,7 +16,7 @@ module Html5Validator
 
   def self.run
     puts "running w3c validation with: \n#{files_to_validates.join("\n")}"
-    `html5validator --root #{RESPONSE_STORED_DIR.to_s}`
+    `html5validator --log DEBUG --root #{RESPONSE_STORED_DIR.to_s}`
   end
 
   def run_request_and_cache_response(report_as:)

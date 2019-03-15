@@ -3,14 +3,13 @@
     <div class="row">
       <div class="col-12">
         <%= form.fields_for (school || School.new) do |city_form| %>
-          <%= form.label :city, 'Ville de mon collège', class: 'required' %>
-          <small class="form-text text-muted"> Veuillez sélectionner une option</small>
+          <%= city_form.label :city, 'Ville de mon collège', class: 'required' %>
           <div class= "input-group">
             <%= city_form.text_field :city,
                                       data: {target: 'select-school.inputSearchCity'},
                                       class: 'form-control col-lg-6',
                                       required: true,
-                                      autocomplete: false %>
+                                      autocomplete: :off %>
             <div class="input-group-append">
               <button type=button
                       class="btn btn-outline-secondary"
@@ -37,7 +36,7 @@
   </div>
 
   <div class="form-group">
-    <%= form.label :school_id, "Mon Collège", required: true %>
+    <%= form.label :school_id, "Mon collège", class: 'required' %>
     <%= form.text_field :school_id,
                         value: '',
                         disabled: true,

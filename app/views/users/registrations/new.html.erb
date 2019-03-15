@@ -5,8 +5,54 @@
 
   <%= f.text_field :type, hidden: true %>
 
+  <% if resource.type == "Student" %>
+    <%= render 'users/form/select_school', form: f, school: nil %>
+
+    <div class="form-group">
+      <%= f.label :first_name, 'Prénom', class: 'required' %>
+      <%= f.email_field :first_name, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :last_name, 'Nom', class: 'required' %>
+      <%= f.email_field :last_name, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :birth_date, 'Date de naissance', class: 'required' %>
+      <%= f.date_field :birth_date, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <div class="required">Genre</div>
+      <div class="custom-control custom-radio">
+        <%= f.radio_button :gender,
+                           "m",
+                           class: 'custom-control-input',
+                           id: "select-gender-boy"  %>
+        <%= f.label :gender, "Garçon",
+                                class: 'custom-control-label',
+                                for: "select-gender-boy" %>
+      </div>
+      <div class="custom-control custom-radio">
+        <%= f.radio_button :gender,
+                           "f",
+                           class: 'custom-control-input',
+                           id: "select-gender-girl"  %>
+        <%= f.label :gender, "Fille",
+                       class: 'custom-control-label',
+                       for: "select-gender-girl" %>
+      </div>
+    </div>
+
+  <% end %>
+
+
   <div class="form-group">
-    <%= f.label resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel', class: 'required', data: { target: 'registration-form.emailLabel'} %>
+    <%= f.label :email,
+                resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel',
+                class: 'required',
+                  data: { target: 'registration-form.emailLabel'} %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>
   </div>
 
@@ -22,6 +68,7 @@
     <%= f.label :password_confirmation, class: 'required' %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
+
 
   <div class="actions">
     <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>

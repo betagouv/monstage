@@ -22,6 +22,21 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'label', 'Courriel professionnel'
   end
 
+  test 'GET new as Student render expected inputs' do
+
+    get new_user_registration_path(as: 'Student')
+
+    assert_response :success
+    assert_select 'input', { value: 'Student', hidden: 'hidden' }
+    assert_select 'input[name="user[school_id]"]'
+    assert_select 'input[name="user[first_name]"]'
+    assert_select 'input[name="user[last_name]"]'
+    assert_select 'input[name="user[birth_date]"]'
+    assert_select 'input[name="user[gender]"]'
+    assert_select 'input[name="user[email]"]'
+    assert_select 'input[name="user[password_confirmation]"]'
+  end
+
   test 'POST create School Manager responds with success' do
     assert_difference("SchoolManager.count") do
       post user_registration_path(params: { user: { email: 'test@ac-edu.fr',

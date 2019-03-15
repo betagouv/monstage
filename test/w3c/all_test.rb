@@ -36,4 +36,23 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
       get edit_internship_offer_path(id: stage_dev.to_param)
     end
   end
+
+  test 'register as Student' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Student') do
+      get new_user_registration_path(as: 'Student')
+    end
+  end
+
+  test 'register as SchoolManager' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_SchoolManager') do
+      get new_user_registration_path(as: 'SchoolManager')
+    end
+  end
+
+  test 'register as Employer' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Employer') do
+      get new_user_registration_path(as: 'Employer')
+    end
+  end
+
 end
