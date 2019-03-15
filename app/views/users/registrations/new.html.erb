@@ -4,9 +4,8 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
-
   <% if resource.type == "Student" %>
-    <%= render 'users/form/select_school', form: f, school: nil %>
+    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: true %>
 
     <div class="form-group">
       <%= f.label :first_name, 'Prénom', class: 'required' %>
@@ -59,7 +58,7 @@
   <div class="form-group">
     <%= f.label :password, class: 'required' %>
     <% if @minimum_password_length %>
-    <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+      <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
     <% end %>
     <%= f.password_field :password, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
@@ -68,7 +67,6 @@
     <%= f.label :password_confirmation, class: 'required' %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
-
 
   <div class="actions">
     <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>

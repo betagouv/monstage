@@ -1,65 +1,85 @@
-<div data-controller="select-school" >
-  <div class="form-group">
-    <div class="row">
-      <div class="col-12">
-        <%= form.fields_for (school || School.new) do |city_form| %>
-          <%= city_form.label :city, 'Ville de mon collège', class: 'required' %>
+<div data-controller="select-school"
+     data-select-school-class-room="<%= (select_class_room) %>">
+  <%= form.fields_for resource.school || resource.build_school do |school_form| %>
+    <%# SELECT CITY %>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-12">
+          <%= school_form.label :city, 'Ville de mon collège', class: 'required' %>
           <div class= "input-group">
-            <%= city_form.text_field :city,
-                                      data: {target: 'select-school.inputSearchCity'},
+            <%= school_form.text_field :city,
+                                      data: { target: 'select-school.inputSearchCity' },
                                       class: 'form-control col-lg-6',
                                       required: true,
                                       autocomplete: :off %>
             <div class="input-group-append">
               <button type=button
                       class="btn btn-outline-secondary"
-                      data-action="click->select-school#resetCitySearch"
+                      data-action="click->select-school#onResetCityClicked"
                       data-target="select-school.resetSearchCityButton"><i class="fas fa-times"></i></button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <ul class="list-group" data-target="select-school.listCities">
+            <% School.all.map(&:city).uniq.each do |city| %>
+              <a data-city="<%= city %>"
+                 class="list-group-item"
+                 data-action="click->select-school#onSelectCity"
+                 data-target="select-school.cityItem"><%= city %></a>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <%# SELECT SCHOOL %>
+    <div class="form-group">
+      <%= form.label :school_id, "Mon collège", class: 'required' %>
+      <%= form.text_field :school_id,
+                          value: '',
+                          disabled: true,
+                          readonly: true,
+                          data: {target: 'select-school.placeholderSchoolInput'},
+                          class: 'form-control col-lg-6' %>
+
+      <div data-target="select-school.listSchools">
+        <% School.all.each do |school| %>
+          <div class="custom-control custom-radio"
+               data-target="select-school.schoolItem"
+               data-city="<%= school.city %>">
+            <%= form.radio_button :school_id,
+                                  school.id,
+                                  class: 'custom-control-input',
+                                  id: "select-school-#{school.id}",
+                                  required: true,
+                                  data: {
+                                    "action": "change->select-school#onSelectSchool",
+                                    "class-room-available": school.class_rooms.to_json
+                                  } %>
+            <%= form.label :school_id, "#{school.name} - #{school.city}",
+                           class: 'custom-control-label',
+                           for: "select-school-#{school.id}" %>
           </div>
         <% end %>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12">
-        <ul class="list-group" data-target="select-school.listCities">
-          <% School.all.map(&:city).uniq.each do |city| %>
-            <a data-city="<%= city %>"
-               class="list-group-item"
-               data-action="click->select-school#onSelectedCity"
-               data-target="select-school.cityItem"><%= city %></a>
-          <% end %>
-        </ul>
+    <%# SELECT CLASS_ROOM %>
+    <% if select_class_room %>
+      <div class="form-group">
+        <%= school_form.label :class_room_id, "Ma classe" %>
+        <%= form.select :class_room_id,
+                        options_from_collection_for_select((resource.school || resource.build_school).class_rooms,
+                                                           :id,
+                                                           :name,
+                                                           resource.class_room),
+                        {},
+                        class: 'form-control col-lg-6', data: {target: 'select-school.classRoomSelect'}, readonly: !resource.class_room.present? %>
       </div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= form.label :school_id, "Mon collège", class: 'required' %>
-    <%= form.text_field :school_id,
-                        value: '',
-                        disabled: true,
-                        readonly: true,
-                        data: {target: 'select-school.placeholderSchoolInput'},
-                        class: 'form-control col-lg-6' %>
-
-    <div data-target="select-school.listSchools">
-      <% School.all.each do |school| %>
-        <div class="custom-control custom-radio"
-             data-target="select-school.schoolItem"
-             data-city="<%= school.city %>">
-          <%= form.radio_button :school_id,
-                                school.id,
-                                class: 'custom-control-input',
-                                id: "select-school-#{school.id}",
-                                required: true %>
-          <%= form.label :school_id, "#{school.name} - #{school.city}",
-                         class: 'custom-control-label',
-                         for: "select-school-#{school.id}" %>
-        </div>
-      <% end %>
-    </div>
-
-  </div>
+    <% end %>
+  <% end %>
 </div>
