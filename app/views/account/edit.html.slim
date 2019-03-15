@@ -2,7 +2,7 @@ h2 Mon compte
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = render 'layouts/form_errors', object: current_user
-  = render 'users/form/select_school', form: f, resource: current_user, select_class_room: false
+  = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room)
 
   .form-group
     = f.label :first_name, 'Mon Prénom', class: 'required'
