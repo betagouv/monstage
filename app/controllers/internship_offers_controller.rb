@@ -7,7 +7,7 @@ class InternshipOffersController < ApplicationController
 
   def show
     @internship_offer = InternshipOffer.find(params[:id])
-    @internship_application = InternshipApplication.new(user_id: current_user.id)
+    @internship_application = InternshipApplication.new(user_id: current_user.id) if user_signed_in?
   end
 
   def create
