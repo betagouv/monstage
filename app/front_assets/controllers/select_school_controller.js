@@ -1,4 +1,6 @@
 import { Controller } from "stimulus"
+import { showElement, hideElement } from "../utils/dom"
+
 // replace dash / white space with wildcard char
 // searching for Saint Denis, which is officialy written Saint-Denis
 // TODO: rethink this one for accentuated chars, any idea brice?
@@ -7,9 +9,6 @@ const formatSearchStringForRegexp = (searchText) => {
   return searchText.replace(/ /g, wildcard)
                    .replace(/-/g, wildcard)
 }
-
-const showElement = ($element) => $element.removeClass('d-none');
-const hideElement = ($element) => $element.addClass('d-none');
 
 export default class extends Controller {
   static targets = [ 'inputSearchCity',

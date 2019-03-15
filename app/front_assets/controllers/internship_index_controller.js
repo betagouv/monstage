@@ -1,5 +1,6 @@
 import { Controller } from "stimulus"
 import Turbolinks from 'turbolinks';
+import { setElementVisibility } from "../utils/dom";
 
 // should be a link, but have to check with Brice why ...
 export default class extends Controller {
@@ -11,7 +12,7 @@ export default class extends Controller {
 
     $(this.offerTargets).each(function (index, offer) {
       let shouldBeHidden = sectors.length > 0 && !sectors.includes($(offer).data('sector'));
-      $(offer).toggleClass('d-none', shouldBeHidden);
+      setElementVisibility($(offer), !shouldBeHidden)
     });
   }
 
