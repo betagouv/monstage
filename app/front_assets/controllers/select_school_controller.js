@@ -1,8 +1,11 @@
 import { Controller } from "stimulus"
-
-const flexibleSearch = (searchText) => {
-  return searchText.replace(/ /g, ".")
-                   .replace(/-/g, ".")
+// replace dash / white space with wildcard char
+// searching for Saint Denis, which is officialy written Saint-Denis
+// TODO: rethink this one for accentuated chars, any idea brice?
+const formatSearchStringForRegexp = (searchText) => {
+  const wildcard = '.';
+  return searchText.replace(/ /g, wildcard)
+                   .replace(/-/g, wildcard)
 }
 export default class extends Controller {
   static targets = [ 'inputSearchCity',
@@ -20,7 +23,7 @@ export default class extends Controller {
   // -
   onSearchCityKeystroke(event) {
     const val = $(this.inputSearchCityTarget).val()
-    const searchRegExp = new RegExp(flexibleSearch(val), 'i')
+    const searchRegExp = new RegExp(formatSearchStringForRegexp(val), 'i')
 
     if (val.length > 1) {
       this.showCitiesList();
@@ -64,7 +67,7 @@ export default class extends Controller {
   // used by onSelectCity and to initialize component
   // -
   selectCity(val) {
-    const searchRegExp = new RegExp(flexibleSearch(val), 'i');
+    const searchRegExp = new RegExp(formatSearchStringForRegexp(val), 'i');
 
     this.hideCitiesList()
     this.showSchoolsList()
