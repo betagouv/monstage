@@ -2,14 +2,7 @@ h2 Mon compte
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = render 'layouts/form_errors', object: current_user
-
-  .form-group
-    = f.label :school_id, 'Mon collège', class: 'required'
-    = f.select :school_id,
-      grouped_options_for_select(School.grouped_by_short_zipcode,  current_user.school_id),
-      {},
-      class: 'form-control col-lg-6',
-      required: true
+  = render 'users/form/select_school', form: f, school: current_user.school
 
   .form-group
     = f.label :first_name, 'Mon Prénom', class: 'required'
