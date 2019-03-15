@@ -1,6 +1,6 @@
 <h2><%= t('devise.registrations.new.sign_up') %></h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: {controller: 'registration-form'}) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
@@ -50,8 +50,7 @@
   <div class="form-group">
     <%= f.label :email,
                 resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel',
-                class: 'required',
-                  data: { target: 'registration-form.emailLabel'} %>
+                class: 'required' %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>
   </div>
 
