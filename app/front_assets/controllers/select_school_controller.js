@@ -24,8 +24,9 @@ export default class extends Controller {
   onSearchCityKeystroke(event) {
     const val = $(this.inputSearchCityTarget).val()
     const searchRegExp = new RegExp(formatSearchStringForRegexp(val), 'i')
+    const startAutocompleteAtLength = 1;
 
-    if (val.length > 1) {
+    if (val.length > startAutocompleteAtLength) {
       this.showCitiesList();
     }
 
