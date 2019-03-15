@@ -7,6 +7,10 @@ const formatSearchStringForRegexp = (searchText) => {
   return searchText.replace(/ /g, wildcard)
                    .replace(/-/g, wildcard)
 }
+
+const showElement = ($element) => $element.removeClass('d-none');
+const hideElement = ($element) => $element.addClass('d-none');
+
 export default class extends Controller {
   static targets = [ 'inputSearchCity',
                      'listSchools',
@@ -78,9 +82,9 @@ export default class extends Controller {
       const $el = $(el);
 
       if (searchRegExp.test($el.data('city'))) {
-        $el.removeClass('d-none');
+        showElement($el)
       } else {
-        $el.addClass('d-none');
+        hideElement($el)
       }
     })
   }
@@ -120,21 +124,21 @@ export default class extends Controller {
   }
 
   hideSchoolsList() {
-    $(this.listSchoolsTarget).addClass('d-none');
-    $(this.placeholderSchoolInputTarget).removeClass('d-none');
+    hideElement($(this.listSchoolsTarget))
+    showElement($(this.placeholderSchoolInputTarget))
   }
 
   showSchoolsList() {
-    $(this.listSchoolsTarget).removeClass('d-none');
-    $(this.placeholderSchoolInputTarget).addClass('d-none');
+    showElement($(this.listSchoolsTarget))
+    hideElement($(this.placeholderSchoolInputTarget))
   }
 
   hideCitiesList() {
-    $(this.listCitiesTarget).addClass('d-none');
+    hideElement($(this.listCitiesTarget));
   }
 
   showCitiesList() {
-    $(this.listCitiesTarget).removeClass('d-none');
+    showElement($(this.listCitiesTarget));
   }
 
   // -
