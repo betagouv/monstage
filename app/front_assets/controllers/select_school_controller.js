@@ -38,18 +38,18 @@ export default class extends Controller {
       const $el = $(el);
 
       if (searchRegExp.test($el.text())) {
-        $el.removeClass('d-none');
+        showElement($el)
       } else {
-        $el.addClass('d-none');
+        hideElement($el)
       }
     })
   }
 
   onSelectCity(event) {
     const $sourceTarget = $(event.target)
-    const val = $sourceTarget.text()
+    const cityName = $sourceTarget.text()
 
-    this.selectCity(val);
+    this.selectCity(cityName);
     this.resetSchoolsList();
     this.resetClassRoomList([]);
   }
@@ -149,9 +149,9 @@ export default class extends Controller {
     $(this.inputSearchCityTarget)
       .on("keyup", this.onSearchCityKeystroke.bind(this))
 
-    const currentValue = $(this.inputSearchCityTarget).val();
-    if (currentValue) {
-      this.selectCity(currentValue);
+    const currentCityName = $(this.inputSearchCityTarget).val();
+    if (currentCityName) {
+      this.selectCity(currentCityName);
     } else {
       this.hideSchoolsList();
       this.hideCitiesList();
