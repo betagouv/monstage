@@ -96,7 +96,7 @@ export default class extends Controller {
     const $classRoomSelectTarget = $(this.classRoomSelectTarget);
 
     if (classRoomList.length > 0) {
-      $classRoomSelectTarget.attr('readonly', false)
+      $classRoomSelectTarget.attr('disabled', false)
       $classRoomSelectTarget.html(
         $(`<option value="">-- Veuillez selectionner une classe --</option>`)
       )
@@ -104,7 +104,7 @@ export default class extends Controller {
         $classRoomSelectTarget.append($(`<option value="${el.id}">${el.name}</option>`))
       })
     } else {
-      $classRoomSelectTarget.attr('readonly', true)
+      $classRoomSelectTarget.attr('disabled', true)
       $classRoomSelectTarget.html(
         $(`<option value="">-- Aucune classe disponible --</option>`)
       )

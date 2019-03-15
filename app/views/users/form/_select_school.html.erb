@@ -78,7 +78,7 @@
                                                            :name,
                                                            resource.class_room),
                         {},
-                        class: 'form-control col-lg-6', data: {target: 'select-school.classRoomSelect'}, readonly: !resource.class_room.present? %>
+                        class: 'form-control col-lg-6', data: {target: 'select-school.classRoomSelect'}, disabled: !resource.class_room.present? %>
       </div>
     <% end %>
   <% end %>
