@@ -1,25 +1,24 @@
 <div data-controller="select-school" >
   <div class="form-group">
-    <%= form.label :school, 'Ville de mon collège', class: 'required' %>
-    <small class="form-text text-muted"> Veuillez sélectionner une option</small>
-
     <div class="row">
       <div class="col-12">
-        <div class= "input-group">
-          <%= form.fields_for (school || School.new) do |city_form| %>
+        <%= form.fields_for (school || School.new) do |city_form| %>
+          <%= form.label :city, 'Ville de mon collège', class: 'required' %>
+          <small class="form-text text-muted"> Veuillez sélectionner une option</small>
+          <div class= "input-group">
             <%= city_form.text_field :city,
                                       data: {target: 'select-school.inputSearchCity'},
                                       class: 'form-control col-lg-6',
                                       required: true,
                                       autocomplete: false %>
-          <% end %>
-          <div class="input-group-append">
-            <button type=button
-                    class="btn btn-outline-secondary"
-                    data-action="click->select-school#resetCitySearch"
-                    data-target="select-school.resetSearchCityButton"><i class="fas fa-times"></i></button>
+            <div class="input-group-append">
+              <button type=button
+                      class="btn btn-outline-secondary"
+                      data-action="click->select-school#resetCitySearch"
+                      data-target="select-school.resetSearchCityButton"><i class="fas fa-times"></i></button>
+            </div>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
 
@@ -38,7 +37,14 @@
   </div>
 
   <div class="form-group">
-    <label class="required">Mon Collège</label>
+    <%= form.label :school_id, "Mon Collège", required: true %>
+    <%= form.text_field :school_id,
+                        value: '',
+                        disabled: true,
+                        readonly: true,
+                        data: {target: 'select-school.placeholderSchoolInput'},
+                        class: 'form-control col-lg-6' %>
+
     <div data-target="select-school.listSchools">
       <% School.all.each do |school| %>
         <div class="custom-control custom-radio"

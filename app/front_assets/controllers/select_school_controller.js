@@ -11,7 +11,8 @@ export default class extends Controller {
                      "cityItem",
                      "cityContainer",
                      "schoolItem",
-                     "resetSearchCityButton" ]
+                     "resetSearchCityButton",
+                     "placeholderSchoolInput" ]
 
   onSelectedCity(event) {
     const $sourceTarget = $(event.target)
@@ -67,10 +68,12 @@ export default class extends Controller {
 
   hideSchoolsList() {
     $(this.listSchoolsTarget).addClass('d-none');
+    $(this.placeholderSchoolInputTarget).removeClass('d-none');
   }
 
   showSchoolsList() {
     $(this.listSchoolsTarget).removeClass('d-none');
+    $(this.placeholderSchoolInputTarget).addClass('d-none');
   }
 
   hideCitiesList() {
