@@ -3,7 +3,7 @@
   <% unless current_user.is_a?(God) %>
     <fieldset>
       <div class="form-group">
-        <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', class: 'required' %>
+        <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', required: true %>
         <small class="form-text text-muted">Si vous souhaitez choisir plusieurs semaines, utilisez la touche contrôle.</small>
         <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
       </div>
@@ -12,14 +12,14 @@
 
   <fieldset>
     <div class="form-group">
-      <%= f.label :name, 'Nom de votre établissement', class: 'required' %>
+      <%= f.label :name, 'Nom de votre établissement', required: true %>
       <%= f.text_field :name, class: 'form-control col-lg-6', required: true %>
     </div>
   </fieldset>
 
   <fieldset data-controller="algolia-place">
     <div class="form-group d-none" data-target="algolia-place.autocompleteFormGroup" >
-      <%= f.label :autocomplete, "Adresse du collège", class: 'required' %>
+      <%= f.label :autocomplete, "Adresse du collège", required: true %>
       <small class="form-text text-muted">Merci de renseigner l'adresse précise de votre collège.</small>
       <%= f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie",
                                          value: @school.formatted_autocomplete_address,
@@ -38,19 +38,19 @@
       <div class="form-row">
         <div class="col-sm-6">
           <div class="form-group">
-            <%= f.label :street, 'Rue', class: 'required' %>
+            <%= f.label :street, 'Rue', required: true %>
             <%= f.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'} %>
           </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <%= f.label :city, 'Ville', class: 'required' %>
+            <%= f.label :city, 'Ville', required: true %>
             <%= f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'} %>
           </div>
         </div>
         <div class="col-sm-2">
           <div class="form-group">
-            <%= f.label :zipcode, 'Code postal', class: 'required' %>
+            <%= f.label :zipcode, 'Code postal', required: true %>
             <%= f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'} %>
           </div>
         </div>

@@ -1,11 +1,11 @@
 <div data-controller="select-school"
      data-select-school-class-room="<%= (select_class_room) %>">
-  <%= form.fields_for resource.school || resource.build_school do |school_form| %>
+  <%= form.fields_for(resource.school || resource.build_school) do |school_form| %>
     <%# SELECT CITY %>
     <div class="form-group">
       <div class="row">
         <div class="col-12">
-          <%= school_form.label :city, 'Ville de mon collège', class: 'required' %>
+          <%= school_form.label :city, 'Ville de mon collège', required: true %>
           <div class= "input-group">
             <%= school_form.text_field :city,
                                       data: { target: 'select-school.inputSearchCity' },
@@ -38,7 +38,7 @@
 
     <%# SELECT SCHOOL %>
     <div class="form-group">
-      <%= form.label :school_id, "Mon collège", class: 'required' %>
+      <%= form.label :school_id, "Mon collège", required: true %>
       <%= form.text_field :school_id,
                           value: '',
                           disabled: true,

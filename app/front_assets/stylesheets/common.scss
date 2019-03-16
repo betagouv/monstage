@@ -1,19 +1,5 @@
-label.required:before {
-  content:"*";
-  color:red;
-
-  margin-right: 0.25rem;
-}
-
-.clickable-row {
-  cursor: pointer;
-}
 .svg-inline--fa {
   pointer-events: none
-}
-
-.gray {
-    color: gray;
 }
 
 $logo-color: #feb620;
