@@ -25,7 +25,7 @@ p.text-muted
 h3 L'entreprise
 p = @internship_offer.employer_name
 p
-  a href=@internship_offer.employer_website target="_blank"
+  a href.external=@internship_offer.employer_website target="_blank"
     = @internship_offer.employer_website
     = " "
     i.fas.fa-external-link-alt
