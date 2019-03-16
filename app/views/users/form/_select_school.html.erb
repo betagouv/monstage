@@ -47,7 +47,7 @@
                           class: 'form-control col-lg-6' %>
 
       <div data-target="select-school.listSchools">
-        <% School.all.each do |school| %>
+        <% School.all.includes(:class_rooms).each do |school| %>
           <div class="custom-control custom-radio"
                data-target="select-school.schoolItem"
                data-city="<%= school.city %>">
