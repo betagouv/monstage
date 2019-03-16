@@ -1,13 +1,22 @@
 <h2><%= t('.sign_in') %></h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= f.rg2a_explain_required_asterisk %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
   <div class="form-group">
-    <%= f.label :email, "Courriel", required: true %>
+    <%= f.label :email do %>
+      Courriel
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password, "Mot de passe", required: true %>
+    <%= f.label :password do %>
+      Mot de passe
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  col-lg-6', required: true %>
     <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
       <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted' %>

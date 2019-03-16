@@ -5,7 +5,10 @@
     <div class="form-group">
       <div class="row">
         <div class="col-12">
-          <%= school_form.label :city, 'Ville de mon collège', required: true %>
+          <%= school_form.label :city do %>
+            Ville de mon collège
+            <%= school_form.rg2a_required_content_tag %>
+          <% end %>
           <div class= "input-group">
             <%= school_form.text_field :city,
                                       data: { target: 'select-school.inputSearchCity' },
@@ -38,7 +41,10 @@
 
     <%# SELECT SCHOOL %>
     <div class="form-group">
-      <%= form.label :school_id, "Mon collège", required: true %>
+      <%= form.label :school_id do %>
+        Mon collège
+        <%= form.rg2a_required_content_tag %>
+      <% end %>
       <%= form.text_field :school_id,
                           value: '',
                           disabled: true,

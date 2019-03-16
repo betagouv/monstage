@@ -19,7 +19,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'input', { value: 'SchoolManager', hidden: 'hidden' }
-    assert_select 'label', 'Courriel professionnel*'
+    assert_select 'label', /Courriel professionnel/
   end
 
   test 'GET new as Student render expected inputs' do

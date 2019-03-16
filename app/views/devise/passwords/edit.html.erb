@@ -1,19 +1,26 @@
 <h2><%= t('.change_your_password') %></h2>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
   <div class="form-group">
-    <%= f.label :password, t('.new_password'), required: true %>
-    <% if @minimum_password_length %>
-      <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+    <%= f.label :password do %>
+      <%= t('.new_password') %>
+      <% if @minimum_password_length %>
+        <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+      <% end %>
+      <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: 'form-control col-lg-6' %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, t('.confirm_new_password'), required: true %>
+    <%= f.label :password_confirmation do %>
+      <%= t('.confirm_new_password') %>
+      <% f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control col-lg-6' %>
   </div>
 

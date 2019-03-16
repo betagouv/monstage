@@ -1,11 +1,10 @@
 class Rg2aFormBuilder < ActionView::Helpers::FormBuilder
-  def label(method, text = nil, options = {}, &block)
-    if options.key?(:required)
-      text = @template.content_tag :span do
-        text.concat(@template.content_tag(:abbr, '*', title: '(obligatoire)', aria: { hidden: "true" })).html_safe
-      end
-      options.delete(:required)
-    end
-    super
+  def rg2a_explain_required_asterisk
+    "<p>Les champs avec <span class='text-danger'>*</span> sont obligatoires</p>".html_safe
+  end
+
+  def rg2a_required_content_tag
+    @template.content_tag(:abbr, '*', title: '(obligatoire)',
+                                      aria: { hidden: "true" })
   end
 end

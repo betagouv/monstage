@@ -1,6 +1,7 @@
 <h2><%= t('devise.registrations.new.sign_up') %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
@@ -8,17 +9,26 @@
     <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: true %>
 
     <div class="form-group">
-      <%= f.label :first_name, 'Prénom', required: true %>
+      <%= f.label :first_name do %>
+        Prénom
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
       <%= f.text_field :first_name, class: 'form-control col-lg-6', required: true %>
     </div>
 
     <div class="form-group">
-      <%= f.label :last_name, 'Nom', required: true %>
+      <%= f.label :last_name do %>
+        Nom
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
       <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
     </div>
 
     <div class="form-group">
-      <%= f.label :birth_date, 'Date de naissance', required: true %>
+      <%= f.label :birth_date do %>
+        Date de naissance
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
       <%= f.date_field :birth_date, class: 'form-control col-lg-6', required: true %>
     </div>
 
@@ -49,22 +59,27 @@
 
 
   <div class="form-group">
-    <%= f.label :email,
-                resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel',
-                required: true %>
+    <%= f.label :email do %>
+      <%= resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel' %>
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password, "Mot de passe", required: true %>
-    <% if @minimum_password_length %>
-      <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+    <%= f.label :password do %>
+      Mot de passe
+      <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+      <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.password_field :password, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, "Confirmation du mot de passe", required: true %>
+    <%= f.label :password_confirmation do %>
+      Confirmation du mot de passe
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
 

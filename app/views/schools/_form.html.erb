@@ -1,10 +1,14 @@
 <%= form_for @school do |f| %>
+  <%= f.rg2a_explain_required_asterisk %>
   <%= render "layouts/form_errors", object: @school %>
   <% unless current_user.is_a?(God) %>
     <fieldset>
       <div class="form-group">
-        <%= f.label :week_ids, 'Sélectionnez les semaines de stage du collège', required: true %>
-        <small class="form-text text-muted">Si vous souhaitez choisir plusieurs semaines, utilisez la touche contrôle.</small>
+        <%= f.label :week_ids do %>
+          Sélectionnez les semaines de stage du collège
+          <small class="form-text text-muted">Si vous souhaitez choisir plusieurs semaines, utilisez la touche contrôle.</small>
+          <%= f.rg2a_required_content_tag %>
+        <% end %>
         <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
       </div>
     </fieldset>
@@ -12,15 +16,21 @@
 
   <fieldset>
     <div class="form-group">
-      <%= f.label :name, 'Nom de votre établissement', required: true %>
+      <%= f.label :name do %>
+        Nom de votre établissement
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
       <%= f.text_field :name, class: 'form-control col-lg-6', required: true %>
     </div>
   </fieldset>
 
   <fieldset data-controller="algolia-place">
     <div class="form-group d-none" data-target="algolia-place.autocompleteFormGroup" >
-      <%= f.label :autocomplete, "Adresse du collège", required: true %>
-      <small class="form-text text-muted">Merci de renseigner l'adresse précise de votre collège.</small>
+      <%= f.label :autocomplete do %>
+        Adresse du collège
+        <small class="form-text text-muted">Merci de renseigner l'adresse précise de votre collège.</small>
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
       <%= f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie",
                                          value: @school.formatted_autocomplete_address,
                                          required: true,
@@ -38,19 +48,28 @@
       <div class="form-row">
         <div class="col-sm-6">
           <div class="form-group">
-            <%= f.label :street, 'Rue', required: true %>
+            <%= f.label :street do %>
+              Rue
+              <%= f.rg2a_required_content_tag %>
+            <% end %>
             <%= f.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'} %>
           </div>
         </div>
         <div class="col-sm-4">
           <div class="form-group">
-            <%= f.label :city, 'Ville', required: true %>
+            <%= f.label :city do %>
+              Ville
+              <%= f.rg2a_required_content_tag %>
+            <% end %>
             <%= f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'} %>
           </div>
         </div>
         <div class="col-sm-2">
           <div class="form-group">
-            <%= f.label :zipcode, 'Code postal', required: true %>
+            <%= f.label :zipcode do %>
+              Code postal
+              <%= f.rg2a_required_content_tag %>
+            <% end %>
             <%= f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'} %>
           </div>
         </div>

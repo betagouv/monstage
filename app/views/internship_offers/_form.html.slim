@@ -1,17 +1,22 @@
-== '<p>Les champs avec <span style="color: red">*</span> sont obligatoires</p>'
-
 = form_for @internship_offer, {data: {controller: 'internship-form'}} do |form|
+  = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", object: @internship_offer
 
   = form.hidden_field :employer_id, value: current_user.id
 
   .form-group
-    = form.label :title, 'Intitulé', required: true
-    small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
+    = form.label :title do
+      = "Intitulé"
+      small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
+      = form.rg2a_required_content_tag
+
     = form.text_field :title, class: "form-control col-lg-6", required: true
 
   .form-group
-    = form.label :description, 'Description', required: true
+    = form.label :description do
+      = 'Description'
+      = form.rg2a_required_content_tag
+
     a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
       i.fa.fa-question-circle
 
@@ -23,13 +28,18 @@
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
     = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
   .form-group
-    = form.label :sector, "Secteur d'activité", required: true
+    = form.label :sector do
+      = "Secteur d'activité"
+      = form.rg2a_required_content_tag
     = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
 
   fieldset
     legend Quand ?
     .form-group
-      = form.label :week_ids, "Choisir la ou les semaines où vous pouvez accueillir un stagiaire", required: true
+      = form.label :week_ids do
+        = "Choisir la ou les semaines où vous pouvez accueillir un stagiaire"
+        = form.rg2a_required_content_tag
+
       .custom-control.custom-checkbox.mb-1
         = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', data: {action: "change->internship-form#toggleWeeks"}
         = label_tag 'all_year_long', "Tout sélectionner / désélectionner", class: 'custom-control-label'
@@ -38,7 +48,10 @@
   fieldset
     legend Quoi ?
     .form-group
-      label.required Type de stage
+      div.label
+        = "Type de stage"
+        = form.rg2a_required_content_tag
+
       .custom-control.custom-radio
         = form.radio_button :can_be_applied_for,
                             true,
@@ -56,38 +69,55 @@
                      'Collectif',
                      class: 'custom-control-label'
     .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
-      = form.label :max_candidates, 'Nombre de stagiaires maximum par groupe'
-      small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
+      = form.label :max_candidates do
+        = 'Nombre de stagiaires maximum par groupe'
+        small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
       = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control col-lg-6'
     .form-group
-      = form.label :max_weeks, "Nombre de stage proposés dans l'année", required: true
-      small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
+      = form.label :max_weeks do
+        = "Nombre de stage proposés dans l'année"
+        small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
+        = form.rg2a_required_content_tag
+
       = form.number_field :max_weeks, value: @current_weeks.count, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
 
   fieldset
     legend Tuteur
     .form-group
-      = form.label :tutor_name, 'Prénom et nom', required: true
+      = form.label :tutor_name do
+        = 'Prénom et nom'
+        = form.rg2a_required_content_tag
+
       = form.text_field :tutor_name, class: 'form-control col-lg-6', required: true
     .form-group
-      = form.label :tutor_email, 'Adresse électronique', required: true
+      = form.label :tutor_email do
+        = 'Adresse électronique'
+        = form.rg2a_required_content_tag
+
       = form.email_field :tutor_email, class: 'form-control col-lg-6', required: true
     .form-group
-      = form.label :tutor_phone, 'Téléphone', required: true
-      small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
+      = form.label :tutor_phone do
+        = "Téléphone"
+        small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
+        = form.rg2a_required_content_tag
       = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
 
   fieldset data={controller: 'algolia-place'}
     legend L'entreprise ou Administration
     .form-group
-      = form.label :employer_name, "Nom de l'entreprise ou de l'administration", required: true
+      = form.label :employer_name do
+        = "Nom de l'entreprise ou de l'administration"
+        = form.rg2a_required_content_tag
       = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
+
     .form-group
       = form.label :employer_website, 'Site web'
       = form.url_field :employer_website, class: 'form-control col-lg-6'
 
     .form-group.d-none data={target: 'algolia-place.autocompleteFormGroup'}
-      = form.label :autocomplete, "Adresse du lieu où se déroule le stage", required: true
+      = form.label :autocomplete do
+        = "Adresse du lieu où se déroule le stage"
+        = form.rg2a_required_content_tag
       = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
       input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
       input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
@@ -95,18 +125,28 @@
       .form-row
         .col-sm-6
           .form-group
-            = form.label :employer_street, 'Rue', required: true
+            = form.label :employer_street do
+              = 'Rue'
+              = form.rg2a_required_content_tag
             = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
         .col-sm-4
           .form-group
-            = form.label :employer_city, 'Ville', required: true
+            = form.label :employer_city do
+              = 'Ville'
+              = form.rg2a_required_content_tag
             = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
         .col-sm-2
           .form-group
-            = form.label :employer_zipcode, 'Code postal', required: true
+            = form.label :employer_zipcode do
+              = 'Code postal'
+              = form.rg2a_required_content_tag
             = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
-    label.required Secteur
+
     .form-group
+      div.label
+        = "Secteur"
+        = form.rg2a_required_content_tag
+
       .custom-control.custom-radio
         = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: true
         = form.label :is_public_true, 'Public', class: 'custom-control-label'
