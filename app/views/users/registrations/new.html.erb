@@ -10,7 +10,7 @@
 
     <div class="form-group">
       <%= f.label :first_name do %>
-        Prénom
+        Mon prénom
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.text_field :first_name, class: 'form-control col-lg-6', required: true %>
@@ -18,7 +18,7 @@
 
     <div class="form-group">
       <%= f.label :last_name do %>
-        Nom
+        Mon nom
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
@@ -26,14 +26,14 @@
 
     <div class="form-group">
       <%= f.label :birth_date do %>
-        Date de naissance
+        Ma date de naissance
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.date_field :birth_date, class: 'form-control col-lg-6', required: true %>
     </div>
 
     <div class="form-group">
-      <div class="label">Sexe <abbr title="(obligatoire)">*</abbr></div>
+      <div class="label">Mon sexe <abbr title="(obligatoire)">*</abbr></div>
       <div class="custom-control custom-radio">
         <%= f.radio_button :gender,
                            "f",
@@ -60,7 +60,7 @@
 
   <div class="form-group">
     <%= f.label :email do %>
-      <%= resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel' %>
+      Mon <%= resource.type == 'SchoolManager' ? 'courriel professionnel' : 'courriel' %>
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>
@@ -68,7 +68,7 @@
 
   <div class="form-group">
     <%= f.label :password do %>
-      Mot de passe
+      Mon mot de passe
       <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
       <%= f.rg2a_required_content_tag %>
     <% end %>
@@ -77,14 +77,14 @@
 
   <div class="form-group">
     <%= f.label :password_confirmation do %>
-      Confirmation du mot de passe
+      Confirmation de mon mot de passe
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>
+    <%= f.submit "Je m'inscris", class: 'btn btn-primary' %>
   </div>
 <% end %>
 
