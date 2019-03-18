@@ -16,7 +16,6 @@ jobs: # a collection of steps
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
-      - image: validator/validator
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -24,8 +23,10 @@ jobs: # a collection of steps
       - run:
           name: Update Chromedriver
           command: |
+            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
             sudo apt-get update
-            sudo apt-get install google-chrome-stable
+            sudo apt-get upgrade google-chrome-stable
 
       # Which version of bundler?
       - run:
