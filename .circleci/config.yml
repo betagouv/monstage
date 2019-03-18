@@ -1,6 +1,7 @@
 version: 2 # use CircleCI 2.0
 jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
+    working_directory: ~/project
     docker: # run the steps with Docker
       - image: circleci/ruby:2.5.1-node-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
@@ -16,7 +17,6 @@ jobs: # a collection of steps
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
       - image: validator/validator
-      - image: selenium/standalone-chrome:3.5.3
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -40,7 +40,7 @@ jobs: # a collection of steps
       - save_cache:
           key: monstage-bundle-cachebust{{ checksum "Gemfile.lock" }}
           paths:
-            - ~/.bundle
+            - vendor/bundle
 
       - restore_cache:
           name: Restore yarn cache
@@ -49,7 +49,7 @@ jobs: # a collection of steps
 
       - run:
           name: Yarn Install
-          command: yarn install
+          command: yarn install --cache-folder ~/.cache/yarn
 
       - save_cache:
           name: Store yarn cache
@@ -69,11 +69,14 @@ jobs: # a collection of steps
 
       - run:
           name: Run TestUnit
-          command: bundle exec rake test --trace
+          command: bundle exec rake test
+      - run:
+          name: Run TestSystem
+          command: bundle exec rake test:system
 
       - run:
           name: w3c validation
-          command: java -jar /usr/local/lib/python3.5/dist-packages/vnujar/vnu.jar --errors-only ~/project/tmp/w3c/*.html
+          command: java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
