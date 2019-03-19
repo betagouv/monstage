@@ -26,4 +26,8 @@ class School < ApplicationRecord
       acc
     end
   end
+
+  def to_s
+    name
+  end
 end

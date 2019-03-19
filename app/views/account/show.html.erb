@@ -5,9 +5,11 @@
     <li class="nav-item">
       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Mon profil</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mon CV</a>
-    </li>
+    <% if current_user.is_a?(Student) %>
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mon CV</a>
+      </li>
+    <% end %>
   </ul>
 
   <!-- Tab panes -->
@@ -31,8 +33,10 @@
         <% end %>
       </div>
     </div>
-    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <p>CV incroyable</p>
-    </div>
+    <% if current_user.is_a?(Student) %>
+      <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <%= render "edit_resume" %>
+      </div>
+    <% end %>
   </div>
 <% end %>

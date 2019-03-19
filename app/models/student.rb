@@ -6,6 +6,10 @@ class Student < User
 
   has_many :internship_applications
 
+  def age
+    ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
+  end
+
   def to_s
     "#{super}, in school: #{school&.zipcode}"
   end
