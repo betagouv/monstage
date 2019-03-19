@@ -1,7 +1,12 @@
 <%= form_for [@school, @class_room] do |form|  %>
+  <%= form.rg2a_explain_required_asterisk %>
   <%= render "layouts/form_errors", object: @class_room %>
+
   <div class="form-group">
-    <%= form.label :name, 'Nom de la classe', class: 'required' %>
+    <%= form.label :name do %>
+      Nom de la classe
+      <%= form.rg2a_required_content_tag %>
+    <% end %>
     <%= form.text_field :name, required: true, class: 'form-control col-lg-6' %>
   </div>
   <div class="actions"><%= form.submit 'Enregistrer', class: 'btn btn-primary' %></div>

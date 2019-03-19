@@ -6765,6 +6765,11 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vnu-jar@^18.11.5:
+  version "18.11.5"
+  resolved "https://registry.yarnpkg.com/vnu-jar/-/vnu-jar-18.11.5.tgz#0d430cf2e84ba9c98f1441be09db7f32bbc46284"
+  integrity sha512-XxTYLOUgQYdvIlAgX1BtxZiQ97/OKuBaEojqZdjMnjI+OXDkSyQGNGpzUQIQygeRrFVdQ1/eAVfiRE/iIlV0fg==
+
 watchpack@^1.4.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"

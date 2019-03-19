@@ -14,10 +14,11 @@
 
   <body>
     <div class="container pb-3">
-      <div class="row">
-        <div class="col-12"><%= render 'layouts/navbar' %></div>
-
-      </div>
+      <header role="banner">
+        <div class="row">
+          <div class="col-12"><%= render 'layouts/navbar' %></div>
+        </div>
+      </header>
       <%= render 'layouts/flash' %>
       <%= yield %>
     </div>

@@ -1,16 +1,25 @@
 <% unless flash.keys.size.zero? %>
-  <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
-    <% if flash.keys.include?(flash_kind) %>
-      <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'danger' else flash_kind end %>
-      <div
-        id="alert-<%= bootstrap_style %>"
-        class="alert alert-<%= bootstrap_style %> col-12 my-3 alert-dismissible fade show"
-        role="alert">
-        <span id="alert-text"><%= flash[flash_kind] %></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <% end %>
-  <% end %>
+  <div class="row">
+    <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
+      <% if flash.keys.include?(flash_kind) %>
+        <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'danger' else flash_kind end %>
+        <div
+          id="alert-<%= bootstrap_style %>"
+          class="alert
+                 alert-<%= bootstrap_style %>
+                 col-12
+                 my-3
+                 alert-dismissible
+                 fade
+                 show"
+          role="alert">
+
+          <span id="alert-text"><%= flash[flash_kind] %></span>
+          <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <% end %>
+    <% end %>
+  </div>
 <% end %>

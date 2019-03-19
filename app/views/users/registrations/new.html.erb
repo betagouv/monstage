@@ -1,30 +1,90 @@
 <h2><%= t('devise.registrations.new.sign_up') %></h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: {controller: 'registration-form'}) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
+  <% if resource.type == "Student" %>
+    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: true %>
+
+    <div class="form-group">
+      <%= f.label :first_name do %>
+        Mon prénom
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.text_field :first_name, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :last_name do %>
+        Mon nom
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :birth_date do %>
+        Ma date de naissance
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.date_field :birth_date, class: 'form-control col-lg-6', required: true %>
+    </div>
+
+    <div class="form-group">
+      <div class="label">Mon sexe <abbr title="(obligatoire)">*</abbr></div>
+      <div class="custom-control custom-radio">
+        <%= f.radio_button :gender,
+                           "f",
+                           class: 'custom-control-input',
+                           id: "select-gender-girl",
+                           required: true  %>
+        <%= f.label :gender, "Fille",
+                             class: 'custom-control-label',
+                             for: "select-gender-girl" %>
+      </div>
+      <div class="custom-control custom-radio">
+        <%= f.radio_button :gender,
+                           "m",
+                           class: 'custom-control-input',
+                           id: "select-gender-boy"  %>
+        <%= f.label :gender, "Garçon",
+                             class: 'custom-control-label',
+                             for: "select-gender-boy" %>
+      </div>
+    </div>
+
+  <% end %>
+
 
   <div class="form-group">
-    <%= f.label resource.type == 'SchoolManager' ? 'Courriel professionnel' : 'Courriel', class: 'required', data: { target: 'registration-form.emailLabel'} %>
+    <%= f.label :email do %>
+      Mon <%= resource.type == 'SchoolManager' ? 'courriel professionnel' : 'courriel' %>
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password, class: 'required' %>
-    <% if @minimum_password_length %>
-    <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+    <%= f.label :password do %>
+      Mon mot de passe
+      <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+      <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.password_field :password, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="form-group">
-    <%= f.label :password_confirmation, class: 'required' %>
+    <%= f.label :password_confirmation do %>
+      Confirmation de mon mot de passe
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control col-lg-6', required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit t('devise.registrations.new.sign_up'), class: 'btn btn-primary' %>
+    <%= f.submit "Je m'inscris", class: 'btn btn-primary' %>
   </div>
 <% end %>
 

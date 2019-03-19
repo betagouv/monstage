@@ -1,57 +1,35 @@
 import { Controller } from "stimulus"
+import { showElement, hideElement } from "../utils/dom"
 
-const flexibleSearch = (searchText) => {
-  return searchText.replace(" ", ".")
-                   .replace("-", ".")
+// replace dash / white space with wildcard char
+// searching for Saint Denis, which is officialy written Saint-Denis
+// TODO: rethink this one for accentuated chars, any idea brice?
+const formatSearchStringForRegexp = (searchText) => {
+  const wildcard = '.';
+  return searchText.replace(/ /g, wildcard)
+                   .replace(/-/g, wildcard)
 }
+
 export default class extends Controller {
-  static targets = [ "inputSearchCity",
-                     "listSchools",
-                     "listCities",
-                     "cityItem",
-                     "cityContainer",
-                     "schoolItem",
-                     "resetSearchCityButton",
-                     "placeholderSchoolInput" ]
+  static targets = [ 'inputSearchCity',
+                     'listSchools',
+                     'listCities',
+                     'cityItem',
+                     'cityContainer',
+                     'schoolItem',
+                     'resetSearchCityButton',
+                     'placeholderSchoolInput',
+                     'classRoomSelect' ]
 
-  onSelectedCity(event) {
-    const $sourceTarget = $(event.target)
-    const val = $sourceTarget.text()
+  // -
+  // event handlers
+  // -
+  onSearchCityKeystroke(event) {
+    const searchValue = $(this.inputSearchCityTarget).val()
+    const searchRegExp = new RegExp(formatSearchStringForRegexp(searchValue), 'i')
+    const startAutocompleteAtLength = 1;
 
-    this.selectCity(val);
-  }
-
-  selectCity(val) {
-    const searchRegExp = new RegExp(flexibleSearch(val), 'i');
-
-    this.hideCitiesList()
-    this.showSchoolsList()
-    $(this.inputSearchCityTarget).val(val)
-    $(this.schoolItemTargets).each((i, el) => {
-      const $el = $(el);
-
-      if (searchRegExp.test($el.data('city'))) {
-        $el.removeClass('d-none');
-      } else {
-        $el.addClass('d-none');
-      }
-    })
-  }
-
-  resetCitySearch() {
-    $(this.inputSearchCityTarget).val("");
-    this.hideCitiesList();
-    this.hideSchoolsList();
-    $(this.schoolItemTarges).each((i, el) => {
-      if ($(el).prop('checked', false));
-    })
-  }
-
-  filterCities(event) {
-    const val = $(this.inputSearchCityTarget).val()
-    const searchRegExp = new RegExp(flexibleSearch(val), 'i')
-
-    if (val.length > 1) {
+    if (searchValue.length > startAutocompleteAtLength) {
       this.showCitiesList();
     }
 
@@ -59,37 +37,118 @@ export default class extends Controller {
       const $el = $(el);
 
       if (searchRegExp.test($el.text())) {
-        $el.removeClass('d-none');
+        showElement($el)
       } else {
-        $el.addClass('d-none');
+        hideElement($el)
       }
     })
   }
 
+  onSelectCity(event) {
+    const $sourceTarget = $(event.target)
+    const cityName = $sourceTarget.text()
+
+    this.selectCity(cityName);
+    this.resetSchoolsList();
+    this.resetClassRoomList([]);
+  }
+
+  onSelectSchool(event) {
+    const $sourceTarget = $(event.target) // clicked radio school
+
+    this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
+  }
+
+  onResetCityClicked() {
+    $(this.inputSearchCityTarget).val("");
+    this.hideCitiesList();
+    this.hideSchoolsList();
+    this.resetSchoolsList();
+    this.resetClassRoomList([]);
+  }
+
+  // -
+  // used by onSelectCity and to initialize component
+  // -
+  selectCity(val) {
+    const searchRegExp = new RegExp(formatSearchStringForRegexp(val), 'i');
+
+    this.hideCitiesList()
+    this.showSchoolsList()
+
+    $(this.inputSearchCityTarget).val(val)
+    $(this.schoolItemTargets).each((i, el) => {
+      const $el = $(el);
+
+      if (searchRegExp.test($el.data('city'))) {
+        showElement($el)
+      } else {
+        hideElement($el)
+      }
+    })
+  }
+
+
+  // -
+  // UI Helpers
+  // -
+  resetClassRoomList(classRoomList) {
+    const $classRoomSelectTarget = $(this.classRoomSelectTarget);
+
+    if (classRoomList.length > 0) {
+      $classRoomSelectTarget.attr('disabled', false)
+      $classRoomSelectTarget.html(
+        $(`<option value="">-- Veuillez selectionner une classe --</option>`)
+      )
+      $.each(classRoomList, (i, el) => {
+        $classRoomSelectTarget.append($(`<option value="${el.id}">${el.name}</option>`))
+      })
+    } else {
+      $classRoomSelectTarget.attr('disabled', true)
+      $classRoomSelectTarget.html(
+        $(`<option value="">-- Aucune classe disponible --</option>`)
+      )
+    }
+  }
+
+  resetSchoolsList() {
+    $(this.schoolItemTargets).each((i, el) => {
+      if (el.checked) {
+        el.checked = false;
+      }
+
+    })
+  }
+
   hideSchoolsList() {
-    $(this.listSchoolsTarget).addClass('d-none');
-    $(this.placeholderSchoolInputTarget).removeClass('d-none');
+    hideElement($(this.listSchoolsTarget))
+    showElement($(this.placeholderSchoolInputTarget))
   }
 
   showSchoolsList() {
-    $(this.listSchoolsTarget).removeClass('d-none');
-    $(this.placeholderSchoolInputTarget).addClass('d-none');
+    showElement($(this.listSchoolsTarget))
+    hideElement($(this.placeholderSchoolInputTarget))
   }
 
   hideCitiesList() {
-    $(this.listCitiesTarget).addClass('d-none');
+    hideElement($(this.listCitiesTarget));
   }
 
   showCitiesList() {
-    $(this.listCitiesTarget).removeClass('d-none');
+    showElement($(this.listCitiesTarget));
   }
 
+  // -
+  // Life Cycle
+  // -
   connect() {
+    // should be bound via Stimulus ; but change event sucks?
     $(this.inputSearchCityTarget)
-      .on("keyup", this.filterCities.bind(this))
-    const currentValue = $(this.inputSearchCityTarget).val();
-    if (currentValue) {
-      this.selectCity(currentValue);
+      .on("keyup", this.onSearchCityKeystroke.bind(this))
+
+    const currentCityName = $(this.inputSearchCityTarget).val();
+    if (currentCityName) {
+      this.selectCity(currentCityName);
     } else {
       this.hideSchoolsList();
       this.hideCitiesList();
