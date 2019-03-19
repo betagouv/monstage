@@ -23,8 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:as].blank?
       redirect_to users_choose_profile_path
     else
-      super do |resource|
-      end
+      super
     end
   end
 
