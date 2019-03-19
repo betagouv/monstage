@@ -1,22 +1,38 @@
-<h2>Mon compte</h2>
-<div class="row">
-  <% if current_user.is_a?(God) %>
-    <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
-  <% else %>
-    <% if can? :update, User %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_account_card" %>
+<% if current_user.is_a?(God) %>
+  <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
+<% else %>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Mon profil</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mon CV</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="row">
+        <% if can? :update, User %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_account_card" %>
+          </div>
+        <% end %>
+         <% if can? :new, ClassRoom %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_school_class_rooms_card" %>
+          </div>
+        <% end %>
+         <% if can?(:update, School) %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_school_card" %>
+          </div>
+        <% end %>
       </div>
-    <% end %>
-     <% if can? :new, ClassRoom %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_school_class_rooms_card" %>
-      </div>
-    <% end %>
-     <% if can?(:update, School) %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_school_card" %>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+    </div>
+    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <p>CV incroyable</p>
+    </div>
+  </div>
+<% end %>
