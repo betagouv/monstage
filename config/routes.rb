@@ -6,8 +6,9 @@ Rails.application.routes.draw do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
   end
 
-  resources :internship_offers
-  resources :internship_applications, only: [:create]
+  resources :internship_offers do
+    resources :internship_applications, only: [:create]
+  end
 
   resources :schools, only: [:edit, :update, :index] do
     resources :class_rooms, only: [:new, :create, :edit, :update]

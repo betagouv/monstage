@@ -4,10 +4,10 @@ class InternshipApplicationsController < ApplicationController
     @internship_application = InternshipApplication.create(internship_application_params)
 
     if @internship_application.valid?
-      redirect_to internship_offer_path, flash: { success: "Votre candidature a bien été envoyée." }
+      redirect_to internship_offers_path, flash: { success: "Votre candidature a bien été envoyée." }
     else
-      @internship_offer = @internship_application.internship_offer
-      redirect_to @internship_offer.blank? ? root_path : @internship_offer, flash: { danger: "Erreur dans la saisie de votre candidature" }
+      @internship_offer = InternshipOffer.find(params[:internship_offer_id])
+      redirect_to @internship_offer, flash: { danger: "Erreur dans la saisie de votre candidature" }
     end
   end
 

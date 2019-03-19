@@ -50,7 +50,7 @@ p
 - if can?(:apply, InternshipOffer)
   h2 Je candidate
 
-  = form_for @internship_application do |f|
+  = form_for [@internship_offer, @internship_application] do |f|
     = render "layouts/form_errors", object: @internship_application
 
     = f.hidden_field :user_id, value: @internship_application.student.id
