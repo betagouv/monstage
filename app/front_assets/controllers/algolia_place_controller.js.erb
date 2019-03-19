@@ -1,5 +1,6 @@
 import { Controller } from "stimulus"
 import places from 'places.js';
+import { showElement } from "../utils/dom"
 
 export default class extends Controller {
   static targets = [ "autocompleteFormGroup",
@@ -51,7 +52,7 @@ export default class extends Controller {
     */
 
     // when everything is ok ; show autocompleteTarget and makes default input readonly
-    $(this.autocompleteFormGroupTarget).removeClass('d-none')
+    showElement($(this.autocompleteFormGroupTarget));
     $(this.streetInputTarget).prop("readonly", true)
     $(this.cityInputTarget).prop("readonly", true)
     $(this.zipcodeInputTarget).prop("readonly", true)

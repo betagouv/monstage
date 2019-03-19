@@ -1,15 +1,20 @@
 h2 Mon compte
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+  = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', object: current_user
-  = render 'users/form/select_school', form: f, school: current_user.school
 
+  = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room)
   .form-group
-    = f.label :first_name, 'Mon Prénom', class: 'required'
+    = f.label :first_name do
+      = 'Mon Prénom'
+      = f.rg2a_required_content_tag
     = f.text_field :first_name, class: 'form-control col-lg-6',
       required: true
   .form-group
-    = f.label :last_name, 'Mon Nom', class: 'required'
+    = f.label :last_name do
+      = 'Mon Nom'
+      = f.rg2a_required_content_tag
     = f.text_field :last_name, class: 'form-control col-lg-6',
       required: true
 

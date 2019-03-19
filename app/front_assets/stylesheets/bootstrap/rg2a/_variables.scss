@@ -1,0 +1,24 @@
+// imported from http://design.tetue.net/public-style-guide/
+
+// Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
+$gray-600: #767676; // text muted color
+// Éviter les contrastes maximum (tel que noir #000000 sur blanc #FFFFFF).
+$gray-900: #333;    // body text color
+
+// s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
+$blue:    #007bff;
+$red:     #dc3545;
+$yellow:  #AE650B;
+$green:   #28a745;
+$cyan:    #0981A1;
+
+// liens soulignés
+$link-decoration: underline;
+// font lisible
+$font-family-sans-serif: Roboto, Helvetica, Arial, sans-serif;
+
+// override alert styles, otherwise bootstrap do color manipulation
+// which return non optimized contrast
+$alert-bg-level: 1;
+$alert-border-level: 1;
+$alert-color-level: 1;

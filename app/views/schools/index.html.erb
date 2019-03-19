@@ -14,7 +14,7 @@
       <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>" >
         <th scope="row"><%= school.name %></th>
         <td>
-          <a href="https://www.google.com?q=<%= school.code_uai %>" target="_blank">
+          <a class="external" href="https://www.google.com?q=<%= school.code_uai %>" target="_blank">
             <%= school.code_uai %>
             <i class="fas fa-external-link-alt"></i>
             (nouvelle fenêtre)

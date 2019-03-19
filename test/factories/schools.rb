@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :school do
     name { 'Collègue evariste Gallois' }
     coordinates { Coordinates.paris }
+
     trait :at_paris do
       city { 'Paris' }
       departement_name { 'Paris 75015' }

@@ -12,7 +12,8 @@
     "rails-erb-loader": "^5.5.2",
     "rails-ujs": "^5.2.2",
     "stimulus": "^1.1.1",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "vnu-jar": "^18.11.5"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  default_form_builder Rg2aFormBuilder
+
   rescue_from(CanCan::AccessDenied) do |error|
     redirect_to(root_path,
                 flash: { danger: "Vous n'êtes pas autorisé à effectuer cette action." })

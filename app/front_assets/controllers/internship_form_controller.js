@@ -1,17 +1,17 @@
 import { Controller } from "stimulus"
-
+import { toggleElement } from "../utils/dom"
 export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
                      "selectWeeks" ]
 
   // show/hide group internship custom controls
   toggleCanBeAppliedSection(event) {
-    $(this.maxCandidatesGroupTarget).toggleClass('d-none');
+    toggleElement($(this.maxCandidatesGroupTarget))
   }
 
   // show/hide div next of element
   toggleClosestHelpSign(event) {
-    $(event.target).next().toggleClass('d-none');
+    toggleElement($(event.target).next())
   }
 
   // toggle all weeks options
