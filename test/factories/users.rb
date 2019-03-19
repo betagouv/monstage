@@ -8,6 +8,7 @@ FactoryBot.define do
 
     factory :student, class: 'Student', parent: :user do
       type { 'Student' }
+      birth_date { Date.new(2005, 1, 1) }
     end
 
     factory :employer, class: 'Employer', parent: :user do
