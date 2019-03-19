@@ -61,6 +61,7 @@ p
 
     .form-group
       = f.label :motivation, 'Ma motivation', class: 'required'
+      small.form-text.text-muted.mt-0 Relisez vous, corrigez vos fautes d'orthographes et utilisez une formule de politesse pour conclure
       = f.text_area :motivation, class: "form-control col-lg-6", required: true
 
     = f.submit 'Envoyer', class: 'btn btn-primary'
