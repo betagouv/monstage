@@ -64,6 +64,12 @@ p
       small.form-text.text-muted.mt-0 Relisez vous, corrigez vos fautes d'orthographes et utilisez une formule de politesse pour conclure
       = f.text_area :motivation, class: "form-control col-lg-6", required: true
 
+    p
+      = link_to account_path(tab: 'resume'), target: "_blank", class: 'external' do
+        | Relire mon CV
+        i.fas.fa-external-link-alt
+        = "(nouvelle fenêtre)"
+
     = f.submit 'Envoyer', class: 'btn btn-primary'
 
 #delete-offer-modal.modal tabindex="-1" role="dialog"

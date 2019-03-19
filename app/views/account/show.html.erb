@@ -3,18 +3,18 @@
 <% else %>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Mon profil</a>
+      <a class="nav-link <%= 'active' if params[:tab].blank? || params[:tab] == 'account' %>" id="account-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">Mon profil</a>
     </li>
     <% if current_user.is_a?(Student) %>
       <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mon CV</a>
+        <a class="nav-link <%= 'active' if params[:tab] == 'resume' %>" id="resume-tab" data-toggle="tab" href="#resume" role="tab" aria-controls="resume" aria-selected="false">Mon CV</a>
       </li>
     <% end %>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-pane <%= 'active' if params[:tab].blank? || params[:tab] == 'account' %>" id="account" role="tabpanel" aria-labelledby="account-tab">
       <div class="row">
         <% if can? :update, User %>
           <div class="col-sm-6 col-md-4">
@@ -34,7 +34,7 @@
       </div>
     </div>
     <% if current_user.is_a?(Student) %>
-      <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="tab-pane <%= 'active' if params[:tab] == 'resume' %>" id="resume" role="tabpanel" aria-labelledby="resume-tab">
         <%= render "edit_resume" %>
       </div>
     <% end %>
