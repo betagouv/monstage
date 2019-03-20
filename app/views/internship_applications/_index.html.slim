@@ -9,7 +9,7 @@ h2 Mes candidatures
         th scope="col" Élève
         th scope="col" Semaine
         th scope="col" Motivation
-        th scope="col"
+        th scope="col" Statut
     tbody
       - @internship_offer.internship_applications.each do |internship_application|
         tr
@@ -17,5 +17,12 @@ h2 Mes candidatures
           td = internship_application.week.select_text_method
           td = internship_application.motivation
           td
-            .fas.fa-2x.fa-check-circle
-            .fas.fa-2x.fa-times-circle
+            - if internship_application.submitted?
+              = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: true), method: :patch do
+                .fas.fa-2x.fa-check-circle
+              = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: false), method: :patch do
+                .fas.fa-2x.fa-times-circle
+            - elsif internship_application.approved?
+              | Validée
+            - else
+              | Rejetée
