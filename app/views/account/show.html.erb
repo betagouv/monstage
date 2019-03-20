@@ -1,22 +1,42 @@
-<h2>Mon compte</h2>
-<div class="row">
-  <% if current_user.is_a?(Users::God) %>
-    <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
-  <% else %>
-    <% if can? :update, User %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_account_card" %>
+<% if current_user.is_a?(Users::God) %>
+  <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
+<% else %>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link <%= 'active' if params[:tab].blank? || params[:tab] == 'account' %>" id="account-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">Mon profil</a>
+    </li>
+    <% if current_user.is_a?(Users::Student) %>
+      <li class="nav-item">
+        <a class="nav-link <%= 'active' if params[:tab] == 'resume' %>" id="resume-tab" data-toggle="tab" href="#resume" role="tab" aria-controls="resume" aria-selected="false">Mon CV</a>
+      </li>
+    <% end %>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div class="tab-pane <%= 'active' if params[:tab].blank? || params[:tab] == 'account' %>" id="account" role="tabpanel" aria-labelledby="account-tab">
+      <div class="row">
+        <% if can? :update, User %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_account_card" %>
+          </div>
+        <% end %>
+         <% if can? :new, ClassRoom %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_school_class_rooms_card" %>
+          </div>
+        <% end %>
+         <% if can?(:update, School) %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_school_card" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% if current_user.is_a?(Users::Student) %>
+      <div class="tab-pane <%= 'active' if params[:tab] == 'resume' %>" id="resume" role="tabpanel" aria-labelledby="resume-tab">
+        <%= render "edit_resume" %>
       </div>
     <% end %>
-     <% if can? :new, ClassRoom %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_school_class_rooms_card" %>
-      </div>
-    <% end %>
-     <% if can?(:update, School) %>
-      <div class="col-sm-6 col-md-4">
-        <%= render "edit_school_card" %>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

@@ -8,6 +8,7 @@ FactoryBot.define do
 
     factory :student, class: 'Users::Student', parent: :user do
       type { 'Users::Student' }
+
       first_name { 'Rick' }
       last_name { 'Roll' }
       gender { 'm' }

@@ -1,10 +1,14 @@
 <div class="card">
   <div class="card-body">
+    <p><%= current_user.name %></p>
     <% if current_user.school %>
-      <h5 class="card-title">Mon Collège</h5>
       <p class="card-text"><%= current_user.school.name %></p>
+      <% if current_user.is_a?(Users::Student) %>
+        <p class="card-text">
+          <%= current_user.class_room || "Vous n'avez pas encore sélectionné de classe" %>
+        </p>
+      <% end %>
     <% else %>
-      <h5 class="card-title">Mon Collège</h5>
       <p class="card-text">Vous n'avez pas encore sélectionné de collège</p>
     <% end %>
     <%= link_to "Modifier", account_edit_path, class: 'btn btn-primary' %>
