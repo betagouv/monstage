@@ -10,6 +10,13 @@ const formatSearchStringForRegexp = (searchText) => {
                    .replace(/-/g, wildcard)
 }
 
+const makeClassRoomOption = (classRoom) => {
+  const option = document.createElement("option");
+  option.value = classRoom.id
+  option.textContent = classRoom.name
+  return option;
+}
+
 export default class extends Controller {
   static targets = [ 'inputSearchCity',
                      'listSchools',
@@ -25,7 +32,7 @@ export default class extends Controller {
   // event handlers
   // -
   onSearchCityKeystroke(event) {
-    const searchValue = $(this.inputSearchCityTarget).val()
+    const searchValue = this.inputSearchCityTarget.value
     const searchRegExp = new RegExp(formatSearchStringForRegexp(searchValue), 'i')
     const startAutocompleteAtLength = 1;
 
@@ -33,20 +40,17 @@ export default class extends Controller {
       this.showCitiesList();
     }
 
-    $(this.cityItemTargets).each((i, el) => {
-      const $el = $(el);
-
-      if (searchRegExp.test($el.text())) {
-        showElement($el)
+    Array.from(this.cityItemTargets).forEach((element) => {
+      if (searchRegExp.test(element.textContent)) {
+        showElement(element)
       } else {
-        hideElement($el)
+        hideElement(element)
       }
     })
   }
 
   onSelectCity(event) {
-    const $sourceTarget = $(event.target)
-    const cityName = $sourceTarget.text()
+    const cityName = event.target.textContent
 
     this.selectCity(cityName);
     this.resetSchoolsList();
@@ -54,13 +58,11 @@ export default class extends Controller {
   }
 
   onSelectSchool(event) {
-    const $sourceTarget = $(event.target) // clicked radio school
-
-    this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
+    this.resetClassRoomList(JSON.parse(event.target.dataset.classRoomAvailable))
   }
 
   onResetCityClicked() {
-    $(this.inputSearchCityTarget).val("");
+    this.inputSearchCityTarget.value = null;
     this.hideCitiesList();
     this.hideSchoolsList();
     this.resetSchoolsList();
@@ -75,15 +77,12 @@ export default class extends Controller {
 
     this.hideCitiesList()
     this.showSchoolsList()
-
-    $(this.inputSearchCityTarget).val(val)
-    $(this.schoolItemTargets).each((i, el) => {
-      const $el = $(el);
-
-      if (searchRegExp.test($el.data('city'))) {
-        showElement($el)
+    this.inputSearchCityTarget.value = val
+    Array.from(this.schoolItemTargets).forEach((element) => {
+      if (searchRegExp.test(element.dataset.city)) {
+        showElement(element)
       } else {
-        hideElement($el)
+        hideElement(element)
       }
     })
   }
@@ -93,49 +92,47 @@ export default class extends Controller {
   // UI Helpers
   // -
   resetClassRoomList(classRoomList) {
-    const $classRoomSelectTarget = $(this.classRoomSelectTarget);
+    const hasClassRooms = classRoomList.length > 0
+    const defaultOption = makeClassRoomOption({
+      id: "",
+      name: hasClassRooms
+            ? "-- Veuillez selectionner une classe --"
+            : "-- Aucune classe disponible --"
+    })
 
-    if (classRoomList.length > 0) {
-      $classRoomSelectTarget.attr('disabled', false)
-      $classRoomSelectTarget.html(
-        $(`<option value="">-- Veuillez selectionner une classe --</option>`)
-      )
-      $.each(classRoomList, (i, el) => {
-        $classRoomSelectTarget.append($(`<option value="${el.id}">${el.name}</option>`))
-      })
-    } else {
-      $classRoomSelectTarget.attr('disabled', true)
-      $classRoomSelectTarget.html(
-        $(`<option value="">-- Aucune classe disponible --</option>`)
-      )
-    }
+    this.classRoomSelectTarget.disabled= !hasClassRooms;
+    this.classRoomSelectTarget.innerHTML = ""
+    this.classRoomSelectTarget.appendChild(defaultOption)
+    classRoomList.forEach( (classRoom) => {
+      this.classRoomSelectTarget.appendChild(makeClassRoomOption(classRoom))
+    })
   }
 
   resetSchoolsList() {
-    $(this.schoolItemTargets).each((i, el) => {
-      if (el.checked) {
-        el.checked = false;
+    Array.from(this.schoolItemTargets).forEach((element) => {
+      if (element.checked) {
+        element.checked = false;
       }
 
     })
   }
 
   hideSchoolsList() {
-    hideElement($(this.listSchoolsTarget))
-    showElement($(this.placeholderSchoolInputTarget))
+    hideElement(this.listSchoolsTarget);
+    showElement(this.placeholderSchoolInputTarget);
   }
 
   showSchoolsList() {
-    showElement($(this.listSchoolsTarget))
-    hideElement($(this.placeholderSchoolInputTarget))
+    showElement(this.listSchoolsTarget);
+    hideElement(this.placeholderSchoolInputTarget);
   }
 
   hideCitiesList() {
-    hideElement($(this.listCitiesTarget));
+    hideElement(this.listCitiesTarget);
   }
 
   showCitiesList() {
-    showElement($(this.listCitiesTarget));
+    showElement(this.listCitiesTarget);
   }
 
   // -
@@ -143,10 +140,12 @@ export default class extends Controller {
   // -
   connect() {
     // should be bound via Stimulus ; but change event sucks?
-    $(this.inputSearchCityTarget)
-      .on("keyup", this.onSearchCityKeystroke.bind(this))
+    this.inputSearchCityTarget.addEventListener(
+      "keyup",
+      this.onSearchCityKeystroke.bind(this)
+    )
 
-    const currentCityName = $(this.inputSearchCityTarget).val();
+    const currentCityName = this.inputSearchCityTarget.value;
     if (currentCityName) {
       this.selectCity(currentCityName);
     } else {

@@ -18,6 +18,6 @@
           .filter-section.py-3
             fieldset
               legend Domaine d'activité
-              = select_tag "Domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', multiple: true, data: { action: 'internship-index#filterOffersBySectors'} }
+              = select_tag "Domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq.map{|sector| [sector, sector, data: {target: 'internship-index.filterOption'}]}), { id: 'internship-offer-sector-filter', class: 'custom-select', multiple: true, data: { action: 'internship-index#filterOffersBySectors'} }
 
     .row= render partial: "internship_offer", collection: @internship_offers

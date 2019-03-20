@@ -12,15 +12,15 @@
 
     = form.text_field :title, class: "form-control col-lg-6", required: true
 
-  .form-group
+  .form-group data-controller="help"
     = form.label :description do
       = 'Description'
       = form.rg2a_required_content_tag
 
-    a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
+    a.btn.btn-link data-action="click->help#toggle"
       i.fa.fa-question-circle
 
-    .help-sign-content.d-none
+    .help-sign-content.d-none data-target="help.content"
       ol
         li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
         li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
@@ -41,7 +41,7 @@
         = form.rg2a_required_content_tag
 
       .custom-control.custom-checkbox.mb-1
-        = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', data: {action: "change->internship-form#toggleWeeks"}
+        = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', data: {action: "change->internship-form#toggleWeeks", target:'internship-form.allYearLong'}
         = label_tag 'all_year_long', "Tout sélectionner / désélectionner", class: 'custom-control-label'
       = form.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @internship_offer.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true, data: {target: 'internship-form.selectWeeks'}
 

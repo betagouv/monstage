@@ -1,19 +1,19 @@
 import { Controller } from "stimulus"
 import Turbolinks from 'turbolinks';
-import { setElementVisibility } from "../utils/dom";
 
 // should be a link, but have to check with Brice why ...
 export default class extends Controller {
-  static targets = [ "offer" ];
+  static targets = [ "offer",
+                     "filterOption" ];
 
   filterOffersBySectors(event) {
-    // let sector = event.target.options[event.target.selectedIndex].value;
-    let sectors = $("#internship-offer-sector-filter option:selected").map(function() { return this.value }).get();
+    const sectors = Array.from(this.filterOptionTargets)
+                         .filter((element) => element.selected )
+                         .map((element) => element.value)
 
-    $(this.offerTargets).each(function (index, offer) {
-      let shouldBeHidden = sectors.length > 0 && !sectors.includes($(offer).data('sector'));
-      setElementVisibility($(offer), !shouldBeHidden)
+    Array.from(this.offerTargets).forEach((offerElement) => {
+      let shouldBeHidden = sectors.length > 0 && !sectors.includes(offerElement.dataset.sector);
+      setElementVisibility(offerElement, !shouldBeHidden)
     });
   }
-
 }
