@@ -60,3 +60,5 @@ gem 'sentry-raven'
 
 gem 'devise'
 gem 'devise-i18n'
+
+gem 'aasm'
