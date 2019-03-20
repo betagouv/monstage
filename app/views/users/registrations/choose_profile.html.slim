@@ -10,3 +10,6 @@ h2 = t('devise.registrations.new.sign_up')
 
 .mt-3
   = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-primary'
+
+.mt-3
+  = select_tag :type, ["-- Membre de l'équipe pédagogique --", "Professeur Principal", "Professeur", "Psychologue", "CPE", "Documentaliste", "Secrétaire", "Autre"]

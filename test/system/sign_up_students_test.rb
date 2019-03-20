@@ -18,7 +18,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     click_on "Je suis élève de 3e"
 
     # fails to create student with existing email
-    assert_difference('Student.count', 0) do
+    assert_difference('Users::Student.count', 0) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
@@ -39,7 +39,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
                  "re-select of city after failure fails"
 
     # create student
-    assert_difference('Student.count', 1) do
+    assert_difference('Users::Student.count', 1) do
       fill_in "Mon courriel", with: "another@email.com"
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"

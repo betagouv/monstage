@@ -1,6 +1,6 @@
 <h2>Mon compte</h2>
 <div class="row">
-  <% if current_user.is_a?(God) %>
+  <% if current_user.is_a?(Users::God) %>
     <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
   <% else %>
     <% if can? :update, User %>
