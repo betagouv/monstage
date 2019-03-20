@@ -10,7 +10,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test "Student" do
-    ability = Ability.new(create(:student))
+    ability = Ability.new(build(:student))
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
     assert(ability.can?(:apply, InternshipOffer.new),
@@ -45,7 +45,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test "God" do
-    ability = Ability.new(create(:god))
+    ability = Ability.new(build(:god))
     assert(ability.can?(:show, :account),
            'god should be able to see his account')
     assert(ability.can?(:manage, School),
@@ -55,7 +55,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'MainTeacher' do
-    ability = Ability.new(create(:main_teacher))
+    ability = Ability.new(build(:main_teacher))
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
     assert(ability.can?(:choose_school, :sign_up),
