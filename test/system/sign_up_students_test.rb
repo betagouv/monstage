@@ -47,7 +47,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     # check created student has valid info
-    created_student = Student.where(email: "another@email.com").first
+    created_student = Users::Student.where(email: "another@email.com").first
     assert_equal school_1, created_student.school
     assert_equal class_room_1, created_student.class_room
     assert_equal "Martin", created_student.first_name
