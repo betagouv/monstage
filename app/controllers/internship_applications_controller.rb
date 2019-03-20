@@ -4,6 +4,7 @@ class InternshipApplicationsController < ApplicationController
     @internship_application = InternshipApplication.create(internship_application_params)
 
     if @internship_application.valid?
+      EmployerMailer.with(internship_application: @internship_application).new_internship_application_email.deliver_later
       redirect_to internship_offers_path, flash: { success: "Votre candidature a bien été envoyée." }
     else
       @internship_offer = InternshipOffer.find(params[:internship_offer_id])
