@@ -6,7 +6,7 @@ class UserManager
     'Employer' => Users::Employer,
     'Librarian' => Users::Librarian,
     'MainTeacher' => Users::MainTeacher,
-    'Other' => Users::Other,q
+    'Other' => Users::Other,
     'Psychologist' => Users::Psychologist,
     'SchoolManager' => Users::SchoolManager,
     'Secretary' => Users::Secretary,
