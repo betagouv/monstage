@@ -8,6 +8,7 @@ class Ability
       when 'Users::Employer' then employer_abilities(user: user)
       when 'Users::SchoolManager' then school_manager_abilities(user: user)
       when 'Users::God' then god_abilities(user: user)
+      when 'Users::MainTeacher' then main_teacher_abilities(user: user)
       else
       end
     else
@@ -24,6 +25,7 @@ class Ability
     can :read, InternshipOffer
     can :apply, InternshipOffer
     can [:show, :update], User
+    can [:choose_school, :choose_class_room, :choose_full_name, :choose_gender_and_birthday], :sign_up
   end
 
   def school_manager_abilities(user:)
@@ -31,6 +33,13 @@ class Ability
     can [:create, :new, :update], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
+    can :choose_school
+  end
+
+  def main_teacher_abilities(user:)
+    can :show, :account
+    can [:show, :edit, :update], User
+    can [:choose_school, :choose_class_room, :choose_full_name], :sign_up
   end
 
   def employer_abilities(user:)

@@ -4,16 +4,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-
   # GET /users/choose_profile
   # def choose_profile
   #
   # end
+
   def resource_class
     case params[:as]
       when 'Student' then Users::Student
       when 'SchoolManager' then Users::SchoolManager
       when 'Employer' then Users::Employer
+      when 'MainTeacher' then Users::MainTeacher
       else User
     end
   end
@@ -23,14 +24,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:as].blank?
       redirect_to users_choose_profile_path
     else
-      super
+      super do |resource|
+        @current_ability = Ability.new(resource)
+      end
     end
   end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super do |resource|
+      @current_ability = Ability.new(resource)
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -80,4 +85,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
 end

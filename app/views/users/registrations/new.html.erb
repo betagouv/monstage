@@ -1,13 +1,15 @@
 <h2><%= t('devise.registrations.new.sign_up') %></h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
-  <% if resource.type == "Users::Student" %>
-    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: true %>
 
+  <% if can?(:choose_school, :sign_up) %>
+    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: can?(:choose_class_room, :sign_up) %>
+  <% end %>
+
+  <% if can?(:choose_full_name, :sign_up) %>
     <div class="form-group">
       <%= f.label :first_name do %>
         Mon prénom
@@ -23,7 +25,9 @@
       <% end %>
       <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
     </div>
+  <% end %>
 
+  <% if can?(:choose_gender_and_birthday, :sign_up) %>
     <div class="form-group">
       <%= f.label :birth_date do %>
         Ma date de naissance
@@ -54,9 +58,7 @@
                              for: "select-gender-boy" %>
       </div>
     </div>
-
   <% end %>
-
 
   <div class="form-group">
     <%= f.label :email do %>
