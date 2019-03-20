@@ -1,0 +1,19 @@
+p
+  = current_user.name
+  br
+  = "#{current_user.school} #{current_user.class_room}"
+  br
+  = "#{current_user.age} ans"
+
+= form_for current_user, as: :user, url: account_path, method: :patch do |f|
+  .form-group
+    = f.label :resume_educational_background, 'Parcours Scolaire'
+    = f.text_area :resume_educational_background, class: 'form-control col-lg-6'
+  .form-group
+    = f.label :resume_volunteer_work, 'Engagement asscociatif'
+    = f.text_area :resume_volunteer_work, class: 'form-control col-lg-6'
+  .form-group
+    = f.label :resume_other, 'Autre (sport, loisirs)'
+    = f.text_area :resume_other, class: 'form-control col-lg-6'
+
+  = f.submit 'Enregistrer', class: 'btn btn-primary'

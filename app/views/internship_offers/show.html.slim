@@ -48,7 +48,29 @@ p
     = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
 
 - if can?(:apply, InternshipOffer)
-  = button_tag 'Je candidate', disabled: true, class: 'btn btn-primary'
+  h2 Je candidate
+
+  = form_for [@internship_offer, @internship_application] do |f|
+    = render "layouts/form_errors", object: @internship_application
+
+    = f.hidden_field :user_id, value: @internship_application.student.id
+
+    .form-group
+      = f.label :internship_offer_week_id, "Quelle semaine ?", class: 'required'
+      = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks, :id, :select_text_method), {}, class: "form-control col-lg-6", required: true
+
+    .form-group
+      = f.label :motivation, 'Ma motivation', class: 'required'
+      small.form-text.text-muted.mt-0 Relisez vous, corrigez vos fautes d'orthographes et utilisez une formule de politesse pour conclure
+      = f.text_area :motivation, class: "form-control col-lg-6", required: true
+
+    p
+      = link_to account_path(tab: 'resume'), target: "_blank", class: 'external' do
+        | Relire mon CV
+        i.fas.fa-external-link-alt
+        = "(nouvelle fenêtre)"
+
+    = f.submit 'Envoyer', class: 'btn btn-primary'
 
 #delete-offer-modal.modal tabindex="-1" role="dialog"
   .modal-dialog role="document"

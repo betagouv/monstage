@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 2019_03_20_105347) do
     t.index ["school_id"], name: "index_class_rooms_on_school_id"
   end
 
+  create_table "internship_applications", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "internship_offer_week_id"
+    t.text "motivation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
+    t.index ["user_id"], name: "index_internship_applications_on_user_id"
+  end
+
   create_table "internship_offer_weeks", force: :cascade do |t|
     t.bigint "internship_offer_id"
     t.bigint "week_id"
@@ -109,6 +119,9 @@ ActiveRecord::Schema.define(version: 2019_03_20_105347) do
     t.date "birth_date"
     t.string "gender"
     t.bigint "class_room_id"
+    t.text "resume_educational_background"
+    t.text "resume_volunteer_work"
+    t.text "resume_other"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -124,6 +137,8 @@ ActiveRecord::Schema.define(version: 2019_03_20_105347) do
   end
 
   add_foreign_key "class_rooms", "schools"
+  add_foreign_key "internship_applications", "internship_offer_weeks"
+  add_foreign_key "internship_applications", "users"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
   add_foreign_key "internship_offers", "users", column: "employer_id"
