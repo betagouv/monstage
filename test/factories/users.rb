@@ -20,6 +20,7 @@ FactoryBot.define do
     factory :employer, class: 'Users::Employer', parent: :user do
       type { 'Users::Employer' }
     end
+
     factory :god, class: 'Users::God', parent: :user do
       type { 'Users::God' }
     end
@@ -28,11 +29,30 @@ FactoryBot.define do
       sequence(:email) {|n| "jean#{n}-claude@ac-dus.fr" }
       type { 'Users::SchoolManager' }
     end
+
     factory :main_teacher, class: 'Users::MainTeacher', parent: :user do
       type { 'Users::MainTeacher' }
       school { create(:school) }
       first_name { 'Madame' }
       last_name { 'Labutte' }
+    end
+
+    factory :psychologist, class: 'Users::Psychologist', parent: :user do
+    end
+
+    factory :cpe, class: 'Users::CPE', parent: :user do
+    end
+
+    factory :librarian, class: 'Users::librarian', parent: :user do
+    end
+
+    factory :secretary, class: 'Users::Secretary', parent: :user do
+    end
+
+    factory :other, class: 'Users::Other', parent: :user do
+    end
+
+    factory :teacher, class: 'Users::Teacher', parent: :user do
     end
   end
 end

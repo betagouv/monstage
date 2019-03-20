@@ -11,5 +11,18 @@ h2 = t('devise.registrations.new.sign_up')
 .mt-3
   = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-primary'
 
-.mt-3
-  = select_tag :type, ["-- Membre de l'équipe pédagogique --", "Professeur Principal", "Professeur", "Psychologue", "CPE", "Documentaliste", "Secrétaire", "Autre"]
+
+.mt-3.dropdown
+  #dropdownMenuLink.btn.btn-secondary.dropdown-toggle href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+    = "Membre de l'équipe pédagogique"
+
+  .dropdown-menu aria-labelledby="dropdownMenuLink"
+    - { "Professeur principal" => "MainTeacher",
+        "Professeur" => "Teacher",
+        "Psychologue" => "Psychologist",
+        "CPE" => "Cpe",
+        "Documentaliste" => "Librarian",
+        "Secrétaire" => "Secretary",
+        "Autre" => "Other" }.map do |role_str, role_url|
+      = link_to role_str, new_user_registration_path(as: role_url), class: 'dropdown-item'
+

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_20_105347) do
+ActiveRecord::Schema.define(version: 2019_03_20_143203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 2019_03_20_105347) do
     t.string "code_uai"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "street"
+    t.bigint "school_manager_id"
     t.index ["coordinates"], name: "index_schools_on_coordinates", using: :gist
   end
 
@@ -144,5 +145,6 @@ ActiveRecord::Schema.define(version: 2019_03_20_105347) do
   add_foreign_key "internship_offers", "users", column: "employer_id"
   add_foreign_key "school_internship_weeks", "schools"
   add_foreign_key "school_internship_weeks", "weeks"
+  add_foreign_key "schools", "users", column: "school_manager_id"
   add_foreign_key "users", "class_rooms"
 end
