@@ -45,11 +45,11 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     school = create(:school)
     class_room = create(:class_room, school: school)
     birth_date = 14.years.ago
-    assert_difference("Student.count") do
+    assert_difference("Users::Student.count") do
       post user_registration_path(
         params: {
           user: {
-            type: 'Student',
+            type: 'Users::Student',
             school_id: school.id,
             class_room_id: class_room.id,
             first_name: 'Martin',
@@ -64,7 +64,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
       )
       assert_redirected_to root_path
     end
-    created_student = Student.first
+    created_student = Users::Student.first
     assert_equal school, created_student.school
     assert_equal class_room, created_student.class_room
     assert_equal 'Martin', created_student.first_name
@@ -77,35 +77,35 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST create School Manager responds with success' do
-    assert_difference("SchoolManager.count") do
+    assert_difference("Users::SchoolManager.count") do
       post user_registration_path(params: { user: { email: 'test@ac-edu.fr',
                                                      password: 'okokok',
                                                      password_confirmation: 'okokok',
                                                      first_name: 'Chef',
                                                      last_name: 'Etablissement',
-                                                     type: 'SchoolManager' }})
+                                                     type: 'Users::SchoolManager' }})
       assert_redirected_to root_path
     end
   end
 
   test 'POST Create Student' do
-    assert_difference("Student.count") do
+    assert_difference("Users::Student.count") do
       post user_registration_path(params: { user: { email: 'fatou@snapchat.com',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     first_name: 'Fatou',
                                                     last_name: 'D',
-                                                    type: 'Student' }})
+                                                    type: 'Users::Student' }})
       assert_redirected_to root_path
     end
   end
 
   test 'POST Create Employer' do
-    assert_difference("Employer.count") do
+    assert_difference("Users::Employer.count") do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
-                                                    type: 'Employer' }})
+                                                    type: 'Users::Employer' }})
       assert_redirected_to root_path
     end
   end
