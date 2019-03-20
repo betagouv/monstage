@@ -4,7 +4,7 @@ class Student < User
 
   include NearbyIntershipOffersQueryable
 
-  has_many :internship_applications
+  has_many :internship_applications, dependent: :destroy
 
   def age
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
