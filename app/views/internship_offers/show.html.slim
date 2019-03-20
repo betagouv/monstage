@@ -50,6 +50,9 @@ p
 - if can?(:apply, InternshipOffer)
   = render "internship_applications/form"
 
+- if can?(:update, @internship_offer)
+  = render "internship_applications/index"
+
 #delete-offer-modal.modal tabindex="-1" role="dialog"
   .modal-dialog role="document"
     .modal-content

@@ -1,0 +1,21 @@
+h2 Mes candidatures
+
+- if @internship_offer.internship_applications.empty?
+  p Aucune candidature reçue à ce jour
+- else
+  table.table.table-striped
+    thead
+      tr
+        th scope="col" Élève
+        th scope="col" Semaine
+        th scope="col" Motivation
+        th scope="col"
+    tbody
+      - @internship_offer.internship_applications.each do |internship_application|
+        tr
+          td = internship_application.student.name
+          td = internship_application.week.select_text_method
+          td = internship_application.motivation
+          td
+            .fas.fa-2x.fa-check-circle
+            .fas.fa-2x.fa-times-circle
