@@ -18,12 +18,12 @@ module Users
 
     # GET /resource/sign_up
     def new
-      if params[:as].blank?
-        redirect_to users_choose_profile_path
-      else
+      if UserManager.new.valid?(params: params)
         super do |resource|
           @current_ability = Ability.new(resource)
         end
+      else
+        redirect_to users_choose_profile_path
       end
     end
 

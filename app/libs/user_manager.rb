@@ -17,7 +17,14 @@ class UserManager
   # raises KeyError whe can't find expected role
   def by_params(params:)
     key = params[:as]
-    key ||= params.dig(:user, :type)&.demodulize
+    key ||= String(params.dig(:user, :type)).demodulize
+
     ROLES_BY_PARAMS.fetch(key)
+  end
+
+  def valid?(params:)
+    true if by_params(params: params)
+  rescue KeyError => error
+    false
   end
 end
