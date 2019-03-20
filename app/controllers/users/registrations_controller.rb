@@ -11,9 +11,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
   def resource_class
     case params[:as]
-      when 'Student' then Student
-      when 'SchoolManager' then SchoolManager
-      when 'Employer' then Employer
+      when 'Student' then Users::Student
+      when 'SchoolManager' then Users::SchoolManager
+      when 'Employer' then Users::Employer
       else User
     end
   end

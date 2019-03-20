@@ -1,7 +1,7 @@
 <%= form_for @school do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "layouts/form_errors", object: @school %>
-  <% unless current_user.is_a?(God) %>
+  <% unless current_user.is_a?(Users::God) %>
     <fieldset>
       <div class="form-group">
         <%= f.label :week_ids do %>

@@ -5,7 +5,7 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <%= f.text_field :type, hidden: true %>
-  <% if resource.type == "Student" %>
+  <% if resource.type == "Users::Student" %>
     <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: true %>
 
     <div class="form-group">
@@ -60,7 +60,7 @@
 
   <div class="form-group">
     <%= f.label :email do %>
-      Mon <%= resource.type == 'SchoolManager' ? 'courriel professionnel' : 'courriel' %>
+      Mon <%= resource.type == 'Users::SchoolManager' ? 'courriel professionnel' : 'courriel' %>
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>

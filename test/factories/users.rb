@@ -6,21 +6,21 @@ FactoryBot.define do
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
 
-    factory :student, class: 'Student', parent: :user do
-      type { 'Student' }
+    factory :student, class: 'Users::Student', parent: :user do
+      type { 'Users::Student' }
       birth_date { Date.new(2005, 1, 1) }
     end
 
-    factory :employer, class: 'Employer', parent: :user do
-      type { 'Employer' }
+    factory :employer, class: 'Users::Employer', parent: :user do
+      type { 'Users::Employer' }
     end
-    factory :god, class: 'God', parent: :user do
-      type { 'God' }
+    factory :god, class: 'Users::God', parent: :user do
+      type { 'Users::God' }
     end
 
-    factory :school_manager, class: 'SchoolManager', parent: :user do
+    factory :school_manager, class: 'Users::SchoolManager', parent: :user do
       sequence(:email) {|n| "jean#{n}-claude@ac-dus.fr" }
-      type { 'SchoolManager' }
+      type { 'Users::SchoolManager' }
     end
   end
 end

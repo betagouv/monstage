@@ -74,7 +74,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: HOST }
 
 
-  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
+  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Credentials.enc(:mailtrap, :api_token)}"
 
   first_inbox = JSON.parse(response)[0] # get first inbox
 

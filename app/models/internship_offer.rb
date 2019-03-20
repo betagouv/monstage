@@ -34,7 +34,7 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
   has_many :internship_applications, through: :internship_offer_weeks
-  belongs_to :employer
+  belongs_to :employer, class_name: "Users::Employer"
 
   scope :for_user, -> (user:) {
     return merge(all) unless user # fuck it ; should have a User::Visitor type
