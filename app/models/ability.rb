@@ -66,5 +66,6 @@ def other_abilities(user:)
   def god_abilities(user:)
     can :show, :account
     can :manage, School
+    can :destroy, InternshipOffer
   end
 end
