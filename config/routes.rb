@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers do
-    resources :internship_applications, only: [:create]
+    resources :internship_applications, only: [:create, :update]
   end
 
   resources :schools, only: [:edit, :update, :index] do
