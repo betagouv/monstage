@@ -1,10 +1,10 @@
 require 'test_helper'
 module Users
-  class MainTeacherTest < ActiveSupport::TestCase
+  class TeacherTest < ActiveSupport::TestCase
     test "creation fails" do
-      main_teacher = Users::MainTeacher.create()
-      assert main_teacher.invalid?
-      errors = main_teacher.errors.keys
+      teacher = Users::Teacher.create()
+      assert teacher.invalid?
+      errors = teacher.errors.keys
       assert_includes errors, :school
       assert_includes errors, :first_name
       assert_includes errors, :last_name
@@ -15,13 +15,13 @@ module Users
     test "creation succeed" do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
-      main_teacher = Users::MainTeacher.new(email: 'chef@ac-etablissement.com',
+      teacher = Users::Teacher.new(email: 'chef@ac-etablissement.com',
                                             password: 'tototo',
                                             password_confirmation: 'tototo',
                                             first_name: 'Chef',
                                             last_name: 'Etablissement',
                                             school: school)
-      assert main_teacher.valid?
+      assert teacher.valid?
     end
     test "send SchoolManagerMailer.new_member on create" do
       school = create(:school)
@@ -29,7 +29,7 @@ module Users
       mock_mail = MiniTest::Mock.new
       mock_mail.expect(:deliver_later, true)
       SchoolManagerMailer.stub :new_member, mock_mail do
-        create(:main_teacher, school: school)
+        create(:teacher, school: school)
       end
       mock_mail.verify
     end
@@ -37,21 +37,21 @@ module Users
     test "change school requires school_manager" do
       school_1 = create(:school)
       school_manager_1 = create(:school_manager, school: school_1)
-      main_teacher = create(:main_teacher, school: school_1)
+      teacher = create(:teacher, school: school_1)
 
-      main_teacher.school = create(:school)
-      assert_not main_teacher.valid?
-      assert_includes main_teacher.errors.keys, :school_manager
+      teacher.school = create(:school)
+      assert_not teacher.valid?
+      assert_includes teacher.errors.keys, :school_manager
 
-      school_manager_2 = create(:school_manager, school: main_teacher.school)
-      main_teacher.reload
-      main_teacher.school = school_manager_2.school
-      assert main_teacher.valid?
+      school_manager_2 = create(:school_manager, school: teacher.school)
+      teacher.reload
+      teacher.school = school_manager_2.school
+      assert teacher.valid?
 
       mock_mail = MiniTest::Mock.new
       mock_mail.expect(:deliver_later, true)
       SchoolManagerMailer.stub :new_member, mock_mail do
-        main_teacher.save!
+        teacher.save!
       end
       mock_mail.verify
     end
@@ -60,14 +60,14 @@ module Users
     test "school_manager" do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
-      main_teacher = create(:main_teacher, school: school)
+      teacher = create(:teacher, school: school)
 
-      assert_equal main_teacher.school_manager, school_manager
+      assert_equal teacher.school_manager, school_manager
     end
 
     test "i18n" do
       assert_equal "Chef d'établissement",
-                   MainTeacher.human_attribute_name(:school_manager)
+                   Teacher.human_attribute_name(:school_manager)
     end
   end
 end

@@ -1,5 +1,9 @@
 fr:
   activerecord:
+    models:
+      users/main_teacher: "Profésseur principal"
+      users/teacher: "Profésseur"
+
     attributes:
       internship_offer:
         can_be_applied_for: "Type de stage"

@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  validates :encrypted_password, presence: true
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 

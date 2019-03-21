@@ -37,22 +37,10 @@ FactoryBot.define do
       last_name { 'Labutte' }
     end
 
-    factory :psychologist, class: 'Users::Psychologist', parent: :user do
-    end
-
-    factory :cpe, class: 'Users::CPE', parent: :user do
-    end
-
-    factory :librarian, class: 'Users::librarian', parent: :user do
-    end
-
-    factory :secretary, class: 'Users::Secretary', parent: :user do
+    factory :teacher, class: 'Users::Teacher', parent: :user do
     end
 
     factory :other, class: 'Users::Other', parent: :user do
-    end
-
-    factory :teacher, class: 'Users::Teacher', parent: :user do
     end
   end
 end
