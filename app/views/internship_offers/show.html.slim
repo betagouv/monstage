@@ -10,6 +10,9 @@
       - if can?(:update, @internship_offer)
         a.nav-link href=edit_internship_offer_path(@internship_offer.to_param)
           .fas.fa-2x.fa-pen
+      - if can?(:create, InternshipOffer)
+        a.nav-link href=new_internship_offer_path()
+          .fas.fa-2x.fa-plus
 
 h2 = @internship_offer.title
 
