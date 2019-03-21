@@ -7,8 +7,7 @@ class School < ApplicationRecord
   has_many :teachers, dependent: :nullify,
                       class_name: 'Users::Teacher'
 
-  belongs_to :school_manager, optional: true,
-                              class_name: 'Users::SchoolManager'
+  has_one :school_manager, class_name: 'Users::SchoolManager'
 
   has_many :class_rooms, dependent: :destroy
 

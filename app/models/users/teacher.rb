@@ -1,6 +1,6 @@
 module Users
   class Teacher < User
     belongs_to :class_room, optional: true
-    include UserManageable
+    include ManagedUser
   end
 end

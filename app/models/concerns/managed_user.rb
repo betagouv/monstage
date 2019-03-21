@@ -1,4 +1,4 @@
-module UserManageable
+module ManagedUser
   extend ActiveSupport::Concern
 
   included do
