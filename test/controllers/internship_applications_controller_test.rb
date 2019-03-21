@@ -2,6 +2,7 @@ require 'test_helper'
 
 class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ActionMailer::TestHelper
 
   test "POST #create internship application" do
     internship_offer = create(:internship_offer)
@@ -14,6 +15,8 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     assert_difference('InternshipApplication.count', 1) do
       post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
     end
+    assert_enqueued_emails 1
+
     assert_redirected_to internship_offers_path
 
     created_internship_application = InternshipApplication.last
@@ -55,8 +58,10 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in(internship_application.internship_offer.employer)
 
-    patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-          params: { approve: true })
+    assert_enqueued_emails 1 do
+      patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+            params: { approve: true })
+    end
 
     assert_redirected_to internship_offer_path(internship_application.internship_offer)
 
@@ -68,8 +73,10 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
 
     sign_in(internship_application.internship_offer.employer)
 
-    patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-          params: { approve: false })
+    assert_enqueued_emails 1 do
+      patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+            params: { approve: false })
+    end
 
     assert_redirected_to internship_offer_path(internship_application.internship_offer)
 

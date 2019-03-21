@@ -17,8 +17,10 @@ class InternshipApplicationsController < ApplicationController
     authorize! :update, @internship_application
     if params[:approve] == 'true'
       @internship_application.approve!
+      StudentMailer.with(internship_application: @internship_application).internship_application_approved_email.deliver_later
     else
       @internship_application.reject!
+      StudentMailer.with(internship_application: @internship_application).internship_application_rejected_email.deliver_later
     end
 
     redirect_to @internship_application.internship_offer, flash: { success: 'Candidature mis à jour avec succès' }
