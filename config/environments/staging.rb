@@ -79,14 +79,26 @@ Rails.application.configure do
   first_inbox = JSON.parse(response)[0] # get first inbox
 
   ActionMailer::Base.delivery_method = :smtp
-  ActionMailer::Base.smtp_settings = {
-    :user_name => first_inbox['username'],
-    :password => first_inbox['password'],
-    :address => first_inbox['domain'],
-    :domain => first_inbox['domain'],
-    :port => first_inbox['smtp_ports'][0],
-    :authentication => :plain
-  }
+  ActionMailer::Base.smtp_settings = if ENV['SEND_REAL_EMAILS'] == 'true'
+                                       {
+                                         :user_name => ENV['SENDGRID_USERNAME'],
+                                         :password => ENV['SENDGRID_PASSWORD'],
+                                         :domain => HOST,
+                                         :address => 'smtp.sendgrid.net',
+                                         :port => 587,
+                                         :authentication => :plain,
+                                         :enable_starttls_auto => true
+                                       }
+                                     else
+                                       {
+                                         :user_name => first_inbox['username'],
+                                         :password => first_inbox['password'],
+                                         :address => first_inbox['domain'],
+                                         :domain => first_inbox['domain'],
+                                         :port => first_inbox['smtp_ports'][0],
+                                         :authentication => :plain
+                                       }
+                                     end
 
 
   # Ignore bad email addresses and do not raise email delivery errors.
