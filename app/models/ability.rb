@@ -10,6 +10,7 @@ class Ability
       when 'Users::God' then god_abilities(user: user)
       when 'Users::MainTeacher' then main_teacher_abilities(user: user)
       when 'Users::Teacher' then teacher_abilities(user: user)
+      when 'Users::Other' then other_abilities(user: user)
       else
       end
     else
@@ -47,6 +48,12 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school, :choose_class_room, :choose_full_name], :sign_up
+  end
+
+def other_abilities(user:)
+    can :show, :account
+    can [:show, :edit, :update], User
+    can [:choose_school, :choose_full_name], :sign_up
   end
 
   def employer_abilities(user:)
