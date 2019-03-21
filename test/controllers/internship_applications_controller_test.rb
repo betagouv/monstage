@@ -50,4 +50,29 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to internship_offer_path(internship_offer)
   end
 
+  test "PATCH #update approve application" do
+    internship_application = create(:internship_application)
+
+    sign_in(internship_application.internship_offer.employer)
+
+    patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+          params: { approve: true })
+
+    assert_redirected_to internship_offer_path(internship_application.internship_offer)
+
+    assert InternshipApplication.last.approved?
+  end
+
+  test "PATCH #update decline application" do
+    internship_application = create(:internship_application)
+
+    sign_in(internship_application.internship_offer.employer)
+
+    patch(internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+          params: { approve: false })
+
+    assert_redirected_to internship_offer_path(internship_application.internship_offer)
+
+    assert InternshipApplication.last.rejected?
+  end
 end
