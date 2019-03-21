@@ -7,6 +7,6 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     email = SchoolManagerMailer.new_member(member: main_teacher,
                                            school_manager: school_manager)
     assert_includes email.to, school_manager.email
-    assert_equal "Nouveau Profésseur principal: #{main_teacher.first_name} #{main_teacher.last_name}", email.subject
+    assert_equal "Nouveau Professeur principal: #{main_teacher.first_name} #{main_teacher.last_name}", email.subject
   end
 end
