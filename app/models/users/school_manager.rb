@@ -1,7 +1,7 @@
 module Users
   class SchoolManager < User
     validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/
-    belongs_to :school
+    belongs_to :school, optional: true
     has_many :main_teachers, through: :school
 
     include NearbyIntershipOffersQueryable
