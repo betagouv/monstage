@@ -5,6 +5,8 @@
     "@rails/webpacker": "3.5",
     "@stimulus/polyfills": "^1.1.1",
     "algoliasearch": "^3.32.0",
+    "better-dateinput-polyfill": "^3.2.3",
+    "better-dom": "^4.0.0",
     "bootstrap": "^4.3.1",
     "jquery": "^3.3.1",
     "places.js": "^1.15.5",

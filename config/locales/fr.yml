@@ -1,8 +1,11 @@
 fr:
   activerecord:
     models:
-      users/main_teacher: "Profésseur principal"
-      users/teacher: "Profésseur"
+      users/student: "Élève"
+      users/school_manager: "Chef d'établissement"
+      users/employer: "Employeur"
+      users/main_teacher: "Professeur principal"
+      users/teacher: "Professeur"
       users/other: "Autre"
 
     attributes:

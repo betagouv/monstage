@@ -8,5 +8,7 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import 'bootstrap/dist/js/bootstrap';
-import '../bootapp'
+import 'better-dom/dist/better-dom';
+import 'better-dateinput-polyfill/dist/better-dateinput-polyfill.js';
+import '../bootapp';
 
