@@ -1,6 +1,9 @@
 fr:
   activerecord:
     models:
+      users/student: "Élève"
+      users/school_manager: "Chef d'établissement"
+      users/employer: "Employeur"
       users/main_teacher: "Profésseur principal"
       users/teacher: "Profésseur"
       users/other: "Autre"
@@ -44,6 +47,11 @@ fr:
 
 
         users/main_teacher:
+          attributes:
+            school_manager:
+              blank: "ne s'est pas encore inscrit"
+
+        users/other:
           attributes:
             school_manager:
               blank: "ne s'est pas encore inscrit"
