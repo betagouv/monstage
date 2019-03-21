@@ -10,13 +10,17 @@ module Users
     include NearbyIntershipOffersQueryable
 
     has_many :internship_applications, dependent: :destroy
-
+    after_initialize :init
     def age
       ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
     end
 
     def to_s
       "#{super}, in school: #{school&.zipcode}"
+    end
+
+    def init
+      self.birth_date ||= 14.years.ago
     end
   end
 end

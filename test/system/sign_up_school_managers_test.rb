@@ -18,7 +18,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
     end
-    byebug
+
     # create student
     assert_difference('Users::SchoolManager.count', 1) do
       fill_in "Mon courriel professionnel", with: "fourcade.m@ac-mail.com"
