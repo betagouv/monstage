@@ -3,6 +3,7 @@ fr:
     models:
       users/main_teacher: "Profésseur principal"
       users/teacher: "Profésseur"
+      users/other: "Autre"
 
     attributes:
       internship_offer:
@@ -45,10 +46,14 @@ fr:
         users/main_teacher:
           attributes:
             school_manager:
-              name: "Chef d'établissement"
               blank: "ne s'est pas encore inscrit"
 
         users/school_manager:
           attributes:
             email:
               invalid: "doit être votre adresse académique"
+
+        users/teacher:
+          attributes:
+            school_manager:
+              blank: "ne s'est pas encore inscrit"

@@ -1,17 +1,17 @@
 module Presenters
   class User
     def full_name
-      "#{person.first_name} #{person.last_name}"
+      "#{user.first_name} #{user.last_name}"
     end
 
     def role_name
-      person.model_name.human
+      user.model_name.human
     end
 
     private
-    attr_reader :person
-    def initialize(person:)
-      @person = person
+    attr_reader :user
+    def initialize(user:)
+      @user = user
     end
   end
 end

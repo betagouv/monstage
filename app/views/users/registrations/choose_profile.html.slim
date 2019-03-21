@@ -17,8 +17,7 @@ h2 = t('devise.registrations.new.sign_up')
     = "Membre de l'équipe pédagogique"
 
   .dropdown-menu aria-labelledby="dropdown-choose-profile"
-    - { "Professeur principal" => "MainTeacher",
-        "Professeur" => "Teacher",
-        "Autre" => "Other" }.map do |role_str, role_url|
-      = link_to role_str, new_user_registration_path(as: role_url), class: 'dropdown-item'
+
+    - [Users::MainTeacher, Users::Teacher, Users::Other].map do |role_class|
+      = link_to role_class.model_name.human, new_user_registration_path(as: role_class.name.demodulize), class: 'dropdown-item'
 

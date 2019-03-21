@@ -10,6 +10,7 @@ module UserManageable
               presence: true
 
     validates :school_manager, presence: true,
+                               on: :update,
                                if: :school_id_changed?
     validates :school_manager, presence: true,
                                on: :create

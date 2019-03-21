@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class SignUpMainTeachersTest < ApplicationSystemTestCase
+class SignUpTeachersTest < ApplicationSystemTestCase
   driven_by :selenium, using: :chrome
 
   test "navigation & interaction works until student creation" do
@@ -20,7 +20,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     click_on Users::Teacher.model_name.human
 
     # fails to create student with existing email
-    assert_difference('Users::MainTeacher.count', 0) do
+    assert_difference('Users::Teacher.count', 0) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
@@ -39,7 +39,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
                  "re-select of city after failure fails"
 
     # create student
-    assert_difference('Users::MainTeacher.count', 1) do
+    assert_difference('Users::Teacher.count', 1) do
       fill_in "Mon courriel", with: "another@email.com"
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
@@ -47,10 +47,10 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     end
 
     # check created student has valid info
-    created_main_teacher = Users::MainTeacher.where(email: "another@email.com").first
-    assert_equal school_1, created_main_teacher.school
-    assert_equal class_room_1, created_main_teacher.class_room
-    assert_equal "Martin", created_main_teacher.first_name
-    assert_equal "Fourcade", created_main_teacher.last_name
+    created_teacher = Users::Teacher.where(email: "another@email.com").first
+    assert_equal school_1, created_teacher.school
+    assert_equal class_room_1, created_teacher.class_room
+    assert_equal "Martin", created_teacher.first_name
+    assert_equal "Fourcade", created_teacher.last_name
   end
 end
