@@ -30,7 +30,8 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "GET index as SchoolManager" do
-    sign_in(create(:school_manager))
+    school = create(:school)
+    sign_in(create(:school_manager, school: school))
     get account_path
 
     assert_template "account/_edit_account_card"
@@ -45,7 +46,8 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "GET edit as SchoolManager & Student render :edit" do
-    [create(:school_manager), create(:student)].each do |role|
+    school = create(:school)
+    [create(:school_manager, school: school), create(:student)].each do |role|
       sign_in(role)
       get account_edit_path
       assert_response :success, "#{role.type} should have access to edit himself"
@@ -53,7 +55,8 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH edit updates first_name, last_name and school_id" do
-    [create(:school_manager), create(:student)].each do |current_role|
+    original_school = create(:school)
+    [create(:school_manager, school: original_school), create(:student)].each do |current_role|
       sign_in(current_role)
       school = create(:school)
 

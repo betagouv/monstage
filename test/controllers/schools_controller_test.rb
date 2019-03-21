@@ -18,7 +18,8 @@ class SchoolInternshipWeeksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET edit as School Manager works redirects to sign in' do
-    sign_in(create(:school_manager))
+    school = create(:school)
+    sign_in(create(:school_manager, school: school))
     get edit_school_path(@school.to_param)
     assert_response :success
   end

@@ -10,3 +10,14 @@ h2 = t('devise.registrations.new.sign_up')
 
 .mt-3
   = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-primary'
+
+
+.mt-3.dropdown
+  #dropdown-choose-profile.btn.btn-secondary.dropdown-toggle href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+    = "Membre de l'équipe pédagogique"
+
+  .dropdown-menu aria-labelledby="dropdown-choose-profile"
+
+    - [Users::MainTeacher, Users::Teacher, Users::Other].map do |role_class|
+      = link_to role_class.model_name.human, new_user_registration_path(as: role_class.name.demodulize), class: 'dropdown-item'
+

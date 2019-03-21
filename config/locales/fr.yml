@@ -1,12 +1,20 @@
 fr:
   activerecord:
+    models:
+      users/main_teacher: "Profésseur principal"
+      users/teacher: "Profésseur"
+      users/other: "Autre"
+
     attributes:
       internship_offer:
-          can_be_applied_for: "Type de stage"
-          is_public: Secteur
+        can_be_applied_for: "Type de stage"
+        is_public: Secteur
       user:
         first_name: Prénom
         last_name: Nom
+        school_manager: "Chef d'établissement"
+        class_room: "Classe"
+        school: "Collège"
 
     errors:
       messages:
@@ -33,7 +41,19 @@ fr:
               blank: obligatoire
             last_name:
               blank: obligatoire
-        school_manager:
+
+
+        users/main_teacher:
+          attributes:
+            school_manager:
+              blank: "ne s'est pas encore inscrit"
+
+        users/school_manager:
           attributes:
             email:
               invalid: "doit être votre adresse académique"
+
+        users/teacher:
+          attributes:
+            school_manager:
+              blank: "ne s'est pas encore inscrit"

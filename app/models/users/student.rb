@@ -1,8 +1,12 @@
 module Users
   class Student < User
-    belongs_to :school, optional: true
+    belongs_to :school
     belongs_to :class_room, optional: true
-
+    validates :first_name,
+              :last_name,
+              :birth_date,
+              :gender,
+              presence: true
     include NearbyIntershipOffersQueryable
 
     has_many :internship_applications, dependent: :destroy

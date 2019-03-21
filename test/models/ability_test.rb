@@ -10,13 +10,23 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test "Student" do
-    ability = Ability.new(create(:student))
+    ability = Ability.new(build(:student))
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
     assert(ability.can?(:apply, InternshipOffer.new),
            'students should be able to apply for internship offers')
     assert(ability.cannot?(:manage, InternshipOffer.new),
            'students should not be able to con manage internships')
+    assert(ability.can?(:show, :account),
+           'students should be able to access their account')
+    assert(ability.can?(:choose_school, :sign_up),
+           'student should be able to choose_school')
+    assert(ability.can?(:choose_class_room, :sign_up),
+           'student should be able to choose_class_room')
+    assert(ability.can?(:choose_full_name, :sign_up),
+           'student should be able to choose_full_name')
+    assert(ability.can?(:choose_gender_and_birthday, :sign_up),
+           'student should be able to choose_gender_and_birthday')
   end
 
   test "Employer" do
@@ -35,12 +45,24 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test "God" do
-    ability = Ability.new(create(:god))
+    ability = Ability.new(build(:god))
     assert(ability.can?(:show, :account),
            'god should be able to see his account')
     assert(ability.can?(:manage, School),
            'god should be able to manage school')
     assert(ability.cannot?(:edit, User),
            'god should not be able to edit user')
+  end
+
+  test 'MainTeacher' do
+    ability = Ability.new(build(:main_teacher))
+    assert(ability.can?(:show, :account),
+           'students should be able to access their account')
+    assert(ability.can?(:choose_school, :sign_up),
+           'student should be able to choose_school')
+    assert(ability.can?(:choose_class_room, :sign_up),
+           'student should be able to choose_class_room')
+    assert(ability.can?(:choose_full_name, :sign_up),
+           'student should be able to choose_full_name')
   end
 end
