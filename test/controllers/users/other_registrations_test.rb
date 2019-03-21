@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
+class OtherRegistrationsTest < ActionDispatch::IntegrationTest
   def assert_form_rendered
     assert_select 'input', { value: 'Other', hidden: 'hidden' }
     assert_select 'label', /Ville de mon collège/
