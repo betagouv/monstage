@@ -18,8 +18,7 @@ div[data-controller="internship-index"]
         .col-12
           - if can? :apply, InternshipOffer
             .filter-section.py-3
-              fieldset
-                legend Domaine d'activité
-                = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+              label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
+              = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
       .row= render partial: "internship_offer", collection: @internship_offers
