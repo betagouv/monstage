@@ -45,7 +45,7 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.find(params[:id])
     authorize! :destroy, @internship_offer
     @internship_offer.discard
-    redirect_to(root_path,
+    redirect_to(internship_offer_path,
                 flash: { success: 'Votre annonce a bien été supprimée' })
   end
 

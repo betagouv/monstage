@@ -24,6 +24,7 @@ module InternshipOffers
       assert_changes -> { internship_offer.reload.discarded_at } do
         delete(internship_offer_path(internship_offer.to_param))
       end
+      assert_redirected_to internship_offer_path
     end
   end
 end
