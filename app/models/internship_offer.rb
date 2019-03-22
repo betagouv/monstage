@@ -49,7 +49,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def is_individual?
-    max_candidates <= 1
+    max_candidates.blank? || max_candidates == 1
   end
 
   def formatted_autocomplete_address

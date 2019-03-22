@@ -53,26 +53,28 @@
         = form.rg2a_required_content_tag
 
       .custom-control.custom-radio
-        = form.radio_button :can_be_applied_for,
+        = radio_button_tag :internship_type,
                             true,
+                            @internship_offer.is_individual?,
                             class: 'custom-control-input',
                             data: { action: "change->internship-form#toggleCanBeAppliedSection" }
-        = form.label :can_be_applied_for_true,
+        = label_tag :internship_type_true,
                      'Individuel',
                      class: 'custom-control-label'
       .custom-control.custom-radio
-        = form.radio_button :can_be_applied_for,
+        = radio_button_tag :internship_type,
                             false,
+                            !@internship_offer.is_individual?,
                             class: 'custom-control-input',
                             data: { action: "change->internship-form#toggleCanBeAppliedSection" }
-        = form.label :can_be_applied_for_false,
+        = label_tag :internship_type_false,
                      'Collectif',
                      class: 'custom-control-label'
-    .form-group.d-none data-target= 'internship-form.maxCandidatesGroup'
+    div class="form-group #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
       = form.label :max_candidates do
         = 'Nombre de stagiaires maximum par groupe'
         small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
-      = form.number_field :max_candidates, value: 1, min: 0, step: 1, class: 'form-control col-lg-6'
+      = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 0, step: 1, class: 'form-control col-lg-6'
     .form-group
       = form.label :max_internship_number do
         = "Nombre de stages proposés dans l'année"
