@@ -17,11 +17,14 @@ class SchoolInternshipWeeksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'GET edit as School Manager works redirects to sign in' do
+  test 'GET edit as School Manager works' do
     school = create(:school)
     sign_in(create(:school_manager, school: school))
+
     get edit_school_path(@school.to_param)
+
     assert_response :success
+    assert_select "form a[href=?]", account_path
   end
 
   test 'PATCH update not logged redirects to sign in' do

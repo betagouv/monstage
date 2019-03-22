@@ -19,5 +19,5 @@ Rails.application.routes.draw do
   get 'account/edit', to: 'account#edit'
   patch 'account', to: 'account#update'
 
-  root to: "internship_offers#index"
+  root to: "pages#home"
 end

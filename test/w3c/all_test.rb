@@ -11,6 +11,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'internship_offers_path' do
+    sign_in(create(:employer))
     run_request_and_cache_response(report_as: 'internship_offers_path') do
       get internship_offers_path
     end

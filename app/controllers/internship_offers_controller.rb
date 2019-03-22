@@ -1,5 +1,5 @@
 class InternshipOffersController < ApplicationController
-  before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:index, :create, :edit, :update, :destroy]
 
   def index
     @internship_offers = InternshipOffer.kept.for_user(user: current_user)

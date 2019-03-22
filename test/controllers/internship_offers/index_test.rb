@@ -11,6 +11,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select "[data-test-id=#{internship_offer.id}]", 0
   end
 
+  test 'GET #index redirect to root_path if not connected' do
+    get internship_offers_path
+    assert_redirected_to user_session_path
+  end
 
   test 'GET #index as student. check if filters are properly populated' do
     create(:internship_offer, sector: "Animaux")
@@ -30,18 +34,6 @@ class IndexTest < ActionDispatch::IntegrationTest
         assert_select 'option', text: "Mode, Luxe, Industrie textile"
       end
     end
-  end
-
-   test 'GET #index as god. does not return discarded offers' do
-    discarded_internship_offer = create(:internship_offer, sector: "Animaux")
-    discarded_internship_offer.discard
-    god = create(:god)
-
-    sign_in(god)
-    get internship_offers_path
-
-    assert_response :success
-    assert_select "a[href=?]", internship_offer_url(discarded_internship_offer), 0
   end
 
   test 'GET #index as student returns internship_offer up to 60km nearby' do
@@ -114,5 +106,17 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_presence_of(internship_offer: internship_offer_1)
     assert_presence_of(internship_offer: internship_offer_2)
+  end
+
+  test 'GET #index as god. does not return discarded offers' do
+    discarded_internship_offer = create(:internship_offer, sector: "Animaux")
+    discarded_internship_offer.discard
+    god = create(:god)
+
+    sign_in(god)
+    get internship_offers_path
+
+    assert_response :success
+    assert_select "a[href=?]", internship_offer_url(discarded_internship_offer), 0
   end
 end
