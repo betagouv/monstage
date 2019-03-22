@@ -1,5 +1,5 @@
 <header class="header-account">
-  <h1 class="h2 text-center text-sm-left mb-0">Inscription – <%= Presenters::User.new(user: resource).role_name %></h2>
+  <h1 class="h2 text-center text-sm-left mb-0">Créer mon compte</h2>
 </header>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
@@ -91,5 +91,3 @@
     <%= f.submit "Je m'inscris", class: 'btn btn-primary' %>
   </div>
 <% end %>
-
-<%= render "devise/shared/links" %>

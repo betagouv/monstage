@@ -5,8 +5,8 @@
     <fieldset>
       <div class="form-group">
         <%= f.label :week_ids do %>
-          Sélectionnez les semaines de stage du collège
-          <small class="form-text text-muted">Si vous souhaitez choisir plusieurs semaines, utilisez la touche contrôle.</small>
+          Semaines de stage du collège
+          <small class="form-text text-muted">Utilisez la touche <kbd>contrôle</kbd> pour sélectionner plusieurs semaines en même temps.</small>
           <%= f.rg2a_required_content_tag %>
         <% end %>
         <%= f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true %>
@@ -17,7 +17,7 @@
   <fieldset>
     <div class="form-group">
       <%= f.label :name do %>
-        Nom de votre établissement
+        Nom du collège
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.text_field :name, class: 'form-control col-lg-6', required: true %>
@@ -28,7 +28,6 @@
     <div class="form-group d-none" data-target="algolia-place.autocompleteFormGroup" >
       <%= f.label :autocomplete do %>
         Adresse du collège
-        <small class="form-text text-muted">Merci de renseigner l'adresse précise de votre collège.</small>
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie",
@@ -44,7 +43,7 @@
              value="<%= @school.coordinates&.lon %>"
              data-target="algolia-place.longitudeInput" />
     </div>
-    <div class="form-group">
+    <div class="form-group d-none">
       <div class="form-row">
         <div class="col-sm-6">
           <div class="form-group">

@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Mes classes</h5>
+    <h2 class="h6 card-title">Mes classes</h2>
     <p class="card-text">
       <ul>
         <%= render partial: "class_rooms/class_room", collection: Array(current_user&.school&.class_rooms), locals: { school: current_user.school } %>
