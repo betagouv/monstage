@@ -1,5 +1,6 @@
-<h2>Inscription – <%= Presenters::User.new(user: resource).role_name %></h2>
-
+<header class="header-account">
+  <h2 class="text-center text-sm-left mb-0">Inscription – <%= Presenters::User.new(user: resource).role_name %></h2>
+</header>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
