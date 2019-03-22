@@ -9,5 +9,8 @@
     <% end %>
     <%= form.text_field :name, required: true, class: 'form-control col-lg-6' %>
   </div>
-  <div class="actions"><%= form.submit 'Enregistrer', class: 'btn btn-primary' %></div>
+  <div class="actions">
+    <%= form.submit 'Enregistrer', class: 'btn btn-primary' %>
+    <%= link_to 'Annuler', account_path, class: 'btn btn-link' %>
+  </div>
 <% end %>

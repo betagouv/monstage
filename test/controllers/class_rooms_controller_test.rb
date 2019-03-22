@@ -9,8 +9,11 @@ class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
     class_room_name = SecureRandom.hex
     class_room = create(:class_room, name: class_room_name, school: school)
     sign_in(school_manager)
+
     get new_school_class_room_path(school.to_param)
+
     assert_response :success
+    assert_select "form a[href=?]", account_path
   end
 
   test 'GET new as Student responds with fail' do

@@ -19,5 +19,6 @@ h1.h2 Mon compte
 
   = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room)
 
-
-  = f.submit 'Enregistrer', class: 'btn btn-primary'
+  .actions
+    = f.submit 'Enregistrer', class: 'btn btn-primary'
+    = link_to 'Annuler', account_path, class: 'btn btn-link'

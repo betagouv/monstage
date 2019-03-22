@@ -51,6 +51,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       sign_in(role)
       get account_edit_path
       assert_response :success, "#{role.type} should have access to edit himself"
+      assert_select "form a[href=?]", account_path
     end
   end
 

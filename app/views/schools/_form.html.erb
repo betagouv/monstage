@@ -76,5 +76,8 @@
     </div>
   </fieldset>
 
-  <%= f.submit 'Enregistrer', class: 'btn btn-primary' %>
+  <div class="actions">
+    <%= f.submit 'Enregistrer', class: 'btn btn-primary' %>
+    <%= link_to 'Annuler', account_path, class: 'btn btn-link' %>
+  </div>
 <% end %>
