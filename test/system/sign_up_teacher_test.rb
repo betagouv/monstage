@@ -10,8 +10,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as teacher
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     find("#dropdown-choose-profile").click
     click_on Users::Teacher.model_name.human
 

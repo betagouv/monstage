@@ -6,8 +6,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     create(:employer, email: existing_email)
 
     # go to signup as employer
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     click_on "Je veux déposer une offre"
 
     # fails to create employer with existing email

@@ -8,8 +8,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as other
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     find("#dropdown-choose-profile").click
     click_on Users::Other.model_name.human
 

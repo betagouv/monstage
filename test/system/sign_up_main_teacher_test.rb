@@ -11,8 +11,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
 
     # go to signup as main teacher
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     find("#dropdown-choose-profile").click
     click_on Users::MainTeacher.model_name.human
 

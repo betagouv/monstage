@@ -5,8 +5,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as school_manager
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     click_on "Je suis chef d'établissement"
 
     # fails to create school_manager with existing email

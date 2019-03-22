@@ -11,8 +11,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     student = create(:student, email: existing_email)
 
     # go to signup as student
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     click_on "Je suis élève de 3e"
 
     # fails to create student with existing email
