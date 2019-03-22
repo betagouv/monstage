@@ -23,7 +23,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
       select(class_room_2.name, from: "user_class_room_id")
       fill_in "Mon prénom", with: "Martin"
       fill_in "Mon nom", with: "Fourcade"
-      fill_in "Mon courriel", with: existing_email
+      fill_in "Mon adresse électronique", with: existing_email
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
@@ -40,7 +40,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
       select(class_room_1.name, from: "user_class_room_id")
-      fill_in "Mon courriel", with: "another@email.com"
+      fill_in "Mon adresse électronique", with: "another@email.com"
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"

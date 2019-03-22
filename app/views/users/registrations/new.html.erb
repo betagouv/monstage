@@ -64,7 +64,7 @@
 
   <div class="form-group">
     <%= f.label :email do %>
-      Mon <%= resource.type == 'Users::SchoolManager' ? 'courriel professionnel' : 'courriel' %>
+      Mon <%= resource.type == 'Users::SchoolManager' ? 'adresse électronique académique' : 'adresse électronique' %>
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, class: 'form-control col-lg-6', required: true %>

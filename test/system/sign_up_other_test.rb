@@ -20,7 +20,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
       find("label", text: "#{school_2.name} - #{school_2.city}").click
       fill_in "Mon prénom", with: "Martin"
       fill_in "Mon nom", with: "Fourcade"
-      fill_in "Mon courriel", with: existing_email
+      fill_in "Mon adresse électronique", with: existing_email
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
@@ -36,7 +36,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
-      fill_in "Mon courriel", with: "another@email.com"
+      fill_in "Mon adresse électronique", with: "another@email.com"
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"

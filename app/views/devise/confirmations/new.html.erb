@@ -7,7 +7,7 @@
 
   <div class="form-group">
     <%= f.label :email do %>
-      Mon courriel
+      Adresse électronique
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control col-lg-6', required: true %>
