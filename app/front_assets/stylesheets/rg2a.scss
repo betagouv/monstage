@@ -8,6 +8,7 @@ label, .label {
     color: $red;
   }
 }
+// avoid underline/border bottom on abbr
 abbr[title] {
   border-bottom: none !important;
   cursor: inherit !important;
