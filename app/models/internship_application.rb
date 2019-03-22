@@ -1,6 +1,6 @@
 class InternshipApplication < ApplicationRecord
   include AASM
-  
+
   belongs_to :internship_offer_week
   belongs_to :student, class_name: 'Users::Student', foreign_key: 'user_id'
 
