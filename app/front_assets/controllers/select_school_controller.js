@@ -50,18 +50,13 @@ export default class extends Controller {
 
     this.selectCity(cityName);
     this.resetSchoolsList();
-
-    if (this.data.get('chooseClassRoom') == "true") {
-      this.resetClassRoomList([]);
-    }
+    this.resetClassRoomList([]);
   }
 
   onSelectSchool(event) {
     const $sourceTarget = $(event.target) // clicked radio school
 
-    if (this.data.get('chooseClassRoom') == "true") {
-      this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
-    }
+    this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
   }
 
   onResetCityClicked() {
@@ -98,6 +93,9 @@ export default class extends Controller {
   // UI Helpers
   // -
   resetClassRoomList(classRoomList) {
+    if (this.data.get('chooseClassRoom') != "true") {
+      return;
+    }
     const $classRoomSelectTarget = $(this.classRoomSelectTarget);
 
     if (classRoomList.length > 0) {
