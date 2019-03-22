@@ -2,11 +2,11 @@ nav.navbar.navbar-light
   = link_to root_path, class: 'navbar-brand' do
     = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Logo - mon stage de 3ème", width: 80, height: 45, class: 'mx-auto my-3 d-block logo'
 
-  ul.nav.justify-content-end
+  .nav.justify-content-end
     - if user_signed_in?
-      li.nav-item
+      .nav-item
         = link_to 'Déconnexion', destroy_user_session_path, class: 'nav-link', method: :delete
-      li.nav-item
+      .nav-item
         = link_to internship_offers_path, class: "nav-link px-1" do
           i.fas.fa-user-circle.mr-1
           | Mes stages
