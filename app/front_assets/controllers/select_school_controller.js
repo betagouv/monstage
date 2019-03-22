@@ -50,13 +50,18 @@ export default class extends Controller {
 
     this.selectCity(cityName);
     this.resetSchoolsList();
-    this.resetClassRoomList([]);
+
+    if (this.data.get('chooseClassRoom') == "true") {
+      this.resetClassRoomList([]);
+    }
   }
 
   onSelectSchool(event) {
     const $sourceTarget = $(event.target) // clicked radio school
 
-    this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
+    if (this.data.get('chooseClassRoom') == "true") {
+      this.resetClassRoomList($sourceTarget.data('classRoomAvailable'))
+    }
   }
 
   onResetCityClicked() {
