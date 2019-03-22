@@ -8,3 +8,8 @@ label, .label {
     color: $red;
   }
 }
+abbr[title] {
+  border-bottom: none !important;
+  cursor: inherit !important;
+  text-decoration: none !important;
+}

@@ -1,6 +1,6 @@
 class Rg2aFormBuilder < ActionView::Helpers::FormBuilder
   def rg2a_explain_required_asterisk
-    "<p>Les champs avec <span class='text-danger'>*</span> sont obligatoires</p>".html_safe
+    "<p aria-hidden='true'>Les champs avec <abbr class='text-danger' title='(obligatoire)'>*</abbr> sont obligatoires</p>".html_safe
   end
 
   def rg2a_required_content_tag
