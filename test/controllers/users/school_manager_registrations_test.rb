@@ -6,7 +6,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'input', { value: 'SchoolManager', hidden: 'hidden' }
-    assert_select 'label', /Mon adresse électronique académique/
+    assert_select 'label', /Adresse électronique académique/
   end
 
   test 'POST create School Manager responds with success' do

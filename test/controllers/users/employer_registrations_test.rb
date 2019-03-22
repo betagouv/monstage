@@ -6,8 +6,8 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'input', { value: 'Employer', hidden: 'hidden' }
-    assert_select 'label', /Mon adresse électronique/
-    assert_select 'label', /Mon mot de passe/
+    assert_select 'label', /Adresse électronique/
+    assert_select 'label', /Mot de passe/
     assert_select 'label', /Confirmation de mon mot de passe/
   end
 
