@@ -12,7 +12,7 @@ export default class extends Controller {
 
     $(this.offerTargets).each(function (index, offer) {
       let shouldBeHidden = sectors.length > 0 && !sectors.includes($(offer).data('sector'));
-      setElementVisibility($(offer), !shouldBeHidden)
+      setElementVisibility($(offer), shouldBeHidden)
     });
   }
 
