@@ -6,7 +6,7 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Ville de mon collège/
     assert_select 'label', /Mon collège/
     assert_select 'label', /Ma classe/
-    assert_select 'label', /Mon courriel/
+    assert_select 'label', /Mon adresse électronique/
     assert_select 'label', /Mon mot de passe/
     assert_select 'label', /Confirmation de mon mot de passe/
   end

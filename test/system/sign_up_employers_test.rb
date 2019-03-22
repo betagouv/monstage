@@ -6,13 +6,12 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     create(:employer, email: existing_email)
 
     # go to signup as employer
-    visit "/"
-    click_on "Inscription"
+    visit_signup
     click_on "Je veux déposer une offre"
 
     # fails to create employer with existing email
     assert_difference('Users::Employer.count', 0) do
-      fill_in "Mon courriel", with: existing_email
+      fill_in "Mon adresse électronique", with: existing_email
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
@@ -20,7 +19,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
 
     # create employer
     assert_difference('Users::Employer.count', 1) do
-      fill_in "Mon courriel", with: "another@email.com"
+      fill_in "Mon adresse électronique", with: "another@email.com"
       fill_in "Mon mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"

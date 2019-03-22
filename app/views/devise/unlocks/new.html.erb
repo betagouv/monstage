@@ -1,18 +1,19 @@
-<h2><%= t('.resend_unlock_instructions') %></h2>
-
+<header class="header-account">
+  <h2 class="text-center text-sm-left mb-0"><%= t('.resend_unlock_instructions') %></h2>
+</header>
 <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group">
     <%= f.label :email do %>
-      Courriel
+      Adresse électronique
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control col-lg-6', required: true %>
   </div>
 
-  <div class="actions">
+  <div class="actions d-flex d-sm-block">
     <%= f.submit t('.resend_unlock_instructions'), class: 'btn btn-primary' %>
   </div>
 <% end %>

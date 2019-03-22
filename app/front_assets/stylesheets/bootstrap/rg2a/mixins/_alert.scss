@@ -2,7 +2,7 @@
   $alert-text-color: #fff;
   color: $alert-text-color;
   background-color: $background;
-
+  border-radius: 0;
   hr {
     border-top-color: darken($border, 5%);
   }

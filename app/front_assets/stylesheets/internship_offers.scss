@@ -1,8 +1,8 @@
 .internship-item{
-  border-bottom: 1px solid $light;
+  border-bottom: 1px solid $gray-400;
 
   &:hover{
     text-decoration: none;
-    background-color: $light;
+    background-color: $blue_light;
   }
 }

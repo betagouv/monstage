@@ -1,12 +1,14 @@
-<h2><%= t('.sign_in') %></h2>
-
+<header class="header-account">
+  <h2 class="text-center text-sm-left mb-0">Me connecter</h2>
+  <p class="text-center text-sm-left mb-0"><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path %></p>
+</header>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="form-group">
     <%= f.label :email do %>
-      Courriel
+      Adresse électronique
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control col-lg-6', required: true %>
@@ -19,7 +21,7 @@
     <% end %>
     <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  col-lg-6', required: true %>
     <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-      <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted' %>
+      <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
     <% end %>
   </div>
 
@@ -30,7 +32,7 @@
     </div>
   <% end %>
 
-  <div class="actions">
+  <div class="actions d-flex d-sm-block">
     <%= f.submit t('.sign_in'), class: 'btn btn-primary' %>
   </div>
 <% end %>
