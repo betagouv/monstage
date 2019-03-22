@@ -31,6 +31,11 @@
             <%= render "edit_school_card" %>
           </div>
         <% end %>
+        <% if can?(:manage_users, current_user.try(:school)) %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_school_main_teachers", main_teachers: current_user.main_teachers%>
+          </div>
+        <% end %>
       </div>
     </div>
     <% if current_user.is_a?(Users::Student) %>

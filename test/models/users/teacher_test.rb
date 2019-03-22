@@ -23,6 +23,7 @@ module Users
                                             school: school)
       assert teacher.valid?
     end
+
     test "send SchoolManagerMailer.new_member on create" do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
@@ -34,20 +35,23 @@ module Users
       mock_mail.verify
     end
 
-    test "change school requires school_manager" do
+    test 'school can be nullified' do
       school_1 = create(:school)
       school_manager_1 = create(:school_manager, school: school_1)
       teacher = create(:teacher, school: school_1)
 
       teacher.school = create(:school)
-      assert_not teacher.valid?
-      assert_includes teacher.errors.keys, :school_manager
-
-      school_manager_2 = create(:school_manager, school: teacher.school)
-      teacher.reload
-      teacher.school = school_manager_2.school
       assert teacher.valid?
+    end
 
+    test "change school notify new school_manager" do
+      school_1 = create(:school)
+      school_2 = create(:school)
+      school_manager_1 = create(:school_manager, school: school_1)
+      school_manager_2 = create(:school_manager, school: school_2)
+      teacher = create(:teacher, school: school_1)
+
+      teacher.school = school_2
       mock_mail = MiniTest::Mock.new
       mock_mail.expect(:deliver_later, true)
       SchoolManagerMailer.stub :new_member, mock_mail do
@@ -55,7 +59,6 @@ module Users
       end
       mock_mail.verify
     end
-
 
     test "school_manager" do
       school = create(:school)

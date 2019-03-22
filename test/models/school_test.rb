@@ -19,5 +19,9 @@ class SchoolTest < ActiveSupport::TestCase
     assert_equal [main_teacher], school.main_teachers.all
     assert_equal [teacher], school.teachers.all
     assert_equal school_manager, school.school_manager
+    assert_includes school.users, student
+    assert_includes school.users, main_teacher
+    assert_includes school.users, teacher
+    assert_includes school.users, school_manager
   end
 end

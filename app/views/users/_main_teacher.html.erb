@@ -1,0 +1,9 @@
+<li>
+  <%= Presenters::User.new(user: main_teacher).short_name %>
+  -
+  <%= Presenters::User.new(user: main_teacher).role_name %>
+  <% link_to do %>
+    <i class="fas fa-trash"></i>
+    Supprimer
+  <% end %>
+</li>

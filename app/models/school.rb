@@ -1,5 +1,6 @@
 class School < ApplicationRecord
   include Nearbyable
+  has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
                       class_name: 'Users::Student'
   has_many :main_teachers, dependent: :nullify,

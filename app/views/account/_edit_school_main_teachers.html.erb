@@ -1,0 +1,17 @@
+<div class="card">
+  <table class="table table-striped table-bordered table-hover">
+    <% if main_teachers.size.zero? %>
+      <caption class="card-body">Aucun professeur principale inscrit pour le moment</caption>
+    <% else %>
+      <caption class="card-body">Vos professeurs principaux</caption>
+      <thead>
+        <th scope="col">Nom</th>
+        <th scope="col">Classe</th>
+        <th scope="col"></th>
+      </thead>
+      <tbody>
+        <%= render partial: "schools/users/main_teacher", collection: main_teachers %>
+      </tbody>
+    <% end %>
+  </table>
+</div>
