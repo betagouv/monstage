@@ -20,7 +20,6 @@
 @import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
-@import "./rg2a/buttons";
 @import "~bootstrap/scss/transitions";
 @import "~bootstrap/scss/dropdown";
 @import "~bootstrap/scss/button-group";
@@ -47,3 +46,6 @@
 @import "~bootstrap/scss/utilities";
 @import "~bootstrap/scss/print";
 
+// override
+@import "./rg2a/buttons";
+@import "./rg2a/navs";
