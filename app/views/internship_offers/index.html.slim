@@ -14,9 +14,9 @@ div[data-controller="internship-index"]
       p.col-12[style='color: gray'] Aucune offre disponible
   - else
     .controller-container
-      .row.bg-light
-        .col-12
-          - if can? :apply, InternshipOffer
+      - if can? :apply, InternshipOffer
+        .row.bg-light
+          .col-12
             .filter-section.py-3
               label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
               = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
