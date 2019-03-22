@@ -27,12 +27,13 @@ p.text-muted
 
 h3 L'entreprise
 p = @internship_offer.employer_name
-p
-  = link_to @internship_offer.employer_website, target: "_blank", class: 'external' do
-    = @internship_offer.employer_website
-    = " "
-    i.fas.fa-external-link-alt
-    = "(nouvelle fenêtre)"
+- if @internship_offer.employer_website.present?
+  p
+    = link_to @internship_offer.employer_website, target: "_blank", class: 'external' do
+      = @internship_offer.employer_website
+      = " "
+      i.fas.fa-external-link-alt
+      = "(nouvelle fenêtre)"
 
 .d-flex
   i.fas.fa-map-marker.mr-2
