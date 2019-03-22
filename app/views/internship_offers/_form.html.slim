@@ -57,7 +57,7 @@
                             true,
                             @internship_offer.is_individual?,
                             class: 'custom-control-input',
-                            data: { action: "change->internship-form#toggleCanBeAppliedSection" }
+                            data: { action: "change->internship-form#toggleInternshipType" }
         = label_tag :internship_type_true,
                      'Individuel',
                      class: 'custom-control-label'
@@ -66,7 +66,7 @@
                             false,
                             !@internship_offer.is_individual?,
                             class: 'custom-control-input',
-                            data: { action: "change->internship-form#toggleCanBeAppliedSection" }
+                            data: { action: "change->internship-form#toggleInternshipType" }
         = label_tag :internship_type_false,
                      'Collectif',
                      class: 'custom-control-label'
@@ -74,7 +74,7 @@
       = form.label :max_candidates do
         = 'Nombre de stagiaires maximum par groupe'
         small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
-      = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 0, step: 1, class: 'form-control col-lg-6'
+      = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 0, step: 1, class: 'form-control col-lg-6', data: { target: "internship-form.maxCandidatesInput" }
     .form-group
       = form.label :max_internship_number do
         = "Nombre de stages proposés dans l'année"
