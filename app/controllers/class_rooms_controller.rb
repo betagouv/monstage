@@ -6,7 +6,8 @@ class ClassRoomsController < ApplicationController
     @school = current_user.school
     @class_room = @school.class_rooms.new(class_rooms_params)
     @class_room.save!
-    redirect_to account_path
+    redirect_to account_path,
+                flash: { success: "Classe ajoutée avec succès" }
   rescue ActiveRecord::RecordInvalid => error
     render :new
   end
@@ -22,7 +23,8 @@ class ClassRoomsController < ApplicationController
     @school = current_user.school
     @class_room = @school.class_rooms.find(params[:id])
     @class_room.update!(class_rooms_params)
-    redirect_to account_path
+    redirect_to account_path,
+               flash: { success: "Classe mise à jour avec succès" }
   rescue ActiveRecord::RecordInvalid => error
     render :edit
   end
