@@ -1,4 +1,4 @@
-<%= link_to internship_offer_url(internship_offer), class: 'col-12 internship-item py-2', data: { sector: "#{internship_offer.sector}", target: "internship-index.offer", "test-id": "#{internship_offer.id}" } do %>
+<%= link_to internship_offer_path(internship_offer), class: 'col-12 internship-item py-2', data: { sector: "#{internship_offer.sector}", target: "internship-index.offer", "test-id": "#{internship_offer.id}" } do %>
   <p class="text-strong mb-0"><%= internship_offer.title %></p>
   <p class="text-muted mb-0">
     <%= internship_offer.employer_city %>

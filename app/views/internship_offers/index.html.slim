@@ -1,23 +1,25 @@
-.row
-  .col-12
-    - if can? :create, InternshipOffer
-      .clearfix
-        h2.float-left Offres de stage
-        = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
-    - else
-      h2 #{@internship_offers.count} #{'offre'.pluralize(@internship_offers.count)} de stage
-
-- if @internship_offers.blank?
+div[data-controller="internship-index"]
   .row
-    p.col-12[style='color: gray'] Aucune offre disponible
-- else
-  .controller-container[data-controller="internship-index"]
-    .row.bg-light
-      .col-12
-        - if can? :apply, InternshipOffer
-          .filter-section.py-3
-            fieldset
-              legend Domaine d'activité
-              = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+    .col-12
+      - if can? :create, InternshipOffer
+        .clearfix
+          h2.float-left Offres de stage
+          = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
+      - else
+        h2#internship-offers-count data-target="internship-index.title" #{@internship_offers.count} #{'offre'.pluralize(@internship_offers.count)} de stage
 
-    .row= render partial: "internship_offer", collection: @internship_offers
+
+  - if @internship_offers.blank?
+    .row
+      p.col-12[style='color: gray'] Aucune offre disponible
+  - else
+    .controller-container
+      .row.bg-light
+        .col-12
+          - if can? :apply, InternshipOffer
+            .filter-section.py-3
+              fieldset
+                legend Domaine d'activité
+                = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+
+      .row= render partial: "internship_offer", collection: @internship_offers
