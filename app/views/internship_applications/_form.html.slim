@@ -7,7 +7,7 @@ h2 Je candidate
 
   .form-group
     = f.label :internship_offer_week_id, "Quelle semaine ?", class: 'required'
-    = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks, :id, :select_text_method), {}, class: "form-control col-lg-6", required: true
+    = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.where("week_id IN (?)", current_user.school.weeks.pluck(:id)), :id, :select_text_method), { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
 
   .form-group
     = f.label :motivation, 'Ma motivation', class: 'required'
