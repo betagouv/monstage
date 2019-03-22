@@ -20,7 +20,6 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     internship_offer_hello_2 = create(:internship_offer, sector: "Hello")
     internship_offer_world = create(:internship_offer, sector: "World")
     sign_in(student)
-
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         visit internship_offers_path
