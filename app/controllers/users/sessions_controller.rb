@@ -7,7 +7,7 @@ module Users
     private
 
     def remove_notice
-      flash[:notice] = nil
+      flash.delete(:notice)
     end
   end
 end
