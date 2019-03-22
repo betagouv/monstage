@@ -1,9 +1,7 @@
 require "application_system_test_case"
 
 class SignUpMainTeachersTest < ApplicationSystemTestCase
-  driven_by :selenium, using: :chrome
-
-  test "navigation & interaction works until student creation" do
+  test "navigation & interaction works until main teacherr creation" do
     school_1 = create(:school, name: "Collège Test 1", city: "Saint-Martin")
     school_manager = create(:school_manager, school: school_1)
     school_2 = create(:school, name: "Collège Test 2", city: "Saint-Parfait")
@@ -12,13 +10,13 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
     birth_date = 14.years.ago
 
-    # go to signup as teacher
+    # go to signup as main teacher
     visit "/"
     click_on "Inscription"
     find("#dropdown-choose-profile").click
     click_on Users::MainTeacher.model_name.human
 
-    # fails to create teacher with existing email
+    # fails to create main teacher with existing email
     assert_difference('Users::MainTeacher.count', 0) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_2.city).click
@@ -36,7 +34,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
                  find_field("Ville de mon collège").value,
                  "re-select of city after failure fails"
 
-    # create student
+    # creates main teacher
     assert_difference('Users::MainTeacher.count', 1) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_1.city).click
@@ -48,7 +46,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
       click_on "Je m'inscris"
     end
 
-    # check created student has valid info
+    # check created main teacher has valid info
     created_main_teacher = Users::MainTeacher.where(email: "another@email.com").first
     assert_equal school_1, created_main_teacher.school
     assert_equal class_room_1, created_main_teacher.class_room

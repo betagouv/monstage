@@ -1,8 +1,6 @@
 require "application_system_test_case"
 
 class SignUpStudentsTest < ApplicationSystemTestCase
-  driven_by :selenium, using: :chrome
-
   test "navigation & interaction works until student creation" do
     school_1 = create(:school, name: "Collège Test 1", city: "Saint-Martin")
     school_2 = create(:school, name: "Collège Test 2", city: "Saint-Parfait")

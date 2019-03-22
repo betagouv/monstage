@@ -1,21 +1,19 @@
 require "application_system_test_case"
 
 class SignUpOthersTest < ApplicationSystemTestCase
-  driven_by :selenium, using: :chrome
-
-  test "navigation & interaction works until student creation" do
+  test "navigation & interaction works until other creation" do
     school_1 = create(:school, name: "Collège Test 1", city: "Saint-Martin")
     school_manager = create(:school_manager, school: school_1)
     school_2 = create(:school, name: "Collège Test 2", city: "Saint-Parfait")
     existing_email = 'fourcade.m@gmail.com'
 
-    # go to signup as student
+    # go to signup as other
     visit "/"
     click_on "Inscription"
     find("#dropdown-choose-profile").click
     click_on Users::Other.model_name.human
 
-    # fails to create student with existing email
+    # fails to create other with existing email
     assert_difference('Users::Other.count', 0) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_2.city).click
@@ -33,7 +31,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
                  find_field("Ville de mon collège").value,
                  "re-select of city after failure fails"
 
-    # create student
+    # create other
     assert_difference('Users::Other.count', 1) do
       find_field("Ville de mon collège").fill_in(with: "Saint")
       find("a", text: school_1.city).click
@@ -44,7 +42,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
       click_on "Je m'inscris"
     end
 
-    # check created student has valid info
+    # check created other has valid info
     other = Users::Other.where(email: "another@email.com").first
     assert_equal school_1, other.school
     assert_equal "Martin", other.first_name

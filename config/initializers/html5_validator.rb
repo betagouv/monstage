@@ -16,7 +16,7 @@ module Html5Validator
 
   def self.run
     puts "running w3c validation with: \n#{files_to_validates.join("\n")}"
-    `html5validator --root #{RESPONSE_STORED_DIR.to_s}`
+    `java -jar node_modules/vnu-jar/build/dist/vnu.jar #{RESPONSE_STORED_DIR.to_s}/*.html`
   end
 
   def run_request_and_cache_response(report_as:)

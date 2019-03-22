@@ -37,9 +37,21 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'register as Student' do
-    run_request_and_cache_response(report_as: 'new_user_registration_path_Student') do
-      get new_user_registration_path(as: 'Student')
+  test 'register as Employer' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Employer') do
+      get new_user_registration_path(as: 'Employer')
+    end
+  end
+
+  test 'register as MainTeacher' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_MainTeacher') do
+      get new_user_registration_path(as: 'MainTeacher')
+    end
+  end
+
+  test 'register as Other' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Other') do
+      get new_user_registration_path(as: 'Other')
     end
   end
 
@@ -49,10 +61,27 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'register as Employer' do
-    run_request_and_cache_response(report_as: 'new_user_registration_path_Employer') do
-      get new_user_registration_path(as: 'Employer')
+  test 'register as Student' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Student') do
+      get new_user_registration_path(as: 'Student')
     end
   end
 
+  test 'register as Teacher' do
+    run_request_and_cache_response(report_as: 'new_user_registration_path_Teacher') do
+      get new_user_registration_path(as: 'Teacher')
+    end
+  end
+
+  test 'sign in' do
+    run_request_and_cache_response(report_as: 'new_user_session_path') do
+      get new_user_session_path
+    end
+  end
+
+  test 'new password' do
+    run_request_and_cache_response(report_as: 'new_user_password') do
+      get new_user_password_path
+    end
+  end
 end
