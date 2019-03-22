@@ -1,4 +1,9 @@
 fr:
+  errors:
+    messages:
+      not_saved:
+        one: "1 erreur à corriger :"
+        other: "%{count} erreurs à corriger :"
   activerecord:
     models:
       users/student: "Élève"

@@ -1,5 +1,5 @@
 <header class="header-account">
-  <h1 class="h2 text-center text-sm-left mb-0"><%= t('.resend_unlock_instructions') %></h2>
+  <h1 class="h2 text-center text-sm-left mb-0"><%= t('.resend_unlock_instructions') %></h1>
 </header>
 <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
