@@ -1,4 +1,4 @@
-<h2><%= t('.title', resource: resource.model_name.human) %></h2>
+<h1 class="h2"><%= t('.title', resource: resource.model_name.human) %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>

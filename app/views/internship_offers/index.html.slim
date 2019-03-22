@@ -3,10 +3,10 @@ div[data-controller="internship-index"]
     .col-12
       - if can? :create, InternshipOffer
         .clearfix
-          h2.float-left Offres de stage
+          h1.h2.float-left Offres de stage
           = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
       - else
-        h2#internship-offers-count data-target="internship-index.title" #{@internship_offers.count} #{'offre'.pluralize(@internship_offers.count)} de stage
+        h1.h2#internship-offers-count data-target="internship-index.title" #{@internship_offers.count} #{'offre'.pluralize(@internship_offers.count)} de stage
 
 
   - if @internship_offers.blank?

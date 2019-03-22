@@ -1,12 +1,12 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome,
+  driven_by :selenium, using: :chrome,
                        screen_size: [1400, 1400]
 
   def visit_signup
     visit "/"
-    click_on "Mes stages"
+    click_on "Me connecter"
     page.find("a[href='#{users_choose_profile_path}'").click
   end
 end

@@ -15,7 +15,7 @@ class Week < ApplicationRecord
 
   def select_text_method
     week_date = Date.commercial(year, number)
-    date_format = '%d/%m/%y'
+    date_format = '%d/%m/%Y'
     "Semaine #{number} - du #{week_date.beginning_of_week.strftime(date_format)} au #{week_date.end_of_week.strftime(date_format)}"
   end
 end

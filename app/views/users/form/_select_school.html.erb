@@ -42,7 +42,7 @@
     <%# SELECT SCHOOL %>
     <div class="form-group">
       <%= form.label :school_id do %>
-        Mon collège
+        Collège
         <%= form.rg2a_required_content_tag %>
       <% end %>
       <%= form.text_field :school_id,
@@ -77,7 +77,7 @@
     <%# SELECT CLASS_ROOM %>
     <% if select_class_room %>
       <div class="form-group">
-        <%= form.label :class_room_id, "Ma classe" %>
+        <%= form.label :class_room_id, "Classe" %>
         <%= form.select :class_room_id,
                         options_from_collection_for_select((resource.school || resource.build_school).class_rooms,
                                                            :id,

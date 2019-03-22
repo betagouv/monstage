@@ -1,5 +1,5 @@
 <header class="header-account">
-  <h2 class="text-center text-sm-left mb-0">Me connecter</h2>
+  <h1 class="h2 text-center text-sm-left mb-0">Me connecter</h1>
   <p class="text-center text-sm-left mb-0"><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path %></p>
 </header>
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -36,5 +36,4 @@
     <%= f.submit t('.sign_in'), class: 'btn btn-primary' %>
   </div>
 <% end %>
-
-<%= render "devise/shared/links" %>
+<%= link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe, new_confirmation_path(resource_name), class: "small" %>
