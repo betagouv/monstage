@@ -32,6 +32,18 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+   test 'GET #index as god. does not return discarded offers' do
+    discarded_internship_offer = create(:internship_offer, sector: "Animaux")
+    discarded_internship_offer.discard
+    god = create(:god)
+
+    sign_in(god)
+    get internship_offers_path
+
+    assert_response :success
+    assert_select "a[href=?]", internship_offer_url(discarded_internship_offer), 0
+  end
+
   test 'GET #index as student returns internship_offer up to 60km nearby' do
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)

@@ -6,7 +6,7 @@ module NearbyIntershipOffersQueryable
              to: :school, allow_nil: true
 
     scope :targeted_internship_offers, -> (user:) {
-      query = InternshipOffer.all
+      query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby_from_school(user: user)) if user.school
       query = query.merge(internship_offers_overlaping_school_weeks(user: user)) if user.school
       query

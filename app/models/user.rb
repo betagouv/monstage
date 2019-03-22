@@ -3,7 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
   def targeted_internship_offers
-    InternshipOffer.all
+    InternshipOffer.kept
   end
 
   def to_s
