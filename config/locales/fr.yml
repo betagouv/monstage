@@ -2,7 +2,7 @@ fr:
   errors:
     messages:
       not_saved:
-        one: "1 erreur à corriger :"
+        one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"
   activerecord:
     models:
