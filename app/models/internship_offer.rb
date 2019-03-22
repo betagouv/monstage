@@ -18,7 +18,7 @@ class InternshipOffer < ApplicationRecord
 
   validates :max_candidates, numericality: { only_integer: true, greater_than: 0 },
                              unless: :can_be_applied_for?
-  validates :max_weeks, numericality: { only_integer: true, greater_than: 0 }
+  validates :max_internship_number, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true
 

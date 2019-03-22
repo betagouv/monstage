@@ -9,7 +9,7 @@ class CreateInternshipOffers < ActiveRecord::Migration[5.2]
       t.date    :week_day_end
       t.date    :excluded_weeks, array: true
       t.integer :max_candidates
-      t.integer :max_weeks
+      t.integer :max_internship_number
 
       t.string  :tutor_name
       t.string  :tutor_phone

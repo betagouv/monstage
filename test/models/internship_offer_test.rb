@@ -21,7 +21,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:description]
     assert_not_empty internship_offer.errors[:sector]
     assert_not_empty internship_offer.errors[:max_candidates]
-    assert_not_empty internship_offer.errors[:max_weeks]
+    assert_not_empty internship_offer.errors[:max_internship_number]
     assert_not_empty internship_offer.errors[:tutor_name]
     assert_not_empty internship_offer.errors[:tutor_phone]
     assert_not_empty internship_offer.errors[:tutor_email]
