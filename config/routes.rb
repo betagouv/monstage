@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   resources :schools, only: [:edit, :update, :index] do
-    resources :class_rooms, only: [:new, :create, :edit, :update]
+    resources :class_rooms, only: [:new, :create, :edit, :update], module: 'schools'
   end
 
   get 'account', to: 'account#show'
