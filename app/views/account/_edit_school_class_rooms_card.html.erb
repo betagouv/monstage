@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card <%= current_user&.school ? '' : 'd-none' %>">
   <div class="card-body">
     <h2 class="h6 card-title">Mes classes</h2>
     <p class="card-text">
