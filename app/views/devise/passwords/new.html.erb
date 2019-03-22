@@ -4,7 +4,7 @@
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "devise/shared/error_messages", resource: resource %>
-
+  <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>
   <div class="form-group">
     <%= f.label :email do %>
       Adresse électronique
@@ -14,7 +14,7 @@
   </div>
 
   <div class="actions d-flex d-sm-block">
-    <%= f.submit t('.send_me_reset_password_instructions'), class: 'btn btn-primary' %>
+    <%= f.submit "Envoyer", class: 'btn btn-primary' %>
   </div>
 <% end %>
 
