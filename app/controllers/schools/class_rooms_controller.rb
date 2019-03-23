@@ -1,7 +1,7 @@
 module Schools
   class ClassRoomsController < ApplicationController
-    before_action :set_school
-    before_action :authenticate_user!
+    include NestedSchool
+
     def create
       authorize! :create, ClassRoom
       @school = current_user.school
@@ -37,9 +37,6 @@ module Schools
     end
 
     private
-    def set_school
-      @school = School.find(params.require(:school_id))
-    end
     def class_rooms_params
       params.require(:class_room).permit(:name)
     end
