@@ -3,7 +3,6 @@ class InternshipOffer < ApplicationRecord
   include Nearbyable
   validates :title,
             :sector,
-            :max_candidates,
             :tutor_name,
             :tutor_phone,
             :tutor_email,
@@ -15,6 +14,8 @@ class InternshipOffer < ApplicationRecord
 
   validates :is_public, inclusion: { in: [true, false] }
 
+  validates :max_candidates, numericality: { only_integer: true, greater_than: 0 },
+                             unless: :is_individual?
   validates :max_internship_number, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true

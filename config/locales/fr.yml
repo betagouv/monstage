@@ -15,7 +15,6 @@ fr:
 
     attributes:
       internship_offer:
-        can_be_applied_for: "Type de stage"
         is_public: Secteur
       user:
         first_name: Prénom
@@ -30,8 +29,6 @@ fr:
       models:
         internship_offer:
           attributes:
-            can_be_applied_for:
-              blank: "doit être soit Individuel, soit Collectif"
             is_public:
               blank: "doit être soit Public, soit Privé"
             description:

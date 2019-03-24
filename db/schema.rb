@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_22_092608) do
+ActiveRecord::Schema.define(version: 2019_03_24_172606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 2019_03_22_092608) do
     t.string "title", null: false
     t.text "description", null: false
     t.string "sector"
-    t.boolean "can_be_applied_for", default: true
     t.date "week_day_start"
     t.date "week_day_end"
     t.date "excluded_weeks", array: true
