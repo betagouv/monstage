@@ -32,16 +32,4 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:employer_name]
     assert_not_empty internship_offer.errors[:coordinates]
   end
-
-  test "number of candidates required when can_be_applied_for is false" do
-    internship_offer = InternshipOffer.new(max_candidates: 0,
-                                           can_be_applied_for: true)
-    internship_offer.valid?
-    assert_empty internship_offer.errors[:max_candidates]
-
-    internship_offer = InternshipOffer.new(max_candidates: 0,
-                                           can_be_applied_for: false)
-    internship_offer.valid?
-    assert_not_empty internship_offer.errors[:max_candidates]
-  end
 end

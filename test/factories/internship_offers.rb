@@ -5,7 +5,6 @@ FactoryBot.define do
     max_candidates { 1 }
     max_internship_number { 1 }
     sector { 'Aérien, Aéronautique et Aéroportuaire' }
-    can_be_applied_for { true }
     tutor_name { 'Eric Dubois' }
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }

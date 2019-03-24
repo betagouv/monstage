@@ -28,7 +28,6 @@ module InternshipOffers
                         title: new_title,
                         week_ids: [weeks(:week_2019_1).id],
                         is_public: false,
-                        can_be_applied_for: false
                       }
                     })
       assert_redirected_to(internship_offer,
