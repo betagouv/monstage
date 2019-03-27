@@ -1,4 +1,0 @@
-release:
-  command:
-    - rails db:migrate
-    - jekyll build --config config/jekyll.yml
