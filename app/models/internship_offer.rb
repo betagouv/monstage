@@ -61,6 +61,10 @@ class InternshipOffer < ApplicationRecord
     max_candidates.blank? || max_candidates == 1
   end
 
+  def has_spots_left?
+    internship_offer_weeks.any?(&:has_spots_left?)
+  end
+
   def formatted_autocomplete_address
     [
       employer_street,
