@@ -8,6 +8,13 @@ class InternshipApplication < ApplicationRecord
   has_one :week, through: :internship_offer_week
 
   validates :motivation, :internship_offer_week, presence: true
+  before_validation :internship_offer_week_has_spots_left, on: :create
+
+  def internship_offer_week_has_spots_left
+    unless internship_offer_week.has_spots_left?
+      errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
+    end 
+  end
 
   aasm do
     state :submitted, initial: true
