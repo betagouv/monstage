@@ -7,6 +7,7 @@ class InternshipOffersController < ApplicationController
                            .page(params[:page])
     query = query.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
     @internship_offers = query
+    # @internship_offers = InternshipOffer.kept.for_user(user: current_user).reject { |offer| !offer.has_spots_left? }
   end
 
   def show
