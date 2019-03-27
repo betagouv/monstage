@@ -1,4 +1,4 @@
 #!/bin/bash
 set -x
 
-heroku logs -t -a betagouv-monstage
+heroku logs -t -a betagouv-monstage-staging
