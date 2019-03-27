@@ -16,6 +16,15 @@
     = form.label :description do
       = 'Description'
       = form.rg2a_required_content_tag
+      small.form-text.text-muted
+        a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
+          = "Aide à la rédaction  (nouvelle fenêtre)"
+        = " – "
+        a href="/exemple-offre-ideale-ministere" title="Exemple d'offre idéale - Agriculture" target="_blank"
+          = "Exemple d'offre idéale 1 (nouvelle fenêtre)"
+        = " – "
+        a href="/exemple-offre-ideale-sport" title="Exemple d'offre idéale - Sport" target="_blank"
+          = "Exemple d'offre idéale 2 (nouvelle fenêtre)"
 
     a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
       i.fa.fa-question-circle

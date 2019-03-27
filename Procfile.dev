@@ -1,4 +1,5 @@
 web: bundle exec puma -C config/puma.rb -p 3000
-logs: tail -f log/development.log
 webpack: bundle exec bin/webpack-dev-server
+jekyll: bundle exec jekyll build --config config/jekyll.yml  --watch
 delayed_job: bundle exec rails jobs:work
+logs: tail -f log/development.log
