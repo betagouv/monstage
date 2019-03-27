@@ -1,7 +1,11 @@
+html{
+  min-height: 100%;
+}
+
 .development {
-  border: 5px solid $cyan;
+  border: 3px solid rgba($cyan, .5);
 }
 
 .staging {
-  border: 5px solid $blue;
+  border: 3px solid rgba($blue, .5);
 }
