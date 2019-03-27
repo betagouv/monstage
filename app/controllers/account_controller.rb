@@ -20,7 +20,12 @@ class AccountController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:school_id, :first_name, :last_name,
-      :resume_educational_background, :resume_volunteer_work, :resume_other)
+    params.require(:user).permit(:school_id,
+                                 :first_name,
+                                 :last_name,
+                                 :resume_educational_background,
+                                 :resume_volunteer_work,
+                                 :resume_other,
+                                 :class_room_id)
   end
 end
