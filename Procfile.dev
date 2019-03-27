@@ -3,4 +3,3 @@ webpack: bundle exec bin/webpack-dev-server
 jekyll: bundle exec jekyll build --config config/jekyll.yml  --watch
 delayed_job: bundle exec rails jobs:work
 logs: tail -f log/development.log
-release: rails db:migrate && jekyll build --config config/jekyll.yml

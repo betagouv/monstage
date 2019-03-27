@@ -1,0 +1,18 @@
+/ The container tag
+  - available local variables
+    current_page : a page object for the currently displayed page
+    total_pages  : total number of pages
+    per_page     : number of items to fetch per page
+    remote       : data-remote
+    paginator    : the paginator that renders the pagination tags inside
+
+== paginator.render do
+  .row.mt-3.no-gutters
+    .col-4.text-left.text-sm-right
+      - unless current_page.first?
+        == prev_page_tag unless current_page.first?
+    .col-4.text-center
+      a.btn.btn-link.disabled= "Page #{current_page} / #{total_pages}"
+    .col-4.text-right.text-sm-left
+      - unless current_page.last?
+        == next_page_tag unless current_page.last?

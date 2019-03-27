@@ -13,6 +13,8 @@ gem 'activerecord-postgis-adapter' # postgis extension
 gem 'puma'
 gem 'cancancan'
 gem 'bootsnap', require: false
+gem 'kaminari'
+
 # gem 'geocoder'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -20,10 +22,11 @@ group :development, :test do
 end
 gem 'delayed_job_active_record'
 
+# could it be only on build stage?
 gem 'jekyll'
 gem 'minima'
+
 group :jekyll_plugins do
-  # gem "jekyll-feed", "~> 0.6"
 end
 
 group :development do

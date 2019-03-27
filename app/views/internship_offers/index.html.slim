@@ -22,3 +22,5 @@ div[data-controller="internship-index"]
               = select_tag "Sélectionner un domaine d'activité", options_for_select(@internship_offers.pluck(:sector).uniq), { id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
       .row= render partial: "internship_offer", collection: @internship_offers
+
+      = paginate(@internship_offers)
