@@ -46,6 +46,11 @@ use CircleCI : https://circleci.com/gh/betagouv/monstage
 
 deployement automated via CI, can be done manually with ```infra/staging/deploy.sh```
 
+# production
+
+prefer heroku promote staging
+
+
 ## run
 * ```infra/staging/console.sh``` : run rails console on heroku
 * ```infra/staging/set_env.sh``` : setup heroku env vars
