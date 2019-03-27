@@ -36,4 +36,18 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:employer_name]
     assert_not_empty internship_offer.errors[:coordinates]
   end
+
+  test "has spots left" do
+    internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
+
+    assert internship_offer.has_spots_left?
+
+    internship_offer.internship_offer_weeks.each do |internship_offer_week|
+      internship_offer.max_candidates.times do
+        create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'approved')
+      end
+    end
+
+    refute internship_offer.has_spots_left?
+  end
 end
