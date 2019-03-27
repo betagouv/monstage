@@ -2,7 +2,6 @@ require 'rest_client'
 require 'json'
 
 Rails.application.configure do
-  HOST = 'http://betagouv-monstage.herokuapp.com'
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
@@ -71,7 +70,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: HOST }
+  config.action_mailer.default_url_options = { host: ENV.fetch('HOST') }
 
 
   response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Credentials.enc(:mailtrap, :api_token)}"
@@ -83,7 +82,7 @@ Rails.application.configure do
                                        {
                                          :user_name => ENV['SENDGRID_USERNAME'],
                                          :password => ENV['SENDGRID_PASSWORD'],
-                                         :domain => HOST,
+                                         :domain => ENV.fetch('HOST'),
                                          :address => 'smtp.sendgrid.net',
                                          :port => 587,
                                          :authentication => :plain,
