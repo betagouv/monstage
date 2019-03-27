@@ -13,10 +13,10 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Mon stage de 3e
+title: Mon stage de 3e - Aide utilisateur
 email: martin.fourcade@beta.gouv.fr
 description: >- # this means to ignore newlines until "baseurl:"
-  Information de mon stage de 3eme
+  Les informations utiles pour nos élève, employeurs, chef d'établissements, professeurs...
 baseurl: "" # the subpath of your site, e.g. /blog
 # Build settings
 markdown: kramdown

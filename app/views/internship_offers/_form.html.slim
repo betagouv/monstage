@@ -16,6 +16,9 @@
     = form.label :description do
       = 'Description'
       = form.rg2a_required_content_tag
+      small.form-text.text-muted
+        a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
+          = "Aide à la rédaction  (nouvelle fenêtre)"
 
     a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
       i.fa.fa-question-circle
