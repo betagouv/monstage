@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { toggleElement } from "../utils/dom"
+
 export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
                      "maxCandidatesInput",
@@ -11,11 +11,6 @@ export default class extends Controller {
     if (event.target.id == 'internship_type_true') {
       this.maxCandidatesInputTarget.value = 1
     }
-  }
-
-  // show/hide div next of element
-  toggleClosestHelpSign(event) {
-    toggleElement($(event.target).next())
   }
 
   // toggle all weeks options

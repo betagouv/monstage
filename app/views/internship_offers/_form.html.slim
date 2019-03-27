@@ -4,6 +4,14 @@
 
   = form.hidden_field :employer_id, value: current_user.id
 
+  small.form-text.text-muted.mt-0.mb-3
+    a href="/exemple-offre-ideale-ministere" title="Exemple d'offre idéale - Agriculture" target="_blank"
+      = "Exemple d'offre idéale 1 (nouvelle fenêtre)"
+    = " – "
+    a href="/exemple-offre-ideale-sport" title="Exemple d'offre idéale - Sport" target="_blank"
+      = "Exemple d'offre idéale 2 (nouvelle fenêtre)"
+
+
   .form-group
     = form.label :title do
       = "Intitulé"
@@ -12,29 +20,23 @@
 
     = form.text_field :title, class: "form-control col-lg-6", required: true
 
-  .form-group
+  .form-group data-controller="help"
     = form.label :description do
       = 'Description'
       = form.rg2a_required_content_tag
-      small.form-text.text-muted
-        a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
-          = "Aide à la rédaction  (nouvelle fenêtre)"
-        = " – "
-        a href="/exemple-offre-ideale-ministere" title="Exemple d'offre idéale - Agriculture" target="_blank"
-          = "Exemple d'offre idéale 1 (nouvelle fenêtre)"
-        = " – "
-        a href="/exemple-offre-ideale-sport" title="Exemple d'offre idéale - Sport" target="_blank"
-          = "Exemple d'offre idéale 2 (nouvelle fenêtre)"
+      a.btn.btn-link.py-0 data-action="click->help#toggle"
+        i.fa.fa-question-circle
 
-    a.btn.btn-link data-action="click->internship-form#toggleClosestHelpSign"
-      i.fa.fa-question-circle
-
-    .help-sign-content.d-none
-      ol
+    .help-sign-content.d-none data-target="help.content"
+      ol.my-3
         li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
         li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
         li Donnez 3 qualités requises (aimer bricoler, être bavard, aimez écrire)
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
+        li
+          a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
+            = "Aide à la rédaction  (nouvelle fenêtre)"
+
     = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
   .form-group
     = form.label :sector do
