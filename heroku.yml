@@ -1,0 +1,4 @@
+release:
+  command:
+    - rails db:migrate
+    - bundle exec jekyll build --config config/jekyll.yml

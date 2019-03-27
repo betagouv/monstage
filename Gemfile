@@ -20,6 +20,12 @@ group :development, :test do
 end
 gem 'delayed_job_active_record'
 
+gem 'jekyll'
+gem 'minima'
+group :jekyll_plugins do
+  # gem "jekyll-feed", "~> 0.6"
+end
+
 group :development do
   gem 'foreman'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
