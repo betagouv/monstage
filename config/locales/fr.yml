@@ -11,7 +11,7 @@ fr:
       users/employer: "Employeur"
       users/main_teacher: "Professeur principal"
       users/teacher: "Professeur"
-      users/other: "Autre"
+      users/other: "Autre fonction"
 
     attributes:
       internship_offer:
