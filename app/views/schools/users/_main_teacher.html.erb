@@ -1,6 +1,6 @@
 <row>
   <td><%= Presenters::User.new(user: main_teacher).short_name %></td>
-  <td><%= main_teacher.class_room.name %></td>
+  <td><%= main_teacher.try(:class_room).try(:name) %></td>
   <td>
     <%= link_to school_user_path(main_teacher.school, main_teacher), method: :delete do %>
       <i class="fas fa-trash"></i>&nbsp;Supprimer
