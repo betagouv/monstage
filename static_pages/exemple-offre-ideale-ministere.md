@@ -16,7 +16,7 @@ permalink: /exemple-offre-ideale-ministere/
 * la protection des végétaux : les nouvelles maladies,
 * accidents alimentaire et gestion de crises.
 
-**Périodes Poissibles :**
+**Périodes Possibles :**
 
 * 01/09/2018 - 02/12/2018
 * 04/02/2019 - 31/08/2019
