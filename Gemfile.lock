@@ -136,6 +136,18 @@ GEM
       jekyll (~> 3.3)
     jekyll-watch (1.5.1)
       listen (~> 3.0)
+    kaminari (1.1.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.1.1)
+      kaminari-activerecord (= 1.1.1)
+      kaminari-core (= 1.1.1)
+    kaminari-actionview (1.1.1)
+      actionview
+      kaminari-core (= 1.1.1)
+    kaminari-activerecord (1.1.1)
+      activerecord
+      kaminari-core (= 1.1.1)
+    kaminari-core (1.1.1)
     kramdown (1.17.0)
     liquid (4.0.3)
     listen (3.1.5)
@@ -311,6 +323,7 @@ DEPENDENCIES
   factory_bot_rails
   foreman
   jekyll
+  kaminari
   listen
   minima
   minitest-reporters
