@@ -2,9 +2,11 @@ class InternshipOffersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create, :edit, :update, :destroy]
 
   def index
-    @internship_offers = InternshipOffer.kept
-                                        .for_user(user: current_user)
-                                        .page(params[:page])
+    query = InternshipOffer.kept
+                           .for_user(user: current_user)
+                           .page(params[:page])
+    query = query.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
+    @internship_offers = query
   end
 
   def show
@@ -65,7 +67,7 @@ class InternshipOffersController < ApplicationController
 
   def internship_offer_params
     params.require(:internship_offer)
-        .permit(:title, :description, :sector, :week_day_start, :week_day_end, :excluded_weeks,
+        .permit(:title, :description, :sector_id, :week_day_start, :week_day_end, :excluded_weeks,
                 :max_candidates, :max_internship_number, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
                 :employer_name, :employer_street, :employer_zipcode, :employer_city, :is_public, :group_name,
                 :employer_id, :school_id, :employer_description,

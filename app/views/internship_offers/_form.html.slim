@@ -38,11 +38,12 @@
             = "Aide à la rédaction  (nouvelle fenêtre)"
 
     = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+
   .form-group
-    = form.label :sector do
+    = form.label :sector_id do
       = "Secteur d'activité"
       = form.rg2a_required_content_tag
-    = form.select :sector, options_for_select(internship_sectors_options_for_select, selected: @internship_offer.sector), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
+    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
 
   fieldset
     legend Quand ?
@@ -81,6 +82,7 @@
         = label_tag :internship_type_false,
                      'Collectif',
                      class: 'custom-control-label'
+
     div class="form-group #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
       = form.label :max_candidates do
         = 'Nombre de stagiaires maximum par groupe'

@@ -1,0 +1,22 @@
+import { Controller } from "stimulus"
+import Turbolinks from 'turbolinks';
+import { setElementVisibility } from "../utils/dom";
+
+// should be a link, but have to check with Brice why ...
+const INTERNSHIP_OFFERS_URL = "<%= Rails.application.routes.url_helpers.internship_offers_path() %>";
+export default class extends Controller {
+  static targets = [ "offer", 'title' ];
+
+  filterOffersBySectors(event) {
+    const sectorId = $(event.target).val()
+    const params = {}
+    if (sectorId) {
+      params.sector_id = sectorId;
+    }
+    const queryParams = Object.keys(params).length > 0 ?
+                        `?${$.param(params)}` :
+                        "";
+    Turbolinks.visit(`${INTERNSHIP_OFFERS_URL}${queryParams}`)
+  }
+
+}
