@@ -16,9 +16,9 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   test "navigation & interaction works until employer creation" do
     school = create(:school)
     student = create(:student, school: school)
-    internship_offer_hello_1 = create(:internship_offer, sector: "Hello")
-    internship_offer_hello_2 = create(:internship_offer, sector: "Hello")
-    internship_offer_world = create(:internship_offer, sector: "World")
+    internship_offer_hello_1 = create(:internship_offer)
+    internship_offer_hello_2 = create(:internship_offer, sector: internship_offer_hello_1.sector)
+    internship_offer_world = create(:internship_offer)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -28,7 +28,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
         assert_presence_of(internship_offer: internship_offer_hello_2)
         assert_presence_of(internship_offer: internship_offer_world)
 
-        select("Hello", from: "internship-offer-sector-filter")
+        select(internship_offer_hello_1.sector.name, from: "internship-offer-sector-filter")
         assert_presence_of(internship_offer: internship_offer_hello_1)
         assert_presence_of(internship_offer: internship_offer_hello_2)
         assert_absence_of(internship_offer: internship_offer_world)
