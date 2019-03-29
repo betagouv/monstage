@@ -22,4 +22,4 @@ div[data-controller="internship-index"]
     - else
       .row= render partial: "internship_offer", collection: @internship_offers
 
-      = paginate(@internship_offers)
+      = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})

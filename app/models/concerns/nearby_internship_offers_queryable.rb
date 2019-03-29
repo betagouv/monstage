@@ -1,4 +1,4 @@
-module NearbyIntershipOffersQueryable
+module NearbyInternshipOffersQueryable
   extend ActiveSupport::Concern
 
   included do

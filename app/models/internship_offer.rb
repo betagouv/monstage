@@ -2,7 +2,6 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
   validates :title,
-            :sector,
             :tutor_name,
             :tutor_phone,
             :tutor_email,
@@ -33,8 +32,10 @@ class InternshipOffer < ApplicationRecord
   has_many :weeks, through: :internship_offer_weeks
   has_many :internship_applications, through: :internship_offer_weeks
   belongs_to :employer, class_name: "Users::Employer"
-  belongs_to :school, optional: true
+
+  belongs_to :school, optional: true # reserved to school
   belongs_to :sector
+
   scope :for_user, -> (user:) {
     return merge(all) unless user # fuck it ; should have a User::Visitor type
     merge(user.class.targeted_internship_offers(user: user))
@@ -47,7 +48,7 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
 
-  paginates_per 10
+  paginates_per 1
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
