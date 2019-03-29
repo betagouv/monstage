@@ -1,6 +1,8 @@
 class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
+  PAGE_SIZE = 10
+
   validates :title,
             :tutor_name,
             :tutor_phone,
@@ -47,6 +49,8 @@ class InternshipOffer < ApplicationRecord
   scope :filter_by_sector, -> (sector_id) {
     where(sector_id: sector_id)
   }
+
+  paginates_per PAGE_SIZE
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
