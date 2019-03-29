@@ -7,7 +7,9 @@ module Users
               :birth_date,
               :gender,
               presence: true
-    include NearbyInternshipOffersQueryable
+
+    include TargetableInternshipOffersForSchool
+
 
     has_many :internship_applications, dependent: :destroy
     after_initialize :init

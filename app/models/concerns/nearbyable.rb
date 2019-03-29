@@ -5,15 +5,6 @@ module Nearbyable
     validate :coordinates_are_valid?
     attr_reader :autocomplete
 
-    scope :compute_distance_in_select, -> (latitude:, longitude:, as_name:) {
-      select(%{
-            ROUND(ST_Distance(
-              %s.coordinates,
-              ST_GeographyFromText('SRID=4326;POINT(%f %f)')
-            )) AS %s
-          } % [table_name, longitude, latitude, as_name])
-    }
-
     scope :nearby, -> (latitude:, longitude:, within_radius_in_meter: 60_000) {
       query = %{
         ST_DWithin(

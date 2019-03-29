@@ -31,9 +31,14 @@
             <%= render "edit_school_card" %>
           </div>
         <% end %>
-        <% if can?(:manage_users, current_user.try(:school)) %>
+        <% if can?(:manage_main_teachers, current_user.try(:school)) %>
           <div class="col-sm-6 col-md-4">
-            <%= render "edit_school_main_teachers", main_teachers: current_user.main_teachers%>
+            <%= render "edit_school_main_teachers_card", main_teachers: current_user.main_teachers %>
+          </div>
+        <% end %>
+        <% if can?(:manage_students, current_user.try(:class_room)) %>
+          <div class="col-sm-6 col-md-4">
+            <%= render "edit_classroom_students_card.html", class_room: current_user.class_room %>
           </div>
         <% end %>
       </div>

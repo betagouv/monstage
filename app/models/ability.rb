@@ -35,7 +35,7 @@ class Ability
     can [:create, :new, :update], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
-    can [:manage_users], School do |school|
+    can [:manage_main_teachers], School do |school|
       school.id == user.school_id
     end
     can [:delete], User do |delete_user_from_school|
@@ -47,6 +47,9 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school, :choose_class_room, :choose_full_name], :sign_up
+    can [:manage_students], ClassRoom do |class_room|
+      class_room.id == user.class_room_id
+    end
   end
 
   def teacher_abilities(user:)
