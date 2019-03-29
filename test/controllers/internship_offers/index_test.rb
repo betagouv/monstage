@@ -17,9 +17,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student. check if filters are properly populated' do
-    create(:internship_offer, sector: "Animaux")
-    create(:internship_offer, sector: "Droit, Justice")
-    create(:internship_offer, sector: "Mode, Luxe, Industrie textile")
+    internship_offer_1 = create(:internship_offer)
+    internship_offer_2 = create(:internship_offer)
+    internship_offer_3 = create(:internship_offer)
     student = create(:student)
 
     sign_in(student)
@@ -28,10 +28,10 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path
 
         assert_response :success
-        assert_select 'select#internship-offer-sector-filter option', 3
-        assert_select 'option', text: "Animaux"
-        assert_select 'option', text: "Droit, Justice"
-        assert_select 'option', text: "Mode, Luxe, Industrie textile"
+        assert_select 'select#internship-offer-sector-filter option', 4
+        assert_select 'option', text: internship_offer_1.sector.name
+        assert_select 'option', text: internship_offer_2.sector.name
+        assert_select 'option', text: internship_offer_3.sector.name
       end
     end
   end
@@ -40,8 +40,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)
     student = create(:student, school: school_at_paris)
-    internship_offer = create(:internship_offer, sector: "Animaux",
-                                                 weeks: [week],
+    internship_offer = create(:internship_offer, weeks: [week],
                                                  coordinates: Coordinates.paris)
 
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -58,7 +57,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_bordeaux = create(:school, :at_bordeaux)
     student = create(:student, school: school_at_bordeaux)
-    create(:internship_offer, sector: "Animaux", weeks: [week], coordinates: Coordinates.paris)
+    create(:internship_offer, weeks: [week], coordinates: Coordinates.paris)
 
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
       sign_in(student)
@@ -130,7 +129,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as god. does not return discarded offers' do
-    discarded_internship_offer = create(:internship_offer, sector: "Animaux")
+    discarded_internship_offer = create(:internship_offer)
     discarded_internship_offer.discard
     god = create(:god)
 

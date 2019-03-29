@@ -48,8 +48,6 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
 
-  paginates_per 1
-
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?
   end
