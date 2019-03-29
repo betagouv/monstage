@@ -34,12 +34,17 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_applications, through: :internship_offer_weeks
   belongs_to :employer, class_name: "Users::Employer"
   belongs_to :school, optional: true
+  belongs_to :sector
   scope :for_user, -> (user:) {
     return merge(all) unless user # fuck it ; should have a User::Visitor type
     merge(user.class.targeted_internship_offers(user: user))
   }
   scope :by_weeks, -> (weeks:) {
     joins(:weeks).where(weeks: {id: weeks.ids}).distinct
+  }
+
+  scope :filter_by_sector, -> (sector_id) {
+    where(sector_id: sector_id)
   }
 
   paginates_per 10
