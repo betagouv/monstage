@@ -1,0 +1,9 @@
+<row>
+  <td><%= Presenters::User.new(user: student).short_name %></td>
+  <td></td>
+  <td>
+    <%= form_for [student.school, student], url: school_user_path(student.school, student) do |form| %>
+    hello
+    <% end %>
+  </td>
+</row>

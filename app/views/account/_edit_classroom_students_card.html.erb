@@ -1,0 +1,21 @@
+<div class="card">
+  <table class="table table-striped table-bordered table-hover">
+    <caption class="card-body">
+      <%= class_room.name %>
+      <br />
+      <% if class_room.students.size.zero? %>
+        Aucun élève inscrit pour le moment
+      <% else %>
+          Liste des élèves
+      <% end %>
+      <thead>
+        <th scope="col">Nom</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </thead>
+      <tbody>
+        <%= render partial: "schools/users/student", collection: class_room.students %>
+      </tbody>
+    </caption>
+  </table>
+</div>
