@@ -94,6 +94,8 @@
 
       = form.number_field :max_internship_number, value: 1, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
 
+    = render 'users/form/select_school', form: form, resource: @internship_offer, select_class_room: false
+
   fieldset
     legend Tuteur
     .form-group
@@ -122,6 +124,11 @@
         = "Nom de l'entreprise ou de l'administration"
         = form.rg2a_required_content_tag
       = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
+    .form-group
+      = form.label :employer_description do
+        = "Activités de l'entreprise ou de l'administration"
+        = form.rg2a_required_content_tag
+      = form.text_area :employer_description, class: 'form-control col-lg-6', required: true
 
     .form-group
       = form.label :employer_website, 'Site web'

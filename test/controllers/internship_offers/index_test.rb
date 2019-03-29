@@ -87,6 +87,27 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET #index as student ' \
+       'ignores internship_offer restricted to school' \
+       'finds internship_offer limited to current student school ' \
+       'finds all internship_offers not limited' do
+    student = create(:student, school: create(:school))
+    sign_in(student)
+
+    internship_limited_to_another_school = create(:internship_offer, school: create(:school))
+    internship_limited_to_student_school = create(:internship_offer, school: student.school)
+    internship_not_restricted_to_school = create(:internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path
+        assert_presence_of(internship_offer: internship_not_restricted_to_school)
+        assert_presence_of(internship_offer: internship_limited_to_student_school)
+        assert_absence_of(internship_offer: internship_limited_to_another_school)
+      end
+    end
+  end
+
   test 'GET #index as employer returns his internship_offers' do
     employer = create(:employer)
     included_internship_offer = create(:internship_offer, employer: employer, title: 'Hellow-me')

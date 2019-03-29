@@ -33,7 +33,7 @@ class InternshipOffer < ApplicationRecord
   has_many :weeks, through: :internship_offer_weeks
   has_many :internship_applications, through: :internship_offer_weeks
   belongs_to :employer, class_name: "Users::Employer"
-
+  belongs_to :school, optional: true
   scope :for_user, -> (user:) {
     return merge(all) unless user # fuck it ; should have a User::Visitor type
     merge(user.class.targeted_internship_offers(user: user))
@@ -41,6 +41,8 @@ class InternshipOffer < ApplicationRecord
   scope :by_weeks, -> (weeks:) {
     joins(:weeks).where(weeks: {id: weeks.ids}).distinct
   }
+
+  paginates_per 10
 
   def available_all_year?
     week_day_start.blank? && week_day_end.blank?

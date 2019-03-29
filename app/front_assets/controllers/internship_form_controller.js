@@ -1,4 +1,5 @@
 import { Controller } from "stimulus"
+export const toggleElement = ($element) => $element.toggleClass('d-none');
 
 export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
