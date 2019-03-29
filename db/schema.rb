@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_29_003048) do
+ActiveRecord::Schema.define(version: 2019_03_29_104358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,7 +62,6 @@ ActiveRecord::Schema.define(version: 2019_03_29_003048) do
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
-    t.string "sector"
     t.date "week_day_start"
     t.date "week_day_end"
     t.date "excluded_weeks", array: true
