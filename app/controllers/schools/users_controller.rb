@@ -2,6 +2,11 @@ module Schools
   class UsersController < ApplicationController
     include NestedSchool
 
+    def index
+      authorize! :index, ClassRoom
+      @school = current_user.school
+    end
+
     def destroy
       user = @school.users.find(params[:id])
       user_presenter = Presenters::User.new(user: user)
