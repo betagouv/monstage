@@ -9,6 +9,7 @@ module NearbyIntershipOffersQueryable
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby_from_school(user: user)) if user.school
       query = query.merge(internship_offers_overlaping_school_weeks(user: user)) if user.school
+      query = query.merge(ignore_internship_restricted_to_other_schools(user: user))
       query
     }
 
@@ -19,6 +20,10 @@ module NearbyIntershipOffersQueryable
 
     scope :internship_offers_overlaping_school_weeks, -> (user:) {
       InternshipOffer.by_weeks(weeks: user.school.weeks)
+    }
+
+    scope :ignore_internship_restricted_to_other_schools, -> (user:){
+      InternshipOffer.where(school_id: [nil, user.school_id])
     }
   end
 end

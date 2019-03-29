@@ -10,6 +10,11 @@ class InternshipOfferTest < ActiveSupport::TestCase
     internship_offer = InternshipOffer.new
     assert_equal internship_offer.weeks, []
   end
+  test "school (restricted_school)" do
+    internship_offer = InternshipOffer.new
+    assert_equal internship_offer.school, nil
+    assert internship_offer.build_school.is_a?(School)
+  end
 
   test "test presence of fields" do
     internship_offer = InternshipOffer.create
