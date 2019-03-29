@@ -8,7 +8,7 @@ module Users
               :gender,
               presence: true
 
-    include TargetableInternshipOffersInSchool
+    include TargetableInternshipOffersForSchool
 
 
     has_many :internship_applications, dependent: :destroy

@@ -4,6 +4,6 @@ module Users
     has_many :students, through: :class_room
 
     include ManagedUser
-    include TargetableInternshipOffersInSchool
+    include TargetableInternshipOffersForSchool
   end
 end

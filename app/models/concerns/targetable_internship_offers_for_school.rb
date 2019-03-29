@@ -1,4 +1,4 @@
-module TargetableInternshipOffersInSchool
+module TargetableInternshipOffersForSchool
   extend ActiveSupport::Concern
 
   included do
