@@ -38,26 +38,34 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index ignores internship_offers having ' \
        'as much internship_application as max_candidates number' do
-   max_candidates = 1
-   internship_offer = create(:internship_offer, max_candidates: max_candidates)
-   internship_application = create(:internship_application, internship_offer: internship_offer,
-                                                            blocked_applications_count: max_candidates)
-    sign_in(create(:student))
+    max_candidates = 1
+    week = Week.first
+    internship_offer = create(:internship_offer,
+                              max_candidates: max_candidates,
+                              internship_offer_weeks: [
+                                create(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                               week: Week.first)
+                              ])
+    student = create(:student)
+    sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
-      # InternshipOffer.stub :by_weeks, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path
         assert_absence_of(internship_offer: internship_offer)
-     # end
+     end
    end
   end
 
   test 'GET #index keeps internship_offers having ' \
        'as less than blocked_applications_count as max_candidates number' do
-   max_candidates = 2
-   internship_offer = create(:internship_offer, max_candidates: max_candidates)
-   internship_application = create(:internship_application, internship_offer: internship_offer,
-                                                            blocked_applications_count: max_candidates -1)
-    sign_in(create(:student))
+    max_candidates = 2
+    internship_offer = create(:internship_offer,
+                              max_candidates: max_candidates,
+                              internship_offer_weeks: [
+                                create(:internship_offer_week, blocked_applications_count: max_candidates - 1,
+                                                               week: Week.first)
+                              ])
+   sign_in(create(:student))
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path
@@ -65,6 +73,7 @@ class IndexTest < ActionDispatch::IntegrationTest
      end
    end
   end
+
   test 'GET #index as student with page, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map{ create(:internship_offer) }
     sign_in(create(:student))

@@ -5,6 +5,8 @@ module InternshipOffersScopes
 
     included do
       scope :applicable, -> () {
+        InternshipOffer.joins(:internship_offer_weeks)
+                       .where("internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates")
       }
     end
   end

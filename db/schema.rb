@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 2019_03_29_142701) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
-    t.integer "blocked_applications_count", default: 0, null: false
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
@@ -56,6 +55,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_142701) do
     t.bigint "week_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "blocked_applications_count", default: 0, null: false
     t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
     t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
   end
