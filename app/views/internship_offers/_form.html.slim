@@ -130,7 +130,7 @@
       = form.label :employer_description do
         = "Activités de l'entreprise ou de l'administration"
         = form.rg2a_required_content_tag
-      = form.text_area :employer_description, class: 'form-control col-lg-6', required: true
+      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
 
     .form-group
       = form.label :employer_website, 'Site web'
