@@ -2,7 +2,7 @@
   <div class="card-body">
     <p><%= current_user.name %></p>
     <% if current_user.school %>
-      <p class="card-text">Collège <%= current_user.school.name %></p>
+      <p class="card-text"><%= current_user.school.name %></p>
       <% if current_user.respond_to?(:class_room) %>
         <p class="card-text">
           <%= current_user.class_room || "Vous n'avez pas encore sélectionné de classe" %>
