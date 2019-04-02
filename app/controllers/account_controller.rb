@@ -26,6 +26,7 @@ class AccountController < ApplicationController
                                  :resume_educational_background,
                                  :resume_volunteer_work,
                                  :resume_other,
+                                 :resume_languages,
                                  :class_room_id)
   end
 end
