@@ -4,6 +4,12 @@ fr:
       not_saved:
         one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"
+  devise:
+    registrations:
+      user:
+        signed_up_but_not_approved: Votre compte est bien créé mais vous ne pouvez pas vous connecter tant que votre professeur principal ne l'a pas validé.
+    failure:
+      not_approved: Votre compte n'a pas encore été validé par votre professeur principal
   activerecord:
     models:
       users/student: "Élève"
