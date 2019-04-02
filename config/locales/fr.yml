@@ -22,6 +22,7 @@ fr:
         school_manager: "Chef d'établissement"
         class_room: "Classe"
         school: "Collège"
+        gender: Sexe
 
     errors:
       messages:
@@ -67,3 +68,7 @@ fr:
           attributes:
             school_manager:
               blank: "ne s'est pas encore inscrit"
+        users/student:
+          attributes:
+            gender:
+              blank: obligatoire
