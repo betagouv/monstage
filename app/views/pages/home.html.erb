@@ -1,1 +1,30 @@
-<h1>Mon stage de 3e</h1>
+<h1>Tableau de bord</h1>
+
+<% if current_user.is_a?(Users::MainTeacher) %>
+  <% if current_user.class_room.nil? %>
+    <i>Veuillez choisir une classe dans votre compte pour suivre vos élèves</i>
+  <% else %>
+    <h2>Mes élèves de <%= current_user.class_room.name %></h2>
+    <table class="table">
+      <thead>
+        <th>Nom</th>
+        <th>Autorisation parentale</th>
+      </thead>
+      <% current_user.class_room.students.each do |student| %>
+        <tr>
+          <td><%= student.name %></td>
+          <td id="has_parental_consent">
+            <% if student.has_parental_consent %>
+              Validée
+            <% else %>
+              <%= form_for student, as: :user, url: user_path(student), method: :patch, html: { id: "edit_user_#{student.id}" } do |f| %>
+                <%= f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6' %>
+                <%= f.submit 'Valider', class: 'btn btn-primary' %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% end %>
