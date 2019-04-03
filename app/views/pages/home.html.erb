@@ -17,7 +17,7 @@
             <% if student.has_parental_consent %>
               Validée
             <% else %>
-              <%= form_for student, as: :user, url: school_user_path(student.school, student), method: :patch, html: { id: "edit_user_#{student.id}" } do |f| %>
+              <%= form_for student, as: :user, url: school_user_path(student.school, student), method: :patch do |f| %>
                 <%= f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6' %>
                 <%= f.submit 'Valider', class: 'btn btn-primary' %>
               <% end %>
