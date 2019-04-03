@@ -37,7 +37,7 @@
           a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
             = "Aide à la rédaction  (nouvelle fenêtre)"
 
-    = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+    = form.text_area :description, class: "form-control col-lg-6", required: true, minlength: InternshipOffer::DESCRIPTION_MIN_CHAR_COUNT, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 
   .form-group
     = form.label :sector_id do
@@ -130,7 +130,7 @@
       = form.label :employer_description do
         = "Activités de l'entreprise ou de l'administration"
         = form.rg2a_required_content_tag
-      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 
     .form-group
       = form.label :employer_website, 'Site web'
