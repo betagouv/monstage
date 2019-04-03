@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_29_142701) do
+ActiveRecord::Schema.define(version: 2019_04_03_101319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_142701) do
     t.date "week_day_end"
     t.date "excluded_weeks", array: true
     t.integer "max_candidates"
-    t.integer "max_internship_number"
+    t.integer "max_weeks"
     t.string "tutor_name"
     t.string "tutor_phone"
     t.string "tutor_email"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_142701) do
     t.bigint "employer_id"
     t.string "employer_description"
     t.bigint "sector_id"
+    t.integer "blocked_weeks_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"

@@ -18,7 +18,7 @@ class InternshipOffer < ApplicationRecord
   MAX_CANDIDATES_PER_GROUP = 200
   validates :max_candidates, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP },
                              unless: :is_individual?
-  validates :max_internship_number, numericality: { only_integer: true, greater_than: 0 }
+  validates :max_weeks, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true
 
