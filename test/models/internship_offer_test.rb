@@ -12,7 +12,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
   end
   test "school (restricted_school)" do
     internship_offer = InternshipOffer.new
-    assert_equal internship_offer.school, nil
+    assert_nil internship_offer.school
     assert internship_offer.build_school.is_a?(School)
   end
 
@@ -47,6 +47,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
         create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'approved')
       end
     end
+    internship_offer.reload
     refute internship_offer.has_spots_left?
   end
 end

@@ -19,6 +19,6 @@ class InternshipOfferWeek < ApplicationRecord
   }
 
   def has_spots_left?
-    internship_applications.where(aasm_state: 'approved').count < max_candidates
+    blocked_applications_count < max_candidates
   end
 end
