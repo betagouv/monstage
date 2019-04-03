@@ -24,5 +24,15 @@ module Users
     def init
       self.birth_date ||= 14.years.ago
     end
+
+    # Block sign in if email is not confirmed and main teacher has not confirmed
+    # that he received parental consent.
+    def active_for_authentication?
+      super && confirmed? && has_parental_consent?
+    end
+
+    def inactive_message
+      !confirmed? ? :unconfirmed : (has_parental_consent? ? super : :not_approved)
+    end
   end
 end

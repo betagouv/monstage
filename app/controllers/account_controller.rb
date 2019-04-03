@@ -27,6 +27,7 @@ class AccountController < ApplicationController
                                  :resume_volunteer_work,
                                  :resume_other,
                                  :resume_languages,
+                                 :has_parental_consent,
                                  :class_room_id)
   end
 end
