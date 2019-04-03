@@ -3,7 +3,7 @@
 </header>
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "devise/shared/error_messages", resource: resource, resource_name: :user %>
 
   <%= f.text_field :type, hidden: true %>
 
