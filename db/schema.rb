@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_101319) do
+ActiveRecord::Schema.define(version: 2019_04_03_104915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_101319) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
+    t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
@@ -56,6 +57,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_101319) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "blocked_applications_count", default: 0, null: false
+    t.index ["blocked_applications_count"], name: "index_internship_offer_weeks_on_blocked_applications_count"
     t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
     t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
   end
@@ -91,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_101319) do
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
+    t.index ["max_weeks", "blocked_weeks_count"], name: "index_internship_offers_on_max_weeks_and_blocked_weeks_count"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
   end
