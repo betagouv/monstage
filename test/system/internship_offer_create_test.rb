@@ -2,8 +2,6 @@ require "application_system_test_case"
 
 class InternshipOffersCreateTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  driven_by :selenium, using: :chrome,
-                       screen_size: [1400, 1400]
 
   test 'can create internship offer' do
     schools = [create(:school), create(:school)]
@@ -30,7 +28,6 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in "Adresse du lieu où se déroule le stage", with: "Paris, 13eme"
         page.all('.algolia-places div[role="option"]')[0].click
         click_on "Soumettre"
-        byebug
       end
     end
     assert_equal employer, InternshipOffer.first.employer
