@@ -8,7 +8,7 @@
           <%= school_form.label :city do %>
             <%= defined?(school_city_label) ? school_city_label : "Ville de mon collège" %>
             <% if defined?(school_city_help) %>
-              <div class="small form-text text-muted"><%= school_city_help %></div>
+              <small class="small form-text text-muted"><%= school_city_help %></small>
             <% end %>
             <%= school_form.rg2a_required_content_tag %>
           <% end %>
