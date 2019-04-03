@@ -2,9 +2,7 @@ module Users
   class Student < User
     belongs_to :school
     belongs_to :class_room, optional: true
-    validates :first_name,
-              :last_name,
-              :birth_date,
+    validates :birth_date,
               :gender,
               presence: true
 
