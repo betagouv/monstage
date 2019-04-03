@@ -1,10 +1,10 @@
 module InternshipOffersScopes
-  # find internship in a 60km radious from user.school
-  module Applicable
+  # find internship offer weeks where blocked_applications_count < internship_offer.max_candiates
+  module ByMaxCandidates
     extend ActiveSupport::Concern
 
     included do
-      scope :applicable, -> () {
+      scope :ignore_max_candidates_reached, -> () {
         InternshipOffer.joins(:internship_offer_weeks)
                        .where("internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates")
       }
