@@ -11,6 +11,8 @@ class SignUpEmployersTest < ApplicationSystemTestCase
 
     # fails to create employer with existing email
     assert_difference('Users::Employer.count', 0) do
+      fill_in "Prénom", with: "Madame"
+      fill_in "Nom", with: "Accor"
       fill_in "Adresse électronique", with: existing_email
       fill_in "Mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
@@ -19,6 +21,8 @@ class SignUpEmployersTest < ApplicationSystemTestCase
 
     # create employer
     assert_difference('Users::Employer.count', 1) do
+      fill_in "Prénom", with: "Madame"
+      fill_in "Nom", with: "Accor"
       fill_in "Adresse électronique", with: "another@email.com"
       fill_in "Mot de passe", with: "kikoololletest"
       fill_in "Confirmation de mon mot de passe", with: "kikoololletest"

@@ -2,6 +2,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
+ validates :first_name, :last_name,
+           presence: true
+
   def targeted_internship_offers
     InternshipOffer.kept
   end

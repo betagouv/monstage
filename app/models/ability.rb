@@ -27,7 +27,7 @@ class Ability
     can :read, InternshipOffer
     can :apply, InternshipOffer
     can [:show, :update], User
-    can [:choose_school, :choose_class_room, :choose_full_name, :choose_gender_and_birthday], :sign_up
+    can [:choose_school, :choose_class_room, :choose_gender_and_birthday], :sign_up
   end
 
   def school_manager_abilities(user:)
@@ -41,12 +41,13 @@ class Ability
     can [:delete], User do |delete_user_from_school|
       delete_user_from_school.school_id == user.school_id
     end
+    can [:choose_school], :sign_up
   end
 
   def main_teacher_abilities(user:)
     can :show, :account
     can [:show, :edit, :update], User
-    can [:choose_school, :choose_class_room, :choose_full_name], :sign_up
+    can [:choose_school, :choose_class_room], :sign_up
     can [:manage_students], ClassRoom do |class_room|
       class_room.id == user.class_room_id
     end
@@ -55,13 +56,13 @@ class Ability
   def teacher_abilities(user:)
     can :show, :account
     can [:show, :edit, :update], User
-    can [:choose_school, :choose_class_room, :choose_full_name], :sign_up
+    can [:choose_school, :choose_class_room], :sign_up
   end
 
 def other_abilities(user:)
     can :show, :account
     can [:show, :edit, :update], User
-    can [:choose_school, :choose_full_name], :sign_up
+    can [:choose_school], :sign_up
   end
 
   def employer_abilities(user:)

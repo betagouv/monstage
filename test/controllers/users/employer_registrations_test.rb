@@ -16,6 +16,8 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
+                                                    first_name: 'Madame',
+                                                    last_name: 'Accor',
                                                     type: 'Users::Employer' }})
       assert_redirected_to root_path
     end

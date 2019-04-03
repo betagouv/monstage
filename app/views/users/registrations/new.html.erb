@@ -11,23 +11,21 @@
     <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: can?(:choose_class_room, :sign_up) %>
   <% end %>
 
-  <% if can?(:choose_full_name, :sign_up) %>
-    <div class="form-group">
-      <%= f.label :first_name do %>
-        Prénom
-        <%= f.rg2a_required_content_tag %>
-      <% end %>
-      <%= f.text_field :first_name, class: 'form-control col-lg-6', required: true %>
-    </div>
+  <div class="form-group">
+    <%= f.label :first_name do %>
+      Prénom
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
+    <%= f.text_field :first_name, class: 'form-control col-lg-6', required: true %>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :last_name do %>
-        Nom
-        <%= f.rg2a_required_content_tag %>
-      <% end %>
-      <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
-    </div>
-  <% end %>
+  <div class="form-group">
+    <%= f.label :last_name do %>
+      Nom
+      <%= f.rg2a_required_content_tag %>
+    <% end %>
+    <%= f.text_field :last_name, class: 'form-control col-lg-6', required: true %>
+  </div>
 
   <% if can?(:choose_gender_and_birthday, :sign_up) %>
     <div class="form-group">

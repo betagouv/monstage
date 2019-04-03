@@ -23,8 +23,6 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_school')
     assert(ability.can?(:choose_class_room, :sign_up),
            'student should be able to choose_class_room')
-    assert(ability.can?(:choose_full_name, :sign_up),
-           'student should be able to choose_full_name')
     assert(ability.can?(:choose_gender_and_birthday, :sign_up),
            'student should be able to choose_gender_and_birthday')
   end
@@ -62,7 +60,5 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_school')
     assert(ability.can?(:choose_class_room, :sign_up),
            'student should be able to choose_class_room')
-    assert(ability.can?(:choose_full_name, :sign_up),
-           'student should be able to choose_full_name')
   end
 end
