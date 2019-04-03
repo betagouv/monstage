@@ -21,4 +21,7 @@ h1.h2 Je candidate
       i.fas.fa-external-link-alt
       = "(nouvelle fenêtre)"
 
-  = f.submit 'Candidater', class: 'btn btn-primary'
+  - if @internship_offer.school.present?
+    .alert.alert-info="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
+
+  = f.submit "Candidater", { class: 'btn btn-primary' }.merge(@internship_offer.school.present? ? {disabled: true} : {})

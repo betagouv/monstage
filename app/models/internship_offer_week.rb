@@ -17,6 +17,7 @@ class InternshipOfferWeek < ApplicationRecord
   scope :by_weeks, -> (weeks:) {
     where(week: weeks)
   }
+
   def has_spots_left?
     internship_applications.where(aasm_state: 'approved').count < max_candidates
   end
