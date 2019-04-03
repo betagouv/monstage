@@ -47,7 +47,6 @@ class InternshipOfferTest < ActiveSupport::TestCase
         create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'approved')
       end
     end
-
     refute internship_offer.has_spots_left?
   end
 end

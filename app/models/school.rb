@@ -1,8 +1,5 @@
 class School < ApplicationRecord
   include Nearbyable
-  include InternshipOffersScopes::BySchool
-  include InternshipOffersScopes::ByWeeks
-  include InternshipOffersScopes::ByMaxCandidates
 
   has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
