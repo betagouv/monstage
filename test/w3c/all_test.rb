@@ -85,4 +85,16 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
       get new_user_password_path
     end
   end
+
+  test 'new_user_confirmation' do
+    run_request_and_cache_response(report_as: 'new_user_confirmation') do
+      get new_user_confirmation_path
+    end
+  end
+
+  test 'users_choose_profile' do
+    run_request_and_cache_response(report_as: 'users_choose_profile') do
+      get users_choose_profile_path
+    end
+  end
 end
