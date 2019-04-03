@@ -89,12 +89,12 @@
         small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
       = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', data: { target: "internship-form.maxCandidatesInput" }
     .form-group
-      = form.label :max_weeks do
+      = form.label :max_internship_week_number do
         = "Nombre de stages proposés dans l'année"
         small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
         = form.rg2a_required_content_tag
 
-      = form.number_field :max_weeks, value: 1, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
+      = form.number_field :max_internship_week_number, value: 1, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
 
     = render 'users/form/select_school', form: form, resource: @internship_offer, select_class_room: false
 
