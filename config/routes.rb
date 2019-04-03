@@ -16,7 +16,6 @@ Rails.application.routes.draw do
     resources :users, only: [:destroy, :update], module: 'schools'
   end
 
-  resources :users, only: :update
   get 'account', to: 'account#show'
   get 'account/edit', to: 'account#edit'
   patch 'account', to: 'account#update'
