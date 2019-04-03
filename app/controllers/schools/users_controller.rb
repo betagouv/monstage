@@ -20,7 +20,11 @@ module Schools
       authorize! :update, user
       user.update!(user_params)
 
-      redirect_back fallback_location: root_path, flash: { success: "Le compte de #{user.name} a bien été autorisé" }
+      flash_content = if params[:user][:has_parental_consent] == "true"
+                        { success: "Le compte de #{user.name} a bien été autorisé" }
+                      end
+
+      redirect_back fallback_location: root_path, flash: flash_content
     rescue ActiveRecord::RecordInvalid => error
       redirect_back fallback_location: root_path, status: :bad_request
     end
