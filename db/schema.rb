@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_104915) do
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
-    t.index ["max_internship_week_number", "blocked_weeks_count"], name: "index_internship_offers_on_max_internship_week_number_and_blocked_weeks_count"
+    t.index ["max_internship_week_number", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
   end
