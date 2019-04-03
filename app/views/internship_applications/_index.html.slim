@@ -19,7 +19,7 @@ h1.h2 Mes candidatures
           td = internship_application.motivation
           td
             - if internship_application.submitted?
-              - unless internship_application.internship_offer_week.approvable?
+              - unless internship_application.internship_offer_week.has_spot_left?
                 = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: true), method: :patch do
                   .fas.fa-2x.fa-check-circle
               = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: false), method: :patch do
