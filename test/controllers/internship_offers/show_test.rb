@@ -39,7 +39,8 @@ module InternshipOffers
 
     test "GET #show as a student should display only weeks that matches school weeks" do
       internship_offer = create(:internship_offer)
-      internship_offer.weeks = [Week.first, Week.last]
+      weeks = [Week.first, Week.last]
+      internship_offer.weeks = weeks
       internship_offer.save
 
       student = create(:student)
@@ -49,7 +50,34 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
 
-      assert_select 'select[name="internship_application[internship_offer_week_id]"] option', 2
+      assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
+                    weeks.size
+    end
+
+    test "GET #show as a student should display only weeks that are not blocked" do
+      max_candidates = 2
+      weeks_available = [Week.all[0], Week.all[1]]
+      blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                              week: weeks_available[0])
+      available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
+                                                                week: weeks_available[1])
+
+      internship_offer = create(:internship_offer,
+                                max_candidates: max_candidates,
+                                internship_offer_weeks: [
+                                  blocked_internship_week,
+                                  available_internship_week
+                                ])
+
+      student = create(:student)
+      sign_in(student)
+
+      student.school.weeks = [Week.first]
+
+      get internship_offer_path(internship_offer)
+
+      assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
+                    1
     end
   end
 end
