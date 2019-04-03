@@ -7,6 +7,7 @@ class InternshipOffer < ApplicationRecord
             :tutor_name,
             :tutor_phone,
             :tutor_email,
+            :max_internship_week_number,
             :employer_name,
             :employer_street,
             :employer_zipcode,
@@ -55,10 +56,6 @@ class InternshipOffer < ApplicationRecord
   after_initialize :init
 
   paginates_per PAGE_SIZE
-
-  def available_all_year?
-    week_day_start.blank? && week_day_end.blank?
-  end
 
   def is_individual?
     max_candidates == 1
