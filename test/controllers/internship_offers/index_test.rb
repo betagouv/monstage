@@ -43,8 +43,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer = create(:internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
-                                create(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                               week: Week.first)
+                                build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                              week: Week.first)
                               ])
     student = create(:student)
     sign_in(student)
@@ -62,8 +62,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer = create(:internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
-                                create(:internship_offer_week, blocked_applications_count: max_candidates - 1,
-                                                               week: Week.first)
+                                build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
+                                                              week: Week.first)
                               ])
    sign_in(create(:student))
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -74,8 +74,72 @@ class IndexTest < ActionDispatch::IntegrationTest
    end
   end
 
+  test 'GET #index finds internship_offers available with one week that is not available' do
+      max_candidates = 1
+      weeks_available = [Week.all[0], Week.all[1]]
+      internship_offer = create(:internship_offer,
+                                max_candidates: max_candidates,
+                                internship_offer_weeks: [
+                                  build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                                 week: weeks_available[0]),
+                                  build(:internship_offer_week, blocked_applications_count: 0,
+                                                                 week: weeks_available[1])
+                                ])
+      school = create(:school, school_internship_weeks: [
+                                build(:school_internship_week, week: weeks_available[0]),
+                                build(:school_internship_week, week: weeks_available[1]),
+                              ])
+      sign_in(create(:student, school: school))
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        get internship_offers_path
+        assert_presence_of(internship_offer: internship_offer)
+      end
+  end
+
+  test 'GET #index ignores internship_offers not blocked on different week that is not available' do
+    max_candidates = 1
+    weeks_available = [Week.all[0], Week.all[1]]
+    internship_offer = create(:internship_offer,
+                              max_candidates: max_candidates,
+                              internship_offer_weeks: [
+                                build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                              week: weeks_available[0]),
+                                build(:internship_offer_week, blocked_applications_count: 0,
+                                                              week: weeks_available[1])
+                              ])
+    school = create(:school, school_internship_weeks: [
+                              build(:school_internship_week, week: weeks_available[0]),
+                             ])
+    sign_in(create(:student, school: school))
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      get internship_offers_path
+      assert_absence_of(internship_offer: internship_offer)
+    end
+  end
+
+  test 'GET #index finds internship_offers block on other weeks' do
+    max_candidates = 1
+    weeks_available = [Week.all[0], Week.all[1]]
+    internship_offer = create(:internship_offer,
+                              max_candidates: max_candidates,
+                              internship_offer_weeks: [
+                                build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                              week: weeks_available[0]),
+                                build(:internship_offer_week, blocked_applications_count: 0,
+                                                              week: weeks_available[1])
+                              ])
+    school = create(:school, school_internship_weeks: [
+                              build(:school_internship_week, week: weeks_available[1]),
+                             ])
+    sign_in(create(:student, school: school))
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      get internship_offers_path
+      assert_presence_of(internship_offer: internship_offer)
+    end
+  end
+
   test 'GET #index as student with page, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map{ create(:internship_offer) }
+    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map{ create(:internship_offer, max_candidates: 2) }
     sign_in(create(:student))
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
