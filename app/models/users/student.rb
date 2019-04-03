@@ -28,7 +28,7 @@ module Users
     # Block sign in if email is not confirmed and main teacher has not confirmed
     # that he received parental consent.
     def active_for_authentication?
-      super && confirmed? && has_parental_consent
+      super && confirmed? && has_parental_consent?
     end
 
     def inactive_message
