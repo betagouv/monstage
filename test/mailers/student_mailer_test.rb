@@ -13,6 +13,7 @@ class StudentMailerTest < ActionMailer::TestCase
   end
 
   test "email sent when internship application is declined" do
+
     internship_application = create(:internship_application)
 
     email = StudentMailer.with(internship_application: internship_application).internship_application_rejected_email

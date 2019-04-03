@@ -12,7 +12,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
   end
   test "school (restricted_school)" do
     internship_offer = InternshipOffer.new
-    assert_equal internship_offer.school, nil
+    assert_nil internship_offer.school
     assert internship_offer.build_school.is_a?(School)
   end
 
@@ -25,7 +25,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:title]
     assert_not_empty internship_offer.errors[:description]
     assert_not_empty internship_offer.errors[:sector]
-    assert_not_empty internship_offer.errors[:max_internship_number]
+    assert_not_empty internship_offer.errors[:max_internship_week_number]
     assert_not_empty internship_offer.errors[:tutor_name]
     assert_not_empty internship_offer.errors[:tutor_phone]
     assert_not_empty internship_offer.errors[:tutor_email]
@@ -35,5 +35,19 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:employer_city]
     assert_not_empty internship_offer.errors[:employer_name]
     assert_not_empty internship_offer.errors[:coordinates]
+  end
+
+  test "has spots left" do
+    internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
+
+    assert internship_offer.has_spots_left?
+
+    internship_offer.internship_offer_weeks.each do |internship_offer_week|
+      internship_offer.max_candidates.times do
+        create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'approved')
+      end
+    end
+    internship_offer.reload
+    refute internship_offer.has_spots_left?
   end
 end
