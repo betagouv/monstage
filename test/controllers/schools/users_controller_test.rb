@@ -32,5 +32,17 @@ module Schools
       end
       assert_redirected_to account_path
     end
+
+    test "PATCH #update as main teacher should approve parental consent" do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      main_teacher = create(:main_teacher, school: school)
+      student = create(:student, school: school, has_parental_consent: false)
+
+      sign_in(main_teacher)
+      patch school_user_path(school, student, params: { user: { has_parental_consent: true } }), headers: { "HTTP_REFERER" => root_path }
+
+      assert student.reload.has_parental_consent
+    end
   end
 end
