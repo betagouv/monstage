@@ -36,10 +36,20 @@ fr:
       models:
         internship_offer:
           attributes:
+            max_candidates:
+              not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
               blank: "doit être soit Public, soit Privé"
             description:
               too_short: minimum 275 caractères
+            employer_street:
+              blank: "Rue de l'employeur manquante"
+            employer_zipcode:
+              blank: "Code postal de l'employeur manquant"
+            employer_city:
+              blank: "Ville de l'employeur manquante"
+            sector:
+              required: "Veuillez choisir un secteur"
         user:
           attributes:
             email:
