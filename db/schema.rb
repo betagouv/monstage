@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_02_083217) do
-
+ActiveRecord::Schema.define(version: 2019_04_03_104915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -46,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_04_02_083217) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
+    t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_04_02_083217) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "blocked_applications_count", default: 0, null: false
+    t.index ["blocked_applications_count"], name: "index_internship_offer_weeks_on_blocked_applications_count"
     t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
     t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
   end
@@ -67,7 +68,7 @@ ActiveRecord::Schema.define(version: 2019_04_02_083217) do
     t.date "week_day_end"
     t.date "excluded_weeks", array: true
     t.integer "max_candidates"
-    t.integer "max_internship_number"
+    t.integer "max_internship_week_number"
     t.string "tutor_name"
     t.string "tutor_phone"
     t.string "tutor_email"
@@ -87,9 +88,11 @@ ActiveRecord::Schema.define(version: 2019_04_02_083217) do
     t.bigint "school_id"
     t.string "employer_description"
     t.bigint "sector_id"
+    t.integer "blocked_weeks_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
+    t.index ["max_internship_week_number", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
   end

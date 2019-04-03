@@ -15,8 +15,9 @@ class InternshipOffer < ApplicationRecord
 
   validates :is_public, inclusion: { in: [true, false] }
 
-  validates :max_candidates, numericality: { only_integer: true, greater_than: 0 }
-  validates :max_internship_number, numericality: { only_integer: true, greater_than: 0 }
+  MAX_CANDIDATES_PER_GROUP = 200
+  validates :max_candidates, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
+  validates :max_internship_week_number, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true
 
@@ -57,6 +58,10 @@ class InternshipOffer < ApplicationRecord
 
   def is_individual?
     max_candidates == 1
+  end
+
+  def has_spots_left?
+    internship_offer_weeks.any?(&:has_spots_left?)
   end
 
   def formatted_autocomplete_address

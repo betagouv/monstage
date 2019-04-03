@@ -6,7 +6,10 @@
       <div class="row">
         <div class="col-12">
           <%= school_form.label :city do %>
-            Ville de mon collège
+            <%= defined?(school_city_label) ? school_city_label : "Ville de mon collège" %>
+            <% if defined?(school_city_help) %>
+              <div class="small form-text text-muted"><%= school_city_help %></div>
+            <% end %>
             <%= school_form.rg2a_required_content_tag %>
           <% end %>
           <div class= "input-group">
@@ -14,7 +17,8 @@
                                       data: { target: 'select-school.inputSearchCity' },
                                       class: 'form-control col-lg-6',
                                       required: true,
-                                      autocomplete: :off %>
+                                      autocomplete: :off,
+                                      placeholder: defined?(school_city_placeholder) ? school_city_placeholder : "Rechercher la ville de mon collège" %>
             <div class="input-group-append">
               <button type=button
                       class="btn btn-outline-secondary"

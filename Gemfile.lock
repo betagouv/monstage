@@ -49,6 +49,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    after_commit_action (1.1.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     ansi (1.5.0)
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
@@ -78,6 +81,10 @@ GEM
       nokogiri (~> 1.8)
     colorator (1.1.0)
     concurrent-ruby (1.1.4)
+    counter_culture (2.1.4)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      after_commit_action (~> 1.0)
     crass (1.0.4)
     delayed_job (4.1.5)
       activesupport (>= 3.0, < 5.3)
@@ -316,6 +323,7 @@ DEPENDENCIES
   cancancan
   capybara
   chromedriver-helper
+  counter_culture
   delayed_job_active_record
   devise
   devise-i18n
