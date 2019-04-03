@@ -11,7 +11,7 @@ fr:
       users/employer: "Employeur"
       users/main_teacher: "Professeur principal"
       users/teacher: "Professeur"
-      users/other: "Autre fonction"
+      users/other: "Autres fonctions"
 
     attributes:
       internship_offer:
@@ -22,6 +22,7 @@ fr:
         school_manager: "Chef d'établissement"
         class_room: "Classe"
         school: "Collège"
+        gender: Sexe
 
     errors:
       messages:
@@ -67,3 +68,7 @@ fr:
           attributes:
             school_manager:
               blank: "ne s'est pas encore inscrit"
+        users/student:
+          attributes:
+            gender:
+              blank: obligatoire

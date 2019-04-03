@@ -36,6 +36,11 @@ class School < ApplicationRecord
     end
   end
 
+  def name
+   db_name = read_attribute(:name)
+   db_name.starts_with?("Collège") ? db_name : "Collège #{db_name}"
+  end
+
   def to_s
     name
   end

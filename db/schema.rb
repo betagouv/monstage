@@ -11,7 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2019_04_03_104915) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -85,8 +84,8 @@ ActiveRecord::Schema.define(version: 2019_04_03_104915) do
     t.string "employer_name"
     t.string "operator_names", array: true
     t.string "group_name"
-    t.bigint "school_id"
     t.bigint "employer_id"
+    t.bigint "school_id"
     t.string "employer_description"
     t.bigint "sector_id"
     t.integer "blocked_weeks_count", default: 0, null: false
@@ -151,6 +150,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_104915) do
     t.text "resume_educational_background"
     t.text "resume_volunteer_work"
     t.text "resume_other"
+    t.text "resume_languages"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
