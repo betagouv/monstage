@@ -41,6 +41,7 @@ class Ability
     can [:delete], User do |delete_user_from_school|
       delete_user_from_school.school_id == user.school_id
     end
+    can [:choose_school], :sign_up
   end
 
   def main_teacher_abilities(user:)
