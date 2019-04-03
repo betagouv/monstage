@@ -21,37 +21,53 @@ Things you may want to cover:
   - If you installed postgres with Homebrew, run : brew install postgis
 - Setup Postgis : rake db:gis:setup
 
-## run dev env
+# Build: test, dev
+
+## dev
+
+**start project**
 
 ```
 foreman start -f Procfile.dev
 ```
 
-## tooling: linting, etc...
+### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
 * **consult emails sent in development environment with mailcatcher**: 
 - `gem install mailcatcher`
 - `open http://127.0.0.1:1080/`
 
-## run test
+## test
 
-```rake test```
+### units test
 
-# ci
+```rails test```
 
-use CircleCI : https://circleci.com/gh/betagouv/monstage
+### system / e2e, runs within a browswer __without__ (broken) JS
 
-# staging
+```rails test:system```
 
-deployement automated via CI, can be done manually with ```infra/staging/deploy.sh```
+### w3c (using vnu.jar)
 
-# production
+```rails test:w3c```
 
-prefer heroku promote staging
+# Run: ci, staging, production
+
+see build status at: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+
+both environments are limit regarding env var dependencies, but can be setuped via tools : ```infra/staging|production/set_env.sh```
+
+## staging
+
+* deployement automated via CI (merge on master, push on staging)
+* push on staging can be "forced" manually using ```infra/staging/deploy.sh```
+* see other tools in ```infra/staging/*.sh```  (logs, console...)
+
+## production
+
+* prefer heroku promote staging ```infra/production/deploy/promote.sh```
+* can be "forced" manually using ```infra/production/deploy/push.sh```
+* see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
-## run
-* ```infra/staging/console.sh``` : run rails console on heroku
-* ```infra/staging/set_env.sh``` : setup heroku env vars
-* ```infra/staging/logs.sh``` : tail logs
