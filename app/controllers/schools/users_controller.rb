@@ -20,9 +20,9 @@ module Schools
       authorize! :update, user
       user.update!(user_params)
 
-      redirect_to request.referer, flash: { success: "Le compte de #{user.name} a bien été autorisé" }
+      redirect_back fallback_location: root_path, flash: { success: "Le compte de #{user.name} a bien été autorisé" }
     rescue ActiveRecord::RecordInvalid => error
-      redirect_to request.referer, status: :bad_request
+      redirect_back fallback_location: root_path, status: :bad_request
     end
 
     private
