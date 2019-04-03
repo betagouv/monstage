@@ -16,7 +16,10 @@ class InternshipOffer < ApplicationRecord
   validates :is_public, inclusion: { in: [true, false] }
 
   MAX_CANDIDATES_PER_GROUP = 200
-  validates :max_candidates, numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
+  validates :max_candidates, numericality: { only_integer: true,
+                                             greater_than: 0,
+                                             less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
+
   validates :max_internship_week_number, numericality: { only_integer: true, greater_than: 0 }
 
   validates :weeks, presence: true
@@ -49,6 +52,7 @@ class InternshipOffer < ApplicationRecord
   scope :filter_by_sector, -> (sector_id) {
     where(sector_id: sector_id)
   }
+  after_initialize :init
 
   paginates_per PAGE_SIZE
 
@@ -71,4 +75,9 @@ class InternshipOffer < ApplicationRecord
       employer_zipcode
     ].compact.uniq.join(', ')
   end
+
+  def init
+   self.max_candidates ||= 1
+  end
+
 end

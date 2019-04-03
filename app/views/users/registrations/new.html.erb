@@ -8,7 +8,7 @@
   <%= f.text_field :type, hidden: true %>
 
   <% if can?(:choose_school, :sign_up) %>
-    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: can?(:choose_class_room, :sign_up) %>
+    <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: can?(:choose_class_room, :sign_up), required: true %>
   <% end %>
 
   <% if can?(:choose_full_name, :sign_up) %>

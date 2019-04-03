@@ -10,13 +10,15 @@
             <% if defined?(school_city_help) %>
               <small class="small form-text text-muted"><%= school_city_help %></small>
             <% end %>
-            <%= school_form.rg2a_required_content_tag %>
+            <% if required %>
+              <%= school_form.rg2a_required_content_tag %>
+            <% end %>
           <% end %>
           <div class= "input-group">
             <%= school_form.text_field :city,
                                       data: { target: 'select-school.inputSearchCity' },
                                       class: 'form-control col-lg-6',
-                                      required: true,
+                                      required: required,
                                       autocomplete: :off,
                                       placeholder: defined?(school_city_placeholder) ? school_city_placeholder : "Rechercher la ville de mon collège" %>
             <div class="input-group-append">
@@ -47,7 +49,9 @@
     <div class="form-group">
       <%= form.label :school_id do %>
         Collège
-        <%= form.rg2a_required_content_tag %>
+        <% if required %>
+          <%= form.rg2a_required_content_tag %>
+        <% end %>
       <% end %>
       <%= form.text_field :school_id,
                           value: '',
@@ -65,7 +69,7 @@
                                   school.id,
                                   class: 'custom-control-input',
                                   id: "select-school-#{school.id}",
-                                  required: true,
+                                  required: required,
                                   data: {
                                     "action": "change->select-school#onSelectSchool",
                                     "class-room-available": school.class_rooms.to_json

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_104915) do
+ActiveRecord::Schema.define(version: 2019_04_03_153507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_104915) do
     t.date "week_day_start"
     t.date "week_day_end"
     t.date "excluded_weeks", array: true
-    t.integer "max_candidates"
+    t.integer "max_candidates", default: 1, null: false
     t.integer "max_internship_week_number"
     t.string "tutor_name"
     t.string "tutor_phone"
@@ -85,8 +85,8 @@ ActiveRecord::Schema.define(version: 2019_04_03_104915) do
     t.string "employer_name"
     t.string "operator_names", array: true
     t.string "group_name"
-    t.bigint "school_id"
     t.bigint "employer_id"
+    t.bigint "school_id"
     t.string "employer_description"
     t.bigint "sector_id"
     t.integer "blocked_weeks_count", default: 0, null: false
