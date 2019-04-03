@@ -20,9 +20,11 @@ module Schools
       authorize! :update, user
       user.update!(user_params)
 
-      flash_content = if params[:user][:has_parental_consent] == "true"
-                        { success: "Le compte de #{user.name} a bien été autorisé" }
-                      end
+      flash_content = {}
+      if params[:user][:has_parental_consent] == "true"
+        flash_content = { success: "Le compte de #{user.name} a bien été autorisé" }
+        StudentMailer.with(user: user).account_activated_by_main_teacher_email.deliver_later
+      end
 
       redirect_back fallback_location: root_path, flash: flash_content
     rescue ActiveRecord::RecordInvalid => error
