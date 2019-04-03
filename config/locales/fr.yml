@@ -39,52 +39,52 @@ fr:
             max_candidates:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
-              blank: "doit être soit Public, soit Privé"
+              blank: "Le stage doit être soit collectif, soit individuel"
             description:
-              too_short: minimum 275 caractères
+              too_short: La description doit faire un minimum 275 caractères
             employer_street:
-              blank: "Rue de l'employeur manquante"
+              blank: "Veuillez saisir la rue de l'employeur manquante"
             employer_zipcode:
-              blank: "Code postal de l'employeur manquant"
+              blank: "Veuillez saisir le code postal de l'employeur manquante"
             employer_city:
-              blank: "Ville de l'employeur manquante"
+              blank: "Veuillez saisir la rue de la ville l'employeur manquante"
             sector:
-              required: "Veuillez choisir un secteur"
+              required: "Veuillez choisir un secteur pour l'offre"
         user:
           attributes:
             email:
-              blank: obligatoire
-              taken: déjà pris
+              blank: "Veuillez saisir un email"
+              taken: "Un compte est déjà associé a cet email"
             password:
-              too_short: trop court
+              too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
             password_confirmation:
-              confirmation: invalide
+              confirmation: "La confirmation du mot de passe n'est pas identique a celle du mot de passe."
             first_name:
-              blank: obligatoire
+              blank: Veuillez saisir un prénom
             last_name:
-              blank: obligatoire
+              blank: Veuillez saisir un nom de famille
 
 
         users/main_teacher:
           attributes:
             school_manager:
-              blank: "ne s'est pas encore inscrit"
+              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeur principaux."
 
         users/other:
           attributes:
             school_manager:
-              blank: "ne s'est pas encore inscrit"
+              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les membres de l'équipe éducative."
 
         users/school_manager:
           attributes:
             email:
-              invalid: "doit être votre adresse académique"
+              invalid: "Veuillez saisir une adresse mail académique"
 
         users/teacher:
           attributes:
             school_manager:
-              blank: "ne s'est pas encore inscrit"
+              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeur."
         users/student:
           attributes:
             gender:
-              blank: obligatoire
+              blank: Veuillez saisir un sexe

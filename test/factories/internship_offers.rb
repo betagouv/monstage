@@ -10,6 +10,7 @@ FactoryBot.define do
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }
     is_public { true }
+    employer_description { 'on envoie du parpaing' }
     employer_street { '1 rue du poulet' }
     employer_zipcode { '75001' }
     employer_city { 'Paris' }

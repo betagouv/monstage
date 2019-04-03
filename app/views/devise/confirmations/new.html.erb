@@ -1,9 +1,9 @@
 <header class="header-account">
-  <h1 class="h2 text-center text-sm-left mb-0">Renvoyer le messsage d'activation</h2>
+  <h1 class="h2 text-center text-sm-left mb-0">Renvoyer le messsage d'activation</h1>
 </header>
 <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "devise/shared/error_messages", resource: resource, resource_name: :user %>
   <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>
   <div class="form-group">
     <%= f.label :email do %>

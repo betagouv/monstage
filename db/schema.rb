@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_153507) do
+ActiveRecord::Schema.define(version: 2019_04_03_155105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,30 +65,27 @@ ActiveRecord::Schema.define(version: 2019_04_03_153507) do
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
     t.text "description", null: false
-    t.date "week_day_start"
-    t.date "week_day_end"
-    t.date "excluded_weeks", array: true
     t.integer "max_candidates", default: 1, null: false
-    t.integer "max_internship_week_number"
-    t.string "tutor_name"
-    t.string "tutor_phone"
-    t.string "tutor_email"
+    t.integer "max_internship_week_number", default: 1, null: false
+    t.string "tutor_name", null: false
+    t.string "tutor_phone", null: false
+    t.string "tutor_email", null: false
     t.string "employer_website"
-    t.text "employer_street"
-    t.string "employer_zipcode"
-    t.string "employer_city"
-    t.boolean "is_public"
+    t.text "employer_street", null: false
+    t.string "employer_zipcode", null: false
+    t.string "employer_city", null: false
+    t.boolean "is_public", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
-    t.string "employer_name"
+    t.string "employer_name", null: false
     t.string "operator_names", array: true
     t.string "group_name"
-    t.bigint "employer_id"
     t.bigint "school_id"
-    t.string "employer_description"
-    t.bigint "sector_id"
+    t.bigint "employer_id"
+    t.string "employer_description", null: false
+    t.integer "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"

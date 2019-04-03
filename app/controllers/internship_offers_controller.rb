@@ -67,9 +67,9 @@ class InternshipOffersController < ApplicationController
 
   def internship_offer_params
     params.require(:internship_offer)
-        .permit(:title, :description, :sector_id, :week_day_start, :week_day_end, :excluded_weeks,
-                :max_candidates, :max_internship_week_number, :tutor_name, :tutor_phone, :tutor_email, :employer_website,
-                :employer_name, :employer_street, :employer_zipcode, :employer_city, :is_public, :group_name,
+        .permit(:title, :description, :sector_id, :max_candidates, :max_internship_week_number,
+                :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
+                :employer_street, :employer_zipcode, :employer_city, :is_public, :group_name,
                 :employer_id, :school_id, :employer_description,
                 operator_names: [], coordinates: {}, week_ids: [])
   end
