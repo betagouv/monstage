@@ -11,14 +11,14 @@
 - else
   - @internship_applications.each.with_index do |internship_application, index|
     div data-controller="internship-application-index" class=" row py-3 internship_application #{cycle("bg-light", "")}"
-      .col-sm-1.text-right
+      .col-1.col-sm-1.text-right
         .link-btn data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer"
           - if index == 0
             i.fas.fa-chevron-down
           - else
             i.fas.fa-chevron-right
 
-      .col-sm-8
+      .col-11.col-sm-8
         h2.h4= "Candidature de #{internship_application.student.name} reçu le #{localize(internship_application.created_at, format: "%d %B")}"
         p= internship_application.motivation
         .collapsible data-target="internship-application-index.collapsible" class="#{index > 0 ? 'd-none' : ''}"
@@ -73,4 +73,6 @@
               = "Réponse négative"
               br
               = "Le #{localize(internship_application.updated_at, format: "%d %B à %H:%m")}"
+
+  = paginate(@internship_applications)
 

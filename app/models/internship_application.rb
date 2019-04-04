@@ -1,5 +1,6 @@
 class InternshipApplication < ApplicationRecord
   include AASM
+  PAGE_SIZE = 10
 
   belongs_to :internship_offer_week
   counter_culture :internship_offer_week,
@@ -13,6 +14,8 @@ class InternshipApplication < ApplicationRecord
 
   validates :motivation, :internship_offer_week, presence: true
   before_validation :internship_offer_week_has_spots_left, on: :create
+
+  paginates_per PAGE_SIZE
 
   def internship_offer_week_has_spots_left
     unless internship_offer_week && internship_offer_week.has_spots_left?
