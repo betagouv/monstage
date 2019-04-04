@@ -1,0 +1,78 @@
+= render "internship_offers/navigation", internship_offer: @internship_offer
+
+- if @internship_applications.empty?
+  .row
+    .col-sm-1
+    .col-sm-8
+      p
+      i Aucune candidature reçue à ce jour
+    .col-sm-3
+
+- else
+  - @internship_applications.each.with_index do |internship_application, index|
+    div data-controller="internship-application-index" class=" row py-3 internship_application #{cycle("bg-light", "")}"
+      .col-1.col-sm-1.text-right
+        .link-btn data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer"
+          - if index == 0
+            i.fas.fa-chevron-down
+          - else
+            i.fas.fa-chevron-right
+
+      .col-11.col-sm-8
+        h2.h4= "Candidature de #{internship_application.student.name} reçu le #{localize(internship_application.created_at, format: "%d %B")}"
+        p= internship_application.motivation
+        .collapsible data-target="internship-application-index.collapsible" class="#{index > 0 ? 'd-none' : ''}"
+          p= "Pour la semaine du #{internship_application.week.select_text_method}"
+          p
+            strong.student-name= internship_application.student.name
+            br
+            span.school-name= internship_application.student.school.name
+            br
+            span.school-city= internship_application.student.school.city
+            br
+            span.student-age= internship_application.student.age
+
+          h3.h6= "Parcours Scolaire"
+          pre.word-breakable-content= internship_application.student.resume_educational_background
+          h3.h6= "Engagement associatif"
+          pre.word-breakable-content= internship_application.student.resume_other
+          - if internship_application.student.resume_languages.present?
+            h3.h6= "Langues vivantes"
+            pre= internship_application.student.resume_languages
+          h3.h6= "Autre (sport, loisir)"
+          pre.word-breakable-content= internship_application.student.resume_volunteer_work
+
+          .actions
+            - if internship_application.submitted?
+              - if internship_application.internship_offer_week.has_spots_left?
+                = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: true), method: :patch, class: 'btn btn-success mx-1' do
+                  .fas.fa-check-circle.mr-1
+                  = "Répondre postivement"
+
+              = link_to internship_offer_internship_application_path(@internship_offer, internship_application, approve: false), method: :patch, class: 'btn btn-danger mx-1' do
+                .fas.fa-times-circle.mr-1
+                = "Répondre négativement"
+
+      .col-sm-3
+        - if internship_application.approved?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1
+              i.fas.fa-check.fa-1x
+            .d-inline-flex
+              = "Réponse positive"
+              br
+              = "Le #{localize(internship_application.updated_at, format: "%d %B à %H:%m")}"
+
+        - if internship_application.rejected?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1
+              span.fa-stack.fa-xs
+                i.fas.fa-circle.fa-stack-2x
+                i.fas.fa-slash.fa-stack-1x.fa-inverse
+            .d-inline-flex
+              = "Réponse négative"
+              br
+              = "Le #{localize(internship_application.updated_at, format: "%d %B à %H:%m")}"
+
+  = paginate(@internship_applications)
+

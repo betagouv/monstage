@@ -1,20 +1,4 @@
-.row.bg-light
-  .col-12
-    nav.navbar
-      a.icon-link href=internship_offers_path
-        .fas.fa-2x.fa-angle-left
-
-      - if can?(:destroy, @internship_offer)
-        a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
-          .fas.fa-2x.fa-trash
-      - if can?(:update, @internship_offer)
-        a.nav-link href=edit_internship_offer_path(@internship_offer.to_param)
-          .fas.fa-2x.fa-pen
-      - if can?(:create, InternshipOffer)
-        a.nav-link href=new_internship_offer_path()
-          .fas.fa-2x.fa-plus
-
-h1.h2.mt-2 = @internship_offer.title
+= render "navigation", internship_offer: @internship_offer
 
 h2.h6 Le stage
 p = @internship_offer.description
@@ -54,8 +38,6 @@ p = @internship_offer.employer_name
 - if can?(:apply, InternshipOffer) && @internship_offer.has_spots_left?
   = render "internship_applications/form"
 
-- if can?(:update, @internship_offer)
-  = render "internship_applications/index"
 
 #delete-offer-modal.modal tabindex="-1" role="dialog"
   .modal-dialog role="document"

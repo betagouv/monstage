@@ -157,4 +157,9 @@ export default class extends Controller {
       this.hideCitiesList();
     }
   }
+
+  disconnect() {
+    $(this.inputSearchCityTarget)
+      .off("keyup", this.onSearchCityKeystroke.bind(this))
+  }
 }
