@@ -18,3 +18,7 @@ pre.word-breakable-content {
   white-space: -o-pre-wrap;
   word-wrap: break-word;
 }
+
+.table-caption-top{
+  caption { caption-side: top };
+}
