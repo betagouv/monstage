@@ -3,7 +3,7 @@ class InternshipApplicationsController < ApplicationController
   before_action :find_internship_offer, only: [:index, :update]
 
   def index
-    @internship_applications = @internship_offer.internship_applications
+    @internship_applications = @internship_offer.internship_applications.order(updated_at: :desc)
     authorize! :read, @internship_offer
     authorize! :index, InternshipApplication
   end
