@@ -41,7 +41,7 @@ fr:
             is_public:
               blank: "Le stage doit être soit collectif, soit individuel"
             description:
-              too_short: La description doit faire un minimum 275 caractères
+              too_long: La description doit faire au maximum 275 caractères
             employer_street:
               blank: "Veuillez saisir la rue de l'employeur manquante"
             employer_zipcode:

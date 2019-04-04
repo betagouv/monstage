@@ -25,14 +25,10 @@ class InternshipOffer < ApplicationRecord
 
   validates :weeks, presence: true
 
-  AVERAGE_CHAR_PER_WORD = 5.5
-  DESCRIPTION_MIN_WORD_COUNT = 2
-  DESCRIPTION_MAX_WORD_COUNT = 130
-  DESCRIPTION_MIN_CHAR_COUNT = (DESCRIPTION_MIN_WORD_COUNT * AVERAGE_CHAR_PER_WORD).ceil
-  DESCRIPTION_MAX_CHAR_COUNT = (DESCRIPTION_MAX_WORD_COUNT * AVERAGE_CHAR_PER_WORD).ceil
-  validates_length_of :description, minimum: DESCRIPTION_MIN_CHAR_COUNT,
-                                    maximum: DESCRIPTION_MAX_CHAR_COUNT,
-                                    allow_blank: false
+  DESCRIPTION_MAX_CHAR_COUNT = 275
+  OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
+  validates :description, presence: true, length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT }
+  validates :employer_description, presence: true, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
