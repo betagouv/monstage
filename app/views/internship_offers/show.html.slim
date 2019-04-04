@@ -4,6 +4,9 @@
       a.icon-link href=internship_offers_path
         .fas.fa-2x.fa-angle-left
 
+      - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
+        = link_to internship_offer_internship_applications_path(@internship_offer), class: 'nav-link' do
+          = "#{@internship_offer.internship_applications.count} #{'candidature'.pluralize(@internship_offer.internship_applications.count)}"
       - if can?(:destroy, @internship_offer)
         a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
           .fas.fa-2x.fa-trash

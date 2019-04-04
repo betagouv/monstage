@@ -69,7 +69,7 @@ def other_abilities(user:)
     can :show, :account
     can :create, InternshipOffer
     can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
-    can :update, InternshipApplication
+    can [:index, :update], InternshipApplication
   end
 
   def god_abilities(user:)

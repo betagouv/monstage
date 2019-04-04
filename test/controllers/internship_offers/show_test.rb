@@ -89,5 +89,25 @@ module InternshipOffers
       assert_select 'select option', text: blocked_internship_week.week.select_text_method, count: 0
       assert_select 'select option', text: available_internship_week.week.select_text_method, count: 1
     end
+
+    test 'GET #show as employer displays internship_applications link' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      get internship_offer_path(internship_offer)
+      assert_select "a[href=?]", internship_offer_internship_applications_path(internship_offer),
+                                 text: "0 candidatures",
+                                 count: 1
+
+    end
+
+    test 'GET #show as students does not shows internship_applications link' do
+      internship_offer = create(:internship_offer)
+      sign_in(create(:student))
+      get internship_offer_path(internship_offer)
+      assert_select "a[href=?]", internship_offer_internship_applications_path(internship_offer),
+                                 text: "0 candidatures",
+                                 count: 0
+
+    end
   end
 end

@@ -7,17 +7,17 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
   test "POST #create internship application" do
     internship_offer = create(:internship_offer)
     student = create(:student)
-
+    sign_in(student)
     valid_params = { internship_application: { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
                                                motivation: 'Je suis trop motivé wesh',
                                                user_id: student.id
                                              }}
     assert_difference('InternshipApplication.count', 1) do
       post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
+      assert_redirected_to internship_offers_path
     end
     assert_enqueued_emails 1
 
-    assert_redirected_to internship_offers_path
 
     created_internship_application = InternshipApplication.last
     assert_equal internship_offer.internship_offer_weeks.first.id, created_internship_application.internship_offer_week.id
@@ -28,7 +28,7 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
   test "POST #create internship application failed" do
     internship_offer = create(:internship_offer)
     student = create(:student)
-
+    sign_in(student)
     valid_internship_application_params = { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
                                                motivation: 'Je suis trop motivé wesh',
                                                user_id: student.id
@@ -81,5 +81,29 @@ class InternshipApplicationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to internship_offer_path(internship_application.internship_offer)
 
     assert InternshipApplication.last.rejected?
+  end
+
+  test "GET #index redirect to new_user_session_path when not logged in" do
+    get internship_offer_internship_applications_path(create(:internship_offer))
+    assert_redirected_to new_user_session_path
+  end
+
+  test "GET #index redirects to root_path when logged in as student" do
+    sign_in(create(:student))
+    get internship_offer_internship_applications_path(create(:internship_offer))
+    assert_redirected_to root_path
+  end
+
+  test "GET #index redirects to root_path when logged as different employer than internship_offer.employer" do
+    sign_in(create(:employer))
+    get internship_offer_internship_applications_path(create(:internship_offer))
+    assert_redirected_to root_path
+  end
+
+  test "GET #index succeed when logged in as employer" do
+    internship_offer = create(:internship_offer)
+    sign_in(internship_offer.employer)
+    get internship_offer_internship_applications_path(internship_offer)
+    assert_response :success
   end
 end
