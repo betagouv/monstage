@@ -1,25 +1,17 @@
-div[data-controller="internship-index"]
-  .row
+
+= render "title", internship_offers: @internship_offers
+
+- if can? :apply, InternshipOffer
+  .row.bg-light
     .col-12
-      - if can? :create, InternshipOffer
-        .clearfix
-          h1.h2.float-left Offres de stage
-          = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'
-      - else
-        h1.h2#internship-offers-count data-target="internship-index.title" #{@internship_offers.size} #{'offre'.pluralize(@internship_offers.size)} de stage
+      .filter-section.py-3 data-controller="internship-index"
+        label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
+        = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: internship_sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
-  .controller-container
-    - if can? :apply, InternshipOffer
-      .row.bg-light
-        .col-12
-          .filter-section.py-3
-            label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
-            = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: internship_sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+- if @internship_offers.blank?
+  .row
+    p.col-12[style='color: gray'] Aucune offre disponible
+- else
+  .row= render partial: "internship_offer", collection: @internship_offers
 
-    - if @internship_offers.blank?
-      .row
-        p.col-12[style='color: gray'] Aucune offre disponible
-    - else
-      .row= render partial: "internship_offer", collection: @internship_offers
-
-      = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})
+  = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})
