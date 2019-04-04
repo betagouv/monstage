@@ -7,6 +7,11 @@ class InternshipOffersController < ApplicationController
                            .page(params[:page])
     query = query.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
     @internship_offers = query
+    template = case current_user.class.name
+               when Users::Employer.name then "employer_index"
+               else "index"
+               end
+    render template
   end
 
   def show
