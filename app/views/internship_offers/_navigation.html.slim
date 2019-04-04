@@ -12,10 +12,10 @@
             = "Voir l'annonce"
         = " | "
         - if current_page?(internship_offer_internship_applications_path(@internship_offer))
-          .nav-link= "#{@internship_offer.internship_applications.count} #{'candidature'.pluralize(@internship_offer.internship_applications.count)}"
+          .nav-link= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
         - else
           = link_to internship_offer_internship_applications_path(@internship_offer), class: 'nav-link' do
-            = "#{@internship_offer.internship_applications.count} #{'candidature'.pluralize(@internship_offer.internship_applications.count)}"
+            = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
       - if can?(:destroy, @internship_offer)
         a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"

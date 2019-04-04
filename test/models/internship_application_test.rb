@@ -9,6 +9,14 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert internship_application.valid?
   end
 
+  test "creating an application increment internship_offer.total_applications_count" do
+    internship_offer = create(:internship_offer, max_candidates: 1)
+    internship_offer_week = internship_offer.internship_offer_weeks.first
+    internship_application = create(:internship_application, internship_offer_week: internship_offer_week)
+    internship_offer.reload
+    assert_equal 1, internship_offer.total_applications_count
+  end
+
   test "cannot create application if offer is not full" do
     max_candidates = 1
     internship_offer_week = build(:internship_offer_week, blocked_applications_count: max_candidates,

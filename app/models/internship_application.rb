@@ -9,9 +9,9 @@ class InternshipApplication < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student', foreign_key: 'user_id'
 
   has_one :internship_offer, through: :internship_offer_week
+  counter_culture :internship_offer, column_name: 'total_applications_count'
+
   has_one :week, through: :internship_offer_week
-
-
   validates :motivation, :internship_offer_week, presence: true
   before_validation :internship_offer_week_has_spots_left, on: :create
 
