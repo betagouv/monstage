@@ -5,11 +5,12 @@ class InternshipApplication < ApplicationRecord
   belongs_to :internship_offer_week
   counter_culture :internship_offer_week,
                   column_name: proc  { |model| model.approved? ? 'blocked_applications_count' : nil }
-
   belongs_to :student, class_name: 'Users::Student', foreign_key: 'user_id'
 
   has_one :internship_offer, through: :internship_offer_week
   counter_culture :internship_offer, column_name: 'total_applications_count'
+  counter_culture :internship_offer,
+                  column_name: proc  { |model| model.approved? ? 'approved_applications_count' : nil }
 
   has_one :week, through: :internship_offer_week
   validates :motivation, :internship_offer_week, presence: true
