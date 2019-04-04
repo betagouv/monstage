@@ -14,9 +14,9 @@
       .col-1.col-sm-1.text-right
         a.link-btn data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer"
           - if index == 0
-            i.fas.fa-chevron-down
+            i.fas.fa-2x.fa-chevron-down
           - else
-            i.fas.fa-chevron-right
+            i.fas.fa-2x.fa-chevron-right
 
       .col-11.col-sm-8
         h2.h4= "Candidature de #{internship_application.student.name} reçu le #{localize(internship_application.created_at, format: "%d %B")}"

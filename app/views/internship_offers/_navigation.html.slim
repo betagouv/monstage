@@ -1,8 +1,9 @@
 .row.bg-light
   .col-12
     nav.navbar
-      a.icon-link href=internship_offers_path
-        .fas.fa-2x.fa-angle-left
+      a.icon-link.d-flex.align-items-center href=internship_offers_path
+        .fas.fa-2x.fa-angle-left.mr-1
+        = "Retour"
 
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
         - if current_page?(internship_offer_path(@internship_offer))
