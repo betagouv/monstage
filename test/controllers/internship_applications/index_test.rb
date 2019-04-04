@@ -13,7 +13,7 @@ module InternshipApplications
                     count: count
     end
 
-    test "GET #index redirect to new_user_session_path when not logged in" do
+    test "GET internship_applications#index redirects to new_user_session_path when not logged in" do
       get internship_offer_internship_applications_path(create(:internship_offer))
       assert_redirected_to new_user_session_path
     end
