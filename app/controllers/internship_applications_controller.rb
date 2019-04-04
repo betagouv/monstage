@@ -6,6 +6,7 @@ class InternshipApplicationsController < ApplicationController
     @internship_applications = @internship_offer.internship_applications
                                                 .order(updated_at: :desc)
                                                 .page(params[:page])
+
     authorize! :read, @internship_offer
     authorize! :index, InternshipApplication
   end
@@ -25,18 +26,16 @@ class InternshipApplicationsController < ApplicationController
   def update
     @internship_application = @internship_offer.internship_applications.find(params[:id])
     authorize! :update, @internship_offer, InternshipApplication
-    if params[:approve] == 'true'
-      @internship_application.approve!
-      StudentMailer.with(internship_application: @internship_application).internship_application_approved_email.deliver_later
-    else
-      @internship_application.reject!
-      StudentMailer.with(internship_application: @internship_application).internship_application_rejected_email.deliver_later
-    end
-
+    @internship_application.send(params[:transition]) if valid_transition?
     redirect_to @internship_application.internship_offer, flash: { success: 'Candidature mis à jour avec succès' }
   end
 
   private
+
+  def valid_transition?
+    %w[approve! reject! signed! cancel!].include?(params[:transition])
+  end
+
   def find_internship_offer
     @internship_offer = InternshipOffer.find(params[:internship_offer_id])
   end

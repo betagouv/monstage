@@ -1,7 +1,14 @@
 class InternshipOfferWeek < ApplicationRecord
   belongs_to :internship_offer
+
   counter_culture :internship_offer,
-                  column_name: proc  { |model| model.blocked_applications_count > 0 ? 'blocked_weeks_count' : nil }
+                  column_name: proc  { |model| model.blocked_applications_count > 0 ? 'blocked_weeks_count' : nil },
+                  column_names: {
+                    ["blocked_applications_count > ?", "0"] => 'blocked_weeks_count'
+                  }
+  counter_culture :internship_offer,
+                  column_name: :approved_applications_count,
+                  delta_column: :approved_applications_count
 
   belongs_to :week
 
