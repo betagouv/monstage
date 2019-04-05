@@ -71,6 +71,7 @@ class InternshipOffer < ApplicationRecord
 
   def init
    self.max_candidates ||= 1
+   self.max_internship_week_number ||= 1
   end
 
 end

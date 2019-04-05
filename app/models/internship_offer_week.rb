@@ -1,8 +1,5 @@
 class InternshipOfferWeek < ApplicationRecord
   belongs_to :internship_offer
-  counter_culture :internship_offer,
-                  column_name: proc  { |model| model.blocked_applications_count > 0 ? 'blocked_weeks_count' : nil }
-
   belongs_to :week
 
   has_many :internship_applications

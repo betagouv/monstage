@@ -41,7 +41,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
     internship_offer.internship_offer_weeks.each do |internship_offer_week|
       internship_offer.max_candidates.times do
-        create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'approved')
+        create(:internship_application, internship_offer_week: internship_offer_week, aasm_state: 'convention_signed')
       end
     end
     internship_offer.reload

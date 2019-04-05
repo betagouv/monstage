@@ -1,6 +1,6 @@
 <%= form_for @school do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
-  <%= render "layouts/form_errors", object: @school %>
+  <%= render "layouts/form_errors", resource: @school, resource_name: :school %>
   <% unless current_user.is_a?(Users::God) %>
     <fieldset>
       <div class="form-group">

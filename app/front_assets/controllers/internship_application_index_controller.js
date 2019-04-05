@@ -11,9 +11,9 @@ export default class extends Controller {
 
     toggleElement($collapsibleTarget);
     if (isVisible($collapsibleTarget)) {
-      $linkIconContainer.html(`<i class="fas fa-chevron-right"></i>`)
+      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-right"></i>`)
     } else {
-      $linkIconContainer.html(`<i class="fas fa-chevron-down"></i>`)
+      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-down"></i>`)
     }
   }
 }

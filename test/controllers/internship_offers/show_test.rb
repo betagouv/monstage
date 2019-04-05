@@ -4,14 +4,9 @@ module InternshipOffers
   class ShowTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    test 'GET #show displays application form for student' do
-      sign_in(create(:student))
-      get internship_offer_path(create(:internship_offer))
-
-      assert_response :success
-      assert_select "form[id=?]", "new_internship_application"
-    end
-
+    #
+    # content checks
+    #
     test 'GET #show website url when present' do
       internship_offer = create(:internship_offer, employer_website: 'http://google.com')
       get internship_offer_path(internship_offer)
@@ -28,6 +23,17 @@ module InternshipOffers
       assert_select "a.external", 0
     end
 
+    #
+    # internship_applications checks
+    #
+    test 'GET #show displays application form for student' do
+      sign_in(create(:student))
+      get internship_offer_path(create(:internship_offer))
+
+      assert_response :success
+      assert_select "form[id=?]", "new_internship_application"
+    end
+
     test "GET #show as a student who can apply shows an enabled button with candidate label" do
       weeks = [Week.find_by(number:1, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
@@ -38,7 +44,6 @@ module InternshipOffers
       assert_select 'option', text: weeks.first.select_text_method, count: 1
       assert_select 'input[type="submit"][value="Candidater"]', count: 1
     end
-
 
     test "GET #show as a student who can apply to limited internship offer shows a disabled button with contact SchoolManager label" do
       weeks = [Week.find_by(number:1, year: 2020)]
@@ -71,7 +76,7 @@ module InternshipOffers
       assert_select 'select option', text: internship_weeks[3].select_text_method, count: 0
     end
 
-    test "GET #show as a student displays only weeks that are not blocked" do
+    test "GET #show as a student only displays weeks that are not blocked" do
       max_candidates = 2
       internship_weeks = [Week.find_by(number: 1, year: 2020),
                           Week.find_by(number: 2, year: 2020)]
@@ -90,6 +95,9 @@ module InternshipOffers
       assert_select 'select option', text: available_internship_week.week.select_text_method, count: 1
     end
 
+    #
+    # navigation checks
+    #
     test 'GET #show as employer displays internship_applications link' do
       internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
@@ -97,7 +105,6 @@ module InternshipOffers
       assert_select "a[href=?]", internship_offer_internship_applications_path(internship_offer),
                                  text: "0 candidatures",
                                  count: 1
-
     end
 
     test 'GET #show as students does not shows internship_applications link' do
@@ -107,7 +114,6 @@ module InternshipOffers
       assert_select "a[href=?]", internship_offer_internship_applications_path(internship_offer),
                                  text: "0 candidatures",
                                  count: 0
-
     end
   end
 end

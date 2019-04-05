@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_04_120942) do
+ActiveRecord::Schema.define(version: 2019_04_05_113420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2019_04_04_120942) do
     t.string "aasm_state"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
+    t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
 
@@ -57,6 +58,8 @@ ActiveRecord::Schema.define(version: 2019_04_04_120942) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "blocked_applications_count", default: 0, null: false
+    t.integer "approved_applications_count", default: 0, null: false
+    t.index ["approved_applications_count"], name: "index_internship_offer_weeks_on_approved_applications_count"
     t.index ["blocked_applications_count"], name: "index_internship_offer_weeks_on_blocked_applications_count"
     t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
     t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
@@ -88,6 +91,8 @@ ActiveRecord::Schema.define(version: 2019_04_04_120942) do
     t.integer "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.integer "total_applications_count", default: 0, null: false
+    t.integer "convention_signed_applications_count", default: 0, null: false
+    t.integer "approved_applications_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"

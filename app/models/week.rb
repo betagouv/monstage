@@ -13,9 +13,20 @@ class Week < ApplicationRecord
     where(year: year).where("number > ?", from.cweek)
   }
 
+  WEEK_DATE_FORMAT = '%d/%m/%Y'
   def select_text_method
-    week_date = Date.commercial(year, number)
-    date_format = '%d/%m/%Y'
-    "Semaine #{number} - du #{week_date.beginning_of_week.strftime(date_format)} au #{week_date.end_of_week.strftime(date_format)}"
+    "Semaine #{number} - du #{beginning_of_week} au #{end_of_week}"
+  end
+
+  def week_date
+    Date.commercial(year, number)
+  end
+
+  def beginning_of_week
+    week_date.beginning_of_week.strftime(WEEK_DATE_FORMAT)
+  end
+
+  def end_of_week
+    week_date.end_of_week.strftime(WEEK_DATE_FORMAT)
   end
 end

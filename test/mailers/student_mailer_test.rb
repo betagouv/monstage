@@ -4,7 +4,7 @@ class StudentMailerTest < ActionMailer::TestCase
   test "email sent when internship application is approved" do
     internship_application = create(:internship_application)
 
-    email = StudentMailer.with(internship_application: internship_application).internship_application_approved_email
+    email = StudentMailer.internship_application_approved_email(internship_application: internship_application)
 
     email.deliver_now
     assert_emails 1
@@ -16,7 +16,7 @@ class StudentMailerTest < ActionMailer::TestCase
 
     internship_application = create(:internship_application)
 
-    email = StudentMailer.with(internship_application: internship_application).internship_application_rejected_email
+    email = StudentMailer.internship_application_rejected_email(internship_application: internship_application)
 
     email.deliver_now
     assert_emails 1

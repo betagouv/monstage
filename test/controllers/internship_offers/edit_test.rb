@@ -19,7 +19,12 @@ module InternshipOffers
     test 'GET #edit as employer owning internship_offer renders success' do
       employer = create(:employer)
       sign_in(employer)
-      get edit_internship_offer_path(create(:internship_offer, employer: employer).to_param)
+      internship_offer = create(:internship_offer, employer: employer,
+                                                   max_candidates: 2,
+                                                   max_internship_week_number: 4)
+      get edit_internship_offer_path(internship_offer.to_param)
+      assert_select "#internship_offer_max_internship_week_number[value=#{internship_offer.max_internship_week_number}]", count: 1
+      assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
       assert_response :success
     end
   end
