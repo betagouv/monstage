@@ -9,6 +9,7 @@ class InternshipApplication < ApplicationRecord
 
   has_one :week, through: :internship_offer_week
   validates :motivation, :internship_offer_week, presence: true
+  validates :student, uniqueness: { scope: :internship_offer_week_id }
   before_validation :internship_offer_week_has_spots_left, on: :create
 
   counter_culture :internship_offer_week,

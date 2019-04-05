@@ -87,6 +87,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       internship_application.cancel!
     end
   end
+
   test 'transition via signed! changes aasm_state from approved to rejected' do
     internship_application = create(:internship_application, aasm_state: :approved)
     assert_changes -> { internship_application.reload.aasm_state },
@@ -94,5 +95,17 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                    to: 'convention_signed' do
       internship_application.signed!
     end
+  end
+
+  test 'is not applicable twice by same student' do
+    weeks = [Week.find_by(number: 1, year: 2019)]
+    student = create(:student)
+    internship_offer = create(:internship_offer, weeks: weeks)
+    internship_application_1 = create(:internship_application, student: student,
+                                                               internship_offer_week: internship_offer.internship_offer_weeks.first)
+    assert internship_application_1.valid?
+    internship_application_2 = build(:internship_application, student: student,
+                                                              internship_offer_week: internship_offer.internship_offer_weeks.first)
+    refute internship_application_2.valid?
   end
 end
