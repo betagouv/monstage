@@ -76,8 +76,6 @@ class InternshipOffer < ApplicationRecord
   def init
    self.max_candidates ||= 1
    self.max_internship_week_number ||= 1
-  rescue ActiveModel::MissingAttributeError
-    puts "counter culture error"
   end
 
 end
