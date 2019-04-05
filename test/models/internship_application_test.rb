@@ -17,7 +17,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal 1, internship_offer.total_applications_count
   end
 
-  test "cannot create application if offer is not full" do
+  test "cannot create application if offer is full" do
     max_candidates = 1
     internship_offer_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                           week: Week.first)
@@ -36,17 +36,16 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert_equal 2, internship_offer.total_applications_count
   end
 
-  test "internship_application.approve! increment internship_offer_weeks.blocked_applications_count" do
+  test "internship_application.signed! increment internship_offer_weeks.blocked_applications_count" do
     internship_offer = create(:internship_offer, max_candidates: 1)
     internship_offer_week = internship_offer.internship_offer_weeks.first
-    internship_application = create(:internship_application, internship_offer_week: internship_offer_week)
+    internship_application = create(:internship_application, internship_offer_week: internship_offer_week,
+                                                             aasm_state: :approved)
     internship_offer_week.reload
     assert_equal 0, internship_offer_week.blocked_applications_count
-    assert_equal 0, internship_offer_week.approved_applications_count
-    internship_application.approve!
+    internship_application.signed!
     internship_offer_week.reload
     assert_equal 1, internship_offer_week.blocked_applications_count
-    assert_equal 1, internship_offer_week.approved_applications_count
   end
 
   test "internship_application.reject! deos not increment internship_offer_weeks.blocked_applications_count" do

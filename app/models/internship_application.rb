@@ -13,9 +13,9 @@ class InternshipApplication < ApplicationRecord
   before_validation :internship_offer_week_has_spots_left, on: :create
 
   counter_culture :internship_offer_week,
-                  column_name: proc  { |model| model.approved? ? 'blocked_applications_count' : nil },
+                  column_name: proc  { |model| model.convention_signed? ? 'blocked_applications_count' : nil },
                   column_names: {
-                    ["aasm_state = ?", "approved"] => 'blocked_applications_count'
+                    ["aasm_state = ?", "signed"] => 'blocked_applications_count'
                   }
   counter_culture :internship_offer_week,
                   column_name: proc  { |model| model.approved? ? 'approved_applications_count' : nil },
