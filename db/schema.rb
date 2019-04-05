@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_05_095801) do
+ActiveRecord::Schema.define(version: 2019_04_05_113420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2019_04_05_095801) do
     t.datetime "updated_at", null: false
     t.integer "blocked_applications_count", default: 0, null: false
     t.integer "approved_applications_count", default: 0, null: false
+    t.index ["approved_applications_count"], name: "index_internship_offer_weeks_on_approved_applications_count"
     t.index ["blocked_applications_count"], name: "index_internship_offer_weeks_on_blocked_applications_count"
     t.index ["internship_offer_id"], name: "index_internship_offer_weeks_on_internship_offer_id"
     t.index ["week_id"], name: "index_internship_offer_weeks_on_week_id"
