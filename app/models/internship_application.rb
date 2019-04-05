@@ -12,18 +12,8 @@ class InternshipApplication < ApplicationRecord
   validates :student, uniqueness: { scope: :internship_offer_week_id }
   before_validation :internship_offer_week_has_spots_left, on: :create
 
-  counter_culture :internship_offer_week,
-                  column_name: proc  { |model| model.convention_signed? ? 'blocked_applications_count' : nil },
-                  column_names: {
-                    ["aasm_state = ?", "signed"] => 'blocked_applications_count'
-                  }
-  counter_culture :internship_offer_week,
-                  column_name: proc  { |model| model.approved? ? 'approved_applications_count' : nil },
-                  column_names: {
-                    ["aasm_state = ?", "approved"] => 'approved_applications_count'
-                  }
-
-  counter_culture :internship_offer, column_name: 'total_applications_count'
+  delegate :update_all_counters, to: :internship_application_counter_hook
+  after_save :update_all_counters
 
   paginates_per PAGE_SIZE
 
@@ -31,6 +21,10 @@ class InternshipApplication < ApplicationRecord
     unless internship_offer_week && internship_offer_week.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
     end
+  end
+
+  def internship_application_counter_hook
+    InternshipApplicationCountersHook.new(internship_application: self)
   end
 
   aasm do

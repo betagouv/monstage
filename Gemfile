@@ -72,6 +72,4 @@ gem 'devise-i18n'
 gem 'cancancan'
 
 gem 'kaminari'
-gem 'counter_culture'
-
 gem 'aasm'
