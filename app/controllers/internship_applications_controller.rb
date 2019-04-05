@@ -28,7 +28,7 @@ class InternshipApplicationsController < ApplicationController
                 flash: { success: 'Candidature mis à jour avec succès' }
   rescue AASM::InvalidTransition => e
     redirect_to internship_offer_internship_applications_path(@internship_application.internship_offer),
-                flash: { danger: 'Cette candidature a déjà été traitée' }
+                flash: { warning: 'Cette candidature a déjà été traitée' }
   end
 
   private
