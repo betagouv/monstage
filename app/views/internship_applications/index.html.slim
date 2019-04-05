@@ -9,11 +9,11 @@
     .col-11.col-sm-3
 
 - else
-  - @internship_applications.each.with_index do |internship_application, index|
+  - @internship_applications.each do |internship_application|
     div data-controller="internship-application-index" class=" row py-3 internship_application #{cycle("bg-light", "")}"
       .col-1.col-sm-1.text-right
         a.link-btn data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer"
-          - if index == 0
+          - if internship_application.submitted?
             i.fas.fa-2x.fa-chevron-down
           - else
             i.fas.fa-2x.fa-chevron-right
@@ -21,7 +21,7 @@
       .col-11.col-sm-8
         h2.h4= "Candidature de #{internship_application.student.name} reçu le #{localize(internship_application.created_at, format: "%d %B")}"
         p= internship_application.motivation
-        .collapsible data-target="internship-application-index.collapsible" class="#{index > 0 ? 'd-none' : ''}"
+        .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
           p= "Pour la semaine du #{internship_application.week.select_text_method}"
           p
             strong.student-name= internship_application.student.name

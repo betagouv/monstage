@@ -60,6 +60,10 @@ module InternshipApplications
       get internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
+      assert_select "i.fas.fa-2x.fa-chevron-down", 1
+      assert_select "i.fas.fa-2x.fa-chevron-right", 0
+      assert_select ".collapsible", 1
+      assert_select ".collapsible.d-none", 0
       assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 1)
       assert_has_link_count_to_transition(internship_application, :cancel!, 0)
@@ -72,6 +76,10 @@ module InternshipApplications
       get internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
+      assert_select "i.fas.fa-2x.fa-chevron-down", 0
+      assert_select "i.fas.fa-2x.fa-chevron-right", 1
+      assert_select ".collapsible", 1
+      assert_select ".collapsible.d-none", 1
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
       assert_has_link_count_to_transition(internship_application, :cancel!, 1)
