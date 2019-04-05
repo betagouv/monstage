@@ -92,5 +92,7 @@ fr:
 
         internship_application:
           attributes:
+            motivation:
+              blank: Veuillez reseigner vos motivations
             student:
               taken: 'Vous ne pouvez pas candidater deux fois à la même offre'

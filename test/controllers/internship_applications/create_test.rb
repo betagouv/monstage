@@ -39,19 +39,19 @@ module InternshipApplications
         post(internship_offer_internship_applications_path(internship_offer),
              params: { internship_application: valid_internship_application_params.except(:motivation)})
       end
-      assert_redirected_to internship_offer_path(internship_offer)
+      assert_response :bad_request
 
       assert_no_difference('InternshipApplication.count') do
         post(internship_offer_internship_applications_path(internship_offer),
              params: { internship_application: valid_internship_application_params.except(:internship_offer_week_id)})
       end
-      assert_redirected_to internship_offer_path(internship_offer)
+      assert_response :bad_request
 
       assert_no_difference('InternshipApplication.count') do
         post(internship_offer_internship_applications_path(internship_offer),
              params: { internship_application: valid_internship_application_params.except(:user_id)})
       end
-      assert_redirected_to internship_offer_path(internship_offer)
+      assert_response :bad_request
     end
   end
 end

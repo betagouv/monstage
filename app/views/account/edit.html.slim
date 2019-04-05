@@ -2,7 +2,7 @@ h1.h2 Mon compte
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = f.rg2a_explain_required_asterisk
-  = render 'layouts/form_errors', object: current_user
+  = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
   .form-group
     = f.label :first_name do

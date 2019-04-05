@@ -1,6 +1,6 @@
 <%= form_for [@school, @class_room] do |form|  %>
   <%= form.rg2a_explain_required_asterisk %>
-  <%= render "layouts/form_errors", object: @class_room %>
+  <%= render "layouts/form_errors", resource: @class_room, resource_name: :class_room %>
 
   <div class="form-group">
     <%= form.label :name do %>
