@@ -2,9 +2,10 @@ class InternshipApplicationCountersHook
   delegate :internship_offer, to: :internship_application
   delegate :internship_offer_week, to: :internship_application
 
+  # BEWARE: order matters
   def update_all_counters
-    update_internship_offer_counters
     update_internship_offer_week_counters
+    update_internship_offer_counters
   end
 
   # PERF: maybe optimization path to group those queries?

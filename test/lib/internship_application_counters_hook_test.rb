@@ -21,7 +21,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                    from: 0,
                    to: 1 do
       @internship_application.signed!
-      @hook.update_internship_offer_week_counters # TODO: remove, plug in callback
     end
   end
 
@@ -32,7 +31,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                    from: 0,
                    to: 1 do
       @internship_application.approve!
-      @hook.update_internship_offer_week_counters # TODO: remove, plug in callback
     end
   end
 
@@ -47,8 +45,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                    from: 0,
                    to: 1 do
       @internship_application.signed!
-      @hook.update_internship_offer_week_counters
-      @hook.update_internship_offer_counters
     end
   end
 
@@ -57,7 +53,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                    from: 0,
                    to: 1 do
       @internship_application.save!
-      @hook.update_internship_offer_counters
       @internship_offer.reload
     end
   end
@@ -70,8 +65,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                    from: 0,
                    to: 1 do
       @internship_application.signed!
-      @hook.update_internship_offer_week_counters
-      @hook.update_internship_offer_counters
     end
   end
 end
