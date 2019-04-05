@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_04_142124) do
+ActiveRecord::Schema.define(version: 2019_04_05_081101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 2019_04_04_142124) do
     t.string "aasm_state"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
+    t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
 
