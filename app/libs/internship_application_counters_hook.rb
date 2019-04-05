@@ -17,7 +17,9 @@ class InternshipApplicationCountersHook
       total_applications_count: internship_offer.internship_applications
                                                 .count,
       approved_applications_count: internship_offer.internship_offer_weeks
-                                                   .sum(:blocked_applications_count),
+                                                   .sum(:approved_applications_count),
+      convention_signed_applications_count: internship_offer.internship_offer_weeks
+                                                            .sum(:blocked_applications_count),
     )
   end
 
