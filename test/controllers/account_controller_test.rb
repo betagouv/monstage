@@ -22,11 +22,13 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
 
   test "GET edit render :edit success with all roles" do
     school = create(:school)
+    class_room_1 = create(:class_room, school: school)
+    class_room_2 = create(:class_room, school: school)
     [
       create(:school_manager, school: school),
       create(:student),
-      create(:main_teacher, school: school),
-      create(:teacher, school: school),
+      create(:main_teacher, school: school, class_room: class_room_1),
+      create(:teacher, school: school, class_room: class_room_2),
       create(:other, school: school),
     ].each do |role|
       sign_in(role)
