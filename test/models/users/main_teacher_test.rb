@@ -59,7 +59,6 @@ module Users
       mock_mail.verify
     end
 
-
     test "school_manager" do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
@@ -69,8 +68,25 @@ module Users
     end
 
     test "i18n" do
-      assert_equal "Chef d'établissement",
-                   MainTeacher.human_attribute_name(:school_manager)
+      assert_equal "Professeur principal", MainTeacher.human_attribute_name(:main_teacher)
+    end
+
+    test 'teacher after_sign_in_path without school redirects to account_path' do
+      teacher = build(:teacher, school: nil, class_room: nil)
+      assert_equal(teacher.after_sign_in_path,
+                   Rails.application.routes.url_helpers.account_path)
+    end
+
+    test 'main_teacher after_sign_in_path with school redirects to dashboard_school_class_room_path' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      class_room = create(:class_room, school: school)
+      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      redirect_to = Rails.application
+                         .routes
+                         .url_helpers
+                         .dashboard_school_class_room_path(school, class_room)
+      assert_equal(redirect_to, main_teacher.after_sign_in_path)
     end
   end
 end

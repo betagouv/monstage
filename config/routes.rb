@@ -14,12 +14,15 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: "dashboard" do
-    resources :schools, only: [:edit, :update, :index] do
-      # TODO: index
+    # TODO: index
+    # DASHBOARD: show
+    resources :schools, only: [:edit, :update, :index, :show] do
+      # MAYBE TODO: index
+      # DASHBOARD: show
       resources :users, only: [:destroy, :update], module: 'schools'
-      # TODO: index
-      resources :class_rooms, only: [:new, :create, :edit, :update], module: 'schools' do
-        # TODO: index
+      # MAYBE TODO: index
+      resources :class_rooms, only: [:new, :create, :edit, :update, :show], module: 'schools' do
+        # MAYBE TODO: index
         resources :students, only: [:show, :update]
       end
     end
