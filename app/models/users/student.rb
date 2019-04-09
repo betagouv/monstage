@@ -33,10 +33,6 @@ module Users
       !confirmed? ? :unconfirmed : (has_parental_consent? ? super : :not_approved)
     end
 
-    def after_sign_in_path
-      custom_dashboard_path
-    end
-
     def custom_dashboard_path
       return url_helpers.dashboard_path
     end
