@@ -67,13 +67,13 @@ module Users
     end
 
 
-    test 'other without school redirects to account_path' do
+    test 'other.after_sign_in_path without school redirects to account_path' do
       other = build(:other, school: nil)
       assert_equal(other.after_sign_in_path,
                    Rails.application.routes.url_helpers.account_path)
     end
 
-    test 'other with school and weeks redirects to dashboard_school_path' do
+    test 'other.after_sign_in_path with school and weeks redirects to dashboard_school_path' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2019)])
       school_manager = create(:school_manager, school: school)
       other = create(:other, school: school)

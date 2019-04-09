@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: "dashboard" do
-    # TODO: index
     # DASHBOARD: show
     resources :schools, only: [:edit, :update, :index, :show] do
       # MAYBE TODO: index

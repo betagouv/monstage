@@ -72,13 +72,13 @@ module Users
       assert_equal "Professeur", Teacher.human_attribute_name(:teacher)
     end
 
-    test 'teacher after_sign_in_path without school redirects to account_path' do
+    test 'teacher.after_sign_in_path without school redirects to account_path' do
       teacher = build(:teacher, school: nil, class_room: nil)
       assert_equal(teacher.after_sign_in_path,
                    Rails.application.routes.url_helpers.account_path)
     end
 
-    test 'teacher after_sign_in_path with school redirects to dashboard_school_class_room_path' do
+    test 'teacher.after_sign_in_path with school redirects to dashboard_school_class_room_path' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       class_room = create(:class_room, school: school)
