@@ -12,53 +12,28 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     sign_in(create(:student))
     get account_path
 
-    assert_template "account/_edit_account_card"
-  end
-
-  test "GET index as God" do
-    sign_in(create(:god))
-    get account_path
-
-    assert_select "a[href=?]", schools_path
-  end
-
-  test "GET index as Employer" do
-    sign_in(create(:employer))
-    get account_path
-
-    assert_response :success
-  end
-
-  test "GET index as SchoolManager" do
-    school = create(:school)
-    sign_in(create(:school_manager, school: school))
-    get account_path
-
-    assert_template "account/_edit_account_card"
-    assert_template "account/_edit_school_card"
-    assert_template "account/_edit_school_class_rooms_card"
+    assert_template "users/edit"
   end
 
   test "GET edit not logged redirects to sign in" do
-    get account_edit_path
+    get account_path
 
     assert_redirected_to user_session_path
   end
 
   test "GET edit render :edit success with all roles" do
     school = create(:school)
-    school_manager = create(:school_manager, school: school)
     [
-      school_manager,
+      create(:school_manager, school: school),
       create(:student),
       create(:main_teacher, school: school),
       create(:teacher, school: school),
       create(:other, school: school),
     ].each do |role|
       sign_in(role)
-      get account_edit_path
+      get account_path
       assert_response :success, "#{role.type} should have access to edit himself"
-      assert_select "form a[href=?]", account_path
+      assert_select "form[action=?]", account_path(role)
     end
   end
 
