@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def update
     authorize! :update, current_user
     current_user.update!(user_params)
-    render :edit, flash: { success: 'Compte mis à jour avec succès' }
+    redirect_to account_path, flash: { success: 'Compte mis à jour avec succès' }
   rescue ActiveRecord::RecordInvalid => error
     render :edit, status: :bad_request
   end
