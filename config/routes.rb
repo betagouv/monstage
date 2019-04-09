@@ -21,5 +21,7 @@ Rails.application.routes.draw do
   get 'account', to: 'users#edit'
   patch 'account', to: 'users#update'
 
+  get 'dashboard', to: 'dashboard#index'
+
   root to: "pages#home"
 end

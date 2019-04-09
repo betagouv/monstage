@@ -1,0 +1,24 @@
+h1 Mon tableau
+
+= render current_user.class.name.demodulize.underscore
+
+/ - if current_user.is_a?(Users::God)
+/   .col-12 = link_to "Gerer les Collèges", schools_path
+/ - else
+/   ul.nav.nav-pills.mb-3
+/     - if current_user.is_a?(Users::Student)
+/       li.nav-item
+/         a.nav-link.active href="#" Mon CV
+/     - elsif current_user.is_a?(Users::SchoolManager)
+/       li.nav-item.active
+/         a.nav-link href="#" Mes classes
+/       li.nav-item
+/         a.nav-link href="#" Personnel
+/       li.nav-item
+/         a.nav-link href="#" Semaines de stage
+/     - elsif current_user.is_a?(Users::MainTeacher)
+/       li.nav-item
+/         a.nav-link.active href="#" Ma classe
+/
+/ - if current_user.is_a?(Users::Student)
+/   = render "edit_resume"
