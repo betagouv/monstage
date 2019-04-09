@@ -5,6 +5,9 @@ module Dashboard
     class ClassRoomsControllerTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
+      #
+      # bew
+      #
       test 'GET new as SchoolManager responds with success' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -26,6 +29,9 @@ module Dashboard
         assert_redirected_to root_path
       end
 
+      #
+      # Create
+      #
       test 'POST create as SchoolManager responds with success' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -46,6 +52,9 @@ module Dashboard
         assert_redirected_to root_path
       end
 
+      #
+      # Edit
+      #
       test 'GET edit as SchoolManager render form' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -56,6 +65,9 @@ module Dashboard
         assert_response :success
       end
 
+      #
+      # Update
+      #
       test 'PATCH update as SchoolManager update class_room' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -64,6 +76,43 @@ module Dashboard
         patch dashboard_school_class_room_path(school, class_room, params: {class_room: { name: 'new_name' }})
         assert_redirected_to account_path
         assert_equal 'new_name', class_room.reload.name
+      end
+
+      #
+      # Show
+      #
+      test 'GET show as Student is forbidden' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        sign_in(create(:student, school: school))
+
+        get dashboard_school_class_room_path(school, class_room)
+        assert_redirected_to root_path
+      end
+
+      test 'GET show as SchoolManager works' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_class_room_path(school, class_room)
+        assert_response :success
+      end
+
+      test 'GET show as SchoolManager shows student list' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        students = [
+          create(:student, class_room: class_room, school: school),
+          create(:student, class_room: class_room, school: school),
+          create(:student, class_room: class_room, school: school),
+        ]
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_class_room_path(school, class_room)
+        students.map do |student|
+          assert_select "a[href=?]", dashboard_school_class_room_student_path(school, class_room, student)
+        end
       end
     end
   end

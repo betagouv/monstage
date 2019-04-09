@@ -1,7 +1,7 @@
 module Dashboard
   class SchoolsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_school, only: [:edit, :update]
+    before_action :set_school, only: [:edit, :update, :show]
     before_action :find_selectable_weeks, only: [:edit, :update]
 
     def index

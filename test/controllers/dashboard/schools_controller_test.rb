@@ -8,6 +8,9 @@ module Dashboard
       @school = create(:school)
     end
 
+    #
+    # Edit
+    #
     test 'GET edit not logged redirects to sign in' do
       get edit_dashboard_school_path(@school.to_param)
       assert_redirected_to user_session_path
@@ -29,6 +32,10 @@ module Dashboard
       assert_select "form a[href=?]", account_path
     end
 
+
+    #
+    # Update
+    #
     test 'PATCH update not logged redirects to sign in' do
       patch(dashboard_school_path(@school.to_param),
             params: {
@@ -67,6 +74,16 @@ module Dashboard
       end
     end
 
+    #
+    # Show
+    #
+    test 'GET show as Student is forbidden' do
+      sign_in(create(:student, school: @school))
+
+      get dashboard_school_path(@school)
+      assert_redirected_to root_path
+    end
+
     test 'GET show as SchoolManager works' do
       sign_in(create(:school_manager, school: @school))
 
@@ -74,11 +91,19 @@ module Dashboard
       assert_response :success
     end
 
-    test 'GET show as Student is forbidden' do
-      sign_in(create(:student, school: @school))
+    test 'GET show as SchoolManager shows class rooms list' do
+      class_rooms = [
+        create(:class_room, school: @school),
+        create(:class_room, school: @school),
+        create(:class_room, school: @school)
+      ]
+      sign_in(create(:school_manager, school: @school))
 
       get dashboard_school_path(@school)
-      assert_redirected_to root_path
+      class_rooms.map do |class_room|
+        assert_select 'a[href=?]', dashboard_school_class_room_path(@school, class_room)
+      end
     end
+
   end
 end

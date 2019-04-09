@@ -3,6 +3,11 @@ module Dashboard
     class ClassRoomsController < ApplicationController
       include NestedSchool
 
+      def show
+        authorize! :show, ClassRoom
+        @class_room = @school.class_rooms.find(params[:id])
+      end
+
       def create
         authorize! :create, ClassRoom
         @school = current_user.school

@@ -1,0 +1,12 @@
+module NestedClassRoom
+  extend ActiveSupport::Concern
+
+  included do
+    before_action :set_class_room
+    before_action :authenticate_user!
+
+    def set_school
+      @class_room = @school.class_rooms.find(params.require(:class_room_id))
+    end
+  end
+end

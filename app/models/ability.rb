@@ -32,7 +32,7 @@ class Ability
 
   def school_manager_abilities(user:)
     can :show, :account
-    can [:create, :new, :update], ClassRoom
+    can [:create, :new, :update, :show], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
     can [:show, :manage_main_teachers], School do |school|
