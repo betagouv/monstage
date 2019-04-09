@@ -3,6 +3,10 @@ module Dashboard
     class ClassRoomsController < ApplicationController
       include NestedSchool
 
+      def index
+        authorize! :show, School
+      end
+
       def show
         authorize! :show, ClassRoom
         @class_room = @school.class_rooms.find(params[:id])
