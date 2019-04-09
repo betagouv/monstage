@@ -3,6 +3,13 @@
 h3 Mes classes
 
 table.table.table-striped.table-bordered.table-hover.table-caption-top
+  thead
+    tr
+      th Classe
+      th Nb d'élève inscrits/validés
+      th Nb d'élève sans candidature
+      th Nb d'élève en attente de convention
+      th Nb d'élève sans stage
   tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school }
 
 = link_to "Ajouter", new_dashboard_school_class_room_path(@school), class: 'btn btn-dark'

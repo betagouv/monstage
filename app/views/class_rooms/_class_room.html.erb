@@ -1,8 +1,23 @@
-<tr>
+<% stats_aggregator = Presenters::ClassRoomStats.new(class_room: class_room) %>
+<tr class="class-room-<%= class_room.id %>">
   <td class="class-room-name">
     <%= link_to class_room.name, dashboard_school_class_room_path(school, class_room) %>
     <%= link_to edit_dashboard_school_class_room_path(school, class_room) do %>
       <i class="fas fa-pen"></i>
     <% end %>
+  </td>
+  <td>
+    <span class='student-count'><%= stats_aggregator.total_student %></span>
+    /
+    <span class='student-with-parental-consent'><%= stats_aggregator.total_student_with_parental_consent %></span>
+  </td>
+  <td>
+    <span class='student-needs-help'><%= stats_aggregator.total_student_with_zero_application  %></span>
+  </td>
+  <td>
+    <span class='pending-convention'><%= stats_aggregator.total_pending_convention_signed  %></span>
+  </td>
+  <td>
+    <span class='student-without-internship'><%= stats_aggregator.total_student_with_zero_internship  %></span>
   </td>
 </tr>

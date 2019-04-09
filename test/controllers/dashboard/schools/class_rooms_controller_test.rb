@@ -157,6 +157,17 @@ module Dashboard
         get dashboard_school_class_rooms_path(school)
         class_rooms.map do |class_room|
           assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
+          stats_aggregator = Presenters::ClassRoomStats.new(class_room: class_room)
+          assert_select ".class-room-#{class_room.id} span.student-count",
+                        text: stats_aggregator.total_student.to_s
+          assert_select ".class-room-#{class_room.id} span.student-with-parental-consent",
+                        text: stats_aggregator.total_student_with_parental_consent.to_s
+          assert_select ".class-room-#{class_room.id} span.student-needs-help",
+                        text: stats_aggregator.total_student_with_zero_application.to_s
+          assert_select ".class-room-#{class_room.id} span.pending-convention",
+                        text: stats_aggregator.total_pending_convention_signed.to_s
+          assert_select ".class-room-#{class_room.id} span.student-without-internship",
+                        text: stats_aggregator.total_student_with_zero_internship.to_s
         end
       end
     end
