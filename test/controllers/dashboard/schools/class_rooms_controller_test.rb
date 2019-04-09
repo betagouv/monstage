@@ -18,7 +18,6 @@ module Dashboard
         get new_dashboard_school_class_room_path(school.to_param)
 
         assert_response :success
-        assert_select "form a[href=?]", dashboard_school_path(school)
       end
 
       test 'GET class_rooms#new as Student responds with fail' do
@@ -39,7 +38,7 @@ module Dashboard
         class_room_name = SecureRandom.hex
         assert_difference 'ClassRoom.count' do
           post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
-          assert_redirected_to dashboard_school_path(school)
+          assert_redirected_to dashboard_school_class_rooms_path(school)
         end
         assert_equal 1, ClassRoom.where(name: class_room_name).count
       end
@@ -74,7 +73,7 @@ module Dashboard
         class_room = create(:class_room, school: school, name: SecureRandom.hex)
         sign_in(school_manager)
         patch dashboard_school_class_room_path(school, class_room, params: {class_room: { name: 'new_name' }})
-        assert_redirected_to account_path
+        assert_redirected_to dashboard_school_class_rooms_path
         assert_equal 'new_name', class_room.reload.name
       end
 
