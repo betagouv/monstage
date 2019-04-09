@@ -39,7 +39,7 @@ module Dashboard
         class_room_name = SecureRandom.hex
         assert_difference 'ClassRoom.count' do
           post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
-          assert_redirected_to account_path
+          assert_redirected_to dashboard_school_path(school)
         end
         assert_equal 1, ClassRoom.where(name: class_room_name).count
       end
