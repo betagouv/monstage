@@ -13,6 +13,7 @@ class Ability
       when 'Users::Other' then other_abilities(user: user)
       else
       end
+      shared_abilities(user: user)
     else
       visitor_abilities(user: user)
     end
@@ -76,5 +77,9 @@ def other_abilities(user:)
     can :show, :account
     can :manage, School
     can :destroy, InternshipOffer
+  end
+
+  def shared_abilities(user:)
+    can :update, user
   end
 end

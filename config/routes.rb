@@ -16,9 +16,10 @@ Rails.application.routes.draw do
     resources :users, only: [:destroy, :update], module: 'schools'
   end
 
-  get 'account', to: 'account#show'
-  get 'account/edit', to: 'account#edit'
-  patch 'account', to: 'account#update'
+  resources :users, only: [:edit, :update]
+
+  get 'account', to: 'users#edit'
+  patch 'account', to: 'users#update'
 
   root to: "pages#home"
 end

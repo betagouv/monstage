@@ -1,6 +1,6 @@
 h1.h2 Mon compte
 
-= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+= form_for(current_user, as: :user, url: account_path(current_user), method: :patch) do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
@@ -21,4 +21,3 @@ h1.h2 Mon compte
 
   .actions
     = f.submit 'Enregistrer', class: 'btn btn-primary'
-    = link_to 'Annuler', account_path, class: 'btn btn-link'
