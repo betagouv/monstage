@@ -18,7 +18,7 @@ module Dashboard
         get new_dashboard_school_class_room_path(school.to_param)
 
         assert_response :success
-        assert_select "form a[href=?]", account_path
+        assert_select "form a[href=?]", dashboard_school_path(school)
       end
 
       test 'GET new as Student responds with fail' do

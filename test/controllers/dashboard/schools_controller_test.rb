@@ -91,6 +91,16 @@ module Dashboard
       assert_response :success
     end
 
+    test 'GET show as SchoolManager contains key navigations links' do
+      sign_in(create(:school_manager, school: @school))
+
+      get dashboard_school_path(@school)
+      assert_response :success
+      assert_select "a.disabled[href=?]", dashboard_school_path(@school)
+      assert_select "a.nav-link[href=?]", dashboard_school_users_path(@school)
+      assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(@school)
+    end
+
     test 'GET show as SchoolManager shows class rooms list' do
       class_rooms = [
         create(:class_room, school: @school),

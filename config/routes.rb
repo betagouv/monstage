@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     resources :schools, only: [:edit, :update, :index, :show] do
       # MAYBE TODO: index
       # DASHBOARD: show
-      resources :users, only: [:destroy, :update], module: 'schools'
+      resources :users, only: [:destroy, :update, :index], module: 'schools'
       # MAYBE TODO: index
       resources :class_rooms, only: [:new, :create, :edit, :update, :show], module: 'schools' do
         # MAYBE TODO: index
