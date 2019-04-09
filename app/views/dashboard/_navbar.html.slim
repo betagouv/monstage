@@ -1,6 +1,9 @@
+h1 Mon tableau
+h2= @school.name
+
 ul.nav
   li.nav-item
-    = link_to "Personnel", dashboard_school_users_path(school), class: "nav-link #{current_page?(dashboard_school_users_path(school)) ? 'disabled' : ''}"
+    = link_to "Personnels", dashboard_school_users_path(school), class: "nav-link #{current_page?(dashboard_school_users_path(school)) ? 'disabled' : ''}"
   - if can? :manage_school_users, @school
     li.nav-item
       = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link #{current_page?(dashboard_school_class_rooms_path(school)) ? 'disabled' : ''}"
