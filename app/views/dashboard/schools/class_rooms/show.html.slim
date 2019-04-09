@@ -1,0 +1,7 @@
+= render partial: 'dashboard/navbar', locals: { school: @school }
+
+h3= "Classe #{@class_room.name}"
+
+table.table.table-striped.table-bordered.table-hover.table-caption-top
+  tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students
+

@@ -1,4 +1,4 @@
-<%= form_for @school do |f| %>
+<%= form_for [:dashboard, @school] do |f| %>
   <%= f.rg2a_explain_required_asterisk %>
   <%= render "layouts/form_errors", resource: @school, resource_name: :school %>
   <% unless current_user.is_a?(Users::God) %>

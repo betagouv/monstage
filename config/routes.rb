@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
+
   devise_for :users, controllers: {
       registrations: 'users/registrations',
       sessions: 'users/sessions'
   }
+
   devise_scope :user do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
   end
@@ -11,9 +13,15 @@ Rails.application.routes.draw do
     resources :internship_applications, only: [:create, :update, :index]
   end
 
-  resources :schools, only: [:edit, :update, :index] do
-    resources :class_rooms, only: [:new, :create, :edit, :update], module: 'schools'
-    resources :users, only: [:destroy, :update], module: 'schools'
+  namespace :dashboard, path: "dashboard" do
+    resources :schools, only: [:index, :edit, :update, :show] do
+      resources :users, only: [:destroy, :update, :index], module: 'schools'
+      # MAYBE TODO: index
+      resources :class_rooms, only: [:index, :new, :create, :edit, :update, :show], module: 'schools' do
+        # MAYBE TODO: index
+        resources :students, only: [:show, :update], module: 'class_rooms'
+      end
+    end
   end
 
   resources :users, only: [:edit, :update]

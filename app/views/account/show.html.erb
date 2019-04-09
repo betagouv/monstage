@@ -1,5 +1,5 @@
 <% if current_user.is_a?(Users::God) %>
-  <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
+  <div class="col-12"><%= link_to "Gerer les Collèges", dashboard_schools_path %></div>
 <% else %>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
@@ -31,7 +31,7 @@
             <%= render "edit_school_card" %>
           </div>
         <% end %>
-        <% if can?(:manage_main_teachers, current_user.try(:school)) %>
+        <% if can?(:manage_school_users, current_user.try(:school)) %>
           <div class="col-sm-6 col-md-4">
             <%= render "edit_school_main_teachers_card", main_teachers: current_user.main_teachers %>
           </div>

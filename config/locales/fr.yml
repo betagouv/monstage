@@ -26,6 +26,9 @@ fr:
         first_name: Prénom
         last_name: Nom
         school_manager: "Chef d'établissement"
+        main_teacher: "Professeur principal"
+        teacher: "Professeur"
+        other: "Autres fonctions"
         class_room: "Classe"
         school: "Collège"
         gender: Sexe

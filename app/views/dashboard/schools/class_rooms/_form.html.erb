@@ -1,4 +1,4 @@
-<%= form_for [@school, @class_room] do |form|  %>
+<%= form_for [:dashboard, @school, @class_room] do |form|  %>
   <%= form.rg2a_explain_required_asterisk %>
   <%= render "layouts/form_errors", resource: @class_room, resource_name: :class_room %>
 
@@ -11,6 +11,6 @@
   </div>
   <div class="actions">
     <%= form.submit 'Enregistrer', class: 'btn btn-primary' %>
-    <%= link_to 'Annuler', account_path, class: 'btn btn-link' %>
+    <%= link_to 'Annuler', dashboard_school_path(@school), class: 'btn btn-link' %>
   </div>
 <% end %>

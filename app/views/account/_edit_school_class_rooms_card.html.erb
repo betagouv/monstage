@@ -7,7 +7,7 @@
       </ul>
     </p>
     <% if current_user&.school %>
-      <%= link_to "Ajouter", new_school_class_room_path(current_user.school.to_param), class: 'btn btn-primary' %>
+      <%= link_to "Ajouter", new_dashboard_school_class_room_path(current_user.school.to_param), class: 'btn btn-primary' %>
     <% else %>
       Choisir un collège
     <% end %>
