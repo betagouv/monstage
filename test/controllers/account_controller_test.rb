@@ -19,7 +19,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     sign_in(create(:god))
     get account_path
 
-    assert_select "a[href=?]", schools_path
+    assert_select "a[href=?]", dashboard_schools_path
   end
 
   test "GET index as Employer" do

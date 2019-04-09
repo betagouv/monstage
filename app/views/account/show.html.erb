@@ -1,5 +1,5 @@
 <% if current_user.is_a?(Users::God) %>
-  <div class="col-12"><%= link_to "Gerer les Collèges", schools_path %></div>
+  <div class="col-12"><%= link_to "Gerer les Collèges", dashboard_schools_path %></div>
 <% else %>
   <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
