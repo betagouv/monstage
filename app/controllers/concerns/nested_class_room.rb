@@ -5,7 +5,7 @@ module NestedClassRoom
     before_action :set_class_room
     before_action :authenticate_user!
 
-    def set_school
+    def set_class_room
       @class_room = @school.class_rooms.find(params.require(:class_room_id))
     end
   end

@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       # MAYBE TODO: index
       resources :class_rooms, only: [:new, :create, :edit, :update, :show], module: 'schools' do
         # MAYBE TODO: index
-        resources :students, only: [:show, :update]
+        resources :students, only: [:show, :update], module: 'class_rooms'
       end
     end
   end

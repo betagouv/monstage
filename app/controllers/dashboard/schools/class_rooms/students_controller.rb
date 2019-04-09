@@ -6,6 +6,7 @@ module Dashboard
 
       def show
         @student = @class_room.students.find(params[:id])
+        authorize! :show_user_in_school, @student
       end
     end
   end
