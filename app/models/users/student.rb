@@ -13,7 +13,7 @@ module Users
     after_initialize :init
 
     def has_zero_internship_application?
-      internship_applications.zero?
+      internship_applications.count.zero?
     end
 
     def has_convention_signed_internship_application?
