@@ -38,7 +38,7 @@ module Users
     end
 
     def custom_dashboard_path
-      return url_helpers.internship_offers_path
+      return url_helpers.dashboard_path
     end
   end
 end
