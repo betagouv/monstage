@@ -11,17 +11,18 @@ nav.navbar.navbar-light.navbar-expand-lg
         = link_to internship_offers_path, class: 'nav-link' do
           i.fas.fa-list-alt.mr-1
           | Les stages
-      li.nav-item
-        = link_to dashboard_path, class: 'nav-link' do
-          i.fas.fa-table.mr-1
-          | Mon Tableau
-      - unless user_signed_in?
+
+      - if user_signed_in?
         li.nav-item
-          = link_to 'Inscription', new_user_registration_path, class: "nav-link"
-        li.nav-item
-          = link_to 'Connexion', new_user_session_path, class: "nav-link"
-      - else
+          = link_to current_user.custom_dashboard_path, class: 'nav-link' do
+            i.fas.fa-table.mr-1
+            | Mon Tableau
         li.nav-item
           = link_to account_path, class: "nav-link" do
             i.fas.fa-user.mr-1
             = current_user.name
+      - else
+        li.nav-item
+          = link_to 'Inscription', new_user_registration_path, class: "nav-link"
+        li.nav-item
+          = link_to 'Connexion', new_user_session_path, class: "nav-link"

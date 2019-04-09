@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     resources :internship_applications, only: [:create, :update, :index]
   end
 
-  namespace :dashboard, path: "dashboard", only: [:index] do
+  namespace :dashboard, path: "dashboard" do
     # DASHBOARD: show
     resources :schools, only: [:edit, :update, :index, :show] do
       # MAYBE TODO: index
@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
   get 'account', to: 'users#edit'
   patch 'account', to: 'users#update'
+
+  get 'dashboard', to: 'dashboard#index'
 
   root to: "pages#home"
 end
