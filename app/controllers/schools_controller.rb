@@ -15,8 +15,8 @@ class SchoolsController < ApplicationController
   def update
     authorize! :update, School
     @school.update!(internship_weeks_params)
-    flash.now[:primary] = "Collège mis à jour avec succès"
-    render :edit
+    redirect_to(account_path,
+                flash: {success: "Collège mis à jour avec succès"})
   rescue ActiveRecord::RecordInvalid => error
     render :edit, status: :bad_request
   end
