@@ -21,3 +21,7 @@ h1.h2 Mon compte
 
   .actions
     = f.submit 'Enregistrer', class: 'btn btn-primary'
+
+= link_to destroy_user_session_path, class: 'btn btn-danger mt-3', method: :delete do
+  i.fas.fa-sign-out-alt.mr-1
+  | Déconnexion

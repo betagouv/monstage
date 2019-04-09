@@ -2,7 +2,7 @@ nav.navbar.navbar-light.navbar-expand-lg
   = link_to root_path, class: 'navbar-brand' do
     = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Mon stage de 3e", width: 80, height: 45, class: 'mx-auto my-3 d-block logo'
 
-  button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"
+  button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Voir la navigation"
     span.navbar-toggler-icon
 
   #navbarContent.collapse.navbar-collapse.justify-content-end
@@ -17,10 +17,7 @@ nav.navbar.navbar-light.navbar-expand-lg
         li.nav-item
           = link_to 'Connexion', new_user_session_path, class: "nav-link"
       - else
-        li.nav-item.dropdown
-          = link_to '#', class: "nav-link dropdown-toggle", href: "#", id: "navbarDropdownMenuLink", role: "button", data: { toggle: "dropdown" }, "aria-haspopup" => true, "aria-expanded" => false do
+        li.nav-item
+          = link_to account_path, class: "nav-link" do
             i.fas.fa-user.mr-1
-            = current_user.name
-          .dropdown-menu aria-labelledby="navbarDropdownMenuLink"
-            = link_to 'Mon compte', account_path, class: 'dropdown-item'
-            = link_to 'Déconnexion', destroy_user_session_path, class: 'dropdown-item', method: :delete
+            = current_user.name    
