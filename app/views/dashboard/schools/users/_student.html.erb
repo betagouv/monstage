@@ -1,12 +1,11 @@
-<row>
+<tr>
   <td>
     <%= link_to Presenters::User.new(user: student).short_name, dashboard_school_class_room_student_path(student.school, student.class_room, student) %>
   </td>
-  <td></td>
   <td>
     <%= form_for [student.school, student], url: dashboard_school_user_path(student.school, student) do |form| %>
         <%= student.school %>
     hello
     <% end %>
   </td>
-</row>
+</tr>

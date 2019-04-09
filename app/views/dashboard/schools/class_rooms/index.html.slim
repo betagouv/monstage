@@ -6,6 +6,6 @@ h2 Mes classes
 
 table.table.table-striped.table-bordered.table-hover.table-caption-top
   tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school }
-  tfoot
-    legend= link_to "Ajouter", new_dashboard_school_class_room_path(@school), class: 'btn btn-dark'
+
+= link_to "Ajouter", new_dashboard_school_class_room_path(@school), class: 'btn btn-dark'
 

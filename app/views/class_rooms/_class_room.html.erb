@@ -1,8 +1,8 @@
-<li>
-  <div class="class-room-name">
+<tr>
+  <td class="class-room-name">
     <%= link_to class_room.name, dashboard_school_class_room_path(school, class_room) %>
     <%= link_to edit_dashboard_school_class_room_path(school, class_room) do %>
       <i class="fas fa-pen"></i>
     <% end %>
-  </div>
-</li>
+  </td>
+</tr>
