@@ -35,7 +35,7 @@ class Ability
     can [:create, :new, :update], ClassRoom
     can [:show, :edit, :update], User
     can [:edit, :update], School
-    can [:manage_main_teachers], School do |school|
+    can [:show, :manage_main_teachers], School do |school|
       school.id == user.school_id
     end
     can [:delete], User do |delete_user_from_school|

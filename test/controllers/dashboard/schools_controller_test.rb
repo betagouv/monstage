@@ -66,5 +66,19 @@ module Dashboard
         assert_select "#alert-success #alert-text", {text: "Collège mis à jour avec succès"}, 1
       end
     end
+
+    test 'GET show as SchoolManager works' do
+      sign_in(create(:school_manager, school: @school))
+
+      get dashboard_school_path(@school)
+      assert_response :success
+    end
+
+    test 'GET show as Student is forbidden' do
+      sign_in(create(:student, school: @school))
+
+      get dashboard_school_path(@school)
+      assert_redirected_to root_path
+    end
   end
 end

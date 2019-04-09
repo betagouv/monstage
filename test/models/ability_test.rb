@@ -52,6 +52,11 @@ class AbilityTest < ActiveSupport::TestCase
            'god should not be able to edit user')
   end
 
+  test 'SchoolManager' do
+    ability = Ability.new(build(:school_manager))
+    assert(ability.can?(:show, School),
+           'school_manager should be able to manage school')
+  end
   test 'MainTeacher' do
     ability = Ability.new(build(:main_teacher))
     assert(ability.can?(:show, :account),
