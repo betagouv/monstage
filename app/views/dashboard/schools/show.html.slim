@@ -1,11 +1,6 @@
 h1 Mon tableau
 
-ul.nav
-  li.nav-item
-    = link_to "Personnel", dashboard_school_users_path(@school), class: "nav-link #{current_page?(dashboard_school_users_path(@school)) ? 'disabled' : ''}"
-  li.nav-item
-    = link_to "Classes", dashboard_school_path(@school), class: "nav-link #{current_page?(dashboard_school_path(@school)) ? 'disabled' : ''}"
-
+= render partial: 'dashboard/navbar', locals: { school: @school }
 h2 Mes classes
 
 = render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school }

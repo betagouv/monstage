@@ -6,6 +6,9 @@ module Dashboard
     class UsersControllerTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
+      #
+      # destroy
+      #
       test 'DELETE #destroy not signed in' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -35,6 +38,9 @@ module Dashboard
         assert_redirected_to account_path
       end
 
+      #
+      # update
+      #
       test "PATCH #update as main teacher should approve parental consent" do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
@@ -45,6 +51,35 @@ module Dashboard
         patch dashboard_school_user_path(school, student, params: { user: { has_parental_consent: true } }), headers: { "HTTP_REFERER" => root_path }
 
         assert student.reload.has_parental_consent
+      end
+
+      #
+      # index
+      #
+      test 'GET show as Student is forbidden' do
+        school = create(:school)
+        sign_in(create(:student))
+
+        get dashboard_school_users_path(school)
+        assert_redirected_to root_path
+      end
+
+      test 'GET show as SchoolManager works' do
+        school = create(:school)
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_users_path(school)
+        assert_response :success
+      end
+
+      test 'GET show as SchoolManager contains key navigations links' do
+        school = create(:school)
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_users_path(school)
+        assert_response :success
+        assert_select "a.nav-link[href=?]", dashboard_school_path(school)
+        assert_select "a.disabled[href=?]", dashboard_school_users_path(school)
       end
     end
   end

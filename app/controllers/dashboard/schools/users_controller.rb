@@ -3,6 +3,10 @@ module Dashboard
     class UsersController < ApplicationController
       include NestedSchool
 
+      def index
+        authorize! :manage_school_users, @school
+      end
+
       def destroy
         user = @school.users.find(params[:id])
         user_presenter = Presenters::User.new(user: user)
