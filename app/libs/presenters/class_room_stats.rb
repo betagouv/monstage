@@ -24,7 +24,7 @@ module Presenters
     end
 
     def total_student_with_zero_internship
-      0
+      "- ? -"
     end
 
     private

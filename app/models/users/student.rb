@@ -13,7 +13,7 @@ module Users
     after_initialize :init
 
     def has_zero_internship_application?
-      internship_applications.size == 0
+      internship_applications.zero?
     end
 
     def has_convention_signed_internship_application?
