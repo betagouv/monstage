@@ -1,12 +1,11 @@
 class InternshipOffersController < ApplicationController
+  include SetInternshipOffers
+
   before_action :authenticate_user!, only: [:index, :create, :edit, :update, :destroy]
 
   def index
-    query = InternshipOffer.kept
-                           .for_user(user: current_user)
-                           .page(params[:page])
-    query = query.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
-    @internship_offers = query
+    set_internship_offers
+    @internship_offers = @internship_offers.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
   end
 
   def show

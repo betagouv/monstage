@@ -1,11 +1,11 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
+    include SetInternshipOffers
+
     before_action :authenticate_user!
 
     def index
-      @internship_offers = InternshipOffer.kept
-                             .for_user(user: current_user)
-                             .page(params[:page])
+      set_internship_offers
     end
 
     def show
