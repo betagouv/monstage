@@ -1,4 +1,4 @@
-= form_for @internship_offer, {data: {controller: 'internship-form'}} do |form|
+= form_for [:dashboard, @internship_offer], {data: {controller: 'internship-form'}} do |form|
   = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 

@@ -25,16 +25,16 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
 
   test 'new_internship_offer_path'  do
     sign_in(create(:employer))
-    run_request_and_cache_response(report_as: 'new_internship_offer_path') do
-      get new_internship_offer_path
+    run_request_and_cache_response(report_as: 'new_dashboard_internship_offer') do
+      get new_dashboard_internship_offer_path
     end
   end
 
   test 'edit_internship_offer_path'  do
     stage_dev = create(:internship_offer)
     sign_in(stage_dev.employer)
-    run_request_and_cache_response(report_as: 'edit_internship_offer_path') do
-      get edit_internship_offer_path(id: stage_dev.to_param)
+    run_request_and_cache_response(report_as: 'edit_dashboard_internship_offer_path') do
+      get edit_dashboard_internship_offer_path(id: stage_dev.to_param)
     end
   end
 

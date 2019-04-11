@@ -22,6 +22,6 @@ class User < ApplicationRecord
   end
 
   def after_sign_in_path
-    nil # I know you don't like it Martin but in this cas it makes sense
+    custom_dashboard_path
   end
 end

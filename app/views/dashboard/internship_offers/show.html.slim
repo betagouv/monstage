@@ -1,4 +1,4 @@
-= render "internship_offers/navigation", internship_offer: @internship_offer
+= render "navigation", internship_offer: @internship_offer
 
 h2.h6 Le stage
 p = @internship_offer.description
@@ -37,3 +37,6 @@ p = @internship_offer.employer_name
 
 - if can?(:apply, InternshipOffer) && @internship_offer.has_spots_left?
   = render "internship_applications/form"
+
+
+= render "delete_internship_offer_modal", internship_offer: @internship_offer

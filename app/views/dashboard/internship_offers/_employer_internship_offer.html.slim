@@ -1,14 +1,16 @@
 tr
   td
-    = link_to internship_offer_path(employer_internship_offer), data: { "test-id": "#{employer_internship_offer.id}" }, class: 'internship-item' do
+    = link_to dashboard_internship_offer_path(employer_internship_offer), data: { "test-id": "#{employer_internship_offer.id}" }, class: 'internship-item' do
       p.text-strong.internship-item-title.mb-0= employer_internship_offer.title
       p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.employer_city
       p.text-muted.internship-item-city.small.mb-0= "Du #{employer_internship_offer.weeks.order(:number, :year).first.beginning_of_week} au #{employer_internship_offer.weeks.order(:number, :year).last.end_of_week}"
   td.align-middle.text-center
     a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
       .fas.fa-trash
-    a.nav-link href=edit_internship_offer_path(employer_internship_offer.to_param)
+    a.nav-link href=edit_dashboard_internship_offer_path(employer_internship_offer.to_param)
       .fas.fa-pen
   td.h1.align-middle.text-center= employer_internship_offer.total_applications_count
   td.h1.align-middle.text-center= employer_internship_offer.approved_applications_count
   td.h1.align-middle.text-center= employer_internship_offer.convention_signed_applications_count
+
+= render "delete_internship_offer_modal", internship_offer: employer_internship_offer

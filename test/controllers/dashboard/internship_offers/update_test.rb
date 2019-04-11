@@ -7,14 +7,14 @@ module InternshipOffers
 
     test 'PATCH #update as visitor redirects to user_session_path' do
       internship_offer = create(:internship_offer)
-      patch(internship_offer_path(internship_offer.to_param), params: {})
+      patch(dashboard_internship_offer_path(internship_offer.to_param), params: {})
       assert_redirected_to user_session_path
     end
 
     test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
       internship_offer = create(:internship_offer)
       sign_in(create(:employer))
-      patch(internship_offer_path(internship_offer.to_param), params: {})
+      patch(dashboard_internship_offer_path(internship_offer.to_param), params: {})
       assert_redirected_to root_path
     end
 
@@ -23,7 +23,7 @@ module InternshipOffers
       new_title = 'new title'
 
       sign_in(internship_offer.employer)
-      patch(internship_offer_path(internship_offer.to_param),
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
                         title: new_title,
                         week_ids: [weeks(:week_2019_1).id],

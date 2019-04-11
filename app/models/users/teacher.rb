@@ -6,7 +6,7 @@ module Users
 
     def after_sign_in_path
       return url_helpers.account_path if [school, class_room].any?(&:blank?)
-      custom_dashboard_path
+      super
     end
 
     def custom_dashboard_path

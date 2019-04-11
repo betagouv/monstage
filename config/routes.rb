@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
   end
 
-  resources :internship_offers do
+  resources :internship_offers, only: [:index, :show] do
     resources :internship_applications, only: [:create, :update, :index]
   end
 
@@ -21,6 +21,9 @@ Rails.application.routes.draw do
         # MAYBE TODO: index
         resources :students, only: [:show, :update], module: 'class_rooms'
       end
+    end
+    resources :internship_offers do
+      resources :internship_applications, only: [:update, :index], module: 'internship_offers'
     end
   end
 
