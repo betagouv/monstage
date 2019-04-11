@@ -29,7 +29,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_response :success
-      assert_select "form a[href=?]", account_path
+      assert_select "form a[href=?]", dashboard_school_class_rooms_path(@school)
     end
 
 
@@ -68,7 +68,7 @@ module Dashboard
                   week_ids: weeks_ids
                 }
               })
-        assert_redirected_to account_path
+        assert_redirected_to dashboard_school_class_rooms_path(@school)
         follow_redirect!
         assert_select "#alert-success #alert-text", {text: "Collège mis à jour avec succès"}, 1
       end

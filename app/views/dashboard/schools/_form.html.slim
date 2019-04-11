@@ -29,14 +29,8 @@
                                          value: @school.formatted_autocomplete_address,
                                          required: true,
                                          data: { target: 'algolia-place.autocompleteInput' }
-      .input type="hidden"
-             name="school[coordinates][latitude]"
-             value="= @school.coordinates&.lat"
-             data-target="algolia-place.latitudeInput"
-      .input type="hidden"
-             name="school[coordinates][longitude]"
-             value="= @school.coordinates&.lon"
-             data-target="algolia-place.longitudeInput"
+      .input type="hidden" name="school[coordinates][latitude]" value="= @school.coordinates&.lat" data-target="algolia-place.latitudeInput"
+      .input type="hidden" name="school[coordinates][longitude]" value="= @school.coordinates&.lon" data-target="algolia-place.longitudeInput"
     .div class="form-group d-none"
       .div class="form-row"
         .div class="col-sm-6"
@@ -60,4 +54,4 @@
 
   .div class="actions"
     = f.submit 'Enregistrer', class: 'btn btn-primary'
-    = link_to 'Annuler', account_path, class: 'btn btn-link'
+    = link_to 'Annuler', dashboard_school_class_rooms_path(@school), class: 'btn btn-link'
