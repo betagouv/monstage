@@ -6,13 +6,13 @@ module InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'GET #edit as visitor redirects to user_session_path' do
-      get edit_internship_offer_path(create(:internship_offer).to_param)
+      get edit_dashboard_internship_offer_path(create(:internship_offer).to_param)
       assert_redirected_to user_session_path
     end
 
     test 'GET #edit as employer not owning internship_offer redirects to user_session_path' do
       sign_in(create(:employer))
-      get edit_internship_offer_path(create(:internship_offer).to_param)
+      get edit_dashboard_internship_offer_path(create(:internship_offer).to_param)
       assert_redirected_to root_path
     end
 
@@ -22,7 +22,7 @@ module InternshipOffers
       internship_offer = create(:internship_offer, employer: employer,
                                                    max_candidates: 2,
                                                    max_internship_week_number: 4)
-      get edit_internship_offer_path(internship_offer.to_param)
+      get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_internship_week_number[value=#{internship_offer.max_internship_week_number}]", count: 1
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
       assert_response :success

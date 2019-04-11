@@ -22,7 +22,7 @@ module Dashboard
            ActionController::ParameterMissing
       @internship_offer ||= InternshipOffer.new
       find_selectable_content
-      render 'internship_offers/new', status: :bad_request
+      render :new, status: :bad_request
     end
 
     def edit
@@ -47,7 +47,7 @@ module Dashboard
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :destroy, @internship_offer
       @internship_offer.discard
-      redirect_to(internship_offer_path,
+      redirect_to(dashboard_internship_offers_path,
                   flash: { success: 'Votre annonce a bien été supprimée' })
     end
 

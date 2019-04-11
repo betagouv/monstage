@@ -8,7 +8,7 @@ module InternshipOffers
     test 'GET #new as employer show valid form' do
       sign_in(create(:employer))
       travel_to(Date.new(2019, 3, 1)) do
-        get new_internship_offer_path
+        get new_dashboard_internship_offer_path
 
         assert_response :success
         assert_select 'select[name="internship_offer[week_ids][]"] option', 14
@@ -31,8 +31,8 @@ module InternshipOffers
     end
 
     test 'GET #new as visitor redirects to internship_offers' do
-      get new_internship_offer_path
-      assert_redirected_to root_path
+      get new_dashboard_internship_offer_path
+      assert_redirected_to user_session_path
     end
   end
 end

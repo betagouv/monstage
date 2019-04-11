@@ -5,7 +5,7 @@ module InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'POST #create as visitor redirects to internship_offers' do
-      post internship_offers_path(params: {})
+      post dashboard_internship_offers_path(params: {})
       assert_redirected_to user_session_path
     end
 
@@ -24,7 +24,7 @@ module InternshipOffers
                          max_candidates: 2,
                          max_internship_week_number: 4,
                          employer_description: "bim bim bim bam bam")
-        post(internship_offers_path, params: { internship_offer: params })
+        post(dashboard_internship_offers_path, params: { internship_offer: params })
       end
       created_internship_offer = InternshipOffer.last
       assert_equal employer, created_internship_offer.employer
@@ -37,13 +37,13 @@ module InternshipOffers
 
     test 'POST #create as employer with missing params' do
       sign_in(create(:employer))
-      post(internship_offers_path, params: { internship_offer: {} })
+      post(dashboard_internship_offers_path, params: { internship_offer: {} })
       assert_response :bad_request
     end
 
     test 'POST #create as employer with invalid data' do
       sign_in(create(:employer))
-      post(internship_offers_path, params: { internship_offer: {title: "hello"} })
+      post(dashboard_internship_offers_path, params: { internship_offer: {title: "hello"} })
       assert_response :bad_request
     end
 
