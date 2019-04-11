@@ -9,10 +9,6 @@ module Dashboard
       @schools = School.all.order(zipcode: :desc)
     end
 
-    def show
-      authorize! :show, School
-    end
-
     def edit
       authorize! :edit, School
     end

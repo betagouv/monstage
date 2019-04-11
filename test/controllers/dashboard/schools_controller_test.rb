@@ -73,23 +73,5 @@ module Dashboard
         assert_select "#alert-success #alert-text", {text: "Collège mis à jour avec succès"}, 1
       end
     end
-
-    #
-    # Show, SchoolManager
-    #
-    test 'GET show as Student is forbidden' do
-      roles = [
-        create(:student, school: @school),
-        create(:school_manager, school: @school),
-        create(:teacher, school: @school),
-        create(:main_teacher, school: @school),
-        create(:other, school: @school)
-      ]
-      roles.map do |role|
-        sign_in(role)
-        get dashboard_school_path(@school)
-        assert_redirected_to root_path
-      end
-    end
   end
 end
