@@ -96,7 +96,13 @@
 
       = form.number_field :max_internship_week_number, value: @internship_offer.max_internship_week_number, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true
 
-    = render 'users/form/select_school', form: form, resource: @internship_offer, select_class_room: false, school_city_label: "Ville ou se situe le collège auquel le stage est reservé", school_city_placeholder: "Rechercher le nom de ville ou se situe le collège", school_city_help: "Laisser vide si le stage n'est pas reservé à un collège", required: false
+    .form-group
+      = label_tag "is_reserved" do
+        = check_box_tag :is_reserved, @internship_offer.school.present?, @internship_offer.school.present?, id: "is_reserved", data: {action: "change->internship-form#toggleSelectSchoolBlock"}
+        span.ml-1= "Ce stage est reservé à un collège uniquement ?"
+        small.form-text.text-muted Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
+    div data-target="internship-form.selectSchoolBlock" class="#{@internship_offer.school.present? ? '' : 'd-none'}"
+      = render 'users/form/select_school', form: form, resource: @internship_offer, select_class_room: false, school_city_label: "Ville ou se situe le collège auquel le stage est reservé", school_city_placeholder: "Rechercher le nom de ville ou se situe le collège", required: false
 
   fieldset
     legend Tuteur
