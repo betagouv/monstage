@@ -150,6 +150,21 @@ module Dashboard
             assert_select(".test-student-#{student.id} form[action=?]",
                           dashboard_school_user_path(student.school, student))
           end
+          student_stats = Presenters::StudentStats.new(student: student)
+          assert_select ".test-student-#{student.id} span.applications_count",
+                        text: student_stats.applications_count.to_s
+          assert_select ".test-student-#{student.id} span.applications_approved_count",
+                        text: student_stats.applications_approved_count.to_s
+          assert_select ".test-student-#{student.id} span.applications_with_convention_pending_count",
+                        text: student_stats.applications_with_convention_pending_count.to_s
+          assert_select ".test-student-#{student.id} span.applications_with_convention_signed_count",
+                        text: student_stats.applications_with_convention_signed_count.to_s
+          assert_select ".test-student-#{student.id} span.internship_done",
+                        text: student_stats.internship_done?.to_s
+          assert_select ".test-student-#{student.id} span.internship_locations",
+                        text: student_stats.internship_locations.to_s
+          assert_select ".test-student-#{student.id} span.internship_tutors",
+                        text: student_stats.internship_tutors.to_s
         end
       end
 
@@ -215,17 +230,17 @@ module Dashboard
                         edit_dashboard_school_class_room_path(school, class_room),
                         count: 1
 
-          stats_aggregator = Presenters::ClassRoomStats.new(class_room: class_room)
-          assert_select ".class-room-#{class_room.id} span.student-count",
-                        text: stats_aggregator.total_student.to_s
-          assert_select ".class-room-#{class_room.id} span.student-with-parental-consent",
-                        text: stats_aggregator.total_student_with_parental_consent.to_s
-          assert_select ".class-room-#{class_room.id} span.student-needs-help",
-                        text: stats_aggregator.total_student_with_zero_application.to_s
-          assert_select ".class-room-#{class_room.id} span.pending-convention",
-                        text: stats_aggregator.total_pending_convention_signed.to_s
-          assert_select ".class-room-#{class_room.id} span.student-without-internship",
-                        text: stats_aggregator.total_student_with_zero_internship.to_s
+          class_room_stats = Presenters::ClassRoomStats.new(class_room: class_room)
+          assert_select ".test-class-room-#{class_room.id} span.total_student",
+                        text: class_room_stats.total_student.to_s
+          assert_select ".test-class-room-#{class_room.id} span.total_student_with_parental_consent",
+                        text: class_room_stats.total_student_with_parental_consent.to_s
+          assert_select ".test-class-room-#{class_room.id} span.total_student_with_zero_application",
+                        text: class_room_stats.total_student_with_zero_application.to_s
+          assert_select ".test-class-room-#{class_room.id} span.total_pending_convention_signed",
+                        text: class_room_stats.total_pending_convention_signed.to_s
+          assert_select ".test-class-room-#{class_room.id} span.total_student_with_zero_internship",
+                        text: class_room_stats.total_student_with_zero_internship.to_s
         end
       end
 

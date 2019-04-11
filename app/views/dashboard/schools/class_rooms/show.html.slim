@@ -6,6 +6,13 @@ table.table.table-striped.table-bordered.table-hover.table-caption-top
   thead
     tr
       th Élève
-      th.text-right Accord parental
+      th Accord parental
+      th Nombre de candidature
+      th Nombre de reponses positives
+      th Convention signée en attente
+      th Convention signée
+      th Stage réalisé
+      th Lieu
+      th Contact tuteur
   tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students
 
