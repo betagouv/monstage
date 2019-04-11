@@ -2,6 +2,3 @@
   .col-12
     h1.h2#internship-offers-count
       = "#{internship_offers.size} #{'offre'.pluralize(internship_offers.size)} de stage"
-
-      - if can? :create, InternshipOffer
-        = link_to 'Déposer une offre', new_internship_offer_path, class: 'btn btn-dark float-right'

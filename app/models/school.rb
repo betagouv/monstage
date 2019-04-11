@@ -8,7 +8,8 @@ class School < ApplicationRecord
                            class_name: 'Users::MainTeacher'
   has_many :teachers, dependent: :nullify,
                       class_name: 'Users::Teacher'
-
+  has_many :others, dependent: :nullify,
+                    class_name: 'Users::Other'
   has_one :school_manager, class_name: 'Users::SchoolManager'
 
   has_many :class_rooms, dependent: :destroy

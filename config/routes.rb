@@ -1,24 +1,36 @@
 Rails.application.routes.draw do
+
   devise_for :users, controllers: {
       registrations: 'users/registrations',
       sessions: 'users/sessions'
   }
+
   devise_scope :user do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
   end
 
-  resources :internship_offers do
+  resources :internship_offers, only: [:index, :show] do
     resources :internship_applications, only: [:create, :update, :index]
   end
 
-  resources :schools, only: [:edit, :update, :index] do
-    resources :class_rooms, only: [:new, :create, :edit, :update], module: 'schools'
-    resources :users, only: [:destroy, :update], module: 'schools'
+  namespace :dashboard, path: "dashboard" do
+    get '/', to: 'dashboard#index'
+
+    resources :schools, only: [:index, :edit, :update] do
+      resources :users, only: [:destroy, :update, :index], module: 'schools'
+      resources :class_rooms, only: [:index, :new, :create, :edit, :update, :show], module: 'schools' do
+        resources :students, only: [:show, :update], module: 'class_rooms'
+      end
+    end
+    resources :internship_offers do
+      resources :internship_applications, only: [:update, :index], module: 'internship_offers'
+    end
   end
 
-  get 'account', to: 'account#show'
-  get 'account/edit', to: 'account#edit'
-  patch 'account', to: 'account#update'
+  resources :users, only: [:edit, :update]
+
+  get 'account', to: 'users#edit'
+  patch 'account', to: 'users#update'
 
   root to: "pages#home"
 end

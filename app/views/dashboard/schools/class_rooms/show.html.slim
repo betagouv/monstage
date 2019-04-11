@@ -1,0 +1,18 @@
+= render partial: 'dashboard/navbar', locals: { school: @school }
+
+h3= "Classe #{@class_room.name}"
+
+table.table.table-striped.table-bordered.table-hover.table-caption-top
+  thead
+    tr
+      th Élève
+      th Accord parental
+      th Nombre de candidature
+      th Nombre de reponses positives
+      th Convention signée en attente
+      th Convention signée
+      th Stage réalisé
+      th Lieu
+      th Contact tuteur
+  tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students
+

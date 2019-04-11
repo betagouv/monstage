@@ -1,0 +1,34 @@
+.row.bg-light
+  .col-12
+    nav.navbar
+      a.icon-link.d-flex.align-items-center href=dashboard_internship_offers_path
+        .fas.fa-2x.fa-angle-left.mr-1
+        = "Retour"
+
+      - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
+        - if current_page?(dashboard_internship_offer_path(@internship_offer))
+          .nav-link= "Voir l'annonce"
+        - else
+          = link_to dashboard_internship_offer_path(@internship_offer), class: 'nav-link' do
+            = "Voir l'annonce"
+        = " | "
+        - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
+          .nav-link= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+        - else
+          = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link' do
+            = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+
+      - if can?(:destroy, @internship_offer)
+        a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
+          .fas.fa-2x.fa-trash
+
+      - if can?(:update, @internship_offer)
+        a.nav-link href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
+          .fas.fa-2x.fa-pen
+      - if can?(:create, InternshipOffer)
+        a.nav-link href=new_dashboard_internship_offer_path
+          .fas.fa-2x.fa-plus
+
+.row.bg-internship-title
+  .col-12
+    h1.h2.mt-2 = @internship_offer.title

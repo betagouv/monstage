@@ -13,6 +13,7 @@ class Ability
       when 'Users::Other' then other_abilities(user: user)
       else
       end
+      shared_abilities(user: user)
     else
       visitor_abilities(user: user)
     end
@@ -32,14 +33,21 @@ class Ability
 
   def school_manager_abilities(user:)
     can :show, :account
-    can [:create, :new, :update], ClassRoom
-    can [:show, :edit, :update], User
+    can [:index, :create, :new, :update, :show], ClassRoom
+    can [:edit, :update], User
+    can [:show_user_in_school], User do |user|
+      user.school
+          .users
+          .map(&:id)
+          .map(&:to_i)
+          .include?(user.id.to_i)
+    end
     can [:edit, :update], School
-    can [:manage_main_teachers], School do |school|
+    can [:manage_school_users], School do |school|
       school.id == user.school_id
     end
-    can [:delete], User do |delete_user_from_school|
-      delete_user_from_school.school_id == user.school_id
+    can [:delete], User do |managed_user_from_school|
+      managed_user_from_school.school_id == user.school_id
     end
     can [:choose_school], :sign_up
   end
@@ -48,6 +56,7 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school, :choose_class_room], :sign_up
+    can [:show, :index], ClassRoom
     can [:manage_students], ClassRoom do |class_room|
       class_room.id == user.class_room_id
     end
@@ -76,5 +85,9 @@ def other_abilities(user:)
     can :show, :account
     can :manage, School
     can :destroy, InternshipOffer
+  end
+
+  def shared_abilities(user:)
+    can :update, user
   end
 end

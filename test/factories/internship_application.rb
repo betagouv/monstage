@@ -4,4 +4,18 @@ FactoryBot.define do
     internship_offer_week { create(:internship_offer_week) }
     motivation { 'Suis hyper motivé' }
   end
+
+  trait :submited do
+    aasm_state { :submited }
+  end
+  trait :approved do
+    aasm_state { :approved }
+  end
+  trait :rejected do
+    aasm_state { :rejected }
+  end
+  trait :convention_signed do
+    aasm_state { :convention_signed }
+  end
+
 end
