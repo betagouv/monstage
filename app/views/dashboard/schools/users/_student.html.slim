@@ -1,0 +1,29 @@
+- student_stats = Presenters::StudentStats.new(student: student)
+
+tr class="test-student-#{student.id}"
+  td= link_to Presenters::User.new(user: student).short_name, dashboard_school_class_room_student_path(student.school, student.class_room, student)
+
+  td#has_parental_consent
+    - if student.has_parental_consent
+      i.fas.fa-check
+    - elsif can?(:update, student)
+      = form_for student, as: :user, url: dashboard_school_user_path(student.school, student), method: :patch do |f|
+        = f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6'
+        = f.submit 'Valider', class: 'btn btn-primary'
+    - else
+      i.fas.fa-times
+
+  th
+    span.applications_count= student_stats.applications_count
+  th
+    span.applications_approved_count= student_stats.applications_approved_count
+  th
+    span.applications_with_convention_pending_count= student_stats.applications_with_convention_pending_count
+  th
+    span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
+  th
+    span.internship_done= student_stats.internship_done?.to_s
+  th
+    span.internship_locations= student_stats.internship_locations
+  th
+    span.internship_tutors= student_stats.internship_tutors

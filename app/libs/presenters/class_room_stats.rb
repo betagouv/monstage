@@ -24,7 +24,9 @@ module Presenters
     end
 
     def total_student_with_zero_internship
-      "- ? -"
+      class_room.students
+                .reject(&:has_convention_signed_internship_application?)
+                .size
     end
 
     private

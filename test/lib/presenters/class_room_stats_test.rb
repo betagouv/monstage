@@ -63,6 +63,20 @@ module Presenters
     end
 
     test '.total_student_with_zero_internship' do
+      student_1 = create(:student, class_room: @class_room)
+      student_1_applications = [
+        create(:internship_application, student: student_1, aasm_state: :approved),
+        create(:internship_application, student: student_1, aasm_state: :rejected)
+      ]
+      student_2 = create(:student, class_room: @class_room)
+      student_2_applications = [
+        create(:internship_application, student: student_2, aasm_state: :convention_signed),
+        create(:internship_application, student: student_2, aasm_state: :approved)
+      ]
+
+      student_3 = create(:student, class_room: @class_room)
+
+      assert_equal 2, @class_room_stats.total_student_with_zero_internship
     end
   end
 end
