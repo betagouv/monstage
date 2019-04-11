@@ -1,32 +1,38 @@
-= form_for Feedback.new(email: current_user.try(:email)), html: { class: 'feedback-form p-3 d-flex' }, data: {controller: 'feedback-form'} do |f|
+= form_for Feedback.new(email: current_user.try(:email)), html: { class: 'feedback-form  d-flex' }, data: {controller: 'feedback-form'} do |f|
 
-  a.btn-open-feedback-form.d-flex.flex-column.col-12.justify-content-center.align-items-center.text-center data-action="click->feedback-form#toggle"
+  a.btn-open-feedback-form.d-flex.flex-column.col-12.justify-content-center.align-items-center.text-center.p-3 data-action="click->feedback-form#toggle"
     i.fas.fa-smile.fa-2x
-    br
-    | Donnez
-    br
-    | votre
-    br
-    | avis
+    p.d-none.d-sm-block
+      br
+      | Donnez
+      br
+      | votre
+      br
+      | avis
 
-  div.feedback-form-content data-target="feedback-form.formContent"
+  div.feedback-form-content.align-items-center.p-3 data-target="feedback-form.formContent"
     .container
-      h3
-        | Donnez votre avis
-        a.btn-close-feedback-form.float-right data-action="click->feedback-form#toggle"
-          .fas.fa-times
+      a.btn-close-feedback-form.btn-fixed-close-feedback-form.float-right.d-block.d-sm-none.m-3 data-action="click->feedback-form#toggle"
+        .fas.fa-times.fa-2x
 
-      p Vos retours nous permettent d'améliorer le site
+      .row
+        .col-12
+          h3
+            | Donnez votre avis
+            a.btn-close-feedback-form.float-right.d-none.d-sm-block data-action="click->feedback-form#toggle"
+              .fas.fa-times
 
-      .form-group
-        = f.label :email do
-          | Votre email
-          = f.rg2a_required_content_tag
-        = f.email_field :email, {class: "form-control", required: true}.merge( user_signed_in? ? {readonly: :readonly} : {})
-      .form-group
-        = f.label :comment do
-          | Votre avis
-          = f.rg2a_required_content_tag
-        = f.text_area :comment, class: "form-control", required: true
+          p Vos retours nous permettent d'améliorer le site
 
-      .actions = f.submit "Envoyer", class: 'btn btn-primary'
+          .form-group
+            = f.label :email do
+              | Votre email
+              = f.rg2a_required_content_tag
+            = f.email_field :email, {class: "form-control", required: true}.merge( user_signed_in? ? {readonly: :readonly} : {})
+          .form-group
+            = f.label :comment do
+              | Votre avis
+              = f.rg2a_required_content_tag
+            = f.text_area :comment, class: "form-control", required: true
+
+          .actions = f.submit "Envoyer", class: 'btn btn-primary'

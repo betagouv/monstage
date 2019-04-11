@@ -2,8 +2,7 @@
   position: fixed;
   bottom: 0;
   right: 0;
-  background-color: $warning;
-
+  background-color: yellow;
   // defaults, hidden form content, visible call to action
   max-width: 120px;
   .btn-open-feedback-form {
@@ -22,5 +21,20 @@
       display: flex;
     }
     max-width: 100%;
+  }
+
+}
+@include media-breakpoint-down(xs) {
+  .feedback-form.feedback-form-open {
+    height: 100%;
+    width: 100%;
+    .feedback-form-content{
+      width: 100%;
+    }
+    .btn-fixed-close-feedback-form{
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 }
