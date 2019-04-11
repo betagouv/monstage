@@ -39,11 +39,4 @@ p = @internship_offer.employer_name
   = render "internship_applications/form"
 
 
-#delete-offer-modal.modal tabindex="-1" role="dialog"
-  .modal-dialog role="document"
-    .modal-content
-      .modal-body
-        p Souhaitez-vous réellement supprimer cette annonce ?
-      .modal-footer
-        = link_to "Oui", internship_offer_path(@internship_offer), class: "btn btn-secondary", method: :delete
-        button type="button" class="btn btn-primary" data-dismiss="modal" Non
+= render "delete_internship_offer_modal", internship_offer: @internship_offer
