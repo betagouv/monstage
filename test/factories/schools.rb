@@ -16,5 +16,9 @@ FactoryBot.define do
       departement_name { 'Gironde' }
       coordinates { Coordinates.bordeaux }
     end
+
+    trait :with_school_manager do
+      school_manager { build(:school_manager) }
+    end
   end
 end

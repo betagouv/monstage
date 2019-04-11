@@ -9,7 +9,7 @@ module Dashboard
     end
 
     #
-    # Edit
+    # Edit, SchoolManager
     #
     test 'GET edit not logged redirects to sign in' do
       get edit_dashboard_school_path(@school.to_param)
@@ -34,7 +34,7 @@ module Dashboard
 
 
     #
-    # Update
+    # Update, SchoolManager
     #
     test 'PATCH update not logged redirects to sign in' do
       patch(dashboard_school_path(@school.to_param),
@@ -75,7 +75,7 @@ module Dashboard
     end
 
     #
-    # Show
+    # Show, SchoolManager
     #
     test 'GET show as Student is forbidden' do
       sign_in(create(:student, school: @school))
@@ -90,8 +90,5 @@ module Dashboard
       get dashboard_school_path(@school)
       assert_response :success
     end
-
-
-
   end
 end

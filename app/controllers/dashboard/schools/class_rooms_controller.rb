@@ -4,7 +4,7 @@ module Dashboard
       include NestedSchool
 
       def index
-        authorize! :show, School
+        authorize! :index, ClassRoom
       end
 
       def show

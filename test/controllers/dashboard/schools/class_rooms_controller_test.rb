@@ -6,7 +6,7 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # New
+      # New, SchoolManager
       #
       test 'GET class_rooms#new as SchoolManager responds with success' do
         school = create(:school)
@@ -29,7 +29,7 @@ module Dashboard
       end
 
       #
-      # Create
+      # Create, SchoolManager
       #
       test 'POST class_rooms#create as SchoolManager responds with success' do
         school = create(:school)
@@ -52,7 +52,7 @@ module Dashboard
       end
 
       #
-      # Edit
+      # Edit, SchoolManager
       #
       test 'GET class_rooms#edit as SchoolManager render form' do
         school = create(:school)
@@ -65,7 +65,7 @@ module Dashboard
       end
 
       #
-      # Update
+      # Update, SchoolManager
       #
       test 'PATCH class_rooms#update as SchoolManager update class_room' do
         school = create(:school)
@@ -78,7 +78,7 @@ module Dashboard
       end
 
       #
-      # Show
+      # Show, SchoolManager, MainTeacher
       #
       test 'GET class_rooms#show as Student is forbidden' do
         school = create(:school)
@@ -89,6 +89,7 @@ module Dashboard
         assert_redirected_to root_path
       end
 
+      # Show, SchoolManager
       test 'GET class_rooms#show as SchoolManager works' do
         school = create(:school)
         class_room = create(:class_room, school: school)
@@ -98,6 +99,7 @@ module Dashboard
         assert_response :success
       end
 
+      # Show, SchoolManager
       test 'GET class_rooms#show as SchoolManager shows student list' do
         school = create(:school)
         class_room = create(:class_room, school: school)
@@ -111,6 +113,44 @@ module Dashboard
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
           assert_select "a[href=?]", dashboard_school_class_room_student_path(school, class_room, student)
+          if student.has_parental_consent?
+            assert_select ".test-student-#{student.id} .fas.fa-check", 1
+          else
+            assert_select ".test-student-#{student.id} .fas.fa-times", 1
+          end
+        end
+      end
+
+      # Show, MainTeacher
+      test 'GET class_rooms#show as MainTeacher works' do
+        school = create(:school, :with_school_manager)
+        class_room = create(:class_room, school: school)
+        sign_in(create(:main_teacher, school: school, class_room: class_room))
+
+        get dashboard_school_class_room_path(school, class_room)
+        assert_response :success
+      end
+
+      # Show, MainTeacher
+      test 'GET class_rooms#show as MainTeacher shows student list' do
+        school = create(:school, :with_school_manager)
+        class_room = create(:class_room, school: school)
+        students = [
+          create(:student, class_room: class_room, school: school, has_parental_consent: true),
+          create(:student, class_room: class_room, school: school, has_parental_consent: false),
+          create(:student, class_room: class_room, school: school, has_parental_consent: false),
+        ]
+        sign_in(create(:main_teacher, school: school, class_room: class_room))
+
+
+        get dashboard_school_class_room_path(school, class_room)
+        students.map do |student|
+          if student.has_parental_consent?
+            assert_select ".test-student-#{student.id} .fas.fa-check", 1
+          else
+            assert_select(".test-student-#{student.id} form[action=?]",
+                          dashboard_school_user_path(student.school, student))
+          end
         end
       end
 
