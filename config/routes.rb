@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: "dashboard" do
+    get '/', to: 'dashboard#index'
+
     resources :schools, only: [:index, :edit, :update] do
       resources :users, only: [:destroy, :update, :index], module: 'schools'
       resources :class_rooms, only: [:index, :new, :create, :edit, :update, :show], module: 'schools' do
@@ -29,8 +31,6 @@ Rails.application.routes.draw do
 
   get 'account', to: 'users#edit'
   patch 'account', to: 'users#update'
-
-  get 'dashboard', to: 'dashboard#index'
 
   root to: "pages#home"
 end
