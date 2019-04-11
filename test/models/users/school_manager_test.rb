@@ -49,7 +49,7 @@ module Users
       redirect_to = Rails.application
                          .routes
                          .url_helpers
-                         .dashboard_school_path(school_manager.school)
+                         .dashboard_school_class_rooms_path(school_manager.school)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
   end

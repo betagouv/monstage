@@ -43,7 +43,7 @@ class Ability
           .include?(user.id.to_i)
     end
     can [:edit, :update], School
-    can [:show, :manage_school_users], School do |school|
+    can [:manage_school_users], School do |school|
       school.id == user.school_id
     end
     can [:delete], User do |managed_user_from_school|

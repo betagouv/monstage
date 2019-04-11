@@ -78,17 +78,18 @@ module Dashboard
     # Show, SchoolManager
     #
     test 'GET show as Student is forbidden' do
-      sign_in(create(:student, school: @school))
-
-      get dashboard_school_path(@school)
-      assert_redirected_to root_path
-    end
-
-    test 'GET show as SchoolManager works' do
-      sign_in(create(:school_manager, school: @school))
-
-      get dashboard_school_path(@school)
-      assert_response :success
+      roles = [
+        create(:student, school: @school),
+        create(:school_manager, school: @school),
+        create(:teacher, school: @school),
+        create(:main_teacher, school: @school),
+        create(:other, school: @school)
+      ]
+      roles.map do |role|
+        sign_in(role)
+        get dashboard_school_path(@school)
+        assert_redirected_to root_path
+      end
     end
   end
 end
