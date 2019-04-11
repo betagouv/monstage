@@ -4,14 +4,12 @@
 .row
   .col-12
     table class="table table-striped table-bordered table"
+      - cols = ["Stage proposé", "", "Candidatures", "Réponses positives", "Convention signée"]
       thead
         tr
-          th Stage proposé
-          th
-          th Candidatures
-          th Réponses positives
-          th Convention signée
+          - cols.map do |col|
+            th= col
 
-      tbody= render partial: "employer_internship_offer", collection: @internship_offers
+      tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}
 
 = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})

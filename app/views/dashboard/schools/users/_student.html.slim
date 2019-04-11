@@ -1,9 +1,9 @@
 - student_stats = Presenters::StudentStats.new(student: student)
 
 tr class="test-student-#{student.id}"
-  td= link_to Presenters::User.new(user: student).short_name, dashboard_school_class_room_student_path(student.school, student.class_room, student)
+  td data-head="#{cols[0]}"= link_to Presenters::User.new(user: student).short_name, dashboard_school_class_room_student_path(student.school, student.class_room, student)
 
-  td#has_parental_consent
+  td data-head="#{cols[1]}" id="has_parental_consent"
     - if student.has_parental_consent
       i.fas.fa-check
     - elsif can?(:update, student)
@@ -13,17 +13,17 @@ tr class="test-student-#{student.id}"
     - else
       i.fas.fa-times
 
-  th
+  td data-head="#{cols[2]}"
     span.applications_count= student_stats.applications_count
-  th
+  td data-head="#{cols[3]}"
     span.applications_approved_count= student_stats.applications_approved_count
-  th
+  td data-head="#{cols[4]}"
     span.applications_with_convention_pending_count= student_stats.applications_with_convention_pending_count
-  th
+  td data-head="#{cols[5]}"
     span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
-  th
+  td data-head="#{cols[6]}"
     span.internship_done= student_stats.internship_done?.to_s
-  th
+  td data-head="#{cols[7]}"
     span.internship_locations= student_stats.internship_locations
-  th
+  td data-head="#{cols[8]}"
     span.internship_tutors= student_stats.internship_tutors

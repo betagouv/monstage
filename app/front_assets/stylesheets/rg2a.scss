@@ -14,3 +14,27 @@ abbr[title] {
   cursor: inherit !important;
   text-decoration: none !important;
 }
+
+//
+// table
+//
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+@media only screen and (max-width:600px) {
+  thead {display: none;}
+  tr:last-child {border-bottom: 0 none;}
+  td {
+    display: block;
+  }
+  td:before {
+    content: attr(data-head);
+    display: inline-block;
+    width: auto;
+    min-width: 40%;
+    font-weight: 900;
+    padding-right: 1rem;
+    font-variant: small-caps;
+  }
+}
