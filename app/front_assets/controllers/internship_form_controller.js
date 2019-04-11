@@ -4,7 +4,8 @@ import { toggleElement } from "../utils/dom";
 export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
                      "maxCandidatesInput",
-                     "selectWeeks" ]
+                     "selectWeeks",
+                     "selectSchoolBlock" ]
 
   // show/hide group internship custom controls
   toggleInternshipType(event) {
@@ -12,6 +13,10 @@ export default class extends Controller {
     if (event.target.id == 'internship_type_true') {
       this.maxCandidatesInputTarget.value = 1
     }
+  }
+
+  toggleSelectSchoolBlock(event) {
+    toggleElement($(this.selectSchoolBlockTarget))
   }
 
   // toggle all weeks options
