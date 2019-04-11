@@ -8,6 +8,7 @@ ul.nav
   - if can? :manage_school_users, @school
     li.nav-item
       = link_to "Personnels", dashboard_school_users_path(school), class: "nav-link #{current_page?(dashboard_school_users_path(school)) ? 'disabled' : ''}"
+
   - if can? :edit, @school
     li.nav-item
       = link_to "Semaines de stage", edit_dashboard_school_path(school), class: "nav-link #{current_page?(edit_dashboard_school_path(school)) ? 'disabled' : ''}"

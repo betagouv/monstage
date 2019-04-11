@@ -32,46 +32,48 @@ class Ability
   end
 
   def school_manager_abilities(user:)
-    can :show, :account
-    can [:index, :create, :new, :update, :show], ClassRoom
-    can [:edit, :update], User
-    can [:show_user_in_school], User do |user|
-      user.school
-          .users
-          .map(&:id)
-          .map(&:to_i)
-          .include?(user.id.to_i)
+    can_create_and_manage_account(user: user)
+
+    can_read_dashboard(user: user) do
+      can [:create, :new, :update], ClassRoom
+      can [:edit, :update], School
+      can [:manage_school_users], School do |school|
+        school.id == user.school_id
+      end
+      can [:delete], User do |managed_user_from_school|
+        managed_user_from_school.school_id == user.school_id
+      end
     end
-    can [:edit, :update], School
-    can [:manage_school_users], School do |school|
-      school.id == user.school_id
-    end
-    can [:delete], User do |managed_user_from_school|
-      managed_user_from_school.school_id == user.school_id
-    end
-    can [:choose_school], :sign_up
   end
 
   def main_teacher_abilities(user:)
-    can :show, :account
-    can [:show, :edit, :update], User
-    can [:choose_school, :choose_class_room], :sign_up
-    can [:show, :index], ClassRoom
-    can [:manage_students], ClassRoom do |class_room|
-      class_room.id == user.class_room_id
+    # user account rights
+    can_create_and_manage_account(user: user) do
+      can [:choose_class_room], :sign_up
+    end
+
+    # dashboard rights
+    can_read_dashboard(user: user) do
+      can [:manage_students], ClassRoom do |class_room|
+        class_room.id == user.class_room_id
+      end
     end
   end
 
   def teacher_abilities(user:)
-    can :show, :account
-    can [:show, :edit, :update], User
-    can [:choose_school, :choose_class_room], :sign_up
+    can_create_and_manage_account(user: user) do
+      can [:choose_class_room], :sign_up
+    end
   end
 
-def other_abilities(user:)
-    can :show, :account
-    can [:show, :edit, :update], User
-    can [:choose_school], :sign_up
+  def other_abilities(user:)
+    can_create_and_manage_account(user: user)
+
+    can_read_dashboard(user: user) do
+      can [:manage_school_users], School do |school|
+        school.id == user.school_id
+      end
+    end
   end
 
   def employer_abilities(user:)
@@ -87,7 +89,28 @@ def other_abilities(user:)
     can :destroy, InternshipOffer
   end
 
+
+  private
   def shared_abilities(user:)
     can :update, user
+  end
+
+  def can_create_and_manage_account(user:)
+    can :show, :account
+    can [:show, :edit, :update], User
+    can [:choose_school], :sign_up
+    yield if block_given?
+  end
+
+  def can_read_dashboard(user:)
+    can [:index, :show], ClassRoom
+    can [:show_user_in_school], User do |user|
+      user.school
+          .users
+          .map(&:id)
+          .map(&:to_i)
+          .include?(user.id.to_i)
+    end
+    yield if block_given?
   end
 end
