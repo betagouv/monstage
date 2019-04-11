@@ -87,6 +87,7 @@ class Ability
     can :show, :account
     can :manage, School
     can :destroy, InternshipOffer
+    can [:destroy, :index], Feedback
   end
 
 

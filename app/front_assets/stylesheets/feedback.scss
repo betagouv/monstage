@@ -1,0 +1,26 @@
+.feedback-form {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: $warning;
+
+  // defaults, hidden form content, visible call to action
+  max-width: 120px;
+  .btn-open-feedback-form {
+    display: flex;
+  }
+  .feedback-form-content {
+    display: none;
+  }
+
+  // state opened
+  &.feedback-form-open{
+    .btn-open-feedback-form {
+      display: none!important;
+    }
+    .feedback-form-content {
+      display: flex;
+    }
+    max-width: 100%;
+  }
+}
