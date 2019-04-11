@@ -1,4 +1,4 @@
-= render "internship_offers/navigation", internship_offer: @internship_offer
+= render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
 
 - if @internship_applications.empty?
   .row
@@ -94,4 +94,3 @@
 
 
   = paginate(@internship_applications)
-
