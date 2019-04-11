@@ -68,5 +68,6 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_class_room, :sign_up),
            'student should be able to choose_class_room')
     assert(ability.can?(:show, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
   end
 end

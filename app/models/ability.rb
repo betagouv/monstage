@@ -56,7 +56,7 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school, :choose_class_room], :sign_up
-    can [:show], ClassRoom
+    can [:show, :index], ClassRoom
     can [:manage_students], ClassRoom do |class_room|
       class_room.id == user.class_room_id
     end
