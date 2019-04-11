@@ -32,7 +32,7 @@ module InternshipOffers
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
       assert_equal 2, created_internship_offer.max_candidates
       assert_equal 4, created_internship_offer.max_internship_week_number
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to dashboard_internship_offer_path(created_internship_offer)
     end
 
     test 'POST #create as employer with missing params' do

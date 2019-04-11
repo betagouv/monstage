@@ -16,7 +16,7 @@ module Dashboard
       authorize! :create, InternshipOffer
       @internship_offer = InternshipOffer.new(internship_offer_params)
       @internship_offer.save!
-      redirect_to(internship_offer_path(@internship_offer),
+      redirect_to(dashboard_internship_offer_path(@internship_offer),
                   flash: {success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.'})
     rescue ActiveRecord::RecordInvalid,
            ActionController::ParameterMissing
