@@ -152,20 +152,6 @@
   fieldset
     legend Entreprise ou Administration
     .form-group
-      = form.label :employer_name do
-        = "Nom de l'entreprise ou de l'administration"
-        = form.rg2a_required_content_tag
-      = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
-    .form-group
-      = form.label :employer_description do
-        = "Activités de l'entreprise ou de l'administration"
-      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
-
-    .form-group
-      = form.label :employer_website, 'Site web'
-      = form.url_field :employer_website, class: 'form-control col-lg-6'
-
-    .form-group
       div.label
         = "Secteur"
         = form.rg2a_required_content_tag
@@ -176,6 +162,20 @@
       .custom-control.custom-radio
         = form.radio_button :is_public, false, class: 'custom-control-input', required: true
         = form.label :is_public_false, 'Privé', class: 'custom-control-label'
+    .form-group
+      = form.label :employer_name do
+        = "Nom de l'entreprise ou de l'administration"
+        = form.rg2a_required_content_tag
+      = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
+    .form-group
+      = form.label :employer_description do
+        = "Activités"
+      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+
+    .form-group
+      = form.label :employer_website, 'Site web'
+      = form.url_field :employer_website, class: 'form-control col-lg-6'
+
     .form-group
       = form.label :group_name, "Groupe ou Institution de tutelle"
       = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "form-control col-lg-6"
