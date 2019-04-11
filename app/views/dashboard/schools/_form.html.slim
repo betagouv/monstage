@@ -1,0 +1,63 @@
+= form_for [:dashboard, @school] do |f|
+  = f.rg2a_explain_required_asterisk
+  = render "layouts/form_errors", resource: @school, resource_name: :school
+  - unless current_user.is_a?(Users::God)
+    .fieldset
+      .div class="form-group"
+        = f.label :week_ids do
+          = "Semaines de stage du collège"
+          small.form-text.text-muted
+            = "Utilisez la touche "
+            kbd= "contrôle"
+            = " pour sélectionner plusieurs semaines en même temps."
+          = f.rg2a_required_content_tag
+        = f.select :week_ids, options_from_collection_for_select(@current_weeks, :id, :select_text_method, @school.week_ids), {}, multiple: true, class: "form-control col-lg-6", required: true
+
+  .fieldset
+    .div class="form-group"
+      = f.label :name do
+        Nom du collège
+        = f.rg2a_required_content_tag
+      = f.text_field :name, class: 'form-control col-lg-6', required: true
+
+  .fieldset data-controller="algolia-place"
+    .div class="form-group d-none" data-target="algolia-place.autocompleteFormGroup"
+      = f.label :autocomplete do
+        Adresse du collège
+        = f.rg2a_required_content_tag
+      = f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie",
+                                         value: @school.formatted_autocomplete_address,
+                                         required: true,
+                                         data: { target: 'algolia-place.autocompleteInput' }
+      .input type="hidden"
+             name="school[coordinates][latitude]"
+             value="= @school.coordinates&.lat"
+             data-target="algolia-place.latitudeInput"
+      .input type="hidden"
+             name="school[coordinates][longitude]"
+             value="= @school.coordinates&.lon"
+             data-target="algolia-place.longitudeInput"
+    .div class="form-group d-none"
+      .div class="form-row"
+        .div class="col-sm-6"
+          .div class="form-group"
+            = f.label :street do
+              Rue
+              = f.rg2a_required_content_tag
+            = f.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
+        .div class="col-sm-4"
+          .div class="form-group"
+            = f.label :city do
+              Ville
+              = f.rg2a_required_content_tag
+            = f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
+        .div class="col-sm-2"
+          .div class="form-group"
+            = f.label :zipcode do
+              Code postal
+              = f.rg2a_required_content_tag
+            = f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+
+  .div class="actions"
+    = f.submit 'Enregistrer', class: 'btn btn-primary'
+    = link_to 'Annuler', account_path, class: 'btn btn-link'

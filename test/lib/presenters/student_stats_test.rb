@@ -22,7 +22,7 @@ module Presenters
     end
 
     test '.applications_with_convention_pending_count' do
-      assert_equal 0,
+      assert_equal "- ? -",
                    @student_stats.applications_with_convention_pending_count
     end
 
@@ -36,7 +36,7 @@ module Presenters
     end
 
     test '.internship_done?' do
-      refute @student_stats.internship_done?
+      assert_equal "- ? -", @student_stats.internship_done?
     end
 
     test '.internship_location' do

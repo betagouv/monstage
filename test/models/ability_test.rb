@@ -54,8 +54,8 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'SchoolManager' do
     ability = Ability.new(build(:school_manager))
-    assert(ability.can?(:show, School),
-           'school_manager should be able to manage school')
+    assert(ability.cannot?(:show, School),
+           'school_manager should be able show school')
     assert(ability.can?(:show , ClassRoom))
   end
 
