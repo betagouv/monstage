@@ -179,9 +179,13 @@
     .form-group
       = form.label :group_name, "Groupe ou Institution de tutelle"
       = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "form-control col-lg-6"
-    .form-group
-      = form.label :operator_names, "Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs"
-      = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
+    fieldset
+      legend Accompagnement
+      .form-group
+        = form.label :operator_names do
+          = "Opérateur"
+          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs
+        = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
 
 
   = form.submit 'Soumettre', class: 'btn btn-primary'
