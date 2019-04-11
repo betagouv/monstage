@@ -80,7 +80,7 @@ module Users
       redirect_to = Rails.application
                          .routes
                          .url_helpers
-                         .dashboard_school_path(other.school)
+                         .dashboard_school_class_rooms_path(other.school)
       assert_equal(redirect_to, other.after_sign_in_path)
     end
   end

@@ -6,6 +6,9 @@ module Dashboard
 
     def index
       set_internship_offers
+      @internship_offers = @internship_offers.order(total_applications_count: :desc,
+                                    updated_at: :desc)
+
     end
 
     def show
