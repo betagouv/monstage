@@ -5,6 +5,8 @@ module Dashboard
     def index
       @internship_offers = InternshipOffer.kept
                              .for_user(user: current_user)
+                             .order(total_applications_count: :desc,
+                                    updated_at: :desc)
                              .page(params[:page])
     end
 
