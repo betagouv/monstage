@@ -9,7 +9,7 @@ module Dashboard
     end
 
     #
-    # Edit
+    # Edit, SchoolManager
     #
     test 'GET edit not logged redirects to sign in' do
       get edit_dashboard_school_path(@school.to_param)
@@ -34,7 +34,7 @@ module Dashboard
 
 
     #
-    # Update
+    # Update, SchoolManager
     #
     test 'PATCH update not logged redirects to sign in' do
       patch(dashboard_school_path(@school.to_param),
@@ -75,23 +75,21 @@ module Dashboard
     end
 
     #
-    # Show
+    # Show, SchoolManager
     #
     test 'GET show as Student is forbidden' do
-      sign_in(create(:student, school: @school))
-
-      get dashboard_school_path(@school)
-      assert_redirected_to root_path
+      roles = [
+        create(:student, school: @school),
+        create(:school_manager, school: @school),
+        create(:teacher, school: @school),
+        create(:main_teacher, school: @school),
+        create(:other, school: @school)
+      ]
+      roles.map do |role|
+        sign_in(role)
+        get dashboard_school_path(@school)
+        assert_redirected_to root_path
+      end
     end
-
-    test 'GET show as SchoolManager works' do
-      sign_in(create(:school_manager, school: @school))
-
-      get dashboard_school_path(@school)
-      assert_response :success
-    end
-
-
-
   end
 end

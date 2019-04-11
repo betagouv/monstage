@@ -33,7 +33,6 @@ FactoryBot.define do
 
     factory :main_teacher, class: 'Users::MainTeacher', parent: :user do
       type { 'Users::MainTeacher' }
-      school { create(:school) }
       first_name { 'Madame' }
       last_name { 'Labutte' }
     end

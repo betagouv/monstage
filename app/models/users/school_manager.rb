@@ -12,7 +12,7 @@ module Users
     end
 
     def custom_dashboard_path
-      url_helpers.dashboard_school_path(school)
+      url_helpers.dashboard_school_class_rooms_path(school)
     rescue
       url_helpers.account_path
     end

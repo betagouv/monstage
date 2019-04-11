@@ -35,7 +35,7 @@ module Dashboard
         assert_changes -> { main_teacher.reload.school } do
           delete dashboard_school_user_path(school, main_teacher)
         end
-        assert_redirected_to dashboard_school_path(school)
+        assert_redirected_to dashboard_school_users_path(school)
       end
 
       #
@@ -78,7 +78,7 @@ module Dashboard
 
         get dashboard_school_users_path(school)
         assert_response :success
-        assert_select "a.nav-link[href=?]", dashboard_school_path(school)
+        assert_select "a.nav-link[href=?]", dashboard_school_class_rooms_path(school)
         assert_select "a.disabled[href=?]", dashboard_school_users_path(school)
       end
 

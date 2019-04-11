@@ -33,7 +33,7 @@ class Ability
 
   def school_manager_abilities(user:)
     can :show, :account
-    can [:create, :new, :update, :show], ClassRoom
+    can [:index, :create, :new, :update, :show], ClassRoom
     can [:edit, :update], User
     can [:show_user_in_school], User do |user|
       user.school
@@ -43,7 +43,7 @@ class Ability
           .include?(user.id.to_i)
     end
     can [:edit, :update], School
-    can [:show, :manage_school_users], School do |school|
+    can [:manage_school_users], School do |school|
       school.id == user.school_id
     end
     can [:delete], User do |managed_user_from_school|
@@ -56,6 +56,7 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school, :choose_class_room], :sign_up
+    can [:show, :index], ClassRoom
     can [:manage_students], ClassRoom do |class_room|
       class_room.id == user.class_room_id
     end
