@@ -176,8 +176,10 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         assert_response :success
-        assert_select "a.nav-link[href=?]", dashboard_school_class_rooms_path(school)
-        assert_select "a[href=?]", dashboard_school_users_path(school), count: 0
+        assert_select "a.nav-link[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 0
+        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
+        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 0
       end
 
 
@@ -207,9 +209,11 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.disabled[href=?]", dashboard_school_class_rooms_path(school)
-        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school)
-        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school)
+        assert_select "a.nav-link.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 1
+        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 1
+
+        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 1
       end
 
       test 'GET class_rooms#index as SchoolManager shows class rooms list' do
@@ -263,8 +267,10 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
         assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 0
+        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
+
         assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 0
       end
 
