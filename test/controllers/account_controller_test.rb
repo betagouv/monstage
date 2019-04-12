@@ -50,7 +50,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Jules', school_manager.first_name
     assert_equal 'Verne', school_manager.last_name
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès'}, 1
+    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
   end
 
   test 'PATCH edit as student can change class_room_id' do
@@ -68,7 +68,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     student.reload
     assert_equal class_room.id, student.class_room_id
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès'}, 1
+    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
   end
 
   test 'PATCH edit as main_teacher can change class_room_id' do
@@ -84,14 +84,14 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     main_teacher.reload
     assert_equal class_room.id, main_teacher.class_room_id
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès'}, 1
+    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
   end
 
   test 'GET #edit can change email' do
     sign_in(create(:employer))
-    get edit_user_path
+    get account_path
 
     assert_response :success
-    asset_select "input#user_email[required]"
+    assert_select "input#user_email[required]"
   end
 end
