@@ -18,6 +18,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:school_id,
                                  :first_name,
                                  :last_name,
+                                 :email,
                                  :class_room_id)
   end
 end
