@@ -11,6 +11,7 @@ class Ability
       when 'Users::MainTeacher' then main_teacher_abilities(user: user)
       when 'Users::Teacher' then teacher_abilities(user: user)
       when 'Users::Other' then other_abilities(user: user)
+      when 'Users::Operator' then operator_abilities(user: user)
       else
       end
       shared_abilities(user: user)
@@ -81,6 +82,13 @@ class Ability
     can :create, InternshipOffer
     can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
     can [:index, :update], InternshipApplication
+  end
+
+  def operator_abilities(user:)
+    can :show, :account
+    can :choose_operator, :sign_up
+    can :create, InternshipOffer
+    can :index, InternshipApplication
   end
 
   def god_abilities(user:)

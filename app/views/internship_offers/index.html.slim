@@ -6,7 +6,7 @@
     .col-12
       .filter-section.py-3 data-controller="internship-index"
         label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
-        = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: internship_sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+        = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
 - if @internship_offers.blank?
   .row

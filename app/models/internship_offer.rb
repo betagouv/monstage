@@ -36,6 +36,10 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, class_name: "Users::Employer"
 
   belongs_to :school, optional: true # reserved to school
+
+  has_many :internship_offer_operators, dependent: :destroy
+  has_many :operators, through: :internship_offer_operators, class_name: 'Operator'
+
   belongs_to :sector
 
   scope :for_user, -> (user:) {

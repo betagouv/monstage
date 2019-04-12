@@ -43,7 +43,7 @@
     = form.label :sector_id do
       = "Secteur d'activité"
       = form.rg2a_required_content_tag
-    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
+    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
 
   fieldset data={controller: 'algolia-place'}
     legend Où?
@@ -190,10 +190,10 @@
     fieldset
       legend Accompagnement
       .form-group
-        = form.label :operator_names do
+        = form.label :operator_ids do
           = "Opérateur"
           small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs
-        = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
+        = form.select :operator_ids, options_from_collection_for_select(Operator.all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
 
 
   = form.submit 'Soumettre', class: 'btn btn-primary'

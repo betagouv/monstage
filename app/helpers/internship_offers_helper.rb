@@ -1,21 +1,4 @@
 module InternshipOffersHelper
-  def internship_sectors_options_for_default
-    "-- Veuillez sélectionner un domaine --"
-  end
-
-  def operator_names
-    [
-        "Clubs régionaux  d'entreprises pour l'insertion (CREPI)",
-        "Dégun sans stage (Ecole centrale de Marseille)",
-        "Fondation Agir contre l'Exclusion (FACE)",
-        "JOB IRL",
-        "Les entreprises pour la cité (LEPC)",
-        "Un stage et après !",
-        "Tous en stage",
-        "Viens voir mon taf"
-    ]
-  end
-
   def options_for_group_names
     administration_list.map { |admin| [admin, { 'data-sector' => 'public'}] } +
         group_list.map { |admin| [admin, { 'data-sector' => 'private'}] }
