@@ -1,0 +1,10 @@
+h1 Mon tableau
+
+ul.nav.nav-pills.mb-3
+  li.nav-item
+    = link_to "Mon Compte", account_path, class: "nav-link #{current_page?(account_path) ? 'active' : ''}"
+  li.nav-item
+    = link_to "Mon CV", resume_path, class: "nav-link #{current_page?(resume_path) ? 'active' : ''}"
+  li.nav-item
+    a.nav-link.disabled href="#" Mes candidatures
+

@@ -12,12 +12,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     sign_in(create(:student))
     get account_path
     assert_template "users/edit"
-  end
-
-  test "GET edit not logged redirects to sign in" do
-    get account_path
-
-    assert_redirected_to user_session_path
+    assert_template "dashboard/_student_navbar"
   end
 
   test "GET edit render :edit success with all roles" do
