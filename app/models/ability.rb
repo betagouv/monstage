@@ -88,6 +88,7 @@ class Ability
     can :show, :account
     can :choose_operator, :sign_up
     can :create, InternshipOffer
+    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
     can :index, InternshipApplication
   end
 

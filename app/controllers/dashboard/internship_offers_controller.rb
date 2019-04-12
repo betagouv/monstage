@@ -8,7 +8,6 @@ module Dashboard
       set_internship_offers
       @internship_offers = @internship_offers.order(total_applications_count: :desc,
                                                     updated_at: :desc)
-
     end
 
     def show
@@ -71,7 +70,7 @@ module Dashboard
           .permit(:title, :description, :sector_id, :max_candidates, :max_internship_week_number,
                   :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                   :employer_street, :employer_zipcode, :employer_city, :is_public, :group_name,
-                  :employer_id, :school_id, :employer_description,
+                  :employer_id, :employer_type, :school_id, :employer_description,
                   operator_ids: [], coordinates: {}, week_ids: [])
     end
   end

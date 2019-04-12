@@ -37,7 +37,7 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
 
-  belongs_to :employer, class_name: "Users::Employer"
+  belongs_to :employer, polymorphic: true
 
   belongs_to :school, optional: true # reserved to school
 

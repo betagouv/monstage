@@ -10,5 +10,13 @@ module Users
                                              operator_id: operator.id)
       assert_equal operator, user_operator.operator
     end
+
+    test "association.internship_offers" do
+      operator = create(:user_operator)
+      internship_offer = create(:internship_offer, employer: operator)
+      operator.reload
+
+      assert_equal internship_offer, operator.internship_offers.first
+    end
   end
 end

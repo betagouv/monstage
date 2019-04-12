@@ -16,6 +16,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_session_path
   end
 
+  #
+  # Student
+  #
   test 'GET #index as student. check if filters are properly populated' do
     internship_offer_1 = create(:internship_offer)
     internship_offer_2 = create(:internship_offer)
@@ -247,6 +250,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  #
+  # Employer
+  #
   test 'GET #index as employer returns his internship_offers' do
     employer = create(:employer)
     included_internship_offer = create(:internship_offer, employer: employer, title: 'Hellow-me')
