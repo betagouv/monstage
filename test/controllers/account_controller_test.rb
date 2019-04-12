@@ -91,4 +91,12 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès'}, 1
   end
+
+  test 'GET #edit can change email' do
+    sign_in(create(:employer))
+    get edit_user_path
+
+    assert_response :success
+    asset_select "input#user_email[required]"
+  end
 end
