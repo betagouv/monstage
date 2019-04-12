@@ -11,20 +11,10 @@ module Presenters
              .size
     end
 
-    # TODO: spec
-    def applications_with_convention_pending_count
-      "- ? -"
-    end
-
     def applications_with_convention_signed_count
        student.internship_applications
               .select(&:convention_signed?)
               .size
-    end
-
-    # TODO: spec
-    def internship_done?
-      "- ? -"
     end
 
     def internship_locations

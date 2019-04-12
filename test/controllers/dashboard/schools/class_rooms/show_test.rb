@@ -118,12 +118,8 @@ module Dashboard
                         text: student_stats.applications_count.to_s
           assert_select ".test-student-#{student.id} span.applications_approved_count",
                         text: student_stats.applications_approved_count.to_s
-          assert_select ".test-student-#{student.id} span.applications_with_convention_pending_count",
-                        text: student_stats.applications_with_convention_pending_count.to_s
           assert_select ".test-student-#{student.id} span.applications_with_convention_signed_count",
                         text: student_stats.applications_with_convention_signed_count.to_s
-          assert_select ".test-student-#{student.id} span.internship_done",
-                        text: student_stats.internship_done?.to_s
           assert_select ".test-student-#{student.id} span.internship_locations",
                         text: student_stats.internship_locations.to_s
           assert_select ".test-student-#{student.id} span.internship_tutors",

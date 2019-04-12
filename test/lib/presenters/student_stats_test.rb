@@ -21,11 +21,6 @@ module Presenters
       assert_equal 1, @student_stats.applications_approved_count
     end
 
-    test '.applications_with_convention_pending_count' do
-      assert_equal "- ? -",
-                   @student_stats.applications_with_convention_pending_count
-    end
-
     test '.applications_with_convention_signed_count' do
       create(:internship_application, :approved, student: @student)
       create(:internship_application, :rejected, student: @student)
@@ -33,10 +28,6 @@ module Presenters
       create(:internship_application, :convention_signed, student: @student)
       create(:internship_application, :convention_signed, student: @student)
       assert_equal 3, @student_stats.applications_with_convention_signed_count
-    end
-
-    test '.internship_done?' do
-      assert_equal "- ? -", @student_stats.internship_done?
     end
 
     test '.internship_location' do
