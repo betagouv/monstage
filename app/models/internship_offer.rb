@@ -61,6 +61,10 @@ class InternshipOffer < ApplicationRecord
     internship_offer_weeks.any?(&:has_spots_left?)
   end
 
+  def is_fully_editable?
+    internship_applications.empty?
+  end
+
   def formatted_autocomplete_address
     [
       employer_street,
