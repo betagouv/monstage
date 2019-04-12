@@ -33,7 +33,7 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
         assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 1
         assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 1
 
@@ -89,7 +89,7 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
         assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 1
 
         assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
@@ -137,7 +137,7 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.disabled[href=?]", dashboard_school_class_rooms_path(school), count: 1
+        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
         assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 0
         assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
 

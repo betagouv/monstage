@@ -1,9 +1,6 @@
-ul.nav.nav-pills.mb-3
-  li.nav-item
-    a.nav-link.disabled href="#" Mes candidatures
-  li.nav-item
-    a.nav-link.active href="#" Mon CV
-
+- if current_user.is_a?(Users::Student)
+  = render 'dashboard/student_navbar'
+h1.h2 Mon CV
 p
   = current_user.name
   br
@@ -11,7 +8,7 @@ p
   br
   = "#{current_user.age} ans"
 
-= form_for current_user, as: :user, url: account_path, method: :patch do |f|
+= form_for current_user, as: :user, url: resume_path, method: :patch do |f|
   .form-group
     = f.label :resume_educational_background, 'Parcours Scolaire'
     = f.text_area :resume_educational_background, class: 'form-control col-lg-6'

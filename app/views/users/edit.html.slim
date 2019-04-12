@@ -1,3 +1,6 @@
+- if current_user.is_a?(Users::Student)
+  = render 'dashboard/student_navbar'
+
 h1.h2 Mon compte
 
 = form_for(current_user, as: :user, url: account_path(current_user), method: :patch) do |f|
