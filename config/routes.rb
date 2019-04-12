@@ -26,9 +26,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users, only: [:edit, :update]
+  # resources :users, only: [:edit, :update]
+  # resources :curriculum_vitaes, only: [:edit, :update]
 
   get '/dashboard', to: 'dashboard#index'
+  # CV
+  get 'resume', to: "resumes#edit"
+  patch 'resume', to: "resumes#update"
+
   get 'account', to: 'users#edit'
   patch 'account', to: 'users#update'
 

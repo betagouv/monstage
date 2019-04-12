@@ -21,7 +21,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in "Adresse électronique", with: "le@brice.durand"
         fill_in "Téléphone", with: "0639693969"
         fill_in "Nom de l'entreprise ou de l'administration", with: "BetaGouv"
-        fill_in "Activités de l'entreprise ou de l'administration", with: "On fait des startup d'état qui déchirent"
+        fill_in "Activités", with: "On fait des startup d'état qui déchirent"
         fill_in "Site web", with: "https://beta.gouv.fr/"
 
         fill_in "Adresse du lieu où se déroule le stage", with: "Paris, 13eme"
