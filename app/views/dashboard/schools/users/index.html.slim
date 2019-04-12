@@ -3,13 +3,11 @@
 h3 Mon personnel
 
 table.table.table-striped.table-bordered.table-hover.table-caption-top
-  - cols = %w[Nom Classe Fonction]
+  - cols = %w[Nom Classe Fonction Actions]
   thead
     tr
-      th Nom
-      th Classe
-      th Fonction
-      th
+      - cols.each do |col|
+        th= col
   tbody= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others, locals: { cols: cols }
 
 
