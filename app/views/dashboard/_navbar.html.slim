@@ -1,7 +1,7 @@
 h1 Mon tableau
 h2= @school.name
 
-ul.nav.test-dashboard-nav
+ul.nav.nav-pills.test-dashboard-nav
   li.nav-item
     = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}"
 
