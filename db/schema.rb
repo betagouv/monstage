@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_151038) do
+ActiveRecord::Schema.define(version: 2019_04_17_073023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -188,4 +188,26 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
   add_foreign_key "school_internship_weeks", "schools"
   add_foreign_key "school_internship_weeks", "weeks"
   add_foreign_key "users", "class_rooms"
+  add_foreign_key "users", "operators"
+
+  create_view "reporting_internship_offers", sql_definition: <<-SQL
+      SELECT internship_offers.title,
+      ( SELECT sectors.name
+             FROM sectors
+            WHERE (sectors.id = internship_offers.sector_id)) AS sector_name,
+      internship_offers.employer_zipcode,
+      ( SELECT "substring"((internship_offers.employer_zipcode)::text, 1, 2) AS "substring") AS employer_departement,
+      internship_offers.is_public,
+      ( SELECT
+                  CASE
+                      WHEN (internship_offers.is_public IS TRUE) THEN 'Secteur Public'::text
+                      ELSE 'Secteur Privé'::text
+                  END AS "case") AS publicy,
+      internship_offers.blocked_weeks_count,
+      internship_offers.total_applications_count,
+      internship_offers.convention_signed_applications_count,
+      internship_offers.approved_applications_count,
+      internship_offers.sector_id
+     FROM internship_offers;
+  SQL
 end
