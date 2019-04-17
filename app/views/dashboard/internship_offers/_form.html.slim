@@ -59,23 +59,41 @@
       .form-row
         .col-sm-6
           .form-group
-            = form.label :employer_street do
+            = form.label :street do
               = 'Rue'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
+            = form.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
         .col-sm-4
           .form-group
-            = form.label :employer_city do
+            = form.label :city do
               = 'Ville'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
+            = form.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
         .col-sm-2
           .form-group
-            = form.label :employer_zipcode do
+            = form.label :zipcode do
               = 'Code postal'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
-
+            = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+      .form-row
+        .col-sm-4
+          .form-group
+            = form.label :department do
+              = 'Rue'
+              = form.rg2a_required_content_tag
+            = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+        .col-sm-4
+          .form-group
+            = form.label :region do
+              = 'Rue'
+              = form.rg2a_required_content_tag
+            = form.text_field :region, class: "form-control", required: true, data: {target: 'algolia-place.regionInput'}
+        .col-sm-4
+          .form-group
+            = form.label :academy do
+              = 'Rue'
+              = form.rg2a_required_content_tag
+            = form.text_field :academy, class: "form-control", required: true, data: {target: 'algolia-place.academyInput'}
   fieldset
     legend Quand ?
     .form-group

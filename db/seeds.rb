@@ -31,7 +31,7 @@ def populate_schools
       code_uai: row['Code UAI'],
       name: row['ETABLISSEMENT'],
       city: row['Commune'],
-      departement_name: row['Département']
+      department: row['Département']
     )
     puts "school created: #{school.inspect}"
   end

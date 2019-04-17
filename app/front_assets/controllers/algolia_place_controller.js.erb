@@ -9,7 +9,10 @@ export default class extends Controller {
                      "latitudeInput",
                      "streetInput",
                      "cityInput",
-                     "zipcodeInput" ]
+                     "zipcodeInput",
+                     "departmentInput",
+                     "regionInput",
+                     "academyInput" ]
 
   onAlgoliaSearchResultSelected = (selection) => {
     const suggestion = selection.suggestion;
@@ -17,6 +20,9 @@ export default class extends Controller {
     $(this.streetInputTarget).val(suggestion.name);
     $(this.cityInputTarget).val(suggestion.city);
     $(this.zipcodeInputTarget).val(suggestion.postcode);
+    $(this.departmentInputTarget).val(suggestion.county);
+    $(this.regionInputTarget).val(suggestion.administrative);
+    $(this.academyInputTarget).val(suggestion.administrative);
     $(this.longitudeInputTarget).val(suggestion.latlng.lng);
     $(this.latitudeInputTarget).val(suggestion.latlng.lat);
   }

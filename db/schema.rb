@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2019_04_17_073023) do
+ActiveRecord::Schema.define(version: 2019_04_17_084500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,9 +90,9 @@ ActiveRecord::Schema.define(version: 2019_04_17_073023) do
     t.string "tutor_phone", null: false
     t.string "tutor_email", null: false
     t.string "employer_website"
-    t.text "employer_street", null: false
-    t.string "employer_zipcode", null: false
-    t.string "employer_city", null: false
+    t.text "street", null: false
+    t.string "zipcode", null: false
+    t.string "city", null: false
     t.boolean "is_public", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -110,6 +109,9 @@ ActiveRecord::Schema.define(version: 2019_04_17_073023) do
     t.integer "convention_signed_applications_count", default: 0, null: false
     t.integer "approved_applications_count", default: 0, null: false
     t.string "employer_type"
+    t.string "department", default: "", null: false
+    t.string "region", default: "", null: false
+    t.string "academy", default: "", null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
@@ -134,7 +136,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_073023) do
   create_table "schools", force: :cascade do |t|
     t.string "name"
     t.string "city"
-    t.string "departement_name"
+    t.string "department"
     t.string "zipcode"
     t.string "code_uai"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
@@ -206,28 +208,27 @@ ActiveRecord::Schema.define(version: 2019_04_17_073023) do
   add_foreign_key "school_internship_weeks", "weeks"
   add_foreign_key "users", "class_rooms"
   add_foreign_key "users", "operators"
-<<<<<<< HEAD
 
   create_view "reporting_internship_offers", sql_definition: <<-SQL
       SELECT internship_offers.title,
+      internship_offers.zipcode,
+      ( SELECT "substring"((internship_offers.zipcode)::text, 1, 2) AS "substring") AS department_code,
+      internship_offers.department AS department_name,
+      internship_offers.region,
+      internship_offers.academy,
+      internship_offers.is_public AS publicly_code,
       ( SELECT sectors.name
              FROM sectors
             WHERE (sectors.id = internship_offers.sector_id)) AS sector_name,
-      internship_offers.employer_zipcode,
-      ( SELECT "substring"((internship_offers.employer_zipcode)::text, 1, 2) AS "substring") AS employer_departement,
-      internship_offers.is_public,
       ( SELECT
                   CASE
                       WHEN (internship_offers.is_public IS TRUE) THEN 'Secteur Public'::text
                       ELSE 'Secteur Privé'::text
-                  END AS "case") AS publicy,
+                  END AS "case") AS publicly_name,
       internship_offers.blocked_weeks_count,
       internship_offers.total_applications_count,
       internship_offers.convention_signed_applications_count,
-      internship_offers.approved_applications_count,
-      internship_offers.sector_id
+      internship_offers.approved_applications_count
      FROM internship_offers;
   SQL
-=======
->>>>>>> US/operator
 end

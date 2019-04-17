@@ -9,9 +9,9 @@ class InternshipOffer < ApplicationRecord
             :tutor_email,
             :max_internship_week_number,
             :employer_name,
-            :employer_street,
-            :employer_zipcode,
-            :employer_city,
+            :street,
+            :zipcode,
+            :city,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
@@ -73,9 +73,9 @@ class InternshipOffer < ApplicationRecord
 
   def formatted_autocomplete_address
     [
-      employer_street,
-      employer_city,
-      employer_zipcode
+      street,
+      city,
+      zipcode
     ].compact.uniq.join(', ')
   end
 
