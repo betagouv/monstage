@@ -45,7 +45,7 @@ module InternshipOffers
     test 'GET #edit as Operator with disabled fields if applications exist' do
       operator = create(:user_operator)
       sign_in(operator)
-      internship_offer = create(:internship_offer, employer_id: operator.id)
+      internship_offer = create(:internship_offer, employer: operator)
 
       get edit_dashboard_internship_offer_path(internship_offer)
       assert_response :success
