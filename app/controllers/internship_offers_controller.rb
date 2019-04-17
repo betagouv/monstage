@@ -5,7 +5,7 @@ class InternshipOffersController < ApplicationController
 
   def index
     set_internship_offers
-    @internship_offers = @internship_offers.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
+    @internship_offers = @internship_offers.merge(InternshipOffer.by_sector(params[:sector_id])) if params[:sector_id]
   end
 
   def show

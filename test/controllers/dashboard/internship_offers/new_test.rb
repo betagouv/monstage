@@ -30,6 +30,15 @@ module InternshipOffers
 
     end
 
+    test 'GET #edit as Operator with disabled fields if applications exist' do
+      operator = create(:user_operator)
+      sign_in(operator)
+
+      get new_dashboard_internship_offer_path
+      assert_response :success
+      assert_select "#internship_offer_operator_ids[disabled]"
+    end
+
     test 'GET #new as visitor redirects to internship_offers' do
       get new_dashboard_internship_offer_path
       assert_redirected_to user_session_path

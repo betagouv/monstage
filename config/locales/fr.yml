@@ -93,6 +93,11 @@ fr:
             gender:
               blank: Veuillez saisir un sexe
 
+        users/operator:
+          attributes:
+            operator:
+              blank: Veuillez saisir un opérateur
+
         internship_application:
           attributes:
             motivation:

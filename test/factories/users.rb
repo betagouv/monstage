@@ -42,5 +42,9 @@ FactoryBot.define do
 
     factory :other, class: 'Users::Other', parent: :user do
     end
+
+    factory :user_operator, class: 'Users::Operator', parent: :user do
+      operator { create(:operator) }
+    end
   end
 end
