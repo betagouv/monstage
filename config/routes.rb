@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     end
 
     namespace :students, path: '/:student_id/' do
-      resources :internship_applications, only: [:index]
+      resources :internship_applications, only: [:index, :show]
     end
   end
 
