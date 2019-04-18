@@ -21,8 +21,13 @@ Rails.application.routes.draw do
         resources :students, only: [:show, :update], module: 'class_rooms'
       end
     end
+
     resources :internship_offers do
       resources :internship_applications, only: [:update, :index], module: 'internship_offers'
+    end
+
+    namespace :students, path: '/:student_id/' do
+      resources :internship_applications, only: [:index]
     end
   end
 

@@ -12,9 +12,12 @@ module Users
     end
 
     test 'employer.after_sign_in_path redirects to internship_offers_path' do
-      student = build(:student)
+      student = create(:student)
       assert_equal(student.after_sign_in_path,
-                   Rails.application.routes.url_helpers.internship_offers_path)
+                   Rails.application
+                        .routes
+                        .url_helpers
+                        .dashboard_students_internship_applications_path(student_id: student.id))
     end
   end
 end
