@@ -53,10 +53,13 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'SchoolManager' do
-    ability = Ability.new(build(:school_manager))
+    student = create(:student)
+    school_manager = create(:school_manager, school: student.school)
+    ability = Ability.new(school_manager)
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
     assert(ability.can?(:show , ClassRoom))
+    assert(ability.can?(:dashboard_index, student))
   end
 
   test 'MainTeacher' do

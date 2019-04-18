@@ -29,10 +29,12 @@ class Ability
     can :apply, InternshipOffer
     can [:show, :update], User
     can [:choose_school, :choose_class_room, :choose_gender_and_birthday], :sign_up
+    can_read_dashboard_students_internship_applications(user: user)
   end
 
   def school_manager_abilities(user:)
     can_create_and_manage_account(user: user)
+    can_read_dashboard_students_internship_applications(user: user)
 
     can_read_dashboard(user: user) do
       can [:create, :new, :update], ClassRoom
@@ -92,6 +94,26 @@ class Ability
 
 
   private
+
+  def can_read_dashboard_students_internship_applications(user:)
+    can [:dashboard_index], Users::Student do |student|
+      student.id == user.id || student_managed_by?(student: student, user: user)
+    end
+
+    can [:dashboard_show], InternshipApplication do |internship_application|
+      internship_application.student.id == user.id ||
+        student_managed_by?(student: internship_application.student, user: user)
+    end
+  end
+  def student_managed_by?(student:, user:)
+    student.school_id == user.school_id && (
+      user.is_a?(Users::Teacher) ||
+      user.is_a?(Users::MainTeacher) ||
+      user.is_a?(Users::SchoolManager) ||
+      user.is_a?(Users::Other)
+    )
+  end
+
   def shared_abilities(user:)
     can :update, user
   end
