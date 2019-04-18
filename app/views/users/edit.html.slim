@@ -23,6 +23,11 @@ h1.h2 Mon compte
   - if current_user.respond_to?(:school)
     = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room), required: true
 
+  .form-group
+    = f.label :email do
+      = 'Email'
+      = f.rg2a_required_content_tag
+    = f.text_field :email, class: 'form-control col-lg-6', required: true
   .actions
     = f.submit 'Enregistrer', class: 'btn btn-primary'
 
