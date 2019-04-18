@@ -19,7 +19,7 @@
             i.fas.fa-2x.fa-chevron-right
 
       .col-11.col-sm-8
-        h2.h4= "Candidature de #{internship_application.student.name} reçu le #{localize(internship_application.created_at, format: "%d %B")}"
+        h2.h4= "Candidature de #{internship_application.student.name} reçue le #{localize(internship_application.created_at, format: "%d %B")}"
         p= internship_application.motivation
         .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
           p= "Pour la semaine du #{internship_application.week.select_text_method}"
