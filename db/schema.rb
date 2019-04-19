@@ -53,6 +53,9 @@ ActiveRecord::Schema.define(version: 2019_04_17_084501) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
+    t.datetime "approved_at"
+    t.datetime "rejected_at"
+    t.datetime "convention_signed_at"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true

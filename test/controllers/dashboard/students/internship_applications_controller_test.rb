@@ -40,15 +40,21 @@ module Dashboard
 
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
-        internship_application_1 = create(:internship_application, student: student)
-        internship_application_2 = create(:internship_application, student: student)
+        internship_applications = {
+          submitted: create(:internship_application, :submitted, student: student),
+          approved: create(:internship_application, :approved, student: student),
+          rejected: create(:internship_application, :rejected, student: student),
+          convention_signed: create(:internship_application, :convention_signed, student: student)
+        }
 
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
         assert_select "a.btn.btn-link[href=?]", internship_offers_path
-        assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application_1)
-        assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application_2)
+        internship_applications.each do |aasm_state, internship_application|
+          assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application)
+          assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
+        end
       end
 
       test 'GET internship_applications#show not connected responds with redireciton' do

@@ -5,8 +5,8 @@ FactoryBot.define do
     motivation { 'Suis hyper motivé' }
   end
 
-  trait :submited do
-    aasm_state { :submited }
+  trait :submitted do
+    aasm_state { :submitted }
   end
   trait :approved do
     aasm_state { :approved }
