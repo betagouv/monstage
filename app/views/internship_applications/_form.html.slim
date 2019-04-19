@@ -20,12 +20,12 @@ div data-controller="internship-application-form"
 
           .form-group
             = f.label :internship_offer_week_id, "Quelle semaine ?", class: 'required'
-            = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: @internship_offer.max_candidates), :id, :select_text_method),
+            = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: @internship_offer.max_candidates), :id, :select_text_method, @internship_application.internship_offer_week_id),
               { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
 
           .form-group
-            = f.label :motivation, 'Ma motivation', class: 'required'
-            small.form-text.text-muted.mt-0 Relisez vous, corrigez vos fautes d'orthographes et utilisez une formule de politesse pour conclure
+            = f.label :motivation, 'Pourquoi ce stage me motive', class: 'required'
+            small.form-text.text-muted.mt-0 Relisez vous pour éviter les fautes d'orthographes et utilisez une formule de politesse pour conclure
             = f.text_area :motivation, class: "form-control col-lg-6", required: true
 
           p
@@ -34,6 +34,6 @@ div data-controller="internship-application-form"
               i.fas.fa-external-link-alt
               = "(nouvelle fenêtre)"
 
-          .actions.d-flex
+          .actions.d-flex.d-sm-block
             = link_to "Annuler", "#internship-application-closeform", class: 'btn btn-link text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'}
             = f.submit "Valider", { class: 'btn btn-primary' }

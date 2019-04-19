@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: [:index, :show] do
-    resources :internship_applications, only: [:create, :update, :index]
+    resources :internship_applications, only: [:create, :index, :show, :update]
   end
 
   namespace :dashboard, path: "dashboard" do

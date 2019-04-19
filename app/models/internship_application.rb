@@ -32,8 +32,16 @@ class InternshipApplication < ApplicationRecord
   end
 
   aasm do
-    state :submitted, initial: true
-    state :approved, :rejected, :convention_signed
+    state :drafted, initial: true
+    state :submitted, :approved, :rejected, :convention_signed
+
+    event :submit do
+      transitions from: :drafted, to: :submitted, :after => Proc.new { |*args|
+        update!(submitted_at: Date.today)
+        EmployerMailer.new_internship_application_email(internship_application: self)
+                      .deliver_later
+      }
+    end
 
     event :approve do
       transitions from: :submitted, to: :approved, :after => Proc.new { |*args|

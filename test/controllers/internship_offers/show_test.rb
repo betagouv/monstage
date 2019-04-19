@@ -92,5 +92,20 @@ module InternshipOffers
       assert_select 'select option', text: blocked_internship_week.week.select_text_method, count: 0
       assert_select 'select option', text: available_internship_week.week.select_text_method, count: 1
     end
+
+    test "GET #show as student with existing draft application shows the draft" do
+      weeks = [Week.find_by(number:1, year: 2020), Week.find_by(number:2, year: 2020)]
+      internship_offer = create(:internship_offer, weeks: weeks)
+      student = create(:student, school: create(:school, weeks: weeks))
+      internship_application = create(:internship_application, :drafted, motivation: 'au taquet',
+                                                                         student: student,
+                                                                         internship_offer: internship_offer,
+                                                                         week: weeks.last)
+      sign_in(student)
+      get internship_offer_path(internship_offer)
+      assert_response :success
+      assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
+      assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
+    end
   end
 end

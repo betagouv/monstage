@@ -23,10 +23,10 @@ class Week < ApplicationRecord
   end
 
   def beginning_of_week
-    week_date.beginning_of_week.strftime(WEEK_DATE_FORMAT)
+    I18n.localize(week_date.beginning_of_week, format: :human_mm_dd)
   end
 
   def end_of_week
-    week_date.end_of_week.strftime(WEEK_DATE_FORMAT)
+    I18n.localize(week_date.end_of_week, format: :human_mm_dd)
   end
 end

@@ -28,6 +28,9 @@ class Ability
     can :show, :account
     can :read, InternshipOffer
     can :apply, InternshipOffer
+    can :submit_internship_application, InternshipApplication do |internship_application|
+      internship_application.student.id == user.id
+    end
     can [:show, :update], User
     can [:choose_school, :choose_class_room, :choose_gender_and_birthday], :sign_up
     can_read_dashboard_students_internship_applications(user: user)

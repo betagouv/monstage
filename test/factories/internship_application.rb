@@ -5,8 +5,13 @@ FactoryBot.define do
     motivation { 'Suis hyper motivé' }
   end
 
+  trait :drafted do
+    aasm_state { :drafted }
+  end
+
   trait :submitted do
     aasm_state { :submitted }
+    submitted_at { 3.days.ago.to_date }
   end
   trait :approved do
     aasm_state { :approved }
@@ -21,5 +26,4 @@ FactoryBot.define do
     aasm_state { :convention_signed }
     convention_signed_at { 2.days.ago.to_date }
   end
-
 end

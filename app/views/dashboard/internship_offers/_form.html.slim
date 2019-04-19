@@ -79,19 +79,19 @@
         .col-sm-4
           .form-group
             = form.label :department do
-              = 'Rue'
+              = 'Département'
               = form.rg2a_required_content_tag
             = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
         .col-sm-4
           .form-group
             = form.label :region do
-              = 'Rue'
+              = 'Région'
               = form.rg2a_required_content_tag
             = form.text_field :region, class: "form-control", required: true, data: {target: 'algolia-place.regionInput'}
         .col-sm-4
           .form-group
             = form.label :academy do
-              = 'Rue'
+              = 'Académie'
               = form.rg2a_required_content_tag
             = form.text_field :academy, class: "form-control", required: true, data: {target: 'algolia-place.academyInput'}
   fieldset

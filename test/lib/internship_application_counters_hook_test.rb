@@ -25,6 +25,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   end
 
   test ".update_internship_offer_week_counters tracks internship_offer_weeks.approved_applications_count" do
+    @internship_application.aasm_state = :submitted
     @internship_application.save!
 
     assert_changes -> { @internship_offer_week.reload.approved_applications_count },
@@ -69,6 +70,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   end
 
   test ".update_internship_offer_counters tracks internship_offer.approved_applications_count" do
+    @internship_application.aasm_state = :submitted
     @internship_application.save!
 
     assert_changes -> { @internship_offer.reload.approved_applications_count },

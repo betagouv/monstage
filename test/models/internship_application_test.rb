@@ -19,6 +19,22 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     refute internship_application.valid?
   end
 
+  test 'transition from draft to submit updates submitted_at' do
+    internship_application = create(:internship_application, :drafted)
+    freeze_time do
+      assert_changes -> { internship_application.reload.submitted_at },
+                     from: nil,
+                     to: Date.today do
+        mock_mail = MiniTest::Mock.new
+        mock_mail.expect(:deliver_later, true)
+        EmployerMailer.stub :new_internship_application_email, mock_mail do
+          internship_application.submit!
+        end
+        mock_mail.verify
+      end
+    end
+  end
+
   test 'transition from submited to approved send approved email' do
     internship_application = create(:internship_application, :submitted)
     freeze_time do
