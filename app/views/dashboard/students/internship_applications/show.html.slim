@@ -1,3 +1,25 @@
 = render 'dashboard/students/navigation'
-= render partial: 'dashboard/students/timeline', locals: {internship_application: @internship_application}
-= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
+.row
+  .col-12= render partial: 'dashboard/students/timeline', locals: {internship_application: @internship_application}
+
+.row
+  .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
+
+.row
+  .col-12
+    - if @internship_application.submitted?
+      p
+        ="L'employeur doit vous répondre "
+        strong= "avant le #{localize(@internship_application.expires_at, format: :human_mm_dd)}."
+- if @internship_application.submitted? || @internship_application.approved?
+  div data-controller="dashboard-students-internship-application"
+    = link_to "Afficher ma candidature", "#internship-application-details", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationDetails"}
+
+    #internship-application-details data-target="dashboard-students-internship-application.internshipApplicationDetails"
+      pre= @internship_application.motivation
+- if @internship_application.convention_signed?
+  p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l'assurance responsabilité civile de l'établissement Scolaire.
+  h3.h4 Mode d'emploi
+  p C'est le collège qui remet a ses élèves une convention de stage. Elle doit être remplie et signée par les parents (puisqu'ils sont mineurs), par l'entreprise ou l'administration qui accueille le ou la stagiaire puis par le ou la chef d'établissement ou son adjoint-e. La convention confère au stage un caractère légal et précise les engagements de chacun. Elle doit vous être adressée par courrier (postal ou électronique) ou remise en main propre avant le début du stage.
+  p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d'urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l'entreprise ou de l'administration, son secteur d'activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+  p Sans une convention convenable remplie et signée par chacune des parties prenantes, l'entreprise ou l'administration ne peut pas accueillir le ou la stagiaire.

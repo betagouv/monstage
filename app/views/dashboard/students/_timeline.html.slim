@@ -4,18 +4,18 @@
     br
     small= "Annonce"
   .col-4.text-center
-    - if internship_application.approved?
-      i.fas.fa-2x.fa-check-circle
-      br
-    - else
+    - if internship_application.submitted?
       i.fas.fa-2x.fa-hourglass-start
-      br
+    - else
+      i.fas.fa-2x.fa-check-circle
+    br
     small= "Candidature"
   .col-4.text-center
-    - if internship_application.convention_signed?
+    - if internship_application.submitted?
+      i.far.fa-2x.fa-circle
+    - if internship_application.approved?
+      i.fas.fa-2x.fa-exclamation-triangle
+    - elsif internship_application.convention_signed?
       i.fas.fa-2x.fa-check-circle
-      br
-    - else
-      i.fas.fa-2x.fa-hourglass-start
-      br
+    br
     small= "Convention"

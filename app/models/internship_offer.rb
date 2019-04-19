@@ -31,8 +31,8 @@ class InternshipOffer < ApplicationRecord
   validates :employer_description, presence: true, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
   has_many :internship_applications, through: :internship_offer_weeks
+  has_many :weeks, through: :internship_offer_weeks
 
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
@@ -56,7 +56,6 @@ class InternshipOffer < ApplicationRecord
   }
 
   after_initialize :init
-
   paginates_per PAGE_SIZE
 
   def is_individual?

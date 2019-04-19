@@ -23,6 +23,10 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  def expires_at
+    created_at + 15.days
+  end
+
   def internship_application_counter_hook
     InternshipApplicationCountersHook.new(internship_application: self)
   end
