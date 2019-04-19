@@ -1,1 +1,12 @@
-index.html.slim
+.row
+  .col-12
+    h1.h2 Mes candidatures
+
+- if @internship_applications.size.zero?
+  .row
+    h2.h3 Aucun stage séléctionné
+    = link_to "Rechercher un stage", internship_offers_path, class: 'btn btn-primary'
+- else
+  .row
+    = render partial: "dashboard/students/internship_applications/student_internship_application", collection: @internship_applications
+    = link_to "Rechercher un stage", internship_offers_path, class: 'btn btn-link'

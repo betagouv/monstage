@@ -13,7 +13,7 @@ class PopulateOperators < ActiveRecord::Migration[5.2]
       operator = Operator.create(name: operator_name)
       InternshipOffer.where("operator_names @> ?", "{\"#{operator_name}\"}").each do |io|
         io.operators << operator
-        io.save
+        io.save(validate: false)
       end
     end
   end

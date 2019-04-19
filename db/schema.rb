@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_084500) do
+ActiveRecord::Schema.define(version: 2019_04_17_084501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,8 +100,8 @@ ActiveRecord::Schema.define(version: 2019_04_17_084500) do
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "employer_name", null: false
     t.string "group_name"
-    t.bigint "school_id"
     t.bigint "employer_id"
+    t.bigint "school_id"
     t.string "employer_description", null: false
     t.integer "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
