@@ -1,0 +1,34 @@
+h2.h6 Le stage
+p = internship_offer.description
+
+p.text-muted
+  - if internship_offer.is_individual?
+    | Stage individuel
+  - else
+    | Stage collectif
+
+h2.h6 L'entreprise
+p = internship_offer.employer_name
+- if internship_offer.employer_website.present?
+  p.text-truncate
+    = link_to internship_offer.employer_website, target: "_blank", class: 'external' do
+      = internship_offer.employer_website
+      = " "
+      i.fas.fa-external-link-alt
+      = "(nouvelle fenêtre)"
+
+.d-flex
+  i.fas.fa-map-marker.mr-2
+  p
+    = internship_offer.street
+    br
+    = "#{internship_offer.zipcode} #{internship_offer.city}"
+
+- if can? :create, InternshipOffer
+  h2.h6.bg-light Contact
+  p
+    b = internship_offer.tutor_name
+    br
+    = link_to internship_offer.tutor_phone, "tel:#{internship_offer.tutor_phone}"
+    br
+    = link_to internship_offer.tutor_email, "email:#{internship_offer.tutor_email}"

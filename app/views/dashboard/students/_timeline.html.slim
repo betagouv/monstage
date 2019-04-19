@@ -1,21 +1,26 @@
-.row.align-items-center.no-gutters.my-3
-  .col-4.text-center
-    i.fas.fa-2x.fa-file-alt
-    br
-    small= "Annonce"
-  .col-4.text-center
-    - if internship_application.submitted?
-      i.fas.fa-2x.fa-hourglass-start
-    - else
-      i.fas.fa-2x.fa-check-circle
-    br
-    small= "Candidature"
-  .col-4.text-center
-    - if internship_application.submitted?
-      i.far.fa-2x.fa-circle
-    - if internship_application.approved?
-      i.fas.fa-2x.fa-exclamation-triangle
-    - elsif internship_application.convention_signed?
-      i.fas.fa-2x.fa-check-circle
-    br
-    small= "Convention"
+ul.nav.align-items-center.no-gutters.my-3.nav-pills
+  li.col-4.text-center.nav-item
+    = link_to "#tab-internship-offer-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipOfferDetail", turbolinks: "false", target: 'dashboard-students-internship-application.linkInternshipOfferDetail'}, class: 'nav-link' do
+      i.fas.fa-2x.fa-file-alt
+      br
+      small= "Annonce"
+  li.col-4.text-center.nav-item
+    = link_to "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail", turbolinks: "false", target: 'dashboard-students-internship-application.linkInternshipApplicationDetail'}, class: 'nav-link' do
+      - if internship_application.submitted?
+        i.fas.fa-2x.fa-hourglass-start
+      - elsif internship_application.approved? || internship_application.convention_signed?
+        i.fas.fa-2x.fa-check-circle
+      - else
+        i.far.fa-2x.fa-circle
+      br
+      small= "Candidature"
+  li.col-4.text-center.nav-item
+    = link_to "#tab-convention-detail", data: {action: "click->dashboard-students-internship-application#enableConventionDetail", turbolinks: "false", target: 'dashboard-students-internship-application.linkConventionDetail'}, class: 'nav-link' do
+      - if internship_application.submitted? || internship_application.rejected?
+        i.far.fa-2x.fa-circle
+      - elsif internship_application.approved?
+        i.fas.fa-2x.fa-exclamation-triangle
+      - else internship_application.convention_signed?
+        i.fas.fa-2x.fa-check-circle
+      br
+      small= "Convention"
