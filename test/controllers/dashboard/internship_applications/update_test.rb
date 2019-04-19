@@ -6,7 +6,7 @@ module InternshipApplications
     include ActionMailer::TestHelper
 
     test "PATCH #update with approve! transition sends email" do
-      internship_application = create(:internship_application)
+      internship_application = create(:internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -21,7 +21,7 @@ module InternshipApplications
     end
 
     test "PATCH #update with reject! transition sends email" do
-      internship_application = create(:internship_application)
+      internship_application = create(:internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -36,7 +36,7 @@ module InternshipApplications
     end
 
     test "PATCH #update with cancel! does not send email, change aasm_state" do
-      internship_application = create(:internship_application, aasm_state: :approved)
+      internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -51,7 +51,7 @@ module InternshipApplications
     end
 
     test "PATCH #update with signed! does not send email, change aasm_state" do
-      internship_application = create(:internship_application, aasm_state: :approved)
+      internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 

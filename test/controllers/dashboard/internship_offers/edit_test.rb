@@ -32,7 +32,7 @@ module InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:internship_offer, employer: employer)
-      internship_application = create(:internship_application, internship_offer: internship_offer)
+      internship_application = create(:internship_application, :submitted, internship_offer: internship_offer)
 
       get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
       assert_response :success

@@ -38,7 +38,7 @@ module InternshipApplications
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages',
                                  resume_volunteer_work: 'resume_volunteer_work')
-      internship_application = create(:internship_application, student: student)
+      internship_application = create(:internship_application, :submitted, student: student)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -55,7 +55,7 @@ module InternshipApplications
     end
 
     test "GET #index with submitted offer, shows approve/reject links" do
-      internship_application = create(:internship_application, aasm_state: 'submitted')
+      internship_application = create(:internship_application, :submitted)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -71,7 +71,7 @@ module InternshipApplications
     end
 
     test "GET #index with approved offer, shows cancel! & signed! links" do
-      internship_application = create(:internship_application, aasm_state: 'approved')
+      internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -87,7 +87,7 @@ module InternshipApplications
     end
 
     test "GET #index with rejected offer, does not shows any link" do
-      internship_application = create(:internship_application, aasm_state: 'rejected')
+      internship_application = create(:internship_application, :rejected)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -98,7 +98,7 @@ module InternshipApplications
     end
 
     test "GET #index with convention_signed offer, does not shows any link" do
-      internship_application = create(:internship_application, aasm_state: 'convention_signed')
+      internship_application = create(:internship_application, :convention_signed)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
