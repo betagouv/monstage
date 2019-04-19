@@ -31,9 +31,9 @@ module Presenters
     end
 
     test '.internship_location' do
-      internship_offer = build(:internship_offer, employer_street: '7 rue du puits',
-                                                  employer_city: 'Coye la foret',
-                                                  employer_zipcode: '60580')
+      internship_offer = build(:internship_offer, street: '7 rue du puits',
+                                                  city: 'Coye la foret',
+                                                  zipcode: '60580')
       create(:internship_application, :convention_signed, student: @student,
                                                           internship_offer: internship_offer)
       assert_equal [internship_offer.formatted_autocomplete_address],

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_11_151038) do
+ActiveRecord::Schema.define(version: 2019_04_17_084500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,15 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
 
+  create_table "internship_offer_operators", force: :cascade do |t|
+    t.bigint "internship_offer_id"
+    t.bigint "operator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["internship_offer_id"], name: "index_internship_offer_operators_on_internship_offer_id"
+    t.index ["operator_id"], name: "index_internship_offer_operators_on_operator_id"
+  end
+
   create_table "internship_offer_weeks", force: :cascade do |t|
     t.bigint "internship_offer_id"
     t.bigint "week_id"
@@ -81,16 +90,15 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
     t.string "tutor_phone", null: false
     t.string "tutor_email", null: false
     t.string "employer_website"
-    t.text "employer_street", null: false
-    t.string "employer_zipcode", null: false
-    t.string "employer_city", null: false
+    t.text "street", null: false
+    t.string "zipcode", null: false
+    t.string "city", null: false
     t.boolean "is_public", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "discarded_at"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "employer_name", null: false
-    t.string "operator_names", array: true
     t.string "group_name"
     t.bigint "school_id"
     t.bigint "employer_id"
@@ -100,12 +108,20 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
     t.integer "total_applications_count", default: 0, null: false
     t.integer "convention_signed_applications_count", default: 0, null: false
     t.integer "approved_applications_count", default: 0, null: false
+    t.string "employer_type"
+    t.string "department", default: "", null: false
+    t.string "region", default: "", null: false
+    t.string "academy", default: "", null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
     t.index ["max_internship_week_number", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
+  end
+
+  create_table "operators", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "school_internship_weeks", force: :cascade do |t|
@@ -120,7 +136,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
   create_table "schools", force: :cascade do |t|
     t.string "name"
     t.string "city"
-    t.string "departement_name"
+    t.string "department"
     t.string "zipcode"
     t.string "code_uai"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
@@ -163,6 +179,7 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
     t.text "resume_other"
     t.text "resume_languages"
     t.boolean "has_parental_consent", default: false
+    t.bigint "operator_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -180,6 +197,8 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
   add_foreign_key "class_rooms", "schools"
   add_foreign_key "internship_applications", "internship_offer_weeks"
   add_foreign_key "internship_applications", "users"
+  add_foreign_key "internship_offer_operators", "internship_offers"
+  add_foreign_key "internship_offer_operators", "operators"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
   add_foreign_key "internship_offers", "schools"
@@ -188,4 +207,28 @@ ActiveRecord::Schema.define(version: 2019_04_11_151038) do
   add_foreign_key "school_internship_weeks", "schools"
   add_foreign_key "school_internship_weeks", "weeks"
   add_foreign_key "users", "class_rooms"
+  add_foreign_key "users", "operators"
+
+  create_view "reporting_internship_offers", sql_definition: <<-SQL
+      SELECT internship_offers.title,
+      internship_offers.zipcode,
+      ( SELECT "substring"((internship_offers.zipcode)::text, 1, 2) AS "substring") AS department_code,
+      internship_offers.department AS department_name,
+      internship_offers.region,
+      internship_offers.academy,
+      internship_offers.is_public AS publicly_code,
+      ( SELECT sectors.name
+             FROM sectors
+            WHERE (sectors.id = internship_offers.sector_id)) AS sector_name,
+      ( SELECT
+                  CASE
+                      WHEN (internship_offers.is_public IS TRUE) THEN 'Secteur Public'::text
+                      ELSE 'Secteur Privé'::text
+                  END AS "case") AS publicly_name,
+      internship_offers.blocked_weeks_count,
+      internship_offers.total_applications_count,
+      internship_offers.convention_signed_applications_count,
+      internship_offers.approved_applications_count
+     FROM internship_offers;
+  SQL
 end

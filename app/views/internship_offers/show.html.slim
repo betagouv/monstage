@@ -22,9 +22,9 @@ p = @internship_offer.employer_name
 .d-flex
   i.fas.fa-map-marker.mr-2
   p
-    = @internship_offer.employer_street
+    = @internship_offer.street
     br
-    = "#{@internship_offer.employer_zipcode} #{@internship_offer.employer_city}"
+    = "#{@internship_offer.zipcode} #{@internship_offer.city}"
 
 - if can? :create, InternshipOffer
   h2.h6.bg-light Contact

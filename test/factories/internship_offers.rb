@@ -11,9 +11,9 @@ FactoryBot.define do
     tutor_email { 'eric@dubois.fr' }
     is_public { true }
     employer_description { 'on envoie du parpaing' }
-    employer_street { '1 rue du poulet' }
-    employer_zipcode { '75001' }
-    employer_city { 'Paris' }
+    street { '1 rue du poulet' }
+    zipcode { '75001' }
+    city { 'Paris' }
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
     weeks { [ Week.first ] }
