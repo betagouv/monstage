@@ -13,4 +13,10 @@
       color: darken($alert-text-color, 10%)!important;
     }
   }
+
+  &.alert-outlined{
+    background-color: transparent;
+    color: $background;
+    border-color: $background
+  }
 }

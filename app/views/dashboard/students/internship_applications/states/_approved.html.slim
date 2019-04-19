@@ -1,4 +1,8 @@
-p.alert.alert-warning
-  span.alert-internship-application-state= "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
-  br
-  = "Convention à faire signer et à envoyer"
+.alert.alert-warning.alert-outlined.m-0.p-0.
+  .row.align-items-center.no-gutters
+    .col-2.text-center
+      i.fas.fa-exclamation-triangle
+    .col-10
+      small.alert-internship-application-state= "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
+      br
+      small= "Convention à faire signer et à envoyer"

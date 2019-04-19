@@ -1,2 +1,6 @@
-p.alert.alert-success
-  span.alert-internship-application-state= "Convention reçue le #{localize(internship_application.convention_signed_at, format: :human_mm_dd)}."
+.alert.alert-success.alert-outlined.m-0.p-0
+  .row.align-items-center.no-gutters
+    .col-2.text-center
+      i.fas.fa-check
+    .col-10
+      small.alert-internship-application-state= "Convention reçue le #{localize(internship_application.convention_signed_at, format: :human_mm_dd)}."

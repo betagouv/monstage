@@ -1,4 +1,8 @@
-p.alert
-  span.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.created_at.to_date, format: :human_mm_dd)}."
-  br
-  = "En attente de réponse"
+.alert.alert-info.alert-outlined.m-0.p-0
+  .row.align-items-center.no-gutters
+    .col-2.text-center
+      i.fas.fa-hourglass-start
+    .col-10
+      small.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.created_at.to_date, format: :human_mm_dd)}."
+      br
+      small= "En attente de réponse"
