@@ -2,3 +2,4 @@
   p.text-strong.internship-item-title.mb-0= student_internship_application.internship_offer.title
   p.text-muted.internship-item-city.small.mb-0= student_internship_application.internship_offer.city
 
+  = render partial: "dashboard/students/internship_applications/states/#{student_internship_application.aasm_state}", locals: {internship_application: student_internship_application}

@@ -33,7 +33,7 @@ class InternshipApplication < ApplicationRecord
 
     event :approve do
       transitions from: :submitted, to: :approved, :after => Proc.new { |*args|
-        update!(approved_at: Time.now.utc)
+        update!(approved_at: Date.today)
         StudentMailer.internship_application_approved_email(internship_application: self)
                      .deliver_later
       }
@@ -41,7 +41,7 @@ class InternshipApplication < ApplicationRecord
 
     event :reject do
       transitions from: :submitted, to: :rejected, :after => Proc.new { |*args|
-        update!(rejected_at: Time.now.utc)
+        update!(rejected_at: Date.today)
         StudentMailer.internship_application_rejected_email(internship_application: self)
                      .deliver_later
       }
@@ -49,13 +49,13 @@ class InternshipApplication < ApplicationRecord
 
     event :cancel do
       transitions from: :approved, to: :rejected, :after => Proc.new { |*args|
-        update!(rejected_at: Time.now.utc)
+        update!(rejected_at: Date.today)
       }
     end
 
     event :signed do
       transitions from: :approved, to: :convention_signed, :after => Proc.new { |*args|
-        update!(convention_signed_at: Time.now.utc)
+        update!(convention_signed_at: Date.today)
       }
     end
   end

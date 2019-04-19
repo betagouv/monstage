@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_084501) do
+ActiveRecord::Schema.define(version: 2019_04_19_082459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,9 +53,9 @@ ActiveRecord::Schema.define(version: 2019_04_17_084501) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
-    t.datetime "approved_at"
-    t.datetime "rejected_at"
-    t.datetime "convention_signed_at"
+    t.date "approved_at"
+    t.date "rejected_at"
+    t.date "convention_signed_at"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true
