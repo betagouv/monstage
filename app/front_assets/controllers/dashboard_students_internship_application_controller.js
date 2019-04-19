@@ -1,5 +1,6 @@
 import { Controller } from "stimulus"
 import { hideElement, showElement } from "../utils/dom";
+const MENU_ITEM_ACTIVE_CLASS_NAME = 'active';
 
 export default class extends Controller {
   static targets = ["internshipOfferDetail",
@@ -10,11 +11,11 @@ export default class extends Controller {
                     "linkConventionDetail", ];
 
   updateMenu(enabledTarget){
-    $(this.linkInternshipOfferDetailTarget).removeClass('active')
-    $(this.linkInternshipApplicationDetailTarget).removeClass('active')
-    $(this.linkConventionDetailTarget).removeClass('active')
+    $(this.linkInternshipOfferDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
+    $(this.linkInternshipApplicationDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
+    $(this.linkConventionDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
 
-    $(enabledTarget).addClass('active')
+    $(enabledTarget).addClass(MENU_ITEM_ACTIVE_CLASS_NAME)
   }
 
   updateTab(enabledTab) {

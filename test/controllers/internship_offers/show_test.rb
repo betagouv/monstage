@@ -42,7 +42,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
       assert_select "#new_internship_application", 1
       assert_select 'option', text: weeks.first.select_text_method, count: 1
-      assert_select 'input[type="submit"][value="Candidater"]', count: 1
+      assert_select 'a[href=?]', "#internship-application-form", count: 1
     end
 
     test "GET #show as a student who can apply to limited internship offer shows a disabled button with contact SchoolManager label" do
@@ -52,11 +52,9 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_select "#new_internship_application", 1
-      assert_select 'option', text: weeks.first.select_text_method, count: 1
-      assert_select 'input[type="submit"][disabled][value="Candidater"]', count: 1
       assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
                                          count: 1
+      assert_select "#new_internship_application", 0
     end
 
     test "GET #show as a student displays weeks that matches school weeks" do

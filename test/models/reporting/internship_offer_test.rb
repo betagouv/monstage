@@ -14,8 +14,8 @@ module Reporting
       attribute_names = internship_offer_reportable.attribute_names
       assert_includes attribute_names, "title"
       assert_includes attribute_names, "zipcode"
-      assert_includes attribute_names, "departement_name"
-      assert_includes attribute_names, "departement_code"
+      assert_includes attribute_names, "department_name"
+      assert_includes attribute_names, "department_code"
       assert_includes attribute_names, "region"
       assert_includes attribute_names, "academy"
       assert_includes attribute_names, "publicly_name"
