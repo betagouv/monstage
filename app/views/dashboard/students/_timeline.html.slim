@@ -1,1 +1,21 @@
-_timeline.html.slim
+.row.align-items-center.no-gutters.my-3
+  .col-4.text-center
+    i.fas.fa-2x.fa-file-alt
+    br
+    small= "Annonce"
+  .col-4.text-center
+    - if internship_application.approved?
+      i.fas.fa-2x.fa-check-circle
+      br
+    - else
+      i.fas.fa-2x.fa-hourglass-start
+      br
+    small= "Candidature"
+  .col-4.text-center
+    - if internship_application.convention_signed?
+      i.fas.fa-2x.fa-check-circle
+      br
+    - else
+      i.fas.fa-2x.fa-hourglass-start
+      br
+    small= "Convention"

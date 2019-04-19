@@ -10,8 +10,8 @@ module Dashboard
       end
 
       def show
+        @internship_application = @current_student.internship_applications.find(params[:id])
         authorize! :dashboard_show, @internship_application
-        @internship_application = @current_student.internship_applications
       end
 
       private
