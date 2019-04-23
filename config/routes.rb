@@ -35,9 +35,6 @@ Rails.application.routes.draw do
   # resources :curriculum_vitaes, only: [:edit, :update]
 
   get '/dashboard', to: 'dashboard#index'
-  # CV
-  get 'resume', to: "resumes#edit"
-  patch 'resume', to: "resumes#update"
 
   get 'account(/:section)', to: 'users#edit'
   patch 'account', to: 'users#update'

@@ -4,7 +4,7 @@ p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur
 
 p Le CV aide l'employeur à découvrir votre parcours, vos habilités et compétences.
 
-= form_for current_user, as: :user, url: resume_path, method: :patch do |f|
+= form_for current_user, as: :user, url: account_path(current_user), method: :patch do |f|
   .form-group
     = f.label :resume_educational_background do
       = 'Parcours Scolaire'

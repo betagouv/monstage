@@ -9,10 +9,12 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "GET index as Student" do
-    sign_in(create(:student))
+    student = create(:student)
+    sign_in(student)
     get account_path
     assert_template "users/edit"
-    assert_template "dashboard/_student_navbar"
+    assert_template "users/_edit_resume"
+    assert_select "form[action=?]", account_path(student)
   end
 
   test "GET edit render :edit success with all roles" do
@@ -27,10 +29,33 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       create(:other, school: school),
     ].each do |role|
       sign_in(role)
-      get account_path
+      get '/account/identity'
       assert_response :success, "#{role.type} should have access to edit himself"
       assert_select "form[action=?]", account_path(role)
     end
+  end
+
+  test 'PATCH edit as student, updates resume params' do
+    student = create(:student)
+    sign_in(student)
+
+    patch(account_path, params: {
+                         user: {
+                           resume_educational_background: 'background',
+                           resume_volunteer_work: 'work',
+                           resume_other: 'other',
+                           resume_languages: 'languages'
+                         }
+                       })
+
+    assert_redirected_to account_path
+    student.reload
+    assert_equal 'background', student.resume_educational_background
+    assert_equal 'work', student.resume_volunteer_work
+    assert_equal 'other', student.resume_other
+    assert_equal 'languages', student.resume_languages
+    follow_redirect!
+    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
   end
 
   test 'PATCH edit as school_manager, can change school' do
