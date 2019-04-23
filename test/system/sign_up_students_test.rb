@@ -25,8 +25,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in "Date de naissance", with: birth_date.strftime("%d/%m/%Y")
       find("label", text: "Garçon").click
       fill_in "Adresse électronique", with: existing_email
-      fill_in "Mot de passe", with: "kikoololletest"
-      fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
+      fill_in "Choisir un mot de passe", with: "kikoololletest"
+      fill_in "Confirmer le mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
     end
 
@@ -38,8 +38,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # create student
     assert_difference('Users::Student.count', 1) do
       fill_in "Adresse électronique", with: "another@email.com"
-      fill_in "Mot de passe", with: "kikoololletest"
-      fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
+      fill_in "Choisir un mot de passe", with: "kikoololletest"
+      fill_in "Confirmer le mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
     end
 

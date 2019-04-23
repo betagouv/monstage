@@ -7,7 +7,7 @@
   <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>
   <div class="form-group">
     <%= f.label :email do %>
-      Adresse électronique
+      Adresse électronique (email)
       <%= f.rg2a_required_content_tag %>
     <% end %>
     <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control col-lg-6', required: true %>
@@ -17,4 +17,3 @@
     <%= f.submit "Renvoyer", class: 'btn btn-primary' %>
   </div>
 <% end %>
-
