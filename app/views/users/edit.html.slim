@@ -2,10 +2,10 @@
 
 ul.list-group.mt-5
   - if current_user.is_a?(Users::Student)
-    = link_to 'Modifier mon CV', '/account/resume', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'resume'}"
-  = link_to 'Modifier mon identité', '/account/identity', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'identity'}"
+    = link_to 'Modifier mon CV', account_path(section: 'resume'), class: "list-group-item list-group-item-action #{'active' if params[:section] == 'resume'}"
+  = link_to 'Modifier mon identité', account_path(section: 'identity'), class: "list-group-item list-group-item-action #{'active' if params[:section] == 'identity'}"
   - if can?(:choose_school, current_user)
-    = link_to 'Modifier mon collège', '/account/school', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'school'}"
+    = link_to 'Modifier mon collège', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if params[:section] == 'school'}"
   = link_to destroy_user_session_path, class: "list-group-item list-group-item-action", method: :delete do
     i.fas.fa-sign-out-alt.mr-1
     | Déconnexion

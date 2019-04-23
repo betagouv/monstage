@@ -1,6 +1,6 @@
 h1.h2 Modifier mon identité
 
-= form_for(current_user, as: :user, url: account_path(current_user), method: :patch) do |f|
+= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 

@@ -29,7 +29,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       create(:other, school: school),
     ].each do |role|
       sign_in(role)
-      get '/account/identity'
+      get account_path(section: 'identity')
       assert_response :success, "#{role.type} should have access to edit himself"
       assert_template 'users/_edit_identity'
       assert_select "form[action=?]", account_path(role)
@@ -128,7 +128,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
 
     sign_in(main_teacher)
 
-    get '/account/school'
+    get account_path(section: 'school')
     assert_response :success
     assert_template 'users/_edit_school'
     assert_template 'users/form/_select_school'
