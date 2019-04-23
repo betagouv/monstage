@@ -15,10 +15,10 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
       fill_in "Adresse électronique académique", with: 'fourcade.m@gmail.com'
-      fill_in "Mot de passe", with: "kikoololletest"
+      fill_in "Choisir un mot de passe", with: "kikoololletest"
       fill_in "Prénom", with: "Martin"
       fill_in "Nom", with: "Fourcade"
-      fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
+      fill_in "Confirmer le mot de passe", with: "kikoololletest"
       click_on "Je m'inscris"
     end
 
@@ -28,8 +28,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("a", text: school_1.city).click
       find("label", text: "#{school_1.name} - #{school_1.city}").click
       fill_in "Adresse électronique académique", with: "fourcade.m@ac-mail.com"
-      fill_in "Mot de passe", with: "kikoololletest"
-      fill_in "Confirmation de mon mot de passe", with: "kikoololletest"
+      fill_in "Choisir un mot de passe", with: "kikoololletest"
+      fill_in "Confirmer le mot de passe", with: "kikoololletest"
       fill_in "Prénom", with: "Martin"
       fill_in "Nom", with: "Fourcade"
       click_on "Je m'inscris"
