@@ -54,7 +54,15 @@ module InternshipApplications
       assert_select "pre", student.resume_volunteer_work
     end
 
-    test "GET #index with submitted offer, shows approve/reject links" do
+     test "GET #index with drafted does not shows internship_application" do
+      internship_application = create(:internship_application, :drafted)
+      sign_in(internship_application.internship_offer.employer)
+      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      assert_response :success
+      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 0
+    end
+
+    test "GET #index with submitted internship_application, shows approve/reject links" do
       internship_application = create(:internship_application, :submitted)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
@@ -64,13 +72,14 @@ module InternshipApplications
       assert_select "i.fas.fa-2x.fa-chevron-right", 0
       assert_select ".collapsible", 1
       assert_select ".collapsible.d-none", 0
+      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
       assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 1)
       assert_has_link_count_to_transition(internship_application, :cancel!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
-    test "GET #index with approved offer, shows cancel! & signed! links" do
+    test "GET #index with approved internship_application, shows cancel! & signed! links" do
       internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)

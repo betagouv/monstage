@@ -15,6 +15,7 @@ class InternshipApplicationCountersHook
                                            .where("internship_offer_weeks.blocked_applications_count > 0")
                                            .count,
       total_applications_count: internship_offer.internship_applications
+                                                .reject(&:drafted?)
                                                 .count,
       approved_applications_count: internship_offer.internship_offer_weeks
                                                    .sum(:approved_applications_count),

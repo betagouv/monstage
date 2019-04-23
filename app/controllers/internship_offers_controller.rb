@@ -10,7 +10,11 @@ class InternshipOffersController < ApplicationController
 
   def show
     @internship_offer = InternshipOffer.find(params[:id])
-    @internship_application = @internship_offer.internship_applications.where(user_id: current_user.id).first
-    @internship_application ||= @internship_offer.internship_applications.build(user_id: current_user.id)
+    current_user_id = current_user.try(:id)
+    @internship_application = @internship_offer.internship_applications
+                                               .where(user_id: current_user_id)
+                                               .first if current_user
+    @internship_application ||= @internship_offer.internship_applications
+                                                 .build(user_id: current_user_id)
   end
 end

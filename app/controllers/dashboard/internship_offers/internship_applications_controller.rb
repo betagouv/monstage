@@ -30,6 +30,7 @@ module Dashboard
 
       def set_intership_applications
         @internship_applications = @internship_offer.internship_applications
+                                                    .where.not(aasm_state: :drafted)
                                                     .order(updated_at: :desc)
                                                     .page(params[:page])
       end

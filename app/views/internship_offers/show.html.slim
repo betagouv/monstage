@@ -2,5 +2,5 @@
 
 = render "internship_offers/show_details", internship_offer: @internship_offer
 
-- if can?(:apply, InternshipOffer) && @internship_offer.has_spots_left?
+- if can?(:apply, InternshipOffer) && @internship_offer.has_spots_left? && user_signed_in?
   = render partial: "internship_applications/form"

@@ -107,5 +107,23 @@ module InternshipOffers
       assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
       assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
     end
+
+    test "GET #show as student with existing submitted, approved, rejected application shows _state component" do
+      weeks = [Week.find_by(number:1, year: 2020), Week.find_by(number:2, year: 2020)]
+      internship_offer = create(:internship_offer, weeks: weeks)
+      student = create(:student, school: create(:school, weeks: weeks))
+      internship_applications = {
+          submitted: create(:internship_application, :submitted, student: student),
+          approved: create(:internship_application, :approved, student: student),
+          rejected: create(:internship_application, :rejected, student: student),
+          convention_signed: create(:internship_application, :convention_signed, student: student)
+      }
+      sign_in(student)
+      get internship_offer_path(internship_offer)
+      assert_response :success
+      internship_applications.each do |aasm_state, internship_application|
+        assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
+      end
+    end
   end
 end
