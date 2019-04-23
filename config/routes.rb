@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: [:index, :show] do
-    resources :internship_applications, only: [:create, :update, :index]
+    resources :internship_applications, only: [:create, :index, :show, :update]
   end
 
   namespace :dashboard, path: "dashboard" do
@@ -21,8 +21,13 @@ Rails.application.routes.draw do
         resources :students, only: [:show, :update], module: 'class_rooms'
       end
     end
+
     resources :internship_offers do
       resources :internship_applications, only: [:update, :index], module: 'internship_offers'
+    end
+
+    namespace :students, path: '/:student_id/' do
+      resources :internship_applications, only: [:index, :show]
     end
   end
 
@@ -30,11 +35,8 @@ Rails.application.routes.draw do
   # resources :curriculum_vitaes, only: [:edit, :update]
 
   get '/dashboard', to: 'dashboard#index'
-  # CV
-  get 'resume', to: "resumes#edit"
-  patch 'resume', to: "resumes#update"
 
-  get 'account', to: 'users#edit'
+  get 'account(/:section)', to: 'users#edit'
   patch 'account', to: 'users#update'
 
   root to: "pages#home"

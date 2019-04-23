@@ -38,12 +38,12 @@ module InternshipApplications
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages',
                                  resume_volunteer_work: 'resume_volunteer_work')
-      internship_application = create(:internship_application, student: student)
+      internship_application = create(:internship_application, :submitted, student: student)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select "h2", "Candidature de #{internship_application.student.name} reçu le #{I18n.localize(internship_application.created_at, format: "%d %B")}"
+      assert_select "h2", "Candidature de #{internship_application.student.name} reçue le #{I18n.localize(internship_application.created_at, format: "%d %B")}"
       assert_select ".student-name", student.name
       assert_select ".school-name", school.name
       assert_select ".school-city", school.city
@@ -54,8 +54,16 @@ module InternshipApplications
       assert_select "pre", student.resume_volunteer_work
     end
 
-    test "GET #index with submitted offer, shows approve/reject links" do
-      internship_application = create(:internship_application, aasm_state: 'submitted')
+     test "GET #index with drafted does not shows internship_application" do
+      internship_application = create(:internship_application, :drafted)
+      sign_in(internship_application.internship_offer.employer)
+      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      assert_response :success
+      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 0
+    end
+
+    test "GET #index with submitted internship_application, shows approve/reject links" do
+      internship_application = create(:internship_application, :submitted)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -64,14 +72,15 @@ module InternshipApplications
       assert_select "i.fas.fa-2x.fa-chevron-right", 0
       assert_select ".collapsible", 1
       assert_select ".collapsible.d-none", 0
+      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
       assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 1)
       assert_has_link_count_to_transition(internship_application, :cancel!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
-    test "GET #index with approved offer, shows cancel! & signed! links" do
-      internship_application = create(:internship_application, aasm_state: 'approved')
+    test "GET #index with approved internship_application, shows cancel! & signed! links" do
+      internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -87,7 +96,7 @@ module InternshipApplications
     end
 
     test "GET #index with rejected offer, does not shows any link" do
-      internship_application = create(:internship_application, aasm_state: 'rejected')
+      internship_application = create(:internship_application, :rejected)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -98,7 +107,7 @@ module InternshipApplications
     end
 
     test "GET #index with convention_signed offer, does not shows any link" do
-      internship_application = create(:internship_application, aasm_state: 'convention_signed')
+      internship_application = create(:internship_application, :convention_signed)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success

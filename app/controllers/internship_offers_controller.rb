@@ -5,11 +5,16 @@ class InternshipOffersController < ApplicationController
 
   def index
     set_internship_offers
-    @internship_offers = @internship_offers.merge(InternshipOffer.filter_by_sector(params[:sector_id])) if params[:sector_id]
+    @internship_offers = @internship_offers.merge(InternshipOffer.by_sector(params[:sector_id])) if params[:sector_id]
   end
 
   def show
     @internship_offer = InternshipOffer.find(params[:id])
-    @internship_application = InternshipApplication.new(user_id: current_user.id) if user_signed_in?
+    current_user_id = current_user.try(:id)
+    @internship_application = @internship_offer.internship_applications
+                                               .where(user_id: current_user_id)
+                                               .first if current_user
+    @internship_application ||= @internship_offer.internship_applications
+                                                 .build(user_id: current_user_id)
   end
 end

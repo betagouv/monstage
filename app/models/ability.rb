@@ -11,6 +11,7 @@ class Ability
       when 'Users::MainTeacher' then main_teacher_abilities(user: user)
       when 'Users::Teacher' then teacher_abilities(user: user)
       when 'Users::Other' then other_abilities(user: user)
+      when 'Users::Operator' then operator_abilities(user: user)
       else
       end
       shared_abilities(user: user)
@@ -27,12 +28,17 @@ class Ability
     can :show, :account
     can :read, InternshipOffer
     can :apply, InternshipOffer
+    can :submit_internship_application, InternshipApplication do |internship_application|
+      internship_application.student.id == user.id
+    end
     can [:show, :update], User
     can [:choose_school, :choose_class_room, :choose_gender_and_birthday], :sign_up
+    can_read_dashboard_students_internship_applications(user: user)
   end
 
   def school_manager_abilities(user:)
     can_create_and_manage_account(user: user)
+    can_read_dashboard_students_internship_applications(user: user)
 
     can_read_dashboard(user: user) do
       can [:create, :new, :update], ClassRoom
@@ -83,6 +89,14 @@ class Ability
     can [:index, :update], InternshipApplication
   end
 
+  def operator_abilities(user:)
+    can :show, :account
+    can :choose_operator, :sign_up
+    can :create, InternshipOffer
+    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
+    can :index, InternshipApplication
+  end
+
   def god_abilities(user:)
     can :show, :account
     can :manage, School
@@ -92,6 +106,26 @@ class Ability
 
 
   private
+
+  def can_read_dashboard_students_internship_applications(user:)
+    can [:dashboard_index], Users::Student do |student|
+      student.id == user.id || student_managed_by?(student: student, user: user)
+    end
+
+    can [:dashboard_show], InternshipApplication do |internship_application|
+      internship_application.student.id == user.id ||
+        student_managed_by?(student: internship_application.student, user: user)
+    end
+  end
+  def student_managed_by?(student:, user:)
+    student.school_id == user.school_id && (
+      user.is_a?(Users::Teacher) ||
+      user.is_a?(Users::MainTeacher) ||
+      user.is_a?(Users::SchoolManager) ||
+      user.is_a?(Users::Other)
+    )
+  end
+
   def shared_abilities(user:)
     can :update, user
   end
@@ -100,6 +134,7 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school], :sign_up
+    can :choose_school, User, id: user.id
     yield if block_given?
   end
 

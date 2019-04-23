@@ -43,6 +43,8 @@ fr:
       default: "%d/%m/%Y"
       long: "%e %B %Y"
       short: "%e %b"
+      human_mm_dd: "%e %B"
+
     month_names:
     -
     - janvier
@@ -215,4 +217,5 @@ fr:
       default: "%d %B %Y %Hh %Mmin %Ss"
       long: "%A %d %B %Y %Hh%M"
       short: "%d %b %Hh%M"
+      human_mm_dd: "%e %B"
     pm: pm

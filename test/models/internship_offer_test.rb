@@ -27,9 +27,9 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:tutor_phone]
     assert_not_empty internship_offer.errors[:tutor_email]
     assert_not_empty internship_offer.errors[:is_public]
-    assert_not_empty internship_offer.errors[:employer_street]
-    assert_not_empty internship_offer.errors[:employer_zipcode]
-    assert_not_empty internship_offer.errors[:employer_city]
+    assert_not_empty internship_offer.errors[:street]
+    assert_not_empty internship_offer.errors[:zipcode]
+    assert_not_empty internship_offer.errors[:city]
     assert_not_empty internship_offer.errors[:employer_name]
     assert_not_empty internship_offer.errors[:coordinates]
   end

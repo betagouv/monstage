@@ -3,6 +3,7 @@
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
   = form.hidden_field :employer_id, value: current_user.id
+  = form.hidden_field :employer_type, value: current_user.class.name
 
   small.form-text.text-muted.mt-0.mb-3
     a href="/exemple-offre-ideale-ministere" title="Exemple d'offre idéale - Agriculture" target="_blank"
@@ -43,7 +44,7 @@
     = form.label :sector_id do
       = "Secteur d'activité"
       = form.rg2a_required_content_tag
-    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: internship_sectors_options_for_default }, class: "form-control col-lg-6"
+    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
 
   fieldset data={controller: 'algolia-place'}
     legend Où?
@@ -58,23 +59,41 @@
       .form-row
         .col-sm-6
           .form-group
-            = form.label :employer_street do
+            = form.label :street do
               = 'Rue'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
+            = form.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
         .col-sm-4
           .form-group
-            = form.label :employer_city do
+            = form.label :city do
               = 'Ville'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
+            = form.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
         .col-sm-2
           .form-group
-            = form.label :employer_zipcode do
+            = form.label :zipcode do
               = 'Code postal'
               = form.rg2a_required_content_tag
-            = form.text_field :employer_zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
-
+            = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+      .form-row
+        .col-sm-4
+          .form-group
+            = form.label :department do
+              = 'Département'
+              = form.rg2a_required_content_tag
+            = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+        .col-sm-4
+          .form-group
+            = form.label :region do
+              = 'Région'
+              = form.rg2a_required_content_tag
+            = form.text_field :region, class: "form-control", required: true, data: {target: 'algolia-place.regionInput'}
+        .col-sm-4
+          .form-group
+            = form.label :academy do
+              = 'Académie'
+              = form.rg2a_required_content_tag
+            = form.text_field :academy, class: "form-control", required: true, data: {target: 'algolia-place.academyInput'}
   fieldset
     legend Quand ?
     .form-group
@@ -178,7 +197,9 @@
     .form-group
       = form.label :employer_description do
         = "Activités"
-      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+        = form.rg2a_required_content_tag
+
+      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }, required: true
 
     .form-group
       = form.label :employer_website, 'Site web'
@@ -190,10 +211,10 @@
     fieldset
       legend Accompagnement
       .form-group
-        = form.label :operator_names do
+        = form.label :operator_ids do
           = "Opérateur"
           small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs
-        = form.select :operator_names, options_for_select(operator_names, selected: @internship_offer.operator_names), {include_hidden: false}, class: "form-control col-lg-6", multiple: true
+        = form.select :operator_ids, options_from_collection_for_select(Operator.all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true, disabled: current_user.is_a?(Users::Operator)
 
 
   = form.submit 'Soumettre', class: 'btn btn-primary'

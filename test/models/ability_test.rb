@@ -10,7 +10,9 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test "Student" do
-    ability = Ability.new(build(:student))
+    student = create(:student)
+    ability = Ability.new(student)
+    internship_application = create(:internship_application, student: student)
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
     assert(ability.can?(:apply, InternshipOffer.new),
@@ -25,6 +27,9 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_class_room')
     assert(ability.can?(:choose_gender_and_birthday, :sign_up),
            'student should be able to choose_gender_and_birthday')
+    assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:internship_application)))
   end
 
   test "Employer" do
@@ -53,10 +58,16 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'SchoolManager' do
-    ability = Ability.new(build(:school_manager))
+    student = create(:student)
+    school_manager = create(:school_manager, school: student.school)
+    internship_application = create(:internship_application, student: student)
+    ability = Ability.new(school_manager)
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
     assert(ability.can?(:show , ClassRoom))
+    assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:internship_application)))
   end
 
   test 'MainTeacher' do

@@ -15,10 +15,8 @@ module InternshipApplications
                                                }}
       assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to internship_offers_path
+        assert_redirected_to internship_offer_internship_application_path(internship_offer, InternshipApplication.last)
       end
-      assert_enqueued_emails 1
-
 
       created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.id, created_internship_application.internship_offer_week.id

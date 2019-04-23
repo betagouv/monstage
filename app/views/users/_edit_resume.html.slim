@@ -1,0 +1,24 @@
+h1.h2 Modifier mon CV
+p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur
+  avec votre candidature. Sauf si vous le laissez vide.
+
+p Le CV aide l'employeur à découvrir votre parcours, vos habilités et compétences.
+
+= form_for current_user, as: :user, url: account_path(current_user), method: :patch do |f|
+  .form-group
+    = f.label :resume_educational_background do
+      = 'Parcours Scolaire'
+      small.form-text.text-muted Classes suivies jusqu'à maintenant
+    = f.text_area :resume_educational_background, class: 'form-control col-lg-6'
+  .form-group
+    = f.label :resume_volunteer_work do
+      = 'Activités extra scolaires'
+      small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
+    = f.text_area :resume_volunteer_work, class: 'form-control col-lg-6'
+  .form-group
+    = f.label :resume_other do
+      = 'Langues vivantes'
+      small.form-text.text-muted Langues étudiées et/ou parlées
+    = f.text_area :resume_languages, class: 'form-control col-lg-6'
+
+  = f.submit 'Enregistrer', class: 'btn btn-primary'

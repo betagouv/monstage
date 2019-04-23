@@ -2,11 +2,22 @@
 = render "title", internship_offers: @internship_offers
 
 - if can? :apply, InternshipOffer
-  .row.bg-light
+  .row
     .col-12
-      .filter-section.py-3 data-controller="internship-index"
-        label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
-        = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: internship_sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+      .filter-section data-controller="internship-index"
+        div data-controller="help"
+          .form-group.row.no-gutters
+            label.col-4.mb-0.align-self-center for="internship-offer-sector-filter"
+              = "Secteur"
+              a.btn.btn-link.py-0 data-action="click->help#toggle"
+                i.fa.fa-question-circle
+
+            .col-8= select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+          .form-group.row.no-gutter.d-none data-target="help.content"
+            .col-12
+              .alert.alert-info.alert-outlined
+                = "Retrouvez tous les secteurs sur "
+                = link_to "Onisep.fr", "http://www.onisep.fr/"
 
 - if @internship_offers.blank?
   .row

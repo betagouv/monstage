@@ -1,6 +1,8 @@
 module Users
   class Employer < User
-    has_many :internship_offers, dependent: :destroy
+    has_many :internship_offers, as: :employer,
+                                 dependent: :destroy
+
 
     scope :targeted_internship_offers, -> (user:) {
       user.internship_offers

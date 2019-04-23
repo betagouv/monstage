@@ -2,9 +2,9 @@ class InternshipOfferWeek < ApplicationRecord
   belongs_to :internship_offer
   belongs_to :week
 
-  has_many :internship_applications
+  has_many :internship_applications, dependent: :destroy
 
-  delegate :select_text_method, to: :week
+  delegate :select_text_method, :human_select_text_method, to: :week
   delegate :max_candidates, to: :internship_offer
 
   scope :ignore_max_candidates_reached, -> (max_candidates:) {

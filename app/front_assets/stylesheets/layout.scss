@@ -5,7 +5,15 @@ html{
 .development {
   border: 3px solid rgba($cyan, .5);
 }
-
+@include media-breakpoint-down(xs) {
+  .nav-banner{
+    font-size: .8em;
+    .nav-link{
+      padding-left: .5rem;
+      padding-right: .5rem;
+    }
+  }
+}
 .staging {
   border: 3px solid rgba($blue, .5);
 }
@@ -21,4 +29,7 @@ pre.word-breakable-content {
 
 .table-caption-top{
   caption { caption-side: top };
+}
+.opacity-05{
+  opacity: .5;
 }

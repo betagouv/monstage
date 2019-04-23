@@ -17,6 +17,21 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  scope :order_by_aasm_state, -> {
+    select("#{table_name}.*")
+    .select(%Q(
+      CASE
+        WHEN aasm_state = 'convention_signed' THEN 0
+        WHEN aasm_state = 'drafted' THEN 1
+        WHEN aasm_state = 'approved' THEN 2
+        WHEN aasm_state = 'submitted' THEN 3
+        WHEN aasm_state = 'rejected' THEN 4
+        ELSE 0
+      END as orderable_aasm_state
+    ))
+    .order("orderable_aasm_state")
+  }
+
   def internship_offer_week_has_spots_left
     unless internship_offer_week && internship_offer_week.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
@@ -28,11 +43,20 @@ class InternshipApplication < ApplicationRecord
   end
 
   aasm do
-    state :submitted, initial: true
-    state :approved, :rejected, :convention_signed
+    state :drafted, initial: true
+    state :submitted, :approved, :rejected, :convention_signed
+
+    event :submit do
+      transitions from: :drafted, to: :submitted, :after => Proc.new { |*args|
+        update!(submitted_at: Date.today)
+        EmployerMailer.new_internship_application_email(internship_application: self)
+                      .deliver_later
+      }
+    end
 
     event :approve do
       transitions from: :submitted, to: :approved, :after => Proc.new { |*args|
+        update!(approved_at: Date.today)
         StudentMailer.internship_application_approved_email(internship_application: self)
                      .deliver_later
       }
@@ -40,17 +64,22 @@ class InternshipApplication < ApplicationRecord
 
     event :reject do
       transitions from: :submitted, to: :rejected, :after => Proc.new { |*args|
+        update!(rejected_at: Date.today)
         StudentMailer.internship_application_rejected_email(internship_application: self)
                      .deliver_later
       }
     end
 
     event :cancel do
-      transitions from: :approved, to: :rejected, :after => Proc.new { |*args| }
+      transitions from: :approved, to: :rejected, :after => Proc.new { |*args|
+        update!(rejected_at: Date.today)
+      }
     end
 
     event :signed do
-      transitions from: :approved, to: :convention_signed, :after => Proc.new { |*args| }
+      transitions from: :approved, to: :convention_signed, :after => Proc.new { |*args|
+        update!(convention_signed_at: Date.today)
+      }
     end
   end
 end

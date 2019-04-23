@@ -24,4 +24,12 @@ class User < ApplicationRecord
   def after_sign_in_path
     custom_dashboard_path
   end
+
+  def dashboard_name
+    "Mon tableau"
+  end
+
+  def default_account_section
+    'identity'
+  end
 end

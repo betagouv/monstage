@@ -9,9 +9,9 @@ class InternshipOffer < ApplicationRecord
             :tutor_email,
             :max_internship_week_number,
             :employer_name,
-            :employer_street,
-            :employer_zipcode,
-            :employer_city,
+            :street,
+            :zipcode,
+            :city,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
@@ -31,26 +31,31 @@ class InternshipOffer < ApplicationRecord
   validates :employer_description, presence: true, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
   has_many :internship_applications, through: :internship_offer_weeks
-  belongs_to :employer, class_name: "Users::Employer"
+  has_many :weeks, through: :internship_offer_weeks
+
+  has_many :internship_offer_operators, dependent: :destroy
+  has_many :operators, through: :internship_offer_operators
+
+  belongs_to :employer, polymorphic: true
 
   belongs_to :school, optional: true # reserved to school
+
+
   belongs_to :sector
 
   scope :for_user, -> (user:) {
     return merge(all) unless user # fuck it ; should have a User::Visitor type
     merge(user.class.targeted_internship_offers(user: user))
   }
+  scope :by_sector, -> (sector_id) {
+    where(sector_id: sector_id)
+  }
   scope :by_weeks, -> (weeks:) {
     joins(:weeks).where(weeks: {id: weeks.ids}).distinct
   }
 
-  scope :filter_by_sector, -> (sector_id) {
-    where(sector_id: sector_id)
-  }
   after_initialize :init
-
   paginates_per PAGE_SIZE
 
   def is_individual?
@@ -67,9 +72,9 @@ class InternshipOffer < ApplicationRecord
 
   def formatted_autocomplete_address
     [
-      employer_street,
-      employer_city,
-      employer_zipcode
+      street,
+      city,
+      zipcode
     ].compact.uniq.join(', ')
   end
 

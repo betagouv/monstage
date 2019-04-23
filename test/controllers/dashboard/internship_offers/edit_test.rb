@@ -32,7 +32,7 @@ module InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:internship_offer, employer: employer)
-      internship_application = create(:internship_application, internship_offer: internship_offer)
+      internship_application = create(:internship_application, :submitted, internship_offer: internship_offer)
 
       get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
       assert_response :success
@@ -40,6 +40,16 @@ module InternshipOffers
       assert_select "select#internship_offer_week_ids[disabled]"
       assert_select "input#internship_offer_max_candidates[disabled]"
       assert_select "input#internship_offer_max_internship_week_number[disabled]"
+    end
+
+    test 'GET #edit as Operator with disabled fields if applications exist' do
+      operator = create(:user_operator)
+      sign_in(operator)
+      internship_offer = create(:internship_offer, employer: operator)
+
+      get edit_dashboard_internship_offer_path(internship_offer)
+      assert_response :success
+      assert_select "#internship_offer_operator_ids[disabled]"
     end
   end
 end

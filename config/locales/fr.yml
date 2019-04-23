@@ -45,11 +45,11 @@ fr:
               blank: "Le stage doit être soit collectif, soit individuel"
             description:
               too_long: La description doit faire au maximum 275 caractères
-            employer_street:
+            street:
               blank: "Veuillez saisir la rue de l'employeur manquante"
-            employer_zipcode:
+            zipcode:
               blank: "Veuillez saisir le code postal de l'employeur manquante"
-            employer_city:
+            city:
               blank: "Veuillez saisir la rue de la ville l'employeur manquante"
             sector:
               required: "Veuillez choisir un secteur pour l'offre"
@@ -92,6 +92,11 @@ fr:
           attributes:
             gender:
               blank: Veuillez saisir un sexe
+
+        users/operator:
+          attributes:
+            operator:
+              blank: Veuillez saisir un opérateur
 
         internship_application:
           attributes:

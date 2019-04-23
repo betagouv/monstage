@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def edit
     authorize! :update, current_user
+    params[:section] ||= current_user.default_account_section
   end
 
   def update
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
     current_user.update!(user_params)
     flash_message = 'Compte mis à jour avec succès.'
     flash_message += " Veuillez confirmer votre nouvelle adresse email." if current_user.unconfirmed_email
-    redirect_to account_path, flash: { success: flash_message }
+    redirect_back fallback_location: account_path, flash: { success: flash_message }
   rescue ActiveRecord::RecordInvalid => error
     render :edit, status: :bad_request
   end
@@ -21,6 +22,10 @@ class UsersController < ApplicationController
                                  :first_name,
                                  :last_name,
                                  :email,
-                                 :class_room_id)
+                                 :class_room_id,
+                                 :resume_educational_background,
+                                 :resume_volunteer_work,
+                                 :resume_other,
+                                 :resume_languages)
   end
 end
