@@ -41,7 +41,7 @@ module Dashboard
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
         internship_applications = {
-          drafted: create(:internship_application, :draft, student: student),
+          drafted: create(:internship_application, :drafted, student: student),
           submitted: create(:internship_application, :submitted, student: student),
           approved: create(:internship_application, :approved, student: student),
           rejected: create(:internship_application, :rejected, student: student),
@@ -56,8 +56,8 @@ module Dashboard
           assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
         end
-        assert_select ".alert-warning small.alert-internship-application-state",
-                      text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
+        assert_select ".alert-info strong.alert-internship-application-state",
+                      text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select ".alert-warning small.alert-internship-application-state",
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",

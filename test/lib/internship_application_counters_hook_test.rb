@@ -50,12 +50,19 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   end
 
   test ".update_internship_offer_counters tracks internship_offer.total_applications_count" do
+    @internship_application.aasm_state = :submitted
     assert_changes -> { @internship_offer.total_applications_count },
                    from: 0,
                    to: 1 do
       @internship_application.save!
       @internship_offer.reload
     end
+  end
+  test ".update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count" do
+    create(:internship_application, :drafted, internship_offer_week: @internship_offer_week,
+                                              internship_offer: @internship_offer)
+
+    assert_equal 0, @internship_offer.reload.total_applications_count
   end
 
   test ".update_internship_offer_counters tracks internship_offer.convention_signed_applications_count" do
