@@ -8,6 +8,7 @@ fr:
     registrations:
       user:
         signed_up_but_not_approved: Votre compte est bien créé mais vous ne pouvez pas vous connecter tant que votre professeur principal ne l'a pas validé.
+        signed_up_but_unconfirmed: Un message d'activation vous a été envoyé par email. Veuillez suivre les instructions qu'il contient.
     failure:
       not_approved: Veuillez faire signer l'autorisation parentale à vos parents et la donner à votre professeur principal pour consulter la liste des stages
   activerecord:
