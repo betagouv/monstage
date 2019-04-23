@@ -2,7 +2,6 @@ require "application_system_test_case"
 
 class InternshipOffersCreateTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  driven_by :selenium, using: :chrome
 
   test 'student can draft, submit internship_applications' do
     weeks = [Week.find_by(number:1, year: 2020)]
@@ -13,21 +12,24 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     click_on 'Rechercher'
     click_on internship_offer.title
 
+    # show application form
     page.find "#internship-application-closeform", visible: false
     click_on 'Je candidate'
     page.find "#internship-application-closeform", visible: true
 
-    page.find("option[value='#{internship_offer.internship_offer_weeks.first.id}']").select_option
+    # fill in application form
+    select weeks.first.select_text_method, from: 'internship_application_internship_offer_week_id'
     fill_in 'internship_application_motivation', with: 'Je suis au taquet'
 
 
-    assert_changes -> { student.reload.internship_applications.count },
+    assert_changes -> { student.internship_applications
+                               .where(aasm_state: :drafted)
+                               .count },
                   from: 0,
                   to: 1 do
       click_on 'Valider'
     end
-    assert_changes -> { student.reload
-                               .internship_applications
+    assert_changes -> { student.internship_applications
                                .where(aasm_state: :submitted)
                                .count },
                   from: 0,
