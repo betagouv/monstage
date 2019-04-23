@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#index'
 
-  get 'account(/:section)', to: 'users#edit'
+  get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
   root to: "pages#home"
