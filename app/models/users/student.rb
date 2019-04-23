@@ -51,5 +51,9 @@ module Users
     def custom_dashboard_path
       return url_helpers.dashboard_students_internship_applications_path(self)
     end
+
+    def dashboard_name
+      "Candidatures"
+    end
   end
 end

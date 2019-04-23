@@ -1,8 +1,8 @@
 .alert.alert-warning.alert-outlined.m-0.p-1.
   .row.align-items-center.no-gutters
-    .col-2.text-center
+    .col-2.col-sm-auto.text-center.p-3
       i.fas.fa-exclamation-triangle
-    .col-10
+    .col
       small.alert-internship-application-state= "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
       br
       small= "Convention à faire signer et à envoyer"
