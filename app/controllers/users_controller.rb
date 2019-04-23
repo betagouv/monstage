@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     current_user.update!(user_params)
     flash_message = 'Compte mis à jour avec succès.'
     flash_message += " Veuillez confirmer votre nouvelle adresse email." if current_user.unconfirmed_email
-    redirect_to account_path, flash: { success: flash_message }
+    redirect_back fallback_location: account_path, flash: { success: flash_message }
   rescue ActiveRecord::RecordInvalid => error
     render :edit, status: :bad_request
   end
