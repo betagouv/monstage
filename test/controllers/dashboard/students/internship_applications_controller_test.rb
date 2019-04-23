@@ -34,7 +34,7 @@ module Dashboard
         assert_response :success
         assert_template 'dashboard/students/internship_applications/index'
         assert_select "h1.h2", text: "Mes candidatures"
-        assert_select "h2.h3", text: "Aucun stage séléctionné"
+        assert_select "h2.h3", text: "Aucune candidature"
         assert_select "a.btn.btn-primary[href=?]", internship_offers_path
       end
 
