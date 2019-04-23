@@ -1,0 +1,27 @@
+h1.h2 Modifier mon identité
+
+= form_for(current_user, as: :user, url: account_path(current_user), method: :patch) do |f|
+  = f.rg2a_explain_required_asterisk
+  = render 'layouts/form_errors', resource: current_user, resource_name: :user
+
+  .form-group
+    = f.label :first_name do
+      = 'Prénom'
+      = f.rg2a_required_content_tag
+    = f.text_field :first_name, class: 'form-control col-lg-6',
+      required: true
+  .form-group
+    = f.label :last_name do
+      = 'Nom'
+      = f.rg2a_required_content_tag
+    = f.text_field :last_name, class: 'form-control col-lg-6',
+      required: true
+
+  .form-group
+    = f.label :email do
+      = 'Email'
+      = f.rg2a_required_content_tag
+    = f.text_field :email, class: 'form-control col-lg-6', required: true
+
+  .actions
+    = f.submit 'Enregistrer', class: 'btn btn-primary'

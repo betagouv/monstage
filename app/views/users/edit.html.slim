@@ -1,45 +1,11 @@
-- if current_user.is_a?(Users::Student)
-  = render 'dashboard/student_navbar'
+= render "edit_#{params[:section]}"
 
-h1.h2 Mon compte
-
-= form_for(current_user, as: :user, url: account_path(current_user), method: :patch) do |f|
-  = f.rg2a_explain_required_asterisk
-  = render 'layouts/form_errors', resource: current_user, resource_name: :user
-
-  .form-group
-    = f.label :first_name do
-      = 'Prénom'
-      = f.rg2a_required_content_tag
-    = f.text_field :first_name, class: 'form-control col-lg-6',
-      required: true
-  .form-group
-    = f.label :last_name do
-      = 'Nom'
-      = f.rg2a_required_content_tag
-    = f.text_field :last_name, class: 'form-control col-lg-6',
-      required: true
-
-  - if current_user.respond_to?(:school)
-    = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room), required: true
-
-
-  - if can?(:choose_operator, :sign_up)
-    .form-group
-      = f.label :operator
-        | Opérateur
-        = f.rg2a_required_content_tag
-      = f.select :operator_id, options_from_collection_for_select(Operator.all, :id, :name, current_user.operator), { prompt: operator_options_for_default }, class: "form-control col-lg-6", disabled: true
-
-  .form-group
-    = f.label :email do
-      = 'Email'
-      = f.rg2a_required_content_tag
-    = f.text_field :email, class: 'form-control col-lg-6', required: true
-
-  .actions
-    = f.submit 'Enregistrer', class: 'btn btn-primary'
-
-= link_to destroy_user_session_path, class: 'btn btn-danger mt-3', method: :delete do
-  i.fas.fa-sign-out-alt.mr-1
-  | Déconnexion
+ul.list-group.mt-5
+  - if current_user.is_a?(Users::Student)
+    = link_to 'Modifier mon CV', '/account/resume', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'resume'}"
+  = link_to 'Modifier mon identité', '/account/identity', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'identity'}"
+  - if can?(:choose_school, current_user)
+    = link_to 'Modifier mon collège', '/account/school', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'school'}"
+  = link_to destroy_user_session_path, class: "list-group-item list-group-item-action", method: :delete do
+    i.fas.fa-sign-out-alt.mr-1
+    | Déconnexion

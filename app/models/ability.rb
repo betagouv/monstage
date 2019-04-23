@@ -134,6 +134,7 @@ class Ability
     can :show, :account
     can [:show, :edit, :update], User
     can [:choose_school], :sign_up
+    can :choose_school, User, id: user.id
     yield if block_given?
   end
 

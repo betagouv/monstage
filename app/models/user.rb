@@ -28,4 +28,8 @@ class User < ApplicationRecord
   def dashboard_name
     "Mon tableau"
   end
+
+  def default_account_section
+    'identity'
+  end
 end

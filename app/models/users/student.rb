@@ -55,5 +55,9 @@ module Users
     def dashboard_name
       "Candidatures"
     end
+
+    def default_account_section
+      'resume'
+    end
   end
 end
