@@ -5,10 +5,19 @@
   .row
     .col-12
       .filter-section data-controller="internship-index"
+        div data-controller="help"
+          .form-group.row.no-gutters
+            label.col-4.mb-0.align-self-center for="internship-offer-sector-filter"
+              = "Secteur"
+              a.btn.btn-link.py-0 data-action="click->help#toggle"
+                i.fa.fa-question-circle
 
-        .form-group.row.no-gutters
-          label.col-3 for="internship-offer-sector-filter" Secteur
-          .col-9= select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+            .col-8= select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+          .form-group.row.no-gutter.d-none data-target="help.content"
+            .col-12
+              .alert.alert-info.alert-outlined
+                = "Retrouvez tous les secteurs sur "
+                = link_to "Onisep.fr", "http://www.onisep.fr/"
 
 - if @internship_offers.blank?
   .row

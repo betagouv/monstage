@@ -1,13 +1,17 @@
-h2.h6 Le stage
-p = internship_offer.description
+.row.bg-internship-title
+  .col-12
+    h2.h6 Le stage
+    p = internship_offer.description
+    p.text-muted.mb-0
+      - if internship_offer.is_individual?
+        | Stage individuel
+      - else
+        | Stage collectif
+    p.text-muted
+      = "Semaines : "
+      = internship_offer.weeks.map(&:short_select_text_method).join(' ou ')
 
-p.text-muted
-  - if internship_offer.is_individual?
-    | Stage individuel
-  - else
-    | Stage collectif
-
-h2.h6 L'entreprise
+h2.h6.mt-3 L'entreprise
 p = internship_offer.employer_name
 - if internship_offer.employer_website.present?
   p.text-truncate
