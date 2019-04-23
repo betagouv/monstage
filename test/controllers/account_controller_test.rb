@@ -31,6 +31,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       sign_in(role)
       get '/account/identity'
       assert_response :success, "#{role.type} should have access to edit himself"
+      assert_template 'users/_edit_identity'
       assert_select "form[action=?]", account_path(role)
     end
   end
@@ -119,4 +120,18 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "input#user_email[required]"
   end
+
+  test 'GET edit as main_teacher can change school' do
+    school = create(:school)
+    school_manager = create(:school_manager, school: school)
+    main_teacher = create(:main_teacher, school: school)
+
+    sign_in(main_teacher)
+
+    get '/account/school'
+    assert_response :success
+    assert_template 'users/_edit_school'
+    assert_template 'users/form/_select_school'
+  end
+
 end

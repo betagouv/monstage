@@ -1,6 +1,6 @@
 = render "edit_#{params[:section]}"
 
-ul.list-group.mt-3
+ul.list-group.mt-5
   - if current_user.is_a?(Users::Student)
     = link_to 'Modifier mon CV', '/account/resume', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'resume'}"
   = link_to 'Modifier mon identité', '/account/identity', class: "list-group-item list-group-item-action #{'active' if params[:section] == 'identity'}"
