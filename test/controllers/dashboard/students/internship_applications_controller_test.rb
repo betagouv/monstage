@@ -95,6 +95,19 @@ module Dashboard
         assert_template 'dashboard/students/_navigation'
         assert_template 'dashboard/students/_timeline'
       end
+
+      test 'GET internship_applications#show with drafted can be submitted' do
+        student = create(:student)
+        sign_in(student)
+        internship_application = create(:internship_application, student: student)
+
+        get dashboard_students_internship_application_path(student,
+                                                           internship_application)
+        assert_response :success
+        assert_select "a.btn-primary[href=\"#{internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :submit!)}\"]"
+        assert_select "a.btn-primary[data-method=patch]"
+      end
+
     end
   end
 end
