@@ -14,7 +14,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     get account_path
     assert_template "users/edit"
     assert_template "users/_edit_resume"
-    assert_select "form[action=?]", account_path(student)
+    assert_select "form[action=?]", account_path
   end
 
   test "GET edit render :edit success with all roles" do
@@ -32,7 +32,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       get account_path(section: 'identity')
       assert_response :success, "#{role.type} should have access to edit himself"
       assert_template 'users/_edit_identity'
-      assert_select "form[action=?]", account_path(role)
+      assert_select "form[action=?]", account_path
     end
   end
 
