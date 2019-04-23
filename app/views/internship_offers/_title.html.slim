@@ -1,4 +1,7 @@
 .row
-  .col-12
-    h1.h2#internship-offers-count
+  .col-12.mb-3
+    h1.h2.mb-0#internship-offers-count
       = "#{internship_offers.total_count} #{'offre'.pluralize(internship_offers.total_count)} de stage"
+
+    - if user_signed_in? && current_user.respond_to?(:school)
+      small= "Autour du #{current_user.school.name}"

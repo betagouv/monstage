@@ -2,11 +2,13 @@
 = render "title", internship_offers: @internship_offers
 
 - if can? :apply, InternshipOffer
-  .row.bg-light
+  .row
     .col-12
-      .filter-section.py-3 data-controller="internship-index"
-        label for="internship-offer-sector-filter" Sélectionner un domaine d'activité
-        = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: sectors_options_for_default, id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+      .filter-section data-controller="internship-index"
+
+        .form-group.row.no-gutters
+          label.col-3 for="internship-offer-sector-filter" Secteur
+          .col-9= select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
 
 - if @internship_offers.blank?
   .row
