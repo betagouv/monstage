@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   get 'resume', to: "resumes#edit"
   patch 'resume', to: "resumes#update"
 
-  get 'account', to: 'users#edit'
+  get 'account(/:section)', to: 'users#edit'
   patch 'account', to: 'users#update'
 
   root to: "pages#home"

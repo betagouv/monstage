@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def edit
     authorize! :update, current_user
+    params[:section] ||= current_user.default_account_section
   end
 
   def update
@@ -21,6 +22,10 @@ class UsersController < ApplicationController
                                  :first_name,
                                  :last_name,
                                  :email,
-                                 :class_room_id)
+                                 :class_room_id,
+                                 :resume_educational_background,
+                                 :resume_volunteer_work,
+                                 :resume_other,
+                                 :resume_languages)
   end
 end
