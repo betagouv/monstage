@@ -41,7 +41,7 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_select "#new_internship_application", 1
-      assert_select 'option', text: weeks.first.select_text_method, count: 1
+      assert_select 'option', text: weeks.first.human_select_text_method, count: 1
       assert_select 'a[href=?]', "#internship-application-form", count: 1
     end
 
@@ -68,10 +68,10 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
 
-      assert_select 'select option', text: internship_weeks[0].select_text_method, count: 0
-      assert_select 'select option', text: internship_weeks[1].select_text_method, count: 1
-      assert_select 'select option', text: internship_weeks[2].select_text_method, count: 1
-      assert_select 'select option', text: internship_weeks[3].select_text_method, count: 0
+      assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
+      assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
+      assert_select 'select option', text: internship_weeks[2].human_select_text_method, count: 1
+      assert_select 'select option', text: internship_weeks[3].human_select_text_method, count: 0
     end
 
     test "GET #show as a student only displays weeks that are not blocked" do
@@ -89,8 +89,8 @@ module InternshipOffers
       sign_in(create(:student, school: school))
       get internship_offer_path(internship_offer)
 
-      assert_select 'select option', text: blocked_internship_week.week.select_text_method, count: 0
-      assert_select 'select option', text: available_internship_week.week.select_text_method, count: 1
+      assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
+      assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
     end
 
     test "GET #show as student with existing draft application shows the draft" do
@@ -119,9 +119,9 @@ module InternshipOffers
           convention_signed: create(:internship_application, :convention_signed, student: student)
       }
       sign_in(student)
-      get internship_offer_path(internship_offer)
-      assert_response :success
       internship_applications.each do |aasm_state, internship_application|
+        get internship_offer_path(internship_application.internship_offer)
+        assert_response :success
         assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
       end
     end

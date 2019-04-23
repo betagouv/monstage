@@ -21,11 +21,11 @@ class InternshipApplication < ApplicationRecord
     select("#{table_name}.*")
     .select(%Q(
       CASE
-        WHEN aasm_state = 'drafted' THEN 0
-        WHEN aasm_state = 'submitted' THEN 1
+        WHEN aasm_state = 'convention_signed' THEN 0
+        WHEN aasm_state = 'drafted' THEN 1
         WHEN aasm_state = 'approved' THEN 2
-        WHEN aasm_state = 'rejected' THEN 3
-        WHEN aasm_state = 'convention_signed' THEN 4
+        WHEN aasm_state = 'submitted' THEN 3
+        WHEN aasm_state = 'rejected' THEN 4
         ELSE 0
       END as orderable_aasm_state
     ))
