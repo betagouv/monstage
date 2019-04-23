@@ -1,4 +1,3 @@
-
 = render "title", internship_offers: @internship_offers
 
 - if can? :apply, InternshipOffer
@@ -25,4 +24,5 @@
 - else
   .row= render partial: "internship_offer", collection: @internship_offers
 
-  = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})
+  .row.mt-3
+    .col-12= paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})

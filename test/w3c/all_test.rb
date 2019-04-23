@@ -97,4 +97,18 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
       get users_choose_profile_path
     end
   end
+
+  test 'static pages' do
+    [
+      :root_path,
+      :les_10_commandements_d_une_bonne_offre_path,
+      :exemple_offre_ideale_ministere_path,
+      :exemple_offre_ideale_sport_path
+    ].map do |page_path|
+      run_request_and_cache_response(report_as: page_path.to_s) do
+        path = Rails.application.routes.url_helpers.send(page_path)
+        get path
+      end
+    end
+  end
 end

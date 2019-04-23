@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" class="<%= env_class_name %>">
+<html lang="fr" >
   <head>
     <title>Monstage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,8 +13,8 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true  %>
   </head>
 
-  <body>
-    <div class="container pb-3">
+  <body name="top" class="<%= env_class_name %>">
+    <div class="content container">
       <header role="banner">
         <div class="row">
           <div class="col px-0"><%= render 'layouts/navbar' %></div>
@@ -23,12 +23,16 @@
       <%= render 'layouts/flash' %>
       <%= yield %>
     </div>
+    <div class="footer container mt-3 pb-3">
+      <%= render 'layouts/footer' %>
+    </div>
     <%= render 'feedbacks/form' %>
     <% if Rails.env.development? %>
       <script>
         console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
       </script>
     <% end %>
+
     <script defer src="https://use.fontawesome.com/releases/v5.8.0/js/solid.js" integrity="sha384-prcFDC6iTvvWsx2iSZtbDdeMVWWOtxcQXXagr9uPHwi42uae31Y3Q17eehHuC0JL" crossorigin="anonymous" data-turbolinks-eval="false"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/regular.js" integrity="sha384-Uc9toywOA44owltk1MWl0lQZ+L0mBzJkLQcdif6+JtG9izvok9DLJtCZX57Uq3k2" crossorigin="anonymous"  data-turbolinks-eval="false"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.8.0/js/fontawesome.js" integrity="sha384-TAztyRuTlqgZ97tz982rMo44MRC58wyCC0pqKZY3cKWJNkK00qMd3DhQ7R25jpCe" crossorigin="anonymous" data-turbolinks-eval="false"></script>
