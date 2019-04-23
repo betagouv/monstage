@@ -6,13 +6,6 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
   .row
     .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
 
-  .row
-    .col-12
-      - if @internship_application.submitted?
-        p
-          ="L'employeur doit vous répondre "
-          strong= "avant le #{localize(@internship_application.expires_at, format: :human_mm_dd)}."
-
   - if @internship_application.submitted? || @internship_application.approved?
     = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail"}
 

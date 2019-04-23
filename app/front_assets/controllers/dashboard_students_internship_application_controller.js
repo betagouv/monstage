@@ -9,7 +9,11 @@ export default class extends Controller {
                     "linkInternshipOfferDetail",
                     "linkInternshipApplicationDetail",
                     "linkConventionDetail", ];
-
+  stopEventPropagation(event) {
+    if (event) {
+      event.preventDefault()
+    }
+  }
   updateMenu(enabledTarget){
     $(this.linkInternshipOfferDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
     $(this.linkInternshipApplicationDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
@@ -29,16 +33,19 @@ export default class extends Controller {
   enableInternshipOfferDetail(event) {
     this.updateTab(this.internshipOfferDetailTarget);
     this.updateMenu(this.linkInternshipOfferDetailTarget);
+    this.stopEventPropagation(event)
   }
 
   enableInternshipApplicationDetail(event) {
     this.updateTab(this.internshipApplicationDetailTarget);
     this.updateMenu(this.linkInternshipApplicationDetailTarget);
+    this.stopEventPropagation(event)
   }
 
   enableConventionDetail(event) {
     this.updateTab($(this.conventionDetailTarget));
     this.updateMenu(this.linkConventionDetailTarget);
+    this.stopEventPropagation(event)
   }
 
   initWithLocationHash() {

@@ -7,6 +7,8 @@ module Dashboard
       def index
         authorize! :dashboard_index, @current_student
         @internship_applications = @current_student.internship_applications
+                                                   .includes(:internship_offer, :student)
+                                                   .order_by_aasm_state
       end
 
       def show
