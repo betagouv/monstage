@@ -1,0 +1,36 @@
+// see: http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation/
+.text-truncate-max-height-50 {
+  text-align: justify;
+  position: relative;
+  max-height: 50px;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  margin-right: -1em;
+  padding-right: 1em;
+  &:before{
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  &:after{
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    /* bg color = bg color under block */
+    background: white;
+  }
+}

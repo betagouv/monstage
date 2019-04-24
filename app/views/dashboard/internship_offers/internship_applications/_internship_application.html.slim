@@ -8,9 +8,11 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
 
   .col-11.col-sm-8
     h2.h4= "Candidature de #{internship_application.student.name} reçue le #{localize(internship_application.created_at, format: "%d %B")}"
-    p= internship_application.motivation
+    p
+      = "Pour la "
+      strong= "semaine #{internship_application.week.short_select_text_method}"
+    p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
     .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
-      p= "Pour la semaine du #{internship_application.week.select_text_method}"
       p
         strong.student-name= internship_application.student.name
         br
