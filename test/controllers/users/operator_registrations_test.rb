@@ -6,8 +6,8 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
     assert_select 'label', /Adresse électronique/
-    assert_select 'label', /Mot de passe/
-    assert_select 'label', /Confirmation de mon mot de passe/
+    assert_select 'label', /Choisir un mot de passe/
+    assert_select 'label', /Confirmer le mot de passe/
     assert_select 'label', /Opérateur/
   end
 

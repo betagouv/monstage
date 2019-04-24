@@ -18,8 +18,8 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Date de naissance/
     assert_select 'div', /Sexe/
     assert_select 'label', /Adresse électronique/
-    assert_select 'label', /Mot de passe/
-    assert_select 'label', /Confirmation de mon mot de passe/
+    assert_select 'label', /Choisir un mot de passe/
+    assert_select 'label', /Confirmer le mot de passe/
   end
 
   test 'POST Create Student without class fails' do
