@@ -67,10 +67,10 @@ export default class extends Controller {
   initWithDataState() {
     switch(this.data.get('state')) {
       case 'submitted':
-      case 'approved':
       case 'rejected':
         this.enableInternshipApplicationDetail();
         break;
+      case 'approved':
       case 'convention_signed':
         this.enableConventionDetail();
         break;
