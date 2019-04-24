@@ -69,7 +69,7 @@ module Dashboard
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select "small.alert-internship-application-state",
-                      text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].created_at, format: :human_mm_dd)}.",
+                      text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
                       count: 1
 
       end
