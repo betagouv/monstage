@@ -7,12 +7,9 @@ table.table.table-striped.table-bordered.table-hover.table-caption-top
             "Accord parental",
             "Nombre de candidature",
             "Nombre de reponses positives",
-            "Convention signée",
-            "Lieu",
-            "Contact tuteur"]
+            "Convention signée"]
   thead
     tr
       - cols.each do |col|
         th= col
   tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students, locals: {cols: cols}
-
