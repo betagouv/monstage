@@ -23,3 +23,16 @@ $font-family-sans-serif: Roboto, Helvetica, Arial, sans-serif;
 $alert-bg-level: 1;
 $alert-border-level: 1;
 $alert-color-level: 1;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 480px,
+  md: 768px,
+  lg: 1024px
+);
+
+$container-max-widths: (
+  sm: 480px,
+  md: 768px,
+  lg: 1024px
+);

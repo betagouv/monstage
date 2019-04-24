@@ -31,13 +31,20 @@ Rails.application.routes.draw do
     end
   end
 
-  # resources :users, only: [:edit, :update]
-  # resources :curriculum_vitaes, only: [:edit, :update]
-
   get '/dashboard', to: 'dashboard#index'
 
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
+
+  get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
+  get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
+  get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'
+  get '/qui-sommes-nous', to: 'pages#qui_sommes_nous'
+  get '/partenaires', to: 'pages#partenaires'
+  get '/mentions-legales', to: 'pages#mentions_legales'
+  get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
+  get '/faq', to: 'pages#faq'
+  get '/accessibilite', to: 'pages#accessibilite'
 
   root to: "pages#home"
 end

@@ -6,11 +6,9 @@
   = form.hidden_field :employer_type, value: current_user.class.name
 
   small.form-text.text-muted.mt-0.mb-3
-    a href="/exemple-offre-ideale-ministere" title="Exemple d'offre idéale - Agriculture" target="_blank"
-      = "Exemple d'offre idéale 1 (nouvelle fenêtre)"
+    = link_to "Exemple d'offre idéale 1 (nouvelle fenêtre)", exemple_offre_ideale_ministere_path, title: "Exemple d'offre idéale - Agriculture", target: "_blank"
     = " – "
-    a href="/exemple-offre-ideale-sport" title="Exemple d'offre idéale - Sport" target="_blank"
-      = "Exemple d'offre idéale 2 (nouvelle fenêtre)"
+    = link_to "Exemple d'offre idéale 2 (nouvelle fenêtre)", exemple_offre_ideale_sport_path, title: "Exemple d'offre idéale - Sport", target: "_blank"
 
 
   .form-group
@@ -35,8 +33,7 @@
         li Donnez 3 qualités requises (aimer bricoler, être bavard, aimez écrire)
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
         li
-          a href="/les-10-commandements-d-une-bonne-offre-de-stage" title="Consulter les 10 commandements d'une bonne offre de stage" target="_blank"
-            = "Aide à la rédaction  (nouvelle fenêtre)"
+          = link_to "Aide à la rédaction  (nouvelle fenêtre)", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage", target: "_blank"
 
     = form.text_area :description, class: "form-control col-lg-6", required: true, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 

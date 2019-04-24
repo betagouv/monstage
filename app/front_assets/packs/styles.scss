@@ -1,13 +1,19 @@
 @import "../stylesheets/bootstrap/bootstrap";
 
-// would like to use tinytypo from npm / yarn not yet ready ;
-// once ready ; import nicely - follow https://github.com/tetue/tinytypo/issues/27
-// @import '../src/stylesheets/tinytypo';
+@import '../stylesheets/layout/header';
+@import '../stylesheets/layout/footer';
 
 @import '../stylesheets/rg2a';
-@import '../stylesheets/common';
-@import '../stylesheets/layout';
-@import '../stylesheets/account';
-@import '../stylesheets/internship_offers';
-@import '../stylesheets/devise';
-@import '../stylesheets/feedback';
+@import '../stylesheets/environment';
+
+@import '../stylesheets/components/fa';
+@import '../stylesheets/components/help';
+@import '../stylesheets/components/opacity';
+@import '../stylesheets/components/pre';
+@import '../stylesheets/components/table';
+
+@import '../stylesheets/pages/account';
+@import '../stylesheets/pages/internship_offers';
+@import '../stylesheets/pages/devise';
+@import '../stylesheets/pages/feedback';
+

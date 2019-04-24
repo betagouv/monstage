@@ -7,7 +7,7 @@
     paginator    : the paginator that renders the pagination tags inside
 
 == paginator.render do
-  .row.mt-3.no-gutters
+  .row.no-gutters
     .col-4.text-left.text-sm-right
       - unless current_page.first?
         == prev_page_tag unless current_page.first?

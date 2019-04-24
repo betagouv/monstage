@@ -51,7 +51,7 @@ module Dashboard
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select "a.btn.btn-link[href=?]", internship_offers_path
+        assert_select "a.btn.btn-primary[href=?]", internship_offers_path
         internship_applications.each do |aasm_state, internship_application|
           assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
