@@ -24,7 +24,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     freeze_time do
       assert_changes -> { internship_application.reload.submitted_at },
                      from: nil,
-                     to: Date.today do
+                     to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
         EmployerMailer.stub :new_internship_application_email, mock_mail do
@@ -40,7 +40,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,
-                     to: Date.today do
+                     to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
         StudentMailer.stub :internship_application_approved_email, mock_mail do
@@ -57,7 +57,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
-                     to: Date.today do
+                     to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
         StudentMailer.stub :internship_application_rejected_email, mock_mail do
@@ -76,7 +76,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       freeze_time do
         assert_changes -> { internship_application.reload.rejected_at },
                        from: nil,
-                       to: Date.today do
+                       to: Time.now.utc do
           internship_application.cancel!
         end
       end
@@ -91,7 +91,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       freeze_time do
         assert_changes -> { internship_application.reload.convention_signed_at },
                        from: nil,
-                       to: Date.today do
+                       to: Time.now.utc do
           internship_application.signed!
         end
       end

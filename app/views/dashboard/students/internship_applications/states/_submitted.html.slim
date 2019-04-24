@@ -3,6 +3,6 @@
     .col-2.col-sm-auto.text-center.p-3
       i.fas.fa-hourglass-start
     .col
-      small.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.created_at.to_date, format: :human_mm_dd)}."
+      small.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}."
       br
       small= "En attente de réponse"

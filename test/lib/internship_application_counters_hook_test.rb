@@ -7,7 +7,6 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     @internship_offer = build(:internship_offer, internship_offer_weeks: [@internship_offer_week])
     @internship_application = build(:internship_application, internship_offer_week: @internship_offer_week,
                                                              internship_offer: @internship_offer)
-    @hook = InternshipApplicationCountersHook.new(internship_application: @internship_application)
   end
 
 

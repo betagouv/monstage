@@ -1,3 +1,4 @@
+# Services::CounterManager.reset_internship_offer_counters
 module Services
   class CounterManager
     def self.reset_internship_offer_counters
@@ -6,6 +7,10 @@ module Services
         total_applications_count: 0,
         convention_signed_applications_count: 0,
         approved_applications_count: 0
+      )
+      InternshipOfferWeek.update_all(
+        approved_applications_count: 0,
+        blocked_applications_count: 0,
       )
       InternshipApplication.all.map(&:update_all_counters)
     end

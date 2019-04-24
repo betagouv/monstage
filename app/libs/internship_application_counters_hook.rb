@@ -44,5 +44,6 @@ class InternshipApplicationCountersHook
   private
   def initialize(internship_application:)
     @internship_application = internship_application
+    @internship_application.reload
   end
 end
