@@ -4,10 +4,8 @@
 .row
   .col-12
     p La conformité aux normes est un objectif ultérieur mais nous nous soucions de rendre ce site accessible à toutes et à tous.
-    p Signaler un dysfonctionnement
-    p Si vous rencontrez un défaut d'accessibilité vous empêchant d'accéder à un contenu ou une fonctionnalité du site, merci de nous en faire part.
-    p Si vous n'obtenez pas de réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au Défenseur des droits.
-    p En savoir plus
-    p Pour en savoir plus sur la politique d'accessibilité numérique de l'État : http://references.modernisation.gouv.fr/accessibilite-numerique
-
-
+    h3 Signaler un dysfonctionnement
+    p Si vous rencontrez un défaut d'accessibilité vous empêchant d'accéder à un contenu ou une fonctionnalité du site, merci de #{link_to "nous en faire part.", "#", data: { action: 'click->feedback-form#toggle', turbolinks: false }}.
+    p Si vous n'obtenez pas de réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au #{link_to "Défenseur des droits", "https://www.defenseurdesdroits.fr/"}.
+    h3 En savoir plus
+    p Pour en savoir plus sur la politique d'accessibilité numérique de l'État : #{link_to "http://references.modernisation.gouv.fr/accessibilite-numerique"}

@@ -120,10 +120,6 @@ module Dashboard
                         text: student_stats.applications_approved_count.to_s
           assert_select ".test-student-#{student.id} span.applications_with_convention_signed_count",
                         text: student_stats.applications_with_convention_signed_count.to_s
-          assert_select ".test-student-#{student.id} span.internship_locations",
-                        text: student_stats.internship_locations.to_s
-          assert_select ".test-student-#{student.id} span.internship_tutors",
-                        text: student_stats.internship_tutors.to_s
         end
       end
 
@@ -144,5 +140,3 @@ module Dashboard
     end
   end
 end
-
-

@@ -9,5 +9,9 @@ module Users
     rescue
       url_helpers.account_path
     end
+
+    def dashboard_name
+      "Ma classe"
+    end
   end
 end
