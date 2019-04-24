@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-heroku config:set RACK_ENV=production RAILS_ENV=production JEKYLL_ENV=production DEPLOY_TASKS=static_pages:build -a betagouv-monstage-prod
+heroku config:set RACK_ENV=production RAILS_ENV=production -a betagouv-monstage-prod
 heroku config -a betagouv-monstage-prod | grep RAILS_MASTER_KEY
 
 if [ $? -eq 0 ]; then

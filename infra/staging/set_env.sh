@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-heroku config:set RACK_ENV=staging RAILS_ENV=staging JEKYLL_ENV=production DEPLOY_TASKS=static_pages:build -a betagouv-monstage-staging
+heroku config:set RACK_ENV=staging RAILS_ENV=staging -a betagouv-monstage-staging
 heroku config -a betagouv-monstage-staging | grep RAILS_MASTER_KEY
 
 if [ $? -eq 0 ]; then
