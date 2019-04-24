@@ -4,15 +4,15 @@ tr class="test-internship-offer-#{employer_internship_offer.id}"
       p.text-strong.internship-item-title.mb-0= employer_internship_offer.title
       p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city
       p.text-muted.internship-item-city.small.mb-0= "Du #{employer_internship_offer.weeks.order(:number, :year).first.beginning_of_week} au #{employer_internship_offer.weeks.order(:number, :year).last.end_of_week}"
-  td.align-middle.text-sm-center data-head="#{cols[2]}"= employer_internship_offer.total_applications_count
-  td.align-middle.text-sm-center data-head="#{cols[3]}"
+  td.align-middle.text-sm-center data-head="#{cols[1]}"= employer_internship_offer.total_applications_count
+  td.align-middle.text-sm-center data-head="#{cols[2]}"
     = employer_internship_offer.internship_applications.where(aasm_state: 'submitted').count
     - if employer_internship_offer.internship_applications.where(aasm_state: 'submitted').count > 0
       br
       = link_to 'Répondre', dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn btn-dark'
-  td.align-middle.text-sm-center data-head="#{cols[4]}"= employer_internship_offer.approved_applications_count + employer_internship_offer.convention_signed_applications_count
+  td.align-middle.text-sm-center data-head="#{cols[3]}"= employer_internship_offer.approved_applications_count
 
-  td.align-middle.text-sm-center data-head="#{cols[5]}"= employer_internship_offer.convention_signed_applications_count
+  td.align-middle.text-sm-center data-head="#{cols[4]}"= employer_internship_offer.convention_signed_applications_count
 
 - if can? :destroy, employer_internship_offer
   = render "delete_internship_offer_modal", internship_offer: employer_internship_offer
