@@ -6,8 +6,8 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Ville de mon collège/
     assert_select 'label', /Collège/
     assert_select 'label', /Adresse électronique/
-    assert_select 'label', /Mot de passe/
-    assert_select 'label', /Confirmation de mon mot de passe/
+    assert_select 'label', /Choisir un mot de passe/
+    assert_select 'label', /Confirmer le mot de passe/
   end
 
   test 'GET new as a Other renders expected inputs' do

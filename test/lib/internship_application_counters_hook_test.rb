@@ -58,6 +58,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
       @internship_offer.reload
     end
   end
+
   test ".update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count" do
     create(:internship_application, :drafted, internship_offer_week: @internship_offer_week,
                                               internship_offer: @internship_offer)

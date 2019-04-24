@@ -2,11 +2,10 @@ import { Controller } from "stimulus"
 import { hideElement, showElement } from "../utils/dom";
 
 export default class extends Controller {
-  static targets = [ "callToAction",
-                     "formContent" ];
+  static targets = [ 'container' ];
 
   toggle() {
-    $(this.element).toggleClass('feedback-form-open')
+    $(this.containerTarget).toggleClass('feedback-form-open')
   }
 
   connect() {

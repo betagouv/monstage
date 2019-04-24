@@ -1,4 +1,4 @@
-= form_for Feedback.new(email: current_user.try(:email)), html: { class: 'feedback-form  d-flex' }, data: {controller: 'feedback-form'} do |f|
+= form_for Feedback.new(email: current_user.try(:email)), html: { class: 'feedback-form  d-flex', data: {target: 'feedback-form.container'} } do |f|
 
   a.btn-open-feedback-form.d-flex.flex-column.col-12.justify-content-center.align-items-center.text-center.p-3 data-action="click->feedback-form#toggle"
     i.fas.fa-smile.fa-2x

@@ -1,9 +1,3 @@
-.svg-inline--fa {
-  pointer-events: none
-}
-
-$logo-color: #feb620;
-
 .help-sign-content {
   @extend .border;
   @extend .border-secondary;
@@ -11,9 +5,4 @@ $logo-color: #feb620;
 
   background-color: whitesmoke;
   margin-bottom: 0.5rem;
-}
-
-.icon-link {
-  text-decoration: none;
-  color: inherit;
 }
