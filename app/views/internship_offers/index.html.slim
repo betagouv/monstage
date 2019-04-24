@@ -2,26 +2,28 @@
 
 - if can? :apply, InternshipOffer
   .row
-    .col-12
-      .bg-light.px-3.pt-3.row.filter-section data-controller="internship-index"
-        - if user_signed_in? && current_user.respond_to?(:school)
-          .form-group.mb-2
-          = label_tag 'disabled_location_search', class: 'mb-0' do
-            = check_box_tag :disabled_location_search, true, true, disabled: true
-            span.ml-1="Autour du #{current_user.school.name}"
-
+    .col-12.bg-light.px-3.pt-3.filter-section data-controller="internship-index"
+      - if user_signed_in? && current_user.respond_to?(:school)
+        .row
+          .col-12
+            .form-group.mb-2
+              = label_tag 'disabled_location_search', class: 'mb-0' do
+                = check_box_tag :disabled_location_search, true, true, disabled: true
+                span.ml-1="Autour du #{current_user.school.name}"
+      .row
         .form-group data-controller="help"
-          label.mb-0 for="internship-offer-sector-filter"
-            = "Secteur profesionnel"
-            a.btn.btn-link.py-0 data-action="click->help#toggle"
-              i.fa.fa-question-circle
-
-          .help-sign-content.py-1.px-2.d-none data-target="
-          help.content"
-            = "Le secteur profesionnel est TODO. Pour en savoir plus, consultez le "
-            = link_to "site de l'Onisep.", "https://www.onisep.fr"
-
-          = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select', data: { action: 'internship-index#filterOffersBySectors'} }
+          .col-12
+            label.mb-0.d-block for="internship-offer-sector-filter"
+              = "Secteur profesionnel"
+              a.btn.btn-link.py-0 data-action="click->help#toggle"
+                i.fa.fa-question-circle
+          .col-12
+            .help-sign-content.py-1.px-2.d-none data-target="
+            help.content"
+              = "Le secteur profesionnel est TODO. Pour en savoir plus, consultez le "
+              = link_to "site de l'Onisep.", "https://www.onisep.fr"
+          .col-12
+            = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select col-12', data: { action: 'internship-index#filterOffersBySectors'} }
 
 - if @internship_offers.blank?
   .row
