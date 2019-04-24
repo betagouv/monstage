@@ -10,18 +10,18 @@
     .row.no-gutter
       .col-6
         ul.nav.flex-column
-          li.nav-item= link_to "Qui sommes-nous ?", "#", class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Partenaires", "#", class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Mentions Légales", "#", class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "CGU", "#", class: 'nav-link px-0'
+          li.nav-item= link_to "Qui sommes-nous ?", qui_sommes_nous_path, class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "Partenaires", partenaires_path, class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "Mentions Légales", mentions_legales_path, class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "CGU", conditions_d_utilisation_path, class: 'nav-link px-0'
       .col-6
         ul.nav.flex-column
-          li.nav-item= link_to "FAQ", "#", class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Accéssibilité", "#", class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Contact", "#", class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "FAQ", faq_path, class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "Accéssibilité", accessibilite_path, class: 'nav-link px-0 py-2'
+          li.nav-item= link_to "Contact", "#", class: 'nav-link px-0 py-2', data: { action: 'click->feedback-form#toggle', turbolinks: false }
 
 .row
   .col-12
     = "© #{Time.now.year} MonStageDeTroisieme.fr"
-    = link_to "#top", class: 'float-right' do
+    = link_to "#top", class: 'float-right', data: {turbolinks: false} do
       .fa-2x.fas.fa-arrow-circle-up

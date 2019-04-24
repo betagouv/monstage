@@ -13,7 +13,9 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true  %>
   </head>
 
-  <body name="top" class="<%= env_class_name %>">
+  <body class="<%= env_class_name %>" data-controller='feedback-form'>
+    <a name="top" id="top"></a>
+
     <div class="content container">
       <header role="banner">
         <div class="row">
