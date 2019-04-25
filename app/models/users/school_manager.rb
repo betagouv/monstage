@@ -6,6 +6,10 @@ module Users
 
     include TargetableInternshipOffersForSchool
 
+    def dashboard_name
+      "Mon collège"
+    end
+
     def after_sign_in_path
       return url_helpers.account_path if school.blank? || school.weeks.empty?
       super

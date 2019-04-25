@@ -8,8 +8,8 @@
   p.text-muted Aucune offre publiée
 - else
   .row
-    table.table.table-striped.table-responsive
-      - cols = ["Stage proposé", "Candidatures", "Réponse à donner", "En attente de convention", "Convention signée"]
+    table.table.table-striped.table-hover.table-responsive
+      - cols = ["Stage proposé", "Candidatures", "Réponses à donner", "En attente de convention", "Convention signée"]
       thead
         tr
           - cols.map.with_index do |col, i|

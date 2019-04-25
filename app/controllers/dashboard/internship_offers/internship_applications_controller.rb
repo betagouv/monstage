@@ -15,7 +15,7 @@ module Dashboard
         authorize! :update, @internship_offer, InternshipApplication
         @internship_application.send(params[:transition]) if valid_transition?
         redirect_to dashboard_internship_offer_internship_applications_path(@internship_application.internship_offer),
-                    flash: { success: 'Candidature mis à jour avec succès' }
+                    flash: { success: 'Candidature mise à jour avec succès' }
       rescue AASM::InvalidTransition => e
         redirect_to dashboard_internship_offer_internship_applications_path(@internship_application.internship_offer),
                     flash: { warning: 'Cette candidature a déjà été traitée' }
