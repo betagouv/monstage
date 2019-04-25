@@ -9,13 +9,12 @@ h3
 
 table.table.table-striped.table-bordered.table-hover.table-caption-top
   - cols = ["Classe",
-      "Nb d'élève inscrits/validés",
-      "Nb d'élève sans candidature",
-      "Nb d'élève en attente de convention",
-      "Nb d'élève sans stage"]
+      "Nb d'élèves inscrits/validés",
+      "Nb d'élèves sans candidature",
+      "Nb d'élèves en attente de convention",
+      "Nb d'élèves sans stage"]
   thead
     tr
       - cols.map do |col|
         th= col
   tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school, cols: cols }
-
