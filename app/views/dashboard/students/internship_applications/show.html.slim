@@ -1,4 +1,5 @@
-= render 'dashboard/students/navigation'
+h1.h2 = @internship_application.internship_offer.title
+
 div data-controller="dashboard-students-internship-application" data-dashboard-students-internship-application-state=@internship_application.aasm_state
   .row
     .col-12= render partial: 'dashboard/students/timeline', locals: {internship_application: @internship_application}
@@ -25,4 +26,3 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
     p C'est le collège qui remet à ses élèves une convention de stage. Elle doit être remplie et signée par les parents (puisque les élèves sont mineurs), par l'entreprise ou l'administration qui accueille le ou la stagiaire puis par le ou la chef d'établissement ou son adjoint-e. La convention confère au stage un caractère légal et précise les engagements de chacun. Elle doit vous être adressée par courrier (postal ou électronique) ou remise en main propre avant le début du stage.
     p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d'urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l'entreprise ou de l'administration, son secteur d'activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
     p Sans une convention convenablement remplie et signée par chacune des parties prenantes, l'entreprise ou l'administration ne peut pas accueillir le ou la stagiaire.
-
