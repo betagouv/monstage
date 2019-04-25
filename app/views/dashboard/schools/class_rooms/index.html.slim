@@ -12,6 +12,7 @@
           th class="align-top #{i.zero? ? '' : 'text-center'}"
             small= col
     tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school, cols: cols }
+
   - if can?(:create, ClassRoom)
-  .col-12
-    = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn btn-link'
+    .col-12
+      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn btn-link'

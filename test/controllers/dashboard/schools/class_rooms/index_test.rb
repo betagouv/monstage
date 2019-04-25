@@ -54,9 +54,6 @@ module Dashboard
           assert_select 'a[href=?]',
                         dashboard_school_class_room_path(school, class_room),
                         count: 1
-          assert_select 'a[href=?]',
-                        edit_dashboard_school_class_room_path(school, class_room),
-                        count: 1
 
           class_room_stats = Presenters::ClassRoomStats.new(class_room: class_room)
           assert_select ".test-class-room-#{class_room.id} span.total_student",

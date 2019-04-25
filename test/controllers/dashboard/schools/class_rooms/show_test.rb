@@ -118,8 +118,8 @@ module Dashboard
                         text: student_stats.applications_count.to_s
           assert_select ".test-student-#{student.id} span.applications_approved_count",
                         text: student_stats.applications_approved_count.to_s
-          assert_select ".test-student-#{student.id} span.applications_with_convention_signed_count",
-                        text: student_stats.applications_with_convention_signed_count.to_s
+          # assert_select ".test-student-#{student.id} span.applications_with_convention_signed_count",
+          #               text: student_stats.applications_with_convention_signed_count.to_s
         end
       end
 
