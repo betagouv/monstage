@@ -57,6 +57,7 @@ class Ability
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], :sign_up
     end
+    can_read_dashboard_students_internship_applications(user: user)
 
     # dashboard rights
     can_read_dashboard(user: user) do
