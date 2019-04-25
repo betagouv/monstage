@@ -18,41 +18,42 @@ abbr[title] {
 //
 // table
 //
-table.table-responsive {
-  table-layout: fixed;
-  // border-collapse: collapse;
-}
 
 @include media-breakpoint-down(xs) {
-  thead {display: none;}
-  tr {
-    // display: flex;
-    // border-top: 1rem transparent solid;
-    // border-bottom: 1rem transparent solid;
-  }
-  td:first-child {
-    display: block;
-    width: 100%;
-    clear: both;
-    text-align: left;
-  }
-  td{
-    border-color:transparent;
-    display: block;
-    float: left;
-    width: 25%;
-    text-align: center;
-  }
-  td:first-child:before{
-    display: none;
-  }
-  td:before {
-    content: attr(data-head);
-    display: block;
-    font-size: .8em;
-    height: 50px;
-  }
-  td.half-height:before{
-    height: 16px;
+  table.table-rg2a {
+    // table-layout: fixed;
+    // border-collapse: collapse;
+
+    thead {display: none;}
+    tr {
+      // display: flex;
+      // border-top: 1rem transparent solid;
+      // border-bottom: 1rem transparent solid;
+    }
+    td:first-child {
+      display: block;
+      width: 100%;
+      clear: both;
+      text-align: left;
+    }
+    td{
+      border-color:transparent;
+      display: block;
+      float: left;
+      width: 25%;
+      text-align: center;
+    }
+    td:first-child:before{
+      display: none;
+    }
+    td:before {
+      content: attr(data-head);
+      display: block;
+      font-size: .8em;
+      height: 50px;
+    }
+    td.half-height:before{
+      height: 16px;
+    }
   }
 }
