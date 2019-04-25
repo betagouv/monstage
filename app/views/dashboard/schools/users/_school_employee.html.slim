@@ -1,11 +1,9 @@
-tr
-  td.align-middle data-head="#{cols[0]}"= Presenters::User.new(user: school_employee).short_name
-  td.align-middle data-head="#{cols[2]}"= Presenters::User.new(user: school_employee).role_name
-  td.align-middle data-head="#{cols[1]}"= school_employee.try(:class_room).try(:name)
-  td.align-middle data-head="#{cols[3]}"
-    - if can?(:delete, school_employee)
-      = link_to dashboard_school_user_path(school_employee.school, school_employee), data: { confirm: "Êtes-vous sur ?"}, method: :delete, class: 'btn btn-danger btn-sm' do
-        i class="fas fa-trash"
-        | &nbsp
-        | Supprimer
+.col-12.pt-1.pb-2.listview-item.align-items-center
+  - if can?(:delete, school_employee)
+    = link_to dashboard_school_user_path(school_employee.school, school_employee), data: { confirm: "Êtes-vous sur ?"}, method: :delete, class: 'float-right btn btn-link' do
+      i class="fas fa-trash fa-2x"
+
+  = Presenters::User.new(user: school_employee).short_name
+  br
+  = "#{Presenters::User.new(user: school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
 

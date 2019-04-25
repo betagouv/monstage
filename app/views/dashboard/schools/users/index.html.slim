@@ -1,13 +1,8 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
 h3 Mon personnel
+p Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimer leur compte.
 
-table.table.table-striped.table-bordered.table-hover.table-caption-top
-  - cols = %w[Nom Fonction Classe Actions]
-  thead
-    tr
-      - cols.each do |col|
-        th= col
-  tbody= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others, locals: { cols: cols }
+.row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
 
 

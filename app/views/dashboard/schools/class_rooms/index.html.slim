@@ -1,20 +1,17 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
-
-h3
- = "Mes classes"
- - if can?(:create, ClassRoom)
-  = link_to "Ajouter", new_dashboard_school_class_room_path(@school), class: 'btn btn-dark float-right btn-sm'
-
-
-
-table.table.table-striped.table-bordered.table-hover.table-caption-top
-  - cols = ["Classe",
-      "Nb d'élèves inscrits/validés",
-      "Nb d'élèves sans candidature",
-      "Nb d'élèves en attente de convention",
-      "Nb d'élèves sans stage"]
-  thead
-    tr
-      - cols.map do |col|
-        th= col
-  tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school, cols: cols }
+.row
+  table.table.table-striped.table-hover.table-responsive
+    - cols = ["Classe",
+        "Validés/inscrits",
+        "Sans candidature",
+        "Convention en cours",
+        "Sans stage"]
+    thead
+      tr
+        - cols.map.with_index do |col, i|
+          th class="align-top #{i.zero? ? '' : 'text-center'}"
+            small= col
+    tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school, cols: cols }
+  - if can?(:create, ClassRoom)
+  .col-12
+    = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn btn-link'

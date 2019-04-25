@@ -52,4 +52,7 @@ table.table-responsive {
     font-size: .8em;
     height: 50px;
   }
+  td.half-height:before{
+    height: 16px;
+  }
 }

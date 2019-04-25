@@ -11,6 +11,12 @@ module Presenters
              .size
     end
 
+    def applications_rejected_count
+      student.internship_applications
+             .select(&:rejected?)
+             .size
+    end
+
     def applications_with_convention_signed_count
        student.internship_applications
               .select(&:convention_signed?)

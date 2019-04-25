@@ -15,7 +15,16 @@ tr class="test-student-#{student.id}"
 
   td data-head="#{cols[2]}"
     span.applications_count= student_stats.applications_count
-  td data-head="#{cols[3]}"
-    span.applications_approved_count= student_stats.applications_approved_count
+  td.half-height data-head="#{cols[3]}"
+    .row
+      .col-6
+        small Neg
+        br
+        span.applications_rejected_count= student_stats.applications_rejected_count
+      .col-6
+        small Pos
+        br
+        span.applications_approved_count.text-success= student_stats.applications_approved_count
   td data-head="#{cols[4]}"
-    span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
+    - # span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
+    span.applications_with_convention_signed_count –
