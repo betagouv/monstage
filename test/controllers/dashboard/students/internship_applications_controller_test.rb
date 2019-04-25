@@ -92,7 +92,6 @@ module Dashboard
         assert_response :success
 
         assert_template 'dashboard/students/internship_applications/show'
-        assert_template 'dashboard/students/_navigation'
         assert_template 'dashboard/students/_timeline'
       end
 
