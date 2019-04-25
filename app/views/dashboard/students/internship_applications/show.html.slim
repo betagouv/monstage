@@ -7,22 +7,26 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
   .row
     .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
 
-  - if @internship_application.submitted? || @internship_application.approved?
-    = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail"}
-
   #tab-internship-offer-detail data-target="dashboard-students-internship-application.internshipOfferDetail"= render "internship_offers/show_details", internship_offer: @internship_application.internship_offer
 
   #tab-internship-application-detail data-target='dashboard-students-internship-application.internshipApplicationDetail'
     h2.h6 Ma candidature
-    = render "internship_applications/show_details", internship_application: @internship_application
-    - if @internship_application.drafted?
-      .actions.d-flex.d-sm-block
-        = link_to "Modifier", @internship_offer, class: 'btn btn-link'
-        = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-primary'
+
+    = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", turbolinks: false }
+
+    .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"
+      = render "internship_applications/show_details", internship_application: @internship_application
+      - if @internship_application.drafted?
+        .actions.d-flex.d-sm-block
+          = link_to "Modifier", @internship_offer, class: 'btn btn-link'
+          = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-primary'
 
   #tab-convention-detail data-target='dashboard-students-internship-application.conventionDetail'
-    p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l'assurance responsabilité civile de l'établissement scolaire.
-    h3.h4 Mode d'emploi
-    p C'est le collège qui remet à ses élèves une convention de stage. Elle doit être remplie et signée par les parents (puisque les élèves sont mineurs), par l'entreprise ou l'administration qui accueille le ou la stagiaire puis par le ou la chef d'établissement ou son adjoint-e. La convention confère au stage un caractère légal et précise les engagements de chacun. Elle doit vous être adressée par courrier (postal ou électronique) ou remise en main propre avant le début du stage.
-    p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d'urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l'entreprise ou de l'administration, son secteur d'activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
-    p Sans une convention convenablement remplie et signée par chacune des parties prenantes, l'entreprise ou l'administration ne peut pas accueillir le ou la stagiaire.
+    p La convention est fournie par le collège. Elle doit être remplie et signée par les parents puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.
+    p.strong Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
+
+    h3.h4 À quoi sert la convention ?
+    p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
+
+    p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+

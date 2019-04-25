@@ -1,19 +1,23 @@
 h3.h4 Ma motivation
 pre.word-breakable-content= internship_application.motivation
 
-h3.h4 Mon CV
-h4.h5 Parcours scolaire
-pre.word-breakable-content= internship_application.student.resume_educational_background
+- unless is_resume_empty?(internship_application)
+  h3.h4 Mon CV
+  - if has_resume_educational_background?(internship_application)
+    h4.h5 Parcours scolaire
+    pre.word-breakable-content= internship_application.student.resume_educational_background
 
-h4.h5 Activités extra scolaires
-pre.word-breakable-content= internship_application.student.resume_other
+  - if has_resume_other?(internship_application)
+    h4.h5 Activités extra scolaires
+    pre.word-breakable-content= internship_application.student.resume_other
 
-- if internship_application.student.resume_volunteer_work.present?
-  h4.h5 Engagement associatif
-  pre.word-breakable-content= internship_application.student.resume_volunteer_work
+  - if has_resume_volunteer_work?(internship_application)
+    h4.h5 Engagement associatif
+    pre.word-breakable-content= internship_application.student.resume_volunteer_work
 
-h4.h5 Langues
-pre.word-breakable-content= internship_application.student.resume_languages
+  - if has_resume_languages?(internship_application)
+    h4.h5 Langues
+    pre.word-breakable-content= internship_application.student.resume_languages
 
 h4.h5 Mon identité
 p

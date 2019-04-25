@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { hideElement, showElement } from "../utils/dom";
+import { toggleElement, hideElement, showElement } from "../utils/dom";
 const MENU_ITEM_ACTIVE_CLASS_NAME = 'active';
 
 export default class extends Controller {
@@ -8,12 +8,20 @@ export default class extends Controller {
                     "conventionDetail",
                     "linkInternshipOfferDetail",
                     "linkInternshipApplicationDetail",
-                    "linkConventionDetail", ];
+                    "linkConventionDetail",
+                    "internshipApplicationContent", ];
+
   stopEventPropagation(event) {
     if (event) {
       event.preventDefault()
     }
   }
+
+  toggleInternshipApplicationContent(event) {
+    toggleElement($(this.internshipApplicationContentTarget))
+    this.stopEventPropagation(event)
+  }
+
   updateMenu(enabledTarget){
     $(this.linkInternshipOfferDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
     $(this.linkInternshipApplicationDetailTarget).removeClass(MENU_ITEM_ACTIVE_CLASS_NAME)
