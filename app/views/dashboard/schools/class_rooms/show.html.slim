@@ -1,8 +1,9 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
-h3.h5
-  = "#{@class_room.name}"
-  = link_to "Autres classes", dashboard_school_class_rooms_path(@school), class: 'float-right small pr-0'
+.row
+  .col-8
+    h2.h5.mb-0= "#{@class_room.name}"
+  .col-4.text-right= link_to "Autres classes", dashboard_school_class_rooms_path(@school), class: 'small pr-0'
 - unless @class_room.main_teachers.size.zero?
   p.text-muted.small
     = "PP : "
