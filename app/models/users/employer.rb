@@ -11,5 +11,9 @@ module Users
     def custom_dashboard_path
       return url_helpers.dashboard_internship_offers_path
     end
+
+    def dashboard_name
+      "Mes stages"
+    end
   end
 end
