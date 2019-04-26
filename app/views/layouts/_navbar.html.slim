@@ -7,7 +7,7 @@ nav.navbar.navbar-light
       - if user_signed_in?
         - unless current_user.is_a?(Users::Employer)
           li.nav-item
-            = link_to 'Rechercher', internship_offers_path, class: 'nav-link pl-0 pr-1'
+            = link_to 'Recherche', internship_offers_path, class: 'nav-link pl-0 pr-1'
           li.nav-item.nav-item-serparator
           span.nav-link.px-0= " | "
         li.nav-item
