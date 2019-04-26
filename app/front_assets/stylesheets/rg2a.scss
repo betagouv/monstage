@@ -27,8 +27,7 @@ abbr[title] {
     thead {display: none;}
     tr {
       // display: flex;
-      // border-top: 1rem transparent solid;
-      // border-bottom: 1rem transparent solid;
+      border-bottom: 1px $nav-tabs-border-color solid;
     }
     td:first-child {
       display: block;

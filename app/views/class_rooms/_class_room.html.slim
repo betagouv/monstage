@@ -2,7 +2,7 @@
 
 tr class="test-class-room-#{class_room.id}"
   td data-head="#{cols[0]}" class="class-room-name"
-    = class_room.name
+    h5.float-left= class_room.name
     = link_to 'Voir le détail', dashboard_school_class_room_path(school, class_room), class: 'float-right'
 
   td.align-middle.text-sm-center data-head="#{cols[1]}"

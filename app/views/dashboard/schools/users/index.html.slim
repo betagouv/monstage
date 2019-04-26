@@ -1,6 +1,5 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
-h3 Mon personnel
 p Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimer leur compte.
 
 .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others

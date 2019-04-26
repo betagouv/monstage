@@ -1,8 +1,8 @@
-h2= @school.name
+h2.h3= @school.name
 
-ul.nav.nav-pills.test-dashboard-nav
+ul.nav.nav-tabs.test-dashboard-nav.mb-2
   li.nav-item
-    = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}"
+    = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link #{current_page?(dashboard_school_class_rooms_path(school)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}"
 
   - if can? :manage_school_users, @school
     li.nav-item

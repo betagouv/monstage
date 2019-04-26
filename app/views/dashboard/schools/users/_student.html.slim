@@ -1,7 +1,9 @@
 - student_stats = Presenters::StudentStats.new(student: student)
 
 tr class="test-student-#{student.id}"
-  td data-head="#{cols[0]}"= link_to Presenters::User.new(user: student).short_name, dashboard_students_internship_applications_path(student)
+  td data-head="#{cols[0]}"
+    = Presenters::User.new(user: student).short_name
+    = link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'float-right'
 
   td data-head="#{cols[1]}" id="has_parental_consent"
     - if student.has_parental_consent
