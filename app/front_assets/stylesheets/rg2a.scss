@@ -27,8 +27,7 @@ abbr[title] {
     thead {display: none;}
     tr {
       // display: flex;
-      // border-top: 1rem transparent solid;
-      // border-bottom: 1rem transparent solid;
+      border-bottom: 1px $nav-tabs-border-color solid;
     }
     td:first-child {
       display: block;
@@ -42,6 +41,7 @@ abbr[title] {
       float: left;
       width: 25%;
       text-align: center;
+      padding: 0.5rem 0.75rem;
     }
     td:first-child:before{
       display: none;

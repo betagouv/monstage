@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_115311) do
+ActiveRecord::Schema.define(version: 2019_04_26_075049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -183,7 +183,6 @@ ActiveRecord::Schema.define(version: 2019_04_24_115311) do
     t.string "gender"
     t.bigint "class_room_id"
     t.text "resume_educational_background"
-    t.text "resume_volunteer_work"
     t.text "resume_other"
     t.text "resume_languages"
     t.boolean "has_parental_consent", default: false

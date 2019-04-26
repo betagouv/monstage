@@ -1,7 +1,7 @@
 .listview-item{
   text-decoration: none;
-  &:first-child { border-top: 1px solid $gray-400; }
-  border-bottom: 1px solid $gray-400;
+  &:first-child { border-top: 1px solid $nav-tabs-border-color; }
+  border-bottom: 1px solid $nav-tabs-border-color;
 
   &:hover{
     text-decoration: none;

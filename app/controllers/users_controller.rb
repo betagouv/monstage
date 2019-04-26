@@ -24,7 +24,6 @@ class UsersController < ApplicationController
                                  :email,
                                  :class_room_id,
                                  :resume_educational_background,
-                                 :resume_volunteer_work,
                                  :resume_other,
                                  :resume_languages)
   end

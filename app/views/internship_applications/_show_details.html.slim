@@ -11,10 +11,6 @@ pre.word-breakable-content= internship_application.motivation
     h4.h5 Activités extra scolaires
     pre.word-breakable-content= internship_application.student.resume_other
 
-  - if has_resume_volunteer_work?(internship_application)
-    h4.h5 Engagement associatif
-    pre.word-breakable-content= internship_application.student.resume_volunteer_work
-
   - if has_resume_languages?(internship_application)
     h4.h5 Langues
     pre.word-breakable-content= internship_application.student.resume_languages

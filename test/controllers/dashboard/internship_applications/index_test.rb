@@ -36,8 +36,7 @@ module InternshipApplications
                                  birth_date: 14.years.ago,
                                  resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
-                                 resume_languages: 'resume_languages',
-                                 resume_volunteer_work: 'resume_volunteer_work')
+                                 resume_languages: 'resume_languages')
       internship_application = create(:internship_application, :submitted, student: student)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
@@ -51,7 +50,6 @@ module InternshipApplications
       assert_select "pre", student.resume_educational_background
       assert_select "pre", student.resume_other
       assert_select "pre", student.resume_languages
-      assert_select "pre", student.resume_volunteer_work
     end
 
      test "GET #index with drafted does not shows internship_application" do
