@@ -1,16 +1,6 @@
-- convention_tab ||= false
+- application_detail_tab ||= false
 
-- if convention_tab
-  .alert.alert-warning.alert-outlined.m-0.p-1.
-    .row.align-items-center.no-gutters
-      .col-2.col-sm-auto.text-center.p-3
-        i.fas.fa-exclamation-triangle
-      .col
-        small.alert-internship-application-state= "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
-        br
-        small= "Convention à faire signer et à envoyer"
-
-- else
+- if application_detail_tab
   .alert.alert-success.alert-outlined.m-0.p-1.
     .row.align-items-center.no-gutters
       .col-2.col-sm-auto.text-center.p-3
@@ -19,3 +9,12 @@
         small.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}"
         br
         small= "et acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}"
+- else
+  .alert.alert-warning.alert-outlined.m-0.p-1.
+    .row.align-items-center.no-gutters
+      .col-2.col-sm-auto.text-center.p-3
+        i.fas.fa-exclamation-triangle
+      .col
+        small.alert-internship-application-state= "Candidature acceptée le #{localize(internship_application.approved_at, format: :human_mm_dd)}."
+        br
+        small= "Convention à faire signer et à envoyer"

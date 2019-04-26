@@ -9,7 +9,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
 
   #tab-internship-application-detail data-target='dashboard-students-internship-application.internshipApplicationDetail'
     .row
-      .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
+      .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, application_detail_tab: true }
     = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", turbolinks: false }
 
     .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"
@@ -21,7 +21,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
 
   #tab-convention-detail data-target='dashboard-students-internship-application.conventionDetail'
     .row
-      .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, convention_tab: true }
+      .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
     p La convention est fournie par le collège. Elle doit être remplie et signée par les parents puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.
     p.strong Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
 
