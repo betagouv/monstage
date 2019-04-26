@@ -22,15 +22,13 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
         br
         span.student-age= internship_application.student.age
 
-      h3.h6= "Parcours Scolaire"
+      h3.h6 Parcours Scolaire
       pre.word-breakable-content= internship_application.student.resume_educational_background
-      h3.h6= "Engagement associatif"
+      h3.h6 Activités extra scolaires
       pre.word-breakable-content= internship_application.student.resume_other
       - if internship_application.student.resume_languages.present?
-        h3.h6= "Langues"
+        h3.h6 Langues
         pre= internship_application.student.resume_languages
-      h3.h6= "Autre (sport, loisir)"
-      pre.word-breakable-content= internship_application.student.resume_volunteer_work
 
       .actions
         - if internship_application.submitted?

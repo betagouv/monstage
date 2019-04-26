@@ -51,9 +51,12 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         class_rooms.map do |class_room|
-          assert_select 'a[href=?]',
+          assert_select '.d-sm-none a[href=?]',
                         dashboard_school_class_room_path(school, class_room),
-                        count: 1
+                        count: 1, text: 'Voir le détail'
+          assert_select '.col-sm-12 a[href=?]',
+                        dashboard_school_class_room_path(school, class_room),
+                        count: 1, text: class_room.name
 
           class_room_stats = Presenters::ClassRoomStats.new(class_room: class_room)
           assert_select ".test-class-room-#{class_room.id} span.total_student",
@@ -104,9 +107,12 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         class_rooms.map do |class_room|
-          assert_select 'a[href=?]',
+          assert_select '.d-sm-none a[href=?]',
                         dashboard_school_class_room_path(school, class_room),
-                        count: 1
+                        count: 1, text: 'Voir le détail'
+          assert_select '.col-sm-12 a[href=?]',
+                        dashboard_school_class_room_path(school, class_room),
+                        count: 1, text: class_room.name
           assert_select 'a[href=?]',
                         edit_dashboard_school_class_room_path(school, class_room),
                         count: 0
@@ -154,7 +160,12 @@ module Dashboard
         get dashboard_school_class_rooms_path(school)
 
         class_rooms.map do |class_room|
-          assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room), count: 1
+          assert_select '.d-sm-none a[href=?]',
+                        dashboard_school_class_room_path(school, class_room),
+                        count: 1, text: 'Voir le détail'
+          assert_select '.col-sm-12 a[href=?]',
+                        dashboard_school_class_room_path(school, class_room),
+                        count: 1, text: class_room.name
           assert_select 'a[href=?]', edit_dashboard_school_class_room_path(school, class_room), count: 0
         end
       end

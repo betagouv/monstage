@@ -43,7 +43,6 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     patch(account_path, params: {
                          user: {
                            resume_educational_background: 'background',
-                           resume_volunteer_work: 'work',
                            resume_other: 'other',
                            resume_languages: 'languages'
                          }
@@ -52,7 +51,6 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to account_path
     student.reload
     assert_equal 'background', student.resume_educational_background
-    assert_equal 'work', student.resume_volunteer_work
     assert_equal 'other', student.resume_other
     assert_equal 'languages', student.resume_languages
     follow_redirect!
