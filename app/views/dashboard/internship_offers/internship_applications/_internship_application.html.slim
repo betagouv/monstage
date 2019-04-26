@@ -32,13 +32,13 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
 
       .actions
         - if internship_application.submitted?
-          = render "dashboard/internship_offers/internship_applications/reject_modal", internship_application:internship_application
+          = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false
           = button_tag type: "button", data: { toggle: 'modal', target: "#reject-internship-application-#{internship_application.id}" }, class: 'btn btn-danger mx-1' do
               .fas.fa-ban.mr-1
               = "Refuser"
 
           - if internship_application.internship_offer_week.has_spots_left?
-            = render "dashboard/internship_offers/internship_applications/approve_modal", internship_application:internship_application
+            = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: true
             = button_tag type: "button", data: { toggle: 'modal', target: "#approve-internship-application-#{internship_application.id}" }, class: 'btn btn-success mx-1' do
               .fas.fa-check.mr-1
               = "Accepter"
