@@ -6,7 +6,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   def visit_signup
     visit "/"
-    click_on "Inscription"
+    click_on "Créer mon compte"
     # page.find("a[href='#{users_choose_profile_path}'").click
   end
 end

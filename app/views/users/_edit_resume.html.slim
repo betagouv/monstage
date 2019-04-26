@@ -11,14 +11,19 @@ p Le CV aide l'employeur à découvrir votre parcours, vos habiletés et compét
       small.form-text.text-muted Classes suivies jusqu'à maintenant
     = f.text_area :resume_educational_background, class: 'form-control col-lg-6'
   .form-group
-    = f.label :resume_volunteer_work do
+    = f.label :resume_other do
       = 'Activités extra scolaires'
       small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
-    = f.text_area :resume_volunteer_work, class: 'form-control col-lg-6'
+    = f.text_area :resume_other, class: 'form-control col-lg-6'
   .form-group
-    = f.label :resume_other do
+    = f.label :resume_languages do
       = 'Langues vivantes'
       small.form-text.text-muted Langues étudiées et/ou parlées
     = f.text_area :resume_languages, class: 'form-control col-lg-6'
+  .form-group
+    = f.label :resume_volunteer_work do
+      = 'Activités bénévoles'
+      small.form-text.text-muted Si vous vous êtes impliqué dans une association
+    = f.text_area :resume_volunteer_work, class: 'form-control col-lg-6'
 
   = f.submit 'Enregistrer', class: 'btn btn-primary'
