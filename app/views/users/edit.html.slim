@@ -7,5 +7,4 @@
   - if can?(:choose_school, current_user)
     = link_to 'Modifier mon collège', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if params[:section] == 'school'}"
   = link_to destroy_user_session_path, class: "list-group-item list-group-item-action list-group-item-danger", method: :delete do
-    i.fas.fa-sign-out-alt.mr-1
     | Déconnexion
