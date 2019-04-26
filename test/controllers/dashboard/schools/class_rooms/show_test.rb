@@ -41,7 +41,7 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
-          assert_select "a[href=?]", dashboard_school_class_room_student_path(school, class_room, student)
+          assert_select "a[href=?]", dashboard_students_internship_applications_path(student)
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
@@ -74,7 +74,7 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
-          assert_select "a[href=?]", dashboard_school_class_room_student_path(school, class_room, student)
+          assert_select "a[href=?]", dashboard_students_internship_applications_path(student)
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else

@@ -11,24 +11,39 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'internship_offers_path' do
-    sign_in(create(:employer))
-    run_request_and_cache_response(report_as: 'internship_offers_path') do
-      get internship_offers_path
+    [:employer, :student, :school_manager].each do |role|
+      run_request_and_cache_response(report_as: "internship_offers_path_#{role}") do
+        sign_in(create(role))
+        get internship_offers_path
+      end
     end
   end
 
   test 'internship_offer_path' do
-    run_request_and_cache_response(report_as: 'internship_offer_path') do
-      get internship_offer_path(create(:internship_offer).to_param)
+    [:employer, :student].each do |role|
+      run_request_and_cache_response(report_as: "internship_offer_path_#{role}") do
+        sign_in(create(role))
+        get internship_offer_path(create(:internship_offer).to_param)
+      end
     end
   end
 
   test 'new_internship_offer_path'  do
     sign_in(create(:employer))
-    run_request_and_cache_response(report_as: 'new_dashboard_internship_offer') do
+    run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
       get new_dashboard_internship_offer_path
     end
   end
+
+  test 'dashboard_internship_offers_path'  do
+    employer = create(:employer)
+    2.times.map { create(:internship_offer, employer: employer)}
+    sign_in(employer)
+    run_request_and_cache_response(report_as: 'dashboard_internship_offers_path') do
+      get dashboard_internship_offers_path
+    end
+  end
+
 
   test 'edit_internship_offer_path'  do
     stage_dev = create(:internship_offer)
@@ -95,6 +110,47 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   test 'users_choose_profile' do
     run_request_and_cache_response(report_as: 'users_choose_profile') do
       get users_choose_profile_path
+    end
+  end
+
+  test 'account_path' do
+    school = create(:school)
+    school_manager = create(:school_manager, school: school)
+    [
+      create(:employer),
+      create(:student),
+      school_manager,
+      create(:teacher, school: school_manager.school),
+      create(:main_teacher, school: school_manager.school),
+      create(:other, school: school_manager.school)
+    ].each do |user|
+      role = user.class.name.demodulize.downcase
+      report_as = "custom_dashboard_path_#{role}"
+
+      run_request_and_cache_response(report_as: report_as) do
+        sign_in(user)
+        get account_path
+      end
+    end
+  end
+
+  test 'custom_dashboard_path' do
+    school = create(:school)
+    school_manager = create(:school_manager, school: school)
+    [
+      create(:employer),
+      create(:student),
+      school_manager,
+      create(:teacher, school: school_manager.school),
+      create(:main_teacher, school: school_manager.school),
+      create(:other, school: school_manager.school)
+    ].each do |user|
+      role = user.class.name.demodulize.downcase
+      report_as = "custom_dashboard_path_#{role}"
+      run_request_and_cache_response(report_as: report_as) do
+        sign_in(user)
+        get user.custom_dashboard_path
+      end
     end
   end
 
