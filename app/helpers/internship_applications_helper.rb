@@ -1,10 +1,8 @@
 module InternshipApplicationsHelper
   def is_resume_empty?(internship_application)
-    [
-      has_resume_educational_background?(internship_application),
-      has_resume_other?(internship_application),
-      has_resume_languages?(internship_application),
-    ].all?(&:nil?)
+    !has_resume_educational_background?(internship_application) &&
+    !has_resume_other?(internship_application) &&
+    !has_resume_languages?(internship_application)
   end
 
   def has_resume_educational_background?(internship_application)
