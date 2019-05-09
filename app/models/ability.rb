@@ -26,6 +26,7 @@ class Ability
 
   def student_abilities(user:)
     can :show, :account
+    can :change, :class_room
     can :read, InternshipOffer
     can :apply, InternshipOffer
     can :submit_internship_application, InternshipApplication do |internship_application|
