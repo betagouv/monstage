@@ -28,6 +28,16 @@ module InternshipOffers
         assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
       end
 
+      travel_to(Date.new(2019, 5, 15)) do
+        get new_dashboard_internship_offer_path
+
+        assert_response :success
+        assert_select 'select[name="internship_offer[week_ids][]"] option', 3
+        assert_select 'option', text: 'Semaine 20 - du 13 mai au 19 mai'
+        assert_select 'option', text: 'Semaine 21 - du 20 mai au 26 mai'
+        assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
+      end
+
     end
 
     test 'GET #edit as Operator with disabled fields if applications exist' do
