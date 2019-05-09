@@ -20,8 +20,8 @@
           .col-12
             .help-sign-content.py-1.px-2.d-none data-target="
             help.content"
-              = "Le secteur professionnel est TODO. Pour en savoir plus, consultez le "
-              = link_to "site de l'Onisep.", "https://www.onisep.fr"
+              = "Le secteur professionnel est #{current_sector_name}. Pour en savoir plus, consultez le "
+              = link_to "site de l'Onisep.", current_sector_url
           .col-12
             = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select col-12', data: { action: 'internship-index#filterOffersBySectors'} }
 
