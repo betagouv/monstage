@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     current_year = today.year
     current_month = today.month
 
-    if current_month < 5 # Before May, offers should be available from now until May of the current year
+    if current_month <= MONTH_OF_YEAR_SHIFT # Before the end of May, offers should be available from now until May of the current year
       @current_weeks = Week.from_date_to_date_for_year(today, Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT), current_year)
     else # After May, offers should be posted for next year
       first_day_available = if current_month < 9 # Between May and September, the first week should be the first week of september
