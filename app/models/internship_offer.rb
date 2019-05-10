@@ -28,7 +28,7 @@ class InternshipOffer < ApplicationRecord
   DESCRIPTION_MAX_CHAR_COUNT = 275
   OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
   validates :description, presence: true, length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :employer_description, presence: true, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
+  validates :employer_description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_applications, through: :internship_offer_weeks
