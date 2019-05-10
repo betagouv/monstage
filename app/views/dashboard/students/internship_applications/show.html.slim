@@ -13,6 +13,8 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
     h2.h6 Ma candidature
 
     = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", turbolinks: false }
+    - if @internship_application.approved?
+      p.small.text-muted Vous pouvez demander un modèle de convention de stage à votre professeur principal
 
     .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"
       = render "internship_applications/show_details", internship_application: @internship_application
