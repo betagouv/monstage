@@ -6,17 +6,18 @@ $gray-600: #767676; // text muted color
 $gray-900: #333;    // body text color
 
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
-$blue:    #0b6ba8;
+$blue:    #006699;
 $blue_light: #e3f2fe;
 $red:     #dc3545;
-$yellow:  #AE650B;
+$yellow:  #feb620;
 $green:   #28a745;
 $cyan:    #0981A1;
 
 // liens soulignés
 $link-decoration: underline;
 // font lisible
-$font-family-sans-serif: Roboto, Helvetica, Arial, sans-serif;
+$font-family-sans-serif: 'Nunito', Helvetica, Arial, sans-serif;
+
 
 // override alert styles, otherwise bootstrap do color manipulation
 // which return non optimized contrast
@@ -36,3 +37,6 @@ $container-max-widths: (
   md: 768px,
   lg: 1024px
 );
+
+$line-height-base: 1.25;
+

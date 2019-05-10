@@ -6,8 +6,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <%= favicon_link_tag asset_pack_path('images/favicon.png') %>
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
 
     <%= stylesheet_pack_tag 'styles', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true  %>
@@ -25,7 +26,7 @@
       <%= render 'layouts/flash' %>
       <%= yield %>
     </div>
-    <div class="footer container mt-3 pb-3">
+    <div class="footer container mt-3 pb-3 bg-dark-light">
       <%= render 'layouts/footer' %>
     </div>
     <%= render 'feedbacks/form' %>

@@ -4,3 +4,9 @@ a.btn {
 .btn.btn-link{
   text-decoration: underline;
 }
+.btn {
+  color: $gray-900;
+  font-weight: 700;
+  border-radius: 1rem * 1.5;
+}
+

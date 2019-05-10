@@ -1,27 +1,27 @@
 .row
   .col-12.col-md-3
-    .row.pt-2
+    .row.pt-3.pb-3
       .col-4.col-md-12= image_tag asset_pack_path('images/logo-rp.svg'), alt: "Logo – République Française", width: 80, height: 45, class: 'float-md-left'
       .col-8.col-md-12
         .small.text-muted Un service fourni par la DINSIC et incubé par beta.gouv.fr
   .d-none.d-md-flex.col-md-3
 
   .col-12.col-md-6
-    .row.no-gutter
+    .row.no-gutter.pt-3
       .col-6
         ul.nav.flex-column
-          li.nav-item= link_to "Qui sommes-nous ?", qui_sommes_nous_path, class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Partenaires", partenaires_path, class: 'nav-link px-0 py-2'
-          / li.nav-item= link_to "Mentions Légales", mentions_legales_path, class: 'nav-link px-0 py-2'
-          / li.nav-item= link_to "CGU", conditions_d_utilisation_path, class: 'nav-link px-0'
+          li.nav-item= link_to "Qui sommes-nous ?", qui_sommes_nous_path, class: 'nav-link small px-0 py-1'
+          li.nav-item= link_to "Partenaires", partenaires_path, class: 'nav-link small px-0 py-1'
+          / li.nav-item= link_to "Mentions Légales", mentions_legales_path, class: 'nav-link small px-0 py-1'
+          / li.nav-item= link_to "CGU", conditions_d_utilisation_path, class: 'nav-link small px-0'
       .col-6
         ul.nav.flex-column
-          / li.nav-item= link_to "FAQ", faq_path, class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Accessibilité", accessibilite_path, class: 'nav-link px-0 py-2'
-          li.nav-item= link_to "Contact", "#", class: 'nav-link px-0 py-2', data: { action: 'click->feedback-form#toggle', turbolinks: false }
+          / li.nav-item= link_to "FAQ", faq_path, class: 'nav-link small px-0 py-1'
+          li.nav-item= link_to "Accessibilité", accessibilite_path, class: 'nav-link small px-0 py-1'
+          li.nav-item= link_to "Contact", "#", class: 'nav-link small px-0 py-1', data: { action: 'click->feedback-form#toggle', turbolinks: false }
 
 .row
   .col-12
-    = "© #{Time.now.year} MonStageDeTroisieme.fr"
+    span.small= "© #{Time.now.year} MonStageDeTroisieme.fr"
     = link_to "#top", class: 'float-right', data: {turbolinks: false} do
       .fa-2x.fas.fa-arrow-circle-up
