@@ -1,5 +1,6 @@
-h1.h3= @school.name
-
+.d-flex style="align-items: baseline"
+  h1.h3= @school.name
+  a.ml-1 href="#{account_path(section: 'school')}" Modifier
 ul.nav.nav-tabs.test-dashboard-nav.mb-2
   li.nav-item
     = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link #{current_page?(dashboard_school_class_rooms_path(school)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}"

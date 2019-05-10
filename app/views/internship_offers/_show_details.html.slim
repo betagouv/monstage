@@ -9,7 +9,8 @@
         | Stage collectif
     p.text-muted
       = "Semaines : "
-      = internship_offer.weeks.map(&:short_select_text_method).join(' ou ')
+      - weeks = current_user.respond_to?(:school) ? internship_offer.weeks.reject { |week| !current_user.school.weeks.include?(week) } : internship_offer.weeks
+      = weeks.map(&:short_select_text_method).join(' ou ')
 
 h2.h6.mt-3 L'entreprise
 p = internship_offer.employer_name

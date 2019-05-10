@@ -22,3 +22,5 @@
         - cols.each do |col|
           th= col
     tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students, locals: {cols: cols}
+
+= link_to "Autorisation parentale d'accès à la plateforme (document PDF)", root_path + 'autorisation_parentale.pdf'
