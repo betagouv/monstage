@@ -23,4 +23,9 @@
           th= col
     tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students, locals: {cols: cols}
 
-= link_to "Autorisation parentale d'accès à la plateforme (document PDF)", root_path + 'autorisation_parentale.pdf'
+.alert.alert-info.alert-outlined.m-0.p-1
+  .row.align-items-center.no-gutters
+    .col-2.col-sm-auto.text-center.p-3
+      i.fas.fa-file-pdf
+    .col
+      = link_to "Autorisation parentale d'accès à la plateforme (document PDF)", root_path + 'autorisation_parentale.pdf'
