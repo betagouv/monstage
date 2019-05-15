@@ -55,6 +55,14 @@ class InternshipOffer < ApplicationRecord
     joins(:weeks).where(weeks: {id: weeks.ids}).distinct
   }
 
+  scope :older_than, -> (week:) {
+    joins(:weeks).where("weeks.year > ? OR weeks.number > ?", week.year, week.number)
+  }
+
+  scope :available_in_the_future, -> {
+    older_than(week: Week.current).distinct
+  }
+
   after_initialize :init
   paginates_per PAGE_SIZE
 
