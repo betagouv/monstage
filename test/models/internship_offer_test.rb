@@ -49,11 +49,11 @@ class InternshipOfferTest < ActiveSupport::TestCase
   end
 
   test "look for offers available in the future" do
-    travel_to(Date.new(2019, 5, 15)) do
-      internship_offer = create(:internship_offer, weeks: [ Week.find_by(year: 2019, number: 10)])
+    travel_to(Date.new(2020, 5, 15)) do
+      internship_offer = create(:internship_offer, weeks: [ Week.find_by(year: 2019, number: 50), Week.find_by(year: 2020, number: 10)])
       assert_empty InternshipOffer.available_in_the_future
 
-      next_week = Week.find_by(year: 2019, number: 21)
+      next_week = Week.find_by(year: 2020, number: 30)
       internship_offer.weeks << next_week
 
       assert_equal 1, InternshipOffer.available_in_the_future.count
