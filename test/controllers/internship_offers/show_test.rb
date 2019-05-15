@@ -125,5 +125,18 @@ module InternshipOffers
         assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
       end
     end
+
+    test "GET #show displays proper weeks" do
+      internship_offer = create(:internship_offer, weeks: [Week.find_by(number: 8, year: 2019), Week.find_by(number: 9, year: 2019), Week.find_by(number: 21, year: 2019), Week.find_by(number: 22, year: 2019)])
+
+      school = create(:school, weeks: [Week.find_by(number: 8, year: 2019), Week.find_by(number: 21, year: 2019)])
+      sign_in(create(:student, school: school))
+      travel_to(Date.new(2019, 5, 15)) do
+        get internship_offer_path(internship_offer)
+
+        assert_response :success
+        assert_select 'option', text: 'Semaine du 20 mai au 26 mai'
+      end
+    end
   end
 end

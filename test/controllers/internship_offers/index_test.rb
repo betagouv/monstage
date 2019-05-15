@@ -151,16 +151,22 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student with page, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map{ create(:internship_offer, max_candidates: 2) }
-    sign_in(create(:student))
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
-        assert_presence_of(internship_offer: internship_offers.last)
-        assert_absence_of(internship_offer: internship_offers.first)
 
-        get internship_offers_path page: 2
-        assert_presence_of(internship_offer: internship_offers.first)
-        assert_absence_of(internship_offer: internship_offers.last)
+    travel_to(Date.new(2019, 3, 1)) do
+      sign_in(create(:student))
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        InternshipOffer.stub :by_weeks, InternshipOffer.all do
+          InternshipOffer.stub :available_in_the_future, InternshipOffer.all do
+
+            get internship_offers_path
+            assert_presence_of(internship_offer: internship_offers.last)
+            assert_absence_of(internship_offer: internship_offers.first)
+
+            get internship_offers_path page: 2
+            assert_presence_of(internship_offer: internship_offers.first)
+            assert_absence_of(internship_offer: internship_offers.last)
+          end
+        end
       end
     end
   end
