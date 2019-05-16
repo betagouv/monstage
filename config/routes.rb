@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/faq', to: 'pages#faq'
   get '/accessibilite', to: 'pages#accessibilite'
+  get '/statistiques', to: 'pages#statistiques'
 
   root to: "pages#home"
 end

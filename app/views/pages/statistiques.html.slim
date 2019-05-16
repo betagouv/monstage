@@ -1,0 +1,23 @@
+h1 Statistiques
+
+table.table
+  thead
+    tr
+      th Secteurs professionnels
+      th Nbr. d'offres proposées
+      th colspan="3"
+        | Nbr. de candidatures
+        br
+        | total | garçons | filles
+      th colspan="3"
+        | Nbr. de stages conclus
+        br
+        | total | garçons | filles
+  tbody
+    - Sector.all.each do |sector|
+      - scope_by_sector = InternshipOffer.where(sector_id: sector.id)
+      tr
+        td = sector.name
+        td = scope_by_sector.count
+        td colspan="3" = scope_by_sector.sum(:total_applications_count)
+        td colspan="3" = scope_by_sector.sum(:convention_signed_applications_count)
