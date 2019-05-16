@@ -1,5 +1,5 @@
-.d-flex.mb-3.align-items-center
-  h1.h2.mb-0= "#{@internship_offers.empty? ? 'Vos' : @internship_offers.total_count} offres de stage"
+.d-flex.align-items-center
+  h1.h2.mb-3= "#{@internship_offers.empty? ? 'Vos' : @internship_offers.total_count} offres de stage"
   = link_to new_dashboard_internship_offer_path, class: 'ml-auto btn btn-dark', style: 'height: max-content' do
     i.fas.fa-plus
     = " Déposer une offre"

@@ -1,4 +1,4 @@
-nav.navbar.navbar-light.py-0.mb-3.custom-navbar
+nav.navbar.navbar-light.py-0
   - if !current_page?(root_path) || current_page?(root_path) && user_signed_in?
     = link_to root_path, class: 'nav-item' do
       = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Mon stage de 3e", width: 80, height: 45, class: 'my-0 py-0'
