@@ -7,9 +7,9 @@ $line-height: 4px;
   background-color: white;
   color: $nav-tabs-border-color;
   text-align: center;
-  position: relative; // prepare position of before/after elements positionning with absolute
+  position: relative; // prepare position of pseudo element positionning with absolute
 
-  // use pseudo elements to draw 2 lines next to circle [one on the left side, the other on the right side]
+  // use one element to the line connecting to the next circle
   &:after{
     // force visibility of pseudo elements
     display: block;
@@ -59,7 +59,7 @@ $line-height: 4px;
       background-color: $nav-link-background-success;
     }
   }
-
+  // do not draw last line
   &.trailing-nav-link-icon {
     &:after{
       display: none;
