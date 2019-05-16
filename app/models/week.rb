@@ -48,4 +48,9 @@ class Week < ApplicationRecord
   def end_of_week
     I18n.localize(week_date.end_of_week, format: :human_mm_dd)
   end
+
+  def self.current
+    current_date = Date.today
+    Week.find_by(number: current_date.cweek, year: current_date.year)
+  end
 end

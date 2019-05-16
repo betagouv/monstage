@@ -15,6 +15,14 @@ class InternshipOfferWeek < ApplicationRecord
     where(week: weeks)
   }
 
+  scope :after_week, -> (week:) {
+    joins(:week).where("weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)", week.year, week.year, week.number)
+  }
+
+  scope :after_current_week, -> {
+    after_week(week: Week.current)
+  }
+
   def has_spots_left?
     blocked_applications_count < max_candidates
   end
