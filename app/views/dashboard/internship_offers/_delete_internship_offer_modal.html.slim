@@ -5,4 +5,4 @@ div.modal id="delete-offer-modal-#{internship_offer.id}" tabindex="-1" role="dia
         p Souhaitez-vous réellement supprimer cette annonce ?
       .modal-footer
         = link_to "Oui", dashboard_internship_offer_path(internship_offer), class: "btn btn-secondary", method: :delete
-        button type="button" class="btn btn-primary" data-dismiss="modal" Non
+        button type="button" class="btn btn-warning" data-dismiss="modal" Non

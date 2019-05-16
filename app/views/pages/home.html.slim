@@ -11,7 +11,7 @@
   .col-12.col-md-6
     - if !user_signed_in?
       .actions.my-3.d-flex
-        = link_to "Me connecter", new_user_session_path, class: 'btn btn-primary'
+        = link_to "Me connecter", new_user_session_path, class: 'btn btn-warning'
       .actions.my-3.d-flex
-        = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-primary'
+        = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-warning'
 

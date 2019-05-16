@@ -211,4 +211,4 @@
         = form.select :operator_ids, options_from_collection_for_select(Operator.all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true, disabled: current_user.is_a?(Users::Operator)
 
 
-  = form.submit 'Soumettre', class: 'btn btn-primary'
+  = form.submit 'Soumettre', class: 'btn btn-warning'
