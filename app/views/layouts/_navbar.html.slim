@@ -1,25 +1,19 @@
-nav.navbar.navbar-light.py-0
+nav.navbar.navbar-light.py-0.mb-3.custom-navbar
   - if !current_page?(root_path) || current_page?(root_path) && user_signed_in?
-    = link_to root_path, class: 'navbar-brand mr-0 my-3 py-0' do
-      = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Mon stage de 3e", width: 80, height: 45, class: 'mx-auto my-0 d-block logo'
+    = link_to root_path, class: 'nav-item' do
+      = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Mon stage de 3e", width: 80, height: 45, class: 'my-0 py-0'
 
-    ul.nav.nav-banner.nav-pills.float-xs-none.float-sm-right
+    ul.nav.nav-banner.float-xs-none.float-sm-right
       - if user_signed_in?
         - unless current_user.is_a?(Users::Employer)
           li.nav-item
-            = link_to 'Recherche', internship_offers_path, class: 'nav-link pl-0 pr-1'
-          li.nav-item.nav-item-serparator
-            span.nav-link.px-0= " | "
+            = link_to 'Recherche', internship_offers_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(internship_offers_path) || current_controller?(:internship_offers) ? 'active' : ''}"
         li.nav-item
-          = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: 'nav-link pl-1 pr-1'
-        li.nav-item.nav-item-serparator
-          span.nav-link.px-0= " | "
+          = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{current_page?(dashboard_students_internship_applications_path(current_user)) || current_controller?(:internship_applications) ? 'active' : ''}"
         li.nav-item
-          = link_to "Mon profil", account_path, class: "nav-link pr-0 pl-1"
+          = link_to "Mon profil", account_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(account_path) || current_page?(account_path(section: :resume)) || current_page?(account_path(section: :identity)) || current_page?(account_path(section: :school)) ? 'active' : ''}"
       - else
         li.nav-item
-          = link_to 'Inscription', new_user_registration_path, class: "nav-link pl-1 pr-1"
-        li.nav-item.nav-item-serparator
-          span.nav-link.px-0= " | "
+          = link_to 'Inscription', new_user_registration_path, class: "nav-link pl-1 pr-1 py-4"
         li.nav-item
-          = link_to 'Connexion', new_user_session_path, class: "nav-link pl-1 pr-0"
+          = link_to 'Connexion', new_user_session_path, class: "nav-link pl-1 pr-1 py-4"

@@ -7,13 +7,18 @@
 @import '../stylesheets/rg2a';
 @import '../stylesheets/environment';
 
+@import '../stylesheets/components/backgrounds';
 @import '../stylesheets/components/fa';
+@import '../stylesheets/components/form';
 @import '../stylesheets/components/help';
-@import '../stylesheets/components/opacity';
-@import '../stylesheets/components/pre';
-@import '../stylesheets/components/table';
-@import '../stylesheets/components/p';
 @import '../stylesheets/components/listview';
+@import '../stylesheets/components/opacity';
+@import '../stylesheets/components/p';
+@import '../stylesheets/components/pre';
+@import '../stylesheets/components/spacers';
+@import '../stylesheets/components/sticky_buttons';
+@import '../stylesheets/components/table';
+@import '../stylesheets/components/titles';
 
 @import '../stylesheets/pages/account';
 @import '../stylesheets/pages/internship_offers';
