@@ -1,0 +1,88 @@
+//desktop
+// html {
+//   font-size: $html-font-size-base;
+//   h1, .h1 {
+//     font-size: $html-font-size-base * 3;
+//   }
+//   h2, .h2 {
+//     font-size: $html-font-size-base * 1.75;
+//   }
+//   h3, .h3 {
+//     font-size: $html-font-size-base * 1.5;
+//   }
+//   h4, .h4 {
+//     font-size: $html-font-size-base * 1.25;
+//   }
+//   h5, .h5 {
+//     font-size: $html-font-size-base;
+//   }
+// }
+
+
+
+// everybody
+html h1,
+html .h1,
+html h2,
+html .h2,
+{
+  color: $blue;
+}
+
+html .h3,
+html h3
+{
+  color: $gray-900;
+}
+
+html h4,
+html .h4{
+  color: #666;
+}
+html h5,
+html .h5{
+  color: #999
+}
+// desktop is default bootstrap
+
+// mobile is custom
+@include media-breakpoint-down(xs) {
+  html h1,
+  html .h1,
+  html h2,
+  html .h2,
+  html h3,
+  html .h3,
+  html h4,
+  html .h4,
+  html h5,
+  html .h5,
+  {
+    font-weight: 700;
+  }
+  html h1,
+  html .h1 {
+    font-size: $html-font-size-base * 1.5;
+    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
+  }
+  html h2,
+  html .h2 {
+    font-size: $html-font-size-base * 1.375;
+    line-height: ($html-font-size-base * 1.375) * $mobile-line-height-ratio;
+  }
+  html h3,
+  html .h3 {
+    font-size: $html-font-size-base * 1.5;
+    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
+  }
+  html h4,
+  html .h4 {
+    font-size: $html-font-size-base * 1.25;
+    line-height: ($html-font-size-base * 1.25) * $mobile-line-height-ratio;
+  }
+  html h5,
+  html .h5 {
+    font-size: $html-font-size-base;
+    line-height: ($html-font-size-base) * $mobile-line-height-ratio;
+  }
+}

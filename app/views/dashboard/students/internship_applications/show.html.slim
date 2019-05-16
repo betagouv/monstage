@@ -12,10 +12,10 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, application_detail_tab: true }
     = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", turbolinks: false }
 
-    .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"
+    .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"F
       = render "internship_applications/show_details", internship_application: @internship_application
       - if @internship_application.drafted?
-        .actions.d-flex.d-sm-block
+        .actions.d-flex.d-sm-block.d-xs-stick
           = link_to internship_offer_path(@internship_application.internship_offer), class: 'btn btn-link' do
             i.fas.fa-2x.fa-chevron-left
             = "Modifier"
