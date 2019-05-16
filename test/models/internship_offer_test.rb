@@ -59,4 +59,14 @@ class InternshipOfferTest < ActiveSupport::TestCase
       assert_equal 1, InternshipOffer.available_in_the_future.count
     end
   end
+
+  test "scopes that select offers depending on years" do
+    travel_to(Date.new(2019, 5, 15)) do
+      create(:internship_offer)
+
+      assert_equal 1, InternshipOffer.during_current_year.count
+      assert_equal 1, InternshipOffer.during_year(year: 2018).count
+      assert_equal 0, InternshipOffer.during_year(year: 2019).count
+    end
+  end
 end

@@ -15,7 +15,7 @@ table.table
         | total | garçons | filles
   tbody
     - Sector.all.each do |sector|
-      - scope_by_sector = InternshipOffer.where(sector_id: sector.id)
+      - scope_by_sector = InternshipOffer.during_current_year.where(sector_id: sector.id)
       tr
         td = sector.name
         td = scope_by_sector.count
