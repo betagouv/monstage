@@ -16,12 +16,18 @@ h1.h2 Modifier mon identité
       = f.rg2a_required_content_tag
     = f.text_field :last_name, class: 'form-control col-lg-6',
       required: true
-
   .form-group
     = f.label :email do
       = 'Adresse électronique (email)'
       = f.rg2a_required_content_tag
     = f.text_field :email, class: 'form-control col-lg-6', required: true
+
+  - if can?(:change, :class_room)
+    = f.label :class_room_id do
+      = 'Classe'
+      = f.rg2a_required_content_tag
+    = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id), { }, class: "form-control col-lg-6"
+
 
   .actions.d-flex.d-sm-block
     = f.submit 'Enregistrer', class: 'btn btn-primary'

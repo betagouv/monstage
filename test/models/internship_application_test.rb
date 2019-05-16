@@ -98,6 +98,31 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
+  test 'transition via signed! cancel internship_application.student other applications on same week' do
+    weeks =  [weeks(:week_2019_1), weeks(:week_2019_2)]
+    student = create(:student)
+    internship_offer_1 = create(:internship_offer, weeks: weeks)
+    internship_offer_2 = create(:internship_offer, weeks: weeks)
+    internship_application_to_be_canceled = create(:internship_application, :approved,
+                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.first,
+                                                               student: student)
+    internship_application_to_be_signed = create(:internship_application, :approved,
+                                                               internship_offer_week: internship_offer_2.internship_offer_weeks.first,
+                                                               student: student)
+    internship_application_ignored_by_week = create(:internship_application, :approved,
+                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.last,
+                                                               student: student)
+    internship_application_ignored_by_student = create(:internship_application, :approved,
+                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.first)
+    assert_changes -> { internship_application_to_be_canceled.reload.aasm_state },
+                   from: 'approved',
+                   to: 'rejected' do
+      internship_application_to_be_signed.signed!
+    end
+    assert internship_application_ignored_by_week.reload.approved?
+    assert internship_application_ignored_by_student.reload.approved?
+  end
+
   test 'is not applicable twice by same student' do
     weeks = [Week.find_by(number: 1, year: 2019)]
     student = create(:student)

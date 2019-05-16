@@ -16,10 +16,14 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       = render "internship_applications/show_details", internship_application: @internship_application
       - if @internship_application.drafted?
         .actions.d-flex.d-sm-block
-          = link_to "Modifier", internship_offer_path(@internship_application.internship_offer), class: 'btn btn-link'
+          = link_to internship_offer_path(@internship_application.internship_offer), class: 'btn btn-link' do
+            i.fas.fa-2x.fa-chevron-left
+            = "Modifier"
           = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-primary'
 
   #tab-convention-detail data-target='dashboard-students-internship-application.conventionDetail'
+    - if @internship_application.approved?
+      p.small.text-muted Vous pouvez demander un modèle de convention à votre professeur principal
     .row
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
     p La convention est fournie par le collège. Elle doit être remplie et signée par les parents puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.

@@ -32,6 +32,9 @@ class InternshipApplication < ApplicationRecord
     .order("orderable_aasm_state")
   }
 
+  scope :for_user, -> (user:) { where(user_id: user.id) }
+  scope :not_by_id, -> (id:) { where.not(id: id) }
+
   def internship_offer_week_has_spots_left
     unless internship_offer_week && internship_offer_week.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
@@ -79,6 +82,11 @@ class InternshipApplication < ApplicationRecord
     event :signed do
       transitions from: :approved, to: :convention_signed, :after => Proc.new { |*args|
         update!(convention_signed_at: Time.now.utc)
+        InternshipApplication.for_user(user: self.student)
+                             .not_by_id(id: self.id)
+                             .joins(:internship_offer_week)
+                             .where("internship_offer_weeks.week_id = #{self.internship_offer_week.week.id}")
+                             .map(&:cancel!)
       }
     end
   end

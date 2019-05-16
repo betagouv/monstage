@@ -36,6 +36,18 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET edit render as student also allow him to change class_room" do
+    school = create(:school)
+    class_room_1 = create(:class_room, school: school)
+    class_room_2 = create(:class_room, school: school)
+    student = create(:student, school: school, class_room: class_room_1)
+
+    sign_in(student)
+    get account_path(section: 'identity')
+
+    assert_select 'select[name="user[class_room_id]"]'
+  end
+
   test 'PATCH edit as student, updates resume params' do
     student = create(:student)
     sign_in(student)
