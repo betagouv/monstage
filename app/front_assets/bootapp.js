@@ -3,6 +3,7 @@ import Rails from 'rails-ujs';
 import Turbolinks from 'turbolinks';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
+import 'fonts/fontawesome';
 
 Rails.start();
 Turbolinks.start();
