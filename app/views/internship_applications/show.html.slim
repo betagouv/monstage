@@ -1,13 +1,22 @@
-h1.h2 Je candidate
+h1.h2 Je postule
 
-h2.h3 Pour le stage
-h3.h4
-p
-  strong= @internship_offer.title
-  br
-  = "à #{@internship_application.internship_offer.city}"
-  br
-  = @internship_application.week.select_text_method
+.row.bg-dark-light
+  .col-12
+    .alert.alert-secondary.alert-outlined.bg-white.mt-3
+      .row.align-items-center.no-gutters
+        .col-1.col-sm-auto
+          i.fas.fa-exclamation-triangle
+        .col Relisez vous bien pour éviter les fautes d'orthographe.
+
+.row.bg-dark-light
+  .col-12
+    h2.h4 Pour le stage
+    p
+      strong= @internship_offer.title
+      br
+      = "à #{@internship_application.internship_offer.city}"
+      br
+      = @internship_application.week.select_text_method
 
 = render "internship_applications/show_details", internship_application: @internship_application
 
