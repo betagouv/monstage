@@ -11,8 +11,8 @@ module InternshipApplications
       get internship_offer_internship_application_path(internship_offer,
                                                        internship_application)
       assert_response :success
-      assert_select "a.btn-primary[href=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
-      assert_select "a.btn-primary[data-method=patch]"
+      assert_select "a.btn-warning[href=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
+      assert_select "a.btn-warning[data-method=patch]"
     end
 
     test "GET #show not owning internship_application is forbidden" do

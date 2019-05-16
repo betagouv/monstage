@@ -10,6 +10,7 @@ export default class extends Controller {
     showElement($(this.containerFormTarget))
     hideElement($(this.containerShowFormLinkTarget))
   }
+
   hideForm(event) {
     hideElement($(this.containerFormTarget))
     showElement($(this.containerShowFormLinkTarget))

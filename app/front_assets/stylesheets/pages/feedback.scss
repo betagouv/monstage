@@ -3,11 +3,12 @@
   z-index: 2;
   bottom: 70px;
   right: 0;
-  background-color: yellow;
+  background-color: $warning;
   // defaults, hidden form content, visible call to action
   max-width: 120px;
   .btn-open-feedback-form {
     display: flex;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
   }
   .feedback-form-content {
     display: none;

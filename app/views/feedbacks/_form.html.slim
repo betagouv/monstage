@@ -1,6 +1,6 @@
 = form_for Feedback.new(email: current_user.try(:email)), html: { class: 'feedback-form  d-flex', data: {target: 'feedback-form.container'} } do |f|
 
-  a.btn-open-feedback-form.d-flex.flex-column.col-12.justify-content-center.align-items-center.text-center.p-3 data-action="click->feedback-form#toggle"
+  a.btn-open-feedback-form.d-flex.flex-column.col-12.justify-content-center.align-items-center.text-center.p-3.text-white data-action="click->feedback-form#toggle"
     i.fas.fa-smile.fa-2x
     span.d-none.d-sm-block
       br
@@ -12,7 +12,7 @@
 
   div.feedback-form-content.align-items-center.p-3 data-target="feedback-form.formContent"
     .container
-      a.btn-close-feedback-form.btn-fixed-close-feedback-form.float-right.d-block.d-sm-none.m-3 data-action="click->feedback-form#toggle"
+      a.btn-close-feedback-form.btn-fixed-close-feedback-form.float-right.d-block.d-sm-none.m-3.text-white data-action="click->feedback-form#toggle"
         i.fas.fa-times.fa-2x
 
       .row
@@ -35,4 +35,4 @@
               = f.rg2a_required_content_tag
             = f.text_area :comment, class: "form-control", required: true
 
-          .actions.d-flex.d-sm-block = f.submit "Envoyer", class: 'btn btn-primary'
+          .actions.d-flex.d-sm-block = f.submit "Envoyer", class: 'btn btn-warning bg-white'

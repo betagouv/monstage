@@ -11,5 +11,9 @@ body {
 .footer{
   border-top: 1px solid $gray-400;
   flex-shrink: 0;
+  a{
+    color: #444;
+    text-decoration: none;
+  }
 }
 
