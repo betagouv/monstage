@@ -18,5 +18,5 @@
   .row
     = render partial: "dashboard/students/internship_applications/student_internship_application", collection: @internship_applications
     .col-12
-      .actions.d-flex.mt-3.d-sm-block
+      .actions.d-flex.mt-3.d-sm-block.d-xs-stick
         = link_to "Rechercher un autre stage", internship_offers_path, class: 'btn btn-warning'
