@@ -79,5 +79,5 @@
         h3.h2-home.mb-5.text-center Un projet porté par
 
       .col-12.text-center
-        - %w[Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg jndj.png united-way.png].each do |img|
-          = image_tag asset_pack_path("images/partenaires/#{img}"), height: 69, class: 'mx-4'
+        - %w[Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each do |img|
+          = image_tag asset_pack_path("images/partenaires/#{img}"), height: 69, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
