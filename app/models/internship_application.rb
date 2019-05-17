@@ -78,7 +78,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: :approved, to: :rejected, :after => Proc.new { |*args|
+      transitions from: [:submitted, :approved], to: :rejected, :after => Proc.new { |*args|
         update!(rejected_at: Time.now.utc)
       }
     end
