@@ -5,11 +5,11 @@ table.table
     tr
       th Secteurs professionnels
       th Nbr. d'offres proposées
-      th colspan="3"
+      th
         | Nbr. de candidatures
         br
         | total | garçons | filles
-      th colspan="3"
+      th
         | Nbr. de stages conclus
         br
         | total | garçons | filles
@@ -19,5 +19,13 @@ table.table
       tr
         td = sector.name
         td = scope_by_sector.count
-        td colspan="3" = scope_by_sector.sum(:total_applications_count)
-        td colspan="3" = scope_by_sector.sum(:convention_signed_applications_count)
+        td
+          .d-flex.justify-content-around
+            span = scope_by_sector.sum(:total_applications_count)
+            span = scope_by_sector.sum(:total_male_applications_count)
+            span = scope_by_sector.sum(&:total_female_applications_count)
+        td
+          .d-flex.justify-content-around
+            span = scope_by_sector.sum(:convention_signed_applications_count)
+            span = scope_by_sector.sum(:total_male_convention_signed_applications_count)
+            span = scope_by_sector.sum(&:total_female_convention_signed_applications_count)

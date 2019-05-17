@@ -104,4 +104,11 @@ class InternshipOffer < ApplicationRecord
    self.max_internship_week_number ||= 1
   end
 
+  def total_female_applications_count
+    total_applications_count - total_male_applications_count
+  end
+
+  def total_female_convention_signed_applications_count
+    convention_signed_applications_count - total_male_convention_signed_applications_count
+  end
 end
