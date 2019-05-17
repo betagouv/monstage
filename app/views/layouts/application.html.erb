@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= favicon_link_tag asset_pack_path('images/favicon.png') %>
-
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
-
     <%= stylesheet_pack_tag 'styles', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true  %>
   </head>
 
-  <body class="<%= env_class_name %>" data-controller='feedback-form'>
+  <body class="<%= env_class_name %> <%= body_class_name %>" data-controller='feedback-form'>
     <a name="top" id="top"></a>
-
     <div class="content">
-      <header role="banner" class="custom-navbar mb-4">
+      <header role="banner" class="custom-navbar <%= homepage? ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
             <div class="col px-0"><%= render 'layouts/navbar' %></div>
           </div>
         </div>
       </header>
-      <div class="container">
+      <% if homepage? %>
         <%= render 'layouts/flash' %>
         <%= yield %>
-      </div>
+      <% else %>
+        <div class="container">
+          <%= render 'layouts/flash' %>
+          <%= yield %>
+        </div>
+      <% end %>
     </div>
     <div class="footer mt-3 pb-3 bg-dark-light">
       <div class="container">

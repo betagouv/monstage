@@ -1,6 +1,7 @@
 $nav-link-rounded-radius: 25px;
 $line-height: 4px;
-
+// nav-link-icon-with-label
+//  nav-link-icon-with-label-success
 .nav-link-icon-with-label{
   margin: 0;
   padding: 0;
@@ -11,9 +12,10 @@ $line-height: 4px;
 
   // use one element to the line connecting to the next circle
   &:after{
+    // position element
+    position: absolute;
     // force visibility of pseudo elements
     display: block;
-    position: absolute;
     content: " ";
     height: $line-height;
     width: 100%;
@@ -28,10 +30,10 @@ $line-height: 4px;
 
   // draw the circle from the top
   .nav-link-icon{
+    font-size: 13px;
     position: relative;
     z-index: 2;
 
-    line-height: $nav-link-rounded-radius * 2;
     width: $nav-link-rounded-radius * 2;
     height: $nav-link-rounded-radius * 2;
     border-radius: $nav-link-rounded-radius;
@@ -59,6 +61,7 @@ $line-height: 4px;
       background-color: $nav-link-background-success;
     }
   }
+
   // do not draw last line
   &.trailing-nav-link-icon {
     &:after{
