@@ -18,12 +18,14 @@ class InternshipApplicationCountersHook
                                                 .reject(&:drafted?)
                                                 .count,
       total_male_applications_count: internship_offer.internship_applications
-                                                     .joins(:student).where("users.gender = 'm'")
+                                                     .joins(:student)
                                                      .reject(&:drafted?)
+                                                     .select(&:student_is_male?)
                                                      .count,
       total_female_applications_count: internship_offer.internship_applications
-                                                     .joins(:student).where("users.gender = 'f'")
+                                                     .joins(:student)
                                                      .reject(&:drafted?)
+                                                     .reject(&:student_is_male?)
                                                      .count,
       approved_applications_count: internship_offer.internship_offer_weeks
                                                    .sum(:approved_applications_count),
