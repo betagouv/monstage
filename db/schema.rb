@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_131202) do
+ActiveRecord::Schema.define(version: 2019_05_16_145246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 2019_05_09_131202) do
     t.string "department", default: "", null: false
     t.string "region", default: "", null: false
     t.string "academy", default: "", null: false
+    t.integer "total_female_applications_count", default: 0, null: false
+    t.integer "total_male_applications_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"

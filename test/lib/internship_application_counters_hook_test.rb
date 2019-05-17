@@ -86,4 +86,26 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
       @internship_application.approve!
     end
   end
+
+  test ".update_internship_offer_counters tracks total male and female applications_count" do
+    @internship_application.student = create(:student, gender: 'm')
+    @internship_application.aasm_state = :submitted
+    assert_changes -> { @internship_offer.total_male_applications_count },
+                   from: 0,
+                   to: 1 do
+      @internship_application.save!
+      @internship_offer.reload
+    end
+
+    second_application = build(:internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
+                               student: create(:student, gender: 'f'))
+    second_application.aasm_state = :submitted
+
+    assert_changes -> { @internship_offer.total_female_applications_count },
+                   from: 0,
+                   to: 1 do
+      @internship_application.save!
+      @internship_offer.reload
+    end
+  end
 end
