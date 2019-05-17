@@ -22,8 +22,7 @@
 .bg-peacock-blue.py-5
   .container
     .row
-      .d-none.d-sm-flex.col-sm-4
-        = image_tag asset_pack_path('images/homepage/reserve-aux-eleves-de-rep-plus.jpg'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto shadow', width: 360
+      .d-none.d-md-flex.col-sm-4.bg-cover-rep-plus.shadow
 
       .col-12.col-sm.8
         h2.h3-home.text-white Cette plateforme est réservée aux élèves des établissements des Réseaux d'Éducation Prioritaire (REP+)
@@ -41,15 +40,15 @@
         h3.h2-home.text-center Nous sommes à vos côtés pour…
 
     .row.py-5
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
           = image_tag asset_pack_path('images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Offrir un stage
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
           = image_tag asset_pack_path('images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Trouver un stage
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
           = image_tag asset_pack_path('images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Accompagner les élèves
@@ -60,7 +59,7 @@
       .col-12
         h3.h2-home.text-center Chiffres clés des stages de 3e sur le site
     .row.py-5
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .row
           .col-3
             .circled-icon.d-inline-flex.align-items-center
@@ -68,7 +67,7 @@
           .col-9
             h5.h1-stat.m-0.p-0 1324
             h6.h3-stat.m-0.p-0 stages offerts
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .row
           .col-3
             .circled-icon.d-inline-flex.align-items-center
@@ -76,7 +75,7 @@
           .col-9
             h5.h1-stat.m-0.p-0 780
             h6.h3-stat.m-0.p-0 candidatures
-      .col-4
+      .col-sm-12.col-md-4.py-3
         .row
           .col-3
             .circled-icon.d-inline-flex.align-items-center

@@ -18,6 +18,10 @@
     background-repeat: no-repeat, no-repeat;
     background-size: cover, cover;
   }
+  .bg-cover-rep-plus{
+    background: transparent url('../images/homepage/reserve-aux-eleves-de-rep-plus.jpg') top left no-repeat;
+    background-size: cover;
+  }
   $homepage-icon-size: 80px;
   .circled-icon{
     background-color: #fff;
@@ -52,7 +56,10 @@
   }
 }
 
-
+.mw-360{
+  max-width: 360px;
+  height: auto;
+}
 .bg-peacock-blue{
-    background-color: rgba(0, 102, 153, 0.9);
-  }
+  background-color: rgba(0, 102, 153, 0.9);
+}
