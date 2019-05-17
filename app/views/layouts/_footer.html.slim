@@ -1,12 +1,10 @@
 .row
-  .col-12.col-md-3
-    .row.pt-3.pb-3
-      .col-4.col-md-12= image_tag asset_pack_path('images/logo-rp.svg'), alt: "Logo – République Française", width: 80, height: 45, class: 'float-md-left'
-      .col-8.col-md-12
-        .small.text-muted Un service fourni par la DINSIC et incubé par beta.gouv.fr
-  .d-none.d-md-flex.col-md-3
+  .col-12.col-md-4
+    p.pt-3.mb-0
+      small Un service fourni par la DINSIC et incubé par beta.gouv.fr
+      = image_tag asset_pack_path('images/logo-beta-gouv-fr.png'), alt: "Logo beta gouv", class: 'img-fluid mt-3'
 
-  .col-12.col-md-6
+  .col-12.col-md-8
     .row.no-gutter.pt-3
       .col-6
         ul.nav.flex-column

@@ -1,9 +1,9 @@
-import './mon-stage-3e-logo.svg'
-import './logo-rp.svg'
 import './favicon.png'
+import './logo-mon-stage-3e.svg'
+import './logo-beta-gouv-fr.png'
 
-import './logo_onisep.jpg'
-import './logo_cget_texte.png'
+import './pages/logo_onisep.jpg'
+import './pages/logo_cget_texte.png'
 
 import './homepage/reserve-aux-eleves-de-rep-plus.jpg'
 
