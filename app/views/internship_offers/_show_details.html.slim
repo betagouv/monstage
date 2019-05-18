@@ -1,19 +1,19 @@
 .row
   .col-12
     p = internship_offer.description
-    p.text-muted.mb-0
-      - if internship_offer.is_individual?
-        | Stage individuel
-      - else
-        | Stage collectif
+    p
+      span.badge.badge-cyan.px-3.py-2
+        - if internship_offer.is_individual?
+          | Stage individuel
+        - else
+          | Stage collectif
     p.text-muted
       = "Semaines : "
       - weeks = current_user.respond_to?(:school) ? internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates).after_current_week : internship_offer.internship_offer_weeks
       = weeks.map(&:human_select_text_method).join(' ou ')
-      = internship_offer.weeks.map(&:short_select_text_method).join(' ou ')
 .row.bg-light.py-3
   .col-12
-    h2.h3 L'entreprise
+    h2.h4 Où se déroule ce stage ?
     p = internship_offer.employer_name
     - if internship_offer.employer_website.present?
       p.text-truncate
