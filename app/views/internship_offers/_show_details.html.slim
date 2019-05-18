@@ -11,7 +11,7 @@
       = "Semaines : "
       - weeks = current_user.respond_to?(:school) ? internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates).after_current_week : internship_offer.internship_offer_weeks
       = weeks.map(&:human_select_text_method).join(' ou ')
-.row.bg-light.py-3
+.row.bg-light.py-3.bt-1.bt-light
   .col-12
     h2.h4 Où se déroule ce stage ?
     p = internship_offer.employer_name

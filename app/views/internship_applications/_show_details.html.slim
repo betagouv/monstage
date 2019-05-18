@@ -1,23 +1,28 @@
 .row.bg-dark-light
   .col-12
-    h3.h4 Ma motivation
+    p.my-2
+      strong Ma motivation
     pre.word-breakable-content= internship_application.motivation
 
 - unless is_resume_empty?(internship_application)
   h3.h4.mt-3 Mon CV
   - if has_resume_educational_background?(internship_application)
-    h4.h5 Parcours scolaire
+    p.my-2
+      strong Parcours scolaire
     pre.word-breakable-content= internship_application.student.resume_educational_background
 
   - if has_resume_other?(internship_application)
-    h4.h5.mt-3 Activités extra scolaires
+    p.my-2.mt-3
+      strong Activités extra scolaires
     pre.word-breakable-content= internship_application.student.resume_other
 
   - if has_resume_languages?(internship_application)
-    h4.h5.mt-3 Langues
+    p.my-2.mt-3
+      strong Langues
     pre.word-breakable-content= internship_application.student.resume_languages
 
-h4.h5 Mon identité
+p.my-1
+  strong Mon identité
 p
   strong= "#{internship_application.student.first_name} #{internship_application.student.last_name}"
   br

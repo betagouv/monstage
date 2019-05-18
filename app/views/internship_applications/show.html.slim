@@ -1,8 +1,8 @@
 h1.h2.mb-3 Je postule
 
-.row.bg-dark-light
+.row.bg-dark-light.bt-1.bt-light
   .col-12
-    .alert.alert-secondary.alert-outlined.bg-white.mt-3
+    .alert.alert-secondary.alert-outlined.bg-white.mt-3.rounded.shadow-sm
       .row.align-items-center.no-gutters
         .col-1.col-sm-auto
           i.fas.fa-exclamation-triangle
@@ -10,10 +10,11 @@ h1.h2.mb-3 Je postule
 
 .row.bg-dark-light
   .col-12
-    h2.h4 Pour le stage
-    p
+    p.my-2
+      strong Pour le stage
+    h2.h1
       strong= @internship_offer.title
-      br
+    p.strong
       = "à #{@internship_application.internship_offer.city}"
       br
       = @internship_application.week.select_text_method

@@ -1,7 +1,7 @@
 = render "title", internship_offers: @internship_offers
 
 - if can? :apply, InternshipOffer
-  .row
+  .row.bt-1.bt-light
     .col-12.bg-light.px-3.pt-3.filter-section data-controller="internship-index"
       - if user_signed_in? && current_user.respond_to?(:school)
         .row
