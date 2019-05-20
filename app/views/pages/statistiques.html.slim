@@ -14,6 +14,7 @@ h1.mt-2 Statistiques
     = label_tag :department, 'Département'
     = select_tag :department, options_for_select(InternshipOffer.pluck(:department).uniq.reject(&:blank?), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
 
+- @offers = @offers.where(department: params[:department]) unless params[:department].blank?
 table.table
   thead
     tr
@@ -29,18 +30,6 @@ table.table
         | total | garçons | filles
   tbody
     - Sector.all.each do |sector|
-      - scoped_offers = InternshipOffer.during_current_year.where(sector_id: sector.id)
-      - scoped_offers = scoped_offers.where(department: params[:department]) if params[:department]
-      tr
-        td = sector.name
-        td = scoped_offers.count
-        td
-          .d-flex.justify-content-around
-            span = scoped_offers.sum(:total_applications_count)
-            span = scoped_offers.sum(:total_male_applications_count)
-            span = scoped_offers.sum(&:total_female_applications_count)
-        td
-          .d-flex.justify-content-around
-            span = scoped_offers.sum(:convention_signed_applications_count)
-            span = scoped_offers.sum(:total_male_convention_signed_applications_count)
-            span = scoped_offers.sum(&:total_female_convention_signed_applications_count)
+      = render "statistiques_row", row_title: sector.name, offers: @offers.where(sector_id: sector.id)
+    = render "statistiques_row", row_title: 'Secteur privé', offers: @offers.where(is_public: false), gray_background: true
+    = render "statistiques_row", row_title: 'Secteur public', offers: @offers.where(is_public: true), gray_background: true

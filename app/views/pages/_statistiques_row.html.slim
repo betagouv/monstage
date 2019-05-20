@@ -1,0 +1,14 @@
+- gray_background ||= false
+tr class="#{'bg-light' if gray_background}"
+  td = row_title
+  td = offers.count
+  td
+    .d-flex.justify-content-around
+      span = offers.sum(:total_applications_count)
+      span = offers.sum(:total_male_applications_count)
+      span = offers.sum(&:total_female_applications_count)
+  td
+    .d-flex.justify-content-around
+      span = offers.sum(:convention_signed_applications_count)
+      span = offers.sum(:total_male_convention_signed_applications_count)
+      span = offers.sum(&:total_female_convention_signed_applications_count)
