@@ -1,20 +1,32 @@
 = link_to 'Accueil', root_path
 span.mx-1 >
-- if params[:department].blank?
-  | Statistiques
-- else
+- if params[:department].present? || params[:group_name].present?
   = link_to 'Statistiques', statistiques_path
   span.mx-1 >
-  = params[:department]
+  - if params[:department].present?
+    - if params[:group_name].present?
+      = link_to params[:department], statistiques_path(department: params[:department])
+      span.mx-1 >
+      = params[:group_name]
+    - else
+      = params[:department]
+  - elsif params[:group_name].present?
+    = params[:group_name]
+- else
+  | Statistiques
 
 h1.mt-2 Statistiques
 
-.bg-light.p-3[data-controller='statistics']
-  .form-group
+.row.bg-light.pt-3[data-controller='statistics']
+  .form-group.col-lg-6
     = label_tag :department, 'Département'
     = select_tag :department, options_for_select(InternshipOffer.pluck(:department).uniq.reject(&:blank?), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+  .form-group.col-lg-6
+    = label_tag :group_name, "Groupe ou Institution de tutelle"
+    = select_tag :group_name, options_for_select(InternshipOffer.pluck(:group_name).uniq.reject(&:blank?), selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
 
 - @offers = @offers.where(department: params[:department]) unless params[:department].blank?
+- @offers = @offers.where(group_name: params[:group_name]) unless params[:group_name].blank?
 table.table
   thead
     tr
