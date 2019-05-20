@@ -2,7 +2,7 @@
   .container
     .row
       .col-12.col-md-6
-        = image_tag asset_pack_path('images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none mx-sm-0 mx-auto', width: 160
+        = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none mx-sm-0 mx-auto', width: 160
       .col-12.col-md-6
 
     .row
@@ -42,15 +42,15 @@
     .row.py-5
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
-          = image_tag asset_pack_path('images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Offrir un stage
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
-          = image_tag asset_pack_path('images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Trouver un stage
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3
-          = image_tag asset_pack_path('images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center Accompagner les élèves
 
 .bg-light-warning.py-5.d-none.d-sm-block
@@ -93,11 +93,11 @@
         h3.h3-home.mb-5.text-center Un projet porté par
       .col-12
         - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |img|
-          = image_tag asset_pack_path("images/homepage/sponsors/#{img}"), height: 221, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+          = image_tag asset_pack_path("media/images/homepage/sponsors/#{img}"), height: 221, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
 
       .col-12
         h3.h3-home.my-5.text-center Nos partenaires
 
       .col-12.text-center
         - %w[Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each do |img|
-          = image_tag asset_pack_path("images/homepage/partenaires/#{img}"), height: 69, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+          = image_tag asset_pack_path("media/images/homepage/partenaires/#{img}"), height: 69, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
