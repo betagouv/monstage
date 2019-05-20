@@ -1,4 +1,18 @@
-h1 Statistiques
+= link_to 'Accueil', root_path
+span.mx-1 >
+- if params[:department].blank?
+  | Statistiques
+- else
+  = link_to 'Statistiques', statistiques_path
+  span.mx-1 >
+  = params[:department]
+
+h1.mt-2 Statistiques
+
+.bg-light.p-3[data-controller='statistics']
+  .form-group
+    = label_tag :department, 'Département'
+    = select_tag :department, options_for_select(InternshipOffer.pluck(:department).uniq.reject(&:blank?), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
 
 table.table
   thead
@@ -15,17 +29,18 @@ table.table
         | total | garçons | filles
   tbody
     - Sector.all.each do |sector|
-      - scope_by_sector = InternshipOffer.during_current_year.where(sector_id: sector.id)
+      - scoped_offers = InternshipOffer.during_current_year.where(sector_id: sector.id)
+      - scoped_offers = scoped_offers.where(department: params[:department]) if params[:department]
       tr
         td = sector.name
-        td = scope_by_sector.count
+        td = scoped_offers.count
         td
           .d-flex.justify-content-around
-            span = scope_by_sector.sum(:total_applications_count)
-            span = scope_by_sector.sum(:total_male_applications_count)
-            span = scope_by_sector.sum(&:total_female_applications_count)
+            span = scoped_offers.sum(:total_applications_count)
+            span = scoped_offers.sum(:total_male_applications_count)
+            span = scoped_offers.sum(&:total_female_applications_count)
         td
           .d-flex.justify-content-around
-            span = scope_by_sector.sum(:convention_signed_applications_count)
-            span = scope_by_sector.sum(:total_male_convention_signed_applications_count)
-            span = scope_by_sector.sum(&:total_female_convention_signed_applications_count)
+            span = scoped_offers.sum(:convention_signed_applications_count)
+            span = scoped_offers.sum(:total_male_convention_signed_applications_count)
+            span = scoped_offers.sum(&:total_female_convention_signed_applications_count)
