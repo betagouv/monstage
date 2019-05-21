@@ -26,7 +26,7 @@ module Dashboard
         sign_in(school_manager)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
-        assert_select "h1.h2.mb-0", text: student.name
+        assert_select "h1.h2.mb-3", text: student.name
         assert_select "a[href=?]", dashboard_school_class_room_path(school, class_room)
         assert_select "h2.h4", text: "Aucun stage sélectionné"
       end
@@ -60,7 +60,7 @@ module Dashboard
           assert_select "a[href=?]", dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
         end
-        assert_select ".alert-info strong.alert-internship-application-state",
+        assert_select ".alert-secondary small.alert-internship-application-state",
                       text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select ".alert-warning small.alert-internship-application-state",

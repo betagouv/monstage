@@ -1,4 +1,4 @@
-h1.h2 Modifier mon identité
+h1.h2.mb-3 Modifier mon identité
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = f.rg2a_explain_required_asterisk
@@ -23,10 +23,11 @@ h1.h2 Modifier mon identité
     = f.text_field :email, class: 'form-control col-lg-6', required: true
 
   - if can?(:change, :class_room)
-    = f.label :class_room_id do
-      = 'Classe'
-      = f.rg2a_required_content_tag
-    = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id), { }, class: "form-control col-lg-6"
+    .form-group
+      = f.label :class_room_id do
+        = 'Classe'
+        = f.rg2a_required_content_tag
+      = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id), { }, class: "form-control col-lg-6"
 
 
   .actions.d-flex.d-sm-block

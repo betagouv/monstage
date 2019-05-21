@@ -1,0 +1,71 @@
+$nav-link-rounded-radius: 25px;
+$line-height: 4px;
+// nav-link-icon-with-label
+//  nav-link-icon-with-label-success
+.nav-link-icon-with-label{
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: $nav-tabs-border-color;
+  text-align: center;
+  position: relative; // prepare position of pseudo element positionning with absolute
+
+  // use one element to the line connecting to the next circle
+  &:after{
+    // position element
+    position: absolute;
+    // force visibility of pseudo elements
+    display: block;
+    content: " ";
+    height: $line-height;
+    width: 100%;
+    left: 50%;
+    // position the line at the center of of the circle
+    top: $nav-link-rounded-radius; // position at center of circle which is radius
+    margin-top: -($line-height/2); // recenter line considering his width
+    // add some colors
+    background-color: $nav-tabs-border-color;
+    z-index: 1;
+  }
+
+  // draw the circle from the top
+  .nav-link-icon{
+    font-size: 13px;
+    position: relative;
+    z-index: 2;
+
+    width: $nav-link-rounded-radius * 2;
+    height: $nav-link-rounded-radius * 2;
+    border-radius: $nav-link-rounded-radius;
+    border: 4px solid $nav-tabs-border-color;
+    background-color: white;
+    > svg{
+      margin: 0 auto; // center svg horizontaly
+    }
+  }
+
+  &.nav-link-icon-with-label-success {
+    $nav-link-background-success: rgb(81,157,81);
+    $nav-link-border-success: rgb(163,210,163);
+    color: white;
+    small{
+      color: $nav-link-background-success;
+    }
+
+    &:after{
+      background-color: $nav-link-background-success;
+    }
+
+    .nav-link-icon{
+      border-color: $nav-link-border-success;
+      background-color: $nav-link-background-success;
+    }
+  }
+
+  // do not draw last line
+  &.trailing-nav-link-icon {
+    &:after{
+      display: none;
+    }
+  }
+}

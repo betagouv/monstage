@@ -1,0 +1,12 @@
+@include media-breakpoint-down(xs) {
+  .d-xs-stick {
+    z-index: 1;
+    background-color: #fff;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    box-shadow: 0 -2px 20px rgba(0,0,0,.2);
+  }
+}

@@ -4,8 +4,14 @@ a.btn {
 .btn.btn-link{
   text-decoration: underline;
 }
-.btn-warning, .btn-warning-outline {
+.btn-warning, .btn-outline-warning {
   color: $gray-900;
+}
+.homepage .btn-outline-warning{
+  background-color: #fff;
+  &:hover{
+    background-color: darken(#fff, 10%);
+  }
 }
 .btn{
   font-weight: 700;

@@ -1,17 +1,103 @@
-.row
-  .col-12.col-md-6
-    - if !user_signed_in?
-      = image_tag asset_pack_path('images/mon-stage-3e-logo.svg'), alt: "Mon stage de 3e", class: 'mx-auto my-3 d-block logo d-none'
-  .col-12.col-md-6
-.row
-  .col-12.col-md-6
-    h1 Tout pour trouver mon stage et faire une vraie découverte
-    h2 Permettre aux élèves de 3è d'accéder à des stages pertinents et de qualité visant à accompagner leurs émancipation et combattre les déterminismes sociaux
+.bg-cover-image.py-5
+  .container
+    .row
+      .col-12.col-md-6
+        = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none mx-sm-0 mx-auto', width: 160
+      .col-12.col-md-6
 
-  .col-12.col-md-6
-    - if !user_signed_in?
-      .actions.my-3.d-flex
-        = link_to "Me connecter", new_user_session_path, class: 'btn btn-warning'
-      .actions.my-3.d-flex
-        = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-warning'
+    .row
+      .col-12.col-md-8
+        h1.h1-home.mb-5.text-center.text-sm-left Le monde professionnel s’ouvre à l’école
+        p.big-tagline.mb-0.mb-sm-5.text-center.text-sm-left
+          | Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec  votre orientation et votre projet personnel.
+          | Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou  découvrir de nouveaux secteurs ou activités.
 
+        - if !user_signed_in?
+          .actions.mt-3.d-flex.d-sm-inline
+            = link_to "Me connecter", new_user_session_path, class: 'btn btn-lg px-4 btn-outline-warning'
+          span.mx-3.d-none.d-sm-inline=" "
+          .actions.mt-3.d-flex.d-sm-inline
+            = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-lg px-4 btn-warning shadow-lg'
+
+.bg-peacock-blue.py-5
+  .container
+    .row
+      .d-none.d-md-flex.col-sm-4.bg-cover-rep-plus.shadow
+
+      .col-12.col-sm.8
+        h2.h3-home.text-white Cette plateforme est réservée aux élèves des établissements des Réseaux d'Éducation Prioritaire (REP+)
+        p.text-white.mt-3.mb-4 Les autres élèves pourront accéder au service de l’ONISEP
+        .actions.my-3.d-flex.d-sm-inline
+          = link_to "Site web Onisep", "https://www.onisep.fr/", class: 'btn btn-outline-warning btn-lg'
+        span.mx-2.d-none.d-sm-inline=" "
+        .actions.my-3.d-flex.d-sm-inline
+          = link_to "En savoir plus", "https://www.onisep.fr/", class: 'btn btn-outline-warning btn-lg'
+
+.bg-warning.py-5.d-none.d-sm-block
+  .container
+    .row
+      .col-12
+        h3.h2-home.text-center Nous sommes à vos côtés pour…
+
+    .row.py-5
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center Offrir un stage
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center Trouver un stage
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center Accompagner les élèves
+
+.bg-light-warning.py-5.d-none.d-sm-block
+  .container
+    .row
+      .col-12
+        h3.h2-home.text-center Chiffres clés des stages de 3e sur le site
+    .row.py-5
+      .col-sm-12.col-md-4.py-3
+        .row
+          .col-3
+            .circled-icon.d-inline-flex.align-items-center
+              i.fas.fa-3x.fa-layer-group.mx-auto
+          .col-9
+            h5.h1-stat.m-0.p-0 1324
+            h6.h3-stat.m-0.p-0 stages offerts
+      .col-sm-12.col-md-4.py-3
+        .row
+          .col-3
+            .circled-icon.d-inline-flex.align-items-center
+              i.fas.fa-3x.fa-arrow-circle-right.mx-auto
+          .col-9
+            h5.h1-stat.m-0.p-0 780
+            h6.h3-stat.m-0.p-0 candidatures
+      .col-sm-12.col-md-4.py-3
+        .row
+          .col-3
+            .circled-icon.d-inline-flex.align-items-center
+              i.fas.fa-3x.fa-check-circle.mx-auto
+          .col-9
+            h5.h1-stat.m-0.p-0 42
+            h6.h3-stat.m-0.p-0 stages conclus
+    .row.py-5
+      .col-12.text-center
+        a.btn.btn-lg.btn-outline-warning.shadow-lg Voir les statistiques
+.bg-white.py-5.d-none.d-sm-block
+  .container
+    .row
+      .col-12
+        h3.h3-home.mb-5.text-center Un projet porté par
+      .col-12
+        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |img|
+          = image_tag asset_pack_path("media/images/homepage/sponsors/#{img}"), height: 221, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+
+      .col-12
+        h3.h3-home.my-5.text-center Nos partenaires
+
+      .col-12.text-center
+        - %w[Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each do |img|
+          = image_tag asset_pack_path("media/images/homepage/partenaires/#{img}"), height: 69, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"

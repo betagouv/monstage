@@ -1,7 +1,7 @@
 = render "title", internship_offers: @internship_offers
 
 - if can? :apply, InternshipOffer
-  .row
+  .row.bt-1.bt-light
     .col-12.bg-light.px-3.pt-3.filter-section data-controller="internship-index"
       - if user_signed_in? && current_user.respond_to?(:school)
         .row
@@ -13,12 +13,12 @@
       .row
         .form-group data-controller="help"
           .col-12
-            label.mb-0.d-block for="internship-offer-sector-filter"
-              = "Secteur professionnel"
+            label.mt-2.mb-3.d-block for="internship-offer-sector-filter"
+              strong= "Secteur professionnel"
               a.btn.btn-link.py-0 data-action="click->help#toggle"
                 i.fa.fa-question-circle
           .col-12
-            .help-sign-content.py-1.px-2.d-none data-target="
+            .help-sign-content.py-1.px-2.mb-3.d-none.bg-white.alert.alert-secondary.alert-outlined data-target="
             help.content"
               = "Le secteur professionnel est #{current_sector_name}. Pour en savoir plus, consultez le "
               = link_to "site de l'Onisep.", current_sector_url

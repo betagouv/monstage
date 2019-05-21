@@ -7,8 +7,20 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import 'bootstrap/dist/js/bootstrap';
+import Alert from 'bootstrap'
+// import Button from 'bootstrap'
+// import Carousel from 'bootstrap'
+// import Collapse from 'bootstrap'
+import Dropdown from 'bootstrap'
+import Modal from 'bootstrap'
+// import Popover from 'bootstrap'
+// import ScrollSpy from 'bootstrap'
+// import Tab from 'bootstrap'
+// import Toast from 'bootstrap'
+// import Tooltip from 'bootstrap'
+
 import 'better-dom/dist/better-dom';
 import 'better-dateinput-polyfill/dist/better-dateinput-polyfill.js';
+
 import '../bootapp';
 

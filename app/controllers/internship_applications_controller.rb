@@ -26,8 +26,7 @@ class InternshipApplicationsController < ApplicationController
                   flash: { success: "Votre candidature a bien été envoyée" }
     else
       @internship_application.update(internship_application_params)
-      redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application),
-                  flash: { warning: "Relisez vous bien pour éviter les fautes d'orthographe." }
+      redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
     end
   rescue AASM::InvalidTransition => e
     redirect_to dashboard_students_internship_applications_path(current_user, @internship_application),
@@ -42,8 +41,7 @@ class InternshipApplicationsController < ApplicationController
     authorize! :apply, InternshipOffer
     @internship_application.save!
     redirect_to internship_offer_internship_application_path(@internship_application.internship_offer,
-                                                             @internship_application),
-                flash: { warning: "Relisez vous bien pour éviter les fautes d'orthographe." }
+                                                             @internship_application)
   rescue ActiveRecord::RecordInvalid => error
     @internship_offer = InternshipOffer.find(params[:internship_offer_id])
     flash[:danger] = "Erreur dans la saisie de votre candidature"

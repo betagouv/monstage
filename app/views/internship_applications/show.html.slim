@@ -1,16 +1,27 @@
-h1.h2 Je candidate
+h1.h2.mb-3 Je postule
 
-h2.h3 Pour le stage
-h3.h4
-p
-  strong= @internship_offer.title
-  br
-  = "à #{@internship_application.internship_offer.city}"
-  br
-  = @internship_application.week.select_text_method
+.row.bg-dark-light.bt-1.bt-light
+  .col-12
+    .alert.alert-secondary.alert-outlined.bg-white.mt-3.rounded.shadow-sm
+      .row.align-items-center.no-gutters
+        .col-1.col-sm-auto
+          i.fas.fa-exclamation-triangle
+        .col Relisez vous bien pour éviter les fautes d'orthographe.
+
+.row.bg-dark-light
+  .col-12
+    p.my-2
+      strong Pour le stage
+    h2.h1
+      strong= @internship_offer.title
+    p.strong
+      = "à #{@internship_application.internship_offer.city}"
+      br
+      = @internship_application.week.select_text_method
 
 = render "internship_applications/show_details", internship_application: @internship_application
 
-.actions.d-flex.d-sm-block
-  = link_to "Modifier", @internship_offer, class: 'btn btn-link'
+.actions.d-flex.d-sm-block.d-xs-stick
+  = link_to "Modifier", @internship_offer, class: 'btn btn-outline-warning'
+  span.mx-1
   = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-warning'

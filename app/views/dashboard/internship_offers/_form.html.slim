@@ -192,7 +192,7 @@
         = form.rg2a_required_content_tag
       = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
     .form-group
-      = form.label :employer_description, "Activités"
+      = form.label :employer_description, "Activités de l’entreprise ou du service"
       = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 
     .form-group

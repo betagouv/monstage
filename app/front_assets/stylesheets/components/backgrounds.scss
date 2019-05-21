@@ -1,0 +1,11 @@
+.bg-dark-light{
+  background-color: #f8f8f8;
+}
+.bg-light-warning{
+  background-color: rgba(
+      red($warning),
+      green($warning),
+      blue($warning),
+      .2
+    );
+}

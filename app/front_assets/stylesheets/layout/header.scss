@@ -1,3 +1,38 @@
+.custom-navbar {
+  position: relative;
+}
+@include media-breakpoint-up(sm) {
+  .homepage .custom-navbar {
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3);
+    border-bottom: none;
+  }
+  .custom-navbar{
+    border-bottom: 1px solid rgb(235,233,240);
+  }
+}
+@include media-breakpoint-down(xs) {
+  .homepage .custom-navbar {
+    display: none;
+  }
+  .custom-navbar{
+    border-bottom: 1px solid rgb(235,233,240);
+  }
+
+}
+
+.custom-navbar{
+  .nav-link{
+    color: $gray-600;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    &.active{
+      color: $blue;
+      font-weight: 700;
+      border-bottom-color: $blue;
+    }
+  }
+}
+
 @include media-breakpoint-down(xs) {
   .nav-banner{
     font-size: .8em;
