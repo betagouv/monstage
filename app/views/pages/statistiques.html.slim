@@ -20,10 +20,10 @@ h1.mt-2 Statistiques
 .row.bg-light.pt-3[data-controller='statistics']
   .form-group.col-lg-6
     = label_tag :department, 'Département'
-    = select_tag :department, options_for_select(InternshipOffer.pluck(:department).uniq.reject(&:blank?), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+    = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
   .form-group.col-lg-6
     = label_tag :group_name, "Groupe ou Institution de tutelle"
-    = select_tag :group_name, options_for_select(InternshipOffer.pluck(:group_name).uniq.reject(&:blank?), selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
+    = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
 
 - @offers = @offers.where(department: params[:department]) unless params[:department].blank?
 - @offers = @offers.where(group_name: params[:group_name]) unless params[:group_name].blank?
