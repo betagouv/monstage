@@ -21,6 +21,9 @@ module Reporting
     scope :by_group_name, -> (group_name:) {
       where(group_name: group_name)
     }
+    scope :by_academy_name, -> (academy_name:) {
+      where(academy: academy_name)
+    }
 
     scope :grouped_by_sector, -> () {
       select("sector_name as report_row_title",

@@ -15,29 +15,37 @@ span.mx-1 >
 - else
   | Statistiques
 
-h1.mt-2 Statistiques
+h1.h2.mt-2 Statistiques
 
 .row.bg-light.pt-3[data-controller='statistics']
-  .form-group.col-lg-6
+  .form-group.col-lg-4
+    = label_tag :department, 'Académie'
+    = select_tag :department, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+  .form-group.col-lg-4
     = label_tag :department, 'Département'
     = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
-  .form-group.col-lg-6
+  .form-group.col-lg-4
     = label_tag :group_name, "Groupe ou Institution de tutelle"
     = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
+.row.mt-3
+  table.table
+    thead
+      tr.table-blue
+        th Secteurs professionnels
+        th Nbr. d'offres proposées
+        th colspan=3 Nombre de candidatures
+        th colspan=3 Nombre de stages conclus
+      tr.bg-light
+        th
+        th Total
+        th Total
+        th Garçon
+        th Fille
+        th Total
+        th Garçon
+        th Fille
 
-table.table
-  thead
-    tr
-      th Secteurs professionnels
-      th Nbr. d'offres proposées
-      th
-        | Nbr. de candidatures
-        br
-        | total | garçons | filles
-      th
-        | Nbr. de stages conclus
-        br
-        | total | garçons | filles
-  tbody
-    = render partial: 'reporting_internship_offer', collection: @offers_by_sector
-    = render partial: 'reporting_internship_offer', collection: @offers_by_publicy, locals: { gray_background: true }
+    tbody
+      = render partial: 'reporting_internship_offer', collection: @offers_by_sector
+      = render partial: 'reporting_internship_offer', collection: @offers_by_publicy, locals: { gray_background: true }
+      = render 'reporting_internship_offer', reporting_internship_offer: Presenters::TotalReportingInternshipOfferStats.new(offers: @offers_by_sector)

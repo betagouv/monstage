@@ -12,6 +12,7 @@ class PagesController < ApplicationController
     base_query = Reporting::InternshipOffer.during_current_year
     base_query = base_query.by_departement(department_name: departement) if departement
     base_query = base_query.by_group_name(group_name: group_name) if group_name
+    base_query = base_query.by_academy_name(academy_name: academy_name) if academy_name
     base_query
   end
 
@@ -21,5 +22,9 @@ class PagesController < ApplicationController
 
   def group_name
     params[:group_name]
+  end
+
+  def academy_name
+    params[:academy_name]
   end
 end

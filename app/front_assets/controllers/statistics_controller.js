@@ -11,12 +11,19 @@ export default class extends Controller {
     this.changeURLFromEvent(event, "group_name")
   }
 
+  filterByAcademy(event) {
+    this.changeURLFromEvent(event, "academy_name")
+  }
+
   changeURLFromEvent(event, param) {
-    const param_value = $(event.target).val()
-    const search_params = new URLSearchParams(window.location.search)
-    search_params.set(param, param_value)
+    const paramValue = $(event.target).val()
+    const searchParams = new URLSearchParams(window.location.search)
 
+    if (paramValue.length > 0) {
+      searchParams.set(param, paramValue);
+    } else {
+      searchParams.delete(param)
+    }
     Turbolinks.visit(`${window.location.origin}${window.location.pathname}?${search_params.toString()}`)
-
   }
 }
