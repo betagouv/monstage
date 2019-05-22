@@ -1,0 +1,15 @@
+- gray_background ||= false
+tr class="#{'bg-light' if gray_background}"
+  td = reporting_internship_offer.report_row_title
+  td = reporting_internship_offer.report_total_count
+  td
+    .d-flex.justify-content-around
+      span = reporting_internship_offer.total_applications_count
+      span = reporting_internship_offer.total_male_applications_count
+      span = reporting_internship_offer.total_female_applications_count
+  td
+    .d-flex.justify-content-around
+      span = reporting_internship_offer.convention_signed_applications_count
+      span = reporting_internship_offer.total_male_convention_signed_applications_count
+      span = reporting_internship_offer.total_female_convention_signed_applications_count
+

@@ -25,8 +25,6 @@ h1.mt-2 Statistiques
     = label_tag :group_name, "Groupe ou Institution de tutelle"
     = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
 
-- @offers = @offers.where(department: params[:department]) unless params[:department].blank?
-- @offers = @offers.where(group_name: params[:group_name]) unless params[:group_name].blank?
 table.table
   thead
     tr
@@ -41,7 +39,5 @@ table.table
         br
         | total | garçons | filles
   tbody
-    - Sector.all.each do |sector|
-      = render "statistiques_row", row_title: sector.name, offers: @offers.where(sector_id: sector.id)
-    = render "statistiques_row", row_title: 'Secteur privé', offers: @offers.where(is_public: false), gray_background: true
-    = render "statistiques_row", row_title: 'Secteur public', offers: @offers.where(is_public: true), gray_background: true
+    = render partial: 'reporting_internship_offer', collection: @offers_by_sector
+    = render partial: 'reporting_internship_offer', collection: @offers_by_publicy, locals: { gray_background: true }

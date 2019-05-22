@@ -13,8 +13,12 @@ SELECT
         ELSE 'Secteur Privé'
         END
   ) as publicly_name,
+  internship_offers.group_name,
   internship_offers.blocked_weeks_count,
   internship_offers.total_applications_count,
   internship_offers.convention_signed_applications_count,
-  internship_offers.approved_applications_count
+  internship_offers.total_male_applications_count,
+  internship_offers.total_male_convention_signed_applications_count,
+  internship_offers.approved_applications_count,
+  internship_offers.created_at
 FROM internship_offers

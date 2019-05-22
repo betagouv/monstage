@@ -1,10 +1,8 @@
 class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
+  include Yearable
   PAGE_SIZE = 10
-
-  MONTH_OF_YEAR_SHIFT = 5
-  DAY_OF_YEAR_SHIFT = 31
 
   validates :title,
             :tutor_name,
@@ -64,16 +62,6 @@ class InternshipOffer < ApplicationRecord
 
   scope :available_in_the_future, -> {
     older_than(week: Week.current).distinct
-  }
-
-  # year parameter is the first year from a school year.
-  # For example, year would be 2019 for school year 2019/2020
-  scope :during_year, -> (year:) {
-    where("created_at > :date_begin", date_begin: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)).where("created_at <= :date_end", date_end: Date.new(year + 1, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))
-  }
-
-  scope :during_current_year, -> {
-    during_year(year: Date.today.month <= MONTH_OF_YEAR_SHIFT ? Date.today.year - 1 : Date.today.year)
   }
 
   after_initialize :init
