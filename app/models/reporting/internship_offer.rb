@@ -2,6 +2,10 @@ module Reporting
   class InternshipOffer < ApplicationRecord
     include Yearable
 
+    def self.table_name_prefix
+    'reporting_'
+    end
+
     def self.refresh
       Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
     end
@@ -40,9 +44,5 @@ module Reporting
         .group(:publicly_name)
         .order(publicly_name: :asc)
     }
-
-    def self.table_name_prefix
-    'reporting_'
-    end
   end
 end
