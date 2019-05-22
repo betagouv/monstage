@@ -5,12 +5,11 @@ import './logo-beta-gouv-fr.png'
 import './pages/logo_onisep.jpg'
 import './pages/logo_cget_texte.png'
 
-import './homepage/reserve-aux-eleves-de-rep-plus.jpg'
-
 import './homepage/benefices/icon-accompagner-les-eleves.png'
 import './homepage/benefices/icon-offrir-un-stage.png'
 import './homepage/benefices/icon-trouver-un-stage.png'
 
+import './homepage/partenaires/Logo-onisep.jpg'
 import './homepage/partenaires/Logo-FACE.jpg'
 import './homepage/partenaires/Logo-degunsanstage.jpg'
 import './homepage/partenaires/Logo-jobIRL.jpg'
