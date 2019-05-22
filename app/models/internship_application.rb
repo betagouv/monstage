@@ -35,6 +35,10 @@ class InternshipApplication < ApplicationRecord
   scope :for_user, -> (user:) { where(user_id: user.id) }
   scope :not_by_id, -> (id:) { where.not(id: id) }
 
+  def student_is_male?
+    student.gender == 'm'
+  end
+
   def internship_offer_week_has_spots_left
     unless internship_offer_week && internship_offer_week.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
@@ -74,7 +78,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: :approved, to: :rejected, :after => Proc.new { |*args|
+      transitions from: [:submitted, :approved], to: :rejected, :after => Proc.new { |*args|
         update!(rejected_at: Time.now.utc)
       }
     end

@@ -1,6 +1,7 @@
 class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
+  include Yearable
   PAGE_SIZE = 10
 
   validates :title,
@@ -33,15 +34,11 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_applications, through: :internship_offer_weeks
   has_many :weeks, through: :internship_offer_weeks
-
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
 
   belongs_to :employer, polymorphic: true
-
   belongs_to :school, optional: true # reserved to school
-
-
   belongs_to :sector
 
   scope :for_user, -> (user:) {
@@ -64,6 +61,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   after_initialize :init
+  before_create :reverse_academy_by_zipcode
   paginates_per PAGE_SIZE
 
   def is_individual?
@@ -91,4 +89,15 @@ class InternshipOffer < ApplicationRecord
    self.max_internship_week_number ||= 1
   end
 
+  def total_female_applications_count
+    total_applications_count - total_male_applications_count
+  end
+
+  def total_female_convention_signed_applications_count
+    convention_signed_applications_count - total_male_convention_signed_applications_count
+  end
+
+  def reverse_academy_by_zipcode
+    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
+  end
 end

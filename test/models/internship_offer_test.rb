@@ -59,4 +59,5 @@ class InternshipOfferTest < ActiveSupport::TestCase
       assert_equal 1, InternshipOffer.available_in_the_future.count
     end
   end
+
 end

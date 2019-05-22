@@ -17,10 +17,12 @@ class InternshipApplicationCountersHook
       total_applications_count: internship_offer.internship_applications
                                                 .reject(&:drafted?)
                                                 .count,
+      total_male_applications_count: internship_offer.internship_applications.joins(:student).reject(&:drafted?).select(&:student_is_male?).count,
       approved_applications_count: internship_offer.internship_offer_weeks
                                                    .sum(:approved_applications_count),
       convention_signed_applications_count: internship_offer.internship_offer_weeks
                                                             .sum(:blocked_applications_count),
+      total_male_convention_signed_applications_count: internship_offer.internship_applications.joins(:student).select(&:convention_signed?).select(&:student_is_male?).count,
     )
   end
 

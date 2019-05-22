@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_18_064711) do
+ActiveRecord::Schema.define(version: 2019_05_22_120310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,8 @@ ActiveRecord::Schema.define(version: 2019_05_18_064711) do
     t.string "department", default: "", null: false
     t.string "region", default: "", null: false
     t.string "academy", default: "", null: false
+    t.integer "total_male_applications_count", default: 0, null: false
+    t.integer "total_male_convention_signed_applications_count", default: 0, null: false
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
@@ -213,7 +215,7 @@ ActiveRecord::Schema.define(version: 2019_05_18_064711) do
   add_foreign_key "users", "class_rooms"
   add_foreign_key "users", "operators"
 
-  create_view "reporting_internship_offers", sql_definition: <<-SQL
+  create_view "reporting_internship_offers", materialized: true, sql_definition: <<-SQL
       SELECT internship_offers.title,
       internship_offers.zipcode,
       ( SELECT "substring"((internship_offers.zipcode)::text, 1, 2) AS "substring") AS department_code,
@@ -229,10 +231,17 @@ ActiveRecord::Schema.define(version: 2019_05_18_064711) do
                       WHEN (internship_offers.is_public IS TRUE) THEN 'Secteur Public'::text
                       ELSE 'Secteur Privé'::text
                   END AS "case") AS publicly_name,
+      internship_offers.group_name,
       internship_offers.blocked_weeks_count,
       internship_offers.total_applications_count,
       internship_offers.convention_signed_applications_count,
-      internship_offers.approved_applications_count
+      internship_offers.total_male_applications_count,
+      internship_offers.total_male_convention_signed_applications_count,
+      internship_offers.approved_applications_count,
+      internship_offers.created_at
      FROM internship_offers;
   SQL
+  add_index "reporting_internship_offers", ["publicly_name"], name: "index_reporting_internship_offers_on_publicly_name"
+  add_index "reporting_internship_offers", ["sector_name"], name: "index_reporting_internship_offers_on_sector_name"
+
 end

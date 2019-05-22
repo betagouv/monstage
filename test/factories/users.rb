@@ -16,6 +16,12 @@ FactoryBot.define do
       has_parental_consent { true }
 
       school { create(:school) }
+      trait :male do
+        gender { 'm' }
+      end
+      trait :female do
+        gender { 'f' }
+      end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do

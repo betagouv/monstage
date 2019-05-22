@@ -86,3 +86,6 @@ html .h5{
     line-height: ($html-font-size-base) * $mobile-line-height-ratio;
   }
 }
+.text-bigger{
+  font-size: $html-font-size-base * 1.125;
+}
