@@ -12,15 +12,11 @@
     line-height: 30px;
   }
   .bg-cover-image{
-    background-image: linear-gradient(248deg, rgba(238, 238, 238, 0), rgba(244, 244, 244, 0.68) 27%, #ffffff),
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=),
                       url('../images/homepage/mon-stage-de-3e-illustration.jpg');
     background-position: bottom left, top right;
-    background-repeat: no-repeat, no-repeat;
+    background-repeat: repeat, no-repeat;
     background-size: cover, cover;
-  }
-  .bg-cover-rep-plus{
-    background: transparent url('../images/homepage/reserve-aux-eleves-de-rep-plus.jpg') top left no-repeat;
-    background-size: cover;
   }
   $homepage-icon-size: 80px;
   .circled-icon{
@@ -41,6 +37,10 @@
   }
   .h3-home{
     font-size: 30px;
+  }
+  .h4-home{
+    font-size: 18px;
+    line-height: 22px;
   }
 
   .h1-stat{

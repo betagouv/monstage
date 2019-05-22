@@ -16,22 +16,10 @@ body {
   }
 }
 
-
-@include media-breakpoint-up(sm) {
-  .footer{
+.footer{
+  color: rgb(241,241,241);
+  a{
     color: rgb(241,241,241);
-    a{
-      color: rgb(241,241,241);
-    }
-    background-color: rgba(51, 51, 51, 0.9);
   }
-}
-@include media-breakpoint-down(xs) {
-  .footer{
-    color: #444;
-    a{
-      color: #444;
-    }
-    background-color: #eaeaea;
-  }
+  background-color: rgba(51, 51, 51, 0.9);
 }
