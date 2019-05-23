@@ -9,7 +9,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     internship_offer = create(:internship_offer, weeks: weeks)
     sign_in(student)
     visit '/'
-    click_on 'Rechercher'
+    click_on 'Recherche'
     click_on internship_offer.title
 
     # show application form
@@ -18,7 +18,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     page.find "#internship-application-closeform", visible: true
 
     # fill in application form
-    select weeks.first.select_text_method, from: 'internship_application_internship_offer_week_id'
+    select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
     fill_in 'internship_application_motivation', with: 'Je suis au taquet'
 
 
@@ -53,7 +53,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     click_on 'Candidatures'
     internship_applications.each do |aasm_state, internship_application|
       click_on internship_application.internship_offer.title
-      click_on 'Retour'
+      click_on 'Candidatures'
     end
   end
 end

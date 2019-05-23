@@ -13,7 +13,7 @@ nav.navbar.navbar-light.py-0
         = link_to "Mon profil", account_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(account_path) || current_page?(account_path(section: :resume)) || current_page?(account_path(section: :identity)) || current_page?(account_path(section: :school)) ? 'active' : ''}"
     - else
       li.nav-item.d-none.d-sm-block
-        = link_to 'Créer mon compte', new_user_registration_path, class: "btn btn-warning mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}"
+        = link_to 'Créer mon compte', new_user_registration_path, class: "btn btn-warning mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}", id: 'signup-header'
       li.nav-item.d-none.d-sm-block
         = link_to 'Me connecter', new_user_session_path, class: "btn btn-outline-warning ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
 

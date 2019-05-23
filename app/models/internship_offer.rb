@@ -32,7 +32,7 @@ class InternshipOffer < ApplicationRecord
   validates :employer_description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_offer_weeks, dependent: :destroy
-  has_many :internship_applications, through: :internship_offer_weeks
+  has_many :internship_applications, through: :internship_offer_weeks, dependent: :destroy
   has_many :weeks, through: :internship_offer_weeks
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
