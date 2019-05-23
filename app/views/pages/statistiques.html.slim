@@ -1,51 +1,64 @@
-= link_to 'Accueil', root_path
-span.mx-1 >
-- if params[:department].present? || params[:group_name].present?
-  = link_to 'Statistiques', statistiques_path
-  span.mx-1 >
-  - if params[:department].present?
-    - if params[:group_name].present?
-      = link_to params[:department], statistiques_path(department: params[:department])
+.bg-cover-image-statistiques
+  .container
+    .row.py-3
+      .col-9
+        h1.h1-home.py-5.text-center.text-sm-left.text-white
+          = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none float-left mr-5', width: 160
+          | Le monde professionnel s’ouvre à l’école
+
+.container.mt-3
+  .row
+    .wrapper-breadcrumb.bg-light.d-inline-block.px-3.py-2.rounded
+      = link_to 'Accueil', root_path
       span.mx-1 >
-      = params[:group_name]
-    - else
-      = params[:department]
-  - elsif params[:group_name].present?
-    = params[:group_name]
-- else
-  | Statistiques
+      - if params[:department].present? || params[:group_name].present?
+        = link_to 'Statistiques', statistiques_path
+        span.mx-1 >
+        - if params[:department].present?
+          - if params[:group_name].present?
+            = link_to params[:department], statistiques_path(department: params[:department])
+            span.mx-1 >
+            = params[:group_name]
+          - else
+            = params[:department]
+        - elsif params[:group_name].present?
+          = params[:group_name]
+      - else
+        span.font-weight-bold Statistiques nationales
 
-h1.h2.mt-2 Statistiques
+  .row
+    h1.h2.py-3 Statistiques
 
-.row.bg-light.pt-3[data-controller='statistics']
-  .form-group.col-lg-4
-    = label_tag :academy, 'Académie'
-    = select_tag :academy, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
-  .form-group.col-lg-4
-    = label_tag :department, 'Département'
-    = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
-  .form-group.col-lg-4
-    = label_tag :group_name, "Groupe ou Institution de tutelle"
-    = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
-.row.mt-3
-  table.table
-    thead
-      tr.table-blue
-        th Secteurs professionnels
-        th Nbr. d'offres proposées
-        th colspan=3 Nombre de candidatures
-        th colspan=3 Nombre de stages conclus
-      tr.bg-light
-        th
-        th Total
-        th Total
-        th Garçon
-        th Fille
-        th Total
-        th Garçon
-        th Fille
+  .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
+    .form-group.col-lg-4
+      = label_tag :academy, 'Académie', class: 'text-uppercase'
+      = select_tag :academy, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+    .form-group.col-lg-4
+      = label_tag :department, 'Département', class: 'text-uppercase'
+      = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+    .form-group.col-lg-4
+      = label_tag :group_name, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+      = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
+  .row.mt-3
+    table.table.table-statistics
+      thead
+        tr.table-blue
+          th Secteurs professionnels
+          th Nbr. d'offres proposées
+          th colspan=3 Nombre de candidatures
+          th colspan=3 Nombre de stages conclus
+        tr.bg-light
+          th
+          th Total
+          th Total
+          th Garçon
+          th Fille
+          th Total
+          th Garçon
+          th Fille
 
-    tbody
-      = render partial: 'reporting_internship_offer', collection: @offers_by_sector.map(&Presenters::GroupedBySectorInternshipOfferStats.method(:new))
-      = render partial: 'reporting_internship_offer', collection: @offers_by_publicy.map(&Presenters::GroupedByPublicyInternshipOfferStats.method(:new)), locals: { gray_background: true }
-      = render 'reporting_internship_offer', reporting_internship_offer: Presenters::TotalReportingInternshipOfferStats.new(offers: @offers_by_sector)
+      tbody
+        = render partial: 'reporting_internship_offer', collection: @offers_by_sector.map(&Presenters::GroupedBySectorInternshipOfferStats.method(:new))
+        = render partial: 'reporting_internship_offer', collection: @offers_by_publicy.map(&Presenters::GroupedByPublicyInternshipOfferStats.method(:new)), locals: { gray_background: true }
+      tfoot
+        = render 'reporting_internship_offer', reporting_internship_offer: Presenters::TotalReportingInternshipOfferStats.new(offers: @offers_by_publicy), font_weight_bold: true, font_color_blue: true

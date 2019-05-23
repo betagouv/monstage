@@ -14,14 +14,14 @@
   <body class="<%= env_class_name %> <%= body_class_name %>" data-controller='feedback-form'>
     <a name="top" id="top"></a>
     <div class="content">
-      <header role="banner" class="custom-navbar <%= homepage? ? '' : 'mb-4' %>">
+      <header role="banner" class="custom-navbar <%= homepage? || statistics? ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
             <div class="col px-0"><%= render 'layouts/navbar' %></div>
           </div>
         </div>
       </header>
-      <% if homepage? %>
+      <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
         <%= yield %>
       <% else %>

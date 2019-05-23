@@ -1,0 +1,39 @@
+.bg-cover-image-statistiques{
+  background-image: linear-gradient(to bottom, rgba(51, 51, 51, 0.5), rgba(51, 51, 51, 0.5)),
+                    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+  background-position: bottom left, right -80px;
+  background-repeat: repeat, no-repeat;
+  background-size: cover, cover;
+}
+.wrapper-breadcrumb{
+  background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
+}
+
+.bg-stats-filter{
+  background-color: #eaeaea;
+}
+
+.table-statistics {
+  td:first-child{
+    border-left: 1px solid #d8d8d8;
+  }
+  td:last-child{
+    border-right: 1px solid #d8d8d8;
+  }
+  tbody {
+    tr{
+      border-bottom-color: #d8d8d8;
+    }
+    tr:last-child td{
+      border-bottom: 1px solid $blue;
+    }
+    tr:hover{
+      background-color: #cce4f0;
+    }
+  }
+  tfoot{
+    tr{
+      border-bottom: 2px solid $blue;
+    }
+  }
+}

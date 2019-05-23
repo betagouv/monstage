@@ -1,5 +1,7 @@
 - gray_background ||= false
-tr class="#{'bg-light' if gray_background}"
+- font_weight_bold ||= false
+- font_color_blue ||= false
+tr class="#{gray_background ? 'bg-light' : ''} #{font_weight_bold ? 'font-weight-bold' : ''} #{font_color_blue ? 'text-info' : ''}"
   td.align-middle= reporting_internship_offer.report_row_title
   td.align-middle.text-info.text-bigger.font-weight-bold= reporting_internship_offer.report_total_count
   td.align-middle.text-info.text-bigger.font-weight-bold= reporting_internship_offer.total_applications_count
