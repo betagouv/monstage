@@ -12,7 +12,10 @@
 .bg-stats-filter{
   background-color: #eaeaea;
 }
-
+.custom-stats-checkbox{
+  padding-top: $input-btn-padding-y;
+  padding-bottom: $input-btn-padding-y;
+}
 .table-statistics {
   td:first-child{
     border-left: 1px solid #d8d8d8;

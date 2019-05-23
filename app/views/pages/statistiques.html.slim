@@ -30,15 +30,20 @@
     h1.h2.py-3 Statistiques
 
   .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
-    .form-group.col-lg-4
+    .form-group.col-lg-3
       = label_tag :academy, 'Académie', class: 'text-uppercase'
       = select_tag :academy, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
-    .form-group.col-lg-4
+    .form-group.col-lg-3
       = label_tag :department, 'Département', class: 'text-uppercase'
-      = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+      = select_tag :department, options_for_select(Department.to_select(only: (params[:academy_name].blank? ? nil : Academy.departements_by_name(academy_name: params[:academy_name]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+
+    .form-group.col-lg-2
+      = label_tag :is_public, 'Secteur', class: 'text-uppercase'
+      = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
+
     .form-group.col-lg-4
       = label_tag :group_name, "Groupe ou Institution de tutelle", class: 'text-uppercase'
-      = select_tag :group_name, options_for_select(@groups, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
+      = select_tag :group_name, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? InternshipOffer::PUBLIC_GROUP_NAMES : InternshipOffer::PRIVATE_GROUP_NAMES, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
   .row.mt-3
     table.table.table-statistics
       thead
@@ -51,14 +56,14 @@
           th
           th Total
           th Total
-          th Garçon
-          th Fille
+          th Garçons
+          th Filles
           th Total
-          th Garçon
-          th Fille
+          th Garçons
+          th Filles
 
       tbody
-        = render partial: 'reporting_internship_offer', collection: @offers_by_sector.map(&Presenters::GroupedBySectorInternshipOfferStats.method(:new))
-        = render partial: 'reporting_internship_offer', collection: @offers_by_publicy.map(&Presenters::GroupedByPublicyInternshipOfferStats.method(:new)), locals: { gray_background: true }
+        = render partial: 'reporting_internship_offer', collection: @offers
+        = render partial: 'reporting_internship_offer', collection: @offers_by_publicy.map(&Presenters::InternshipOfferStatsByPublicy.method(:new)), locals: { gray_background: true }
       tfoot
-        = render 'reporting_internship_offer', reporting_internship_offer: Presenters::TotalReportingInternshipOfferStats.new(offers: @offers_by_publicy), font_weight_bold: true, font_color_blue: true
+        = render 'reporting_internship_offer', reporting_internship_offer: Presenters::InternshipOfferStatsTotal.new(offers: @offers), font_weight_bold: true, font_color_blue: true

@@ -1,6 +1,6 @@
 # see: https://fr.wikipedia.org/wiki/Acad%C3%A9mie_(%C3%A9ducation_en_France)#cite_note-RegAcad-16
 class Academy
-  ACADEMY_MAP = {
+  MAP = {
     "Académie de Clermont-Ferrand" => %w[03 15 43 63],
     "Académie de Grenoble" => %w[07 26 38 73 74],
     "Académie de Lyon" => %w[01 42 69 69],
@@ -34,11 +34,15 @@ class Academy
   }
 
   def self.names
-    ACADEMY_MAP.keys
+    MAP.keys
+  end
+
+  def self.departements_by_name(academy_name:)
+    MAP.fetch(academy_name)
   end
 
   def self.lookup_by_zipcode(zipcode:)
-    ACADEMY_MAP.map do |academy_name, departement_numbers|
+    MAP.map do |academy_name, departement_numbers|
       if departement_identified_by_3_chars?(zipcode: zipcode)
         return academy_name if departement_numbers.include?(zipcode[0..2])
       else

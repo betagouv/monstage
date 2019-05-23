@@ -181,10 +181,10 @@
         = form.rg2a_required_content_tag
 
       .custom-control.custom-radio
-        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: true
+        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: true, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_true, 'Public', class: 'custom-control-label'
       .custom-control.custom-radio
-        = form.radio_button :is_public, false, class: 'custom-control-input', required: true
+        = form.radio_button :is_public, false, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_false, 'Privé', class: 'custom-control-label'
     .form-group
       = form.label :employer_name do
@@ -201,7 +201,7 @@
 
     .form-group
       = form.label :group_name, "Groupe ou Institution de tutelle"
-      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant -- '}, class: "form-control col-lg-6"
+      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
     fieldset
       legend Accompagnement
       .form-group

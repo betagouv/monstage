@@ -1,5 +1,5 @@
 module Presenters
-  class TotalReportingInternshipOfferStats
+  class InternshipOfferStatsTotal
     def report_row_title
       "Total"
     end

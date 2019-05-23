@@ -16,7 +16,7 @@
                       url('../images/homepage/mon-stage-de-3e-illustration.jpg');
     background-position: bottom left, top right;
     background-repeat: repeat, no-repeat;
-    background-size: cover, cover;
+    background-size: contain, cover;
   }
   $homepage-icon-size: 80px;
   .circled-icon{

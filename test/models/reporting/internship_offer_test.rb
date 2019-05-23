@@ -35,7 +35,7 @@ module Reporting
 
     test ".grouped_by_publicy group by publicly_name" do
       create(:internship_offer, is_public: true)
-      create(:internship_offer, is_public: false)
+      create(:internship_offer, is_public: false, group_name: '')
       create(:internship_offer, is_public: true)
 
 

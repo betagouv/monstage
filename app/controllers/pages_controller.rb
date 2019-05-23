@@ -1,7 +1,18 @@
 class PagesController < ApplicationController
   def statistiques
-    @offers_by_sector = base_query.grouped_by_sector
-    @offers_by_publicy = base_query.grouped_by_publicy
+    if params[:is_public].present? && params[:is_public] == 'true'
+      @offers = base_query.grouped_by_group_name
+                          .map(&Presenters::InternshipOfferStatsByGroupName.method(:new))
+    else
+      @offers = base_query.grouped_by_sector
+                          .map(&Presenters::InternshipOfferStatsBySector.method(:new))
+    end
+    if params[:is_public].present?
+      @offers_by_publicy = []
+    else
+      @offers_by_publicy = base_query.grouped_by_publicy
+    end
+
     @departments = InternshipOffer.where.not(department: "").distinct.pluck(:department)
     @groups = InternshipOffer.where.not(group_name: "").distinct.pluck(:group_name)
   end

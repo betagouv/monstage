@@ -12,7 +12,7 @@ module Reporting
       "sum(convention_signed_applications_count) as convention_signed_applications_count",
       "sum(total_male_convention_signed_applications_count) as total_male_convention_signed_applications_count",
       "sum(convention_signed_applications_count) - sum(total_male_convention_signed_applications_count) as total_female_convention_signed_applications_count"
-    ].freeze
+    ]
 
     scope :by_departement, -> (department_name:) {
       where(department: department_name)
@@ -39,6 +39,15 @@ module Reporting
              *AGGREGATE_FUNCTIONS)
         .group(:is_public)
         .order(:is_public)
+    }
+
+    scope :grouped_by_group_name, -> () {
+      select("group_name",
+             "count(group_name) as report_total_count",
+             *AGGREGATE_FUNCTIONS)
+        .where(is_public: true)
+        .group(:group_name)
+        .order(:group_name)
     }
   end
 end

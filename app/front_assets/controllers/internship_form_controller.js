@@ -5,7 +5,10 @@ export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
                      "maxCandidatesInput",
                      "selectWeeks",
-                     "selectSchoolBlock" ]
+                     "selectSchoolBlock",
+                     "groupNamePublic",
+                     "groupNamePrivate",
+                     "selectGroupName" ]
 
   // show/hide group internship custom controls
   toggleInternshipType(event) {
@@ -19,10 +22,33 @@ export default class extends Controller {
     toggleElement($(this.selectSchoolBlockTarget))
   }
 
+
+  handleClickIsPublic(event) {
+    const value = $(event.target).val();
+    debugger
+    this.toggleGroupNames(value === "true");
+  }
+
+  toggleGroupNames(isPublic) {
+    if (isPublic) {
+      $(this.selectGroupNameTarget).find("option").first().text("-- Veuillez sélectionner une institution --")
+      $(this.groupNamePublicTargets).show()
+      $(this.groupNamePrivateTargets).hide()
+    } else {
+      $(this.selectGroupNameTarget).find("option").first().text("-- Indépendant --")
+      $(this.groupNamePublicTargets).hide()
+      $(this.groupNamePrivateTargets).show()
+    }
+  }
+
   // toggle all weeks options
   toggleWeeks(event) {
     $(this.selectWeeksTarget).find("option").each((i, el) => {
       $(el).prop('selected', $(event.target).prop('checked'))
     })
+  }
+
+  connect() {
+    this.toggleGroupNames(true);
   }
 }
