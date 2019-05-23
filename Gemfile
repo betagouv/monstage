@@ -8,7 +8,6 @@ gem 'rails'
 gem 'webpacker'
 gem 'turbolinks'
 gem 'pg'
-gem 'scenic'
 gem 'activerecord-postgis-adapter' # postgis extension
 
 # Use Puma as the app server
