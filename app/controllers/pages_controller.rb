@@ -2,8 +2,8 @@ class PagesController < ApplicationController
   def statistiques
     @offers_by_sector = base_query.grouped_by_sector
     @offers_by_publicy = base_query.grouped_by_publicy
-    @departments = InternshipOffer.pluck(:department).uniq.reject(&:blank?)
-    @groups = InternshipOffer.pluck(:group_name).uniq.reject(&:blank?)
+    @departments = InternshipOffer.where.not(department: "").distinct.pluck(:department)
+    @groups = InternshipOffer.where.not(group_name: "").distinct.pluck(:group_name)
   end
 
   private

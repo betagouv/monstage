@@ -1,7 +1,7 @@
 require 'test_helper'
 module Reporting
   class InternshipOfferAggregateFunctionsTest < ActiveSupport::TestCase
-    def setup
+    setup do
       @sector_agri = create(:sector, name: "Agriculture")
       @sector_wood = create(:sector, name: "Filière bois")
 
@@ -10,18 +10,16 @@ module Reporting
       @internship_offer_wood = create(:internship_offer, sector: @sector_wood)
     end
 
-    test ".group_by(:sector_name) and order(sector_name: :asc)" do
-      Reporting::InternshipOffer.refresh
+    test ".group_by(:sector_name)" do
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
-      assert_equal agri_stats.report_row_title, @sector_agri.name
-      assert_equal wood_stats.report_row_title, @sector_wood.name
+      assert_equal agri_stats.sector_name, @sector_agri.name
+      assert_equal wood_stats.sector_name, @sector_wood.name
     end
 
     test "computes internship_offer count by sector" do
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -34,7 +32,6 @@ module Reporting
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_2)
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -52,7 +49,6 @@ module Reporting
                                                   student: create(:student, :male))
       create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
                                                   student: create(:student, :male))
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -70,7 +66,6 @@ module Reporting
                                                   student: create(:student, :male))
       create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
                                                   student: create(:student, :male))
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -86,7 +81,6 @@ module Reporting
                                       internship_offer: @internship_offer_agri_1)
       create(:internship_application, :convention_signed,
                                       internship_offer: @internship_offer_agri_2)
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -109,7 +103,6 @@ module Reporting
                                       internship_offer: @internship_offer_wood,
                                       student: create(:student, :male))
 
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -132,7 +125,6 @@ module Reporting
                                       internship_offer: @internship_offer_wood,
                                       student: create(:student, :male))
 
-      Reporting::InternshipOffer.refresh
       results = Reporting::InternshipOffer.grouped_by_sector
       agri_stats = results[0]
       wood_stats = results[1]

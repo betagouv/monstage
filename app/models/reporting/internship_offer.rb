@@ -2,13 +2,8 @@ module Reporting
   class InternshipOffer < ApplicationRecord
     include Yearable
 
-    def self.table_name_prefix
-    'reporting_'
-    end
-
-    def self.refresh
-      Scenic.database.refresh_materialized_view(table_name, concurrently: false, cascade: false)
-    end
+    belongs_to :sector
+    delegate :name, to: :sector, prefix: true
 
     AGGREGATE_FUNCTIONS = [
       "sum(total_applications_count) as total_applications_count",
@@ -20,7 +15,7 @@ module Reporting
     ].freeze
 
     scope :by_departement, -> (department_name:) {
-      where(department_name: department_name)
+      where(department: department_name)
     }
     scope :by_group_name, -> (group_name:) {
       where(group_name: group_name)
@@ -30,19 +25,18 @@ module Reporting
     }
 
     scope :grouped_by_sector, -> () {
-      select("sector_name as report_row_title",
-             "count(sector_name) as report_total_count",
+      select("sector_id",
+             "count(sector_id) as report_total_count",
              *AGGREGATE_FUNCTIONS)
-        .group(:sector_name)
-        .order(sector_name: :asc)
+        .includes(:sector)
+        .group(:sector_id)
     }
 
     scope :grouped_by_publicy, -> () {
-      select("publicly_name as report_row_title",
-             "count(publicly_name) as report_total_count",
+      select("is_public",
+             "count(is_public) as report_total_count",
              *AGGREGATE_FUNCTIONS)
-        .group(:publicly_name)
-        .order(publicly_name: :asc)
+        .group(:is_public)
     }
   end
 end

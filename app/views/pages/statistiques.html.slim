@@ -19,8 +19,8 @@ h1.h2.mt-2 Statistiques
 
 .row.bg-light.pt-3[data-controller='statistics']
   .form-group.col-lg-4
-    = label_tag :department, 'Académie'
-    = select_tag :department, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+    = label_tag :academy, 'Académie'
+    = select_tag :academy, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
   .form-group.col-lg-4
     = label_tag :department, 'Département'
     = select_tag :department, options_for_select(@departments, selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
@@ -46,6 +46,6 @@ h1.h2.mt-2 Statistiques
         th Fille
 
     tbody
-      = render partial: 'reporting_internship_offer', collection: @offers_by_sector
-      = render partial: 'reporting_internship_offer', collection: @offers_by_publicy, locals: { gray_background: true }
+      = render partial: 'reporting_internship_offer', collection: @offers_by_sector.map(&Presenters::GroupedBySectorInternshipOfferStats.method(:new))
+      = render partial: 'reporting_internship_offer', collection: @offers_by_publicy.map(&Presenters::GroupedByPublicyInternshipOfferStats.method(:new)), locals: { gray_background: true }
       = render 'reporting_internship_offer', reporting_internship_offer: Presenters::TotalReportingInternshipOfferStats.new(offers: @offers_by_sector)

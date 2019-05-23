@@ -1,4 +1,3 @@
-
 module Presenters
   class TotalReportingInternshipOfferStats
     def report_row_title
@@ -27,7 +26,6 @@ module Presenters
       offers.sum(&:total_female_convention_signed_applications_count)
     end
 
-    private
     attr_reader :offers
     def initialize(offers:)
       @offers = offers
