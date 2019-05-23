@@ -30,6 +30,7 @@ module Reporting
              *AGGREGATE_FUNCTIONS)
         .includes(:sector)
         .group(:sector_id)
+        .order(:sector_id)
     }
 
     scope :grouped_by_publicy, -> () {
@@ -37,6 +38,7 @@ module Reporting
              "count(is_public) as report_total_count",
              *AGGREGATE_FUNCTIONS)
         .group(:is_public)
+        .order(:is_public)
     }
   end
 end

@@ -4,7 +4,6 @@ module Reporting
     setup do
       @sector_agri = create(:sector, name: "Agriculture")
       @sector_wood = create(:sector, name: "Filière bois")
-
       @internship_offer_agri_1 = create(:internship_offer, sector: @sector_agri)
       @internship_offer_agri_2 = create(:internship_offer, sector: @sector_agri)
       @internship_offer_wood = create(:internship_offer, sector: @sector_wood)
