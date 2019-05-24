@@ -10,7 +10,7 @@ FactoryBot.define do
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }
     is_public { true }
-    group_name { InternshipOffer::PUBLIC_GROUP_NAMES.first }
+    group { Group::PUBLIC.first }
     employer_description { 'on envoie du parpaing' }
     street { '1 rue du poulet' }
     zipcode { '75001' }

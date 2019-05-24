@@ -37,8 +37,8 @@ class Academy
     MAP.keys
   end
 
-  def self.departements_by_name(academy_name:)
-    MAP.fetch(academy_name)
+  def self.departments_by_name(academy:)
+    MAP.fetch(academy)
   end
 
   def self.lookup_by_zipcode(zipcode:)

@@ -14,14 +14,14 @@ module Reporting
       "sum(convention_signed_applications_count) - sum(total_male_convention_signed_applications_count) as total_female_convention_signed_applications_count"
     ]
 
-    scope :by_departement, -> (department_name:) {
-      where(department: department_name)
+    scope :by_departement, -> (department:) {
+      where(department: department)
     }
-    scope :by_group_name, -> (group_name:) {
-      where(group_name: group_name)
+    scope :by_group, -> (group:) {
+      where(group: group)
     }
-    scope :by_academy_name, -> (academy_name:) {
-      where(academy: academy_name)
+    scope :by_academy, -> (academy:) {
+      where(academy: academy)
     }
 
     scope :grouped_by_sector, -> () {
@@ -41,13 +41,13 @@ module Reporting
         .order(:is_public)
     }
 
-    scope :grouped_by_group_name, -> () {
-      select("group_name",
-             "count(group_name) as report_total_count",
+    scope :grouped_by_group, -> () {
+      select("internship_offers.group",
+             "count(internship_offers.group) as report_total_count",
              *AGGREGATE_FUNCTIONS)
         .where(is_public: true)
-        .group(:group_name)
-        .order(:group_name)
+        .group("internship_offers.group")
+        .order("internship_offers.group")
     }
   end
 end

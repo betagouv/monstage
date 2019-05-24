@@ -11,18 +11,18 @@
     .wrapper-breadcrumb.bg-light.d-inline-block.px-3.py-2.rounded
       = link_to 'Accueil', root_path
       span.mx-1 >
-      - if params[:department].present? || params[:group_name].present?
+      - if params[:department].present? || params[:group].present?
         = link_to 'Statistiques', statistiques_path
         span.mx-1 >
         - if params[:department].present?
-          - if params[:group_name].present?
+          - if params[:group].present?
             = link_to params[:department], statistiques_path(department: params[:department])
             span.mx-1 >
-            = params[:group_name]
+            = params[:group]
           - else
             = params[:department]
-        - elsif params[:group_name].present?
-          = params[:group_name]
+        - elsif params[:group].present?
+          = params[:group]
       - else
         span.font-weight-bold Statistiques nationales
 
@@ -32,18 +32,18 @@
   .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
     .form-group.col-lg-3
       = label_tag :academy, 'Académie', class: 'text-uppercase'
-      = select_tag :academy, options_for_select(Academy.names, selected: params[:academy_name].blank? ? nil : params[:academy_name]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+      = select_tag :academy, options_for_select(Academy.names, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
     .form-group.col-lg-3
       = label_tag :department, 'Département', class: 'text-uppercase'
-      = select_tag :department, options_for_select(Department.to_select(only: (params[:academy_name].blank? ? nil : Academy.departements_by_name(academy_name: params[:academy_name]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+      = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
 
     .form-group.col-lg-2
       = label_tag :is_public, 'Secteur', class: 'text-uppercase'
       = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
 
     .form-group.col-lg-4
-      = label_tag :group_name, "Groupe ou Institution de tutelle", class: 'text-uppercase'
-      = select_tag :group_name, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? InternshipOffer::PUBLIC_GROUP_NAMES : InternshipOffer::PRIVATE_GROUP_NAMES, selected: params[:group_name].blank? ? nil : params[:group_name]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroupName' }
+      = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+      = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
   .row.mt-3
     table.table.table-statistics
       thead

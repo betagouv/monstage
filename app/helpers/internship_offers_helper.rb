@@ -9,8 +9,8 @@ module InternshipOffersHelper
     'http://www.onisep.fr/Decouvrir-les-metiers/Des-metiers-par-secteur'
   end
 
-  def options_for_group_names
-    InternshipOffer::PUBLIC_GROUP_NAMES.map { |admin| [admin, { 'data-target' => "internship-form.groupNamePublic"}] } +
-        InternshipOffer::PRIVATE_GROUP_NAMES.map { |admin| [admin, { 'data-target' => "internship-form.groupNamePrivate"}] }
+  def options_for_groups
+    Group::PUBLIC.map { |admin| [admin, { 'data-target' => "internship-form.groupNamePublic"}] } +
+        Group::PRIVATE.map { |admin| [admin, { 'data-target' => "internship-form.groupNamePrivate"}] }
   end
 end

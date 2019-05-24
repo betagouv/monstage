@@ -200,8 +200,8 @@
       = form.url_field :employer_website, class: 'form-control col-lg-6'
 
     .form-group
-      = form.label :group_name, "Groupe ou Institution de tutelle"
-      = form.select :group_name, options_for_select(options_for_group_names, selected: @internship_offer.group_name), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
+      = form.label :group, "Groupe ou Institution de tutelle"
+      = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
     fieldset
       legend Accompagnement
       .form-group
