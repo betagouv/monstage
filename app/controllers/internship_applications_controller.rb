@@ -24,7 +24,7 @@ class InternshipApplicationsController < ApplicationController
     if params[:transition] == 'submit!'
       @internship_application.submit!
       @internship_application.save!
-      redirect_to dashboard_students_internship_applications_path(current_user, @internship_application),
+      redirect_to dashboard_students_internship_applications_path(@internship_application.student, @internship_application),
                   flash: { success: 'Votre candidature a bien été envoyée' }
     else
       @internship_application.update(internship_application_params)
@@ -40,7 +40,7 @@ class InternshipApplicationsController < ApplicationController
 
   def create
     @internship_application = InternshipApplication.new(internship_application_params)
-    authorize! :apply, InternshipOffer
+    authorize! :apply, @internship_offer
     @internship_application.save!
     redirect_to internship_offer_internship_application_path(@internship_application.internship_offer,
                                                              @internship_application)

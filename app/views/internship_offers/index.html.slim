@@ -1,15 +1,15 @@
 = render "title", internship_offers: @internship_offers
 
-- if can? :apply, InternshipOffer
+- if user_signed_in? && current_user.respond_to?(:school) && current_user.school
   .row.bt-1.bt-light
     .col-12.bg-light.px-3.pt-3.filter-section data-controller="internship-index"
-      - if user_signed_in? && current_user.respond_to?(:school)
-        .row
-          .col-12
-            .form-group.mb-2
-              = label_tag 'disabled_location_search', class: 'mb-0' do
-                = check_box_tag :disabled_location_search, true, true, disabled: true
-                span.ml-1="Autour du #{current_user.school.name}"
+      .row
+        .col-12
+          .form-group.mb-2
+            = label_tag 'disabled_location_search', class: 'mb-0' do
+              = check_box_tag :disabled_location_search, true, true, disabled: true
+              span.ml-1="Autour du #{current_user.school.name}"
+
       .row
         .form-group data-controller="help"
           .col-12

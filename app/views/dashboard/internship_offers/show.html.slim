@@ -35,7 +35,7 @@ p = @internship_offer.employer_name
     br
     = link_to @internship_offer.tutor_email, "email:#{@internship_offer.tutor_email}"
 
-- if can?(:apply, InternshipOffer) && @internship_offer.has_spots_left?
+- if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
   = render "internship_applications/form"
 
 

@@ -29,7 +29,9 @@ class Ability
     can :show, :account
     can :change, :class_room
     can :read, InternshipOffer
-    can :apply, InternshipOffer
+    can :apply, InternshipOffer do |internship_offer|
+      internship_offer.school_id.nil?
+    end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
@@ -67,6 +69,13 @@ class Ability
         class_room.id == user.class_room_id
       end
     end
+    can [:apply], InternshipOffer do |internship_offer|
+      internship_offer.school_id == user.school_id
+    end
+    can :submit_internship_application, InternshipApplication do |internship_application|
+      internship_application.student.school_id == user.school_id
+    end
+
   end
 
   def teacher_abilities(user:)
