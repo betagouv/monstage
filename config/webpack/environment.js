@@ -9,7 +9,7 @@ environment.plugins.append('Provide', new webpack.ProvidePlugin({
 
 environment.plugins.append('Provide', new webpack.ProvidePlugin({
     $: 'jquery',
-    jQuery: 'jquery',
+    jQuery: 'jquery'
 }));
 
 environment.loaders.prepend('erb', erb)
