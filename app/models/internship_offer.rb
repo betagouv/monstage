@@ -18,12 +18,12 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
-  validates :group, inclusion: { in: Group::PUBLIC, message: 'Veuillez choisir une institution de tutelle' },
-                    if: :is_public?
-  validates :group, inclusion: { in: Group::PRIVATE, message: 'Veuillez choisir une institution de tutelle' },
-                    unless: :is_public?,
-                    allow_blank: true,
-                    allow_nil: true
+  # validates :group, inclusion: { in: Group::PUBLIC, message: 'Veuillez choisir une institution de tutelle' },
+  #                   if: :is_public?
+  # validates :group, inclusion: { in: Group::PRIVATE, message: 'Veuillez choisir une institution de tutelle' },
+  #                   unless: :is_public?,
+  #                   allow_blank: true,
+  #                   allow_nil: true
 
   MAX_CANDIDATES_PER_GROUP = 200
   validates :max_candidates, numericality: { only_integer: true,
