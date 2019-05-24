@@ -1,9 +1,9 @@
 .bg-cover-image-statistiques{
-  background-image: linear-gradient(to bottom, rgba(51, 51, 51, 0.5), rgba(51, 51, 51, 0.5)),
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
                     url('../images/homepage/mon-stage-de-3e-illustration.jpg');
   background-position: bottom left, right -80px;
   background-repeat: repeat, no-repeat;
-  background-size: cover, cover;
+  background-size: contain, cover;
 }
 .wrapper-breadcrumb{
   background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
