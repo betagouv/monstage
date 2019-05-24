@@ -1,7 +1,7 @@
 class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
-  include Yearable
+
   PAGE_SIZE = 10
 
   validates :title,
