@@ -14,13 +14,13 @@ module Dashboard
 
       def update
         @internship_application = @internship_offer.internship_applications.find(params[:id])
-        authorize! :update, @internship_offer, InternshipApplication
+        authorize! :update, @internship_application, InternshipApplication
         @internship_application.send(params[:transition]) if valid_transition?
-        redirect_to dashboard_internship_offer_internship_applications_path(@internship_application.internship_offer),
-                    flash: { success: 'Candidature mise à jour avec succès' }
+        redirect_back fallback_location: current_user.after_sign_in_path,
+                      flash: { success: 'Candidature mise à jour avec succès' }
       rescue AASM::InvalidTransition => e
-        redirect_to dashboard_internship_offer_internship_applications_path(@internship_application.internship_offer),
-                    flash: { warning: 'Cette candidature a déjà été traitée' }
+        redirect_back fallback_location: current_user.after_sign_in_path,
+                      flash: { warning: 'Cette candidature a déjà été traitée' }
       end
 
       private

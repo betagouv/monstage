@@ -54,6 +54,9 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
+    can %i[update], InternshipApplication do |internship_application|
+      user.school.students.where(id: internship_application.student.id).count > 0
+    end
   end
 
   def main_teacher_abilities(user:)

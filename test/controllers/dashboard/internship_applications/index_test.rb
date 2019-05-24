@@ -92,7 +92,7 @@ module InternshipApplications
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
       assert_has_link_count_to_transition(internship_application, :cancel!, 1)
-      assert_has_link_count_to_transition(internship_application, :signed!, 1)
+      assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
     test 'GET #index with rejected offer, does not shows any link' do

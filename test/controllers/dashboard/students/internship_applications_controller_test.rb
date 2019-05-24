@@ -20,7 +20,7 @@ module Dashboard
         assert_response :redirect
       end
 
-      test 'GET internship_applications#index as another student.school.school_manager responds with 200' do
+      test 'GET internship_applications#index as student.school.school_manager responds with 200' do
         school = create(:school)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
@@ -31,6 +31,18 @@ module Dashboard
         assert_select 'h1.h2.mb-3', text: student.name
         assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
+      end
+
+      test 'GET internship_applications#index as student.school.school_manager works and show convention button' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        student = create(:student, school: school, class_room: class_room)
+        school_manager = create(:school_manager, school: school)
+        internship_application = create(:internship_application, :approved, student: student)
+        sign_in(school_manager)
+        get dashboard_students_internship_applications_path(student)
+        assert_response :success
+        assert_select 'a[href=?]', dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!)
       end
 
       test 'GET internship_applications#index render navbar, timeline' do
