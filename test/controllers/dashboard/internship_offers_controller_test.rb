@@ -28,7 +28,6 @@ module Dashboard
       get dashboard_internship_offers_path
       assert_response :success
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
-      assert_template 'dashboard/internship_offers/_delete_internship_offer_modal'
     end
 
     test 'GET #index as Operator displays internship_applications link' do
@@ -49,7 +48,6 @@ module Dashboard
                     count: 0
       assert_select 'a[href=?]', dashboard_internship_offer_path(internship_offer_delegated_to_opereator),
                     count: 1
-      assert_template 'dashboard/internship_offers/_delete_internship_offer_modal'
     end
   end
 end

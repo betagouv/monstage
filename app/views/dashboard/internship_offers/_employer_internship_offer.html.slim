@@ -13,8 +13,3 @@ tr class="test-internship-offer-#{employer_internship_offer.id}"
   td.align-middle.text-sm-center data-head="#{cols[3]}"= employer_internship_offer.approved_applications_count
 
   td.align-middle.text-sm-center data-head="#{cols[4]}"= employer_internship_offer.convention_signed_applications_count
-
-- if can? :destroy, employer_internship_offer
-  tr.d-none
-    td colspan=5
-      = render "delete_internship_offer_modal", internship_offer: employer_internship_offer
