@@ -12,7 +12,7 @@
     line-height: 30px;
   }
   .bg-cover-image-homepage{
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=),
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0rgcAAOsAtGe4os0AAAAASUVORK5CYII='),
                       url('../images/homepage/mon-stage-de-3e-illustration.jpg');
     background-position: bottom left, top right;
     background-repeat: repeat, no-repeat;
@@ -42,7 +42,6 @@
     font-size: 18px;
     line-height: 22px;
   }
-
   .h1-stat{
     font-size: 62px;
     color: $blue;
@@ -59,6 +58,9 @@
 .mw-360{
   max-width: 360px;
   height: auto;
+}
+.text-blue{
+  color: $blue !important;
 }
 .bg-peacock-blue{
   background-color: rgba(0, 102, 153, 0.9);

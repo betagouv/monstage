@@ -7,9 +7,9 @@
 
     .row.no-gutters
       .col-12.col-md-7
-        h1.h1-home.mb-5.text-center.text-sm-left Le monde professionnel s’ouvre à l’école
-        p.big-tagline.text-center.text-sm-left Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec  votre orientation et votre projet personnel.
-        p.big-tagline.mb-0.mb-sm-5.text-center.text-sm-left
+        h1.h1-home.mb-5.text-center.text-sm-left.text-white Le monde professionnel s’ouvre à l’école
+        p.big-tagline.text-center.text-sm-left.text-white Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec  votre orientation et votre projet personnel.
+        p.big-tagline.mb-0.mb-sm-5.text-center.text-sm-left.text-white
           | Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou  découvrir de nouveaux secteurs ou activités.
 
         - if !user_signed_in?
@@ -19,19 +19,23 @@
           .actions.mt-3.d-flex.d-sm-inline
             = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-lg px-4 btn-warning shadow-lg'
 
-.bg-peacock-blue.py-5
+.py-5
   .container
     .row
       .col-12.col-sm-9
-        h2.h3-home.text-white Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire renforcée (REP+)
+        h2.h3-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire renforcée (REP+)
     .row
       .col-12.col-sm.12
-        p.text-white.mt-3.mb-4 Les élèves des autres collèges trouveront toutes les informations utiles sur le site EDUSCOL et trouveront de stages sur le portail de l'ONISEP : Mon stage en ligne.
+        p.mt-3.mb-4.big-tagline Les élèves des autres collèges trouveront toutes les informations utiles sur le site EDUSCOL et trouveront de stages sur le portail de l'ONISEP : Mon stage en ligne.
         .actions.my-3.d-flex.d-sm-inline
-          = link_to "Mon stage en ligne", "https://www.monstageenligne.fr", class: 'btn btn-outline-warning btn-lg'
+          = link_to "https://www.monstageenligne.fr", class: 'h4-home' do
+            i.fas.fa-chevron-circle-right.mr-1.text-warning
+            | Mon stage en ligne
         span.mx-2.d-none.d-sm-inline=" "
         .actions.my-3.d-flex.d-sm-inline
-          = link_to "Tout sur les stages", "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'btn btn-outline-warning btn-lg'
+          = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'h4-home' do
+            i.fas.fa-chevron-circle-right.mr-1.text-warning
+            | Tout sur les stages
 
 .bg-warning.py-5.d-none.d-sm-block
   .container
