@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_24_091853) do
+ActiveRecord::Schema.define(version: 2019_05_24_092527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,7 +114,6 @@ ActiveRecord::Schema.define(version: 2019_05_24_091853) do
     t.integer "approved_applications_count", default: 0, null: false
     t.string "employer_type"
     t.string "department", default: "", null: false
-    t.string "region", default: "", null: false
     t.string "academy", default: "", null: false
     t.integer "total_male_applications_count", default: 0, null: false
     t.integer "total_male_convention_signed_applications_count", default: 0, null: false

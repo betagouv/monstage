@@ -12,7 +12,6 @@ class InternshipOffer < ApplicationRecord
             :tutor_email,
             :max_internship_week_number,
             :employer_name,
-            :street,
             :zipcode,
             :city,
             presence: true

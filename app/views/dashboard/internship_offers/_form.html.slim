@@ -59,7 +59,7 @@
             = form.label :street do
               = 'Rue'
               = form.rg2a_required_content_tag
-            = form.text_field :street, class: "form-control", required: true, data: {target: 'algolia-place.streetInput'}
+            = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
         .col-sm-4
           .form-group
             = form.label :city do
@@ -79,18 +79,6 @@
               = 'Département'
               = form.rg2a_required_content_tag
             = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
-        .col-sm-4
-          .form-group
-            = form.label :region do
-              = 'Région'
-              = form.rg2a_required_content_tag
-            = form.text_field :region, class: "form-control", required: true, data: {target: 'algolia-place.regionInput'}
-        .col-sm-4
-          .form-group
-            = form.label :academy do
-              = 'Académie'
-              = form.rg2a_required_content_tag
-            = form.text_field :academy, class: "form-control", required: true, data: {target: 'algolia-place.academyInput'}
   fieldset
     legend Quand ?
     .form-group
