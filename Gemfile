@@ -11,6 +11,7 @@ gem 'pg'
 gem 'rails'
 gem 'turbolinks'
 gem 'webpacker'
+gem 'scenic'
 
 # Use Puma as the app server
 gem 'bootsnap', require: false
