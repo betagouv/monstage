@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 class ReRefactorOnisepSectors < ActiveRecord::Migration[5.2]
   def change
@@ -5,7 +7,7 @@ class ReRefactorOnisepSectors < ActiveRecord::Migration[5.2]
     former_sectors = Sector.all.entries
     new_sectors = []
     CSV.foreach(Rails.root.join('db/metiers_onisep-Sectors.csv'),
-                {headers: { col_sep: ';'}}) do |row, i|
+                headers: { col_sep: ';' }) do |row, _i|
       new_sector = Sector.find_or_create_by(
         name: row['Des métiers par Secteur'].strip,
         external_url: row['URL'].strip
@@ -15,11 +17,11 @@ class ReRefactorOnisepSectors < ActiveRecord::Migration[5.2]
     end
 
     InternshipOffer.all.each.with_index do |io, i|
-      if i <= new_sectors.size - 1
-        io.sector = new_sectors[i]
-      else
-        io.sector = new_sectors.sample
-      end
+      io.sector = if i <= new_sectors.size - 1
+                    new_sectors[i]
+                  else
+                    new_sectors.sample
+                  end
       io.save!
     end
 

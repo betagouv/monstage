@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Ability
   include CanCan::Ability
 
-  def initialize(user=nil)
+  def initialize(user = nil)
     if user.present?
       case user.type
       when 'Users::Student' then student_abilities(user: user)
@@ -12,7 +14,6 @@ class Ability
       when 'Users::Teacher' then teacher_abilities(user: user)
       when 'Users::Other' then other_abilities(user: user)
       when 'Users::Operator' then operator_abilities(user: user)
-      else
       end
       shared_abilities(user: user)
     else
@@ -32,8 +33,8 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
-    can [:show, :update], User
-    can [:choose_school, :choose_class_room, :choose_gender_and_birthday], :sign_up
+    can %i[show update], User
+    can %i[choose_school choose_class_room choose_gender_and_birthday], :sign_up
     can_read_dashboard_students_internship_applications(user: user)
   end
 
@@ -42,8 +43,8 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     can_read_dashboard(user: user) do
-      can [:create, :new, :update], ClassRoom
-      can [:edit, :update], School
+      can %i[create new update], ClassRoom
+      can %i[edit update], School
       can [:manage_school_users], School do |school|
         school.id == user.school_id
       end
@@ -87,15 +88,15 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     can :create, InternshipOffer
-    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
-    can [:index, :update], InternshipApplication
+    can %i[read update destroy], InternshipOffer, employer_id: user.id
+    can %i[index update], InternshipApplication
   end
 
   def operator_abilities(user:)
     can :show, :account
     can :choose_operator, :sign_up
     can :create, InternshipOffer
-    can [:read, :update, :destroy], InternshipOffer, employer_id: user.id
+    can %i[read update destroy], InternshipOffer, employer_id: user.id
     can :index, InternshipApplication
   end
 
@@ -103,9 +104,8 @@ class Ability
     can :show, :account
     can :manage, School
     can :destroy, InternshipOffer
-    can [:destroy, :index], Feedback
+    can %i[destroy index], Feedback
   end
-
 
   private
 
@@ -119,6 +119,7 @@ class Ability
         student_managed_by?(student: internship_application.student, user: user)
     end
   end
+
   def student_managed_by?(student:, user:)
     student.school_id == user.school_id && (
       user.is_a?(Users::Teacher) ||
@@ -134,14 +135,14 @@ class Ability
 
   def can_create_and_manage_account(user:)
     can :show, :account
-    can [:show, :edit, :update], User
+    can %i[show edit update], User
     can [:choose_school], :sign_up
     can :choose_school, User, id: user.id
     yield if block_given?
   end
 
   def can_read_dashboard(user:)
-    can [:index, :show], ClassRoom
+    can %i[index show], ClassRoom
     can [:show_user_in_school], User do |user|
       user.school
           .users

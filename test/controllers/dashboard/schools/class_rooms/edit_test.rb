@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
   module Schools
-    class EditClassRoomsTest  < ActionDispatch::IntegrationTest
+    class EditClassRoomsTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       #

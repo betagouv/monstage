@@ -12,7 +12,7 @@ module Users
 
     def resource_class
       UserManager.new.by_params(params: params)
-    rescue KeyError => error
+    rescue KeyError => e
       User
     end
 
@@ -64,15 +64,15 @@ module Users
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(
         :sign_up,
-        keys: [
-          :type,
-          :first_name,
-          :last_name,
-          :birth_date,
-          :gender,
-          :school_id,
-          :class_room_id,
-          :operator_id
+        keys: %i[
+          type
+          first_name
+          last_name
+          birth_date
+          gender
+          school_id
+          class_room_id
+          operator_id
         ]
       )
     end

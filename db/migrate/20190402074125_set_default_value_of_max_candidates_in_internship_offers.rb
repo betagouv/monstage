@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SetDefaultValueOfMaxCandidatesInInternshipOffers < ActiveRecord::Migration[5.2]
   def up
     InternshipOffer.where(max_candidates: nil).each do |internship_offer|

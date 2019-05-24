@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
@@ -10,13 +12,14 @@ class UsersController < ApplicationController
     authorize! :update, current_user
     current_user.update!(user_params)
     flash_message = 'Compte mis à jour avec succès.'
-    flash_message += " Veuillez confirmer votre nouvelle adresse email." if current_user.unconfirmed_email
+    flash_message += ' Veuillez confirmer votre nouvelle adresse email.' if current_user.unconfirmed_email
     redirect_back fallback_location: account_path, flash: { success: flash_message }
-  rescue ActiveRecord::RecordInvalid => error
+  rescue ActiveRecord::RecordInvalid => e
     render :edit, status: :bad_request
   end
 
   private
+
   def user_params
     params.require(:user).permit(:school_id,
                                  :first_name,

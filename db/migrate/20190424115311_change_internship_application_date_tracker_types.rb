@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeInternshipApplicationDateTrackerTypes < ActiveRecord::Migration[5.2]
   def change
     change_column :internship_applications, :approved_at, :datetime

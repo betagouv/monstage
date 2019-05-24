@@ -1,5 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
 
+require 'test_helper'
 
 module Dashboard
   module Schools
@@ -38,13 +39,13 @@ module Dashboard
       #
       # update
       #
-      test "PATCH #update as main teacher should approve parental consent" do
+      test 'PATCH #update as main teacher should approve parental consent' do
         school = create(:school, :with_school_manager)
         main_teacher = create(:main_teacher, school: school)
         student = create(:student, school: school, has_parental_consent: false)
 
         sign_in(main_teacher)
-        patch dashboard_school_user_path(school, student, params: { user: { has_parental_consent: true } }), headers: { "HTTP_REFERER" => root_path }
+        patch dashboard_school_user_path(school, student, params: { user: { has_parental_consent: true } }), headers: { 'HTTP_REFERER' => root_path }
 
         assert student.reload.has_parental_consent
       end
@@ -74,8 +75,8 @@ module Dashboard
 
         get dashboard_school_users_path(school)
         assert_response :success
-        assert_select ".test-dashboard-nav a.nav-link[href=?]", dashboard_school_class_rooms_path(school), count: 1
-        assert_select ".test-dashboard-nav a.active[href=?]", dashboard_school_users_path(school), count: 1
+        assert_select '.test-dashboard-nav a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select '.test-dashboard-nav a.active[href=?]', dashboard_school_users_path(school), count: 1
       end
 
       test 'GET users#index as SchoolManager contains list school members' do
@@ -90,7 +91,7 @@ module Dashboard
         get dashboard_school_users_path(school)
         assert_response :success
         school_employees.each do |school_employee|
-          assert_select "a[href=?]", dashboard_school_user_path(school, school_employee)
+          assert_select 'a[href=?]', dashboard_school_user_path(school, school_employee)
         end
       end
 
@@ -107,7 +108,7 @@ module Dashboard
         get dashboard_school_users_path(school)
         assert_response :success
         school_employees.each do |school_employee|
-          assert_select "a[href=?]", dashboard_school_user_path(school, school_employee), count: 0
+          assert_select 'a[href=?]', dashboard_school_user_path(school, school_employee), count: 0
         end
       end
     end

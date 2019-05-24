@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dashboard
   module Schools
     class UsersController < ApplicationController
@@ -13,10 +15,10 @@ module Dashboard
         authorize! :delete, user
         user.update!(school_id: nil)
         redirect_to dashboard_school_users_path(@school),
-                    flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été supprimé de votre collège"}
-      rescue ActiveRecord::RecordInvalid => error
+                    flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été supprimé de votre collège" }
+      rescue ActiveRecord::RecordInvalid => e
         redirect_to dashboard_school_users_path(@school),
-                    flash: { success: "Une erreur est survenue, impossible de supprimé #{user_presenter.human_role} #{user_presenter.short_name} de votre collège: #{error.record.full_messages}"}
+                    flash: { success: "Une erreur est survenue, impossible de supprimé #{user_presenter.human_role} #{user_presenter.short_name} de votre collège: #{e.record.full_messages}" }
       end
 
       def update
@@ -26,17 +28,18 @@ module Dashboard
         user.update!(user_params)
 
         flash_content = {}
-        if params[:user][:has_parental_consent] == "true"
+        if params[:user][:has_parental_consent] == 'true'
           flash_content = { success: "Le compte de #{user.name} a bien été autorisé" }
           StudentMailer.with(user: user).account_activated_by_main_teacher_email.deliver_later
         end
 
         redirect_back fallback_location: root_path, flash: flash_content
-      rescue ActiveRecord::RecordInvalid => error
+      rescue ActiveRecord::RecordInvalid => e
         redirect_back fallback_location: root_path, status: :bad_request
       end
 
       private
+
       def user_params
         params.require(:user).permit(:has_parental_consent)
       end

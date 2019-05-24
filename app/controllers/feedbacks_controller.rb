@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class FeedbacksController < ApplicationController
-  before_action :authenticate_user!, only: [:index, :destroy]
+  before_action :authenticate_user!, only: %i[index destroy]
   before_action :set_feedback, only: [:destroy]
 
   # GET /feedbacks
@@ -17,10 +19,9 @@ class FeedbacksController < ApplicationController
                     flash: { success: "Votre message a bien été envoyé. Merci d'avoir donné votre avis." }
     else
       redirect_back fallback_location: root_path,
-                    flash: { success: "Woops, une erreur est survenue, veuillez ré-essayer" }
+                    flash: { success: 'Woops, une erreur est survenue, veuillez ré-essayer' }
     end
   end
-
 
   # DELETE /feedbacks/1
   def destroy
@@ -30,13 +31,14 @@ class FeedbacksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def feedback_params
-      params.require(:feedback).permit(:email, :comment)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_feedback
+    @feedback = Feedback.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def feedback_params
+    params.require(:feedback).permit(:email, :comment)
+  end
 end

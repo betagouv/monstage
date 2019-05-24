@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
   module Schools
-    class ShowClassRoomsTest  < ActionDispatch::IntegrationTest
+    class ShowClassRoomsTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       #
@@ -35,13 +37,13 @@ module Dashboard
         students = [
           create(:student, class_room: class_room, school: school),
           create(:student, class_room: class_room, school: school),
-          create(:student, class_room: class_room, school: school),
+          create(:student, class_room: class_room, school: school)
         ]
         sign_in(create(:school_manager, school: school))
 
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
-          assert_select "a[href=?]", dashboard_students_internship_applications_path(student)
+          assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
@@ -68,13 +70,13 @@ module Dashboard
         students = [
           create(:student, class_room: class_room, school: school),
           create(:student, class_room: class_room, school: school),
-          create(:student, class_room: class_room, school: school),
+          create(:student, class_room: class_room, school: school)
         ]
         sign_in(create(:other, school: school))
 
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
-          assert_select "a[href=?]", dashboard_students_internship_applications_path(student)
+          assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
@@ -101,7 +103,7 @@ module Dashboard
         students = [
           create(:student, class_room: class_room, school: school, has_parental_consent: true),
           create(:student, class_room: class_room, school: school, has_parental_consent: false),
-          create(:student, class_room: class_room, school: school, has_parental_consent: false),
+          create(:student, class_room: class_room, school: school, has_parental_consent: false)
         ]
         sign_in(create(:main_teacher, school: school, class_room: class_room))
 
@@ -131,11 +133,11 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         assert_response :success
-        assert_select "a.nav-link[href=?]", dashboard_school_class_rooms_path(school), count: 1
-        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 0
-        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
+        assert_select 'a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 0
+        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 0
 
-        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 0
+        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
     end
   end

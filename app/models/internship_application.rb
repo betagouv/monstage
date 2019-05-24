@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
@@ -17,9 +19,9 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
-  scope :order_by_aasm_state, -> {
+  scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
-    .select(%Q(
+      .select(%(
       CASE
         WHEN aasm_state = 'convention_signed' THEN 0
         WHEN aasm_state = 'drafted' THEN 1
@@ -29,18 +31,18 @@ class InternshipApplication < ApplicationRecord
         ELSE 0
       END as orderable_aasm_state
     ))
-    .order("orderable_aasm_state")
+      .order('orderable_aasm_state')
   }
 
-  scope :for_user, -> (user:) { where(user_id: user.id) }
-  scope :not_by_id, -> (id:) { where.not(id: id) }
+  scope :for_user, ->(user:) { where(user_id: user.id) }
+  scope :not_by_id, ->(id:) { where.not(id: id) }
 
   def student_is_male?
     student.gender == 'm'
   end
 
   def internship_offer_week_has_spots_left
-    unless internship_offer_week && internship_offer_week.has_spots_left?
+    unless internship_offer_week&.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
     end
   end
@@ -54,7 +56,7 @@ class InternshipApplication < ApplicationRecord
     state :submitted, :approved, :rejected, :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, :after => Proc.new { |*args|
+      transitions from: :drafted, to: :submitted, after: proc { |*_args|
         update!(submitted_at: Time.now.utc)
         EmployerMailer.new_internship_application_email(internship_application: self)
                       .deliver_later
@@ -62,7 +64,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :approve do
-      transitions from: :submitted, to: :approved, :after => Proc.new { |*args|
+      transitions from: :submitted, to: :approved, after: proc { |*_args|
         update!(approved_at: Time.now.utc)
         StudentMailer.internship_application_approved_email(internship_application: self)
                      .deliver_later
@@ -70,7 +72,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :reject do
-      transitions from: :submitted, to: :rejected, :after => Proc.new { |*args|
+      transitions from: :submitted, to: :rejected, after: proc { |*_args|
         update!(rejected_at: Time.now.utc)
         StudentMailer.internship_application_rejected_email(internship_application: self)
                      .deliver_later
@@ -78,18 +80,18 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :cancel do
-      transitions from: [:submitted, :approved], to: :rejected, :after => Proc.new { |*args|
+      transitions from: %i[submitted approved], to: :rejected, after: proc { |*_args|
         update!(rejected_at: Time.now.utc)
       }
     end
 
     event :signed do
-      transitions from: :approved, to: :convention_signed, :after => Proc.new { |*args|
+      transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        InternshipApplication.for_user(user: self.student)
-                             .not_by_id(id: self.id)
+        InternshipApplication.for_user(user: student)
+                             .not_by_id(id: id)
                              .joins(:internship_offer_week)
-                             .where("internship_offer_weeks.week_id = #{self.internship_offer_week.week.id}")
+                             .where("internship_offer_weeks.week_id = #{internship_offer_week.week.id}")
                              .map(&:cancel!)
       }
     end

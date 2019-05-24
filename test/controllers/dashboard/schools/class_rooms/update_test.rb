@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
   module Schools
-    class UpdateClassRoomsTest  < ActionDispatch::IntegrationTest
+    class UpdateClassRoomsTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       #
@@ -12,7 +14,7 @@ module Dashboard
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school, name: SecureRandom.hex)
         sign_in(school.school_manager)
-        patch dashboard_school_class_room_path(school, class_room, params: {class_room: { name: 'new_name' }})
+        patch dashboard_school_class_room_path(school, class_room, params: { class_room: { name: 'new_name' } })
         assert_redirected_to dashboard_school_class_rooms_path
         assert_equal 'new_name', class_room.reload.name
       end
@@ -27,7 +29,7 @@ module Dashboard
           create(:other, school: school)
         ].each do |role|
           sign_in(role)
-          patch dashboard_school_class_room_path(school, class_room, params: {class_room: { name: 'new_name' }})
+          patch dashboard_school_class_room_path(school, class_room, params: { class_room: { name: 'new_name' } })
           assert_redirected_to root_path
         end
       end

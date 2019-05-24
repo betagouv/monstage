@@ -1,33 +1,34 @@
-Rails.application.routes.draw do
+# frozen_string_literal: true
 
+Rails.application.routes.draw do
   resources :feedbacks
   devise_for :users, controllers: {
-      registrations: 'users/registrations',
-      sessions: 'users/sessions'
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
 
   devise_scope :user do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
   end
 
-  resources :internship_offers, only: [:index, :show] do
-    resources :internship_applications, only: [:create, :index, :show, :update]
+  resources :internship_offers, only: %i[index show] do
+    resources :internship_applications, only: %i[create index show update]
   end
 
-  namespace :dashboard, path: "dashboard" do
-    resources :schools, only: [:index, :edit, :update] do
-      resources :users, only: [:destroy, :update, :index], module: 'schools'
-      resources :class_rooms, only: [:index, :new, :create, :edit, :update, :show], module: 'schools' do
-        resources :students, only: [:show, :update], module: 'class_rooms'
+  namespace :dashboard, path: 'dashboard' do
+    resources :schools, only: %i[index edit update] do
+      resources :users, only: %i[destroy update index], module: 'schools'
+      resources :class_rooms, only: %i[index new create edit update show], module: 'schools' do
+        resources :students, only: %i[show update], module: 'class_rooms'
       end
     end
 
     resources :internship_offers do
-      resources :internship_applications, only: [:update, :index], module: 'internship_offers'
+      resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
 
     namespace :students, path: '/:student_id/' do
-      resources :internship_applications, only: [:index, :show]
+      resources :internship_applications, only: %i[index show]
     end
   end
 
@@ -47,5 +48,5 @@ Rails.application.routes.draw do
   get '/accessibilite', to: 'pages#accessibilite'
   get '/statistiques', to: 'pages#statistiques'
 
-  root to: "pages#home"
+  root to: 'pages#home'
 end

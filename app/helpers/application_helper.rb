@@ -1,18 +1,23 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def env_class_name
-    return "development" if Rails.env.development?
-    return "staging" if Rails.env.staging?
-    ""
+    return 'development' if Rails.env.development?
+    return 'staging' if Rails.env.staging?
+
+    ''
   end
 
   def body_class_name
     return 'homepage' if homepage?
-    ""
+
+    ''
   end
 
   def homepage?
     current_page?(root_path)
   end
+
   def statistics?
     current_controller?(:pages) && current_action?(:statistiques)
   end

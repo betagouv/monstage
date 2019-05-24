@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class IndexTest < ActionDispatch::IntegrationTest
@@ -69,8 +71,8 @@ class IndexTest < ActionDispatch::IntegrationTest
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path
         assert_absence_of(internship_offer: internship_offer)
-     end
-   end
+      end
+    end
   end
 
   test 'GET #index keeps internship_offers having ' \
@@ -82,13 +84,13 @@ class IndexTest < ActionDispatch::IntegrationTest
                                 build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
                                                               week: Week.first)
                               ])
-   sign_in(create(:student))
+    sign_in(create(:student))
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path
         assert_presence_of(internship_offer: internship_offer)
-     end
-   end
+      end
+    end
   end
 
   test 'GET #index finds internship_offers available with one week that is not available' do
@@ -100,8 +102,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
-                                                 internship_offer_weeks: [ blocked_internship_week,
-                                                                           not_blocked_internship_week])
+                                                 internship_offer_weeks: [blocked_internship_week,
+                                                                          not_blocked_internship_week])
     sign_in(create(:student, school: school))
     InternshipOffer.stub :nearby, InternshipOffer.all do
       get internship_offers_path
@@ -116,10 +118,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-                                                            week: internship_weeks[1])
+                                                                week: internship_weeks[1])
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
-                                                 internship_offer_weeks: [ blocked_internship_week,
-                                                                           not_blocked_internship_week])
+                                                 internship_offer_weeks: [blocked_internship_week,
+                                                                          not_blocked_internship_week])
 
     sign_in(create(:student, school: school))
 
@@ -136,10 +138,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-                                                            week: internship_weeks[1])
+                                                                week: internship_weeks[1])
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
-                                                 internship_offer_weeks: [ blocked_internship_week,
-                                                                           not_blocked_internship_week])
+                                                 internship_offer_weeks: [blocked_internship_week,
+                                                                          not_blocked_internship_week])
 
     sign_in(create(:student, school: school))
 
@@ -150,14 +152,13 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student with page, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map{ create(:internship_offer, max_candidates: 2) }
+    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:internship_offer, max_candidates: 2) }
 
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
           InternshipOffer.stub :available_in_the_future, InternshipOffer.all do
-
             get internship_offers_path
             assert_presence_of(internship_offer: internship_offers.last)
             assert_absence_of(internship_offer: internship_offers.first)
@@ -178,7 +179,7 @@ class IndexTest < ActionDispatch::IntegrationTest
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: {sector_id: internship_1.sector_id}
+        get internship_offers_path, params: { sector_id: internship_1.sector_id }
         assert_presence_of(internship_offer: internship_1)
         assert_absence_of(internship_offer: internship_2)
       end
@@ -214,7 +215,7 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path
 
         assert_response :success
-        assert_select ".offer-row", 0
+        assert_select '.offer-row', 0
       end
     end
   end
@@ -289,6 +290,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path
 
     assert_response :success
-    assert_select "a[href=?]", internship_offer_url(discarded_internship_offer), 0
+    assert_select 'a[href=?]', internship_offer_url(discarded_internship_offer), 0
   end
 end

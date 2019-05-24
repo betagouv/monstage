@@ -2,7 +2,7 @@
 
 module Users
   class SessionsController < Devise::SessionsController
-    after_action :remove_notice, only: [:destroy, :create]
+    after_action :remove_notice, only: %i[destroy create]
 
     private
 

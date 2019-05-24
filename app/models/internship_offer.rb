@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternshipOffer < ApplicationRecord
   include Discard::Model
   include Nearbyable
@@ -16,12 +18,12 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
-  validates :group, inclusion: { in: Group::PUBLIC, message: "Veuillez choisir une institution de tutelle" },
-                         if: :is_public?
-  validates :group, inclusion: { in: Group::PRIVATE, message: "Veuillez choisir une institution de tutelle" },
-                         unless: :is_public?,
-                         allow_blank: true,
-                         allow_nil: true
+  validates :group, inclusion: { in: Group::PUBLIC, message: 'Veuillez choisir une institution de tutelle' },
+                    if: :is_public?
+  validates :group, inclusion: { in: Group::PRIVATE, message: 'Veuillez choisir une institution de tutelle' },
+                    unless: :is_public?,
+                    allow_blank: true,
+                    allow_nil: true
 
   MAX_CANDIDATES_PER_GROUP = 200
   validates :max_candidates, numericality: { only_integer: true,
@@ -47,22 +49,23 @@ class InternshipOffer < ApplicationRecord
   belongs_to :school, optional: true # reserved to school
   belongs_to :sector
 
-  scope :for_user, -> (user:) {
+  scope :for_user, lambda { |user:|
     return merge(all) unless user # fuck it ; should have a User::Visitor type
+
     merge(user.class.targeted_internship_offers(user: user))
   }
-  scope :by_sector, -> (sector_id) {
+  scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
   }
-  scope :by_weeks, -> (weeks:) {
-    joins(:weeks).where(weeks: {id: weeks.ids}).distinct
+  scope :by_weeks, lambda { |weeks:|
+    joins(:weeks).where(weeks: { id: weeks.ids }).distinct
   }
 
-  scope :older_than, -> (week:) {
-    joins(:weeks).where("weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)", week.year, week.year, week.number)
+  scope :older_than, lambda { |week:|
+    joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
   }
 
-  scope :available_in_the_future, -> {
+  scope :available_in_the_future, lambda {
     older_than(week: Week.current).distinct
   }
 
@@ -91,8 +94,8 @@ class InternshipOffer < ApplicationRecord
   end
 
   def init
-   self.max_candidates ||= 1
-   self.max_internship_week_number ||= 1
+    self.max_candidates ||= 1
+    self.max_internship_week_number ||= 1
   end
 
   def total_female_applications_count

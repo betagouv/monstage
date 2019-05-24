@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AbilityTest < ActiveSupport::TestCase
-  test "Visitor" do
-    ability = Ability.new()
+  test 'Visitor' do
+    ability = Ability.new
     assert(ability.can?(:read, InternshipOffer.new),
            'visitors should be able to consult internships')
     assert(ability.cannot?(:manage, InternshipOffer.new),
            'visitors should not be able to con manage internships')
   end
 
-  test "Student" do
+  test 'Student' do
     student = create(:student)
     ability = Ability.new(student)
     internship_application = create(:internship_application, student: student)
@@ -32,7 +34,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))
   end
 
-  test "Employer" do
+  test 'Employer' do
     employer = create(:employer)
     ability = Ability.new(employer)
     assert(ability.can?(:create, InternshipOffer.new),
@@ -47,7 +49,7 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to destroy internships offer that belongs to him')
   end
 
-  test "God" do
+  test 'God' do
     ability = Ability.new(build(:god))
     assert(ability.can?(:show, :account),
            'god should be able to see his account')
@@ -64,7 +66,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(school_manager)
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
-    assert(ability.can?(:show , ClassRoom))
+    assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))

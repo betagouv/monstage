@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternshipOfferWeek < ApplicationRecord
   belongs_to :internship_offer
   belongs_to :week
@@ -7,19 +9,19 @@ class InternshipOfferWeek < ApplicationRecord
   delegate :select_text_method, :human_select_text_method, to: :week
   delegate :max_candidates, to: :internship_offer
 
-  scope :ignore_max_candidates_reached, -> (max_candidates:) {
-    where("blocked_applications_count < :max_candidates", max_candidates: max_candidates)
+  scope :ignore_max_candidates_reached, lambda { |max_candidates:|
+    where('blocked_applications_count < :max_candidates', max_candidates: max_candidates)
   }
 
-  scope :by_weeks, -> (weeks:) {
+  scope :by_weeks, lambda { |weeks:|
     where(week: weeks)
   }
 
-  scope :after_week, -> (week:) {
-    joins(:week).where("weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)", week.year, week.year, week.number)
+  scope :after_week, lambda { |week:|
+    joins(:week).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
   }
 
-  scope :after_current_week, -> {
+  scope :after_current_week, lambda {
     after_week(week: Week.current)
   }
 

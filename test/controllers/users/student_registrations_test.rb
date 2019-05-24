@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StudentRegistrationsTest < ActionDispatch::IntegrationTest
@@ -8,7 +10,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     get new_user_registration_path(as: 'Student')
 
     assert_response :success
-    assert_select 'input', { value: 'Student', hidden: 'hidden' }
+    assert_select 'input', value: 'Student', hidden: 'hidden'
 
     assert_select 'label', /Ville de mon collège/
     assert_select 'label', /Collège/
@@ -23,13 +25,13 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST Create Student without class fails' do
-    assert_difference("Users::Student.count", 0) do
+    assert_difference('Users::Student.count', 0) do
       post user_registration_path(params: { user: { email: 'fatou@snapchat.com',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     first_name: 'Fatou',
                                                     last_name: 'D',
-                                                    type: 'Users::Student' }})
+                                                    type: 'Users::Student' } })
       assert_response 200
     end
   end
@@ -38,7 +40,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     school = create(:school)
     class_room = create(:class_room, school: school)
     birth_date = 14.years.ago
-    assert_difference("Users::Student.count") do
+    assert_difference('Users::Student.count') do
       post user_registration_path(
         params: {
           user: {
@@ -51,7 +53,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             gender: 'm',
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
-            password_confirmation: 'okokok',
+            password_confirmation: 'okokok'
           }
         }
       )

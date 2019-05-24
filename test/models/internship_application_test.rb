@@ -1,15 +1,16 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class InternshipApplicationTest < ActiveSupport::TestCase
-
-  test "can create application if offer is not full" do
+  test 'can create application if offer is not full' do
     internship_offer = create(:internship_offer, max_candidates: 1)
     internship_offer_week = internship_offer.internship_offer_weeks.first
     internship_application = build(:internship_application, internship_offer_week: internship_offer_week)
     assert internship_application.valid?
   end
 
-  test "cannot create application if offer is full" do
+  test 'cannot create application if offer is full' do
     max_candidates = 1
     internship_offer_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                           week: Week.first)
@@ -99,21 +100,21 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition via signed! cancel internship_application.student other applications on same week' do
-    weeks =  [weeks(:week_2019_1), weeks(:week_2019_2)]
+    weeks = [weeks(:week_2019_1), weeks(:week_2019_2)]
     student = create(:student)
     internship_offer_1 = create(:internship_offer, weeks: weeks)
     internship_offer_2 = create(:internship_offer, weeks: weeks)
     internship_application_to_be_canceled = create(:internship_application, :approved,
-                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.first,
-                                                               student: student)
+                                                   internship_offer_week: internship_offer_1.internship_offer_weeks.first,
+                                                   student: student)
     internship_application_to_be_signed = create(:internship_application, :approved,
-                                                               internship_offer_week: internship_offer_2.internship_offer_weeks.first,
-                                                               student: student)
+                                                 internship_offer_week: internship_offer_2.internship_offer_weeks.first,
+                                                 student: student)
     internship_application_ignored_by_week = create(:internship_application, :approved,
-                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.last,
-                                                               student: student)
+                                                    internship_offer_week: internship_offer_1.internship_offer_weeks.last,
+                                                    student: student)
     internship_application_ignored_by_student = create(:internship_application, :approved,
-                                                               internship_offer_week: internship_offer_1.internship_offer_weeks.first)
+                                                       internship_offer_week: internship_offer_1.internship_offer_weeks.first)
     assert_changes -> { internship_application_to_be_canceled.reload.aasm_state },
                    from: 'approved',
                    to: 'rejected' do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SchoolManagerMailer < ApplicationMailer
   def new_member(school_manager:, member:)
     @member_presenter = ::Presenters::User.new(user: member)

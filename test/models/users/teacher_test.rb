@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 module Users
   class TeacherTest < ActiveSupport::TestCase
-    test "creation fails" do
-      teacher = Users::Teacher.create()
+    test 'creation fails' do
+      teacher = Users::Teacher.create
       assert teacher.invalid?
       errors = teacher.errors.keys
       assert_includes errors, :school
@@ -12,19 +14,19 @@ module Users
       assert_includes errors, :school_manager
     end
 
-    test "creation succeed" do
+    test 'creation succeed' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       teacher = Users::Teacher.new(email: 'chef@ac-etablissement.com',
-                                            password: 'tototo',
-                                            password_confirmation: 'tototo',
-                                            first_name: 'Chef',
-                                            last_name: 'Etablissement',
-                                            school: school)
+                                   password: 'tototo',
+                                   password_confirmation: 'tototo',
+                                   first_name: 'Chef',
+                                   last_name: 'Etablissement',
+                                   school: school)
       assert teacher.valid?
     end
 
-    test "send SchoolManagerMailer.new_member on create" do
+    test 'send SchoolManagerMailer.new_member on create' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       mock_mail = MiniTest::Mock.new
@@ -44,7 +46,7 @@ module Users
       assert teacher.valid?
     end
 
-    test "change school notify new school_manager" do
+    test 'change school notify new school_manager' do
       school_1 = create(:school)
       school_2 = create(:school)
       school_manager_1 = create(:school_manager, school: school_1)
@@ -60,7 +62,7 @@ module Users
       mock_mail.verify
     end
 
-    test "school_manager" do
+    test 'school_manager' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       teacher = create(:teacher, school: school)
@@ -68,8 +70,8 @@ module Users
       assert_equal teacher.school_manager, school_manager
     end
 
-    test "i18n" do
-      assert_equal "Professeur", Teacher.human_attribute_name(:teacher)
+    test 'i18n' do
+      assert_equal 'Professeur', Teacher.human_attribute_name(:teacher)
     end
 
     test 'teacher.after_sign_in_path without school redirects to account_path' do

@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SchoolTest < ActiveSupport::TestCase
-  test "coordinates" do
+  test 'coordinates' do
     school = School.new
     assert school.invalid?
     assert_not_empty school.errors[:coordinates]
   end
 
-  test "Users associations" do
+  test 'Users associations' do
     school = create(:school)
 
     student = create(:student, school: school)

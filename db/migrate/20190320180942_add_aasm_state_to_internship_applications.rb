@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAasmStateToInternshipApplications < ActiveRecord::Migration[5.2]
   def change
     add_column :internship_applications, :aasm_state, :string

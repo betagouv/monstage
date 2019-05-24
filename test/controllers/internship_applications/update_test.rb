@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module InternshipApplications
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    test "patch #update works for student owning internship_application, " \
-         "with transition=submit! submit internship_application and redirect to dashboard/students/internship_application#show" do
+    test 'patch #update works for student owning internship_application, ' \
+         'with transition=submit! submit internship_application and redirect to dashboard/students/internship_application#show' do
       internship_offer = create(:internship_offer)
       internship_application = create(:internship_application, :drafted, internship_offer: internship_offer)
       sign_in(internship_application.student)
@@ -20,8 +22,8 @@ module InternshipApplications
       end
     end
 
-    test "patch #update works for student owning internship_application, " \
-         "without transition=submit! updates internship_applications and redirect to show" do
+    test 'patch #update works for student owning internship_application, ' \
+         'without transition=submit! updates internship_applications and redirect to show' do
       internship_offer = create(:internship_offer)
       initial_motivation = 'pizza biere'
       new_motivation = 'le travail dequipe'
@@ -39,7 +41,7 @@ module InternshipApplications
       end
     end
 
-    test "patch #update from submit to submit fails gracefully" do
+    test 'patch #update from submit to submit fails gracefully' do
       internship_application = create(:internship_application, :submitted)
       sign_in(internship_application.student)
       patch internship_offer_internship_application_path(internship_application.internship_offer,
@@ -49,7 +51,7 @@ module InternshipApplications
                                                                            internship_application)
     end
 
-    test "patch #update for student not owning internship_application is forbidden" do
+    test 'patch #update for student not owning internship_application is forbidden' do
       internship_offer = create(:internship_offer)
       internship_application = create(:internship_application, :drafted, internship_offer: internship_offer)
       sign_in(create(:student))
@@ -57,7 +59,7 @@ module InternshipApplications
       patch internship_offer_internship_application_path(internship_offer,
                                                          internship_application,
                                                          transition: :submit!),
-            params: { internship_application: { motivation: "whoop"} }
+            params: { internship_application: { motivation: 'whoop' } }
       assert_response :redirect
     end
   end

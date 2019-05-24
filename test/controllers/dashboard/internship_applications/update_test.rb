@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module InternshipApplications
@@ -5,7 +7,7 @@ module InternshipApplications
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
 
-    test "PATCH #update with approve! transition sends email" do
+    test 'PATCH #update with approve! transition sends email' do
       internship_application = create(:internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
@@ -20,7 +22,7 @@ module InternshipApplications
       assert InternshipApplication.last.approved?
     end
 
-    test "PATCH #update with reject! transition sends email" do
+    test 'PATCH #update with reject! transition sends email' do
       internship_application = create(:internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
@@ -35,7 +37,7 @@ module InternshipApplications
       assert InternshipApplication.last.rejected?
     end
 
-    test "PATCH #update with cancel! does not send email, change aasm_state" do
+    test 'PATCH #update with cancel! does not send email, change aasm_state' do
       internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
@@ -50,7 +52,7 @@ module InternshipApplications
       assert_redirected_to dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
     end
 
-    test "PATCH #update with signed! does not send email, change aasm_state" do
+    test 'PATCH #update with signed! does not send email, change aasm_state' do
       internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)

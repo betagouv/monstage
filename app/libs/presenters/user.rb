@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Presenters
   class User
     def short_name
@@ -13,6 +15,7 @@ module Presenters
     end
 
     private
+
     attr_reader :user
     def initialize(user:)
       @user = user

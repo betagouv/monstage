@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateOperatorsTable < ActiveRecord::Migration[5.2]
   def change
     create_table :operators do |t|

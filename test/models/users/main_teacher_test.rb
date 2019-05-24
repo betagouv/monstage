@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 module Users
   class MainTeacherTest < ActiveSupport::TestCase
-    test "creation fails" do
-      main_teacher = Users::MainTeacher.create()
+    test 'creation fails' do
+      main_teacher = Users::MainTeacher.create
       assert main_teacher.invalid?
       errors = main_teacher.errors.keys
       assert_includes errors, :school
@@ -12,7 +14,7 @@ module Users
       assert_includes errors, :school_manager
     end
 
-    test "creation succeed" do
+    test 'creation succeed' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       main_teacher = Users::MainTeacher.new(email: 'chef@ac-etablissement.com',
@@ -23,7 +25,7 @@ module Users
                                             school: school)
       assert main_teacher.valid?
     end
-    test "send SchoolManagerMailer.new_member on create" do
+    test 'send SchoolManagerMailer.new_member on create' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       mock_mail = MiniTest::Mock.new
@@ -43,7 +45,7 @@ module Users
       assert main_teacher.valid?
     end
 
-    test "change school notify new school_manager" do
+    test 'change school notify new school_manager' do
       school_1 = create(:school)
       school_2 = create(:school)
       school_manager_1 = create(:school_manager, school: school_1)
@@ -59,7 +61,7 @@ module Users
       mock_mail.verify
     end
 
-    test "school_manager" do
+    test 'school_manager' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       main_teacher = create(:main_teacher, school: school)
@@ -67,8 +69,8 @@ module Users
       assert_equal main_teacher.school_manager, school_manager
     end
 
-    test "i18n" do
-      assert_equal "Professeur principal", MainTeacher.human_attribute_name(:main_teacher)
+    test 'i18n' do
+      assert_equal 'Professeur principal', MainTeacher.human_attribute_name(:main_teacher)
     end
 
     test 'main_teacher.after_sign_in_path without school redirects to account_path' do

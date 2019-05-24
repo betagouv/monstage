@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -8,7 +10,7 @@ Bundler.require(*Rails.groups)
 
 module Monstage
   class Application < Rails::Application
-    config.time_zone = "Paris"
+    config.time_zone = 'Paris'
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 

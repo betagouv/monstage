@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dashboard
   module Students
     class InternshipApplicationsController < ApplicationController
@@ -17,6 +19,7 @@ module Dashboard
       end
 
       private
+
       def set_current_student
         @current_student = Users::Student.find(params[:student_id])
       end

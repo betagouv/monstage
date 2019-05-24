@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Users
   class Student < User
     belongs_to :school
@@ -7,7 +9,6 @@ module Users
               presence: true
 
     include TargetableInternshipOffersForSchool
-
 
     has_many :internship_applications, dependent: :destroy, foreign_key: 'user_id'
     after_initialize :init
@@ -49,11 +50,11 @@ module Users
     end
 
     def custom_dashboard_path
-      return url_helpers.dashboard_students_internship_applications_path(self)
+      url_helpers.dashboard_students_internship_applications_path(self)
     end
 
     def dashboard_name
-      "Candidatures"
+      'Candidatures'
     end
 
     def default_account_section

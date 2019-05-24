@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ManagedUser
   extend ActiveSupport::Concern
 
@@ -25,6 +27,5 @@ module ManagedUser
                                      member: self)
                          .deliver_later
     end
-
   end
 end

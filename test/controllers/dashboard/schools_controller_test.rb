@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
@@ -29,9 +31,8 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_response :success
-      assert_select "form a[href=?]", dashboard_school_class_rooms_path(@school)
+      assert_select 'form a[href=?]', dashboard_school_class_rooms_path(@school)
     end
-
 
     #
     # Update, SchoolManager
@@ -40,9 +41,9 @@ module Dashboard
       patch(dashboard_school_path(@school.to_param),
             params: {
               school: {
-                weeks_ids:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]
-                }
-              })
+                weeks_ids: [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
+              }
+            })
       assert_redirected_to user_session_path
     end
 
@@ -51,7 +52,7 @@ module Dashboard
       patch(dashboard_school_path(@school.to_param),
             params: {
               school: {
-                weeks_ids:[ weeks(:week_2019_1).id, weeks(:week_2019_2).id ]
+                weeks_ids: [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
               }
             })
 
@@ -60,7 +61,7 @@ module Dashboard
 
     test 'PATCH update as SchoolManage update school' do
       sign_in(create(:school_manager, school: @school))
-      weeks_ids = [ weeks(:week_2019_1).id, weeks(:week_2019_2).id]
+      weeks_ids = [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
       assert_difference('SchoolInternshipWeek.count', weeks_ids.size) do
         patch(dashboard_school_path(@school.to_param),
               params: {
@@ -70,7 +71,7 @@ module Dashboard
               })
         assert_redirected_to dashboard_school_class_rooms_path(@school)
         follow_redirect!
-        assert_select "#alert-success #alert-text", {text: "Collège mis à jour avec succès"}, 1
+        assert_select '#alert-success #alert-text', { text: 'Collège mis à jour avec succès' }, 1
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCoordinatesColumnToInternshipOffers < ActiveRecord::Migration[5.2]
   def change
     change_table :internship_offers do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGodUser < ActiveRecord::Migration[5.2]
   def up
     God.create!(password: Credentials.enc(:god, :password, prefix_env: false),

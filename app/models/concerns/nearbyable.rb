@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Nearbyable
   extend ActiveSupport::Concern
 
@@ -5,14 +7,14 @@ module Nearbyable
     validate :coordinates_are_valid?
     attr_reader :autocomplete
 
-    scope :nearby, -> (latitude:, longitude:, within_radius_in_meter: 60_000) {
-      query = %{
+    scope :nearby, lambda { |latitude:, longitude:, within_radius_in_meter: 60_000|
+      query = format(%{
         ST_DWithin(
           %s.coordinates,
           ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
           %d
         )
-      } % [table_name, longitude, latitude, within_radius_in_meter]
+      }, table_name, longitude, latitude, within_radius_in_meter)
       where(query)
     }
 
@@ -23,6 +25,7 @@ module Nearbyable
 
     def coordinates_are_valid?
       return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+
       errors.add(:coordinates, 'Veuillez renseigner une adresse')
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 module Reporting
   class InternshipOfferTest < ActiveSupport::TestCase
@@ -8,7 +10,7 @@ module Reporting
       assert_equal 3, Reporting::InternshipOffer.count
     end
 
-    test "scopes that select offers depending on years" do
+    test 'scopes that select offers depending on years' do
       travel_to(Date.new(2019, 5, 15)) do
         create(:internship_offer)
 
@@ -18,9 +20,9 @@ module Reporting
       end
     end
 
-    test ".grouped_by_sector group by sector_name" do
-      sector_a = create(:sector, name: "Agriculture")
-      sector_b = create(:sector, name: "Filière bois")
+    test '.grouped_by_sector group by sector_name' do
+      sector_a = create(:sector, name: 'Agriculture')
+      sector_b = create(:sector, name: 'Filière bois')
       create(:internship_offer, sector: sector_a)
       create(:internship_offer, sector: sector_a)
       create(:internship_offer, sector: sector_b)
@@ -33,11 +35,10 @@ module Reporting
       assert_equal last_sectored_report.sector_name, sector_b.name
     end
 
-    test ".grouped_by_publicy group by publicly_name" do
+    test '.grouped_by_publicy group by publicly_name' do
       create(:internship_offer, is_public: true)
       create(:internship_offer, is_public: false, group: '')
       create(:internship_offer, is_public: true)
-
 
       results = Reporting::InternshipOffer.grouped_by_publicy
       publicly_no = results[0]
@@ -48,4 +49,3 @@ module Reporting
     end
   end
 end
-

@@ -1,23 +1,25 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AccountControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  test "GET index not logged redirects to sign in" do
+  test 'GET index not logged redirects to sign in' do
     get account_path
     assert_redirected_to user_session_path
   end
 
-  test "GET index as Student" do
+  test 'GET index as Student' do
     student = create(:student)
     sign_in(student)
     get account_path
-    assert_template "users/edit"
-    assert_template "users/_edit_resume"
-    assert_select "form[action=?]", account_path
+    assert_template 'users/edit'
+    assert_template 'users/_edit_resume'
+    assert_select 'form[action=?]', account_path
   end
 
-  test "GET edit render :edit success with all roles" do
+  test 'GET edit render :edit success with all roles' do
     school = create(:school)
     class_room_1 = create(:class_room, school: school)
     class_room_2 = create(:class_room, school: school)
@@ -26,17 +28,17 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
       create(:student),
       create(:main_teacher, school: school, class_room: class_room_1),
       create(:teacher, school: school, class_room: class_room_2),
-      create(:other, school: school),
+      create(:other, school: school)
     ].each do |role|
       sign_in(role)
       get account_path(section: 'identity')
       assert_response :success, "#{role.type} should have access to edit himself"
       assert_template 'users/_edit_identity'
-      assert_select "form[action=?]", account_path
+      assert_select 'form[action=?]', account_path
     end
   end
 
-  test "GET edit render as student also allow him to change class_room" do
+  test 'GET edit render as student also allow him to change class_room' do
     school = create(:school)
     class_room_1 = create(:class_room, school: school)
     class_room_2 = create(:class_room, school: school)
@@ -53,12 +55,12 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     sign_in(student)
 
     patch(account_path, params: {
-                         user: {
-                           resume_educational_background: 'background',
-                           resume_other: 'other',
-                           resume_languages: 'languages'
-                         }
-                       })
+            user: {
+              resume_educational_background: 'background',
+              resume_other: 'other',
+              resume_languages: 'languages'
+            }
+          })
 
     assert_redirected_to account_path
     student.reload
@@ -66,7 +68,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'other', student.resume_other
     assert_equal 'languages', student.resume_languages
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
   test 'PATCH edit as school_manager, can change school' do
@@ -86,7 +88,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Jules', school_manager.first_name
     assert_equal 'Verne', school_manager.last_name
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
   test 'PATCH edit as student can change class_room_id' do
@@ -104,7 +106,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     student.reload
     assert_equal class_room.id, student.class_room_id
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
   test 'PATCH edit as main_teacher can change class_room_id' do
@@ -120,7 +122,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     main_teacher.reload
     assert_equal class_room.id, main_teacher.class_room_id
     follow_redirect!
-    assert_select "#alert-success #alert-text", {text: 'Compte mis à jour avec succès.'}, 1
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
   test 'GET #edit can change email' do
@@ -128,7 +130,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     get account_path
 
     assert_response :success
-    assert_select "input#user_email[required]"
+    assert_select 'input#user_email[required]'
   end
 
   test 'GET edit as main_teacher can change school' do
@@ -143,5 +145,4 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_template 'users/_edit_school'
     assert_template 'users/form/_select_school'
   end
-
 end

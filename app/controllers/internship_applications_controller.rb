@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternshipApplicationsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_internship_offer
@@ -23,17 +25,17 @@ class InternshipApplicationsController < ApplicationController
       @internship_application.submit!
       @internship_application.save!
       redirect_to dashboard_students_internship_applications_path(current_user, @internship_application),
-                  flash: { success: "Votre candidature a bien été envoyée" }
+                  flash: { success: 'Votre candidature a bien été envoyée' }
     else
       @internship_application.update(internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
     end
   rescue AASM::InvalidTransition => e
     redirect_to dashboard_students_internship_applications_path(current_user, @internship_application),
-                flash: { warning: "Votre candidature avait déjà été soumise" }
-  rescue ActiveRecord::RecordInvalid => error
-    flash[:danger] = "Erreur dans la saisie de votre candidature"
-    render "internship_application/show"
+                flash: { warning: 'Votre candidature avait déjà été soumise' }
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:danger] = 'Erreur dans la saisie de votre candidature'
+    render 'internship_application/show'
   end
 
   def create
@@ -42,10 +44,10 @@ class InternshipApplicationsController < ApplicationController
     @internship_application.save!
     redirect_to internship_offer_internship_application_path(@internship_application.internship_offer,
                                                              @internship_application)
-  rescue ActiveRecord::RecordInvalid => error
+  rescue ActiveRecord::RecordInvalid => e
     @internship_offer = InternshipOffer.find(params[:internship_offer_id])
-    flash[:danger] = "Erreur dans la saisie de votre candidature"
-    render "internship_offers/show", status: :bad_request
+    flash[:danger] = 'Erreur dans la saisie de votre candidature'
+    render 'internship_offers/show', status: :bad_request
   end
 
   private

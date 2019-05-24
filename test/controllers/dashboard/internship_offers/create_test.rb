@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module InternshipOffers
@@ -17,15 +19,15 @@ module InternshipOffers
       sign_in(internship_offer.employer)
       assert_difference('InternshipOffer.count', 1) do
         params = internship_offer
-                  .attributes
-                  .merge(week_ids: weeks.map(&:id),
-                         "coordinates" => { latitude: 1, longitude: 1 },
-                         school_id: school.id,
-                         max_candidates: 2,
-                         max_internship_week_number: 4,
-                         employer_description: "bim bim bim bam bam",
-                         employer_id: internship_offer.employer_id,
-                         employer_type: "Users::Employer")
+                 .attributes
+                 .merge(week_ids: weeks.map(&:id),
+                        'coordinates' => { latitude: 1, longitude: 1 },
+                        school_id: school.id,
+                        max_candidates: 2,
+                        max_internship_week_number: 4,
+                        employer_description: 'bim bim bim bam bam',
+                        employer_id: internship_offer.employer_id,
+                        employer_type: 'Users::Employer')
 
         post(dashboard_internship_offers_path, params: { internship_offer: params })
       end
@@ -46,9 +48,8 @@ module InternshipOffers
 
     test 'POST #create as employer with invalid data' do
       sign_in(create(:employer))
-      post(dashboard_internship_offers_path, params: { internship_offer: {title: "hello"} })
+      post(dashboard_internship_offers_path, params: { internship_offer: { title: 'hello' } })
       assert_response :bad_request
     end
-
   end
 end

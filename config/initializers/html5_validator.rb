@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 
 module Html5Validator
@@ -23,10 +25,10 @@ module Html5Validator
     yield
     basename = report_as.parameterize
     ext = '.html'
-    fail "testing page without 200, not possible" if response.status != 200
+    raise 'testing page without 200, not possible' if response.status != 200
+
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write(response.body)
     end
   end
-
 end

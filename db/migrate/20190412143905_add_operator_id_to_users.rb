@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOperatorIdToUsers < ActiveRecord::Migration[5.2]
   def change
     add_column :users, :operator_id, :bigint, null: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Week < ApplicationRecord
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_offers, through: :internship_offer_weeks
@@ -5,12 +7,12 @@ class Week < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :schools, through: :school_internship_weeks
 
-  scope :from_date_to_date_for_year, -> (from, to, year) {
-    where(year: year).where("number BETWEEN ? AND ?", from.cweek, to.cweek)
+  scope :from_date_to_date_for_year, lambda { |from, to, year|
+    where(year: year).where('number BETWEEN ? AND ?', from.cweek, to.cweek)
   }
 
-  scope :from_date_until_end_of_year, -> (from, year) {
-    where(year: year).where("number > ?", from.cweek)
+  scope :from_date_until_end_of_year, lambda { |from, year|
+    where(year: year).where('number > ?', from.cweek)
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'
@@ -23,6 +25,7 @@ class Week < ApplicationRecord
       .map(&:strip)
       .join(' ')
   end
+
   def human_select_text_method
     ['Semaine du', beginning_of_week, 'au', end_of_week]
       .map(&:to_s)
@@ -31,7 +34,7 @@ class Week < ApplicationRecord
   end
 
   def select_text_method
-    ['Semaine', number,  '- du', beginning_of_week, 'au', end_of_week]
+    ['Semaine', number, '- du', beginning_of_week, 'au', end_of_week]
       .map(&:to_s)
       .map(&:strip)
       .join(' ')

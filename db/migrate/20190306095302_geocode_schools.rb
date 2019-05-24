@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GeocodeSchools < ActiveRecord::Migration[5.2]
   GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache.dump')
 
@@ -5,15 +7,15 @@ class GeocodeSchools < ActiveRecord::Migration[5.2]
     geocode_searches_with_caching do
       School.all.map do |school|
         school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
-        school.name = school.name.strip.split(" ").map(&:capitalize).join(" ")
-        school.city = school.city.strip.split(" ").map(&:capitalize).join(" ")
+        school.name = school.name.strip.split(' ').map(&:capitalize).join(' ')
+        school.city = school.city.strip.split(' ').map(&:capitalize).join(' ')
 
         query = "#{school.name} #{school.city}"
         result = Geocoder.search(query)
-        location = result&.first&.geometry&.dig("location")
+        location = result&.first&.geometry&.dig('location')
         if location
           school.postal_code = result.first.postal_code
-          school.coordinates = { latitude: location["lat"], longitude: location["lng"] }
+          school.coordinates = { latitude: location['lat'], longitude: location['lng'] }
           school.save!
           puts "ok: #{query}"
         else
@@ -34,11 +36,11 @@ class GeocodeSchools < ActiveRecord::Migration[5.2]
   end
 
   def load_cache
-    YAML.load(File.read(GEOCODE_CACHE_FILE))
-  rescue Errno::ENOENT => error
+    YAML.safe_load(File.read(GEOCODE_CACHE_FILE))
+  rescue Errno::ENOENT => e
     {}
-  rescue SyntaxError => error
-    puts "FUCKIT cache failed"
+  rescue SyntaxError => e
+    puts 'FUCKIT cache failed'
     {}
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddGfeNamePublicationNameCustomNameToSectors < ActiveRecord::Migration[5.2]
   def change
     add_column :sectors, :gfe_name, :string, null: false, default: ''

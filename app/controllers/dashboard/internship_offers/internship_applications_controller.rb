@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Dashboard
   module InternshipOffers
     class InternshipApplicationsController < ApplicationController
       before_action :authenticate_user!
-      before_action :find_internship_offer, only: [:index, :update]
+      before_action :find_internship_offer, only: %i[index update]
 
       def index
         set_intership_applications
@@ -19,7 +21,6 @@ module Dashboard
       rescue AASM::InvalidTransition => e
         redirect_to dashboard_internship_offer_internship_applications_path(@internship_application.internship_offer),
                     flash: { warning: 'Cette candidature a déjà été traitée' }
-
       end
 
       private

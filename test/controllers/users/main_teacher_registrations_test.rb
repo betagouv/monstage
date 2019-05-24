@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
   def assert_form_rendered
-    assert_select 'input', { value: 'MainTeacher', hidden: 'hidden' }
+    assert_select 'input', value: 'MainTeacher', hidden: 'hidden'
     assert_select 'label', /Ville de mon collège/
     assert_select 'label', /Collège/
     assert_select 'label', /Classe/
@@ -19,13 +21,13 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST #create with missing params fails creation' do
-    assert_difference("Users::MainTeacher.count", 0) do
+    assert_difference('Users::MainTeacher.count', 0) do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::MainTeacher',
-                                                    first_name: "Martin",
-                                                    last_name: "Fourcade" }})
+                                                    first_name: 'Martin',
+                                                    last_name: 'Fourcade' } })
       assert_response 200
       assert_form_rendered
     end
@@ -34,18 +36,17 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST #create with all params create MainTeacher' do
     school = create(:school)
     school_manager = create(:school_manager, school: school)
-    class_room = create(:class_room, name: "3e A", school: school)
-    assert_difference("Users::MainTeacher.count", 1) do
+    class_room = create(:class_room, name: '3e A', school: school)
+    assert_difference('Users::MainTeacher.count', 1) do
       post user_registration_path(params: { user: { email: 'madame@accor.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::MainTeacher',
-                                                    first_name: "Martin",
-                                                    last_name: "Fourcade",
-                                                    school_id:  school.id,
-                                                    class_room_id: class_room.id}})
+                                                    first_name: 'Martin',
+                                                    last_name: 'Fourcade',
+                                                    school_id: school.id,
+                                                    class_room_id: class_room.id } })
       assert_redirected_to root_path
     end
   end
 end
-

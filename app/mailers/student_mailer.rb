@@ -1,5 +1,6 @@
-class StudentMailer < ApplicationMailer
+# frozen_string_literal: true
 
+class StudentMailer < ApplicationMailer
   def internship_application_approved_email(internship_application:)
     @internship_application = internship_application
 
@@ -19,6 +20,6 @@ class StudentMailer < ApplicationMailer
     @user = params[:user]
 
     mail(to: @user.email,
-         subject: "Votre compte sur monstagede3e.fr a été validé")
+         subject: 'Votre compte sur monstagede3e.fr a été validé')
   end
 end

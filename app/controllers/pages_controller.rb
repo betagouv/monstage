@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PagesController < ApplicationController
   def statistiques
     if params[:is_public].present? && params[:is_public] == 'true'
@@ -7,11 +9,11 @@ class PagesController < ApplicationController
       @offers = base_query.grouped_by_sector
                           .map(&Presenters::InternshipOfferStatsBySector.method(:new))
     end
-    if params[:is_public].present?
-      @offers_by_publicy = []
-    else
-      @offers_by_publicy = base_query.grouped_by_publicy
-    end
+    @offers_by_publicy = if params[:is_public].present?
+                           []
+                         else
+                           base_query.grouped_by_publicy
+                         end
   end
 
   private

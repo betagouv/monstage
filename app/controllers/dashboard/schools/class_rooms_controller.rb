@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dashboard
   module Schools
     class ClassRoomsController < ApplicationController
@@ -18,8 +20,8 @@ module Dashboard
         @class_room = @school.class_rooms.new(class_rooms_params)
         @class_room.save!
         redirect_to dashboard_school_class_rooms_path(@school),
-                    flash: { success: "Classe ajoutée avec succès" }
-      rescue ActiveRecord::RecordInvalid => error
+                    flash: { success: 'Classe ajoutée avec succès' }
+      rescue ActiveRecord::RecordInvalid => e
         render :new
       end
 
@@ -35,8 +37,8 @@ module Dashboard
         @class_room = @school.class_rooms.find(params[:id])
         @class_room.update!(class_rooms_params)
         redirect_to dashboard_school_class_rooms_path,
-                   flash: { success: "Classe mise à jour avec succès" }
-      rescue ActiveRecord::RecordInvalid => error
+                    flash: { success: 'Classe mise à jour avec succès' }
+      rescue ActiveRecord::RecordInvalid => e
         render :edit
       end
 
@@ -47,6 +49,7 @@ module Dashboard
       end
 
       private
+
       def class_rooms_params
         params.require(:class_room).permit(:name)
       end

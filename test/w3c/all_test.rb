@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class HomeValidationTest < ActionDispatch::IntegrationTest
@@ -11,7 +13,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'internship_offers_path' do
-    [:employer, :student, :school_manager].each do |role|
+    %i[employer student school_manager].each do |role|
       run_request_and_cache_response(report_as: "internship_offers_path_#{role}") do
         sign_in(create(role))
         get internship_offers_path
@@ -20,7 +22,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'internship_offer_path' do
-    [:employer, :student].each do |role|
+    %i[employer student].each do |role|
       run_request_and_cache_response(report_as: "internship_offer_path_#{role}") do
         sign_in(create(role))
         get internship_offer_path(create(:internship_offer).to_param)
@@ -28,24 +30,23 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'new_internship_offer_path'  do
+  test 'new_internship_offer_path' do
     sign_in(create(:employer))
     run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
       get new_dashboard_internship_offer_path
     end
   end
 
-  test 'dashboard_internship_offers_path'  do
+  test 'dashboard_internship_offers_path' do
     employer = create(:employer)
-    2.times.map { create(:internship_offer, employer: employer)}
+    2.times.map { create(:internship_offer, employer: employer) }
     sign_in(employer)
     run_request_and_cache_response(report_as: 'dashboard_internship_offers_path') do
       get dashboard_internship_offers_path
     end
   end
 
-
-  test 'edit_internship_offer_path'  do
+  test 'edit_internship_offer_path' do
     stage_dev = create(:internship_offer)
     sign_in(stage_dev.employer)
     run_request_and_cache_response(report_as: 'edit_dashboard_internship_offer_path') do
@@ -155,17 +156,17 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'static pages' do
-    [
-      :root_path,
-      :les_10_commandements_d_une_bonne_offre_path,
-      :exemple_offre_ideale_ministere_path,
-      :exemple_offre_ideale_sport_path,
-      :qui_sommes_nous_path,
-      :partenaires_path,
-      :mentions_legales_path,
-      :conditions_d_utilisation_path,
-      :faq_path,
-      :accessibilite_path,
+    %i[
+      root_path
+      les_10_commandements_d_une_bonne_offre_path
+      exemple_offre_ideale_ministere_path
+      exemple_offre_ideale_sport_path
+      qui_sommes_nous_path
+      partenaires_path
+      mentions_legales_path
+      conditions_d_utilisation_path
+      faq_path
+      accessibilite_path
     ].map do |page_path|
       run_request_and_cache_response(report_as: page_path.to_s) do
         path = Rails.application.routes.url_helpers.send(page_path)

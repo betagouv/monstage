@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rest_client'
 require 'json'
 
@@ -59,7 +61,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -72,7 +74,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: ENV.fetch('HOST') }
 
-
   response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Credentials.enc(:mailtrap, :api_token)}"
 
   first_inbox = JSON.parse(response)[0] # get first inbox
@@ -80,25 +81,24 @@ Rails.application.configure do
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = if ENV['SEND_REAL_EMAILS'] == 'true'
                                        {
-                                         :user_name => ENV['SENDGRID_USERNAME'],
-                                         :password => ENV['SENDGRID_PASSWORD'],
-                                         :domain => ENV.fetch('HOST'),
-                                         :address => 'smtp.sendgrid.net',
-                                         :port => 587,
-                                         :authentication => :plain,
-                                         :enable_starttls_auto => true
+                                         user_name: ENV['SENDGRID_USERNAME'],
+                                         password: ENV['SENDGRID_PASSWORD'],
+                                         domain: ENV.fetch('HOST'),
+                                         address: 'smtp.sendgrid.net',
+                                         port: 587,
+                                         authentication: :plain,
+                                         enable_starttls_auto: true
                                        }
                                      else
                                        {
-                                         :user_name => first_inbox['username'],
-                                         :password => first_inbox['password'],
-                                         :address => first_inbox['domain'],
-                                         :domain => first_inbox['domain'],
-                                         :port => first_inbox['smtp_ports'][0],
-                                         :authentication => :plain
+                                         user_name: first_inbox['username'],
+                                         password: first_inbox['password'],
+                                         address: first_inbox['domain'],
+                                         domain: first_inbox['domain'],
+                                         port: first_inbox['smtp_ports'][0],
+                                         authentication: :plain
                                        }
                                      end
-
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -118,7 +118,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)

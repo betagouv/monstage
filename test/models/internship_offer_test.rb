@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class InternshipOfferTest < ActiveSupport::TestCase
-  test "association internship_offer_weeks" do
+  test 'association internship_offer_weeks' do
     internship_offer = InternshipOffer.new
     assert_equal internship_offer.internship_offer_weeks, []
   end
 
-  test "association weeks" do
+  test 'association weeks' do
     internship_offer = InternshipOffer.new
     assert_equal internship_offer.weeks, []
   end
-  test "school (restricted_school)" do
+  test 'school (restricted_school)' do
     internship_offer = InternshipOffer.new
     assert_nil internship_offer.school
     assert internship_offer.build_school.is_a?(School)
   end
 
-  test "test presence of fields" do
+  test 'test presence of fields' do
     internship_offer = InternshipOffer.new
 
     assert internship_offer.invalid?
@@ -34,7 +36,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_empty internship_offer.errors[:coordinates]
   end
 
-  test "has spots left" do
+  test 'has spots left' do
     internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
 
     assert internship_offer.has_spots_left?
@@ -48,9 +50,9 @@ class InternshipOfferTest < ActiveSupport::TestCase
     refute internship_offer.has_spots_left?
   end
 
-  test "look for offers available in the future" do
+  test 'look for offers available in the future' do
     travel_to(Date.new(2020, 5, 15)) do
-      internship_offer = create(:internship_offer, weeks: [ Week.find_by(year: 2019, number: 50), Week.find_by(year: 2020, number: 10)])
+      internship_offer = create(:internship_offer, weeks: [Week.find_by(year: 2019, number: 50), Week.find_by(year: 2020, number: 10)])
       assert_empty InternshipOffer.available_in_the_future
 
       next_week = Week.find_by(year: 2020, number: 30)
@@ -59,5 +61,4 @@ class InternshipOfferTest < ActiveSupport::TestCase
       assert_equal 1, InternshipOffer.available_in_the_future.count
     end
   end
-
 end

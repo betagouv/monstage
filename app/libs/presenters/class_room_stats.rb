@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Presenters
   class ClassRoomStats
     def total_student
@@ -30,6 +32,7 @@ module Presenters
     end
 
     private
+
     attr_reader :class_room
     def initialize(class_room:)
       @class_room = class_room

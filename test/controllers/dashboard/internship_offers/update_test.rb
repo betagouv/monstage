@@ -1,5 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
 
+require 'test_helper'
 
 module InternshipOffers
   class UpdateTest < ActionDispatch::IntegrationTest
@@ -25,14 +26,13 @@ module InternshipOffers
       sign_in(internship_offer.employer)
       patch(dashboard_internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
-                        title: new_title,
-                        week_ids: [weeks(:week_2019_1).id],
-                        is_public: false,
-                        group: Group::PRIVATE.first
-                      }
-                    })
+              title: new_title,
+              week_ids: [weeks(:week_2019_1).id],
+              is_public: false,
+              group: Group::PRIVATE.first
+            } })
       assert_redirected_to(internship_offer,
-                         'redirection should point to updated offer')
+                           'redirection should point to updated offer')
       assert_equal(new_title,
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')

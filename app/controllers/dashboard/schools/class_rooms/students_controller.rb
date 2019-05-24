@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dashboard
   module Schools::ClassRooms
     class StudentsController < ApplicationController

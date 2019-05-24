@@ -1,5 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
 
+require 'test_helper'
 
 module InternshipOffers
   class NewTest < ActionDispatch::IntegrationTest
@@ -37,7 +38,6 @@ module InternshipOffers
         assert_select 'option', text: 'Semaine 21 - du 20 mai au 26 mai'
         assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
       end
-
     end
 
     test 'GET #edit as Operator with disabled fields if applications exist' do
@@ -46,7 +46,7 @@ module InternshipOffers
 
       get new_dashboard_internship_offer_path
       assert_response :success
-      assert_select "#internship_offer_operator_ids[disabled]"
+      assert_select '#internship_offer_operator_ids[disabled]'
     end
 
     test 'GET #new as visitor redirects to internship_offers' do

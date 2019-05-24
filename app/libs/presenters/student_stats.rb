@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Presenters
   class StudentStats
     def applications_count
@@ -18,16 +20,16 @@ module Presenters
     end
 
     def applications_with_convention_signed_count
-       student.internship_applications
-              .select(&:convention_signed?)
-              .size
+      student.internship_applications
+             .select(&:convention_signed?)
+             .size
     end
 
     def internship_locations
       student.internship_applications
-              .select(&:convention_signed?)
-              .map(&:internship_offer)
-              .map(&:formatted_autocomplete_address)
+             .select(&:convention_signed?)
+             .map(&:internship_offer)
+             .map(&:formatted_autocomplete_address)
     end
 
     Tutor = Struct.new(:tutor_name,
@@ -36,16 +38,17 @@ module Presenters
                        keyword_init: true)
     def internship_tutors
       student.internship_applications
-              .select(&:convention_signed?)
-              .map(&:internship_offer)
-              .map do |internship_offer|
-                Tutor.new(tutor_name: internship_offer.tutor_name,
-                          tutor_phone: internship_offer.tutor_phone,
-                          tutor_email: internship_offer.tutor_email)
-              end
+             .select(&:convention_signed?)
+             .map(&:internship_offer)
+             .map do |internship_offer|
+        Tutor.new(tutor_name: internship_offer.tutor_name,
+                  tutor_phone: internship_offer.tutor_phone,
+                  tutor_email: internship_offer.tutor_email)
+      end
     end
 
     private
+
     attr_reader :student
     def initialize(student:)
       @student = student

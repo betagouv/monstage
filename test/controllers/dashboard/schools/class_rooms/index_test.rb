@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
   module Schools
-    class IndexClassRoomsTest  < ActionDispatch::IntegrationTest
+    class IndexClassRoomsTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       #
@@ -33,11 +35,11 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
-        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 1
-        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 1
+        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 1
 
-        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 1
+        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 1
       end
 
       test 'GET class_rooms#index as SchoolManager shows class rooms list' do
@@ -89,11 +91,11 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
-        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 1
+        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
 
-        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
-        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 0
+        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 0
+        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
 
       test 'GET class_rooms#index as Other shows class rooms list' do
@@ -140,11 +142,11 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select "a.nav-link.active[href=?]", dashboard_school_class_rooms_path(school), count: 1
-        assert_select "a.nav-link[href=?]", dashboard_school_users_path(school), count: 0
-        assert_select "a.nav-link[href=?]", edit_dashboard_school_path(school), count: 0
+        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 0
+        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 0
 
-        assert_select "a.btn[href=?]", new_dashboard_school_class_room_path(school), count: 0
+        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
 
       test 'GET class_rooms#index as MainTeacher shows class rooms list' do

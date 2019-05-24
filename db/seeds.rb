@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 def populate_week_reference
@@ -9,24 +11,22 @@ def populate_week_reference
 
   first_year.upto(last_year) do |year|
     first_week.upto(last_week) do |week| # number of the week
-      begin
-        if week == last_week
-          Date.commercial(year, week, 1)
-          puts "Special year #{year}, this one have 53 weeks"
-        end
-
-        Week.create!(year: year, number: week)
-      rescue ArgumentError
-        puts "no week #{week} for year #{year}"
-      rescue ActiveRecord::RecordNotUnique
-        puts "week #{week} - #{year} already exists"
+      if week == last_week
+        Date.commercial(year, week, 1)
+        puts "Special year #{year}, this one have 53 weeks"
       end
+
+      Week.create!(year: year, number: week)
+    rescue ArgumentError
+      puts "no week #{week} for year #{year}"
+    rescue ActiveRecord::RecordNotUnique
+      puts "week #{week} - #{year} already exists"
     end
   end
 end
 
 def populate_schools
-  CSV.foreach(Rails.root.join('db/college-rep-plus.csv'), {headers: { col_sep: ','}}) do |row, i|
+  CSV.foreach(Rails.root.join('db/college-rep-plus.csv'), headers: { col_sep: ',' }) do |row, _i|
     school = School.find_or_create_by(
       code_uai: row['Code UAI'],
       name: row['ETABLISSEMENT'],

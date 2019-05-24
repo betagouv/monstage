@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Presenters
   class GroupedInternshipOfferStats
-
     delegate :report_total_count,
              :total_applications_count,
              :total_male_applications_count,

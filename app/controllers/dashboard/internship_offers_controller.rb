@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dashboard
   class InternshipOffersController < ApplicationController
     include SetInternshipOffers
@@ -20,7 +22,7 @@ module Dashboard
       @internship_offer = InternshipOffer.new(internship_offer_params)
       @internship_offer.save!
       redirect_to(dashboard_internship_offer_path(@internship_offer),
-                  flash: {success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.'})
+                  flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.' })
     rescue ActiveRecord::RecordInvalid,
            ActionController::ParameterMissing
       @internship_offer ||= InternshipOffer.new
@@ -39,9 +41,9 @@ module Dashboard
       authorize! :update, @internship_offer
       @internship_offer.update!(internship_offer_params)
       redirect_to(@internship_offer,
-                  flash: { success: 'Votre annonce a bien été modifiée'})
+                  flash: { success: 'Votre annonce a bien été modifiée' })
     rescue ActiveRecord::RecordInvalid,
-           ActionController::ParameterMissing => error
+           ActionController::ParameterMissing => e
       find_selectable_content
       render :edit, status: :bad_request
     end
@@ -68,12 +70,12 @@ module Dashboard
 
     def internship_offer_params
       params.require(:internship_offer)
-          .permit(:title, :description, :sector_id, :max_candidates, :max_internship_week_number,
-                  :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
-                  :street, :zipcode, :city, :department, :region, :academy,
-                  :is_public, :group,
-                  :employer_id, :employer_type, :school_id, :employer_description,
-                  operator_ids: [], coordinates: {}, week_ids: [])
+            .permit(:title, :description, :sector_id, :max_candidates, :max_internship_week_number,
+                    :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
+                    :street, :zipcode, :city, :department, :region, :academy,
+                    :is_public, :group,
+                    :employer_id, :employer_type, :school_id, :employer_description,
+                    operator_ids: [], coordinates: {}, week_ids: [])
     end
   end
 end

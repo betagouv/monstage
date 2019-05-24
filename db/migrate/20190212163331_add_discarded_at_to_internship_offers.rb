@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDiscardedAtToInternshipOffers < ActiveRecord::Migration[5.2]
   def change
     add_column :internship_offers, :discarded_at, :datetime

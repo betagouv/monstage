@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
@@ -9,11 +11,10 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
                                                              internship_offer: @internship_offer)
   end
 
-
   #
   # tracks internship_offer_weeks counters
   #
-  test ".update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count" do
+  test '.update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count' do
     @internship_application.aasm_state = :approved
     @internship_application.save!
     assert_changes -> { @internship_offer_week.reload.blocked_applications_count },
@@ -23,7 +24,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
   end
 
-  test ".update_internship_offer_week_counters tracks internship_offer_weeks.approved_applications_count" do
+  test '.update_internship_offer_week_counters tracks internship_offer_weeks.approved_applications_count' do
     @internship_application.aasm_state = :submitted
     @internship_application.save!
 
@@ -37,7 +38,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   #
   # track internship_offer counters
   #
-  test ".update_internship_offer_counters tracks internship_offer.blocked_weeks_count" do
+  test '.update_internship_offer_counters tracks internship_offer.blocked_weeks_count' do
     @internship_application.aasm_state = :approved
     @internship_application.save!
 
@@ -48,7 +49,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
   end
 
-  test ".update_internship_offer_counters tracks internship_offer.total_applications_count" do
+  test '.update_internship_offer_counters tracks internship_offer.total_applications_count' do
     @internship_application.aasm_state = :submitted
     assert_changes -> { @internship_offer.total_applications_count },
                    from: 0,
@@ -58,14 +59,14 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
   end
 
-  test ".update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count" do
+  test '.update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count' do
     create(:internship_application, :drafted, internship_offer_week: @internship_offer_week,
                                               internship_offer: @internship_offer)
 
     assert_equal 0, @internship_offer.reload.total_applications_count
   end
 
-  test ".update_internship_offer_counters tracks internship_offer.convention_signed_applications_count" do
+  test '.update_internship_offer_counters tracks internship_offer.convention_signed_applications_count' do
     @internship_application.aasm_state = :approved
     @internship_application.save!
 
@@ -76,7 +77,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
   end
 
-  test ".update_internship_offer_counters tracks internship_offer.approved_applications_count" do
+  test '.update_internship_offer_counters tracks internship_offer.approved_applications_count' do
     @internship_application.aasm_state = :submitted
     @internship_application.save!
 
@@ -87,7 +88,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
   end
 
-  test ".update_internship_offer_counters tracks total male and female applications_count" do
+  test '.update_internship_offer_counters tracks total male and female applications_count' do
     @internship_application.student = create(:student, gender: 'm')
     @internship_application.aasm_state = :submitted
     assert_changes -> { @internship_application.internship_offer.total_male_applications_count },
@@ -97,7 +98,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
     end
 
     second_application = build(:internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
-                               student: create(:student, gender: 'f'))
+                                                        student: create(:student, gender: 'f'))
     second_application.aasm_state = :submitted
 
     assert_changes -> { second_application.internship_offer.total_female_applications_count },

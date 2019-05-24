@@ -1,5 +1,6 @@
-require 'test_helper'
+# frozen_string_literal: true
 
+require 'test_helper'
 
 module InternshipOffers
   class EditTest < ActionDispatch::IntegrationTest
@@ -36,10 +37,10 @@ module InternshipOffers
 
       get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
       assert_response :success
-      assert_select "input#all_year_long[disabled]"
-      assert_select "select#internship_offer_week_ids[disabled]"
-      assert_select "input#internship_offer_max_candidates[disabled]"
-      assert_select "input#internship_offer_max_internship_week_number[disabled]"
+      assert_select 'input#all_year_long[disabled]'
+      assert_select 'select#internship_offer_week_ids[disabled]'
+      assert_select 'input#internship_offer_max_candidates[disabled]'
+      assert_select 'input#internship_offer_max_internship_week_number[disabled]'
     end
 
     test 'GET #edit as Operator with disabled fields if applications exist' do
@@ -49,7 +50,7 @@ module InternshipOffers
 
       get edit_dashboard_internship_offer_path(internship_offer)
       assert_response :success
-      assert_select "#internship_offer_operator_ids[disabled]"
+      assert_select '#internship_offer_operator_ids[disabled]'
     end
   end
 end

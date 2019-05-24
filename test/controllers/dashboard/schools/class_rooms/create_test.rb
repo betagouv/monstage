@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module Dashboard
   module Schools
-    class CreateClassRoomsTest  < ActionDispatch::IntegrationTest
+    class CreateClassRoomsTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       #
@@ -28,7 +30,7 @@ module Dashboard
           create(:other, school: school)
         ].each do |role|
           sign_in(role)
-          post dashboard_school_class_rooms_path(school.to_param), params: { class_room: {name: 'test'} }
+          post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: 'test' } }
           assert_redirected_to root_path
         end
       end

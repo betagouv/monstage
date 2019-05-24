@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 module Users
   class OtherTest < ActiveSupport::TestCase
-    test "creation fails" do
+    test 'creation fails' do
       other = Users::Other.new
       assert other.invalid?
       errors = other.errors.keys
@@ -11,7 +13,7 @@ module Users
       assert_includes errors, :email
     end
 
-    test "creation succeed" do
+    test 'creation succeed' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       other = Users::Other.new(email: 'chef@lol.com',
@@ -23,7 +25,7 @@ module Users
       assert other.valid?
     end
 
-    test "send SchoolManagerMailer.new_member on create" do
+    test 'send SchoolManagerMailer.new_member on create' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       mock_mail = MiniTest::Mock.new
@@ -43,7 +45,7 @@ module Users
       assert other.valid?
     end
 
-    test "change school notify new other" do
+    test 'change school notify new other' do
       school_1 = create(:school)
       school_manager_1 = create(:school_manager, school: school_1)
       school_2 = create(:school)
@@ -61,11 +63,9 @@ module Users
       mock_mail.verify
     end
 
-
-    test "i18n" do
-      assert_equal "Autres fonctions", Other.human_attribute_name(:other)
+    test 'i18n' do
+      assert_equal 'Autres fonctions', Other.human_attribute_name(:other)
     end
-
 
     test 'other.after_sign_in_path without school redirects to account_path' do
       other = build(:other, school: nil)

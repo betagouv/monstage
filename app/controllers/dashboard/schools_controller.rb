@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Dashboard
   class SchoolsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_school, only: [:edit, :update, :show]
-    before_action :find_selectable_weeks, only: [:edit, :update]
+    before_action :set_school, only: %i[edit update show]
+    before_action :find_selectable_weeks, only: %i[edit update]
 
     def index
       authorize! :index, School
@@ -17,8 +19,8 @@ module Dashboard
       authorize! :update, School
       @school.update!(internship_weeks_params)
       redirect_to(dashboard_school_class_rooms_path(@school),
-                  flash: {success: "Collège mis à jour avec succès"})
-    rescue ActiveRecord::RecordInvalid => error
+                  flash: { success: 'Collège mis à jour avec succès' })
+    rescue ActiveRecord::RecordInvalid => e
       render :edit, status: :bad_request
     end
 

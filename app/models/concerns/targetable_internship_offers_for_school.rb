@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TargetableInternshipOffersForSchool
   extend ActiveSupport::Concern
 
@@ -8,7 +10,7 @@ module TargetableInternshipOffersForSchool
     include InternshipOffersScopes::ByMaxWeeks
     include InternshipOffersScopes::ByMaxCandidates
 
-    scope :targeted_internship_offers, -> (user:) {
+    scope :targeted_internship_offers, lambda { |user:|
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby_from_school(coordinates: user.school.coordinates)) if user.school
       query = query.merge(internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if user.school

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddResumeToUsers < ActiveRecord::Migration[5.2]
   def change
     add_column :users, :resume_educational_background, :text

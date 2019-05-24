@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
@@ -26,7 +28,7 @@ class User < ApplicationRecord
   end
 
   def dashboard_name
-    "Mon tableau"
+    'Mon tableau'
   end
 
   def default_account_section

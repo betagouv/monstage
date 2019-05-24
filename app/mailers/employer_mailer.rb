@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmployerMailer < ApplicationMailer
   def new_internship_application_email(internship_application:)
     @internship_application = internship_application

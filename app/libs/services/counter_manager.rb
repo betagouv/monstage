@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Services::CounterManager.reset_internship_offer_counters
 module Services
   class CounterManager
@@ -10,7 +12,7 @@ module Services
       )
       InternshipOfferWeek.update_all(
         approved_applications_count: 0,
-        blocked_applications_count: 0,
+        blocked_applications_count: 0
       )
       InternshipApplication.all.map(&:update_all_counters)
     end

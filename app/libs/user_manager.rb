@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserManager
   # Avoid user Users.const_get,
   # otherwise expose RCE: params[:as]=Kernel.eval("do some magick")
@@ -21,7 +23,7 @@ class UserManager
 
   def valid?(params:)
     true if by_params(params: params)
-  rescue KeyError => error
+  rescue KeyError => e
     false
   end
 end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StudentMailerTest < ActionMailer::TestCase
-  test "email sent when internship application is approved" do
+  test 'email sent when internship application is approved' do
     internship_application = create(:internship_application)
 
     email = StudentMailer.internship_application_approved_email(internship_application: internship_application)
@@ -12,8 +14,7 @@ class StudentMailerTest < ActionMailer::TestCase
     assert_equal [internship_application.student.email], email.to
   end
 
-  test "email sent when internship application is declined" do
-
+  test 'email sent when internship application is declined' do
     internship_application = create(:internship_application)
 
     email = StudentMailer.internship_application_rejected_email(internship_application: internship_application)

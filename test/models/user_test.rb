@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  test "School manager creation" do
+  test 'School manager creation' do
     school_manager = Users::SchoolManager.create(email: 'chef@etablissement.com',
                                                  password: 'tototo',
                                                  password_confirmation: 'tototo',

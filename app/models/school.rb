@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class School < ApplicationRecord
   include Nearbyable
 
@@ -29,8 +31,8 @@ class School < ApplicationRecord
   end
 
   def name
-   db_name = read_attribute(:name)
-   db_name.starts_with?("Collège") ? db_name : "Collège #{db_name}"
+    db_name = read_attribute(:name)
+    db_name.starts_with?('Collège') ? db_name : "Collège #{db_name}"
   end
 
   def to_s

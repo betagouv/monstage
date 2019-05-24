@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Users
   class MainTeacher < User
     belongs_to :class_room, optional: true
@@ -8,17 +10,18 @@ module Users
 
     def after_sign_in_path
       return url_helpers.account_path if [school, class_room].any?(&:blank?)
+
       super
     end
 
     def custom_dashboard_path
       url_helpers.dashboard_school_class_room_path(school, class_room)
-    rescue
+    rescue StandardError
       url_helpers.account_path
     end
 
     def dashboard_name
-      "Ma classe"
+      'Ma classe'
     end
   end
 end

@@ -51,6 +51,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     ansi (1.5.0)
     arel (9.0.0)
+    ast (2.4.0)
     bcrypt (3.1.12)
     bindex (0.7.0)
     bootsnap (1.4.4)
@@ -107,6 +108,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    jaro_winkler (1.5.2)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -150,6 +152,9 @@ GEM
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    parallel (1.17.0)
+    parser (2.6.3.0)
+      ast (~> 2.4.0)
     pg (1.1.4)
     public_suffix (3.0.3)
     puma (3.12.1)
@@ -186,6 +191,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
+    rainbow (3.0.0)
     rake (12.3.2)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
@@ -202,6 +208,13 @@ GEM
     rgeo-activerecord (6.2.0)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
+    rubocop (0.70.0)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.6)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 1.7)
     ruby-progressbar (1.10.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
@@ -241,6 +254,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
+    unicode-display_width (1.6.0)
     uniform_notifier (1.12.1)
     warden (1.2.8)
       rack (>= 2.0.6)
@@ -288,6 +302,7 @@ DEPENDENCIES
   rails
   rails-controller-testing
   rest-client
+  rubocop
   selenium-webdriver
   sentry-raven
   slim-rails

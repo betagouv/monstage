@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropMaterializedView < ActiveRecord::Migration[5.2]
   def change
     remove_index :reporting_internship_offers, :sector_name
