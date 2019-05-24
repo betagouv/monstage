@@ -25,12 +25,13 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in "Nom de l'entreprise ou de l'administration", with: 'BetaGouv'
         fill_in 'Activités', with: "On fait des startup d'état qui déchirent"
         fill_in 'Site web', with: 'https://beta.gouv.fr/'
-
+        select Group::PUBLIC.first, from: 'internship_offer_group'
         fill_in 'Adresse du lieu où se déroule le stage', with: 'Paris, 13eme'
         page.all('.algolia-places div[role="option"]')[0].click
         click_on 'Soumettre'
       end
     end
     assert_equal employer, InternshipOffer.first.employer
+    assert_equal "User", InternshipOffer.first.employer_type
   end
 end
