@@ -4,6 +4,9 @@ require 'csv'
 class ReRefactorOnisepSectors < ActiveRecord::Migration[5.2]
   def change
     rename_column :sectors, :gfe_name, :external_url
+
+    Sector.reset_column_information
+    
     former_sectors = Sector.all.entries
     new_sectors = []
     CSV.foreach(Rails.root.join('db/metiers_onisep-Sectors.csv'),
