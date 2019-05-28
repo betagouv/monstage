@@ -2,6 +2,7 @@
 
 class CreateReportingInternshipOffers < ActiveRecord::Migration[5.2]
   def change
-    create_view :reporting_internship_offers
+    # REMOVED because scenic gem is gone
+    # create_view :reporting_internship_offers
   end
 end
