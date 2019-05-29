@@ -15,6 +15,8 @@ gem 'webpacker'
 # Use Puma as the app server
 gem 'bootsnap', require: false
 gem 'puma'
+gem 'newrelic_rpm'
+
 
 # gem 'geocoder'
 group :development, :test do
@@ -52,6 +54,7 @@ end
 group :staging do
   gem 'rest-client'
 end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

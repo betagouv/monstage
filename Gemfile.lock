@@ -148,6 +148,7 @@ GEM
     msgpack (1.2.10)
     multipart-post (2.1.1)
     netrc (0.11.0)
+    newrelic_rpm (6.0.0.351)
     nio4r (2.3.1)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
@@ -297,6 +298,7 @@ DEPENDENCIES
   kaminari
   listen
   minitest-reporters
+  newrelic_rpm
   pg
   puma
   rails
