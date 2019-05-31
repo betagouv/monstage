@@ -13,9 +13,9 @@ export default class extends Controller {
     toggleElement($collapsibleTarget);
     $(this.motivationTarget).toggleClass('text-truncate-max-height-50')
     if (isVisible($collapsibleTarget)) {
-      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-right"></i>`)
-    } else {
       $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-down"></i>`)
+    } else {
+      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-right"></i>`)
     }
   }
 }
