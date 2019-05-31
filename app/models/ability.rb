@@ -57,6 +57,9 @@ class Ability
     can %i[update], InternshipApplication do |internship_application|
       user.school.students.where(id: internship_application.student.id).count > 0
     end
+    can [:apply], InternshipOffer do |internship_offer|
+      internship_offer.school_id == user.school_id
+    end
   end
 
   def main_teacher_abilities(user:)
@@ -71,9 +74,6 @@ class Ability
       can [:manage_students], ClassRoom do |class_room|
         class_room.id == user.class_room_id
       end
-    end
-    can [:apply], InternshipOffer do |internship_offer|
-      internship_offer.school_id == user.school_id
     end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id

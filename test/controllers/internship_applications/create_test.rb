@@ -25,14 +25,13 @@ module InternshipApplications
       assert_equal student.id, created_internship_application.student.id
     end
 
-    test 'POST #create internship application as main_teacher' do
+    test 'POST #create internship application as school_manager' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)
-      main_teacher = create(:main_teacher, class_room: class_room, school: school)
       internship_offer = create(:internship_offer, school: school)
 
-      sign_in(main_teacher)
+      sign_in(school.school_manager)
       valid_params = { internship_application: { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
                                                  motivation: 'Je suis trop motivé wesh',
                                                  user_id: student.id } }

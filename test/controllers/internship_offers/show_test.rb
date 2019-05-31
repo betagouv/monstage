@@ -42,9 +42,8 @@ module InternshipOffers
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)
-      main_teacher = create(:main_teacher, class_room: class_room, school: school)
 
-      sign_in(main_teacher)
+      sign_in(school.school_manager)
       get internship_offer_path(create(:internship_offer, school: school))
 
       assert_response :success
