@@ -7,6 +7,14 @@ class Week < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :schools, through: :school_internship_weeks
 
+  scope :from_date_to_date, -> (from:, to:) {
+    if from.year == to.year
+      where(year: from.year).where('number BETWEEN ? AND ? ', from.cweek, to.cweek)
+    else
+      where("year = :from_year AND number > :from_week", {from_year: from.year, from_week: from.cweek})
+        .or(where("year = :to_year AND number BETWEEN 1 AND :to_week", {to_year: to.year, to_week: to.cweek}))
+    end
+  }
   scope :from_date_to_date_for_year, lambda { |from, to, year|
     where(year: year).where('number BETWEEN ? AND ?', from.cweek, to.cweek)
   }
