@@ -15,20 +15,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def find_selectable_weeks
-    today = Date.today
-    current_year = today.year
-    current_month = today.month
-
-    if current_month <= SchoolYear::MONTH_OF_YEAR_SHIFT # Before the end of May, offers should be available from now until May of the current year
-      @current_weeks = Week.from_date_to_date_for_year(today, Date.new(current_year, SchoolYear::MONTH_OF_YEAR_SHIFT, SchoolYear::DAY_OF_YEAR_SHIFT), current_year)
-    else # After May, offers should be posted for next year
-      first_day_available = if current_month < 9 # Between May and September, the first week should be the first week of september
-                              Date.new(current_year, 9, 1)
-                            else
-                              today
-                            end
-      @current_weeks = Week.from_date_until_end_of_year(first_day_available, current_year)
-                           .or(Week.from_date_to_date_for_year(Date.new(current_year + 1), Date.new(current_year + 1, SchoolYear::MONTH_OF_YEAR_SHIFT, InternshipOffer::DAY_OF_YEAR_SHIFT), current_year + 1))
-    end
+    school_year = SchoolYear.new(date: Date.today)
+    @current_weeks = Week.from_date_to_date(from: school_year.beginning_of_period,
+                                            to: school_year.end_of_period)
   end
 end
