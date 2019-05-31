@@ -8,8 +8,10 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
     = render "internship_offers/show_details", internship_offer: @internship_application.internship_offer
 
   #tab-internship-application-detail data-target='dashboard-students-internship-application.internshipApplicationDetail'
+
     .row
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, application_detail_tab: true }
+
     .row
       .col-12.py-2
         = link_to "#tab-internship-application-detail", class: '', data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", target: "dashboard-students-internship-application.linkIconContainer", turbolinks: false } do

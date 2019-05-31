@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { toggleElement, hideElement, showElement } from "../utils/dom";
+import { setElementVisibility, toggleElement, hideElement, showElement, isVisible } from "../utils/dom";
 const MENU_ITEM_ACTIVE_CLASS_NAME = 'active';
 
 export default class extends Controller {
@@ -9,7 +9,8 @@ export default class extends Controller {
                     "linkInternshipOfferDetail",
                     "linkInternshipApplicationDetail",
                     "linkConventionDetail",
-                    "internshipApplicationContent", ];
+                    "internshipApplicationContent",
+                    "linkIconContainer"];
 
   stopEventPropagation(event) {
     if (event) {
@@ -18,7 +19,17 @@ export default class extends Controller {
   }
 
   toggleInternshipApplicationContent(event) {
-    toggleElement($(this.internshipApplicationContentTarget))
+    const $collapsibleTarget = $(this.internshipApplicationContentTarget);
+    const $linkIconContainer = $(this.linkIconContainerTarget)
+    const isCollapseVisible = isVisible($collapsibleTarget);
+
+    if (isCollapseVisible) {
+      hideElement($collapsibleTarget)
+      $linkIconContainer.find("svg").replaceWith(`<i class="fas fa-chevron-right mr-1"></i>`)
+    } else {
+      showElement($collapsibleTarget)
+      $linkIconContainer.find("svg").replaceWith(`<i class="fas fa-chevron-down mr-1"></i>`)
+    }
     this.stopEventPropagation(event)
   }
 
