@@ -10,7 +10,11 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
   #tab-internship-application-detail data-target='dashboard-students-internship-application.internshipApplicationDetail'
     .row
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, application_detail_tab: true }
-    = link_to "Afficher ma candidature", "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", turbolinks: false }
+    .row
+      .col-12.py-2
+        = link_to "#tab-internship-application-detail", class: '', data: {action: "click->dashboard-students-internship-application#toggleInternshipApplicationContent", target: "dashboard-students-internship-application.linkIconContainer", turbolinks: false } do
+          i.fas.fa-chevron-right.mr-1
+          = "Afficher ma candidature"
 
     .d-none data-target="dashboard-students-internship-application.internshipApplicationContent"
       = render "internship_applications/show_details", internship_application: @internship_application
@@ -24,14 +28,15 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
           = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-warning'
 
   #tab-convention-detail data-target='dashboard-students-internship-application.conventionDetail'
-    - if @internship_application.approved?
-      p.small.text-muted Vous pouvez demander un modèle de convention à votre professeur principal
     .row
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
-    p La convention est fournie par le collège. Elle doit être remplie et signée par les parents puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.
-    p.strong Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
+    .row
+      .col-12.py-2
+        p La convention est fournie par le collège. Vous pouvez demander un modèle de convention à votre professeur principal.
+        p Elle doit être remplie et signée par les parents puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.
+        p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
 
-    h3.h4 À quoi sert la convention ?
-    p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
+        h3.h4 À quoi sert la convention ?
+        p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
 
-    p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+        p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.

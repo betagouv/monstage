@@ -14,7 +14,7 @@ h1.h2.mb-3 Je postule
       strong Pour le stage
     h2.h1
       strong= @internship_offer.title
-    p.strong
+    p.font-weight-bold
       = "à #{@internship_application.internship_offer.city}"
       br
       = @internship_application.week.select_text_method

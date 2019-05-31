@@ -74,13 +74,13 @@ module Dashboard
           assert_select 'a[href=?]', dashboard_students_internship_application_path(student, internship_application)
           assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
         end
-        assert_select '.alert-secondary small.alert-internship-application-state',
+        assert_select '.alert-secondary .alert-internship-application-state',
                       text: "Candidature en attente depuis le #{I18n.localize(internship_applications[:drafted].created_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-warning small.alert-internship-application-state',
+        assert_select '.alert-warning .alert-internship-application-state',
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
                       count: 1
-        assert_select '.alert-success small.alert-internship-application-state',
+        assert_select '.alert-success .alert-internship-application-state',
                       text: "Convention reçue le #{I18n.localize(internship_applications[:convention_signed].convention_signed_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select 'small.alert-internship-application-state',
