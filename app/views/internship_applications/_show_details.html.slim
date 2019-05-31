@@ -1,30 +1,25 @@
 .row.bg-dark-light
   .col-12
-    p.my-2
-      strong Ma motivation
-    pre.word-breakable-content= internship_application.motivation
+    h2.h5.my-2.gray-666 Ma motivation
+    p.word-breakable-content= internship_application.motivation
 
 - unless is_resume_empty?(internship_application)
-  h3.h4.mt-3 Mon CV
+  h2.h5.mt-4.gray-666 Mon CV
   - if has_resume_educational_background?(internship_application)
-    p.my-2
-      strong Parcours scolaire
-    pre.word-breakable-content= internship_application.student.resume_educational_background
+    h3.h5.gray-999.mb-1 Parcours scolaire
+    p.word-breakable-content= internship_application.student.resume_educational_background
 
   - if has_resume_other?(internship_application)
-    p.my-2.mt-3
-      strong Activités extra scolaires
-    pre.word-breakable-content= internship_application.student.resume_other
+    h3.h5.gray-999.mb-1.mt-4 Activités extra scolaires
+    p.word-breakable-content= internship_application.student.resume_other
 
   - if has_resume_languages?(internship_application)
-    p.my-2.mt-3
-      strong Langues
-    pre.word-breakable-content= internship_application.student.resume_languages
+    h3.h5.gray-999.mb-1.mt-4 Langues
+    p.word-breakable-content= internship_application.student.resume_languages
 
-p.my-1
-  strong Mon identité
+h3.h5.gray-999.mb-1.mt-2 Mon identité
 p
-  strong= "#{internship_application.student.first_name} #{internship_application.student.last_name}"
+  = "#{internship_application.student.first_name} #{internship_application.student.last_name}"
   br
   = internship_application.student.school.name
   br

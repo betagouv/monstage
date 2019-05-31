@@ -17,7 +17,7 @@
 //     font-size: $html-font-size-base;
 //   }
 // }
-
+html body{font-size: 15px;}
 
 
 // everybody
@@ -43,6 +43,12 @@ html h5,
 html .h5{
   color: #999
 }
+html .gray-666{
+  color: #666;
+}
+html .gray-999{
+  color: #999;
+}
 // desktop is default bootstrap
 
 // mobile is custom
@@ -58,17 +64,17 @@ html .h5{
   html h5,
   html .h5,
   {
-    font-weight: 700;
+    font-weight: 600;
   }
   html h1,
   html .h1 {
-    font-size: $html-font-size-base * 1.5;
+    font-size: $html-font-size-base * 1.625;
     line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
   }
   html h2,
   html .h2 {
-    font-size: $html-font-size-base * 1.375;
-    line-height: ($html-font-size-base * 1.375) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base * 1.5;
+    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
   }
   html h3,
   html .h3 {

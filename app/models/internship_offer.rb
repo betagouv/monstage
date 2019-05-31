@@ -84,6 +84,10 @@ class InternshipOffer < ApplicationRecord
     internship_applications.empty?
   end
 
+  def osm_url
+    "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
+  end
+
   def formatted_autocomplete_address
     [
       street,

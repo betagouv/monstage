@@ -11,7 +11,7 @@
         span.badge.badge-cyan.px-3.py-2.ml-3
           | Stage reservé
 
-    p.text-muted
+    p.font-weight-bold
       = "Semaines : "
       - weeks = current_user.respond_to?(:school) ? internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates).after_current_week : internship_offer.internship_offer_weeks
       = weeks.map(&:human_select_text_method).join(' ou ')
@@ -19,13 +19,14 @@
   .col-12
     h2.h4 Où se déroule ce stage ?
     p = internship_offer.employer_name
+    p = internship_offer.employer_description
     - if internship_offer.employer_website.present?
       p.text-truncate
         = link_to internship_offer.employer_website, target: "_blank", class: 'external' do
           = internship_offer.employer_website
           = " "
-          i.fas.fa-external-link-alt
-          = "(nouvelle fenêtre)"
+          i.fas.fa-external-link-alt.fa-xs
+          = " (nouvelle fenêtre)"
 
     .d-flex
       .circle-font.text-info
@@ -34,6 +35,13 @@
         = internship_offer.street
         br
         = "#{internship_offer.zipcode} #{internship_offer.city}"
+        br
+        br
+        = link_to internship_offer.osm_url, target: "_blank", class: 'external' do
+          = "Afficher sur une carte "
+          i.fas.fa-external-link-alt.fa-xs
+          = " (nouvelle fenêtre)"
+
 
 - if can? :create, InternshipOffer
   h2.h6.bg-light Contact
