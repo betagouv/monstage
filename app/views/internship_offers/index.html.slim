@@ -20,8 +20,18 @@
           .col-12
             .help-sign-content.py-1.px-2.mb-3.d-none.bg-white.alert.alert-secondary.alert-outlined data-target="
             help.content"
-              = "Le secteur professionnel est #{current_sector_name}. Pour en savoir plus, consultez le "
-              = link_to "site de l'Onisep.", current_sector_url
+              - if params[:sector_id].present?
+                = "Pour en savoir plus sur le secteur professionnel "
+                |&laquo;
+                |&nbsp;
+                = current_sector_name
+                |&nbsp;
+                |&raquo;
+                = " consultez le "
+                = link_to "site de l'Onisep.", current_sector_url
+              - else
+                = "Pour découvrir les secteurs profesionnels consultez le "
+                = link_to "site de l'Onisep.", current_sector_url
           .col-12
             = select_tag "Sélectionner un domaine d'activité", options_from_collection_for_select(Sector.all, :id, :name, params[:sector_id]), { prompt: "Tous", id: 'internship-offer-sector-filter', class: 'custom-select col-12', data: { action: 'internship-index#filterOffersBySectors'} }
 
