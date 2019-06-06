@@ -49,9 +49,9 @@ module InternshipApplications
       assert_select '.school-name', school.name
       assert_select '.school-city', school.city
       assert_select '.student-age', student.age.to_s
-      assert_select 'pre', student.resume_educational_background
-      assert_select 'pre', student.resume_other
-      assert_select 'pre', student.resume_languages
+      assert_select 'p', student.resume_educational_background
+      assert_select 'p', student.resume_other
+      assert_select 'p', student.resume_languages
     end
 
     test 'GET #index with drafted does not shows internship_application' do

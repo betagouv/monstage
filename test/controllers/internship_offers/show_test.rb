@@ -14,7 +14,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_response :success
-      assert_select 'a.external[href=?]', internship_offer.employer_website
+      assert_select 'a.external.test-employer-website[href=?]', internship_offer.employer_website
     end
 
     test 'GET #show does not show website url when absent' do
@@ -22,7 +22,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_response :success
-      assert_select 'a.external', 0
+      assert_select 'a.external.test-employer-website', 0
     end
 
     #

@@ -22,7 +22,7 @@
     p = internship_offer.employer_description
     - if internship_offer.employer_website.present?
       p.text-truncate
-        = link_to internship_offer.employer_website, target: "_blank", class: 'external' do
+        = link_to internship_offer.employer_website, target: "_blank", class: 'external test-employer-website' do
           = internship_offer.employer_website
           = " "
           i.fas.fa-external-link-alt.fa-xs
