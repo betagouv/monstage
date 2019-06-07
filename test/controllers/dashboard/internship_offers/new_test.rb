@@ -12,8 +12,7 @@ module InternshipOffers
         get new_dashboard_internship_offer_path
 
         assert_response :success
-        assert_select 'select[name="internship_offer[week_ids][]"] option', 14
-        assert_select 'option', text: 'Semaine 9 - du 25 février au 3 mars'
+        assert_select 'select[name="internship_offer[week_ids][]"] option', 13
         assert_select 'option', text: 'Semaine 10 - du 4 mars au 10 mars'
         assert_select 'option', text: 'Semaine 11 - du 11 mars au 17 mars'
         assert_select 'option', text: 'Semaine 12 - du 18 mars au 24 mars'
@@ -33,8 +32,7 @@ module InternshipOffers
         get new_dashboard_internship_offer_path
 
         assert_response :success
-        assert_select 'select[name="internship_offer[week_ids][]"] option', 3
-        assert_select 'option', text: 'Semaine 20 - du 13 mai au 19 mai'
+        assert_select 'select[name="internship_offer[week_ids][]"] option', 2
         assert_select 'option', text: 'Semaine 21 - du 20 mai au 26 mai'
         assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
       end
