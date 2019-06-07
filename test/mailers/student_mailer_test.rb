@@ -21,7 +21,7 @@ class StudentMailerTest < ActionMailer::TestCase
 
     email.deliver_now
     assert_emails 1
-    assert_equal ["ne-pas-repondre@#{URI(ENV.fetch('HOST')).host.gsub('www.', '')}"], email.from
+    assert_equal [ApplicationMailer.from], email.from
     assert_equal [internship_application.student.email], email.to
   end
 end
