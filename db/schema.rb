@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 2019_05_24_153049) do
   create_table "sectors", force: :cascade do |t|
     t.string "name"
     t.string "external_url", default: "", null: false
+    t.string "uuid", default: "", null: false
   end
 
   create_table "users", force: :cascade do |t|
