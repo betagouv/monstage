@@ -10,9 +10,14 @@ class ApplicationMailer < ActionMailer::Base
     "ne-pas-repondre@#{domain_without_www}"
   end
 
+  def self.display_name
+    "Mon Stage de 3e"
+  end
+
   def self.formatted_email
-    address = Mail::Address.new(self.from)
-    address.display_name = "Mon Stage de 3e"
-    address.format.inspect
+    address = Mail::Address.new()
+    address.address = self.from
+    address.display_name = self.display_name
+    address.format
   end
 end
