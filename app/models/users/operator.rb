@@ -14,10 +14,17 @@ module Users
       mines_and_sumbmitted_to_operator(user: user)
     }
 
+    before_create :set_api_token
+
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue StandardError
       url_helpers.account_path
+    end
+
+    private
+    def set_api_token
+      api_token = SecureRandom.uuid
     end
   end
 end

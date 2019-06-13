@@ -109,6 +109,17 @@ GEM
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.2)
+    jsonapi-deserializable (0.2.0)
+    jsonapi-parser (0.1.1)
+    jsonapi-rails (0.4.0)
+      jsonapi-parser (~> 0.1.0)
+      jsonapi-rb (~> 0.5.0)
+    jsonapi-rb (0.5.0)
+      jsonapi-deserializable (~> 0.2.0)
+      jsonapi-serializable (~> 0.3.0)
+    jsonapi-renderer (0.2.2)
+    jsonapi-serializable (0.3.1)
+      jsonapi-renderer (~> 0.2.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -295,6 +306,7 @@ DEPENDENCIES
   discard
   factory_bot_rails
   foreman
+  jsonapi-rails
   kaminari
   listen
   minitest-reporters
