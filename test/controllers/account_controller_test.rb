@@ -19,6 +19,21 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_select 'form[action=?]', account_path
   end
 
+  test 'GET index as Operator' do
+    operator = create(:user_operator)
+    sign_in(operator)
+    get account_path
+    assert_select 'a[href=?]', account_path(section: 'api')
+  end
+
+  test 'GET account_path(section: api) as Operator' do
+    operator = create(:user_operator)
+    sign_in(operator)
+    get account_path(section: 'api')
+    assert_select 'input[name="user[api_token]"]'
+    assert_select "input[value=\"#{operator.api_token}\"]"
+  end
+
   test 'GET edit render :edit success with all roles' do
     school = create(:school)
     class_room_1 = create(:class_room, school: school)

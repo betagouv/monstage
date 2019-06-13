@@ -8,7 +8,6 @@ module Api
     end
 
     def token
-      byebug
       bearer && bearer.split("Bearer ")[1]
     end
 

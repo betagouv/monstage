@@ -110,6 +110,7 @@ class Ability
     can :create, InternshipOffer
     can %i[read update destroy], InternshipOffer, employer_id: user.id
     can :index, InternshipApplication
+    can :show, :api_token
   end
 
   def god_abilities(user:)
