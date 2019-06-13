@@ -16,12 +16,19 @@ module Api
 
     def internship_offer_params
       params.require(:internship_offer)
-            .permit(:title, :description, :sector_id, :max_candidates, :max_internship_week_number,
-                    :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
-                    :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group,
-                    :employer_id, :employer_type, :school_id, :employer_description,
-                    operator_ids: [], coordinates: {}, week_ids: [])
+            .permit(
+              :title, # : Titre de l’offre de stage
+              :description, # : Description de l'offre de stage
+              :employer_name, # : Nom de l’entreprise proposant le stage
+              :employer_description, # : Description de l’entreprise proposant le stage
+              :employer_website, # : Lien web vers le site de l’entreprise proposant le stage
+              :coordinates, # : { latitude: 1, longitude: 1 } ; coordonnées géographique du lieu de stage
+              :street, # : Nom de la rue ou se déroule le stage
+              :zipcode, #  : Code postal du lieu de stage
+              :city, # : Nom de la ville où se déroule le stage
+              :sector_uuid, # : voir référentiel
+              :weeks # : voir référentiel.
+            )
     end
   end
 end
