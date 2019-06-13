@@ -48,11 +48,15 @@ Contraintes de données
 * **sector_uuid** (integer, required) 
 * **weeks** (array[array(year, week_number), array(year, week_number), ...], optional) : si ce champs n'est pas remplis, le stage sera automatiquement disponible toute l'année
 
-exemple curl
-```
-```
+**exemple curl**
 
 ```
+curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+	 -X POST \
+	 -d '{}' \
+     https://monstagedetroisieme.fr/api/internship_offers  -vvv
 ```
 
 
