@@ -1,11 +1,35 @@
-Pour rendre les offres proposées par les associations / collectivités / ministères disponibles sur la plateforme Mon Stage de 3è, une API sera mise à disposition.
+Pour diffuser des offres de stage sur la plateforme "[mon stage de 3e](https://www.monstagedetroisieme.fr/)", une API sera mise à disposition pour :
 
-L'API sera construite sur le format REST, avec en ```baseUrl``` https://monstagedetroisieme.fr/api.
+* les associations
+* les collectivités
+* les ministères
+
+L'API sera :
+
+* construite sur le format "REST" 
+* "dans le respect" du standard [jsonapi](https://jsonapi.org)
+* avec en ```baseUrl``` https://monstagedetroisieme.fr/api.
 
 Les services web suivant seront mis à dispotion :
 
-* POST /internship_offers : Pour ajouter une offre de stage sur Mon stage de 3e
-* DELETE /internship_offers/{id} : Pour supprimer une offre de stage sur Mon stage de 3e
+* POST [/internship_offers](#ref-create-internship-offer) : Pour ajouter une offre de stage sur Mon stage de 3e
+* DELETE [/internship_offers/{id}](#ref-destroy-internship-offer) : Pour suprimer une offre de stage sur Mon stage de 3e
+
+
+# Authentification
+
+*Les APIs sont ouvertes uniquement aux acteurs concernés.*
+
+**Merci d'effectuer une demande par mail** pour l'accès a la création de compte opérateur : [support](mailto:martin.fourcade@beta.gouv.fr?subject=Création Compte opérateur&body=Demande d'accès pour l'association|ministère|opérateur ...) afin de créer un compte API.
+
+Une fois les comptes crées, les token d'API pourront être récupéré via notre interface web.
+
+L'authentification se fait par token via :
+
+* le header HTTP : ```Authorization: Bearer #{token} ```
+* ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
+* ou le param d'url token : ```token=Bearer #{token} ``` (**attention**, il faut tout encoder la valeur du paramêtre via le format d'url param ; donc Bearer en URL doit devenir Bearer+#{token}, un exemple est donnée plus tard...)
+
 
 # Structure de donnée : Les offres de stages
 
@@ -25,26 +49,14 @@ Les services web suivant seront mis à dispotion :
 
   sector_uuid : voir référentiel *(1)
   weeks : voir référentiel *(2)
+  remote_id: l'identifiant unique du coté opposé (pr faire des callbacks, au besoin, si possible)
 }
 ```
 
 *(1): [referenciel des secteurs](#ref-sectors)
 *(2): [referenciel des semaines](#ref-weeks)
 
-
-# Authentification
-
-Les APIs sont ouvertes uniquement aux associations/opérateurs pouvant accèder à la plateforme via leurs comptes (faire la demande d'accès aux API à notre [support](mailto:martin.fourcade@beta.gouv.fr).
-
-Une fois leurs comptes crées, les token d'API pourront être récupéré via notre interface web.
-
-L'authentification se fait par token via :
-
-* le header HTTP : ```Authorization: Bearer #{token} ```
-* ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
-* ou le param d'url token : ```token=Bearer #{token} ``` (**attention**, il faut tout encoder la valeur du paramêtre via le format d'url param ; donc Bearer en URL doit devenir Bearer+#{token}, un exemple est donnée plus tard...)
-
-
+### <a name="ref-create-internship-offer"></a>
 ## Endpoint création d'offre.
 
 
@@ -52,7 +64,7 @@ L'authentification se fait par token via :
 
 **method** : POST
 
-**params** :
+**body params** :
 
 *(Contraintes de données)*
 
@@ -80,9 +92,29 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
      https://monstagedetroisieme.fr/api/internship_offers
 ```
 
-
+### <a name="ref-destroy-internship-offer"></a>
+## Endpoint supression d'offre.
+**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote__id}
 
-### <a name="ref-weeks"></a>  
+**method** : DELETE
+
+**url params** :
+
+*(Contraintes de données)*
+
+* **remote_id** *(string, required)*
+
+**exemple curl**
+
+```
+curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
+     -H "Accept: application/json" \
+     -X DELETE \
+     -vvv \
+     https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
+```
+
+### <a name="ref-weeks"></a>
 ## Référentiel : Semaines
 Les offres de stages se faisant par cycles hebdomadaires de travail (du lundi au vendredi), Cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple. C'est un "couple" composé de :
 
@@ -90,10 +122,13 @@ Les offres de stages se faisant par cycles hebdomadaires de travail (du lundi au
 * Le numéro de semaine: 1
 * Joint par un W*(eek)*
 
-Nous pouvons attendons donc ce couple dans nos API ; 
+Nous attendons donc une liste/tableau de couple année/semaine dans nos API, exemple ;
 ```
 internship_offers.weeks: ["2019W1", "2019W3", "2019W5"]
 ```
+
+L'absence de donnée indique un stage accéssible sur toute l'année.
+
 ### <a name="ref-sectors"></a>
 ## Référentiel : Secteurs d'activité
 
