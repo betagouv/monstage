@@ -130,7 +130,7 @@ Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendr
 * Le numéro de semaine: 1
 * Joint par un W*(eek)*
 
-Nous attendons donc une liste de couple année/semaine dans nos API, exemple :
+Exemple de ce que nous attendons dans nos API :
 
 ```
 internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
@@ -186,7 +186,7 @@ L'API attends en paramêtre obligatoire un secteur d'activité associé à une o
 * *Arts du spectacle*: **055b7580-c979-480f-a026-e94c8b8dc46e**
 * *Culture et patrimoine*: **c76e6364-7257-473c-89aa-c951141810ce**
 
-Nous attendons donc un uuid dans nos API, exemple :
+Exemple de ce que nous attendons donc un uuid dans nos API :
 
 ```
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
