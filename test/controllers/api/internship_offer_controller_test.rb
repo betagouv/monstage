@@ -11,13 +11,51 @@ module Api
 
     test 'POST #create as operator works to internship_offers' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      post api_internship_offers_path(params: {token: "Bearer #{operator.api_token}"})
-      assert_equal 204, response.status
+      weeks = [weeks(:week_2019_1)]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+
+      title = "title"
+      description = "description"
+      employer_name = "employer_name"
+      employer_description = "employer_description"
+      employer_website = "http://google.fr"
+      coordinates = {latitude: 48.8566, longitude: 2.3522}
+      street = "Avenue de l'opéra"
+      zipcode = "75002"
+      city = "Paris"
+      sector_uuid = sector.uuid
+      weeks = []
+      remote_id = ""
+      permalink = ""
+
+      post api_internship_offers_path(
+        params: {
+          token: "Bearer #{operator.api_token}",
+          internship_offer: {
+            title: title,
+            description: description,
+            employer_name: employer_name,
+            employer_description: employer_description,
+            employer_website: employer_website,
+            coordinates: coordinates,
+            street: street,
+            zipcode: zipcode,
+            city: city,
+            sector_uuid: sector_uuid,
+            weeks: weeks,
+            remote_id: remote_id,
+            permalink: permalink,
+          }
+        }
+      )
+
+
+      assert_equal 200, response.status
     end
 
     # test 'POST #create as employer creates the post' do
     #   school = create(:school)
-    #   employer = create(:employer)
+    #
     #   weeks = [weeks(:week_2019_1)]
     #   internship_offer = build(:internship_offer, employer: employer)
     #   sign_in(internship_offer.employer)

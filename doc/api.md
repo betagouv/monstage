@@ -52,6 +52,7 @@ L'authentification se fait par jeton via :
 
     sector_uuid : Identifiant unique du secteurs, voir référentiel *(1)
     weeks : Liste des semaines pendant lequel celui ci est accessible voir référentiel *(2)
+
     remote_id: l'identifiant unique du coté operateur|collectivité|association
     permalink: lien de redirection pour renvoyer sur le site unique du coté operateur|collectivité|association
   }
