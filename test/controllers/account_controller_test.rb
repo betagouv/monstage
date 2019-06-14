@@ -53,6 +53,16 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # test 'GET edit render :edit api success for Operator' do
+  #   token = SecureRandom.uuid
+  #   sign_in(create(:user_operator, api_token: "token"))
+  #   get account_path(section: 'api')
+
+  #   assert_response :success
+  #   assert_select "input[name=\"user[api_token]\"]"
+  #   assert_select "input[value=\"#{token}\"]"
+  # end
+
   test 'GET edit render as student also allow him to change class_room' do
     school = create(:school)
     class_room_1 = create(:class_room, school: school)

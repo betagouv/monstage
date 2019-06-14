@@ -25,6 +25,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 gem 'delayed_job_active_record'
+gem "delayed_job_web"
 
 group :development do
   gem 'foreman'

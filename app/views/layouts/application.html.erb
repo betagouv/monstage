@@ -23,19 +23,21 @@
       </header>
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
-        <%= yield %>
+        <div role="main"><%= yield %></div>
       <% else %>
         <div class="container">
           <%= render 'layouts/flash' %>
-          <%= yield %>
+          <div role="main"><%= yield %></div>
         </div>
       <% end %>
     </div>
-    <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3">
-      <div class="container">
-        <%= render 'layouts/footer' %>
+    <footer role="contentinfo">
+      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3">
+        <div class="container">
+          <%= render 'layouts/footer' %>
+        </div>
       </div>
-    </div>
+    </footer>
     <%= render 'feedbacks/form' %>
     <% if Rails.env.development? %>
       <script>

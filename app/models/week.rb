@@ -9,18 +9,18 @@ class Week < ApplicationRecord
 
   scope :from_date_to_date, -> (from:, to:) {
     if from.year == to.year
-      where(year: from.year).where('number BETWEEN ? AND ? ', from.cweek, to.cweek)
+      from_date_for_current_year(from: from).to_date_for_current_year(to: to)
     else
-      where("year = :from_year AND number > :from_week", {from_year: from.year, from_week: from.cweek})
-        .or(where("year = :to_year AND number BETWEEN 1 AND :to_week", {to_year: to.year, to_week: to.cweek}))
+      from_date_for_current_year(from: from).or(to_date_for_current_year(to: to))
     end
   }
-  scope :from_date_to_date_for_year, lambda { |from, to, year|
-    where(year: year).where('number BETWEEN ? AND ?', from.cweek, to.cweek)
+
+  scope :from_date_for_current_year, -> (from:) {
+    where(year: from.year).where('number > :from_week', { from_week: from.cweek })
   }
 
-  scope :from_date_until_end_of_year, lambda { |from, year|
-    where(year: year).where('number > ?', from.cweek)
+  scope :to_date_for_current_year, -> (to:) {
+    where(year: to.year).where('number <= :to_week', { to_week: to.cweek })
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'

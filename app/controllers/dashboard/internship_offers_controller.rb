@@ -26,14 +26,14 @@ module Dashboard
     rescue ActiveRecord::RecordInvalid,
            ActionController::ParameterMissing
       @internship_offer ||= InternshipOffer.new
-      find_selectable_content
+      find_selectable_weeks
       render :new, status: :bad_request
     end
 
     def edit
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
-      find_selectable_content
+      find_selectable_weeks
     end
 
     def update
@@ -44,7 +44,7 @@ module Dashboard
                   flash: { success: 'Votre annonce a bien été modifiée' })
     rescue ActiveRecord::RecordInvalid,
            ActionController::ParameterMissing => e
-      find_selectable_content
+      find_selectable_weeks
       render :edit, status: :bad_request
     end
 
@@ -59,14 +59,10 @@ module Dashboard
     def new
       authorize! :create, InternshipOffer
       @internship_offer = InternshipOffer.new
-      find_selectable_content
+      find_selectable_weeks
     end
 
     private
-
-    def find_selectable_content
-      find_selectable_weeks
-    end
 
     def internship_offer_params
       params.require(:internship_offer)

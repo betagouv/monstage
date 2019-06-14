@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: 'ne-pas-repondre@monstagede3e.fr'
+  default from: Proc.new {  ApplicationMailer.formatted_email }
   layout 'mailer'
+
+  def self.from
+    host_or_default = ENV.fetch('HOST') { 'https://test.example.com' }
+    domain_without_www = URI(host_or_default).host.gsub('www.', '')
+    "ne-pas-repondre@#{domain_without_www}"
+  end
+
+  def self.display_name
+    "Mon Stage de 3e"
+  end
+
+  def self.formatted_email
+    address = Mail::Address.new()
+    address.address = self.from
+    address.display_name = self.display_name
+    address.format
+  end
 end

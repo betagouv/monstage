@@ -85,11 +85,12 @@ class Ability
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], :sign_up
     end
+    can_read_dashboard_students_internship_applications(user: user)
   end
 
   def other_abilities(user:)
     can_create_and_manage_account(user: user)
-
+    can_read_dashboard_students_internship_applications(user: user)
     can_read_dashboard(user: user) do
       can [:manage_school_users], School do |school|
         school.id == user.school_id

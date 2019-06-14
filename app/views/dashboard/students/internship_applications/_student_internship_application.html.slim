@@ -7,8 +7,7 @@
 
       - if student_internship_application.approved? && can?(:update, student_internship_application)
         p.actions.d-flex.d-sm-block.py-0.mt-2.mb-0
-          = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application
 
           = button_tag type: "button", data: { toggle: 'modal', target: "#sign-internship-application-#{student_internship_application.id}" }, class: 'btn btn-success btn-sm mx-1' do
             = "Valider la convention"
-
+    = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application

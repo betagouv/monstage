@@ -39,7 +39,7 @@ module Reporting
 
     scope :grouped_by_sector, lambda {
       select('sector_id',
-             'count(sector_id) as report_total_count',
+             'sum(max_internship_week_number * max_candidates) as report_total_count',
              *AGGREGATE_FUNCTIONS)
         .includes(:sector)
         .group(:sector_id)
@@ -48,7 +48,7 @@ module Reporting
 
     scope :grouped_by_publicy, lambda {
       select('is_public',
-             'count(is_public) as report_total_count',
+             'sum(max_internship_week_number * max_candidates) as report_total_count',
              *AGGREGATE_FUNCTIONS)
         .group(:is_public)
         .order(:is_public)
@@ -56,7 +56,7 @@ module Reporting
 
     scope :grouped_by_group, lambda {
       select('internship_offers.group',
-             'count(internship_offers.group) as report_total_count',
+             'sum(max_internship_week_number * max_candidates) as report_total_count',
              *AGGREGATE_FUNCTIONS)
         .where(is_public: true)
         .group('internship_offers.group')

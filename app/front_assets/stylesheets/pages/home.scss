@@ -39,6 +39,9 @@
   .h2-home{
     font-size: 44px;
   }
+  .h3-bis-home{
+    font-size: 24px;
+  }
   .h3-home{
     font-size: 30px;
   }
@@ -58,7 +61,21 @@
     line-height: 60px;
   }
 }
-
+.container-sticky-note{
+  position: relative;
+}
+.bg-white-250{
+  background-color: rgb(250,250,250);
+}
+.sticky-note {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  background-color: #cf004c;
+  color: white;
+  font-weight: 900;
+  font-size: 32px;
+}
 .mw-360{
   max-width: 360px;
   height: auto;

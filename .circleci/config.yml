@@ -11,6 +11,7 @@ jobs: # a collection of steps
           PGHOST: 127.0.0.1
           PGUSER: monstage_test
           RAILS_ENV: test
+          HOST: https://www.example.fr
       - image: circleci/postgres:10.6-alpine-postgis # database image
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
