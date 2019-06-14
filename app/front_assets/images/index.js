@@ -5,6 +5,7 @@ import './logo-beta-gouv-fr.png'
 import './pages/logo_onisep.jpg'
 import './pages/logo_cget_texte.png'
 
+import './homepage/icon-documents-utiles.png'
 import './homepage/benefices/icon-accompagner-les-eleves.png'
 import './homepage/benefices/icon-offrir-un-stage.png'
 import './homepage/benefices/icon-trouver-un-stage.png'
@@ -23,3 +24,8 @@ import './homepage/partenaires/Logo-united-way.png'
 
 import './homepage/sponsors/Logo-MCTRCT-CGET.png'
 import './homepage/sponsors/Logo-ministere-education-nationale.png'
+
+import './documents-utiles/CarnetStagePro_USEA_WEB-2.jpg'
+import './documents-utiles/RienNeSertDeCourirPageBD.jpg'
+import './documents-utiles/USEA-Carnet-Stage-Education.jpg'
+import './documents-utiles/USEA-Cherchez-la-chercheuse.jpg'
