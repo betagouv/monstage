@@ -6,8 +6,8 @@ Pour diffuser des offres de stage sur la plateforme "[mon stage de 3e](https://w
 
 L'API sera :
 
-* construite sur le format "REST" 
-* "dans le respect" du standard [jsonapi](https://jsonapi.org)
+* construite sur le format "REST"
+* inspiré du standard [jsonapi](https://jsonapi.org)
 * avec en ```baseUrl``` https://monstagedetroisieme.fr/api.
 
 Les services web suivant seront mis à dispotion :
@@ -20,36 +20,38 @@ Les services web suivant seront mis à dispotion :
 
 *Les APIs sont ouvertes uniquement aux acteurs concernés.*
 
-**Merci d'effectuer une demande par mail** pour l'accès a la création de compte opérateur : [support](mailto:martin.fourcade@beta.gouv.fr?subject=Création Compte opérateur&body=Demande d'accès pour l'association|ministère|opérateur ...) afin de créer un compte API.
+**Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois les comptes crées, les token d'API pourront être récupéré via notre interface web.
+Une fois le compte crée, le token d'API pourra être récupéré via notre interface web.
 
 L'authentification se fait par token via :
 
-* le header HTTP : ```Authorization: Bearer #{token} ```
+* **le header HTTP** : ```Authorization: Bearer #{token} ```
 * ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
-* ou le param d'url token : ```token=Bearer #{token} ``` (**attention**, il faut tout encoder la valeur du paramêtre via le format d'url param ; donc Bearer en URL doit devenir Bearer+#{token}, un exemple est donnée plus tard...)
+* ou le param d'url token : ```token=Bearer #{token} ``` (**attention**, il faut encoder la valeur du paramêtre au format de paramêtre d'url ; donc Bearer en URL doit devenir Bearer+#{token}, un exemple est donnée plus tard...)
 
 
 # Structure de donnée : Les offres de stages
 
 ```
 {
-  title : Titre de l’offre de stage
-  description : Description de l'offre de stage
+  internship_offer: {
+    title : Titre de l’offre de stage
+    description : Description de l'offre de stage
 
-  employer_name : Nom de l’entreprise proposant le stage
-  employer_description : Description de l’entreprise proposant le stage
-  employer_website : Lien web vers le site de l’entreprise proposant le stage
+    employer_name : Nom de l’entreprise proposant le stage
+    employer_description : Description de l’entreprise proposant le stage
+    employer_website : Lien web vers le site de l’entreprise proposant le stage
 
-  coordinates : Coordonnées géographique du lieu de stage
-  street : Nom de la rue ou se déroule le stage
-  zipcode  : Code postal ou se déroule le stage
-  city : Nom de la ville où se déroule le stage
+    coordinates : Coordonnées géographique du lieu de stage
+    street : Nom de la rue ou se déroule le stage
+    zipcode  : Code postal ou se déroule le stage
+    city : Nom de la ville où se déroule le stage
 
-  sector_uuid : voir référentiel *(1)
-  weeks : voir référentiel *(2)
-  remote_id: l'identifiant unique du coté opposé (pr faire des callbacks, au besoin, si possible)
+    sector_uuid : Identifiant unique du secteurs, voir référentiel *(1)
+    weeks : Liste des semaines pendant lequel celui ci est accessible voir référentiel *(2)
+    remote_id: l'identifiant unique du coté operateur|collectivité|association
+  }
 }
 ```
 
@@ -68,17 +70,17 @@ L'authentification se fait par token via :
 
 *(Contraintes de données)*
 
-* **title** *(string, required)*
-* **description** *(text, required *<= 715 caractères)
-* **employer_name** *(string, required)*
-* **employer_description** *(string, required *<= 275 caractères)
-* **employer_website** *(string, optional)*
-* **coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
-* **street** *(text, optional)*
-* **zipcode** *(string, required)*
-* **city** *(string, required)*
-* **sector_uuid** *(integer, required)*
-* **weeks** (array[array(year, week_number), array(year, week_number), ...], optional) : si ce champs n'est pas remplis, le stage sera automatiquement disponible toute l'année
+* **internship_offer.title** *(string, required)*
+* **internship_offer.description** *(text, required *<= 715 caractères)
+* **internship_offer.employer_name** *(string, required)*
+* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_website** *(string, optional)*
+* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
+* **internship_offer.street** *(text, optional)*
+* **internship_offer.zipcode** *(string, required)*
+* **internship_offer.city** *(string, required)*
+* **internship_offer.sector_uuid** *(integer, required)*
+* **internship_offer.weeks** (array[array(year, week_number), array(year, week_number), ...], optional) : si ce champs n'est pas remplis, le stage sera automatiquement disponible toute l'année
 
 **exemple curl**
 
@@ -93,8 +95,8 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
 ```
 
 ### <a name="ref-destroy-internship-offer"></a>
-## Endpoint supression d'offre.
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote__id}
+## Endpoint supression d'offre.
+**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 
 **method** : DELETE
 
@@ -122,14 +124,15 @@ Les offres de stages se faisant par cycles hebdomadaires de travail (du lundi au
 * Le numéro de semaine: 1
 * Joint par un W*(eek)*
 
-Nous attendons donc une liste/tableau de couple année/semaine dans nos API, exemple ;
+Nous attendons donc une liste/tableau de couple année/semaine dans nos API, exemple :
+
 ```
-internship_offers.weeks: ["2019W1", "2019W3", "2019W5"]
+internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
 ```
 
-L'absence de donnée indique un stage accéssible sur toute l'année.
+L'absence de donnée indique que le stage accessible toute l'année.
 
-### <a name="ref-sectors"></a>
+### <a name="ref-sectors"></a>
 ## Référentiel : Secteurs d'activité
 
 L'API attends en paramêtre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
@@ -177,4 +180,8 @@ L'API attends en paramêtre obligatoire un secteur d'activité associé à une o
 * *Arts du spectacle*: **055b7580-c979-480f-a026-e94c8b8dc46e**
 * *Culture et patrimoine*: **c76e6364-7257-473c-89aa-c951141810ce**
 
+Nous attendons donc un uuid dans nos API, exemple :
 
+```
+internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
+```
