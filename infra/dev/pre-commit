@@ -11,3 +11,11 @@ else
 	echo "Circle ci file not valid!"
 	exit 1; # circle ci file not valid!
 fi
+
+command -v rails test:system
+if [ $? -eq 0 ]; then
+  exit 0; # allow commit
+else
+  echo "System test failed!"
+  exit 1; # circle ci file not valid!
+fi
