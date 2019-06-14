@@ -118,13 +118,13 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
 
 ### <a name="ref-weeks"></a>
 ## Référentiel : Semaines
-Les offres de stages se faisant par cycles hebdomadaires de travail (du lundi au vendredi), Cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple. C'est un "couple" composé de :
+Les stage se faisant par cycles hebdomadaires de travail (du lundi au vendredi), cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple composé de :
 
 * L'année: 2019
 * Le numéro de semaine: 1
 * Joint par un W*(eek)*
 
-Nous attendons donc une liste/tableau de couple année/semaine dans nos API, exemple :
+Nous attendons donc une liste de couple année/semaine dans nos API, exemple :
 
 ```
 internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
