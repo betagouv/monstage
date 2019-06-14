@@ -5,7 +5,7 @@ import './logo-beta-gouv-fr.png'
 import './pages/logo_onisep.jpg'
 import './pages/logo_cget_texte.png'
 
-import './homepage/icon-documents-utiles.png'
+import './homepage/icon-documents-utiles.svg'
 import './homepage/benefices/icon-accompagner-les-eleves.png'
 import './homepage/benefices/icon-offrir-un-stage.png'
 import './homepage/benefices/icon-trouver-un-stage.png'
