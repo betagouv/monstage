@@ -22,13 +22,13 @@ Les services web suivant seront mis à dispotion :
 
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois le compte crée, le token d'API pourra être récupéré via notre interface web.
+Une fois le compte crée, le jeton d'API pourra être récupéré via notre interface web.
 
-L'authentification se fait par token via :
+L'authentification se fait par jeton via :
 
-* **le header HTTP** : ```Authorization: Bearer #{token} ```
+* **le header HTTP (de préférence)** : ```Authorization: Bearer #{token} ```
 * ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
-* ou le param d'url token : ```token=Bearer #{token} ``` (**attention**, il faut encoder la valeur du paramêtre au format de paramêtre d'url ; donc Bearer en URL doit devenir Bearer+#{token}, un exemple est donnée plus tard...)
+* ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramêtre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
 
 
 # Structure de donnée : Les offres de stages
@@ -89,7 +89,7 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X POST \
-     -d '{}' \
+     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
      -vvv \
      https://monstagedetroisieme.fr/api/internship_offers
 ```
