@@ -60,17 +60,17 @@
     .row.py-5
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Offrir un stage
           p.text-center.h4-home Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Trouver un stage
           p.text-center.h4-home À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Accompagner les élèves
           p.text-center.h4-home Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
 .bg-light-warning.py-5.d-none.d-sm-block
@@ -112,14 +112,14 @@
       .col-12
         h3.h3-home.mb-5.text-center Un projet porté par
       .col-12
-        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |img|
-          = image_tag asset_pack_path("media/images/homepage/sponsors/#{img}"), height: 221, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |sponsor_logo|
+          = image_tag asset_pack_path("media/images/homepage/sponsors/#{sponsor_logo}"), height: 221, class: 'mx-4', alt: "#{sponsor_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
 
       .col-12
         h3.h3-home.my-5.text-center Nos partenaires
 
       .col-12
-        - %w[Logo-onisep.jpg Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each.with_index do |img, i|
-          = image_tag asset_pack_path("media/images/homepage/partenaires/#{img}"), height: 69, class: 'mx-3 my-3', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+        - %w[Logo-onisep.jpg Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each.with_index do |partner_logo, i|
+          = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), height: 69, class: 'mx-3 my-3', alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
           - if i == 0
             br
