@@ -31,7 +31,9 @@ L'authentification se fait par jeton via :
 * ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramêtre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
 
 
-# Structure de donnée : Les offres
+# Structures de donnée
+
+## Les offres
 
 ```
 {
@@ -58,8 +60,10 @@ L'authentification se fait par jeton via :
 *(1): [referenciel des secteurs](#ref-sectors)
 *(2): [referenciel des semaines](#ref-weeks)
 
+# Endpoints
+
 ### <a name="ref-create-internship-offer"></a>
-## Endpoint création d'offre.
+## Création d'offre
 
 
 **url** : https://monstagedetroisieme.fr/api/internship_offers
@@ -80,12 +84,12 @@ L'authentification se fait par jeton via :
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[array(year, week_number), array(year, week_number), ...], optional) : si ce champs n'est pas remplis, le stage sera automatiquement disponible toute l'année
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 
 **exemple curl**
 
 ```
-curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
+curl -H "Authorization: Bearer foobarbaz" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X POST \
@@ -95,7 +99,7 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
 ```
 
 ### <a name="ref-destroy-internship-offer"></a>
-## Endpoint supression d'offre.
+## Supression d'offre
 **url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 
 **method** : DELETE
@@ -109,15 +113,17 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
 **exemple curl**
 
 ```
-curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
+curl -H "Authorization: Bearer foobarbaz" \
      -H "Accept: application/json" \
      -X DELETE \
      -vvv \
      https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
 ```
 
+# Référentiels
+
 ### <a name="ref-weeks"></a>
-## Référentiel : Semaines
+## Semaines
 Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple composé de :
 
 * L'année: 2019
@@ -133,7 +139,7 @@ internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
 L'absence de donnée indique que le stage accessible toute l'année.
 
 ### <a name="ref-sectors"></a>
-## Référentiel : Secteurs d'activité
+## Secteurs d'activité
 
 L'API attends en paramêtre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
 
