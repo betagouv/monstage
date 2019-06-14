@@ -1,4 +1,4 @@
-Pour diffuser des offres de stage sur la plateforme "[mon stage de 3e](https://www.monstagedetroisieme.fr/)", une API sera mise à disposition pour :
+Pour diffuser des offres sur la plateforme "[mon stage de 3e](https://www.monstagedetroisieme.fr/)", une API sera mise à disposition pour :
 
 * les associations
 * les collectivités
@@ -31,7 +31,7 @@ L'authentification se fait par jeton via :
 * ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramêtre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
 
 
-# Structure de donnée : Les offres de stages
+# Structure de donnée : Les offres
 
 ```
 {
@@ -43,7 +43,7 @@ L'authentification se fait par jeton via :
     employer_description : Description de l’entreprise proposant le stage
     employer_website : Lien web vers le site de l’entreprise proposant le stage
 
-    coordinates : Coordonnées géographique du lieu de stage
+    coordinates : Coordonnées géographique du lieu du stage
     street : Nom de la rue ou se déroule le stage
     zipcode  : Code postal ou se déroule le stage
     city : Nom de la ville où se déroule le stage
@@ -118,7 +118,7 @@ curl -H "Authorization: Bearer 68792260-2e41-40e4-a9e5-ec32ffa33ad8" \
 
 ### <a name="ref-weeks"></a>
 ## Référentiel : Semaines
-Les stage se faisant par cycles hebdomadaires de travail (du lundi au vendredi), cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple composé de :
+Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple composé de :
 
 * L'année: 2019
 * Le numéro de semaine: 1
