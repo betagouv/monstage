@@ -1,18 +1,28 @@
 # frozen_string_literal: true
 
 module Api
+  SerializableError = Struct.new(:title) do
+  end
   class InternshipOffersController < ApiBaseController
-    include SetInternshipOffers
-
     before_action :authenticate_api_user!
 
     def create
-      internship_offer_builder.create(params: internship_offer_params) do |on|
+      internship_offer_builder.create(params: method(:internship_offer_params)) do |on|
         on.success do |created_internship_offer|
-        end
+          render status: :createeated,
+                 jsonapi: created_internship_offer
+          end
         on.failure do |failure_internship_offer|
+          render status: :bad_request,
+                 jsonapi_errors: failure_internship_offer.errors
         end
       end
+    rescue ArgumentError,
+           ActionController::ParameterMissing => error
+           byebug
+      render status: :unprocessable_entity,
+             jsonapi_errors: SerializableError.new(error.message),
+             jsonapi_errors_class: Api::Serializers::SerializableError
     end
 
     def destroy
@@ -21,7 +31,7 @@ module Api
     private
 
     def internship_offer_builder
-      @builder ||= Builders::InternshipOfferBuilder.new(user: api_user)
+      @builder ||= Builders::InternshipOfferBuilder.new(user: current_api_user)
     end
 
     def internship_offer_params

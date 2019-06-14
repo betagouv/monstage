@@ -29,6 +29,10 @@ module Dashboard
           render :new, status: :bad_request
         end
       end
+    rescue ActionController::ParameterMissing => error
+      @internship_offer = InternshipOffer.new
+      find_selectable_weeks
+      render :new, status: :bad_request
     end
 
     def edit

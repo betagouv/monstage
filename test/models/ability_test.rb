@@ -43,10 +43,10 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should not be able to update internship offer not belonging to him')
     assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
            'employers should be able to update internships offer that belongs to him')
-    assert(ability.cannot?(:destroy, InternshipOffer.new),
-           'employers should be able to destroy internships offer not belonging to him')
-    assert(ability.can?(:destroy, InternshipOffer.new(employer: employer)),
-           'employers should be able to destroy internships offer that belongs to him')
+    assert(ability.cannot?(:discard, InternshipOffer.new),
+           'employers should be able to discard internships offer not belonging to him')
+    assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
+           'employers should be able to discard internships offer that belongs to him')
   end
 
   test 'God' do
