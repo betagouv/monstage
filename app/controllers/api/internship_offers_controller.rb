@@ -27,7 +27,7 @@ module Api
               :zipcode, #  : Code postal du lieu de stage
               :city, # : Nom de la ville où se déroule le stage
               :sector_uuid, # : voir référentiel
-              :weeks # : voir référentiel,
+              :weeks, # : voir référentiel,
               :remote_id,
               :permalink
             )
