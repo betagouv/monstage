@@ -18,16 +18,17 @@ module Dashboard
     end
 
     def create
-      authorize! :create, InternshipOffer
-      @internship_offer = InternshipOffer.new(internship_offer_params)
-      @internship_offer.save!
-      redirect_to(dashboard_internship_offer_path(@internship_offer),
-                  flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.' })
-    rescue ActiveRecord::RecordInvalid,
-           ActionController::ParameterMissing
-      @internship_offer ||= InternshipOffer.new
-      find_selectable_weeks
-      render :new, status: :bad_request
+      internship_offer_builder.create({params: method(:internship_offer_params)}) do |on|
+        on.success do |created_internship_offer|
+          redirect_to(dashboard_internship_offer_path(created_internship_offer),
+                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.' })
+        end
+        on.failure do |failed_internship_offer|
+          @internship_offer = failed_internship_offer || InternshipOffer.new
+          find_selectable_weeks
+          render :new, status: :bad_request
+        end
+      end
     end
 
     def edit
@@ -50,7 +51,7 @@ module Dashboard
 
     def destroy
       @internship_offer = InternshipOffer.find(params[:id])
-      authorize! :destroy, @internship_offer
+      authorize! :discard, @internship_offer
       @internship_offer.discard
       redirect_to(dashboard_internship_offers_path,
                   flash: { success: 'Votre annonce a bien été supprimée' })
@@ -63,6 +64,10 @@ module Dashboard
     end
 
     private
+
+    def internship_offer_builder
+      @builder ||= Builders::InternshipOfferBuilder.new(user: current_user)
+    end
 
     def internship_offer_params
       params.require(:internship_offer)

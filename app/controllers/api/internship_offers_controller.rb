@@ -7,12 +7,22 @@ module Api
     before_action :authenticate_api_user!
 
     def create
+      internship_offer_builder.create(params: internship_offer_params) do |on|
+        on.success do |created_internship_offer|
+        end
+        on.failure do |failure_internship_offer|
+        end
+      end
     end
 
     def destroy
     end
 
     private
+
+    def internship_offer_builder
+      @builder ||= Builders::InternshipOfferBuilder.new(user: api_user)
+    end
 
     def internship_offer_params
       params.require(:internship_offer)
