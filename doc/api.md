@@ -53,6 +53,7 @@ L'authentification se fait par jeton via :
     sector_uuid : Identifiant unique du secteurs, voir référentiel *(1)
     weeks : Liste des semaines pendant lequel celui ci est accessible voir référentiel *(2)
     remote_id: l'identifiant unique du coté operateur|collectivité|association
+    permalink: lien de redirection pour renvoyer sur le site unique du coté operateur|collectivité|association
   }
 }
 ```
@@ -85,6 +86,8 @@ L'authentification se fait par jeton via :
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
+* **permalink** *(url, required)*
 
 **exemple curl**
 

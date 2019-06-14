@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_06_151156) do
+ActiveRecord::Schema.define(version: 2019_06_14_130950) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
@@ -116,6 +117,8 @@ ActiveRecord::Schema.define(version: 2019_06_06_151156) do
     t.string "academy", default: "", null: false
     t.integer "total_male_applications_count", default: 0, null: false
     t.integer "total_male_convention_signed_applications_count", default: 0, null: false
+    t.string "remote_id"
+    t.string "permalink"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
