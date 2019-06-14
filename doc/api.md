@@ -10,7 +10,7 @@ L'API sera :
 * inspiré du standard [jsonapi](https://jsonapi.org)
 * avec en ```baseUrl``` https://monstagedetroisieme.fr/api.
 
-Les services web suivant seront mis à dispotion :
+Les services web suivant seront mis à disposition :
 
 * POST [/internship_offers](#ref-create-internship-offer) : Pour ajouter une offre de stage sur Mon stage de 3e
 * DELETE [/internship_offers/{id}](#ref-destroy-internship-offer) : Pour suprimer une offre de stage sur Mon stage de 3e
@@ -22,13 +22,13 @@ Les services web suivant seront mis à dispotion :
 
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois le compte crée, le jeton d'API pourra être récupéré via notre interface web.
+Une fois le compte créée, le jeton d'API pourra être récupéré via notre interface web.
 
 L'authentification se fait par jeton via :
 
 * **le header HTTP (de préférence)** : ```Authorization: Bearer #{token} ```
 * ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
-* ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramêtre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
+* ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramètre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
 
 
 # Structures de donnée
@@ -145,7 +145,7 @@ L'absence de donnée indique que le stage accessible toute l'année.
 ### <a name="ref-sectors"></a>
 ## Secteurs d'activité
 
-L'API attends en paramêtre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
+L'API attends en paramètre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
 
 * *Mode*: **b7564ac4-e184-41c4-a7a9-57233a9d244a**
 * *Banque et assurance*: **6a8f813b-c338-4d4f-a4cd-99a28748b57d**
