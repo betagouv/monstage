@@ -1,5 +1,5 @@
-.bg-cover-image-homepage.py-5
-  .container
+.bg-cover-image-homepage
+  .container.py-5.container-sticky-note
     .row
       .col-12.col-md-6
         = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none mx-sm-0 mx-auto', width: 160
@@ -19,23 +19,37 @@
           .actions.mt-3.d-flex.d-sm-inline
             = link_to "Créer mon compte", users_choose_profile_path, class: 'btn btn-lg px-4 btn-warning shadow-lg'
 
+    .row
+      p.sticky-note.d-none.d-md-block.px-3.py-2.text-center
+        | STAGES RÉSERVÉS
+        br
+        | aux collèges REP+
+.py-5.bg-white-250
+  .container
+    .row.align-items-center.no-gutters
+      .col-1.text-center.text-warning.d-none.d-md-block
+        i.fas.fa-2x.fa-exclamation-triangle
+      .col
+        h2.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire renforcée (REP+)
+        p.mt-2.mb-0.h4-home
+          = "Les élèves des autres collèges trouveront "
+          = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'h4-home' do
+            | toutes les informations utiles
+          = " sur le site EDUSCOL et chercheront des stages sur le portail "
+          = link_to "https://www.monstageenligne.fr", class: 'h4-home' do
+            | Mon stage en ligne
+          = " de l'ONISEP"
+
 .py-5
   .container
     .row
-      .col-12.col-sm-9
-        h2.h3-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire renforcée (REP+)
-    .row
-      .col-12.col-sm.12
-        p.mt-3.mb-4.big-tagline Les élèves des autres collèges trouveront toutes les informations utiles sur le site EDUSCOL et trouveront des stages sur le portail de l'ONISEP : Mon stage en ligne.
-        .actions.my-3.d-flex.d-sm-inline
-          = link_to "https://www.monstageenligne.fr", class: 'h4-home' do
-            i.fas.fa-chevron-circle-right.mr-1.text-warning
-            | Mon stage en ligne
-        span.mx-2.d-none.d-sm-inline=" "
-        .actions.my-3.d-flex.d-sm-inline
-          = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'h4-home' do
-            i.fas.fa-chevron-circle-right.mr-1.text-warning
-            | Tout sur les stages
+      .col
+        = image_tag asset_pack_path('media/images/homepage/icon-documents-utiles.png'), alt: "Icon documents utiles", class: 'my-3 mx-5 d-none d-md-block float-right ', size: "200x200"
+
+        h3.h2-home Documents utiles
+        p.h4-home Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
+        p= link_to "Voir les documents", documents_utiles_path, class: "btn btn-lg btn-outline-warning shadow-lg"
+
 
 .bg-warning.py-5.d-none.d-sm-block
   .container
@@ -46,17 +60,17 @@
     .row.py-5
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Offrir un stage
           p.text-center.h4-home Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Trouver un stage
           p.text-center.h4-home À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
       .col-sm-12.col-md-4.py-3
         .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Mon stage de 3e", class: 'my-3 d-block logo mx-auto', width: 160
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", class: 'my-3 d-block logo mx-auto', width: 160
           h4.text-center.mb-3 Accompagner les élèves
           p.text-center.h4-home Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
 .bg-light-warning.py-5.d-none.d-sm-block
@@ -98,14 +112,14 @@
       .col-12
         h3.h3-home.mb-5.text-center Un projet porté par
       .col-12
-        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |img|
-          = image_tag asset_pack_path("media/images/homepage/sponsors/#{img}"), height: 221, class: 'mx-4', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |sponsor_logo|
+          = image_tag asset_pack_path("media/images/homepage/sponsors/#{sponsor_logo}"), height: 221, class: 'mx-4', alt: "#{sponsor_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
 
       .col-12
         h3.h3-home.my-5.text-center Nos partenaires
 
       .col-12
-        - %w[Logo-onisep.jpg Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each.with_index do |img, i|
-          = image_tag asset_pack_path("media/images/homepage/partenaires/#{img}"), height: 69, class: 'mx-3 my-3', alt: "#{img.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+        - %w[Logo-onisep.jpg Logo-FACE.jpg Logo-degunsanstage.jpg Logo-jobIRL.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].each.with_index do |partner_logo, i|
+          = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), height: 69, class: 'mx-3 my-3', alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
           - if i == 0
             br
