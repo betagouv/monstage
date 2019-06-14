@@ -149,7 +149,7 @@ L'API attends en paramêtre obligatoire un secteur d'activité associé à une o
 * *Communication*: **63d73fd3-9ca6-4838-95aa-9901896be99c**
 * *Édition, librairie, bibliothèque*: **27c1d368-0846-4038-903f-d63b989e0fe4**
 * *Traduction, interprétation*: **1123edde-0d77-498a-85c5-2ab3d81b3cd8**
-* Bâtiment et travaux publics
+* *Bâtiment et travaux publics (BTP)*: **ab69287d-273a-4626-b645-d98f567b22ba**
 * *Comptabilité, gestion, ressources humaines*: **bfb24e1c-aebc-4451-bb4b-569ab71a814d**
 * *Droit et justice*: **1711c7c8-89dc-48dd-9ae9-22bde1bd281b**
 * *Enseignement*: **76f3a155-e592-4bb9-8512-358a7d9db313**
