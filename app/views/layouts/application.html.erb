@@ -23,7 +23,7 @@
       </header>
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
-        <div role="main"><%= yield %><div>
+        <div role="main"><%= yield %></div>
       <% else %>
         <div class="container">
           <%= render 'layouts/flash' %>
