@@ -140,7 +140,7 @@ Exemple de ce que nous attendons dans nos API :
 internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
 ```
 
-L'absence de donnée indique que le stage accessible toute l'année.
+L'absence de donnée indique que le stage est accessible toute l'année.
 
 ### <a name="ref-sectors"></a>
 ## Secteurs d'activité
