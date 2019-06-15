@@ -31,9 +31,11 @@ module Builders
       params[:weeks] = preprocess_week(weeks: params.delete(:weeks)) if from_api?(params)
       params
     end
+
     def from_api?(params)
       params.key?(:sector_uuid)
     end
+
     def preprocess_sector(sector_uuid:)
       Sector.where(uuid: sector_uuid).first
     end
