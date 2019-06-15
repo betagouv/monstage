@@ -19,7 +19,6 @@ module Api
       end
     rescue ArgumentError,
            ActionController::ParameterMissing => error
-           byebug
       render status: :unprocessable_entity,
              jsonapi_errors: SerializableError.new(error.message),
              jsonapi_errors_class: Api::Serializers::SerializableError

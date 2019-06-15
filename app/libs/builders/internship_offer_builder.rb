@@ -27,7 +27,6 @@ module Builders
 
     def preprocess_params(params)
       params = params.call
-      # byebug
       params[:sector] = preprocess_sector(sector: params.delete(:sector_uuid)) if from_api?(params)
       params[:weeks] = preprocess_week(weeks: params.delete(:weeks)) if from_api?(params)
       params
