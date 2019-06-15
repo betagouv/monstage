@@ -18,7 +18,7 @@ module Dashboard
     end
 
     def create
-      internship_offer_builder.create({params: method(:internship_offer_params)}) do |on|
+      internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(dashboard_internship_offer_path(created_internship_offer),
                       flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.' })

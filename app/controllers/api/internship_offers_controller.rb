@@ -7,7 +7,7 @@ module Api
     before_action :authenticate_api_user!
 
     def create
-      internship_offer_builder.create(params: method(:internship_offer_params)) do |on|
+      internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           render status: :createeated,
                  jsonapi: created_internship_offer

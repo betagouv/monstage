@@ -26,7 +26,6 @@ module Builders
     attr_reader :user, :callback, :ability
 
     def preprocess_params(params)
-      params = params.call
       params[:sector] = preprocess_sector(sector: params.delete(:sector_uuid)) if from_api?(params)
       params[:weeks] = preprocess_week(weeks: params.delete(:weeks)) if from_api?(params)
       params
