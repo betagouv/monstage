@@ -6,7 +6,8 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize! :create, InternshipOffer
-      internship_offer = InternshipOffer.create!(preprocess_params(params))
+      params = from_api? ? preprocess_api_params(params) : params
+      internship_offer = model.create!(params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => error
       callback.on_failure.try(:call, error.record)
@@ -23,28 +24,55 @@ module Builders
     # end
 
     private
-    attr_reader :user, :callback, :ability
+    attr_reader :user, :callback, :ability, :context
 
-    def preprocess_params(params)
-      params[:sector] = preprocess_sector(sector: params.delete(:sector_uuid)) if from_api?(params)
-      params[:weeks] = preprocess_week(weeks: params.delete(:weeks)) if from_api?(params)
+    def initialize(user:, context:)
+      @user = user
+      @context = context
+      @ability = Ability.new(user)
+      @callback = Callback.new
+    end
+
+    def preprocess_api_params(params)
+      params = map_sector_uuid_to_sector(params: params)
+      params = map_week_slugs_to_weeks(params: params)
+      params = assign_offer_to_api_current_user(params: params)
       params
     end
 
-    def from_api?(params)
-      params.key?(:sector_uuid)
+    def from_api?
+      context == :api
     end
 
-    def preprocess_sector(sector_uuid:)
-      Sector.where(uuid: sector_uuid).first
+    def model
+      return ::Api::InternshipOffer if from_api?
+      return ::InternshipOffer
     end
 
-    def preprocess_week(weeks:)
-      query_weeks = weeks.map do |week_str|
-        year, number = week.split("W")
-        { year: year, number: number }
+    def map_sector_uuid_to_sector(params:)
+      return params unless params.key?(:sector_uuid)
+      params[:sector] = Sector.where(uuid: params.delete(:sector_uuid)).first
+      params
+    end
+
+    def map_week_slugs_to_weeks(params:)
+      if params.key?(:weeks)
+        concatenated_query = nil
+        Array(params.delete(:weeks)).map do |week_str|
+          year, number = week_str.split("W")
+          base_query = Week.where({ year: year, number: number })
+          concatenated_query = concatenated_query.nil? ? base_query : concatenated_query.or(base_query)
+        end
+        params[:weeks] = concatenated_query.all
+      else
+        # all year long
       end
-      Week.where(query_weeks).all
+      params
+    end
+
+    def assign_offer_to_api_current_user(params:)
+      params[:employer] = user
+      params
     end
 
     def authorize!(*vargs)
@@ -52,10 +80,5 @@ module Builders
       fail CanCan::AccessDenied
     end
 
-    def initialize(user:)
-      @user = user
-      @ability = Ability.new(user)
-      @callback = Callback.new
-    end
   end
 end

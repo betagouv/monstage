@@ -70,7 +70,8 @@ module Dashboard
     private
 
     def internship_offer_builder
-      @builder ||= Builders::InternshipOfferBuilder.new(user: current_user)
+      @builder ||= Builders::InternshipOfferBuilder.new(user: current_user,
+                                                        context: :webapp)
     end
 
     def internship_offer_params

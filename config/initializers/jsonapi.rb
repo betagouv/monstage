@@ -1,10 +1,12 @@
 JSONAPI::Rails.configure do |config|
   # # Set a default serializable class mapping.
-  # config.jsonapi_class = Hash.new { |h, k|
-  #   names = k.to_s.split('::')
-  #   klass = names.pop
-  #   h[k] = [*names, "Serializable#{klass}"].join('::').safe_constantize
-  # }
+  config.jsonapi_class = Hash.new { |h, k|
+    names = k.to_s.split('::')
+    klass = names.pop
+    h[k] = [*names, "Serializable#{klass}"].join('::').safe_constantize
+  }.tap { |h|
+    h[:'Api::InternshipOffer'] = SerializableInternshipOffer
+  }
   #
   # # Set a default serializable class mapping for errors.
   config.jsonapi_errors_class = Hash.new { |h, k|
@@ -14,7 +16,7 @@ JSONAPI::Rails.configure do |config|
   }.tap { |h|
     h[:'ActiveModel::Errors'] = JSONAPI::Rails::SerializableActiveModelErrors
     h[:Hash] = JSONAPI::Rails::SerializableErrorHash
-    h[:'Api::SerializableError'] = Api::Serializers::SerializableError
+    h[:'Api::SerializableError'] = SerializableError
   }
   #
   # # Set a default JSON API object.
