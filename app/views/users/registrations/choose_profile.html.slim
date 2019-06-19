@@ -5,32 +5,32 @@ header.header-account
 .row
   .col-12.col-md-6.my-3
     .onboarding-col
-      .mt-3.d-flex.d-sm-block
+      .mt-3
         h2= "Je suis élève de 3e"
         p
           | À l’invitation de ton professeur principal, accède à de nombreuses offres de stages et candidate à un stage qui te conviennes ou découvre un métier, un domaine d’activité.
-        .actions= link_to "Je crée mon compte", new_user_registration_path(as: 'Student'), class: 'btn btn-warning'
+        .actions.d-flex.d-sm-block= link_to "Je crée mon compte", new_user_registration_path(as: 'Student'), class: 'btn btn-warning'
 
   .col-12.col-md-6.my-3
     .onboarding-col
-      .mt-3.d-flex.d-sm-block
+      .mt-3
         h2= "Je suis chef d'établissement"
         p
           | Vous souhaitez que vos élèves trouvent un stage de qualité... Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
-        .actions= link_to "Je crée mon compte", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-warning'
+        .actions.d-flex.d-sm-block= link_to "Je crée mon compte", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-warning'
 
 .row
   .col-12.col-md-6.my-3
     .onboarding-col
-      .mt-3.d-flex.d-sm-block
+      .mt-3
         h2= "Je veux déposer une offre"
         p
           | Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
-        .actions= link_to "Je crée mon compte", new_user_registration_path(as: 'Employer'), class: 'btn btn-warning'
+        .actions.d-flex.d-sm-block= link_to "Je crée mon compte", new_user_registration_path(as: 'Employer'), class: 'btn btn-warning'
 
   .col-12.col-md-6.my-3
     .onboarding-col
-      .mt-3.d-flex.d-sm-block
+      .mt-3
         h2= "Je suis membre de l'équipe pédagogique"
         p
           | Vous souhaitez que vos élèves trouvent un stage de qualité. cette plateforme vous permettra de les accompagner dans les meilleures conditions.
