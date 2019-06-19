@@ -17,13 +17,13 @@
           <div class= "input-group">
             <%= school_form.text_field :city,
                                       data: { target: 'select-school.inputSearchCity' },
-                                      class: 'form-control col-lg-6',
+                                      class: 'form-control',
                                       required: required,
                                       autocomplete: :off,
                                       placeholder: defined?(school_city_placeholder) ? school_city_placeholder : "Rechercher la ville de mon collège" %>
             <div class="input-group-append">
               <button type=button
-                      class="btn btn-outline-secondary"
+                      class="btn btn-outline-secondary btn-clear-city"
                       data-action="click->select-school#onResetCityClicked"
                       data-target="select-school.resetSearchCityButton"><i class="fas fa-times"></i></button>
             </div>
@@ -58,7 +58,7 @@
                           disabled: true,
                           readonly: true,
                           data: {target: 'select-school.placeholderSchoolInput'},
-                          class: 'form-control col-lg-6' %>
+                          class: 'form-control' %>
 
       <div data-target="select-school.listSchools">
         <% School.all.includes(:class_rooms).each do |school| %>
@@ -92,7 +92,7 @@
                                                            :name,
                                                            resource.class_room),
                         {},
-                        class: 'form-control col-lg-6', data: {target: 'select-school.classRoomSelect'}, disabled: !resource.class_room.present? %>
+                        class: 'form-control', data: {target: 'select-school.classRoomSelect'}, disabled: !resource.class_room.present? %>
       </div>
     <% end %>
   <% end %>
