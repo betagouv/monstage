@@ -9,7 +9,7 @@
       Adresse électronique (email)
       <%= f.rg2a_required_content_tag %>
     <% end %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control col-lg-6" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
   </div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -25,7 +25,7 @@
       <% end %>
       <%= f.rg2a_required_content_tag %>
     <% end %>
-    <%= f.password_field :password, autocomplete: "new-password", class: "form-control col-lg-6" %>
+    <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
   </div>
 
   <div class="form-group">
@@ -33,7 +33,7 @@
       Confirmation du mot de passe
       <%= f.rg2a_required_content_tag %>
     <% end %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control col-lg-6" %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
   </div>
 
   <div class="form-group">
@@ -42,7 +42,7 @@
       <small class="form-text text-muted"><%= t('.we_need_your_current_password_to_confirm_your_changes') %></small>
       <%= f.rg2a_required_content_tag %>
     <% end %>
-    <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control col-lg-6" %>
+    <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
   </div>
 
   <div class="actions">

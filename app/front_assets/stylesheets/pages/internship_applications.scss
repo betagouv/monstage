@@ -9,6 +9,7 @@ $line-height: 4px;
   color: $nav-tabs-border-color;
   text-align: center;
   position: relative; // prepare position of pseudo element positionning with absolute
+  text-decoration: none;
 
   // use one element to the line connecting to the next circle
   &:after{
@@ -19,7 +20,7 @@ $line-height: 4px;
     content: " ";
     height: $line-height;
     width: 100%;
-    left: 50%;
+    right: 50%;
     // position the line at the center of of the circle
     top: $nav-link-rounded-radius; // position at center of circle which is radius
     margin-top: -($line-height/2); // recenter line considering his width
@@ -63,6 +64,9 @@ $line-height: 4px;
     }
   }
 
+  &.active small{
+    font-weight: bold;
+  }
   // do not draw last line
   &.trailing-nav-link-icon {
     &:after{

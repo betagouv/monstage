@@ -1,7 +1,12 @@
 .header-account{
   margin: 2rem 0;
 }
-
+.btn-clear-city{
+  background-color: $input-bg;
+  border-color: $input-border-color;
+  border-top-right-radius: $input-border-radius;
+  border-bottom-right-radius: $input-border-radius;
+}
 .actions .btn {
   flex: 1
 }

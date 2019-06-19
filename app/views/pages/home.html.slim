@@ -25,16 +25,6 @@
         br
         | aux collèges REP+
 
-.py-5
-  .container
-    .row
-      .col
-        = image_tag asset_pack_path('media/images/homepage/icon-documents-utiles.svg'), alt: "Icon documents utiles", class: 'my-3 mx-5 d-none d-md-block float-right ', size: "200x200"
-
-        h3.h2-home Documents utiles
-        p.h4-home Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
-        p= link_to "Voir les documents", documents_utiles_path, class: "btn btn-lg btn-outline-warning shadow-lg"
-
 .py-5.bg-white-250
   .container
     .row.align-items-center.no-gutters
@@ -50,6 +40,17 @@
           = link_to "https://www.monstageenligne.fr", class: 'h4-home' do
             | Mon stage en ligne
           = " de l'ONISEP"
+
+.py-5
+  .container
+    .row
+      .col
+        = image_tag asset_pack_path('media/images/homepage/icon-documents-utiles.svg'), alt: "Icon documents utiles", class: 'my-3 mx-5 d-none d-md-block float-right ', size: "200x200"
+
+        h3.h2-home Documents utiles
+        p.h4-home Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
+        p= link_to "Voir les documents", documents_utiles_path, class: "btn btn-lg btn-outline-warning shadow-lg"
+
 
 .bg-warning.py-5.d-none.d-sm-block
   .container

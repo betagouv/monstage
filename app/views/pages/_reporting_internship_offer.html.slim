@@ -2,12 +2,12 @@
 - font_weight_bold ||= false
 - font_color_blue ||= false
 tr class="#{gray_background ? 'bg-light' : ''} #{font_weight_bold ? 'font-weight-bold' : ''} #{font_color_blue ? 'text-info' : ''}"
-  td.align-middle= reporting_internship_offer.report_row_title
-  td.align-middle.text-info.text-bigger.font-weight-bold= reporting_internship_offer.report_total_count
-  td.align-middle.text-info.text-bigger.font-weight-bold= reporting_internship_offer.total_applications_count
+  td.align-middle.border-left-1= reporting_internship_offer.report_row_title
+  td.align-middle.border-left-1.text-info.text-bigger.font-weight-bold= reporting_internship_offer.report_total_count
+  td.align-middle.border-left-1.text-info.text-bigger.font-weight-bold= reporting_internship_offer.total_applications_count
   td.align-middle= reporting_internship_offer.total_male_applications_count
   td.align-middle= reporting_internship_offer.total_female_applications_count
-  td.align-middle.text-info.text-bigger.font-weight-bold= reporting_internship_offer.convention_signed_applications_count
+  td.align-middle.border-left-1.text-info.text-bigger.font-weight-bold= reporting_internship_offer.convention_signed_applications_count
   td.align-middle= reporting_internship_offer.total_male_convention_signed_applications_count
   td.align-middle= reporting_internship_offer.total_female_convention_signed_applications_count
 

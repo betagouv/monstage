@@ -5,9 +5,10 @@
     .small
       = render partial: "dashboard/students/internship_applications/states/#{student_internship_application.aasm_state}", locals: {internship_application: student_internship_application}
 
-      - if student_internship_application.approved? && can?(:update, student_internship_application)
-        p.actions.d-flex.d-sm-block.py-0.mt-2.mb-0
+  .small
+    - if student_internship_application.approved? && can?(:update, student_internship_application)
+      p.actions.d-flex.d-sm-block.py-0.mt-2.mb-0
 
-          = button_tag type: "button", data: { toggle: 'modal', target: "#sign-internship-application-#{student_internship_application.id}" }, class: 'btn btn-success btn-sm mx-1' do
-            = "Valider la convention"
-    = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application
+        = button_tag type: "button", data: { toggle: 'modal', target: "#sign-internship-application-#{student_internship_application.id}", turbolinks: false }, class: 'btn btn-success btn-sm mx-1' do
+          = "Valider la convention"
+  = render "dashboard/internship_offers/internship_applications/convention_signed_modal", internship_application:student_internship_application

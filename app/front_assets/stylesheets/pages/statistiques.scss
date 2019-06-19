@@ -17,6 +17,12 @@
   padding-bottom: $input-btn-padding-y;
 }
 .table-statistics {
+  .table-blue{
+    th { border-bottom: 2px solid #4CA2CD };
+  }
+  .border-left-1{
+    border-left: 1px solid #d8d8d8;
+  }
   td:first-child{
     border-left: 1px solid #d8d8d8;
   }
@@ -34,6 +40,7 @@
       background-color: #cce4f0;
     }
   }
+
   tfoot{
     tr{
       border-bottom: 2px solid $blue;

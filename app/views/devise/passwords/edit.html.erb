@@ -1,31 +1,33 @@
-<header class="header-account">
-  <h1 class="h2 text-center text-sm-left mb-0"><%= t('.change_your_password') %></h1>
-</header>
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.rg2a_explain_required_asterisk %>
-  <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
-  <%= f.hidden_field :reset_password_token %>
+<div class='onboarding-card'>
+  <header class="header-account">
+    <h1 class="h2 text-center mb-0"><%= t('.change_your_password') %></h1>
+  </header>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= f.rg2a_explain_required_asterisk %>
+    <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
+    <%= f.hidden_field :reset_password_token %>
 
-  <div class="form-group">
-    <%= f.label :password do %>
-      <%= t('.new_password') %>
-      <% if @minimum_password_length %>
-        <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+    <div class="form-group">
+      <%= f.label :password do %>
+        <%= t('.new_password') %>
+        <% if @minimum_password_length %>
+          <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+        <% end %>
+        <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.rg2a_required_content_tag %>
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: 'form-control col-lg-6' %>
-  </div>
+      <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: 'form-control' %>
+    </div>
 
-  <div class="form-group">
-    <%= f.label :password_confirmation do %>
-      <%= t('.confirm_new_password') %>
-      <% f.rg2a_required_content_tag %>
-    <% end %>
-    <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control col-lg-6' %>
-  </div>
+    <div class="form-group">
+      <%= f.label :password_confirmation do %>
+        <%= t('.confirm_new_password') %>
+        <% f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+    </div>
 
-  <div class="actions d-flex d-sm-block">
-    <%= f.submit t('.change_my_password'), class: 'btn btn-warning' %>
-  </div>
-<% end %>
+    <div class="actions d-flex d-sm-block text-center">
+      <%= f.submit t('.change_my_password'), class: 'btn btn-warning' %>
+    </div>
+  <% end %>
+</div>

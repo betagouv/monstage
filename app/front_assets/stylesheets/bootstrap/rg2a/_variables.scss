@@ -39,8 +39,9 @@ $container-max-widths: (
 );
 
 $line-height-base: 1.25;
-
-$input-border-radius: 0;
+$input-bg: #fbfbfb;
+$input-border-color: #dddddd;
+$input-border-radius: 3px;
 $input-border-radius-lg: 0;
 $input-border-radius-sm: 0;
 

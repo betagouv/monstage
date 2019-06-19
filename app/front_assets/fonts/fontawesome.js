@@ -11,6 +11,7 @@ import { faAngleLeft,
          faChevronDown,
          faChevronLeft,
          faChevronRight,
+         faExchangeAlt,
          faExclamationTriangle,
          faExternalLinkAlt,
          faFileAlt,
@@ -29,7 +30,8 @@ import { faAngleLeft,
 
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
-import { faCircle } from '@fortawesome/free-regular-svg-icons'
+import { faCircle,
+         faFlag } from '@fortawesome/free-regular-svg-icons'
 
 // avoid SVG flickering
 // see: https://github.com/FortAwesome/Font-Awesome/issues/11924
@@ -44,8 +46,10 @@ library.add(faAngleLeft,
             faChevronDown,
             faChevronLeft,
             faChevronRight,
+            faExchangeAlt,
             faExclamationTriangle,
             faExternalLinkAlt,
+            faFlag,
             faFileAlt,
             faFilePdf,
             faHourglassStart,
