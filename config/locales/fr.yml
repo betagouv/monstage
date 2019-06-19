@@ -55,6 +55,8 @@ fr:
             sector:
               required: "Veuillez choisir un secteur pour l'offre"
 
+
+
         user:
           attributes:
             email:
@@ -68,7 +70,8 @@ fr:
               blank: Veuillez saisir un prénom
             last_name:
               blank: Veuillez saisir un nom de famille
-
+            reset_password_token:
+              invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
         users/main_teacher:
           attributes:
             school_manager:
