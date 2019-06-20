@@ -9,7 +9,12 @@ module Api
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           render_success(status: :created, object: created_internship_offer)
-          end
+        end
+        on.duplicate do |failure_internship_offer|
+          render_error(code: "DUPLICATE_INTERNSHIP_OFFER",
+                       error: "an object with this remote_id already exists for this account",
+                       status: :conflict)
+        end
         on.failure do |failure_internship_offer|
           render_error(code: "CAN_NOT_CREATE_INTERNSHIP_OFFER",
                        error: failure_internship_offer.errors,

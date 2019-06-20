@@ -9,6 +9,8 @@ module Api
               :permalink,
               presence: true
 
+    validates :remote_id, uniqueness: { scope: :employer_id }
+
     after_initialize :init
 
     def init
@@ -17,5 +19,9 @@ module Api
       self.is_public = false
     end
 
+    def duplicate?
+      Array(errors.details[:remote_id]).map {|error| error[:error]}
+                                       .include?(:taken)
+    end
   end
 end

@@ -1,8 +1,12 @@
 module Builders
-  class InternshipOfferBuilder < Callback
-    SerializableError = Struct.new(:errors) do
+  class InternshipOfferCallback < Callback
+    attr_accessor :on_duplicate
+    def duplicate(&block)
+      @on_duplicate = block
     end
+  end
 
+  class InternshipOfferBuilder
     def create(params:)
       yield callback if block_given?
       authorize! :create, InternshipOffer
@@ -10,7 +14,11 @@ module Builders
       internship_offer = model.create!(params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => error
-      callback.on_failure.try(:call, error.record)
+      if error.record.duplicate?
+        callback.on_duplicate.try(:call, error.record)
+      else
+        callback.on_failure.try(:call, error.record)
+      end
     end
 
     # # hard delete for operators
@@ -30,7 +38,7 @@ module Builders
       @user = user
       @context = context
       @ability = Ability.new(user)
-      @callback = Callback.new
+      @callback = InternshipOfferCallback.new
     end
 
     def preprocess_api_params(params)

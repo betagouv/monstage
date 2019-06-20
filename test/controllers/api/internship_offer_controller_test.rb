@@ -34,15 +34,16 @@ module Api
       assert_equal "param is missing or the value is empty: internship_offer", json_response["error"]
     end
 
+
     test 'POST #create as operator fails with invalid data respond with :bad_request' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       write_response_as(report_as: :bad_request) do
-      post api_internship_offers_path(
-          params: {
-            token: "Bearer #{operator.api_token}",
-            internship_offer: {title: ''}
-          }
-      )
+        post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {title: ''}
+            }
+        )
       end
       assert_response :bad_request
       assert_equal "CAN_NOT_CREATE_INTERNSHIP_OFFER", json_response["code"]
@@ -76,6 +77,34 @@ module Api
       assert_equal ["Missing sector"],
                    json_response["error"]["sector"],
                    "bad sector message"
+    end
+
+
+    test 'POST #create as operator post duplicate remote_id' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      existing_internship_offer = create(:api_internship_offer, employer: operator)
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      week_params = [
+        "#{week_instances.first.year}W#{week_instances.first.number}",
+        "#{week_instances.last.year}W#{week_instances.last.number}",
+      ]
+      sector = create(:sector, uuid: SecureRandom.uuid)
+      internship_offer_params = existing_internship_offer.attributes
+                                                         .except(:sector,
+                                                                 :weeks,
+                                                                 :coordinates)
+                                                         .merge(sector_uuid: sector.uuid,
+                                                                weeks: week_params,
+                                                                coordinates: {latitude: 1, longitude: 1})
+      write_response_as(report_as: :bad_request) do
+        post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: internship_offer_params
+            }
+        )
+      end
+      assert_response :conflict
     end
 
     test 'POST #create as operator works to internship_offers' do
