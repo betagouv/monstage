@@ -96,7 +96,7 @@ module Api
                                                          .merge(sector_uuid: sector.uuid,
                                                                 weeks: week_params,
                                                                 coordinates: {latitude: 1, longitude: 1})
-      write_response_as(report_as: :bad_request) do
+      write_response_as(report_as: :conflict) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
