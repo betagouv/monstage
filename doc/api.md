@@ -119,7 +119,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 ### <a name="ref-weeks"></a>
 ## Semaines
-Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information est codifiée selon la : [norme ISO 8601 ](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines).
+Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information est codifiée selon la [norme ISO 8601 ](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines).
 
 Exemple : 2019-W35 correspondant à :
 * L'année : 2019
