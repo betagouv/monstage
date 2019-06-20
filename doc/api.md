@@ -8,12 +8,14 @@ L'API sera :
 
 * construite sur le format "REST"
 * inspiré du standard [jsonapi](https://jsonapi.org)
-* avec en ```baseUrl``` https://monstagedetroisieme.fr/api.
+* avec le point d'entrée ```baseUrl```:
+ * En pré production : https://v2-test.monstagedetroisieme.fr/api
+ * En production : https://monstagedetroisieme.fr/api
 
 Les services web suivant seront mis à disposition :
 
 * POST [/internship_offers](#ref-create-internship-offer) : Pour ajouter une offre de stage sur Mon stage de 3e
-* DELETE [/internship_offers/{id}](#ref-destroy-internship-offer) : Pour suprimer une offre de stage sur Mon stage de 3e
+* DELETE [/internship_offers/{remote_id}](#ref-destroy-internship-offer) : Pour suprimer une offre de stage sur Mon stage de 3e
 
 
 # Authentification
