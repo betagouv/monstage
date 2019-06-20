@@ -14,7 +14,7 @@ module Builders
       internship_offer = model.create!(params)
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => error
-      if error.record.duplicate?
+      if duplicate?(error.record)
         callback.on_duplicate.try(:call, error.record)
       else
         callback.on_failure.try(:call, error.record)
@@ -83,6 +83,10 @@ module Builders
       params
     end
 
+    def duplicate?(internship_offer)
+      Array(internship_offer.errors.details[:remote_id]).map {|error| error[:error]}
+                                                        .include?(:taken)
+    end
     def authorize!(*vargs)
       return nil if ability.can?(*vargs)
       fail CanCan::AccessDenied

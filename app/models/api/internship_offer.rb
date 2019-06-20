@@ -18,10 +18,5 @@ module Api
       self.max_internship_week_number ||= 1
       self.is_public = false
     end
-
-    def duplicate?
-      Array(errors.details[:remote_id]).map {|error| error[:error]}
-                                       .include?(:taken)
-    end
   end
 end
