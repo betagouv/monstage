@@ -24,13 +24,10 @@ Les services web suivant seront mis à disposition :
 
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois le compte créée, le jeton d'API pourra être récupéré via notre interface web.
+Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de test ou production.
 
-L'authentification se fait par jeton via :
+L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
 
-* **le header HTTP (de préférence)** : ```Authorization: Bearer #{token} ```
-* ou le header HTTP : ```HTTP_AUTHORIZATION: Bearer #{token} ```
-* ou le param d'url token : ```#{endpoint}?token=Bearer #{token} ``` (**attention sur ce cas**, il faut encoder la valeur du paramètre token ; donc "Bearer #{token}" devient "Bearer+#{token}")
 
 
 # Structures de donnée
