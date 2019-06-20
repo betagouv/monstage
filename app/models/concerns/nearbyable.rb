@@ -26,7 +26,7 @@ module Nearbyable
     def coordinates_are_valid?
       return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
 
-      errors.add(:coordinates, 'Veuillez renseigner une adresse')
+      errors.add(:coordinates, :blank)
     end
   end
 end

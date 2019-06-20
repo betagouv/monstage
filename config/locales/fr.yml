@@ -40,21 +40,54 @@ fr:
       models:
         internship_offer:
           attributes:
+            title:
+              blank: "Veuillez saisir le titre de l'offre de stage"
+            employer_name:
+              blank: "Veuillez saisir le nom de l'employeur"
+            coordinates:
+              blank: 'Veuillez renseigner une adresse'
             max_candidates:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
               blank: "Le stage doit être soit collectif, soit individuel"
             description:
-              too_long: La description doit faire au maximum 275 caractères
+              blank: "Veuillez saisir une description pour l'offre"
+              too_long: La description doit faire au maximum 500 caractères
             street:
-              blank: "Veuillez saisir la rue de l'employeur manquante"
+              blank: "Veuillez saisir la rue de l'employeur"
             zipcode:
-              blank: "Veuillez saisir le code postal de l'employeur manquante"
+              blank: "Veuillez saisir le code postal de l'employeur"
             city:
-              blank: "Veuillez saisir la rue de la ville l'employeur manquante"
+              blank: "Veuillez saisir la rue de la ville l'employeur"
             sector:
               required: "Veuillez choisir un secteur pour l'offre"
-
+            weeks:
+              blank: Veuillez saisir des semaines de stage
+        api/internship_offer:
+          attributes:
+            title:
+              blank: "Missing title"
+            description:
+              blank: "Missing description"
+              too_long: "Description too long, allowed up 500 chars"
+            employer_name:
+              blank: "Missing employer_name"
+            coordinates:
+              blank: 'Missing coordinates'
+            street:
+              blank: "Missing street"
+            zipcode:
+              blank: "Missing zipcode"
+            city:
+              blank: "Missing city"
+            sector:
+              required: "Missing sector"
+            weeks:
+              blank: "Missing weeks"
+            remote_id:
+              blank: "Missing remote_id"
+            permalink:
+              blank: "Missing permalink"
 
 
         user:
