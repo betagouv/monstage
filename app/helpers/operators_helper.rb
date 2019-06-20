@@ -2,6 +2,6 @@
 
 module OperatorsHelper
   def operator_options_for_default
-    '-- Veuillez sélectionner un domaine --'
+    '-- Veuillez sélectionner un opérateur --'
   end
 end
