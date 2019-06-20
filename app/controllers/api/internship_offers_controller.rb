@@ -8,18 +8,19 @@ module Api
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          render status: :created,
-                 jsonapi: created_internship_offer
+          render_success(status: :created, object: created_internship_offer)
           end
         on.failure do |failure_internship_offer|
-          render status: :bad_request,
-                 jsonapi_errors: failure_internship_offer.errors
+          render_error(code: "CAN_NOT_CREATE_INTERNSHIP_OFFER",
+                       error: failure_internship_offer.errors,
+                       status: :bad_request)
         end
       end
     rescue ArgumentError,
            ActionController::ParameterMissing => error
-      render status: :unprocessable_entity,
-             jsonapi_errors: [SerializableError.new(error.message)]
+     render_error(code: "BAD_PAYLOAD",
+                  error: error.message,
+                  status: :unprocessable_entity)
     end
 
     def destroy

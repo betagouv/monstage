@@ -1,11 +1,21 @@
 module Api
   class ApiBaseController < ActionController::Base
-    skip_before_action :verify_authenticity_token
+    protect_from_forgery with: :null_session
+
+    def render_success(object:, status:)
+      render json: object.to_json,
+             status: status
+    end
+
+    def render_error(code:, error:, status:)
+      render json: { code: code, error: error },
+             status: status
+    end
 
     private
 
     def bearer
-      request.env['Authorization'] || request.env['HTTP_AUTHORIZATION'] || params[:token]
+      request.env['Authorization'] || params[:token]
     end
 
     def token

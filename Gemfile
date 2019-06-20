@@ -9,7 +9,6 @@ ruby '2.6.3'
 gem 'activerecord-postgis-adapter' # postgis extension
 gem 'pg'
 gem 'rails'
-gem 'jsonapi-rails'
 gem 'turbolinks'
 gem 'webpacker'
 
