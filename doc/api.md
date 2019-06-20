@@ -28,9 +28,67 @@ Une fois le compte créé, le token d'API pourra être récupéré via notre int
 
 L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
 
+Ce token devra être présent à chaque requête.
+
+# Endpoints
+
+### <a name="ref-create-internship-offer"></a>
+## Création d'offre
 
 
-# Structures de donnée
+**url** : https://monstagedetroisieme.fr/api/internship_offers
+
+**method** : POST
+
+** Paramètres de body** :
+
+* **internship_offer.title** *(string, required)*
+* **internship_offer.description** *(text, required *<= 715 caractères)
+* **internship_offer.employer_name** *(string, required)*
+* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_website** *(string, optional)*
+* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
+* **internship_offer.street** *(text, optional)*
+* **internship_offer.zipcode** *(string, required)*
+* **internship_offer.city** *(string, required)*
+* **internship_offer.sector_uuid** *(integer, required)*
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
+* **permalink** *(url, required)*
+
+**Exemple curl**
+
+```
+curl -H "Authorization: Bearer foobarbaz" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X POST \
+     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
+     -vvv \
+     https://monstagedetroisieme.fr/api/internship_offers
+```
+
+### <a name="ref-destroy-internship-offer"></a>
+## Supression d'offre
+**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+
+**method** : DELETE
+
+**Paramètres d'url** :
+
+* **remote_id** *(string, required)*
+
+**Exemple curl**
+
+```
+curl -H "Authorization: Bearer foobarbaz" \
+     -H "Accept: application/json" \
+     -X DELETE \
+     -vvv \
+     https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
+```
+
+# Structures de données et référentiels
 
 ## Les offres
 
@@ -58,93 +116,25 @@ L'authentification se fait par token via le header HTTP : ```Authorization: Bear
 }
 ```
 
-*(1): [referenciel des secteurs](#ref-sectors)
-*(2): [referenciel des semaines](#ref-weeks)
-
-# Endpoints
-
-### <a name="ref-create-internship-offer"></a>
-## Création d'offre
-
-
-**url** : https://monstagedetroisieme.fr/api/internship_offers
-
-**method** : POST
-
-**body params** :
-
-*(Contraintes de données)*
-
-* **internship_offer.title** *(string, required)*
-* **internship_offer.description** *(text, required *<= 715 caractères)
-* **internship_offer.employer_name** *(string, required)*
-* **internship_offer.employer_description** *(string, required *<= 275 caractères)
-* **internship_offer.employer_website** *(string, optional)*
-* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
-* **internship_offer.street** *(text, optional)*
-* **internship_offer.zipcode** *(string, required)*
-* **internship_offer.city** *(string, required)*
-* **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
-* **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
-* **permalink** *(url, required)*
-
-**exemple curl**
-
-```
-curl -H "Authorization: Bearer foobarbaz" \
-     -H "Accept: application/json" \
-     -H "Content-type: application/json" \
-     -X POST \
-     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
-     -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers
-```
-
-### <a name="ref-destroy-internship-offer"></a>
-## Supression d'offre
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
-
-**method** : DELETE
-
-**url params** :
-
-*(Contraintes de données)*
-
-* **remote_id** *(string, required)*
-
-**exemple curl**
-
-```
-curl -H "Authorization: Bearer foobarbaz" \
-     -H "Accept: application/json" \
-     -X DELETE \
-     -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
-```
-
-# Référentiels
 
 ### <a name="ref-weeks"></a>
 ## Semaines
-Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information se matérialise par un "object" de “[semaine commerciale](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines)”, ex: 2019W35. Se definissant par un couple composé de :
+Les stages se faisant sur des cycles hebdomadaires de travail (du lundi au vendredi), cette information est codifiée selon la : [norme ISO 8601 ](https://fr.wikipedia.org/wiki/Num%C3%A9rotation_ISO_des_semaines).
 
-* L'année: 2019
-* Le numéro de semaine: 1
-* Joint par un W*(eek)*
+Exemple : 2019-W35 correspondant à :
+* L'année : 2019
+* Le numéro de semaine : 35, du 26 août au 1er septembre
 
 Exemple de ce que nous attendons dans nos API :
 
 ```
-internship_offer.weeks: ["2019W1", "2019W3", "2019W5"]
+internship_offer.weeks: ["2019-W1", "2019-W3", "2019-W5"]
 ```
-
-L'absence de donnée indique que le stage est accessible toute l'année.
 
 ### <a name="ref-sectors"></a>
 ## Secteurs d'activité
 
-L'API attends en paramètre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
+L'API attend en paramètre obligatoire un secteur d'activité associé à une offre. Voici la *liste* ainsi que leurs **identifiants uniques**.
 
 * *Mode*: **b7564ac4-e184-41c4-a7a9-57233a9d244a**
 * *Banque et assurance*: **6a8f813b-c338-4d4f-a4cd-99a28748b57d**
