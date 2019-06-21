@@ -27,11 +27,7 @@ module Builders
       instance.update!(params)
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => error
-      if duplicate?(error.record)
-        callback.on_duplicate.try(:call, error.record)
-      else
-        callback.on_failure.try(:call, instance)
-      end
+      callback.on_failure.try(:call, instance)
     end
 
     # # hard delete for operators

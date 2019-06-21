@@ -108,7 +108,8 @@ class Ability
   def operator_abilities(user:)
     can :show, :account
     can :choose_operator, :sign_up
-    can %i[read], InternshipOffer, employer_id: user.id
+    can :create, InternshipOffer
+    can %i[read update destroy], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
     can %i[update], Api::InternshipOffer, employer_id: user.id
     can :index, InternshipApplication

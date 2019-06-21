@@ -18,11 +18,15 @@ module Api
     end
 
     def create
-      internship_offer_builder.create(params: internship_offer_params) do |on|
+      internship_offer_builder.create(params: create_internship_offer_params) do |on|
         on.success do |created_internship_offer|
           render_success(status: :created, object: created_internship_offer)
         end
-        on.duplicate &method(:render_duplicate)
+        on.duplicate do |duplicate_internship_offer|
+          render_error(code: "DUPLICATE_INTERNSHIP_OFFER",
+                   error: "an object with this remote_id (#{duplicate_internship_offer.remote_id}) already exists for this account",
+                   status: :conflict)
+        end
         on.failure &method(:render_validation_error)
       end
     end
@@ -31,11 +35,10 @@ module Api
       internship_offer = InternshipOffer.find_by!(remote_id: params[:id])
 
       internship_offer_builder.update(instance: internship_offer,
-                                      params: internship_offer_params) do |on|
+                                      params: update_internship_offer_params) do |on|
         on.success do |updated_internship_offer|
           render_success(status: :ok, object: updated_internship_offer)
         end
-        on.duplicate &method(:render_duplicate)
         on.failure &method(:render_validation_error)
       end
     end
@@ -44,17 +47,13 @@ module Api
     # end
 
     private
-    def render_duplicate(instance)
-      render_error(code: "DUPLICATE_INTERNSHIP_OFFER",
-                   error: "an object with this remote_id (#{instance.remote_id}) already exists for this account",
-                   status: :conflict)
-    end
+
     def internship_offer_builder
       @builder ||= Builders::InternshipOfferBuilder.new(user: current_api_user,
                                                         context: :api)
     end
 
-    def internship_offer_params
+    def create_internship_offer_params
       params.require(:internship_offer)
             .permit(
               :title,
@@ -66,6 +65,24 @@ module Api
               :zipcode,
               :city,
               :remote_id,
+              :permalink,
+              :sector_uuid,
+              coordinates: {},
+              weeks: [],
+            )
+    end
+
+    def update_internship_offer_params
+      params.require(:internship_offer)
+            .permit(
+              :title,
+              :description,
+              :employer_name,
+              :employer_description,
+              :employer_website,
+              :street,
+              :zipcode,
+              :city,
               :permalink,
               :sector_uuid,
               coordinates: {},

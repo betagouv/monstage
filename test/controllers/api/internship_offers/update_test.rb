@@ -71,27 +71,6 @@ module Api
                    "bad description error "
     end
 
-
-    test 'PATCH #update as operator post duplicate remote_id' do
-      remote_id = 'foo'
-      conflict_internship_offer = create(:api_internship_offer, employer: @operator,
-                                                                remote_id: remote_id)
-      write_response_as(report_as: :update_conflict) do
-        patch api_internship_offer_path(
-            id: @internship_offer.remote_id,
-            params: {
-              token: "Bearer #{@operator.api_token}",
-              internship_offer: {
-                remote_id: remote_id
-              }
-            }
-        )
-      end
-      assert_response :conflict
-      assert_equal "DUPLICATE_INTERNSHIP_OFFER", json_response["code"]
-      assert_equal "an object with this remote_id (#{remote_id}) already exists for this account", json_response["error"]
-    end
-
     test 'PATCH #update as operator works to internship_offers' do
       new_title = "hellow"
       write_response_as(report_as: :update_success) do
