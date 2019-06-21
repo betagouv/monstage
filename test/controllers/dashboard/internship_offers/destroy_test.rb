@@ -3,7 +3,7 @@
 require 'test_helper'
 
 module InternshipOffers
-  class DeleteTest < ActionDispatch::IntegrationTest
+  class DestroyTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
     test 'DELETE #destroy as visitor redirects to user_session_path' do
@@ -26,6 +26,18 @@ module InternshipOffers
         delete(dashboard_internship_offer_path(internship_offer.to_param))
       end
       assert_redirected_to dashboard_internship_offers_path
+      assert_equal 'Votre annonce a bien été supprimée', flash[:success]
+    end
+
+    test 'DELETE #destroy twice as employer what does it do?' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      assert_changes -> { internship_offer.reload.discarded_at } do
+        delete(dashboard_internship_offer_path(internship_offer.to_param))
+      end
+      delete(dashboard_internship_offer_path(internship_offer.to_param))
+      assert_redirected_to dashboard_internship_offers_path
+      assert_equal "Votre annonce n'a pas été supprimée", flash[:warning]
     end
   end
 end

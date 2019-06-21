@@ -61,11 +61,17 @@ module Dashboard
     end
 
     def destroy
-      @internship_offer = InternshipOffer.find(params[:id])
-      authorize! :discard, @internship_offer
-      @internship_offer.discard
-      redirect_to(dashboard_internship_offers_path,
-                  flash: { success: 'Votre annonce a bien été supprimée' })
+      internship_offer_builder.discard(instance: InternshipOffer.find(params[:id])) do |on|
+        on.success do
+          redirect_to(dashboard_internship_offers_path,
+                      flash: { success: 'Votre annonce a bien été supprimée' })
+
+        end
+        on.failure do |failed_internship_offer|
+          redirect_to(dashboard_internship_offers_path,
+                      flash: { warning: "Votre annonce n'a pas été supprimée" })
+        end
+      end
     end
 
     def new

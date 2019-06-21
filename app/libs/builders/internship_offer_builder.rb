@@ -30,15 +30,14 @@ module Builders
       callback.on_failure.try(:call, instance)
     end
 
-    # # hard delete for operators
-    # def destroy(remote_id:)
-    #   authorize! :destroy, internship_offer
-    # end
-
-    # # soft delete for employers
-    # def discard(internship_offer)
-    #   authorize! :discard, internship_offer
-    # end
+    def discard(instance:)
+      yield callback if block_given?
+      authorize! :discard, instance
+      instance.discard!
+      callback.on_success.try(:call)
+    rescue Discard::RecordNotDiscarded => error
+      callback.on_failure.try(:call, instance)
+    end
 
     private
     attr_reader :user, :callback, :ability, :context

@@ -109,9 +109,9 @@ class Ability
     can :show, :account
     can :choose_operator, :sign_up
     can :create, InternshipOffer
-    can %i[read update destroy], InternshipOffer, employer_id: user.id
+    can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
-    can %i[update], Api::InternshipOffer, employer_id: user.id
+    can %i[update discard], Api::InternshipOffer, employer_id: user.id
     can :index, InternshipApplication
     can :show, :api_token
   end

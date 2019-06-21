@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  include Discard::Model
   include Nearbyable
   include BaseInternshipOffer
 

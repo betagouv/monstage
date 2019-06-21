@@ -7,6 +7,8 @@ module BaseInternshipOffer
   OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
 
   included do
+    include Discard::Model
+
     validates :title,
               :employer_name,
               :zipcode,

@@ -51,6 +51,7 @@ module Api
       assert_equal "FORBIDDEN", json_response["code"]
       assert_equal "You are not authorized to access this page.", json_response["error"]
     end
+
     test 'PATCH #update as operator fails with invalid remote_id' do
       documents_as(endpoint: :'internship_offers/update', state: :not_found) do
         patch api_internship_offer_path(
