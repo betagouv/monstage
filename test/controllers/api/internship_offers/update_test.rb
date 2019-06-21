@@ -21,7 +21,7 @@ module Api
     end
 
     test 'PATCH #update as operator fails with invalid payload respond with :unprocessable_entity' do
-      write_response_as(report_as: :update_sable_entity) do
+      write_response_as(report_as: :update_unprocessable_entity) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
