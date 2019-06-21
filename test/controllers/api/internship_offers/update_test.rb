@@ -51,6 +51,22 @@ module Api
       assert_equal "FORBIDDEN", json_response["code"]
       assert_equal "You are not authorized to access this page.", json_response["error"]
     end
+    test 'PATCH #update as operator fails with invalid remote_id' do
+      write_response_as(report_as: :update_not_found) do
+        patch api_internship_offer_path(
+            id: "foo",
+            params: {
+              token: "Bearer #{@operator.api_token}",
+              internship_offer: {
+                description: "a" * (BaseInternshipOffer::OLD_DESCRIPTION_MAX_CHAR_COUNT + 2)
+              }
+            }
+        )
+      end
+      assert_response :not_found
+      assert_equal "NOT_FOUND", json_response["code"]
+      assert_equal "can't find internship_offer with this remote_id", json_response["error"]
+    end
 
     test 'PATCH #update as operator fails with invalid data respond with :bad_request' do
       write_response_as(report_as: :update_bad_request) do

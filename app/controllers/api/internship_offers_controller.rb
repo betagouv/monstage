@@ -17,6 +17,12 @@ module Api
                    status: :forbidden)
     end
 
+    rescue_from(ActiveRecord::RecordNotFound) do |_error|
+      render_error(code: "NOT_FOUND",
+                   error: "can't find internship_offer with this remote_id",
+                   status: :not_found)
+    end
+
     def create
       internship_offer_builder.create(params: create_internship_offer_params) do |on|
         on.success do |created_internship_offer|
