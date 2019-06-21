@@ -9,8 +9,8 @@ L'API sera :
 * construite sur le format "REST"
 * inspiré du standard [jsonapi](https://jsonapi.org)
 * avec le point d'entrée ```baseUrl```:
- * En pré production : https://v2-test.monstagedetroisieme.fr/api
- * En production : https://monstagedetroisieme.fr/api
+  * En pré production : https://v2-test.monstagedetroisieme.fr/api
+  * En production : https://monstagedetroisieme.fr/api
 
 Les services web suivant seront mis à disposition :
 
