@@ -15,7 +15,8 @@ L'API sera :
 Les services web suivant seront mis à disposition :
 
 * POST [/internship_offers](#ref-create-internship-offer) : Pour ajouter une offre de stage sur Mon stage de 3e
-* DELETE [/internship_offers/{remote_id}](#ref-destroy-internship-offer) : Pour suprimer une offre de stage sur Mon stage de 3e
+* PATCH [/internship_offers/{remote_id}](#ref-modify-internship-offer) : Pour modifier l'offre de stage avec l'identifiant ```remote_id``` sur Mon stage de 3e
+* DELETE [/internship_offers/{remote_id}](#ref-destroy-internship-offer) : Pour supprimer une offre de stage sur Mon stage de 3e
 
 
 # Authentification
@@ -33,7 +34,7 @@ Ce token devra être présent à chaque requête.
 # Endpoints
 
 ### <a name="ref-create-internship-offer"></a>
-## Création d'offre
+## Création d'une offre
 
 
 **url** : https://monstagedetroisieme.fr/api/internship_offers
@@ -68,8 +69,43 @@ curl -H "Authorization: Bearer foobarbaz" \
      https://monstagedetroisieme.fr/api/internship_offers
 ```
 
+### <a name="ref-modify-internship-offer"></a>
+## Modification d'une offre
+
+
+**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+
+**method** : PATCH
+
+** Paramètres de body** :
+
+* **internship_offer.title** *(string, required)*
+* **internship_offer.description** *(text, required *<= 715 caractères)
+* **internship_offer.employer_name** *(string, required)*
+* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_website** *(string, optional)*
+* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
+* **internship_offer.street** *(text, optional)*
+* **internship_offer.zipcode** *(string, required)*
+* **internship_offer.city** *(string, required)*
+* **internship_offer.sector_uuid** *(integer, required)*
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **permalink** *(url, required)*
+
+**Exemple curl**
+
+```
+curl -H "Authorization: Bearer foobarbaz" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X PATCH \
+     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
+     -vvv \
+     https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+```
+
 ### <a name="ref-destroy-internship-offer"></a>
-## Supression d'offre
+## Supression d'une offre
 **url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 
 **method** : DELETE
