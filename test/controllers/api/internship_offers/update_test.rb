@@ -89,7 +89,7 @@ module Api
 
     test 'PATCH #update as operator works to internship_offers' do
       new_title = "hellow"
-      write_response_as(report_as: :update_success) do
+      write_response_as(report_as: :update_ok) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
