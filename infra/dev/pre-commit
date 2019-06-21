@@ -4,18 +4,15 @@ set -x
 command -v circleci >/dev/null 2>&1 || { echo "Git pre-commit must check circleci cli file before push ; please install it"; exit 1; }
 
 circleci config validate .circleci/config.yml
-
-if [ $? -eq 0 ]; then
-	exit 0; # allow commit
-else
+if [ $? -ne 0 ]; then
 	echo "Circle ci file not valid!"
-	exit 1; # circle ci file not valid!
+  exit 1;
 fi
 
-command -v rails test:system
-if [ $? -eq 0 ]; then
-  exit 0; # allow commit
-else
+rails test:system
+if [ $? -ne 0 ]; then
   echo "System test failed!"
-  exit 1; # circle ci file not valid!
-fi
+  exit 1;
+fi;
+
+exit 0
