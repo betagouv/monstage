@@ -31,6 +31,16 @@ L'authentification se fait par token via le header HTTP : ```Authorization: Bear
 
 Ce token devra être présent à chaque requête.
 
+# Gestion d'erreurs
+Les erreurs de requête seront signalées via un code HTTP > 400.
+
+Sur chaque requête, on pourra avoir les erreurs suivantes :
+
+- 400, Bad Request : Paramètres de requête mal renseignés.
+
+Exemple : Secteur non indiqué dans la création d'une offres
+
+
 # Endpoints
 
 ### <a name="ref-create-internship-offer"></a>
