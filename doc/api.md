@@ -44,7 +44,7 @@ Ce token devra être présent à chaque requête.
 ** Paramètres de body** :
 
 * **internship_offer.title** *(string, required)*
-* **internship_offer.description** *(text, required *<= 715 caractères)
+* **internship_offer.description** *(text, required *<= 500 caractères)
 * **internship_offer.employer_name** *(string, required)*
 * **internship_offer.employer_description** *(string, required *<= 275 caractères)
 * **internship_offer.employer_website** *(string, optional)*
@@ -80,7 +80,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 ** Paramètres de body** :
 
 * **internship_offer.title** *(string, required)*
-* **internship_offer.description** *(text, required *<= 715 caractères)
+* **internship_offer.description** *(text, required *<= 500 caractères)
 * **internship_offer.employer_name** *(string, required)*
 * **internship_offer.employer_description** *(string, required *<= 275 caractères)
 * **internship_offer.employer_website** *(string, optional)*
