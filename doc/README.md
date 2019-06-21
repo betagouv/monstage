@@ -9,13 +9,8 @@ L'API sera :
 * construite sur le format "REST"
 * inspiré du standard [jsonapi](https://jsonapi.org)
 * avec le point d'entrée ```baseUrl```:
-<<<<<<< HEAD
- * En pré production : https://v2-test.monstagedetroisieme.fr/api
- * En production : https://monstagedetroisieme.fr/api
-=======
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
   * En production : https://monstagedetroisieme.fr/api
->>>>>>> master
 
 Les services web suivant seront mis à disposition :
 
@@ -61,11 +56,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 **method** : POST
 
-<<<<<<< HEAD
-** Paramètres de body** :
-=======
 *Paramètres de body :*
->>>>>>> master
 
 * **internship_offer.title** *(string, required)*
 * **internship_offer.description** *(text, required *<= 500 caractères)
@@ -105,16 +96,13 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 **method** : PATCH
 
-<<<<<<< HEAD
-** Paramètres de body** :
-=======
-*Paramètres de body :*
->>>>>>> master
+*Paramètres d'url* :
 
+* **remote_id** *(string, required)*
 * **internship_offer.title** *(string)*
-* **internship_offer.description** *(text, required *<= 500 caractères)
+* **internship_offer.description** *(text,  <= 500 caractères)*
 * **internship_offer.employer_name** *(string)*
-* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_description** *(string, <= 275 caractères)*
 * **internship_offer.employer_website** *(string)*
 * **internship_offer.coordinates** *(object/geography)* : { latitude: 1, longitude: 1 }
 * **internship_offer.street** *(text)*
@@ -142,12 +130,12 @@ curl -H "Authorization: Bearer foobarbaz" \
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
 ### <a name="ref-destroy-internship-offer"></a>
-## Supression d'une offre
+## Suppression d'une offre
 **url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 
 **method** : DELETE
 
-**Paramètres d'url** :
+*Paramètres d'url* :
 
 * **remote_id** *(string, required)*
 
