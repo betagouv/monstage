@@ -8,7 +8,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     create(:employer, email: existing_email)
 
     # go to signup as employer
-    visit new_user_registration_path(as: "Employer")
+    visit new_user_registration_path(as: 'Employer')
 
     # fails to create employer with existing email
     assert_difference('Users::Employer.count', 0) do

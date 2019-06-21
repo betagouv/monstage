@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   get '/accessibilite', to: 'pages#accessibilite'
   get '/statistiques', to: 'pages#statistiques'
 
-  match "/admin/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
+  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
 
   root to: 'pages#home'
 end

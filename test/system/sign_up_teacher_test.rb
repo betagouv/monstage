@@ -12,7 +12,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as teacher
-    visit new_user_registration_path(as: "Teacher")
+    visit new_user_registration_path(as: 'Teacher')
 
     # fails to create teacher with existing email
     assert_difference('Users::Teacher.count', 0) do

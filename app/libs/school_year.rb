@@ -6,28 +6,31 @@ class SchoolYear
 
   def beginning_of_period
     case current_month
-      when january_to_may
-        return SchoolYear.new(date: Date.new(current_year, 6, 1)).beginning_of_period if last_week_of_may?
-        return Date.today
-      when june_to_august then return Date.new(current_year, 9, 1)
-      when september_to_december then return Date.today
+    when january_to_may
+      return SchoolYear.new(date: Date.new(current_year, 6, 1)).beginning_of_period if last_week_of_may?
+
+      Date.today
+    when june_to_august then Date.new(current_year, 9, 1)
+    when september_to_december then Date.today
     end
   end
 
   def end_of_period
     case current_month
-      when january_to_may
-        return SchoolYear.new(date: Date.new(current_year, 6, 1)).end_of_period if last_week_of_may?
-        return Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
-      when june_to_august,
+    when january_to_may
+      return SchoolYear.new(date: Date.new(current_year, 6, 1)).end_of_period if last_week_of_may?
+
+      Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
+    when june_to_august,
            september_to_december
-        Date.new(current_year + 1,
-                 MONTH_OF_YEAR_SHIFT,
-                 DAY_OF_YEAR_SHIFT)
+      Date.new(current_year + 1,
+               MONTH_OF_YEAR_SHIFT,
+               DAY_OF_YEAR_SHIFT)
     end
   end
 
   private
+
   attr_reader :date
 
   def initialize(date:)
@@ -41,7 +44,6 @@ class SchoolYear
   def current_month
     date.month
   end
-
 
   def january_to_may
     1..5

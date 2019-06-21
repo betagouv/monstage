@@ -7,7 +7,7 @@ class Week < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :schools, through: :school_internship_weeks
 
-  scope :from_date_to_date, -> (from:, to:) {
+  scope :from_date_to_date, lambda { |from:, to:|
     if from.year == to.year
       from_date_for_current_year(from: from).to_date_for_current_year(to: to)
     else
@@ -15,12 +15,12 @@ class Week < ApplicationRecord
     end
   }
 
-  scope :from_date_for_current_year, -> (from:) {
-    where(year: from.year).where('number > :from_week', { from_week: from.cweek })
+  scope :from_date_for_current_year, lambda { |from:|
+    where(year: from.year).where('number > :from_week', from_week: from.cweek)
   }
 
-  scope :to_date_for_current_year, -> (to:) {
-    where(year: to.year).where('number <= :to_week', { to_week: to.cweek })
+  scope :to_date_for_current_year, lambda { |to:|
+    where(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'

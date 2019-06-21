@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: Proc.new {  ApplicationMailer.formatted_email }
+  default from: proc { ApplicationMailer.formatted_email }
   layout 'mailer'
 
   def self.from
@@ -11,13 +11,13 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def self.display_name
-    "Mon Stage de 3e"
+    'Mon Stage de 3e'
   end
 
   def self.formatted_email
-    address = Mail::Address.new()
-    address.address = self.from
-    address.display_name = self.display_name
+    address = Mail::Address.new
+    address.address = from
+    address.display_name = display_name
     address.format
   end
 end

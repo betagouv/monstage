@@ -89,7 +89,7 @@ class InternshipApplication < ApplicationRecord
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
         InternshipApplication.for_user(user: student)
-                             .where(aasm_state: [:approved, :submitted, :drafted])
+                             .where(aasm_state: %i[approved submitted drafted])
                              .not_by_id(id: id)
                              .joins(:internship_offer_week)
                              .where("internship_offer_weeks.week_id = #{internship_offer_week.week.id}")
