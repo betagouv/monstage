@@ -84,6 +84,10 @@ curl -H "Authorization: Bearer foobarbaz" \
      https://monstagedetroisieme.fr/api/internship_offers
 ```
 
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
 ### <a name="ref-modify-internship-offer"></a>
 ## Modification d'une offre
 
@@ -119,6 +123,11 @@ curl -H "Authorization: Bearer foobarbaz" \
      https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 ```
 
+### Erreurs
+
+- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
+- 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
+
 ### <a name="ref-destroy-internship-offer"></a>
 ## Supression d'une offre
 **url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
@@ -138,6 +147,10 @@ curl -H "Authorization: Bearer foobarbaz" \
      -vvv \
      https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
 ```
+
+### Erreurs
+
+- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 
 # Structures de données et référentiels
 
