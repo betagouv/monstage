@@ -23,6 +23,7 @@ module Users
     end
 
     private
+
     def set_api_token
       api_token = SecureRandom.uuid
     end

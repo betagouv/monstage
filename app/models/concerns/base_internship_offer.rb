@@ -26,7 +26,6 @@ module BaseInternshipOffer
     has_many :internship_offer_weeks, dependent: :destroy
     has_many :weeks, through: :internship_offer_weeks
 
-
     before_create :reverse_academy_by_zipcode
 
     def osm_url
@@ -44,7 +43,5 @@ module BaseInternshipOffer
     def reverse_academy_by_zipcode
       self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
     end
-
-
   end
 end

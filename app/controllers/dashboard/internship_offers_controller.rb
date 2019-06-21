@@ -29,7 +29,7 @@ module Dashboard
           render :new, status: :bad_request
         end
       end
-    rescue ActionController::ParameterMissing => error
+    rescue ActionController::ParameterMissing => e
       @internship_offer = InternshipOffer.new
       find_selectable_weeks
       render :new, status: :bad_request
@@ -55,7 +55,7 @@ module Dashboard
         end
       end
     rescue ActionController::ParameterMissing => e
-      @internship_offer =InternshipOffer.find(params[:id])
+      @internship_offer = InternshipOffer.find(params[:id])
       find_selectable_weeks
       render :edit, status: :bad_request
     end
@@ -65,9 +65,8 @@ module Dashboard
         on.success do
           redirect_to(dashboard_internship_offers_path,
                       flash: { success: 'Votre annonce a bien été supprimée' })
-
         end
-        on.failure do |failed_internship_offer|
+        on.failure do |_failed_internship_offer|
           redirect_to(dashboard_internship_offers_path,
                       flash: { warning: "Votre annonce n'a pas été supprimée" })
         end

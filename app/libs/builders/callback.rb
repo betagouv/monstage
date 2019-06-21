@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Builders
   class Callback
     attr_accessor :on_success, :on_failure
@@ -12,7 +14,6 @@ module Builders
 
     private
 
-    def initialize(args = {})
-    end
+    def initialize(args = {}); end
   end
 end

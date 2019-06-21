@@ -10,8 +10,8 @@ module Api
       post api_internship_offers_path(params: {})
       documents_as(endpoint: :'internship_offers/create', state: :unauthorized) do
         assert_response :unauthorized
-        assert_equal "UNAUTHORIZED", json_response["code"]
-        assert_equal "wrong api token", json_response["error"]
+        assert_equal 'UNAUTHORIZED', json_response['code']
+        assert_equal 'wrong api token', json_response['error']
       end
     end
 
@@ -19,61 +19,59 @@ module Api
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       documents_as(endpoint: :'internship_offers/create', state: :unprocessable_entity) do
         post api_internship_offers_path(
-            params: {
-              token: "Bearer #{operator.api_token}",
-            }
+          params: {
+            token: "Bearer #{operator.api_token}"
+          }
         )
       end
       assert_response :unprocessable_entity
-      assert_equal "BAD_PAYLOAD", json_response["code"]
-      assert_equal "param is missing or the value is empty: internship_offer", json_response["error"]
+      assert_equal 'BAD_PAYLOAD', json_response['code']
+      assert_equal 'param is missing or the value is empty: internship_offer', json_response['error']
     end
-
 
     test 'POST #create as operator fails with invalid data respond with :bad_request' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       documents_as(endpoint: :'internship_offers/create', state: :bad_request) do
         post api_internship_offers_path(
-            params: {
-              token: "Bearer #{operator.api_token}",
-              internship_offer: {title: ''}
-            }
+          params: {
+            token: "Bearer #{operator.api_token}",
+            internship_offer: { title: '' }
+          }
         )
       end
       assert_response :bad_request
-      assert_equal "VALIDATION_ERROR", json_response["code"]
-      assert_equal ["Missing coordinates"],
-                   json_response["error"]["coordinates"],
-                   "bad coordinates message"
-      assert_equal ["Missing title"],
-                   json_response["error"]["title"],
-                   "bad title message"
-      assert_equal ["Missing employer_name"],
-                   json_response["error"]["employer_name"],
-                   "bad employer_name message"
-      assert_equal ["Missing zipcode"],
-                   json_response["error"]["zipcode"],
-                   "bad zipcode message"
-      assert_equal ["Missing city"],
-                   json_response["error"]["city"],
-                   "bad city message"
-      assert_equal ["Missing remote_id"],
-                   json_response["error"]["remote_id"],
-                   "bad remote_id message"
-      assert_equal ["Missing permalink"],
-                   json_response["error"]["permalink"],
-                   "bad permalink message"
-      assert_equal ["Missing weeks"],
-                   json_response["error"]["weeks"],
-                   "bad weeks message"
-      assert_equal ["Missing description"],
-                   json_response["error"]["description"],
-                   "bad description message"
-      assert_equal ["Missing sector"],
-                   json_response["error"]["sector"],
-                   "bad sector message"
+      assert_equal 'VALIDATION_ERROR', json_response['code']
+      assert_equal ['Missing coordinates'],
+                   json_response['error']['coordinates'],
+                   'bad coordinates message'
+      assert_equal ['Missing title'],
+                   json_response['error']['title'],
+                   'bad title message'
+      assert_equal ['Missing employer_name'],
+                   json_response['error']['employer_name'],
+                   'bad employer_name message'
+      assert_equal ['Missing zipcode'],
+                   json_response['error']['zipcode'],
+                   'bad zipcode message'
+      assert_equal ['Missing city'],
+                   json_response['error']['city'],
+                   'bad city message'
+      assert_equal ['Missing remote_id'],
+                   json_response['error']['remote_id'],
+                   'bad remote_id message'
+      assert_equal ['Missing permalink'],
+                   json_response['error']['permalink'],
+                   'bad permalink message'
+      assert_equal ['Missing weeks'],
+                   json_response['error']['weeks'],
+                   'bad weeks message'
+      assert_equal ['Missing description'],
+                   json_response['error']['description'],
+                   'bad description message'
+      assert_equal ['Missing sector'],
+                   json_response['error']['sector'],
+                   'bad sector message'
     end
-
 
     test 'POST #create as operator post duplicate remote_id' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
@@ -81,7 +79,7 @@ module Api
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
       week_params = [
         "#{week_instances.first.year}W#{week_instances.first.number}",
-        "#{week_instances.last.year}W#{week_instances.last.number}",
+        "#{week_instances.last.year}W#{week_instances.last.number}"
       ]
       sector = create(:sector, uuid: SecureRandom.uuid)
       internship_offer_params = existing_internship_offer.attributes
@@ -90,13 +88,13 @@ module Api
                                                                  :coordinates)
                                                          .merge(sector_uuid: sector.uuid,
                                                                 weeks: week_params,
-                                                                coordinates: {latitude: 1, longitude: 1})
+                                                                coordinates: { latitude: 1, longitude: 1 })
       documents_as(endpoint: :'internship_offers/create', state: :conflict) do
         post api_internship_offers_path(
-            params: {
-              token: "Bearer #{operator.api_token}",
-              internship_offer: internship_offer_params
-            }
+          params: {
+            token: "Bearer #{operator.api_token}",
+            internship_offer: internship_offer_params
+          }
         )
       end
       assert_response :conflict
@@ -107,22 +105,22 @@ module Api
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
       sector = create(:sector, uuid: SecureRandom.uuid)
 
-      title = "title"
-      description = "description"
-      employer_name = "employer_name"
-      employer_description = "employer_description"
-      employer_website = "http://google.fr"
-      coordinates = {latitude: 1, longitude: 1}
+      title = 'title'
+      description = 'description'
+      employer_name = 'employer_name'
+      employer_description = 'employer_description'
+      employer_website = 'http://google.fr'
+      coordinates = { latitude: 1, longitude: 1 }
       street = "Avenue de l'opéra"
-      zipcode = "75002"
-      city = "Paris"
+      zipcode = '75002'
+      city = 'Paris'
       sector_uuid = sector.uuid
       week_params = [
         "#{week_instances.first.year}W#{week_instances.first.number}",
-        "#{week_instances.last.year}W#{week_instances.last.number}",
+        "#{week_instances.last.year}W#{week_instances.last.number}"
       ]
-      remote_id = "test"
-      permalink = "https://www.google.fr"
+      remote_id = 'test'
+      permalink = 'https://www.google.fr'
       assert_difference('InternshipOffer.count', 1) do
         documents_as(endpoint: :'internship_offers/create', state: :created) do
           post api_internship_offers_path(
@@ -141,7 +139,7 @@ module Api
                 sector_uuid: sector_uuid,
                 weeks: week_params,
                 remote_id: remote_id,
-                permalink: permalink,
+                permalink: permalink
               }
             }
           )
@@ -155,8 +153,8 @@ module Api
       assert_equal employer_name, internship_offer.employer_name
       assert_equal employer_description, internship_offer.employer_description
       assert_equal employer_website, internship_offer.employer_website
-      assert_equal coordinates, { latitude: internship_offer.coordinates.latitude,
-                                  longitude: internship_offer.coordinates.longitude }
+      assert_equal coordinates, latitude: internship_offer.coordinates.latitude,
+                                longitude: internship_offer.coordinates.longitude
       assert_equal street, internship_offer.street
       assert_equal zipcode, internship_offer.zipcode
       assert_equal city, internship_offer.city

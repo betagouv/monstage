@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Renderer
     extend ActiveSupport::Concern
@@ -14,7 +16,7 @@ module Api
       end
 
       def render_validation_error(instance)
-        render_error(code: "VALIDATION_ERROR",
+        render_error(code: 'VALIDATION_ERROR',
                      error: instance.errors,
                      status: :bad_request)
       end

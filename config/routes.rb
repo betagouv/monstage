@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     resources :internship_applications, only: %i[create index show update]
   end
   namespace :api, path: 'api' do
-    resources :internship_offers, only: [:create, :update, :destroy]
+    resources :internship_offers, only: %i[create update destroy]
   end
 
   namespace :dashboard, path: 'dashboard' do

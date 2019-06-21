@@ -70,7 +70,6 @@ class InternshipOffer < ApplicationRecord
     internship_applications.empty?
   end
 
-
   def init
     self.max_candidates ||= 1
   end

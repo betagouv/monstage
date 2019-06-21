@@ -36,6 +36,6 @@ FactoryBot.define do
     weeks { [Week.first] }
     sequence(:remote_id) { |n| n }
     employer { create(:user_operator) }
-    permalink { "https://google.fr" }
+    permalink { 'https://google.fr' }
   end
 end

@@ -15,7 +15,7 @@ module InternshipOffers
     test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
       internship_offer = create(:internship_offer)
       sign_in(create(:employer))
-      patch(dashboard_internship_offer_path(internship_offer.to_param), params: {internship_offer: {title: ''}})
+      patch(dashboard_internship_offer_path(internship_offer.to_param), params: { internship_offer: { title: '' } })
       assert_redirected_to root_path
     end
 

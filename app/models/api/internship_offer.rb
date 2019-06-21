@@ -22,23 +22,23 @@ module Api
     def formatted_coordinates
       {
         latitude: coordinates.latitude,
-        longitude: coordinates.longitude,
+        longitude: coordinates.longitude
       }
     end
 
-    def to_json
+    def to_json(*_args)
       super(
-        only: [:title,
-               :description,
-               :employer_name,
-               :employer_description,
-               :employer_website,
-               :street,
-               :zipcode,
-               :city,
-               :remote_id,
-               :permalink,
-               :sector_uuid],
+        only: %i[title
+                 description
+                 employer_name
+                 employer_description
+                 employer_website
+                 street
+                 zipcode
+                 city
+                 remote_id
+                 permalink
+                 sector_uuid],
         methods: [:formatted_coordinates]
       )
     end

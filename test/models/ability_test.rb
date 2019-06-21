@@ -88,11 +88,10 @@ class AbilityTest < ActiveSupport::TestCase
     operator = create(:user_operator)
     ability = Ability.new(operator)
     assert(ability.can?(:create, Api::InternshipOffer.new),
-           "Operator should be able to create internship_offers")
+           'Operator should be able to create internship_offers')
     assert(ability.cannot?(:update, Api::InternshipOffer.new),
            'employers should not be able to update internship offer not belonging to him')
     assert(ability.can?(:update, Api::InternshipOffer.new(employer: operator)),
            'employers should be able to update internships offer that belongs to him')
-
   end
 end
