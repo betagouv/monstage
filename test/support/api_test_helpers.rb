@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module ApiTestHelpers
-  def write_response_as(report_as:)
+  def documents_as(endpoint:, state:)
     yield
-    File.write(Rails.root.join('doc', "#{report_as}.json"), response.body)
+    File.write(Rails.root.join('doc', *endpoint.to_s.split('/'), "#{state}.json"), response.body)
   end
 
   def json_response

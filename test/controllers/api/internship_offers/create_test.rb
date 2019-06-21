@@ -8,7 +8,7 @@ module Api
 
     test 'POST #create without token renders :authorized payload' do
       post api_internship_offers_path(params: {})
-      write_response_as(report_as: :create_unauthorized) do
+      documents_as(endpoint: :'internship_offers/create', state: :unauthorized) do
         assert_response :unauthorized
         assert_equal "UNAUTHORIZED", json_response["code"]
         assert_equal "wrong api token", json_response["error"]
@@ -17,7 +17,7 @@ module Api
 
     test 'POST #create as operator fails with invalid payload respond with :unprocessable_entity' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      write_response_as(report_as: :create_unprocessable_entity) do
+      documents_as(endpoint: :'internship_offers/create', state: :unprocessable_entity) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -32,7 +32,7 @@ module Api
 
     test 'POST #create as operator fails with invalid data respond with :bad_request' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      write_response_as(report_as: :create_bad_request) do
+      documents_as(endpoint: :'internship_offers/create', state: :bad_request) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -91,7 +91,7 @@ module Api
                                                          .merge(sector_uuid: sector.uuid,
                                                                 weeks: week_params,
                                                                 coordinates: {latitude: 1, longitude: 1})
-      write_response_as(report_as: :create_conflict) do
+      documents_as(endpoint: :'internship_offers/create', state: :conflict) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -124,7 +124,7 @@ module Api
       remote_id = "test"
       permalink = "https://www.google.fr"
       assert_difference('InternshipOffer.count', 1) do
-        write_response_as(report_as: :create_created) do
+        documents_as(endpoint: :'internship_offers/create', state: :created) do
           post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",

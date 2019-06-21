@@ -12,7 +12,7 @@ module Api
     end
 
     test 'PATCH #update without token renders :authorized payload' do
-      write_response_as(report_as: :update_unauthorized) do
+      documents_as(endpoint: :'internship_offers/update', state: :unauthorized) do
         patch api_internship_offer_path(id: @internship_offer.remote_id)
       end
       assert_response :unauthorized
@@ -21,7 +21,7 @@ module Api
     end
 
     test 'PATCH #update as operator fails with invalid payload respond with :unprocessable_entity' do
-      write_response_as(report_as: :update_unprocessable_entity) do
+      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
@@ -36,7 +36,7 @@ module Api
 
     test 'PATCH #update an internship_offer which does not belongs to current auth operator' do
       bad_operator = create(:user_operator)
-      write_response_as(report_as: :update_forbidden) do
+      documents_as(endpoint: :'internship_offers/update', state: :forbidden) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
@@ -52,7 +52,7 @@ module Api
       assert_equal "You are not authorized to access this page.", json_response["error"]
     end
     test 'PATCH #update as operator fails with invalid remote_id' do
-      write_response_as(report_as: :update_not_found) do
+      documents_as(endpoint: :'internship_offers/update', state: :not_found) do
         patch api_internship_offer_path(
             id: "foo",
             params: {
@@ -69,7 +69,7 @@ module Api
     end
 
     test 'PATCH #update as operator fails with invalid data respond with :bad_request' do
-      write_response_as(report_as: :update_bad_request) do
+      documents_as(endpoint: :'internship_offers/update', state: :bad_request) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
@@ -89,7 +89,7 @@ module Api
 
     test 'PATCH #update as operator works to internship_offers' do
       new_title = "hellow"
-      write_response_as(report_as: :update_ok) do
+      documents_as(endpoint: :'internship_offers/update', state: :ok) do
         patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
