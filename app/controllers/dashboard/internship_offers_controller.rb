@@ -42,13 +42,20 @@ module Dashboard
     end
 
     def update
-      @internship_offer = InternshipOffer.find(params[:id])
-      authorize! :update, @internship_offer
-      @internship_offer.update!(internship_offer_params)
-      redirect_to(@internship_offer,
-                  flash: { success: 'Votre annonce a bien été modifiée' })
-    rescue ActiveRecord::RecordInvalid,
-           ActionController::ParameterMissing => e
+      internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
+                                      params: internship_offer_params) do |on|
+        on.success do |updated_internship_offer|
+          redirect_to(updated_internship_offer,
+                      flash: { success: 'Votre annonce a bien été modifiée' })
+        end
+        on.failure do |failed_internship_offer|
+          @internship_offer = failed_internship_offer
+          find_selectable_weeks
+          render :edit, status: :bad_request
+        end
+      end
+    rescue ActionController::ParameterMissing => e
+      @internship_offer =InternshipOffer.find(params[:id])
       find_selectable_weeks
       render :edit, status: :bad_request
     end

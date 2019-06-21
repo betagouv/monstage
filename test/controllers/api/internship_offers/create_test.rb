@@ -3,26 +3,21 @@
 require 'test_helper'
 
 module Api
-  class InternshipOfferTest < ActionDispatch::IntegrationTest
-    def write_response_as(report_as:)
-      yield
-      File.write(Rails.root.join('doc', "#{report_as}.json"), response.body)
-    end
+  class CreateTest < ActionDispatch::IntegrationTest
+    include ::ApiTestHelpers
 
-    def json_response
-      JSON.parse(response.body)
-    end
-
-    test 'POST #create as visitor redirects to internship_offers' do
+    test 'POST #create without token renders :authorized payload' do
       post api_internship_offers_path(params: {})
-      assert_response :unauthorized
-      assert_equal "UNAUTHORIZED", json_response["code"]
-      assert_equal "wrong api token", json_response["error"]
+      write_response_as(report_as: :create_unauthorized) do
+        assert_response :unauthorized
+        assert_equal "UNAUTHORIZED", json_response["code"]
+        assert_equal "wrong api token", json_response["error"]
+      end
     end
 
     test 'POST #create as operator fails with invalid payload respond with :unprocessable_entity' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      write_response_as(report_as: :unprocessable_entity) do
+      write_response_as(report_as: :create_unprocessable_entity) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -37,7 +32,7 @@ module Api
 
     test 'POST #create as operator fails with invalid data respond with :bad_request' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
-      write_response_as(report_as: :bad_request) do
+      write_response_as(report_as: :create_bad_request) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -96,7 +91,7 @@ module Api
                                                          .merge(sector_uuid: sector.uuid,
                                                                 weeks: week_params,
                                                                 coordinates: {latitude: 1, longitude: 1})
-      write_response_as(report_as: :conflict) do
+      write_response_as(report_as: :create_conflict) do
         post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -129,7 +124,7 @@ module Api
       remote_id = "test"
       permalink = "https://www.google.fr"
       assert_difference('InternshipOffer.count', 1) do
-        write_response_as(report_as: :created) do
+        write_response_as(report_as: :create_created) do
           post api_internship_offers_path(
             params: {
               token: "Bearer #{operator.api_token}",
@@ -154,7 +149,7 @@ module Api
         assert_response :created
       end
 
-      internship_offer = InternshipOffer.first
+      internship_offer = Api::InternshipOffer.first
       assert_equal title, internship_offer.title
       assert_equal description, internship_offer.description
       assert_equal employer_name, internship_offer.employer_name
@@ -170,6 +165,8 @@ module Api
       assert_equal week_instances, internship_offer.weeks
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
+
+      assert_equal JSON.parse(internship_offer.to_json), json_response
     end
   end
 end

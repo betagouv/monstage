@@ -9,7 +9,7 @@ module Builders
   class InternshipOfferBuilder
     def create(params:)
       yield callback if block_given?
-      authorize! :create, InternshipOffer
+      authorize! :create, model
       params = from_api? ? preprocess_api_params(params) : params
       internship_offer = model.create!(params)
       callback.on_success.try(:call, internship_offer)
@@ -18,6 +18,19 @@ module Builders
         callback.on_duplicate.try(:call, error.record)
       else
         callback.on_failure.try(:call, error.record)
+      end
+    end
+
+    def update(instance:, params:)
+      yield callback if block_given?
+      authorize! :update, instance
+      instance.update!(params)
+      callback.on_success.try(:call, instance)
+    rescue ActiveRecord::RecordInvalid => error
+      if duplicate?(error.record)
+        callback.on_duplicate.try(:call, error.record)
+      else
+        callback.on_failure.try(:call, instance)
       end
     end
 

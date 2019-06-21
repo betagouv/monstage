@@ -12,6 +12,12 @@ module Api
              status: status
     end
 
+    def render_validation_error(instance)
+      render_error(code: "VALIDATION_ERROR",
+                   error: instance.errors,
+                   status: :bad_request)
+    end
+
     private
 
     def bearer
