@@ -38,9 +38,7 @@ module Api
     end
 
     def update
-      internship_offer = InternshipOffer.find_by!(remote_id: params[:id])
-
-      internship_offer_builder.update(instance: internship_offer,
+      internship_offer_builder.update(instance: InternshipOffer.find_by!(remote_id: params[:id]),
                                       params: update_internship_offer_params) do |on|
         on.success do |updated_internship_offer|
           render_success(status: :ok, object: updated_internship_offer)
