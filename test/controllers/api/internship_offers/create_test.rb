@@ -78,8 +78,8 @@ module Api
       existing_internship_offer = create(:api_internship_offer, employer: operator)
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
       week_params = [
-        "#{week_instances.first.year}W#{week_instances.first.number}",
-        "#{week_instances.last.year}W#{week_instances.last.number}"
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
       ]
       sector = create(:sector, uuid: SecureRandom.uuid)
       internship_offer_params = existing_internship_offer.attributes
@@ -116,8 +116,8 @@ module Api
       city = 'Paris'
       sector_uuid = sector.uuid
       week_params = [
-        "#{week_instances.first.year}W#{week_instances.first.number}",
-        "#{week_instances.last.year}W#{week_instances.last.number}"
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
       ]
       remote_id = 'test'
       permalink = 'https://www.google.fr'
@@ -165,6 +165,39 @@ module Api
       assert_equal permalink, internship_offer.permalink
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
+    end
+
+    test 'POST #create as operator with no weeks params use all selectable week from now until end of school year' do
+      operator = create(:user_operator, api_token: SecureRandom.uuid)
+      sector = create(:sector, uuid: SecureRandom.uuid)
+
+      travel_to(Date.new(2019, 3, 1)) do
+        assert_difference('InternshipOffer.count', 1) do
+          post api_internship_offers_path(
+            params: {
+              token: "Bearer #{operator.api_token}",
+              internship_offer: {
+                title: 'title',
+                description: 'description',
+                employer_name: 'employer_name',
+                employer_description: 'employer_description',
+                employer_website: 'http://employer_website.com',
+                'coordinates' => { latitude: 1, longitude: 1 },
+                street: 'street',
+                zipcode: '60580',
+                city: 'Coye la forêt',
+                sector_uuid: sector.uuid,
+                remote_id: 'remote_id',
+                permalink: 'http://google.fr/permalink'
+              }
+            }
+          )
+          assert_response :created
+        end
+
+        internship_offer = Api::InternshipOffer.first
+        assert_equal Week.selectable_from_now_until_end_of_period, internship_offer.weeks
+      end
     end
   end
 end

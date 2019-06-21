@@ -15,8 +15,6 @@ class ApplicationController < ActionController::Base
   protected
 
   def find_selectable_weeks
-    school_year = SchoolYear.new(date: Date.today)
-    @current_weeks = Week.from_date_to_date(from: school_year.beginning_of_period,
-                                            to: school_year.end_of_period)
+    @current_weeks = Week.selectable_from_now_until_end_of_period
   end
 end

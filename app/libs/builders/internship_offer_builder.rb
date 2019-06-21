@@ -80,13 +80,14 @@ module Builders
       if params.key?(:weeks)
         concatenated_query = nil
         Array(params.delete(:weeks)).map do |week_str|
-          year, number = week_str.split('W')
+          byebug
+          year, number = week_str.split('-W')
           base_query = Week.where(year: year, number: number)
           concatenated_query = concatenated_query.nil? ? base_query : concatenated_query.or(base_query)
         end
         params[:weeks] = concatenated_query.all
       else
-        # all year long
+        params[:weeks] = Week.selectable_from_now_until_end_of_period
       end
       params
     end

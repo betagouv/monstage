@@ -25,6 +25,11 @@ class Week < ApplicationRecord
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
+  def self.selectable_from_now_until_end_of_period
+    school_year = SchoolYear.new(date: Date.today)
+    Week.from_date_to_date(from: school_year.beginning_of_period,
+                           to: school_year.end_of_period)
+  end
   # to, strip, join with space otherwise multiple spaces can be outputted,
   # then within html it is concatenated [html logic], but capybara fails to find this content
   def short_select_text_method
