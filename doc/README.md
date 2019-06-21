@@ -96,12 +96,16 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 **method** : PATCH
 
+*Paramètres d'url* :
+
+* **remote_id** *(string, required)*
+
 *Paramètres de body :*
 
 * **internship_offer.title** *(string)*
-* **internship_offer.description** *(text, required *<= 500 caractères)
+* **internship_offer.description** *(text,  <= 500 caractères)*
 * **internship_offer.employer_name** *(string)*
-* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_description** *(string, <= 275 caractères)*
 * **internship_offer.employer_website** *(string)*
 * **internship_offer.coordinates** *(object/geography)* : { latitude: 1, longitude: 1 }
 * **internship_offer.street** *(text)*
@@ -129,12 +133,12 @@ curl -H "Authorization: Bearer foobarbaz" \
 - 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
 
 ### <a name="ref-destroy-internship-offer"></a>
-## Supression d'une offre
+## Suppression d'une offre
 **url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
 
 **method** : DELETE
 
-**Paramètres d'url** :
+*Paramètres d'url* :
 
 * **remote_id** *(string, required)*
 
