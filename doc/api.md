@@ -36,9 +36,14 @@ Les erreurs de requête seront signalées via un code HTTP > 400.
 
 Sur chaque requête, on pourra avoir les erreurs suivantes :
 
-- 400, Bad Request : Paramètres de requête mal renseignés.
+- 400, Bad Request : Paramètres de requête mal renseignés. Exemple : Secteur non indiqué dans la création d'une offres
+- 401, Unauthorized : Token invalide
+- 403, Forbidden : Pas le droit d'effectuer cette requête. Exemple : Modification d'une offre qui ne vous appartient pas
+- 422, Unprocessable Entity. Payload incorrect, impossible de traiter la requête
 
-Exemple : Secteur non indiqué dans la création d'une offres
+- 500, Internal Server Error : Service indisponible
+
+En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront détaillées pour chacun d'entre eux.
 
 
 # Endpoints
@@ -67,7 +72,7 @@ Exemple : Secteur non indiqué dans la création d'une offres
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
 
-**Exemple curl**
+### Exemple curl
 
 ```
 curl -H "Authorization: Bearer foobarbaz" \
@@ -102,7 +107,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url, required)*
 
-**Exemple curl**
+### Exemple curl
 
 ```
 curl -H "Authorization: Bearer foobarbaz" \
@@ -124,7 +129,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 * **remote_id** *(string, required)*
 
-**Exemple curl**
+### Exemple curl
 
 ```
 curl -H "Authorization: Bearer foobarbaz" \
