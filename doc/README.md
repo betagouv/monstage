@@ -9,8 +9,13 @@ L'API sera :
 * construite sur le format "REST"
 * inspiré du standard [jsonapi](https://jsonapi.org)
 * avec le point d'entrée ```baseUrl```:
+<<<<<<< HEAD
  * En pré production : https://v2-test.monstagedetroisieme.fr/api
  * En production : https://monstagedetroisieme.fr/api
+=======
+  * En pré production : https://v2-test.monstagedetroisieme.fr/api
+  * En production : https://monstagedetroisieme.fr/api
+>>>>>>> master
 
 Les services web suivant seront mis à disposition :
 
@@ -56,7 +61,11 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 **method** : POST
 
+<<<<<<< HEAD
 ** Paramètres de body** :
+=======
+*Paramètres de body :*
+>>>>>>> master
 
 * **internship_offer.title** *(string, required)*
 * **internship_offer.description** *(text, required *<= 500 caractères)
@@ -96,7 +105,11 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 **method** : PATCH
 
+<<<<<<< HEAD
 ** Paramètres de body** :
+=======
+*Paramètres de body :*
+>>>>>>> master
 
 * **internship_offer.title** *(string)*
 * **internship_offer.description** *(text, required *<= 500 caractères)
