@@ -80,7 +80,6 @@ module Builders
       if params.key?(:weeks)
         concatenated_query = nil
         Array(params.delete(:weeks)).map do |week_str|
-          byebug
           year, number = week_str.split('-W')
           base_query = Week.where(year: year, number: number)
           concatenated_query = concatenated_query.nil? ? base_query : concatenated_query.or(base_query)
