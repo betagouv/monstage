@@ -56,7 +56,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 
 **method** : POST
 
-** Paramètres de body** :
+*Paramètres de body :*
 
 * **internship_offer.title** *(string, required)*
 * **internship_offer.description** *(text, required *<= 500 caractères)
@@ -96,7 +96,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 
 **method** : PATCH
 
-** Paramètres de body** :
+*Paramètres de body :*
 
 * **internship_offer.title** *(string)*
 * **internship_offer.description** *(text, required *<= 500 caractères)
