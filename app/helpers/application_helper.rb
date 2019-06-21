@@ -16,7 +16,7 @@ module ApplicationHelper
     class_names = []
     class_names.push('homepage') if homepage?
     class_names.push('onboarding-flow') if onboarding_flow?
-    return class_names.join(' ')
+    class_names.join(' ')
   end
 
   def homepage?

@@ -13,7 +13,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
 
     # go to signup as main teacher
-    visit new_user_registration_path(as: "MainTeacher")
+    visit new_user_registration_path(as: 'MainTeacher')
 
     # fails to create main teacher with existing email
     assert_difference('Users::MainTeacher.count', 0) do

@@ -78,7 +78,6 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
-
   end
 
   def teacher_abilities(user:)
