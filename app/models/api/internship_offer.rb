@@ -19,7 +19,7 @@ module Api
       self.is_public = false
     end
 
-    def formated_coordinates
+    def formatted_coordinates
       {
         latitude: coordinates.latitude,
         longitude: coordinates.longitude,
@@ -39,7 +39,7 @@ module Api
                :remote_id,
                :permalink,
                :sector_uuid],
-        methods: [:formated_coordinates]
+        methods: [:formatted_coordinates]
       )
     end
   end
