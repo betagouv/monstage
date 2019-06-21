@@ -8,8 +8,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin')
 
     # go to signup as school_manager
-    visit_signup
-    click_on "Je suis chef d'établissement"
+    visit new_user_registration_path(as: "SchoolManager")
 
     # fails to create school_manager with existing email
     assert_difference('Users::SchoolManager.count', 0) do

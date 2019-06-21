@@ -10,9 +10,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as other
-    visit_signup
-    find('#dropdown-choose-profile').click
-    click_on Users::Other.model_name.human
+    visit new_user_registration_path(as: "Other")
 
     # fails to create other with existing email
     assert_difference('Users::Other.count', 0) do

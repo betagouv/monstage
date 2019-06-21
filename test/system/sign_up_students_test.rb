@@ -13,8 +13,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     student = create(:student, email: existing_email)
 
     # go to signup as student
-    visit_signup
-    click_on 'Je suis élève de 3e'
+    visit new_user_registration_path(as: "Student")
 
     # fails to create student with existing email
     assert_difference('Users::Student.count', 0) do
