@@ -37,3 +37,7 @@
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+
+/doc/internship_offers/create
+/doc/internship_offers/destroy
+/doc/internship_offers/update
