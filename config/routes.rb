@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   get '/faq', to: 'pages#faq'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/statistiques', to: 'pages#statistiques'
+  get '/operators', to: 'pages#operators'
 
   match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
 
