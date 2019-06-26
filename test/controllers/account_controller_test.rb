@@ -30,8 +30,16 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get account_path(section: 'api')
+    assert_select "a[href='#{account_path(section: 'api')}']"
     assert_select 'input[name="user[api_token]"]'
     assert_select "input[value=\"#{operator.api_token}\"]"
+  end
+
+  test 'No other role than operator should have an API token' do
+    student = create(:student)
+    sign_in(student)
+    get account_path
+    assert_select "a[href='#{account_path(section: 'api')}']", false
   end
 
   test 'GET edit render :edit success with all roles' do
