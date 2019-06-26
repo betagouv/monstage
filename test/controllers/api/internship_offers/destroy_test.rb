@@ -11,7 +11,7 @@ module Api
       @internship_offer = create(:api_internship_offer, employer: @operator)
     end
 
-    test 'DELETE #destroy without token renders :authorized payload' do
+    test 'DELETE #destroy without token renders :unauthorized payload' do
       documents_as(endpoint: :'internship_offers/destroy', state: :unauthorized) do
         delete api_internship_offer_path(id: @internship_offer.remote_id)
       end
