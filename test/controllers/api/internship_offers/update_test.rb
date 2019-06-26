@@ -90,19 +90,27 @@ module Api
 
     test 'PATCH #update as operator works to internship_offers' do
       new_title = 'hellow'
+      week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
+      week_params = [
+        "#{week_instances.first.year}-W#{week_instances.first.number}",
+        "#{week_instances.last.year}-W#{week_instances.last.number}"
+      ]
+
       documents_as(endpoint: :'internship_offers/update', state: :ok) do
         patch api_internship_offer_path(
           id: @internship_offer.remote_id,
           params: {
             token: "Bearer #{@operator.api_token}",
             internship_offer: {
-              title: new_title
+              title: new_title,
+              weeks: week_params,
             }
           }
         )
       end
       assert_response :success
       assert_equal new_title, @internship_offer.reload.title
+      assert_equal week_instances, @internship_offer.reload.weeks
       assert_equal JSON.parse(@internship_offer.to_json), json_response
     end
   end

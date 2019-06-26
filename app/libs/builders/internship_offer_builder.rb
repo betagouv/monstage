@@ -26,6 +26,7 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize! :update, instance
+      params = from_api? ? preprocess_api_params(params) : params
       instance.update!(params)
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
