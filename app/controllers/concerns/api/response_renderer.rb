@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Api
-  module Renderer
+  module ResponseRenderer
     extend ActiveSupport::Concern
 
     included do

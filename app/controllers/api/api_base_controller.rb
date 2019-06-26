@@ -5,6 +5,7 @@ module Api
     protect_from_forgery with: :null_session
 
     include Api::Authentication
-    include Api::Renderer
+    include Api::ResponseRenderer
+    include Api::ErrorHandler
   end
 end
