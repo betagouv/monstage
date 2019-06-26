@@ -3,7 +3,7 @@
 module BaseInternshipOffer
   extend ActiveSupport::Concern
 
-  DESCRIPTION_MAX_CHAR_COUNT = 275
+  DESCRIPTION_MAX_CHAR_COUNT = 500
   OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
 
   included do
