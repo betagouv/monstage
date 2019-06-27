@@ -45,7 +45,7 @@
 
   fieldset data={controller: 'algolia-place'}
     legend Où?
-    .form-group data={target: 'algolia-place.autocompleteFormGroup'}
+    .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
       = form.label :autocomplete do
         = "Adresse du lieu où se déroule le stage"
         = form.rg2a_required_content_tag
@@ -195,7 +195,7 @@
       .form-group
         = form.label :operator_ids do
           = "Opérateurs"
-          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs
+          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs. #{link_to 'En savoir plus. (nouvelle fenêtre)', operators_path, target: '_blank'}
         = form.select :operator_ids, options_from_collection_for_select(Operator.order(:name).all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true, disabled: current_user.is_a?(Users::Operator)
 
 
