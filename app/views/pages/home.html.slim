@@ -25,6 +25,29 @@
         br
         | aux collèges REP+
 
+.bg-warning.py-5.d-none.d-sm-block
+  .container
+    .row
+      .col-12
+        h3.h2-home.text-center Nous sommes à vos côtés pour…
+
+    .row.py-5
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3.h-100
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center.mb-3 Offrir un stage
+          p.text-center.h4-home Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3.h-100
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center.mb-3 Trouver un stage
+          p.text-center.h4-home À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
+      .col-sm-12.col-md-4.py-3
+        .bg-white.shadow-lg.rounded-lg.p-3.h-100
+          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", class: 'my-3 d-block logo mx-auto', width: 160
+          h4.text-center.mb-3 Accompagner les élèves
+          p.text-center.h4-home Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
+
 .py-5.bg-white-250
   .container
     .row.align-items-center.no-gutters
@@ -52,28 +75,6 @@
         p= link_to "Voir les documents", documents_utiles_path, class: "btn btn-lg btn-outline-warning shadow-lg"
 
 
-.bg-warning.py-5.d-none.d-sm-block
-  .container
-    .row
-      .col-12
-        h3.h2-home.text-center Nous sommes à vos côtés pour…
-
-    .row.py-5
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Offrir un stage
-          p.text-center.h4-home Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Trouver un stage
-          p.text-center.h4-home À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Accompagner les élèves
-          p.text-center.h4-home Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
 .bg-light-warning.py-5.d-none.d-sm-block
   .container
     .row
