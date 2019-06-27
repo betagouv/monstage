@@ -61,5 +61,16 @@ module Api
       end
       assert_response :no_content
     end
+
+    test 'DELETE #destroy twice renders conflict' do
+      new_title = 'hellow'
+      documents_as(endpoint: :'internship_offers/destroy', state: :conflict) do
+        delete api_internship_offer_path(id: @internship_offer.remote_id,
+                                         params: { token: "Bearer #{@operator.api_token}" })
+        delete api_internship_offer_path(id: @internship_offer.remote_id,
+                                         params: { token: "Bearer #{@operator.api_token}" })
+      end
+      assert_response :conflict
+    end
   end
 end
