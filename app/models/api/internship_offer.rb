@@ -26,6 +26,14 @@ module Api
       }
     end
 
+    def capitalize_class_name
+      self.class.name.demodulize.underscore.capitalize
+    end
+
+    def underscore_class_name
+      self.class.name.demodulize.underscore
+    end
+
     def to_json(*_args)
       super(
         only: %i[title

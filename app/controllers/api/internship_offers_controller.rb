@@ -6,31 +6,23 @@ module Api
 
     def create
       internship_offer_builder.create(params: create_internship_offer_params) do |on|
-        on.success do |created_internship_offer|
-          render_success(status: :created, object: created_internship_offer)
-        end
-        on.duplicate do |duplicate_internship_offer|
-          render_error(code: 'DUPLICATE_INTERNSHIP_OFFER',
-                       error: "an object with this remote_id (#{duplicate_internship_offer.remote_id}) already exists for this account",
-                       status: :conflict)
-        end
+        on.success &method(:render_created)
         on.failure &method(:render_validation_error)
+        on.duplicate &method(:render_duplicate)
       end
     end
 
     def update
       internship_offer_builder.update(instance: InternshipOffer.find_by!(remote_id: params[:id]),
                                       params: update_internship_offer_params) do |on|
-        on.success do |updated_internship_offer|
-          render_success(status: :ok, object: updated_internship_offer)
-        end
+        on.success &method(:render_ok)
         on.failure &method(:render_validation_error)
       end
     end
 
     def destroy
       internship_offer_builder.discard(instance: InternshipOffer.find_by!(remote_id: params[:id])) do |on|
-        on.success &method(:render_success_no_content)
+        on.success &method(:render_no_content)
         on.failure do |_failed_internship_offer|
           render_error(code: 'INTERNSHIP_OFFER_ALREADY_DESTROYED',
                        error: 'internship_offer already destroyed',
