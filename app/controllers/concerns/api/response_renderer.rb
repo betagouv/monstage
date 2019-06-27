@@ -22,8 +22,8 @@ module Api
       # error renderers
       #
       def render_duplicate(duplicate_ar_object)
-        render_error(code: "DUPLICATE_#{duplicate_ar_object.capitalize_class_name}",
-                     error: "#{duplicate_ar_object.underscore_class_name} with this remote_id (#{duplicate_ar_object.remote_id}) already exists",
+        render_error(code: "DUPLICATE_#{capitalize_class_name(duplicate_ar_object)}",
+                     error: "#{underscore_class_name(duplicate_ar_object)} with this remote_id (#{duplicate_ar_object.remote_id}) already exists",
                      status: :conflict)
       end
 
@@ -33,9 +33,9 @@ module Api
                      status: :bad_request)
       end
 
-      def render_discard_errror(discard_ar_object)
-        render_error(code: "#{discard_ar_object.capitalize_class_name}_ALREADY_DESTROYED",
-                     error: "#{discard_ar_object.underscore_class_name} already destroyed",
+      def render_discard_error(discard_ar_object)
+        render_error(code: "#{capitalize_class_name(discard_ar_object)}_ALREADY_DESTROYED",
+                     error: "#{underscore_class_name(discard_ar_object)} already destroyed",
                      status: :conflict)
       end
 

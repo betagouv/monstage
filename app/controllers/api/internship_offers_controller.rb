@@ -23,11 +23,7 @@ module Api
     def destroy
       internship_offer_builder.discard(instance: InternshipOffer.find_by!(remote_id: params[:id])) do |on|
         on.success &method(:render_no_content)
-        on.failure do |_failed_internship_offer|
-          render_error(code: 'INTERNSHIP_OFFER_ALREADY_DESTROYED',
-                       error: 'internship_offer already destroyed',
-                       status: :conflict)
-        end
+        on.failure &method(:render_discard_error)
       end
     end
 
