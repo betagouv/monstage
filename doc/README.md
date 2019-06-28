@@ -7,7 +7,6 @@ Pour diffuser des offres sur la plateforme "[mon stage de 3e](https://www.monsta
 L'API sera :
 
 * construite sur le format "REST"
-* inspiré du standard [jsonapi](https://jsonapi.org)
 * avec le point d'entrée ```baseUrl```:
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
   * En production : https://monstagedetroisieme.fr/api
@@ -75,13 +74,14 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 ### Exemple curl
 
 ```
-curl -H "Authorization: Bearer foobarbaz" \
+curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X POST \
-     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
+     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name","employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6","coordinates":{"latitude":1.0,"longitude":1.0}}}' \
      -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers
+     $ENV/api/internship_offers
+
 ```
 
 ### Erreurs
@@ -115,15 +115,15 @@ curl -H "Authorization: Bearer foobarbaz" \
 ### Exemple curl
 
 ```
-curl -H "Authorization: Bearer foobarbaz" \
+curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X PATCH \
      -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
      -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+     $ENV/api/internship_offers/$remote_id
 ```
-
+		
 ### Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
@@ -249,3 +249,30 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 ```
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
+
+## Prise en main
+
+### Récuperer votre token d'authentification
+
+Depuis la page d'accueil, se rendre sur son profil
+![](screenshots/0-page-d-accueil.jpg)
+
+Depuis la page "Mon profil", se render sur la page API
+![](screenshots/1-page-mon-profil.jpg)
+
+Depuis la page "API", récuperer le token
+![](screenshots/2-page-api-token.jpg)
+
+### Scripts pour tester rapidement
+
+Pour tester/debugger nos APIs facilement, nous utilisons des scripts shell: $lien git master
+
+#### la creation d'une offre
+
+```./requests/internship_offers/create.sh $API_TOKEN $ENV ```
+
+#### la mise à jour d'une offre
+```./requests/internship_offers/update.sh $API_TOKEN $ENV ```
+
+#### la suppression d'une offre
+```./requests/internship_offers/destroy.sh $API_TOKEN $ENV ```

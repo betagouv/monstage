@@ -1,0 +1,11 @@
+Unstaged changes after reset:
+M	Gemfile.lock
+M	app/controllers/concerns/api/authentication.rb
+M	app/controllers/concerns/api/helpers.rb
+M	app/controllers/dashboard/internship_offers_controller.rb
+M	app/libs/builders/callback.rb
+M	app/libs/builders/internship_offer_builder.rb
+M	db/schema.rb
+D	doc/internship_offers/create/bad_request.json
+M	test/controllers/api/internship_offers/destroy_test.rb
+M	test/support/api_test_helpers.rb
