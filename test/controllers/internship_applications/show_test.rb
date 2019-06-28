@@ -17,7 +17,7 @@ module InternshipApplications
       assert_select 'a.btn-warning[data-method=patch]'
     end
 
-    test 'GET #show renders preview for main_teacher' do
+    test 'GET #show renders preview for school_manager' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)

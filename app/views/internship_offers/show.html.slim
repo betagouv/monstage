@@ -2,7 +2,7 @@
 
 = render "internship_offers/show_details", internship_offer: @internship_offer
 
-- if @internship_offer.school.present?
+- if @internship_offer.school.present? && current_user.is_a?(Users::Student)
   .row
     .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
 - if @internship_offer.permalink.present?

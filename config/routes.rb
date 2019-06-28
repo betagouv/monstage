@@ -12,7 +12,11 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: %i[index show] do
-    resources :internship_applications, only: %i[create index show update]
+    resources :internship_applications, only: %i[create index show update] do
+      collection do
+        post :bulk_create
+      end
+    end
   end
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy]

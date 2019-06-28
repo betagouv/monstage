@@ -12,6 +12,15 @@ module Users
       'Mon collège'
     end
 
+    def students_by_class_room_for_registration
+      school.class_rooms.inject([]) do |class_room_groups, class_room|
+        class_room_groups.push([
+          class_room.name,
+          class_room.students.map { |student| [student.name, student.id]}
+        ])
+      end
+    end
+
     def after_sign_in_path
       return url_helpers.account_path if school.blank? || school.weeks.empty?
 

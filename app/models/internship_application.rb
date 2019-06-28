@@ -10,13 +10,13 @@ class InternshipApplication < ApplicationRecord
   has_one :internship_offer, through: :internship_offer_week
 
   has_one :week, through: :internship_offer_week
-  validates :motivation, :internship_offer_week, presence: true
+  validates :motivation, :internship_offer_week, presence: true, unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
   before_validation :internship_offer_week_has_spots_left, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   after_save :update_all_counters
-
+  attr_reader :student_ids
   paginates_per PAGE_SIZE
 
   scope :order_by_aasm_state, lambda {
@@ -49,6 +49,10 @@ class InternshipApplication < ApplicationRecord
 
   def internship_application_counter_hook
     InternshipApplicationCountersHook.new(internship_application: self)
+  end
+
+  def application_via_school_manager?
+    internship_offer && internship_offer.school && internship_offer.school.present?
   end
 
   aasm do

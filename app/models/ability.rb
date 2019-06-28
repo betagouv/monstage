@@ -60,6 +60,10 @@ class Ability
     can [:apply], InternshipOffer do |internship_offer|
       internship_offer.school_id == user.school_id
     end
+
+    can [:apply_in_bulk], InternshipOffer do |internship_offer|
+      internship_offer.school_id == user.school_id
+    end
   end
 
   def main_teacher_abilities(user:)

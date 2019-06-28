@@ -38,20 +38,26 @@ module InternshipOffers
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show displays application form for main_teacher when internship_offer is reserved to school' do
+    test 'GET #show displays application form for school_manager when internship_offer is reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)
 
       sign_in(school.school_manager)
-      get internship_offer_path(create(:internship_offer, school: school))
+      internship_offer = create(:internship_offer, school: school)
+      get internship_offer_path(internship_offer)
 
       assert_response :success
+      assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
+                                         count: 0
       assert_select 'form[id=?]', 'new_internship_application'
-      assert_select 'select[id=internship_application_user_id]'
+      assert_select 'select[id=internship_application_student_ids][multiple]'
+      assert_select 'span.h1-label', text: "Inscrire des élèves"
+      assert_select '.btn-warning', text: "Inscrire des élèves"
+      assert_select 'textarea[id=internship_application_motivation]', count: 0
     end
 
-    test 'GET #show does not display application form for main_teacher when internship_offer is not reserved to school' do
+    test 'GET #show does not display application form for school_manager when internship_offer is not reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)
@@ -73,6 +79,9 @@ module InternshipOffers
       assert_select '#new_internship_application', 1
       assert_select 'option', text: weeks.first.human_select_text_method, count: 1
       assert_select 'a[href=?]', '#internship-application-form', count: 1
+      assert_select 'span.h1-label', text: "Je candidate"
+      assert_select '.btn-warning', text: "Je candidate"
+      assert_select 'textarea[id=internship_application_motivation]', count: 1
     end
 
     test 'GET #show as a student who can apply to limited internship offer shows a disabled button with contact SchoolManager label' do
@@ -176,7 +185,6 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
       assert_response :success
-
     end
   end
 end
