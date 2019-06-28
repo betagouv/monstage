@@ -10,7 +10,7 @@
     .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
       = "Candidatez à cette offre sur le site de "
       = link_to @internship_offer.permalink, class: 'text-white' do
-        = @internship_offer.operator_name
+        = operator_name(@internship_offer)
         = " "
         i.fas.fa-external-link-alt.fa-xs
 
