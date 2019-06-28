@@ -26,6 +26,18 @@ Les services web suivant seront mis à disposition :
 
 Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de test ou production.
 
+### Récuperer votre token d'authentification
+
+[Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
+
+![](screenshots/0-se-connecter.jpg)
+
+Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se render sur la page API
+![](screenshots/1-page-mon-profil.jpg)
+
+Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récuperer le token
+![](screenshots/2-page-api-token.jpg)
+
 L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
 
 Ce token devra être présent à chaque requête.
@@ -250,29 +262,43 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
 
-## Prise en main
+## Premiers pas avec l'API
 
-### Récuperer votre token d'authentification
+Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/betagouv/monstage/tree/master/doc/requests/internship_offers/).
 
-Depuis la page d'accueil, se rendre sur son profil
-![](screenshots/0-page-d-accueil.jpg)
 
-Depuis la page "Mon profil", se render sur la page API
-![](screenshots/1-page-mon-profil.jpg)
+C'est un moyen simple pour tester votre token et nos APIs.
 
-Depuis la page "API", récuperer le token
-![](screenshots/2-page-api-token.jpg)
+```
+git clone https://github.com/betagouv/monstage.git
+cd monstage
+cd doc
+cp env.sample env.sh
+```
 
-### Scripts pour tester rapidement
+Vous pouvez maintenant configurer votre environnement (pre-production/production) et votre token en editant le fichier ```env.sh```
 
-Pour tester/debugger nos APIs facilement, nous utilisons des scripts shell: $lien git master
+```
+set -x
 
-#### la creation d'une offre
+# usage: rename env.sample env.sh
 
-```./requests/internship_offers/create.sh $API_TOKEN $ENV ```
+MONSTAGEDETROISIEME_ENV=https://v2-test.monstagedetroisieme.fr/api
+MONSTAGEDETROISIEME_TOKEN=foobarbaz
+```
 
-#### la mise à jour d'une offre
-```./requests/internship_offers/update.sh $API_TOKEN $ENV ```
 
-#### la suppression d'une offre
-```./requests/internship_offers/destroy.sh $API_TOKEN $ENV ```
+### la creation d'une offre
+
+* exemple d'appel à l'api : ```./requests/internship_offers/create.sh```
+* exemple de reponse, cf: ./output/internship_offers/create/*
+* exemple de payload, cf: ./input/internship_offers/create.json
+
+### la mise à jour d'une offre
+* exemple d'appel à l'api : ```./requests/internship_offers/update.sh```
+* exemple de reponse, cf: ./output/internship_offers/update/*
+* exemple de payload, cf: ./input/internship_offers/update.json
+
+### la suppression d'une offre
+* exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
+* exemple de reponse, cf: ./output/internship_offers/destroy/*
