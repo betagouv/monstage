@@ -30,7 +30,7 @@ class Ability
     can :change, :class_room
     can :read, InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      internship_offer.school_id.nil?
+      internship_offer.school_id.nil? && internship_offer.permalink.nil?
     end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
