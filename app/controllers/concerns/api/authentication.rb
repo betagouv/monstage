@@ -8,7 +8,7 @@ module Api
       private
 
       def bearer
-        request.env['Authorization'] || params[:token]
+        request.headers['Authorization'] || params[:token]
       end
 
       def token
