@@ -4,7 +4,15 @@
 
 - if @internship_offer.school.present?
   .row
-    .alert.alert-info.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
+    .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
+- if @internship_offer.permalink.present?
+  .row
+    .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
+      = "Candidatez à cette offre sur le site de "
+      = link_to @internship_offer.permalink, class: 'text-white' do
+        = @internship_offer.operator_name
+        = " "
+        i.fas.fa-external-link-alt.fa-xs
 
 - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && user_signed_in?
   = render partial: "internship_applications/form"
