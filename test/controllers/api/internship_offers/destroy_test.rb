@@ -50,7 +50,6 @@ module Api
     end
 
     test 'DELETE #destroy as operator works to internship_offers' do
-      new_title = 'hellow'
       documents_as(endpoint: :'internship_offers/destroy', state: :ok) do
         delete api_internship_offer_path(
           id: @internship_offer.remote_id,
@@ -63,7 +62,6 @@ module Api
     end
 
     test 'DELETE #destroy twice renders conflict' do
-      new_title = 'hellow'
       documents_as(endpoint: :'internship_offers/destroy', state: :conflict) do
         delete api_internship_offer_path(id: @internship_offer.remote_id,
                                          params: { token: "Bearer #{@operator.api_token}" })

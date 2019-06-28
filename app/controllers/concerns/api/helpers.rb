@@ -6,7 +6,7 @@ module Api
 
     included do
       def capitalize_class_name(instance)
-        instance.class.name.demodulize.underscore.capitalize
+        instance.class.name.demodulize.underscore.upcase
       end
 
       def underscore_class_name(instance)

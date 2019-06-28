@@ -11,9 +11,5 @@ module Builders
     def failure(&block)
       @on_failure = block
     end
-
-    private
-
-    def initialize(args = {}); end
   end
 end

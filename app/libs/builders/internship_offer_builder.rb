@@ -56,7 +56,7 @@ module Builders
     def preprocess_api_params(params)
       params = map_sector_uuid_to_sector(params: params)
       params = map_week_slugs_to_weeks(params: params)
-      params = assign_offer_to_api_current_user(params: params)
+      params = assign_offer_to_current_api_user(params: params)
       params
     end
 
@@ -92,7 +92,7 @@ module Builders
       params
     end
 
-    def assign_offer_to_api_current_user(params:)
+    def assign_offer_to_current_api_user(params:)
       params[:employer] = user
       params
     end
