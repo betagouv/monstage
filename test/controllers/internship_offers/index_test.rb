@@ -172,6 +172,27 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET #index as student with Api::InternshipOffer, returns paginated content' do
+    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:api_internship_offer) }
+
+    travel_to(Date.new(2019, 3, 1)) do
+      sign_in(create(:student))
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        InternshipOffer.stub :by_weeks, InternshipOffer.all do
+          InternshipOffer.stub :available_in_the_future, InternshipOffer.all do
+            get internship_offers_path
+            assert_presence_of(internship_offer: internship_offers.last)
+            assert_absence_of(internship_offer: internship_offers.first)
+
+            get internship_offers_path page: 2
+            assert_presence_of(internship_offer: internship_offers.first)
+            assert_absence_of(internship_offer: internship_offers.last)
+          end
+        end
+      end
+    end
+  end
+
   test 'GET #index as student with sector_id, returns filtered content' do
     sign_in(create(:student))
     internship_1 = create(:internship_offer)
