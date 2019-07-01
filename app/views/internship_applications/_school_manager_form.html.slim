@@ -1,0 +1,44 @@
+div data-controller="internship-application-form"
+  div id="internship-application-openform" class="#{@internship_application.new_record? ? '' : 'd-none'}"  data-target='internship-application-form.containerShowFormLink'
+    .actions.d-flex.d-sm-block.d-xs-stick= link_to "Inscrire des élèves", "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbolinks: 'false' }, class: 'btn btn-warning'
+
+  div id="internship-application-closeform" class="#{@internship_application.new_record? ? 'd-none' : ''}" data-target="internship-application-form.containerForm"
+    div id="internship-application-form"
+    .row.bg-warning
+      .col-12
+        h1.h3.text-center.text-sm-left.py-3.my-0
+          span.h1-label
+            | Inscrire des élèves
+          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white' do
+            i.fas.fa-times.fa-sm
+
+    .row.bg-light-warning.py-3
+      .col-12
+        = form_for [@internship_offer, @internship_application], url: bulk_create_internship_offer_internship_applications_path(@internship_offer) do |f|
+          = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_application
+          .form-group
+            = f.label :internship_offer_week_id, class: 'required' do
+              | Quelle semaine ?
+              = f.rg2a_required_content_tag
+
+            = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: @internship_offer.max_candidates).after_current_week, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+              { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
+
+
+          - # todo..
+          .form-group
+            = f.label :student_ids, class: 'required' do
+              | Quels élèves
+              = f.rg2a_required_content_tag
+              small.form-text.text-muted.mt-0
+                ul.ml-0.pl-0
+                  - @internship_offer.internship_applications.reject(&:new_record?).map(&:student).map do |student|
+                    li= student.name
+            = f.select :student_ids, grouped_options_for_select(current_user.students_by_class_room_for_registration), { }, class: 'form-control col-lg-6', required: true, multiple: true, size: 15
+
+          .actions.d-flex.d-sm-block
+            = link_to "#internship-application-closeform", class: 'btn btn-outline-warning text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              i.fa.fa-chevron-left.mr-1
+              | Annuler
+            span.mx-1= " "
+            = f.submit "Valider", { class: 'btn btn-warning' }

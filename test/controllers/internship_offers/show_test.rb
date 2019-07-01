@@ -50,6 +50,7 @@ module InternshipOffers
       assert_response :success
       assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
                                          count: 0
+      assert_template 'internship_applications/_school_manager_form'
       assert_select 'form[id=?]', 'new_internship_application'
       assert_select 'select[id=internship_application_student_ids][multiple]'
       assert_select 'span.h1-label', text: "Inscrire des élèves"
@@ -76,6 +77,7 @@ module InternshipOffers
       sign_in(create(:student, school: create(:school, weeks: weeks)))
 
       get internship_offer_path(internship_offer)
+      assert_template 'internship_applications/_student_form'
       assert_select '#new_internship_application', 1
       assert_select 'option', text: weeks.first.human_select_text_method, count: 1
       assert_select 'a[href=?]', '#internship-application-form', count: 1

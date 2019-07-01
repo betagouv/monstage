@@ -57,9 +57,6 @@ class Ability
     can %i[update], InternshipApplication do |internship_application|
       user.school.students.where(id: internship_application.student.id).count > 0
     end
-    can [:apply], InternshipOffer do |internship_offer|
-      internship_offer.school_id == user.school_id
-    end
 
     can [:apply_in_bulk], InternshipOffer do |internship_offer|
       internship_offer.school_id == user.school_id

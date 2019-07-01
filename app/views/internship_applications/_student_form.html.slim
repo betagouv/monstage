@@ -1,0 +1,54 @@
+div data-controller="internship-application-form"
+  - if !@internship_application.new_record? && !@internship_application.drafted?
+    = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
+
+  div id="internship-application-openform" class="#{@internship_application.new_record? ? '' : 'd-none'}" data-target='internship-application-form.containerShowFormLink'
+    .actions.d-flex.d-sm-block.d-xs-stick= link_to "Je candidate", "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbolinks: 'false' }, class: 'btn btn-warning'
+
+  div id="internship-application-closeform" class="#{@internship_application.new_record? ? 'd-none' : ''}" data-target="internship-application-form.containerForm"
+    div id="internship-application-form"
+    .row.bg-warning
+      .col-12
+        h1.h3.text-center.text-sm-left.py-3.my-0
+          span.h1-label
+            | Je candidate
+          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white' do
+            i.fas.fa-times.fa-sm
+
+    .row.bg-light-warning.py-3
+      .col-12
+        = form_for [@internship_offer, @internship_application], url: internship_offer_internship_applications_path(@internship_offer) do |f|
+          = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_application
+          .form-group
+            = f.label :internship_offer_week_id, class: 'required' do
+              | Quelle semaine ?
+              = f.rg2a_required_content_tag
+
+            = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: @internship_offer.max_candidates).after_current_week, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+              { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
+
+          - if current_user.is_a?(Users::Student)
+            = f.hidden_field :user_id
+
+          .form-group
+            = f.label :motivation, class: 'required' do
+              = "Pourquoi ce stage me motive"
+              small.form-text.text-muted.mt-0 Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
+              = f.rg2a_required_content_tag
+
+            = f.text_area :motivation, class: "form-control col-lg-6", required: true
+
+          .form-group
+            .label
+              | Mon CV
+              small.form-text.text-muted.mt-0 Vous pouvez joindre votre CV à votre candidature.
+            div= link_to account_path(tab: 'resume'), target: "_blank", class: 'external' do
+              | Modifier mon CV
+              = " (nouvelle fenêtre)"
+
+          .actions.d-flex.d-sm-block
+            = link_to "#internship-application-closeform", class: 'btn btn-outline-warning text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              i.fa.fa-chevron-left.mr-1
+              | Annuler
+            span.mx-1= " "
+            = f.submit "Valider", { class: 'btn btn-warning' }
