@@ -13,7 +13,6 @@ module Users
     end
 
     def students_by_class_room_for_registration(ignore_applicants:)
-      Rails.logger.info("ignore_applicants: #{ignore_applicants.inspect}")
       school.class_rooms.inject([]) do |class_room_groups, class_room|
         class_room_groups.push([
           class_room.name,
