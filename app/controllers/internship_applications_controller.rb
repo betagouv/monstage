@@ -54,8 +54,15 @@ class InternshipApplicationsController < ApplicationController
                     flash: { success: "Les candidature (#{success_applications.map(&:student_name).join(', ')}) ont été soumises"}
       end
       on.failure do |internship_offer|
+        errors = error_applications.map do |internship_application|
+                                      [
+                                        internship_application.student_name,
+                                        internship_application.errors.messages.map{|key, errors_message| errors_message}.join(", ")
+                                      ].join(': ')
+                                    end
         redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
-                    flash: { danger: "Les candidature (#{error_applications.map(&:student_name).join(', ')}) n'ont pas pu être soumises"}
+                    flash: {
+                      danger: "Les candidature (#{errors.join(', ')}) n'ont pas pu être soumises"}
       end
     end
   end

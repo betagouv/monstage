@@ -31,10 +31,9 @@ module Builders
         next if student_id.blank?
         unit_params = params.except(:student_ids)
                             .merge(user_id: student_id)
-                            .merge(aasm_state: :approved)
         internship_application = InternshipApplication.new(unit_params)
 
-        if internship_application.save
+        if internship_application.save && internship_application.submit! && internship_application.approve!
           callback.on_bulk_unit_success.try(:call, internship_application)
         else
           success = false

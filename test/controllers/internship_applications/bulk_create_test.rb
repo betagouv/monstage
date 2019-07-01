@@ -23,6 +23,8 @@ module InternshipApplications
 
       created_internship_application = InternshipApplication.last
       assert_equal "approved", created_internship_application.aasm_state
+      assert_not_nil created_internship_application.submitted_at
+      assert_not_nil created_internship_application.approved_at
       assert_equal internship_offer.internship_offer_weeks.first.id, created_internship_application.internship_offer_week.id
       assert_equal student.id, created_internship_application.student.id
     end
