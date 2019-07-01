@@ -17,6 +17,7 @@ class InternshipApplication < ApplicationRecord
   before_validation :at_most_one_application_per_student?, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
+  delegate :name, to: :student, prefix: true
   after_save :update_all_counters
   attr_reader :student_ids
   paginates_per PAGE_SIZE
@@ -44,6 +45,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def internship_offer_has_spots_left?
+    return unless internship_offer_week.present?
     unless internship_offer.has_spots_left?
       errors.add(:internship_offer, :has_no_spots_left)
     end
@@ -56,6 +58,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def at_most_one_application_per_student?
+    return unless internship_offer_week.present?
     if internship_offer.internship_applications.where(user_id: self.user_id).count > 0
       errors.add(:user_id, :duplicate)
     end

@@ -13,6 +13,7 @@ module InternshipApplications
       student = create(:student, school: school)
       internship_application = create(:internship_application, student: student)
       sign_in(student)
+      sign_in(student)
       delete internship_offer_internship_application_path(internship_application.internship_offer,
                                                           internship_application)
       assert_redirected_to root_path
@@ -28,7 +29,7 @@ module InternshipApplications
       assert_difference('InternshipApplication.count', -1) do
         delete internship_offer_internship_application_path(internship_application.internship_offer,
                                                             internship_application)
-        assert_redirected_to internship_offer_path(internship_application.internship_offer)
+        assert_redirected_to internship_offer_path(internship_application.internship_offer, anchor: 'internship-application-form')
       end
     end
   end

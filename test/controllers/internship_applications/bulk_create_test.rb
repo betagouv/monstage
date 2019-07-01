@@ -18,6 +18,7 @@ module InternshipApplications
                                                  student_ids: [student.id] } }
       assert_difference('InternshipApplication.count', 1) do
         post(bulk_create_internship_offer_internship_applications_path(internship_offer_id: internship_offer.id), params: valid_params)
+        assert_redirected_to internship_offer_path(internship_offer, anchor: 'internship-application-form')
       end
 
       created_internship_application = InternshipApplication.last

@@ -27,21 +27,18 @@ module Builders
       success = true
       authorize! :apply_in_bulk, internship_offer
       internship_applications = []
-      student_ids = params[:student_ids].dup
-      student_ids.map do |student_id|
+      params[:student_ids].map do |student_id|
         next if student_id.blank?
-        begin
-          next if InternshipApplication.exists?(user_id: student_id, internship_offer_week_id: Week.find(params[:internship_offer_week_id]))
-          unit_params = params.except(:student_ids)
-                              .merge(user_id: student_id)
-                              .merge(aasm_state: :approved)
-          internship_application = InternshipApplication.new(unit_params)
-          if internship_application.save
+        unit_params = params.except(:student_ids)
+                            .merge(user_id: student_id)
+                            .merge(aasm_state: :approved)
+        internship_application = InternshipApplication.new(unit_params)
+
+        if internship_application.save
           callback.on_bulk_unit_success.try(:call, internship_application)
-          else
-            success = false
-            callback.on_bulk_unit_failure.try(:call, internship_application)
-          end
+        else
+          success = false
+          callback.on_bulk_unit_failure.try(:call, internship_application)
         end
       end
 

@@ -51,11 +51,11 @@ class InternshipApplicationsController < ApplicationController
       end
       on.success do |internship_offer|
         redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
-                    flash: { success: "Les candidature ont été soumises"}
+                    flash: { success: "Les candidature (#{success_applications.map(&:student_name).join(', ')}) ont été soumises"}
       end
       on.failure do |internship_offer|
         redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
-                    flash: { error: "Toutes les candidature n'ont pas pu être soumises"}
+                    flash: { danger: "Les candidature (#{error_applications.map(&:student_name).join(', ')}) n'ont pas pu être soumises"}
       end
     end
   end
