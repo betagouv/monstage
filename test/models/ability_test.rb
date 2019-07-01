@@ -67,6 +67,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
     assert(ability.can?(:show, ClassRoom))
+    assert(ability.can?(:destroy, internship_application))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))

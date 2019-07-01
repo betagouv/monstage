@@ -34,7 +34,7 @@ class InternshipApplicationsController < ApplicationController
     redirect_to dashboard_students_internship_applications_path(current_user, @internship_application),
                 flash: { warning: 'Votre candidature avait déjà été soumise' }
   rescue ActiveRecord::RecordInvalid => e
-    flash[:danger] = 'Erreur dans la saisie de votre candidature'
+    flash[:error] = 'Erreur dans la saisie de votre candidature'
     render 'internship_application/show'
   end
 
@@ -47,14 +47,14 @@ class InternshipApplicationsController < ApplicationController
         success_applications.push(success_internship_application)
       end
       on.bulk_unit_failure do |error_internship_application|
-        error_applications.push(internship_application)
+        error_applications.push(error_internship_application)
       end
       on.success do |internship_offer|
-        redirect_to internship_offer_path(internship_offer),
+        redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
                     flash: { success: "Les candidature ont été soumises"}
       end
       on.failure do |internship_offer|
-        redirect_to internship_offer_path(internship_offer),
+        redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
                     flash: { error: "Toutes les candidature n'ont pas pu être soumises"}
       end
     end
@@ -74,6 +74,17 @@ class InternshipApplicationsController < ApplicationController
     end
   end
 
+  # school manager can destroy applications on reserved internship_offers
+  def destroy
+    @internship_application = @internship_offer.internship_applications.find(params[:id])
+    authorize! :destroy, @internship_application
+    @internship_application.destroy!
+    redirect_to internship_offer_path(@internship_offer, anchor: 'internship-application-form'),
+                flash: { success: "La candidature de #{@internship_application.student.name} a été supprimée"}
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:error] = "La candidature de #{@internship_application.student.name} n'a pas été supprimée"
+    render 'internship_application/show'
+  end
   private
 
   def internship_application_builder

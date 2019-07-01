@@ -137,6 +137,12 @@ fr:
 
         internship_application:
           attributes:
+            user_id:
+              duplicate: "Vous êtes déjà candidat pour cette offre sur une semaine différente"
+            internship_offer:
+              has_no_spots_left: "Cette offre est complète"
+            internship_offer_week:
+              has_no_spots_left: "Impossible de candidater car l'offre est complète pour cette semaine"
             motivation:
               blank: Veuillez reseigner vos motivations
             student:

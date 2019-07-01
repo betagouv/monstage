@@ -31,14 +31,17 @@ module Builders
       student_ids.map do |student_id|
         next if student_id.blank?
         begin
+          next if InternshipApplication.exists?(user_id: student_id, internship_offer_week_id: Week.find(params[:internship_offer_week_id]))
           unit_params = params.except(:student_ids)
                               .merge(user_id: student_id)
                               .merge(aasm_state: :approved)
-          internship_application = InternshipApplication.create!(unit_params)
+          internship_application = InternshipApplication.new(unit_params)
+          if internship_application.save
           callback.on_bulk_unit_success.try(:call, internship_application)
-        rescue ActiveRecord::RecordInvalid => e
-          success = false
-          callback.on_bulk_unit_failure.try(:call, e.record)
+          else
+            success = false
+            callback.on_bulk_unit_failure.try(:call, internship_application)
+          end
         end
       end
 

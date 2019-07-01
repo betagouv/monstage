@@ -12,11 +12,14 @@ module Users
       'Mon collège'
     end
 
-    def students_by_class_room_for_registration
+    def students_by_class_room_for_registration(ignore_applicants:)
+      Rails.logger.info("ignore_applicants: #{ignore_applicants.inspect}")
       school.class_rooms.inject([]) do |class_room_groups, class_room|
         class_room_groups.push([
           class_room.name,
-          class_room.students.map { |student| [student.name, student.id]}
+          class_room.students
+                    .reject { |student| ignore_applicants.include?(student) }
+                    .map { |student| [student.name, student.id]}
         ])
       end
     end
