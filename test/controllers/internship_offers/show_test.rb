@@ -168,5 +168,15 @@ module InternshipOffers
         assert_select 'option', text: 'Semaine du 20 mai au 26 mai'
       end
     end
+
+    test 'GET #show with API offer' do
+      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
+      internship_offer = create(:api_internship_offer, weeks: weeks)
+      student = create(:student, school: create(:school, weeks: weeks))
+      sign_in(student)
+      get internship_offer_path(internship_offer)
+      assert_response :success
+
+    end
   end
 end

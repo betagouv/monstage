@@ -62,5 +62,9 @@ module Reporting
         .group('internship_offers.group')
         .order('internship_offers.group')
     }
+
+    def readonly?
+      true
+    end
   end
 end

@@ -53,6 +53,7 @@ FactoryBot.define do
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
       operator { create(:operator) }
+      api_token { SecureRandom.uuid }
     end
   end
 end

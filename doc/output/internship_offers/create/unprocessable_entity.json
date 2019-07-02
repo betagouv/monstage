@@ -1,0 +1,4 @@
+{
+  "code": "BAD_PAYLOAD",
+  "error": "param is missing or the value is empty: internship_offer"
+}

@@ -7,7 +7,6 @@ Pour diffuser des offres sur la plateforme "[mon stage de 3e](https://www.monsta
 L'API sera :
 
 * construite sur le format "REST"
-* inspiré du standard [jsonapi](https://jsonapi.org)
 * avec le point d'entrée ```baseUrl```:
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
   * En production : https://monstagedetroisieme.fr/api
@@ -26,6 +25,18 @@ Les services web suivant seront mis à disposition :
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
 Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de test ou production.
+
+### Récuperer votre token d'authentification
+
+[Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
+
+![](screenshots/0-se-connecter.jpg)
+
+Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se render sur la page API
+![](screenshots/1-page-mon-profil.jpg)
+
+Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récuperer le token
+![](screenshots/2-page-api-token.jpg)
 
 L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
 
@@ -75,13 +86,14 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 ### Exemple curl
 
 ```
-curl -H "Authorization: Bearer foobarbaz" \
+curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X POST \
-     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
+     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name","employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6","coordinates":{"latitude":1.0,"longitude":1.0}}}' \
      -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers
+     $ENV/api/internship_offers
+
 ```
 
 ### Erreurs
@@ -99,9 +111,6 @@ curl -H "Authorization: Bearer foobarbaz" \
 *Paramètres d'url* :
 
 * **remote_id** *(string, required)*
-
-*Paramètres de body :*
-
 * **internship_offer.title** *(string)*
 * **internship_offer.description** *(text,  <= 500 caractères)*
 * **internship_offer.employer_name** *(string)*
@@ -118,15 +127,15 @@ curl -H "Authorization: Bearer foobarbaz" \
 ### Exemple curl
 
 ```
-curl -H "Authorization: Bearer foobarbaz" \
+curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X PATCH \
      -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
      -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+     $ENV/api/internship_offers/$remote_id
 ```
-
+		
 ### Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
@@ -252,3 +261,44 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 ```
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
+
+## Premiers pas avec l'API
+
+Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/betagouv/monstage/tree/master/doc/requests/internship_offers/).
+
+
+C'est un moyen simple pour tester votre token et nos APIs.
+
+```
+git clone https://github.com/betagouv/monstage.git
+cd monstage
+cd doc
+cp env.sample env.sh
+```
+
+Vous pouvez maintenant configurer votre environnement (pre-production/production) et votre token en editant le fichier ```env.sh```
+
+```
+set -x
+
+# usage: rename env.sample env.sh
+
+MONSTAGEDETROISIEME_ENV=https://v2-test.monstagedetroisieme.fr/api
+MONSTAGEDETROISIEME_TOKEN=foobarbaz
+```
+
+
+### la creation d'une offre
+
+* exemple d'appel à l'api : ```./requests/internship_offers/create.sh```
+* exemple de reponse, cf: ./output/internship_offers/create/*
+* exemple de payload, cf: ./input/internship_offers/create.json
+
+### la mise à jour d'une offre
+* exemple d'appel à l'api : ```./requests/internship_offers/update.sh```
+* exemple de reponse, cf: ./output/internship_offers/update/*
+* exemple de payload, cf: ./input/internship_offers/update.json
+
+### la suppression d'une offre
+* exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
+* exemple de reponse, cf: ./output/internship_offers/destroy/*

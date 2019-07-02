@@ -1,19 +1,15 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  include Discard::Model
   include Nearbyable
+  include BaseInternshipOffer
 
   PAGE_SIZE = 10
 
-  validates :title,
-            :tutor_name,
+  validates :tutor_name,
             :tutor_phone,
             :tutor_email,
             :max_internship_week_number,
-            :employer_name,
-            :zipcode,
-            :city,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
@@ -31,23 +27,12 @@ class InternshipOffer < ApplicationRecord
 
   validates :max_internship_week_number, numericality: { only_integer: true, greater_than: 0 }
 
-  validates :weeks, presence: true
-
-  DESCRIPTION_MAX_CHAR_COUNT = 500
-  OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
-  validates :description, presence: true, length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :employer_description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
-
-  has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_applications, through: :internship_offer_weeks, dependent: :destroy
 
-  has_many :weeks, through: :internship_offer_weeks
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
 
-  belongs_to :employer, polymorphic: true
   belongs_to :school, optional: true # reserved to school
-  belongs_to :sector
 
   scope :for_user, lambda { |user:|
     return merge(all) unless user # fuck it ; should have a User::Visitor type
@@ -85,18 +70,6 @@ class InternshipOffer < ApplicationRecord
     internship_applications.empty?
   end
 
-  def osm_url
-    "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
-  end
-
-  def formatted_autocomplete_address
-    [
-      street,
-      city,
-      zipcode
-    ].compact.uniq.join(', ')
-  end
-
   def init
     self.max_candidates ||= 1
   end
@@ -107,9 +80,5 @@ class InternshipOffer < ApplicationRecord
 
   def total_female_convention_signed_applications_count
     convention_signed_applications_count - total_male_convention_signed_applications_count
-  end
-
-  def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
   end
 end
