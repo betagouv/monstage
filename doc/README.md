@@ -74,7 +74,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.employer_name** *(string, required)*
 * **internship_offer.employer_description** *(string, required *<= 275 caractères)
 * **internship_offer.employer_website** *(string, optional)*
-* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
+* **internship_offer.coordinates** *(object/geography, required)* : { "latitude" : 1, "longitude" : 1 }
 * **internship_offer.street** *(text, optional)*
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
@@ -116,7 +116,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.employer_name** *(string)*
 * **internship_offer.employer_description** *(string, <= 275 caractères)*
 * **internship_offer.employer_website** *(string)*
-* **internship_offer.coordinates** *(object/geography)* : { latitude: 1, longitude: 1 }
+* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1, "longitude" : 1 }
 * **internship_offer.street** *(text)*
 * **internship_offer.zipcode** *(string)*
 * **internship_offer.city** *(string)*
@@ -135,7 +135,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -vvv \
      $ENV/api/internship_offers/$remote_id
 ```
-		
+
 ### Erreurs
 
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
