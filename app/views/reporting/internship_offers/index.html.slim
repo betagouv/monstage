@@ -67,5 +67,5 @@
         = render partial: 'reporting/internship_offers/internship_offer', collection: @offers_by_publicy.map(&Presenters::InternshipOfferStatsByPublicy.method(:new)), locals: { gray_background: true }
       tfoot
         = render 'reporting/internship_offers/internship_offer', internship_offer: Presenters::InternshipOfferStatsTotal.new(offers: @offers), font_weight_bold: true, font_color_blue: true
-  .row.mt-3
-    = link_to "Télécharger", download_reporting_internship_offers_path(safe_download_params)
+  .row.mt-3.mb-3.text-center
+    = link_to "Télécharger", download_reporting_internship_offers_path(safe_download_params), class: 'btn btn-primary'
