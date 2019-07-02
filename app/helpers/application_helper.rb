@@ -24,7 +24,8 @@ module ApplicationHelper
   end
 
   def statistics?
-    current_controller?(:pages) && current_action?(:statistiques)
+    controller.is_a?(Reporting::InternshipOffersController) &&
+      current_action?(:index)
   end
 
   def current_controller?(controller_name)

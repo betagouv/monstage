@@ -55,7 +55,7 @@ module Reporting
         .where('created_at <= :date_end', date_end: Date.new(year + 1, SchoolYear::MONTH_OF_YEAR_SHIFT, SchoolYear::DAY_OF_YEAR_SHIFT))
     }
 
-    scope :by_departement, lambda { |department:|
+    scope :by_department, lambda { |department:|
       where(department: department)
     }
 
