@@ -17,7 +17,7 @@ div data-controller="internship-application-form"
 
     .row.bg-light-warning.py-3
       .col-12
-        = form_for [@internship_offer, @internship_application], url: internship_offer_internship_applications_path(@internship_offer) do |f|
+        = form_for [@internship_offer, @internship_application] do |f|
           = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_application
           .form-group
             = f.label :internship_offer_week_id, class: 'required' do
