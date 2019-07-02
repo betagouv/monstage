@@ -75,7 +75,7 @@ module Reporting
       assert_equal 0, wood_stats.total_female_applications_count
     end
 
-    test 'computes internship_offer convention_signed_applications_count' do
+    test 'computes internship_offer total_convention_signed_applications_count' do
       create(:internship_application, :convention_signed,
              internship_offer: @internship_offer_agri_1)
       create(:internship_application, :convention_signed,
@@ -86,8 +86,8 @@ module Reporting
       agri_stats = results[0]
       wood_stats = results[1]
 
-      assert_equal 3, agri_stats.convention_signed_applications_count
-      assert_equal 0, wood_stats.convention_signed_applications_count
+      assert_equal 3, agri_stats.total_convention_signed_applications_count
+      assert_equal 0, wood_stats.total_convention_signed_applications_count
     end
 
     test 'computes internship_offer total_male_convention_signed_applications_count' do

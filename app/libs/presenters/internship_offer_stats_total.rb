@@ -22,8 +22,8 @@ module Presenters
       offers.sum(&:total_female_applications_count)
     end
 
-    def convention_signed_applications_count
-      offers.sum(&:convention_signed_applications_count)
+    def total_convention_signed_applications_count
+      offers.sum(&:total_convention_signed_applications_count)
     end
 
     def total_male_convention_signed_applications_count

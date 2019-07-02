@@ -6,7 +6,7 @@ module Presenters
              :total_applications_count,
              :total_male_applications_count,
              :total_female_applications_count,
-             :convention_signed_applications_count,
+             :total_convention_signed_applications_count,
              :total_male_convention_signed_applications_count,
              :total_female_convention_signed_applications_count,
              to: :internship_offer
