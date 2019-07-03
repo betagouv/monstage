@@ -15,13 +15,13 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
 - [Structures de données et référentiels](#structures-de-données-et-référentiels)
   - [Offres de stage](#offres-de-stage)
   - [Semaines](#semaines)
-  - [Secteurs d'activité](#secteurs-d'activité)
-- [Gestion d'erreurs](#gestion-d'erreurs)
+  - [Secteurs d'activité](#secteurs-dactivité)
+- [Gestion d'erreurs](#gestion-derreurs)
 - [Endpoints](#endpoints)
   - [Création d'une offre](#ref-create-internship-offer)
   - [Modification d'une offre](#ref-modify-internship-offer)
   - [Suppression d'une offre](#ref-destroy-internship-offer)
-- [Exemples](#exemples)
+- [Premiers pas et exemples](#premiers-pas-et-exemples)
 
 # Environnements
 L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit
@@ -34,23 +34,23 @@ L'api est disponible sur ```/api``` sur les environnements de pré production et
 
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de test ou production.
+Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de pré production ou production.
 
-### Récuperer votre token d'authentification
+L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
+
+Ce token devra être présent à chaque requête.
+
+### Comment récuperer mon token d'authentification
 
 [Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
 
 ![](screenshots/0-se-connecter.jpg)
 
-Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se render sur la page API
+Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se rendre sur la page API
 ![](screenshots/1-page-mon-profil.jpg)
 
-Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récuperer le token
+Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupérer le token
 ![](screenshots/2-page-api-token.jpg)
-
-L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
-
-Ce token devra être présent à chaque requête.
 
 # Structures de données et référentiels
 
@@ -273,7 +273,7 @@ curl -H "Authorization: Bearer foobarbaz" \
 - 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
 
 
-# Exemples
+# Premiers pas et exemples
 
 Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/betagouv/monstage/tree/master/doc/requests/internship_offers/).
 
@@ -299,17 +299,17 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ```
 
 
-### la creation d'une offre
+## Création d'une offre
 
 * exemple d'appel à l'api : ```./requests/internship_offers/create.sh```
 * exemple de reponse, cf: ./output/internship_offers/create/*
 * exemple de payload, cf: ./input/internship_offers/create.json
 
-### la mise à jour d'une offre
+## Mise à jour d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/update.sh```
 * exemple de reponse, cf: ./output/internship_offers/update/*
 * exemple de payload, cf: ./input/internship_offers/update.json
 
-### la suppression d'une offre
+## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
