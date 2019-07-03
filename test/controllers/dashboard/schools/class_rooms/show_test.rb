@@ -112,7 +112,7 @@ module Dashboard
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
-            assert_select(".test-student-#{student.id} form[action=?]",
+            assert_select("#approve-student-#{student.id} form[action=?]",
                           dashboard_school_user_path(student.school, student))
           end
           student_stats = Presenters::StudentStats.new(student: student)
