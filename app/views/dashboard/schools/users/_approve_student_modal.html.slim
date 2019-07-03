@@ -12,9 +12,7 @@ div.modal id="approve-student-#{student.id}" tabindex="-1" role="dialog"
           = " "
           = Presenters::User.new(user: student).full_name
 
-      .modal-footer
+      .modal-footer.actions
         button type="button" class="btn btn-outline-warning" data-dismiss="modal" Annuler
 
-        = form_for student, as: :user, url: dashboard_school_user_path(student.school, student), method: :patch do |f|
-          = f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6'
-          = f.submit 'Valider', class: 'btn btn-warning mx-1'
+        = link_to "Valider",dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: true }), method: :patch, class: 'btn btn-warning'
