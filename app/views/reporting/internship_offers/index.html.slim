@@ -60,7 +60,7 @@
           th= Reporting::InternshipOffer.i18n_attribute(:total_female_applications_count)
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
           th= Reporting::InternshipOffer.i18n_attribute(:total_male_convention_signed_applications_count)
-          th= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
+          th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
 
       tbody
         = render partial: 'reporting/internship_offers/internship_offer', collection: @offers
