@@ -14,5 +14,5 @@
         = " "
         i.fas.fa-external-link-alt.fa-xs
 
-- if can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && user_signed_in?
+- elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && user_signed_in?
   = render partial: "internship_applications/form"

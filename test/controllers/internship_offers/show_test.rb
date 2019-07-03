@@ -178,5 +178,17 @@ module InternshipOffers
       assert_response :success
 
     end
+
+    test 'GET #show should be 404 if offer is discarded' do
+      internship_offer = create(:internship_offer)
+      student = create(:student, school: create(:school))
+      sign_in(student)
+
+      internship_offer.discard
+
+      assert_raise ActionController::RoutingError do
+         get internship_offer_path(internship_offer)
+      end
+    end
   end
 end
