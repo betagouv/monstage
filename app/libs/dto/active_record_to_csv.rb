@@ -26,25 +26,11 @@ module Dto
     end
 
     def headers_column_names
-      case headers
-      when Array
-        headers
-      when Hash
-        headers.values
-      else
-        fail "Unkown headers"
-      end
+      headers.values
     end
 
     def headers_values_names
-      case headers
-      when Array
-        headers
-      when Hash
-        headers.keys
-      else
-        fail "Unkown values"
-      end
+      headers.keys
     end
 
     def initialize(entries:, headers:)
