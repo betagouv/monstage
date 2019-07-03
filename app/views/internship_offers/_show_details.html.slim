@@ -18,7 +18,7 @@
     p = internship_offer.employer_description
     - if internship_offer.employer_website.present?
       p.text-truncate
-        = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)"
+        = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
     .d-flex
       .circle-font.text-info
@@ -29,7 +29,7 @@
         = "#{internship_offer.zipcode} #{internship_offer.city}"
         br
         br
-        = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)"
+        = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
 
 - if can? :create, InternshipOffer

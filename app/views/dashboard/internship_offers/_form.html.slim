@@ -6,9 +6,9 @@
   = form.hidden_field :employer_type, value: "User"
 
   small.form-text.text-muted.mt-0.mb-3
-    = link_to "Exemple d'offre idéale 1", exemple_offre_ideale_ministere_path, title: "Exemple d'offre idéale - Agriculture (nouvelle fenêtre)", target: "_blank"
+    = link_to "Exemple d'offre idéale 1", exemple_offre_ideale_ministere_path, title: "Exemple d'offre idéale - Agriculture (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
     = " – "
-    = link_to "Exemple d'offre idéale 2", exemple_offre_ideale_sport_path, title: "Exemple d'offre idéale - Sport (nouvelle fenêtre)", target: "_blank"
+    = link_to "Exemple d'offre idéale 2", exemple_offre_ideale_sport_path, title: "Exemple d'offre idéale - Sport (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
 
 
   .form-group
@@ -33,7 +33,7 @@
         li Donnez 3 qualités requises (aimer bricoler, être bavard, aimer écrire)
         li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
         li
-          = link_to "Aide à la rédaction ", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank"
+          = link_to "Aide à la rédaction ", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
 
     = form.text_area :description, class: "form-control col-lg-6", required: true, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 
@@ -195,7 +195,7 @@
       .form-group
         = form.label :operator_ids do
           = "Opérateurs"
-          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs. #{link_to 'En savoir plus.', operators_path, target: '_blank', title: 'En savoir plus (nouvelle fenêtre).'}
+          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs. #{link_to 'En savoir plus.', operators_path, target: '_blank', rel: "external noopener noreferrer", title: 'En savoir plus (nouvelle fenêtre)'}
         = form.select :operator_ids, options_from_collection_for_select(Operator.order(:name).all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true, disabled: current_user.is_a?(Users::Operator)
 
 
