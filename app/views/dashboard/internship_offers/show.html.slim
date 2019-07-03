@@ -13,11 +13,7 @@ h2.h6 L'entreprise
 p = @internship_offer.employer_name
 - if @internship_offer.employer_website.present?
   p
-    = link_to @internship_offer.employer_website, target: "_blank", class: 'external' do
-      = @internship_offer.employer_website
-      = " "
-      i.fas.fa-external-link-alt.fa-xs
-      = "(nouvelle fenêtre)"
+    = link_to @internship_offer.employer_website, @internship_offer.employer_website, target: "_blank", title: "#{@internship_offer.employer_website} (nouvelle fenêtre)"
 
 .d-flex
   i.fas.fa-map-marker.mr-2

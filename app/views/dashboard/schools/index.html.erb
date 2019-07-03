@@ -15,10 +15,8 @@
       <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>" >
         <td data-head="Nom" scope="row"><%= school.name %></td>
         <td data-head="Code UAI">
-          <a class="external" href="https://www.google.com?q=<%= school.code_uai %>" target="_blank">
+          <a href="https://www.google.com?q=<%= school.code_uai %>" target="_blank" title="<%= school.code_uai %> (nouvelle fenêtre)">
             <%= school.code_uai %>
-            <i class="fas fa-external-link-alt fa-xs"></i>
-            (nouvelle fenêtre)
           </a>
         </td>
         <td data-head="Adresse">
