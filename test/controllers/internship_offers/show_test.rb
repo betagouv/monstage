@@ -14,7 +14,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_response :success
-      assert_select 'a.external.test-employer-website[href=?]', internship_offer.employer_website
+      assert_select 'a.test-employer-website[href=?]', internship_offer.employer_website
     end
 
     test 'GET #show does not show website url when absent' do
@@ -22,7 +22,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_response :success
-      assert_select 'a.external.test-employer-website', 0
+      assert_select 'a.test-employer-website', 0
     end
 
     #
@@ -187,6 +187,18 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
       assert_response :success
+    end
+
+    test 'GET #show should be 404 if offer is discarded' do
+      internship_offer = create(:internship_offer)
+      student = create(:student, school: create(:school))
+      sign_in(student)
+
+      internship_offer.discard
+
+      assert_raise ActionController::RoutingError do
+         get internship_offer_path(internship_offer)
+      end
     end
   end
 end

@@ -21,6 +21,17 @@ fr:
       users/other: "Autres fonctions"
 
     attributes:
+      reporting/internship_offer:
+        sector_id: Secteurs professionnels
+        report_total_count: Nbr. d'offres proposées
+        total_applications_count: Nombre de candidatures
+        total_male_applications_count: Garçon
+        total_female_applications_count: Fille
+        total_convention_signed_applications_count: Nombre de stages conclus
+        total_male_convention_signed_applications_count: Garçon
+        total_female_convention_signed_applications_count: Fille
+        total: Total
+
       internship_offer:
         is_public: Secteur
       user:

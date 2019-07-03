@@ -3,6 +3,6 @@ div.modal id="delete-offer-modal" tabindex="-1" role="dialog"
     .modal-content
       .modal-body
         p Souhaitez-vous réellement supprimer cette annonce ?
-      .modal-footer
-        = link_to "Oui", dashboard_internship_offer_path(internship_offer), class: "btn btn-secondary", method: :delete
-        button type="button" class="btn btn-warning" data-dismiss="modal" Non
+      .modal-footer.actions
+        button type="button" class="btn btn-outline-warning" data-dismiss="modal" Non
+        = link_to "Oui", dashboard_internship_offer_path(internship_offer), class: "btn btn-warning", method: :delete

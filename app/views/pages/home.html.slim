@@ -1,9 +1,5 @@
 .bg-cover-image-homepage
   .container.py-5.container-sticky-note
-    .row
-      .col-12.col-md-6
-        = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo Mon stage de 3e", class: 'my-3 d-block logo d-none mx-sm-0 mx-auto', width: 160
-      .col-12.col-md-6
 
     .row.no-gutters
       .col-12.col-md-7
@@ -108,7 +104,7 @@
             h6.h3-stat.m-0.p-0 stages conclus
     .row.py-5
       .col-12.text-center
-        = link_to "Voir les statistiques", statistiques_path, class: "btn btn-lg btn-outline-warning shadow-lg"
+        = link_to "Voir les statistiques", reporting_internship_offers_path, class: "btn btn-lg btn-outline-warning shadow-lg"
 .bg-white.py-5.d-none.d-sm-block
   .container
     .row

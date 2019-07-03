@@ -6,9 +6,4 @@ export default class extends Controller {
   toggle() {
     $(this.containerTarget).toggleClass('feedback-form-open')
   }
-
-  connect() {
-  }
-
-
 }

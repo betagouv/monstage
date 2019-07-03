@@ -3,13 +3,19 @@ div.modal id="#{approved ? "approve" : "reject"}-internship-application-#{intern
 
     .modal-content
       .modal-header
-        h5.modal-title = "#{approved ? "Accepter" : "Refuser"} la candidature"
+        h5.modal-title
+          - if approved
+            i.fas.fa-check.text-success
+          - else
+            i.fas.fa-ban.text-danger
+
+          = " "
+          = "#{approved ? "Accepter" : "Refuser"} la candidature"
         button type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
       .modal-body
         p.text-muted.small Message envoyé à  l'élève
         p
-          i.fas.fa-check.text-success.fa-2x.float-right
           = "Bonjour #{Presenters::User.new(user: internship_application.student).full_name},"
           br
           br
@@ -19,8 +25,8 @@ div.modal id="#{approved ? "approve" : "reject"}-internship-application-#{intern
             br
             = "Vous devez maintenant faire signer la convention de stage."
 
-      .modal-footer
-        button type="button" class="btn btn-warning" data-dismiss="modal" Annuler
+      .modal-footer.actions
+        button type="button" class="btn btn-outline-warning" data-dismiss="modal" Annuler
 
-        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: (approved ? :approve! : :reject!)), method: :patch, class: 'btn btn-success mx-1' do
+        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: (approved ? :approve! : :reject!)), method: :patch, class: 'btn btn-warning' do
               = "Envoyer"

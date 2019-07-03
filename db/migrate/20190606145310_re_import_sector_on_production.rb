@@ -7,11 +7,15 @@ class ReImportSectorOnProduction < ActiveRecord::Migration[5.2]
     references_path = Rails.root.join('db', 'reference.yml')
     references_content = File.read(references_path.to_s)
     preload_class = Sector
-    sectors = YAML.safe_load(references_content)
+    sectors = YAML.load(references_content)
+    first_sector = nil
+    old_sector_ids = Sector.all.map(&:id)
     sectors.map do |sector|
-      Sector.create(name: sector['name'],
-                    external_url: sector['external_url'],
-                    uuid: sector['uuid'])
+      first_sector = Sector.create!(name: sector['name'],
+                                    external_url: sector['external_url'],
+                                    uuid: sector['uuid'])
     end
+    InternshipOffer.update_all(sector_id: first_sector.id)
+    Sector.where(id: old_sector_ids).destroy_all
   end
 end

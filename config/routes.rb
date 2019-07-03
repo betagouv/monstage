@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
     end
   end
+
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy]
   end
@@ -41,6 +42,14 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#index'
 
+  namespace :reporting, path: 'reporting' do
+    resources :internship_offers, only: %i[index] do
+      collection do
+        get :download
+      end
+    end
+  end
+
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
@@ -54,7 +63,7 @@ Rails.application.routes.draw do
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/faq', to: 'pages#faq'
   get '/accessibilite', to: 'pages#accessibilite'
-  get '/statistiques', to: 'pages#statistiques'
+
   get '/operators', to: 'pages#operators'
 
   match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]

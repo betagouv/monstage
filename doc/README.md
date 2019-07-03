@@ -4,19 +4,29 @@ Pour diffuser des offres sur la plateforme "[mon stage de 3e](https://www.monsta
 * les collectivités
 * les ministères
 
-L'API sera :
+Il s'agit d'une API REST qui permet les opérations suivantes :
+- Ajouter une offre de stage sur Mon stage de 3e
+- Modifier une offre de stage sur Mon stage de 3e
+- Supprimer une offre de stage sur Mon stage de 3e
 
-* construite sur le format "REST"
-* avec le point d'entrée ```baseUrl```:
+# Table des matières
+- [Environnements](#environnements)
+- [Authentification](#authentification)
+- [Structures de données et référentiels](#structures-de-données-et-référentiels)
+  - [Offres de stage](#offres-de-stage)
+  - [Semaines](#semaines)
+  - [Secteurs d'activité](#secteurs-dactivité)
+- [Gestion d'erreurs](#gestion-derreurs)
+- [Endpoints](#endpoints)
+  - [Création d'une offre](#ref-create-internship-offer)
+  - [Modification d'une offre](#ref-modify-internship-offer)
+  - [Suppression d'une offre](#ref-destroy-internship-offer)
+- [Premiers pas et exemples](#premiers-pas-et-exemples)
+
+# Environnements
+L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit les ```baseURL``` suivantes
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
   * En production : https://monstagedetroisieme.fr/api
-
-Les services web suivant seront mis à disposition :
-
-* POST [/internship_offers](#ref-create-internship-offer) : Pour ajouter une offre de stage sur Mon stage de 3e
-* PATCH [/internship_offers/{remote_id}](#ref-modify-internship-offer) : Pour modifier l'offre de stage avec l'identifiant ```remote_id``` sur Mon stage de 3e
-* DELETE [/internship_offers/{remote_id}](#ref-destroy-internship-offer) : Pour supprimer une offre de stage sur Mon stage de 3e
-
 
 # Authentification
 
@@ -24,150 +34,27 @@ Les services web suivant seront mis à disposition :
 
 **Merci d'effectuer une demande par mail** ([support](mailto:martin.fourcade@beta.gouv.fr)) pour créer un compte API.
 
-Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de test ou production.
-
-### Récuperer votre token d'authentification
-
-[Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
-
-![](screenshots/0-se-connecter.jpg)
-
-Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se render sur la page API
-![](screenshots/1-page-mon-profil.jpg)
-
-Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récuperer le token
-![](screenshots/2-page-api-token.jpg)
+Une fois le compte créé, le token d'API pourra être récupéré via notre interface web. Il est différent selon l'environnement de pré production ou production.
 
 L'authentification se fait par token via le header HTTP : ```Authorization: Bearer #{token} ```
 
 Ce token devra être présent à chaque requête.
 
-# Gestion d'erreurs
-Les erreurs de requête seront signalées via un code HTTP > 400.
+### Comment récuperer mon token d'authentification
 
-Sur chaque requête, on pourra avoir les erreurs suivantes :
+[Se connecter](https://monstagedetroisieme.fr/users/sign_in) avec votre compte opérateur
 
-- 400, Bad Request : Paramètres de requête mal renseignés. Exemple : Secteur non indiqué dans la création d'une offres
-- 401, Unauthorized : Token invalide
-- 403, Forbidden : Pas le droit d'effectuer cette requête. Exemple : Modification d'une offre qui ne vous appartient pas
-- 422, Unprocessable Entity. Payload incorrect, impossible de traiter la requête
+![](screenshots/0-se-connecter.jpg)
 
-- 500, Internal Server Error : Service indisponible
+Depuis la page [Mon profil](https://www.monstagedetroisieme.fr/account), se rendre sur la page API
+![](screenshots/1-page-mon-profil.jpg)
 
-En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront détaillées pour chacun d'entre eux.
-
-
-# Endpoints
-
-### <a name="ref-create-internship-offer"></a>
-## Création d'une offre
-
-
-**url** : https://monstagedetroisieme.fr/api/internship_offers
-
-**method** : POST
-
-*Paramètres de body :*
-
-* **internship_offer.title** *(string, required)*
-* **internship_offer.description** *(text, required *<= 500 caractères)
-* **internship_offer.employer_name** *(string, required)*
-* **internship_offer.employer_description** *(string, required *<= 275 caractères)
-* **internship_offer.employer_website** *(string, optional)*
-* **internship_offer.coordinates** *(object/geography, required)* : { latitude: 1, longitude: 1 }
-* **internship_offer.street** *(text, optional)*
-* **internship_offer.zipcode** *(string, required)*
-* **internship_offer.city** *(string, required)*
-* **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
-* **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
-* **permalink** *(url, required)*
-
-### Exemple curl
-
-```
-curl -H "Authorization: Bearer $API_TOKEN" \
-     -H "Accept: application/json" \
-     -H "Content-type: application/json" \
-     -X POST \
-     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name","employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6","coordinates":{"latitude":1.0,"longitude":1.0}}}' \
-     -vvv \
-     $ENV/api/internship_offers
-
-```
-
-### Erreurs
-
-- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
-
-### <a name="ref-modify-internship-offer"></a>
-## Modification d'une offre
-
-
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
-
-**method** : PATCH
-
-*Paramètres d'url* :
-
-* **remote_id** *(string, required)*
-* **internship_offer.title** *(string)*
-* **internship_offer.description** *(text,  <= 500 caractères)*
-* **internship_offer.employer_name** *(string)*
-* **internship_offer.employer_description** *(string, <= 275 caractères)*
-* **internship_offer.employer_website** *(string)*
-* **internship_offer.coordinates** *(object/geography)* : { latitude: 1, longitude: 1 }
-* **internship_offer.street** *(text)*
-* **internship_offer.zipcode** *(string)*
-* **internship_offer.city** *(string)*
-* **internship_offer.sector_uuid** *(integer)*
-* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
-* **permalink** *(url)*
-
-### Exemple curl
-
-```
-curl -H "Authorization: Bearer $API_TOKEN" \
-     -H "Accept: application/json" \
-     -H "Content-type: application/json" \
-     -X PATCH \
-     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
-     -vvv \
-     $ENV/api/internship_offers/$remote_id
-```
-		
-### Erreurs
-
-- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
-- 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
-
-### <a name="ref-destroy-internship-offer"></a>
-## Suppression d'une offre
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
-
-**method** : DELETE
-
-*Paramètres d'url* :
-
-* **remote_id** *(string, required)*
-
-### Exemple curl
-
-```
-curl -H "Authorization: Bearer foobarbaz" \
-     -H "Accept: application/json" \
-     -X DELETE \
-     -vvv \
-     https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
-```
-
-### Erreurs
-
-- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
+Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupérer le token
+![](screenshots/2-page-api-token.jpg)
 
 # Structures de données et référentiels
 
-## Les offres
+## Offres de stage
 
 ```
 {
@@ -262,7 +149,131 @@ Exemple de ce que nous attendons donc un uuid dans nos API :
 internship_offer.sector_uuid: "c76e6364-7257-473c-89aa-c951141810ce"
 ```
 
-## Premiers pas avec l'API
+# Gestion d'erreurs
+Les erreurs de requête seront signalées via un code HTTP > 400.
+
+Sur chaque requête, on pourra avoir les erreurs suivantes :
+
+- 400, Bad Request : Paramètres de requête mal renseignés. Exemple : Secteur non indiqué dans la création d'une offres
+- 401, Unauthorized : Token invalide
+- 403, Forbidden : Pas le droit d'effectuer cette requête. Exemple : Modification d'une offre qui ne vous appartient pas
+- 422, Unprocessable Entity. Payload incorrect, impossible de traiter la requête
+
+- 500, Internal Server Error : Service indisponible
+
+En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront détaillées pour chacun d'entre eux.
+
+
+# Endpoints
+
+### <a name="ref-create-internship-offer"></a>
+## Création d'une offre
+
+
+**url** : ```#{baseURL}/internship_offers```
+
+**method** : POST
+
+*Paramètres de body :*
+
+* **internship_offer.title** *(string, required)*
+* **internship_offer.description** *(text, required *<= 500 caractères)
+* **internship_offer.employer_name** *(string, required)*
+* **internship_offer.employer_description** *(string, required *<= 275 caractères)
+* **internship_offer.employer_website** *(string, optional)*
+* **internship_offer.coordinates** *(object/geography, required)* : { "latitude" : 1, "longitude" : 1 }
+* **internship_offer.street** *(text, optional)*
+* **internship_offer.zipcode** *(string, required)*
+* **internship_offer.city** *(string, required)*
+* **internship_offer.sector_uuid** *(integer, required)*
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
+* **permalink** *(url, required)*
+
+### Exemple curl
+
+```
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X POST \
+     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name","employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6","coordinates":{"latitude":1.0,"longitude":1.0}}}' \
+     -vvv \
+     $ENV/api/internship_offers
+
+```
+
+### Erreurs
+
+- 409, Conflict. Une offre avec le même ```remote_id``` existe déjà
+
+### <a name="ref-modify-internship-offer"></a>
+## Modification d'une offre
+
+
+**url** : ```#{baseURL}/internship_offers/#{remote_id}```
+
+**method** : PATCH
+
+*Paramètres d'url* :
+
+* **remote_id** *(string, required)*
+* **internship_offer.title** *(string)*
+* **internship_offer.description** *(text,  <= 500 caractères)*
+* **internship_offer.employer_name** *(string)*
+* **internship_offer.employer_description** *(string, <= 275 caractères)*
+* **internship_offer.employer_website** *(string)*
+* **internship_offer.coordinates** *(object/geography)* : { "latitude" : 1, "longitude" : 1 }
+* **internship_offer.street** *(text)*
+* **internship_offer.zipcode** *(string)*
+* **internship_offer.city** *(string)*
+* **internship_offer.sector_uuid** *(integer)*
+* **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
+* **permalink** *(url)*
+
+### Exemple curl
+
+```
+curl -H "Authorization: Bearer $API_TOKEN" \
+     -H "Accept: application/json" \
+     -H "Content-type: application/json" \
+     -X PATCH \
+     -d '{"internship_offer": {"title":"Mon offre de stage", "description": "Description..."}}' \
+     -vvv \
+     $ENV/api/internship_offers/$remote_id
+```
+
+### Erreurs
+
+- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
+- 422, Unprocessable Entity. Aucun paramètre n'a été spécifié pour la modification
+
+### <a name="ref-destroy-internship-offer"></a>
+## Suppression d'une offre
+**url** : ```#{baseURL}/internship_offers/#{remote_id}```
+
+**method** : DELETE
+
+*Paramètres d'url* :
+
+* **remote_id** *(string, required)*
+
+### Exemple curl
+
+```
+curl -H "Authorization: Bearer foobarbaz" \
+     -H "Accept: application/json" \
+     -X DELETE \
+     -vvv \
+     https://monstagedetroisieme.fr/api/internship_offers/#{job_irl_id|vvmt_id|myfuture_id|provider_id...}
+```
+
+### Erreurs
+
+- 404, Not Found. Aucune offre n'a été trouvée avec le ```remote_id``` spécifié
+
+
+# Premiers pas et exemples
 
 Pour éprouver nos APIs, nous utilisons des [scripts shell](https://github.com/betagouv/monstage/tree/master/doc/requests/internship_offers/).
 
@@ -288,17 +299,17 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ```
 
 
-### la creation d'une offre
+## Création d'une offre
 
 * exemple d'appel à l'api : ```./requests/internship_offers/create.sh```
 * exemple de reponse, cf: ./output/internship_offers/create/*
 * exemple de payload, cf: ./input/internship_offers/create.json
 
-### la mise à jour d'une offre
+## Mise à jour d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/update.sh```
 * exemple de reponse, cf: ./output/internship_offers/update/*
 * exemple de payload, cf: ./input/internship_offers/update.json
 
-### la suppression d'une offre
+## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
