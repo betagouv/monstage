@@ -17,4 +17,4 @@ div.modal id="approve-student-#{student.id}" tabindex="-1" role="dialog"
 
         = form_for student, as: :user, url: dashboard_school_user_path(student.school, student), method: :patch do |f|
           = f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6'
-          = f.submit 'Valider', class: 'btn btn-success mx-1'
+          = f.submit 'Valider', class: 'btn btn-warning mx-1'

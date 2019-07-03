@@ -18,6 +18,6 @@ div.modal id="sign-internship-application-#{internship_application.id}" tabindex
       .modal-footer
         button type="button" class="btn btn-outline-warning" data-dismiss="modal" Annuler
 
-        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!), method: :patch, class: 'btn btn-success mx-1' do
+        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!), method: :patch, class: 'btn btn-warning mx-1' do
           = "Valider la convention"
 
