@@ -1,5 +1,4 @@
 - student_stats = Presenters::StudentStats.new(student: student)
-
 tr class="test-student-#{student.id}"
   td data-head="#{cols[0]}"
     .row.no-gutters
@@ -13,9 +12,8 @@ tr class="test-student-#{student.id}"
     - if student.has_parental_consent
       i.fas.fa-check
     - elsif can?(:update, student)
-      = form_for student, as: :user, url: dashboard_school_user_path(student.school, student), method: :patch do |f|
-        = f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6'
-        = f.submit 'Valider', class: 'btn btn-warning'
+      = button_tag type: "button", data: { toggle: 'modal', target: "#approve-student-#{student.id}", turbolinks: false }, class: 'btn btn-warning btn-sm mx-1' do
+        | Valider
     - else
       i.fas.fa-times
 
@@ -34,3 +32,6 @@ tr class="test-student-#{student.id}"
   td data-head="#{cols[4]}"
     - # span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
     span.applications_with_convention_signed_count –
+
+tr style="height: 0; width: 0;"
+  td style="padding: 0; margin: 0;" colspan="5"= render "dashboard/schools/users/approve_student_modal", student: student

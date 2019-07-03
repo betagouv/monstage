@@ -1,0 +1,20 @@
+div.modal id="approve-student-#{student.id}" tabindex="-1" role="dialog"
+  .modal-dialog role="document"
+
+    .modal-content
+      .modal-header
+        h5.modal-title Valider la convention
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+      .modal-body
+        p
+          | Vous confirmez avoir reçu l'accord parental de
+          = " "
+          = Presenters::User.new(user: student).full_name
+
+      .modal-footer
+        button type="button" class="btn btn-warning" data-dismiss="modal" Annuler
+
+        = form_for student, as: :user, url: dashboard_school_user_path(student.school, student), method: :patch do |f|
+          = f.hidden_field :has_parental_consent, value: true, class: 'form-control col-lg-6'
+          = f.submit 'Valider', class: 'btn btn-success mx-1'
