@@ -24,7 +24,7 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
 - [Premiers pas et exemples](#premiers-pas-et-exemples)
 
 # Environnements
-L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit
+L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit les ```baseURL``` suivantes
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
   * En production : https://monstagedetroisieme.fr/api
 
@@ -170,7 +170,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 ## Création d'une offre
 
 
-**url** : https://monstagedetroisieme.fr/api/internship_offers
+**url** : ```#{baseURL}/internship_offers```
 
 **method** : POST
 
@@ -211,7 +211,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 ## Modification d'une offre
 
 
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+**url** : ```#{baseURL}/internship_offers/#{remote_id}```
 
 **method** : PATCH
 
@@ -250,7 +250,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 
 ### <a name="ref-destroy-internship-offer"></a>
 ## Suppression d'une offre
-**url** : https://monstagedetroisieme.fr/api/internship_offers/#{remote_id}
+**url** : ```#{baseURL}/internship_offers/#{remote_id}```
 
 **method** : DELETE
 
