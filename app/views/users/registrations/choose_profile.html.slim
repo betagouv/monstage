@@ -2,8 +2,15 @@ header.header-account
   h1.h2.text-center.mb-0 Créer mon compte
   p.text-center.mb-0= link_to "J'ai déjà un compte", new_user_session_path
 
+.d-block.d-sm-none.actions
+  .mt-3.d-flex.d-sm-block
+    = link_to "Je suis élève de 3e", new_user_registration_path(as: 'Student'), class: 'btn btn-warning'
+  .mt-3.d-flex.d-sm-block
+    = link_to "Je veux déposer une offre", new_user_registration_path(as: 'Employer'), class: 'btn btn-warning'
+  .mt-3.d-flex.d-sm-block
+    = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-warning'
 .row
-  .col-12.col-md-6.my-3
+  .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
         h2= "Je suis élève de 3e"
@@ -11,7 +18,7 @@ header.header-account
           | À l’invitation de ton professeur principal, accède à de nombreuses offres de stages et candidate à un stage qui te conviennes ou découvre un métier, un domaine d’activité.
         .actions.d-flex.d-sm-block= link_to "Je crée mon compte", new_user_registration_path(as: 'Student'), class: 'btn btn-warning'
 
-  .col-12.col-md-6.my-3
+  .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
         h2= "Je suis chef d'établissement"
@@ -20,7 +27,7 @@ header.header-account
         .actions.d-flex.d-sm-block= link_to "Je crée mon compte", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-warning'
 
 .row
-  .col-12.col-md-6.my-3
+  .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
         h2= "Je veux déposer une offre"
