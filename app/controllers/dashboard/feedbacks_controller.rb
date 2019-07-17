@@ -8,7 +8,7 @@ module Dashboard
     # GET /feedbacks
     def index
       authorize! :index, Feedback
-      @feedbacks = Feedback.all
+      @feedbacks = Feedback.order(created_at: :desc)
     end
 
     # POST /feedbacks
