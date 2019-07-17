@@ -15,6 +15,6 @@ table.table.table-striped.table-bordered.table
         td = feedback.created_at.strftime('%F %T')
         td = feedback.email
         td = feedback.comment
-        td = link_to 'Destroy', [:dashboard, feedback], data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to 'Supprimer', [:dashboard, feedback], data: { confirm: 'Are you sure?' }, method: :delete
 
 br
