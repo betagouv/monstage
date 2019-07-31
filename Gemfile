@@ -6,8 +6,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'activerecord-postgis-adapter' # postgis extension
 gem 'pg'
+gem 'activerecord-postgis-adapter' # pg extension for geo queries
+gem 'pg_search'                    # pg search for autocomplete
 gem 'rails'
 gem 'turbolinks'
 gem 'webpacker'
