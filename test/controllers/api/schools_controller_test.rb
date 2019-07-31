@@ -4,11 +4,24 @@ require 'test_helper'
 
 module Api
   class SchoolsControllerTest < ActionDispatch::IntegrationTest
-    include Devise::Test::IntegrationHelpers
+    include ::ApiTestHelpers
 
-    test 'search by term' do
-      post search_api_schools_path, params: { term: "Un+pavais+dans+la+marre" }
+    def assert_hash_contains(a, b)
+      assert (a.to_a - b.to_a).empty?, "contains fail:\n #{a}\n is not contained in\n #{b}"
+    end
+
+    test 'empty searh works' do
+      post search_api_schools_path, params: {  }
       assert_response :success
+    end
+
+    test 'search with term works' do
+      parisian_school = create(:api_school, city: "Paris")
+      parisian_school.reload # ensure triggered city_tsv had been reloaded
+
+      post search_api_schools_path, params: { term: "Paris" }
+      assert_hash_contains(JSON.parse(parisian_school.to_json).except("pg_search_highlight"),
+                           json_response[parisian_school.city].first.except("pg_search_highlight"))
     end
   end
 end

@@ -9,7 +9,7 @@ module Api
       # base responders
       #
       def render_success(object:, status:)
-        render json: object.to_json,
+        render json: object,
                status: status
       end
 

@@ -2,7 +2,6 @@
 
 class School < ApplicationRecord
   include Nearbyable
-  include PgSearch::Model
 
   has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
@@ -19,26 +18,7 @@ class School < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
 
-  pg_search_scope :search_city,
-                  against: :city,
-                  ignoring: :accents,
-                  using: {
-                    tsearch: {
-                      dictionary: 'public.fr',
-                      # use ts_vector field for search, maintened via trigger
-                      tsvector_column: "city_tsv",
-                      prefix: true,
-                      highlight: {
-                        StartSel: '<b>',
-                        StopSel: '</b>'
-                      }
-                    }
-                  }
 
-  scope :autocomplete_by_city, -> (term:, limit: 15) {
-    search_city(term)
-      .with_pg_search_highlight
-  }
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end

@@ -16,6 +16,14 @@ module ApiTestHelpers
     fail "Not a json response"
   end
 
+  def json_code
+    json_response['code']
+  end
+
+  def json_error
+    json_response['error']
+  end
+
   def pretty_json_response
     body = JSON.parse(response.body)
     JSON.pretty_generate(body)
