@@ -34,12 +34,6 @@
       <div class="row">
         <div class="col-12">
           <ul class="list-group" data-target="select-school.listCities">
-            <% School.all.map(&:city).uniq.each do |city| %>
-              <a data-city="<%= city %>"
-                 class="list-group-item"
-                 data-action="click->select-school#onSelectCity"
-                 data-target="select-school.cityItem"><%= city %></a>
-            <% end %>
           </ul>
         </div>
       </div>
@@ -53,15 +47,16 @@
           <%= form.rg2a_required_content_tag %>
         <% end %>
       <% end %>
-      <%= form.text_field :school_id,
-                          value: '',
+      <%= form.text_field :school_name,
+                          value: resource.try(:school).try(:name) || '',
                           disabled: true,
                           readonly: true,
                           data: {target: 'select-school.placeholderSchoolInput'},
                           class: 'form-control' %>
 
       <div data-target="select-school.listSchools">
-        <% School.all.includes(:class_rooms).each do |school| %>
+        <% Array(resource.try(:school)).each do |school| %>
+          <% next if school.new_record? %>
           <div class="custom-control custom-radio"
                data-target="select-school.schoolItem"
                data-city="<%= school.city %>">

@@ -4,19 +4,20 @@ require 'application_system_test_case'
 
 class SignUpOthersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until other creation' do
-    school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin')
+    school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_manager = create(:school_manager, school: school_1)
-    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait')
+    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait', city: 'Saint-Parfait')
     existing_email = 'fourcade.m@gmail.com'
-
+    student = create(:student, email: existing_email)
     # go to signup as other
     visit new_user_registration_path(as: 'Other')
 
     # fails to create other with existing email
     assert_difference('Users::Other.count', 0) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      find('a', text: school_2.city).click
-      find('label', text: "#{school_2.name} - #{school_2.city}").click
+      all('[data-target="select-school.listCities"] a.list-group-item').first.click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
+
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
@@ -25,16 +26,11 @@ class SignUpOthersTest < ApplicationSystemTestCase
       click_on "Je m'inscris"
     end
 
-    # ensure failure reset form as expected
-    assert_equal school_2.city,
-                 find_field('Ville de mon collège').value,
-                 're-select of city after failure fails'
-
     # create other
     assert_difference('Users::Other.count', 1) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
       find('a', text: school_1.city).click
-      find('label', text: "#{school_1.name} - #{school_1.city}").click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Choisir un mot de passe', with: 'kikoololletest'
       fill_in 'Confirmer le mot de passe', with: 'kikoololletest'

@@ -27,21 +27,17 @@ module Api
         .with_pg_search_highlight
     }
 
-    def formatted_autocomplete_address
-      [
-        street,
-        city,
-        zipcode
-      ].compact.uniq.join(', ')
-    end
-
-    def as_json(options={})
-      super(options.merge(only: %i[id name department zipcode street],
-                          methods: %i[pg_search_highlight class_rooms]))
+    def uniq_city_name
+      "#{pg_search_highlight} (#{zipcode})"
     end
 
     def pg_search_highlight
       attributes["pg_search_highlight"]
+    end
+
+    def as_json(options={})
+      super(options.merge(only: %i[id name department zipcode],
+                          methods: %i[pg_search_highlight class_rooms]))
     end
   end
 end

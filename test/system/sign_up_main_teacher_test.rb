@@ -18,8 +18,9 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     # fails to create main teacher with existing email
     assert_difference('Users::MainTeacher.count', 0) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      find('a', text: school_2.city).click
-      find('label', text: "#{school_2.name} - #{school_2.city}").click
+      all('[data-target="select-school.listCities"] a.list-group-item').last.click
+      find("label[for=\"select-school-#{school_2.id}\"]").click
+
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
@@ -36,11 +37,9 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     # creates main teacher
     assert_difference('Users::MainTeacher.count', 1) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      find('a', text: school_1.city).click
-      find('label', text: "#{school_1.name} - #{school_1.city}").click
+      all('[data-target="select-school.listCities"] a.list-group-item').first.click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
-      fill_in 'Prénom', with: 'Martin'
-      fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Choisir un mot de passe', with: 'kikoololletest'
       fill_in 'Confirmer le mot de passe', with: 'kikoololletest'

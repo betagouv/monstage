@@ -2,7 +2,7 @@ module Api
   class AutocompleteSchool
     def as_json(options={})
       result.inject({}) do |accu, school|
-        accu[school.city] = Array(accu[school.city]).push(school)
+        accu[school.uniq_city_name] = Array(accu[school.uniq_city_name]).push(school)
         accu
       end
     end
@@ -13,6 +13,7 @@ module Api
       @term = term
       @limit = limit
       @result = Api::School.autocomplete_by_city(term: term, limit: limit)
+                           .includes(:class_rooms)
     end
   end
 end

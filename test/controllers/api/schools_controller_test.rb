@@ -16,12 +16,15 @@ module Api
     end
 
     test 'search with term works' do
-      parisian_school = create(:api_school, city: "Paris")
+      parisian_school = create(:api_school, city: "Paris", zipcode:"75015")
       parisian_school.reload # ensure triggered city_tsv had been reloaded
 
-      post search_api_schools_path, params: { term: "Paris" }
+      post search_api_schools_path, params: { query: "Paris" }
+      parisian_schools_key = json_response.keys.first
+      first_parisian_school = json_response[parisian_schools_key].first
+
       assert_hash_contains(JSON.parse(parisian_school.to_json).except("pg_search_highlight"),
-                           json_response[parisian_school.city].first.except("pg_search_highlight"))
+                           first_parisian_school.except("pg_search_highlight"))
     end
   end
 end

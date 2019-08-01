@@ -34,7 +34,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
     parisotel = create(:api_school, city: "Parisotel")
 
     results = Api::School.autocomplete_by_city(term: "Pari")
-    byebug
+
     assert_equal paris.name, results[0].name
     assert_equal parisot.name, results[1].name
     assert_equal parisote.name, results[2].name
