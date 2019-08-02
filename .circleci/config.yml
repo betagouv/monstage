@@ -76,7 +76,9 @@ jobs: # a collection of steps
           name: Database setup
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
-          command: bundle exec bin/rails db:create db:schema:load --trace
+          command: |
+            bundle exec bin/rails db:create db:schema:load --trace
+            bundle exec bin/rails db:migrate:up VERSION=20190802163449
 
       - run:
           name: Run TestUnit

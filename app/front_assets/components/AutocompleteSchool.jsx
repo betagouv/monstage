@@ -135,6 +135,7 @@ class AutocompleteSchool extends React.Component {
                 <div className="input-group-append">
                   { !currentRequest && (<button type="button"
                                                 className="btn btn-outline-secondary btn-clear-city"
+                                                onClick={this.onResetSearch}
                                                 >
                                           <i className="fas fa-times"></i>
                                        </button>)}

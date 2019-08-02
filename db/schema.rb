@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_31_084620) do
+ActiveRecord::Schema.define(version: 2019_08_02_163449) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "fuzzystrmatch"
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "unaccent"
@@ -157,6 +156,7 @@ ActiveRecord::Schema.define(version: 2019_07_31_084620) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.tsvector "city_tsv"
+    t.string "kind"
     t.index ["city_tsv"], name: "index_schools_on_city_tsv", using: :gin
     t.index ["coordinates"], name: "index_schools_on_coordinates", using: :gist
   end

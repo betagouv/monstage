@@ -5,7 +5,10 @@
     <tr>
       <th scope="col">Nom</th>
       <th scope="col">Code UAI</th>
-      <th scope="col">Adresse</th>
+      <th scope="col">Departement</th>
+      <th scope="col">Street</th>
+      <th scope="col">City</th>
+      <th scope="col">Zipcode</th>
       <th scope="col">Coordonnées GPS</th>
       <th scope="col"></th>
     </tr>
@@ -19,10 +22,16 @@
             <%= school.code_uai %>
           </a>
         </td>
-        <td data-head="Adresse">
+        <td data-head="street">
           <%= school.street %>
-          <%= school.city %>
+        </td>
+        <td data-head="department">
           <%= school.department %>
+        </td>
+        <td data-head="city">
+          <%= school.city %>
+        </td>
+        <td data-head="zipcode">
           <%= school.zipcode %>
         </td>
         <td data-head="Coordonnées GPS">
