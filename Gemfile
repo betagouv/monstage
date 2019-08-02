@@ -12,6 +12,7 @@ gem 'pg_search'                    # pg search for autocomplete
 gem 'rails'
 gem 'turbolinks'
 gem 'webpacker'
+gem 'react-rails'
 
 # Use Puma as the app server
 gem 'bootsnap', require: false

@@ -17,7 +17,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     # fails to create teacher with existing email
     assert_difference('Users::Teacher.count', 0) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('[data-target="select-school.listCities"] a.list-group-item').last.click
+      all('.list-group a.list-group-item').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
       select(class_room_2.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
@@ -36,7 +36,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     # create teacher
     assert_difference('Users::Teacher.count', 1) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('[data-target="select-school.listCities"] a.list-group-item').first.click
+      all('.list-group a.list-group-item').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: 'another@email.com'

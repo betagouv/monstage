@@ -15,7 +15,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     # fails to create other with existing email
     assert_difference('Users::Other.count', 0) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('[data-target="select-school.listCities"] a.list-group-item').first.click
+      all('.list-group a.list-group-item').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
 
       fill_in 'Prénom', with: 'Martin'

@@ -22,8 +22,4 @@ class School < ApplicationRecord
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end
-
-  def to_s
-    name
-  end
 end

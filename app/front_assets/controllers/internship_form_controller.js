@@ -25,7 +25,6 @@ export default class extends Controller {
 
   handleClickIsPublic(event) {
     const value = $(event.target).val();
-    debugger
     this.toggleGroupNames(value === "true");
   }
 
