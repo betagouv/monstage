@@ -5,22 +5,62 @@ const StartAutocompleteAtLength = 2
 
 class AutocompleteSchool extends React.Component {
   state = {
+    currentRequest: null,
+    requestError: null,
+
     selectedSchool: null,
     selectedClassRoom: null,
 
     city: "",
     citySuggestions: {},
     schoolsSuggestions: [],
-    classRoomsSuggestions: [],
+    classRoomsSuggestions: []
   };
 
+  constructor(props) {
+    super(props);
+    this.emitRequest = this.emitRequest.bind(this)
+    this.fetchDone = this.fetchDone.bind(this)
+    this.fetchFail = this.fetchFail.bind(this)
+  }
+
   fetchData = (cityName) => {
-    $.ajax({ type: "POST", url: '/api/schools/search', data: {query: cityName}})
-     .done((result) => {
-       this.setState({citySuggestions: result})
-     })
-     .fail((error) => {
-     })
+    const { currentRequest } = this.state;
+
+    if (currentRequest) {
+      this.setState({currentRequest: null}, () => {
+        currentRequest.abort();
+        this.emitRequest(cityName)
+      })
+    } else {
+      this.emitRequest(cityName)
+    };
+  }
+
+  emitRequest = (cityName) => {
+    this.setState({
+      currentRequest: $.ajax({ type: "POST", url: '/api/schools/search', data: {query: cityName}})
+                       .done(this.fetchDone)
+                       .fail(this.fetchFail)
+    })
+  }
+
+  fetchDone = (result) => {
+    this.setState({
+      citySuggestions: result,
+      requestError: null,
+      currentRequest: null
+    })
+  }
+
+  fetchFail = (error) => {
+    this.setState({
+      requestError: "Une erreur est survenue, veuillez ré-essayer plus tard.",
+      currentRequest: null,
+      citySuggestions: {},
+      schoolsSuggestions: [],
+      classRoomsSuggestions: []
+    });
   }
 
   onResetSearch = (event) => {
@@ -68,6 +108,8 @@ class AutocompleteSchool extends React.Component {
     const {
       city,
       citySuggestions,
+      currentRequest,
+      requestError
     } = this.state;
     const { resourceName, existingSchool, label, required } = this.props;
 
@@ -91,11 +133,15 @@ class AutocompleteSchool extends React.Component {
                        onChange={this.onCityChange}
                 />
                 <div className="input-group-append">
-                  <button type="button"
-                          className="btn btn-outline-secondary btn-clear-city"
-                          onClick={this.onResetSearch}>
-                    <i className="fas fa-times"></i>
-                  </button>
+                  { !currentRequest && (<button type="button"
+                                                className="btn btn-outline-secondary btn-clear-city"
+                                                >
+                                          <i className="fas fa-times"></i>
+                                       </button>)}
+                  { currentRequest && (<button type="button"
+                                               className="btn btn-outline-secondary btn-clear-city">
+                                        <i className="fas fa-spinner fa-spin"></i>
+                                       </button>)}
                 </div>
               </div>
             </div>
@@ -112,6 +158,8 @@ class AutocompleteSchool extends React.Component {
                 </a>
               )) }
               </ul>
+
+              { requestError && <p className="text-danger small">{requestError}</p> }
             </div>
           </div>
         </div>
