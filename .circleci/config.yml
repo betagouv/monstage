@@ -82,7 +82,7 @@ jobs: # a collection of steps
           name: Setup DB full text search
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
-          command: bundle exec bin/rails db:migrate:up VERSION=20190802163449
+          command: bundle exec bin/rails db:migrate:up VERSION=20190802163449 RAILS_ENV=test
 
       - run:
           name: Run TestUnit
