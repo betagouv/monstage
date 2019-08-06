@@ -73,12 +73,16 @@ jobs: # a collection of steps
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
-          name: Database setup
+          name: Load DB schema
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
-          command: |
-            bundle exec bin/rails db:create db:schema:load --trace
-            bundle exec bin/rails db:migrate:up VERSION=20190802163449
+          command: bundle exec bin/rails db:create db:schema:load --trace
+
+      - run:
+          name: Setup DB full text search
+          environment:
+            DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
+          command: bundle exec bin/rails db:migrate:up VERSION=20190802163449
 
       - run:
           name: Run TestUnit
