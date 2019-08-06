@@ -45,7 +45,7 @@ class Academy
 
   def self.lookup_by_zipcode(zipcode:)
     MAP.map do |academy_name, departement_numbers|
-      if departement_identified_by_3_chars?(zipcode: zipcode)
+      if ::Department.departement_identified_by_3_chars?(zipcode: zipcode)
         return academy_name if departement_numbers.include?(zipcode[0..2])
       else
         return academy_name if departement_numbers.include?(zipcode[0..1])
@@ -53,8 +53,5 @@ class Academy
     end
   end
 
-  # edge case for [971->978]
-  def self.departement_identified_by_3_chars?(zipcode:)
-    zipcode.starts_with?('97')
-  end
+
 end

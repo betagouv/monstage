@@ -26,8 +26,8 @@ module Api
       }
     end
 
-    def to_json(*_args)
-      super(
+    def as_json(options={})
+      super(options.merge(
         only: %i[title
                  description
                  employer_name
@@ -40,7 +40,7 @@ module Api
                  permalink
                  sector_uuid],
         methods: [:formatted_coordinates]
-      )
+      ))
     end
   end
 end

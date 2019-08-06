@@ -138,7 +138,13 @@
         span.ml-1= "Ce stage est reservé à un collège uniquement ?"
         small.form-text.text-muted Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
     div data-target="internship-form.selectSchoolBlock" class="#{@internship_offer.school.present? ? '' : 'd-none'}"
-      = render 'users/form/select_school', form: form, resource: @internship_offer, select_class_room: false, school_city_label: "Ville ou se situe le collège auquel le stage est reservé", school_city_placeholder: "Rechercher le nom de ville ou se situe le collège", required: false
+
+    = react_component("AutocompleteSchool",
+                      label:"Ville ou se situe le collège auquel le stage est reservé",
+                      required:false,
+                      resourceName: :internship_offer,
+                      selectClassRoom: false,
+                      existingSchool: @internship_offer.school.as_json)
 
   fieldset
     legend Tuteur

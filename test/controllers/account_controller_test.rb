@@ -176,6 +176,5 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     get account_path(section: 'school')
     assert_response :success
     assert_template 'users/_edit_school'
-    assert_template 'users/form/_select_school'
   end
 end

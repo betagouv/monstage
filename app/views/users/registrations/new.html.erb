@@ -9,7 +9,15 @@
     <%= f.text_field :type, hidden: true %>
 
     <% if can?(:choose_school, :sign_up) %>
-      <%= render 'users/form/select_school', form: f, resource: resource, select_class_room: can?(:choose_class_room, :sign_up), required: true %>
+      <%= react_component(
+        "AutocompleteSchool",
+        label: "Ville de mon collège",
+        required: true,
+        resourceName: :user,
+        selectClassRoom: can?(:choose_class_room, :sign_up),
+        existingSchool: resource.school.as_json,
+        existingClassRoom: resource.try(:class_room).try(:as_json)
+      ) %>
     <% end %>
 
     <div class="form-group">

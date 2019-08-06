@@ -16,6 +16,11 @@ Rails.application.routes.draw do
 
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy]
+    resources :schools, only: [] do
+      collection do
+        post :search
+      end
+    end
   end
 
   namespace :dashboard, path: 'dashboard' do
