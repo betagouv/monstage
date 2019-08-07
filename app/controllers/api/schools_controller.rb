@@ -8,7 +8,7 @@ module Api
 
     private
     def result
-      Api::AutocompleteSchool.new(term: params[:query], limit: 6)
+      Api::AutocompleteSchool.new(term: params[:query], limit: 25)
     end
   end
 end
