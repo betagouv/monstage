@@ -129,7 +129,7 @@ class AutocompleteSchool extends React.Component {
                        type="text"
                        name={`${resourceName}[school][city]`}
                        id={`${resourceName}_school_city`}
-                       value={city.length == "" && existingSchool ? existingSchool.city : city.replace('<b>', '').replace('</b>', "")}
+                       value={city.length == "" && existingSchool ? existingSchool.city : city.replace(/<b>/g, '').replace(/<\/b>/g, "")}
                        onChange={this.onCityChange}
                 />
                 <div className="input-group-append">
