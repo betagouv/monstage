@@ -38,7 +38,9 @@ module InternshipOffers
       get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
       assert_response :success
       assert_select 'input#all_year_long[disabled]'
-      assert_select 'select#internship_offer_week_ids[disabled]'
+      internship_offer.weeks.each do |week|
+        assert_select "#internship_offer_week_ids_#{available_weeks.first.id}""][disabled]"
+      end
       assert_select 'input#internship_offer_max_candidates[disabled]'
       assert_select 'input#internship_offer_max_internship_week_number[disabled]'
     end

@@ -12,29 +12,13 @@ module InternshipOffers
         get new_dashboard_internship_offer_path
 
         assert_response :success
-        assert_select 'select[name="internship_offer[week_ids][]"] option', 13
-        assert_select 'option', text: 'Semaine 10 - du 4 mars au 10 mars'
-        assert_select 'option', text: 'Semaine 11 - du 11 mars au 17 mars'
-        assert_select 'option', text: 'Semaine 12 - du 18 mars au 24 mars'
-        assert_select 'option', text: 'Semaine 13 - du 25 mars au 31 mars'
-        assert_select 'option', text: 'Semaine 14 - du 1 avril au 7 avril'
-        assert_select 'option', text: 'Semaine 15 - du 8 avril au 14 avril'
-        assert_select 'option', text: 'Semaine 16 - du 15 avril au 21 avril'
-        assert_select 'option', text: 'Semaine 17 - du 22 avril au 28 avril'
-        assert_select 'option', text: 'Semaine 18 - du 29 avril au 5 mai'
-        assert_select 'option', text: 'Semaine 19 - du 6 mai au 12 mai'
-        assert_select 'option', text: 'Semaine 20 - du 13 mai au 19 mai'
-        assert_select 'option', text: 'Semaine 21 - du 20 mai au 26 mai'
-        assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
-      end
-
-      travel_to(Date.new(2019, 5, 15)) do
-        get new_dashboard_internship_offer_path
-
-        assert_response :success
-        assert_select 'select[name="internship_offer[week_ids][]"] option', 2
-        assert_select 'option', text: 'Semaine 21 - du 20 mai au 26 mai'
-        assert_select 'option', text: 'Semaine 22 - du 27 mai au 2 juin'
+        available_weeks = Week.selectable_from_now_until_end_of_period
+        asserted_input_count = 0
+        available_weeks.each do |week|
+          assert_select "input[id=internship_offer_week_ids_#{week.id}]"
+          asserted_input_count += 1
+        end
+        assert asserted_input_count > 0
       end
     end
 
