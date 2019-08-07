@@ -23,4 +23,9 @@ FactoryBot.define do
       school_manager { build(:school_manager) }
     end
   end
+
+  factory :api_school, class: Api::School do
+    name { 'Collègue evariste Gallois' }
+    coordinates { Coordinates.paris }
+  end
 end

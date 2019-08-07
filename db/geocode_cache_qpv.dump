@@ -1,0 +1,1387 @@
+---
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Lamartine+Toulouse&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "11",
+                 "short_name" : "11",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Marie Magné",
+                 "short_name" : "Rue Marie Magné",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Toulouse",
+                 "short_name" : "Toulouse",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Haute-Garonne",
+                 "short_name" : "Haute-Garonne",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Occitanie",
+                 "short_name" : "Occitanie",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "31300",
+                 "short_name" : "31300",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "11 Rue Marie Magné, 31300 Toulouse, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 43.5950277,
+                 "lng" : 1.4337286
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 43.59637668029149,
+                    "lng" : 1.435077580291502
+                 },
+                 "southwest" : {
+                    "lat" : 43.59367871970849,
+                    "lng" : 1.432379619708498
+                 }
+              }
+           },
+           "place_id" : "ChIJXb4XrHC7rhIRK6Vxf_49lkQ",
+           "plus_code" : {
+              "compound_code" : "HCWM+2F Toulouse, France",
+              "global_code" : "8FM3HCWM+2F"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Zola+Toulouse&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "17",
+                 "short_name" : "17",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Jean Pierre Blanchard",
+                 "short_name" : "Rue Jean Pierre Blanchard",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Toulouse",
+                 "short_name" : "Toulouse",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Haute-Garonne",
+                 "short_name" : "Haute-Garonne",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Occitanie",
+                 "short_name" : "Occitanie",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "31400",
+                 "short_name" : "31400",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "17 Rue Jean Pierre Blanchard, 31400 Toulouse, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 43.5883291,
+                 "lng" : 1.4487551
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 43.5896780802915,
+                    "lng" : 1.450104080291502
+                 },
+                 "southwest" : {
+                    "lat" : 43.5869801197085,
+                    "lng" : 1.447406119708498
+                 }
+              }
+           },
+           "place_id" : "ChIJ_6OzdLKkrhIRpxGFcO2_XY0",
+           "plus_code" : {
+              "compound_code" : "HCQX+8G Toulouse, France",
+              "global_code" : "8FM3HCQX+8G"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Jules+Ferry+M%C3%A9rignac&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "1",
+                 "short_name" : "1",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Frédéric Joliot Curie",
+                 "short_name" : "Rue Frédéric Joliot Curie",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Mérignac",
+                 "short_name" : "Mérignac",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Gironde",
+                 "short_name" : "Gironde",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Nouvelle-Aquitaine",
+                 "short_name" : "Nouvelle-Aquitaine",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "33700",
+                 "short_name" : "33700",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "1 Rue Frédéric Joliot Curie, 33700 Mérignac, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 44.8420616,
+                 "lng" : -0.6506805
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 44.8434105802915,
+                    "lng" : -0.6493315197084979
+                 },
+                 "southwest" : {
+                    "lat" : 44.8407126197085,
+                    "lng" : -0.652029480291502
+                 }
+              }
+           },
+           "place_id" : "ChIJgUAkq9vZVA0RKkUMZp-kU1g",
+           "plus_code" : {
+              "compound_code" : "R8RX+RP Mérignac, France",
+              "global_code" : "8CPXR8RX+RP"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Fran%C3%A7ois+Mitterrand+Pessac&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "3",
+                 "short_name" : "3",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue André Chénier",
+                 "short_name" : "Rue André Chénier",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Pessac",
+                 "short_name" : "Pessac",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Gironde",
+                 "short_name" : "Gironde",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Nouvelle-Aquitaine",
+                 "short_name" : "Nouvelle-Aquitaine",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "33600",
+                 "short_name" : "33600",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "3 Rue André Chénier, 33600 Pessac, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 44.7918828,
+                 "lng" : -0.6451918
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 44.79323178029149,
+                    "lng" : -0.6438428197084979
+                 },
+                 "southwest" : {
+                    "lat" : 44.79053381970849,
+                    "lng" : -0.646540780291502
+                 }
+              }
+           },
+           "place_id" : "ChIJme7TEyLZVA0R1Ono_0d1pjE",
+           "plus_code" : {
+              "compound_code" : "Q9R3+QW Pessac, France",
+              "global_code" : "8CPXQ9R3+QW"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+G%C3%A9rard+Philippe+Pessac&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "38",
+                 "short_name" : "38",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue Pierre Corneille",
+                 "short_name" : "Avenue Pierre Corneille",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Pessac",
+                 "short_name" : "Pessac",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Gironde",
+                 "short_name" : "Gironde",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Nouvelle-Aquitaine",
+                 "short_name" : "Nouvelle-Aquitaine",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "33600",
+                 "short_name" : "33600",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "38 Avenue Pierre Corneille, 33600 Pessac, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 44.7993225,
+                 "lng" : -0.6223780999999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 44.8006714802915,
+                    "lng" : -0.6210291197084979
+                 },
+                 "southwest" : {
+                    "lat" : 44.7979735197085,
+                    "lng" : -0.623727080291502
+                 }
+              }
+           },
+           "place_id" : "ChIJv8YNY-zYVA0RhZ8MKYDeGVE",
+           "plus_code" : {
+              "compound_code" : "Q9XH+P2 Pessac, France",
+              "global_code" : "8CPXQ9XH+P2"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Victor+Louise+Talence&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "52",
+                 "short_name" : "52",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue de Thouars",
+                 "short_name" : "Avenue de Thouars",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Talence",
+                 "short_name" : "Talence",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Gironde",
+                 "short_name" : "Gironde",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Nouvelle-Aquitaine",
+                 "short_name" : "Nouvelle-Aquitaine",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "33400",
+                 "short_name" : "33400",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "52 Avenue de Thouars, 33400 Talence, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 44.79978999999999,
+                 "lng" : -0.5923925999999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 44.8011389802915,
+                    "lng" : -0.5910436197084978
+                 },
+                 "southwest" : {
+                    "lat" : 44.7984410197085,
+                    "lng" : -0.5937415802915019
+                 }
+              }
+           },
+           "partial_match" : true,
+           "place_id" : "ChIJHU2jYG8nVQ0Rw4iXRFI65GM",
+           "plus_code" : {
+              "compound_code" : "QCX5+W2 Talence, France",
+              "global_code" : "8CPXQCX5+W2"
+           },
+           "types" : [ "establishment", "point_of_interest", "university" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Alpahonse+De+Lamartine+Tours&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "Boulevard Tonnellé",
+                 "short_name" : "Boulevard Tonnellé",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Tours",
+                 "short_name" : "Tours",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Indre-et-Loire",
+                 "short_name" : "Indre-et-Loire",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Centre-Val de Loire",
+                 "short_name" : "Centre-Val de Loire",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "37000",
+                 "short_name" : "37000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "Boulevard Tonnellé, 37000 Tours, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3911306,
+                 "lng" : 0.6682583
+              },
+              "location_type" : "GEOMETRIC_CENTER",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3924795802915,
+                    "lng" : 0.6696072802915021
+                 },
+                 "southwest" : {
+                    "lat" : 47.3897816197085,
+                    "lng" : 0.666909319708498
+                 }
+              }
+           },
+           "partial_match" : true,
+           "place_id" : "ChIJG-mmQuzV_EcR444T0bSnWOA",
+           "plus_code" : {
+              "compound_code" : "9MR9+F8 Tours, France",
+              "global_code" : "8FV29MR9+F8"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Jules+Michelet+Tours&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "38",
+                 "short_name" : "38",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Galpin Thiou",
+                 "short_name" : "Rue Galpin Thiou",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Tours",
+                 "short_name" : "Tours",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Indre-et-Loire",
+                 "short_name" : "Indre-et-Loire",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Centre-Val de Loire",
+                 "short_name" : "Centre-Val de Loire",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "37000",
+                 "short_name" : "37000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "38 Rue Galpin Thiou, 37000 Tours, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3841019,
+                 "lng" : 0.6950002
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3854508802915,
+                    "lng" : 0.6963491802915021
+                 },
+                 "southwest" : {
+                    "lat" : 47.3827529197085,
+                    "lng" : 0.693651219708498
+                 }
+              }
+           },
+           "place_id" : "ChIJvWuOpTTU_EcR1V84w14lgmo",
+           "plus_code" : {
+              "compound_code" : "9MMW+J2 Tours, France",
+              "global_code" : "8FV29MMW+J2"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Jean+De+La+Bruy%C3%A8re+Tours&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "3",
+                 "short_name" : "3",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue de Roubaix",
+                 "short_name" : "Avenue de Roubaix",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Tours",
+                 "short_name" : "Tours",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Indre-et-Loire",
+                 "short_name" : "Indre-et-Loire",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Centre-Val de Loire",
+                 "short_name" : "Centre-Val de Loire",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "37100",
+                 "short_name" : "37100",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "3 Avenue de Roubaix, 37100 Tours, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.4195722,
+                 "lng" : 0.6827240999999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.42092118029149,
+                    "lng" : 0.6840730802915019
+                 },
+                 "southwest" : {
+                    "lat" : 47.4182232197085,
+                    "lng" : 0.6813751197084978
+                 }
+              }
+           },
+           "place_id" : "ChIJzc4WqRHV_EcR3xHzzoZsavg",
+           "plus_code" : {
+              "compound_code" : "CM9M+R3 Tours, France",
+              "global_code" : "8FV2CM9M+R3"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Clagny+Versailles&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "7",
+                 "short_name" : "7",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Victor Bart",
+                 "short_name" : "Rue Victor Bart",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Versailles",
+                 "short_name" : "Versailles",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Yvelines",
+                 "short_name" : "Yvelines",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Île-de-France",
+                 "short_name" : "Île-de-France",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "78000",
+                 "short_name" : "78000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "7 Rue Victor Bart, 78000 Versailles, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 48.8104095,
+                 "lng" : 2.1442666
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 48.8117584802915,
+                    "lng" : 2.145615580291502
+                 },
+                 "southwest" : {
+                    "lat" : 48.8090605197085,
+                    "lng" : 2.142917619708498
+                 }
+              }
+           },
+           "place_id" : "ChIJ0fnXQVJ85kcRYGQtYcpOKTI",
+           "plus_code" : {
+              "compound_code" : "R46V+5P Versailles, France",
+              "global_code" : "8FW4R46V+5P"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Ariane+Guyancourt&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "Place des Frères Voisin",
+                 "short_name" : "Place des Frères Voisin",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Guyancourt",
+                 "short_name" : "Guyancourt",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Yvelines",
+                 "short_name" : "Yvelines",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Île-de-France",
+                 "short_name" : "Île-de-France",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "78280",
+                 "short_name" : "78280",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "Place des Frères Voisin, 78280 Guyancourt, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 48.7677229,
+                 "lng" : 2.0696971
+              },
+              "location_type" : "GEOMETRIC_CENTER",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 48.76907188029149,
+                    "lng" : 2.071046080291502
+                 },
+                 "southwest" : {
+                    "lat" : 48.76637391970849,
+                    "lng" : 2.068348119708498
+                 }
+              }
+           },
+           "place_id" : "ChIJ8zUhgbiA5kcR90SMgOVSqV8",
+           "plus_code" : {
+              "compound_code" : "Q399+3V Guyancourt, France",
+              "global_code" : "8FW4Q399+3V"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+De+Champaigne+Mesnils+Saint+Denis&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "4",
+                 "short_name" : "4",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue de Breteuil",
+                 "short_name" : "Avenue de Breteuil",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Le Mesnil-Saint-Denis",
+                 "short_name" : "Le Mesnil-Saint-Denis",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Yvelines",
+                 "short_name" : "Yvelines",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Île-de-France",
+                 "short_name" : "Île-de-France",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "78320",
+                 "short_name" : "78320",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "4 Avenue de Breteuil, 78320 Le Mesnil-Saint-Denis, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 48.7450548,
+                 "lng" : 1.9503737
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 48.7464037802915,
+                    "lng" : 1.951722680291502
+                 },
+                 "southwest" : {
+                    "lat" : 48.7437058197085,
+                    "lng" : 1.949024719708498
+                 }
+              }
+           },
+           "place_id" : "ChIJa2Q7LwKD5kcRhjVqdfZHcdg",
+           "plus_code" : {
+              "compound_code" : "PXW2+24 Le Mesnil-Saint-Denis, France",
+              "global_code" : "8FW3PXW2+24"
+           },
+           "types" : [ "establishment", "point_of_interest", "school", "university" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Chen%C3%B4ve+Edouard+Herriot&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "6",
+                 "short_name" : "6",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Edouard Herriot",
+                 "short_name" : "Rue Edouard Herriot",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Chenôve",
+                 "short_name" : "Chenôve",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21300",
+                 "short_name" : "21300",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "6 Rue Edouard Herriot, 21300 Chenôve, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.29149959999999,
+                 "lng" : 5.0068899
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.2928485802915,
+                    "lng" : 5.008238880291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.2901506197085,
+                    "lng" : 5.005540919708498
+                 }
+              }
+           },
+           "place_id" : "ChIJJ2EBmFec8kcRR3i7lU7-YWs",
+           "plus_code" : {
+              "compound_code" : "72R4+HQ Chenôve, France",
+              "global_code" : "8FV772R4+HQ"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Dijon+Bachelard&language=en&sensor=false: |
+  {
+     "results" : [],
+     "status" : "ZERO_RESULTS"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Dijon+Carnot&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "16",
+                 "short_name" : "16",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Boulevard Thiers",
+                 "short_name" : "Boulevard Thiers",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Dijon",
+                 "short_name" : "Dijon",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21000",
+                 "short_name" : "21000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "16 Boulevard Thiers, 21000 Dijon, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3236853,
+                 "lng" : 5.0492528
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3250342802915,
+                    "lng" : 5.050601780291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.3223363197085,
+                    "lng" : 5.047903819708497
+                 }
+              }
+           },
+           "place_id" : "ChIJ-6S2BOSd8kcRq2JZB7gnFWc",
+           "plus_code" : {
+              "compound_code" : "82FX+FP Dijon, France",
+              "global_code" : "8FV782FX+FP"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Dijon+Champollion&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "15",
+                 "short_name" : "15",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Castelnau",
+                 "short_name" : "Rue Castelnau",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Dijon",
+                 "short_name" : "Dijon",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21000",
+                 "short_name" : "21000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "15 Rue Castelnau, 21000 Dijon, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3322471,
+                 "lng" : 5.073237499999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3335960802915,
+                    "lng" : 5.074586480291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.3308981197085,
+                    "lng" : 5.071888519708497
+                 }
+              }
+           },
+           "place_id" : "ChIJZUxEGxye8kcRumrwWcPoXJo",
+           "plus_code" : {
+              "compound_code" : "83JF+V7 Dijon, France",
+              "global_code" : "8FV783JF+V7"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Talant+Boris+Vian&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "11",
+                 "short_name" : "11",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Pablo Picasso",
+                 "short_name" : "Rue Pablo Picasso",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Talant",
+                 "short_name" : "Talant",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21240",
+                 "short_name" : "21240",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "11 Rue Pablo Picasso, 21240 Talant, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.339868,
+                 "lng" : 4.9933822
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.34121698029149,
+                    "lng" : 4.994731180291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.33851901970849,
+                    "lng" : 4.992033219708498
+                 }
+              }
+           },
+           "place_id" : "ChIJY3Oq0mGd8kcRl3DwZEJgYOI",
+           "plus_code" : {
+              "compound_code" : "8XQV+W9 Talant, France",
+              "global_code" : "8FV68XQV+W9"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Longvic+Roland+Dorgel%C3%A8s&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "7",
+                 "short_name" : "7",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Carnot",
+                 "short_name" : "Rue Carnot",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Longvic",
+                 "short_name" : "Longvic",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21600",
+                 "short_name" : "21600",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "7 Rue Carnot, 21600 Longvic, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.2954207,
+                 "lng" : 5.0595341
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.2967696802915,
+                    "lng" : 5.060883080291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.2940717197085,
+                    "lng" : 5.058185119708497
+                 }
+              }
+           },
+           "place_id" : "ChIJdW6BXYae8kcR8sB-bHYljak",
+           "plus_code" : {
+              "compound_code" : "73W5+5R Longvic, France",
+              "global_code" : "8FV773W5+5R"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Dijon+Gaston+Roupnel&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "71",
+                 "short_name" : "71",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue du Drapeau",
+                 "short_name" : "Avenue du Drapeau",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Dijon",
+                 "short_name" : "Dijon",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21000",
+                 "short_name" : "21000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "71 Avenue du Drapeau, 21000 Dijon, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3364507,
+                 "lng" : 5.044076599999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3377996802915,
+                    "lng" : 5.045425580291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.3351017197085,
+                    "lng" : 5.042727619708497
+                 }
+              }
+           },
+           "place_id" : "ChIJNbC4yfed8kcRDdN6O-MHJ3A",
+           "plus_code" : {
+              "compound_code" : "82PV+HJ Dijon, France",
+              "global_code" : "8FV782PV+HJ"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+? geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Roland+Dorgel%C3%A8s+Longvic&language=en&sensor=false
+: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "7",
+                 "short_name" : "7",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Rue Carnot",
+                 "short_name" : "Rue Carnot",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Longvic",
+                 "short_name" : "Longvic",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21600",
+                 "short_name" : "21600",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "7 Rue Carnot, 21600 Longvic, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.2954207,
+                 "lng" : 5.0595341
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.2967696802915,
+                    "lng" : 5.060883080291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.2940717197085,
+                    "lng" : 5.058185119708497
+                 }
+              }
+           },
+           "place_id" : "ChIJdW6BXYae8kcR8sB-bHYljak",
+           "plus_code" : {
+              "compound_code" : "73W5+5R Longvic, France",
+              "global_code" : "8FV773W5+5R"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }
+geocoder:https://maps.googleapis.com/maps/api/geocode/json?address=Coll%C3%A8ge+Gaston+Roupnel+Dijon&language=en&sensor=false: |
+  {
+     "results" : [
+        {
+           "address_components" : [
+              {
+                 "long_name" : "71",
+                 "short_name" : "71",
+                 "types" : [ "street_number" ]
+              },
+              {
+                 "long_name" : "Avenue du Drapeau",
+                 "short_name" : "Avenue du Drapeau",
+                 "types" : [ "route" ]
+              },
+              {
+                 "long_name" : "Dijon",
+                 "short_name" : "Dijon",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "long_name" : "Côte-d'Or",
+                 "short_name" : "Côte-d'Or",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "long_name" : "Bourgogne-Franche-Comté",
+                 "short_name" : "Bourgogne-Franche-Comté",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "long_name" : "France",
+                 "short_name" : "FR",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "long_name" : "21000",
+                 "short_name" : "21000",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "formatted_address" : "71 Avenue du Drapeau, 21000 Dijon, France",
+           "geometry" : {
+              "location" : {
+                 "lat" : 47.3364507,
+                 "lng" : 5.044076599999999
+              },
+              "location_type" : "ROOFTOP",
+              "viewport" : {
+                 "northeast" : {
+                    "lat" : 47.3377996802915,
+                    "lng" : 5.045425580291502
+                 },
+                 "southwest" : {
+                    "lat" : 47.3351017197085,
+                    "lng" : 5.042727619708497
+                 }
+              }
+           },
+           "place_id" : "ChIJNbC4yfed8kcRDdN6O-MHJ3A",
+           "plus_code" : {
+              "compound_code" : "82PV+HJ Dijon, France",
+              "global_code" : "8FV782PV+HJ"
+           },
+           "types" : [ "establishment", "point_of_interest", "school" ]
+        }
+     ],
+     "status" : "OK"
+  }

@@ -28,5 +28,19 @@ module Nearbyable
 
       errors.add(:coordinates, :blank)
     end
+
+    def osm_url
+      "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
+    end
+
+    def formatted_autocomplete_address
+      [
+        street,
+        city,
+        zipcode
+      ].compact.uniq.join(', ')
+    end
+
+
   end
 end

@@ -1,33 +1,46 @@
 <%= render "dashboard/god_navbar" %>
 <h1 class="h2">Gerer les ecoles</h1>
-<table class="table table-striped table-hover table-rg2a">
+<table class="table table-striped table-bordered table-hover table-rg2a">
   <thead class="thead-light">
     <tr>
       <th scope="col">Nom</th>
-      <th scope="col">Code UAI</th>
-      <th scope="col">Adresse</th>
+      <th scope="col">Visible</th>
+      <th scope="col">Zipcode</th>
+      <th scope="col">Street, City (Departement)</th>
       <th scope="col">Coordonnées GPS</th>
       <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
     <% @schools.each do |school| %>
-      <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>" >
-        <td data-head="Nom" scope="row"><%= school.name %></td>
-        <td data-head="Code UAI">
-          <a href="https://www.google.com?q=<%= school.code_uai %>" target="_blank" title="<%= school.code_uai %> (nouvelle fenêtre)" rel="external noopener noreferrer">
-            <%= school.code_uai %>
+      <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>">
+        <td data-head="Nom" scope="row">
+          <a id="<%= "school_#{school.id}" %>"></a>
+          <a href="https://www.google.com?q=<%= school.code_uai %>" target="_blank" title="Trouver plus d'information via le code UAI de l'établissement : <%= school.code_uai %> (nouvelle fenêtre)" rel="external noopener noreferrer">
+            <%= school.name %>
           </a>
         </td>
-        <td data-head="Adresse">
-          <%= school.street %>
-          <%= school.city %>
-          <%= school.department %>
+
+        <td data-head="Visible" scope="row">
+          <% if school.visible? %>
+            <i class="fas fa-check" />
+          <% else %>
+            <i class="fas fa-times" />
+          <% end %>
+        </td>
+
+        <td data-head="zipcode">
           <%= school.zipcode %>
         </td>
+
+        <td data-head="Street?, city? (Departement)">
+          <%= [school.street, school.city].compact.join(", ") %> (<%= school.department %>)
+        </td>
+
         <td data-head="Coordonnées GPS">
           [<%= school.coordinates&.lat %>, <%= school.coordinates&.lon %>]
         </td>
+
         <td>
           <%= link_to edit_dashboard_school_path(school) do  %>
             <i class="fas fa-pen"></i>

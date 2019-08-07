@@ -1,0 +1,20 @@
+= render "dashboard/god_navbar"
+
+h2 Les Avis
+
+table.table.table-striped.table-bordered.table
+  thead
+    tr
+      th Date
+      th Email
+      th Commentaire
+      th
+  tbody
+    - @feedbacks.each do |feedback|
+      tr
+        td = feedback.created_at.strftime('%F %T')
+        td = feedback.email
+        td = feedback.comment
+        td = link_to 'Supprimer', [:dashboard, feedback], data: { confirm: 'Are you sure?' }, method: :delete
+
+br

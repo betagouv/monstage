@@ -18,8 +18,13 @@ module Dashboard
     def update
       authorize! :update, School
       @school.update!(internship_weeks_params)
-      redirect_to(dashboard_school_class_rooms_path(@school),
-                  flash: { success: 'Collège mis à jour avec succès' })
+      if current_user.is_a?(Users::God)
+        redirect_to(dashboard_schools_path(anchor: "school_#{@school.id}"),
+                    flash: { success: 'Collège mis à jour avec succès' })
+      else
+        redirect_to(dashboard_school_class_rooms_path(@school),
+                    flash: { success: 'Collège mis à jour avec succès' })
+      end
     rescue ActiveRecord::RecordInvalid => e
       render :edit, status: :bad_request
     end
@@ -31,7 +36,23 @@ module Dashboard
     end
 
     def internship_weeks_params
-      params.require(:school).permit(:zipcode, :city, :street, coordinates: {}, week_ids: [])
+      current_user.is_a?(Users::God) ?
+        god_internship_weeks_params :
+        school_manager_internship_weeks_params
+    end
+
+    def god_internship_weeks_params
+        params.require(:school).permit(:zipcode,
+                                     :city,
+                                     :street,
+                                     :name,
+                                     :visible,
+                                     coordinates: {},
+                                     week_ids: [])
+    end
+
+    def school_manager_internship_weeks_params
+        params.require(:school).permit(week_ids: [])
     end
   end
 end

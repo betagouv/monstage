@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :feedbacks
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
@@ -21,6 +20,11 @@ Rails.application.routes.draw do
 
   namespace :api, path: 'api' do
     resources :internship_offers, only: %i[create update destroy]
+    resources :schools, only: [] do
+      collection do
+        post :search
+      end
+    end
   end
 
   namespace :dashboard, path: 'dashboard' do
@@ -38,6 +42,8 @@ Rails.application.routes.draw do
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
     end
+
+    resources :feedbacks
   end
 
   get '/dashboard', to: 'dashboard#index'

@@ -5,7 +5,12 @@ h1.h2.mb-3 Modifier mon collège
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
   - if current_user.respond_to?(:school)
-    = render 'users/form/select_school', form: f, resource: current_user, select_class_room: current_user.respond_to?(:class_room), required: true
+    = react_component("AutocompleteSchool",
+                      label:"Ville ou se situe mon collège",
+                      required:true,
+                      resourceName: :user,
+                      selectClassRoom: current_user.respond_to?(:class_room),
+                      existingSchool: @current_user.try(:school).try(:as_json))
 
   - if can?(:choose_operator, :sign_up)
     .form-group

@@ -5,9 +5,6 @@ require 'test_helper'
 class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
   def assert_form_rendered
     assert_select 'input', value: 'MainTeacher', hidden: 'hidden'
-    assert_select 'label', /Ville de mon collège/
-    assert_select 'label', /Collège/
-    assert_select 'label', /Classe/
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Choisir un mot de passe/
     assert_select 'label', /Confirmer le mot de passe/

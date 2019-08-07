@@ -18,21 +18,15 @@ class School < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
 
+  before_save :lookup_department
+  before_create :lookup_department
+
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end
 
-  def formatted_autocomplete_address
-    [
-      street,
-      city,
-      zipcode
-    ].compact.uniq.join(', ')
-  end
-
-  def name
-    db_name = read_attribute(:name)
-    db_name.starts_with?('Collège') ? db_name : "Collège #{db_name}"
+  def lookup_department
+    self.department = Department.lookup_by_zipcode(zipcode: zipcode) if zipcode.present?
   end
 
   def to_s

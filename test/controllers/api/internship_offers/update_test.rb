@@ -17,7 +17,7 @@ module Api
       end
       assert_response :unauthorized
       assert_equal 'UNAUTHORIZED', json_response['code']
-      assert_equal 'wrong api token', json_response['error']
+      assert_equal 'wrong api token', json_error
     end
 
     test 'PATCH #update as operator fails with invalid payload respond with :unprocessable_entity' do
@@ -31,7 +31,7 @@ module Api
       end
       assert_response :unprocessable_entity
       assert_equal 'BAD_PAYLOAD', json_response['code']
-      assert_equal 'param is missing or the value is empty: internship_offer', json_response['error']
+      assert_equal 'param is missing or the value is empty: internship_offer', json_error
     end
 
     test 'PATCH #update an internship_offer which does not belongs to current auth operator' do
@@ -49,7 +49,7 @@ module Api
       end
       assert_response :forbidden
       assert_equal 'FORBIDDEN', json_response['code']
-      assert_equal 'You are not authorized to access this page.', json_response['error']
+      assert_equal 'You are not authorized to access this page.', json_error
     end
 
     test 'PATCH #update as operator fails with invalid remote_id' do
@@ -66,7 +66,7 @@ module Api
       end
       assert_response :not_found
       assert_equal 'NOT_FOUND', json_response['code']
-      assert_equal "can't find internship_offer with this remote_id", json_response['error']
+      assert_equal "can't find internship_offer with this remote_id", json_error
     end
 
     test 'PATCH #update as operator fails with invalid data respond with :bad_request' do
@@ -84,7 +84,7 @@ module Api
       assert_response :bad_request
       assert_equal 'VALIDATION_ERROR', json_response['code']
       assert_equal ['Description too long, allowed up 500 chars'],
-                   json_response['error']['description'],
+                   json_error['description'],
                    'bad description error '
     end
 

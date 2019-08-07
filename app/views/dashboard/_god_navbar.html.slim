@@ -5,6 +5,4 @@ ul.nav.nav-pills.test-dashboard-nav
     = link_to "Gérer les collèges", dashboard_schools_path, class: "nav-link #{current_page?(dashboard_schools_path) ? 'active' : ''}"
 
   li.nav-item
-    = link_to "Gérer les avis", feedbacks_path, class: "nav-link #{current_page?(feedbacks_path) ? 'active' : ''}"
-
-
+    = link_to "Gérer les avis", dashboard_feedbacks_path, class: "nav-link #{current_page?(dashboard_feedbacks_path) ? 'active' : ''}"

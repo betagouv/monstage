@@ -10,8 +10,8 @@ module Api
       post api_internship_offers_path(params: {})
       documents_as(endpoint: :'internship_offers/create', state: :unauthorized) do
         assert_response :unauthorized
-        assert_equal 'UNAUTHORIZED', json_response['code']
-        assert_equal 'wrong api token', json_response['error']
+        assert_equal 'UNAUTHORIZED', json_code
+        assert_equal 'wrong api token', json_error
       end
     end
 
@@ -25,8 +25,8 @@ module Api
         )
       end
       assert_response :unprocessable_entity
-      assert_equal 'BAD_PAYLOAD', json_response['code']
-      assert_equal 'param is missing or the value is empty: internship_offer', json_response['error']
+      assert_equal 'BAD_PAYLOAD', json_code
+      assert_equal 'param is missing or the value is empty: internship_offer', json_error
     end
 
     test 'POST #create as operator fails with invalid data respond with :bad_request' do
@@ -40,33 +40,33 @@ module Api
         )
       end
       assert_response :bad_request
-      assert_equal 'VALIDATION_ERROR', json_response['code']
+      assert_equal 'VALIDATION_ERROR', json_code
       assert_equal ['Missing coordinates'],
-                   json_response['error']['coordinates'],
+                   json_error['coordinates'],
                    'bad coordinates message'
       assert_equal ['Missing title'],
-                   json_response['error']['title'],
+                   json_error['title'],
                    'bad title message'
       assert_equal ['Missing employer_name'],
-                   json_response['error']['employer_name'],
+                   json_error['employer_name'],
                    'bad employer_name message'
       assert_equal ['Missing zipcode'],
-                   json_response['error']['zipcode'],
+                   json_error['zipcode'],
                    'bad zipcode message'
       assert_equal ['Missing city'],
-                   json_response['error']['city'],
+                   json_error['city'],
                    'bad city message'
       assert_equal ['Missing remote_id'],
-                   json_response['error']['remote_id'],
+                   json_error['remote_id'],
                    'bad remote_id message'
       assert_equal ['Missing permalink'],
-                   json_response['error']['permalink'],
+                   json_error['permalink'],
                    'bad permalink message'
       assert_equal ['Missing description'],
-                   json_response['error']['description'],
+                   json_error['description'],
                    'bad description message'
       assert_equal ['Missing sector'],
-                   json_response['error']['sector'],
+                   json_error['sector'],
                    'bad sector message'
     end
 

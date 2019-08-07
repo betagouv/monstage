@@ -12,9 +12,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'input', value: 'Student', hidden: 'hidden'
 
-    assert_select 'label', /Ville de mon collège/
-    assert_select 'label', /Collège/
-    assert_select 'label', /Classe/
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
     assert_select 'label', /Date de naissance/
