@@ -9,8 +9,8 @@ class SetupSchoolSearch < ActiveRecord::Migration[5.2]
     add_column :schools, :city_tsv, :tsvector
     add_index :schools, :city_tsv, using: 'gin'
 
-   now = Time.current.to_s(:db)
-    update("UPDATE schools SET updated_at = '#{now}'")
+    now = Time.current.to_s(:db)
+
   end
 
   def down

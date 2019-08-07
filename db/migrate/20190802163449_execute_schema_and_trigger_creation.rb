@@ -21,6 +21,8 @@ class ExecuteSchemaAndTriggerCreation < ActiveRecord::Migration[5.2]
         ON schools FOR EACH ROW EXECUTE PROCEDURE
         tsvector_update_trigger(city_tsv, 'public.fr', city);
     SQL
+
+    update("UPDATE schools SET updated_at = '#{now}'")
   end
 
   def down
