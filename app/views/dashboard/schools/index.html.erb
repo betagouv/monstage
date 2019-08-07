@@ -15,8 +15,10 @@
   </thead>
   <tbody>
     <% @schools.each do |school| %>
-      <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>" >
-        <td data-head="Nom" scope="row"><%= school.name %></td>
+      <tr class="<%= school.zipcode.blank? ? 'table-danger' : 'table-success'%>">
+        <td data-head="Nom" scope="row">
+            <a id="<%= "school_#{school.id}" %>"></a>
+        </td>
         <td data-head="Code UAI">
           <a href="https://www.google.com?q=<%= school.code_uai %>" target="_blank" title="<%= school.code_uai %> (nouvelle fenêtre)" rel="external noopener noreferrer">
             <%= school.code_uai %>

@@ -10,6 +10,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
     sign_in(employer)
+    available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit '/dashboard'
@@ -17,8 +18,8 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
         fill_in 'internship_offer_description', with: "Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain"
         select sectors.first.name, from: 'internship_offer_sector_id'
-        select Week.find_by(number: 10, year: 2019).select_text_method, from: 'internship_offer_week_ids'
-        select Week.find_by(number: 11, year: 2019).select_text_method, from: 'internship_offer_week_ids'
+        find(:css, "label[for=internship_offer_week_ids_#{available_weeks.first.id}").click
+        find(:css, "label[for=internship_offer_week_ids_#{available_weeks.last.id}").click
         fill_in 'Prénom et nom', with: 'Brice Durand'
         fill_in 'Adresse électronique', with: 'le@brice.durand'
         fill_in 'Téléphone', with: '0639693969'

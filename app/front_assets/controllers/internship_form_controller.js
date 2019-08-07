@@ -4,7 +4,6 @@ import { toggleElement } from "../utils/dom";
 export default class extends Controller {
   static targets = [ "maxCandidatesGroup",
                      "maxCandidatesInput",
-                     "selectWeeks",
                      "selectSchoolBlock",
                      "groupNamePublic",
                      "groupNamePrivate",
@@ -40,12 +39,6 @@ export default class extends Controller {
     }
   }
 
-  // toggle all weeks options
-  toggleWeeks(event) {
-    $(this.selectWeeksTarget).find("option").each((i, el) => {
-      $(el).prop('selected', $(event.target).prop('checked'))
-    })
-  }
 
   connect() {
     this.toggleGroupNames(true);

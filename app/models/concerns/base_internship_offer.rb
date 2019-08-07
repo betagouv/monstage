@@ -28,18 +28,6 @@ module BaseInternshipOffer
 
     before_create :reverse_academy_by_zipcode
 
-    def osm_url
-      "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
-    end
-
-    def formatted_autocomplete_address
-      [
-        street,
-        city,
-        zipcode
-      ].compact.uniq.join(', ')
-    end
-
     def reverse_academy_by_zipcode
       self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
     end
