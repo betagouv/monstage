@@ -31,7 +31,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_response :success
-      assert_select 'form a[href=?]', dashboard_school_class_rooms_path(@school)
+      assert_select 'form[action=?]', dashboard_school_path(@school)
       available_weeks = Week.selectable_from_now_until_end_of_period
       asserted_input_count = 0
       available_weeks.each do |week|
@@ -39,6 +39,19 @@ module Dashboard
         asserted_input_count += 1
       end
       assert asserted_input_count > 0
+    end
+
+    test 'GET edit as God works' do
+      school = create(:school)
+      sign_in(create(:god))
+
+      get edit_dashboard_school_path(@school.to_param)
+
+      assert_response :success
+      assert_select 'form[action=?]', dashboard_school_path(@school)
+      assert_select 'input[name="school[name]"]'
+      assert_select 'input[name="school[coordinates][longitude]"]'
+      assert_select 'input[name="school[coordinates][latitude]"]'
     end
 
     #

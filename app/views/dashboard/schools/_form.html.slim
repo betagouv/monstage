@@ -5,47 +5,55 @@
     legend= "Semaines de stage"
     = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: f, label: "Semaines de stage du collège" }
 
-  .fieldset
-    legend= "Mon collège (#{@school.kind})"
+  - if current_user.is_a?(Users::God)
+    .fieldset
+      legend= "Collège (#{@school.kind})"
 
-    div data={controller: 'algolia-place'}
-      .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
-        = f.label :autocomplete do
-          = "Adresse du lieu où se déroule le stage"
-          = f.rg2a_required_content_tag
-        = f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @school.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
-        input type="hidden" name="school[coordinates][latitude]" value=(@school.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
-        input type="hidden" name="school[coordinates][longitude]" value=(@school.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
       .form-group
-        .form-row
-          .col-sm-6
-            .form-group
-              = f.label :street do
-                = 'Rue'
-                = f.rg2a_required_content_tag
-              = f.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
-          .col-sm-4
-            .form-group
-              = f.label :city do
-                = 'Ville'
-                = f.rg2a_required_content_tag
-              = f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
-          .col-sm-2
-            .form-group
-              = f.label :zipcode do
-                = 'Code postal'
-                = f.rg2a_required_content_tag
-              = f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
-        .form-row
-          .col-sm-4
-            .form-group
-              = f.label :department do
-                = 'Département'
-                = f.rg2a_required_content_tag
-              = f.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+        = f.label :name do
+          = "Nom du collège"
+          = f.rg2a_required_content_tag
+
+        = f.text_field :name, class: "form-control col-lg-6", required: true
+
+      div data={controller: 'algolia-place'}
+        .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
+          = f.label :autocomplete do
+            = "Adresse du lieu où se déroule le stage"
+            = f.rg2a_required_content_tag
+          = f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @school.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
+          input type="hidden" name="school[coordinates][latitude]" value=(@school.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+          input type="hidden" name="school[coordinates][longitude]" value=(@school.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
+        .form-group
+          .form-row
+            .col-sm-6
+              .form-group
+                = f.label :street do
+                  = 'Rue'
+                  = f.rg2a_required_content_tag
+                = f.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
+            .col-sm-4
+              .form-group
+                = f.label :city do
+                  = 'Ville'
+                  = f.rg2a_required_content_tag
+                = f.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
+            .col-sm-2
+              .form-group
+                = f.label :zipcode do
+                  = 'Code postal'
+                  = f.rg2a_required_content_tag
+                = f.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+          .form-row
+            .col-sm-4
+              .form-group
+                = f.label :department do
+                  = 'Département'
+                  = f.rg2a_required_content_tag
+                = f.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
 
 
-  .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-warning'
-  .actions= link_to dashboard_school_class_rooms_path(@school), class: 'btn btn-link' do
-    .fas.fa-chevron-left
-    span.ml-1 Retour
+    .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-warning'
+    .actions= link_to dashboard_school_class_rooms_path(@school), class: 'btn btn-link' do
+      .fas.fa-chevron-left
+      span.ml-1 Retour

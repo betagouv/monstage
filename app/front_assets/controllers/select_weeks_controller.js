@@ -10,8 +10,4 @@ export default class extends Controller {
       $(el).prop('checked', $(event.target).prop('checked'))
     })
   }
-
-  connect() {
-    debugger
-  }
 }
