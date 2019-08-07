@@ -7,6 +7,6 @@
   background-color: $input-bg;
   border: 1px solid $input-border-color;
   border-radius: $input-border-radius;
-  padding: $input-btn-padding-x $input-btn-padding-y;
+  padding: ($input-btn-padding-x/2) $input-btn-padding-y;
 
 }

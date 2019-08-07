@@ -6,7 +6,7 @@ h1.h2.mb-3 Modifier mon collège
 
   - if current_user.respond_to?(:school)
     = react_component("AutocompleteSchool",
-                      label:"Ville ou se situe le collège auquel le stage est reservé",
+                      label:"Ville ou se situe mon collège",
                       required:true,
                       resourceName: :user,
                       selectClassRoom: current_user.respond_to?(:class_room),
