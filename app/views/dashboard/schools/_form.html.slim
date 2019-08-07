@@ -1,9 +1,6 @@
 = form_for [:dashboard, @school] do |f|
   = f.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @school, resource_name: :school
-  .fieldset
-    legend= "Semaines de stage"
-    = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: f, label: "Semaines de stage du collège" }
 
   - if current_user.is_a?(Users::God)
     .fieldset
@@ -15,6 +12,14 @@
           = f.rg2a_required_content_tag
 
         = f.text_field :name, class: "form-control col-lg-6", required: true
+
+      .form-group
+        .custom-control.custom-checkbox
+          = f.check_box :visible, class: 'custom-control-input'
+          = f.label :visible, class: 'custom-control-label' do
+            = " Actif (accessible aux utilisateurs)"
+    .fieldset
+      legend= "Localisation"
 
       div data={controller: 'algolia-place'}
         .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
@@ -53,7 +58,14 @@
                 = f.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
 
 
+
     .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-warning'
     .actions= link_to dashboard_school_class_rooms_path(@school), class: 'btn btn-link' do
       .fas.fa-chevron-left
       span.ml-1 Retour
+
+  - else
+    .fieldset
+      legend= "Semaines de stage"
+      = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: f, label: "Semaines de stage du collège" }
+

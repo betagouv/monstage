@@ -103,6 +103,7 @@ module Dashboard
               params: {
                 school: {
                   name: 'hello',
+                  visible: false,
                   week_ids: weeks_ids
                 }
               })
@@ -111,6 +112,7 @@ module Dashboard
         assert_select '#alert-success #alert-text', { text: 'Collège mis à jour avec succès' }, 1
         @school.reload
         assert_equal 'hello', @school.name
+        assert_equal false, @school.visible
       end
     end
   end
