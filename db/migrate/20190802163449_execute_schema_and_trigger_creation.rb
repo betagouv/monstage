@@ -22,6 +22,7 @@ class ExecuteSchemaAndTriggerCreation < ActiveRecord::Migration[5.2]
         tsvector_update_trigger(city_tsv, 'public.fr', city);
     SQL
 
+    now = Time.current.to_s(:db)
     update("UPDATE schools SET updated_at = '#{now}'")
   end
 
