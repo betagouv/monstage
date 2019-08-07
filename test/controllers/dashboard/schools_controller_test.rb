@@ -102,12 +102,15 @@ module Dashboard
         patch(dashboard_school_path(@school.to_param),
               params: {
                 school: {
+                  name: 'hello',
                   week_ids: weeks_ids
                 }
               })
         assert_redirected_to dashboard_schools_path(anchor: "school_#{@school.id}")
         follow_redirect!
         assert_select '#alert-success #alert-text', { text: 'Collège mis à jour avec succès' }, 1
+        @school.reload
+        assert_equal 'hello', @school.name
       end
     end
   end

@@ -36,7 +36,12 @@ module Dashboard
     end
 
     def internship_weeks_params
-      params.require(:school).permit(:zipcode, :city, :street, coordinates: {}, week_ids: [])
+      params.require(:school).permit(:zipcode,
+                                     :city,
+                                     :street,
+                                     :name,
+                                     coordinates: {},
+                                     week_ids: [])
     end
   end
 end

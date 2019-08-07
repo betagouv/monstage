@@ -35,14 +35,17 @@ module InternshipOffers
       internship_offer = create(:internship_offer, employer: employer)
       internship_application = create(:internship_application, :submitted, internship_offer: internship_offer)
 
-      get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
-      assert_response :success
-      assert_select 'input#all_year_long[disabled]'
-      internship_offer.weeks.each do |week|
-        assert_select "#internship_offer_week_ids_#{available_weeks.first.id}""][disabled]"
+      travel_to(internship_offer.weeks.first.week_date - 1.week) do
+        get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
+        assert_response :success
+        assert_select 'input#all_year_long[disabled]'
+
+        internship_offer.weeks.each do |week|
+          assert_select "label", text: week.select_text_method
+        end
+        assert_select 'input#internship_offer_max_candidates[disabled]'
+        assert_select 'input#internship_offer_max_internship_week_number[disabled]'
       end
-      assert_select 'input#internship_offer_max_candidates[disabled]'
-      assert_select 'input#internship_offer_max_internship_week_number[disabled]'
     end
 
     test 'GET #edit as Operator with disabled fields if applications exist' do
