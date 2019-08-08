@@ -90,7 +90,11 @@ module Reporting
         .order('internship_offers.group')
     }
 
-
+    scope :total_for_year, lambda {
+      select(*self.aggregate_functions_to_sql_select)
+        .during_year(year: Date.today.month <= SchoolYear::MONTH_OF_YEAR_SHIFT ? Date.today.year - 1 : Date.today.year)
+        .group(:is_public)
+    }
 
   end
 end

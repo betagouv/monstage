@@ -84,7 +84,7 @@
             .circled-icon.d-inline-flex.align-items-center
               i.fas.fa-3x.fa-layer-group.mx-auto
           .col-9
-            h5.h1-stat.m-0.p-0 = Reporting::InternshipOffer.during_current_year.count
+            h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:report_total_count)
             h6.h3-stat.m-0.p-0 stages offerts
       .col-sm-12.col-md-4.py-3
         .row
@@ -92,7 +92,7 @@
             .circled-icon.d-inline-flex.align-items-center
               i.fas.fa-3x.fa-arrow-circle-right.mx-auto
           .col-9
-            h5.h1-stat.m-0.p-0 0
+            h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_applications_count)
             h6.h3-stat.m-0.p-0 candidatures
       .col-sm-12.col-md-4.py-3
         .row
@@ -100,7 +100,7 @@
             .circled-icon.d-inline-flex.align-items-center
               i.fas.fa-3x.fa-check-circle.mx-auto
           .col-9
-            h5.h1-stat.m-0.p-0 0
+            h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_convention_signed_applications_count)
             h6.h3-stat.m-0.p-0 stages conclus
     .row.py-5
       .col-12.text-center
