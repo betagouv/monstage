@@ -1,8 +1,8 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 
-const StartAutocompleteAtLength = 2
+const StartAutocompleteAtLength = 2;
 
 class AutocompleteSchool extends React.Component {
   state = {
@@ -12,164 +12,176 @@ class AutocompleteSchool extends React.Component {
     selectedSchool: null,
     selectedClassRoom: null,
 
-    city: "",
+    city: '',
     citySuggestions: {},
     schoolsSuggestions: [],
-    classRoomsSuggestions: []
+    classRoomsSuggestions: [],
   };
 
   constructor(props) {
     super(props);
-    this.emitRequest = this.emitRequest.bind(this)
-    this.fetchDone = this.fetchDone.bind(this)
-    this.fetchFail = this.fetchFail.bind(this)
+    this.emitRequest = this.emitRequest.bind(this);
+    this.fetchDone = this.fetchDone.bind(this);
+    this.fetchFail = this.fetchFail.bind(this);
   }
 
-  fetchData = (cityName) => {
+  fetchData = cityName => {
     const { currentRequest } = this.state;
 
     if (currentRequest) {
-      this.setState({currentRequest: null}, () => {
+      this.setState({ currentRequest: null }, () => {
         currentRequest.abort();
-        this.emitRequest(cityName)
-      })
+        this.emitRequest(cityName);
+      });
     } else {
-      this.emitRequest(cityName)
-    };
-  }
+      this.emitRequest(cityName);
+    }
+  };
 
-  emitRequest = (cityName) => {
+  emitRequest = cityName => {
     this.setState({
-      currentRequest: $.ajax({ type: "POST", url: '/api/schools/search', data: {query: cityName}})
-                       .done(this.fetchDone)
-                       .fail(this.fetchFail)
-    })
-  }
+      currentRequest: $.ajax({
+        type: 'POST',
+        url: '/api/schools/search',
+        data: { query: cityName },
+      })
+        .done(this.fetchDone)
+        .fail(this.fetchFail),
+    });
+  };
 
-  fetchDone = (result) => {
+  fetchDone = result => {
     this.setState({
       citySuggestions: result,
       requestError: null,
-      currentRequest: null
-    })
-  }
+      currentRequest: null,
+    });
+  };
 
   fetchFail = (xhr, textStatus) => {
-    if (textStatus == "abort") {
-      return
+    if (textStatus === 'abort') {
+      return;
     }
     this.setState({
-      requestError: "Une erreur est survenue, veuillez ré-essayer plus tard.",
+      requestError: 'Une erreur est survenue, veuillez ré-essayer plus tard.',
       currentRequest: null,
       citySuggestions: {},
       schoolsSuggestions: [],
-      classRoomsSuggestions: []
+      classRoomsSuggestions: [],
     });
-  }
+  };
 
-  onResetSearch = (event) => {
+  onResetSearch = () => {
     this.setState({
-      city: "",
+      city: '',
 
       selectedSchool: null,
       selectedClassRoom: null,
 
       citySuggestions: {},
       schoolsSuggestions: [],
-      classRoomsSuggestions: []
-    })
-  }
+      classRoomsSuggestions: [],
+    });
+  };
 
-  onCityChange = (event) => {
-    this.setState({city: event.target.value});
+  onCityChange = event => {
+    this.setState({ city: event.target.value });
 
     if (event.target.value.length > StartAutocompleteAtLength) {
-      this.fetchData(event.target.value)
+      this.fetchData(event.target.value);
     } else {
-      this.setState({citySuggestions: {}})
+      this.setState({ citySuggestions: {} });
     }
-  }
+  };
 
-  onSelectCity = (city, schoolsSuggestions) => (event) => {
+  onSelectCity = (city, schoolsSuggestions) => () => {
     this.setState({
-      city: city,
+      city,
       schoolsSuggestions,
 
       citySuggestions: {},
       classRoomsSuggestions: [],
-      classRoomsSuggestions: []
-    })
-  }
+    });
+  };
 
   onSelectSchool = (event, school) => {
     this.setState({
       selectedSchool: school,
-      classRoomsSuggestions: school.class_rooms
-    })
-  }
+      classRoomsSuggestions: school.class_rooms,
+    });
+  };
 
   renderCityInput = () => {
-    const {
-      city,
-      citySuggestions,
-      currentRequest,
-      requestError
-    } = this.state;
+    const { city, citySuggestions, currentRequest, requestError } = this.state;
     const { resourceName, existingSchool, label, required } = this.props;
 
     return (
       <div className="form-group">
-          <div className="row">
-            <div className="col-12">
-              <label htmlFor={`${resourceName}_school_city`}>
-                {label}
-                <abbr title="(obligatoire)" aria-hidden="true">*</abbr>
-              </label>
-              <div className="input-group">
-                <input className="form-control"
-                       required={required}
-                       autoComplete="off"
-                       placeholder="Rechercher la ville"
-                       type="text"
-                       name={`${resourceName}[school][city]`}
-                       id={`${resourceName}_school_city`}
-                       value={city.length == "" && existingSchool ? existingSchool.city : city.replace(/<b>/g, '').replace(/<\/b>/g, "")}
-                       onChange={this.onCityChange}
-                />
-                <div className="input-group-append">
-                  { !currentRequest && (<button type="button"
-                                                className="btn btn-outline-secondary btn-clear-city"
-                                                onClick={this.onResetSearch}
-                                                >
-                                          <i className="fas fa-times"></i>
-                                       </button>)}
-                  { currentRequest && (<button type="button"
-                                               className="btn btn-outline-secondary btn-clear-city">
-                                        <i className="fas fa-spinner fa-spin"></i>
-                                       </button>)}
-                </div>
+        <div className="row">
+          <div className="col-12">
+            <label htmlFor={`${resourceName}_school_city`}>
+              {label}
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <div className="input-group">
+              <input
+                className="form-control"
+                required={required}
+                autoComplete="off"
+                placeholder="Rechercher la ville"
+                type="text"
+                name={`${resourceName}[school][city]`}
+                id={`${resourceName}_school_city`}
+                value={
+                  city.length === '' && existingSchool
+                    ? existingSchool.city
+                    : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
+                }
+                onChange={this.onCityChange}
+              />
+              <div className="input-group-append">
+                {!currentRequest && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-clear-city"
+                    onClick={this.onResetSearch}
+                  >
+                    <i className="fas fa-times" />
+                  </button>
+                )}
+                {currentRequest && (
+                  <button type="button" className="btn btn-outline-secondary btn-clear-city">
+                    <i className="fas fa-spinner fa-spin" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="row">
-            <div className="col-12">
-              <ul className="list-group { citySuggestions.length > 0 ? '' : 'd-none'}">
-              { Object.keys((citySuggestions || {})).map((city) => (
-                <a className="list-group-item"
-                   key={city}
-                   onClick={this.onSelectCity(city, citySuggestions[city])}>
-                   <span dangerouslySetInnerHTML={{__html: city}} />
-                </a>
-              )) }
-              </ul>
+        <div className="row">
+          <div className="col-12">
+            <ul className="list-group { citySuggestions.length > 0 ? '' : 'd-none'}">
+              {Object.keys(citySuggestions || {}).map(currentCity => (
+                <button
+                  type="button"
+                  className="list-group-item text-left"
+                  key={currentCity}
+                  onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
+                >
+                  <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+                </button>
+              ))}
+            </ul>
 
-              { requestError && <p className="text-danger small">{requestError}</p> }
-            </div>
+            {requestError && <p className="text-danger small">{requestError}</p>}
           </div>
         </div>
-    )
-  }
+      </div>
+    );
+  };
 
   renderSchoolsInput = () => {
     const { selectedSchool, schoolsSuggestions } = this.state;
@@ -179,50 +191,48 @@ class AutocompleteSchool extends React.Component {
       <div className="form-group">
         <label>
           Collège
-          <abbr title="(obligatoire)" aria-hidden="true">*</abbr>
+          <abbr title="(obligatoire)" aria-hidden="true">
+            *
+          </abbr>
         </label>
-        { schoolsSuggestions.length == 0 && !selectedSchool && !existingSchool && (
-          <input value="Veuillez choisir la ville du collège"
-                 disabled
-                 className="form-control"
-                 type="text"
-                 id={`${resourceName}_school_name`}
+        {schoolsSuggestions.length === 0 && !selectedSchool && !existingSchool && (
+          <input
+            value="Veuillez choisir la ville du collège"
+            disabled
+            className="form-control"
+            type="text"
+            id={`${resourceName}_school_name`}
           />
         )}
-        { schoolsSuggestions.length == 0 && existingSchool && (
+        {schoolsSuggestions.length === 0 && existingSchool && (
           <>
-            <input value="{existingSchool.name}"
-                   readOnly
-                   disabled
-                   className="form-control"
-                   type="text"
-                   value={existingSchool.name}
-                   name={`${resourceName}[school_name]`}
-                   id={`${resourceName}_school_name`}
+            <input
+              readOnly
+              disabled
+              className="form-control"
+              type="text"
+              value={existingSchool.name}
+              name={`${resourceName}[school_name]`}
+              id={`${resourceName}_school_name`}
             />
-            <input value="{existingSchool.id}"
-                   type="hidden"
-                   value={existingSchool.id}
-                   name={`${resourceName}[school_id]`}
-            />
+            <input type="hidden" value={existingSchool.id} name={`${resourceName}[school_id]`} />
           </>
         )}
-        { schoolsSuggestions.length > 0 && (
+        {schoolsSuggestions.length > 0 && (
           <div>
-            { (schoolsSuggestions || []).map((school) => (
-              <div className="custom-control custom-radio"
-                   key={`school-${school.id}`}>
-                <input type="radio"
-                       id={`select-school-${school.id}`}
-                       name={`${resourceName}[school_id]`}
-                       value={school.id}
-                       checked={selectedSchool && selectedSchool.id == school.id}
-                       onChange={(event) => this.onSelectSchool(event, school)}
-                       required
-                       className="custom-control-input"
+            {(schoolsSuggestions || []).map(school => (
+              <div className="custom-control custom-radio" key={`school-${school.id}`}>
+                <input
+                  type="radio"
+                  id={`select-school-${school.id}`}
+                  name={`${resourceName}[school_id]`}
+                  value={school.id}
+                  checked={selectedSchool && selectedSchool.id == school.id}
+                  onChange={event => this.onSelectSchool(event, school)}
+                  required
+                  className="custom-control-input"
                 />
-                <label htmlFor={`select-school-${school.id}`}
-                       className="custom-control-label">
+                <label htmlFor={`select-school-${school.id}`} className="custom-control-label">
                   {school.name}
                 </label>
               </div>
@@ -230,80 +240,88 @@ class AutocompleteSchool extends React.Component {
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   renderClassRoomsInput = () => {
     const { selectedClassRoom, classRoomsSuggestions } = this.state;
-    const { resourceName, existingClassRoom, selectClassRoom } = this.props;
+    const { resourceName, existingClassRoom } = this.props;
 
     return (
       <div className="form-group">
-        <label htmlFor={`${resourceName}_class_room_id`}>
-          Classe
-        </label>
-        { classRoomsSuggestions.length == 0 && !selectedClassRoom && !existingClassRoom && (
-          <input value="Veuillez choisir un collège"
-                 disabled
-                 className="form-control"
-                 type="text"
-                 id={`${resourceName}_school_name`}
+        <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+        {classRoomsSuggestions.length === 0 && !selectedClassRoom && !existingClassRoom && (
+          <input
+            value="Veuillez choisir un collège"
+            disabled
+            className="form-control"
+            type="text"
+            id={`${resourceName}_school_name`}
           />
         )}
-        { classRoomsSuggestions.length == 0 && existingClassRoom && (
+        {classRoomsSuggestions.length === 0 && existingClassRoom && (
           <>
-            <input value={existingClassRoom.name}
-                   disabled
-                   readOnly
-                   className="form-control"
-                   type="text"
-                   value={existingClassRoom.name}
-                   name={`${resourceName}[class_room_name]`}
-                   id={`${resourceName}_class_room_name`}
+            <input
+              disabled
+              readOnly
+              className="form-control"
+              type="text"
+              value={existingClassRoom.name}
+              name={`${resourceName}[class_room_name]`}
+              id={`${resourceName}_class_room_name`}
             />
-            <input value={existingClassRoom.id}
-                   type="hidden"
-                   name={`${resourceName}[class_room_id]`}
+            <input
+              value={existingClassRoom.id}
+              type="hidden"
+              name={`${resourceName}[class_room_id]`}
             />
           </>
         )}
-        { classRoomsSuggestions.length > 0 && (
-          <select className="form-control"
-                  name={`${resourceName}[class_room_id]`}
-                  id={`${resourceName}_class_room_id`}>
-            {(classRoomsSuggestions || []).map((classRoom) => (
-              <option key={`class-room-${classRoom.id}`}
-                      value={classRoom.id}
-                      selected={selectedClassRoom && selectedClassRoom.id == classRoom.id}>
+        {classRoomsSuggestions.length > 0 && (
+          <select
+            className="form-control"
+            name={`${resourceName}[class_room_id]`}
+            id={`${resourceName}_class_room_id`}
+          >
+            {(classRoomsSuggestions || []).map(classRoom => (
+              <option
+                key={`class-room-${classRoom.id}`}
+                value={classRoom.id}
+                selected={selectedClassRoom && selectedClassRoom.id === classRoom.id}
+              >
                 {classRoom.name}
               </option>
             ))}
           </select>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   render() {
-    const { selectClassRoom } = this.props
+    const { selectClassRoom } = this.props;
 
     return (
       <>
         {this.renderCityInput()}
         {this.renderSchoolsInput()}
-        { selectClassRoom && this.renderClassRoomsInput()}
+        {selectClassRoom && this.renderClassRoomsInput()}
       </>
-    )
+    );
   }
 }
 
 AutocompleteSchool.propTypes = {
-  label: PropTypes.string,
-  required: PropTypes.bool,
-  resourceName: PropTypes.string,
-  selectClassRoom: PropTypes.bool,
-  existingSchool: PropTypes.object,
-  existingClassRoom: PropTypes.object
-}
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool.isRequired,
+  resourceName: PropTypes.string.isRequired,
+  selectClassRoom: PropTypes.bool.isRequired,
+  existingSchool: PropTypes.objectOf(PropTypes.object),
+  existingClassRoom: PropTypes.objectOf(PropTypes.object),
+};
+AutocompleteSchool.defaultProps = {
+  existingSchool: null,
+  existingClassRoom: null,
+};
 
-export default AutocompleteSchool
+export default AutocompleteSchool;

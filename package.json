@@ -8,6 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.2",
     "@rails/webpacker": "4.0.2",
     "@stimulus/polyfills": "^1.1.1",
+    "algolia-places-react": "^1.5.0",
     "algoliasearch": "^3.32.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "better-dateinput-polyfill": "^3.2.3",
@@ -27,6 +28,15 @@
     "vnu-jar": "^18.11.5"
   },
   "devDependencies": {
-    "webpack-dev-server": "3.4.1"
+    "webpack-dev-server": "3.4.1",
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "prettier": "^1.18.2"
   }
 }
