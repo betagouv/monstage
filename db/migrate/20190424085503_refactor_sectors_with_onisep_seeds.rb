@@ -3,10 +3,11 @@
 require 'csv'
 class RefactorSectorsWithOnisepSeeds < ActiveRecord::Migration[5.2]
   def change
+    return
     former_sectors = Sector.all.entries
     new_sectors = []
     new_sector = nil
-    CSV.foreach(Rails.root.join('db/onisep-sectors.csv'), headers: { col_sep: ';' }) do |row, _i|
+    CSV.foreach(Rails.root.join('db/data_imports/onisep-sectors.csv'), headers: { col_sep: ';' }) do |row, _i|
       new_sector = Sector.find_or_create_by(
         name: row['GFE'].strip,
         gfe_name: row['GFE'].strip

@@ -1,7 +1,7 @@
 
 
 class ImportRep < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache_rep.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports', 'geocode_cache_rep.dump')
 
   def up
 
@@ -9,7 +9,7 @@ class ImportRep < ActiveRecord::Migration[5.2]
     School.update_all(kind: :rep_plus)
     return if Rails.env.test?
     geocode_searches_with_caching do
-      CSV.foreach(Rails.root.join('db/college-rep.csv'), headers: { col_sep: ',' })
+      CSV.foreach(Rails.root.join('db/data_imports/college-rep.csv'), headers: { col_sep: ',' })
          .each
          .with_index do |row, i|
         next if i.zero?

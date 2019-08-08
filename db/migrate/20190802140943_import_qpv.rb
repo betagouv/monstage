@@ -1,10 +1,10 @@
 class ImportQpv < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache_qpv.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports','geocode_cache_qpv.dump')
 
   def up
     return if Rails.env.test?
     geocode_searches_with_caching do
-      CSV.foreach(Rails.root.join('db/college-qpv.csv'), headers: { col_sep: ',' })
+      CSV.foreach(Rails.root.join('db/data_imports/college-qpv.csv'), headers: { col_sep: ',' })
          .each
          .with_index do |row, i|
         next if i.zero?

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GeocodeSchools < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports','geocode_cache.dump')
 
   def up
     geocode_searches_with_caching do
