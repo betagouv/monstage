@@ -16,7 +16,7 @@
         resourceName: :user,
         selectClassRoom: can?(:choose_class_room, :sign_up),
         existingSchool: resource.school.as_json,
-        existingClassRoom: resource.try(:class_room).try(:as_json)
+        existingClassRoom: resource.try(:class_room).try(:as_json),
       ) %>
     <% end %>
 

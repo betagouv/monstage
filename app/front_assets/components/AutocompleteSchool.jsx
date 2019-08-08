@@ -114,7 +114,6 @@ class AutocompleteSchool extends React.Component {
   renderCityInput = () => {
     const { city, citySuggestions, currentRequest, requestError } = this.state;
     const { resourceName, existingSchool, label, required } = this.props;
-
     return (
       <div className="form-group">
         <div className="row">
@@ -135,7 +134,7 @@ class AutocompleteSchool extends React.Component {
                 name={`${resourceName}[school][city]`}
                 id={`${resourceName}_school_city`}
                 value={
-                  city.length === '' && existingSchool
+                  city.length === 0 && existingSchool
                     ? existingSchool.city
                     : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
                 }
