@@ -17,4 +17,4 @@
 - if can?(:apply_in_bulk, @internship_offer) && @internship_offer.has_spots_left?
   = render partial: "internship_applications/school_manager_form"
 - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && user_signed_in?
-  = render partial: "internship_applications/form"
+  = render partial: "internship_applications/student_form"
