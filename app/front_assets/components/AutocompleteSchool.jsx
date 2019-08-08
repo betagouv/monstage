@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types';
 
 const StartAutocompleteAtLength = 2
 
@@ -53,7 +54,10 @@ class AutocompleteSchool extends React.Component {
     })
   }
 
-  fetchFail = (error) => {
+  fetchFail = (xhr, textStatus) => {
+    if (textStatus == "abort") {
+      return
+    }
     this.setState({
       requestError: "Une erreur est survenue, veuillez ré-essayer plus tard.",
       currentRequest: null,
@@ -291,6 +295,15 @@ class AutocompleteSchool extends React.Component {
       </>
     )
   }
+}
+
+AutocompleteSchool.propTypes = {
+  label: PropTypes.string,
+  required: PropTypes.bool,
+  resourceName: PropTypes.string,
+  selectClassRoom: PropTypes.bool,
+  existingSchool: PropTypes.object,
+  existingClassRoom: PropTypes.object
 }
 
 export default AutocompleteSchool
