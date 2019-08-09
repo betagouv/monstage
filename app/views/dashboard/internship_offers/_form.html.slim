@@ -39,7 +39,7 @@
       = link_to "En savoir plus sur les opérateurs", operators_path, target: '_blank', rel: "external noopener noreferrer", title: 'En savoir plus (nouvelle fenêtre)'
 
     .form-group
-      div.label
+      .label
         = "Un opérateur vous accompagne-t-il ?"
         = form.rg2a_required_content_tag
 
@@ -54,7 +54,7 @@
         = form.label :with_operator_unknown, 'Je ne sais pas', class: 'custom-control-label'
 
     div class="form-group operators-check-boxes #{@internship_offer.has_operator? ? '' : 'd-none'}" data-target="internship-form.operatorsBlock"
-      = form.label :operator_ids do
+      .label
         = "Quel opérateur vous accompagne"
 
       .custom-control.custom-checkbox.custom-control-checkbox-list
