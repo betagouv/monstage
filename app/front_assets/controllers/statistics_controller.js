@@ -1,32 +1,33 @@
-import { Controller } from "stimulus"
+import { Controller } from 'stimulus';
 import Turbolinks from 'turbolinks';
 
 export default class extends Controller {
-
   filterByDepartment(event) {
-    this.changeURLFromEvent(event, "department")
+    this.changeURLFromEvent(event, 'department');
   }
 
   filterByGroup(event) {
-    this.changeURLFromEvent(event, "group")
+    this.changeURLFromEvent(event, 'group');
   }
 
   filterByAcademy(event) {
-    this.changeURLFromEvent(event, "academy")
+    this.changeURLFromEvent(event, 'academy');
   }
 
   filterByPublicy(event) {
-    this.changeURLFromEvent(event, "is_public")
+    this.changeURLFromEvent(event, 'is_public');
   }
 
   changeURLFromEvent(event, param) {
-    const paramValue = $(event.target).val()
-    const searchParams = new URLSearchParams(window.location.search)
+    const paramValue = $(event.target).val();
+    const searchParams = new URLSearchParams(window.location.search);
     if (paramValue.length === 0) {
-      searchParams.delete(param)
+      searchParams.delete(param);
     } else {
       searchParams.set(param, paramValue);
     }
-    Turbolinks.visit(`${window.location.origin}${window.location.pathname}?${searchParams.toString()}`)
+    Turbolinks.visit(
+      `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`,
+    );
   }
 }

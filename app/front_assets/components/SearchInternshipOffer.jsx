@@ -9,6 +9,22 @@ import SchoolPropType from '../prop_types/school';
 import SectorPropType from '../prop_types/sector';
 
 class SearchInternshipOffer extends React.Component {
+  static propTypes = {
+    url: PropTypes.string.isRequired,
+    algoliaApiId: PropTypes.string.isRequired,
+    algoliaApiKey: PropTypes.string.isRequired,
+    sectors: PropTypes.arrayOf(SectorPropType).isRequired,
+    currentCitySearch: PropTypes.string,
+    currentSector: SectorPropType,
+    currentSchool: SchoolPropType,
+  };
+
+  static defaultProps = {
+    currentCitySearch: null,
+    currentSchool: null,
+    currentSector: null,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -172,20 +188,5 @@ class SearchInternshipOffer extends React.Component {
   }
 }
 
-SearchInternshipOffer.propTypes = {
-  url: PropTypes.string.isRequired,
-  algoliaApiId: PropTypes.string.isRequired,
-  algoliaApiKey: PropTypes.string.isRequired,
-  sectors: PropTypes.arrayOf(SectorPropType).isRequired,
-  currentCitySearch: PropTypes.string,
-  currentSector: SectorPropType,
-  currentSchool: SchoolPropType,
-};
-
-SearchInternshipOffer.defaultProps = {
-  currentCitySearch: null,
-  currentSchool: null,
-  currentSector: null,
-};
 
 export default SearchInternshipOffer;

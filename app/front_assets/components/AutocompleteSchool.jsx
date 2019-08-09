@@ -3,10 +3,25 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 const StartAutocompleteAtLength = 2;
+import SchoolPropType from '../prop_types/school';
 
 class AutocompleteSchool extends React.Component {
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    required: PropTypes.bool.isRequired,
+    resourceName: PropTypes.string.isRequired,
+    selectClassRoom: PropTypes.bool.isRequired,
+    existingSchool: PropTypes.objectOf(SchoolPropType),
+    existingClassRoom: PropTypes.objectOf(PropTypes.object),
+  };
+
+  static defaultProps = {
+    existingSchool: null,
+    existingClassRoom: null,
+  };
+
   state = {
-    currentRequest: null,
+    currentRequest: null,l
     requestError: null,
 
     selectedSchool: null,
@@ -116,7 +131,6 @@ class AutocompleteSchool extends React.Component {
     const { resourceName, existingSchool, label, required } = this.props;
     return (
       <div className="form-group">
-
         <div className="col-12">
           <label htmlFor={`${resourceName}_school_city`}>
             {label}
@@ -175,7 +189,6 @@ class AutocompleteSchool extends React.Component {
 
           {requestError && <p className="text-danger small">{requestError}</p>}
         </div>
-
       </div>
     );
   };
@@ -308,17 +321,6 @@ class AutocompleteSchool extends React.Component {
   }
 }
 
-AutocompleteSchool.propTypes = {
-  label: PropTypes.string.isRequired,
-  required: PropTypes.bool.isRequired,
-  resourceName: PropTypes.string.isRequired,
-  selectClassRoom: PropTypes.bool.isRequired,
-  existingSchool: PropTypes.objectOf(PropTypes.object),
-  existingClassRoom: PropTypes.objectOf(PropTypes.object),
-};
-AutocompleteSchool.defaultProps = {
-  existingSchool: null,
-  existingClassRoom: null,
-};
+
 
 export default AutocompleteSchool;
