@@ -2,3 +2,12 @@
 .bg-internship-title{
   background-color: rgb(255,217,102);
 }
+.ap-input{
+  padding-top: $input-btn-padding-y;
+  padding-bottom: $input-btn-padding-y;
+  line-height: $line-height-base;
+  font-size: 1rem;
+  border: 1px solid $input-border-color;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  height: calc(1.25em + 1.5rem + 2px);
+}

@@ -26,7 +26,7 @@ def populate_week_reference
 end
 
 def populate_schools
-  CSV.foreach(Rails.root.join('db/college-rep-plus.csv'), headers: { col_sep: ',' }) do |row, _i|
+  CSV.foreach(Rails.root.join('db/data_imports/college-rep-plus.csv'), headers: { col_sep: ',' }) do |row, _i|
     school = School.find_or_create_by(
       code_uai: row['Code UAI'],
       name: row['ETABLISSEMENT'],

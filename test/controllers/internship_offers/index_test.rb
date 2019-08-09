@@ -18,29 +18,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_session_path
   end
 
-  #
-  # Student
-  #
-  test 'GET #index as student. check if filters are properly populated' do
-    internship_offer_1 = create(:internship_offer)
-    internship_offer_2 = create(:internship_offer)
-    internship_offer_3 = create(:internship_offer)
-    student = create(:student)
-
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
-
-        assert_response :success
-        assert_select 'select#internship-offer-sector-filter option', 4
-        assert_select 'option', text: internship_offer_1.sector.name
-        assert_select 'option', text: internship_offer_2.sector.name
-        assert_select 'option', text: internship_offer_3.sector.name
-      end
-    end
-  end
-
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > max_internship_week_number_count' do
     internship_offer_with_max_internship_week_number_count_reached = create(:internship_offer, max_internship_week_number: 2, blocked_weeks_count: 2)
     internship_offer_without_max_internship_week_number_count_reached = create(:internship_offer, max_internship_week_number: 2, blocked_weeks_count: 0)
@@ -220,6 +197,49 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path
         assert_response :success
         assert_presence_of(internship_offer: internship_offer)
+      end
+    end
+  end
+
+  test 'GET #index as student returns internship_offer up by location' do
+    week = Week.find_by(year: 2019, number: 10)
+    school_at_paris = create(:school, :at_paris)
+    student = create(:student, school: school_at_paris)
+    internship_offer_at_paris = create(:internship_offer, weeks: [week],
+                                                 coordinates: Coordinates.paris)
+    internship_offer_at_bordeaux = create(:internship_offer, weeks: [week],
+                                                 coordinates: Coordinates.bordeaux)
+
+    InternshipOffer.stub :by_weeks, InternshipOffer.all do
+      sign_in(student)
+      travel_to(Date.new(2019, 3, 1)) do
+        get internship_offers_path
+        assert_response :success
+        assert_presence_of(internship_offer: internship_offer_at_paris)
+        assert_absence_of(internship_offer: internship_offer_at_bordeaux)
+      end
+    end
+  end
+
+  test 'GET #index?latitude=?&longitude=? as student returns internship_offer 60km around this location' do
+    week = Week.find_by(year: 2019, number: 10)
+    school_at_paris = create(:school, :at_paris)
+    student = create(:student, school: school_at_paris)
+    internship_offer_at_paris = create(:internship_offer,
+                                       weeks: [week],
+                                       coordinates: Coordinates.paris)
+    internship_offer_at_bordeaux = create(:internship_offer,
+                                          weeks: [week],
+                                          coordinates: Coordinates.bordeaux)
+
+    InternshipOffer.stub :by_weeks, InternshipOffer.all do
+      sign_in(student)
+      travel_to(Date.new(2019, 3, 1)) do
+        get internship_offers_path(latitude: Coordinates.bordeaux[:latitude],
+                                   longitude: Coordinates.bordeaux[:longitude])
+        assert_response :success
+        assert_absence_of(internship_offer: internship_offer_at_paris)
+        assert_presence_of(internship_offer: internship_offer_at_bordeaux)
       end
     end
   end

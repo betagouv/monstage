@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module InternshipOffersHelper
+  def current_sector
+    return Sector.find(params[:sector_id]) if params[:sector_id]
+    nil
+  end
+
   def current_sector_name
     return Sector.find(params[:sector_id]).name if params[:sector_id]
 
