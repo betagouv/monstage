@@ -26,7 +26,7 @@
         = form.radio_button :is_public, false, class: 'custom-control-input', required: true, checked: @internship_offer.new_record? ? false : !@internship_offer.is_public, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_false, 'privé', class: 'custom-control-label'
 
-    div class="form-group #{@internship_offer.new_record? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
+    div class="form-group form-group-select-group #{@internship_offer.new_record? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
       = form.label :group, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
       = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
 
@@ -240,4 +240,4 @@
     p.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment
 
     = form.submit "Enregistrer et publier l'offre", class: 'btn btn-warning'
-    = link_to "Annuler", dashboard_internship_offers_path, title: 'Retourner sur mes stages', class: 'ml-3'
+    = link_to "Annuler", current_action?("new") ? dashboard_internship_offers_path : dashboard_internship_offer_path(@internship_offer), title: 'Retourner sur mes stages', class: 'ml-3 btn-back'
