@@ -29,7 +29,8 @@ class SignUpOthersTest < ApplicationSystemTestCase
     # create other
     assert_difference('Users::Other.count', 1) do
       find_field('Ville de mon collège').fill_in(with: 'Saint')
-      find('a', text: school_1.city).click
+      # find('button', text: school_1.city).click
+      all('.list-group button.list-group-item').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Choisir un mot de passe', with: 'kikoololletest'

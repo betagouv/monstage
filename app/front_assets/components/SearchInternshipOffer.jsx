@@ -34,16 +34,26 @@ class SearchInternshipOffer extends React.Component {
     const { url } = this.props;
     const searchParams = new URLSearchParams(window.location.search);
 
-    searchParams.set('city', suggestion.name);
-    searchParams.set('latitude', suggestion.latlng.lat);
-    searchParams.set('longitude', suggestion.latlng.lng);
-
+    if (suggestion) {
+      searchParams.set('city', suggestion.name);
+      searchParams.set('latitude', suggestion.latlng.lat);
+      searchParams.set('longitude', suggestion.latlng.lng);
+    } else {
+      searchParams.delete('city');
+      searchParams.delete('latitude');
+      searchParams.delete('longitude');
+    }
     Turbolinks.visit(`${url}?${searchParams.toString()}`);
   };
 
   toggleSearchByCity = () => {
     const { currentCitySearch } = this.state;
-    this.setState({ currentCitySearch: currentCitySearch ? null : '' });
+    if (currentCitySearch) {
+      this.setState({ currentCitySearch: null });
+      this.filterOfferByLocation({ suggestion: null });
+    } else {
+      this.setState({ currentCitySearch: '' });
+    }
   };
 
   render() {
@@ -51,35 +61,35 @@ class SearchInternshipOffer extends React.Component {
     const { currentCitySearch } = this.state;
 
     return (
-      <>
-        <div className="row">
+      <div className="row" data-controller="help">
+        <div className="col-12 col-md-6 col-lg-4">
           <div className="form-group">
-            <div className="col-12">
-              <label htmlFor="input-search-by-city">Autour de</label>
-            </div>
-            <div className="col-12">
-              {currentCitySearch === null && (
-                <div className="input-group">
-                  <input
-                    className="form-control"
-                    name="input-search-by-city"
-                    id="input-search-by-city"
-                    type="text"
-                    readOnly
-                    value={currentSchool.name}
-                  />
-                  <div className="input-group-append">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary btn-clear-city"
-                      onClick={this.toggleSearchByCity}
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  </div>
+            <label className="mb-3 d-block" htmlFor="input-search-by-city">
+              <strong>Autour de</strong>
+            </label>
+            {currentCitySearch === null && (
+              <div className="input-group">
+                <input
+                  className="form-control"
+                  name="input-search-by-city"
+                  id="input-search-by-city"
+                  type="text"
+                  readOnly
+                  value={currentSchool.name}
+                />
+                <div className="input-group-append">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-clear-city"
+                    onClick={this.toggleSearchByCity}
+                  >
+                    <i className="fas fa-times" />
+                  </button>
                 </div>
-              )}
-              {currentCitySearch !== null && (
+              </div>
+            )}
+            {currentCitySearch !== null && (
+              <div className="input-group">
                 <AlgoliaPlaces
                   placeholder={currentCitySearch || 'Rechercher une ville'}
                   options={{
@@ -97,65 +107,67 @@ class SearchInternshipOffer extends React.Component {
                     )
                   }
                 />
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group" data-controller="help">
-            <div className="col-12">
-              <label className="mt-2 mb-3 d-block" htmlFor="internship-offer-sector-filter">
-                <strong>Secteur professionnel</strong>
-                <button
-                  type="button"
-                  className="btn btn-link py-0"
-                  data-action="click->help#toggle"
-                >
-                  <i className="fa fa-question-circle" />
-                </button>
-              </label>
-            </div>
-            <div className="col-12">
-              <div
-                className="help-sign-content py-1 px-2 mb-3 d-none bg-white alert alert-secondary alert-outlined"
-                data-target="help.content"
-              >
-                {currentSector && (
-                  <>
-                    Pour en savoir plus sur le secteur professionnel
-                    {` "${currentSector.name}"`}
-                    <a href={currentSector.external_url}>site de l&apos;Onisep.</a>
-                  </>
-                )}
-                {!currentSector && (
-                  <>
-                    Pour découvrir les secteurs profesionnels consultez le{' '}
-                    <a href="http://www.onisep.fr/Decouvrir-les-metiers/Des-metiers-par-secteur">
-                      site de l&apos;Onisep.
-                    </a>
-                  </>
-                )}
+                <div className="input-group-append">
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-clear-city"
+                    onClick={this.toggleSearchByCity}
+                  >
+                    <i className="fas fa-times" />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="col-12">
-              <select
-                name="Sélectionner un domaine d'activité"
-                id="internship-offer-sector-filter"
-                className="custom-select col-12"
-                onChange={this.filterOfferBySector}
-              >
-                <option value="">-- Veuillez sélectionner un domaine --</option>
-                <option value="">Tous</option>
-                {(sectors || []).map(sector => (
-                  <option key={sector.id} value={sector.id}>
-                    {sector.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            )}
           </div>
         </div>
-      </>
+        <div className="col-12 col-md-6 col-lg-4">
+          <div className="form-group">
+            <label className="mb-3 d-block" htmlFor="internship-offer-sector-filter">
+              <strong>Secteur professionnel</strong>
+              <button
+                type="button"
+                className="btn btn-absolute btn-link py-0"
+                data-action="click->help#toggle"
+              >
+                <i className="fa fa-question-circle" />
+              </button>
+            </label>
+            <select
+              name="Sélectionner un domaine d'activité"
+              id="internship-offer-sector-filter"
+              className="custom-select col-12"
+              onChange={this.filterOfferBySector}
+            >
+              <option value="">-- Veuillez sélectionner un domaine --</option>
+              <option value="">Tous</option>
+              {(sectors || []).map(sector => (
+                <option key={sector.id} value={sector.id}>
+                  {sector.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="d-none col-12 col-lg-8" data-target="help.content">
+          <div className="help-sign-content bg-white alert alert-secondary alert-outlined">
+            {currentSector && (
+              <>
+                Pour en savoir plus sur le secteur professionnel
+                {` "${currentSector.name}"`}
+                <a href={currentSector.external_url}>site de l&apos;Onisep.</a>
+              </>
+            )}
+            {!currentSector && (
+              <>
+                Pour découvrir les secteurs profesionnels consultez le{' '}
+                <a href="http://www.onisep.fr/Decouvrir-les-metiers/Des-metiers-par-secteur">
+                  site de l&apos;Onisep.
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     );
   }
 }

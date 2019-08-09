@@ -116,68 +116,66 @@ class AutocompleteSchool extends React.Component {
     const { resourceName, existingSchool, label, required } = this.props;
     return (
       <div className="form-group">
-        <div className="row">
-          <div className="col-12">
-            <label htmlFor={`${resourceName}_school_city`}>
-              {label}
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
-            </label>
-            <div className="input-group">
-              <input
-                className="form-control"
-                required={required}
-                autoComplete="off"
-                placeholder="Rechercher la ville"
-                type="text"
-                name={`${resourceName}[school][city]`}
-                id={`${resourceName}_school_city`}
-                value={
-                  city.length === 0 && existingSchool
-                    ? existingSchool.city
-                    : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
-                }
-                onChange={this.onCityChange}
-              />
-              <div className="input-group-append">
-                {!currentRequest && (
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
-                    onClick={this.onResetSearch}
-                  >
-                    <i className="fas fa-times" />
-                  </button>
-                )}
-                {currentRequest && (
-                  <button type="button" className="btn btn-outline-secondary btn-clear-city">
-                    <i className="fas fa-spinner fa-spin" />
-                  </button>
-                )}
-              </div>
+
+        <div className="col-12">
+          <label htmlFor={`${resourceName}_school_city`}>
+            {label}
+            <abbr title="(obligatoire)" aria-hidden="true">
+              *
+            </abbr>
+          </label>
+          <div className="input-group">
+            <input
+              className="form-control"
+              required={required}
+              autoComplete="off"
+              placeholder="Rechercher la ville"
+              type="text"
+              name={`${resourceName}[school][city]`}
+              id={`${resourceName}_school_city`}
+              value={
+                city.length === 0 && existingSchool
+                  ? existingSchool.city
+                  : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
+              }
+              onChange={this.onCityChange}
+            />
+            <div className="input-group-append">
+              {!currentRequest && (
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary btn-clear-city"
+                  onClick={this.onResetSearch}
+                >
+                  <i className="fas fa-times" />
+                </button>
+              )}
+              {currentRequest && (
+                <button type="button" className="btn btn-outline-secondary btn-clear-city">
+                  <i className="fas fa-spinner fa-spin" />
+                </button>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-12">
-            <ul className="list-group { citySuggestions.length > 0 ? '' : 'd-none'}">
-              {Object.keys(citySuggestions || {}).map(currentCity => (
-                <button
-                  type="button"
-                  className="list-group-item text-left"
-                  key={currentCity}
-                  onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
-                >
-                  <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-                </button>
-              ))}
-            </ul>
+        <div className="col-12">
+          <ul className="list-group { citySuggestions.length > 0 ? '' : 'd-none'}">
+            {Object.keys(citySuggestions || {}).map(currentCity => (
+              <button
+                type="button"
+                className="list-group-item text-left"
+                key={currentCity}
+                onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
+              >
+                <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+              </button>
+            ))}
+          </ul>
 
-            {requestError && <p className="text-danger small">{requestError}</p>}
-          </div>
+          {requestError && <p className="text-danger small">{requestError}</p>}
         </div>
+
       </div>
     );
   };
