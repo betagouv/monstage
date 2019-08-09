@@ -9,12 +9,12 @@ div data-controller="select-weeks"
         = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#toggleWeeks"}
         = label_tag 'all_year_long', "Tout sélectionner / désélectionner", class: 'custom-control-label'
 
-  .custom-control.custom-checkbox.form-select-weeks
-    - current_weeks.map do |week|
-      .custom-control.custom-checkbox
-        = form.check_box :week_ids, { multiple: true, class: 'custom-control-input', disabled: defined?(disabled) && disabled, data: {target: 'select-weeks.weekCheckboxes'} }, week.id, false
-        = form.label :"week_id", for: "#{form.object.class.name.underscore}_week_ids_#{week.id}", class: 'custom-control-label' do
-          = week.select_text_method
+    .custom-control-checkbox-list
+      - current_weeks.map do |week|
+        .custom-control.custom-checkbox
+          = form.check_box :week_ids, { multiple: true, class: 'custom-control-input', disabled: defined?(disabled) && disabled, data: {target: 'select-weeks.weekCheckboxes'} }, week.id, false
+          = form.label :"week_id", for: "#{form.object.class.name.underscore}_week_ids_#{week.id}", class: 'custom-control-label' do
+            = week.select_text_method
 
 
 

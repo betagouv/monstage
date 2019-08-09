@@ -58,6 +58,8 @@ class InternshipOffer < ApplicationRecord
   before_create :reverse_academy_by_zipcode
   paginates_per PAGE_SIZE
 
+  attr_reader :with_operator
+
   def is_individual?
     max_candidates == 1
   end
@@ -68,6 +70,10 @@ class InternshipOffer < ApplicationRecord
 
   def is_fully_editable?
     internship_applications.empty?
+  end
+
+  def has_operator?
+    !operators.empty?
   end
 
   def init

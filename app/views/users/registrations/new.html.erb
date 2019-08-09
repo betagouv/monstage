@@ -11,6 +11,7 @@
     <% if can?(:choose_school, :sign_up) %>
       <%= react_component(
         "AutocompleteSchool",
+        classes: 'col-12',
         label: "Ville de mon collège",
         required: true,
         resourceName: :user,

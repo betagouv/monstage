@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
+import SchoolPropType from '../prop_types/school';
 
 const StartAutocompleteAtLength = 2;
-import SchoolPropType from '../prop_types/school';
 
 class AutocompleteSchool extends React.Component {
   static propTypes = {
+    classes: PropTypes.string,
     label: PropTypes.string.isRequired,
     required: PropTypes.bool.isRequired,
     resourceName: PropTypes.string.isRequired,
@@ -16,6 +17,7 @@ class AutocompleteSchool extends React.Component {
   };
 
   static defaultProps = {
+    classes: null,
     existingSchool: null,
     existingClassRoom: null,
   };
@@ -128,74 +130,74 @@ class AutocompleteSchool extends React.Component {
 
   renderCityInput = () => {
     const { city, citySuggestions, currentRequest, requestError } = this.state;
-    const { resourceName, existingSchool, label, required } = this.props;
+    const { resourceName, existingSchool, label, required, classes } = this.props;
     return (
       <div className="form-group">
-        <div className="col-12">
-          <label htmlFor={`${resourceName}_school_city`}>
-            {label}
-            <abbr title="(obligatoire)" aria-hidden="true">
-              *
-            </abbr>
-          </label>
-          <div className="input-group">
-            <input
-              className="form-control"
-              required={required}
-              autoComplete="off"
-              placeholder="Rechercher la ville"
-              type="text"
-              name={`${resourceName}[school][city]`}
-              id={`${resourceName}_school_city`}
-              value={
-                city.length === 0 && existingSchool
-                  ? existingSchool.city
-                  : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
-              }
-              onChange={this.onCityChange}
-            />
-            <div className="input-group-append">
-              {!currentRequest && (
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary btn-clear-city"
-                  onClick={this.onResetSearch}
-                >
-                  <i className="fas fa-times" />
-                </button>
-              )}
-              {currentRequest && (
-                <button type="button" className="btn btn-outline-secondary btn-clear-city">
-                  <i className="fas fa-spinner fa-spin" />
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
+        <label htmlFor={`${resourceName}_school_city`}>
+          {label}
+          <abbr title="(obligatoire)" aria-hidden="true">
+            *
+          </abbr>
+        </label>
 
-        <div className="col-12">
-          <ul className="list-group { citySuggestions.length > 0 ? '' : 'd-none'}">
-            {Object.keys(citySuggestions || {}).map(currentCity => (
+        <div className="input-group">
+          <input
+            className={`form-control ${classes || ''}`}
+            required={required}
+            autoComplete="off"
+            placeholder="Rechercher la ville"
+            type="text"
+            name={`${resourceName}[school][city]`}
+            id={`${resourceName}_school_city`}
+            value={
+              city.length === 0 && existingSchool
+                ? existingSchool.city
+                : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
+            }
+            onChange={this.onCityChange}
+          />
+          <div className="input-group-append">
+            {!currentRequest && (
               <button
                 type="button"
-                className="list-group-item text-left"
-                key={currentCity}
-                onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
+                className="btn btn-outline-secondary btn-clear-city"
+                onClick={this.onResetSearch}
               >
-                <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+                <i className="fas fa-times" />
               </button>
-            ))}
-          </ul>
-
-          {requestError && <p className="text-danger small">{requestError}</p>}
+            )}
+            {currentRequest && (
+              <button type="button" className="btn btn-outline-secondary btn-clear-city">
+                <i className="fas fa-spinner fa-spin" />
+              </button>
+            )}
+          </div>
         </div>
+        <ul
+          className={`${classes || ''} list-group p-0 ${
+            Object.keys(citySuggestions || {}).length > 0 ? '' : 'd-none'
+          }`}
+        >
+          {Object.keys(citySuggestions || {}).map(currentCity => (
+            <button
+              type="button"
+              className="list-group-item text-left"
+              key={currentCity}
+              onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
+            >
+              <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+            </button>
+          ))}
+        </ul>
+
+        {requestError && <p className="text-danger small">{requestError}</p>}
       </div>
     );
   };
 
   renderSchoolsInput = () => {
     const { selectedSchool, schoolsSuggestions } = this.state;
-    const { resourceName, existingSchool } = this.props;
+    const { resourceName, existingSchool, classes } = this.props;
 
     return (
       <div className="form-group">
@@ -209,7 +211,7 @@ class AutocompleteSchool extends React.Component {
           <input
             value="Veuillez choisir la ville du collège"
             disabled
-            className="form-control"
+            className={`form-control ${classes || ''}`}
             type="text"
             id={`${resourceName}_school_name`}
           />
@@ -219,7 +221,7 @@ class AutocompleteSchool extends React.Component {
             <input
               readOnly
               disabled
-              className="form-control"
+              className={`form-control ${classes || ''}`}
               type="text"
               value={existingSchool.name}
               name={`${resourceName}[school_name]`}
@@ -255,7 +257,7 @@ class AutocompleteSchool extends React.Component {
 
   renderClassRoomsInput = () => {
     const { selectedClassRoom, classRoomsSuggestions } = this.state;
-    const { resourceName, existingClassRoom } = this.props;
+    const { resourceName, existingClassRoom, classes } = this.props;
 
     return (
       <div className="form-group">
@@ -264,7 +266,7 @@ class AutocompleteSchool extends React.Component {
           <input
             value="Veuillez choisir un collège"
             disabled
-            className="form-control"
+            className={`form-control ${classes || ''}`}
             type="text"
             id={`${resourceName}_school_name`}
           />
@@ -274,7 +276,7 @@ class AutocompleteSchool extends React.Component {
             <input
               disabled
               readOnly
-              className="form-control"
+              className={`form-control ${classes || ''}`}
               type="text"
               value={existingClassRoom.name}
               name={`${resourceName}[class_room_name]`}
@@ -320,7 +322,5 @@ class AutocompleteSchool extends React.Component {
     );
   }
 }
-
-
 
 export default AutocompleteSchool;
