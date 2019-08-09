@@ -138,7 +138,7 @@
       = form.label :autocomplete do
         = "Adresse du lieu où se déroule le stage"
         = form.rg2a_required_content_tag
-        button.btn.btn-link.py-0 data-action="click->help#toggle" type="button"
+        a.btn.btn-link.py-0 data-action="click->help#toggle"
           i.fa.fa-question-circle
       .help-sign-content.d-none data-target="help.content"
         p Si vous proposez le même stage dans un autre établissement, déposez une offre par étabilissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse ou l'évève devra se rendre au premier jour
