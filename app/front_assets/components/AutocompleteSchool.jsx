@@ -21,7 +21,7 @@ class AutocompleteSchool extends React.Component {
   };
 
   state = {
-    currentRequest: null,l
+    currentRequest: null,
     requestError: null,
 
     selectedSchool: null,
