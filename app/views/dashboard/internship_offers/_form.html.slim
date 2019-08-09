@@ -134,20 +134,25 @@
 
   fieldset.mt-4 data={controller: 'algolia-place'}
     legend Où, Quand, Comment ?
-    .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'} data-controller="help"
-      = form.label :autocomplete do
-        = "Adresse du lieu où se déroule le stage"
-        = form.rg2a_required_content_tag
-        a.btn.btn-link.py-0 data-action="click->help#toggle"
-          i.fa.fa-question-circle
-      .help-sign-content.d-none data-target="help.content"
-        p Si vous proposez le même stage dans un autre établissement, déposez une offre par étabilissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse ou l'évève devra se rendre au premier jour
+    div data={target: 'algolia-place.autocompleteFormGroup'} data-controller="help"
+      .form-row
+        .col-sm-12
+          .form-group
+            = form.label :autocomplete do
+              = "Adresse du lieu où se déroule le stage"
+              = form.rg2a_required_content_tag
+              a.btn-absolute.btn.btn-link.py-0 data-action="click->help#toggle"
+                i.fa.fa-question-circle
 
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
-      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
-      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
+              .d-none.my-1.p-2.help-sign-content data-target="help.content"
+                | Si vous proposez le même stage dans un autre établissement, déposez une offre par étabilissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse ou l'évève devra se rendre au premier jour
 
-    .form-group.d-none
+            = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
+
+            input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+            input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
+
+
       .form-row
         .col-sm-6
           .form-group
@@ -167,6 +172,7 @@
               = 'Code postal'
               = form.rg2a_required_content_tag
             = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+
       .form-row
         .col-sm-4
           .form-group
@@ -174,6 +180,7 @@
               = 'Département'
               = form.rg2a_required_content_tag
             = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+
 
     .form-group
       = form.label :employer_description do

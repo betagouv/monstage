@@ -76,7 +76,19 @@ export default class extends Controller {
     }
   }
 
+  validateForm(event) {
+    const latitudeInput = document.getElementById('internship_offer_coordinates_latitude');
+    if (!latitudeInput.validity.valid) {
+      document.getElementById('js-internship_offer_autocomplete').focus()
+    }
+    return event;
+  }
+
   connect() {
     this.toggleGroupNames(true);
+    this.element.addEventListener('submit', this.validateForm, false);
+  }
+
+  disconnect() {
   }
 }
