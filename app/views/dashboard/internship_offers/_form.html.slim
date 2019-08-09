@@ -185,7 +185,7 @@
       = form.label :employer_website do
         = 'Site web (facultatif)'
         small.form-text.text-muted Quel site web l'élève peut visiter pour découvrir son lieu de stage
-      = form.url_field :employer_website, class: 'form-control col-lg-6', value: @internship_offer.employer_website || "https://"
+      = form.url_field :employer_website, class: 'form-control col-lg-6', placeholder: @internship_offer.employer_website || "https://"
 
     .form-group
       = label_tag "is_reserved" do
