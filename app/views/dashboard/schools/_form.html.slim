@@ -57,15 +57,13 @@
                   = f.rg2a_required_content_tag
                 = f.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
 
-
-
-    .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-warning'
-    .actions= link_to dashboard_school_class_rooms_path(@school), class: 'btn btn-link' do
-      .fas.fa-chevron-left
-      span.ml-1 Retour
-
   - else
     .fieldset
       legend= "Semaines de stage"
       = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: f, label: "Semaines de stage du collège" }
 
+
+  .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-warning'
+    .actions= link_to dashboard_school_class_rooms_path(@school), class: 'btn btn-link' do
+      .fas.fa-chevron-left
+      span.ml-1 Retour
