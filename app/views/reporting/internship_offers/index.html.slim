@@ -44,6 +44,7 @@
     .form-group.col-lg-4
       = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
       = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
+
   .row.mt-3
     table.table.table-statistics
       thead
@@ -51,14 +52,17 @@
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:sector_id)
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:report_total_count)
           th.border-left-1 colspan="3"= Reporting::InternshipOffer.i18n_attribute(:total_applications_count)
-          th.border-left-1 colspan="3"= Reporting::InternshipOffer.i18n_attribute(:total_convention_signed_applications_count)
+          th.border-left-1 colspan="4"= Reporting::InternshipOffer.i18n_attribute(:total_convention_signed_applications_count)
         tr.bg-light
           th.border-left-1
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
+
           th= Reporting::InternshipOffer.i18n_attribute(:total_male_applications_count)
           th= Reporting::InternshipOffer.i18n_attribute(:total_female_applications_count)
           th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
+          th
+            accr title="Cordée de la réussite, parcours d'éxcellence"= Reporting::InternshipOffer.i18n_attribute(:total_custom_track_convention_signed_applications_count)
           th= Reporting::InternshipOffer.i18n_attribute(:total_male_convention_signed_applications_count)
           th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
 

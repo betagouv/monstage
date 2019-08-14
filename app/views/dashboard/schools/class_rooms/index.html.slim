@@ -11,7 +11,7 @@
         - cols.map.with_index do |col, i|
           th class="align-top #{i.zero? ? '' : 'text-center'}"
             small= col
-    tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms), locals: { school: @school, cols: cols }
+    tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms.order(:name)), locals: { school: @school, cols: cols }
 
   - if can?(:create, ClassRoom)
     .col-12

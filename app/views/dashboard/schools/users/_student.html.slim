@@ -8,18 +8,45 @@ tr class="test-student-#{student.id}"
           .d-block.d-sm-none= Presenters::User.new(user: student).short_name
       .col-3.d-sm-none.text-right= link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'small'
 
-  td data-head="#{cols[1]}" id="has_parental_consent"
-    - if student.has_parental_consent
-      i.fas.fa-check
-    - elsif can?(:update, student)
-      = button_tag type: "button", data: { toggle: 'modal', target: "#approve-student-#{student.id}", turbolinks: false }, class: 'btn btn-warning btn-sm mx-1' do
-        | Valider
+  td data-head="#{cols[1]}" class="has_parental_consent"
+    - if can?(:update, student) && student.has_parental_consent
+      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: false }), method: :patch, class: 'mx-1' do
+        span.fa-stack
+          i.fas.fa-square.fa-stack-2x
+          i.fas.fa-check.fa-stack-1x.fa-inverse
+    - elsif can?(:update, student) && !student.has_parental_consent
+      = link_to "#approve-student-#{student.id}", data: { toggle: 'modal', target: "#approve-student-#{student.id}", turbolinks: false }, class: 'mx-1' do
+        span.fa-stack
+          i.far.fa-square.fa-stack-2x
+    - elsif student.has_parental_consent
+      span.fa-stack
+        i.fas.fa-square.fa-stack-2x
+        i.fas.fa-check.fa-stack-1x.fa-inverse
     - else
-      i.fas.fa-times
+      span.fa-stack
+        i.far.fa-square.fa-stack-2x
 
-  td data-head="#{cols[2]}"
+  td data-head="#{cols[2]}" class="is_custom_track"
+    - if can?(:update, student) && student.custom_track?
+      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false }), method: :patch, class: 'mx-1' do
+        span.fa-stack
+          i.fas.fa-square.fa-stack-2x
+          i.fas.fa-check.fa-stack-1x.fa-inverse
+    - elsif can?(:update, student) && !student.custom_track?
+      = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true }), method: :patch, class: 'mx-1' do
+        span.fa-stack
+          i.far.fa-square.fa-stack-2x
+    - elsif student.custom_track?
+      span.fa-stack
+        i.fas.fa-square.fa-stack-2x
+        i.fas.fa-check.fa-stack-1x.fa-inverse
+    - else
+      span.fa-stack
+        i.far.fa-square.fa-stack-2x
+
+  td data-head="#{cols[3]}"
     span.applications_count= student_stats.applications_count
-  td.half-height data-head="#{cols[3]}"
+  td.half-height data-head="#{cols[4]}"
     .row
       .col-6
         small Neg
@@ -29,9 +56,9 @@ tr class="test-student-#{student.id}"
         small Pos
         br
         span.applications_approved_count.text-success= student_stats.applications_approved_count
-  td data-head="#{cols[4]}"
+  td data-head="#{cols[5]}"
     - # span.applications_with_convention_signed_count= student_stats.applications_with_convention_signed_count
     span.applications_with_convention_signed_count –
-
-tr style="height: 0; width: 0;"
-  td style="padding: 0; margin: 0;" colspan="5"= render "dashboard/schools/users/approve_student_modal", student: student
+- unless student.has_parental_consent
+  tr style="height: 0; width: 0;"
+    td style="padding: 0; margin: 0;" colspan="#{cols.size}"= render "dashboard/schools/users/approve_student_modal", student: student

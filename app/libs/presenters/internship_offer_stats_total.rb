@@ -34,6 +34,10 @@ module Presenters
       offers.sum(&:total_female_convention_signed_applications_count)
     end
 
+    def total_custom_track_convention_signed_applications_count
+      offers.sum(&:total_custom_track_convention_signed_applications_count)
+    end
+
     attr_reader :offers
     def initialize(offers:)
       @offers = offers

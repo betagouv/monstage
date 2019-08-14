@@ -363,7 +363,8 @@ CREATE TABLE public.internship_offers (
     total_male_applications_count integer DEFAULT 0 NOT NULL,
     total_male_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     remote_id character varying,
-    permalink character varying
+    permalink character varying,
+    total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -564,7 +565,8 @@ CREATE TABLE public.users (
     has_parental_consent boolean DEFAULT false,
     operator_id bigint,
     api_token character varying,
-    handicap text
+    handicap text,
+    custom_track boolean DEFAULT false NOT NULL
 );
 
 
@@ -1278,6 +1280,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190802142452'),
 ('20190802163449'),
 ('20190807122943'),
-('20190814075600');
+('20190814075600'),
+('20190814124142'),
+('20190814152258');
 
 
