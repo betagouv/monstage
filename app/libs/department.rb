@@ -123,6 +123,8 @@ class Department
     list = only ? MAP.select { |code, _name| only.include?(code) }
                 : MAP.map
     list.map { |_code, name| name }
+        .uniq
+        .sort
   end
 
   # edge case for [971->978]
