@@ -10,7 +10,7 @@ module Users
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
 
-    scope :targeted_internship_offers, lambda { |user:|
+    scope :targeted_internship_offers, lambda { |user:, coordinates:|
       mines_and_sumbmitted_to_operator(user: user)
     }
 

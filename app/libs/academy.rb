@@ -35,8 +35,8 @@ class Academy
     'Académie de La Réunion' => %w[974]
   }.freeze
 
-  def self.names
-    MAP.keys
+  def self.to_select(only: nil)
+    MAP.keys.sort
   end
 
   def self.departments_by_name(academy:)

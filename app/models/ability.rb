@@ -36,7 +36,10 @@ class Ability
       internship_application.student.id == user.id
     end
     can %i[show update], User
-    can %i[choose_school choose_class_room choose_gender_and_birthday], :sign_up
+    can %i[choose_school
+           choose_class_room
+           choose_gender_and_birthday
+           choose_handicap], :sign_up
     can_read_dashboard_students_internship_applications(user: user)
   end
 

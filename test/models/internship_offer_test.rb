@@ -60,4 +60,13 @@ class InternshipOfferTest < ActiveSupport::TestCase
       assert_equal 1, InternshipOffer.available_in_the_future.count
     end
   end
+
+  test '.has_operator?' do
+    operator = create(:operator)
+    internship_offer = create(:internship_offer, operators: [operator])
+    assert internship_offer.has_operator?
+
+    internship_offer = create(:internship_offer)
+    refute internship_offer.has_operator?
+  end
 end

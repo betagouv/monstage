@@ -5,7 +5,7 @@ module BaseInternshipOffer
 
   DESCRIPTION_MAX_CHAR_COUNT = 500
   OLD_DESCRIPTION_MAX_CHAR_COUNT = 715 # here for backward compatibility
-
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   included do
     include Discard::Model
 
@@ -16,7 +16,7 @@ module BaseInternshipOffer
               presence: true
 
     validates :description, presence: true, length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT }
-    validates :employer_description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
+    validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
 
     validates :weeks, presence: true
 

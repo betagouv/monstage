@@ -5,54 +5,154 @@
   = form.hidden_field :employer_id, value: current_user.id
   = form.hidden_field :employer_type, value: "User"
 
-  small.form-text.text-muted.mt-0.mb-3
-    = link_to "Exemple d'offre idéale 1", exemple_offre_ideale_ministere_path, title: "Exemple d'offre idéale - Agriculture (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
-    = " – "
-    = link_to "Exemple d'offre idéale 2", exemple_offre_ideale_sport_path, title: "Exemple d'offre idéale - Sport (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
+  fieldset.mt-4
+    legend Qui êtes-vous ?
 
-
-  .form-group
-    = form.label :title do
-      = "Intitulé"
-      small.form-text.text-muted Saisissez un titre court mettant l'offre en avant : "Observation du métier de comptable", "Découverte d'une entreprise de bâtiment"...
-      = form.rg2a_required_content_tag
-
-    = form.text_field :title, class: "form-control col-lg-6", required: true
-
-  .form-group data-controller="help"
-    = form.label :description do
-      = 'Description'
-      = form.rg2a_required_content_tag
-      a.btn.btn-link.py-0 data-action="click->help#toggle"
-        i.fa.fa-question-circle
-
-    .help-sign-content.d-none data-target="help.content"
-      ol.my-3
-        li Décrivez le site (le lieu) qui va accueillir le stagiaire et l'activité du site, notamment si l'entreprise a plusieurs sites
-        li Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage?
-        li Donnez 3 qualités requises (aimer bricoler, être bavard, aimer écrire)
-        li N'oubliez pas que vous vous adressez à des enfants de 14/15 ans, alors utilisez des mots simples
-        li
-          = link_to "Aide à la rédaction ", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
-
-    = form.text_area :description, class: "form-control col-lg-6", required: true, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
-
-  .form-group
-    = form.label :sector_id do
-      = "Secteur d'activité"
-      = form.rg2a_required_content_tag
-    = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
-
-  fieldset data={controller: 'algolia-place'}
-    legend Où?
-    .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
-      = form.label :autocomplete do
-        = "Adresse du lieu où se déroule le stage"
+    .form-group
+      = form.label :employer_name do
+        = "Nom de la structure ou du service proposant l'offre"
         = form.rg2a_required_content_tag
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
-      input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
-      input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
-    .form-group.d-none
+      = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
+
+    .form-group
+      div.label
+        = "Secteur"
+        = form.rg2a_required_content_tag
+
+      .custom-control.custom-radio
+        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: @internship_offer.new_record? ? false : @internship_offer.is_public, data: { action: 'change->internship-form#handleClickIsPublic' }
+        = form.label :is_public_true, 'public', class: 'custom-control-label'
+      .custom-control.custom-radio
+        = form.radio_button :is_public, false, class: 'custom-control-input', required: true, checked: @internship_offer.new_record? ? false : !@internship_offer.is_public, data: { action: 'change->internship-form#handleClickIsPublic' }
+        = form.label :is_public_false, 'privé', class: 'custom-control-label'
+
+    div class="form-group form-group-select-group #{@internship_offer.new_record? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
+      = form.label :group, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
+      = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
+
+  fieldset.mt-4
+    legend Accompagnement (facultatif)
+
+    p.text-muted
+      | Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et collaboratrices et/ou dans l'accueil des élèves, vous pouvez soliciter un opérateur.
+      = " "
+      = link_to "En savoir plus sur les opérateurs", operators_path, target: '_blank', rel: "external noopener noreferrer", title: 'En savoir plus (nouvelle fenêtre)'
+
+    .form-group
+      .label
+        = "Un opérateur vous accompagne-t-il ?"
+        = form.rg2a_required_content_tag
+
+      .custom-control.custom-radio
+        = form.radio_button :with_operator, true, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? ? false : @internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.label :with_operator_true, 'Oui', class: 'custom-control-label'
+      .custom-control.custom-radio
+        = form.radio_button :with_operator, false, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? ? false : !@internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.label :with_operator_false, 'Non', class: 'custom-control-label'
+      .custom-control.custom-radio
+        = form.radio_button :with_operator, :unknown, class: 'custom-control-input', required: true, checked: @internship_offer.new_record?, data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.label :with_operator_unknown, 'Je ne sais pas', class: 'custom-control-label'
+
+    div class="form-group operators-check-boxes #{@internship_offer.has_operator? ? '' : 'd-none'}" data-target="internship-form.operatorsBlock"
+      .label
+        = "Quel opérateur vous accompagne"
+
+      .custom-control.custom-checkbox.custom-control-checkbox-list
+        - Operator.order(:name).all.map do| operator|
+          .custom-control.custom-checkbox
+            = form.check_box :operator_ids, {multiple: true,  class: 'custom-control-input', disabled: current_user.is_a?(Users::Operator), data: { target: 'internship-form.operator' } }, operator.id, false
+            = form.label :operator_ids, for: "internship_offer_operator_ids_#{operator.id}", class: 'custom-control-label' do
+              = operator.name
+
+  fieldset.mt-4
+    legend Offre de stage
+    .form-group
+      = form.label :title do
+        = "Intitulé"
+        small.form-text.text-muted
+          | Le stage de 3e est un temps de découverte et d'observation des metiers. Évitez les termes génériques "Observation de ..." ou "Immersion dans ..." et indiquez plutôt
+          = " "
+          strong le métier à découvrir :
+          = " "
+          | "Animateur sportif" ou "Metiers de l'hôtellerie".
+        = form.rg2a_required_content_tag
+
+      = form.text_field :title, class: "form-control col-lg-6", required: true
+
+    .form-group
+      div.label
+        = "Type de stage"
+        = form.rg2a_required_content_tag
+
+      .custom-control.custom-radio
+        = radio_button_tag :internship_type,
+                            true,
+                            @internship_offer.new_record? ? false : @internship_offer.is_individual?,
+                            class: 'custom-control-input',
+                            disabled: !@internship_offer.is_fully_editable?,
+                            data: { action: "change->internship-form#toggleInternshipType" }
+        = label_tag :internship_type_true,
+                     'individuel (un seul élève par stage)',
+                     class: 'custom-control-label'
+      .custom-control.custom-radio
+        = radio_button_tag :internship_type,
+                            false,
+                            @internship_offer.new_record? ? false : !@internship_offer.is_individual?,
+                            class: 'custom-control-input',
+                            disabled: !@internship_offer.is_fully_editable?,
+                            data: { action: "change->internship-form#toggleInternshipType" }
+        = label_tag :internship_type_false,
+                     'collectif (un groupe de plusieurs élèves)',
+                     class: 'custom-control-label'
+
+    div class="form-group #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
+      = form.label :max_candidates do
+        = 'Nombre de stagiaires maximum par groupe'
+        small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
+      = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !@internship_offer.is_fully_editable?, data: { target: "internship-form.maxCandidatesInput" }
+
+    .form-group
+      = form.label :description do
+        = 'Description'
+        = form.rg2a_required_content_tag
+        small.form-text.text-muted
+          | N'oubliez pas que
+          = " "
+          strong vous vous adressez à des enfants de 13/14 ans
+          | ; utilisez des mots simples. Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage ? Donnez 3 qualités requises (aimer bricoler, être bavard, aimer écrire ...).
+          = " "
+          = link_to "Besoin d'aide à la rédaction ?", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
+
+      = form.text_area :description, class: "form-control col-lg-6", required: true, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+
+    .form-group
+      = form.label :sector_id do
+        = "Secteur d'activité du stage"
+        = form.rg2a_required_content_tag
+        small.form-text.text-muted Sélectionner le secteur d'activité correspondant au stage décrit
+      = form.select :sector_id, options_from_collection_for_select(Sector.all, :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
+
+  fieldset.mt-4 data={controller: 'algolia-place'}
+    legend Où, Quand, Comment ?
+    div data={target: 'algolia-place.autocompleteFormGroup'} data-controller="help"
+      .form-row
+        .col-sm-12
+          .form-group
+            = form.label :autocomplete do
+              = "Adresse du lieu où se déroule le stage"
+              = form.rg2a_required_content_tag
+              a.btn-absolute.btn.btn-link.py-0 data-action="click->help#toggle"
+                i.fa.fa-question-circle
+
+            .d-none.my-1.p-2.help-sign-content data-target="help.content"
+              | Si vous proposez le même stage dans un autre établissement, déposez une offre par étabilissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse ou l'évève devra se rendre au premier jour
+
+            = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
+
+            input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+            input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
+
+
       .form-row
         .col-sm-6
           .form-group
@@ -72,6 +172,7 @@
               = 'Code postal'
               = form.rg2a_required_content_tag
             = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+
       .form-row
         .col-sm-4
           .form-group
@@ -79,121 +180,71 @@
               = 'Département'
               = form.rg2a_required_content_tag
             = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
-  fieldset
-    legend Quand ?
-    = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
-  fieldset
-    legend Quoi ?
+
+
     .form-group
-      div.label
-        = "Type de stage"
-        = form.rg2a_required_content_tag
+      = form.label :employer_description do
+        = "Description de l'organisme accueillant (facultatif)"
+        small.form-text.text-muted Décrivez en 2 lignes l'établissement ou le service qui accueille l'élève : ses missions, ses spécialités
+      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: BaseInternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
 
-      .custom-control.custom-radio
-        = radio_button_tag :internship_type,
-                            true,
-                            @internship_offer.is_individual?,
-                            class: 'custom-control-input',
-                            disabled: !@internship_offer.is_fully_editable?,
-                            data: { action: "change->internship-form#toggleInternshipType" }
-        = label_tag :internship_type_true,
-                     'Individuel',
-                     class: 'custom-control-label'
-      .custom-control.custom-radio
-        = radio_button_tag :internship_type,
-                            false,
-                            !@internship_offer.is_individual?,
-                            class: 'custom-control-input',
-                            disabled: !@internship_offer.is_fully_editable?,
-                            data: { action: "change->internship-form#toggleInternshipType" }
-        = label_tag :internship_type_false,
-                     'Collectif',
-                     class: 'custom-control-label'
-
-    div class="form-group #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
-      = form.label :max_candidates do
-        = 'Nombre de stagiaires maximum par groupe'
-        small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
-      = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !@internship_offer.is_fully_editable?, data: { target: "internship-form.maxCandidatesInput" }
     .form-group
-      = form.label :max_internship_week_number do
-        = "Nombre de stages proposés dans l'année"
-        small.form-text.text-muted Indiquez le nombre de stages que vous pouvez effectuer dans l'année
-        = form.rg2a_required_content_tag
-
-      = form.number_field :max_internship_week_number, value: @internship_offer.max_internship_week_number, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true, disabled: !@internship_offer.is_fully_editable?
+      = form.label :employer_website do
+        = 'Site web (facultatif)'
+        small.form-text.text-muted Quel site web l'élève peut visiter pour découvrir son lieu de stage
+      = form.url_field :employer_website, class: 'form-control col-lg-6', placeholder: @internship_offer.employer_website || "https://"
 
     .form-group
       = label_tag "is_reserved" do
         = check_box_tag :is_reserved, @internship_offer.school.present?, @internship_offer.school.present?, id: "is_reserved", data: {action: "change->internship-form#toggleSelectSchoolBlock"}
         span.ml-1= "Ce stage est reservé à un collège uniquement ?"
         small.form-text.text-muted Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
-    div data-target="internship-form.selectSchoolBlock" class="#{@internship_offer.school.present? ? '' : 'd-none'}"
 
-    = react_component("AutocompleteSchool",
-                      label:"Ville ou se situe le collège auquel le stage est reservé",
-                      required:false,
-                      resourceName: :internship_offer,
-                      selectClassRoom: false,
-                      existingSchool: @internship_offer.school.as_json)
+    div data-target="internship-form.selectSchoolBlock" class="form-group #{@internship_offer.school.present? ? '' : 'd-none'}"
+      = react_component("AutocompleteSchool",
+                        classes: 'col-lg-6',
+                        label:"Ville ou se situe le collège auquel le stage est reservé",
+                        required:false,
+                        resourceName: :internship_offer,
+                        selectClassRoom: false,
+                        existingSchool: @internship_offer.school.as_json)
 
-  fieldset
-    legend Tuteur
+    = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
+
+    .form-group
+      = form.label :max_internship_week_number do
+        = "Nombre d'occurences de ce stage"
+        small.form-text.text-muted Combien de fois pouvez-vous recevoir ce stage dans l'année ?
+        = form.rg2a_required_content_tag
+
+      = form.number_field :max_internship_week_number, value: @internship_offer.max_internship_week_number, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true, disabled: !@internship_offer.is_fully_editable?
+
+  fieldset.mt-4
+    legend Tuteur/trice de stage
+    p.text-muted Le tuteur ou la tutrice est la personne référente sur ce stage. Ses coordonnées ne seront pas publiées en ligne. Elle serviront uniquement à ceux qui accompagnent les élèves à savoir qui joindre en cas d'urgence
+
     .form-group
       = form.label :tutor_name do
-        = 'Prénom et nom'
+        = 'Nom du tuteu/trice'
         = form.rg2a_required_content_tag
 
-      = form.text_field :tutor_name, class: 'form-control col-lg-6', required: true
-    .form-group
-      = form.label :tutor_email do
-        = 'Adresse électronique (email)'
-        = form.rg2a_required_content_tag
-
-      = form.email_field :tutor_email, class: 'form-control col-lg-6', required: true
+      = form.text_field :tutor_name, class: 'form-control col-lg-6', required: true, value: @internship_offer.tutor_name ||current_user.name
     .form-group
       = form.label :tutor_phone do
-        = "Téléphone"
-        small.form-text.text-muted Ce numéro ne sera pas visible en ligne, il servira uniquement à ceux qui accompagnent les élèves à vous joindre en cas d'urgence.
+        = "Téléphone (ex : 06 12 34 56 78)"
+        small.form-text.text-muted Pour plus de facilité. de contact, indiquez le numéro de mobile
         = form.rg2a_required_content_tag
       = form.phone_field :tutor_phone, class: 'form-control col-lg-6', required: true
 
-  fieldset
-    legend Entreprise ou Administration
     .form-group
-      div.label
-        = "Secteur"
+      = form.label :tutor_email do
+        = 'Adresse électronique (ex : mon@exemple.fr)'
         = form.rg2a_required_content_tag
 
-      .custom-control.custom-radio
-        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: true, data: { action: 'change->internship-form#handleClickIsPublic' }
-        = form.label :is_public_true, 'Public', class: 'custom-control-label'
-      .custom-control.custom-radio
-        = form.radio_button :is_public, false, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
-        = form.label :is_public_false, 'Privé', class: 'custom-control-label'
-    .form-group
-      = form.label :employer_name do
-        = "Nom de l'entreprise ou de l'administration"
-        = form.rg2a_required_content_tag
-      = form.text_field :employer_name, class: 'form-control col-lg-6', required: true
-    .form-group
-      = form.label :employer_description, "Activités de l’entreprise ou du service"
-      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: BaseInternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+      = form.email_field :tutor_email, class: 'form-control col-lg-6', required: true, value: @internship_offer.tutor_email ||current_user.email
 
-    .form-group
-      = form.label :employer_website, 'Site web'
-      = form.url_field :employer_website, class: 'form-control col-lg-6'
+  .actions
+    p.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment
 
-    .form-group
-      = form.label :group, "Groupe ou Institution de tutelle"
-      = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
-    fieldset
-      legend Accompagnement
-      .form-group
-        = form.label :operator_ids do
-          = "Opérateurs"
-          small.form-text.text-muted Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et/ou dans l'accueil des élèves, vous pouvez sollicitez ces opérateurs. #{link_to 'En savoir plus.', operators_path, target: '_blank', rel: "external noopener noreferrer", title: 'En savoir plus (nouvelle fenêtre)'}
-        = form.select :operator_ids, options_from_collection_for_select(Operator.order(:name).all, :id, :name, @internship_offer.operator_ids), {include_hidden: false}, class: "form-control col-lg-6", multiple: true, disabled: current_user.is_a?(Users::Operator)
-
-
-  = form.submit 'Soumettre', class: 'btn btn-warning'
+    = form.submit "Enregistrer et publier l'offre", class: 'btn btn-warning'
+    = link_to "Annuler", current_action?("new") || current_action?("create") ? dashboard_internship_offers_path : dashboard_internship_offer_path(@internship_offer), title: 'Retourner sur mes stages', class: 'ml-3 btn-back'

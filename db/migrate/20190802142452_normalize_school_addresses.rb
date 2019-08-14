@@ -1,5 +1,5 @@
 class NormalizeSchoolAddresses < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'normalize-school-addresses-components.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports','normalize-school-addresses-components.dump')
 
   def up
     return if Rails.env.test?

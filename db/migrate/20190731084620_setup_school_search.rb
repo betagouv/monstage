@@ -10,7 +10,6 @@ class SetupSchoolSearch < ActiveRecord::Migration[5.2]
     add_index :schools, :city_tsv, using: 'gin'
 
     now = Time.current.to_s(:db)
-
   end
 
   def down

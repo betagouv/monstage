@@ -13,6 +13,8 @@ module Users
     has_many :internship_applications, dependent: :destroy, foreign_key: 'user_id'
     after_initialize :init
 
+    attr_reader :handicap_present
+
     def has_zero_internship_application?
       internship_applications.all
                              .size

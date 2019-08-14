@@ -20,16 +20,17 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         select sectors.first.name, from: 'internship_offer_sector_id'
         find(:css, "label[for=internship_offer_week_ids_#{available_weeks.first.id}").click
         find(:css, "label[for=internship_offer_week_ids_#{available_weeks.last.id}").click
-        fill_in 'Prénom et nom', with: 'Brice Durand'
-        fill_in 'Adresse électronique', with: 'le@brice.durand'
-        fill_in 'Téléphone', with: '0639693969'
-        fill_in "Nom de l'entreprise ou de l'administration", with: 'BetaGouv'
-        fill_in 'Activités', with: "On fait des startup d'état qui déchirent"
-        fill_in 'Site web', with: 'https://beta.gouv.fr/'
+        fill_in 'Nom du tuteu/trice', with: 'Brice Durand'
+        fill_in 'Adresse électronique (ex : mon@exemple.fr)', with: 'le@brice.durand'
+        fill_in 'Téléphone (ex : 06 12 34 56 78)', with: '0639693969'
+        fill_in "Nom de la structure ou du service proposant l'offre", with: 'BetaGouv'
+        fill_in "Description de l'organisme accueillant (facultatif)", with: "On fait des startup d'état qui déchirent"
+        fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
+        find('label', text: 'public').click
         select Group::PUBLIC.first, from: 'internship_offer_group'
         fill_in 'Adresse du lieu où se déroule le stage', with: 'Paris, 13eme'
         page.all('.algolia-places div[role="option"]')[0].click
-        click_on 'Soumettre'
+        click_on "Enregistrer et publier l'offre"
       end
     end
     assert_equal employer, InternshipOffer.first.employer

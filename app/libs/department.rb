@@ -21,8 +21,6 @@ class Department
     '17' => 'Charente-Maritime',
     '18' => 'Cher',
     '19' => 'Corrèze',
-    '2A' => 'Corse-du-Sud',
-    '2B' => 'Haute-Corse',
     '21' => "Côte-d'Or",
     '22' => "Côtes-d'Armor",
     '23' => 'Creuse',
@@ -105,8 +103,10 @@ class Department
     '976' => 'Mayotte',
     '202' => 'Haute-Corse',
     '206' => 'Haute-Corse',
+    '2B' => 'Haute-Corse',
     '201' => 'Corse-du-Sud',
-    '200' => 'Corse-du-Sud'
+    '200' => 'Corse-du-Sud',
+    '2A' => 'Corse-du-Sud',
 
   }.freeze
 
@@ -122,7 +122,9 @@ class Department
   def self.to_select(only: nil)
     list = only ? MAP.select { |code, _name| only.include?(code) }
                 : MAP.map
-    list.map { |_code, name| name }
+    list.map { |code, name| "#{name}" }
+        .uniq
+        .sort
   end
 
   # edge case for [971->978]

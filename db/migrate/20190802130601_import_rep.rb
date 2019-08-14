@@ -1,15 +1,14 @@
 
 
 class ImportRep < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'geocode_cache_rep.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports', 'geocode_cache_rep.dump')
 
   def up
-
     add_column(:schools, :kind, :string)
     School.update_all(kind: :rep_plus)
     return if Rails.env.test?
     geocode_searches_with_caching do
-      CSV.foreach(Rails.root.join('db/college-rep.csv'), headers: { col_sep: ',' })
+      CSV.foreach(Rails.root.join('db/data_imports/college-rep.csv'), headers: { col_sep: ',' })
          .each
          .with_index do |row, i|
         next if i.zero?
@@ -20,7 +19,6 @@ class ImportRep < ActiveRecord::Migration[5.2]
           department: row['Départements '].strip,
           kind: :rep
         )
-        # byebug
         school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
         school.name = school.name.strip.split(' ').map(&:capitalize).join(' ')
         school.city = school.city.strip.split(' ').map(&:capitalize).join(' ')

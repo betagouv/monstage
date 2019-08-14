@@ -30,6 +30,10 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
         h3.h6 Langues
         p.word-breakable-content= internship_application.student.resume_languages
 
+      - if internship_application.student.handicap?
+        h3.h6 Besoin d'accompagnement
+        p.word-breakable-content.student-handicap= internship_application.student.handicap
+
       .actions
         - if internship_application.submitted?
           = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false

@@ -34,10 +34,10 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :school, optional: true # reserved to school
 
-  scope :for_user, lambda { |user:|
+  scope :for_user, lambda { |user:, coordinates:|
     return merge(all) unless user # fuck it ; should have a User::Visitor type
 
-    merge(user.class.targeted_internship_offers(user: user))
+    merge(user.class.targeted_internship_offers(user: user, coordinates: coordinates))
   }
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -58,6 +58,8 @@ class InternshipOffer < ApplicationRecord
   before_create :reverse_academy_by_zipcode
   paginates_per PAGE_SIZE
 
+  attr_reader :with_operator
+
   def is_individual?
     max_candidates == 1
   end
@@ -68,6 +70,10 @@ class InternshipOffer < ApplicationRecord
 
   def is_fully_editable?
     internship_applications.empty?
+  end
+
+  def has_operator?
+    !operators.empty?
   end
 
   def init
