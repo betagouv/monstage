@@ -1,4 +1,4 @@
-<div class='onboarding-card'>
+<div class='onboarding-card' data-controller="signup">
   <header class="header-account">
     <h1 class="h2 text-center mb-0">Créer mon compte</h1>
   </header>
@@ -103,6 +103,26 @@
         <% end %>
         <%= f.select :operator_id, options_from_collection_for_select(Operator.all, :id, :name, resource.operator), { prompt: operator_options_for_default }, class: "form-control" %>
       </div>
+    <% end %>
+
+    <% if can?(:choose_handicap, :sign_up) %>
+      <div class="form-group">
+        <div class="custom-control custom-checkbox">
+          <%= f.check_box :handicap_present, class: 'custom-control-input', data: {action: "change->signup#toggleHandicap"} %>
+          <%= f.label :handicap_present, class: 'custom-control-label' do %>
+            J'ai besoin d'un aménagement
+          <% end %>
+          </div>
+      </div>
+
+      <div class="form-group d-none" data-target="signup.handicapGroup">
+        <%= f.label :handicap do %>
+          Mon handicap
+          <%= f.rg2a_required_content_tag %>
+        <% end %>
+        <%= f.text_field :handicap, class: 'form-control' %>
+      </div>
+
     <% end %>
 
     <div class="actions d-flex d-sm-block text-center">

@@ -19,6 +19,8 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Choisir un mot de passe/
     assert_select 'label', /Confirmer le mot de passe/
+    assert_select 'div', /J'ai besoin d'un aménagement/
+    assert_select 'label', /Mon handicap/
   end
 
   test 'POST Create Student without class fails' do
@@ -50,7 +52,8 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             gender: 'm',
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
-            password_confirmation: 'okokok'
+            password_confirmation: 'okokok',
+            handicap: 'cotorep'
           }
         }
       )
@@ -66,5 +69,6 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal birth_date.day, created_student.birth_date.day
     assert_equal 'm', created_student.gender
     assert_equal 'fourcade.m@gmail.com', created_student.email
+    assert_equal 'cotorep', created_student.handicap
   end
 end
