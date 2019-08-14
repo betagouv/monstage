@@ -14,7 +14,7 @@ module Users
     end
 
     def dashboard_name
-      'Mes stages'
+      'Mes offres'
     end
   end
 end
