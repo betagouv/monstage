@@ -41,6 +41,10 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'm'
   end
 
+  def student_is_custom_track?
+    student.custom_track?
+  end
+
   def internship_offer_week_has_spots_left
     unless internship_offer_week&.has_spots_left?
       errors[:base] << "Impossible de candidater car l'offre est déjà pourvue"
