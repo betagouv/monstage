@@ -9,15 +9,16 @@ module Reporting
     belongs_to :sector
     delegate :name, to: :sector, prefix: true
 
+    # beware, order matters on csv export
     AGGREGATE_FUNCTIONS = {
       report_total_count: 'sum(max_internship_week_number * max_candidates)',
       total_applications_count: 'sum(total_applications_count)',
       total_male_applications_count: 'sum(total_male_applications_count)',
       total_female_applications_count: 'sum(total_applications_count) - sum(total_male_applications_count)',
       total_convention_signed_applications_count: 'sum(convention_signed_applications_count)',
+      total_custom_track_convention_signed_applications_count: 'sum(total_custom_track_convention_signed_applications_count)',
       total_male_convention_signed_applications_count: 'sum(total_male_convention_signed_applications_count)',
       total_female_convention_signed_applications_count: 'sum(convention_signed_applications_count) - sum(total_male_convention_signed_applications_count)',
-      total_custom_track_convention_signed_applications_count: 'sum(total_custom_track_convention_signed_applications_count)',
     }.freeze
 
     def self.aggregate_functions_to_sql_select
