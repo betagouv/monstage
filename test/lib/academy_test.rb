@@ -19,4 +19,9 @@ class AcademyTest < ActiveSupport::TestCase
     assert_equal "Académie d'Amiens", Academy.lookup_by_zipcode(zipcode: '60580')
     assert_equal "Académie d'Aix-Marseille", Academy.lookup_by_zipcode(zipcode: '13001')
   end
+
+  test '.to_select is sorted by alnum' do
+    assert_equal 'Académie d\'Aix-Marseille', Academy.to_select.first
+    assert_equal 'Académie de la Guyane', Academy.to_select.last
+  end
 end
