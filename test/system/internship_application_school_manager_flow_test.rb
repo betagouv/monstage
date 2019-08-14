@@ -25,8 +25,8 @@ class InternshipApplicationSchoolManagerFlowTest < ApplicationSystemTestCase
 
     # fill in application form
     select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
-    select student_1.name, from: 'internship_application_student_ids'
-    select student_2.name, from: 'internship_application_student_ids'
+    find(:css, "label[for=internship_application_student_ids_#{student_1.id}]").click
+    find(:css, "label[for=internship_application_student_ids_#{student_2.id}]").click
 
     assert_changes lambda {
                      InternshipApplication.where(aasm_state: :approved)

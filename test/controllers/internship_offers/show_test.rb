@@ -52,7 +52,7 @@ module InternshipOffers
                                          count: 0
       assert_template 'internship_applications/_school_manager_form'
       assert_select 'form[id=?]', 'new_internship_application'
-      assert_select 'select[id=internship_application_student_ids][multiple]'
+      assert_select "input[id=internship_application_student_ids_#{student.id}][type=checkbox]"
       assert_select 'span.h1-label', text: "Inscrire des élèves"
       assert_select '.btn-warning', text: "Inscrire des élèves"
       assert_select 'textarea[id=internship_application_motivation]', count: 0
