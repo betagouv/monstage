@@ -201,6 +201,7 @@ ActiveRecord::Schema.define(version: 2019_08_07_122943) do
     t.bigint "operator_id"
     t.string "api_token"
     t.text "handicap"
+    t.boolean "custom_track", default: false, null: false
     t.index ["api_token"], name: "index_users_on_api_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
