@@ -27,8 +27,9 @@ module Builders
       success = true
       authorize! :apply_in_bulk, internship_offer
       internship_applications = []
-      params[:student_ids].map do |student_id|
-        next if student_id.blank?
+      params[:student_ids].compact
+                          .reject{|student_id| student_id == "0"}
+                          .map do |student_id|
         unit_params = params.except(:student_ids)
                             .merge(user_id: student_id)
         internship_application = InternshipApplication.new(unit_params)
