@@ -35,8 +35,8 @@ module Dashboard
         school = create(:school)
         class_room = create(:class_room, school: school)
         students = [
-          create(:student, class_room: class_room, school: school),
-          create(:student, class_room: class_room, school: school),
+          create(:student, class_room: class_room, school: school, has_parental_consent: true),
+          create(:student, class_room: class_room, school: school, custom_track: true),
           create(:student, class_room: class_room, school: school)
         ]
         sign_in(create(:school_manager, school: school))
@@ -45,9 +45,20 @@ module Dashboard
         students.map do |student|
           assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
           if student.has_parental_consent?
-            assert_select ".test-student-#{student.id} .fas.fa-check", 1
+            assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-square", 1
+            assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-check", 1
+            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: false })
           else
-            assert_select ".test-student-#{student.id} .fas.fa-times", 1
+            assert_select ".test-student-#{student.id} .has_parental_consent .far.fa-square", 1
+            assert_select "a[href=?]", "#approve-student-#{student.id}"
+          end
+          if student.custom_track?
+            assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
+            assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-check", 1
+            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
+          else
+            assert_select ".test-student-#{student.id} .is_custom_track .far.fa-square", 1
+            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
           end
         end
       end

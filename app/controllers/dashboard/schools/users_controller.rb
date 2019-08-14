@@ -41,7 +41,7 @@ module Dashboard
       private
 
       def user_params
-        params.require(:user).permit(:has_parental_consent)
+        params.require(:user).permit(:has_parental_consent, :custom_track)
       end
     end
   end

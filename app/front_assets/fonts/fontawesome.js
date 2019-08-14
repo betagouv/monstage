@@ -23,6 +23,7 @@ import { faAngleLeft,
          faPen,
          faPlus,
          faSpinner,
+         faSquare as faSquareSolid,
          faQuestionCircle,
          faSignature,
          faSmile,
@@ -32,7 +33,8 @@ import { faAngleLeft,
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import { faCircle,
-         faFlag } from '@fortawesome/free-regular-svg-icons'
+         faFlag,
+         faSquare as faSquareRegular } from '@fortawesome/free-regular-svg-icons'
 
 // avoid SVG flickering
 // see: https://github.com/FortAwesome/Font-Awesome/issues/11924
@@ -60,6 +62,8 @@ library.add(faAngleLeft,
             faPen,
             faPlus,
             faSpinner,
+            faSquareRegular,
+            faSquareSolid,
             faQuestionCircle,
             faSignature,
             faSmile,

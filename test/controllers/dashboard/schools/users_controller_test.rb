@@ -50,6 +50,17 @@ module Dashboard
         assert student.reload.has_parental_consent
       end
 
+      test 'PATCH #update as main teacher should change custom track' do
+        school = create(:school, :with_school_manager)
+        main_teacher = create(:main_teacher, school: school)
+        student = create(:student, school: school, custom_track: false)
+
+        sign_in(main_teacher)
+        patch dashboard_school_user_path(school, student, params: { user: { custom_track: true } }), headers: { 'HTTP_REFERER' => root_path }
+
+        assert student.reload.custom_track
+      end
+
       #
       # index
       #
