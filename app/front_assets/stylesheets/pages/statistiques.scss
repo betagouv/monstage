@@ -12,10 +12,15 @@
 .bg-stats-filter{
   background-color: #eaeaea;
 }
+.table-statistics accr {
+  border-bottom: 1px dotted #4CA2CD;
+  cursor: help;
+}
 .custom-stats-checkbox{
   padding-top: $input-btn-padding-y;
   padding-bottom: $input-btn-padding-y;
 }
+
 .table-statistics {
   .table-blue{
     th { border-bottom: 2px solid #4CA2CD };
