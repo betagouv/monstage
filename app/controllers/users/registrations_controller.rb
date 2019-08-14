@@ -73,6 +73,7 @@ module Users
           school_id
           class_room_id
           operator_id
+          handicap
         ]
       )
     end
