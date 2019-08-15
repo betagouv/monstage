@@ -10,6 +10,7 @@ module Users
     #
     # end
     def confirmation_standby
+      flash.delete(:notice)
       @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
       @confirmable_user ||= nil
     end
