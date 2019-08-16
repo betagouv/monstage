@@ -63,6 +63,7 @@ class Ability
     can [:apply_in_bulk], InternshipOffer do |internship_offer|
       internship_offer.school_id == user.school_id
     end
+    can [:see_tutor], InternshipOffer
   end
 
   def main_teacher_abilities(user:)
@@ -81,6 +82,7 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
+    can [:see_tutor], InternshipOffer
   end
 
   def teacher_abilities(user:)

@@ -14,7 +14,8 @@
 
 .last-visible{
   position: relative;
-  padding: 0 1rem;
+  display: inline-block;
+
   &::before{
     display: block;
     position: absolute;

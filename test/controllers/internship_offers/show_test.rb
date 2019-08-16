@@ -56,6 +56,9 @@ module InternshipOffers
       assert_select 'span.h1-label', text: "Inscrire des élèves"
       assert_select '.btn-warning', text: "Inscrire des élèves"
       assert_select 'textarea[id=internship_application_motivation]', count: 0
+      assert_select 'strong.tutor_name', text: internship_offer.tutor_name
+      assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
+      assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]", text: internship_offer.tutor_email
     end
 
     test 'GET #show does not display application form for school_manager when internship_offer is not reserved to school' do
@@ -65,10 +68,15 @@ module InternshipOffers
       main_teacher = create(:main_teacher, class_room: class_room, school: school)
 
       sign_in(main_teacher)
-      get internship_offer_path(create(:internship_offer))
+      internship_offer = create(:internship_offer)
+      get internship_offer_path(internship_offer)
 
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 0
+      assert_select 'strong.tutor_name', text: internship_offer.tutor_name
+      assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
+      assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]",
+                    text: internship_offer.tutor_email
     end
 
     test 'GET #show as a student who can apply shows an enabled button with candidate label' do

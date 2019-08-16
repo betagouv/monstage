@@ -21,6 +21,7 @@ import { faAngleLeft,
          faMapMarker,
          faMapMarkerAlt,
          faPen,
+         faPhone,
          faPlus,
          faSpinner,
          faSquare as faSquareSolid,
@@ -29,11 +30,13 @@ import { faAngleLeft,
          faSmile,
          faTimes,
          faTrash,
+         faUser,
          faWheelchair } from '@fortawesome/free-solid-svg-icons'
 
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import { faCircle,
+         faEnvelope,
          faFlag,
          faSquare as faSquareRegular } from '@fortawesome/free-regular-svg-icons'
 
@@ -50,6 +53,8 @@ library.add(faAngleLeft,
             faChevronDown,
             faChevronLeft,
             faChevronRight,
+            faCircle,
+            faEnvelope,
             faExchangeAlt,
             faExclamationTriangle,
             faExternalLinkAlt,
@@ -61,6 +66,7 @@ library.add(faAngleLeft,
             faMapMarker,
             faMapMarkerAlt,
             faPen,
+            faPhone,
             faPlus,
             faSpinner,
             faSquareRegular,
@@ -70,7 +76,7 @@ library.add(faAngleLeft,
             faSmile,
             faTimes,
             faTrash,
-            faCircle,
+            faUser,
             faWheelchair);
 
 // makes it works with Turbolink on document mutation

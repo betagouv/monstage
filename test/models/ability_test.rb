@@ -73,6 +73,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))
+    assert(ability.can?(:see_tutor, InternshipOffer))
   end
 
   test 'MainTeacher' do
@@ -85,7 +86,9 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_class_room')
     assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:see_tutor, InternshipOffer))
   end
+
   test 'Teacher' do
     ability = Ability.new(build(:teacher))
     assert(ability.can?(:show, ClassRoom))
