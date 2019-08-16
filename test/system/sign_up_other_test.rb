@@ -6,7 +6,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until other creation' do
     school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_manager = create(:school_manager, school: school_1)
-    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait', city: 'Saint-Parfait')
+    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait')
     existing_email = 'fourcade.m@gmail.com'
     student = create(:student, email: existing_email)
     # go to signup as other

@@ -15,4 +15,11 @@ export default class extends Controller {
     hideElement($(this.containerFormTarget))
     showElement($(this.containerShowFormLinkTarget))
   }
+
+  connect() {
+    if (window.location.hash === '#internship-application-form') {
+      this.showForm()
+      window.location.hash = '#internship-application-form'
+    }
+  }
 }
