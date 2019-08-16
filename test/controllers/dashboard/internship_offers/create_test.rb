@@ -49,7 +49,12 @@ module InternshipOffers
     test 'POST #create as employer with invalid data' do
       sign_in(create(:employer))
       post(dashboard_internship_offers_path, params: { internship_offer: { title: 'hello' } })
-      assert_response :bad_request
+      assert_select "li label[for=internship_offer_coordinates]",
+                    text: "Veuillez saisir et sélectionner une adresse avec l'outil de complétion automatique"
+      assert_select "li label[for=internship_offer_zipcode]",
+                    text: "Veuillez reseigner le code postal de l'employeur"
+      assert_select "li label[for=internship_offer_city]",
+                    text: "Veuillez reseigner la ville l'employeur"
     end
   end
 end

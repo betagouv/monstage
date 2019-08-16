@@ -57,7 +57,7 @@ fr:
             employer_name:
               blank: "Veuillez saisir le nom de l'employeur"
             coordinates:
-              blank: 'Veuillez renseigner une adresse'
+              blank: "Veuillez saisir et sélectionner une adresse avec l'outil de complétion automatique"
             max_candidates:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
@@ -65,16 +65,25 @@ fr:
             description:
               blank: "Veuillez saisir une description pour l'offre"
               too_long: La description doit faire au maximum 500 caractères
-            street:
-              blank: "Veuillez saisir la rue de l'employeur"
             zipcode:
-              blank: "Veuillez saisir le code postal de l'employeur"
+              blank: "Veuillez reseigner le code postal de l'employeur"
             city:
-              blank: "Veuillez saisir la rue de la ville l'employeur"
+              blank: "Veuillez reseigner la ville l'employeur"
             sector:
-              required: "Veuillez choisir un secteur pour l'offre"
+              required: "Veuillez choisir un secteur pour l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
+            employer:
+              required: Veuillez choisir un compte responsable de l'offre
+            tutor_name:
+              blank: "Veuillez saisir un tuteur pour l'offre de stage"
+            tutor_phone:
+              blank: "Veuillez saisir le numéro de téléphone du tuteur de l'offre de stage"
+            tutor_email:
+              blank: "Veuillez saisir l'adresse électronique du tuteur de l'offre de stage"
+            public:
+              inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
+
         api/internship_offer:
           attributes:
             title:
