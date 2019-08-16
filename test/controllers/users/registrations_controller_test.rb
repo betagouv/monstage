@@ -8,11 +8,34 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to users_choose_profile_path
   end
 
-  test 'GET choose_profile' do
+  test 'GET #choose_profile' do
     get users_choose_profile_path
 
     assert_select 'a[href=?]', '/users/sign_up?as=Student'
     assert_select 'a[href=?]', '/users/sign_up?as=Employer'
     assert_select 'a[href=?]', '/users/sign_up?as=SchoolManager'
+  end
+
+  test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with pending account' do
+    email = 'fourcade.m@gmail.com'
+    create(:student, email: email, confirmed_at: nil)
+    get users_registrations_standby_path(email: email)
+    assert_response :success
+    assert_select '.alert.alert-warning', text: "Un message d'activation a été envoyé à #{email}.Veuillez suivre les instructions qu'il contient"
+  end
+
+  test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with confirmed account' do
+    email = 'fourcade.m@gmail.com'
+    create(:student, email: email, confirmed_at: Time.now)
+    get users_registrations_standby_path(email: email)
+    assert_response :success
+    assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{email}).Veuillez vous connecter"
+  end
+
+  test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with unknown account' do
+    email = 'fourcade.m@gmail.com'
+    get users_registrations_standby_path(email: email)
+    assert_response :success
+    assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au mail: #{email}.Veuillez créer un compte"
   end
 end
