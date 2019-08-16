@@ -16,5 +16,9 @@ module Users
     def dashboard_name
       'Mes offres'
     end
+
+    def account_link_name
+      'Mon compte'
+    end
   end
 end

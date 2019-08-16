@@ -10,7 +10,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#user_password[autofocus=autofocus]", count: 0
   end
 
-  test 'GET works' do
+  test 'GET with prefilled email works' do
     email = 'fourcade.m@gmail.com'
     get new_user_session_path(email: email)
     assert_response :success

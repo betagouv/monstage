@@ -31,6 +31,10 @@ class User < ApplicationRecord
     'Mon tableau'
   end
 
+  def account_link_name
+    'Mon profil'
+  end
+
   def default_account_section
     'identity'
   end
