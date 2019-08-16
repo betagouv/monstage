@@ -22,6 +22,10 @@ module Users
       url_helpers.account_path
     end
 
+    def dashboard_name
+      'Mes offres'
+    end
+
     private
 
     def set_api_token

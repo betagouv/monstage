@@ -4,13 +4,13 @@ nav.navbar.navbar-light.py-0
 
   ul.nav.nav-banner.float-xs-none.float-sm-right
     - if user_signed_in?
-      - unless current_user.is_a?(Users::Employer)
+      - if [current_user.is_a?(Users::Employer), current_user.is_a?(Users::Operator)].none?
         li.nav-item
           = link_to 'Recherche', internship_offers_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(internship_offers_path) || current_controller?(:internship_offers) ? 'active' : ''}"
       li.nav-item
-        = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{current_page?(dashboard_students_internship_applications_path(current_user)) || current_controller?(:internship_applications) ? 'active' : ''}"
+        = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
       li.nav-item
-        = link_to "Mon profil", account_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(account_path) || current_page?(account_path(section: :resume)) || current_page?(account_path(section: :identity)) || current_page?(account_path(section: :school)) ? 'active' : ''}"
+        = link_to "Mon profil", account_path, class: "nav-link pl-1 pr-1 py-4 #{account_controller?(user: current_user) ? 'active' : ''}"
     - else
       li.nav-item.d-none.d-sm-block
         = link_to 'Créer mon compte', new_user_registration_path, class: "btn btn-warning mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}", id: 'signup-header'

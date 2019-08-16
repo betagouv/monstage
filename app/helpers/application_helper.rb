@@ -8,6 +8,22 @@ module ApplicationHelper
     ''
   end
 
+  def custom_dashboard_controller?(user:)
+    user.custom_dashboard_paths
+        .map{ |path| current_page?(path) }
+        .any?
+  end
+
+  def account_controller?(user:)
+    [
+      current_page?(account_path),
+      current_page?(account_path(section: :resume)),
+      current_page?(account_path(section: :api)),
+      current_page?(account_path(section: :identity)),
+      current_page?(account_path(section: :school))
+    ].any?
+  end
+
   def onboarding_flow?
     devise_controller?
   end

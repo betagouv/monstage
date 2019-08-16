@@ -86,6 +86,11 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:index, ClassRoom))
   end
+  test 'Teacher' do
+    ability = Ability.new(build(:teacher))
+    assert(ability.can?(:show, ClassRoom))
+    assert(ability.can?(:index, ClassRoom))
+  end
 
   test 'Operator' do
     operator = create(:user_operator)
