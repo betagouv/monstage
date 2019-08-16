@@ -10,6 +10,20 @@
       - if internship_offer.school.present?
         span.badge.badge-cyan.px-3.py-2.ml-3
           | Stage reservé
+    p.font-weight-bold data-controller="collapsible-list"
+      = "Semaines : "
+      - weeks = current_user.respond_to?(:school) ? internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates).after_current_week : internship_offer.internship_offer_weeks
+      - weeks.take(6).map.with_index do |visible_week, i|
+        span data-target="collapsible-list.lastVisibleElement" class="#{i == 5 && weeks.size > 6 ? 'last-visible' : ''}"
+          = visible_week.human_select_text_method
+          = " – "
+      - if weeks.size > 6
+        a href="#showAll" data-turbolink="false" data-target="collapsible-list.showMoreButton" data-action="collapsible-list#showMore"= "Tout afficher"
+      - weeks.drop(6).map.with_index do |hidden_week, i|
+        span.d-none data-target="collapsible-list.hiddenElement"
+          = hidden_week.human_select_text_method
+          - if i < weeks.drop(6).size - 1
+            = " – "
 
 .row.bg-light.py-3
   .col-12
