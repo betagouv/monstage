@@ -1,0 +1,24 @@
+.onboarding-card
+  header.header-account
+    h1.h2.text-center.mb-0 Activation
+  - if !@confirmable_user
+    p.alert.alert-danger
+      = "Aucun compte n'est lié au mail: #{params[:email]}."
+      br
+      = "Veuillez "
+      = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
+
+  - elsif @confirmable_user.confirmed_at
+    p.alert.alert-success
+      = "Votre compte est déjà confirmé (#{params[:email]})."
+      br
+      = "Veuillez vous "
+      = link_to "connecter", new_user_session_path(email: params[:email]), class: 'text-white'
+
+  - else
+    p.alert.alert-warning
+      = "Un message d'activation a été envoyé à "
+      strong= params[:email]
+      = "."
+      br
+      | Veuillez suivre les instructions qu'il contient

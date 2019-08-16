@@ -18,7 +18,7 @@ module Users
 
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
-    rescue StandardError
+    rescue ActionController::UrlGenerationError
       url_helpers.account_path
     end
 

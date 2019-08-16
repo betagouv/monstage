@@ -9,6 +9,11 @@ module Users
     # def choose_profile
     #
     # end
+    def confirmation_standby
+      flash.delete(:notice)
+      @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
+      @confirmable_user ||= nil
+    end
 
     def resource_class
       UserManager.new.by_params(params: params)
@@ -89,8 +94,8 @@ module Users
     # end
 
     # The path used after sign up for inactive accounts.
-    # def after_inactive_sign_up_path_for(resource)
-    #   super(resource)
-    # end
+    def after_inactive_sign_up_path_for(resource)
+      users_registrations_standby_path(email: resource.email)
+    end
   end
 end

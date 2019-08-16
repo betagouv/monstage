@@ -25,12 +25,14 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST Create Student without class fails' do
     assert_difference('Users::Student.count', 0) do
-      post user_registration_path(params: { user: { email: 'fatou@snapchat.com',
-                                                    password: 'okokok',
-                                                    password_confirmation: 'okokok',
-                                                    first_name: 'Fatou',
-                                                    last_name: 'D',
-                                                    type: 'Users::Student' } })
+      post user_registration_path(params: {
+                                    user: { email: 'fatou@snapchat.com',
+                                            password: 'okokok',
+                                            password_confirmation: 'okokok',
+                                            first_name: 'Fatou',
+                                            last_name: 'D',
+                                            type: 'Users::Student' }
+                                  })
       assert_response 200
     end
   end
@@ -39,6 +41,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     school = create(:school)
     class_room = create(:class_room, school: school)
     birth_date = 14.years.ago
+    email = 'fourcade.m@gmail.com'
     assert_difference('Users::Student.count') do
       post user_registration_path(
         params: {
@@ -57,7 +60,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
           }
         }
       )
-      assert_redirected_to root_path
+      assert_redirected_to users_registrations_standby_path(email: email)
     end
     created_student = Users::Student.first
     assert_equal school, created_student.school

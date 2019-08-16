@@ -21,7 +21,7 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
                                                     type: 'Users::Employer' } })
-      assert_redirected_to root_path
+      assert_redirected_to users_registrations_standby_path(email: 'madame@accor.fr')
     end
   end
 end

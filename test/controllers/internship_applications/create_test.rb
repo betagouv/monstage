@@ -25,27 +25,6 @@ module InternshipApplications
       assert_equal student.id, created_internship_application.student.id
     end
 
-    test 'POST #create internship application as school_manager' do
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, class_room: class_room, school: school)
-      internship_offer = create(:internship_offer, school: school)
-
-      sign_in(school.school_manager)
-      valid_params = { internship_application: { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
-                                                 motivation: 'Je suis trop motivé wesh',
-                                                 user_id: student.id } }
-      assert_difference('InternshipApplication.count', 1) do
-        post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to internship_offer_internship_application_path(internship_offer, InternshipApplication.last)
-      end
-
-      created_internship_application = InternshipApplication.last
-      assert_equal internship_offer.internship_offer_weeks.first.id, created_internship_application.internship_offer_week.id
-      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation
-      assert_equal student.id, created_internship_application.student.id
-    end
-
     test 'POST #create internship application failed' do
       internship_offer = create(:internship_offer)
       student = create(:student)

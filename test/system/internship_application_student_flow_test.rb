@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class InternshipOffersCreateTest < ApplicationSystemTestCase
+class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
   test 'student can draft, submit internship_applications' do

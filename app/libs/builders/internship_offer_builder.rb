@@ -44,7 +44,7 @@ module Builders
 
     private
 
-    attr_reader :user, :callback, :ability, :context
+    attr_reader :callback, :user, :ability, :context
 
     def initialize(user:, context:)
       @user = user
