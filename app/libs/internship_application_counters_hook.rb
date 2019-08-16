@@ -13,18 +13,13 @@ class InternshipApplicationCountersHook
   # PERF: maybe optimization path to group those queries?
   def update_internship_offer_counters
     internship_offer.update(
-      blocked_weeks_count: internship_offer.internship_offer_weeks
-                                           .where('internship_offer_weeks.blocked_applications_count > 0')
-                                           .count,
-      total_applications_count: internship_offer.internship_applications
-                                                .reject(&:drafted?)
-                                                .count,
-      total_male_applications_count: internship_offer.internship_applications.joins(:student).reject(&:drafted?).select(&:student_is_male?).count,
-      approved_applications_count: internship_offer.internship_offer_weeks
-                                                   .sum(:approved_applications_count),
-      convention_signed_applications_count: internship_offer.internship_offer_weeks
-                                                            .sum(:blocked_applications_count),
-      total_male_convention_signed_applications_count: internship_offer.internship_applications.joins(:student).select(&:convention_signed?).select(&:student_is_male?).count
+      blocked_weeks_count: blocked_weeks_count,
+      total_applications_count: total_applications_count,
+      total_male_applications_count: total_male_applications_count,
+      approved_applications_count: approved_applications_count,
+      convention_signed_applications_count: convention_signed_applications_count,
+      total_male_convention_signed_applications_count: total_male_convention_signed_applications_count,
+      total_custom_track_convention_signed_applications_count: total_custom_track_convention_signed_applications_count
     )
   end
 
@@ -50,5 +45,49 @@ class InternshipApplicationCountersHook
   def initialize(internship_application:)
     @internship_application = internship_application
     @internship_application.reload
+  end
+
+  def blocked_weeks_count
+    internship_offer.internship_offer_weeks
+                    .where('internship_offer_weeks.blocked_applications_count > 0')
+                    .count
+  end
+
+  def total_applications_count
+    internship_offer.internship_applications.reject(&:drafted?).count
+  end
+
+  def total_male_applications_count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .reject(&:drafted?)
+                    .select(&:student_is_male?)
+                    .count
+  end
+
+  def approved_applications_count
+    internship_offer.internship_offer_weeks
+                    .sum(:approved_applications_count)
+  end
+
+  def convention_signed_applications_count
+    internship_offer.internship_offer_weeks
+                    .sum(:blocked_applications_count)
+  end
+
+  def total_male_convention_signed_applications_count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:convention_signed?)
+                    .select(&:student_is_male?)
+                    .count
+  end
+
+  def total_custom_track_convention_signed_applications_count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:convention_signed?)
+                    .select(&:student_is_custom_track?)
+                    .size
   end
 end

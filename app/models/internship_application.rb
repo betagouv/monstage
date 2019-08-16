@@ -43,6 +43,10 @@ class InternshipApplication < ApplicationRecord
   def student_is_male?
     student.gender == 'm'
   end
+  
+  def student_is_custom_track?
+    student.custom_track?
+  end
 
   def internship_offer_has_spots_left?
     return unless internship_offer_week.present?

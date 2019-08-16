@@ -107,4 +107,22 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
       second_application.save!
     end
   end
+
+  test '.update_internship_offer_counters tracks students.custom_track when application is in convention_signed' do
+    @internship_application.student = create(:student, custom_track: true)
+    @internship_application.aasm_state = :submitted
+    assert_no_changes -> { @internship_application.internship_offer.total_custom_track_convention_signed_applications_count } do
+      @internship_application.save!
+    end
+  end
+
+  test '.update_internship_offer_counters ignores students.custom_track when application is in submitted' do
+    @internship_application.student = create(:student, custom_track: true)
+    @internship_application.aasm_state = :convention_signed
+    assert_changes -> { @internship_application.internship_offer.total_custom_track_convention_signed_applications_count },
+                   from: 0,
+                   to: 1 do
+      @internship_application.save!
+    end
+  end
 end

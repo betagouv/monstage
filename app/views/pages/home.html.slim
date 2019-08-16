@@ -19,7 +19,7 @@
       p.sticky-note.d-none.d-md-block.px-3.py-2.text-center.mr-3
         | STAGES RÉSERVÉS
         br
-        | aux collèges REP+
+        | aux collèges REP et REP+
 
 .bg-warning.py-5.d-none.d-sm-block
   .container
@@ -50,7 +50,7 @@
       .col-1.text-center.text-warning.d-none.d-md-block
         i.fas.fa-2x.fa-exclamation-triangle
       .col
-        h2.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire renforcée (REP+)
+        h2.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire (RET et REP+)
         p.mt-2.mb-0.h4-home
           = "Les élèves des autres collèges trouveront "
           = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'h4-home' do
@@ -102,9 +102,7 @@
           .col-9
             h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_convention_signed_applications_count)
             h6.h3-stat.m-0.p-0 stages conclus
-    .row.py-5
-      .col-12.text-center
-        = link_to "Voir les statistiques", reporting_internship_offers_path, class: "btn btn-lg btn-outline-warning shadow-lg"
+
 .bg-white.py-5.d-none.d-sm-block
   .container
     .row
