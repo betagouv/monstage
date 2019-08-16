@@ -31,7 +31,7 @@ module Users
 
     def custom_dashboard_path
       url_helpers.dashboard_school_class_rooms_path(school)
-    rescue StandardError
+    rescue ActionController::UrlGenerationError
       url_helpers.account_path
     end
 
