@@ -34,4 +34,10 @@ class User < ApplicationRecord
   def default_account_section
     'identity'
   end
+
+  def custom_dashboard_paths
+    [
+      custom_dashboard_path
+    ]
+  end
 end

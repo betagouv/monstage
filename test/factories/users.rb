@@ -46,12 +46,15 @@ FactoryBot.define do
     end
 
     factory :teacher, class: 'Users::Teacher', parent: :user do
+      type { 'Users::Teacher' }
     end
 
     factory :other, class: 'Users::Other', parent: :user do
+      type { 'Users::Other' }
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
+      type { 'Users::Operator' }
       operator { create(:operator) }
       api_token { SecureRandom.uuid }
     end

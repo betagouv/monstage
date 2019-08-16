@@ -20,6 +20,15 @@ module Users
       url_helpers.account_path
     end
 
+    def custom_dashboard_paths
+      [
+        url_helpers.dashboard_school_class_room_path(school, class_room)
+      ]
+    rescue StandardError
+      [
+      ]
+    end
+
     def dashboard_name
       'Ma classe'
     end

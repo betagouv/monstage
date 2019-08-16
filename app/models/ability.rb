@@ -88,6 +88,7 @@ class Ability
       can [:choose_class_room], :sign_up
     end
     can_read_dashboard_students_internship_applications(user: user)
+    can_read_dashboard(user: user)
   end
 
   def other_abilities(user:)
