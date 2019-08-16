@@ -110,6 +110,7 @@
         <div class="custom-control custom-checkbox">
           <%= f.check_box :handicap_present, class: 'custom-control-input', data: {action: "change->signup#toggleHandicap"} %>
           <%= f.label :handicap_present, class: 'custom-control-label' do %>
+            <i class="fas fa-wheelchair"></i>
             J'ai besoin d'un aménagement
           <% end %>
           </div>

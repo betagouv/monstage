@@ -31,7 +31,9 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
         p.word-breakable-content= internship_application.student.resume_languages
 
       - if internship_application.student.handicap?
-        h3.h6 Besoin d'accompagnement
+        h3.h6
+          i.fas.fa-wheelchair
+          Besoin d'accompagnement
         p.word-breakable-content.student-handicap= internship_application.student.handicap
 
       .actions

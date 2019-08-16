@@ -28,7 +28,8 @@ import { faAngleLeft,
          faSignature,
          faSmile,
          faTimes,
-         faTrash } from '@fortawesome/free-solid-svg-icons'
+         faTrash,
+         faWheelchair } from '@fortawesome/free-solid-svg-icons'
 
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
@@ -69,7 +70,8 @@ library.add(faAngleLeft,
             faSmile,
             faTimes,
             faTrash,
-            faCircle);
+            faCircle,
+            faWheelchair);
 
 // makes it works with Turbolink on document mutation
 dom.watch({observeMutationsRoot: document})
