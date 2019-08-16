@@ -4,7 +4,7 @@ nav.navbar.navbar-light.py-0
 
   ul.nav.nav-banner.float-xs-none.float-sm-right
     - if user_signed_in?
-      - unless current_user.is_a?(Users::Employer)
+      - if [current_user.is_a?(Users::Employer), current_user.is_a?(Users::Operator)].none?
         li.nav-item
           = link_to 'Recherche', internship_offers_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(internship_offers_path) || current_controller?(:internship_offers) ? 'active' : ''}"
       li.nav-item
