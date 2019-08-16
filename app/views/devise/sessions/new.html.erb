@@ -12,7 +12,7 @@
         Adresse électronique (email)
         <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control ', required: true %>
+      <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', required: true, value: params[:email] %>
     </div>
 
     <div class="form-group">
@@ -20,7 +20,7 @@
         Mot de passe
         <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  ', required: true %>
+      <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  ', required: true, autofocus: params[:email].blank? ? false : true %>
       <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
         <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
       <% end %>
