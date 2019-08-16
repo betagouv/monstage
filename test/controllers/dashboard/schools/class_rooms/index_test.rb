@@ -29,20 +29,26 @@ module Dashboard
         assert_response :success
       end
 
-      test 'GET class_rooms#index as SchoolManager contains key navigations links' do
+      test 'GET class_rooms#index as SchoolManager ' \
+           'contains key navigations links' do
         school = create(:school)
         sign_in(create(:school_manager, school: school))
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 1
+        assert_select '.navbar a.nav-link.active[href=?]',
+                      dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'a.nav-link[href=?]',
+                      dashboard_school_users_path(school), count: 1
+        assert_select 'a.nav-link[href=?]',
+                      edit_dashboard_school_path(school), count: 1
 
-        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 1
+        assert_select 'a.btn[href=?]',
+                      new_dashboard_school_class_room_path(school), count: 1
       end
 
-      test 'GET class_rooms#index as SchoolManager shows class rooms list' do
+      test 'GET class_rooms#index as SchoolManager ' \
+           'shows class rooms list' do
         school = create(:school)
         class_rooms = [
           create(:class_room, school: school),
@@ -60,17 +66,17 @@ module Dashboard
                         dashboard_school_class_room_path(school, class_room),
                         count: 1, text: class_room.name
 
-          class_room_stats = Presenters::ClassRoomStats.new(class_room: class_room)
-          assert_select ".test-class-room-#{class_room.id} span.total_student",
-                        text: class_room_stats.total_student.to_s
-          assert_select ".test-class-room-#{class_room.id} span.total_student_with_parental_consent",
-                        text: class_room_stats.total_student_with_parental_consent.to_s
-          assert_select ".test-class-room-#{class_room.id} span.total_student_with_zero_application",
-                        text: class_room_stats.total_student_with_zero_application.to_s
-          assert_select ".test-class-room-#{class_room.id} span.total_pending_convention_signed",
-                        text: class_room_stats.total_pending_convention_signed.to_s
-          assert_select ".test-class-room-#{class_room.id} span.total_student_with_zero_internship",
-                        text: class_room_stats.total_student_with_zero_internship.to_s
+          stats = Presenters::ClassRoomStats.new(class_room: class_room)
+          assert_select ".test-class-room-#{class_room.id} .total_student",
+                        text: stats.total_student.to_s
+          assert_select ".test-class-room-#{class_room.id} .total_student_with_parental_consent",
+                        text: stats.total_student_with_parental_consent.to_s
+          assert_select ".test-class-room-#{class_room.id} .total_student_with_zero_application",
+                        text: stats.total_student_with_zero_application.to_s
+          assert_select ".test-class-room-#{class_room.id} .total_pending_convention_signed",
+                        text: stats.total_pending_convention_signed.to_s
+          assert_select ".test-class-room-#{class_room.id} .total_student_with_zero_internship",
+                        text: stats.total_student_with_zero_internship.to_s
         end
       end
 
@@ -91,11 +97,19 @@ module Dashboard
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select '.navbar a.nav-link.active[href=?]',
+                      dashboard_school_class_rooms_path(school),
+                      count: 1
+        assert_select 'a.nav-link[href=?]',
+                      dashboard_school_users_path(school),
+                      count: 1
 
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 0
-        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
+        assert_select 'a.nav-link[href=?]',
+                      edit_dashboard_school_path(school),
+                      count: 0
+        assert_select 'a.btn[href=?]',
+                      new_dashboard_school_class_room_path(school),
+                      count: 0
       end
 
       test 'GET class_rooms#index as Other shows class rooms list' do
@@ -116,7 +130,8 @@ module Dashboard
                         dashboard_school_class_room_path(school, class_room),
                         count: 1, text: class_room.name
           assert_select 'a[href=?]',
-                        edit_dashboard_school_class_room_path(school, class_room),
+                        edit_dashboard_school_class_room_path(school,
+                                                              class_room),
                         count: 0
         end
       end
@@ -127,7 +142,8 @@ module Dashboard
       test 'GET class_rooms#index as MainTeacher works' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
-        main_teacher = create(:main_teacher, school: school, class_room: class_room)
+        main_teacher = create(:main_teacher, school: school,
+                                             class_room: class_room)
         sign_in(main_teacher)
 
         get dashboard_school_class_rooms_path(school)
@@ -137,14 +153,21 @@ module Dashboard
       test 'GET class_rooms#index as MainTeacher contains key navigations links' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
-        main_teacher = create(:main_teacher, school: school, class_room: class_room)
+        main_teacher = create(:main_teacher, school: school,
+                                             class_room: class_room)
         sign_in(main_teacher)
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
-        assert_select 'a.nav-link.active[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 0
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 0
+        assert_select 'a.nav-link.active[href=?]',
+                      dashboard_school_class_rooms_path(school),
+                      count: 1
+        assert_select 'a.nav-link[href=?]',
+                      dashboard_school_users_path(school),
+                      count: 0
+        assert_select 'a.nav-link[href=?]',
+                      edit_dashboard_school_path(school),
+                      count: 0
 
         assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
