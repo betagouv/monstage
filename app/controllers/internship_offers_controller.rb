@@ -12,18 +12,14 @@ class InternshipOffersController < ApplicationController
 
   def show
     @internship_offer = InternshipOffer.find(params[:id])
-
-    if @internship_offer.discarded?
-      raise ActionController::RoutingError.new('Not Found')
-    else
-      current_user_id = current_user.try(:id)
-      if current_user
-        @internship_application = @internship_offer.internship_applications
-                                                   .where(user_id: current_user_id)
-                                                   .first
-      end
-      @internship_application ||= @internship_offer.internship_applications
-                                                   .build(user_id: current_user_id)
+    raise ActionController::RoutingError.new('Not Found') if @internship_offer.discarded?
+    current_user_id = current_user.try(:id)
+    if current_user
+      @internship_application = @internship_offer.internship_applications
+                                                 .where(user_id: current_user_id)
+                                                 .first
     end
+    @internship_application ||= @internship_offer.internship_applications
+                                                 .build(user_id: current_user_id)
   end
 end

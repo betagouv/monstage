@@ -12,7 +12,8 @@
           | Stage reservé
     p.font-weight-bold data-controller="collapsible-list"
       = "Semaines : "
-      - weeks = current_user.respond_to?(:school) ? internship_offer.internship_offer_weeks.by_weeks(weeks: current_user.school.weeks).ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates).after_current_week : internship_offer.internship_offer_weeks
+      - weeks = internship_offer.internship_offer_weeks
+      - weeks = weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
       - weeks.take(6).map.with_index do |visible_week, i|
         span data-target="collapsible-list.lastVisibleElement" class="#{i == 5 && weeks.size > 6 ? 'last-visible' : ''}"
           = visible_week.human_select_text_method

@@ -25,6 +25,14 @@ class InternshipOfferWeek < ApplicationRecord
     after_week(week: Week.current)
   }
 
+  scope :applicable, lambda { |user:, internship_offer:|
+    by_weeks(weeks: user.school.weeks)
+      .ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates)
+      .after_current_week
+      .includes(:week)
+      .entries
+  }
+
   def has_spots_left?
     blocked_applications_count < max_candidates
   end
