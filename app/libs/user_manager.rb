@@ -23,7 +23,7 @@ class UserManager
 
   def valid?(params:)
     true if by_params(params: params)
-  rescue KeyError => e
+  rescue KeyError
     false
   end
 end

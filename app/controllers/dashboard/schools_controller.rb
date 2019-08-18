@@ -25,7 +25,7 @@ module Dashboard
         redirect_to(dashboard_school_class_rooms_path(@school),
                     flash: { success: 'Collège mis à jour avec succès' })
       end
-    rescue ActiveRecord::RecordInvalid => e
+    rescue ActiveRecord::RecordInvalid
       render :edit, status: :bad_request
     end
 

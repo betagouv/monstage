@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Calendar weeks
 class Week < ApplicationRecord
   has_many :internship_offer_weeks, dependent: :destroy
   has_many :internship_offers, through: :internship_offer_weeks
@@ -8,19 +9,22 @@ class Week < ApplicationRecord
   has_many :schools, through: :school_internship_weeks
 
   scope :from_date_to_date, lambda { |from:, to:|
-    if from.year == to.year
-      from_date_for_current_year(from: from).to_date_for_current_year(to: to)
-    else
-      from_date_for_current_year(from: from).or(to_date_for_current_year(to: to))
-    end
+    query = from_date_for_current_year(from: from)
+    return query.to_date_for_current_year(to: to) if from.year == to.year
+
+    query.or(to_date_for_current_year(to: to))
+  }
+
+  scope :by_year, lambda { |year:|
+    where(year: year)
   }
 
   scope :from_date_for_current_year, lambda { |from:|
-    where(year: from.year).where('number > :from_week', from_week: from.cweek)
+    by_year(year: from.year).where('number > :from_week', from_week: from.cweek)
   }
 
   scope :to_date_for_current_year, lambda { |to:|
-    where(year: to.year).where('number <= :to_week', to_week: to.cweek)
+    by_year(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'

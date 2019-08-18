@@ -21,7 +21,7 @@ module Dashboard
         @class_room.save!
         redirect_to dashboard_school_class_rooms_path(@school),
                     flash: { success: 'Classe ajoutée avec succès' }
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid
         render :new
       end
 
@@ -38,7 +38,7 @@ module Dashboard
         @class_room.update!(class_rooms_params)
         redirect_to dashboard_school_class_rooms_path,
                     flash: { success: 'Classe mise à jour avec succès' }
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid
         render :edit
       end
 

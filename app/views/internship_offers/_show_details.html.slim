@@ -14,6 +14,7 @@
       = "Semaines : "
       - weeks = internship_offer.internship_offer_weeks
       - weeks = weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
+      - weeks = weeks.entries
       - weeks.take(6).map.with_index do |visible_week, i|
         span data-target="collapsible-list.lastVisibleElement" class="#{i == 5 && weeks.size > 6 ? 'last-visible' : ''}"
           = visible_week.human_select_text_method

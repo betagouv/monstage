@@ -17,7 +17,7 @@ module Users
 
     def resource_class
       UserManager.new.by_params(params: params)
-    rescue KeyError => e
+    rescue KeyError
       User
     end
 

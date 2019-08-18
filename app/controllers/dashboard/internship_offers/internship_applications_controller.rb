@@ -18,7 +18,7 @@ module Dashboard
         @internship_application.send(params[:transition]) if valid_transition?
         redirect_back fallback_location: current_user.after_sign_in_path,
                       flash: { success: 'Candidature mise à jour avec succès' }
-      rescue AASM::InvalidTransition => e
+      rescue AASM::InvalidTransition
         redirect_back fallback_location: current_user.after_sign_in_path,
                       flash: { warning: 'Cette candidature a déjà été traitée' }
       end

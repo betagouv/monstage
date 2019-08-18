@@ -8,14 +8,14 @@
 
     <%= f.text_field :type, hidden: true %>
 
-    <% if can?(:choose_school, :sign_up) %>
+    <% if can?(:choose_school, resource) %>
       <%= react_component(
         "AutocompleteSchool",
         classes: 'col-12',
         label: "Ville de mon collège",
         required: true,
         resourceName: :user,
-        selectClassRoom: can?(:choose_class_room, :sign_up),
+        selectClassRoom: can?(:choose_class_room, resource),
         existingSchool: resource.school.as_json,
         existingClassRoom: resource.try(:class_room).try(:as_json),
       ) %>
@@ -37,7 +37,7 @@
       <%= f.text_field :last_name, class: 'form-control', required: true %>
     </div>
 
-    <% if can?(:choose_gender_and_birthday, :sign_up) %>
+    <% if can?(:choose_gender_and_birthday, resource) %>
       <div class="form-group">
         <%= f.label :birth_date do %>
           Date de naissance
@@ -105,7 +105,7 @@
       </div>
     <% end %>
 
-    <% if can?(:choose_handicap, :sign_up) %>
+    <% if can?(:choose_handicap, resource) %>
       <div class="form-group">
         <div class="custom-control custom-checkbox">
           <%= f.check_box :handicap_present, class: 'custom-control-input', data: {action: "change->signup#toggleHandicap"} %>

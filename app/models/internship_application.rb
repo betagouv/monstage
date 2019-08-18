@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# application from student to internship_offer ; linked with weeks
 class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
@@ -43,9 +44,13 @@ class InternshipApplication < ApplicationRecord
   def student_is_male?
     student.gender == 'm'
   end
-  
+
   def student_is_custom_track?
     student.custom_track?
+  end
+
+  def submitted?
+    aasm_state.to_s == 'submitted'
   end
 
   def internship_offer_has_spots_left?
@@ -56,7 +61,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def internship_offer_week_has_spots_left?
-    unless internship_offer_week&.has_spots_left?
+    unless internship_offer_week.try(:has_spots_left?)
       errors.add(:internship_offer_week, :has_no_spots_left)
     end
   end
@@ -73,7 +78,16 @@ class InternshipApplication < ApplicationRecord
   end
 
   def application_via_school_manager?
-    internship_offer && internship_offer.school && internship_offer.school.present?
+    internship_offer && internship_offer.school
+  end
+
+  def transition_with_email
+    new_state = self.aasm.to_state
+    update!(:"#{new_state}_at" => Time.now.utc)
+    mailer = new_state == :submitted ? EmployerMailer : StudentMailer
+    mailer.send(:"internship_application_#{new_state}_email",
+                internship_application: self)
+          .deliver_later
   end
 
   aasm do
@@ -81,27 +95,15 @@ class InternshipApplication < ApplicationRecord
     state :submitted, :approved, :rejected, :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc { |*_args|
-        update!(submitted_at: Time.now.utc)
-        EmployerMailer.new_internship_application_email(internship_application: self)
-                      .deliver_later
-      }
+      transitions from: :drafted, to: :submitted, after: :transition_with_email
     end
 
     event :approve do
-      transitions from: :submitted, to: :approved, after: proc { |*_args|
-        update!(approved_at: Time.now.utc)
-        StudentMailer.internship_application_approved_email(internship_application: self)
-                     .deliver_later
-      }
+      transitions from: :submitted, to: :approved, after: :transition_with_email
     end
 
     event :reject do
-      transitions from: :submitted, to: :rejected, after: proc { |*_args|
-        update!(rejected_at: Time.now.utc)
-        StudentMailer.internship_application_rejected_email(internship_application: self)
-                     .deliver_later
-      }
+      transitions from: :submitted, to: :rejected, after: :transition_with_email
     end
 
     event :cancel do
@@ -113,12 +115,8 @@ class InternshipApplication < ApplicationRecord
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        InternshipApplication.for_user(user: student)
-                             .where(aasm_state: %i[approved submitted drafted])
-                             .not_by_id(id: id)
-                             .joins(:internship_offer_week)
-                             .where("internship_offer_weeks.week_id = #{internship_offer_week.week.id}")
-                             .map(&:cancel!)
+        student.cancel_application_on_week(week: internship_offer_week.week,
+                                           keep_internship_application_id: id)
       }
     end
   end

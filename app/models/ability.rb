@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# list abilities for users
 class Ability
   include CanCan::Ability
 
@@ -17,11 +18,11 @@ class Ability
       end
       shared_abilities(user: user)
     else
-      visitor_abilities(user: user)
+      visitor_abilities
     end
   end
 
-  def visitor_abilities(user:)
+  def visitor_abilities
     can :read, InternshipOffer
   end
 
@@ -30,16 +31,17 @@ class Ability
     can :change, :class_room
     can :read, InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      internship_offer.school_id.nil? && internship_offer.permalink.nil?
+      !internship_offer.school_id && !internship_offer.permalink
     end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
-    can %i[show update], User
-    can %i[choose_school
+    can %i[show
+           update
+           choose_school
            choose_class_room
            choose_gender_and_birthday
-           choose_handicap], :sign_up
+           choose_handicap], User
     can_read_dashboard_students_internship_applications(user: user)
   end
 
@@ -69,7 +71,7 @@ class Ability
   def main_teacher_abilities(user:)
     # user account rights
     can_create_and_manage_account(user: user) do
-      can [:choose_class_room], :sign_up
+      can [:choose_class_room], User
     end
     can_read_dashboard_students_internship_applications(user: user)
 
@@ -87,7 +89,7 @@ class Ability
 
   def teacher_abilities(user:)
     can_create_and_manage_account(user: user) do
-      can [:choose_class_room], :sign_up
+      can [:choose_class_room], User
     end
     can_read_dashboard_students_internship_applications(user: user)
     can_read_dashboard(user: user)

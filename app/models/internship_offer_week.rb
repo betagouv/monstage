@@ -30,7 +30,6 @@ class InternshipOfferWeek < ApplicationRecord
       .ignore_max_candidates_reached(max_candidates: internship_offer.max_candidates)
       .after_current_week
       .includes(:week)
-      .entries
   }
 
   def has_spots_left?

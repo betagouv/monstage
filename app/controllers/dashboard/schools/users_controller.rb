@@ -16,7 +16,7 @@ module Dashboard
         user.update!(school_id: nil)
         redirect_to dashboard_school_users_path(@school),
                     flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été supprimé de votre collège" }
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid
         redirect_to dashboard_school_users_path(@school),
                     flash: { success: "Une erreur est survenue, impossible de supprimé #{user_presenter.human_role} #{user_presenter.short_name} de votre collège: #{e.record.full_messages}" }
       end
@@ -34,7 +34,7 @@ module Dashboard
         end
 
         redirect_back fallback_location: root_path, flash: flash_content
-      rescue ActiveRecord::RecordInvalid => e
+      rescue ActiveRecord::RecordInvalid
         redirect_back fallback_location: root_path, status: :bad_request
       end
 

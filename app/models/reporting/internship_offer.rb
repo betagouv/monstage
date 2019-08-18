@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Reporting
+  # wrap reporting for internship offers
   class InternshipOffer < ApplicationRecord
     def readonly?
       true

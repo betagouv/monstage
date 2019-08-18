@@ -79,7 +79,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
         mock_mail.expect(:deliver_later, true)
-        EmployerMailer.stub :new_internship_application_email, mock_mail do
+        EmployerMailer.stub :internship_application_submitted_email, mock_mail do
           internship_application.submit!
         end
         mock_mail.verify

@@ -23,13 +23,13 @@ class AbilityTest < ActiveSupport::TestCase
            'students should not be able to con manage internships')
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
-    assert(ability.can?(:choose_school, :sign_up),
+    assert(ability.can?(:choose_school, student),
            'student should be able to choose_school')
-    assert(ability.can?(:choose_class_room, :sign_up),
+    assert(ability.can?(:choose_class_room, student),
            'student should be able to choose_class_room')
-    assert(ability.can?(:choose_gender_and_birthday, :sign_up),
+    assert(ability.can?(:choose_gender_and_birthday, student),
            'student should be able to choose_gender_and_birthday')
-    assert(ability.can?(:choose_handicap, :sign_up),
+    assert(ability.can?(:choose_handicap, student),
            'student should be able to choose handicap')
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
@@ -77,12 +77,13 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'MainTeacher' do
-    ability = Ability.new(build(:main_teacher))
+    main_teacher = build(:main_teacher)
+    ability = Ability.new(main_teacher)
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
-    assert(ability.can?(:choose_school, :sign_up),
+    assert(ability.can?(:choose_school, main_teacher),
            'student should be able to choose_school')
-    assert(ability.can?(:choose_class_room, :sign_up),
+    assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
     assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:index, ClassRoom))
