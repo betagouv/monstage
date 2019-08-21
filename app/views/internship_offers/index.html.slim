@@ -1,6 +1,6 @@
 = render "title", internship_offers: @internship_offers
 
-- if user_signed_in? && current_user.respond_to?(:school) && current_user.school
+- if can?(:search, InternshipOffer)
   .row.bt-1.bt-light
     = react_component("SearchInternshipOffer",
                       { url: internship_offers_path,
@@ -8,7 +8,7 @@
                         algoliaApiKey: Credentials.enc(:algolia, :api_key, prefix_env: false),
                         sectors: Sector.all.map { |s| s.as_json(only: [:id, :name, :external_url]) },
                         currentCitySearch: params[:city],
-                        currentSchool: current_user.school.as_json(only: [:name]),
+                        currentSchool: current_user.try(:school).try(:as_json, only: [:name]),
                         currentSector: current_sector.as_json(only: [:id, :name, :external_url]) },
                       { class: 'col-12 bg-light px-3 pt-3 filter-section' })
 

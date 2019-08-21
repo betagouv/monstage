@@ -83,7 +83,7 @@ class SearchInternshipOffer extends React.Component {
             <label className="mb-3 d-block" htmlFor="input-search-by-city">
               <strong>Autour de</strong>
             </label>
-            {currentCitySearch === null && (
+            {currentSchool !== null && currentCitySearch === null && (
               <div className="input-group">
                 <input
                   className="form-control"
@@ -104,7 +104,7 @@ class SearchInternshipOffer extends React.Component {
                 </div>
               </div>
             )}
-            {currentCitySearch !== null && (
+            {(currentSchool === null || currentCitySearch !== null) && (
               <div className="input-group">
                 <AlgoliaPlaces
                   placeholder={currentCitySearch || 'Rechercher une ville'}

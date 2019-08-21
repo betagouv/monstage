@@ -10,7 +10,7 @@ class Ability
       when 'Users::Student' then student_abilities(user: user)
       when 'Users::Employer' then employer_abilities(user: user)
       when 'Users::SchoolManager' then school_manager_abilities(user: user)
-      when 'Users::God' then god_abilities(user: user)
+      when 'Users::God' then god_abilities
       when 'Users::MainTeacher' then main_teacher_abilities(user: user)
       when 'Users::Teacher' then teacher_abilities(user: user)
       when 'Users::Other' then other_abilities(user: user)
@@ -29,7 +29,7 @@ class Ability
   def student_abilities(user:)
     can :show, :account
     can :change, :class_room
-    can :read, InternshipOffer
+    can %i[read search], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
       !internship_offer.school_id && !internship_offer.permalink
     end
@@ -65,7 +65,8 @@ class Ability
     can [:apply_in_bulk], InternshipOffer do |internship_offer|
       internship_offer.school_id == user.school_id
     end
-    can [:see_tutor], InternshipOffer
+    can %i[see_tutor search], InternshipOffer
+
   end
 
   def main_teacher_abilities(user:)
@@ -84,7 +85,7 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
-    can [:see_tutor], InternshipOffer
+    can %i[see_tutor search], InternshipOffer
   end
 
   def teacher_abilities(user:)
@@ -93,6 +94,8 @@ class Ability
     end
     can_read_dashboard_students_internship_applications(user: user)
     can_read_dashboard(user: user)
+
+    can %i[see_tutor search], InternshipOffer
   end
 
   def other_abilities(user:)
@@ -103,11 +106,12 @@ class Ability
         school.id == user.school_id
       end
     end
+    can %i[see_tutor search], InternshipOffer
   end
 
   def employer_abilities(user:)
     can :show, :account
-    can :create, InternshipOffer
+    can %i[create], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can %i[index update], InternshipApplication
   end
@@ -115,7 +119,7 @@ class Ability
   def operator_abilities(user:)
     can :show, :account
     can :choose_operator, :sign_up
-    can :create, InternshipOffer
+    can %i[create], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
     can %i[update discard], Api::InternshipOffer, employer_id: user.id
@@ -123,10 +127,10 @@ class Ability
     can :show, :api_token
   end
 
-  def god_abilities(user:)
+  def god_abilities
     can :show, :account
     can :manage, School
-    can %i[destroy see_tutor see_max_occurence], InternshipOffer
+    can %i[destroy see_tutor see_max_occurence search], InternshipOffer
     can %i[destroy index], Feedback
   end
 
