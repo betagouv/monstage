@@ -49,10 +49,6 @@ class InternshipApplication < ApplicationRecord
     student.custom_track?
   end
 
-  def submitted?
-    aasm_state.to_s == 'submitted'
-  end
-
   def internship_offer_has_spots_left?
     return unless internship_offer_week.present?
     unless internship_offer.has_spots_left?
