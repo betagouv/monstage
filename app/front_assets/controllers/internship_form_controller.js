@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
+import $ from 'jquery';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
-import $ from 'jquery'
 
 export default class extends Controller {
   static targets = [
@@ -79,16 +79,14 @@ export default class extends Controller {
   validateForm(event) {
     const latitudeInput = document.getElementById('internship_offer_coordinates_latitude');
     if (!latitudeInput.validity.valid) {
-      document.getElementById('js-internship_offer_autocomplete').focus()
+      document.getElementById('js-internship_offer_autocomplete').focus();
     }
     return event;
   }
 
   connect() {
-    this.toggleGroupNames(true);
     this.element.addEventListener('submit', this.validateForm, false);
   }
 
-  disconnect() {
-  }
+  disconnect() {}
 }

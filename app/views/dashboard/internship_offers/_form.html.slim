@@ -20,13 +20,13 @@
         = form.rg2a_required_content_tag
 
       .custom-control.custom-radio
-        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, checked: @internship_offer.new_record? ? false : @internship_offer.is_public, data: { action: 'change->internship-form#handleClickIsPublic' }
+        = form.radio_button :is_public, true, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_true, 'public', class: 'custom-control-label'
       .custom-control.custom-radio
-        = form.radio_button :is_public, false, class: 'custom-control-input', required: true, checked: @internship_offer.new_record? ? false : !@internship_offer.is_public, data: { action: 'change->internship-form#handleClickIsPublic' }
+        = form.radio_button :is_public, false, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_false, 'privé', class: 'custom-control-label'
 
-    div class="form-group form-group-select-group #{@internship_offer.new_record? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
+    div class="form-group form-group-select-group #{@internship_offer.new_record? && @internship_offer.errors.empty? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
       = form.label :group, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
       = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
 
@@ -87,7 +87,7 @@
       .custom-control.custom-radio
         = radio_button_tag :internship_type,
                             true,
-                            @internship_offer.new_record? ? false : @internship_offer.is_individual?,
+                            @internship_offer.new_record? && @internship_offer.errors.empty? ? false : @internship_offer.is_individual?,
                             class: 'custom-control-input',
                             disabled: !@internship_offer.is_fully_editable?,
                             data: { action: "change->internship-form#toggleInternshipType" }
@@ -97,7 +97,7 @@
       .custom-control.custom-radio
         = radio_button_tag :internship_type,
                             false,
-                            @internship_offer.new_record? ? false : !@internship_offer.is_individual?,
+                            @internship_offer.new_record? && @internship_offer.errors.empty? ? false : !@internship_offer.is_individual?,
                             class: 'custom-control-input',
                             disabled: !@internship_offer.is_fully_editable?,
                             data: { action: "change->internship-form#toggleInternshipType" }
@@ -105,7 +105,7 @@
                      'collectif (un groupe de plusieurs élèves)',
                      class: 'custom-control-label'
 
-    div class="form-group #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
+    div class="form-group form-group-select-max-candidates #{@internship_offer.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
       = form.label :max_candidates do
         = 'Nombre de stagiaires maximum par groupe'
         small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
