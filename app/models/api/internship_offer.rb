@@ -15,7 +15,7 @@ module Api
 
     def init
       self.max_candidates ||= 1
-      self.max_internship_week_number ||= 1
+      self.max_occurence ||= 1
       self.is_public = false
     end
 

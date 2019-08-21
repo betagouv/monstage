@@ -212,12 +212,12 @@
     = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @current_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 
     .form-group
-      = form.label :max_internship_week_number do
+      = form.label :max_occurence do
         = "Nombre d'occurences de ce stage"
         small.form-text.text-muted Combien de fois pouvez-vous recevoir ce stage dans l'année ?
         = form.rg2a_required_content_tag
 
-      = form.number_field :max_internship_week_number, value: @internship_offer.max_internship_week_number, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true, disabled: !@internship_offer.is_fully_editable?
+      = form.number_field :max_occurence, value: @internship_offer.max_occurence, min: 1, max: @current_weeks.count, step: 1, class: 'form-control col-lg-6', required: true, disabled: !@internship_offer.is_fully_editable?
 
   fieldset.mt-4
     legend Tuteur/trice de stage

@@ -22,9 +22,9 @@ module InternshipOffers
       sign_in(employer)
       internship_offer = create(:internship_offer, employer: employer,
                                                    max_candidates: 2,
-                                                   max_internship_week_number: 4)
+                                                   max_occurence: 4)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
-      assert_select "#internship_offer_max_internship_week_number[value=#{internship_offer.max_internship_week_number}]", count: 1
+      assert_select "#internship_offer_max_occurence[value=#{internship_offer.max_occurence}]", count: 1
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
       assert_response :success
     end
@@ -44,7 +44,7 @@ module InternshipOffers
           assert_select "label", text: week.select_text_method
         end
         assert_select 'input#internship_offer_max_candidates[disabled]'
-        assert_select 'input#internship_offer_max_internship_week_number[disabled]'
+        assert_select 'input#internship_offer_max_occurence[disabled]'
       end
     end
 

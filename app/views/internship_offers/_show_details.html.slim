@@ -31,6 +31,13 @@
           - if i < weeks.drop(6).size - 1
             = " ou "
 
+- if can?(:see_max_occurence, InternshipOffer)
+  .row
+    .col-12
+      p
+        strong Nombre d'occurences :
+        = " #{internship_offer.max_occurence}"
+
 - if can?(:see_tutor, InternshipOffer)
   .row.bg-light.py-3.bt-1.bt-light
     .col-12
@@ -51,6 +58,7 @@
           .circle-font.text-info
             i.far.fa-envelope.fa-fw
           .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
+
 
 .row.bg-light.py-3.bt-1.bt-light
   .col-12

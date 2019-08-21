@@ -334,7 +334,7 @@ CREATE TABLE public.internship_offers (
     title character varying NOT NULL,
     description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
-    max_internship_week_number integer DEFAULT 1 NOT NULL,
+    max_occurence integer DEFAULT 1 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
@@ -1046,7 +1046,7 @@ CREATE UNIQUE INDEX index_weeks_on_number_and_year ON public.weeks USING btree (
 -- Name: not_blocked_by_weeks_count_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (max_internship_week_number, blocked_weeks_count);
+CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (max_occurence, blocked_weeks_count);
 
 
 --
@@ -1282,6 +1282,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190807122943'),
 ('20190814075600'),
 ('20190814124142'),
-('20190814152258');
+('20190814152258'),
+('20190821145025');
 
 

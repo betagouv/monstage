@@ -6,8 +6,8 @@ module Presenters
       'Total'
     end
 
-    def report_total_count
-      offers.sum(&:report_total_count)
+    def total_report_count
+      offers.sum(&:total_report_count)
     end
 
     def total_applications_count

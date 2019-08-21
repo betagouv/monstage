@@ -2,7 +2,7 @@
 
 module Presenters
   class GroupedInternshipOfferStats
-    delegate :report_total_count,
+    delegate :total_report_count,
              :total_applications_count,
              :total_male_applications_count,
              :total_female_applications_count,

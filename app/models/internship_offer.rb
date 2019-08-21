@@ -9,7 +9,7 @@ class InternshipOffer < ApplicationRecord
   validates :tutor_name,
             :tutor_phone,
             :tutor_email,
-            :max_internship_week_number,
+            :max_occurence,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
@@ -25,7 +25,7 @@ class InternshipOffer < ApplicationRecord
                                              greater_than: 0,
                                              less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
 
-  validates :max_internship_week_number, numericality: { only_integer: true, greater_than: 0 }
+  validates :max_occurence, numericality: { only_integer: true, greater_than: 0 }
 
   has_many :internship_applications, through: :internship_offer_weeks, dependent: :destroy
 

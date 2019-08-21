@@ -126,7 +126,7 @@ class Ability
   def god_abilities(user:)
     can :show, :account
     can :manage, School
-    can :destroy, InternshipOffer
+    can %i[destroy see_tutor see_max_occurence], InternshipOffer
     can %i[destroy index], Feedback
   end
 

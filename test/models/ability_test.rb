@@ -59,6 +59,10 @@ class AbilityTest < ActiveSupport::TestCase
            'god should be able to manage school')
     assert(ability.cannot?(:edit, User),
            'god should not be able to edit user')
+    assert(ability.can?(:see_tutor, InternshipOffer),
+           'god should be able see see_tutor')
+    assert(ability.can?(:see_max_occurence, InternshipOffer),
+           'god should be able see see_tutor')
   end
 
   test 'SchoolManager' do

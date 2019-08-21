@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_14_152258) do
+ActiveRecord::Schema.define(version: 2019_08_21_145025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_152258) do
     t.string "title", null: false
     t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
-    t.integer "max_internship_week_number", default: 1, null: false
+    t.integer "max_occurence", default: 1, null: false
     t.string "tutor_name"
     t.string "tutor_phone"
     t.string "tutor_email"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 2019_08_14_152258) do
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
     t.index ["group"], name: "index_internship_offers_on_group"
-    t.index ["max_internship_week_number", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
+    t.index ["max_occurence", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["remote_id"], name: "index_internship_offers_on_remote_id"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
