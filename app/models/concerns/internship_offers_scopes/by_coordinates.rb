@@ -6,7 +6,7 @@ module InternshipOffersScopes
     extend ActiveSupport::Concern
 
     included do
-      scope :internship_offers_nearby_from_school, lambda { |coordinates:|
+      scope :internship_offers_nearby, lambda { |coordinates:|
         InternshipOffer.nearby(latitude: coordinates.latitude,
                                longitude: coordinates.longitude)
       }

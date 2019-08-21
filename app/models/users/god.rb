@@ -2,7 +2,12 @@
 
 module Users
   class God < User
-    scope :targeted_internship_offers, ->(user:, coordinates:) { InternshipOffer.kept }
+    include InternshipOffersScopes::ByCoordinates
+    scope :targeted_internship_offers, ->(user:, coordinates:) {
+      query = InternshipOffer.kept
+      query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
+      query
+    }
 
     def custom_dashboard_path
       url_helpers.dashboard_schools_path
