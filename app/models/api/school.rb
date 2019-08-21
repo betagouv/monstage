@@ -27,7 +27,7 @@ module Api
         .with_pg_search_highlight
     }
 
-    scope :visible_only, -> () { where(visible: true) }
+    scope :visible, -> () { where(visible: true) }
 
     def uniq_city_name
       "#{pg_search_highlight} (#{zipcode})"

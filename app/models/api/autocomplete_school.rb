@@ -13,7 +13,7 @@ module Api
       @term = term
       @limit = limit
       @result = Api::School.autocomplete_by_city(term: term, limit: limit)
-                           .visible_only
+                           .where(visible: true)
                            .includes(:class_rooms)
     end
   end

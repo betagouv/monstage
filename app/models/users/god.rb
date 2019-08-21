@@ -10,7 +10,7 @@ module Users
     }
 
     def custom_dashboard_path
-      url_helpers.dashboard_schools_path
+      url_helpers.dashboard_schools_path(visible: true)
     end
   end
 end

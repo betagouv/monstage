@@ -8,7 +8,12 @@ module Dashboard
 
     def index
       authorize! :index, School
-      @schools = School.all.order(zipcode: :desc)
+      query = School
+      query = query.all if params[:visible].blank? || params[:kind].blank?
+      query = query.where(visible: parsed_visible_param) if params[:visible].present?
+      query = query.where(kind: parsed_kind_param) if params[:kind].present?
+      query = query.order(zipcode: :desc)
+      @schools = query.entries
     end
 
     def edit
@@ -39,6 +44,15 @@ module Dashboard
       current_user.is_a?(Users::God) ?
         god_internship_weeks_params :
         school_manager_internship_weeks_params
+    end
+
+    def parsed_visible_param
+      ActiveRecord::Type::Boolean.new.deserialize(params[:visible])
+    end
+
+    def parsed_kind_param
+      return params[:kind] if School::VALID_TYPE_PARAMS.include?(params[:kind])
+      fail "unknown kind"
     end
 
     def god_internship_weeks_params
