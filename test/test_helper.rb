@@ -10,6 +10,18 @@ require 'support/api_test_helpers'
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
+
+  parallelize_setup do |worker|
+    # setup databases
+  end
+
+  parallelize_teardown do |worker|
+    # cleanup database
+  end
+
+  # Run tests in parallel with specified workers
+  parallelize(workers: :number_of_processors)
+
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
