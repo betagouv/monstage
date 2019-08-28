@@ -26,10 +26,15 @@ module BaseInternshipOffer
     has_many :internship_offer_weeks, dependent: :destroy
     has_many :weeks, through: :internship_offer_weeks
 
-    before_create :reverse_academy_by_zipcode
+    before_save :reverse_academy_by_zipcode,
+                :reverse_department_by_zipcode
 
     def reverse_academy_by_zipcode
       self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
+    end
+
+    def reverse_department_by_zipcode
+      self.department = Department.lookup_by_zipcode(zipcode: zipcode)
     end
   end
 end

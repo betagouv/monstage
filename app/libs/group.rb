@@ -16,8 +16,9 @@ class Group
     "MINISTERE DE L'EUROPE ET DES AFFAIRES ETRANGERES",
     'MINISTERE DE LA COHESION DES TERRITOIRES',
     "MINISTERE DE L'EDUCATION NATIONALE ET DE LA JEUNESSE",
-    'MINISTERE DES OUTRE-MER'
-  ].freeze
+    'MINISTERE DES OUTRE-MER',
+    'MINISTÈRE DU TRAVAIL'
+  ].sort.freeze
   PRIVATE = [
     'Accenture',
     'AccorHotels',
@@ -87,5 +88,5 @@ class Group
     'Unibail-Rodamco-Westfield',
     'Valeo',
     'Vivendi'
-  ].freeze
+  ].sort.freeze
 end

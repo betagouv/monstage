@@ -69,4 +69,23 @@ class InternshipOfferTest < ActiveSupport::TestCase
     internship_offer = create(:internship_offer)
     refute internship_offer.has_operator?
   end
+
+
+  test '.reverse_academy_by_zipcode works on create and save' do
+    internship_offer = build(:internship_offer, zipcode: '75015')
+    assert_changes -> { internship_offer.academy },
+                  from: '',
+                  to: 'Académie de Paris' do
+      internship_offer.save
+    end
+  end
+
+  test '.reverse_department_by_zipcode works on create and save' do
+    internship_offer = build(:internship_offer, zipcode: '62000', department: 'Arras')
+    assert_changes -> { internship_offer.department },
+                  from: 'Arras',
+                  to: 'Pas-de-Calais' do
+      internship_offer.save
+    end
+  end
 end
