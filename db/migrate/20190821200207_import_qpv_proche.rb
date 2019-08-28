@@ -27,12 +27,16 @@ class ImportQpvProche < ActiveRecord::Migration[5.2]
           school.city = result.first.city
           school.zipcode = result.first.postal_code
           school.coordinates = { latitude: location['lat'], longitude: location['lng'] }
-          puts "ok: #{query}"
+          puts "ok: #{query}" if school.save
         else
-          puts "ko: #{query}"
           school.coordinates = { latitude: 0, longitude: 0 }
+          if school.save
+            puts "fail: #{query}"
+          else
+            puts "school not save : #{query}"
+          end
         end
-        school.save!
+
 
         puts "school created: #{school.inspect}"
       end
