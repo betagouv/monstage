@@ -48,6 +48,7 @@ module Api
               :remote_id,
               :permalink,
               :sector_uuid,
+              :max_candidates,
               coordinates: {},
               weeks: []
             )
@@ -66,6 +67,7 @@ module Api
               :city,
               :permalink,
               :sector_uuid,
+              :max_candidates,
               coordinates: {},
               weeks: []
             )

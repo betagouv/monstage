@@ -136,7 +136,8 @@ module Api
                 sector_uuid: sector_uuid,
                 weeks: week_params,
                 remote_id: remote_id,
-                permalink: permalink
+                permalink: permalink,
+                max_candidates: 2
               }
             }
           )
@@ -160,6 +161,7 @@ module Api
       assert_equal week_instances, internship_offer.weeks
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
+      assert_equal 2, internship_offer.max_candidates
 
       assert_equal JSON.parse(internship_offer.to_json), json_response
     end

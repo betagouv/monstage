@@ -76,6 +76,7 @@ Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupére
 
     remote_id: l'identifiant unique du coté operateur|collectivité|association
     permalink: lien de redirection pour renvoyer sur le site unique du coté operateur|collectivité|association
+    max_candidates: le nombre de candidat possible sur ce stage
   }
 }
 ```
@@ -189,6 +190,7 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
+* **max_candidates** *(integer)*
 
 ### Exemple curl
 
@@ -230,6 +232,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.sector_uuid** *(integer)*
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
+* **max_candidates** *(integer)*
 
 ### Exemple curl
 

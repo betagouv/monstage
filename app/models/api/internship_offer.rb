@@ -38,7 +38,8 @@ module Api
                  city
                  remote_id
                  permalink
-                 sector_uuid],
+                 sector_uuid
+                 max_candidates],
         methods: [:formatted_coordinates]
       ))
     end

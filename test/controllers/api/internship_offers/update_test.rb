@@ -104,6 +104,7 @@ module Api
             internship_offer: {
               title: new_title,
               weeks: week_params,
+              max_candidates: 2
             }
           }
         )
@@ -111,6 +112,7 @@ module Api
       assert_response :success
       assert_equal new_title, @internship_offer.reload.title
       assert_equal week_instances, @internship_offer.reload.weeks
+      assert_equal 2, @internship_offer.max_candidates
       assert_equal JSON.parse(@internship_offer.to_json), json_response
     end
   end

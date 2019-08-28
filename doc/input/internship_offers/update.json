@@ -1,6 +1,7 @@
 {
   "internship_offer":{
     "title":"title",
-    "description":"description"
+    "description":"description",
+    "max_candidates": 2
   }
 }
