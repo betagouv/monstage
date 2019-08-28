@@ -87,6 +87,8 @@ class Group
     'Système U',
     'Unibail-Rodamco-Westfield',
     'Valeo',
-    'Vivendi'
+    'Vivendi',
+    'Orange',
+    'Crédit agricole'
   ].sort.freeze
 end
