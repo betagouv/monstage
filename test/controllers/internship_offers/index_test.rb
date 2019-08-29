@@ -209,7 +209,6 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                  coordinates: Coordinates.paris)
     internship_offer_at_bordeaux = create(:internship_offer, weeks: [week],
                                                  coordinates: Coordinates.bordeaux)
-
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
       sign_in(student)
       travel_to(Date.new(2019, 3, 1)) do
