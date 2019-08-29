@@ -17,9 +17,9 @@
       - weeks = weeks.entries
       - weeks.take(6).map.with_index do |visible_week, i|
         span data-target="collapsible-list.lastVisibleElement" class="#{i == 5 && weeks.size > 6 ? 'last-visible' : ''}"
-          = visible_week.human_select_text_method
+          = visible_week.human_select_text_method.downcase
           - if i <= 5 && weeks.size > 6
-            = " ou "
+            = " – "
       - if weeks.size > 6
         a href="#showAll" data-turbolink="false" data-target="collapsible-list.showMoreButton" title="Afficher les #{weeks.size} semaines disponible" data-action="collapsible-list#showMore"
           | +
@@ -27,9 +27,9 @@
           | Tout afficher
       - weeks.drop(6).map.with_index do |hidden_week, i|
         span.d-none data-target="collapsible-list.hiddenElement"
-          = hidden_week.human_select_text_method
+          = hidden_week.human_select_text_method.downcase
           - if i < weeks.drop(6).size - 1
-            = " ou "
+            = " – "
 
 - if can?(:see_max_occurence, InternshipOffer)
   .row
