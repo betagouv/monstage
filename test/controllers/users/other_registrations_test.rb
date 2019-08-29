@@ -6,8 +6,8 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
   def assert_form_rendered
     assert_select 'input', value: 'Other', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
-    assert_select 'label', /Choisir un mot de passe/
-    assert_select 'label', /Confirmer le mot de passe/
+    assert_select 'label', /Créer un mot de passe/
+    assert_select 'label', /Ressaisir le mot de passe/
   end
 
   test 'GET new as a Other renders expected inputs' do

@@ -80,7 +80,7 @@
 
     <div class="form-group">
       <%= f.label :password do %>
-        Choisir un mot de passe
+        Créer un mot de passe
         <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
         <%= f.rg2a_required_content_tag %>
       <% end %>
@@ -89,7 +89,7 @@
 
     <div class="form-group">
       <%= f.label :password_confirmation do %>
-        Confirmer le mot de passe
+        Ressaisir le mot de passe
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true %>

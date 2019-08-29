@@ -16,10 +16,10 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       all('.list-group button.list-group-item').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
@@ -30,8 +30,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
 
       fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-mail.com'
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       click_on "Je m'inscris"

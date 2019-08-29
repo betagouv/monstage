@@ -24,8 +24,8 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
@@ -41,8 +41,8 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: 'another@email.com'
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 

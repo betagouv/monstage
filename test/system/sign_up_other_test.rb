@@ -21,8 +21,8 @@ class SignUpOthersTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
@@ -33,8 +33,8 @@ class SignUpOthersTest < ApplicationSystemTestCase
       all('.list-group button.list-group-item').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       fill_in 'Adresse électronique', with: 'another@email.com'
-      fill_in 'Choisir un mot de passe', with: 'kikoololletest'
-      fill_in 'Confirmer le mot de passe', with: 'kikoololletest'
+      fill_in 'Créer un mot de passe', with: 'kikoololletest'
+      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
