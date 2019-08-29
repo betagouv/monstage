@@ -195,6 +195,7 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
       assert_response :success
+      assert_select 'a[href=?]', internship_offer.permalink
     end
 
     test 'GET #show should be 404 if offer is discarded' do
