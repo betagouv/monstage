@@ -38,4 +38,12 @@ class ApiInternshipOfferTest < ActiveSupport::TestCase
                                                              employer: create(:user_operator)))
                                .valid?
   end
+
+  test '.as_json' do
+    internship_offer = build(:api_internship_offer)
+    json = internship_offer.as_json
+    assert_equal({ "latitude" => Coordinates.paris[:latitude],
+                   "longitude" => Coordinates.paris[:longitude] },
+                 json["formatted_coordinates"])
+  end
 end
