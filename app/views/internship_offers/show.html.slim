@@ -9,10 +9,8 @@
   .row
     .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
       = "Candidatez à cette offre sur le site de "
-      = link_to @internship_offer.permalink, class: 'text-white', target: "_blank", rel: "external noopener noreferrer", title: 'Candidater sur le site #{operator_name(@internship_offer)} (nouvelle fenêtre)' do
-        = operator_name(@internship_offer)
-        = " "
-        i.fas.fa-external-link-alt.fa-xs
+      = link_to operator_name(@internship_offer), @internship_offer.permalink, class: 'text-white', target: "_blank", rel: "external noopener noreferrer", title: "Candidater sur le site #{operator_name(@internship_offer)} (nouvelle fenêtre)"
+
 
 - if can?(:apply_in_bulk, @internship_offer) && @internship_offer.has_spots_left?
   = render partial: "internship_applications/school_manager_form"
