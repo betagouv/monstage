@@ -18,6 +18,25 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_session_path
   end
 
+  test 'GET #index as student ignores internship_offers with existing applicaiton' do
+    student = create(:student)
+    internship_offer_without_application = create(:internship_offer, title: 'ok')
+    internship_offer_with_application = create(:internship_offer, title: 'o')
+    internship_application = create(:internship_application, {
+      student: student,
+      internship_offer_week: internship_offer_with_application.internship_offer_weeks.first
+    })
+
+    sign_in(student)
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path
+        assert_absence_of(internship_offer: internship_offer_with_application)
+        assert_presence_of(internship_offer: internship_offer_without_application)
+      end
+    end
+  end
+
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > max_occurence_count' do
     internship_offer_with_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 2)
     internship_offer_without_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 0)
