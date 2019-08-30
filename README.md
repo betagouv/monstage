@@ -8,9 +8,9 @@ application up and running.
 # Infra
 Things you may want to cover:
 
-* Ruby version: 2.5.1
+* Ruby version: 2.6.4
 * Database
-- Install Postgres 10.6
+- Install Postgres 11.5
 - Initialize with : initdb /usr/local/var/postgres -E utf8
 - Create local db : createdb monstage
 - Start with : pg_ctl -D /usr/local/var/postgres start
@@ -34,7 +34,7 @@ foreman start -f Procfile.dev
 ### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-* **consult emails sent in development environment with mailcatcher**: 
+* **consult emails sent in development environment with mailcatcher**:
 - `gem install mailcatcher`
 - `open http://127.0.0.1:1080/`
 
