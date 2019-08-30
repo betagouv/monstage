@@ -44,7 +44,6 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Fourcade',
                                                     school_id: school.id,
                                                     class_room_id: class_room.id,
-                                                    accept_terms: true,
                                                     accept_terms: '1' } })
       assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.edu.fr')
     end
