@@ -9,7 +9,8 @@ module Users
                                              last_name: 'Fourcade',
                                              email: 'hello@ho.bye',
                                              password: 'okokok',
-                                             operator_id: operator.id)
+                                             operator_id: operator.id,
+                                             accept_terms: true)
       assert_equal operator, user_operator.operator
       assert_not_nil user_operator.api_token
     end

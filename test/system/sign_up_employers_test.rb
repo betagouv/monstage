@@ -17,6 +17,7 @@ class SignUpEmployersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
+      find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 

@@ -3,18 +3,19 @@
 require 'test_helper'
 
 class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
-  def assert_form_rendered
+  def assert_teacher_form_rendered
     assert_select 'input', value: 'MainTeacher', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
+    assert_select 'label', /J'accepte les conditions d'utilisation/
   end
 
   test 'GET new as a MainTeacher renders expected inputs' do
     get new_user_registration_path(as: 'Teacher')
 
     assert_response :success
-    assert_form_rendered
+    assert_teacher_form_rendered
   end
 
   test 'POST #create with missing params fails creation' do
@@ -24,9 +25,10 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::Teacher',
                                                     first_name: 'Martin',
-                                                    last_name: 'Fourcade' } })
+                                                    last_name: 'Fourcade',
+                                                    accept_terms: '1' } })
       assert_response 200
-      assert_form_rendered
+      assert_teacher_form_rendered
     end
   end
 
@@ -42,7 +44,8 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
                                                     school_id: school.id,
-                                                    class_room_id: class_room.id } })
+                                                    class_room_id: class_room.id,
+                                                    accept_terms: '1' } })
       assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.fr')
     end
   end

@@ -79,6 +79,7 @@ module Users
           class_room_id
           operator_id
           handicap
+          accept_terms
         ]
       )
     end

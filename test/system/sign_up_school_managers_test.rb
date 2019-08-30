@@ -20,6 +20,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
+      find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 

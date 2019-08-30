@@ -46,7 +46,6 @@ module Dashboard
 
         sign_in(main_teacher)
         patch dashboard_school_user_path(school, student, params: { user: { has_parental_consent: true } }), headers: { 'HTTP_REFERER' => root_path }
-
         assert student.reload.has_parental_consent
       end
 

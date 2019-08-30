@@ -115,15 +115,24 @@
           </div>
       </div>
 
-      <div class="form-group d-none" data-target="signup.handicapGroup">
+      <div class="form-group <%= resource.handicap_present ? '' : 'd-none' %>" data-target="signup.handicapGroup">
         <%= f.label :handicap do %>
           Indiquez ce dont vous avez besoin
           <%= f.rg2a_required_content_tag %>
         <% end %>
         <%= f.text_field :handicap, class: 'form-control' %>
       </div>
-
     <% end %>
+
+    <div class="form-group label">
+      <%= f.rg2a_required_content_tag %>
+      <div class="custom-control custom-checkbox">
+        <%= f.check_box :accept_terms, class: 'custom-control-input' %>
+        <%= f.label :accept_terms, class: 'custom-control-label' do %>
+          J'accepte les conditions d'utilisation
+        <% end %>
+      </div>
+    </div>
 
     <div class="actions d-flex d-sm-block text-center">
       <%= f.submit "Je m'inscris", class: 'btn btn-warning' %>

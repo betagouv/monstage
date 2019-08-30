@@ -9,6 +9,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'input', value: 'SchoolManager', hidden: 'hidden'
     assert_select 'label', /Adresse électronique académique/
+    assert_select 'label', /J'accepte les conditions d'utilisation/
   end
 
   test 'POST create School Manager responds with success' do
@@ -20,7 +21,8 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     school_id: school.id,
                                                     first_name: 'Chef',
                                                     last_name: 'Etablissement',
-                                                    type: 'Users::SchoolManager' } })
+                                                    type: 'Users::SchoolManager',
+                                                    accept_terms: '1' } })
       assert_redirected_to users_registrations_standby_path(email: 'chefetb@ac-edu.fr')
     end
   end
