@@ -75,6 +75,10 @@ module Users
     def cleanup_RGPD
       super
 
+      update_columns(birth_date: nil, gender: nil, class_room_id: nil,
+      resume_educational_background: nil, resume_other: nil, resume_languages: nil,
+      handicap: nil)
+
       internship_applications.each do |internship_application|
         internship_application.update(motivation: 'NA')
       end
