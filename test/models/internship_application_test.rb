@@ -175,4 +175,12 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     assert internship_application_ignored_by_week.reload.approved?
     assert internship_application_ignored_by_student.reload.approved?
   end
+
+  test 'RGPD' do
+    internship_application = create(:internship_application, motivation: 'amazing')
+
+    internship_application.cleanup_RGPD
+
+    assert_not_equal 'amazing', internship_application.motivation
+  end
 end

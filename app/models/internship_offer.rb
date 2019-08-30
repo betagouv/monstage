@@ -90,9 +90,9 @@ class InternshipOffer < ApplicationRecord
 
   def cleanup_RGPD
     fields_to_reset = {
-      tutor_name: 'NA', tutor_phone: 'NA', tutor_phone: 'NA', title: 'NA',
+      tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
       description: 'NA', employer_website: 'NA', street: 'NA',
-      employer_name: 'NA', employer_description: 'NA', group: 'NA'
+      employer_name: 'NA', employer_description: 'NA'
     }
     update(fields_to_reset)
     discard
