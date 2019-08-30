@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_130418) do
+ActiveRecord::Schema.define(version: 2019_08_30_082420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,8 +203,10 @@ ActiveRecord::Schema.define(version: 2019_08_28_130418) do
     t.string "api_token"
     t.text "handicap"
     t.boolean "custom_track", default: false, null: false
+    t.datetime "discarded_at"
     t.index ["api_token"], name: "index_users_on_api_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
