@@ -13,6 +13,9 @@ class ActiveSupport::TestCase
 
   parallelize_setup do |worker|
     # setup databases
+    postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')
+    postgis_spatial_ref_sys_sql = File.read(postgis_spatial_ref_sys_path)
+    ActiveRecord::Base.connection.execute(postgis_spatial_ref_sys_sql)
   end
 
   parallelize_teardown do |worker|
