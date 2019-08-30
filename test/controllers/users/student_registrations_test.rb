@@ -21,6 +21,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'div', /Je présente un handicap qui peut nécessiter une assistance particulière/
     assert_select 'label', /Indiquez ce dont vous avez besoin/
+    assert_select 'label', /J'accepte les conditions d'utilisation/
   end
 
   test 'POST Create Student without class fails' do
@@ -31,7 +32,8 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
                                             password_confirmation: 'okokok',
                                             first_name: 'Fatou',
                                             last_name: 'D',
-                                            type: 'Users::Student' }
+                                            type: 'Users::Student',
+                                            accept_terms: '1' }
                                   })
       assert_response 200
     end
@@ -56,7 +58,8 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
             password_confirmation: 'okokok',
-            handicap: 'cotorep'
+            handicap: 'cotorep',
+            accept_terms: '1'
           }
         }
       )

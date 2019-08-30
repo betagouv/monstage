@@ -21,7 +21,8 @@ module Users
                                password_confirmation: 'tototo',
                                first_name: 'Chef',
                                last_name: 'Etablissement',
-                               school: school)
+                               school: school,
+                               accept_terms: true)
       assert other.valid?
     end
 

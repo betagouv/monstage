@@ -3,14 +3,19 @@
 require 'test_helper'
 
 class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
-  test 'GET new as a Employer' do
-    get new_user_registration_path(as: 'Employer')
-
-    assert_response :success
+  def assert_employer_form_rendered
     assert_select 'input', value: 'Employer', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
+    assert_select 'label', /J'accepte les conditions d'utilisation/
+  end
+
+  test 'GET new as a Employer' do
+    get new_user_registration_path(as: 'Employer')
+
+    assert_response :success
+    assert_employer_form_rendered
   end
 
   test 'POST Create Employer' do
@@ -20,7 +25,8 @@ class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     password_confirmation: 'okokok',
                                                     first_name: 'Madame',
                                                     last_name: 'Accor',
-                                                    type: 'Users::Employer' } })
+                                                    type: 'Users::Employer',
+                                                    accept_terms: '1' } })
       assert_redirected_to users_registrations_standby_path(email: 'madame@accor.fr')
     end
   end

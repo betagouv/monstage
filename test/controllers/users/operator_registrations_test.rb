@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
-  def assert_form_rendered
+  def assert_operator_form_rendered
     assert_select 'input', value: 'Operator', hidden: 'hidden'
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
@@ -11,13 +11,14 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /Opérateur/
+    assert_select 'label', /J'accepte les conditions d'utilisation/
   end
 
   test 'GET new as a Operator renders expected inputs' do
     get new_user_registration_path(as: 'Operator')
 
     assert_response :success
-    assert_form_rendered
+    assert_operator_form_rendered
   end
 
   test 'POST #create with missing params fails creation' do
@@ -27,9 +28,10 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
                                                     password_confirmation: 'okokok',
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
-                                                    last_name: 'Fourcade' } })
+                                                    last_name: 'Fourcade',
+                                                    accept_terms: '1' } })
       assert_response 200
-      assert_form_rendered
+      assert_operator_form_rendered
     end
   end
 
@@ -42,7 +44,8 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
                                                     type: 'Users::Operator',
                                                     first_name: 'Martin',
                                                     last_name: 'Fourcade',
-                                                    operator_id: operator.id } })
+                                                    operator_id: operator.id,
+                                                    accept_terms: '1' } })
       assert_redirected_to users_registrations_standby_path(email: 'operator@vvmt.fr')
     end
   end

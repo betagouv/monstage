@@ -9,6 +9,10 @@ class User < ApplicationRecord
   validates :first_name, :last_name,
             presence: true
 
+  validates_inclusion_of :accept_terms, in: ["1", true],
+                                        message: :accept_terms,
+                                        on: :create
+
   delegate :url_helpers, to: :routes
   delegate :routes, to: :application
   delegate :application, to: Rails

@@ -581,6 +581,7 @@ CREATE TABLE public.users (
     handicap text,
     custom_track boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone
+    accept_terms boolean DEFAULT false NOT NULL
 );
 
 
@@ -1309,6 +1310,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190821200207'),
 ('20190828090307'),
 ('20190828130418'),
+('20190830080035');
 ('20190830082420');
 
 

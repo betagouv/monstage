@@ -1,6 +1,8 @@
 fr:
   errors:
     messages:
+      accept_terms: "Veuillez accepter les conditions d'utilisation"
+
       not_saved:
         one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"

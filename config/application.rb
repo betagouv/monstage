@@ -25,5 +25,7 @@ module Monstage
     config.public_file_server.enabled = true
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
+
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
   end
 end

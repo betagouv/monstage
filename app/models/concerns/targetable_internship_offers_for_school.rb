@@ -9,6 +9,7 @@ module TargetableInternshipOffersForSchool
     include InternshipOffersScopes::ByWeeks
     include InternshipOffersScopes::ByMaxWeeks
     include InternshipOffersScopes::ByMaxCandidates
+    include InternshipOffersScopes::ByNotApplied
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
       query = InternshipOffer.kept
@@ -18,6 +19,7 @@ module TargetableInternshipOffersForSchool
       query = query.merge(ignore_internship_restricted_to_other_schools(school_id: user.school_id))
       query = query.merge(ignore_max_candidates_reached)
       query = query.merge(ignore_max_occurence_reached)
+      query = query.merge(ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
       query
     }
   end
