@@ -23,16 +23,8 @@ module Users
 
     def cleanup_RGPD
       super
-      
-      internship_offers.each do |internship_offer|
-        fields_to_reset = {
-          tutor_name: 'NA', tutor_phone: 'NA', tutor_phone: 'NA', title: 'NA',
-          description: 'NA', employer_website: 'NA', street: 'NA',
-          employer_name: 'NA', employer_description: 'NA', group: 'NA'
-        }
-        internship_offer.update(fields_to_reset)
-        internship_offer.discard
-      end
+
+      internship_offers.map(&:cleanup_RGPD)
     end
   end
 end

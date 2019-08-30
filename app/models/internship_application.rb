@@ -116,4 +116,8 @@ class InternshipApplication < ApplicationRecord
       }
     end
   end
+
+  def cleanup_RGPD
+    update(motivation: 'NA')
+  end
 end

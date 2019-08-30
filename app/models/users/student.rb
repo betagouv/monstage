@@ -79,9 +79,7 @@ module Users
       resume_educational_background: nil, resume_other: nil, resume_languages: nil,
       handicap: nil)
 
-      internship_applications.each do |internship_application|
-        internship_application.update(motivation: 'NA')
-      end
+      internship_applications.map(&:cleanup_RGPD)
     end
   end
 end
