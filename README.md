@@ -28,7 +28,7 @@ Things you may want to cover:
 **start project**
 
 ```
-foreman start -f Procfile.dev
+heroku local -f Procfile.dev
 ```
 
 ### tooling: linting, etc...
