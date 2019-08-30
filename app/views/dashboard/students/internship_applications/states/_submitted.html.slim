@@ -4,5 +4,6 @@
       i.fas.fa-hourglass-start
     .col
       span.alert-internship-application-state= "Candidature envoyée le #{localize(internship_application.submitted_at, format: :human_mm_dd)}."
-      br
-      span= "En attente de réponse"
+      - if internship_application.submitted?
+        br
+        span= "En attente de réponse"

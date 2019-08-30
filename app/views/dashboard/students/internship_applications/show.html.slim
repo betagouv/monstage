@@ -11,7 +11,9 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
 
     .row
       .col-12.py-2
-        - unless @internship_application.convention_signed?
+        - if @internship_application.convention_signed?
+          = render partial: "dashboard/students/internship_applications/states/submitted", locals: {internship_application: @internship_application, application_detail_tab: true }
+        - else
           = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application, application_detail_tab: true }
 
     .row

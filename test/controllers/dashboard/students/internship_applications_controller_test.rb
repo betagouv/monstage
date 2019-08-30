@@ -55,7 +55,6 @@ module Dashboard
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
         assert_select 'a.btn.btn-warning[href=?]', internship_offers_path
       end
-
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
         internship_applications = {
@@ -102,14 +101,22 @@ module Dashboard
       test 'GET internship_applications#show render navbar, timeline' do
         student = create(:student)
         sign_in(student)
-        internship_applications = create(:internship_application, student: student)
+        internship_application = create(:internship_application, {
+          student: student,
+          aasm_state: :convention_signed,
+          convention_signed_at: 1.days.ago,
+          submitted_at: 2.days.ago
+        })
 
         get dashboard_students_internship_application_path(student,
-                                                           internship_applications)
+                                                           internship_application)
         assert_response :success
 
         assert_template 'dashboard/students/internship_applications/show'
         assert_template 'dashboard/students/_timeline'
+        assert_select '#tab-internship-application-detail .alert-internship-application-state',
+                      text: "Candidature envoyée le #{I18n.localize(internship_application.submitted_at, format: :human_mm_dd)}.",
+                      count: 1
       end
 
       test 'GET internship_applications#show with drafted can be submitted' do
