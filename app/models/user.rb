@@ -46,4 +46,18 @@ class User < ApplicationRecord
       custom_dashboard_path
     ]
   end
+
+  def cleanup_RGPD
+    # Remove all personal information
+    fields_to_reset = {
+      email: SecureRandom.hex, first_name: 'NA',
+      last_name: 'NA', phone: nil, current_sign_in_ip: nil,
+      last_sign_in_ip: nil, birth_date: nil, gender: nil, class_room_id: nil,
+      resume_educational_background: nil, resume_other: nil,resume_languages: nil,
+      handicap: nil
+    }
+    update_columns(fields_to_reset)
+
+    discard
+  end
 end

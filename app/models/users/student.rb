@@ -71,5 +71,13 @@ module Users
         .where("internship_offer_weeks.week_id = #{week.id}")
         .map(&:cancel!)
     end
+
+    def cleanup_RGPD
+      super
+
+      internship_applications.each do |internship_application|
+        internship_application.update(motivation: 'NA')
+      end
+    end
   end
 end
