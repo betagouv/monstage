@@ -71,3 +71,4 @@ gem 'devise-i18n'
 
 gem 'aasm'
 gem 'kaminari'
+gem "switch_user"
