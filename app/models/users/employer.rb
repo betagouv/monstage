@@ -21,10 +21,10 @@ module Users
       'Mon compte'
     end
 
-    def cleanup_RGPD
+    def anonymize
       super
 
-      internship_offers.map(&:cleanup_RGPD)
+      internship_offers.map(&:anonymize)
     end
   end
 end

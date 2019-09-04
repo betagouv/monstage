@@ -72,14 +72,14 @@ module Users
         .map(&:cancel!)
     end
 
-    def cleanup_RGPD
+    def anonymize
       super
 
       update_columns(birth_date: nil, gender: nil, class_room_id: nil,
       resume_educational_background: nil, resume_other: nil, resume_languages: nil,
       handicap: nil)
 
-      internship_applications.map(&:cleanup_RGPD)
+      internship_applications.map(&:anonymize)
     end
   end
 end

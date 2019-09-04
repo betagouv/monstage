@@ -45,7 +45,7 @@ class UserTest < ActiveSupport::TestCase
       resume_other: 'chocolat', resume_languages: 'FR',
       handicap: 'malvoyant')
 
-    student.cleanup_RGPD
+    student.anonymize
 
     assert_not_equal 'test@test.com', student.email
     assert_not_equal 'Toto', student.first_name
@@ -67,7 +67,7 @@ class UserTest < ActiveSupport::TestCase
 
     internship_offer = create(:internship_offer, employer: employer)
 
-    employer.cleanup_RGPD
+    employer.anonymize
 
     internship_offer.reload
     assert internship_offer.discarded?

@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   include Discard::Model
-  
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
@@ -51,7 +51,7 @@ class User < ApplicationRecord
     ]
   end
 
-  def cleanup_RGPD
+  def anonymize
     # Remove all personal information
     fields_to_reset = {
       email: SecureRandom.hex, first_name: 'NA',

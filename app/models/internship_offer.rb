@@ -88,7 +88,7 @@ class InternshipOffer < ApplicationRecord
     convention_signed_applications_count - total_male_convention_signed_applications_count
   end
 
-  def cleanup_RGPD
+  def anonymize
     fields_to_reset = {
       tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
       description: 'NA', employer_website: 'NA', street: 'NA',

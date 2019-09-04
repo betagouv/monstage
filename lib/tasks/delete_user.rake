@@ -7,7 +7,7 @@ task :delete_user, [:user_id] => :environment do |task, args|
   puts "Removing all information about user #{user_id}..."
 
   user = User.find(user_id)
-  user.cleanup_RGPD
-  
+  user.anonymize
+
   puts 'done'
 end

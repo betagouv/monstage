@@ -94,7 +94,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
       tutor_email: 'eric@octo.com', title: 'Test', description: 'Test', employer_website: 'Test',
       street: 'rue', employer_name: 'Octo', employer_description: 'Test')
 
-    internship_offer.cleanup_RGPD
+    internship_offer.anonymize
 
     assert_not_equal 'Eric', internship_offer.tutor_name
     assert_not_equal '0123456789', internship_offer.tutor_phone

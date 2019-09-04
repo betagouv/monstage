@@ -117,7 +117,7 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def cleanup_RGPD
+  def anonymize
     update(motivation: 'NA')
   end
 end
