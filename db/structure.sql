@@ -580,7 +580,7 @@ CREATE TABLE public.users (
     api_token character varying,
     handicap text,
     custom_track boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone
+    discarded_at timestamp without time zone,
     accept_terms boolean DEFAULT false NOT NULL
 );
 
@@ -1312,5 +1312,3 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190828130418'),
 ('20190830080035');
 ('20190830082420');
-
-
