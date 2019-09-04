@@ -20,5 +20,11 @@ module Users
     def account_link_name
       'Mon compte'
     end
+
+    def anonymize
+      super
+
+      internship_offers.map(&:anonymize)
+    end
   end
 end

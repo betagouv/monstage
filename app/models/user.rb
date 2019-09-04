@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include Discard::Model
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
@@ -47,5 +49,17 @@ class User < ApplicationRecord
     [
       custom_dashboard_path
     ]
+  end
+
+  def anonymize
+    # Remove all personal information
+    fields_to_reset = {
+      email: SecureRandom.hex, first_name: 'NA',
+      last_name: 'NA', phone: nil, current_sign_in_ip: nil,
+      last_sign_in_ip: nil
+    }
+    update_columns(fields_to_reset)
+
+    discard
   end
 end

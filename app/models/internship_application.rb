@@ -116,4 +116,8 @@ class InternshipApplication < ApplicationRecord
       }
     end
   end
+
+  def anonymize
+    update(motivation: 'NA')
+  end
 end

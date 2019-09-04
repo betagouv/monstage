@@ -87,4 +87,14 @@ class InternshipOffer < ApplicationRecord
   def total_female_convention_signed_applications_count
     convention_signed_applications_count - total_male_convention_signed_applications_count
   end
+
+  def anonymize
+    fields_to_reset = {
+      tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
+      description: 'NA', employer_website: 'NA', street: 'NA',
+      employer_name: 'NA', employer_description: 'NA'
+    }
+    update(fields_to_reset)
+    discard
+  end
 end
