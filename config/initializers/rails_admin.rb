@@ -4,16 +4,12 @@ RailsAdmin.config do |config|
 
   ## == Devise ==
   config.authenticate_with do
-    if current_user && current_user.is_a?(Users::God)
-      warden.authenticate! scope: :user
-    else
-      redirect_to '/'
-    end
+    warden.authenticate! scope: :user
   end
   config.current_user_method(&:current_user)
 
   ## == CancanCan ==
-  # config.authorize_with :cancancan
+  config.authorize_with :cancancan
 
   ## == Pundit ==
   # config.authorize_with :pundit
