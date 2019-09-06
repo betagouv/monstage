@@ -70,7 +70,7 @@ export default class extends Controller {
       $(this.selectGroupNameTarget)
         .find('option')
         .first()
-        .text('-- Veuillez sélectionner un groupe --');
+        .text('-- Indépendant --');
       $(this.groupNamePublicTargets).hide();
       $(this.groupNamePrivateTargets).show();
     }

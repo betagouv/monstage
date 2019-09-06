@@ -63,10 +63,31 @@ module InternshipOffers
     end
 
     test 'GET #new as Employer with duplicate_id' do
-      internship_offer = create(:internship_offer)
+      operator = create(:operator)
+      internship_offer = create(:internship_offer, operators: [operator],
+                                                   is_public: true,
+                                                   group: "MATIGNON",
+                                                   max_candidates: 2)
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
       assert_select "input[value=\"#{internship_offer.title}\"]", count: 1
+      assert_select '#internship_offer_is_public_true[checked]',
+                    count: 1 # "ensure user select kind of group"
+      assert_select '#internship_offer_is_public_false[checked]',
+                    count: 0 # "ensure user select kind of group"
+      assert_select '.form-group-select-group.d-none', count: 0
+      assert_select '.form-group-select-group', count: 1
+
+      assert_select '#internship_offer_with_operator_true[checked]', count: 1
+      assert_select '#internship_offer_with_operator_false[checked]', count: 0
+      assert_select '#internship_offer_with_operator_unknown[checked]', count: 0
+      assert_select '.operators-check-boxes.d-none', count: 0
+      assert_select '.operators-check-boxes', count: 1
+
+      assert_select '#internship_type_true[checked]', count: 0
+      assert_select '#internship_type_false[checked]', count: 1
+      assert_select '.form-group-select-max-candidates.d-none', count: 0
+      assert_select '.form-group-select-max-candidates', count: 1
     end
   end
 end

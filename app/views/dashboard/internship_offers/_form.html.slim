@@ -26,7 +26,7 @@
         = form.radio_button :is_public, false, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
         = form.label :is_public_false, 'privé', class: 'custom-control-label'
 
-    div class="form-group form-group-select-group #{@internship_offer.new_record? && @internship_offer.errors.empty? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
+    div class="form-group form-group-select-group #{@internship_offer.is_public.nil? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
       = form.label :group, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
       = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
 
@@ -44,13 +44,13 @@
         = form.rg2a_required_content_tag
 
       .custom-control.custom-radio
-        = form.radio_button :with_operator, true, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? ? false : @internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.radio_button :with_operator, true, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id].present? ? false : @internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
         = form.label :with_operator_true, 'Oui', class: 'custom-control-label'
       .custom-control.custom-radio
-        = form.radio_button :with_operator, false, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? ? false : !@internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.radio_button :with_operator, false, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id].present? ? false : !@internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
         = form.label :with_operator_false, 'Non', class: 'custom-control-label'
       .custom-control.custom-radio
-        = form.radio_button :with_operator, :unknown, class: 'custom-control-input', required: true, checked: @internship_offer.new_record?, data: { action: 'change->internship-form#handleClickWithOperator' }
+        = form.radio_button :with_operator, :unknown, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id]), data: { action: 'change->internship-form#handleClickWithOperator' }
         = form.label :with_operator_unknown, 'Je ne sais pas', class: 'custom-control-label'
 
     div class="form-group operators-check-boxes #{@internship_offer.has_operator? ? '' : 'd-none'}" data-target="internship-form.operatorsBlock"
@@ -97,7 +97,7 @@
       .custom-control.custom-radio
         = radio_button_tag :internship_type,
                             false,
-                            @internship_offer.new_record? && @internship_offer.errors.empty? ? false : !@internship_offer.is_individual?,
+                            @internship_offer.new_record? && @internship_offer.errors.empty? && !params[:duplicate_id].present? ? false : !@internship_offer.is_individual?,
                             class: 'custom-control-input',
                             disabled: !@internship_offer.is_fully_editable?,
                             data: { action: "change->internship-form#toggleInternshipType" }
