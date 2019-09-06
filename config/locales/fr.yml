@@ -24,8 +24,22 @@ fr:
       users/main_teacher: "Professeur principal"
       users/teacher: "Professeur"
       users/other: "Autres fonctions"
+      school:
+        one: Collège
+        other: Collèges
+      feedback:
+        one: Avis
+        other: Avis
 
     attributes:
+      school:
+        name: Nom
+        kind: Type
+        visible: Disponible sur le site
+        street: Adresse
+        zipcode: Code postal
+        city: Ville
+        department: Département
       reporting/internship_offer:
         sector_id: Secteurs professionnels
         total_report_count: Nbr. d'offres proposées

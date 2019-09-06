@@ -131,7 +131,9 @@ class Ability
     can :show, :account
     can :manage, School
     can %i[destroy see_tutor see_max_occurence search], InternshipOffer
-    can %i[destroy index], Feedback
+    can :manage, Feedback
+    can :access, :rails_admin   # grant access to rails_admin
+    can :read, :dashboard       # grant access to the dashboard
   end
 
   private
