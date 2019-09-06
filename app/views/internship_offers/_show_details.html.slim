@@ -24,7 +24,7 @@
         a href="#showAll" data-turbolink="false" data-target="collapsible-list.showMoreButton" title="Afficher les #{weeks.size} semaines disponible" data-action="collapsible-list#showMore"
           | +
           | &nbsp;
-          | Tout afficher
+          | Tout Afficher
       - weeks.drop(6).map.with_index do |hidden_week, i|
         span.d-none data-target="collapsible-list.hiddenElement"
           = hidden_week.human_select_text_method.downcase
@@ -42,7 +42,7 @@
   .row.bg-light.py-3.bt-1.bt-light
     .col-12
       h2.h4 Tuteur
-      address
+      div
         .d-flex.my-2
           .circle-font.text-info
             i.fas.fa-user.fa-fw
@@ -58,7 +58,6 @@
           .circle-font.text-info
             i.far.fa-envelope.fa-fw
           .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
-
 
 .row.bg-light.py-3.bt-1.bt-light
   .col-12
@@ -80,12 +79,3 @@
         br
         = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
-
-- if can? :create, InternshipOffer
-  h2.h6.bg-light Contact
-  p
-    b = internship_offer.tutor_name
-    br
-    = link_to internship_offer.tutor_phone, "tel:#{internship_offer.tutor_phone}"
-    br
-    = link_to internship_offer.tutor_email, "email:#{internship_offer.tutor_email}"

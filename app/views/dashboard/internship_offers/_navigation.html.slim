@@ -1,17 +1,13 @@
-.row.bg-light
+.row.bg-light.mt-n4
   .col-12
     nav.navbar
-      a.icon-link.d-flex.align-items-center href=dashboard_internship_offers_path
-        .fas.fa-2x.fa-angle-left.mr-1
-        = "Retour"
+      .d-flex.align-items-center.text-success.br-1.bt-light.pr-3
+        = "Annonce publiée en ligne"
+        br
+        = "depuis le #{l(@internship_offer.created_at, format: :human_mm_dd)}"
 
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
-        - if current_page?(dashboard_internship_offer_path(@internship_offer))
-          .nav-link= "Voir l'annonce"
-        - else
-          = link_to dashboard_internship_offer_path(@internship_offer), class: 'nav-link' do
-            = "Voir l'annonce"
-        = " | "
+
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
           .nav-link= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
         - else
@@ -29,6 +25,6 @@
         a.nav-link href=new_dashboard_internship_offer_path
           .fas.fa-2x.fa-plus
 
-.row.bg-internship-title
+.row
   .col-12
     h1.h2.mt-2 = @internship_offer.title

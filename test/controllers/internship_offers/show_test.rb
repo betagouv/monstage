@@ -25,6 +25,7 @@ module InternshipOffers
       assert_select 'a.test-employer-website', 0
     end
 
+
     #
     # internship_applications checks
     #

@@ -111,7 +111,7 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
-    can %i[create], InternshipOffer
+    can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can %i[index update], InternshipApplication
   end
@@ -119,7 +119,7 @@ class Ability
   def operator_abilities(user:)
     can :show, :account
     can :choose_operator, :sign_up
-    can %i[create], InternshipOffer
+    can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
     can %i[update discard], Api::InternshipOffer, employer_id: user.id
