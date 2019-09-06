@@ -35,4 +35,35 @@ class School < ApplicationRecord
   def to_s
     name
   end
+
+  rails_admin do
+    list do
+      field :id
+      field :name
+      field :visible
+      field :kind
+      field :city
+      field :zipcode
+    end
+
+    edit do
+      field :name
+      field :visible
+      field :kind
+      field :street do read_only true end
+      field :zipcode do read_only true end
+      field :city do read_only true end
+      field :department do read_only true end
+    end
+
+    show do
+      field :name
+      field :visible
+      field :kind
+      field :street
+      field :zipcode
+      field :city
+      field :department
+    end
+  end
 end
