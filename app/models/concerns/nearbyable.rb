@@ -19,8 +19,15 @@ module Nearbyable
     }
 
     def coordinates=(coordinates)
-      super(geo_point_factory(latitude: coordinates[:latitude],
-                              longitude: coordinates[:longitude]))
+      case coordinates
+      when Hash then
+        super(geo_point_factory(latitude: coordinates[:latitude],
+                                longitude: coordinates[:longitude]))
+      when RGeo::Geographic::SphericalPointImpl then
+        super(coordinates)
+      else
+        super
+      end
     end
 
     def coordinates_are_valid?

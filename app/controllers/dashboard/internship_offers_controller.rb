@@ -75,7 +75,13 @@ module Dashboard
 
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = InternshipOffer.new
+      if params[:duplicate_id].present?
+        @internship_offer = current_user.internship_offers
+                                        .find(params[:duplicate_id])
+                                        .duplicate
+      else
+        @internship_offer = InternshipOffer.new
+      end
       find_selectable_weeks
     end
 

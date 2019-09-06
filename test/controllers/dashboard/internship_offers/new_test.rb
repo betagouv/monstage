@@ -61,5 +61,12 @@ module InternshipOffers
       get new_dashboard_internship_offer_path
       assert_redirected_to user_session_path
     end
+
+    test 'GET #new as Employer with duplicate_id' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
+      assert_select "input[value=\"#{internship_offer.title}\"]", count: 1
+    end
   end
 end

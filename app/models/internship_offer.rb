@@ -97,4 +97,16 @@ class InternshipOffer < ApplicationRecord
     update(fields_to_reset)
     discard
   end
+
+  def duplicate
+    white_list = %w[title description sector_id max_candidates max_occurence
+                    tutor_name tutor_phone tutor_email employer_website
+                    employer_name street zipcode city department region academy
+                    is_public group school_id employer_description coordinates]
+
+    internship_offer = InternshipOffer.new(attributes.slice(*white_list))
+    internship_offer.week_ids = week_ids
+    internship_offer.operator_ids = operator_ids
+    internship_offer
+  end
 end
