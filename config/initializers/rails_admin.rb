@@ -44,5 +44,5 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.included_models = ["School", "Feedback", "Users::Student", "Users::Employer", "Users::SchoolManager", "Users::MainTeacher", "Users::Teacher", "Users::Operator", "Users::Other", "User"]
+  config.included_models = ["School", "Feedback", "Users::Student", "Users::Employer", "Users::SchoolManager", "Users::MainTeacher", "Users::Teacher", "Users::Operator", "Users::Other", "Users::God", "User"]
 end

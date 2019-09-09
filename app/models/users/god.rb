@@ -2,6 +2,8 @@
 
 module Users
   class God < User
+    include UserAdmin
+    
     include InternshipOffersScopes::ByCoordinates
     scope :targeted_internship_offers, ->(user:, coordinates:) {
       query = InternshipOffer.kept
