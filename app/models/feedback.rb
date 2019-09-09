@@ -35,7 +35,7 @@ class Feedback < ApplicationRecord
 
     state({
       # events: {close: 'btn-success', answer: 'btn-warning'},
-      states: {open: 'label-important', in_progress: 'label-warning', closed: 'label-success'}
+      states: {in_progress: 'label-warning', closed: 'label-success'}
     })
   end
 end
