@@ -44,6 +44,7 @@ class School < ApplicationRecord
       field :kind
       field :city
       field :zipcode
+      field :department
     end
 
     edit do
