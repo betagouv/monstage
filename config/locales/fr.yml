@@ -17,6 +17,10 @@ fr:
       not_approved: "Veuillez faire signer l'autorisation parentale à vos parents et la donner à votre professeur principal pour consulter la liste des stages."
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
   activerecord:
+    events:
+      feedback:
+        answer: Marquer comme En Cours
+        close: Fermer
     models:
       user:
         one: Utilisateur
@@ -85,6 +89,10 @@ fr:
         class_room: "Classe"
         school: "Collège"
         gender: Sexe
+      feedback:
+        aasm_state/open: Ouvert
+        aasm_state/in_progress: En Cours
+        aasm_state/closed: Clos
 
     errors:
       messages:
