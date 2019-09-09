@@ -18,12 +18,33 @@ fr:
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
   activerecord:
     models:
-      users/student: "Élève"
-      users/school_manager: "Chef d'établissement"
-      users/employer: "Employeur"
-      users/main_teacher: "Professeur principal"
-      users/teacher: "Professeur"
-      users/other: "Autres fonctions"
+      user:
+        one: Utilisateur
+        other: Utilisateurs
+      users/student:
+        one: Élève
+        other: Élèves
+      users/school_manager:
+        one: Chef d'établissement
+        other: Chefs d'établissement
+      users/employer:
+        one: Employeur
+        other: Employeurs
+      users/main_teacher:
+        one: Professeur principal
+        other: professeurs principaux
+      users/teacher:
+        one: Professeur
+        other: Profresseurs
+      users/operator:
+        one: Opérateur
+        other: Opérateurs
+      users/god:
+        one: Administrateur
+        other: Administrateurs
+      users/other:
+        one: Autre utilisateur
+        other: Autres utilisateurs
       school:
         one: Collège
         other: Collèges

@@ -2,6 +2,8 @@
 
 module Users
   class Student < User
+    include UserAdmin
+
     belongs_to :school
     belongs_to :class_room, optional: true
     validates :birth_date,

@@ -2,6 +2,8 @@
 
 module Users
   class Teacher < User
+    include UserAdmin
+    
     belongs_to :class_room, optional: true
     include ManagedUser
     include TargetableInternshipOffersForSchool
