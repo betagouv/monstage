@@ -21,6 +21,7 @@ class Feedback < ApplicationRecord
   rails_admin do
     list do
       field :id
+      field :created_at
       field :email
       field :comment
       field :aasm_state, :state
