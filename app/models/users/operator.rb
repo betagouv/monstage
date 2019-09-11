@@ -3,7 +3,6 @@
 module Users
   class Operator < User
     include UserAdmin
-    
     include InternshipOffersScopes::ByOperator
 
     belongs_to :operator, foreign_key: :operator_id,
