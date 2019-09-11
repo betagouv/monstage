@@ -4,6 +4,7 @@ class InternshipOffersController < ApplicationController
   include SetInternshipOffers
 
   before_action :authenticate_user!, only: %i[index create edit update destroy]
+  after_action :increment_internship_offer_view_count, only: :show
 
   def index
     set_internship_offers
@@ -21,5 +22,10 @@ class InternshipOffersController < ApplicationController
     end
     @internship_application ||= @internship_offer.internship_applications
                                                  .build(user_id: current_user_id)
+  end
+
+  private
+  def increment_internship_offer_view_count
+    @internship_offer.increment!(:view_count) if current_user.is_a?(Users::Student)
   end
 end

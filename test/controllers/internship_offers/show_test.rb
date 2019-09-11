@@ -25,6 +25,31 @@ module InternshipOffers
       assert_select 'a.test-employer-website', 0
     end
 
+    test 'GET #show not logged increments view_count' do
+      internship_offer = create(:internship_offer)
+
+      assert_no_changes -> { internship_offer.reload.view_count } do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show not logged as employer does not increment view_count' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      assert_no_changes -> { internship_offer.reload.view_count } do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show not logged as student does not increment view_count' do
+      internship_offer = create(:internship_offer)
+      sign_in(create(:student))
+      assert_changes -> { internship_offer.reload.view_count },
+                     from: 0,
+                     to: 1 do
+        get internship_offer_path(internship_offer)
+      end
+    end
 
     #
     # internship_applications checks

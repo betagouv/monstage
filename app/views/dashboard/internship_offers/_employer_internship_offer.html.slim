@@ -1,21 +1,29 @@
 tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id}"
-  td data-head="#{cols[0]}"
+  td data-head="#{cols[:title]}"
     = link_to dashboard_internship_offer_path(employer_internship_offer), data: { "test-id": "#{employer_internship_offer.id}" }, class: 'listview-item' do
       p.text-strong.internship-item-title.mb-0= employer_internship_offer.title
       p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city
       p.text-muted.internship-item-city.small.mb-0= "Du #{employer_internship_offer.weeks.order(:number, :year).first.beginning_of_week} au #{employer_internship_offer.weeks.order(:number, :year).last.end_of_week}"
-  td.align-middle.text-sm-center data-head="#{cols[1]}"
+
+  td.align-middle.text-sm-center.d-none.d-md-table-cell data-head=cols[:view_count]
+    span.badge.badge-view-count= employer_internship_offer.view_count
+
+  td.align-middle.text-sm-center data-head="#{cols[:internship_application_count]}"
     span.badge= employer_internship_offer.total_applications_count
     - if employer_internship_offer.internship_applications.size.positive?
       br
       = link_to 'Afficher', dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn btn-sm btn-link'
-  td.align-middle.text-sm-center data-head="#{cols[2]}"
+  td.align-middle.text-sm-center data-head="#{cols[:internship_application_submitted_count]}"
     span.badge= employer_internship_offer.internship_applications.select(&:submitted?).size
     - if employer_internship_offer.internship_applications.select(&:submitted?).size > 0
       br
       = link_to 'Répondre', dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn btn-outline-dark btn-outline-dark btn-sm'
-  td.align-middle.text-sm-center data-head="#{cols[3]}"
+
+  td.align-middle.text-sm-center.d-none.d-md-table-cell data-head="#{cols[:internship_application_rejected_count]}"
+    span.badge= employer_internship_offer.internship_applications.select(&:rejected?).size
+
+  td.align-middle.text-sm-center data-head="#{cols[:internship_application_approved_count]}"
     span.badge= employer_internship_offer.approved_applications_count
 
-  td.align-middle.text-sm-center data-head="#{cols[4]}"
+  td.align-middle.text-sm-center data-head="#{cols[:internship_application_convention_signed_count]}"
     span.badge= employer_internship_offer.convention_signed_applications_count

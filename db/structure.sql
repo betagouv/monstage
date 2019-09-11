@@ -5,22 +5,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
 
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
@@ -366,7 +353,7 @@ CREATE TABLE public.internship_offers (
     employer_id bigint,
     school_id bigint,
     employer_description character varying NOT NULL,
-    sector_id integer NOT NULL,
+    sector_id bigint NOT NULL,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
     convention_signed_applications_count integer DEFAULT 0 NOT NULL,
@@ -378,7 +365,8 @@ CREATE TABLE public.internship_offers (
     total_male_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     remote_id character varying,
     permalink character varying,
-    total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL
+    total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
+    view_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1313,6 +1301,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190828130418'),
 ('20190830080035'),
 ('20190830082420'),
-('20190909092332');
+('20190909092332'),
+('20190911091325'),
+('20190911091821');
 
 

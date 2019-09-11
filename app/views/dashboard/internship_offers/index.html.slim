@@ -9,13 +9,35 @@
 - else
   .row
     table.table.table-striped.table-hover.table-rg2a
-      - cols = ["Stage proposé", "Candidatures", "Réponses à donner", "En attente de convention", "Convention signée"]
+      - cols = { title: "Offre publiée", view_count: "Affichages", internship_application_count: "Candidatures", internship_application_submitted_count: "Réponses à donner", internship_application_rejected_count: "Candidatures refusées", internship_application_approved_count: "En attente de convention", internship_application_convention_signed_count: "Convention signée"}
       thead
         tr
-          - cols.map.with_index do |col, i|
-
-            th class="align-top #{i.zero? ? '' : 'text-center'}"
-              small= col
+          th.align-top
+            small Offre publiée
+          th.align-top.text-center.d-none.d-md-table-cell
+            accr.small.bb-1.bt-light title="Combien de fois la page de l'offre a été consultée par des élèves" Affichages
+          th.align-top.text-center
+            small Candidatures
+          th.align-top.text-center
+            small
+              | Réponses
+              br
+              | à donner
+          th.align-top.text-center.d-none.d-md-table-cell
+            small
+              | Candidatures
+              br
+              | refusées
+          th.align-top.text-center
+            small
+              | En attente
+              br
+              | de convention
+          th.align-top.text-center
+            small
+              | Convention
+              br
+              | signée
 
       tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}
 

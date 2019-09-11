@@ -14,6 +14,18 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
+    test 'GET #index as Employer show view_count' do
+      internship_offer = create(:internship_offer, view_count: 10)
+
+      sign_in(internship_offer.employer)
+      get dashboard_internship_offers_path
+
+      assert_response :success
+      assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
+                    text: internship_offer.view_count.to_s,
+                    count: 1
+    end
+
 
     test 'GET #index as Employer displays links to internship_application' do
       employer = create(:employer)
@@ -29,6 +41,9 @@ module Dashboard
       get dashboard_internship_offers_path
       assert_response :success
       assert_select ".test-internship-offer", count: 3
+
+      assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(void_internship_offer), text: "Répondre", count: 0
+      assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(void_internship_offer), text: "Afficher", count: 0
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: "Répondre"
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(internship_offer_with_application), text: "Afficher"
     end
