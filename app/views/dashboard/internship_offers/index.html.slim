@@ -13,7 +13,10 @@
       thead
         tr
           th.align-top
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "title", sort_by_i18n: "titre", direction: order_direction}
+
             small Offre publiée
+
           th.align-top.text-center.d-none.d-md-table-cell
             = render partial: "dashboard/internship_offers/sort_links", locals: { order: "view_count", sort_by_i18n: "affichage", direction: order_direction}
 

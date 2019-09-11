@@ -88,6 +88,7 @@ module Dashboard
     private
 
     VALID_ORDER_COLUMNS = %w[
+      title
       view_count
       total_applications_count
       submitted_applications_count
@@ -103,7 +104,7 @@ module Dashboard
     def order_column
       redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" }) if params[:order] && !valid_order_column?
       return params[:order] if params[:order] && valid_order_column?
-      :convention_signed_applications_count
+      :submitted_applications_count
     end
 
     def order_direction
