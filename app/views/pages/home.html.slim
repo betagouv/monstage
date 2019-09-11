@@ -116,10 +116,9 @@
         h3.h3-home.my-5.text-center Nos partenaires
 
       .col-12
-        - %w[Logo-onisep.jpg].each do |partner_logo|
-            = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), height: 69, class: 'mx-3 my-3', alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
-            br
+        - main_partners_map_of_logo_url.each do |partner_logo, partner_url|
+          = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
+        br
 
-        - %w[Logo-face.jpg Logo-degunsanstage.jpg Logo-jobirl.jpg Logo-le-reseau.jpg Logo-les-entreprises-pour-la-cite.jpg Logo-myfuture.png Logo-tous-en-stage.jpg Logo-un-stage-et-apres.jpg Logo-viens-voir-mon-taf.jpg Logo-jndj.png Logo-united-way.png].sort.each do |partner_logo|
-          = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), height: 69, class: 'mx-3 my-3', alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
-            br
+        - partners_map_of_logo_url.each do |partner_logo, partner_url|
+          = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
