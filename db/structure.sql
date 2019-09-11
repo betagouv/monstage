@@ -302,8 +302,7 @@ CREATE TABLE public.internship_offer_weeks (
     week_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    blocked_applications_count integer DEFAULT 0 NOT NULL,
-    approved_applications_count integer DEFAULT 0 NOT NULL
+    blocked_applications_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -366,7 +365,9 @@ CREATE TABLE public.internship_offers (
     remote_id character varying,
     permalink character varying,
     total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
-    view_count integer DEFAULT 0 NOT NULL
+    view_count integer DEFAULT 0 NOT NULL,
+    submitted_applications_count integer DEFAULT 0 NOT NULL,
+    rejected_applications_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -886,13 +887,6 @@ CREATE INDEX index_internship_offer_operators_on_operator_id ON public.internshi
 
 
 --
--- Name: index_internship_offer_weeks_on_approved_applications_count; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_weeks_on_approved_applications_count ON public.internship_offer_weeks USING btree (approved_applications_count);
-
-
---
 -- Name: index_internship_offer_weeks_on_blocked_applications_count; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1303,6 +1297,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190830082420'),
 ('20190909092332'),
 ('20190911091325'),
-('20190911091821');
+('20190911091821'),
+('20190911132109'),
+('20190911134144');
 
 

@@ -5,12 +5,12 @@ module Dashboard
     include SetInternshipOffers
 
     before_action :authenticate_user!
+    helper_method :order_direction
 
     def index
       set_internship_offers
-      @internship_offers = @internship_offers.order(convention_signed_applications_count: :desc,
-                                                    total_applications_count: :desc,
-                                                    updated_at: :desc)
+
+      @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
     def show
@@ -86,6 +86,30 @@ module Dashboard
     end
 
     private
+
+    VALID_ORDER_COLUMNS = %w[
+      view_count
+      total_applications_count
+      submitted_applications_count
+      rejected_applications_count
+      approved_applications_count
+      convention_signed_applications_count
+    ]
+
+    def valid_order_column?
+      VALID_ORDER_COLUMNS.include?(params[:order])
+    end
+
+    def order_column
+      redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" }) if params[:order] && !valid_order_column?
+      return params[:order] if params[:order] && valid_order_column?
+      :convention_signed_applications_count
+    end
+
+    def order_direction
+      return params[:direction] if params[:direction] && %w[asc desc].include?(params[:direction])
+      :desc
+    end
 
     def internship_offer_builder
       @builder ||= Builders::InternshipOfferBuilder.new(user: current_user,

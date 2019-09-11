@@ -14,26 +14,34 @@
         tr
           th.align-top
             small Offre publiée
-          th.align-top.text-center.d-none.d-md-table-cell abbr="Combien de fois la page de l'offre a été consultée par des élèves" title="Combien de fois la page de l'offre a été consultée par des élèves"
+          th.align-top.text-center.d-none.d-md-table-cell
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "view_count", sort_by_i18n: "affichage", direction: order_direction}
+
             small.bb-1.bt-light Affichages
           th.align-top.text-center
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "total_applications_count", sort_by_i18n: "candidatures", direction: order_direction}
+
             small Candidatures
           th.align-top.text-center
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "submitted_applications_count", sort_by_i18n: "réponse à donner", direction: order_direction}
             small
               | Réponses
               br
               | à donner
           th.align-top.text-center.d-none.d-md-table-cell
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "rejected_applications_count", sort_by_i18n: "candidatures refusées", direction: order_direction}
             small
               | Candidatures
               br
               | refusées
           th.align-top.text-center
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "approved_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
             small
               | En attente
               br
               | de convention
           th.align-top.text-center
+            = render partial: "dashboard/internship_offers/sort_links", locals: { order: "convention_signed_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
             small
               | Convention
               br

@@ -24,8 +24,48 @@ module Dashboard
       assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
                     text: internship_offer.view_count.to_s,
                     count: 1
+      assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
+                    text: internship_offer.view_count.to_s,
+                    count: 1
     end
 
+    test 'GET #index returns sortable table' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      get dashboard_internship_offers_path
+      assert_select "a[href=?]", dashboard_internship_offers_path(order: "view_count", direction: "asc")
+    end
+
+    test 'GET #index with order & direction works' do
+      employer = create(:employer)
+      internship_offer_1 = create(:internship_offer, view_count: 2, employer: employer)
+      internship_offer_2 = create(:internship_offer, view_count: 1, employer: employer)
+      sign_in(employer)
+      get dashboard_internship_offers_path(order: :view_count, direction: :desc)
+      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
+      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
+      assert_select "table tbody tr:first .internship-item-title", text: internship_offer_1.title
+      assert_select "table tbody tr:last .internship-item-title", text: internship_offer_2.title
+      get dashboard_internship_offers_path(order: :view_count, direction: :asc)
+      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
+      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
+      assert_select "table tbody tr:last .internship-item-title", text: internship_offer_1.title
+      assert_select "table tbody tr:first .internship-item-title", text: internship_offer_2.title
+    end
+
+    test 'GET #index with order success with all valid column' do
+      employer = create(:employer)
+      internship_offer_1 = create(:internship_offer, view_count: 2, employer: employer)
+      internship_offer_2 = create(:internship_offer, view_count: 1, employer: employer)
+      sign_in(employer)
+      Dashboard::InternshipOffersController::VALID_ORDER_COLUMNS.map do |column|
+        get dashboard_internship_offers_path(order: column, direction: :desc)
+        assert_response :success
+      end
+
+      get dashboard_internship_offers_path(order: "bimg", direction: :desc)
+      assert_response :redirect
+    end
 
     test 'GET #index as Employer displays links to internship_application' do
       employer = create(:employer)

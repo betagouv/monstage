@@ -1,0 +1,6 @@
+= link_to dashboard_internship_offers_path(order: order, direction: direction), class: "sort-link sort-link-#{direction.to_s == 'asc' ? 'up' : 'down'} align-bottom #{current_page?(dashboard_internship_offers_path(order: order, direction: direction)) ? 'active' : ''}", title: "Trier par #{sort_by_i18n} croissant (plus petit au plus grand)" do
+  - if direction.to_s == 'asc'
+    | &#9650;
+  - else
+    | &#9660;
+

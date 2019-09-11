@@ -16,4 +16,6 @@ module InternshipOffersHelper
   def operator_name(internship_offer)
     internship_offer.employer.operator.name
   end
+
+
 end

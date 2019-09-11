@@ -10,17 +10,17 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
 
   td.align-middle.text-sm-center data-head="#{cols[:internship_application_count]}"
     span.badge= employer_internship_offer.total_applications_count
-    - if employer_internship_offer.internship_applications.size.positive?
+    - if employer_internship_offer.total_applications_count.positive?
       br
       = link_to 'Afficher', dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn btn-sm btn-link'
   td.align-middle.text-sm-center data-head="#{cols[:internship_application_submitted_count]}"
-    span.badge= employer_internship_offer.internship_applications.select(&:submitted?).size
-    - if employer_internship_offer.internship_applications.select(&:submitted?).size > 0
+    span.badge= employer_internship_offer.submitted_applications_count
+    - if employer_internship_offer.submitted_applications_count.positive?
       br
       = link_to 'Répondre', dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn btn-outline-dark btn-outline-dark btn-sm'
 
   td.align-middle.text-sm-center.d-none.d-md-table-cell data-head="#{cols[:internship_application_rejected_count]}"
-    span.badge= employer_internship_offer.internship_applications.select(&:rejected?).size
+    span.badge= employer_internship_offer.rejected_applications_count
 
   td.align-middle.text-sm-center data-head="#{cols[:internship_application_approved_count]}"
     span.badge= employer_internship_offer.approved_applications_count

@@ -16,7 +16,9 @@ class InternshipApplicationCountersHook
       blocked_weeks_count: blocked_weeks_count,
       total_applications_count: total_applications_count,
       total_male_applications_count: total_male_applications_count,
+      submitted_applications_count: submitted_applications_count,
       approved_applications_count: approved_applications_count,
+      rejected_applications_count: rejected_applications_count,
       convention_signed_applications_count: convention_signed_applications_count,
       total_male_convention_signed_applications_count: total_male_convention_signed_applications_count,
       total_custom_track_convention_signed_applications_count: total_custom_track_convention_signed_applications_count
@@ -31,9 +33,6 @@ class InternshipApplicationCountersHook
     internship_offer_week.update(
       blocked_applications_count: internship_offer_week.internship_applications
                                                        .where(aasm_state: :convention_signed)
-                                                       .count,
-      approved_applications_count: internship_offer_week.internship_applications
-                                                       .where(aasm_state: :approved)
                                                        .count
     )
   end
@@ -54,7 +53,9 @@ class InternshipApplicationCountersHook
   end
 
   def total_applications_count
-    internship_offer.internship_applications.reject(&:drafted?).count
+    internship_offer.internship_applications
+                    .reject(&:drafted?)
+                    .count
   end
 
   def total_male_applications_count
@@ -66,8 +67,21 @@ class InternshipApplicationCountersHook
   end
 
   def approved_applications_count
-    internship_offer.internship_offer_weeks
-                    .sum(:approved_applications_count)
+    internship_offer.internship_applications
+                    .select(&:approved?)
+                    .count
+  end
+
+  def rejected_applications_count
+    internship_offer.internship_applications
+                    .select(&:rejected?)
+                    .count
+  end
+
+  def submitted_applications_count
+    internship_offer.internship_applications
+                    .select(&:submitted?)
+                    .count
   end
 
   def convention_signed_applications_count

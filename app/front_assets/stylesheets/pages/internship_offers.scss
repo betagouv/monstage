@@ -1,4 +1,25 @@
+.sort-links{
+  $sort-arrow-height: 15px;
+  position: relative;
+  .sort-link{
+    position: absolute;
+    left: -15px;
+    height: $sort-arrow-height;
+    line-height: 8px;
+    opacity: .5;
+    text-decoration: none;
+  }
+  .sort-link.active{
+    opacity: 1;
+  }
+  .sort-link-up{
+    top: 0;
+  }
+  .sort-link-down{
+    top: $sort-arrow-height;
+  }
 
+}
 .ap-input{
   padding-top: $input-btn-padding-y;
   padding-bottom: $input-btn-padding-y;
