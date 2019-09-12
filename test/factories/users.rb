@@ -53,6 +53,9 @@ FactoryBot.define do
     factory :other, class: 'Users::Other', parent: :user do
       type { 'Users::Other' }
     end
+    factory :statistician, class: 'Users::Statistician', parent: :user do
+      email { Users::Statistician::HASH_MAP_EMAIL.values.first.first }
+    end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
       type { 'Users::Operator' }

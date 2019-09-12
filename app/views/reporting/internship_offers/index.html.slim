@@ -29,22 +29,31 @@
   .row
     h1.h2.py-3 Statistiques
 
-  .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
-    .form-group.col-lg-3
-      = label_tag :academy, 'Académie', class: 'text-uppercase'
-      = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
-    .form-group.col-lg-3
-      = label_tag :department, 'Département', class: 'text-uppercase'
-      = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+  - if can?(:index_and_filter, Reporting::InternshipOffer)
+    .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
+      .form-group.col-lg-3
+        = label_tag :academy, 'Académie', class: 'text-uppercase'
+        = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+      .form-group.col-lg-3
+        = label_tag :department, 'Département', class: 'text-uppercase'
+        = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
 
-    .form-group.col-lg-2
-      = label_tag :is_public, 'Secteur', class: 'text-uppercase'
-      = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
+      .form-group.col-lg-2
+        = label_tag :is_public, 'Secteur', class: 'text-uppercase'
+        = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
 
-    .form-group.col-lg-4
-      = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
-      = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
+      .form-group.col-lg-4
+        = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+        = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
+  - else
+    .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
+      .form-group.col-lg-6
+        = label_tag :is_public, 'Secteur', class: 'text-uppercase'
+        = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
 
+      .form-group.col-lg-6
+        = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+        = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
   .row.mt-3
     table.table.table-statistics
       thead

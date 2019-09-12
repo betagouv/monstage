@@ -10,7 +10,8 @@ class UserManager
     'SchoolManager' => Users::SchoolManager,
     'Student' => Users::Student,
     'Teacher' => Users::Teacher,
-    'Operator' => Users::Operator
+    'Operator' => Users::Operator,
+    'Statistician' => Users::Statistician
   }.freeze
 
   # raises KeyError whe can't find expected role

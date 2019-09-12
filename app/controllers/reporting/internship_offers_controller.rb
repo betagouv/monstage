@@ -3,6 +3,8 @@ module Reporting
     helper_method :safe_download_params
 
     def index
+      authorize! :index, Reporting::Acl.new(user: current_user, params: params)
+
       @offers = current_offers
       @offers_by_publicy = is_public.present? ?
                            [] :
@@ -10,6 +12,8 @@ module Reporting
     end
 
     def download
+      authorize! :index, Reporting::Acl.new(user: current_user, params: params)
+
       headers = Reporting::InternshipOffer.csv_headers(headers: {report_row_title: ""})
       converter = Dto::ActiveRecordToCsv.new(entries: current_offers,
                                              headers: headers)

@@ -4,7 +4,6 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'minitest/reporters'
 require 'minitest/autorun'
-Minitest::Reporters.use!(Minitest::Reporters::MeanTimeReporter.new)
 require 'rails/test_help'
 
 require 'support/api_test_helpers'
