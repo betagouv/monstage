@@ -268,7 +268,7 @@ module InternshipOffers
           get internship_offer_path(current)
 
           assert_response :success
-          assert_select 'a.link-previous', count: 0
+          assert_select 'a.list-item-previous', count: 0
           assert_select 'a[href=?]', internship_offer_path(next_in_page)
         end
       end
@@ -287,7 +287,7 @@ module InternshipOffers
 
           assert_response :success
           assert_select 'a[href=?]', internship_offer_path(previous_in_page)
-          assert_select 'a.link-next', count: 0
+          assert_select 'a.list-item-next', count: 0
         end
       end
     end

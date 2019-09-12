@@ -1,8 +1,8 @@
-.row
+.row.no-gutters
   .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     - if @previous_internship_offer
-      = link_to internship_offer_path(@previous_internship_offer), class: 'link-previous' do
-        i.fa-4x.fas.fa-arrow-circle-left
+      = link_to internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous' do
+        i.fas.fa-arrow-circle-left
 
   .col-12.col-sm-10
     = render "internship_offers/navigation", internship_offer: @internship_offer
@@ -11,12 +11,14 @@
 
     - if @internship_offer.school.present? && current_user.is_a?(Users::Student)
       .row
-        .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
+        .col-12
+          .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
     - if @internship_offer.permalink.present?
       .row
-        .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
-          = "Candidatez à cette offre sur le site de "
-          = link_to operator_name(@internship_offer), @internship_offer.permalink, class: 'text-white', target: "_blank", rel: "external noopener noreferrer", title: "Candidater sur le site #{operator_name(@internship_offer)} (nouvelle fenêtre)"
+        .col-12
+          .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
+            = "Candidatez à cette offre sur le site de "
+            = link_to operator_name(@internship_offer), @internship_offer.permalink, class: 'text-white', target: "_blank", rel: "external noopener noreferrer", title: "Candidater sur le site #{operator_name(@internship_offer)} (nouvelle fenêtre)"
 
 
     - if can?(:apply_in_bulk, @internship_offer) && @internship_offer.has_spots_left?
@@ -25,8 +27,8 @@
       = render partial: "internship_applications/student_form"
 
 
-  .d-none.d-sm-flex.col-sm-1.align-items-center.d-flex.text-right
+  .d-none.d-sm-flex.col-sm-1.align-items-center.text-right
     - if @next_internship_offer
-      = link_to internship_offer_path(@next_internship_offer), class: 'link-next' do
-        i.fa-4x.fas.fa-arrow-circle-right
+      = link_to internship_offer_path(@next_internship_offer), class: 'list-item list-item-next' do
+        i.fas.fa-arrow-circle-right
 

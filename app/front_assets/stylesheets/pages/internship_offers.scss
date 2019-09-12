@@ -18,8 +18,33 @@
   .sort-link-down{
     top: $sort-arrow-height;
   }
-
 }
+.list-item{
+  color: $gray-300;
+  width: 100%;
+}
+@include media-breakpoint-up(xs) {
+  .list-item{
+    font-size: 1rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .list-item{
+    font-size: 2rem;
+  }
+}
+@include media-breakpoint-up(md) {
+  .list-item{
+    font-size: 3rem;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .list-item{
+    font-size: 4rem;
+  }
+}
+
 .ap-input{
   padding-top: $input-btn-padding-y;
   padding-bottom: $input-btn-padding-y;
