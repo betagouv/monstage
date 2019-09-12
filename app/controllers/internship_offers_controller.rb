@@ -29,6 +29,7 @@ class InternshipOffersController < ApplicationController
                                                  .build(user_id: current_user_id)
   end
 
+
   private
   def increment_internship_offer_view_count
     @internship_offer.increment!(:view_count) if current_user.is_a?(Users::Student)
