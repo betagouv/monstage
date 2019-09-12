@@ -2,6 +2,7 @@
 
 class InternshipOffer < ApplicationRecord
   include Nearbyable
+  include Listable
   include BaseInternshipOffer
 
   PAGE_SIZE = 10
@@ -54,23 +55,6 @@ class InternshipOffer < ApplicationRecord
     older_than(week: Week.current).distinct
   }
 
-  scope :next_from, lambda { |current:, column:,order:|
-    operator = order == :asc ? '>' : '<'
-    query = where("#{column} #{operator} :current_column_value",
-          current_column_value: current.send(column))
-    query = query.reorder(column => order)
-    query
-  }
-
-  scope :previous_from, lambda { |current:, column:, order:|
-    operator = order == :asc ? '<' : '>'
-    query = where("#{column} #{operator} :current_column_value",
-                  current_column_value: current.send(column))
-
-    query = query.reorder(column => order)
-    query = query.reverse_order
-    query
-  }
 
   after_initialize :init
   before_create :reverse_academy_by_zipcode
