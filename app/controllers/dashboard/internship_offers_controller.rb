@@ -2,15 +2,13 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
-    include SetInternshipOffers
+    include InternshipOffersFinders
 
     before_action :authenticate_user!
     helper_method :order_direction
 
     def index
-      set_internship_offers
-
-      @internship_offers = @internship_offers.order(order_column => order_direction)
+      @internship_offers = query_internship_offers.order(order_column => order_direction)
     end
 
     def show

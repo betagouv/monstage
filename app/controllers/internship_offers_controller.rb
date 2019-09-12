@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class InternshipOffersController < ApplicationController
-  include SetInternshipOffers
+  include InternshipOffersFinders
 
   before_action :authenticate_user!, only: %i[index create edit update destroy]
   after_action :increment_internship_offer_view_count, only: :show
 
   def index
-    set_internship_offers
-    @internship_offers = @internship_offers.merge(InternshipOffer.by_sector(params[:sector_id])) if params[:sector_id]
+    @internship_offers = query_internship_offers.order(id: :desc)
   end
 
   def show
