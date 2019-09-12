@@ -77,4 +77,13 @@ class NavbarTest < ActionDispatch::IntegrationTest
     assert_select(".navbar a.active", text: teacher.dashboard_name,
                                         count: 1)
   end
+
+  test "statistician" do
+    statistician = create(:statistician)
+    sign_in(statistician)
+    get statistician.custom_dashboard_path
+    assert_select(".navbar a.active", count: 1)
+    assert_select(".navbar a.active", text: statistician.dashboard_name,
+                                      count: 1)
+  end
 end

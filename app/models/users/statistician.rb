@@ -1,6 +1,12 @@
 module Users
   class Statistician < User
     validate :email_in_list
+    include InternshipOffersScopes::ByCoordinates
+    scope :targeted_internship_offers, ->(user:, coordinates:) {
+      query = InternshipOffer.kept
+      query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
+      query
+    }
 
     def custom_dashboard_path
       url_helpers.reporting_internship_offers_path(department: department_name)
@@ -22,7 +28,7 @@ module Users
 
     def email_in_list
       unless HASH_MAP_EMAIL.values.flatten.include?(email)
-        errors.add(:email, message: 'Ce mail n\'est pas autorisé')
+        errors.add(:email, 'Cette adresse électronique n\'est pas autorisé')
       end
     end
   end

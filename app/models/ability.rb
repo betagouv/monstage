@@ -129,6 +129,7 @@ class Ability
   end
 
   def statistician_abilities
+    can %i[read search], InternshipOffer
     can %i[index], Reporting::Acl do |acl|
       acl.allowed?
     end
