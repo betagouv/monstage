@@ -2,6 +2,7 @@ import { library, dom, config } from '@fortawesome/fontawesome-svg-core'
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'fas' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import { faAngleLeft,
+         faArrowCircleLeft,
          faArrowCircleRight,
          faArrowCircleUp,
          faBan,
@@ -47,6 +48,7 @@ import { faCircle,
 // see: https://github.com/FortAwesome/Font-Awesome/issues/11924
 config.mutateApproach = 'sync'
 library.add(faAngleLeft,
+            faArrowCircleLeft,
             faArrowCircleRight,
             faArrowCircleUp,
             faBan,

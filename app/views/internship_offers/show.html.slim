@@ -1,7 +1,8 @@
 .row
   .col-1.align-items-center.d-flex
     - if @previous_internship_offer
-      = link_to "previous", internship_offer_path(@previous_internship_offer)
+      = link_to internship_offer_path(@previous_internship_offer) do
+        i.fa-4x.fas.fa-arrow-circle-left
 
   .col-10
     = render "internship_offers/navigation", internship_offer: @internship_offer
@@ -26,5 +27,6 @@
 
   .col-1.align-items-center.d-flex
     - if @next_internship_offer
-      = link_to "next", internship_offer_path(@next_internship_offer)
+      = link_to internship_offer_path(@next_internship_offer) do
+        i.fa-4x.fas.fa-arrow-circle-right
 
