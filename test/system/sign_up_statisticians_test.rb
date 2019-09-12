@@ -23,7 +23,6 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     email = Users::Statistician::HASH_MAP_EMAIL.values.first.first
 
     assert_difference('Users::Statistician.count', 1) do
-      byebug
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'
       fill_in 'Adresse électronique', with: email
