@@ -19,17 +19,5 @@ module Listable
       query = query.reverse_order
       query
     }
-
-    scope :next_first, lambda { |current:, column:,order:|
-      next_from(current: current, column: column, order: order)
-        .limit_and_first
-    }
-
-    scope :previous_first, lambda { |current:, column:,order:|
-      previous_from(current: current, column: column, order: order)
-        .limit_and_first
-    }
-
-    scope :limit_and_first,  lambda { limit(1).first }
   end
 end

@@ -14,15 +14,19 @@ module InternshipOffersFinders
     end
 
     def query_next_internship_offer(current:)
-      query_internship_offers.next_first(current: current,
-                                         column: :id,
-                                         order: :desc)
+      query_internship_offers
+        .order(id: :desc)
+        .next_from(current: current, column: :id, order: :desc)
+        .limit(1)
+        .first
     end
 
     def query_previous_internship_offer(current:)
-       query_internship_offers.previous_first(current: @internship_offer,
-                                              column: :id,
-                                              order: :desc)
+       query_internship_offers
+        .order(id: :desc)
+        .previous_from(current: current, column: :id, order: :desc)
+        .limit(1)
+        .first
     end
 
     def coordinate_params
