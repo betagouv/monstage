@@ -235,5 +235,25 @@ module InternshipOffers
          get internship_offer_path(internship_offer)
       end
     end
+
+    test 'GET #show offers next/previous navigation' do
+      previous_out = create(:internship_offer, title: "previous_out")
+      previous_in_page = create(:internship_offer, title: "previous")
+      current = create(:internship_offer, title: "current")
+      next_in_page = create(:internship_offer, title: "next")
+      next_out = create(:internship_offer, title: "next_out")
+      student = create(:student, school: create(:school))
+
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        InternshipOffer.stub :by_weeks, InternshipOffer.all do
+          sign_in(student)
+          get internship_offer_path(current)
+
+          assert_response :success
+          assert_select 'a[href=?]', internship_offer_path(next_in_page)
+          assert_select 'a[href=?]', internship_offer_path(previous_in_page)
+        end
+      end
+    end
   end
 end

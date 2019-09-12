@@ -12,6 +12,12 @@ class InternshipOffersController < ApplicationController
 
   def show
     @internship_offer = InternshipOffer.find(params[:id])
+    @previous_internship_offer = query_next_internship_offer(
+      current: @internship_offer
+    )
+    @next_internship_offer = query_previous_internship_offer(
+      current: @internship_offer
+    )
     raise ActionController::RoutingError.new('Not Found') if @internship_offer.discarded?
     current_user_id = current_user.try(:id)
     if current_user
