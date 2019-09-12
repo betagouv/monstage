@@ -1,10 +1,10 @@
 .row
-  .col-1.align-items-center.d-flex
+  .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     - if @previous_internship_offer
       = link_to internship_offer_path(@previous_internship_offer), class: 'link-previous' do
         i.fa-4x.fas.fa-arrow-circle-left
 
-  .col-10
+  .col-12.col-sm-10
     = render "internship_offers/navigation", internship_offer: @internship_offer
 
     = render "internship_offers/show_details", internship_offer: @internship_offer
@@ -25,7 +25,7 @@
       = render partial: "internship_applications/student_form"
 
 
-  .col-1.align-items-center.d-flex
+  .d-none.d-sm-flex.col-sm-1.align-items-center.d-flex.text-right
     - if @next_internship_offer
       = link_to internship_offer_path(@next_internship_offer), class: 'link-next' do
         i.fa-4x.fas.fa-arrow-circle-right
