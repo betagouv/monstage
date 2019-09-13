@@ -18,11 +18,25 @@ class Feedback < ApplicationRecord
     end
   end
 
+  def user
+    User.find_by(email: email) || email
+  end
+
   rails_admin do
     list do
       field :id
       field :created_at
-      field :email
+      field :user do
+        pretty_value do
+          user = bindings[:object].user
+          if user.is_a?(User)
+            path = bindings[:view].show_path(model_name: user.class.name, id: user.id)
+            bindings[:view].content_tag(:a, user.email, href: path)
+          else
+            bindings[:object].email
+          end
+        end
+      end
       field :comment
       field :aasm_state, :state
     end
