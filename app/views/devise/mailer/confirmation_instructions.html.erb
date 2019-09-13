@@ -1,5 +1,22 @@
 <p><%= t('.greeting', recipient: @email) %></p>
 
 <p><%= t('.instruction') %></p>
-
 <p><%= link_to t('.action'), confirmation_url(@resource, confirmation_token: @token) %></p>
+
+<% if @resource.is_a?(Users::Student) %>
+  <p>Avant d'accéder aux offres de stage, veuillez : </p>
+  <ul>
+    <li>faire signer l'autorisation parentale à vos parents ;</li>>
+    <li>la rendre à votre professeur principale (qui confirmera votre accès à la plateforme, vous en serez notifié par mail).</li>
+  </ul>
+  <p>Merci.</p>
+<% end %>
+
+<% if @resource.is_a?(Users::MainTeacher) %>
+  <p>
+    Vous trouverez notre modèle d'autorisation parentale en pièce jointe.
+    <br />
+    Vos élèves doivent la faire signer par leurs parents, vous la rendre et que vous confirmiez l'avoir réçus via votre <%= link_to 'tableau de suivis', @resource.custom_dashboard_path %>.
+  </p>
+<% end %>
+

@@ -3,7 +3,7 @@
 module Users
   class MainTeacher < User
     include UserAdmin
-    
+
     belongs_to :class_room, optional: true
     has_many :students, through: :class_room
 
