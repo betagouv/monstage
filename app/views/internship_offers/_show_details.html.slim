@@ -39,43 +39,46 @@
         = " #{internship_offer.max_occurence}"
 
 - if can?(:see_tutor, InternshipOffer)
-  .row.bg-light.py-3.bt-1.bt-light
+  .row
     .col-12
-      h2.h4 Tuteur
-      div
-        .d-flex.my-2
-          .circle-font.text-info
-            i.fas.fa-user.fa-fw
-          .ml-2
-            strong.tutor_name= internship_offer.tutor_name
-        .d-flex.my-2
-          .circle-font.text-info
-            i.fas.fa-phone.fa-fw
-          .ml-2
-            | Portable:
-            span.tutor_phone= internship_offer.tutor_phone
-        .d-flex.my-2
-          .circle-font.text-info
-            i.far.fa-envelope.fa-fw
-          .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
-
-.row.bg-light.py-3.bt-1.bt-light
+      .row.bg-light.py-3.bt-1.bt-light
+        .col-12
+          h2.h4 Tuteur
+          div
+            .d-flex.my-2
+              .circle-font.text-info
+                i.fas.fa-user.fa-fw
+              .ml-2
+                strong.tutor_name= internship_offer.tutor_name
+            .d-flex.my-2
+              .circle-font.text-info
+                i.fas.fa-phone.fa-fw
+              .ml-2
+                | Portable:
+                span.tutor_phone= internship_offer.tutor_phone
+            .d-flex.my-2
+              .circle-font.text-info
+                i.far.fa-envelope.fa-fw
+              .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
+.row
   .col-12
-    h2.h4 Où se déroule ce stage ?
-    p = internship_offer.employer_name
-    p = internship_offer.employer_description
-    - if internship_offer.employer_website.present?
-      p.text-truncate
-        = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
+    .bg-light.py-3.bt-1.bt-light
+      .col-12
+        h2.h4 Où se déroule ce stage ?
+        p = internship_offer.employer_name
+        p = internship_offer.employer_description
+        - if internship_offer.employer_website.present?
+          p.text-truncate
+            = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
-    .d-flex
-      .circle-font.text-info
-        i.fas.fa-map-marker-alt.fa
-      p.ml-2
-        = internship_offer.street
-        br
-        = "#{internship_offer.zipcode} #{internship_offer.city}"
-        br
-        br
-        = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer"
+        .d-flex
+          .circle-font.text-info
+            i.fas.fa-map-marker-alt.fa
+          p.ml-2
+            = internship_offer.street
+            br
+            = "#{internship_offer.zipcode} #{internship_offer.city}"
+            br
+            br
+            = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
