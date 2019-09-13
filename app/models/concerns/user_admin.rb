@@ -22,6 +22,11 @@ module UserAdmin
         field :email
         field :first_name
         field :last_name
+        field :school do
+          visible do
+            bindings[:object].respond_to?(:school)
+          end
+        end
       end
     end
   end
