@@ -152,6 +152,7 @@ class SearchInternshipOffer extends React.Component {
               name="Sélectionner un domaine d'activité"
               id="internship-offer-sector-filter"
               className="custom-select col-12"
+              value={currentSector ? currentSector.id : ''}
               onChange={this.filterOfferBySector}
             >
               <option value="">-- Veuillez sélectionner un domaine --</option>

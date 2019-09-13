@@ -2,6 +2,7 @@
 
 class InternshipOffer < ApplicationRecord
   include Nearbyable
+  include Listable
   include BaseInternshipOffer
 
   PAGE_SIZE = 10
@@ -53,6 +54,7 @@ class InternshipOffer < ApplicationRecord
   scope :available_in_the_future, lambda {
     older_than(week: Week.current).distinct
   }
+
 
   after_initialize :init
   before_create :reverse_academy_by_zipcode

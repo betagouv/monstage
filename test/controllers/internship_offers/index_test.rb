@@ -155,7 +155,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student with page, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:internship_offer, max_candidates: 2) }
+    internship_offers = (InternshipOffer::PAGE_SIZE + 1)
+                          .times
+                          .map { create(:internship_offer, max_candidates: 2) }
 
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
@@ -166,7 +168,7 @@ class IndexTest < ActionDispatch::IntegrationTest
             assert_presence_of(internship_offer: internship_offers.last)
             assert_absence_of(internship_offer: internship_offers.first)
 
-            get internship_offers_path page: 2
+            get internship_offers_path(page: 2)
             assert_presence_of(internship_offer: internship_offers.first)
             assert_absence_of(internship_offer: internship_offers.last)
           end
@@ -206,6 +208,34 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path, params: { sector_id: internship_1.sector_id }
         assert_presence_of(internship_offer: internship_1)
         assert_absence_of(internship_offer: internship_2)
+      end
+    end
+  end
+
+  test 'GET #index as student with sector_id ' \
+       'includes sector_id for listable behaviour on show page' do
+    sign_in(create(:student))
+    internship_1 = create(:internship_offer)
+    internship_2 = create(:internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path, params: { sector_id: internship_1.sector_id }
+        assert_select("a[href=?]", internship_offer_path(id: internship_1, sector_id: internship_1.sector_id))
+      end
+    end
+  end
+
+  test 'GET #index as student with latitude/longitude ' \
+       'includes latitude/longitude for listable behaviour on show page' do
+    sign_in(create(:student))
+    internship_1 = create(:internship_offer)
+    internship_2 = create(:internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path, params: { latitude: 1, longitude: 1 }
+        assert_select("a[href=?]", internship_offer_path(id: internship_1, latitude: 1, longitude: 1))
       end
     end
   end
