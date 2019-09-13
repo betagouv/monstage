@@ -20,7 +20,7 @@ fr:
     events:
       feedback:
         answer: Marquer comme En Cours
-        close: Fermer
+        close: Clore
     models:
       user:
         one: Utilisateur
