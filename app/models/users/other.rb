@@ -3,7 +3,6 @@
 module Users
   class Other < User
     include UserAdmin
-    
     include ManagedUser
     include TargetableInternshipOffersForSchool
 

@@ -37,6 +37,13 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET #index as statistician works' do
+    statistician = create(:statistician)
+    sign_in(statistician)
+    get internship_offers_path
+    assert_response :success
+  end
+
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > max_occurence_count' do
     internship_offer_with_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 2)
     internship_offer_without_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 0)

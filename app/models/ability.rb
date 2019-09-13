@@ -15,6 +15,7 @@ class Ability
       when 'Users::Teacher' then teacher_abilities(user: user)
       when 'Users::Other' then other_abilities(user: user)
       when 'Users::Operator' then operator_abilities(user: user)
+      when 'Users::Statistician' then statistician_abilities
       end
       shared_abilities(user: user)
     else
@@ -127,6 +128,13 @@ class Ability
     can :show, :api_token
   end
 
+  def statistician_abilities
+    can %i[read search], InternshipOffer
+    can %i[index], Reporting::Acl do |acl|
+      acl.allowed?
+    end
+  end
+
   def god_abilities
     can :show, :account
     can :manage, School
@@ -135,6 +143,10 @@ class Ability
     can :read, User
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
+    can %i[index], Reporting::Acl do |_acl|
+      true
+    end
+    can %i[index_and_filter], Reporting::InternshipOffer
   end
 
   private
