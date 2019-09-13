@@ -7,7 +7,7 @@ export default class extends Controller {
     this.hammer = new Hammer(document.body, {});
 
     if (this.data.get('previousUrl').length > 0) {
-      this.hammer.on('swipeleft', this.previous.bind(this));
+      this.hammer.on('swipeLeft', this.previous.bind(this));
     }
     if (this.data.get('nextUrl').length > 0) {
       this.hammer.on('swipeRight', this.next.bind(this));
