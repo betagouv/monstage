@@ -5,6 +5,8 @@ import { definitionsFromContext } from 'stimulus/webpack-helpers';
 import 'fonts/fontawesome';
 
 Rails.start();
+import Turbolinks from 'turbolinks';
+Turbolinks.start();
 const application = Application.start()
 
 const context = require.context('controllers', true, /.js$/)

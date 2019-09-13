@@ -23,6 +23,4 @@ import 'better-dom/dist/better-dom';
 import 'better-dateinput-polyfill/dist/better-dateinput-polyfill.js';
 
 import '../bootapp';
-import Turbolinks from 'turbolinks';
-Turbolinks.start();
 
