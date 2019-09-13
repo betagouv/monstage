@@ -55,6 +55,7 @@ class School < ApplicationRecord
       field :zipcode do read_only true end
       field :city do read_only true end
       field :department do read_only true end
+      field :class_rooms
     end
 
     show do
@@ -65,6 +66,7 @@ class School < ApplicationRecord
       field :zipcode
       field :city
       field :department
+      field :class_rooms
     end
   end
 end
