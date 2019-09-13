@@ -1,6 +1,7 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
 import './logo-beta-gouv-fr.png';
+import './autorisation_parentale.png';
 
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
@@ -31,3 +32,4 @@ import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
+

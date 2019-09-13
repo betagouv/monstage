@@ -45,6 +45,6 @@ header.header-account
         - [Users::MainTeacher, Users::Teacher, Users::Other].map do |role_class|
           = link_to new_user_registration_path(as: role_class.name.demodulize), class: 'd-block my-1' do
              i.fas.fa-chevron-circle-right.mr-1.text-warning
-             = "Je suis #{role_class.model_name.human}"
+             = "Créer un compte #{role_class.model_name.human.downcase}"
 
 

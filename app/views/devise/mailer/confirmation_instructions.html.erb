@@ -4,7 +4,7 @@
 <p><%= link_to t('.action'), confirmation_url(@resource, confirmation_token: @token) %></p>
 
 <% if @resource.is_a?(Users::Student) %>
-  <p>Avant d'accéder aux offres de stage, veuillez : </p>
+  <p>En plus de confirmer votre compte par email, veuillez : </p>
   <ul>
     <li>faire signer l'autorisation parentale, en pièce jointe, par vos parents</li>
     <li>la rendre à votre professeur principal (qui confirmera votre accès à la plateforme, vous en serez notifié par mail).</li>
