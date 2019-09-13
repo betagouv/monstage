@@ -1,0 +1,34 @@
+= javascript_pack_tag 'rails_admin', defer: true
+div data={controller: 'algolia-place'}
+  .col-12 data={target: 'algolia-place.autocompleteFormGroup'}
+    .form-group
+      = form.label :autocomplete do
+        = "Adresse du lieu où se déroule le stage"
+      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: form.object.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
+      input type="hidden" name="school[coordinates][latitude]" value=(form.object.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+      input type="hidden" name="school[coordinates][longitude]" value=(form.object.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
+
+  .col-12
+    .form-group
+      = form.label :street do
+        = 'Rue'
+      = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
+
+  .col-12
+    .form-group
+      = form.label :city do
+        = 'Ville'
+      = form.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
+
+  .col-12
+    .form-group
+      = form.label :zipcode do
+        = 'Code postal'
+      = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
+
+  .col-12
+    .form-group
+      = form.label :department do
+        = 'Département'
+      = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+

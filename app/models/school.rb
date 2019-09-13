@@ -51,11 +51,25 @@ class School < ApplicationRecord
       field :name
       field :visible
       field :kind
-      field :street do read_only true end
-      field :zipcode do read_only true end
-      field :city do read_only true end
-      field :department do read_only true end
       field :class_rooms
+      field :street do
+        partial "void"
+      end
+      field :zipcode do
+        partial "void"
+      end
+      field :city do
+        partial "void"
+      end
+      field :department do
+        partial "void"
+      end
+
+      configure :autocomplete do
+      end
+      field :autocomplete do
+        partial 'autocomplete_address'
+      end
     end
 
     show do

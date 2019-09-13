@@ -5,7 +5,12 @@ module Nearbyable
 
   included do
     validate :coordinates_are_valid?
-    attr_reader :autocomplete
+
+    # rails admin fuck
+    def autocomplete
+    end
+    def autocomplete=(val)
+    end
 
     scope :nearby, lambda { |latitude:, longitude:, within_radius_in_meter: 60_000|
       query = format(%{
