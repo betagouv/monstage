@@ -20,7 +20,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     end
 
     # create statistician
-    email = Users::Statistician::HASH_MAP_EMAIL.values.first.first
+    email = Credentials.enc(:statisticians, prefix_env: false)[:"60"].first
 
     assert_difference('Users::Statistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'

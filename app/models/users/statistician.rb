@@ -17,18 +17,23 @@ module Users
     end
 
     def department_zipcode
-      HASH_MAP_EMAIL.map do |department_number, email_list|
+      statisticians.map do |department_number, email_list|
         return department_number if email_list.include?(email)
       end
     end
 
     private
 
-    HASH_MAP_EMAIL = { '60' =>['fourcade.m@gmail.com'] }
-
     def email_in_list
-      unless HASH_MAP_EMAIL.values.flatten.include?(email)
+      unless statisticians.values.flatten.include?(email)
         errors.add(:email, 'Cette adresse électronique n\'est pas autorisé')
+      end
+    end
+
+    def statisticians
+      Credentials.enc(:statisticians, prefix_env: false).inject({}) do |accu, (key, value)|
+        accu[key.to_s] = value
+        accu
       end
     end
   end

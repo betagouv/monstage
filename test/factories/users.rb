@@ -54,7 +54,7 @@ FactoryBot.define do
       type { 'Users::Other' }
     end
     factory :statistician, class: 'Users::Statistician', parent: :user do
-      email { Users::Statistician::HASH_MAP_EMAIL.values.first.first }
+      email { Credentials.enc(:statisticians, prefix_env: false)[:"60"].first }
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do

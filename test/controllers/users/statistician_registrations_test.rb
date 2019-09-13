@@ -19,7 +19,7 @@ class StatiticianRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST #create with missing params fails creation' do
     assert_difference('Users::Statistician.count', 1) do
-      post user_registration_path(params: { user: { email: Users::Statistician::HASH_MAP_EMAIL.values.first.first,
+      post user_registration_path(params: { user: { email: Credentials.enc(:statisticians, prefix_env: false)[:"60"].first,
                                                     first_name: 'dep',
                                                     last_name: 'artement',
                                                     password: 'okokok',

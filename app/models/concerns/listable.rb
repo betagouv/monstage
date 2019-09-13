@@ -4,17 +4,18 @@ module Listable
   included do
     scope :next_from, lambda { |current:, column:,order:|
       operator = order == :asc ? '>' : '<'
-      query = where("internship_offers.#{column} #{operator} :current_column_value",
-            current_column_value: current.send(column))
+
+      query = where("#{table_name}.#{column} #{operator} :current_column_value",
+                    current_column_value: current.send(column))
       query = query.reorder(column => order)
       query
     }
 
     scope :previous_from, lambda { |current:, column:, order:|
       operator = order == :asc ? '<' : '>'
-      query = where("internship_offers.#{column} #{operator} :current_column_value",
-                    current_column_value: current.send(column))
 
+      query = where("#{table_name}.#{column} #{operator} :current_column_value",
+                    current_column_value: current.send(column))
       query = query.reorder(column => order)
       query = query.reverse_order
       query
