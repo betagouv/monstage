@@ -145,7 +145,7 @@
                 i.fa.fa-question-circle
 
             .d-none.my-1.p-2.help-sign-content data-target="help.content"
-              | Si vous proposez le même stage dans un autre établissement, déposez une offre par établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse ou l'élève devra se rendre au premier jour
+              | Si vous proposez le même stage dans un autre établissement, déposez une offre par établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse où l'élève devra se rendre au premier jour
 
             = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
 
