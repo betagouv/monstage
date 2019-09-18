@@ -45,6 +45,14 @@ header.header-account
         - [Users::MainTeacher, Users::Teacher, Users::Other].map do |role_class|
           = link_to new_user_registration_path(as: role_class.name.demodulize), class: 'd-block my-1' do
              i.fas.fa-chevron-circle-right.mr-1.text-warning
-             = "Créer un compte #{role_class.model_name.human.downcase}"
+             = "Créer mon compte #{role_class.model_name.human.downcase}"
 
 
+.row
+  .d-none.d-sm-block.col-12.col-md-6.my-3.offset-md-3
+    .onboarding-col
+      .mt-3
+        h2= "Je suis responsable departemental"
+        p
+          | Vous êtes responsable departemental et souhaitez accéder aux statistiques de votre département offres de stages.
+        .actions.d-flex.d-sm-block= link_to "Créer mon compte responsable departemental", new_user_registration_path(as: 'Statistician'), class: 'btn btn-warning'
