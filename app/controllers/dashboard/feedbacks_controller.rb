@@ -2,41 +2,44 @@
 
 module Dashboard
   class FeedbacksController < ApplicationController
-    before_action :authenticate_user!, only: %i[index destroy]
-    before_action :set_feedback, only: [:destroy]
-
-    # GET /feedbacks
-    def index
-      authorize! :index, Feedback
-      @feedbacks = Feedback.order(created_at: :desc)
-    end
 
     # POST /feedbacks
     def create
-      @feedback = Feedback.new(feedback_params)
+      @feedback = Feedback.create(feedback_params)
 
-      if @feedback.save
-        redirect_back fallback_location: root_path,
-                      flash: { success: "Votre message a bien été envoyé. Merci d'avoir donné votre avis." }
-      else
-        redirect_back fallback_location: root_path,
-                      flash: { success: 'Woops, une erreur est survenue, veuillez ré-essayer' }
+      client = ZammadAPI::Client.new(
+        url:        Rails.application.credentials.zammad[:url],
+        http_token: Rails.application.credentials.zammad[:http_token],
+      )
+
+      begin
+        client.user.create(email: @feedback.email)
+      rescue RuntimeError
+        # Dirty, but it is the error we get when the user already exists in zammad
+        # In the future we should probaly have some kind of temporary user to avoid this
       end
-    end
 
-    # DELETE /feedbacks/1
-    def destroy
-      authorize! :destroy, Feedback
-      @feedback.destroy
-      redirect_to dashboard_feedbacks_url, notice: 'Feedback was successfully destroyed.'
+      client.perform_on_behalf_of(@feedback.email) do
+        client.ticket.create(
+          title: "Demande n°#{@feedback.id}",
+          state: 'new',
+          group: 'Users',
+          article: {
+            body: @feedback.comment
+          }
+        )
+      end
+
+
+      redirect_back fallback_location: root_path,
+                    flash: { success: "Votre message a bien été envoyé. Merci d'avoir donné votre avis." }
+      # else
+      #   redirect_back fallback_location: root_path,
+      #                 flash: { success: 'Woops, une erreur est survenue, veuillez ré-essayer' }
+      # end
     end
 
     private
-
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
-    end
 
     # Only allow a trusted parameter "white list" through.
     def feedback_params
