@@ -87,6 +87,7 @@ class AutocompleteSchool extends React.Component {
     this.setState({
       requestError: 'Une erreur est survenue, veuillez ré-essayer plus tard.',
       currentRequest: null,
+      autocompleteNoResult: false,
       autocompleteCitySuggestions: {},
       autocompleteSchoolsSuggestions: [],
       schoolsInCitySuggestions: [],
@@ -163,6 +164,7 @@ class AutocompleteSchool extends React.Component {
       requestError,
       autocompleteNoResult,
     } = this.state;
+
     const { resourceName, existingSchool, label, required, classes } = this.props;
     return (
       <div className="form-group">
@@ -175,7 +177,7 @@ class AutocompleteSchool extends React.Component {
 
         <div className="input-group">
           <input
-            className={`form-control ${classes || ''}`}
+            className={`form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'}`}
             required={required}
             autoComplete="off"
             placeholder="Rechercher par ville ou par nom"
@@ -193,7 +195,7 @@ class AutocompleteSchool extends React.Component {
             {!currentRequest && (
               <button
                 type="button"
-                className="btn btn-outline-secondary btn-clear-city"
+                className={`btn btn-outline-secondary btn-clear-city ${autocompleteNoResult ? '' : 'rounded-0'}`}
                 onClick={this.onResetSearch}
               >
                 <i className="fas fa-times" />
@@ -207,15 +209,10 @@ class AutocompleteSchool extends React.Component {
           </div>
         </div>
         <ul
-          className={`${classes || ''} list-group p-0 ${
-            Object.keys(autocompleteCitySuggestions || {}).length > 0 ||
-            (autocompleteSchoolsSuggestions || []).length > 0
-              ? ''
-              : 'd-none'
-          }`}
+          className={`${classes || ''} list-group p-0 shadow-sm`}
         >
           <li
-            className={`list-group-item list-group-item-dark small py-2 ${
+            className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
               Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
             }`}
           >
@@ -224,16 +221,17 @@ class AutocompleteSchool extends React.Component {
           {Object.keys(autocompleteCitySuggestions || {}).map(currentCity => (
             <li
               type="button"
-              className="list-group-item list-group-item-action text-left"
+              className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
               key={currentCity}
               onClick={this.onSelectCity(currentCity, autocompleteCitySuggestions[currentCity])}
             >
               <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+              <span className="badge-secondary badge-pill small">{autocompleteCitySuggestions[currentCity].length} collège{autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}</span>
             </li>
           ))}
 
           <li
-            className={`list-group-item  list-group-item-dark small py-2 ${
+            className={`list-group-item  list-group-item-secondary small py-2 ${
               (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
             }`}
           >
@@ -253,10 +251,10 @@ class AutocompleteSchool extends React.Component {
               </small>
             </li>
           ))}
+          {requestError && <li className="list-group-item list-group-item-danger small">{requestError}</li>}
+          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+, QPV et certains collèges proche des zones QPV.</li>}
         </ul>
 
-        {requestError && <p className="text-danger small">{requestError}</p>}
-        {autocompleteNoResult && <p className="text-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+, QPV et certains collèges proche des zones QPV.</p>}
       </div>
     );
   };
