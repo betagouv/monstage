@@ -35,6 +35,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     post user_session_path(params: { user: { email: student.email, password: pwd } })
     assert_response :found
     follow_redirect!
-    assert_select "#alert-warning #alert-text", text: "Veuillez faire signer l'autorisation parentale à vos parents et la donner à votre professeur principal pour consulter la liste des stages."
+    assert_select "#alert-warning #alert-text", text: "Veuillez faire signer l'autorisation parentale à vos responsables légaux et la donner à votre professeur principal pour consulter la liste des stages."
   end
 end
