@@ -203,7 +203,7 @@
     div data-target="internship-form.selectSchoolBlock" class="form-group #{@internship_offer.school.present? ? '' : 'd-none'}"
       = react_component("AutocompleteSchool",
                         classes: 'col-lg-6',
-                        label:"Ville ou se situe le collège auquel le stage est reservé",
+                        label:"Ville ou nom du collège auquel le stage est reservé",
                         required:false,
                         resourceName: :internship_offer,
                         selectClassRoom: false,

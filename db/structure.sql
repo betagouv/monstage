@@ -1065,7 +1065,7 @@ CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.intern
 -- Name: schools sync_schools_city_tsv; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('city_tsv', 'public.fr', 'city');
+CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('city_tsv', 'public.fr', 'city', 'name', 'zipcode');
 
 
 --
@@ -1299,6 +1299,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190911091325'),
 ('20190911091821'),
 ('20190911132109'),
-('20190911134144');
+('20190911134144'),
+('20190918101306');
 
 
