@@ -23,9 +23,11 @@ module ManagedUser
     end
 
     def notify_school_manager
-      SchoolManagerMailer.new_member(school_manager: school_manager,
-                                     member: self)
-                         .deliver_later
+      if school_manager.present?
+        SchoolManagerMailer.new_member(school_manager: school_manager,
+                                       member: self)
+                           .deliver_later
+      end
     end
   end
 end
