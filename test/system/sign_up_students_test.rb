@@ -17,8 +17,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # fails to create student with existing email
     assert_difference('Users::Student.count', 0) do
-      find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('.list-group button.list-group-item').first.click
+      find_field('Ville ou nom de mon collège').fill_in(with: 'Saint')
+      all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
@@ -34,7 +34,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # ensure failure reset form as expected
     assert_equal school_1.city,
-                 find_field('Ville de mon collège').value,
+                 find_field('Ville ou nom de mon collège').value,
                  're-select of city after failure fails'
 
     # create student

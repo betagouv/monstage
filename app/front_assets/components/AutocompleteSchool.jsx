@@ -30,8 +30,11 @@ class AutocompleteSchool extends React.Component {
     selectedClassRoom: null,
 
     city: '',
-    citySuggestions: {},
-    schoolsSuggestions: [],
+    autocompleteCitySuggestions: {},
+    autocompleteSchoolsSuggestions: [],
+    autocompleteNoResult: false,
+
+    schoolsInCitySuggestions: [],
     classRoomsSuggestions: [],
   };
 
@@ -69,7 +72,9 @@ class AutocompleteSchool extends React.Component {
 
   fetchDone = result => {
     this.setState({
-      citySuggestions: result,
+      autocompleteCitySuggestions: result.match_by_city,
+      autocompleteSchoolsSuggestions: result.match_by_name,
+      autocompleteNoResult: result.no_match,
       requestError: null,
       currentRequest: null,
     });
@@ -82,8 +87,10 @@ class AutocompleteSchool extends React.Component {
     this.setState({
       requestError: 'Une erreur est survenue, veuillez ré-essayer plus tard.',
       currentRequest: null,
-      citySuggestions: {},
-      schoolsSuggestions: [],
+      autocompleteNoResult: false,
+      autocompleteCitySuggestions: {},
+      autocompleteSchoolsSuggestions: [],
+      schoolsInCitySuggestions: [],
       classRoomsSuggestions: [],
     });
   };
@@ -95,9 +102,13 @@ class AutocompleteSchool extends React.Component {
       selectedSchool: null,
       selectedClassRoom: null,
 
-      citySuggestions: {},
-      schoolsSuggestions: [],
+      autocompleteCitySuggestions: {},
+      autocompleteSchoolsSuggestions: [],
+
+      schoolsInCitySuggestions: [],
       classRoomsSuggestions: [],
+      autocompleteNoResult: false,
+      currentRequest: null,
     });
   };
 
@@ -107,16 +118,20 @@ class AutocompleteSchool extends React.Component {
     if (event.target.value.length > StartAutocompleteAtLength) {
       this.fetchData(event.target.value);
     } else {
-      this.setState({ citySuggestions: {} });
+      this.setState({
+        autocompleteCitySuggestions: {},
+        // autocompleteSchoolsSuggestions?
+      });
     }
   };
 
-  onSelectCity = (city, schoolsSuggestions) => () => {
+  onSelectCity = (city, schoolsInCitySuggestions) => () => {
     this.setState({
       city,
-      schoolsSuggestions,
+      schoolsInCitySuggestions,
 
-      citySuggestions: {},
+      autocompleteCitySuggestions: {},
+      autocompleteSchoolsSuggestions: [],
       classRoomsSuggestions: [],
     });
   };
@@ -128,8 +143,29 @@ class AutocompleteSchool extends React.Component {
     });
   };
 
-  renderCityInput = () => {
-    const { city, citySuggestions, currentRequest, requestError } = this.state;
+  onSelectSchoolFromAutocomplete = school => {
+    this.setState({
+      city: school.city,
+      schoolsInCitySuggestions: [school],
+
+      autocompleteCitySuggestions: {},
+      autocompleteSchoolsSuggestions: [],
+
+      selectedSchool: school,
+      classRoomsSuggestions: school.class_rooms,
+    });
+  };
+
+  renderAutocompleteInput = () => {
+    const {
+      city,
+      autocompleteCitySuggestions,
+      autocompleteSchoolsSuggestions,
+      currentRequest,
+      requestError,
+      autocompleteNoResult,
+    } = this.state;
+
     const { resourceName, existingSchool, label, required, classes } = this.props;
     return (
       <div className="form-group">
@@ -142,10 +178,10 @@ class AutocompleteSchool extends React.Component {
 
         <div className="input-group">
           <input
-            className={`form-control ${classes || ''}`}
+            className={`form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'}`}
             required={required}
             autoComplete="off"
-            placeholder="Rechercher la ville"
+            placeholder="Rechercher par ville ou par nom"
             type="text"
             name={`${resourceName}[school][city]`}
             id={`${resourceName}_school_city`}
@@ -160,7 +196,7 @@ class AutocompleteSchool extends React.Component {
             {!currentRequest && (
               <button
                 type="button"
-                className="btn btn-outline-secondary btn-clear-city"
+                className={`btn btn-outline-secondary btn-clear-city ${autocompleteNoResult ? '' : 'rounded-0'}`}
                 onClick={this.onResetSearch}
               >
                 <i className="fas fa-times" />
@@ -174,29 +210,58 @@ class AutocompleteSchool extends React.Component {
           </div>
         </div>
         <ul
-          className={`${classes || ''} list-group p-0 ${
-            Object.keys(citySuggestions || {}).length > 0 ? '' : 'd-none'
-          }`}
+          className={`${classes || ''} list-group p-0 shadow-sm`}
         >
-          {Object.keys(citySuggestions || {}).map(currentCity => (
-            <button
+          <li
+            className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
+              Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
+            }`}
+          >
+            Ville(s)
+          </li>
+          {Object.keys(autocompleteCitySuggestions || {}).map(currentCity => (
+            <li
               type="button"
-              className="list-group-item text-left"
+              className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
               key={currentCity}
-              onClick={this.onSelectCity(currentCity, citySuggestions[currentCity])}
+              onClick={this.onSelectCity(currentCity, autocompleteCitySuggestions[currentCity])}
             >
               <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-            </button>
+              <span className="badge-secondary badge-pill small">{autocompleteCitySuggestions[currentCity].length} collège{autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}</span>
+            </li>
           ))}
+
+          <li
+            className={`list-group-item  list-group-item-secondary small py-2 ${
+              (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
+            }`}
+          >
+            Collège(s)
+          </li>
+          {(autocompleteSchoolsSuggestions || []).map(currentSchool => (
+            <li
+              type="button"
+              className="list-group-item list-group-item-action text-left"
+              key={currentSchool.id}
+              onClick={event => this.onSelectSchoolFromAutocomplete(currentSchool)}
+            >
+              <span dangerouslySetInnerHTML={{ __html: currentSchool.pg_search_highlight_name }} />
+              <br />
+              <small>
+                {currentSchool.city} – {currentSchool.zipcode}
+              </small>
+            </li>
+          ))}
+          {requestError && <li className="list-group-item list-group-item-danger small">{requestError}</li>}
+          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+ et QPV.</li>}
         </ul>
 
-        {requestError && <p className="text-danger small">{requestError}</p>}
       </div>
     );
   };
 
   renderSchoolsInput = () => {
-    const { selectedSchool, schoolsSuggestions } = this.state;
+    const { selectedSchool, schoolsInCitySuggestions } = this.state;
     const { resourceName, existingSchool, classes } = this.props;
 
     return (
@@ -207,7 +272,7 @@ class AutocompleteSchool extends React.Component {
             *
           </abbr>
         </label>
-        {schoolsSuggestions.length === 0 && !selectedSchool && !existingSchool && (
+        {schoolsInCitySuggestions.length === 0 && !selectedSchool && !existingSchool && (
           <input
             value="Veuillez choisir la ville du collège"
             disabled
@@ -216,7 +281,7 @@ class AutocompleteSchool extends React.Component {
             id={`${resourceName}_school_name`}
           />
         )}
-        {schoolsSuggestions.length === 0 && existingSchool && (
+        {schoolsInCitySuggestions.length === 0 && existingSchool && (
           <>
             <input
               readOnly
@@ -230,9 +295,9 @@ class AutocompleteSchool extends React.Component {
             <input type="hidden" value={existingSchool.id} name={`${resourceName}[school_id]`} />
           </>
         )}
-        {schoolsSuggestions.length > 0 && (
+        {schoolsInCitySuggestions.length > 0 && (
           <div>
-            {(schoolsSuggestions || []).map(school => (
+            {(schoolsInCitySuggestions || []).map(school => (
               <div className="custom-control custom-radio" key={`school-${school.id}`}>
                 <input
                   type="radio"
@@ -315,7 +380,7 @@ class AutocompleteSchool extends React.Component {
 
     return (
       <>
-        {this.renderCityInput()}
+        {this.renderAutocompleteInput()}
         {this.renderSchoolsInput()}
         {selectClassRoom && this.renderClassRoomsInput()}
       </>

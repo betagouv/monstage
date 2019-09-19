@@ -12,8 +12,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # fails to create school_manager with existing email
     assert_difference('Users::SchoolManager.count', 0) do
-      find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('.list-group button.list-group-item').first.click
+      find_field('Ville ou nom de mon collège').fill_in(with: 'Saint')
+      all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
@@ -26,8 +26,8 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # create school_manager
     assert_difference('Users::SchoolManager.count', 1) do
-      find_field('Ville de mon collège').fill_in(with: 'Saint')
-      all('.list-group button.list-group-item').first.click
+      find_field('Ville ou nom de mon collège').fill_in(with: 'Saint')
+      all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
 
       fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-mail.com'
