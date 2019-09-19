@@ -4,7 +4,7 @@ module Dto
       migrate_users if school.users.count.positive?
       migrate_weeks if school.weeks.count.positive?
       migrate_class_rooms if school.class_rooms.count.positive?
-
+      migrate_internship_offers if InternshipOffer.where(school_id: school.id).count.positive?
       real.save!
       school.reload
       school.destroy!
@@ -28,6 +28,10 @@ module Dto
 
     def migrate_class_rooms
       school.class_rooms.update_all(school_id: real.id)
+    end
+
+    def migrate_internship_offers
+      InternshipOffer.where(school_id: school.id).update_all(school_id: real.id)
     end
 
     def real
