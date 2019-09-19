@@ -108,6 +108,7 @@ class AutocompleteSchool extends React.Component {
       schoolsInCitySuggestions: [],
       classRoomsSuggestions: [],
       autocompleteNoResult: false,
+      currentRequest: null,
     });
   };
 
@@ -252,7 +253,7 @@ class AutocompleteSchool extends React.Component {
             </li>
           ))}
           {requestError && <li className="list-group-item list-group-item-danger small">{requestError}</li>}
-          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+, QPV et certains collèges proche des zones QPV.</li>}
+          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+ et QPV.</li>}
         </ul>
 
       </div>
