@@ -15,7 +15,7 @@ class CreateZammadTicketJob < ApplicationJob
     end
 
     client.perform_on_behalf_of(feedback.email) do
-      client.ticket.create(
+      ticket = client.ticket.create(
         title: "Demande n°#{feedback.id}",
         state: 'new',
         group: 'Users',
@@ -23,6 +23,8 @@ class CreateZammadTicketJob < ApplicationJob
           body: feedback.comment
         }
       )
+
+      feedback.update(zammad_id: ticket.id) if ticket
     end
 
   end
