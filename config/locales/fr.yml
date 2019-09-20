@@ -172,6 +172,7 @@ fr:
             email:
               blank: "Veuillez saisir un email"
               taken: "Un compte est déjà associé a cet email"
+              invalid: "Le format de votre email semble incorrect"
             password:
               too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
             password_confirmation:

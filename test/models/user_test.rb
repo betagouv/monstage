@@ -76,4 +76,10 @@ class UserTest < ActiveSupport::TestCase
     internship_offer.reload
     assert internship_offer.discarded?
   end
+
+  test 'validate email bad' do
+    user = build(:employer, email: 'lol')
+    refute user.valid?
+    assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
+  end
 end
