@@ -17,7 +17,7 @@ module RailsAdmin
 
         register_instance_option :visible? do
           subject = bindings[:object]
-          authorized? && !subject.discarded?
+          authorized? && subject.is_a?(User) && !subject.discarded?
         end
 
         register_instance_option :controller do
