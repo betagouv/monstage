@@ -225,6 +225,9 @@ fr:
             student:
               taken: 'Vous ne pouvez pas candidater deux fois à la même offre'
   admin:
+    misc:
+      root_navigation:
+        "Tableaux de suivis"
     actions:
       kpi:
         title: 'Key Performance Indicators'

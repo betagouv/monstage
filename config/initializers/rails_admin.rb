@@ -29,8 +29,13 @@ RailsAdmin.config do |config|
   # config.show_gravatar = true
 
   config.actions do
-    dashboard
-    root :kpi                     # mandatory
+    dashboard do
+      show_in_navigation false
+    end
+    root :kpi do
+      show_in_navigation false
+    end
+
     index                         # mandatory
     new
     # export
@@ -58,4 +63,9 @@ RailsAdmin.config do |config|
                               Users::God
                               Users::Statistician
                               User]
+
+  config.navigation_static_links = {
+    "Delayed Job" => "/admin/delayed_job",
+    "Zammad (Support)" => "https://monstage.zammad.com"
+  }
 end
