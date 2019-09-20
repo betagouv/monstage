@@ -67,6 +67,6 @@ class User < ApplicationRecord
 
     discard!
 
-    AnonymizeUserJob.perform_later(recipient_email: email_for_job)
+    AnonymizeUserJob.perform_later(email_for_job)
   end
 end
