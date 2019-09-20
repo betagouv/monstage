@@ -253,7 +253,7 @@ class AutocompleteSchool extends React.Component {
             </li>
           ))}
           {requestError && <li className="list-group-item list-group-item-danger small">{requestError}</li>}
-          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résulat pour votre recherche. La plateforme supporte uniquement les collèges en REP, REP+ et QPV.</li>}
+          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné est un collège REP ou REP+.</li>}
         </ul>
 
       </div>
