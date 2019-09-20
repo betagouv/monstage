@@ -3,6 +3,21 @@
 module Users
   class SchoolManager < User
     include UserAdmin
+    rails_admin do
+      list do
+        field :school do
+          pretty_value do
+            school = bindings[:object].school
+            if school.is_a?(School)
+              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
+              bindings[:view].content_tag(:a, school.name, href: path)
+            else
+              nil
+            end
+          end
+        end
+      end
+    end
 
     validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/
     belongs_to :school, optional: true
