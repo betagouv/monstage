@@ -32,7 +32,7 @@ RailsAdmin.config do |config|
     dashboard
     root :kpi                     # mandatory
     index                         # mandatory
-    # new
+    new
     # export
     bulk_delete
     show

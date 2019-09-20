@@ -49,8 +49,20 @@ class School < ApplicationRecord
     edit do
       field :name
       field :visible
-      field :kind
+      field :kind, :enum do
+        enum do
+          VALID_TYPE_PARAMS
+        end
+      end
+      field :code_uai
+
+      
+      field :coordinates do
+        partial 'autocomplete_address'
+      end
+
       field :class_rooms
+
       field :street do
         partial "void"
       end
@@ -62,12 +74,6 @@ class School < ApplicationRecord
       end
       field :department do
         partial "void"
-      end
-
-      configure :autocomplete do
-      end
-      field :autocomplete do
-        partial 'autocomplete_address'
       end
     end
 

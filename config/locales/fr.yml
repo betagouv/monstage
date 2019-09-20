@@ -68,6 +68,7 @@ fr:
         zipcode: Code postal
         city: Ville
         department: Département
+        class_rooms: Classes
       reporting/internship_offer:
         sector_id: Secteurs professionnels
         total_report_count: Nbr. d'offres proposées

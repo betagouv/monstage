@@ -1,34 +1,33 @@
 = javascript_pack_tag 'rails_admin', defer: true
-div data={controller: 'algolia-place'}
-  .col-12 data={target: 'algolia-place.autocompleteFormGroup'}
-    .form-group
-      = form.label :autocomplete do
-        = "Adresse du lieu où se déroule le stage"
-      = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: form.object.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
+fieldset data={controller: 'algolia-place'}
+  .form-group.control-group.string-type data={target: 'algolia-place.autocompleteFormGroup'}
+    = form.label :autocomplete, class: 'col-sm-2 control-label' do
+      = "Adresse"
+    .col-sm-10.controls
+      = form.text_field :autocomplete, class: 'form-control', placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: form.object.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
       input type="hidden" name="school[coordinates][latitude]" value=(form.object.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
       input type="hidden" name="school[coordinates][longitude]" value=(form.object.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
 
-  .col-12
-    .form-group
-      = form.label :street do
-        = 'Rue'
+  .form-group.control-group.string-type
+    = form.label :street, class: 'col-sm-2 control-label' do
+      = 'Rue'
+    .col-sm-10.controls
       = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
 
-  .col-12
-    .form-group
-      = form.label :city do
-        = 'Ville'
+  .form-group.control-group.string-type
+    = form.label :city, class: 'col-sm-2 control-label' do
+      = 'Ville'
+    .col-sm-10.controls
       = form.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
 
-  .col-12
-    .form-group
-      = form.label :zipcode do
-        = 'Code postal'
+  .form-group.control-group.string-type
+    = form.label :zipcode, class: 'col-sm-2 control-label' do
+      = 'Code postal'
+    .col-sm-10.controls
       = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
 
-  .col-12
-    .form-group
-      = form.label :department do
-        = 'Département'
+  .form-group.control-group.string-type
+    = form.label :department, class: 'col-sm-2 control-label' do
+      = 'Département'
+    .col-sm-10.controls
       = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
-
