@@ -199,7 +199,8 @@ CREATE TABLE public.feedbacks (
     comment text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    aasm_state character varying
+    aasm_state character varying,
+    zammad_id character varying
 );
 
 
@@ -1301,6 +1302,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190911132109'),
 ('20190911134144'),
 ('20190918101306'),
+('20190918140641'),
 ('20190919131236');
-
-

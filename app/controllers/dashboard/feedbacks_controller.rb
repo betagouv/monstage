@@ -2,20 +2,14 @@
 
 module Dashboard
   class FeedbacksController < ApplicationController
-    before_action :authenticate_user!, only: %i[index destroy]
-    before_action :set_feedback, only: [:destroy]
-
-    # GET /feedbacks
-    def index
-      authorize! :index, Feedback
-      @feedbacks = Feedback.order(created_at: :desc)
-    end
 
     # POST /feedbacks
     def create
       @feedback = Feedback.new(feedback_params)
 
       if @feedback.save
+        CreateZammadTicketJob.perform_later @feedback
+
         redirect_back fallback_location: root_path,
                       flash: { success: "Votre message a bien été envoyé. Merci d'avoir donné votre avis." }
       else
@@ -24,19 +18,7 @@ module Dashboard
       end
     end
 
-    # DELETE /feedbacks/1
-    def destroy
-      authorize! :destroy, Feedback
-      @feedback.destroy
-      redirect_to dashboard_feedbacks_url, notice: 'Feedback was successfully destroyed.'
-    end
-
     private
-
-    # Use callbacks to share common setup or constraints between actions.
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
-    end
 
     # Only allow a trusted parameter "white list" through.
     def feedback_params

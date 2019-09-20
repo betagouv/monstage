@@ -49,7 +49,7 @@ Rails.application.routes.draw do
       resources :internship_applications, only: %i[index show]
     end
 
-    resources :feedbacks
+    resources :feedbacks, only: :create
   end
 
   get '/dashboard', to: 'dashboard#index'
