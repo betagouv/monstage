@@ -31,11 +31,16 @@ module Dashboard
 
       test 'GET class_rooms#index as SchoolManager ' \
            'contains key navigations links' do
-        school = create(:school)
-        sign_in(create(:school_manager, school: school))
+        school = create(:school, :with_school_manager)
+        class_room_with_student = create(:class_room, school: school,
+                                                      students: [create(:student)])
+        class_room_without_student = create(:class_room, school: school,
+                                                         students: [])
+        sign_in(school.school_manager)
 
         get dashboard_school_class_rooms_path(school)
         assert_response :success
+        # navbar links
         assert_select '.navbar a.nav-link.active[href=?]',
                       dashboard_school_class_rooms_path(school), count: 1
         assert_select 'a.nav-link[href=?]',
@@ -43,8 +48,24 @@ module Dashboard
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school), count: 1
 
+        # new link
         assert_select 'a.btn[href=?]',
                       new_dashboard_school_class_room_path(school), count: 1
+
+        # destroy links
+        assert_select 'a.float-right[href=?]',
+                      dashboard_school_class_room_path(school, class_room_without_student),
+                      count: 1
+        assert_select 'a.float-right[href=?]',
+                      dashboard_school_class_room_path(school, class_room_with_student),
+                      count: 0 # do not show destroy on classrooms with students
+        # edit links
+        assert_select 'a.float-right[href=?]',
+                      edit_dashboard_school_class_room_path(school, class_room_without_student),
+                      count: 1
+        assert_select 'a.float-right[href=?]',
+                      edit_dashboard_school_class_room_path(school, class_room_with_student),
+                      count: 1
       end
 
       test 'GET class_rooms#index as SchoolManager ' \

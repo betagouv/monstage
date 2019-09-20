@@ -51,7 +51,7 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     can_read_dashboard(user: user) do
-      can %i[create new update], ClassRoom
+      can %i[create new update destroy], ClassRoom
       can %i[edit update], School
       can [:manage_school_users], School do |school|
         school.id == user.school_id

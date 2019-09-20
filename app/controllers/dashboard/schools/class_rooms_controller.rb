@@ -36,7 +36,7 @@ module Dashboard
         @school = current_user.school
         @class_room = @school.class_rooms.find(params[:id])
         @class_room.update!(class_rooms_params)
-        redirect_to dashboard_school_class_rooms_path,
+        redirect_to dashboard_school_class_rooms_path(@school),
                     flash: { success: 'Classe mise à jour avec succès' }
       rescue ActiveRecord::RecordInvalid
         render :edit
@@ -48,8 +48,18 @@ module Dashboard
         @class_room = @school.class_rooms.new
       end
 
-      private
+      def destroy
+        authorize! :destroy, ClassRoom
+        @school = current_user.school
+        @class_room = @school.class_rooms.find(params[:id])
+        @class_room.destroy!
+        redirect_to dashboard_school_class_rooms_path(@school),
+                    flash: { success: 'Classe supprimée avec succès' }
+      rescue ActiveRecord::RecordInvalid
+        render :edit
+      end
 
+      private
       def class_rooms_params
         params.require(:class_room).permit(:name)
       end
