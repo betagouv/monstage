@@ -1,0 +1,18 @@
+<% kpi_manager = Reporting::Kpi.new %>
+<h2>Élève</h2>
+<ul>
+  <% kpi_manager.student_funnel_goal.map do |key, val| %>
+    <li>
+      <strong><%= key %></strong> : <%= val %> (<%= (val * 100.0 / kpi_manager.student_funnel_goal[:total] ).round(2) %>%)
+    </li>
+  <% end %>
+</ul>
+
+<h2>Collèges</h2>
+<ul>
+  <% kpi_manager.school_manager_funnel_goal.map do |key, val| %>
+    <li>
+      <strong><%= key %></strong> : <%= val %>  (<%= (val * 100.0 / kpi_manager.school_manager_funnel_goal[:total] ).round(2) %>%)
+    </li>
+  <% end %>
+</ul>

@@ -1,6 +1,7 @@
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
+require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 
 RailsAdmin.config do |config|
 
@@ -28,7 +29,8 @@ RailsAdmin.config do |config|
   # config.show_gravatar = true
 
   config.actions do
-    dashboard                     # mandatory
+    dashboard
+    root :kpi                     # mandatory
     index                         # mandatory
     # new
     # export
@@ -44,5 +46,16 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.included_models = ["School", "Feedback", "Users::Student", "Users::Employer", "Users::SchoolManager", "Users::MainTeacher", "Users::Teacher", "Users::Operator", "Users::Other", "Users::God", "User"]
+  config.included_models = %w[School
+                              Feedback
+                              Users::Student
+                              Users::Employer
+                              Users::SchoolManager
+                              Users::MainTeacher
+                              Users::Teacher
+                              Users::Operator
+                              Users::Other
+                              Users::God
+                              Users::Statistician
+                              User]
 end

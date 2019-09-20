@@ -23,7 +23,6 @@ class School < ApplicationRecord
 
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche]
 
-
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end

@@ -1,7 +1,10 @@
 module Users
   class Statistician < User
-    validate :email_in_list
     include InternshipOffersScopes::ByCoordinates
+    include UserAdmin
+
+    validate :email_in_list
+
     scope :targeted_internship_offers, ->(user:, coordinates:) {
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates

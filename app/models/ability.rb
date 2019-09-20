@@ -143,6 +143,7 @@ class Ability
     can :read, User
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
+    can :read, :kpi       # grant access to the dashboard
     can %i[index], Reporting::Acl do |_acl|
       true
     end

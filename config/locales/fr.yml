@@ -49,8 +49,11 @@ fr:
       users/other:
         one: Autre utilisateur
         other: Autres utilisateurs
+      users/statistician:
+        one: Référant départemental
+        other: Référants départemental
       school:
-        one: Collège
+        one: Collèges
         other: Collèges
       feedback:
         one: Avis
@@ -220,3 +223,9 @@ fr:
               blank: Veuillez reseigner vos motivations
             student:
               taken: 'Vous ne pouvez pas candidater deux fois à la même offre'
+  admin:
+    actions:
+      kpi:
+        title: 'Key Performance Indicators'
+        breadcrumb: KPI
+        menu: KPI
