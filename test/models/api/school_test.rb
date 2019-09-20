@@ -24,10 +24,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
 
     search_by_city_result = Api::School.autocomplete_by_name_or_city(term: school_city).first
     assert_equal "<b>#{school_city}</b>", search_by_city_result.pg_search_highlight_city
-    assert_nil search_by_city_result.pg_search_highlight_name
-
     search_by_name_result = Api::School.autocomplete_by_name_or_city(term: school_name).first
-    assert_nil search_by_name_result.pg_search_highlight_city
     assert_equal "<b>#{school_name}</b>", search_by_name_result.pg_search_highlight_name
   end
 
