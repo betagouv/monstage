@@ -93,6 +93,10 @@ fr:
         aasm_state/open: Ouvert
         aasm_state/in_progress: En Cours
         aasm_state/closed: Clos
+        aasm_state: État
+        user: Utilisateur
+        comment: Commentaire
+        created_at: Créé le
 
     errors:
       messages:

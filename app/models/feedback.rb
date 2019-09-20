@@ -22,6 +22,10 @@ class Feedback < ApplicationRecord
     User.find_by(email: email) || email
   end
 
+  def zammad_link
+    "#{Rails.application.credentials.zammad[:url]}#ticket/zoom/#{zammad_id}" if zammad_id.present?
+  end
+
   rails_admin do
     list do
       field :id
@@ -39,6 +43,14 @@ class Feedback < ApplicationRecord
       end
       field :comment
       field :aasm_state, :state
+      field :zammad_link do
+        pretty_value do
+          if bindings[:object].zammad_link.present?
+            bindings[:view].content_tag(:a, "Voir sur Zammad", href: bindings[:object].zammad_link)
+          end
+        end
+      end
+      field :zammad_link
     end
 
     show do
@@ -46,6 +58,13 @@ class Feedback < ApplicationRecord
       field :email
       field :comment
       field :aasm_state, :state
+      field :zammad_link do
+        pretty_value do
+          if bindings[:object].zammad_link.present?
+            bindings[:view].content_tag(:a, "Voir sur Zammad", href: bindings[:object].zammad_link)
+          end
+        end
+      end
     end
 
     state({
