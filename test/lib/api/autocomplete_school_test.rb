@@ -11,16 +11,32 @@ module Api
                                      name: @school_name)
     end
 
-    test '.as_json concat match_by_city' do
+    test '.as_json concat match_by_city with full match' do
       result = AutocompleteSchool.new(term: @school_city, limit: 5).as_json
-      assert_not_empty result[:match_by_city]
-      assert_empty result[:match_by_name]
+      assert_equal 1, result[:match_by_city].size
+      assert_equal 0, result[:match_by_name].size
     end
 
-    test '.as_json concat match_by_name' do
+    test '.as_json concat match_by_city with partial match' do
+      0.upto(@school_city.size).map do |str_len|
+        result = AutocompleteSchool.new(term: @school_city[0..str_len], limit: 5).as_json
+        assert_equal 1, result[:match_by_city].size
+        assert_equal 0, result[:match_by_name].size
+      end
+    end
+
+    test '.as_json concat match_by_name with full match' do
       result = AutocompleteSchool.new(term: @school_name, limit: 5).as_json
-      assert_empty result[:match_by_city]
-      assert_not_empty result[:match_by_name]
+      assert_equal 0, result[:match_by_city].size
+      assert_equal 1, result[:match_by_name].size
+    end
+
+    test '.as_json concat match_by_name with partial match' do
+      0.upto(@school_name.size).map do |str_len|
+        result = AutocompleteSchool.new(term: @school_name, limit: 5).as_json
+        assert_equal 0, result[:match_by_city].size
+        assert_equal 1, result[:match_by_name].size
+      end
     end
   end
 end

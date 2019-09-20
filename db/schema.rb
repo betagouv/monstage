@@ -206,8 +206,8 @@ ActiveRecord::Schema.define(version: 2019_09_19_131236) do
     t.string "api_token"
     t.text "handicap"
     t.boolean "custom_track", default: false, null: false
-    t.datetime "discarded_at"
     t.boolean "accept_terms", default: false, null: false
+    t.datetime "discarded_at"
     t.index ["api_token"], name: "index_users_on_api_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["discarded_at"], name: "index_users_on_discarded_at"

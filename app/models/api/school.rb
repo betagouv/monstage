@@ -30,9 +30,9 @@ module Api
     scope :visible, -> () { where(visible: true) }
 
     def as_json(options={})
-      super(options.merge(only: %i[id name department .],
+      super(options.merge(only: %i[id name department zipcode],
                           methods: %i[class_rooms] +
-                                   %i[name city zipcode] +
+                                   %i[name city] +
                                    %i[pg_search_highlight_city
                                       pg_search_highlight_name]))
     end
@@ -66,14 +66,17 @@ module Api
         select("#{current_pg_search_scope.tsearch.highlight.to_sql} as pg_search_highlight_#{highlight_column}")
       }
 
-      define_method(:"match_by_#{highlight_column}?") do
-        current_attribute_value = attributes["pg_search_highlight_#{highlight_column}"]
-        /<b>.*<\/b>/.match?(current_attribute_value)
+      define_method(:"match_by_#{highlight_column}?") do |term|
+        current_attribute_value = send(highlight_column)
+        current_pg_highlight_attribute_value = attributes["pg_search_highlight_#{highlight_column}"]
+
+        /<b>.*<\/b>/.match?(current_pg_highlight_attribute_value) ||
+            current_attribute_value.downcase.include?(term.downcase)
       end
 
       # read SQL result of ts_headline (highlight_by_#{highlight_column}) pg_search_highlight_#{highlight_column}
       define_method(:"pg_search_highlight_#{highlight_column}") do
-        return nil unless send(:"match_by_#{highlight_column}?")
+        # return nil unless send(:"match_by_#{highlight_column}?", self.send(highlight_column))
         attributes["pg_search_highlight_#{highlight_column}"]
       end
     end
