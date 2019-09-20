@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
+
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
@@ -74,8 +77,6 @@ Rails.application.routes.draw do
   get '/accessibilite', to: 'pages#accessibilite'
 
   get '/operators', to: 'pages#operators'
-
-  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
 
   root to: 'pages#home'
 end
