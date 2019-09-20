@@ -53,13 +53,20 @@ class User < ApplicationRecord
 
   def anonymize
     # Remove all personal information
+    email_for_job = self.email.dup
+
     fields_to_reset = {
-      email: SecureRandom.hex, first_name: 'NA',
-      last_name: 'NA', phone: nil, current_sign_in_ip: nil,
+      email: SecureRandom.hex,
+      first_name: 'NA',
+      last_name: 'NA',
+      phone: nil,
+      current_sign_in_ip: nil,
       last_sign_in_ip: nil
     }
     update_columns(fields_to_reset)
 
-    discard
+    discard!
+
+    AnonymizeUserJob.perform_later(recipient_email: email_for_job)
   end
 end

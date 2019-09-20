@@ -2,9 +2,9 @@ class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields:
   RailsAdmin::Config::Fields::Types.register(self)
 end
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
+require Rails.root.join('lib', 'rails_admin', 'anonymize_user.rb')
 
 RailsAdmin.config do |config|
-
   ### Popular gems integration
 
   ## == Devise ==
@@ -36,19 +36,15 @@ RailsAdmin.config do |config|
       show_in_navigation false
     end
 
-    index                         # mandatory
+    index
     new
-    # export
     bulk_delete
     show
     edit
     delete
-    # show_in_app
     state
 
-    ## With an audit adapter, you can add:
-    # history_index
-    # history_show
+    anonymize_user
   end
 
   config.included_models = %w[School

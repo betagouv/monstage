@@ -3,6 +3,7 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
   test 'creation requires accept terms' do
     user = Users::SchoolManager.new
     user.valid?
@@ -45,7 +46,9 @@ class UserTest < ActiveSupport::TestCase
       resume_other: 'chocolat', resume_languages: 'FR',
       handicap: 'malvoyant')
 
-    student.anonymize
+    assert_enqueued_jobs 1, only: AnonymizeUserJob do
+      student.anonymize
+    end
 
     assert_not_equal 'test@test.com', student.email
     assert_not_equal 'Toto', student.first_name
@@ -59,6 +62,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
+
   end
 
   test 'RGPD employer' do

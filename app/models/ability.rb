@@ -140,7 +140,8 @@ class Ability
     can :manage, School
     can %i[destroy see_tutor see_max_occurence search], InternshipOffer
     can :manage, Feedback
-    can :read, User
+    can %i[read update destroy], Feedback
+    can %i[read anonymize_user], User
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi       # grant access to the dashboard

@@ -65,7 +65,10 @@ class AbilityTest < ActiveSupport::TestCase
            'god should be able see see_tutor')
     assert(ability.can?(:see_max_occurence, InternshipOffer),
            'god should be able see see_tutor')
-    assert(ability.can?(:search, InternshipOffer.new))
+    assert ability.can?(:search, InternshipOffer.new)
+    assert ability.can?(:read, User)
+    assert ability.can?(:anonymize_user, User)
+    assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
   end
 
   test 'SchoolManager' do
