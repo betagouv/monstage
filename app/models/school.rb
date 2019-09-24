@@ -41,9 +41,33 @@ class School < ApplicationRecord
       field :name
       field :visible
       field :kind
-      field :city
-      field :zipcode
-      field :department
+      field :address do
+        pretty_value do
+          school = bindings[:object]
+          "#{school.city} – CP #{school.zipcode} (#{school.department})"
+        end
+      end
+      field :school_manager do
+        visible true
+        pretty_value do
+          school_manager = bindings[:object].school_manager
+          if school_manager.is_a?(Users::SchoolManager)
+            path = bindings[:view].show_path(model_name: school_manager.class.name, id: school_manager.id)
+            bindings[:view].content_tag(:a, school_manager.name, href: path)
+          else
+            nil
+          end
+        end
+      end
+      field :city do
+        visible false
+      end
+      field :department do
+        visible false
+      end
+      field :zipcode do
+        visible false
+      end
     end
 
     edit do
@@ -56,7 +80,6 @@ class School < ApplicationRecord
       end
       field :code_uai
 
-      
       field :coordinates do
         partial 'autocomplete_address'
       end

@@ -78,7 +78,8 @@
         h3.h2-home.text-center Chiffres clés
         h3.h3-home.text-center des stages de 3e sur le site
     .row.py-5
-      .col-sm-12.col-md-4.py-3
+      / .col-sm-12.col-md-4.py-3
+      .col-sm-12.offset-md-4.col-md-4.py-3
         .row
           .col-3
             .circled-icon.d-inline-flex.align-items-center
@@ -86,22 +87,22 @@
           .col-9
             h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_report_count)
             h6.h3-stat.m-0.p-0 stages offerts
-      .col-sm-12.col-md-4.py-3
-        .row
-          .col-3
-            .circled-icon.d-inline-flex.align-items-center
-              i.fas.fa-3x.fa-arrow-circle-right.mx-auto
-          .col-9
-            h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_applications_count)
-            h6.h3-stat.m-0.p-0 candidatures
-      .col-sm-12.col-md-4.py-3
-        .row
-          .col-3
-            .circled-icon.d-inline-flex.align-items-center
-              i.fas.fa-3x.fa-check-circle.mx-auto
-          .col-9
-            h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_convention_signed_applications_count)
-            h6.h3-stat.m-0.p-0 stages conclus
+      / .col-sm-12.col-md-4.py-3
+      /   .row
+      /     .col-3
+      /       .circled-icon.d-inline-flex.align-items-center
+      /         i.fas.fa-3x.fa-arrow-circle-right.mx-auto
+      /     .col-9
+      /       h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_applications_count)
+      /       h6.h3-stat.m-0.p-0 candidatures
+      / .col-sm-12.col-md-4.py-3
+      /   .row
+      /     .col-3
+      /       .circled-icon.d-inline-flex.align-items-center
+      /         i.fas.fa-3x.fa-check-circle.mx-auto
+      /     .col-9
+      /       h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_convention_signed_applications_count)
+      /       h6.h3-stat.m-0.p-0 stages conclus
 
 .bg-white.py-5.d-none.d-sm-block
   .container
