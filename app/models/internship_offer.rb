@@ -7,6 +7,13 @@ class InternshipOffer < ApplicationRecord
 
   PAGE_SIZE = 10
 
+  rails_admin do
+    list do
+      field :title
+      field :zipcode
+    end
+  end
+
   validates :tutor_name,
             :tutor_phone,
             :tutor_email,

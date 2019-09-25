@@ -142,6 +142,7 @@ class Ability
     can :manage, Feedback
     can %i[read update destroy], Feedback
     can %i[read anonymize_user], User
+    can %i[index], InternshipOffer
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi       # grant access to the dashboard

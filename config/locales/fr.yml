@@ -58,6 +58,9 @@ fr:
       feedback:
         one: Avis
         other: Avis
+      internship_offer:
+        one: Offre
+        other: Offres
 
     attributes:
       school:

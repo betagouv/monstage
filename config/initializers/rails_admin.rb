@@ -49,6 +49,7 @@ RailsAdmin.config do |config|
 
   config.included_models = %w[School
                               Feedback
+                              InternshipOffer
                               Users::Student
                               Users::Employer
                               Users::SchoolManager
