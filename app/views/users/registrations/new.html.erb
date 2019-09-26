@@ -75,7 +75,7 @@
         <%= resource.type == 'Users::SchoolManager' ? 'Adresse électronique académique' : 'Adresse électronique (email)' %>
         <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.email_field :email, class: 'form-control', required: true %>
+      <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true %>
     </div>
 
     <div class="form-group">

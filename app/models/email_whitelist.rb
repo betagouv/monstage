@@ -23,7 +23,6 @@ class EmailWhitelist < ApplicationRecord
 
   private
   def notify_account_ready
-    return if ENV['SKIP_STATISTICIAN']
     EmailWhitelistMailer.notify_ready(recipient_email: email)
                         .deliver_later
   end
