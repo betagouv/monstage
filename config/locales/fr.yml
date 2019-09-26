@@ -50,8 +50,8 @@ fr:
         one: Autre utilisateur
         other: Autres utilisateurs
       users/statistician:
-        one: Référant départemental
-        other: Référants départemental
+        one: Référent départemental
+        other: Référents départemental
       school:
         one: Collèges
         other: Collèges
@@ -61,6 +61,9 @@ fr:
       internship_offer:
         one: Offre
         other: Offres
+      email_whitelist:
+        one: Email autorisé du référent
+        other: Email autorisés des référents
 
     attributes:
       school:

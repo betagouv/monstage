@@ -20,8 +20,8 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     end
 
     # create statistician
-    email = Credentials.enc(:statisticians, prefix_env: false)[:"60"].first
-
+    email = 'kikoolol@gmail.com'
+    create(:email_whitelist, email: email, zipcode: 60)
     assert_difference('Users::Statistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
       fill_in 'Nom', with: 'Fourcade'

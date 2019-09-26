@@ -47,7 +47,8 @@ RailsAdmin.config do |config|
     anonymize_user
   end
 
-  config.included_models = %w[School
+  config.included_models = %w[EmailWhitelist
+                              School
                               Feedback
                               InternshipOffer
                               Users::Student

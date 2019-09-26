@@ -15,6 +15,10 @@ module RailsAdmin
           'icon-trash'
         end
 
+        register_instance_option :show_in_menu do
+          false
+        end
+
         register_instance_option :visible? do
           subject = bindings[:object]
           authorized? && subject.is_a?(User) && !subject.discarded?

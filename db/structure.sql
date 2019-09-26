@@ -190,6 +190,38 @@ ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
 
 
 --
+-- Name: email_whitelists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_whitelists (
+    id bigint NOT NULL,
+    email character varying,
+    zipcode character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_whitelists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_whitelists_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_whitelists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_whitelists_id_seq OWNED BY public.email_whitelists.id;
+
+
+--
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -642,6 +674,13 @@ ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: email_whitelists id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('public.email_whitelists_id_seq'::regclass);
+
+
+--
 -- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -740,6 +779,14 @@ ALTER TABLE ONLY public.class_rooms
 
 ALTER TABLE ONLY public.delayed_jobs
     ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_whitelists email_whitelists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_whitelists
+    ADD CONSTRAINT email_whitelists_pkey PRIMARY KEY (id);
 
 
 --
@@ -1303,4 +1350,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190911134144'),
 ('20190918101306'),
 ('20190918140641'),
-('20190919131236');
+('20190919131236'),
+('20190926131324');
+
+
