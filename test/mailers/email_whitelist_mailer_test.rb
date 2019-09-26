@@ -8,6 +8,6 @@ class EmailWhitelistMailerTest < ActionMailer::TestCase
     email = EmailWhitelistMailer.notify_ready(recipient_email: new_email)
     email.deliver_now
     assert_emails 1
-    assert_equal [email], email.to
+    assert_equal [new_email], email.to
   end
 end

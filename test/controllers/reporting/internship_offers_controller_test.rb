@@ -31,7 +31,9 @@ module Reporting
 
     test "GET #index as statistician success " \
          "when department params match his departement_name" do
-      statistician = create(:statistician)
+      email = "bing@bongo.bang"
+      create(:email_whitelist, email: email, zipcode: '60')
+      statistician = create(:statistician, email: email)
       sign_in(statistician)
       get reporting_internship_offers_path(department: statistician.department_name)
       assert_response :success
@@ -39,7 +41,9 @@ module Reporting
 
     test "GET #index as statistician fails " \
          "when department params does not match his department_name" do
-      statistician = create(:statistician)
+      email = "bing@bongo.bang"
+      create(:email_whitelist, email: email, zipcode: '60')
+      statistician = create(:statistician, email: email)
       sign_in(statistician)
       get reporting_internship_offers_path(department: 'Ain')
       assert_response 302

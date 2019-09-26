@@ -14,7 +14,7 @@ module Users
     end
 
     test 'creation succeed' do
-      whitelist_email = create(:email_whitelist, email: 'fourcade.m@gmail.com')
+      whitelist_email = create(:email_whitelist, email: 'fourcade.m@gmail.com', zipcode: '60')
       statistician = Users::Statistician.new(email: whitelist_email.email,
                                              password: 'tototo',
                                              password_confirmation: 'tototo',

@@ -79,7 +79,9 @@ class NavbarTest < ActionDispatch::IntegrationTest
   end
 
   test "statistician" do
-    statistician = create(:statistician)
+    email = "bing@bongo.bang"
+    create(:email_whitelist, email: email, zipcode: '60')
+    statistician = create(:statistician, email: email)
     sign_in(statistician)
     get statistician.custom_dashboard_path
     assert_select(".navbar a.active", count: 1)

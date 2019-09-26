@@ -7,7 +7,7 @@ class EmailWhitelistTest < ActiveSupport::TestCase
 
   test 'send email after create' do
     assert_enqueued_emails 1 do
-      create(:email_whitelist, email: 'kikoo@lol.fr')
+      create(:email_whitelist, email: 'kikoo@lol.fr', zipcode: '60')
     end
   end
 end
