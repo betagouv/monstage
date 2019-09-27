@@ -166,8 +166,9 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input#user_email[required]'
   end
 
-  test 'GET edit as main_teacher can change school' do
+  test 'GET edit as main_teacher can change school and class room' do
     school = create(:school)
+    class_room = create(:class_room, school: school)
     school_manager = create(:school_manager, school: school)
     main_teacher = create(:main_teacher, school: school)
 
@@ -176,5 +177,7 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     get account_path(section: 'school')
     assert_response :success
     assert_template 'users/_edit_school'
+    assert_select 'select[name="user[class_room_id]"]'
+    assert_select 'select[name="user[class_room_id]"] option', count: 2
   end
 end

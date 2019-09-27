@@ -10,9 +10,13 @@ h1.h2.mb-3 Modifier mon collège
                       label:"Ville ou se situe mon collège",
                       required:true,
                       resourceName: :user,
-                      selectClassRoom: current_user.respond_to?(:class_room),
+                      selectClassRoom: false,
                       existingSchool: @current_user.try(:school).try(:as_json))
 
+  - if current_user.respond_to?(:class_room) && current_user.school
+    .form-group
+      = f.label :class_room
+      = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room), { prompt: '-- Veuillez choisir une classe --' }, class: "form-control"
   - if can?(:choose_operator, :sign_up)
     .form-group
       = f.label :operator
