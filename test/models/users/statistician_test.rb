@@ -14,8 +14,10 @@ module Users
     end
 
     test 'creation succeed' do
-      whitelist_email = create(:email_whitelist, email: 'fourcade.m@gmail.com', zipcode: '60')
-      statistician = Users::Statistician.new(email: whitelist_email.email,
+      whitelisted_email = create(:email_whitelist,
+                                 email: 'white@list.email',
+                                 zipcode: '60')
+      statistician = Users::Statistician.new(email: whitelisted_email.email,
                                              password: 'tototo',
                                              password_confirmation: 'tototo',
                                              first_name: 'Chef',
@@ -25,10 +27,12 @@ module Users
     end
 
     test 'departement_name' do
-      whitelist_email = create(:email_whitelist, email: 'fourcade.m@gmail.com', zipcode: '60')
+      whitelisted_email = create(:email_whitelist,
+                                 email: 'fourcade.m@gmail.com',
+                                 zipcode: '59')
 
-      statistician = create(:statistician, email: whitelist_email.email)
-      assert_equal 'Oise', statistician.department_name
+      statistician = create(:statistician, email: whitelisted_email.email)
+      assert_equal 'Nord (département français)|Nord', statistician.department_name
     end
   end
 end

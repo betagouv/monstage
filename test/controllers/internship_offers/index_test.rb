@@ -38,9 +38,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as statistician works' do
-    email = "bing@bongo.bang"
-    create(:email_whitelist, email: email, zipcode: '60')
-    statistician = create(:statistician, email: email)
+    statistician = create(:statistician)
     sign_in(statistician)
     get internship_offers_path
     assert_response :success

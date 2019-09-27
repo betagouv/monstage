@@ -53,8 +53,12 @@ FactoryBot.define do
     factory :other, class: 'Users::Other', parent: :user do
       type { 'Users::Other' }
     end
+
     factory :statistician, class: 'Users::Statistician', parent: :user do
-      email { Credentials.enc(:statisticians, prefix_env: false)[:"60"].first }
+      type { 'Users::Statistician' }
+      before(:create) do |user|
+        create(:email_whitelist, email: user.email, zipcode: '60')
+      end
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
