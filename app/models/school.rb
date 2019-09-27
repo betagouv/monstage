@@ -32,6 +32,10 @@ class School < ApplicationRecord
     self.department = Department.lookup_by_zipcode(zipcode: zipcode) if zipcode.present?
   end
 
+  def has_staff?
+    main_teachers.present? || teachers.present? || others.present?
+  end
+
   def to_s
     name
   end

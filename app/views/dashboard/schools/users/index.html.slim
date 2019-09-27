@@ -1,5 +1,9 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
-small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimer leur compte.
+- if @school.has_staff?
+  small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimer leur compte.
 
-.row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
+  .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
+
+- else
+  i Aucune personne de votre équipe pédagogique ne s'est inscrite sur la plateforme. Vous pourrez les voir ici lorsque ce sera le cas.
