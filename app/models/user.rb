@@ -15,9 +15,9 @@ class User < ApplicationRecord
                                         message: :accept_terms,
                                         on: :create
 
-  delegate :url_helpers, to: :routes
-  delegate :routes, to: :application
   delegate :application, to: Rails
+  delegate :routes, to: :application
+  delegate :url_helpers, to: :routes
 
   def targeted_internship_offers
     InternshipOffer.kept
