@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Instrumentation::Sentry
+
   default_form_builder Rg2aFormBuilder
 
   rescue_from(CanCan::AccessDenied) do |_error|
