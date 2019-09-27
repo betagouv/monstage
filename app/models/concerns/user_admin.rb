@@ -20,6 +20,7 @@ module UserAdmin
       show do
         field :id
         field :email
+        field :phone
         field :first_name
         field :last_name
         field :school do
@@ -27,6 +28,9 @@ module UserAdmin
             bindings[:object].respond_to?(:school)
           end
         end
+        field :confirmed_at
+        field :confirmation_sent_at
+        field :sign_in_count
       end
     end
   end
