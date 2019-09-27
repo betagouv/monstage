@@ -7,7 +7,10 @@ git remote -vvv | grep $target
 if [ $? -eq 0 ]; then
   command -v sentry-cli >/dev/null 2>&1 || { echo "Deploy must ping sentry-cli to track bug from commits, install it with brew install getsentry/tools/sentry-cli. then login with sentry-cli login [credentials for sentri.io are in monstage.kdbx], also"; exit 1; }
   git push $target master:master
-  sentry-cli releases set-commits "$VERSION" --auto
+  # Create sentry release
+  VERSION=$(sentry-cli releases propose-version)
+  sentry-cli releases new $VERSION
+  sentry-cli releases set-commits --auto $VERSION
   exit $?
 else
   echo "missing git remote $target"
