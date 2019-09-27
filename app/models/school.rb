@@ -21,6 +21,7 @@ class School < ApplicationRecord
   before_save :lookup_department
   before_create :lookup_department
 
+  validates :city, :name, presence: true
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche]
 
   def select_text_method

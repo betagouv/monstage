@@ -499,8 +499,8 @@ ALTER SEQUENCE public.school_internship_weeks_id_seq OWNED BY public.school_inte
 
 CREATE TABLE public.schools (
     id bigint NOT NULL,
-    name character varying,
-    city character varying,
+    name character varying DEFAULT ''::character varying NOT NULL,
+    city character varying DEFAULT ''::character varying NOT NULL,
     department character varying,
     zipcode character varying,
     code_uai character varying,
@@ -1351,6 +1351,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190918101306'),
 ('20190918140641'),
 ('20190919131236'),
-('20190926131324');
+('20190926131324'),
+('20190927140816');
 
 

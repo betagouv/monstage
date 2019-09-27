@@ -6,15 +6,17 @@ FactoryBot.define do
   factory :school do
     name { 'Collègue evariste Gallois' }
     coordinates { Coordinates.paris }
-
+    city { 'Paris' }
     trait :at_paris do
       city { 'Paris' }
+      name { 'Parisian school' }
       department { 'Paris 75015' }
       coordinates { Coordinates.paris }
     end
 
     trait :at_bordeaux do
       city { 'bordeaux' }
+      name { 'bordeaux school' }
       department { 'Gironde' }
       coordinates { Coordinates.bordeaux }
     end
@@ -26,6 +28,7 @@ FactoryBot.define do
 
   factory :api_school, class: Api::School do
     name { 'Collègue evariste Gallois' }
+    city { 'Paris' }
     coordinates { Coordinates.paris }
   end
 end
