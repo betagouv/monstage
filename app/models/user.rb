@@ -71,4 +71,14 @@ class User < ApplicationRecord
 
     AnonymizeUserJob.perform_later(email_for_job)
   end
+
+  def destroy
+    anonymize
+  end
+
+  rails_admin do
+    list do
+      scopes [:kept]
+    end
+  end
 end

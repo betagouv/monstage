@@ -2,7 +2,6 @@ class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields:
   RailsAdmin::Config::Fields::Types.register(self)
 end
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
-require Rails.root.join('lib', 'rails_admin', 'anonymize_user.rb')
 
 RailsAdmin.config do |config|
   ### Popular gems integration
@@ -44,8 +43,6 @@ RailsAdmin.config do |config|
     edit
     delete
     state
-
-    anonymize_user
   end
 
   config.included_models = %w[EmailWhitelist

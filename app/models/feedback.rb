@@ -41,6 +41,9 @@ class Feedback < ApplicationRecord
           end
         end
       end
+      field :email do
+        hide
+      end
       field :comment
       field :aasm_state, :state
       field :zammad_link do

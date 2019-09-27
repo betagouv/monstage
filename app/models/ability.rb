@@ -141,7 +141,7 @@ class Ability
     can %i[destroy see_tutor see_max_occurence search], InternshipOffer
     can :manage, Feedback
     can %i[read update destroy], Feedback
-    can %i[read anonymize_user], User
+    can %i[read destroy], User
     can %i[index], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
