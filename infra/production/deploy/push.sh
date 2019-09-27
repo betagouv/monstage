@@ -10,7 +10,7 @@ if [ $? -eq 0 ]; then
   # Create sentry release
   VERSION=$(sentry-cli releases propose-version)
   sentry-cli releases new $VERSION
-  sentry-cli releases set-commits --auto $VERSION
+  # sentry-cli releases set-commits --auto $VERSION
   exit $?
 else
   echo "missing git remote $target"

@@ -10,4 +10,4 @@ heroku restart -a betagouv-monstage-prod
 # Create sentry release
 VERSION=$(sentry-cli releases propose-version)
 sentry-cli releases new $VERSION
-sentry-cli releases set-commits --auto $VERSION
+# sentry-cli releases set-commits $VERSION
