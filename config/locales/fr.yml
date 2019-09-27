@@ -75,6 +75,8 @@ fr:
         city: Ville
         department: Département
         class_rooms: Classes
+        school_manager: Chef d'établissement
+        address: Adresse
       reporting/internship_offer:
         sector_id: Secteurs professionnels
         total_report_count: Nbr. d'offres proposées
