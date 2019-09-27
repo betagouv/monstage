@@ -5,6 +5,15 @@ module Users
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
+    # sentry: 1245741475
+    # rescued "race condition" on creation : form is submitted twice, and pg fails with uniq constraint
+    # 1st request is being created...
+    # 2nd twice arrives, checks for existance of first that is not yet commited in PG
+    # 1st is commited on PG
+    # 2nd try to commit, rails raise ActiveRecord::RecordNotUnique
+    rescue_from(ActiveRecord::RecordNotUnique) do |error|
+      redirect_to after_inactive_sign_up_path_for(resource)
+    end
     # GET /users/choose_profile
     # def choose_profile
     #
