@@ -242,3 +242,9 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+  views:
+    pagination:
+      last: Dernière page
+      first: Première page
+      next: Page suivante
+      prev: Page précédente
