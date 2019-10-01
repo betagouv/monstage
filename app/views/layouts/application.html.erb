@@ -41,7 +41,7 @@
         </div>
       </div>
     </footer>
-    <%= render 'dashboard/feedbacks/form' %>
+    <%= render 'feedbacks/form' %>
     <% if Rails.env.development? %>
       <script>
         console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
