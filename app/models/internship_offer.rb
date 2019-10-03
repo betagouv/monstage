@@ -11,6 +11,14 @@ class InternshipOffer < ApplicationRecord
     list do
       field :title
       field :zipcode
+      field :employer_name
+      field :group
+      field :is_public
+      field :sector
+    end
+
+    show do
+      exclude_fields :blocked_weeks_count, :total_applications_count, :convention_signed_applications_count, :approved_applications_count, :total_male_applications_count, :total_male_convention_signed_applications_count, :total_custom_track_convention_signed_applications_count, :submitted_applications_count, :rejected_applications_count
     end
   end
 

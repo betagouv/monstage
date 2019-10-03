@@ -90,7 +90,26 @@ fr:
         total: Total
 
       internship_offer:
-        is_public: Secteur
+        title: Intitulé
+        zipcode: Code postal
+        employer_name: Employeur
+        group: Groupe ou institution
+        is_public: Secteur public
+        sector: Secteur
+        max_candidates: Nombre max de candidats
+        tutor_name: Nom du tuteur
+        tutor_phone: Téléphone du tuteur
+        tutor_email: Email du tuteur
+        employer: Employeur
+        employer_website: Site web de l'employeur
+        employer_description: Description de l'employeur
+        street: Adresse
+        city: Ville
+        department: Département
+        academy: Académie
+        discarded_at: Supprimée le
+        coordinates: Coordonnées GPS
+        view_count: Nombre de vues
       user:
         first_name: Prénom
         last_name: Nom
