@@ -24,7 +24,6 @@ module InternshipOffers
                         'coordinates' => { latitude: 1, longitude: 1 },
                         school_id: school.id,
                         max_candidates: 2,
-                        max_occurence: 4,
                         employer_description: 'bim bim bim bam bam',
                         employer_id: internship_offer.employer_id,
                         employer_type: 'Users::Employer')
@@ -36,7 +35,6 @@ module InternshipOffers
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
       assert_equal 2, created_internship_offer.max_candidates
-      assert_equal 4, created_internship_offer.max_occurence
       assert_redirected_to dashboard_internship_offer_path(created_internship_offer)
     end
 

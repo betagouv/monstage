@@ -6,9 +6,9 @@ module Reporting
     setup do
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
-      @internship_offer_agri_1 = create(:internship_offer, sector: @sector_agri, max_candidates: 1, max_occurence: 2)
-      @internship_offer_agri_2 = create(:internship_offer, sector: @sector_agri, max_candidates: 1, max_occurence: 2)
-      @internship_offer_wood = create(:internship_offer, sector: @sector_wood, max_candidates: 10, max_occurence: 2)
+      @internship_offer_agri_1 = create(:internship_offer, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_agri_2 = create(:internship_offer, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_wood = create(:internship_offer, sector: @sector_wood, max_candidates: 10)
     end
 
     test '.group_by(:sector_name)' do

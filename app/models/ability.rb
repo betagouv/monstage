@@ -138,7 +138,7 @@ class Ability
   def god_abilities
     can :show, :account
     can :manage, School
-    can %i[destroy see_tutor see_max_occurence search], InternshipOffer
+    can %i[destroy see_tutor search], InternshipOffer
     can :manage, Feedback
     can %i[read update destroy], Feedback
     can %i[read destroy], User

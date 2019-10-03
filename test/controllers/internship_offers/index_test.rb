@@ -44,19 +44,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'GET #index as student. ignores internship offers with blocked_weeks_count > max_occurence_count' do
-    internship_offer_with_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 2)
-    internship_offer_without_max_occurence_count_reached = create(:internship_offer, max_occurence: 2, blocked_weeks_count: 0)
-    student = create(:student)
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
-        assert_absence_of(internship_offer: internship_offer_with_max_occurence_count_reached)
-        assert_presence_of(internship_offer: internship_offer_without_max_occurence_count_reached)
-      end
-    end
-  end
 
   test 'GET #index ignores internship_offers having ' \
        'as much internship_application as max_candidates number' do
