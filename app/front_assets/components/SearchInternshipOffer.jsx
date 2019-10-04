@@ -176,7 +176,7 @@ class SearchInternshipOffer extends React.Component {
             )}
             {!currentSector && (
               <>
-                Pour découvrir les secteurs profesionnels consultez le{' '}
+                Pour découvrir les secteurs professionnels consultez le{' '}
                 <a href="http://www.onisep.fr/Decouvrir-les-metiers/Des-metiers-par-secteur">
                   site de l&apos;Onisep.
                 </a>
