@@ -51,6 +51,9 @@ GEM
     activerecord (6.0.0)
       activemodel (= 6.0.0)
       activesupport (= 6.0.0)
+    activerecord-explain-analyze (0.1.0)
+      activerecord (>= 4)
+      pg
     activerecord-postgis-adapter (6.0.0)
       activerecord (~> 6.0)
       rgeo-activerecord (~> 6.0)
@@ -377,6 +380,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
+  activerecord-explain-analyze
   activerecord-postgis-adapter
   bootsnap
   bullet
