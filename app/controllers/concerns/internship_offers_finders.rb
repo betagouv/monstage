@@ -13,6 +13,7 @@ module InternshipOffersFinders
                              .available_in_the_future
                              .for_user(user: current_user_or_visitor,
                                        coordinates: coordinate_params)
+                             .group(:id)
       query = query.merge(InternshipOffer.by_sector(params[:sector_id])) if params[:sector_id]
       query = query.page(params[:page]) # force kaminari interface no matter presence of page param
       query

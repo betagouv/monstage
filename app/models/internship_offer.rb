@@ -61,7 +61,7 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
   scope :by_weeks, lambda { |weeks:|
-    joins(:weeks).where(weeks: { id: weeks.ids }).distinct
+    joins(:weeks).where(weeks: { id: weeks.ids })
   }
 
   scope :older_than, lambda { |week:|
@@ -69,7 +69,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :available_in_the_future, lambda {
-    older_than(week: Week.current).distinct
+    older_than(week: Week.current)
   }
 
 
