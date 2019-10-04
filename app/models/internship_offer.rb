@@ -22,7 +22,9 @@ class InternshipOffer < ApplicationRecord
     end
   end
 
-  validates :tutor_name,
+  validates :street,
+            :city,
+            :tutor_name,
             :tutor_phone,
             :tutor_email,
             :max_occurence,

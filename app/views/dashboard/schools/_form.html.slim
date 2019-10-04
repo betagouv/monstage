@@ -24,7 +24,7 @@
       div data={controller: 'algolia-place'}
         .form-group.row.col-lg-6 data={target: 'algolia-place.autocompleteFormGroup'}
           = f.label :autocomplete do
-            = "Adresse du lieu où se déroule le stage"
+            = "Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)"
             = f.rg2a_required_content_tag
           = f.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @school.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
           input type="hidden" name="school[coordinates][latitude]" value=(@school.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
