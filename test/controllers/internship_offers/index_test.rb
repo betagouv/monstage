@@ -13,9 +13,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select "[data-test-id=#{internship_offer.id}]", 0
   end
 
-  test 'GET #index redirect to root_path if not connected' do
+  test 'GET #index as "Users::Visitor" works' do
     get internship_offers_path
-    assert_redirected_to user_session_path
+    assert_response :success
+  end
+
+  test 'GET #index with coordinates as "Users::Visitor" works' do
+    get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
+    assert_response :success
   end
 
   test 'GET #index as student ignores internship_offers with existing applicaiton' do

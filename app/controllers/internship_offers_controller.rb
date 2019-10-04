@@ -3,7 +3,7 @@
 class InternshipOffersController < ApplicationController
   include InternshipOffersFinders
 
-  before_action :authenticate_user!, only: %i[index create edit update destroy]
+  before_action :authenticate_user!, only: %i[create edit update destroy]
   after_action :increment_internship_offer_view_count, only: :show
 
   def index

@@ -4,10 +4,15 @@ module InternshipOffersFinders
   extend ActiveSupport::Concern
 
   included do
+    def current_user_or_visitor
+      current_user || Users::Visitor.new
+    end
+
     def query_internship_offers
       query = InternshipOffer.kept
                              .available_in_the_future
-                             .for_user(user: current_user, coordinates: coordinate_params)
+                             .for_user(user: current_user_or_visitor,
+                                       coordinates: coordinate_params)
       query = query.merge(InternshipOffer.by_sector(params[:sector_id])) if params[:sector_id]
       query = query.page(params[:page]) # force kaminari interface no matter presence of page param
       query
