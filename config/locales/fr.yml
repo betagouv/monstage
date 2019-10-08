@@ -8,7 +8,7 @@ fr:
         other: "%{count} erreurs à corriger :"
   devise:
     confirmations:
-      confirmed: Votre compte a déjà été vérifiée. Vous pouvez vous connecter.
+      confirmed: Votre compte est bien confirmé. Vous pouvez vous connecter.
     registrations:
       user:
         signed_up_but_not_approved: Votre compte est bien créé mais vous ne pouvez pas vous connecter tant que votre professeur principal ne l'a pas validé.
