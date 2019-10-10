@@ -66,9 +66,9 @@ $(function() {
     prefixCSS: 'zammad-form-',
     showTitle: false,
     messageTitle: 'Zammad Form',
-    messageSubmit: 'Submit',
-    messageThankYou: 'Thank you for your inquiry! We\'ll contact you as soon as possible.',
-    messageNoConfig: 'Unable to load form config from server. Maybe feature is disabled.',
+    messageSubmit: 'Envoyer',
+    messageThankYou: 'Nous avons bien pris en compte votre demande et reviendrons vers vous dès que possible',
+    messageNoConfig: "La fonctionnalité n'est malheureusement pas encore activée.",
     attachmentSupport: false,
     attributes: [
       {
