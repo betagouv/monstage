@@ -124,7 +124,7 @@ class Ability
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
     can %i[update discard], Api::InternshipOffer, employer_id: user.id
-    can :index, InternshipApplication
+    can %i[index update], InternshipApplication
     can :show, :api_token
   end
 
