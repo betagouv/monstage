@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   get '/partenaires', to: 'pages#partenaires'
   get '/mentions-legales', to: 'pages#mentions_legales'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
-  get '/faq', to: 'pages#faq'
+  get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
 
   get '/operators', to: 'pages#operators'
