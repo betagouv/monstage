@@ -8,7 +8,8 @@ module InternshipOffersFinders
       current_user || Users::Visitor.new
     end
 
-    def query_internship_offers
+    def query_internship_offers(warn_on_missing_school_weeks: false)
+      flash_message_when_missing_school_weeks if warn_on_missing_school_weeks
       query = InternshipOffer.kept
                              .available_in_the_future
                              .for_user(user: current_user_or_visitor,
@@ -39,6 +40,11 @@ module InternshipOffersFinders
       coordinates = params.permit(:latitude, :longitude)
       return nil unless params.key?(:latitude) || params.key?(:longitude)
       geo_point_factory(latitude: params[:latitude], longitude: params[:longitude])
+    end
+
+    def flash_message_when_missing_school_weeks
+      return if current_user.try(:school).try(:weeks).try(:size).try(:positive?)
+      flash.now[:warning] = "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre aux stages accessible pour les élèves de l'etablissement."
     end
   end
 end

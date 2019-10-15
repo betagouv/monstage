@@ -7,7 +7,8 @@ class InternshipOffersController < ApplicationController
   after_action :increment_internship_offer_view_count, only: :show
 
   def index
-    @internship_offers = query_internship_offers.order(id: :desc)
+    @internship_offers = query_internship_offers(warn_on_missing_school_weeks: true)
+                          .order(id: :desc)
   end
 
   def show
