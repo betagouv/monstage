@@ -30,7 +30,6 @@ export default class extends Controller {
     this.wssClient = ActionCable.createConsumer("/cable")
     this.validator = this.wssClient.subscriptions.create(this.channelParams, {
       received: (data) => {
-        debugger
         showElement($hint)
 
         switch (data.status) {
