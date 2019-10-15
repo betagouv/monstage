@@ -46,9 +46,13 @@ Rails.application.configure do
   # config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
-  # config.action_cable.mount_path = nil
-  # config.action_cable.url = 'wss://example.com/cable'
-  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+  host_or_default = ENV.fetch('HOST')
+  host_uri = URI(host_or_default)
+  domain_without_www = host_uri.host.gsub('www.', '')
+
+  config.action_cable.mount_path = nil
+  config.action_cable.url = "wss://#{host_uri.host}"
+  config.action_cable.allowed_request_origins = [ host_uri.to_s ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true

@@ -80,3 +80,4 @@ gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
 
 gem 'zammad_api'
+gem 'email_inquire'
