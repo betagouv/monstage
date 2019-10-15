@@ -25,7 +25,8 @@
       = render partial: "internship_applications/school_manager_form"
     - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && user_signed_in?
       = render partial: "internship_applications/student_form"
-
+    - elsif !user_signed_in?
+      = render partial: "internship_applications/visitor_form"
 
   .d-none.d-sm-flex.col-sm-1.align-items-center.text-right
     - if @next_internship_offer

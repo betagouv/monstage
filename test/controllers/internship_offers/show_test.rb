@@ -54,6 +54,13 @@ module InternshipOffers
     #
     # internship_applications checks
     #
+    test 'GET #show as a visitor shows sign up form' do
+      internship_offer = create(:internship_offer, weeks: weeks)
+
+      get internship_offer_path(internship_offer)
+      assert_template 'internship_applications/_visitor_form'
+    end
+
     test 'GET #show displays application form for student' do
       student = create(:student)
       sign_in(student)
@@ -119,6 +126,7 @@ module InternshipOffers
       assert_select '.btn-warning', text: "Je candidate"
       assert_select 'textarea[id=internship_application_motivation]', count: 1
     end
+
 
     test 'GET #show as a student who can apply to limited internship offer shows a disabled button with contact SchoolManager label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
