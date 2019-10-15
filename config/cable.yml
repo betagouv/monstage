@@ -5,7 +5,7 @@ test:
   adapter: test
 
 staging:
-  adapter: postgres
+  adapter: postgresql
 
 production:
-  adapter: postgres
+  adapter: postgresql
