@@ -28,6 +28,8 @@ module BaseInternshipOffer
 
     before_save :reverse_academy_by_zipcode,
                 :reverse_department_by_zipcode
+    before_create :preset_published_at_to_now
+    scope :published, -> { where.not(published_at: nil) }
 
     def reverse_academy_by_zipcode
       self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
@@ -35,6 +37,10 @@ module BaseInternshipOffer
 
     def reverse_department_by_zipcode
       self.department = Department.lookup_by_zipcode(zipcode: zipcode)
+    end
+
+    def preset_published_at_to_now
+      self.published_at = Time.now
     end
   end
 end

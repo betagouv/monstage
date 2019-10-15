@@ -77,6 +77,7 @@ Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupére
     remote_id: l'identifiant unique du coté operateur|collectivité|association
     permalink: lien de redirection pour renvoyer sur le site unique du coté operateur|collectivité|association
     max_candidates: le nombre de candidat possible sur ce stage
+    published_at: date de publication de l'offre
   }
 }
 ```
@@ -233,6 +234,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
 * **max_candidates** *(integer)*
+* **published_at** *(datetime.iso8601(0))* : voir [reference](https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html#method-i-iso8601)
 
 ### Exemple curl
 

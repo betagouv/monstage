@@ -1,11 +1,14 @@
 .row.bg-light.mt-n4
   .col-12
     nav.navbar
-      .d-flex.align-items-center.text-success.br-1.bt-light.pr-3
-        = "Annonce publiée en ligne"
-        br
-        = "depuis le #{l(@internship_offer.created_at, format: :human_mm_dd)}"
-
+      - if @internship_offer.published_at.present?
+        .d-flex.align-items-center.text-success.br-1.bt-light.pr-3
+          = "Annonce publiée en ligne"
+          br
+          = "depuis le #{l(@internship_offer.created_at, format: :human_mm_dd)}"
+      - else
+        .d-flex.align-items-center.br-1.bt-light.pr-3
+          = "Annonce dé-publiée"
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
 
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
@@ -15,17 +18,36 @@
             = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
       - if can?(:discard, @internship_offer)
-        a.nav-link.ml-auto data-toggle="modal" data-target="#delete-offer-modal"
-          .fas.fa-2x.fa-trash
+        a.nav-link.ml-auto.text-center data-toggle="modal" data-target="#delete-offer-modal"
+          .fas.fa-trash
+          small.d-block
+            | Détruire
+
+      - if can?(:update, @internship_offer) && @internship_offer.published_at?
+        = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center', method: :patch do
+          .fas.fa-times
+          small.d-block
+            | Dépublier
+      - if can?(:update, @internship_offer) && !@internship_offer.published_at?
+        = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}), class: 'nav-link text-center', method: :patch do
+          .fas.fa-check
+          small.d-block
+            | Publier
 
       - if can?(:update, @internship_offer)
-        a.nav-link href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
-          .fas.fa-2x.fa-pen
+        a.nav-link.text-center href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
+          .fas.fa-pen
+          small.d-block
+            | Modifier
       - if can?(:create, InternshipOffer)
-        a.nav-link href= new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
-          .fas.fa-2x.fa-copy
-        a.nav-link href=new_dashboard_internship_offer_path
-          .fas.fa-2x.fa-plus
+        a.nav-link.text-center href= new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
+          .fas.fa-copy
+          small.d-block
+            | Dupliquer
+        a.nav-link.text-center href=new_dashboard_internship_offer_path
+          .fas.fa-plus
+          small.d-block
+            | Déposer une offre
 
 .row
   .col-12

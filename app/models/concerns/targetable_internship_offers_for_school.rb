@@ -12,7 +12,7 @@ module TargetableInternshipOffersForSchool
     include InternshipOffersScopes::ByNotApplied
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
-      query = InternshipOffer.kept
+      query = InternshipOffer.kept.published
       coordinates ||= user.try(:school).try(:coordinates)
       query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
       query = query.merge(internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if user.school

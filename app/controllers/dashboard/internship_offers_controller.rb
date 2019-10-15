@@ -43,7 +43,7 @@ module Dashboard
       internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
         on.success do |updated_internship_offer|
-          redirect_to(updated_internship_offer,
+          redirect_to(dashboard_internship_offer_path(updated_internship_offer),
                       flash: { success: 'Votre annonce a bien été modifiée' })
         end
         on.failure do |failed_internship_offer|
@@ -120,7 +120,7 @@ module Dashboard
             .permit(:title, :description, :sector_id, :max_candidates, :max_occurence,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group,
+                    :is_public, :group, :published_at,
                     :employer_id, :employer_type, :school_id, :employer_description,
                     operator_ids: [], coordinates: {}, week_ids: [])
     end
