@@ -18,7 +18,32 @@ class InternshipOffer < ApplicationRecord
     end
 
     show do
-      exclude_fields :blocked_weeks_count, :total_applications_count, :convention_signed_applications_count, :approved_applications_count, :total_male_applications_count, :total_male_convention_signed_applications_count, :total_custom_track_convention_signed_applications_count, :submitted_applications_count, :rejected_applications_count
+      exclude_fields :blocked_weeks_count,
+                     :total_applications_count,
+                     :convention_signed_applications_count,
+                     :approved_applications_count,
+                     :total_male_applications_count,
+                     :total_male_convention_signed_applications_count,
+                     :total_custom_track_convention_signed_applications_count,
+                     :submitted_applications_count,
+                     :rejected_applications_count
+    end
+
+    edit do
+      field :title
+      field :description
+      field :max_candidates
+      field :max_occurence
+      field :tutor_name
+      field :tutor_phone
+      field :tutor_email
+      field :employer_website
+      field :is_public
+      field :discarded_at
+      field :employer_name
+      field :group
+      field :employer_description
+      field :published_at
     end
   end
 
