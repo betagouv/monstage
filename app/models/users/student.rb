@@ -3,6 +3,21 @@
 module Users
   class Student < User
     include UserAdmin
+    rails_admin do
+      list do
+        field :school do
+          pretty_value do
+            school = bindings[:object].school
+            if school.is_a?(School)
+              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
+              bindings[:view].content_tag(:a, school.name, href: path)
+            else
+              nil
+            end
+          end
+        end
+      end
+    end
 
     belongs_to :school
     belongs_to :class_room, optional: true
