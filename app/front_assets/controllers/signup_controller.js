@@ -36,7 +36,7 @@ export default class extends Controller {
           case 'valid':
             $hint.attr('class','valid-feedback')
             $input.attr('class', 'form-control is-valid')
-            emailHintElement.innerText = "Parfait!"
+            emailHintElement.innerText = "Votre email semble correct!"
             break;
           case 'invalid':
             $hint.attr('class','invalid-feedback')
