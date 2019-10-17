@@ -55,7 +55,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(build(:god))
     assert(ability.can?(:show, :account),
            'god should be able to see his account')
-    assert(ability.can?(:manage, School),
+    assert(ability.can?(:update, School),
            'god should be able to manage school')
     assert(ability.cannot?(:edit, User),
            'god should not be able to edit user')
