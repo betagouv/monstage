@@ -52,11 +52,12 @@ class InternshipOffer < ApplicationRecord
       field :group
       field :zipcode
       field :city
-      field :weeks do
-        pretty_value do
-          school = bindings[:object].weeks.map(&:short_select_text_method)
-        end
-      end
+      # Weeks are removed for now because it is not readable as an export
+      # field :weeks do
+      #   pretty_value do
+      #     bindings[:object].weeks.map(&:short_select_text_method)
+      #   end
+      # end
 
       field :total_applications_count
       field :convention_signed_applications_count
