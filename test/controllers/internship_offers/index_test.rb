@@ -69,13 +69,13 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school)
     sign_in(student)
     get internship_offers_path
-    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre aux stages accessible pour les élèves de l'etablissement.",
+    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
                                  count: 1
   end
 
   test 'GET #index as visitor when school.weeks is empty, shows warning' do
     get internship_offers_path
-    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre aux stages accessible pour les élèves de l'etablissement.",
+    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
                                  count: 0
   end
 
