@@ -64,6 +64,9 @@ fr:
       email_whitelist:
         one: Email autorisé du référent
         other: Email autorisés des référents
+      week:
+        one: Semaine
+        other: Semaines
 
     attributes:
       school:
@@ -77,7 +80,9 @@ fr:
         class_rooms: Classes
         school_manager: Chef d'établissement
         address: Adresse
-        weeks: Semaines de stage
+        weeks:
+          one: Semaine de stage
+          other: Semaines de stage
       reporting/internship_offer:
         sector_id: Secteurs professionnels
         total_report_count: Nbr. d'offres proposées
@@ -111,6 +116,12 @@ fr:
         discarded_at: Supprimée le
         coordinates: Coordonnées GPS
         view_count: Nombre de vues
+        published_at: Publiée le
+        weeks:
+          one: Semaine de stage
+          other: Semaines de stage
+        total_applications_count: Nombre de candidatures
+        convention_signed_applications_count: Nombre de stages conclus
       user:
         first_name: Prénom
         last_name: Nom
@@ -129,6 +140,9 @@ fr:
         user: Utilisateur
         comment: Commentaire
         created_at: Créé le
+      week:
+        number: Numéro de semaine
+        year: Année
 
     errors:
       messages:

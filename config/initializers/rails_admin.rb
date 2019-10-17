@@ -43,6 +43,7 @@ RailsAdmin.config do |config|
     edit
     delete
     state
+    export
   end
 
   config.included_models = %w[EmailWhitelist

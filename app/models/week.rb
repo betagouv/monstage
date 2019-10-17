@@ -73,4 +73,11 @@ class Week < ApplicationRecord
     current_date = Date.today
     Week.find_by(number: current_date.cweek, year: current_date.year)
   end
+
+  rails_admin do
+    export do
+      field :number
+      field :year
+    end
+  end
 end

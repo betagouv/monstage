@@ -14,7 +14,7 @@ class InternshipOffer < ApplicationRecord
       field :employer_name
       field :group
       field :is_public
-      field :sector
+      field :department
     end
 
     show do
@@ -44,6 +44,22 @@ class InternshipOffer < ApplicationRecord
       field :group
       field :employer_description
       field :published_at
+    end
+
+    export do
+      field :title
+      field :employer_name
+      field :group
+      field :zipcode
+      field :city
+      field :weeks do
+        pretty_value do
+          school = bindings[:object].weeks.map(&:short_select_text_method)
+        end
+      end
+
+      field :total_applications_count
+      field :convention_signed_applications_count
     end
   end
 
