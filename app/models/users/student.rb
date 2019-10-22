@@ -17,6 +17,10 @@ module Users
           end
         end
       end
+
+      show do
+        field :class_room
+      end
     end
 
     belongs_to :school

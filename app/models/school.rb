@@ -120,6 +120,7 @@ class School < ApplicationRecord
           school = bindings[:object].weeks.map(&:short_select_text_method)
         end
       end
+      field :school_manager
     end
   end
 end
