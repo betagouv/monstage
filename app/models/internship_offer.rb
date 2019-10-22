@@ -58,7 +58,8 @@ class InternshipOffer < ApplicationRecord
       #     bindings[:object].weeks.map(&:short_select_text_method)
       #   end
       # end
-
+      field :max_candidates
+      field :max_occurence
       field :total_applications_count
       field :convention_signed_applications_count
     end
