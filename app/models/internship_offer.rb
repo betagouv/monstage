@@ -83,7 +83,9 @@ class InternshipOffer < ApplicationRecord
                       in: Group::PUBLIC,
                       message: 'Veuillez choisir une institution de tutelle'
                     },
-                    if: :is_public?
+                    if: :is_public?,
+                    allow_blank: true,
+                    allow_nil: true
   validates :group, inclusion: {
                       in: Group::PRIVATE,
                       message: 'Veuillez choisir une institution de tutelle'
