@@ -41,7 +41,11 @@ class InternshipOffer < ApplicationRecord
       field :is_public
       field :discarded_at
       field :employer_name
-      field :group
+      field :group, :enum do
+        enum do
+          Group::PUBLIC + Group::PRIVATE
+        end
+      end
       field :employer_description
       field :published_at
     end
