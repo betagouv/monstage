@@ -122,5 +122,18 @@ class School < ApplicationRecord
       end
       field :school_manager
     end
+
+    export do
+      field :name
+      field :zipcode
+      field :city
+      field :department
+      # Weeks are removed for now because it is not readable as an export
+      field :weeks, :string do
+        export_value do
+          bindings[:object].weeks.map(&:short_select_text_method)
+        end
+      end
+    end
   end
 end

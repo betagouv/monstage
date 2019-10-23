@@ -137,10 +137,10 @@ class Ability
 
   def god_abilities
     can :show, :account
-    can %i[read create update destroy], School
+    can :manage, School
     can %i[destroy see_tutor see_max_occurence], InternshipOffer
     can %i[read destroy], User
-    can %i[index read update export], InternshipOffer
+    can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard

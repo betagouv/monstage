@@ -57,12 +57,6 @@ class InternshipOffer < ApplicationRecord
       field :group
       field :zipcode
       field :city
-      # Weeks are removed for now because it is not readable as an export
-      # field :weeks do
-      #   pretty_value do
-      #     bindings[:object].weeks.map(&:short_select_text_method)
-      #   end
-      # end
       field :max_candidates
       field :max_occurence
       field :total_applications_count
