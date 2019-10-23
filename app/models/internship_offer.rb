@@ -15,6 +15,7 @@ class InternshipOffer < ApplicationRecord
       field :group
       field :is_public
       field :department
+      field :created_at
     end
 
     show do
@@ -38,9 +39,9 @@ class InternshipOffer < ApplicationRecord
       field :tutor_phone
       field :tutor_email
       field :employer_website
-      field :is_public
       field :discarded_at
       field :employer_name
+      field :is_public
       field :group, :enum do
         enum do
           Group::PUBLIC + Group::PRIVATE
