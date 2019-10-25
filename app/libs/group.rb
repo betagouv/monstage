@@ -28,7 +28,8 @@ class Group
     "CAISSE D'ALLOCATIONS FAMILIALES",
     "PÔLE EMPLOI",
     "RATP",
-    "SNCF"
+    "SNCF",
+    "BANQUE DE FRANCE"
   ].sort.freeze
   PRIVATE = [
     'Accenture',
