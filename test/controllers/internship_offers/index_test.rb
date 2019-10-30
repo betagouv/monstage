@@ -13,9 +13,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select "[data-test-id=#{internship_offer.id}]", 0
   end
 
-  test 'GET #index redirect to root_path if not connected' do
+  test 'GET #index as "Users::Visitor" works' do
     get internship_offers_path
-    assert_redirected_to user_session_path
+    assert_response :success
+  end
+
+  test 'GET #index with coordinates as "Users::Visitor" works' do
+    get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
+    assert_response :success
   end
 
   test 'GET #index as student ignores internship_offers with existing applicaiton' do
@@ -42,6 +47,36 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(statistician)
     get internship_offers_path
     assert_response :success
+  end
+
+  test 'GET #index as student. ignores internship offers not published' do
+    internship_offer_published = create(:internship_offer)
+    internship_offer_unpublished = create(:internship_offer)
+    internship_offer_unpublished.update_column(:published_at, nil)
+    student = create(:student)
+    sign_in(student)
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path
+        assert_absence_of(internship_offer: internship_offer_unpublished)
+        assert_presence_of(internship_offer: internship_offer_published)
+      end
+    end
+  end
+
+  test 'GET #index as student when school.weeks is empty, shows warning' do
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    sign_in(student)
+    get internship_offers_path
+    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+                                 count: 1
+  end
+
+  test 'GET #index as visitor when school.weeks is empty, shows warning' do
+    get internship_offers_path
+    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+                                 count: 0
   end
 
 

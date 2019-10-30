@@ -73,6 +73,7 @@ class School < ApplicationRecord
       field :zipcode do
         visible false
       end
+
     end
 
     edit do
@@ -114,6 +115,25 @@ class School < ApplicationRecord
       field :city
       field :department
       field :class_rooms
+      field :weeks do
+        pretty_value do
+          school = bindings[:object].weeks.map(&:short_select_text_method)
+        end
+      end
+      field :school_manager
+    end
+
+    export do
+      field :name
+      field :zipcode
+      field :city
+      field :department
+      # Weeks are removed for now because it is not readable as an export
+      field :weeks, :string do
+        export_value do
+          bindings[:object].weeks.map(&:short_select_text_method)
+        end
+      end
     end
   end
 end

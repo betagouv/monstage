@@ -36,7 +36,7 @@ module Users
 
     def email_in_list
       unless EmailWhitelist.exists?(email: email)
-        errors.add(:email, 'Cette adresse électronique n\'est pas autorisé')
+        errors.add(:email, 'Cette adresse électronique n\'est pas autorisée')
       end
     end
   end

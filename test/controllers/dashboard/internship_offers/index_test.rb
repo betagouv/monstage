@@ -14,6 +14,17 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
+    test 'GET #index as Employer' do
+      employer = create(:employer)
+      internship_offer_published = create(:internship_offer, employer: employer)
+      internship_offer_unpublished = create(:internship_offer, employer: employer)
+      internship_offer_unpublished.update_column(:published_at, nil)
+      sign_in(employer)
+      get dashboard_internship_offers_path
+      assert_select ".test-internship-offer-#{internship_offer_published.id}"
+      assert_select ".test-internship-offer-#{internship_offer_unpublished.id}"
+    end
+
     test 'GET #index as Employer show view_count' do
       internship_offer = create(:internship_offer, view_count: 10)
 
@@ -21,9 +32,6 @@ module Dashboard
       get dashboard_internship_offers_path
 
       assert_response :success
-      assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
-                    text: internship_offer.view_count.to_s,
-                    count: 1
       assert_select ".test-internship-offer-#{internship_offer.id} .badge-view-count",
                     text: internship_offer.view_count.to_s,
                     count: 1

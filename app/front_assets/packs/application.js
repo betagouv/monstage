@@ -17,14 +17,3 @@ import 'better-dateinput-polyfill/dist/better-dateinput-polyfill.js';
 import '../bootapp';
 
 import '../utils/zammad_form';
-
-$(function() {
-  $('#feedback-form').ZammadForm({
-    messageTitle: 'Contacter mon stage de 3e',
-    messageSubmit: 'Envoyer',
-    messageThankYou: 'Merci pour votre requête  (#%s) ! Nous vous recontacterons dans les meilleurs délais.',
-    showTitle: true,
-    modal: true,
-    attachmentSupport: true
-  });
-});

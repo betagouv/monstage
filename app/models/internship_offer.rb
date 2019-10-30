@@ -14,23 +14,75 @@ class InternshipOffer < ApplicationRecord
       field :employer_name
       field :group
       field :is_public
-      field :sector
+      field :department
+      field :created_at
     end
 
     show do
-      exclude_fields :blocked_weeks_count, :total_applications_count, :convention_signed_applications_count, :approved_applications_count, :total_male_applications_count, :total_male_convention_signed_applications_count, :total_custom_track_convention_signed_applications_count, :submitted_applications_count, :rejected_applications_count
+      exclude_fields :blocked_weeks_count,
+                     :total_applications_count,
+                     :convention_signed_applications_count,
+                     :approved_applications_count,
+                     :total_male_applications_count,
+                     :total_male_convention_signed_applications_count,
+                     :total_custom_track_convention_signed_applications_count,
+                     :submitted_applications_count,
+                     :rejected_applications_count
+    end
+
+    edit do
+      field :title
+      field :description
+      field :max_candidates
+      field :max_occurence
+      field :tutor_name
+      field :tutor_phone
+      field :tutor_email
+      field :employer_website
+      field :discarded_at
+      field :employer_name
+      field :is_public
+      field :group, :enum do
+        enum do
+          Group::PUBLIC + Group::PRIVATE
+        end
+      end
+      field :employer_description
+      field :published_at
+    end
+
+    export do
+      field :title
+      field :employer_name
+      field :group
+      field :zipcode
+      field :city
+      field :max_candidates
+      field :max_occurence
+      field :total_applications_count
+      field :convention_signed_applications_count
     end
   end
 
-  validates :tutor_name,
+  validates :street,
+            :city,
+            :tutor_name,
             :tutor_phone,
             :tutor_email,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
-  validates :group, inclusion: { in: Group::PUBLIC, message: 'Veuillez choisir une institution de tutelle' },
-                    if: :is_public?
-  validates :group, inclusion: { in: Group::PRIVATE, message: 'Veuillez choisir une institution de tutelle' },
+  validates :group, inclusion: {
+                      in: Group::PUBLIC,
+                      message: 'Veuillez choisir une institution de tutelle'
+                    },
+                    if: :is_public?,
+                    allow_blank: true,
+                    allow_nil: true
+  validates :group, inclusion: {
+                      in: Group::PRIVATE,
+                      message: 'Veuillez choisir une institution de tutelle'
+                    },
                     unless: :is_public?,
                     allow_blank: true,
                     allow_nil: true
@@ -40,8 +92,9 @@ class InternshipOffer < ApplicationRecord
                                              greater_than: 0,
                                              less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
 
-  has_many :internship_applications, through: :internship_offer_weeks, dependent: :destroy
 
+  has_many :internship_applications, through: :internship_offer_weeks,
+                                     dependent: :destroy
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
 
@@ -56,7 +109,7 @@ class InternshipOffer < ApplicationRecord
     where(sector_id: sector_id)
   }
   scope :by_weeks, lambda { |weeks:|
-    joins(:weeks).where(weeks: { id: weeks.ids }).distinct
+    joins(:weeks).where(weeks: { id: weeks.ids })
   }
 
   scope :older_than, lambda { |week:|
@@ -64,7 +117,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :available_in_the_future, lambda {
-    older_than(week: Week.current).distinct
+    older_than(week: Week.current)
   }
 
 

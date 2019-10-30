@@ -8,6 +8,6 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
     get user_confirmation_path(confirmation_token: student.confirmation_token)
     assert_redirected_to new_user_session_path(email: student.email)
     follow_redirect!
-    assert_select("#alert-success #alert-text", text: "Votre compte a déjà été vérifiée. Vous pouvez vous connecter.")
+    assert_select("#alert-success #alert-text", text: "Votre compte est bien confirmé. Vous pouvez vous connecter.")
   end
 end

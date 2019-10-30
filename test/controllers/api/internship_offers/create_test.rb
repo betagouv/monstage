@@ -195,7 +195,10 @@ module Api
         end
 
         internship_offer = Api::InternshipOffer.first
-        assert_equal Week.selectable_from_now_until_end_of_period, internship_offer.weeks
+        week_ids = internship_offer.weeks.map(&:id)
+        Week.selectable_from_now_until_end_of_period.each do |week|
+          assert week_ids.include?(week.id)
+        end
       end
     end
   end

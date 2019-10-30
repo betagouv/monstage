@@ -20,7 +20,7 @@ module Api
                       }
                     }
 
-    scope :autocomplete_by_name_or_city, -> (term:, limit: 15) {
+    scope :autocomplete_by_name_or_city, -> (term:) {
       search_by_name_and_city(term)
         .highlight_by_city(term)
         .highlight_by_name(term)

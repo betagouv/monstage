@@ -17,8 +17,20 @@ export default class extends Controller {
   onAlgoliaSearchResultSelected = selection => {
     const { suggestion } = selection;
 
-    $(this.streetInputTarget).val(suggestion.name);
-    $(this.cityInputTarget).val(suggestion.city);
+    $(this.cityInputTarget).val("")
+    $(this.streetInputTarget).val("")
+    switch (suggestion.type) {
+      case 'city':
+        $(this.cityInputTarget).val(suggestion.name);
+        break;
+      case 'address':
+        $(this.streetInputTarget).val(suggestion.name);
+        $(this.cityInputTarget).val(suggestion.city);
+        break;
+      default:
+        break;
+    }
+
     $(this.zipcodeInputTarget).val(suggestion.postcode);
     $(this.departmentInputTarget).val(suggestion.county);
     $(this.longitudeInputTarget).val(suggestion.latlng.lng);
@@ -34,10 +46,21 @@ export default class extends Controller {
     });
 
     // configure algolia api
+    // see:
     this.placesAutocomplete.configure({
       language: 'fr',
-      countries: ['fr'],
-      type: 'address',
+      countries: [
+        'fr', // + neighboring countries for internship close to border
+        'mf', // saint martin, french side, still referenced as french but no more
+        'mc', // monaco
+        'ad', // anddora
+        'lu', // lux
+        'be', // belgium
+        'de', // germany
+        'it', // italia
+        'ch', // switz
+        'es'  // spain
+      ],
     });
 
     // listen on algolia search result selection
@@ -55,8 +78,6 @@ export default class extends Controller {
     const $latitudeInput = $(this.latitudeInputTarget);
     const $longitudeInput = $(this.longitudeInputTarget);
 
-    $streetInput.prop('readonly', true);
-    $cityInput.prop('readonly', true);
     $zipcodeInput.prop('readonly', true);
     $departmentInput.prop('readonly', true);
 

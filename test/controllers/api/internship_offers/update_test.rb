@@ -104,7 +104,8 @@ module Api
             internship_offer: {
               title: new_title,
               weeks: week_params,
-              max_candidates: 2
+              max_candidates: 2,
+              published_at: nil
             }
           }
         )
@@ -114,6 +115,33 @@ module Api
       assert_equal week_instances, @internship_offer.reload.weeks
       assert_equal 2, @internship_offer.max_candidates
       assert_equal JSON.parse(@internship_offer.to_json), json_response
+    end
+
+    test 'PATCH #update as operator unpublish/republish internship_offers' do
+      patch api_internship_offer_path(
+        id: @internship_offer.remote_id,
+        params: {
+          token: "Bearer #{@operator.api_token}",
+          internship_offer: {
+            published_at: nil,
+          }
+        }
+      )
+      assert_response :success
+      assert_equal nil, @internship_offer.reload.published_at
+
+      new_publication_date = Time.now.utc.iso8601(0)
+      patch api_internship_offer_path(
+        id: @internship_offer.remote_id,
+        params: {
+          token: "Bearer #{@operator.api_token}",
+          internship_offer: {
+            published_at: new_publication_date,
+          }
+        }
+      )
+      assert_response :success
+      assert_equal new_publication_date, @internship_offer.reload.published_at.utc.iso8601(0)
     end
   end
 end

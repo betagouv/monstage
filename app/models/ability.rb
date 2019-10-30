@@ -17,7 +17,7 @@ class Ability
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
       end
-      shared_abilities(user: user)
+      shared_signed_in_user_abilities(user: user)
     else
       visitor_abilities
     end
@@ -30,7 +30,7 @@ class Ability
   def student_abilities(user:)
     can :show, :account
     can :change, :class_room
-    can %i[read search], InternshipOffer
+    can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
       !internship_offer.school_id && !internship_offer.permalink
     end
@@ -66,7 +66,7 @@ class Ability
     can [:apply_in_bulk], InternshipOffer do |internship_offer|
       internship_offer.school_id == user.school_id
     end
-    can %i[see_tutor search], InternshipOffer
+    can %i[see_tutor], InternshipOffer
 
   end
 
@@ -86,7 +86,7 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
-    can %i[see_tutor search], InternshipOffer
+    can %i[see_tutor], InternshipOffer
   end
 
   def teacher_abilities(user:)
@@ -96,7 +96,7 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
     can_read_dashboard(user: user)
 
-    can %i[see_tutor search], InternshipOffer
+    can %i[see_tutor], InternshipOffer
   end
 
   def other_abilities(user:)
@@ -107,7 +107,7 @@ class Ability
         school.id == user.school_id
       end
     end
-    can %i[see_tutor search], InternshipOffer
+    can %i[see_tutor], InternshipOffer
   end
 
   def employer_abilities(user:)
@@ -124,12 +124,12 @@ class Ability
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, Api::InternshipOffer
     can %i[update discard], Api::InternshipOffer, employer_id: user.id
-    can :index, InternshipApplication
+    can %i[index update], InternshipApplication
     can :show, :api_token
   end
 
   def statistician_abilities
-    can %i[read search], InternshipOffer
+    can %i[read], InternshipOffer
     can %i[index], Reporting::Acl do |acl|
       acl.allowed?
     end
@@ -138,11 +138,9 @@ class Ability
   def god_abilities
     can :show, :account
     can :manage, School
-    can %i[destroy see_tutor search], InternshipOffer
-    can :manage, Feedback
-    can %i[read update destroy], Feedback
+    can %i[destroy see_tutor see_max_occurence], InternshipOffer
     can %i[read destroy], User
-    can %i[index read], InternshipOffer
+    can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
@@ -175,7 +173,7 @@ class Ability
     )
   end
 
-  def shared_abilities(user:)
+  def shared_signed_in_user_abilities(user:)
     can :update, user
   end
 

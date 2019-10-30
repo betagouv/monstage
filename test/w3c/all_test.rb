@@ -13,7 +13,9 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
   end
 
   test 'internship_offers_path' do
-    %i[employer student school_manager].each do |role|
+    %i[employer
+       student
+       school_manager].each do |role|
       run_request_and_cache_response(report_as: "internship_offers_path_#{role}") do
         sign_in(create(role))
         get internship_offers_path
@@ -165,7 +167,7 @@ class HomeValidationTest < ActionDispatch::IntegrationTest
       partenaires_path
       mentions_legales_path
       conditions_d_utilisation_path
-      faq_path
+      contact_path
       accessibilite_path
     ].map do |page_path|
       run_request_and_cache_response(report_as: page_path.to_s) do

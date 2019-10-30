@@ -400,7 +400,8 @@ CREATE TABLE public.internship_offers (
     total_custom_track_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     view_count integer DEFAULT 0 NOT NULL,
     submitted_applications_count integer DEFAULT 0 NOT NULL,
-    rejected_applications_count integer DEFAULT 0 NOT NULL
+    rejected_applications_count integer DEFAULT 0 NOT NULL,
+    published_at timestamp without time zone
 );
 
 
@@ -949,6 +950,13 @@ CREATE INDEX index_internship_offer_weeks_on_internship_offer_id ON public.inter
 
 
 --
+-- Name: index_internship_offer_weeks_on_internship_offer_id_and_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_weeks_on_internship_offer_id_and_week_id ON public.internship_offer_weeks USING btree (internship_offer_id, week_id);
+
+
+--
 -- Name: index_internship_offer_weeks_on_week_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1093,6 +1101,13 @@ CREATE INDEX index_users_on_school_id ON public.users USING btree (school_id);
 --
 
 CREATE UNIQUE INDEX index_weeks_on_number_and_year ON public.weeks USING btree (number, year);
+
+
+--
+-- Name: index_weeks_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_weeks_on_year ON public.weeks USING btree (year);
 
 
 --
@@ -1352,6 +1367,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190918140641'),
 ('20190919131236'),
 ('20190926131324'),
-('20190927140816');
+('20190927140816'),
+('20191004132428'),
+('20191004151418'),
+('20191015142231');
 
 

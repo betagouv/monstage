@@ -26,6 +26,11 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
+  config.public_file_server.headers = {
+    "Cache-Control" => "public, s-maxage=31536000, max-age=15552000",
+    "Expires"       => 1.year.from_now.to_formatted_s(:rfc822)
+  }
+
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
@@ -46,9 +51,13 @@ Rails.application.configure do
   # config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
-  # config.action_cable.mount_path = nil
-  # config.action_cable.url = 'wss://example.com/cable'
-  # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
+  host_or_default = ENV.fetch('HOST')
+  host_uri = URI(host_or_default)
+  domain_without_www = host_uri.host.gsub('www.', '')
+
+  config.action_cable.mount_path = nil
+  config.action_cable.url = "wss://#{host_uri.host}"
+  config.action_cable.allowed_request_origins = [ host_uri.to_s ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
@@ -56,7 +65,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]

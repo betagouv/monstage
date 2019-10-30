@@ -5,6 +5,7 @@ module Users
     include UserAdmin
 
     include InternshipOffersScopes::ByCoordinates
+
     scope :targeted_internship_offers, ->(user:, coordinates:) {
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates

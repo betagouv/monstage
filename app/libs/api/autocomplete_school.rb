@@ -21,9 +21,10 @@ module Api
     def initialize(term:, limit:)
       @term = term
       @limit = limit
-      @result = Api::School.autocomplete_by_name_or_city(term: term, limit: limit)
+      @result = Api::School.autocomplete_by_name_or_city(term: term)
                            .where(visible: true)
                            .includes(:class_rooms)
+                           .limit(limit)
     end
   end
 end

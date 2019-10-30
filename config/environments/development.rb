@@ -54,6 +54,15 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  # Mount Action Cable outside main process or domain
+  host_or_default = ENV.fetch('HOST') { 'ws://localhost/' }
+  host_uri = URI(host_or_default)
+  domain_without_www = host_uri.host.gsub('www.', '')
+
+  config.action_cable.mount_path = '/action_cable'
+  config.action_cable.url = "wss://#{host_uri.host}"
+  config.action_cable.allowed_request_origins = [ host_uri.to_s ]
+
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.

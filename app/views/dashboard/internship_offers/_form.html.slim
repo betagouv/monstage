@@ -139,7 +139,7 @@
         .col-sm-12
           .form-group
             = form.label :autocomplete do
-              = "Adresse du lieu où se déroule le stage"
+              = "Ville du lieu où se déroule le stage  (la plus proche si vous ne trouvez pas la votre)"
               = form.rg2a_required_content_tag
               a.btn-absolute.btn.btn-link.py-0 data-action="click->help#toggle"
                 i.fa.fa-question-circle
@@ -157,7 +157,7 @@
         .col-sm-6
           .form-group
             = form.label :street do
-              = 'Rue'
+              = "Rue ou compléments d'adresse"
               = form.rg2a_required_content_tag
             = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
         .col-sm-4

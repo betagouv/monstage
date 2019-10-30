@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  mount ActionCable.server => '/cable'
+
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     registrations: 'users/registrations',
@@ -73,7 +75,7 @@ Rails.application.routes.draw do
   get '/partenaires', to: 'pages#partenaires'
   get '/mentions-legales', to: 'pages#mentions_legales'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
-  get '/faq', to: 'pages#faq'
+  get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
 
   get '/operators', to: 'pages#operators'

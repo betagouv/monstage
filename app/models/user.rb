@@ -23,6 +23,15 @@ class User < ApplicationRecord
     InternshipOffer.kept
   end
 
+  def missing_school_weeks?
+    return false unless respond_to?(:school)
+
+    try(:school)
+      .try(:weeks)
+      .try(:size)
+      .try(:zero?)
+  end
+
   def to_s
     "logged in as : #{type}[##{id}]"
   end

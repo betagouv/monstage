@@ -1,0 +1,11 @@
+development:
+  adapter: async
+
+test:
+  adapter: test
+
+staging:
+  adapter: postgresql
+
+production:
+  adapter: postgresql

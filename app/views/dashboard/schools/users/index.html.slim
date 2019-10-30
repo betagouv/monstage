@@ -1,7 +1,7 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
 - if @school.has_staff?
-  small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimer leur compte.
+  small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
 
   .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
 

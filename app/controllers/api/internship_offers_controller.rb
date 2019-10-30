@@ -68,8 +68,9 @@ module Api
               :permalink,
               :sector_uuid,
               :max_candidates,
+              :published_at,
               coordinates: {},
-              weeks: []
+              weeks: [],
             )
     end
   end
