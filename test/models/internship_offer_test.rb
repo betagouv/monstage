@@ -106,4 +106,14 @@ class InternshipOfferTest < ActiveSupport::TestCase
     assert_not_equal 'Test', internship_offer.employer_name
     assert_not_equal 'Test', internship_offer.employer_description
   end
+
+  test 'check if max_occurence counter is properly set' do
+    internship_offer = create(:internship_offer, weeks: [Week.first, Week.last])
+
+    assert_equal 2, internship_offer.internship_offer_weeks_count
+
+    internship_offer.weeks << Week.find_by(number: 10, year: 2020)
+
+    assert_equal 3, internship_offer.internship_offer_weeks_count
+  end
 end
