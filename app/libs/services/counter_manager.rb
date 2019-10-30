@@ -20,5 +20,11 @@ module Services
       )
       InternshipApplication.all.map(&:update_all_counters)
     end
+
+    def self.reset_internship_offer_weeks_counter
+      InternshipOffer.find_each do |internship_offer|
+        InternshipOffer.reset_counters(internship_offer.id, :internship_offer_weeks)
+      end
+    end
   end
 end
