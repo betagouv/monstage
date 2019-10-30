@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+86# frozen_string_literal: true
 
 require 'test_helper'
 
@@ -69,29 +69,6 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application'
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
-    end
-
-    test 'GET #show displays application form for school_manager when internship_offer is reserved to school' do
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, class_room: class_room, school: school)
-
-      sign_in(school.school_manager)
-      internship_offer = create(:internship_offer, school: school)
-      get internship_offer_path(internship_offer)
-
-      assert_response :success
-      assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
-                                         count: 0
-      assert_template 'internship_applications/_school_manager_form'
-      assert_select 'form[id=?]', 'new_internship_application'
-      assert_select "input[id=internship_application_student_ids_#{student.id}][type=checkbox]"
-      assert_select 'span.h1-label', text: "Inscrire des élèves"
-      assert_select '.btn-warning', text: "Inscrire des élèves"
-      assert_select 'textarea[id=internship_application_motivation]', count: 0
-      assert_select 'strong.tutor_name', text: internship_offer.tutor_name
-      assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
-      assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]", text: internship_offer.tutor_email
     end
 
     test 'GET #show does not display application form for school_manager when internship_offer is not reserved to school' do

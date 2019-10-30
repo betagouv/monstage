@@ -15,7 +15,6 @@ module Builders
       yield callback if block_given?
       @success_applications = @error_applications = []
       success = true
-      authorize! :apply_in_bulk, internship_offer
 
       params[:student_ids].compact
                           .reject { |student_id| student_id == '0' }
