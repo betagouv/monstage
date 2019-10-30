@@ -34,7 +34,6 @@ class InternshipOffer < ApplicationRecord
       field :title
       field :description
       field :max_candidates
-      field :max_occurence
       field :tutor_name
       field :tutor_phone
       field :tutor_email
@@ -58,7 +57,6 @@ class InternshipOffer < ApplicationRecord
       field :zipcode
       field :city
       field :max_candidates
-      field :max_occurence
       field :total_applications_count
       field :convention_signed_applications_count
     end

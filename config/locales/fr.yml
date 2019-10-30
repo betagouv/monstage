@@ -103,7 +103,6 @@ fr:
         is_public: Secteur public
         sector: Secteur
         max_candidates: Nb max de candidats
-        max_occurence: Nb max de semaines
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur

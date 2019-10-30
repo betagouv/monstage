@@ -31,13 +31,6 @@
           - if i < weeks.drop(6).size - 1
             = " – "
 
-- if can?(:see_max_occurence, InternshipOffer)
-  .row
-    .col-12
-      p
-        strong Nombre d'occurences :
-        = " #{internship_offer.max_occurence}"
-
 - if can?(:see_tutor, InternshipOffer)
   .row
     .col-12
