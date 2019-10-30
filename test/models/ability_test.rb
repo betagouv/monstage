@@ -61,7 +61,6 @@ class AbilityTest < ActiveSupport::TestCase
            'god should not be able to edit user')
     assert(ability.can?(:see_tutor, InternshipOffer),
            'god should be able see see_tutor')
-    assert ability.can?(:search, InternshipOffer.new)
     assert ability.can?(:read, User)
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
