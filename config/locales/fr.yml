@@ -133,6 +133,8 @@ fr:
         class_room: "Classe"
         school: "Collège"
         gender: Sexe
+        confirmed_at: Confirmé le
+        has_parental_consent: Autorisation parentale
       feedback:
         aasm_state/open: Ouvert
         aasm_state/in_progress: En Cours

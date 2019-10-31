@@ -5,21 +5,23 @@ module Users
     include UserAdmin
     rails_admin do
       list do
-        field :school do
-          pretty_value do
-            school = bindings[:object].school
-            if school.is_a?(School)
-              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
-              bindings[:view].content_tag(:a, school.name, href: path)
-            else
-              nil
-            end
-          end
-        end
+        field :school
       end
 
       show do
         field :class_room
+      end
+
+      export do
+        field :first_name
+        field :last_name
+        field :confirmed_at
+        field :has_parental_consent
+        field :departement, :string do
+          export_value do
+            bindings[:object].school&.department
+          end
+        end
       end
     end
 
