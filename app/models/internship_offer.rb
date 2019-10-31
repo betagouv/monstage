@@ -147,6 +147,10 @@ class InternshipOffer < ApplicationRecord
     !operators.empty?
   end
 
+  def is_from_api?
+    permalink.present?
+  end
+
   def init
     self.max_candidates ||= 1
   end

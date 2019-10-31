@@ -13,7 +13,7 @@
       .row
         .col-12
           .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au #{@internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement"
-    - if @internship_offer.permalink.present?
+    - if @internship_offer.is_from_api?
       .row
         .col-12
           .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
