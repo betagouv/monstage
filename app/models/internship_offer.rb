@@ -151,6 +151,10 @@ class InternshipOffer < ApplicationRecord
     permalink.present?
   end
 
+  def is_reserved_to_school?
+    school.present?
+  end
+
   def init
     self.max_candidates ||= 1
   end
