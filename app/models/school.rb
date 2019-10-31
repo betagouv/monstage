@@ -117,6 +117,12 @@ class School < ApplicationRecord
       field :zipcode
       field :city
       field :department
+      field :kind
+      field :school_manager, :string do
+        export_value do
+          bindings[:object].school_manager.name
+        end
+      end
       # Weeks are removed for now because it is not readable as an export
       field :weeks, :string do
         export_value do
