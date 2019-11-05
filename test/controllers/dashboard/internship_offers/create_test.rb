@@ -34,6 +34,8 @@ module InternshipOffers
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
+      assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
+      
       assert_equal 2, created_internship_offer.max_candidates
       assert_redirected_to dashboard_internship_offer_path(created_internship_offer)
     end
