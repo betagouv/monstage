@@ -38,52 +38,20 @@ class InternshipApplicationsController < ApplicationController
     render 'internship_application/show'
   end
 
-  # school manager can candidate for many students for reserved internship_offers
-  def bulk_create
-    builder.create_many(params: bulk_create_internship_application_params) do |on|
-      on.success do |internship_offer|
-        redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
-                    flash: { success: builder.success_message }
-      end
-      on.failure do |internship_offer|
-        redirect_to internship_offer_path(internship_offer, anchor: 'internship-application-form'),
-                    flash: { danger: builder.error_message }
-      end
-    end
-  end
-
   # students can candidate for one internship_offer
   def create
-    builder.create_one(params: create_internship_application_params) do |on|
-      on.success do |internship_application|
-        redirect_to internship_offer_internship_application_path(internship_application.internship_offer,
-                                                                 internship_application)
-      end
-      on.failure do |internship_application|
-        @internship_application = internship_application
-        render 'internship_offers/show', status: :bad_request
-      end
-    end
-  end
+    set_internship_offer
+    authorize! :apply, @internship_offer
 
-  # school manager can destroy applications on reserved internship_offers
-  def destroy
-    @internship_application = @internship_offer.internship_applications.find(params[:id])
-    authorize! :destroy, @internship_application
-    @internship_application.destroy!
-    redirect_to internship_offer_path(@internship_offer, anchor: 'internship-application-form'),
-                flash: { success: "La candidature de #{@internship_application.student.name} a été supprimée" }
-  rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = "La candidature de #{@internship_application.student.name} n'a pas été supprimée"
-    render 'internship_application/show'
+    @internship_application = InternshipApplication.create!(create_internship_application_params)
+    redirect_to internship_offer_internship_application_path(@internship_offer,
+                                                             @internship_application)
+  rescue ActiveRecord::RecordInvalid => error
+    @internship_application = error.record
+    render 'internship_offers/show', status: :bad_request
   end
 
   private
-
-  def builder
-    @builder ||= Builders::InternshipApplicationBuilder.new(user: current_user,
-                                                            internship_offer: @internship_offer)
-  end
 
   def set_intership_applications
     @internship_applications = @internship_offer.internship_applications
@@ -108,15 +76,6 @@ class InternshipApplicationsController < ApplicationController
             :motivation,
             :internship_offer_week_id,
             :user_id
-          )
-  end
-
-  def bulk_create_internship_application_params
-    params.require(:internship_application)
-          .permit(
-            :motivation,
-            :internship_offer_week_id,
-            student_ids: []
           )
   end
 end

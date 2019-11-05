@@ -32,7 +32,7 @@ class Ability
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      !internship_offer.school_id && !internship_offer.permalink
+      !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) && !internship_offer.from_api?
     end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
@@ -62,9 +62,6 @@ class Ability
     end
     can %i[update destroy], InternshipApplication do |internship_application|
       user.school.students.where(id: internship_application.student.id).count > 0
-    end
-    can [:apply_in_bulk], InternshipOffer do |internship_offer|
-      internship_offer.school_id == user.school_id
     end
     can %i[see_tutor], InternshipOffer
 
