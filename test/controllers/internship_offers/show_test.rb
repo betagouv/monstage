@@ -71,29 +71,6 @@ module InternshipOffers
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show displays application form for school_manager when internship_offer is reserved to school' do
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, class_room: class_room, school: school)
-
-      sign_in(school.school_manager)
-      internship_offer = create(:internship_offer, school: school)
-      get internship_offer_path(internship_offer)
-
-      assert_response :success
-      assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
-                                         count: 0
-      assert_template 'internship_applications/_school_manager_form'
-      assert_select 'form[id=?]', 'new_internship_application'
-      assert_select "input[id=internship_application_student_ids_#{student.id}][type=checkbox]"
-      assert_select 'span.h1-label', text: "Inscrire des élèves"
-      assert_select '.btn-warning', text: "Inscrire des élèves"
-      assert_select 'textarea[id=internship_application_motivation]', count: 0
-      assert_select 'strong.tutor_name', text: internship_offer.tutor_name
-      assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
-      assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]", text: internship_offer.tutor_email
-    end
-
     test 'GET #show does not display application form for school_manager when internship_offer is not reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
@@ -128,16 +105,28 @@ module InternshipOffers
     end
 
 
-    test 'GET #show as a student who can apply to limited internship offer shows a disabled button with contact SchoolManager label' do
+    test 'GET #show as a student a message when he cannot apply to a reserved internship offer' do
+      weeks = [Week.find_by(number: 1, year: 2020)]
+      student = create(:student, school: create(:school, weeks: weeks))
+      other_school = create(:school)
+      internship_offer = create(:internship_offer, school: other_school, weeks: weeks)
+      sign_in(student)
+      get internship_offer_path(internship_offer)
+
+      assert_select '.alert.alert-info', text: "Ce stage est reservé au collège #{internship_offer.school}.",
+                                         count: 1
+      assert_select '#new_internship_application', 0
+    end
+
+    test 'GET #show as a student who can apply to a reserved internship offer' do
       weeks = [Week.find_by(number: 1, year: 2020)]
       student = create(:student, school: create(:school, weeks: weeks))
       internship_offer = create(:internship_offer, school: student.school, weeks: weeks)
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_select '.alert.alert-info', text: "Ce stage est reservé au #{internship_offer.school}, afin de candidater prenez contact avec votre chef d'etablissement",
-                                         count: 1
-      assert_select '#new_internship_application', 0
+      assert_template 'internship_applications/_student_form'
+      assert_select '#new_internship_application', 1
     end
 
     test 'GET #show as a student displays weeks that matches school weeks' do

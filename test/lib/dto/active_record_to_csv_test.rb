@@ -16,9 +16,9 @@ module Dto
     test ".to_csv with Reporting::InternshipOffer" do
       sector_agri = create(:sector, name: 'Agriculture')
       sector_wood = create(:sector, name: 'Filière bois')
-      internship_offer_agri_1 = create(:internship_offer, sector: sector_agri, max_candidates: 1, max_occurence: 2)
-      internship_offer_agri_2 = create(:internship_offer, sector: sector_agri, max_candidates: 1, max_occurence: 2)
-      internship_offer_wood = create(:internship_offer, sector: sector_wood, max_candidates: 10, max_occurence: 2)
+      internship_offer_agri_1 = create(:internship_offer, sector: sector_agri, max_candidates: 1)
+      internship_offer_agri_2 = create(:internship_offer, sector: sector_agri, max_candidates: 1)
+      internship_offer_wood = create(:internship_offer, sector: sector_wood, max_candidates: 10)
 
       results = Reporting::InternshipOffer.grouped_by_sector.all
       headers = {
@@ -26,8 +26,8 @@ module Dto
       }
       converter = ActiveRecordToCsv.new(entries: results, headers: Reporting::InternshipOffer.csv_headers(headers: headers))
       header_row = "Secteurs professionnels,Nbr. d'offres proposées,Nombre de candidatures,Garçon,Fille,Nombre de stages conclus,CR/PE,Garçon,Fille"
-      row_1 = "#{sector_agri.name},4,0,0,0,0,0,0,0"
-      row_2 = "#{sector_wood.name},20,0,0,0,0,0,0,0"
+      row_1 = "#{sector_agri.name},2,0,0,0,0,0,0,0"
+      row_2 = "#{sector_wood.name},10,0,0,0,0,0,0,0"
       assert_equal [header_row, row_1, row_2, ""].join("\n"),
                    converter.to_csv
     end
