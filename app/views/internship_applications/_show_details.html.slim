@@ -18,11 +18,4 @@
     p.word-breakable-content= internship_application.student.resume_languages
 
 h3.h5.gray-999.mb-1.mt-2 Mon identité
-p
-  = "#{internship_application.student.first_name} #{internship_application.student.last_name}"
-  br
-  = internship_application.student.school.name
-  br
-  = internship_application.student.school.city
-  br
-  = "#{internship_application.student.age} ans"
+= render partial: "users/resume_details", locals: {student: internship_application.student}

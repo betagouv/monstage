@@ -6,7 +6,10 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
 
   belongs_to :internship_offer_week
-  belongs_to :student, class_name: 'Users::Student', foreign_key: 'user_id'
+  belongs_to :student, class_name: 'Users::Student',
+                       foreign_key: 'user_id'
+
+  accepts_nested_attributes_for :student, update_only: true
 
   has_one :internship_offer, through: :internship_offer_week
 

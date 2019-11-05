@@ -42,7 +42,6 @@ class InternshipApplicationsController < ApplicationController
   def create
     set_internship_offer
     authorize! :apply, @internship_offer
-
     @internship_application = InternshipApplication.create!(create_internship_application_params)
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
@@ -66,7 +65,14 @@ class InternshipApplicationsController < ApplicationController
   def update_internship_application_params
     params.require(:internship_application)
           .permit(
-            :motivation
+            :motivation,
+            :user_id,
+            student_attributes: [
+              :phone,
+              :resume_educational_background,
+              :resume_other,
+              :resume_languages
+            ]
           )
   end
 
@@ -75,7 +81,13 @@ class InternshipApplicationsController < ApplicationController
           .permit(
             :motivation,
             :internship_offer_week_id,
-            :user_id
+            :user_id,
+            student_attributes: [
+              :phone,
+              :resume_educational_background,
+              :resume_other,
+              :resume_languages
+            ]
           )
   end
 end

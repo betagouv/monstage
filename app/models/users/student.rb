@@ -33,7 +33,8 @@ module Users
 
     include TargetableInternshipOffersForSchool
 
-    has_many :internship_applications, dependent: :destroy, foreign_key: 'user_id'
+    has_many :internship_applications, dependent: :destroy,
+                                       foreign_key: 'user_id'
     after_initialize :init
 
     attr_reader :handicap_present

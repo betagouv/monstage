@@ -21,32 +21,29 @@ div data-controller="internship-application-form"
         .p-3.bg-light-warning
           = form_for [@internship_offer, @internship_application] do |f|
             = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_application
-            .form-group
-              = f.label :internship_offer_week_id, class: 'required' do
-                | Quelle semaine ?
-                = f.rg2a_required_content_tag
+            fieldset
+              legend Ma candidature
+              .form-group
+                = f.label :internship_offer_week_id, class: 'required' do
+                  | Quelle semaine ?
+                  = f.rg2a_required_content_tag
 
-              = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer), :id, :human_select_text_method, @internship_application.internship_offer_week_id),
-                { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
+                = f.select :internship_offer_week_id, options_from_collection_for_select(@internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer), :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+                  { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true
 
-            - if current_user.is_a?(Users::Student)
-              = f.hidden_field :user_id
+              - if current_user.is_a?(Users::Student)
+                = f.hidden_field :user_id
 
-            .form-group
-              = f.label :motivation, class: 'required' do
-                = "Pourquoi ce stage me motive"
-                small.form-text.text-muted.mt-0 Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
-                = f.rg2a_required_content_tag
+              .form-group
+                = f.label :motivation, class: 'required' do
+                  = "Pourquoi ce stage me motive"
+                  small.form-text.text-muted.mt-0 Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
+                  = f.rg2a_required_content_tag
 
-              = f.text_area :motivation, class: "form-control col-lg-6", required: true
+                = f.text_area :motivation, class: "form-control col-lg-6", required: true
 
-            .form-group
-              .label
-                | Mon CV
-                small.form-text.text-muted.mt-0 Vous pouvez joindre votre CV à votre candidature.
-              div= link_to account_path(tab: 'resume'), target: "_blank", class: 'external' do
-                | Modifier mon CV
-                = " (nouvelle fenêtre)"
+            = f.fields_for :student do |resume_form|
+              = render partial: "users/resume_fields", locals: { form: resume_form }
 
             .actions.d-flex.d-sm-block
               = link_to "#internship-application-closeform", class: 'btn btn-outline-warning text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do

@@ -1,0 +1,30 @@
+p
+  strong.student-name
+    i.fa-fw.fas.fa-user
+    = " "
+    = student.name
+  br
+  span.school-name
+    i.fa-fw.fas.fa-school
+    = " "
+    = student.school.name
+  br
+  span.school-city
+    i.fa-fw.fas.fa-map-marker
+    = " "
+    = student.school.city
+  br
+  span.student-age
+    i.fa-fw.fas.fa-birthday-cake
+    = " "
+    = "#{student.age} ans"
+  br
+  span.student-email
+    i.fa-fw.far.fa-envelope
+    = " "
+    = "#{student.email || 'Non communiqué'}"
+  br
+  span.student-phone
+    i.fa-fw.fas.fa-phone
+    = " "
+    = "#{student.phone || 'Non communiqué'}"
