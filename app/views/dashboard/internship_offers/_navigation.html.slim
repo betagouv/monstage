@@ -21,7 +21,7 @@
         a.nav-link.ml-auto.text-center data-toggle="modal" data-target="#delete-offer-modal"
           .fas.fa-trash
           small.d-block
-            | Détruire
+            | Supprimer
 
       - if can?(:update, @internship_offer) && @internship_offer.published_at?
         = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center', method: :patch do

@@ -18,7 +18,7 @@ module TargetableInternshipOffersForSchool
       query = query.merge(internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if !user.missing_school_weeks? && user.school
       query = query.merge(ignore_internship_restricted_to_other_schools(school_id: user.school_id))
       query = query.merge(ignore_max_candidates_reached)
-      query = query.merge(ignore_max_occurence_reached)
+      query = query.merge(ignore_max_internship_offer_weeks_reached)
       query = query.merge(ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
       query
     }

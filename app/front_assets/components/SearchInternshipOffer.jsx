@@ -42,6 +42,7 @@ class SearchInternshipOffer extends React.Component {
     } else {
       searchParams.set('sector_id', paramValue);
     }
+    searchParams.delete('page')
 
     Turbolinks.visit(`${url}?${searchParams.toString()}`);
   };
@@ -59,6 +60,8 @@ class SearchInternshipOffer extends React.Component {
       searchParams.delete('latitude');
       searchParams.delete('longitude');
     }
+    searchParams.delete('page')
+
     Turbolinks.visit(`${url}?${searchParams.toString()}`);
   };
 
