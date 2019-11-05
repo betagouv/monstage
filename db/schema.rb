@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_30_141809) do
+ActiveRecord::Schema.define(version: 2019_11_05_104038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 2019_10_30_141809) do
     t.string "title", null: false
     t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
-    t.integer "max_occurence", default: 1, null: false
+    t.integer "internship_offer_weeks_count", default: 1, null: false
     t.string "tutor_name"
     t.string "tutor_phone"
     t.string "tutor_email"
@@ -133,14 +133,13 @@ ActiveRecord::Schema.define(version: 2019_10_30_141809) do
     t.integer "submitted_applications_count", default: 0, null: false
     t.integer "rejected_applications_count", default: 0, null: false
     t.datetime "published_at"
-    t.integer "internship_offer_weeks_count"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
     t.index ["group"], name: "index_internship_offers_on_group"
-    t.index ["max_occurence", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
+    t.index ["internship_offer_weeks_count", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["remote_id"], name: "index_internship_offers_on_remote_id"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
@@ -216,8 +215,8 @@ ActiveRecord::Schema.define(version: 2019_10_30_141809) do
     t.string "api_token"
     t.text "handicap"
     t.boolean "custom_track", default: false, null: false
-    t.boolean "accept_terms", default: false, null: false
     t.datetime "discarded_at"
+    t.boolean "accept_terms", default: false, null: false
     t.index ["api_token"], name: "index_users_on_api_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["discarded_at"], name: "index_users_on_discarded_at"
