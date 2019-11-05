@@ -139,7 +139,7 @@ class Ability
     can :show, :account
     can :manage, School
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read destroy], User
+    can %i[read destroy export], User
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
