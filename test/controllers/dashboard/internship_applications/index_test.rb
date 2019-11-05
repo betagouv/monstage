@@ -35,6 +35,8 @@ module InternshipApplications
     test 'GET #index succeed when logged in as employer, shows default fields' do
       school = create(:school, city: 'Paris', name: 'Mon collège')
       student = create(:student, school: school,
+                                 phone: '0665656565',
+                                 email: 'student@edu.school',
                                  birth_date: 14.years.ago,
                                  resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
@@ -48,7 +50,9 @@ module InternshipApplications
       assert_select '.student-name', student.name
       assert_select '.school-name', school.name
       assert_select '.school-city', school.city
-      assert_select '.student-age', student.age.to_s
+      assert_select '.student-age', "#{student.age} ans"
+      assert_select '.student-email', student.email
+      assert_select '.student-phone', student.phone
       assert_select 'p', student.resume_educational_background
       assert_select 'p', student.resume_other
       assert_select 'p', student.resume_languages

@@ -14,13 +14,35 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
     p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
     .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
       p
-        strong.student-name= internship_application.student.name
+        strong.student-name
+          i.fa-fw.fas.fa-user
+          = " "
+          = internship_application.student.name
         br
-        span.school-name= internship_application.student.school.name
+        span.school-name
+          i.fa-fw.fas.fa-school
+          = " "
+          = internship_application.student.school.name
         br
-        span.school-city= internship_application.student.school.city
+        span.school-city
+          i.fa-fw.fas.fa-map-marker
+          = " "
+          = internship_application.student.school.city
         br
-        span.student-age= internship_application.student.age
+        span.student-age
+          i.fa-fw.fas.fa-birthday-cake
+          = " "
+          = "#{internship_application.student.age} ans"
+        br
+        span.student-email
+          i.fa-fw.far.fa-envelope
+          = " "
+          = "#{internship_application.student.email || 'Non communiqué'}"
+        br
+        span.student-phone
+          i.fa-fw.fas.fa-phone
+          = " "
+          = "#{internship_application.student.phone || 'Non communiqué'}"
 
       h3.h6 Parcours Scolaire
       p.word-breakable-content= internship_application.student.resume_educational_background
