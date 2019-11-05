@@ -15,7 +15,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_offer_week_1 = build(:internship_offer_week, blocked_applications_count: 1,
                                                             week: Week.find_by(number: 1, year: 2019))
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
-                                                 max_occurence: 2,
                                                  internship_offer_weeks: [
                                                   internship_offer_week_1,
                                                  ])
@@ -34,7 +33,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_offer_week_3 = build(:internship_offer_week, blocked_applications_count: 1,
                                                             week: Week.find_by(number: 3, year: 2019))
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
-                                                 max_occurence: 2,
                                                  internship_offer_weeks: [
                                                   internship_offer_week_1,
                                                   internship_offer_week_2,

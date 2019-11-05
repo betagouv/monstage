@@ -34,7 +34,6 @@ class InternshipOffer < ApplicationRecord
       field :title
       field :description
       field :max_candidates
-      field :max_occurence
       field :tutor_name
       field :tutor_phone
       field :tutor_email
@@ -58,7 +57,6 @@ class InternshipOffer < ApplicationRecord
       field :zipcode
       field :city
       field :max_candidates
-      field :max_occurence
       field :total_applications_count
       field :convention_signed_applications_count
     end
@@ -69,7 +67,6 @@ class InternshipOffer < ApplicationRecord
             :tutor_name,
             :tutor_phone,
             :tutor_email,
-            :max_occurence,
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
@@ -93,12 +90,9 @@ class InternshipOffer < ApplicationRecord
                                              greater_than: 0,
                                              less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
 
-  validates :max_occurence, numericality: { only_integer: true,
-                                            greater_than: 0 }
 
   has_many :internship_applications, through: :internship_offer_weeks,
                                      dependent: :destroy
-
   has_many :internship_offer_operators, dependent: :destroy
   has_many :operators, through: :internship_offer_operators
 
@@ -170,7 +164,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def duplicate
-    white_list = %w[title description sector_id max_candidates max_occurence
+    white_list = %w[title description sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id employer_description coordinates]
