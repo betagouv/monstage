@@ -43,15 +43,12 @@ class InternshipApplicationsController < ApplicationController
     set_internship_offer
     authorize! :apply, @internship_offer
 
-    begin
-      @internship_application = InternshipApplication.create!(create_internship_application_params)
-
-      redirect_to internship_offer_internship_application_path(@internship_offer,
-                                                               @internship_application)
-    rescue ActiveRecord::RecordInvalid => error
-      @internship_application = error.record
-      render 'internship_offers/show', status: :bad_request
-    end
+    @internship_application = InternshipApplication.create!(create_internship_application_params)
+    redirect_to internship_offer_internship_application_path(@internship_offer,
+                                                             @internship_application)
+  rescue ActiveRecord::RecordInvalid => error
+    @internship_application = error.record
+    render 'internship_offers/show', status: :bad_request
   end
 
   private
