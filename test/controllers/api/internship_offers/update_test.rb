@@ -128,7 +128,7 @@ module Api
         }
       )
       assert_response :success
-      assert_equal nil, @internship_offer.reload.published_at
+      assert_nil @internship_offer.reload.published_at
 
       new_publication_date = Time.now.utc.iso8601(0)
       patch api_internship_offer_path(

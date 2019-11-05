@@ -13,14 +13,7 @@ div data-controller="internship-application-index" class=" row py-3 internship_a
       strong= "semaine #{internship_application.week.short_select_text_method}"
     p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
     .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
-      p
-        strong.student-name= internship_application.student.name
-        br
-        span.school-name= internship_application.student.school.name
-        br
-        span.school-city= internship_application.student.school.city
-        br
-        span.student-age= internship_application.student.age
+      = render partial: "users/resume_details", locals: {student: internship_application.student}
 
       h3.h6 Parcours Scolaire
       p.word-breakable-content= internship_application.student.resume_educational_background

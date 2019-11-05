@@ -1,24 +1,9 @@
 h1.h2.mb-3 Mon CV
-p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur
-  avec votre candidature. Sauf si vous le laissez vide.
+p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur avec votre candidature. Sauf si vous le laissez vide.
 
-p Le CV aide l'employeur à découvrir votre parcours, vos habiletés et compétences.
+p Le CV aide l'employeur à découvrir votre parcours, vos habiletés et compétences. Il lui permettra aussi de vous recontacter afin d'avancer sur votre candidature au sein de son entreprise.
 
 = form_for current_user, as: :user, url: account_path, method: :patch do |f|
-  .form-group
-    = f.label :resume_educational_background do
-      = 'Parcours Scolaire'
-      small.form-text.text-muted Classes suivies jusqu'à maintenant
-    = f.text_area :resume_educational_background, class: 'form-control col-lg-6'
-  .form-group
-    = f.label :resume_other do
-      = 'Activités extra scolaires'
-      small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
-    = f.text_area :resume_other, class: 'form-control col-lg-6'
-  .form-group
-    = f.label :resume_languages do
-      = 'Langues vivantes'
-      small.form-text.text-muted Langues étudiées et/ou parlées
-    = f.text_area :resume_languages, class: 'form-control col-lg-6'
+  = render partial: "users/resume_fields", locals: { form: f}
 
   .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-warning'
