@@ -147,11 +147,11 @@ class InternshipOffer < ApplicationRecord
     !operators.empty?
   end
 
-  def is_from_api?
+  def from_api?
     permalink.present?
   end
 
-  def is_reserved_to_school?
+  def reserved_to_school?
     school.present?
   end
 
