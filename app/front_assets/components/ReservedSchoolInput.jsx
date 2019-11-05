@@ -1,0 +1,50 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import AutocompleteSchool from './AutocompleteSchool';
+import SchoolPropType from '../prop_types/school';
+
+class ReservedSchoolInput extends React.Component {
+  static propTypes = {
+    classes: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    required: PropTypes.bool.isRequired,
+    resourceName: PropTypes.string.isRequired,
+    selectClassRoom: PropTypes.bool.isRequired,
+    existingSchool: PropTypes.objectOf(SchoolPropType),
+    existingClassRoom: PropTypes.objectOf(PropTypes.object),
+  };
+
+  static defaultProps = {
+    classes: null,
+    existingSchool: null,
+    existingClassRoom: null,
+  };
+
+  state = {
+    checked: null,
+  }
+
+  handleChange = (event) => {
+    this.setState({checked: event.target.checked})
+  }
+
+  render() {
+    const { existingSchool, resourceName } = this.props;
+    const { checked } = this.state;
+    const checkedOrHasExistingSchool = checked === true || (checked === null && existingSchool)
+    return (
+      <>
+        <div className="form-group">
+          <label htmlFor="is_reserved">
+            <input type="checkbox" name="is_reserved" id="is_reserved" value="true" checked={checkedOrHasExistingSchool} onChange={this.handleChange} />
+            <span className="ml-1">Ce stage est reservé à un collège uniquement ?</span>
+            <small className="form-text text-muted">Les stages reservés ne seront proposés qu'aux élèves du collège selectionné</small>
+          </label>
+        </div>
+        {checkedOrHasExistingSchool && <AutocompleteSchool {...this.props} />}
+        {!checkedOrHasExistingSchool && <input type="hidden" value="" name={`${resourceName}[school_id]`} />}
+      </>
+    );
+  }
+}
+export default ReservedSchoolInput;
