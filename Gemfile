@@ -76,7 +76,8 @@ gem 'kaminari'
 
 # Admin
 gem "switch_user"
-gem 'rails_admin'
+# remove when closed: https://github.com/sferik/rails_admin/issues/3216
+gem 'rails_admin', git: 'https://github.com/sferik/rails_admin.git', ref: '03baf7281cfbe1ca9aeef9648a7d763107dc8f30'
 gem 'rails_admin-i18n'
 gem 'rails_admin_aasm'
 
