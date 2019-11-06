@@ -56,6 +56,9 @@ class Ability
       can [:manage_school_users], School do |school|
         school.id == user.school_id
       end
+      can [:manage_school_students], School do |school|
+        school.id == user.school_id
+      end
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id
       end
@@ -83,6 +86,9 @@ class Ability
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
+    can [:manage_school_students], School do |school|
+      school.id == user.school_id
+    end
     can %i[see_tutor], InternshipOffer
   end
 
@@ -92,7 +98,9 @@ class Ability
     end
     can_read_dashboard_students_internship_applications(user: user)
     can_read_dashboard(user: user)
-
+    can [:manage_school_students], School do |school|
+      school.id == user.school_id
+    end
     can %i[see_tutor], InternshipOffer
   end
 
@@ -103,6 +111,9 @@ class Ability
       can [:manage_school_users], School do |school|
         school.id == user.school_id
       end
+    end
+    can [:manage_school_students], School do |school|
+      school.id == user.school_id
     end
     can %i[see_tutor], InternshipOffer
   end
