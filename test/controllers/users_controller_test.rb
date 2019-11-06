@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class AccountControllerTest < ActionDispatch::IntegrationTest
+class UsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   test 'GET index not logged redirects to sign in' do
@@ -73,6 +73,16 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name="user[class_room_id]"]'
   end
 
+
+  test 'GET edit render as Statistician shows a readonly input on email' do
+    statistician = create(:statistician)
+
+    sign_in(statistician)
+    get account_path(section: 'identity')
+
+    assert_select 'input[name="user[email]"][readonly="readonly"]'
+  end
+
   test 'PATCH edit as student, updates resume params' do
     student = create(:student)
     sign_in(student)
@@ -94,6 +104,21 @@ class AccountControllerTest < ActionDispatch::IntegrationTest
     assert_equal '0665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH failures does not crashes' do
+    student = create(:student)
+    student_1 = create(:student, email: 'fourcade.m@gmail.com')
+
+    sign_in(student)
+
+    patch(account_path, params: {
+            user: {
+              email: student_1.email,
+            }
+          })
+
+    assert_response :bad_request
   end
 
   test 'PATCH edit as school_manager, can change school' do
