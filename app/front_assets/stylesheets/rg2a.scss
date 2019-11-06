@@ -22,8 +22,6 @@ abbr[title] {
 
 @include media-breakpoint-down(xs) {
   table.table-rg2a {
-    // table-layout: fixed;
-    // border-collapse: collapse;
 
     thead {display: none;}
     tr {
@@ -43,6 +41,12 @@ abbr[title] {
       width: 25%;
       text-align: center;
       padding: 0.5rem 0.75rem;
+    }
+    td.full-width{
+      width: 100%;
+      &:before{
+        display: none;
+      }
     }
     td:first-child:before{
       display: none;

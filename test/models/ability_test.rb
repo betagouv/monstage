@@ -68,6 +68,7 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'SchoolManager' do
     student = create(:student)
+    another_school = create(:school)
     school_manager = create(:school_manager, school: student.school)
     internship_application = create(:internship_application, student: student)
     ability = Ability.new(school_manager)
@@ -79,10 +80,15 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))
     assert(ability.can?(:see_tutor, InternshipOffer))
+    assert(ability.can?(:manage_school_users, school_manager.school))
+    assert(ability.cannot?(:manage_school_users, another_school))
+    assert(ability.can?(:manage_school_students, school_manager.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
   end
 
   test 'MainTeacher' do
-    main_teacher = build(:main_teacher)
+    school = create(:school, :with_school_manager)
+    main_teacher = create(:main_teacher, school: school)
     ability = Ability.new(main_teacher)
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
@@ -93,13 +99,28 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:index, ClassRoom))
     assert(ability.can?(:see_tutor, InternshipOffer))
+    assert(ability.can?(:manage_school_students, main_teacher.school))
+    assert(ability.cannot?(:manage_school_students, build(:school)))
   end
 
   test 'Teacher' do
-    ability = Ability.new(build(:teacher))
+    school = create(:school, :with_school_manager)
+    teacher = create(:teacher, school: school)
+    ability = Ability.new(teacher)
     assert(ability.can?(:show, ClassRoom))
     assert(ability.can?(:index, ClassRoom))
     assert(ability.can?(:see_tutor, InternshipOffer))
+    assert(ability.can?(:manage_school_students, teacher.school))
+    assert(ability.cannot?(:manage_school_students, build(:school)))
+  end
+
+  test 'Other' do
+    school = create(:school, :with_school_manager)
+    another_school = create(:school)
+    other = create(:other, school: school)
+    ability = Ability.new(other)
+    assert(ability.can?(:manage_school_students, other.school))
+    assert(ability.cannot?(:manage_school_students, another_school))
   end
 
   test 'Operator' do
