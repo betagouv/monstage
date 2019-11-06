@@ -6,6 +6,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
+  include DelayedDeviseEmailSender
+
   validates :first_name, :last_name,
             presence: true
 
@@ -90,4 +92,7 @@ class User < ApplicationRecord
       scopes [:kept]
     end
   end
+
+
+
 end

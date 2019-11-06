@@ -17,4 +17,12 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
                   count: 1,
                   text: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
   end
+
+  test 'POST create' do
+    student = create(:student)
+    assert_enqueued_emails 1 do
+      post user_password_path, params: { user: { email: student.email } }
+      assert_redirected_to new_user_session_path
+    end
+  end
 end
