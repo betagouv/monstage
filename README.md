@@ -34,9 +34,8 @@ heroku local -f Procfile.dev
 ### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-* **consult emails sent in development environment with mailcatcher**:
-- `gem install mailcatcher`
-- `open http://127.0.0.1:1080/`
+* **consult emails sent in development environment with mail opener**:
+- mail should be opened automatically
 
 ## test
 
