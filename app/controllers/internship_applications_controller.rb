@@ -66,7 +66,6 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :motivation,
-            :user_id,
             student_attributes: [
               :phone,
               :resume_educational_background,
