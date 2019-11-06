@@ -27,10 +27,6 @@ export default class extends Controller {
     }
   }
 
-  toggleSelectSchoolBlock(event) {
-    toggleElement($(this.selectSchoolBlockTarget));
-  }
-
   handleClickWithOperator(event) {
     if (event.target.value === 'true') {
       showElement($(this.operatorsBlockTarget));

@@ -194,17 +194,10 @@
         small.form-text.text-muted Quel site web l'élève peut visiter pour découvrir son lieu de stage
       = form.url_field :employer_website, class: 'form-control col-lg-6', placeholder: @internship_offer.employer_website || "https://"
 
-    .form-group
-      = label_tag "is_reserved" do
-        = check_box_tag :is_reserved, @internship_offer.school.present?, @internship_offer.school.present?, id: "is_reserved", data: {action: "change->internship-form#toggleSelectSchoolBlock"}
-        span.ml-1= "Ce stage est reservé à un collège uniquement ?"
-        small.form-text.text-muted Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
-
-    div data-target="internship-form.selectSchoolBlock" class="form-group #{@internship_offer.school.present? ? '' : 'd-none'}"
-      = react_component("AutocompleteSchool",
+    = react_component("ReservedSchoolInput",
                         classes: 'col-lg-6',
                         label:"Ville ou nom du collège auquel le stage est reservé",
-                        required:false,
+                        required: false,
                         resourceName: :internship_offer,
                         selectClassRoom: false,
                         existingSchool: @internship_offer.school.as_json)

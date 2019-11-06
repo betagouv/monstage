@@ -49,5 +49,18 @@ module InternshipOffers
               params: { internship_offer: { published_at: published_at } })
       end
     end
+
+    test 'PATCH #update as employer is able to remove school' do
+      school = create(:school)
+      internship_offer = create(:internship_offer, school: school)
+      published_at = 2.days.ago.utc
+      sign_in(internship_offer.employer)
+      assert_changes -> { internship_offer.reload.school },
+                     from: school,
+                     to: nil do
+        patch(dashboard_internship_offer_path(internship_offer.to_param),
+              params: { internship_offer: { school_id: nil } })
+      end
+    end
   end
 end
