@@ -3,9 +3,8 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  def edit
+  def edits
     authorize! :update, current_user
-    params[:section] ||= current_user.default_account_section
   end
 
   def update
@@ -18,6 +17,7 @@ class UsersController < ApplicationController
     render :edit, status: :bad_request
   end
 
+  helper_method :current_section
   private
 
   def user_params
@@ -30,5 +30,9 @@ class UsersController < ApplicationController
                                  :resume_educational_background,
                                  :resume_other,
                                  :resume_languages)
+  end
+
+  def current_section
+    params[:section] || current_user.default_account_section
   end
 end
