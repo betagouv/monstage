@@ -118,6 +118,9 @@ Rails.application.configure do
     authentication: :plain,
     enable_starttls_auto: true
   }
+
+  config.show_stats = ENV['SHOW_STATS']
+
   # The `database_selector` hash is used to pass options to the DatabaseSelector
   # middleware. The `delay` is used to determine how long to wait after a write
   # to send a subsequent read to the primary.

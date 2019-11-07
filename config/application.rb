@@ -29,5 +29,7 @@ module Monstage
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
     config.middleware.use Rack::Deflater
+
+    config.show_stats = true
   end
 end
