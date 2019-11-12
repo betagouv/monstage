@@ -26,8 +26,8 @@ module Reporting
       agri_stats = results[0]
       wood_stats = results[1]
 
-      assert_equal 4, agri_stats.total_report_count
-      assert_equal 20, wood_stats.total_report_count
+      assert_equal 2, agri_stats.total_report_count
+      assert_equal 10, wood_stats.total_report_count
     end
 
     test 'computes internship_offer total_applications_count' do
