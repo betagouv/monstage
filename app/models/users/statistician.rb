@@ -24,9 +24,11 @@ module Users
       url_helpers.reporting_internship_offers_path(department: department_name)
     end
 
+    # TODO: extract by department
     def department_name
       Department.lookup_by_zipcode(zipcode: department_zipcode)
     end
+    # /TODO: extract by department
 
     def department_zipcode
       EmailWhitelist.where(email: email).first.zipcode

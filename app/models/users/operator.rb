@@ -12,7 +12,9 @@ module Users
                                  dependent: :destroy
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
-      mines_and_sumbmitted_to_operator(user: user)
+      query = mines_and_sumbmitted_to_operator(user: user)
+      query = query.merge(InternshipOffer.by_department(department: user.department_name)) if user.zipcode
+      query
     }
 
     before_create :set_api_token
@@ -22,6 +24,17 @@ module Users
     rescue ActionController::UrlGenerationError
       url_helpers.account_path
     end
+
+    # TODO: extract by department
+    def department_name
+      Department.lookup_by_zipcode(zipcode: department_zipcode)
+    end
+
+    def department_zipcode
+      zipcode
+    end
+
+    # /TODO: extract by department
 
     def dashboard_name
       'Mes offres'

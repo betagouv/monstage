@@ -14,7 +14,8 @@ module InternshipOffersScopes
                          .merge(
                            InternshipOffer.where(internship_offer_operators: {
                                                    operator_id: user.operator_id
-                                                 }).or(InternshipOffer.where("internship_offers.employer_id = #{user.id}"))
+                                                 })
+                                          .or(InternshipOffer.where("internship_offers.employer_id = #{user.id}"))
                          )
         )
         query
