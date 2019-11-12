@@ -4,7 +4,7 @@
                     { url: internship_offers_path,
                       algoliaApiId: Credentials.enc(:algolia, :app_id, prefix_env: false),
                       algoliaApiKey: Credentials.enc(:algolia, :api_key, prefix_env: false),
-                      sectors: Sector.all.map { |s| s.as_json(only: [:id, :name, :external_url]) },
+                      sectors: Sector.order(:name).all.map { |s| s.as_json(only: [:id, :name, :external_url]) },
                       currentCitySearch: params[:city],
                       currentSchool: current_user.try(:school).try(:as_json, only: [:name]),
                       currentSector: current_sector.as_json(only: [:id, :name, :external_url]) },
