@@ -12,7 +12,7 @@ module Reporting
 
     # beware, order matters on csv export
     AGGREGATE_FUNCTIONS = {
-      total_report_count: 'sum(internship_offer_weeks_count * max_candidates)',
+      total_report_count: 'sum(max_candidates)',
       total_applications_count: 'sum(total_applications_count)',
       total_male_applications_count: 'sum(total_male_applications_count)',
       total_female_applications_count:
