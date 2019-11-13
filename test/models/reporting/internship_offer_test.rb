@@ -35,7 +35,7 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
     assert_equal last_sectored_report.sector_name, sector_b.name
   end
 
-  test '.grouped_by_sector multiply internship_offer_weeks_count * max_candidates' do
+  test '.grouped_by_sector sum max_candidates' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
     create(:internship_offer, weeks: [Week.first], sector: sector_a, max_candidates: 3)
@@ -46,8 +46,8 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
     first_sectored_report = results[0]
     last_sectored_report = results[1]
 
-    assert_equal 5, first_sectored_report.total_report_count
-    assert_equal 20, last_sectored_report.total_report_count
+    assert_equal 4, first_sectored_report.total_report_count
+    assert_equal 10, last_sectored_report.total_report_count
   end
 
   test '.grouped_by_publicy group by publicly_name' do
