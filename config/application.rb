@@ -31,5 +31,7 @@ module Monstage
     config.middleware.use Rack::Deflater
 
     config.show_stats = true
+
+    config.lograge.enabled = true
   end
 end
