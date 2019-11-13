@@ -1,6 +1,7 @@
 module Users
   class Statistician < User
     include InternshipOffersScopes::ByCoordinates
+    include InternshipOffersScopes::ByDepartment
     include UserAdmin
 
     rails_admin do
@@ -17,6 +18,7 @@ module Users
     scope :targeted_internship_offers, ->(user:, coordinates:) {
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
+      query = query.merge(limited_to_department(user: user)) if user.department_name
       query
     }
 

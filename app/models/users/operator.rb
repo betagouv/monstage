@@ -4,6 +4,7 @@ module Users
   class Operator < User
     include UserAdmin
     include InternshipOffersScopes::ByOperator
+    include InternshipOffersScopes::ByDepartment
 
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
@@ -12,7 +13,10 @@ module Users
                                  dependent: :destroy
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
-      mines_and_sumbmitted_to_operator(user: user)
+      query = InternshipOffer.kept
+      query = mines_and_sumbmitted_to_operator(user: user)
+      query = query.merge(limited_to_department(user: user)) if user.department_name.present?
+      query
     }
 
     before_create :set_api_token
