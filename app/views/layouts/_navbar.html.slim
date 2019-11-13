@@ -7,7 +7,7 @@ nav.navbar.navbar-light.py-0
       - if current_user.is_a?(Users::Employer)
         li.nav-item
           = link_to 'Accueil', root_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(root_path) ? 'active' : ''}"
-      - if current_user.is_a?(Users::Operator)
+      - elsif current_user.is_a?(Users::Operator)
         li.nav-item
           = link_to 'Mon tableau', reporting_internship_offers_path(default_reporting_url_options(current_user)), class: "nav-link pl-1 pr-1 py-4 #{current_page?(reporting_internship_offers_path) ? 'active' : ''}"
       - else
