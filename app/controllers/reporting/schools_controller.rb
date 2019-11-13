@@ -6,6 +6,7 @@ module Reporting
       query = School.all
       query = query.where(department: params[:department]) if params[:department]
       query = query.includes(:users)
+      query = query.order(:name)
       query = query.page(params[:page])
       @schools = query
     end

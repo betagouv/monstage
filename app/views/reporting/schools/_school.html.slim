@@ -8,10 +8,8 @@ tr.bg-light
   td.align-middle= school.total_student_with_parental_consent_count
   td.align-middle.border-left-1
     - if school.school_manager?
-      span.fa-stack.text-success
-        i.fas.fa-square.fa-stack-2x
-        i.fas.fa-check.fa-stack-1x.fa-inverse
+      i.fas.fa-check
     - else
-      span.fa-stack.text-danger
-        i.far.fa-square.fa-stack-2x
+      i.fas.fa-times
+
   td.align-middle= school.total_main_teacher_count
