@@ -1,0 +1,33 @@
+.container.mt-3
+  = render partial: 'reporting/navigation'
+  - if can?(:index_and_filter, Reporting::InternshipOffer)
+    .row[data-controller='statistics']
+      .col-12
+        .bg-stats-filter.rounded.py-3.d-flex
+          .form-group.col-lg-3
+            = label_tag :department, 'Département', class: 'text-uppercase'
+            = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+
+  .row.mt-3
+    .col-12
+      table.table.table-statistics
+        thead
+          tr.table-blue
+
+            th.border-left-1= "Etablissement"
+            th.border-left-1 colspan="3"= "Nombre d'élèves"
+            th.border-left-1 colspan="2"= "Personnel impliqué"
+
+
+          tr.bg-light
+            th.border-left-1
+            th.border-left-1= "Total"
+            th= "Confirmé"
+            th= "Accord parental"
+            th.border-left-1= "Chef établissement"
+            th= "Professeurs pincipaux"
+        tbody
+          = render partial: 'reporting/schools/school', collection: @schools
+
+  .row.mt-3
+    .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})

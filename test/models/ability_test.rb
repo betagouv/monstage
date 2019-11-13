@@ -52,7 +52,8 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'God' do
-    ability = Ability.new(build(:god))
+    god = build(:god)
+    ability = Ability.new(god)
     assert(ability.can?(:show, :account),
            'god should be able to see his account')
     assert(ability.can?(:update, School),
@@ -64,6 +65,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:read, User)
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
+    assert ability.can?(:index, Reporting::Acl.new(user: god, params: {}))
   end
 
   test 'SchoolManager' do
@@ -132,5 +134,7 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should not be able to update internship offer not belonging to him')
     assert(ability.can?(:update, Api::InternshipOffer.new(employer: operator)),
            'employers should be able to update internships offer that belongs to him')
+    assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
+    assert ability.can?(:index, Reporting::Acl.new(user: operator, params: {}))
   end
 end
