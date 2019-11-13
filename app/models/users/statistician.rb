@@ -26,6 +26,13 @@ module Users
       url_helpers.reporting_internship_offers_path(department: department_name)
     end
 
+    def custom_dashboard_paths
+      [
+        url_helpers.reporting_internship_offers_path,
+        url_helpers.reporting_schools_path
+      ]
+    end
+
     def department_name
       Department.lookup_by_zipcode(zipcode: department_zipcode)
     end

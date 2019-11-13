@@ -1,80 +1,65 @@
-- if Rails.configuration.show_stats
+- if Rails.configuration.show_stats || current_user.is_a?(Users::God)
   .container.mt-3
-    .row
-      .wrapper-breadcrumb.bg-light.d-inline-block.px-3.py-2.rounded
-        = link_to 'Accueil', root_path
-        span.mx-1 >
-        - if params[:department].present? || params[:group].present?
-          = link_to 'Statistiques', reporting_internship_offers_path
-          span.mx-1 >
-          - if params[:department].present?
-            - if params[:group].present?
-              = link_to params[:department], reporting_internship_offers_path(department: params[:department])
-              span.mx-1 >
-              = params[:group]
-            - else
-              = params[:department]
-          - elsif params[:group].present?
-            = params[:group]
-        - else
-          span.font-weight-bold Statistiques nationales
+    = render partial: 'reporting/navigation'
 
-    .row
-      h1.h2.py-3 Statistiques
+    .row[data-controller='statistics']
+      .col-12
+        .bg-stats-filter.rounded.py-3.d-flex
+          - if can?(:index_and_filter, Reporting::InternshipOffer)
+            .form-group.col-lg-3
+              = label_tag :academy, 'Académie', class: 'text-uppercase'
+              = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+            .form-group.col-lg-3
+              = label_tag :department, 'Département', class: 'text-uppercase'
+              = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
 
-    - if can?(:index_and_filter, Reporting::InternshipOffer)
-      .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
-        .form-group.col-lg-3
-          = label_tag :academy, 'Académie', class: 'text-uppercase'
-          = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
-        .form-group.col-lg-3
-          = label_tag :department, 'Département', class: 'text-uppercase'
-          = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+            .form-group.col-lg-2
+              = label_tag :is_public, 'Secteur', class: 'text-uppercase'
+              = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
 
-        .form-group.col-lg-2
-          = label_tag :is_public, 'Secteur', class: 'text-uppercase'
-          = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
+            .form-group.col-lg-4
+              = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+              = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
+          - else
+            .form-group.col-lg-6
+              = label_tag :is_public, 'Secteur', class: 'text-uppercase'
+              = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
 
-        .form-group.col-lg-4
-          = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
-          = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
-    - else
-      .row.bg-stats-filter.rounded.pt-3[data-controller='statistics']
-        .form-group.col-lg-6
-          = label_tag :is_public, 'Secteur', class: 'text-uppercase'
-          = select_tag :is_public, options_for_select([["Tous", ""], ["Public", "true"], ["Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
+            .form-group.col-lg-6
+              = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
+              = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
 
-        .form-group.col-lg-6
-          = label_tag :group, "Groupe ou Institution de tutelle", class: 'text-uppercase'
-          = select_tag :group, options_for_select(params[:is_public].present? && params[:is_public] == "true" ? Group::PUBLIC : Group::PRIVATE, selected: params[:group].blank? ? nil : params[:group]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByGroup' }
     .row.mt-3
-      table.table.table-statistics
-        thead
-          tr.table-blue
-            th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:sector_id)
-            th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total_report_count)
-            th.border-left-1 colspan="3"= Reporting::InternshipOffer.i18n_attribute(:total_applications_count)
-            th.border-left-1 colspan="4"= Reporting::InternshipOffer.i18n_attribute(:total_convention_signed_applications_count)
-          tr.bg-light
-            th.border-left-1
-            th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
-            th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
+      .col-12
+        table.table.table-statistics
+          thead
+            tr.table-blue
+              th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:sector_id)
+              th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total_report_count)
+              th.border-left-1 colspan="3"= Reporting::InternshipOffer.i18n_attribute(:total_applications_count)
+              th.border-left-1 colspan="4"= Reporting::InternshipOffer.i18n_attribute(:total_convention_signed_applications_count)
+            tr.bg-light
+              th.border-left-1
+              th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
+              th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
 
-            th= Reporting::InternshipOffer.i18n_attribute(:total_male_applications_count)
-            th= Reporting::InternshipOffer.i18n_attribute(:total_female_applications_count)
-            th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
-            th
-              accr title="Cordée de la réussite, parcours d'éxcellence"= Reporting::InternshipOffer.i18n_attribute(:total_custom_track_convention_signed_applications_count)
-            th= Reporting::InternshipOffer.i18n_attribute(:total_male_convention_signed_applications_count)
-            th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
+              th= Reporting::InternshipOffer.i18n_attribute(:total_male_applications_count)
+              th= Reporting::InternshipOffer.i18n_attribute(:total_female_applications_count)
+              th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
+              th
+                accr title="Cordée de la réussite, parcours d'éxcellence"= Reporting::InternshipOffer.i18n_attribute(:total_custom_track_convention_signed_applications_count)
+              th= Reporting::InternshipOffer.i18n_attribute(:total_male_convention_signed_applications_count)
+              th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
 
-        tbody
-          = render partial: 'reporting/internship_offers/internship_offer', collection: @offers
-          = render partial: 'reporting/internship_offers/internship_offer', collection: @offers_by_publicy.map(&Presenters::InternshipOfferStatsByPublicy.method(:new)), locals: { gray_background: true }
-        tfoot
-          = render 'reporting/internship_offers/internship_offer', internship_offer: Presenters::InternshipOfferStatsTotal.new(offers: @offers), font_weight_bold: true, font_color_blue: true
-    .row.mt-3.mb-3.text-center
-      = link_to "Télécharger", download_reporting_internship_offers_path(safe_download_params), class: 'btn btn-primary'
+          tbody
+            = render partial: 'reporting/internship_offers/internship_offer', collection: @offers
+            = render partial: 'reporting/internship_offers/internship_offer', collection: @offers_by_publicy.map(&Presenters::InternshipOfferStatsByPublicy.method(:new)), locals: { gray_background: true }
+          tfoot
+            = render 'reporting/internship_offers/internship_offer', internship_offer: Presenters::InternshipOfferStatsTotal.new(offers: @offers), font_weight_bold: true, font_color_blue: true
+
+    .row.mt-3.mb-3
+      .col-12.text-center
+        = link_to "Exporter", download_reporting_internship_offers_path(safe_download_params), class: 'btn btn-primary'
 
 - else
   .container

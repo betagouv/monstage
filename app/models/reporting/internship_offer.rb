@@ -76,11 +76,9 @@ module Reporting
                                   SchoolYear::DAY_OF_YEAR_SHIFT))
     }
 
-    # TODO: extract by department
     scope :by_department, lambda { |department:|
       where(department: department)
     }
-    # /TODO: extract by department
 
     scope :by_group, lambda { |group:|
       where(group: group)

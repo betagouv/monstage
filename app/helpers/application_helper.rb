@@ -40,8 +40,7 @@ module ApplicationHelper
   end
 
   def statistics?
-    controller.is_a?(Reporting::InternshipOffersController) &&
-      current_action?(:index)
+    controller.class.name.deconstantize == 'Reporting'
   end
 
   def current_controller?(controller_name)

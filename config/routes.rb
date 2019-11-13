@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index'
 
   namespace :reporting, path: 'reporting' do
+    resources :schools, only: %i[index]
     resources :internship_offers, only: %i[index] do
       collection do
         get :download

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'application_system_test_case'
-# TODO: webmock
+
 class InternshipOffersCreateTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
