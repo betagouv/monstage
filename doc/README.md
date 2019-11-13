@@ -26,7 +26,7 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
 # Environnements
 L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit les ```baseURL``` suivantes
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
-  * En production : https://monstagedetroisieme.fr/api
+  * En production : https://www.monstagedetroisieme.fr/api
 
 # Authentification
 
