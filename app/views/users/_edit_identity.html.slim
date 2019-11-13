@@ -21,6 +21,11 @@ h1.h2.mb-3 Mon identité
       = 'Adresse électronique (email)'
       = f.rg2a_required_content_tag
     = f.text_field :email, {class: 'form-control col-lg-6', required: true}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+  .form-group
+    = f.label :department_name do
+      = "Département d'intervention"
+      = f.rg2a_required_content_tag
+    = f.select :department_name, [['Pas de département', nil]] + Department.to_select, {  }, class: "form-control col-lg-6"
 
   - if can?(:change, :class_room)
     .form-group

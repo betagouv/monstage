@@ -109,11 +109,6 @@ class InternshipOffer < ApplicationRecord
   scope :by_weeks, lambda { |weeks:|
     joins(:weeks).where(weeks: { id: weeks.ids })
   }
-  scope :by_department, lambda { |department: |
-    where(department: department)
-  }
-
-
 
   scope :older_than, lambda { |week:|
     joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)

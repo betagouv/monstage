@@ -26,6 +26,7 @@ class UsersController < ApplicationController
                                  :last_name,
                                  :email,
                                  :phone,
+                                 :department_name,
                                  :class_room_id,
                                  :resume_educational_background,
                                  :resume_other,

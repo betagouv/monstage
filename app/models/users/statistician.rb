@@ -1,6 +1,7 @@
 module Users
   class Statistician < User
     include InternshipOffersScopes::ByCoordinates
+    include InternshipOffersScopes::ByDepartment
     include UserAdmin
 
     rails_admin do
@@ -17,6 +18,7 @@ module Users
     scope :targeted_internship_offers, ->(user:, coordinates:) {
       query = InternshipOffer.kept
       query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
+      query = query.merge(limited_to_department(user: user)) if user.department_name
       query
     }
 
@@ -24,11 +26,9 @@ module Users
       url_helpers.reporting_internship_offers_path(department: department_name)
     end
 
-    # TODO: extract by department
     def department_name
       Department.lookup_by_zipcode(zipcode: department_zipcode)
     end
-    # /TODO: extract by department
 
     def department_zipcode
       EmailWhitelist.where(email: email).first.zipcode

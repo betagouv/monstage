@@ -4,6 +4,7 @@ module Users
   class Operator < User
     include UserAdmin
     include InternshipOffersScopes::ByOperator
+    include InternshipOffersScopes::ByDepartment
 
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
@@ -12,8 +13,9 @@ module Users
                                  dependent: :destroy
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
+      query = InternshipOffer.kept
       query = mines_and_sumbmitted_to_operator(user: user)
-      query = query.merge(InternshipOffer.by_department(department: user.department_name)) if user.zipcode
+      query = query.merge(limited_to_department(user: user)) if user.department_name.present?
       query
     }
 
@@ -24,17 +26,6 @@ module Users
     rescue ActionController::UrlGenerationError
       url_helpers.account_path
     end
-
-    # TODO: extract by department
-    def department_name
-      Department.lookup_by_zipcode(zipcode: department_zipcode)
-    end
-
-    def department_zipcode
-      zipcode
-    end
-
-    # /TODO: extract by department
 
     def dashboard_name
       'Mes offres'

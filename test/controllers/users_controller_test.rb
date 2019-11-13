@@ -35,6 +35,14 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[value=\"#{operator.api_token}\"]"
   end
 
+  test 'GET account_path(section: identity) as Operator' do
+    operator = create(:user_operator)
+    sign_in(operator)
+    get account_path(section: 'identity')
+    assert_select "a[href='#{account_path(section: 'api')}']"
+    assert_select 'select[name="user[department_name]"]'
+  end
+
   test 'No other role than operator should have an API token' do
     student = create(:student)
     sign_in(student)
@@ -72,7 +80,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_select 'select[name="user[class_room_id]"]'
   end
-
 
   test 'GET edit render as Statistician shows a readonly input on email' do
     statistician = create(:statistician)
@@ -157,6 +164,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal class_room.id, student.class_room_id
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as Operator can change department_name' do
+    user_operator = create(:user_operator)
+    sign_in(user_operator)
+
+    patch account_path, params: { user: { department_name: 60 } }
+
+    assert_redirected_to account_path
+    user_operator.reload
+    assert_equal 60.to_s, user_operator.department_name
   end
 
   test 'PATCH edit as main_teacher can change class_room_id' do

@@ -406,8 +406,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   # Operator
   #
   test 'GET #index as operator having departement-constraint only return internship offer with location constriant' do
-    operator = create(:operator, zipcode: 60)
-    user_operator = create(:user_operator, operator: operator)
+    operator = create(:operator)
+    user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
     included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
     excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
     sign_in(user_operator)
@@ -418,8 +418,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do
-    operator = create(:operator, zipcode: nil)
-    user_operator = create(:user_operator, operator: operator)
+    operator = create(:operator)
+    user_operator = create(:user_operator, operator: operator, department_name: nil)
     included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
     excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
     sign_in(user_operator)

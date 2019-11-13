@@ -607,7 +607,8 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     accept_terms boolean DEFAULT false NOT NULL,
-    zipcode character varying
+    zipcode character varying,
+    department_name character varying
 );
 
 
