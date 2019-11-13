@@ -44,7 +44,9 @@ class NavbarTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get operator.custom_dashboard_path
-    assert_select(".navbar a[href=\"#{root_path}\"]", count: 1, text: "Accueil")
+    assert_select(".navbar a[href=\"#{reporting_internship_offers_path}\"]",
+                  count: 1,
+                  text: "Mon tableau")
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: operator.dashboard_name,
                                         count: 1)
