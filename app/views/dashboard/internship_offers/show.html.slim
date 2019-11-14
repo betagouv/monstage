@@ -3,11 +3,9 @@
 h2.h6 Le stage
 p = @internship_offer.description
 
-p.text-muted
-  - if @internship_offer.is_individual?
-    | Stage individuel (un seul élève par stage)
-  - else
-    | Stage collectif (un groupe de plusieurs élèves)
+= render partial: "internship_offers/show_kind", locals: {internship_offer: @internship_offer}
+
+= render partial: "internship_offers/show_weeks", locals: {weeks: @internship_offer.weeks}
 
 h2.h6 Où se déroule le stage ?
 p= @internship_offer.employer_name
