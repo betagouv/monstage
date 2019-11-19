@@ -1,82 +1,91 @@
-div data-controller="internship-application-index" class=" row py-3 internship_application #{cycle("bg-light", "")}" data-test-id="internship-application-#{internship_application.id}"
-  .col-1.col-sm-1.text-right
-    a.link-btn data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer"
-      - if internship_application.submitted?
-        i.fas.fa-2x.fa-chevron-down
-      - else
-        i.fas.fa-2x.fa-chevron-right
-
-  .col-11.col-sm-8
-    h2.h4= "Candidature de #{internship_application.student.name} reçue le #{localize(internship_application.created_at, format: "%d %B")}"
-    p
-      = "Pour la "
-      strong= "semaine #{internship_application.week.short_select_text_method}"
-    p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
-    .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
-      = render partial: "users/resume_details", locals: {student: internship_application.student}
-
-      h3.h6 Parcours Scolaire
-      p.word-breakable-content= internship_application.student.resume_educational_background
-      h3.h6 Activités extra scolaires
-      p.word-breakable-content= internship_application.student.resume_other
-      - if internship_application.student.resume_languages.present?
-        h3.h6 Langues
-        p.word-breakable-content= internship_application.student.resume_languages
-
-      - if internship_application.student.handicap?
-        h3.h6
-          i.fas.fa-wheelchair
-          Besoin d'accompagnement
-        p.word-breakable-content.student-handicap= internship_application.student.handicap
-
-      .actions
-        - if internship_application.submitted?
-          = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false
-          = button_tag type: "button", data: { toggle: 'modal', target: "#reject-internship-application-#{internship_application.id}" }, class: 'btn btn-danger mx-1' do
-              .fas.fa-ban.mr-1
-              = "Refuser"
-
-          - if internship_application.internship_offer_week.has_spots_left?
-            = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: true
-            = button_tag type: "button", data: { toggle: 'modal', target: "#approve-internship-application-#{internship_application.id}" }, class: 'btn btn-success mx-1' do
-              .fas.fa-check.mr-1
-              = "Accepter"
+div class="#{cycle("bg-light", "")} row"
+  .col-12.px-0
+    div data-controller="internship-application-index" class="row no-gutters py-3 internship_application" data-test-id="internship-application-#{internship_application.id}"
+      .col-1.col-sm-1.text-center
+        a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbolinks="false"
+          - if internship_application.submitted?
+            i.fas.fa-2x.fa-chevron-down
+          - else
+            i.fas.fa-2x.fa-chevron-right
 
 
-        - if internship_application.approved?
-          = link_to dashboard_internship_offer_internship_application_path(@internship_offer, internship_application, transition: :cancel!), method: :patch, class: 'btn btn-danger mx-1' do
-            .fas.fa-trash.mr-1
-            = "Annuler la confirmation"
+      .col-11.col-sm-8
+        h2.h4 name="internship-application-#{internship_application.id}"= "Candidature de #{internship_application.student.name} reçue le #{localize(internship_application.created_at, format: "%d %B")}"
+        p
+          = "Pour la "
+          strong= "semaine #{internship_application.week.short_select_text_method}"
+        p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
 
-  .col-1.d-sm-none
-  .col-11.col-sm-3
-    - if internship_application.approved? || internship_application.convention_signed?
-      div.d-flex.align-items-center
-        .d-inline-flex.mr-1.text-success
-          i.far.fa-circle.fa-2x.fa-fw
-        .d-inline-flex
-          = "Candidature acceptée"
-          br
-          = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
-    - if internship_application.approved? && !internship_application.convention_signed?
-      div.d-flex.align-items-center.text-warning
-        .d-inline-flex-mr-1
-          i.fas.fa-hourglass-start.fa-2x.fa-fw
-        .d-inline-flex
-          = "En attente de convention"
+        p
+          a class="btn-link strong #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
+            | + Tout Afficher
 
-    - if internship_application.rejected?
-      div.d-flex.align-items-center
-        .d-inline-flex.mr-1
-          i.fas.fa-ban.fa-2x.fa-fw
-        .d-inline-flex
-          = "Réponse négative"
-          br
-          = "Le #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
+        .collapsible data-target="internship-application-index.collapsible" class="#{!internship_application.submitted? ? 'd-none' : ''}"
+          = render partial: "users/resume_details", locals: {student: internship_application.student}
 
-    - if internship_application.convention_signed?
-      div.d-flex.align-items-center
-        .d-inline-flex.mr-1.text-success
-          i.fas.fa-check.fa-2x.fa-fw
-        .d-inline-flex
-          = "Convention signée"
+          h3.h6 Parcours Scolaire
+          p.word-breakable-content= internship_application.student.resume_educational_background
+          h3.h6 Activités extra scolaires
+          p.word-breakable-content= internship_application.student.resume_other
+          - if internship_application.student.resume_languages.present?
+            h3.h6 Langues
+            p.word-breakable-content= internship_application.student.resume_languages
+
+          - if internship_application.student.handicap?
+            h3.h6
+              i.fas.fa-wheelchair
+              Besoin d'accompagnement
+            p.word-breakable-content.student-handicap= internship_application.student.handicap
+
+          .actions
+            - if internship_application.submitted?
+              = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false
+              = button_tag type: "button", data: { toggle: 'modal', target: "#reject-internship-application-#{internship_application.id}" }, class: 'btn btn-danger mx-1' do
+                  .fas.fa-ban.mr-1
+                  = "Refuser"
+
+              - if internship_application.internship_offer_week.has_spots_left?
+                = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: true
+                = button_tag type: "button", data: { toggle: 'modal', target: "#approve-internship-application-#{internship_application.id}" }, class: 'btn btn-success mx-1' do
+                  .fas.fa-check.mr-1
+                  = "Accepter"
+
+
+            - if internship_application.approved?
+              = link_to dashboard_internship_offer_internship_application_path(@internship_offer, internship_application, transition: :cancel!), method: :patch, class: 'btn btn-danger mx-1' do
+                .fas.fa-trash.mr-1
+                = "Annuler la confirmation"
+
+      .col-1.d-sm-none
+
+      .col-11.col-sm-3
+        - if internship_application.approved? || internship_application.convention_signed?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1.text-success
+              i.far.fa-circle.fa-2x.fa-fw
+            .d-inline-flex
+              = "Candidature acceptée"
+              br
+              = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
+        - if internship_application.approved? && !internship_application.convention_signed?
+          div.d-flex.align-items-center.text-warning
+            .d-inline-flex-mr-1
+              i.fas.fa-hourglass-start.fa-2x.fa-fw
+            .d-inline-flex
+              = "En attente de convention"
+
+        - if internship_application.rejected?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1
+              i.fas.fa-ban.fa-2x.fa-fw
+            .d-inline-flex
+              = "Réponse négative"
+              br
+              = "Le #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
+
+        - if internship_application.convention_signed?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1.text-success
+              i.fas.fa-check.fa-2x.fa-fw
+            .d-inline-flex
+              = "Convention signée"
