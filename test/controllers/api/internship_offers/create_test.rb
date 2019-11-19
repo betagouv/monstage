@@ -158,7 +158,7 @@ module Api
       assert_equal city, internship_offer.city
 
       assert_equal sector, internship_offer.sector
-      assert_equal week_instances, internship_offer.weeks
+      assert_equal week_instances, internship_offer.weeks.to_a
       assert_equal remote_id, internship_offer.remote_id
       assert_equal permalink, internship_offer.permalink
       assert_equal 2, internship_offer.max_candidates
