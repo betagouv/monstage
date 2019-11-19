@@ -43,7 +43,7 @@
           Date de naissance
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.date_field :birth_date, value: resource.birth_date.strftime('%Y-%m-%d'), class: 'form-control', required: true %>
+        <%= f.date_field :birth_date, value: resource.birth_date.strftime('%Y-%m-%d'), class: 'form-control', required: true, data: { polyfill: :all } %>
       </div>
 
       <div class="form-group">
