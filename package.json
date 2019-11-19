@@ -24,15 +24,15 @@
     "react_ujs": "^2.5.0",
     "regenerator-runtime": "^0.13.3",
     "stimulus": "^1.1.1",
-    "turbolinks": "^5.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.7.2",
+    "turbolinks": "^5.2.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.7.2",
     "babel-eslint": "^10.0.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "core-js": "^3.4.1",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.7.2"
+  },
+  "devDependencies": {
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.0.0",
