@@ -8,6 +8,10 @@ module Users
         field :school
       end
 
+      edit do
+        field :has_parental_consent
+      end
+
       show do
         field :class_room
       end

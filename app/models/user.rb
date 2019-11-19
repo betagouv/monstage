@@ -92,7 +92,4 @@ class User < ApplicationRecord
       scopes [:kept]
     end
   end
-
-
-
 end
