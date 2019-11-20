@@ -32,7 +32,7 @@ module Dashboard
 
       assert_response :success
       assert_select 'form[action=?]', dashboard_school_path(@school)
-      available_weeks = Week.selectable_from_now_until_end_of_period
+      available_weeks = Week.selectable_on_school_year
       asserted_input_count = 0
       available_weeks.each do |week|
         assert_select "input[id=school_week_ids_#{week.id}]"

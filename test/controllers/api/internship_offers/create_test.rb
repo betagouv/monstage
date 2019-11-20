@@ -196,7 +196,7 @@ module Api
 
         internship_offer = Api::InternshipOffer.first
         week_ids = internship_offer.weeks.map(&:id)
-        Week.selectable_from_now_until_end_of_period.each do |week|
+        Week.selectable_from_now_until_school_year.each do |week|
           assert week_ids.include?(week.id)
         end
       end

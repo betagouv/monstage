@@ -27,13 +27,24 @@ class Week < ApplicationRecord
     by_year(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
+
+  scope :selectable_from_now_until_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today)
+
+    from_date_to_date(from: school_year.beginning_of_period,
+                           to: school_year.end_of_period)
+  }
+
+  scope :selectable_on_school_year, lambda {
+    school_year = SchoolYear::Current.new
+
+    from_date_to_date(from: school_year.beginning_of_period,
+                      to: school_year.end_of_period)
+  }
+
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
-  def self.selectable_from_now_until_end_of_period
-    school_year = SchoolYear.new(date: Date.today)
-    Week.from_date_to_date(from: school_year.beginning_of_period,
-                           to: school_year.end_of_period)
-  end
+
   # to, strip, join with space otherwise multiple spaces can be outputted,
   # then within html it is concatenated [html logic], but capybara fails to find this content
   def short_select_text_method

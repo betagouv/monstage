@@ -4,7 +4,6 @@ module Dashboard
   class SchoolsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_school, only: %i[edit update show]
-    before_action :find_selectable_weeks, only: %i[edit update]
 
     def index
       authorize! :index, School
@@ -18,6 +17,7 @@ module Dashboard
 
     def edit
       authorize! :edit, School
+      @available_weeks = Week.selectable_on_school_year
     end
 
     def update
@@ -31,8 +31,10 @@ module Dashboard
                     flash: { success: 'Collège mis à jour avec succès' })
       end
     rescue ActiveRecord::RecordInvalid
+      @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request
     rescue ActionController::ParameterMissing
+      @available_weeks = Week.selectable_on_school_year
       render :edit, status: :unprocessable_entity
     end
 
