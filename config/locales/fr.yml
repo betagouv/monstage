@@ -163,10 +163,12 @@ fr:
             is_public:
               blank: "Le stage doit être soit collectif, soit individuel"
             description:
-              blank: "Veuillez saisir une description pour l'offre"
+              blank: "Veuillez saisir une description pour l'offre de stage"
               too_long: La description doit faire au maximum 500 caractères
             zipcode:
               blank: "Veuillez reseigner le code postal de l'employeur"
+            street:
+              blank: "Veuillez reseigner la rue ou compléments d'adresse de l'offre de stage"
             city:
               blank: "Veuillez reseigner la ville l'employeur"
             sector:

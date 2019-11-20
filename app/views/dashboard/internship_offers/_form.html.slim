@@ -159,7 +159,7 @@
             = form.label :street do
               = "Rue ou compléments d'adresse"
               = form.rg2a_required_content_tag
-            = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}
+            = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}, required: true
         .col-sm-4
           .form-group
             = form.label :city do
