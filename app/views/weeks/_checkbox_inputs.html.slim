@@ -6,15 +6,16 @@ div data-controller="select-weeks"
 
     - if defined?(select_all) && defined?(disabled)
       .custom-control.custom-checkbox.mb-1
-        = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#toggleWeeks"}
+        = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#handleToggleWeeks"}
         = label_tag 'all_year_long', "Tout sélectionner / désélectionner", class: 'custom-control-label'
 
-    .custom-control-checkbox-list
+    .custom-control-checkbox-list data-target="select-weeks.checkboxesContainer"
       - current_weeks.map do |week|
         .custom-control.custom-checkbox
-          = form.check_box :week_ids, { multiple: true, class: 'custom-control-input', disabled: defined?(disabled) && disabled, data: {target: 'select-weeks.weekCheckboxes'} }, week.id, false
+          = form.check_box :week_ids, { multiple: true, class: 'custom-control-input', disabled: defined?(disabled) && disabled, data: {target: 'select-weeks.weekCheckboxes', action: 'change->select-weeks#handleCheckboxesChanges'} }, week.id, false
           = form.label :"week_id", for: "#{form.object.class.name.underscore}_week_ids_#{week.id}", class: 'custom-control-label' do
             = week.select_text_method
+    small.form-text.text-danger.d-none data-target="select-weeks.hint" Veuillez saisir au moins une semaine de stage
 
 
 

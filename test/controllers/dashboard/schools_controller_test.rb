@@ -115,5 +115,11 @@ module Dashboard
         assert_equal false, @school.visible
       end
     end
+
+    test 'PATCH update with missing params fails gracefuly' do
+      sign_in(create(:school_manager, school: @school))
+      patch(dashboard_school_path(@school.to_param), params: {})
+      assert_response :unprocessable_entity
+    end
   end
 end

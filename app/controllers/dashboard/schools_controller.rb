@@ -32,6 +32,8 @@ module Dashboard
       end
     rescue ActiveRecord::RecordInvalid
       render :edit, status: :bad_request
+    rescue ActionController::ParameterMissing
+      render :edit, status: :unprocessable_entity
     end
 
     private
