@@ -9,6 +9,7 @@
       - else
         .d-flex.align-items-center.br-1.bt-light.pr-3
           = "Annonce dé-publiée"
+
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
 
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))

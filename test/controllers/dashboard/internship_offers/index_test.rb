@@ -112,7 +112,7 @@ module Dashboard
                     count: 1
       assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer_delegated_to_opereator),
                     count: 0
-      assert_select 'a[href=?]', dashboard_internship_offer_path(internship_offer_delegated_to_opereator),
+      assert_select 'a[href=?]', internship_offer_path(internship_offer_delegated_to_opereator),
                     count: 1
     end
 

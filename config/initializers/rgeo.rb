@@ -6,6 +6,7 @@ RGeo::ActiveRecord::SpatialFactoryStore.instance.tap do |config|
                                                      has_z_coordinate: false)
   config.default = POINT_FACTORY
 
+  config.register(POINT_FACTORY, geo_type: 'point')
   config.register(POINT_FACTORY, geo_type: 'st_point')
 end
 

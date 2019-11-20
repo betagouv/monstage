@@ -40,7 +40,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :internship_offers do
+    resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
 
@@ -77,6 +77,8 @@ Rails.application.routes.draw do
   get '/accessibilite', to: 'pages#accessibilite'
 
   get '/operators', to: 'pages#operators'
+
+  get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
 
   root to: 'pages#home'
 end
