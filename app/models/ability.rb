@@ -50,8 +50,7 @@ class Ability
     can_create_and_manage_account(user: user)
     can_read_dashboard_students_internship_applications(user: user)
 
-    can_read_dashboard(user: user) do
-      can %i[create new update destroy], ClassRoom
+    can_manage_school(user: user) do
       can %i[edit update], School
       can [:manage_school_users], School do |school|
         school.id == user.school_id
@@ -78,7 +77,7 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     # dashboard rights
-    can_read_dashboard(user: user) do
+    can_manage_school(user: user) do
       can [:manage_students], ClassRoom do |class_room|
         class_room.id == user.class_room_id
       end
@@ -97,7 +96,7 @@ class Ability
       can [:choose_class_room], User
     end
     can_read_dashboard_students_internship_applications(user: user)
-    can_read_dashboard(user: user)
+    can_manage_school(user: user)
     can [:manage_school_students], School do |school|
       school.id == user.school_id
     end
@@ -107,7 +106,7 @@ class Ability
   def other_abilities(user:)
     can_create_and_manage_account(user: user)
     can_read_dashboard_students_internship_applications(user: user)
-    can_read_dashboard(user: user) do
+    can_manage_school(user: user) do
       can [:manage_school_users], School do |school|
         school.id == user.school_id
       end
@@ -201,8 +200,8 @@ class Ability
     yield if block_given?
   end
 
-  def can_read_dashboard(user:)
-    can %i[index show], ClassRoom
+  def can_manage_school(user:)
+    can :manage, ClassRoom
     can [:show_user_in_school], User do |user|
       user.school
           .users

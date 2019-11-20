@@ -76,7 +76,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(school_manager)
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
-    assert(ability.can?(:show, ClassRoom))
+    assert(ability.can?(:manage, ClassRoom))
     assert(ability.can?(:destroy, internship_application))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
@@ -98,8 +98,7 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose_school')
     assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
-    assert(ability.can?(:show, ClassRoom))
-    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:manage, ClassRoom))
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, main_teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
@@ -109,8 +108,7 @@ class AbilityTest < ActiveSupport::TestCase
     school = create(:school, :with_school_manager)
     teacher = create(:teacher, school: school)
     ability = Ability.new(teacher)
-    assert(ability.can?(:show, ClassRoom))
-    assert(ability.can?(:index, ClassRoom))
+    assert(ability.can?(:manage, ClassRoom))
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
@@ -123,6 +121,7 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new(other)
     assert(ability.can?(:manage_school_students, other.school))
     assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:manage, ClassRoom))
   end
 
   test 'Operator' do
