@@ -111,12 +111,12 @@ module InternshipApplications
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
-    test 'GET #index with rejected offer, does not shows any link' do
+    test 'GET #index with rejected offer, shows approve' do
       internship_application = create(:internship_application, :rejected)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
-      assert_has_link_count_to_transition(internship_application, :approve!, 0)
+      assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
       assert_has_link_count_to_transition(internship_application, :cancel!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)

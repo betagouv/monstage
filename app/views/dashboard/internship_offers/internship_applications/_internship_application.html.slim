@@ -39,22 +39,15 @@ div class="#{cycle("bg-light", "")} row"
 
           .actions
             - if internship_application.submitted?
-              = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false
-              = button_tag type: "button", data: { toggle: 'modal', target: "#reject-internship-application-#{internship_application.id}" }, class: 'btn btn-danger mx-1' do
-                  .fas.fa-ban.mr-1
-                  = "Refuser"
+              = render "dashboard/internship_offers/internship_applications/actions/approve", internship_application: internship_application
 
-              - if internship_application.internship_offer_week.has_spots_left?
-                = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: true
-                = button_tag type: "button", data: { toggle: 'modal', target: "#approve-internship-application-#{internship_application.id}" }, class: 'btn btn-success mx-1' do
-                  .fas.fa-check.mr-1
-                  = "Accepter"
+              = render "dashboard/internship_offers/internship_applications/actions/reject", internship_application: internship_application
 
+            - if internship_application.rejected? && internship_application.internship_offer_week.has_spots_left?
+              = render "dashboard/internship_offers/internship_applications/actions/approve", internship_application: internship_application
 
             - if internship_application.approved?
-              = link_to dashboard_internship_offer_internship_application_path(@internship_offer, internship_application, transition: :cancel!), method: :patch, class: 'btn btn-danger mx-1' do
-                .fas.fa-trash.mr-1
-                = "Annuler la confirmation"
+              = render "dashboard/internship_offers/internship_applications/actions/cancel", internship_application: internship_application
 
       .col-1.d-sm-none
 

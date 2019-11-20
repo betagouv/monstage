@@ -1,0 +1,5 @@
+= render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: false
+= button_tag type: "button", data: { toggle: 'modal', target: "#reject-internship-application-#{internship_application.id}" }, class: 'btn btn-danger mx-1' do
+    .fas.fa-ban.mr-1
+    = "Refuser"
+

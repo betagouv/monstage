@@ -118,6 +118,22 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
+  test 'transition from rejected to approved send approved email' do
+    internship_application = create(:internship_application, :rejected)
+    freeze_time do
+      assert_changes -> { internship_application.reload.approved_at },
+                     from: nil,
+                     to: Time.now.utc do
+        mock_mail = MiniTest::Mock.new
+        mock_mail.expect(:deliver_later, true)
+        StudentMailer.stub :internship_application_approved_email, mock_mail do
+          internship_application.approve!
+        end
+        mock_mail.verify
+      end
+    end
+  end
+
   test 'transition via cancel! changes aasm_state from approved to rejected' do
     internship_application = create(:internship_application, :approved)
     assert_changes -> { internship_application.reload.aasm_state },

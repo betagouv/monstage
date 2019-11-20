@@ -1,0 +1,5 @@
+- if internship_application.internship_offer_week.has_spots_left?
+  = render "dashboard/internship_offers/internship_applications/action_modal", internship_application:internship_application, approved: true
+  = button_tag type: "button", data: { toggle: 'modal', target: "#approve-internship-application-#{internship_application.id}" }, class: 'btn btn-success mx-1' do
+    .fas.fa-check.mr-1
+    = "Accepter"

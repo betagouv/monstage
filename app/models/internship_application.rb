@@ -9,21 +9,23 @@ class InternshipApplication < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
 
-  accepts_nested_attributes_for :student, update_only: true
-
   has_one :internship_offer, through: :internship_offer_week
-
   has_one :week, through: :internship_offer_week
+
   validates :motivation, :internship_offer_week, presence: true, unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
+
   before_validation :internship_offer_has_spots_left?, on: :create
   before_validation :internship_offer_week_has_spots_left?, on: :create
   before_validation :at_most_one_application_per_student?, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
+
   after_save :update_all_counters
-  attr_reader :student_ids
+
+  accepts_nested_attributes_for :student, update_only: true
+
   paginates_per PAGE_SIZE
 
   scope :order_by_aasm_state, lambda {
@@ -98,7 +100,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :approve do
-      transitions from: :submitted, to: :approved, after: :transition_with_email
+      transitions from: %i[submitted rejected], to: :approved, after: :transition_with_email
     end
 
     event :reject do
