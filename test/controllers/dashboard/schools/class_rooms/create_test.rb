@@ -25,9 +25,6 @@ module Dashboard
         school = create(:school, :with_school_manager)
         [
           create(:student, school: school),
-          create(:teacher, school: school),
-          create(:main_teacher, school: school),
-          create(:other, school: school)
         ].each do |role|
           sign_in(role)
           post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: 'test' } }

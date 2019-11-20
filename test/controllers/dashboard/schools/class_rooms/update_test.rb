@@ -24,9 +24,6 @@ module Dashboard
         class_room = create(:class_room, school: school)
         [
           create(:student, school: school),
-          create(:teacher, school: school),
-          create(:main_teacher, school: school),
-          create(:other, school: school)
         ].each do |role|
           sign_in(role)
           patch dashboard_school_class_room_path(school, class_room, params: { class_room: { name: 'new_name' } })
