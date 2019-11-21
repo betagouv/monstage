@@ -1,0 +1,24 @@
+.trix-button--icon-link,
+.trix-button--icon-heading-1,
+.trix-button--icon-quote,
+.trix-button--icon-code,
+.trix-button--icon-number-list,
+.trix-button--icon-decrease-nesting-level,
+.trix-button--icon-increase-nesting-level,
+.trix-button-group--file-tools,
+.trix-button--icon-attach,
+.trix-button-group--history-tools{display: none;}
+
+trix-editor.form-control {
+  height: auto;
+  // overflow-y: auto;
+}
+.reboot-trix-content .trix-content{
+  font-family: $font-family-base;
+  @include font-size($font-size-base);
+  font-weight: $font-weight-base;
+  line-height: $line-height-base;
+
+  margin-top: 0;
+  margin-bottom: $paragraph-margin-bottom;
+}

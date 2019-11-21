@@ -1,6 +1,6 @@
 .row
   .col-12
-    p = internship_offer.description
+    .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ?internship_offer.description_rich_text.to_s : internship_offer.description
     = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
 
     - weeks = internship_offer.internship_offer_weeks
@@ -36,8 +36,8 @@
     .row.bg-light.py-3.bt-1.bt-light
       .col-12
         h2.h4 Où se déroule ce stage ?
-        p = internship_offer.employer_name
-        p = internship_offer.employer_description
+        p= internship_offer.employer_name
+        .reboot-trix-content= internship_offer.employer_description.to_s
         - if internship_offer.employer_website.present?
           p.text-truncate
             = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"

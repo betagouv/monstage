@@ -85,7 +85,7 @@
       * @return {number}
       */
       function inputLength(input) {
-        var text = input.val();
+        var text = input.getDocument().toString();
 
         if (options.twoCharLinebreak) {
           // Count all line breaks as 2 characters
