@@ -5,8 +5,22 @@
 
 .row
   .col-12.col-sm-6.text-center
+    = link_to root_path + 'autorisation_parentale.pdf', title: "Accéder à l'autorisation parentale d'accès à la plateforme"  do
+      = image_tag asset_pack_path("media/images/autorisation_parentale.png"), alt: "Aperçu  de l'autorisation parentale", size: '200x283', class: 'img-thumbnail'
+      p
+        br
+        | Autorisation parentale d'accès à la plateforme
+        br
+        | PDF - 61KB
+        br
+        | MonStageDeTroisieme
+
+    p
+      | L'autorisation parentale d'accès a la plateforme est un document essential pour permettre à monstagedetroisieme.fr de traiter les données d'utilisateurs mineurs.
+
+  .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/USEA-Carnet-Stage-Education.pdf", title: 'Acceder à Carnet Stage Education'  do
-      = image_tag asset_pack_path("media/images/documents_utiles/USEA-Carnet-Stage-Education.jpg"), alt: 'Couverture de Carnet Stage Education', size: '200x283'
+      = image_tag asset_pack_path("media/images/documents_utiles/USEA-Carnet-Stage-Education.jpg"), alt: 'Couverture de Carnet Stage Education', size: '200x283', class: 'img-thumbnail'
       p
         br
         | Carnet de stage éducation
@@ -19,7 +33,7 @@
 
   .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/USEA-Cherchez-la-chercheuse.pdf", title: 'Acceder à Cherchez la chercheuse'  do
-      = image_tag asset_pack_path("media/images/documents_utiles/USEA-Cherchez-la-chercheuse.jpg"), alt: 'Couverture de Cherchez la chercheuse', size: '200x283'
+      = image_tag asset_pack_path("media/images/documents_utiles/USEA-Cherchez-la-chercheuse.jpg"), alt: 'Couverture de Cherchez la chercheuse', size: '200x283', class: 'img-thumbnail'
       p
         br
         | Cherchez la chercheuse
@@ -32,7 +46,7 @@
 
   .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/RienNeSertDeCourirPageBD.pdf", title: 'Acceder à Rien Ne Sert De Courir'  do
-      = image_tag asset_pack_path("media/images/documents_utiles/RienNeSertDeCourirPageBD.jpg"), alt: 'Couverture de Rien Ne Sert De Courir', size: '200x283'
+      = image_tag asset_pack_path("media/images/documents_utiles/RienNeSertDeCourirPageBD.jpg"), alt: 'Couverture de Rien Ne Sert De Courir', size: '200x283', class: 'img-thumbnail'
       p
         br
         | Rien ne sert de courir
@@ -45,7 +59,7 @@
 
   .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/CarnetStagePro_USEA_WEB-2.pdf", title: 'Acceder à Carnet Stage Pro'  do
-      = image_tag asset_pack_path("media/images/documents_utiles/CarnetStagePro_USEA_WEB-2.jpg"), alt: 'Couverture de Carnet Stage Pro', size: '200x284'
+      = image_tag asset_pack_path("media/images/documents_utiles/CarnetStagePro_USEA_WEB-2.jpg"), alt: 'Couverture de Carnet Stage Pro', size: '200x284', class: 'img-thumbnail'
       p
         br
         | Carnet de stage Pro
@@ -56,11 +70,9 @@
     p
       | Vous êtes un professionnel et vous vous posez des questions sur le stage d'observation ? Ce livret vous aidera à organiser un stage passionnant pour un collégien au sein de votre structure.
 
-
-
   .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/versLinfini.pdf", title: "Acceder à Vers l'infini et au-delà"  do
-      = image_tag asset_pack_path("media/images/documents_utiles/versLinfini.jpg"), alt: "Couverture de Vers l'infini et au-delà", size: '200x284'
+      = image_tag asset_pack_path("media/images/documents_utiles/versLinfini.jpg"), alt: "Couverture de Vers l'infini et au-delà", size: '200x284', class: 'img-thumbnail'
       p
         br
         | Vers l'infini et au-delà
@@ -70,7 +82,3 @@
         | USEA
     p
       | Grâce à des missions adaptées et des conseils pratiques, ce carnet aidera les élèves à chercher leur stage d'observation au-delà de leur quartier ou de leur ville.
-
-
-
-
