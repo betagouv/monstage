@@ -143,5 +143,21 @@ module Api
       assert_response :success
       assert_equal new_publication_date, @internship_offer.reload.published_at.utc.iso8601(0)
     end
+
+    test 'PATCH #update as operator does not change weeks with default' do
+      travel_to(2.months.from_now) do
+        assert_no_changes -> {@internship_offer.reload.weeks.count } do
+          patch api_internship_offer_path(
+            id: @internship_offer.remote_id,
+            params: {
+              token: "Bearer #{@operator.api_token}",
+              internship_offer: {
+                published_at: nil,
+              }
+            }
+          )
+        end
+      end
+    end
   end
 end
