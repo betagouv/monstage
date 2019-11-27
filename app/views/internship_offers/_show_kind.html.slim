@@ -4,7 +4,7 @@ p
       | Stage individuel (un seul élève par stage)
     - else
       | Stage collectif
-      = " (par groupe de #{internship_offer.max_candidates} élèves"
+      = " (par groupe de #{internship_offer.max_candidates} élèves)"
 
   - if internship_offer.school.present?
     span.badge.badge-cyan.px-3.py-2.ml-3
