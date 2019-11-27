@@ -3,13 +3,22 @@ tr.bg-light
     strong= school.name
     br
     small.text-muted= "#{school.city} (#{school.zipcode})"
-  td.align-middle.border-left-1.font-weight-bold.text-info= school.total_student_count
-  td.align-middle= school.total_student_with_confirmation_count
+
+
+  td.align-middle.border-left-1
+    - if school.weeks.size.positive?
+      ul.nav
+        - school.weeks.map do |week|
+          li= week.select_text_method
+
+  td.align-middle.border-left-1.font-weight-bold.text-info= school.total_student_with_confirmation_count
+
   td.align-middle= school.total_student_with_parental_consent_count
+
   td.align-middle.border-left-1
     - if school.school_manager?
-      i.fas.fa-check
+      i.fas.fa-check.text-success
     - else
-      i.fas.fa-times
+      i.fas.fa-times.text-danger
 
   td.align-middle= school.total_main_teacher_count
