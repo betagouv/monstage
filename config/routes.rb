@@ -69,15 +69,14 @@ Rails.application.routes.draw do
   get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
   get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'
   get '/documents-utiles', to: 'pages#documents_utiles'
-  get '/qui-sommes-nous', to: 'pages#qui_sommes_nous'
   get '/partenaires', to: 'pages#partenaires'
   get '/mentions-legales', to: 'pages#mentions_legales'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
-
   get '/operators', to: 'pages#operators'
 
+  # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
 
   root to: 'pages#home'

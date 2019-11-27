@@ -10,12 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_05_104039) do
+ActiveRecord::Schema.define(version: 2019_11_20_184442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "unaccent"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "class_rooms", force: :cascade do |t|
     t.string "name"
@@ -96,7 +127,6 @@ ActiveRecord::Schema.define(version: 2019_11_05_104039) do
 
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
-    t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
     t.integer "internship_offer_weeks_count", default: 1, null: false
     t.string "tutor_name"
@@ -115,7 +145,6 @@ ActiveRecord::Schema.define(version: 2019_11_05_104039) do
     t.string "group"
     t.bigint "employer_id"
     t.bigint "school_id"
-    t.string "employer_description", null: false
     t.bigint "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.integer "total_applications_count", default: 0, null: false
@@ -133,6 +162,8 @@ ActiveRecord::Schema.define(version: 2019_11_05_104039) do
     t.integer "submitted_applications_count", default: 0, null: false
     t.integer "rejected_applications_count", default: 0, null: false
     t.datetime "published_at"
+    t.string "description", default: "", null: false
+    t.string "employer_description"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
@@ -236,6 +267,7 @@ ActiveRecord::Schema.define(version: 2019_11_05_104039) do
     t.index ["year"], name: "index_weeks_on_year"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "class_rooms", "schools"
   add_foreign_key "internship_applications", "internship_offer_weeks"
   add_foreign_key "internship_applications", "users"

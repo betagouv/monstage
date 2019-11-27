@@ -111,8 +111,8 @@
         small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
       = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !@internship_offer.is_fully_editable?, data: { target: "internship-form.maxCandidatesInput" }
 
-    .form-group
-      = form.label :description do
+    .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+      .label
         = 'Description'
         = form.rg2a_required_content_tag
         small.form-text.text-muted
@@ -123,7 +123,8 @@
           = " "
           = link_to "Besoin d'aide à la rédaction ?", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
 
-      = form.text_area :description, class: "form-control col-lg-6", required: true, maxlength: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+      = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
+      small.form-text data-target="maxlength-input.trixElementCharCount"
 
     .form-group
       = form.label :sector_id do
@@ -181,11 +182,12 @@
             = form.text_field :department, class: "form-control", data: {target: 'algolia-place.departmentInput'}
 
 
-    .form-group
-      = form.label :employer_description do
+    .form-group data-controller='maxlength-input' data-maxlength-input-limit=BaseInternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
+      .label
         = "Description de l'organisme accueillant (facultatif)"
         small.form-text.text-muted Décrivez en 2 lignes l'établissement ou le service qui accueille l'élève : ses missions, ses spécialités
-      = form.text_area :employer_description, class: 'form-control col-lg-6', maxlength: BaseInternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT, data: { controller: 'maxlength-input' }
+      = form.rich_text_area :employer_description_rich_text, class: 'form-control col-lg-12', data: { target: 'maxlength-input.trixElement'}
+      small.form-text.text-muted data-target="maxlength-input.trixElementCharCount"
 
     .form-group
       = form.label :employer_website do

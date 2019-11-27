@@ -28,12 +28,6 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_template 'pages/exemple_offre_ideale_sport'
   end
 
-  test 'GET pages#qui_sommes_nous works' do
-    get qui_sommes_nous_path
-    assert_response :success
-    assert_template 'pages/qui_sommes_nous'
-  end
-
   test 'GET pages#partenaires works' do
     get partenaires_path
     assert_response :success
