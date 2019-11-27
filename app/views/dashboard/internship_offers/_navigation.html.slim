@@ -18,7 +18,7 @@
         - else
           = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
             = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
-      ul.ml-auto.d-flex.px-0.mb-0
+      .ml-auto.d-flex
         - if can?(:discard, @internship_offer)
           a.nav-link.px-1.px-sm-2.ml-auto.text-center data-toggle="modal" data-target="#discard-internship-offer-modal"
             .fas.fa-trash
