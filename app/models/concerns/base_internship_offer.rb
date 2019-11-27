@@ -56,6 +56,14 @@ module BaseInternshipOffer
       self.department = Department.lookup_by_zipcode(zipcode: zipcode)
     end
 
+    # @note some possible confusion, miss-understanding here
+    #   1. Rich text was added after API
+    #   2. API already exposed a "description" attributes (not rich text) [in/out]
+    #     trying to upgrade description attribute was flacky
+    #     because API returned description as an ActionText record.
+    #   3. To avoid any circumvention (in/out) of the description
+    #     we add a new description_rich_text element which is rendered when possiblee
+    #   4. Bonus -> description will be used for description_tsv as template to extract keywords
     def replicate_rich_text_to_raw_fields
       self.description = self.description_rich_text.to_plain_text if self.description_rich_text.to_s.present?
       self.employer_description = self.employer_description_rich_text.to_plain_text if self.employer_description_rich_text.to_s.present?
