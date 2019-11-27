@@ -31,7 +31,7 @@ module InternshipOffers
               is_public: false,
               group: Group::PRIVATE.first
             } })
-      assert_redirected_to(dashboard_internship_offer_path(internship_offer),
+      assert_redirected_to(internship_offer_path(internship_offer),
                            'redirection should point to updated offer')
       assert_equal(new_title,
                    internship_offer.reload.title,
