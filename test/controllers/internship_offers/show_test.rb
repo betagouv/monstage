@@ -338,7 +338,8 @@ module InternshipOffers
     end
 
     test 'GET #show as Employer displays internship_applications link' do
-      internship_offer = create(:internship_offer)
+      published_at = 2.weeks.ago
+      internship_offer = create(:internship_offer, published_at: published_at)
       sign_in(internship_offer.employer)
       get internship_offer_path(internship_offer)
       assert_response :success
@@ -355,6 +356,10 @@ module InternshipOffers
       assert_select 'a[href=?][data-method=delete]', dashboard_internship_offer_path(internship_offer),
                     { count: 1 },
                     'missing discard link for employer'
+
+      assert_select 'span.internship_offer-published_at',
+                    { text: "depuis le #{I18n.l(published_at, format: :human_mm_dd)}" },
+                    'invalid published_at'
 
       assert_template "dashboard/internship_offers/_delete_internship_offer_modal",
                       "missing discard modal for employer"
