@@ -59,7 +59,7 @@ module Api
           params: {
             token: "Bearer #{@operator.api_token}",
             internship_offer: {
-              description: 'a' * (BaseInternshipOffer::DESCRIPTION_MAX_CHAR_COUNT + 2)
+              description: 'a' * (BaseInternshipOffer::OLD_DESCRIPTION_MAX_CHAR_COUNT + 2)
             }
           }
         )
@@ -76,7 +76,7 @@ module Api
           params: {
             token: "Bearer #{@operator.api_token}",
             internship_offer: {
-              description: 'a' * (BaseInternshipOffer::DESCRIPTION_MAX_CHAR_COUNT + 2)
+              description: 'a' * (BaseInternshipOffer::OLD_DESCRIPTION_MAX_CHAR_COUNT + 2)
             }
           }
         )
