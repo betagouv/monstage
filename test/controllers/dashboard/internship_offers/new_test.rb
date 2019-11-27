@@ -12,7 +12,7 @@ module InternshipOffers
         get new_dashboard_internship_offer_path
 
         assert_response :success
-        available_weeks = Week.selectable_from_now_until_school_year
+        available_weeks = Week.selectable_from_now_until_end_of_school_year
         asserted_input_count = 0
         available_weeks.each do |week|
           assert_select "input[id=internship_offer_week_ids_#{week.id}]"

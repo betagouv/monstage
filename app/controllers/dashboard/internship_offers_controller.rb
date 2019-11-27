@@ -23,13 +23,13 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
-          @available_weeks = Week.selectable_from_now_until_school_year
+          @available_weeks = Week.selectable_from_now_until_end_of_school_year
           render :new, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.new
-      @available_weeks = Week.selectable_from_now_until_school_year
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
       render :new, status: :bad_request
     end
 
@@ -80,7 +80,7 @@ module Dashboard
       else
         @internship_offer = InternshipOffer.new
       end
-      @available_weeks = Week.selectable_from_now_until_school_year
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
     private

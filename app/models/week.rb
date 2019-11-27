@@ -28,7 +28,7 @@ class Week < ApplicationRecord
   }
 
 
-  scope :selectable_from_now_until_school_year, lambda {
+  scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
     from_date_to_date(from: school_year.beginning_of_period,
