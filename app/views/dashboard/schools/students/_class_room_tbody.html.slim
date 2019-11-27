@@ -2,11 +2,11 @@
 tbody class="test-class-room-#{class_room.id}"
   tr
     th= class_room.name
-    th colspan="4"
+    th
   - students.each do |student_in_class_room|
     tr class="test-student-#{student_in_class_room.id}"
       td data-head="#{student_in_class_room.name}"= student_in_class_room.name
-      td.full-width data-head="Action" colspan="4"= form_for student_in_class_room, url: dashboard_school_student_path(student_in_class_room.school, student_in_class_room), as: :student, html: { class: 'd-block d-sm-flex' } do |f|
+      td.full-width data-head="Action"= form_for student_in_class_room, url: dashboard_school_student_path(student_in_class_room.school, student_in_class_room), as: :student, html: { class: 'd-block d-sm-flex' } do |f|
 
           = f.select :class_room_id, options_from_collection_for_select(student_in_class_room.school.class_rooms, :id, :name, student_in_class_room.class_room_id), { prompt: '-- Choisir une classe --' }, class: "custom-select custom-select-sm"
           .actions.d-flex.d-sm-block.text-center
