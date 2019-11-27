@@ -16,7 +16,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         visit '/dashboard'
         click_on 'Déposer une offre'
         fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
-        fill_in 'internship_offer_description', with: "Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain"
+        find('#internship_offer_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
         select sectors.first.name, from: 'internship_offer_sector_id'
         find(:css, "label[for=internship_offer_week_ids_#{available_weeks.first.id}]").click
         find(:css, "label[for=internship_offer_week_ids_#{available_weeks.last.id}]").click
@@ -24,7 +24,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in 'Adresse électronique (ex : mon@exemple.fr)', with: 'le@brice.durand'
         fill_in 'Téléphone (ex : 06 12 34 56 78)', with: '0639693969'
         fill_in "Nom de la structure ou du service proposant l'offre", with: 'BetaGouv'
-        fill_in "Description de l'organisme accueillant (facultatif)", with: "On fait des startup d'état qui déchirent"
+        find('#internship_offer_employer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
         fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
         find('label', text: 'public').click
         select Group::PUBLIC.first, from: 'internship_offer_group'
