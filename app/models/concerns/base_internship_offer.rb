@@ -2,9 +2,11 @@
 
 module BaseInternshipOffer
   extend ActiveSupport::Concern
-
+  TITLE_MAX_CHAR_COUNT = 150
+  OLD_DESCRIPTION_MAX_CHAR_COUNT = 750
   DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
+
   included do
     include Discard::Model
 
@@ -14,7 +16,18 @@ module BaseInternshipOffer
               :city,
               presence: true
 
-    validates :description, presence: true, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
+    validates :title, presence: true,
+                      length: { maximum: TITLE_MAX_CHAR_COUNT },
+                      if: :ready_to_enforce_less_text?
+
+    validates :description, presence: true,
+                            length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT },
+                            unless: :ready_to_enforce_less_text?
+
+    validates :description, presence: true,
+                            length: { maximum: DESCRIPTION_MAX_CHAR_COUNT },
+                            if: :ready_to_enforce_less_text?
+
     validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
     validates :weeks, presence: true
 
@@ -50,6 +63,11 @@ module BaseInternshipOffer
 
     def preset_published_at_to_now
       self.published_at = Time.now
+    end
+
+    def ready_to_enforce_less_text?
+      Date.today.year >= 2019 && Date.today.month >= 9 ||
+      Date.today.year >= 2020
     end
   end
 end
