@@ -33,7 +33,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show not logged as employer does not increment view_count' do
+    test 'GET #show logged as employer does not increment view_count' do
       internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
       assert_no_changes -> { internship_offer.reload.view_count } do
@@ -41,7 +41,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show not logged as student does not increment view_count' do
+    test 'GET #show logged as student does not increment view_count' do
       internship_offer = create(:internship_offer)
       sign_in(create(:student))
       assert_changes -> { internship_offer.reload.view_count },
@@ -343,11 +343,22 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
       assert_response :success
       assert_template 'dashboard/internship_offers/_navigation'
+
       assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer),
-                    count: 1
+                    { count: 1 },
+                    'missing edit internship_offer link for employer'
+
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer),
-                    text: '0 candidatures',
-                    count: 1
+                    { text: '0 candidatures', count: 1},
+                    'missing link to internship_applications for employer'
+
+      assert_select 'a[href=?][data-method=delete]', dashboard_internship_offer_path(internship_offer),
+                    { count: 1 },
+                    'missing discard link for employer'
+
+      assert_template "dashboard/internship_offers/_delete_internship_offer_modal",
+                      "missing discard modal for employer"
     end
+
   end
 end
