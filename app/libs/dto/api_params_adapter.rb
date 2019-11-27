@@ -10,10 +10,11 @@ module Dto
     end
 
     private
-    attr_reader :params, :user
-    def initialize(params:, user:)
+    attr_reader :params, :user, :fallback_weeks
+    def initialize(params:, user:, fallback_weeks:)
       @params = params
       @user = user
+      @fallback_weeks = fallback_weeks
     end
 
     def map_sector_uuid_to_sector
@@ -32,7 +33,7 @@ module Dto
           concatenated_query = concatenated_query.nil? ? base_query : concatenated_query.or(base_query)
         end
         params[:weeks] = concatenated_query.all
-      else
+      elsif fallback_weeks
         params[:weeks] = Week.selectable_from_now_until_end_of_school_year
       end
       params

@@ -6,7 +6,7 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize :create, model
-      internship_offer = model.create!(preprocess_api_params(params))
+      internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => error
       if duplicate?(error.record)
@@ -19,7 +19,7 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.update!(preprocess_api_params(params))
+      instance.update!(preprocess_api_params(params, fallback_weeks: false))
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => error
       callback.on_failure.try(:call, error.record)
@@ -45,10 +45,13 @@ module Builders
       @callback = InternshipOfferCallback.new
     end
 
-    def preprocess_api_params(params)
+    def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
+      opts = { params: params,
+               user: user,
+               fallback_weeks: fallback_weeks }
 
-      Dto::ApiParamsAdapter.new(params: params, user: user)
+      Dto::ApiParamsAdapter.new(opts)
                            .sanitize
     end
 

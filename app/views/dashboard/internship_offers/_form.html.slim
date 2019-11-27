@@ -178,8 +178,7 @@
           .form-group
             = form.label :department do
               = 'Département'
-              = form.rg2a_required_content_tag
-            = form.text_field :department, class: "form-control", required: true, data: {target: 'algolia-place.departmentInput'}
+            = form.text_field :department, class: "form-control", data: {target: 'algolia-place.departmentInput'}
 
 
     .form-group
