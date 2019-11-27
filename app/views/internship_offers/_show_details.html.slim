@@ -9,34 +9,32 @@
 
     = render partial: "internship_offers/show_weeks", locals: {weeks: weeks}
 
-- if can?(:see_tutor, InternshipOffer) && [internship_offer.tutor_name, internship_offer.tutor_phone, internship_offer.tutor_email].map(&:present?).any?
+- if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
   .row
     .col-12
       .row.bg-light.py-3.bt-1.bt-light
-
         .col-12
           h2.h4 Tuteur
           p.text-muted.small Le tuteur ou la tutrice est la personne référente sur ce stage. Ses coordonnées sont publiées à ceux qui accompagnent les élèves pour savoir qui joindre en cas d'urgence
 
           div
-            - if internship_offer.tutor_name.present?
-              .d-flex.my-2
-                .circle-font.text-info
-                  i.fas.fa-user.fa-fw
-                .ml-2
-                  strong.tutor_name= internship_offer.tutor_name
-            - if internship_offer.tutor_phone.present?
-              .d-flex.my-2
-                .circle-font.text-info
-                  i.fas.fa-phone.fa-fw
-                .ml-2
-                  = "Portable: "
-                  span.tutor_phone= internship_offer.tutor_email
-            - if internship_offer.tutor_name.present?
-              .d-flex.my-2
-                .circle-font.text-info
-                  i.far.fa-envelope.fa-fw
-                .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
+            .d-flex.my-2
+              .circle-font.text-info
+                i.fas.fa-user.fa-fw
+              .ml-2
+                strong.tutor_name= internship_offer.tutor_name
+
+            .d-flex.my-2
+              .circle-font.text-info
+                i.fas.fa-phone.fa-fw
+              .ml-2
+                = "Portable: "
+                span.tutor_phone= internship_offer.tutor_email
+
+            .d-flex.my-2
+              .circle-font.text-info
+                i.far.fa-envelope.fa-fw
+              .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
 .row
   .col-12
     .row.bg-light.py-3.bt-1.bt-light
