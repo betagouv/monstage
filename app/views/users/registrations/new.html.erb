@@ -98,7 +98,7 @@
 
     <% if can?(:choose_operator, :sign_up) %>
       <div class="form-group">
-        <%= f.label :operator do %>
+        <%= f.label :operator_id do %>
           Opérateur
           <%= f.rg2a_required_content_tag %>
         <% end %>

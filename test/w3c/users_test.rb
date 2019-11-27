@@ -47,12 +47,14 @@ module W3c
         assert_response :success
       end
     end
+
     test 'register as Operator' do
       run_request_and_cache_response(report_as: 'new_user_registration_path_Operator') do
         get new_user_registration_path(as: 'Operator')
         assert_response :success
       end
     end
+
     test 'register as Statistician' do
       run_request_and_cache_response(report_as: 'new_user_registration_path_Statistician') do
         get new_user_registration_path(as: 'Statistician')

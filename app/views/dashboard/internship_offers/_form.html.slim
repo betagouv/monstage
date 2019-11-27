@@ -112,7 +112,7 @@
       = form.number_field :max_candidates, value: @internship_offer.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !@internship_offer.is_fully_editable?, data: { target: "internship-form.maxCandidatesInput" }
 
     .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
-      = form.label :description_rich_text do
+      .label
         = 'Description'
         = form.rg2a_required_content_tag
         small.form-text.text-muted
@@ -183,7 +183,7 @@
 
 
     .form-group data-controller='maxlength-input' data-maxlength-input-limit=BaseInternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
-      = form.label :employer_description_rich_text do
+      .label
         = "Description de l'organisme accueillant (facultatif)"
         small.form-text.text-muted Décrivez en 2 lignes l'établissement ou le service qui accueille l'élève : ses missions, ses spécialités
       = form.rich_text_area :employer_description_rich_text, class: 'form-control col-lg-12', data: { target: 'maxlength-input.trixElement'}
