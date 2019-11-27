@@ -57,7 +57,7 @@ module Reporting
     end
 
     scope :during_current_year, lambda {
-      during_year(year: if Date.today.month <= SchoolYear::MONTH_OF_YEAR_SHIFT
+      during_year(year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
                         then Date.today.year - 1
                         else Date.today.year
                         end)
@@ -68,12 +68,12 @@ module Reporting
     scope :during_year, lambda { |year:|
       where('created_at > :date_begin',
             date_begin: Date.new(year,
-                                 SchoolYear::MONTH_OF_YEAR_SHIFT,
-                                 SchoolYear::DAY_OF_YEAR_SHIFT))
+                                 SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
+                                 SchoolYear::Base::DAY_OF_YEAR_SHIFT))
         .where('created_at <= :date_end',
                date_end: Date.new(year + 1,
-                                  SchoolYear::MONTH_OF_YEAR_SHIFT,
-                                  SchoolYear::DAY_OF_YEAR_SHIFT))
+                                  SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
+                                  SchoolYear::Base::DAY_OF_YEAR_SHIFT))
     }
 
     scope :by_department, lambda { |department:|
@@ -111,7 +111,7 @@ module Reporting
     scope :total_for_year, lambda {
       select(*aggregate_functions_to_sql_select)
         .during_year(
-          year: if Date.today.month <= SchoolYear::MONTH_OF_YEAR_SHIFT
+          year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
                 then Date.today.year - 1
                 else Date.today.year
                 end

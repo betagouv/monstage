@@ -24,6 +24,9 @@ module InternshipOffers
                                                    max_candidates: 2)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
+      Week.selectable_on_school_year.each do |week|
+        assert_select "label", text: week.select_text_method
+      end
       assert_response :success
     end
 

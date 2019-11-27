@@ -2,7 +2,7 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
-    include InternshipOffersFinders
+    include Finders::InternshipOffers
 
     before_action :authenticate_user!
     helper_method :order_direction
@@ -19,20 +19,20 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
-          find_selectable_weeks
+          @available_weeks = Week.selectable_from_now_until_end_of_school_year
           render :new, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.new
-      find_selectable_weeks
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
       render :new, status: :bad_request
     end
 
     def edit
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
-      find_selectable_weeks
+      @available_weeks = Week.selectable_on_school_year
     end
 
     def update
@@ -44,13 +44,13 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer
-          find_selectable_weeks
+          @available_weeks = Week.selectable_on_school_year
           render :edit, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.find(params[:id])
-      find_selectable_weeks
+      @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request
     end
 
@@ -76,7 +76,7 @@ module Dashboard
       else
         @internship_offer = InternshipOffer.new
       end
-      find_selectable_weeks
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
     private

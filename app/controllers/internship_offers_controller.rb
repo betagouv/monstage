@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InternshipOffersController < ApplicationController
-  include InternshipOffersFinders
+  include Finders::InternshipOffers
 
   before_action :authenticate_user!, only: %i[create edit update destroy]
   after_action :increment_internship_offer_view_count, only: :show
