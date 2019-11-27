@@ -127,7 +127,6 @@ ActiveRecord::Schema.define(version: 2019_11_20_202349) do
 
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
-    t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
     t.integer "internship_offer_weeks_count", default: 1, null: false
     t.string "tutor_name"
@@ -146,7 +145,6 @@ ActiveRecord::Schema.define(version: 2019_11_20_202349) do
     t.string "group"
     t.bigint "employer_id"
     t.bigint "school_id"
-    t.string "employer_description", null: false
     t.bigint "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.integer "total_applications_count", default: 0, null: false
@@ -164,6 +162,8 @@ ActiveRecord::Schema.define(version: 2019_11_20_202349) do
     t.integer "submitted_applications_count", default: 0, null: false
     t.integer "rejected_applications_count", default: 0, null: false
     t.datetime "published_at"
+    t.string "description", default: "", null: false
+    t.string "employer_description"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"

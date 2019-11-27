@@ -3,6 +3,7 @@
 require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
+  # TODO refactor: merge list of static pages with W3c::AllTest
   test 'home' do
     get root_path
     assert_response :success
@@ -26,12 +27,6 @@ class PagesTest < ActionDispatch::IntegrationTest
     get exemple_offre_ideale_sport_path
     assert_response :success
     assert_template 'pages/exemple_offre_ideale_sport'
-  end
-
-  test 'GET pages#qui_sommes_nous works' do
-    get qui_sommes_nous_path
-    assert_response :success
-    assert_template 'pages/qui_sommes_nous'
   end
 
   test 'GET pages#partenaires works' do
