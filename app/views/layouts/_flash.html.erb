@@ -1,29 +1,26 @@
 <% unless flash.keys.size.zero? %>
-  <div class="row">
-    <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
-      <% if flash.keys.include?(flash_kind) %>
-        <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'warning' else flash_kind end %>
-        <div
-          id="alert-<%= bootstrap_style %>"
-          class="alert
-                 alert-<%= bootstrap_style %>
-                 col-12
-                 mb-3
-                 alert-dismissible
-                 fade
-                 show
-                 d-flex
-                 align-items-center"
-          role="alert">
-          <% if %w[alert].include?(flash_kind.to_s) %>
-            <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
-          <% end %>
-          <span id="alert-text"><%= flash[flash_kind] %></span>
-          <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+  <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
+    <% if flash.keys.include?(flash_kind) %>
+      <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'warning' else flash_kind end %>
+      <div
+        id="alert-<%= bootstrap_style %>"
+        class="alert
+               alert-sticky
+               alert-<%= bootstrap_style %>
+               col-12
+               alert-dismissible
+               show
+               d-flex
+               align-items-center"
+        role="alert">
+        <% if %w[alert].include?(flash_kind.to_s) %>
+          <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
         <% end %>
-    <% end %>
-  </div>
+        <span id="alert-text"><%= flash[flash_kind] %></span>
+        <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <% end %>
+  <% end %>
 <% end %>
