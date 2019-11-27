@@ -65,7 +65,6 @@ Rails.application.routes.draw do
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
-  # TODO refactor: merge list of static pages
   get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
   get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
   get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'

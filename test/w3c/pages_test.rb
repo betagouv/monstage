@@ -7,7 +7,6 @@ module W3c
     include Devise::Test::IntegrationHelpers
 
     test 'static pages' do
-      # TODO refactor: merge list of static pages
       %i[
         root_path
         les_10_commandements_d_une_bonne_offre_path
