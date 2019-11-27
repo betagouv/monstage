@@ -60,24 +60,62 @@ module W3c
     end
 
     test 'school_manager dashboard_school_users_path' do
-      assert false
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      create(:teacher, school: school)
+      create(:main_teacher, school: school)
+      create(:other, school: school)
+
+      sign_in(school_manager)
+      run_request_and_cache_response(report_as: "school_manager dashboard_school_users_path") do
+        get dashboard_school_users_path(school)
+        assert_response :success
+      end
     end
 
     test 'school_manager dashboard_school_class_rooms_path' do
-      assert false
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      create(:class_room, school: school)
+      sign_in(school_manager)
+      run_request_and_cache_response(report_as: "school_manager dashboard_school_class_rooms_path") do
+        get dashboard_school_class_rooms_path(school)
+        assert_response :success
+      end
     end
 
-    test 'school_manager dashboard_edit_school_path' do
-      assert false
+    test 'school_manager edit_dashboard_school_path' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      sign_in(school_manager)
+      run_request_and_cache_response(report_as: "school_manager edit_dashboard_school_path") do
+        get edit_dashboard_school_path(school)
+        assert_response :success
+      end
     end
 
-    test 'teacher dashboard_edit_school_class_room_path' do
-      assert false
+    test 'teacher dashboard_school_class_room_path' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      teacher = create(:teacher, school: school_manager.school)
+      class_room = create(:class_room, school: school)
+      sign_in(teacher)
+      run_request_and_cache_response(report_as: "school_manager dashboard_school_class_room_path") do
+        get dashboard_school_class_room_path(school, class_room)
+        assert_response :success
+      end
     end
 
-    test 'teacher dashboard_student_path' do
-      assert false
+    test 'teacher dashboard_school_students_path' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      teacher = create(:teacher, school: school_manager.school)
+      student = create(:student, school: school)
+      sign_in(teacher)
+      run_request_and_cache_response(report_as: "school_manager dashboard_school_students_path") do
+        get dashboard_school_students_path(school)
+        assert_response :success
+      end
     end
-
   end
 end
