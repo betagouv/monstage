@@ -95,7 +95,7 @@ module InternshipApplications
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
-    test 'GET #index with approved internship_application, shows cancel! & signed! links' do
+    test 'GET #index as Employer with approved internship_application, shows cancel! & signed! links' do
       internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)

@@ -89,8 +89,10 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'MainTeacher' do
-    school = create(:school, :with_school_manager)
-    main_teacher = create(:main_teacher, school: school)
+    student = create(:student)
+    school_manager = create(:school_manager, school: student.school)
+    main_teacher = create(:main_teacher, school: student.school)
+    internship_application = create(:internship_application, student: student)
     ability = Ability.new(main_teacher)
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
@@ -102,6 +104,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, main_teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
+    assert(ability.can?(:update, internship_application))
   end
 
   test 'Teacher' do
