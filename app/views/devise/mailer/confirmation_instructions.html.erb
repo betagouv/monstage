@@ -1,7 +1,6 @@
 <p><%= t('.greeting', recipient: @email) %></p>
 
-<p><%= t('.instruction') %></p>
-<p><%= link_to t('.action'), confirmation_url(@resource, confirmation_token: @token) %></p>
+<p><%= link_to "Cliquez sur ce lien pour confirmer votre compte", confirmation_url(@resource, confirmation_token: @token) %></p>
 
 <% if @resource.is_a?(Users::Student) %>
   <p>En plus de confirmer votre compte par email, veuillez : </p>
