@@ -8,6 +8,10 @@ module ApplicationHelper
     ''
   end
 
+  def helpdesk_url
+    "https://monstage.zammad.com/help/fr-fr"
+  end
+
   def custom_dashboard_controller?(user:)
     user.custom_dashboard_paths
         .map{ |path| current_page?(path) }
