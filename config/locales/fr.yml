@@ -93,6 +93,10 @@ fr:
         total_male_convention_signed_applications_count: Garçon
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
+        approved_applications_count: Candidatures acceptées
+        total_male_approved_applications_count: Garçon
+        total_female_approved_applications_count: Fille
+        total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
 
       internship_offer:

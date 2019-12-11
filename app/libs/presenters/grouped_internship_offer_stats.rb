@@ -6,10 +6,10 @@ module Presenters
              :total_applications_count,
              :total_male_applications_count,
              :total_female_applications_count,
-             :total_convention_signed_applications_count,
-             :total_male_convention_signed_applications_count,
-             :total_female_convention_signed_applications_count,
-             :total_custom_track_convention_signed_applications_count,
+             :approved_applications_count,
+             :total_male_approved_applications_count,
+             :total_female_approved_applications_count,
+             :total_custom_track_approved_applications_count,
              to: :internship_offer
 
     attr_reader :internship_offer

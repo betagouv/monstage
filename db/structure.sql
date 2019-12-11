@@ -504,7 +504,9 @@ CREATE TABLE public.internship_offers (
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
-    internship_offer_weeks_count integer
+    internship_offer_weeks_count integer,
+    total_male_approved_applications_count integer DEFAULT 0,
+    total_custom_track_approved_applications_count integer DEFAULT 0
 );
 
 
@@ -1562,6 +1564,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191105104039'),
 ('20191120184441'),
 ('20191120184442'),
-('20191127144843');
+('20191127144843'),
+('20191211145010');
 
 

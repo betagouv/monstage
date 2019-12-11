@@ -37,7 +37,7 @@
               th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:sector_id)
               th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total_report_count)
               th.border-left-1 colspan="3"= Reporting::InternshipOffer.i18n_attribute(:total_applications_count)
-              th.border-left-1 colspan="4"= Reporting::InternshipOffer.i18n_attribute(:total_convention_signed_applications_count)
+              th.border-left-1 colspan="4"= Reporting::InternshipOffer.i18n_attribute(:approved_applications_count)
             tr.bg-light
               th.border-left-1
               th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
@@ -47,9 +47,9 @@
               th= Reporting::InternshipOffer.i18n_attribute(:total_female_applications_count)
               th.border-left-1= Reporting::InternshipOffer.i18n_attribute(:total)
               th
-                accr title="Cordée de la réussite, parcours d'éxcellence"= Reporting::InternshipOffer.i18n_attribute(:total_custom_track_convention_signed_applications_count)
-              th= Reporting::InternshipOffer.i18n_attribute(:total_male_convention_signed_applications_count)
-              th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_convention_signed_applications_count)
+                accr title="Cordée de la réussite, parcours d'éxcellence"= Reporting::InternshipOffer.i18n_attribute(:total_custom_track_approved_applications_count)
+              th= Reporting::InternshipOffer.i18n_attribute(:total_male_approved_applications_count)
+              th.border-right= Reporting::InternshipOffer.i18n_attribute(:total_female_approved_applications_count)
 
           tbody
             = render partial: 'reporting/internship_offers/internship_offer', collection: @offers

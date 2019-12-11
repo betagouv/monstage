@@ -22,20 +22,20 @@ module Presenters
       offers.sum(&:total_female_applications_count)
     end
 
-    def total_convention_signed_applications_count
-      offers.sum(&:total_convention_signed_applications_count)
+    def approved_applications_count
+      offers.sum(&:approved_applications_count)
     end
 
-    def total_male_convention_signed_applications_count
-      offers.sum(&:total_male_convention_signed_applications_count)
+    def total_male_approved_applications_count
+      offers.sum(&:total_male_approved_applications_count)
     end
 
-    def total_female_convention_signed_applications_count
-      offers.sum(&:total_female_convention_signed_applications_count)
+    def total_female_approved_applications_count
+      offers.sum(&:total_female_approved_applications_count)
     end
 
-    def total_custom_track_convention_signed_applications_count
-      offers.sum(&:total_custom_track_convention_signed_applications_count)
+    def total_custom_track_approved_applications_count
+      offers.sum(&:total_custom_track_approved_applications_count)
     end
 
     attr_reader :offers
