@@ -3,7 +3,7 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
   connect() {
-    $formContainer = $('#feedback-form');
+    const $formContainer = $('#feedback-form');
 
     $formContainer.ZammadForm({
       messageTitle: 'Formulaire de Contact',
