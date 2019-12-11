@@ -25,7 +25,7 @@ module Dto
         sector_name: Reporting::InternshipOffer.i18n_attribute(:sector_id)
       }
       converter = ActiveRecordToCsv.new(entries: results, headers: Reporting::InternshipOffer.csv_headers(headers: headers))
-      header_row = "Secteurs professionnels,Nbr. d'offres proposées,Nombre de candidatures,Garçon,Fille,Nombre de stages conclus,CR/PE,Garçon,Fille"
+      header_row = "Secteurs professionnels,Nbr. d'offres proposées,Nombre de candidatures,Garçon,Fille,Candidatures acceptées,CR/PE,Garçon,Fille"
       row_1 = "#{sector_agri.name},2,0,0,0,0,0,0,0"
       row_2 = "#{sector_wood.name},10,0,0,0,0,0,0,0"
       assert_equal [header_row, row_1, row_2, ""].join("\n"),
