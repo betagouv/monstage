@@ -19,6 +19,7 @@ import "@rails/actiontext";
 
 import 'better-dom/dist/better-dom';
 import 'better-dateinput-polyfill/dist/better-dateinput-polyfill.js';
+import 'url-search-params-polyfill';
 
 import '../bootapp';
 

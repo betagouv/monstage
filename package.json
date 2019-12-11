@@ -32,7 +32,8 @@
     "regenerator-runtime": "^0.13.3",
     "stimulus": "^1.1.1",
     "trix": "^1.0.0",
-    "turbolinks": "^5.2.0"
+    "turbolinks": "^5.2.0",
+    "url-search-params-polyfill": "^7.0.0"
   },
   "devDependencies": {
     "eslint": "^6.1.0",
