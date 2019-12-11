@@ -3,9 +3,12 @@
 module Reporting
   # wrap reporting for School
   class School < ApplicationRecord
-    has_many :users, foreign_type: 'type'
+    PAGE_SIZE = 100
 
-    PAGE_SIZE = 30
+    has_many :users, foreign_type: 'type'
+    has_many :school_internship_weeks, dependent: :destroy
+    has_many :weeks, through: :school_internship_weeks
+
     paginates_per PAGE_SIZE
 
     def readonly?

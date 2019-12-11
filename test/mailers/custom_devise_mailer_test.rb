@@ -18,7 +18,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
       assert_equal(user.is_a?(Users::Student) || user.is_a?(Users::MainTeacher),
                    email.attachments
                         .map(&:filename)
-                        .include?('authorisation-parentale.pdf'))
+                        .include?('autorisation-parentale.pdf'))
     end
   end
 end

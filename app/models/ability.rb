@@ -66,7 +66,6 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count > 0
     end
     can %i[see_tutor], InternshipOffer
-
   end
 
   def main_teacher_abilities(user:)
@@ -89,6 +88,9 @@ class Ability
       school.id == user.school_id
     end
     can %i[see_tutor], InternshipOffer
+    can %i[update], InternshipApplication do |internship_application|
+      user.school.students.where(id: internship_application.student.id).count > 0
+    end
   end
 
   def teacher_abilities(user:)

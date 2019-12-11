@@ -45,6 +45,18 @@ module Dashboard
         assert_select 'a[href=?]', dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!)
       end
 
+      test 'GET internship_applications#index as MainTeacher works and show convention button' do
+        school = create(:school, :with_school_manager)
+        class_room = create(:class_room, school: school)
+        student = create(:student, school: school, class_room: class_room)
+        main_teacher = create(:main_teacher, school: school, class_room: class_room)
+        internship_application = create(:internship_application, :approved, student: student)
+        sign_in(main_teacher)
+        get dashboard_students_internship_applications_path(student)
+        assert_response :success
+        assert_select 'a[href=?]', dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!)
+      end
+
       test 'GET internship_applications#index render navbar, timeline' do
         student = create(:student)
         sign_in(student)
