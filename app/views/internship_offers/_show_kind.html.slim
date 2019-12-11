@@ -1,11 +1,13 @@
 p
-  span.badge.badge-cyan.px-3.py-2
+  span.badge.badge-cyan.px-3.py-2.mr-3.my-1
     - if internship_offer.is_individual?
-      | Stage individuel (un seul élève par stage)
+      i.fas.fa-users
+      = " Stage individuel (un seul élève par stage)"
     - else
-      | Stage collectif
-      = " (par groupe de #{internship_offer.max_candidates} élèves)"
+      i.fas.fa-users
+      = " Stage collectif (par groupe de #{internship_offer.max_candidates} élèves)"
 
-  - if internship_offer.school.present?
-    span.badge.badge-cyan.px-3.py-2.ml-3
-      | Stage reservé
+  - if internship_offer.reserved_to_school?
+    span.badge.badge-cyan.px-3.py-2.badge-school-reserved.my-1
+      i.fas.fa-school
+      = "Stage reservé (aux élèves du collège #{internship_offer.school.name})"

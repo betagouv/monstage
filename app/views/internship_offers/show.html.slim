@@ -24,10 +24,6 @@
     - elsif user_signed_in?
       - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
         = render partial: "internship_applications/student_form"
-      - else
-        .row
-          .col-12
-            .alert.alert-info.alert-info-reserved-internship-offer.my-3.mx-0="Ce stage est reservé au collège #{@internship_offer.school}."
 
     - else
       = render partial: "internship_applications/visitor_form"

@@ -37,6 +37,7 @@ import { faAngleLeft,
          faTimes,
          faTrash,
          faUser,
+         faUsers,
          faWheelchair } from '@fortawesome/free-solid-svg-icons'
 
 // get list with ./infra/dev/find-font-awesome-icons.sh
@@ -89,6 +90,7 @@ library.add(faAngleLeft,
             faTimes,
             faTrash,
             faUser,
+            faUsers,
             faWheelchair);
 
 // makes it works with Turbolink on document mutation
