@@ -196,7 +196,9 @@ class AutocompleteSchool extends React.Component {
             {!currentRequest && (
               <button
                 type="button"
-                className={`btn btn-outline-secondary btn-clear-city ${autocompleteNoResult ? '' : 'rounded-0'}`}
+                className={`btn btn-outline-secondary btn-clear-city ${
+                  autocompleteNoResult ? '' : 'rounded-0'
+                }`}
                 onClick={this.onResetSearch}
               >
                 <i className="fas fa-times" />
@@ -209,9 +211,7 @@ class AutocompleteSchool extends React.Component {
             )}
           </div>
         </div>
-        <ul
-          className={`${classes || ''} list-group p-0 shadow-sm`}
-        >
+        <ul className={`${classes || ''} list-group p-0 shadow-sm`}>
           <li
             className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
               Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
@@ -227,7 +227,10 @@ class AutocompleteSchool extends React.Component {
               onClick={this.onSelectCity(currentCity, autocompleteCitySuggestions[currentCity])}
             >
               <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-              <span className="badge-secondary badge-pill small">{autocompleteCitySuggestions[currentCity].length} collège{autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}</span>
+              <span className="badge-secondary badge-pill small">
+                {autocompleteCitySuggestions[currentCity].length} collège
+                {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
+              </span>
             </li>
           ))}
 
@@ -252,10 +255,16 @@ class AutocompleteSchool extends React.Component {
               </small>
             </li>
           ))}
-          {requestError && <li className="list-group-item list-group-item-danger small">{requestError}</li>}
-          {autocompleteNoResult && <li className="list-group-item list-group-item-info small">Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné est un collège REP ou REP+.</li>}
+          {requestError && (
+            <li className="list-group-item list-group-item-danger small">{requestError}</li>
+          )}
+          {autocompleteNoResult && (
+            <li className="list-group-item list-group-item-info small">
+              Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné est un
+              collège REP ou REP+.
+            </li>
+          )}
         </ul>
-
       </div>
     );
   };

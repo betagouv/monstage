@@ -22,27 +22,38 @@ class ReservedSchoolInput extends React.Component {
 
   state = {
     checked: null,
-  }
+  };
 
-  handleChange = (event) => {
-    this.setState({checked: event.target.checked})
-  }
+  handleChange = event => {
+    this.setState({ checked: event.target.checked });
+  };
 
   render() {
     const { existingSchool, resourceName } = this.props;
     const { checked } = this.state;
-    const checkedOrHasExistingSchool = checked === true || (checked === null && existingSchool)
+    const checkedOrHasExistingSchool = checked === true || (checked === null && existingSchool);
     return (
       <>
         <div className="form-group">
           <label htmlFor="is_reserved">
-            <input type="checkbox" name="is_reserved" id="is_reserved" value="true" checked={checkedOrHasExistingSchool} onChange={this.handleChange} />
+            <input
+              type="checkbox"
+              name="is_reserved"
+              id="is_reserved"
+              value="true"
+              checked={checkedOrHasExistingSchool}
+              onChange={this.handleChange}
+            />
             <span className="ml-1">Ce stage est reservé à un collège uniquement ?</span>
-            <small className="form-text text-muted">Les stages reservés ne seront proposés qu'aux élèves du collège selectionné</small>
+            <small className="form-text text-muted">
+              Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
+            </small>
           </label>
         </div>
         {checkedOrHasExistingSchool && <AutocompleteSchool {...this.props} />}
-        {!checkedOrHasExistingSchool && <input type="hidden" value="" name={`${resourceName}[school_id]`} />}
+        {!checkedOrHasExistingSchool && (
+          <input type="hidden" value="" name={`${resourceName}[school_id]`} />
+        )}
       </>
     );
   }

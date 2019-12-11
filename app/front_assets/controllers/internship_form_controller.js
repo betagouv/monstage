@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import { toggleElement, showElement, hideElement } from '../utils/dom';
+import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = [

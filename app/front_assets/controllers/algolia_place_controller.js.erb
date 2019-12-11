@@ -17,8 +17,8 @@ export default class extends Controller {
   onAlgoliaSearchResultSelected = selection => {
     const { suggestion } = selection;
 
-    $(this.cityInputTarget).val("")
-    $(this.streetInputTarget).val("")
+    $(this.cityInputTarget).val('');
+    $(this.streetInputTarget).val('');
     switch (suggestion.type) {
       case 'city':
         $(this.cityInputTarget).val(suggestion.name);
@@ -59,7 +59,7 @@ export default class extends Controller {
         'de', // germany
         'it', // italia
         'ch', // switz
-        'es'  // spain
+        'es', // spain
       ],
     });
 
@@ -71,10 +71,10 @@ export default class extends Controller {
 
     // unfortunately can't use class function on clear callback
     // have to use closured consts
-    const $streetInput = $(this.streetInputTarget)
-    const $cityInput = $(this.cityInputTarget)
-    const $zipcodeInput = $(this.zipcodeInputTarget)
-    const $departmentInput = $(this.departmentInputTarget)
+    const $streetInput = $(this.streetInputTarget);
+    const $cityInput = $(this.cityInputTarget);
+    const $zipcodeInput = $(this.zipcodeInputTarget);
+    const $departmentInput = $(this.departmentInputTarget);
     const $latitudeInput = $(this.latitudeInputTarget);
     const $longitudeInput = $(this.longitudeInputTarget);
 

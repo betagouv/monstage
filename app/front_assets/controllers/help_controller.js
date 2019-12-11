@@ -1,10 +1,11 @@
-import { Controller } from "stimulus"
-import { toggleElement } from "../utils/dom"
+import $ from 'jquery';
+import { Controller } from 'stimulus';
+import { toggleElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = [ 'content' ]
+  static targets = ['content'];
 
   toggle() {
-    toggleElement($(this.contentTarget))
+    toggleElement($(this.contentTarget));
   }
 }

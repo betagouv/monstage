@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import { Controller } from 'stimulus';
 import Turbolinks from 'turbolinks';
 
@@ -26,7 +27,7 @@ export default class extends Controller {
     } else {
       searchParams.set(param, paramValue);
     }
-    searchParams.delete('page')
+    searchParams.delete('page');
 
     Turbolinks.visit(
       `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`,
