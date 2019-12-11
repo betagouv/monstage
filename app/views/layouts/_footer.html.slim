@@ -20,6 +20,8 @@
         ul.nav.flex-column
           li.nav-item= link_to "Centre d'aide", "//monstage.zammad.com/help/fr-fr", class: 'nav-link px-0 py-1', target: '_blank', rel: "external noopener noreferrer", title: "Consulter notre centre d'aide"
 
+          li.nav-item= link_to "Contact le support", contact_path, class: 'nav-link px-0 py-1', title: "Contacter le support de la plateforme monstagedetroisieme.fr"
+
           li.nav-item
             = link_to root_path + 'autorisation_parentale.pdf', title: "Acceder au Manuel d'Utilisation", class: 'nav-link px-0 py-1' do
                = "Autorisation parentale (PDF – 61KB)"
