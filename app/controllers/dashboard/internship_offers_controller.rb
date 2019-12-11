@@ -15,7 +15,7 @@ module Dashboard
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier. Nous vous remercions vivement pour votre participation à cette dynamique nationale.' })
+                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new

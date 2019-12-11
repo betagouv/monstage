@@ -25,3 +25,13 @@
   color: #AE650B; // romy style: http://design.tetue.net/basic-style-guide/
   border-color: #AE650B;
 }
+
+.alert.alert-sticky{
+  position: fixed;
+  top: 0;
+  height: 70px;
+  left: 0;
+  right: 0;
+  border-radius: 0;
+  text-align: center;
+}
