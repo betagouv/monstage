@@ -4,7 +4,8 @@ import { Controller } from 'stimulus';
 export default class extends Controller {
   connect() {
     $formContainer = $('#feedback-form');
-    $('#feedback-form').ZammadForm({
+
+    $formContainer.ZammadForm({
       messageTitle: 'Formulaire de Contact',
       messageSubmit: 'Envoyer',
       messageThankYou:
