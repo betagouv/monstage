@@ -41,7 +41,7 @@ class InternshipApplication < ApplicationRecord
       .where(submitted_at: 14.days.ago..7.days.ago)
   }
 
-  scope :expired, lambda {
+  scope :expirable, lambda {
     submitted.where('submitted_at < :date', date: 14.days.ago)
   }
 

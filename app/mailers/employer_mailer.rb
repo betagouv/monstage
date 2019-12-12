@@ -8,11 +8,12 @@ class EmployerMailer < ApplicationMailer
          subject: "Nouvelle candidature au stage #{@internship_application.internship_offer.title}")
   end
 
-  def internship_applications_reminder_email(pending_applications:,
-                                             rejected_applications:)
-    @pending_applications = pending_applications
-    @rejected_applications = rejected_applications
-    @employer = @pending_applications.first.internship_offer.employer
+  def internship_applications_reminder_email(employer:,
+                                             remindable_application_ids:,
+                                             expirable_application_ids:)
+    @remindable_application_ids = InternshipApplication.where(id: remindable_application_ids)
+    @expirable_application_ids = InternshipApplication.where(id: expirable_application_ids)
+    @employer = employer
 
     mail(to: @employer.email,
          subject: "Action requise : des candidatures vous attendent")

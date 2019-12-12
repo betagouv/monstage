@@ -14,15 +14,15 @@ class EmployerMailerTest < ActionMailer::TestCase
   end
 
   test '.internship_applications_reminder_email delivers as expected' do
-    internship_applications = [create(:internship_application)]
+    internship_application = create(:internship_application)
     email = EmployerMailer.internship_applications_reminder_email(
-      pending_applications: internship_applications,
-      rejected_applications: internship_applications
+      employer: internship_application.internship_offer.employer,
+      remindable_application_ids: [internship_application.id],
+      expirable_application_ids: [internship_application.id]
     )
     email.deliver_now
     assert_emails 1
     assert_equal "Action requise : des candidatures vous attendent", email.subject
-    assert_equal [internship_applications.first.internship_offer.employer.email], email.to
-    assert email.decoded.include?("Vous avez actuellement #{internship_applications.count} candidatures en attente de réponse.")
+    assert_equal [internship_application.internship_offer.employer.email], email.to
   end
 end

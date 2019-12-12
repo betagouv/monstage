@@ -29,7 +29,7 @@ module Triggers
              submitted_at: 8.days.ago,
              internship_offer: @internship_offer)
 
-      assert_enqueued_with(job: EmployerInternshipApplicationsReminderJob,
+      assert_enqueued_with(job: Triggered::InternshipApplicationsReminderJob,
                            args: [@internship_offer.employer]) do
         @reminder_service.enqueue_all
       end
@@ -43,7 +43,7 @@ module Triggers
              submitted_at: 15.days.ago,
              internship_offer: @internship_offer)
 
-      assert_enqueued_with(job: EmployerInternshipApplicationsReminderJob,
+      assert_enqueued_with(job: Triggered::InternshipApplicationsReminderJob,
                            args: [@internship_offer.employer]) do
         @reminder_service.enqueue_all
       end

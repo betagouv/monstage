@@ -1,14 +1,13 @@
 p
   = "Bonjour #{@employer.name},"
 
-- if @pending_applications.size.positive?
-
+- if @remindable_application_ids.size.positive?
   p
-    = "Vous avez actuellement #{@pending_applications.size} candidatures en attente de réponse."
+    = "Vous avez actuellement #{@remindable_application_ids.size} candidatures en attente de réponse."
     = "En l'absence de réponse de votre part ; ces candidature(s) seront automatiquement refusées après de 15 jours."
 
-- if @rejected_applications.size.positive?
+- if @expirable_application_ids.size.positive?
   p
-    = "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@rejected_applications.size} candidatures ont étées automatiquement refusées."
+    = "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@expirable_application_ids.size} candidatures ont étées automatiquement refusées."
 
 p= link_to "Gérer mes candidatures",  dashboard_internship_offers_url
