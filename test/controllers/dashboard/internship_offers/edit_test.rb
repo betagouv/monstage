@@ -88,7 +88,7 @@ module InternshipOffers
 
       get edit_dashboard_internship_offer_path(internship_offer)
       assert_response :success
-      assert_select "#internship_offer_operator_ids_#{operator.id}[disabled]"
+      assert_select "#internship_offer_operator_ids_#{operator.id}", count: 0
     end
   end
 end
