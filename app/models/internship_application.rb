@@ -28,6 +28,26 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  #
+  # Triggers scopes (used for transactional mails)
+  #
+  scope :not_reminded, lambda {
+    where(pending_reminder_sent_at: nil)
+  }
+
+  scope :remindable, lambda {
+    submitted
+      .not_reminded
+      .where(submitted_at: 14.days.ago..7.days.ago)
+  }
+
+  scope :expired, lambda {
+    submitted.where('submitted_at < :date', date: 14.days.ago)
+  }
+
+  #
+  # Ordering scopes (used for ordering in ui)
+  #
   scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
       .select(%(
@@ -43,6 +63,9 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  #
+  # Other stuffs
+  #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
