@@ -221,16 +221,15 @@ module InternshipOffers
       assert_select 'a[href=?]', internship_offer.permalink
     end
 
-    test 'GET #show should be 404 if offer is discarded' do
+    test 'GET #show redirect to internship_offers when offer is discarded' do
       internship_offer = create(:internship_offer)
       student = create(:student, school: create(:school))
       sign_in(student)
 
       internship_offer.discard
 
-      assert_raise ActionController::RoutingError do
-         get internship_offer_path(internship_offer)
-      end
+      get internship_offer_path(internship_offer)
+      assert_redirected_to internship_offers_path
     end
 
     test 'GET #show offers show next/previous navigation in list' do
@@ -335,6 +334,21 @@ module InternshipOffers
                                               longitude: 2)
         end
       end
+    end
+
+    test 'GET #show as Employer when internship_offer is unpublished' do
+      internship_offer = create(:internship_offer)
+      internship_offer.update!(published_at: nil)
+      sign_in(internship_offer.employer)
+      get internship_offer_path(internship_offer)
+      assert_response :success
+    end
+
+    test 'GET #show as visitor when internship_offer is unpublished' do
+      internship_offer = create(:internship_offer)
+      internship_offer.update!(published_at: nil)
+      get internship_offer_path(internship_offer)
+      assert_redirected_to internship_offers_path
     end
 
     test 'GET #show as Employer displays internship_applications link' do

@@ -48,6 +48,13 @@ module BaseInternshipOffer
 
     scope :published, -> { where.not(published_at: nil) }
 
+    def published?
+      published_at.present?
+    end
+    def unpublished?
+      !published?
+    end
+
     def reverse_academy_by_zipcode
       self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
     end
