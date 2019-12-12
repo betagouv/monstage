@@ -89,11 +89,29 @@ module Dashboard
       get dashboard_internship_offers_path
       assert_response :success
       assert_select ".test-internship-offer", count: 3
-
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(void_internship_offer), text: "Répondre", count: 0
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(void_internship_offer), text: "Afficher", count: 0
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: "Répondre"
       assert_select "a[href=?]", dashboard_internship_offer_internship_applications_path(internship_offer_with_application), text: "Afficher"
+    end
+
+    test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
+      employer = create(:employer)
+      discarded_internship_offer = create(:internship_offer, :discarded, employer: employer)
+      kept_internship_offer = create(:internship_offer, employer: employer)
+      create(:internship_application, :submitted,
+                                      internship_offer: discarded_internship_offer)
+      create(:internship_application, :submitted,
+                                      internship_offer: kept_internship_offer)
+      create(:internship_application, :approved,
+                                      internship_offer: kept_internship_offer)
+
+      sign_in(employer)
+      get dashboard_internship_offers_path
+
+      assert_select ".warning-pending-notifications",
+                    text: "Vous avez 1 candidature(s) en attente de réponse.",
+                    count: 1
     end
 
     test 'GET #index as Operator displays internship_applications link' do
