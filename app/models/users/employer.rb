@@ -17,10 +17,6 @@ module Users
       user.internship_offers
     }
 
-    def self.drh
-      Users::Employer.where(email: 'drh@betagouv.fr').first
-    end
-
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     end
