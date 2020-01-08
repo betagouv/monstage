@@ -1,0 +1,159 @@
+.container.mt-3
+  = render partial: 'reporting/navigation'
+
+  - if can?(:index_and_filter, Reporting::InternshipOffer)
+    .row[data-controller='statistics']
+      .col-12
+        .bg-stats-filter.rounded.py-3.d-flex
+          .form-group.col-lg-3
+            = label_tag :department, 'Département', class: 'text-uppercase'
+            = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+
+  .row.mt-3
+    .col-6
+      h2.h3.text-black-50 Collèges
+
+      - # top, school sumup
+      .pane.bg-white.shadow.rounded-lg.my-5.p-4
+        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Collèges engagés
+
+        .row
+          p.col-6.text-left
+            span.h2.text-body X
+            span.text-black-50 Collèges
+          p.col-6.text-right
+            span.h3.text-body X%
+            span.text-black-50 de vos objectifs
+
+        .row
+          .col-12
+            .progress
+              .progress-bar.bg-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
+
+      - # middle, school engaged
+      .card.my-5
+        .card-body
+          h3.h5.text-dark.mb-1.card-title Collèges non inscrits
+          p.mb-0.text-black-50.card-title Collèges à contacter pour inscription
+
+        table.table.table-statistics
+          thead
+            tr.table-blue
+              th Établissement
+              th Label
+              th Chef d'établissement impliqué
+              th Professeurs principaux impliqués
+          tbody
+
+        .card-body
+          p=link_to "#", class: 'btn btn-warning' do
+            i.fas.fa-download
+            span Télécharger
+
+      - # bottom, soon in internship
+      .card.my-5
+        .card-body
+          h3.h5.text-dark.mb-1.card-title Collèges inscrits
+          p.mb-0.text-black-50.card-title Collèges à prioriser car bientôt en stage
+
+        table.table.table-statistics
+          thead
+            tr.table-blue
+              th Établissement
+              th Nombre de stages
+              th Semaines de stage
+          tbody
+
+        .card-body
+          p=link_to "#", class: 'btn btn-warning' do
+            i.fas.fa-download
+            span Télécharger
+
+    .col-6
+      h2.h3.text-black-50 Entreprises
+
+      - # top, count sumup
+      .pane.bg-white.shadow.rounded-lg.my-5.p-4
+
+        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Offres
+
+        .row
+          .col-6
+            .alert-warning.px-1.py-2.rounded
+              .row.align-items-center
+                .col-1.col-sm-auto.text-center.mr-2
+                  i.fas.fa-file-alt.fa-2x
+                .col-1
+                  span.h2.text-white X
+                .col
+                  span.h6.text-white Offres proposées
+
+          .col-6
+            .alert-danger.px-1.py-2.rounded
+              .row.align-items-center
+                .col-1.col-sm-auto.text-center.mr-2
+                  i.far.fa-handshake.fa-2x
+                .col-1
+                  span X
+                .col
+                  span Offres proposées
+
+        .row.mt-3
+          .col-12
+            p=link_to "#", class: 'btn btn-warning' do
+              i.fas.fa-download
+              span Télécharger
+
+      - # middle, count publicy
+      .pane.bg-white.shadow.rounded-lg.my-5.p-4
+        .row
+          .col-6
+            h3.h5.text-cyan Secteur privé
+
+            .row.align-items-center.no-gutters
+              .col-3.text-right
+                span.h2.text-cyan.mr-1 X
+              .col
+                span.text-black-50 Groupes ou institutions de tutelle
+
+          .col-6
+            h3.h5.text-blue-dark Secteur privé
+
+            .row.align-items-center.no-gutters
+              .col-3.text-right
+                span.h2.text-blue-dark.mr-1 X
+              .col
+                span.text-black-50 Groupes ou institutions de tutelle
+
+        .row.mt-3
+          .col-12
+            .progress
+              .progress-bar.bg-cyan aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" style=("width: 60%")
+              .progress-bar.bg-blue-dark aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" style=("width: 40%")
+
+      .row.my-5
+        .col-6
+          .card
+            .card-body
+              h3.h5.text-dark.mb-1.card-title Pacte
+              p.mb-0.text-black-50.card-title Entreprises du pacte à contacter
+
+            table.table.table-statistics
+              thead
+                tr.table-blue
+                  th Entreprise
+                  th Offres
+              tbody
+
+        .col-6
+          .card
+            .card-body
+              h3.h5.text-dark.mb-1.card-title Public
+              p.mb-0.text-black-50.card-title Entreprises publiques à contacter
+
+            table.table.table-statistics
+              thead
+                tr.table-blue
+                  th Entreprise
+                  th Offres
+              tbody

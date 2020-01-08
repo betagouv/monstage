@@ -24,6 +24,7 @@
 .row
   .col-12
     ul.nav.nav-tabs.mb-2
+      li.nav-item= link_to "Dashboard", reporting_dashboards_path(default_reporting_url_options(current_user)), class: "nav-link #{current_page?(reporting_dashboards_path) ? 'active' : ''}"
       li.nav-item= link_to "Offres", reporting_internship_offers_path(default_reporting_url_options(current_user)), class: "nav-link #{current_page?(reporting_internship_offers_path) ? 'active' : ''}"
 
       li.nav-item= link_to "Collèges", reporting_schools_path(default_reporting_url_options(current_user)), class: "nav-link #{current_page?(reporting_schools_path) ? 'active' : ''}"

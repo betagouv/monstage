@@ -8,10 +8,11 @@ $gray-900: #494949;    // body text color
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
 $blue:    #006699;
 $blue_light: #e3f2fe;
+$blue_dark: rgb(47,94,167);
 $red:     #dc3545;
 $yellow:  #feb620;
 $green:   #28a745;
-$cyan:    #0981A1;
+$cyan:    rgb(90,202,198);
 
 // liens soulignés
 $link-decoration: underline;

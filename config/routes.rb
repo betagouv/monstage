@@ -51,15 +51,10 @@ Rails.application.routes.draw do
     resources :feedbacks, only: :create
   end
 
-  get '/dashboard', to: 'dashboard#index'
-
   namespace :reporting, path: 'reporting' do
+    resources :dashboards, only: %i[index]
     resources :schools, only: %i[index]
-    resources :internship_offers, only: %i[index] do
-      collection do
-        get :download
-      end
-    end
+    resources :internship_offers, only: %i[index]
   end
 
   get 'account(/:section)', to: 'users#edit', as: 'account'
