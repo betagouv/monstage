@@ -250,34 +250,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student with sector_id, returns filtered content' do
-    sign_in(create(:student))
-    internship_1 = create(:internship_offer)
-    internship_2 = create(:internship_offer)
-
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: { sector_id: internship_1.sector_id }
-        assert_presence_of(internship_offer: internship_1)
-        assert_absence_of(internship_offer: internship_2)
-      end
-    end
-  end
-
-  test 'GET #index as student with sector_id ' \
-       'includes sector_id for listable behaviour on show page' do
-    sign_in(create(:student))
-    internship_1 = create(:internship_offer)
-    internship_2 = create(:internship_offer)
-
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: { sector_id: internship_1.sector_id }
-        assert_select("a[href=?]", internship_offer_path(id: internship_1, sector_id: internship_1.sector_id))
-      end
-    end
-  end
-
   test 'GET #index as student with latitude/longitude ' \
        'includes latitude/longitude for listable behaviour on show page' do
     sign_in(create(:student))
