@@ -6,23 +6,19 @@ import Turbolinks from 'turbolinks';
 import $ from 'jquery';
 
 import SchoolPropType from '../prop_types/school';
-import SectorPropType from '../prop_types/sector';
 
 class SearchInternshipOffer extends React.Component {
   static propTypes = {
     url: PropTypes.string.isRequired,
     algoliaApiId: PropTypes.string.isRequired,
     algoliaApiKey: PropTypes.string.isRequired,
-    sectors: PropTypes.arrayOf(SectorPropType).isRequired,
     currentCitySearch: PropTypes.string,
-    currentSector: SectorPropType,
     currentSchool: SchoolPropType,
   };
 
   static defaultProps = {
     currentCitySearch: null,
     currentSchool: null,
-    currentSector: null,
   };
 
   constructor(props) {
@@ -32,20 +28,6 @@ class SearchInternshipOffer extends React.Component {
     };
   }
 
-  filterOfferBySector = event => {
-    const { url } = this.props;
-    const paramValue = $(event.target).val();
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if (paramValue.length === 0) {
-      searchParams.delete('sector_id');
-    } else {
-      searchParams.set('sector_id', paramValue);
-    }
-    searchParams.delete('page');
-
-    Turbolinks.visit(`${url}?${searchParams.toString()}`);
-  };
 
   filterOfferByLocation = ({ suggestion }) => {
     const { url } = this.props;
@@ -76,7 +58,7 @@ class SearchInternshipOffer extends React.Component {
   };
 
   render() {
-    const { currentSchool, currentSector, sectors, algoliaApiKey, algoliaApiId } = this.props;
+    const { currentSchool, algoliaApiKey, algoliaApiId } = this.props;
     const { currentCitySearch } = this.state;
 
     return (
@@ -136,54 +118,6 @@ class SearchInternshipOffer extends React.Component {
                   </button>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-        <div className="col-12 col-md-6 col-lg-4">
-          <div className="form-group">
-            <label className="mb-3 d-block" htmlFor="internship-offer-sector-filter">
-              <strong>Secteur professionnel</strong>
-              <button
-                type="button"
-                className="btn btn-absolute btn-link py-0"
-                data-action="click->help#toggle"
-              >
-                <i className="fa fa-question-circle" />
-              </button>
-            </label>
-            <select
-              name="Sélectionner un domaine d'activité"
-              id="internship-offer-sector-filter"
-              className="custom-select col-12"
-              value={currentSector ? currentSector.id : ''}
-              onChange={this.filterOfferBySector}
-            >
-              <option value="">-- Veuillez sélectionner un domaine --</option>
-              <option value="">Tous</option>
-              {(sectors || []).map(sector => (
-                <option key={sector.id} value={sector.id}>
-                  {sector.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="d-none col-12 col-lg-8" data-target="help.content">
-          <div className="help-sign-content bg-white alert alert-secondary alert-outlined">
-            {currentSector && (
-              <>
-                Pour en savoir plus sur le secteur professionnel
-                {` "${currentSector.name}"`}
-                <a href={currentSector.external_url}>site de l&apos;Onisep.</a>
-              </>
-            )}
-            {!currentSector && (
-              <>
-                Pour découvrir les secteurs professionnels consultez le{' '}
-                <a href="http://www.onisep.fr/Decouvrir-les-metiers/Des-metiers-par-secteur">
-                  site de l&apos;Onisep.
-                </a>
-              </>
             )}
           </div>
         </div>
