@@ -19,16 +19,16 @@
 
         .row
           p.col-6.text-left
-            span.h2.text-body X
-            span.text-black-50 Collèges
+            span.h2.text-body= @total_schools_with_manager
+            span.text-black-50= " Collèges"
           p.col-6.text-right
-            span.h3.text-body X%
-            span.text-black-50 de vos objectifs
+            span.h3.text-body ="#{@total_schools_ratio}%"
+            span.text-black-50= " de vos objectifs"
 
         .row
           .col-12
-            .progress
-              .progress-bar.bg-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="25" role="progressbar" style=("width: 25%")
+            .progress.progress-thin
+              .progress-bar.bg-light-green aria-valuemax="100" aria-valuemin="0" aria-valuenow=@total_schools_ratio role="progressbar" style=("width: #{@total_schools_ratio}%")
 
       - # middle, school engaged
       .card.my-5
@@ -127,7 +127,7 @@
 
         .row.mt-3
           .col-12
-            .progress
+            .progress.progress-thin
               .progress-bar.bg-cyan aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" style=("width: 60%")
               .progress-bar.bg-blue-dark aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" style=("width: 40%")
 

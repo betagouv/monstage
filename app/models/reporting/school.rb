@@ -9,6 +9,10 @@ module Reporting
     has_many :school_internship_weeks, dependent: :destroy
     has_many :weeks, through: :school_internship_weeks
 
+    scope :with_school_manager, lambda {
+      joins(:users).where(users: {type: "Users::SchoolManager"})
+    }
+
     paginates_per PAGE_SIZE
 
     def readonly?
