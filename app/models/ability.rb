@@ -155,6 +155,7 @@ class Ability
   def god_abilities
     can :show, :account
     can :manage, School
+    can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update destroy export], User
     can %i[read update export], InternshipOffer

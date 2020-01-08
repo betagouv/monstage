@@ -16,17 +16,11 @@ RailsAdmin.config do |config|
   config.authorize_with :cancancan
 
   config.parent_controller = 'AdminController'
-  ## == Pundit ==
-  # config.authorize_with :pundit
 
   ## == PaperTrail ==
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
 
   ### More at https://github.com/sferik/rails_admin/wiki/Base-configuration
-
-  ## == Gravatar integration ==
-  ## To disable Gravatar integration in Navigation Bar set to false
-  # config.show_gravatar = true
 
   config.actions do
     dashboard do
@@ -50,6 +44,7 @@ RailsAdmin.config do |config|
                               School
                               Feedback
                               InternshipOffer
+                              Sector
                               Users::Student
                               Users::Employer
                               Users::SchoolManager

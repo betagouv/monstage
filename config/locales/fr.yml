@@ -22,6 +22,9 @@ fr:
         answer: Marquer comme En Cours
         close: Clore
     models:
+      sector:
+        one: Secteur
+        other: Secteurs
       user:
         one: Utilisateur
         other: Utilisateurs
