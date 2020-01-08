@@ -1,0 +1,11 @@
+wb = xlsx_package.workbook
+headers = Reporting::InternshipOffer.csv_headers(headers: {report_row_title: ""})
+
+wb.add_worksheet(name: "Offres") do |sheet|
+  sheet.add_row(headers.values)
+  @offers.each do |internship_offer|
+    sheet.add_row(headers.keys.map do |attribute|
+                    internship_offer.send(attribute)
+                  end)
+  end
+end

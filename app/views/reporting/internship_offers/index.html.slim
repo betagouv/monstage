@@ -59,4 +59,4 @@
 
     .row.mt-3.mb-3
       .col-12.text-center
-        = link_to "Exporter", download_reporting_internship_offers_path(safe_download_params), class: 'btn btn-primary'
+        = link_to "Exporter", reporting_internship_offers_path(safe_download_params.merge(format: :xlsx)), class: 'btn btn-primary', data: {turbolinks: false}

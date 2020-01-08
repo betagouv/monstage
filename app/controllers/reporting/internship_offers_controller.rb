@@ -9,18 +9,12 @@ module Reporting
       @offers_by_publicy = is_public.present? ?
                            [] :
                            base_query.grouped_by_publicy
-    end
-
-    def download
-      authorize! :index, Reporting::Acl.new(user: current_user, params: params)
-
-      headers = Reporting::InternshipOffer.csv_headers(headers: {report_row_title: ""})
-      converter = Dto::ActiveRecordToCsv.new(entries: current_offers,
-                                             headers: headers)
-      send_data(converter.to_csv,
-                type: 'text/csv',
-                disposition: 'attachment',
-                filename: 'monstagedetroisieme-export.csv')
+       respond_to do |format|
+        format.xlsx do
+          response.headers['Content-Disposition'] = 'attachment; filename="my_new_filename.xlsx"'
+        end
+        format.html
+      end
     end
 
     def safe_download_params
