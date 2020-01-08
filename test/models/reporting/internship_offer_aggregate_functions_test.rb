@@ -6,7 +6,7 @@ module Reporting
     setup do
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
-      weeks = [Week.first, Week.last]
+      weeks = [::Week.first, ::Week.last]
       @internship_offer_agri_1 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
       @internship_offer_agri_2 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
       @internship_offer_wood = create(:internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10)

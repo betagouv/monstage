@@ -92,16 +92,18 @@ module InternshipOffers
     test 'GET #show as a student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
-      sign_in(create(:student, school: create(:school, weeks: weeks)))
 
-      get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/_student_form'
-      assert_select '#new_internship_application', 1
-      assert_select 'option', text: weeks.first.human_select_text_method, count: 1
-      assert_select 'a[href=?]', '#internship-application-form', count: 1
-      assert_select 'span.h1-label', text: "Je candidate"
-      assert_select '.btn-warning', text: "Je candidate"
-      assert_select 'textarea[id=internship_application_motivation]', count: 1
+      travel_to(weeks[0].week_date) do
+        sign_in(create(:student, school: create(:school, weeks: weeks)))
+        get internship_offer_path(internship_offer)
+        assert_template 'internship_applications/_student_form'
+        assert_select '#new_internship_application', 1
+        assert_select 'option', text: weeks.first.human_select_text_method, count: 1
+        assert_select 'a[href=?]', '#internship-application-form', count: 1
+        assert_select 'span.h1-label', text: "Je candidate"
+        assert_select '.btn-warning', text: "Je candidate"
+        assert_select 'textarea[id=internship_application_motivation]', count: 1
+      end
     end
 
 
@@ -136,18 +138,21 @@ module InternshipOffers
                           Week.find_by(number: 4, year: 2020)]
       school = create(:school, weeks: [internship_weeks[1], internship_weeks[2]])
       internship_offer = create(:internship_offer, weeks: internship_weeks)
-      sign_in(create(:student, school: school))
 
-      get internship_offer_path(internship_offer)
+      travel_to(internship_weeks[0].week_date) do
+        sign_in(create(:student, school: school))
 
-      assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
-      assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
-      assert_select 'select option', text: internship_weeks[2].human_select_text_method, count: 1
-      assert_select 'select option', text: internship_weeks[3].human_select_text_method, count: 0
+        get internship_offer_path(internship_offer)
+        assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
+        assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
+        assert_select 'select option', text: internship_weeks[2].human_select_text_method, count: 1
+        assert_select 'select option', text: internship_weeks[3].human_select_text_method, count: 0
+      end
     end
 
     test 'GET #show as a student only displays weeks that are not blocked' do
       max_candidates = 2
+
       internship_weeks = [Week.find_by(number: 1, year: 2020),
                           Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: internship_weeks)
@@ -158,11 +163,13 @@ module InternshipOffers
       internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                    internship_offer_weeks: [blocked_internship_week,
                                                                             available_internship_week])
-      sign_in(create(:student, school: school))
-      get internship_offer_path(internship_offer)
+      travel_to(internship_weeks[0].week_date - 1.week) do
+        sign_in(create(:student, school: school))
+        get internship_offer_path(internship_offer)
 
-      assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
-      assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
+        assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
+        assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
+      end
     end
 
     test 'GET #show as student with existing draft application shows the draft' do
@@ -173,11 +180,13 @@ module InternshipOffers
                                                                          student: student,
                                                                          internship_offer: internship_offer,
                                                                          week: weeks.last)
-      sign_in(student)
-      get internship_offer_path(internship_offer)
-      assert_response :success
-      assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
-      assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
+      travel_to(weeks[0].week_date - 1.week) do
+        sign_in(student)
+        get internship_offer_path(internship_offer)
+        assert_response :success
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
+      end
     end
 
     test 'GET #show as student with existing submitted, approved, rejected application shows _state component' do
