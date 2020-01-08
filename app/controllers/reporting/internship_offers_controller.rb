@@ -6,7 +6,7 @@ module Reporting
       authorize! :index, Reporting::Acl.new(user: current_user, params: params)
 
       @offers = current_offers
-      @offers_by_publicy = is_public.present? ?
+      @offers_by_publicy = public_param.present? ?
                            [] :
                            base_query.grouped_by_publicy
        respond_to do |format|
@@ -27,7 +27,7 @@ module Reporting
     private
 
     def current_offers
-      if is_public.present? && is_public == 'true'
+      if public_param.present? && public_param == 'true'
         base_query.grouped_by_group
                   .map(&Presenters::InternshipOfferStatsByGroupName.method(:new))
       else
@@ -38,25 +38,26 @@ module Reporting
 
     def base_query
       base_query = Reporting::InternshipOffer.during_current_year
-      base_query = base_query.by_department(department: department) if department
-      base_query = base_query.by_group(group: group) if group
-      base_query = base_query.by_academy(academy: academy) if academy
+      base_query = base_query.by_department(department: department_param) if department_param
+      base_query = base_query.by_group(group: group_param) if group_param
+      base_query = base_query.by_academy(academy: academy_param) if academy_param
+      base_query = base_query.where(is_public: public_param) if public_param
       base_query
     end
 
-    def is_public
+    def public_param
       params[:is_public]
     end
 
-    def department
+    def department_param
       params[:department]
     end
 
-    def group
+    def group_param
       params[:group]
     end
 
-    def academy
+    def academy_param
       params[:academy]
     end
   end
