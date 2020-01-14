@@ -8,10 +8,11 @@ class ReportingSchoolTest < ActiveSupport::TestCase
     create(:school, school_manager: build(:school_manager))
     create(:school, school_manager: build(:school_manager))
 
-    assert_equal 1, Reporting::School.without_school_manager.entries.size, 1
-    assert Reporting::School.without_school_manager.entries.include?(school_without_manager)
+    schools_without_manager = Reporting::School.without_school_manager.entriess
+    assert_equal 1, schools_without_manager.size, 1
+    assert schools_without_manager.map(&:id)
+                                  .include?(school_without_manager.id)
 
-    assert_equal 2, Reporting::School.with_school_manager.count, 'bad count for with_school_manager'
     assert_equal 3, Reporting::School.count, 'bad count for total'
   end
 end
