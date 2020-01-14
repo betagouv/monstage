@@ -1,8 +1,5 @@
 tr.bg-light
-  td.align-middle.border-left-1
-    strong= school.name
-    br
-    small.text-muted= "#{school.city} (#{school.zipcode})"
+  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school }
 
 
   td.align-middle.border-left-1
@@ -15,10 +12,7 @@ tr.bg-light
 
   td.align-middle= school.total_student_with_parental_consent_count
 
-  td.align-middle.border-left-1
-    - if school.school_manager?
-      i.fas.fa-check.text-success
-    - else
-      i.fas.fa-times.text-danger
+  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: school.school_manager? }
+
 
   td.align-middle= school.total_main_teacher_count
