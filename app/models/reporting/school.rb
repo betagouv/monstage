@@ -6,11 +6,21 @@ module Reporting
     PAGE_SIZE = 100
 
     has_many :users, foreign_type: 'type'
+    has_one :school_manager, class_name: 'Users::SchoolManager'
+    has_many :teachers, dependent: :nullify,
+                        class_name: 'Users::Teacher'
+
+
     has_many :school_internship_weeks, dependent: :destroy
     has_many :weeks, through: :school_internship_weeks
 
-    scope :with_school_manager, lambda {
-      joins(:users).where(users: {type: "Users::SchoolManager"})
+    scope :with_school_manager, lambda { joins(:school_manager) }
+    scope :without_school_manager, lambda { left_joins(:school_manager) }
+    scope :with_teacher_count, lambda {
+      left_joins(:teachers)
+        .select("schools.*, count(users.id) as teacher_count")
+        .group("schools.id")
+
     }
 
     paginates_per PAGE_SIZE

@@ -41,9 +41,22 @@
             tr.table-blue
               th Établissement
               th Label
-              th Chef d'établissement impliqué
-              th Professeurs principaux impliqués
+              th
+                acronym title="Chef d'établissement" CE
+                | &nbsp;
+                | impliqué
+              th
+                acronym title="Professeurs principaux" PP
+                | &nbsp;
+                | impliqués
           tbody
+            - @school_without_manager.each do |school_without_manager|
+              tr
+                td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
+                td.align-middle.border-left-1= humanize_school_kind(school_without_manager.kind)
+                td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: false }
+                td.align-middle.border-left-1= school_without_manager.attributes['teacher_count']
+
 
         .card-body
           p=link_to "#", class: 'btn btn-warning' do
