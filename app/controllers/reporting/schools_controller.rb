@@ -3,12 +3,8 @@ module Reporting
     def index
       authorize! :index, Reporting::Acl.new(user: current_user, params: params)
 
-      query = School.all
-      query = query.where(department: params[:department]) if params[:department]
-      query = query.includes(:users, :weeks)
-      query = query.order(:name)
-      query = query.page(params[:page])
-      @schools = query
+      @schools = Finders::ReportingSchool.new(params: params.permit(:department, :page))
+                                         .all_paginated
     end
   end
 end
