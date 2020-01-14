@@ -1,22 +1,26 @@
 module Reporting
   class DashboardsController < ApplicationController
-
     def index
-      @total_schools_with_manager = school_base_query.with_school_manager
-                                                     .count
-      @total_schools_ratio = (@total_schools_with_manager.to_f * 100 / school_base_query.count.to_f).round(2)
-      @school_without_manager = Finders::ReportingSchool.new(params: params.permit(:department, :page))
-                                                        .fetch_all_without_manager
-                                                        .limit(10)
+      render locals: {
+        total_schools_with_manager: total_schools_with_manager,
+        total_schools_ratio: total_schools_ratio,
+        schools_without_manager: finder.fetch_all_without_manager.limit(10),
+        schools_with_weeks_and_internship: finder.fetch_with_weeks_and_internships
+      }
     end
 
     private
 
-    def school_base_query
-      return @school_base_query if @school_base_query
-      @school_base_query = Reporting::School.all
-      @school_base_query = @school_base_query.where(department: params[:department]) if params[:department]
-      @school_base_query
+    def total_schools_with_manager
+      @total_schools_with_manager ||= finder.total_with_manager
+    end
+
+    def total_schools_ratio
+      (total_schools_with_manager.to_f * 100 / finder.total).round(2)
+    end
+
+    def finder
+      @finder ||= Finders::ReportingSchool.new(params: params.permit(:department))
     end
   end
 end
