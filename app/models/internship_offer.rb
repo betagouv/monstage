@@ -4,7 +4,7 @@ class InternshipOffer < ApplicationRecord
   # queries
   include Nearbyable
   include Listable
-  include Weekable
+  include FindableWeek
   # base
   include BaseInternshipOffer
 

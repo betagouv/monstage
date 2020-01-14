@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Weekable
+module FindableWeek
   extend ActiveSupport::Concern
 
   included do

@@ -3,7 +3,7 @@
 module Reporting
   # wrap reporting for School
   class School < ApplicationRecord
-    include Weekable
+    include FindableWeek
 
     def readonly?
       true
