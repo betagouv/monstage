@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
+  # queries
   include Nearbyable
   include Listable
+  include Weekable
+  # base
   include BaseInternshipOffer
 
   PAGE_SIZE = 30
@@ -105,17 +108,6 @@ class InternshipOffer < ApplicationRecord
   }
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
-  }
-  scope :by_weeks, lambda { |weeks:|
-    joins(:weeks).where(weeks: { id: weeks.ids })
-  }
-
-  scope :older_than, lambda { |week:|
-    joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
-  }
-
-  scope :available_in_the_future, lambda {
-    older_than(week: Week.current)
   }
 
   after_initialize :init

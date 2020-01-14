@@ -3,6 +3,11 @@
 module Reporting
   # wrap reporting for School
   class School < ApplicationRecord
+    include Weekable
+
+    def readonly?
+      true
+    end
     PAGE_SIZE = 100
 
     has_many :users, foreign_type: 'type'
@@ -25,9 +30,7 @@ module Reporting
 
     paginates_per PAGE_SIZE
 
-    def readonly?
-      true
-    end
+
 
     def students
       users.select{|user| user.is_a?(Users::Student)}
