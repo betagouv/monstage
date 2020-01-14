@@ -20,16 +20,12 @@ module Finders
     end
     # groupable
 
-    def grouped_by_publicy
-      base_query.grouped_by_publicy
+    def dimension_by_group
+      base_query.dimension_by_group
     end
 
-    def grouped_by_group
-      base_query.grouped_by_group
-    end
-
-    def grouped_by_sector
-      base_query.grouped_by_sector
+    def dimension_by_sector
+      base_query.dimension_by_sector
     end
 
     private

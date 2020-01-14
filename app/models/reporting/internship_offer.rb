@@ -88,20 +88,14 @@ module Reporting
       where(academy: academy)
     }
 
-    scope :grouped_by_sector, lambda {
+    scope :dimension_by_sector, lambda {
       select('sector_id', *aggregate_functions_to_sql_select)
         .includes(:sector)
         .group(:sector_id)
         .order(:sector_id)
     }
 
-    scope :grouped_by_publicy, lambda {
-      select('is_public', *aggregate_functions_to_sql_select)
-        .group(:is_public)
-        .order(:is_public)
-    }
-
-    scope :grouped_by_group, lambda {
+    scope :dimension_by_group, lambda {
       select('internship_offers.group', *aggregate_functions_to_sql_select)
         .where(is_public: true)
         .group('internship_offers.group')

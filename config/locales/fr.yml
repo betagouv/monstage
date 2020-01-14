@@ -89,14 +89,14 @@ fr:
       reporting/internship_offer:
         sector_id: Secteurs professionnels
         total_report_count: Nbr. d'offres proposées
-        total_applications_count: Nombre de candidatures
+        total_applications_count: Nbr. de candidatures
         total_male_applications_count: Garçon
         total_female_applications_count: Fille
-        total_convention_signed_applications_count: Nombre de stages conclus
+        total_convention_signed_applications_count: Nbr. de stages conclus
         total_male_convention_signed_applications_count: Garçon
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
-        approved_applications_count: Candidatures acceptées
+        approved_applications_count: Nbr. de candidatures acceptées
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_custom_track_approved_applications_count: 'CR/PE'

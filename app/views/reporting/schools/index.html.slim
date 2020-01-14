@@ -1,12 +1,6 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
-  - if can?(:index_and_filter, Reporting::InternshipOffer)
-    .row[data-controller='statistics']
-      .col-12
-        .bg-stats-filter.rounded.py-3.d-flex
-          .form-group.col-lg-3
-            = label_tag :department, 'Département', class: 'text-uppercase'
-            = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+  div.bg-stats-filter.rounded.p-3[data-controller='statistics']= render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true}
 
   .row.mt-3
     .col-12

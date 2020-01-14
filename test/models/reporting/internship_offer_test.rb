@@ -20,14 +20,14 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
     end
   end
 
-  test '.grouped_by_sector group by sector_name' do
+  test '.dimension_by_sector group by sector_name' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
     create(:internship_offer, sector: sector_a)
     create(:internship_offer, sector: sector_a)
     create(:internship_offer, sector: sector_b)
 
-    results = Reporting::InternshipOffer.grouped_by_sector
+    results = Reporting::InternshipOffer.dimension_by_sector
     first_sectored_report = results[0]
     last_sectored_report = results[1]
 
@@ -35,31 +35,18 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
     assert_equal last_sectored_report.sector_name, sector_b.name
   end
 
-  test '.grouped_by_sector sum max_candidates' do
+  test '.dimension_by_sector sum max_candidates' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
     create(:internship_offer, weeks: [Week.first], sector: sector_a, max_candidates: 3)
     create(:internship_offer, weeks: [Week.first, Week.last], sector: sector_a, max_candidates: 1)
     create(:internship_offer, weeks: [Week.first, Week.last], sector: sector_b, max_candidates: 10)
 
-    results = Reporting::InternshipOffer.grouped_by_sector
+    results = Reporting::InternshipOffer.dimension_by_sector
     first_sectored_report = results[0]
     last_sectored_report = results[1]
 
     assert_equal 4, first_sectored_report.total_report_count
     assert_equal 10, last_sectored_report.total_report_count
-  end
-
-  test '.grouped_by_publicy group by publicly_name' do
-    create(:internship_offer, is_public: true)
-    create(:internship_offer, is_public: false, group: '')
-    create(:internship_offer, is_public: true)
-
-    results = Reporting::InternshipOffer.grouped_by_publicy
-    publicly_no = results[0]
-    publicly_yes = results[1]
-
-    assert_equal publicly_yes.is_public, true
-    assert_equal publicly_no.is_public, false
   end
 end
