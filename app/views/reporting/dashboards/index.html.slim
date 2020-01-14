@@ -100,24 +100,27 @@
         h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Offres
 
         .row
-          .col-6
+          .col-6.pr-2
             .alert-warning.px-1.py-2.rounded
-              .row.align-items-center
-                .col-1.col-sm-auto.text-center.mr-2
-                  i.fas.fa-file-alt.fa-2x
-                .col-1
-                  span.h2.text-white X
-                .col
-                  span.h6.text-white Offres proposées
+              .row.align-items-center.no-gutters
+                .col-2.text-center
+                  i.fas.fa-file-alt.fa-2x.fa-fw
+                .col-4.text-center
+                  span.h4.text-white= total_internship_offers
+                .col.col-6
+                  span
+                    | Offres
+                    br
+                    | proposées
 
-          .col-6
+          .col-6.pl-2
             .alert-danger.px-1.py-2.rounded
-              .row.align-items-center
-                .col-1.col-sm-auto.text-center.mr-2
-                  i.far.fa-handshake.fa-2x
-                .col-1
-                  span X
-                .col
+              .row.align-items-center.no-gutters
+                .col-2.text-center
+                  i.far.fa-handshake.fa-2x.fa-fw
+                .col-4.text-center
+                  span.h4.text-white= total_approved_applications_count
+                .col.col-6
                   span Candidatures acceptées
 
         .row.mt-3
