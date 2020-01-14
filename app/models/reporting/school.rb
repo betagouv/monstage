@@ -45,8 +45,6 @@ module Reporting
 
     paginates_per PAGE_SIZE
 
-
-
     def students
       users.select{|user| user.is_a?(Users::Student)}
     end
