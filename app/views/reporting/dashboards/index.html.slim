@@ -128,7 +128,7 @@
             p=link_to "#", class: 'btn btn-warning' do
               i.fas.fa-download
               | &nbsp;
-              span Télécharger
+              span Télécharger (TODO)
 
       - # middle, count publicy
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
@@ -138,7 +138,7 @@
 
             .row.align-items-center.no-gutters
               .col-3.text-right
-                span.h2.text-cyan.mr-1 X
+                span.h2.text-cyan.mr-1= total_internship_offers_is_public
               .col
                 span.text-black-50 Groupes ou institutions de tutelle
 
@@ -147,7 +147,7 @@
 
             .row.align-items-center.no-gutters
               .col-3.text-right
-                span.h2.text-blue-dark.mr-1 X
+                span.h2.text-blue-dark.mr-1= total_internship_offers_is_not_public
               .col
                 span.text-black-50 Groupes ou institutions de tutelle
 

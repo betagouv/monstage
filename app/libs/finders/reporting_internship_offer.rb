@@ -1,6 +1,6 @@
 module Finders
   class ReportingInternshipOffer
-
+    # groupable
     def total
       base_query.sum('max_candidates')
     end
@@ -8,6 +8,17 @@ module Finders
     def total_approved_applications_count
       base_query.sum('approved_applications_count')
     end
+
+    def total_is_public
+      base_query.where(is_public: true)
+                .sum('max_candidates')
+    end
+
+    def total_is_not_public
+      base_query.where(is_public: false)
+                .sum('max_candidates')
+    end
+    # groupable
 
     def grouped_by_publicy
       base_query.grouped_by_publicy

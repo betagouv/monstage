@@ -9,6 +9,8 @@ module Reporting
 
         total_internship_offers: internship_offers_finder.total,
         total_approved_applications_count: internship_offers_finder.total_approved_applications_count,
+        total_internship_offers_is_public: internship_offers_finder.total_is_public,
+        total_internship_offers_is_not_public: internship_offers_finder.total_is_not_public,
       }
     end
 
