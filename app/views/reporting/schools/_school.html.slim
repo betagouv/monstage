@@ -2,11 +2,8 @@ tr.bg-light
   td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school }
 
 
-  td.align-middle.border-left-1
-    - if school.weeks.size.positive?
-      ul.nav
-        - school.weeks.map do |week|
-          li= week.select_text_method
+  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school.weeks }
+
 
   td.align-middle.border-left-1.font-weight-bold.text-info= school.total_student_with_confirmation_count
 
