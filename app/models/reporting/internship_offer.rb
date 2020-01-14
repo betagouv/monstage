@@ -8,6 +8,8 @@ module Reporting
     end
 
     belongs_to :sector
+    belongs_to :group
+    delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
 
     # beware, order matters on csv export
@@ -80,10 +82,6 @@ module Reporting
       where(department: department)
     }
 
-    scope :by_group, lambda { |group:|
-      where(group: group)
-    }
-
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
     }
@@ -96,10 +94,10 @@ module Reporting
     }
 
     scope :dimension_by_group, lambda {
-      select('internship_offers.group', *aggregate_functions_to_sql_select)
-        .where(is_public: true)
-        .group('internship_offers.group')
-        .order('internship_offers.group')
+      select('group_id', *aggregate_functions_to_sql_select)
+        .includes(:group)
+        .group(:group_id)
+        .order(:group_id)
     }
 
     scope :total_for_year, lambda {

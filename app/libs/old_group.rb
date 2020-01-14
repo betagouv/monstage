@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Group
+class OldGroup
   PUBLIC = [
     'PRÉSIDENCE DE LA RÉPUBLIQUE',
     'PREMIER MINISTRE',

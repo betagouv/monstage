@@ -22,14 +22,14 @@ module InternshipOffers
     test 'PATCH #update as employer owning internship_offer updates internship_offer' do
       internship_offer = create(:internship_offer)
       new_title = 'new title'
-
+      new_group = create(:group, is_public: false, name: 'woop')
       sign_in(internship_offer.employer)
       patch(dashboard_internship_offer_path(internship_offer.to_param),
             params: { internship_offer: {
               title: new_title,
               week_ids: [weeks(:week_2019_1).id],
               is_public: false,
-              group: Group::PRIVATE.first
+              group_id: new_group.id
             } })
       assert_redirected_to(internship_offer_path(internship_offer),
                            'redirection should point to updated offer')

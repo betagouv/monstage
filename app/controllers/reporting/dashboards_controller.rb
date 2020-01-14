@@ -1,16 +1,30 @@
 module Reporting
   class DashboardsController < ApplicationController
+    # todo refactor for understandable widgetization
     def index
       render locals: {
+        # widget left, 0, showing school involvement
         total_schools_with_manager: total_schools_with_manager,
         total_schools_ratio: total_schools_ratio,
+
+        # widget left, 1, showing not invovled schools
         schools_without_manager: school_finder.fetch_all_without_manager.limit(10),
+
+        # widget left, 2, showing school soon in application
         schools_with_weeks_and_internship: school_finder.fetch_with_weeks_and_internships,
 
+        # widget right, 0, counting internship_offers/applications
         total_internship_offers: internship_offers_finder.total,
         total_approved_applications_count: internship_offers_finder.total_approved_applications_count,
+
+        # widget right, 1, showing distribution public private
         total_internship_offers_is_public: internship_offers_finder.total_is_public,
         total_internship_offers_is_not_public: internship_offers_finder.total_is_not_public,
+
+        # widget right, 2, showing pacte not involved
+        private_groups_not_involved: internship_offers_finder.private_groups_not_involved,
+        # widget right, 2, showing public not involved
+        public_groups_not_involved: internship_offers_finder.public_groups_not_involved,
       }
     end
 

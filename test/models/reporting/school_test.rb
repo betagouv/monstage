@@ -8,7 +8,7 @@ class ReportingSchoolTest < ActiveSupport::TestCase
     create(:school, school_manager: build(:school_manager))
     create(:school, school_manager: build(:school_manager))
 
-    schools_without_manager = Reporting::School.without_school_manager.entriess
+    schools_without_manager = Reporting::School.without_school_manager.entries
     assert_equal 1, schools_without_manager.size, 1
     assert schools_without_manager.map(&:id)
                                   .include?(school_without_manager.id)
