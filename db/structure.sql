@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -516,7 +502,7 @@ CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
-    internship_offer_weeks_count integer DEFAULT 1 NOT NULL,
+    internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
@@ -1649,6 +1635,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200114163150'),
 ('20200114163210'),
 ('20200114164134'),
-('20200114164236');
+('20200114164236'),
+('20200115164034');
 
 
