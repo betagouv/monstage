@@ -7,16 +7,16 @@ export default class extends Controller {
     this.changeURLFromEvent(event, 'department');
   }
 
-  filterByGroup(event) {
-    this.changeURLFromEvent(event, 'group');
-  }
-
   filterByAcademy(event) {
     this.changeURLFromEvent(event, 'academy');
   }
 
   filterByPublicy(event) {
     this.changeURLFromEvent(event, 'is_public');
+  }
+
+  useDimension(event) {
+    this.changeURLFromEvent(event, 'dimension');
   }
 
   changeURLFromEvent(event, param) {

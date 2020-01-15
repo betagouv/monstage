@@ -9,11 +9,12 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
+    group = create(:group, name: 'hello', is_public: true)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
-        visit '/dashboard'
+        visit employer.custom_dashboard_path
         click_on 'Déposer une offre'
         fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
         find('#internship_offer_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
@@ -27,7 +28,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         find('#internship_offer_employer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
         fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
         find('label', text: 'public').click
-        select Group::PUBLIC.first, from: 'internship_offer_group'
+        select group.name, from: 'internship_offer_group_id'
         fill_in "Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)", with: 'Paris, 13eme'
         page.all('.algolia-places div[role="option"]')[0].click
         fill_in "Rue ou compléments d'adresse", with: 'La rue qui existe pas dans algolia place / OSM'

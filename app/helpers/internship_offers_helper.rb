@@ -9,8 +9,16 @@ module InternshipOffersHelper
   end
 
   def options_for_groups
-    Group::PUBLIC.map { |admin| [admin, { 'data-target' => 'internship-form.groupNamePublic' }] } +
-      Group::PRIVATE.map { |admin| [admin, { 'data-target' => 'internship-form.groupNamePrivate' }] }
+    Group.all.map do |group|
+      [
+        group.name,
+        group.id,
+        {
+          'data-target' => group.is_public? ?
+                           'internship-form.groupNamePublic' :
+                           'internship-form.groupNamePrivate' }
+        ]
+    end
   end
 
   def operator_name(internship_offer)

@@ -3,17 +3,42 @@
 module Reporting
   # wrap reporting for School
   class School < ApplicationRecord
-    PAGE_SIZE = 100
-
-    has_many :users, foreign_type: 'type'
-    has_many :school_internship_weeks, dependent: :destroy
-    has_many :weeks, through: :school_internship_weeks
-
-    paginates_per PAGE_SIZE
+    include FindableWeek
 
     def readonly?
       true
     end
+    PAGE_SIZE = 100
+
+    has_many :users, foreign_type: 'type'
+
+    has_one :school_manager,  class_name: 'Users::SchoolManager'
+    has_many :students,       class_name: 'Users::Student'
+    has_many :teachers,       class_name: 'Users::Teacher'
+    has_many :main_teachers,       class_name: 'Users::MainTeacher'
+
+    has_many :school_internship_weeks
+    has_many :weeks, through: :school_internship_weeks
+
+    has_many :internship_applications, through: :students do
+      def approved
+        where(aasm_state: :approved)
+      end
+    end
+
+    scope :count_with_school_manager, lambda {
+      joins(:school_manager)
+        .distinct('schools.id')
+        .count
+    }
+
+    scope :without_school_manager, lambda {
+      left_joins(:school_manager)
+        .group('schools.id')
+        .having("count(users.id) = 0")
+    }
+
+    paginates_per PAGE_SIZE
 
     def students
       users.select{|user| user.is_a?(Users::Student)}
@@ -41,6 +66,11 @@ module Reporting
 
     def total_main_teacher_count
       users.select{|user| user.is_a?(Users::MainTeacher)}
+           .size
+    end
+
+    def total_student_count
+      users.select{|user| user.is_a?(Users::Student)}
            .size
     end
   end

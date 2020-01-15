@@ -8,6 +8,12 @@ module Reporting
     end
 
     belongs_to :sector
+    belongs_to :group, optional: true
+    belongs_to :school, optional: true
+    has_many :internship_offer_weeks
+    has_many :weeks, through: :internship_offer_weeks
+
+    delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
 
     # beware, order matters on csv export
@@ -37,25 +43,6 @@ module Reporting
       end
     end
 
-    # what's the rails way?
-    def self.i18n_attribute(attribute_name)
-      I18n.t(
-        [
-          'activerecord',
-          'attributes',
-          'reporting/internship_offer',
-          attribute_name
-        ].join('.')
-      )
-    end
-
-    def self.csv_headers(headers: {})
-      AGGREGATE_FUNCTIONS.keys
-                         .each_with_object(headers) do |column_name|
-        headers[column_name] = i18n_attribute(column_name)
-      end
-    end
-
     scope :during_current_year, lambda {
       during_year(year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
                         then Date.today.year - 1
@@ -80,32 +67,26 @@ module Reporting
       where(department: department)
     }
 
-    scope :by_group, lambda { |group:|
-      where(group: group)
-    }
-
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
     }
 
-    scope :grouped_by_sector, lambda {
+    scope :dimension_offer, lambda {
+      select('internship_offers.*')
+    }
+
+    scope :dimension_by_sector, lambda {
       select('sector_id', *aggregate_functions_to_sql_select)
         .includes(:sector)
         .group(:sector_id)
         .order(:sector_id)
     }
 
-    scope :grouped_by_publicy, lambda {
-      select('is_public', *aggregate_functions_to_sql_select)
-        .group(:is_public)
-        .order(:is_public)
-    }
-
-    scope :grouped_by_group, lambda {
-      select('internship_offers.group', *aggregate_functions_to_sql_select)
-        .where(is_public: true)
-        .group('internship_offers.group')
-        .order('internship_offers.group')
+    scope :dimension_by_group, lambda {
+      select('group_id', *aggregate_functions_to_sql_select)
+        .includes(:group)
+        .group(:group_id)
+        .order(:group_id)
     }
 
     scope :total_for_year, lambda {

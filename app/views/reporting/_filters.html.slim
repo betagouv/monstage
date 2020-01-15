@@ -1,0 +1,20 @@
+fieldset
+  legend.h6 Filtrer par
+  .row
+    - if can?(:index_and_filter, Reporting::InternshipOffer)
+      - if by_academy
+        .col-4
+          .form-group
+            = label_tag :academy, 'Académie', class: 'text-uppercase'
+            = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
+      - if by_department
+        .col-4
+          .form-group
+            = label_tag :department, 'Département', class: 'text-uppercase'
+            = select_tag :department, options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]), prompt: 'Tous', class: 'form-control', data: { action: 'statistics#filterByDepartment' }
+      - if by_typology
+        .col-4
+          .form-group
+            = label_tag :is_public, 'Typologie d\'acteur', class: 'text-uppercase'
+
+            = select_tag :is_public, options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }

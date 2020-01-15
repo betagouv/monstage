@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
+  # queries
   include Nearbyable
   include Listable
+  include FindableWeek
+  # base
   include BaseInternshipOffer
 
   PAGE_SIZE = 30
@@ -41,11 +44,7 @@ class InternshipOffer < ApplicationRecord
       field :discarded_at
       field :employer_name
       field :is_public
-      field :group, :enum do
-        enum do
-          Group::PUBLIC + Group::PRIVATE
-        end
-      end
+      field :group
       field :employer_description
       field :published_at
     end
@@ -70,20 +69,8 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :is_public, inclusion: { in: [true, false] }
-  validates :group, inclusion: {
-                      in: Group::PUBLIC,
-                      message: 'Veuillez choisir une institution de tutelle'
-                    },
-                    if: :is_public?,
-                    allow_blank: true,
-                    allow_nil: true
-  validates :group, inclusion: {
-                      in: Group::PRIVATE,
-                      message: 'Veuillez choisir une institution de tutelle'
-                    },
-                    unless: :is_public?,
-                    allow_blank: true,
-                    allow_nil: true
+  validate :validate_group_is_public?, if: :is_public?
+  validate :validate_group_is_not_public?, unless: :is_public?
 
   MAX_CANDIDATES_PER_GROUP = 200
   validates :max_candidates, numericality: { only_integer: true,
@@ -97,7 +84,7 @@ class InternshipOffer < ApplicationRecord
   has_many :operators, through: :internship_offer_operators
 
   belongs_to :school, optional: true # reserved to school
-
+  belongs_to :group, optional: true
   scope :for_user, lambda { |user:, coordinates:|
     return merge(all) unless user # fuck it ; should have a User::Visitor type
 
@@ -105,17 +92,6 @@ class InternshipOffer < ApplicationRecord
   }
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
-  }
-  scope :by_weeks, lambda { |weeks:|
-    joins(:weeks).where(weeks: { id: weeks.ids })
-  }
-
-  scope :older_than, lambda { |week:|
-    joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
-  }
-
-  scope :available_in_the_future, lambda {
-    older_than(week: Week.current)
   }
 
   after_initialize :init
@@ -182,4 +158,15 @@ class InternshipOffer < ApplicationRecord
     internship_offer.operator_ids = operator_ids
     internship_offer
   end
+
+  def validate_group_is_public?
+    return if group.nil?
+    errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
+  end
+
+  def validate_group_is_not_public?
+    return if group.nil?
+    errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
+  end
+
 end

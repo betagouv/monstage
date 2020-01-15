@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_11_145010) do
+ActiveRecord::Schema.define(version: 2020_01_15_164034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,13 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
     t.string "zammad_id"
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.boolean "is_public"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "internship_applications", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "internship_offer_week_id"
@@ -98,6 +105,8 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
     t.datetime "rejected_at"
     t.datetime "convention_signed_at"
     t.datetime "submitted_at"
+    t.date "pending_reminder_sent_at"
+    t.date "automatically_rejected_at"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true
@@ -128,7 +137,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
     t.integer "max_candidates", default: 1, null: false
-    t.integer "internship_offer_weeks_count", default: 1, null: false
+    t.integer "internship_offer_weeks_count", default: 0, null: false
     t.string "tutor_name"
     t.string "tutor_phone"
     t.string "tutor_email"
@@ -142,7 +151,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
     t.datetime "discarded_at"
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "employer_name", null: false
-    t.string "group"
+    t.string "old_group"
     t.bigint "employer_id"
     t.bigint "school_id"
     t.bigint "sector_id", null: false
@@ -166,13 +175,15 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
     t.string "employer_description"
     t.integer "total_male_approved_applications_count", default: 0
     t.integer "total_custom_track_approved_applications_count", default: 0
+    t.bigint "group_id"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
     t.index ["discarded_at"], name: "index_internship_offers_on_discarded_at"
     t.index ["employer_id"], name: "index_internship_offers_on_employer_id"
-    t.index ["group"], name: "index_internship_offers_on_group"
+    t.index ["group_id"], name: "index_internship_offers_on_group_id"
     t.index ["internship_offer_weeks_count", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
+    t.index ["old_group"], name: "index_internship_offers_on_old_group"
     t.index ["remote_id"], name: "index_internship_offers_on_remote_id"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
@@ -277,6 +288,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_145010) do
   add_foreign_key "internship_offer_operators", "operators"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
+  add_foreign_key "internship_offers", "groups"
   add_foreign_key "internship_offers", "schools"
   add_foreign_key "internship_offers", "sectors"
   add_foreign_key "internship_offers", "users", column: "employer_id"

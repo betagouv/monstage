@@ -86,36 +86,26 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
-      reporting/internship_offer:
-        sector_id: Secteurs professionnels
-        total_report_count: Nbr. d'offres proposées
-        total_applications_count: Nombre de candidatures
-        total_male_applications_count: Garçon
-        total_female_applications_count: Fille
-        total_convention_signed_applications_count: Nombre de stages conclus
-        total_male_convention_signed_applications_count: Garçon
-        total_female_convention_signed_applications_count: Fille
-        total_custom_track_convention_signed_applications_count: 'CR/PE'
-        approved_applications_count: Candidatures acceptées
-        total_male_approved_applications_count: Garçon
-        total_female_approved_applications_count: Fille
-        total_custom_track_approved_applications_count: 'CR/PE'
-        total: Total
+
 
       internship_offer:
+        id: Identifiant unique de l'offre
         title: Intitulé
+        description: Description
         zipcode: Code postal
         employer_name: Employeur
         group: Groupe ou institution
         is_public: Secteur public
         sector: Secteur
-        max_candidates: Nb max de candidats
+        max_candidates: Nbr. max de candidats
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
         employer: Employeur
         employer_website: Site web de l'employeur
         employer_description: Description de l'employeur
+        internship_offer_weeks_count: Nombre de semaines
+        created_at: "Crée le"
         street: Adresse
         city: Ville
         department: Département
@@ -127,8 +117,31 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
-        total_applications_count: Nombre de candidatures
-        convention_signed_applications_count: Nombre de stages conclus
+        sector_id: Secteurs professionnels
+        submitted_application_count: Nbr. de candidatures soumises
+        rejected_application_count: Nbr. de candidatures refusées
+        total_report_count: Nbr. d'offres proposées
+        total_applications_count: Nbr. de candidatures
+        total_male_applications_count: Garçon
+        total_female_applications_count: Fille
+        total_convention_signed_applications_count: Nbr. de stages conclus
+        total_male_convention_signed_applications_count: Garçon
+        total_female_convention_signed_applications_count: Fille
+        total_custom_track_convention_signed_applications_count: 'CR/PE'
+        approved_applications_count: Nbr. de candidatures acceptées
+        total_male_approved_applications_count: Garçon
+        total_female_approved_applications_count: Fille
+        total_custom_track_approved_applications_count: 'CR/PE'
+        total: Total
+        convention_signed_applications_count: Nbr. de stages conclus
+        permalink: Lien externe
+        sector_name: 'Secteur'
+        group_name: 'Groupe ou institution de tutelle'
+        full_tutor: 'Tuteur'
+        full_employer: 'Employeur'
+        full_address: "Adresse de l'offre"
+        full_school: "Etablissement"
+        full_weeks: Semaines
       user:
         first_name: Prénom
         last_name: Nom

@@ -109,11 +109,9 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
   test 'check if internship_offer_weeks_count counter is properly set' do
     internship_offer = create(:internship_offer, weeks: [Week.first, Week.last])
-
     assert_equal 2, internship_offer.internship_offer_weeks_count
 
     internship_offer.weeks << Week.find_by(number: 10, year: 2020)
-
     assert_equal 3, internship_offer.internship_offer_weeks_count
   end
 end

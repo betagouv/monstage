@@ -1,0 +1,4 @@
+- if weeks.size.positive?
+  ul.nav
+    - weeks.map do |week|
+      li= week.short_select_text_method

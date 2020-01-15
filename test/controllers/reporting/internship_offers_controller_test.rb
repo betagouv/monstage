@@ -44,29 +44,5 @@ module Reporting
       get reporting_internship_offers_path(department: 'Ain')
       assert_response 302
     end
-
-    test "GET #index forward all safe params to download link" do
-      god = create(:god)
-      sign_in(god)
-
-      params = {
-        is_public: 'true',
-        department: 'Ain',
-        academy: 'Académie de Paris',
-        group: 'MINISTERE DE L\'ACTION ET DES COMPTES PUBLICS'
-      }
-
-      get reporting_internship_offers_path(params)
-      assert_response :success
-      assert_select "a[href=?]", download_reporting_internship_offers_path(params)
-    end
-
-    test "GET #download" do
-      god = create(:god)
-      sign_in(god)
-
-      get download_reporting_internship_offers_path
-      assert_response :success
-    end
   end
 end

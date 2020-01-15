@@ -73,6 +73,7 @@ gem 'devise-i18n'
 
 gem 'aasm'
 gem 'kaminari'
+gem 'caxlsx_rails'
 
 # Admin
 gem "switch_user"

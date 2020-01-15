@@ -117,7 +117,7 @@ module Dashboard
                           dashboard_school_class_room_path(school, class_room),
                           count: 1, text: class_room.name
 
-            stats = Presenters::ClassRoomStats.new(class_room: class_room)
+            stats = Presenters::Dashboard::ClassRoomStats.new(class_room: class_room)
             assert_select ".test-class-room-#{class_room.id} .total_student",
                           text: stats.total_student.to_s
             assert_select ".test-class-room-#{class_room.id} .total_student_with_parental_consent",
