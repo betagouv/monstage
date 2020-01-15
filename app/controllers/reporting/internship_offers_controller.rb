@@ -30,7 +30,6 @@ module Reporting
                     :group)
     end
 
-    # @note : this one is fucked up ; should be case when etc.. based on a flag
     def current_offers
       case params[:dimension]
       when 'group'

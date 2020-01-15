@@ -11,6 +11,7 @@ module InternshipOffersHelper
   def options_for_groups
     Group.all.map do |group|
       [
+        group.name,
         group.id,
         {
           'data-target' => group.is_public? ?
