@@ -21,7 +21,7 @@ module Reporting
         total_internship_offers_is_public: internship_offers_finder.total_is_public,
         total_internship_offers_is_not_public: internship_offers_finder.total_is_not_public,
 
-        # widget right, 2, showing pacte not involved
+        # widget right, 2, showing PaQte not involved
         private_groups_not_involved: internship_offers_finder.private_groups_not_involved,
         # widget right, 2, showing public not involved
         public_groups_not_involved: internship_offers_finder.public_groups_not_involved,

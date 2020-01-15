@@ -15,14 +15,14 @@ module Finders
 
     def fetch_all_without_manager
       base_query.without_school_manager
-                .with_teacher_count
                 .order(:name)
     end
 
     def fetch_with_weeks_and_internships
       base_query.available_in_the_future
+                .select('schools.*')
                 .group('schools.id')
-                .preload(:weeks)
+                .preload(:weeks, :users)
     end
 
     private

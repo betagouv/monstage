@@ -15,6 +15,7 @@ module Reporting
     has_one :school_manager,  class_name: 'Users::SchoolManager'
     has_many :students,       class_name: 'Users::Student'
     has_many :teachers,       class_name: 'Users::Teacher'
+    has_many :main_teachers,       class_name: 'Users::MainTeacher'
 
     has_many :school_internship_weeks
     has_many :weeks, through: :school_internship_weeks
@@ -35,12 +36,6 @@ module Reporting
       left_joins(:school_manager)
         .group('schools.id')
         .having("count(users.id) = 0")
-    }
-
-    scope :with_teacher_count, lambda {
-      left_joins(:teachers)
-        .select("schools.*, count(users.id) as teacher_count")
-        .group("schools.id")
     }
 
     paginates_per PAGE_SIZE
@@ -71,6 +66,11 @@ module Reporting
 
     def total_main_teacher_count
       users.select{|user| user.is_a?(Users::MainTeacher)}
+           .size
+    end
+
+    def total_student_count
+      users.select{|user| user.is_a?(Users::Student)}
            .size
     end
   end

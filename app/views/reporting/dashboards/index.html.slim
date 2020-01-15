@@ -8,15 +8,12 @@
 
       - # top, school sumup
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
-        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Collèges engagés
-
         .row
           p.col-6.text-left
             span.h2.text-body= total_schools_with_manager
             span.text-black-50= " Collèges"
           p.col-6.text-right
             span.h3.text-body ="#{total_schools_ratio}%"
-            span.text-black-50= " de vos objectifs"
 
         .row
           .col-12
@@ -27,28 +24,18 @@
       .card.my-5
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges non inscrits
-          p.mb-0.text-black-50.card-title Collèges à contacter pour inscription
 
         table.table.table-statistics
           thead
             tr.table-blue
-              th Établissement
-              th Label
-              th
-                acronym title="Chef d'établissement" CE
-                | &nbsp;
-                | impliqué
-              th
-                acronym title="Professeurs principaux" PP
-                | &nbsp;
-                | impliqués
+              th Nom du collège
+              th Réseau d'éducation prioritaire
+
           tbody
             - schools_without_manager.each do |school_without_manager|
               tr
                 td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
                 td.align-middle.border-left-1= humanize_school_kind(school_without_manager.kind)
-                td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: false }
-                td.align-middle.border-left-1= school_without_manager.attributes['teacher_count']
 
 
         .card-body
@@ -60,19 +47,22 @@
       .card.my-5
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges inscrits
-          p.mb-0.text-black-50.card-title Collèges à prioriser car bientôt en stage
 
         table.table.table-statistics
           thead
             tr.table-blue
-              th Établissement
-              th Nbr. de stages
+              th Nom du collège
+              th Nbr. de candidature acceptées
+              th Nbr. de PP
+              th Nbr. d'élève
               th Semaines de stage
           tbody
             - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
               tr
                 td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
-                td.align-middle= school_with_weeks_and_internship.internship_applications.approved.count
+                td.align-middle= school_with_weeks_and_internship.internship_applications.approved.size
+                td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
+                td.align-middle= school_with_weeks_and_internship.total_student_count
                 td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
 
 
@@ -125,35 +115,27 @@
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
         .row
           .col-6
-            h3.h5.text-cyan Secteur privé
-
-            .row.align-items-center.no-gutters
-              .col-3.text-right
-                span.h2.text-cyan.mr-1= total_internship_offers_is_public
-              .col
-                span.text-black-50 Groupes ou institutions de tutelle
-
-          .col-6
             h3.h5.text-blue-dark Secteur privé
 
             .row.align-items-center.no-gutters
-              .col-3.text-right
+              .col-12
                 span.h2.text-blue-dark.mr-1= total_internship_offers_is_not_public
-              .col
-                span.text-black-50 Groupes ou institutions de tutelle
 
-        .row.mt-3
-          .col-12
-            .progress.progress-thin
-              .progress-bar.bg-cyan aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" style=("width: 60%")
-              .progress-bar.bg-blue-dark aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" style=("width: 40%")
+
+          .col-6
+            h3.h5.text-cyan Secteur public
+
+            .row.align-items-center.no-gutters
+              .col-12
+                span.h2.text-cyan.mr-1= total_internship_offers_is_public
+              .col
+
 
       .row.my-5
         .col-6
           .card
             .card-body
-              h3.h5.text-dark.mb-1.card-title Pacte
-              p.mb-0.text-black-50.card-title Entreprises du pacte à contacter
+              h3.h5.text-dark.mb-1.card-title Entreprises du PaQte
 
             table.table.table-statistics
               thead
@@ -169,8 +151,7 @@
         .col-6
           .card
             .card-body
-              h3.h5.text-dark.mb-1.card-title Public
-              p.mb-0.text-black-50.card-title Entreprises publiques à contacter
+              h3.h5.text-dark.mb-1.card-title Secteur public
 
             table.table.table-statistics
               thead
