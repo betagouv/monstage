@@ -22,9 +22,9 @@ module Reporting
         total_internship_offers_is_not_public: internship_offers_finder.total_is_not_public,
 
         # widget right, 2, showing PaQte not involved
-        private_groups_not_involved: internship_offers_finder.private_groups_not_involved,
+        private_groups_not_involved: group_finder.groups_not_involved(is_public: false),
         # widget right, 2, showing public not involved
-        public_groups_not_involved: internship_offers_finder.public_groups_not_involved,
+        public_groups_not_involved: group_finder.groups_not_involved(is_public: true),
       }
     end
 
@@ -44,6 +44,10 @@ module Reporting
 
     def internship_offers_finder
       @internship_offers_finder ||= Finders::ReportingInternshipOffer.new(params: params.permit(:department))
+    end
+
+    def group_finder
+      @group_finder ||= Finders::ReportingGroup.new(params:params.permit(:department))
     end
   end
 end

@@ -23,17 +23,6 @@ module Finders
     end
     # TODO/1/end/groupable in one query
 
-    def private_groups_not_involved
-      base_query.where(is_public: false)
-                .select('internship_offers.group_id, count(max_candidates) as openings')
-                .group('group_id')
-    end
-
-    def public_groups_not_involved
-      base_query.where(is_public: true)
-                .select('internship_offers.group_id, count(max_candidates) as openings')
-                .group('group_id')
-    end
 
     #
     # raw queries for stats (reporting/internship_offers)

@@ -145,8 +145,8 @@
               tbody
                 - private_groups_not_involved.each do |private_group_not_involved|
                   tr
-                    td= private_group_not_involved.group.present? ? private_group_not_involved.group.name : 'Indépendant'
-                    td= private_group_not_involved.attributes['openings']
+                    td= private_group_not_involved.name
+                    td= private_group_not_involved.group_internship_offers_count
 
         .col-6
           .card
@@ -161,5 +161,5 @@
               tbody
                 - public_groups_not_involved.each do |public_group_not_involved|
                   tr
-                    td= public_group_not_involved.group.present? ? public_group_not_involved.group.name : 'Indépendant'
-                    td= public_group_not_involved.attributes['openings']
+                    td= public_group_not_involved.name
+                    td= public_group_not_involved.group_internship_offers_count
