@@ -106,10 +106,10 @@
 
         .row.mt-3
           .col-12
-            p=link_to "#", class: 'btn btn-warning' do
+            p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
               i.fas.fa-download
               | &nbsp;
-              span Télécharger (TODO)
+              span Télécharger
 
       - # middle, count publicy
       .pane.bg-white.shadow.rounded-lg.my-5.p-4

@@ -38,6 +38,10 @@ module Finders
     #
     # raw queries for stats (reporting/internship_offers)
     #
+    def dimension_offer
+      base_query.dimension_offer
+    end
+
     def dimension_by_group
       base_query.dimension_by_group
     end

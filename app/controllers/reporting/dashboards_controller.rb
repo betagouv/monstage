@@ -1,5 +1,5 @@
 module Reporting
-  class DashboardsController < ApplicationController
+  class DashboardsController < BaseReportingController
     # todo refactor for understandable widgetization
     def index
       render locals: {

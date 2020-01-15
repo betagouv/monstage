@@ -8,7 +8,11 @@ module Reporting
     end
 
     belongs_to :sector
-    belongs_to :group
+    belongs_to :group, optional: true
+    belongs_to :school, optional: true
+    has_many :internship_offer_weeks
+    has_many :weeks, through: :internship_offer_weeks
+
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
 
@@ -39,25 +43,6 @@ module Reporting
       end
     end
 
-    # what's the rails way?
-    def self.i18n_attribute(attribute_name)
-      I18n.t(
-        [
-          'activerecord',
-          'attributes',
-          'reporting/internship_offer',
-          attribute_name
-        ].join('.')
-      )
-    end
-
-    def self.csv_headers(headers: {})
-      AGGREGATE_FUNCTIONS.keys
-                         .each_with_object(headers) do |column_name|
-        headers[column_name] = i18n_attribute(column_name)
-      end
-    end
-
     scope :during_current_year, lambda {
       during_year(year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
                         then Date.today.year - 1
@@ -84,6 +69,10 @@ module Reporting
 
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
+    }
+
+    scope :dimension_offer, lambda {
+      select('internship_offers.*')
     }
 
     scope :dimension_by_sector, lambda {
