@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -499,9 +513,8 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
-    description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
-    max_occurence integer DEFAULT 1 NOT NULL,
+    internship_offer_weeks_count integer DEFAULT 1 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
@@ -518,7 +531,6 @@ CREATE TABLE public.internship_offers (
     old_group character varying,
     employer_id bigint,
     school_id bigint,
-    employer_description character varying NOT NULL,
     sector_id bigint NOT NULL,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -536,7 +548,8 @@ CREATE TABLE public.internship_offers (
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
-    internship_offer_weeks_count integer,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    employer_description character varying,
     total_male_approved_applications_count integer DEFAULT 0,
     total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint
@@ -742,8 +755,8 @@ CREATE TABLE public.users (
     api_token character varying,
     handicap text,
     custom_track boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone,
     accept_terms boolean DEFAULT false NOT NULL,
+    discarded_at timestamp without time zone,
     zipcode character varying,
     department_name character varying
 );
@@ -1349,7 +1362,7 @@ CREATE INDEX index_weeks_on_year ON public.weeks USING btree (year);
 -- Name: not_blocked_by_weeks_count_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (max_occurence, blocked_weeks_count);
+CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (internship_offer_weeks_count, blocked_weeks_count);
 
 
 --
