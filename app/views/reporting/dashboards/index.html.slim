@@ -54,7 +54,7 @@
               th Nom du collège
               th Nbr. de candidature acceptées
               th Nbr. de PP
-              th Nbr. d'élève
+              th Nbr. d'élèves
               th Semaines de stage
           tbody
             - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
@@ -135,13 +135,13 @@
         .col-6
           .card
             .card-body
-              h3.h5.text-dark.mb-1.card-title Entreprises du PaQte
+              h3.h5.text-dark.mb-1.card-title PaQte
 
             table.table.table-statistics
               thead
                 tr.table-blue
-                  th Acteur privée
-                  th Offres
+                  th Entreprise
+                  th Nb. d'offres
               tbody
                 - private_groups_not_involved.each do |private_group_not_involved|
                   tr
@@ -156,8 +156,8 @@
             table.table.table-statistics
               thead
                 tr.table-blue
-                  th Acteur public
-                  th Offres
+                  th Institution
+                  th Nb. d'offres
               tbody
                 - public_groups_not_involved.each do |public_group_not_involved|
                   tr
