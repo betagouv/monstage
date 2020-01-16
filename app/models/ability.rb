@@ -150,6 +150,8 @@ class Ability
     can %i[index], Reporting::Acl do |acl|
       acl.allowed?
     end
+
+    can %i[index_and_filter], Reporting::InternshipOffer
   end
 
   def god_abilities
