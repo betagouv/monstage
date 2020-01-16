@@ -38,10 +38,10 @@
                 td.align-middle.border-left-1= humanize_school_kind(school_without_manager.kind)
 
 
-        .card-body
-          p=link_to "#", class: 'btn btn-warning' do
-            i.fas.fa-download
-            span Télécharger (TODO)
+        / .card-body
+        /   p=link_to "#", class: 'btn btn-warning' do
+        /     i.fas.fa-download
+        /     span Télécharger (TODO)
 
       - # bottom, soon in internship
       .card.my-5
@@ -66,11 +66,11 @@
                 td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
 
 
-        .card-body
-          p=link_to "#", class: 'btn btn-warning' do
-            i.fas.fa-download
-            | &nbsp;
-            span Télécharger (TODO)
+        / .card-body
+        /   p=link_to "#", class: 'btn btn-warning' do
+        /     i.fas.fa-download
+        /     | &nbsp;
+        /     span Télécharger (TODO)
 
     .col-lg-6.col-12
       h2.h3.text-black-50 Entreprises
@@ -104,12 +104,12 @@
                 .col.col-6
                   span Candidatures acceptées
 
-        .row.mt-3
-          .col-12
-            p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
-              i.fas.fa-download
-              | &nbsp;
-              span Télécharger
+        / .row.mt-3
+        /   .col-12
+        /     p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
+        /       i.fas.fa-download
+        /       | &nbsp;
+        /       span Télécharger
 
       - # middle, count publicy
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
