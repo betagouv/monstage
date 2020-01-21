@@ -8,7 +8,7 @@ module Reporting
       @offers = current_offers
       respond_to do |format|
         format.xlsx do
-          response.headers['Content-Disposition'] = 'attachment; filename="my_new_filename.xlsx"'
+          response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('offres')}.xlsx"]
         end
         format.html
       end

@@ -49,13 +49,17 @@ module Reporting
     end
 
     def total_student_with_confirmation_count
-      students.select{|user| user.confirmed_at?}
+      students.select(&:confirmed_at?)
               .size
     end
 
     def total_student_with_parental_consent_count
-      students.select{|user| user.has_parental_consent? }
+      students.select(&:has_parental_consent?)
               .size
+    end
+
+    def total_student_count
+      students.size
     end
 
     def school_manager?
@@ -69,9 +73,9 @@ module Reporting
            .size
     end
 
-    def total_student_count
-      users.select{|user| user.is_a?(Users::Student)}
-           .size
+    def total_approved_internship_applications_count
+      instance.internship_applications.approved.size
     end
+
   end
 end

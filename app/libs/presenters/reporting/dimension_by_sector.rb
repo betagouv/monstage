@@ -6,14 +6,14 @@ module Presenters
       def self.metrics
         ::Reporting::InternshipOffer::AGGREGATE_FUNCTIONS.keys
       end
-      delegate *self.metrics, to: :internship_offer
+      delegate *self.metrics, to: :instance
 
       def self.dimension_name
         'Secteur professionnel'
       end
 
       def dimension
-        internship_offer.sector_name
+        instance.sector_name
       end
     end
   end

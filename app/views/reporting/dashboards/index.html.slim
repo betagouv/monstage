@@ -38,10 +38,10 @@
                 td.align-middle.border-left-1= humanize_school_kind(school_without_manager.kind)
 
 
-        / .card-body
-        /   p=link_to "#", class: 'btn btn-warning' do
-        /     i.fas.fa-download
-        /     span Télécharger (TODO)
+        .card-body
+          p=link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-warning', data: {turbolinks: false} do
+            i.fas.fa-download
+            span Télécharger
 
       - # bottom, soon in internship
       .card.my-5
@@ -52,17 +52,17 @@
           thead
             tr.table-blue
               th Nom du collège
-              th Nbr. de candidature acceptées
               th Nbr. de PP
               th Nbr. d'élèves
+              th Nbr. de candidature acceptées
               th Semaines de stage
           tbody
             - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
               tr
                 td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
-                td.align-middle= school_with_weeks_and_internship.internship_applications.approved.size
                 td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
                 td.align-middle= school_with_weeks_and_internship.total_student_count
+                td.align-middle= school_with_weeks_and_internship.internship_applications.approved.size
                 td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
 
 
@@ -104,12 +104,12 @@
                 .col.col-6
                   span Candidatures acceptées
 
-        / .row.mt-3
-        /   .col-12
-        /     p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
-        /       i.fas.fa-download
-        /       | &nbsp;
-        /       span Télécharger
+        .row.mt-3
+          .col-12
+            p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
+              i.fas.fa-download
+              | &nbsp;
+              span Télécharger
 
       - # middle, count publicy
       .pane.bg-white.shadow.rounded-lg.my-5.p-4

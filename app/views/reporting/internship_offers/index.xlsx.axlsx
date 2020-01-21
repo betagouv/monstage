@@ -6,7 +6,7 @@ wb.add_worksheet(name: "Offres") do |sheet|
   sheet.add_row(
     [].concat(
       [presenter_for_dimension.dimension_name],
-      presenter_for_dimension.metrics.map{|metric_name| i18n_attribute(metric_name)}
+      presenter_for_dimension.metrics.map{|metric_name| InternshipOffer.human_attribute_name(metric_name)}
     )
   )
 

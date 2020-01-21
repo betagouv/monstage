@@ -77,8 +77,10 @@ fr:
         kind: Type
         visible: Disponible sur le site
         street: Adresse
+        kind: Classification
         zipcode: Code postal
         city: Ville
+        visible: Activé?
         department: Département
         class_rooms: Classes
         school_manager: Chef d'établissement
@@ -86,7 +88,10 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
-
+        total_student_count: Nbr. d'élèves
+        total_main_teacher_count: Nbr. de PP
+        school_manager?: Chef d'établissement inscrit
+        approved_internship_applications_count: Nbr. de candidatures acceptées
 
       internship_offer:
         id: Identifiant unique de l'offre
@@ -190,11 +195,11 @@ fr:
               blank: "Veuillez saisir une description pour l'offre de stage"
               too_long: La description doit faire au maximum 500 caractères
             zipcode:
-              blank: "Veuillez reseigner le code postal de l'employeur"
+              blank: "Veuillez renseigner le code postal de l'employeur"
             street:
-              blank: "Veuillez reseigner la rue ou compléments d'adresse de l'offre de stage"
+              blank: "Veuillez renseigner la rue ou compléments d'adresse de l'offre de stage"
             city:
-              blank: "Veuillez reseigner la ville l'employeur"
+              blank: "Veuillez renseigner la ville l'employeur"
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
             weeks:
@@ -292,7 +297,7 @@ fr:
             internship_offer_week:
               has_no_spots_left: "Impossible de candidater car l'offre est complète pour cette semaine"
             motivation:
-              blank: Veuillez reseigner vos motivations
+              blank: Veuillez renseigner vos motivations
             student:
               taken: 'Vous ne pouvez pas candidater deux fois à la même offre'
   admin:

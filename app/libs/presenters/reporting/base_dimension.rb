@@ -1,11 +1,11 @@
 module Presenters
   module Reporting
+    # base class to expose AR collection in CSV/tabular content
     class BaseDimension
-      # what's the rails way?
       private
-      attr_reader :internship_offer
-      def initialize(internship_offer)
-        @internship_offer = internship_offer
+      attr_reader :instance
+      def initialize(instance)
+        @instance = instance
       end
     end
   end

@@ -57,7 +57,7 @@ RailsAdmin.config do |config|
                               User]
 
   config.navigation_static_links = {
-    "Stats" => "/reporting/internship_offers",
+    "Stats" => "/reporting/dashboards",
     "Delayed Job" => "/admin/delayed_job",
     "Zammad (Support)" => "https://monstage.zammad.com"
   }

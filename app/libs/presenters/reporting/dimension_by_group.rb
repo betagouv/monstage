@@ -7,15 +7,15 @@ module Presenters
       def self.metrics
         ::Reporting::InternshipOffer::AGGREGATE_FUNCTIONS.keys
       end
-      delegate *self.metrics, to: :internship_offer
+      delegate *self.metrics, to: :instance
 
       def self.dimension_name
         'Groupe ou Institution de tutelle'
       end
 
       def dimension
-        internship_offer.group.present? ?
-          internship_offer.group.name :
+        instance.group.present? ?
+          instance.group.name :
           'Indépendant'
       end
     end
