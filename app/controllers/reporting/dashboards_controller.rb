@@ -8,7 +8,7 @@ module Reporting
         total_schools_ratio: total_schools_ratio,
 
         # widget left, 1, showing not invovled schools
-        schools_without_manager: school_finder.fetch_all_without_manager.limit(10),
+        schools_without_manager: school_finder.fetch_all_without_manager,
 
         # widget left, 2, showing school soon in application
         schools_with_weeks_and_internship: school_finder.fetch_with_weeks_and_internships,
