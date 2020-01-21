@@ -4,23 +4,16 @@ require 'forwardable'
 module Presenters
   module Reporting
     class DimensionByOffer < BaseDimension
-      ATTRS = %i[title
-                 description
-                 max_candidates
+      ATTRS = %i[description
+                 human_max_candidates
                  internship_offer_weeks_count
-                 is_public
 
-                 created_at
                  discarded_at
                  published_at
-
-                 coordinates
 
                  submitted_applications_count
                  rejected_applications_count
                  approved_applications_count
-                 convention_signed_applications_count
-                 total_applications_count
 
                  department
                  academy
@@ -28,6 +21,7 @@ module Presenters
                  permalink
                  view_count]
       METHODS = %i[group_name
+                   human_is_public
                    sector_name
                    full_tutor
                    full_employer
@@ -45,6 +39,16 @@ module Presenters
 
       def self.dimension_name
         "Titre de l'offre"
+      end
+
+      def human_max_candidates
+        internship_offer.max_candidates == 1 ?
+          " Stage individuel (un seul élève par stage)" :
+          " Stage collectif (par groupe de #{internship_offer.max_candidates} élèves)"
+      end
+
+      def human_is_public
+        internship_offer.is_public ? 'Public' : 'Privé'
       end
 
       def dimension
@@ -73,13 +77,14 @@ module Presenters
 
       def full_school
         return nil unless internship_offer.school
-        [internship_offer.school.name, "school.city – CP #{internship_offer.school.zipcode}"].compact.join("\n")
+        [internship_offer.school.name, "#{internship_offer.school.city} – CP #{internship_offer.school.zipcode}"].compact.join("\n")
       end
 
       def full_weeks
-        internship_offer.weeks.map(&:short_select_text_method).join("\n")
+        internship_offer.weeks
+                        .map(&:long_select_text_method)
+                        .join("\n")
       end
-
     end
   end
 end
