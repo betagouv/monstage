@@ -2,6 +2,8 @@ module Reporting
   class DashboardsController < BaseReportingController
     # todo refactor for understandable widgetization
     def index
+      authorize! :index, Reporting::Acl.new(user: current_user, params: params)
+
       render locals: {
         # widget left, 0, showing school involvement
         total_schools_with_manager: total_schools_with_manager,
