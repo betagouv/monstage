@@ -10,5 +10,11 @@ module Reporting
                     :group,
                     :dimension)
     end
+
+    def export_filename(base_name)
+      file_name_parts = [base_name]
+      file_name_parts.push(params[:department].parameterize) if params[:department].present?
+      file_name_parts.join('-')
+    end
   end
 end

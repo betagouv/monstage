@@ -60,7 +60,7 @@ module InternshipOffers
                     text: 'Veuillez saisir et sélectionner une adresse avec ' \
                           "l'outil de complétion automatique"
       assert_select 'li label[for=internship_offer_zipcode]',
-                    text: "Veuillez reseigner le code postal de l'employeur"
+                    text: "Veuillez renseigner le code postal de l'employeur"
       assert_select 'li label[for=internship_offer_city]',
                     text: "Veuillez reseigner la ville l'employeur"
 
