@@ -5,7 +5,7 @@ module Finders
            .where(is_public: is_public)
            .joins(join_sources(is_public: is_public))
            .group('groups.id')
-           .order('group_internship_offers_count')
+           .order(group_internship_offers_count: :desc)
     end
 
 

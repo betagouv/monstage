@@ -3,11 +3,11 @@ module Presenters
     class DimensionBySchool < BaseDimension
       ATTRS = %i[department
                  code_uai
-                 kind]
+                 human_kind]
       METHODS = %i[total_student_count
                    total_main_teacher_count
                    total_approved_internship_applications_count
-                   school_manager?
+                   human_school_manager
                    full_address
                    full_weeks]
 
@@ -22,8 +22,16 @@ module Presenters
         'Etablissement'
       end
 
+      def human_school_manager
+        instance.school_manager ? 'Inscrit' : 'Non Inscrit'
+      end
+
       def dimension
         instance.name
+      end
+
+      def human_kind
+        Presenters::SchoolKind.new(kind: instance.kind).to_s
       end
 
       def full_address

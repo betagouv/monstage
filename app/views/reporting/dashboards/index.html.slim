@@ -35,7 +35,7 @@
             - schools_without_manager.each do |school_without_manager|
               tr
                 td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
-                td.align-middle.border-left-1= humanize_school_kind(school_without_manager.kind)
+                td.align-middle.border-left-1= Presenters::SchoolKind.new(kind: school_without_manager.kind).to_s
 
 
         .card-body

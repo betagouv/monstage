@@ -7,7 +7,7 @@ fieldset
           .form-group
             = label_tag :academy, 'Académie', class: 'text-uppercase'
             = select_tag :academy, options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]), prompt: 'Toutes', class: 'form-control', data: { action: 'statistics#filterByAcademy' }
-      - if by_department
+      - if by_department && current_user.is_a?(Users::God)
         .col-4
           .form-group
             = label_tag :department, 'Département', class: 'text-uppercase'

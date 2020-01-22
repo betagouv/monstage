@@ -74,7 +74,7 @@ module Reporting
     end
 
     def total_approved_internship_applications_count
-      instance.internship_applications.approved.size
+      internship_applications.approved.size
     end
 
   end

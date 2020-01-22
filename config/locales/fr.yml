@@ -78,6 +78,7 @@ fr:
         visible: Disponible sur le site
         street: Adresse
         kind: Classification
+        human_kind: Classification
         zipcode: Code postal
         city: Ville
         visible: Activé?
@@ -90,8 +91,10 @@ fr:
           other: Semaines de stage
         total_student_count: Nbr. d'élèves
         total_main_teacher_count: Nbr. de PP
-        school_manager?: Chef d'établissement inscrit
+        human_school_manager: Chef d'établissement inscrit
         approved_internship_applications_count: Nbr. de candidatures acceptées
+        full_address: "Adresse de l'établissement"
+        full_weeks: Semaines
 
       internship_offer:
         id: Identifiant unique de l'offre
@@ -101,7 +104,7 @@ fr:
         employer_name: Employeur
         group: Groupe ou institution
         is_public: Secteur public
-        human_is_public: Secteur
+        human_is_public: Public/Privé
         sector: Secteur
         max_candidates: Nbr. max de candidats
         human_max_candidates: Stage individuel/collectif
@@ -149,7 +152,7 @@ fr:
         full_tutor: 'Tuteur'
         full_employer: 'Employeur'
         full_address: "Adresse de l'offre"
-        full_school: "Etablissement"
+        full_school: "Réservée au collège"
         full_weeks: Semaines
       user:
         first_name: Prénom

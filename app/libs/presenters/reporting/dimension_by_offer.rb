@@ -6,17 +6,13 @@ module Presenters
     class DimensionByOffer < BaseDimension
       ATTRS = %i[description
                  human_max_candidates
-
                  published_at
                  discarded_at
-
                  submitted_applications_count
                  rejected_applications_count
                  approved_applications_count
-
                  department
                  academy
-
                  permalink
                  view_count]
       METHODS = %i[group_name
