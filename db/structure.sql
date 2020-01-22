@@ -38,6 +38,15 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.french_nostopwords (
+    TEMPLATE = pg_catalog.snowball,
+    language = 'french' );
+
+
+--
 -- Name: fr; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
@@ -45,10 +54,10 @@ CREATE TEXT SEARCH CONFIGURATION public.fr (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR asciiword WITH french_stem;
+    ADD MAPPING FOR asciiword WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR word WITH public.unaccent, french_stem;
+    ADD MAPPING FOR word WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR numword WITH simple;
@@ -72,19 +81,19 @@ ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword_part WITH public.unaccent, french_stem;
+    ADD MAPPING FOR hword_part WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword_asciipart WITH french_stem;
+    ADD MAPPING FOR hword_asciipart WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR numhword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR asciihword WITH french_stem;
+    ADD MAPPING FOR asciihword WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword WITH public.unaccent, french_stem;
+    ADD MAPPING FOR hword WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR url_path WITH simple;
@@ -1636,6 +1645,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200114163210'),
 ('20200114164134'),
 ('20200114164236'),
-('20200115164034');
+('20200115164034'),
+('20200122144920');
 
 

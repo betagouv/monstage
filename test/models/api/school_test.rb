@@ -4,13 +4,13 @@ require 'test_helper'
 
 class SchoolSearchTest < ActiveSupport::TestCase
   test 'autocomplete_by_name_or_city find stuffs upper or lower case' do
-    @paris = create(:api_school, city: 'Paris')
+    paris = create(:api_school, city: 'Paris')
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'PARIS').size, 'find with uppercase fails'
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'paris').size, 'find with lowercase fails'
   end
 
   test 'autocomplete_by_name_or_city find with or without accent' do
-    @orleans = create(:api_school, city: 'Orléans')
+    orleans = create(:api_school, city: 'Orléans')
 
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'Orléans').size, 'find with accent'
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'Orleans').size, 'find without accent'
@@ -19,7 +19,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
   test 'pg_search_highlight_*' do
     school_city = 'Orléans'
     school_name = 'Jean'
-    @orleans = create(:api_school, city: school_city,
+    orleans = create(:api_school, city: school_city,
                                    name: school_name)
 
     search_by_city_result = Api::School.autocomplete_by_name_or_city(term: school_city).first
@@ -29,7 +29,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
   end
 
   test 'autocomplete_by_name_or_city find compound cities names' do
-    @orleans = create(:api_school, city: 'Mantes-la-Jolie')
+    orleans = create(:api_school, city: 'Mantes-la-Jolie')
 
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'Mante').size, 'coumpound with missing letter missed'
     assert_equal 1, Api::School.autocomplete_by_name_or_city(term: 'Mantes').size, 'compound with single complete word missed'
@@ -54,10 +54,21 @@ class SchoolSearchTest < ActiveSupport::TestCase
   end
 
   test 'autocomplete_by_name_or_city return pg_search_highlight' do
-    @paris = create(:api_school, city: 'paris')
-    @paris = create(:api_school, city: 'paris blip')
+    create(:api_school, city: 'paris')
+    create(:api_school, city: 'paris blip')
     results = Api::School.autocomplete_by_name_or_city(term: 'pari')
     assert '<b>paris</b>', results[0].attributes['pg_search_highlight']
     assert '<b>paris</b> blip', results[1].attributes['pg_search_highlight']
+  end
+
+  test 'autocomplete_by_name_or_city find by increment, even with stop words' do
+    city = 'paris'
+    create(:api_school, city: city)
+    city.split('').each.with_index do |_, idx|
+      query_part = city[0..idx]
+      results = Api::School.autocomplete_by_name_or_city(term: query_part)
+      assert_equal 1, results.size, "fail to find with '#{query_part}'"
+      assert_equal city, results[0].city
+    end
   end
 end
