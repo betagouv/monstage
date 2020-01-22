@@ -1,4 +1,1 @@
-- if weeks.size.positive?
-  ul.nav
-    - weeks.map do |week|
-      li= week.long_select_text_method
+= Presenters::WeekList.new(weeks: weeks).to_range_as_str
