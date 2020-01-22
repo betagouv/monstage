@@ -5,6 +5,7 @@ module Users
     include UserAdmin
     include InternshipOffersScopes::ByOperator
     include InternshipOffersScopes::ByDepartment
+    include InternshipOffersScopes::ByCoordinates
 
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
@@ -14,8 +15,13 @@ module Users
 
     scope :targeted_internship_offers, lambda { |user:, coordinates:|
       query = InternshipOffer.kept
+      coordinates ||= user.try(:school).try(:coordinates)
       query = mines_and_sumbmitted_to_operator(user: user)
-      query = query.merge(limited_to_department(user: user)) if user.department_name.present?
+      if coordinates
+        query = query.merge(internship_offers_nearby(coordinates: coordinates))
+      elsif user.department_name.present?
+        query = query.merge(limited_to_department(user: user))
+      end
       query
     }
 
