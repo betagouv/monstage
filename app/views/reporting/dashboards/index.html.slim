@@ -142,7 +142,7 @@
                 tr.table-blue
                   th Entreprise
                   th Nb. d'offres
-              tbody
+              tbody.small
                 - private_groups_not_involved.each do |private_group_not_involved|
                   tr
                     td= private_group_not_involved.name
@@ -158,7 +158,7 @@
                 tr.table-blue
                   th Institution
                   th Nb. d'offres
-              tbody
+              tbody.small
                 - public_groups_not_involved.each do |public_group_not_involved|
                   tr
                     td= public_group_not_involved.name
