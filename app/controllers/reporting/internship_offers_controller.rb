@@ -8,7 +8,7 @@ module Reporting
       @offers = current_offers
       respond_to do |format|
         format.xlsx do
-          @offers = @offers.find_each(batch_size: 5)
+          @offers = @offers.find_each(batch_size: 1000)
           response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('offres')}.xlsx"]
         end
         format.html do

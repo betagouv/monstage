@@ -21,8 +21,8 @@ module Presenters
                    full_tutor
                    full_employer
                    full_address
-                   full_school
-                   full_weeks]
+                   full_school]
+                   # full_weeks
 
 
       def self.metrics
@@ -75,9 +75,9 @@ module Presenters
         [instance.school.name, "#{instance.school.city} – CP #{instance.school.zipcode}"].compact.join("\n")
       end
 
-      def full_weeks
-        WeekList.new(weeks: instance.weeks).to_s
-      end
+      # def full_weeks
+      #   WeekList.new(weeks: instance.weeks).to_s
+      # end
     end
   end
 end
