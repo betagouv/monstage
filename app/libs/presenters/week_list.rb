@@ -3,9 +3,13 @@ module Presenters
 
     def to_range_as_str
       to_range do |is_first:, is_last:, week:|
-        return week.beginning_of_week_with_year if is_first
-        return week.end_of_week_with_years if is_last
-        week.long_select_text_method
+        if is_first
+          week.beginning_of_week_with_year
+        elsif is_last
+          week.end_of_week_with_years
+        else
+          week.long_select_text_method
+        end
       end
     end
 
