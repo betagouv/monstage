@@ -39,7 +39,7 @@ module Presenters
       end
 
       def full_weeks
-        WeekList.new(weeks: instance.weeks).to_s
+        WeekList.new(weeks: instance.weeks).to_range_as_str
       end
 
       private

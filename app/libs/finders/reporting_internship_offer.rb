@@ -29,7 +29,7 @@ module Finders
     #
     def dimension_offer
       base_query.dimension_offer
-                .includes(:sector, :group, :school)
+                .includes(:sector, :weeks, :group, :school)
     end
 
     def dimension_by_group
