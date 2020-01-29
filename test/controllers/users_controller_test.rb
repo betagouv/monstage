@@ -212,7 +212,5 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get account_path(section: 'school')
     assert_response :success
     assert_template 'users/_edit_school'
-    assert_select 'select[name="user[class_room_id]"]'
-    assert_select 'select[name="user[class_room_id]"] option', count: 2
   end
 end
