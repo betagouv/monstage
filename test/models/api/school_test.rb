@@ -71,4 +71,15 @@ class SchoolSearchTest < ActiveSupport::TestCase
       assert_equal city, results[0].city
     end
   end
+
+   test 'autocomplete_by_name_or_city find dasherized city names' do
+    city = 'Mantes-la-Jolie'
+    create(:api_school, city: city)
+    city.split('').each.with_index do |_, idx|
+      query_part = city[0..idx].gsub('-', ' ')
+      results = Api::School.autocomplete_by_name_or_city(term: query_part)
+      assert_equal 1, results.size, "fail to find with '#{query_part}'"
+      assert_equal city, results[0].city
+    end
+  end
 end
