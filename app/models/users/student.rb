@@ -35,8 +35,6 @@ module Users
               :gender,
               presence: true
 
-    include TargetableInternshipOffersForSchool
-
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id'
     after_initialize :init

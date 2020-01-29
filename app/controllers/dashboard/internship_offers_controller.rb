@@ -2,8 +2,6 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
-    include Finders::InternshipOffers
-
     before_action :authenticate_user!
     helper_method :order_direction
 

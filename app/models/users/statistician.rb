@@ -1,7 +1,5 @@
 module Users
   class Statistician < User
-    include InternshipOffersScopes::ByCoordinates
-    include InternshipOffersScopes::ByDepartment
     include UserAdmin
 
     rails_admin do
@@ -14,13 +12,6 @@ module Users
     end
 
     validate :email_in_list
-
-    scope :targeted_internship_offers, ->(user:, coordinates:) {
-      query = InternshipOffer.kept
-      query = query.merge(internship_offers_nearby(coordinates: coordinates)) if coordinates
-      query = query.merge(limited_to_department(user: user)) if user.department_name
-      query
-    }
 
     def custom_dashboard_path
       url_helpers.reporting_internship_offers_path(department: department_name)

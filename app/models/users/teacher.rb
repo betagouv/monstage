@@ -3,10 +3,9 @@
 module Users
   class Teacher < User
     include UserAdmin
-    
-    belongs_to :class_room, optional: true
     include ManagedUser
-    include TargetableInternshipOffersForSchool
+
+    belongs_to :class_room, optional: true
 
     def custom_dashboard_path
       url_helpers.dashboard_school_class_room_path(school, class_room)

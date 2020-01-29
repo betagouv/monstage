@@ -10,6 +10,38 @@ module BaseInternshipOffer
   included do
     include Discard::Model
 
+    scope :limited_to_department, lambda { |user:|
+      where(department: user.department_name)
+    }
+
+    scope :ignore_max_candidates_reached, lambda {
+      joins(:internship_offer_weeks)
+       .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
+    }
+
+    scope :ignore_max_internship_offer_weeks_reached, lambda {
+      where('internship_offer_weeks_count > blocked_weeks_count')
+    }
+
+    scope :ignore_already_applied, lambda { |user: |
+      where.not(id: joins(:internship_applications)
+                      .merge(InternshipApplication.where(user_id: user.id)))
+    }
+
+    scope :mines_and_sumbmitted_to_operator, lambda { |user:|
+        left_joins(:internship_offer_operators)
+         .merge(where(internship_offer_operators: {operator_id: user.operator_id})
+                .or(where("internship_offers.employer_id = #{user.id}")))
+    }
+
+    scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
+      where(school_id: [nil, school_id])
+    }
+
+    scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
+      by_weeks(weeks: weeks)
+    }
+
     validates :title,
               :employer_name,
               :zipcode,

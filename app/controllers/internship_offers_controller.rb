@@ -57,10 +57,6 @@ class InternshipOffersController < ApplicationController
     current_user.try(:id)
   end
 
-  def current_user_or_visitor
-    current_user || Users::Visitor.new
-  end
-
   def finder
     @finder ||= Finders::ListableInternshipOffer.new(
       params: params.permit(:page, :latitude, :longitude, :radius),
