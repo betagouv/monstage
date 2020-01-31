@@ -15,6 +15,6 @@ fieldset
       - if by_typology
         .col-4
           .form-group
-            = label_tag :is_public, 'Typologie d\'acteur', class: 'text-uppercase'
+            = label_tag :is_public, "Public / Privé", class: 'text-uppercase'
 
             = select_tag :is_public, options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]), class: 'form-control', data: { action: 'statistics#filterByPublicy' }
