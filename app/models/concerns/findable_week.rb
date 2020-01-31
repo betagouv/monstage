@@ -9,7 +9,7 @@ module FindableWeek
     }
 
     scope :older_than, lambda { |week:|
-      joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
+      joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number >= ?)', week.year, week.year, week.number)
     }
 
     scope :available_in_the_future, lambda {
