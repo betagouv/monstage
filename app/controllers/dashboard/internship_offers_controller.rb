@@ -8,7 +8,7 @@ module Dashboard
     helper_method :order_direction
 
     def index
-      @internship_offers = query_internship_offers.order(order_column => order_direction)
+      @internship_offers = query_internship_offers(available_in_the_future: true).order(order_column => order_direction)
     end
 
     def create

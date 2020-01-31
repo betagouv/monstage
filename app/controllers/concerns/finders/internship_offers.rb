@@ -8,13 +8,14 @@ module Finders
         current_user || Users::Visitor.new
       end
 
-      def query_internship_offers(warn_on_missing_school_weeks: false)
+      def query_internship_offers(warn_on_missing_school_weeks: false,
+                                  available_in_the_future: true)
         flash_message_when_missing_school_weeks if warn_on_missing_school_weeks
         query = InternshipOffer.kept
-                               .available_in_the_future
                                .for_user(user: current_user_or_visitor,
                                          coordinates: coordinate_params)
                                .group(:id)
+        query = query.available_in_the_future if available_in_the_future
         query = query.page(params[:page]) # force kaminari interface no matter presence of page param
         query
       end
