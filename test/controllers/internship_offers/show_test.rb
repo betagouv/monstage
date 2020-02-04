@@ -297,30 +297,6 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show with forwards sector_id in params to next/prev ' do
-      sector = create(:sector)
-      previous_in_page = create(:internship_offer, sector: sector)
-      current = create(:internship_offer, sector: sector)
-      next_in_page = create(:internship_offer, sector: sector)
-      student = create(:student, school: create(:school))
-
-      InternshipOffer.stub :nearby, InternshipOffer.all do
-        InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          sign_in(student)
-          get internship_offer_path(id: current.id, sector_id: current.sector_id)
-
-          assert_response :success
-          assert_select 'a[href=?]',
-                        internship_offer_path(id: previous_in_page.id,
-                                              sector_id: current.sector_id)
-          assert_select 'a[href=?]',
-                        internship_offer_path(id: next_in_page.id,
-                                              sector_id: current.sector_id)
-        end
-      end
-
-    end
-
     test 'GET #show with forwards latitude/longitude in params to next/prev ' do
       previous_in_page = create(:internship_offer, title: "previous")
       current = create(:internship_offer, title: "current")
