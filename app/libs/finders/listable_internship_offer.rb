@@ -53,7 +53,7 @@ module Finders
            Users::Student,
            Users::Other,
            Users::SchoolManager,
-           Users::Student
+           Users::Student,
            Users::Teacher
         query = query.published
         coordinates = coordinate_params || user.try(:school).try(:coordinates)

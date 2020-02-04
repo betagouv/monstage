@@ -27,7 +27,7 @@ function iconForRadius(radius) {
 }
 
 function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
-  const [currentSearch, setCurrentSearch] = useState(currentCitySearch || '');
+  const [currentSearch, setCurrentSearch] = useState(null);
   const [currentSelectedItem, setCurrentSelectedItem] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [radius, setRadius] = useState(currentRadius || MAX_RADIUS);
@@ -92,7 +92,11 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
   }, [currentSearch]);
 
   return (
-    <Downshift initialInputValue={currentCitySearch} onChange={setCurrentSelectedItem} itemToString={item => (item ? item.nom : '')}>
+    <Downshift
+      initialInputValue={currentCitySearch || ''}
+      onChange={setCurrentSelectedItem}
+      itemToString={item => (item ? item.nom : '')}
+    >
       {({
         getInputProps,
         getItemProps,
@@ -100,12 +104,13 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
         getMenuProps,
         isOpen,
         inputValue,
+        highlightedIndex,
         selectedItem,
       }) => (
         <form data-turbolink={false} onSubmit={filterOfferByLocation}>
           <div className="form-row align-items-center">
             <div className="col-auto">
-              <label {...getLabelProps()} className="p-0 m-0" htmlFor="input-search-by-city">
+              <label {...getLabelProps()} className="p-0 mb-3 mb-sm-0" htmlFor="input-search-by-city">
                 <strong>Autour de</strong>
               </label>
             </div>
@@ -124,15 +129,17 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
                   })}
                 />
                 <div className="input-group-append">
-                  <button
-                    type="button"
+                  <a
+                    href={url}
+                    title="Effacer les options de recherche"
                     className="btn btn-outline-secondary btn-clear-city"
-                    onClick={resetSelectedResult}
                   >
                     <i className="fas fa-times" />
-                  </button>
+                  </a>
                 </div>
-                <div className={`search-in-place bg-white shadow ${!isOpen && !selectedItem ? 'd-none' : 'pt-3'}`}>
+                <div
+                  className={`search-in-place bg-white shadow`}
+                >
                   <ul
                     {...getMenuProps({
                       className: 'p-0 m-0',
@@ -142,7 +149,9 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
                       ? searchResults.map((item, index) => (
                           <li
                             {...getItemProps({
-                              className: 'py-2 px-3 listview-item',
+                              className: `py-2 px-3 listview-item ${
+                                highlightedIndex === index ? 'highlighted-listview-item' : ''
+                              }`,
                               key: item.code,
                               index,
                               item,
@@ -160,17 +169,8 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
                   </ul>
                   {selectedItem && (
                     <>
-                      <div class="px-3 mb-3">
-                        <div className="p-2 badge badge-light rounded-lg">
-                          {selectedItem.nom}
-                          <a class="mx-1 badge-clear rounded" href={url}>
-                            <i class="fas fa-times" />
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="px-3 form-group">
-                        <label className='mb-0 font-weight-bold' htmlFor="radius">
+                      <div className="p-3 form-group">
+                        <label className="mb-0 font-weight-bold" htmlFor="radius">
                           Dans un rayon de
                         </label>
 
@@ -179,7 +179,7 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
                             className="slider-handle text-center"
                             style={{ left: `${radiusPercentage(radius)}%` }}
                           >
-                            <span className="mr-1">{radiusInKm(radius)}km</span>
+                            <span className="mr-1">{radiusInKm(radius)} km</span>
                             <span key={radius}>
                               <i className={`fas ${iconForRadius(radius)}`} />
                             </span>
@@ -202,10 +202,14 @@ function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
                         <button type="submit" className="float-right btn btn-warning btn-sm">
                           Appliquer
                         </button>
-                        <a href={url} className="float-left btn btn-link btn-sm">
+                        <a
+                          href={url}
+                          className="float-left btn btn-link btn-sm"
+                          title="Effacer les options de recherche"
+                        >
                           Effacer
                         </a>
-                        <div class="clearfix" />
+                        <div className="clearfix" />
                       </div>
                     </>
                   )}
