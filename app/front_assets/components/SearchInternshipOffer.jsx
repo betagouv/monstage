@@ -1,43 +1,59 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AlgoliaPlaces from 'algolia-places-react';
-
+import React, { useEffect, useState } from 'react';
 import Turbolinks from 'turbolinks';
 import $ from 'jquery';
+import Downshift from 'downshift';
 
-import SchoolPropType from '../prop_types/school';
+const MAX_RADIUS = 60000;
+const MIN_RADIUS = 1000;
+const KILO_METER = 1000;
 
-class SearchInternshipOffer extends React.Component {
-  static propTypes = {
-    url: PropTypes.string.isRequired,
-    algoliaApiId: PropTypes.string.isRequired,
-    algoliaApiKey: PropTypes.string.isRequired,
-    currentCitySearch: PropTypes.string,
-    currentSchool: SchoolPropType,
-  };
+function radiusPercentage(radius) {
+  return Math.ceil((radius * 100) / MAX_RADIUS);
+}
+function radiusInKm(radius) {
+  return Math.ceil(radius / KILO_METER);
+}
 
-  static defaultProps = {
-    currentCitySearch: null,
-    currentSchool: null,
-  };
+function iconForRadius(radius) {
+  const comparableRadius = radiusInKm(radius);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentCitySearch: props.currentCitySearch,
-    };
+  if (comparableRadius < 10) {
+    return 'fa-walking';
   }
+  if (comparableRadius < 20) {
+    return 'fa-bus';
+  }
+  return 'fa-train';
+}
 
+function SearchInternshipOffer({ url, currentCitySearch, currentRadius }) {
+  const [currentSearch, setCurrentSearch] = useState(null);
+  const [currentSelectedItem, setCurrentSelectedItem] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [radius, setRadius] = useState(currentRadius || MAX_RADIUS);
 
-  filterOfferByLocation = ({ suggestion }) => {
-    const { url } = this.props;
+  const fetchDone = result => {
+    setSearchResults(result);
+  };
+
+  const inputChange = event => {
+    setCurrentSearch(event.target.value);
+  };
+
+  const onRadiusChange = event => {
+    setRadius(event.target.value);
+  };
+
+  const filterOfferByLocation = event => {
     const searchParams = new URLSearchParams(window.location.search);
 
-    if (suggestion) {
-      searchParams.set('city', suggestion.name);
-      searchParams.set('latitude', suggestion.latlng.lat);
-      searchParams.set('longitude', suggestion.latlng.lng);
+    if (currentSelectedItem) {
+      searchParams.set('city', currentSelectedItem.nom);
+      searchParams.set('latitude', currentSelectedItem.centre.coordinates[1]);
+      searchParams.set('longitude', currentSelectedItem.centre.coordinates[0]);
+      searchParams.set('radius', radius);
     } else {
+      searchParams.delete('radius');
       searchParams.delete('city');
       searchParams.delete('latitude');
       searchParams.delete('longitude');
@@ -45,85 +61,165 @@ class SearchInternshipOffer extends React.Component {
     searchParams.delete('page');
 
     Turbolinks.visit(`${url}?${searchParams.toString()}`);
-  };
-
-  toggleSearchByCity = () => {
-    const { currentCitySearch } = this.state;
-    if (currentCitySearch) {
-      this.setState({ currentCitySearch: null });
-      this.filterOfferByLocation({ suggestion: null });
-    } else {
-      this.setState({ currentCitySearch: '' });
+    if (event) {
+      event.preventDefault();
     }
   };
 
-  render() {
-    const { currentSchool, algoliaApiKey, algoliaApiId } = this.props;
-    const { currentCitySearch } = this.state;
+  const resetSelectedResult = () => {
+    setCurrentSearch('');
+    setRadius(60);
+    filterOfferByLocation({});
+  };
 
-    return (
-      <div className="row" data-controller="help">
-        <div className="col-12 col-md-6 col-lg-4">
-          <div className="form-group">
-            <label className="mb-3 d-block" htmlFor="input-search-by-city">
-              <strong>Autour de</strong>
-            </label>
-            {currentSchool !== null && currentCitySearch === null && (
+  const doRequest = () => {
+    $.ajax({
+      type: 'GET',
+      url: 'https://geo.api.gouv.fr/communes',
+      data: {
+        nom: currentSearch,
+        fields: ['nom', 'centre', 'departement', 'codesPostaux'].join(','),
+        limit: 10,
+        boost: 'population',
+      },
+    }).done(fetchDone);
+  };
+
+  useEffect(() => {
+    if (currentSearch && currentSearch != currentCitySearch && currentSearch.length > 0) {
+      doRequest(currentSearch);
+    }
+  }, [currentSearch]);
+
+  return (
+    <Downshift
+      initialInputValue={currentCitySearch || ''}
+      onChange={setCurrentSelectedItem}
+      itemToString={item => (item ? item.nom : '')}
+    >
+      {({
+        getInputProps,
+        getItemProps,
+        getLabelProps,
+        getMenuProps,
+        isOpen,
+        inputValue,
+        highlightedIndex,
+        selectedItem,
+      }) => (
+        <form data-turbolink={false} onSubmit={filterOfferByLocation}>
+          <div className="form-row align-items-center">
+            <div className="col-auto">
+              <label {...getLabelProps()} className="p-0 mb-3 mb-sm-0" htmlFor="input-search-by-city">
+                <strong>Autour de</strong>
+              </label>
+            </div>
+            <div className="col-auto">
               <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">
+                    <i className="fas fa-map-marker-alt" />
+                  </span>
+                </div>
                 <input
-                  className="form-control"
-                  name="input-search-by-city"
-                  id="input-search-by-city"
-                  type="text"
-                  readOnly
-                  value={currentSchool.name}
+                  {...getInputProps({
+                    onChange: inputChange,
+                    value: inputValue,
+                    className: 'form-control',
+                  })}
                 />
                 <div className="input-group-append">
-                  <button
-                    type="button"
+                  <a
+                    href={url}
+                    title="Effacer les options de recherche"
                     className="btn btn-outline-secondary btn-clear-city"
-                    onClick={this.toggleSearchByCity}
                   >
                     <i className="fas fa-times" />
-                  </button>
+                  </a>
                 </div>
-              </div>
-            )}
-            {(currentSchool === null || currentCitySearch !== null) && (
-              <div className="input-group">
-                <AlgoliaPlaces
-                  placeholder={currentCitySearch || 'Rechercher une ville'}
-                  options={{
-                    appId: algoliaApiId,
-                    apiKey: algoliaApiKey,
-                    language: 'fr',
-                    countries: ['fr'],
-                    type: 'city',
-                  }}
-                  onChange={this.filterOfferByLocation}
-                  onClear={this.toggleSearchByCity}
-                  onError={({ message }) =>
-                    console.log(
-                      'Fired when we could not make the request to Algolia Places servers for any reason but reaching your rate limit.',
-                    )
-                  }
-                />
-                <div className="input-group-append">
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
-                    onClick={this.toggleSearchByCity}
+                <div
+                  className={`search-in-place bg-white shadow`}
+                >
+                  <ul
+                    {...getMenuProps({
+                      className: 'p-0 m-0',
+                    })}
                   >
-                    <i className="fas fa-times" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+                    {isOpen
+                      ? searchResults.map((item, index) => (
+                          <li
+                            {...getItemProps({
+                              className: `py-2 px-3 listview-item ${
+                                highlightedIndex === index ? 'highlighted-listview-item' : ''
+                              }`,
+                              key: item.code,
+                              index,
+                              item,
+                              style: {
+                                fontWeight: selectedItem === item ? 'bold' : 'normal',
+                              },
+                            })}
+                          >
+                            {`${item.nom} (${
+                              item.codesPostaux.length == 1 ? item.codesPostaux[0] : item.code
+                            })`}
+                          </li>
+                        ))
+                      : null}
+                  </ul>
+                  {selectedItem && (
+                    <>
+                      <div className="p-3 form-group">
+                        <label className="mb-0 font-weight-bold" htmlFor="radius">
+                          Dans un rayon de
+                        </label>
 
+                        <div className="slider-legend small">
+                          <div
+                            className="slider-handle text-center"
+                            style={{ left: `${radiusPercentage(radius)}%` }}
+                          >
+                            <span className="mr-1">{radiusInKm(radius)} km</span>
+                            <span key={radius}>
+                              <i className={`fas ${iconForRadius(radius)}`} />
+                            </span>
+                          </div>
+                        </div>
+
+                        <input
+                          type="range"
+                          min={MIN_RADIUS}
+                          max={MAX_RADIUS}
+                          id="radius"
+                          name="radius"
+                          className="form-control-range"
+                          value={radius}
+                          onChange={onRadiusChange}
+                        />
+                      </div>
+
+                      <div className="p-3 footer-autocomplete">
+                        <button type="submit" className="float-right btn btn-warning btn-sm">
+                          Appliquer
+                        </button>
+                        <a
+                          href={url}
+                          className="float-left btn btn-link btn-sm"
+                          title="Effacer les options de recherche"
+                        >
+                          Effacer
+                        </a>
+                        <div className="clearfix" />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      )}
+    </Downshift>
+  );
+}
 export default SearchInternshipOffer;

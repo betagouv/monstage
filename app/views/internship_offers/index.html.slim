@@ -4,9 +4,9 @@
                     { url: internship_offers_path,
                       algoliaApiId: Credentials.enc(:algolia, :app_id, prefix_env: false),
                       algoliaApiKey: Credentials.enc(:algolia, :api_key, prefix_env: false),
-                      currentCitySearch: params[:city],
-                      currentSchool: current_user.try(:school).try(:as_json, only: [:name]) },
-                    { class: 'col-12 bg-light px-3 pt-3 filter-section' })
+                      currentRadius: params[:radius],
+                      currentCitySearch: params[:city] || current_user.try(:school).try(:city) },
+                    { class: 'col-12 bg-light p-3 filter-section' })
 
 - if @internship_offers.blank?
   .row

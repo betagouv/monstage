@@ -12,14 +12,14 @@ module Nearbyable
     def autocomplete=(val)
     end
 
-    scope :nearby, lambda { |latitude:, longitude:, within_radius_in_meter: 60_000|
+    scope :nearby, lambda { |latitude:, longitude:, radius:|
       query = format(%{
         ST_DWithin(
           %s.coordinates,
           ST_GeographyFromText('SRID=4326;POINT(%f %f)'),
           %d
         )
-      }, table_name, longitude, latitude, within_radius_in_meter)
+      }, table_name, longitude, latitude, radius)
       where(query)
     }
 

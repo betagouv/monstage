@@ -2,13 +2,11 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
-    include Finders::InternshipOffers
-
     before_action :authenticate_user!
     helper_method :order_direction
 
     def index
-      @internship_offers = query_internship_offers.order(order_column => order_direction)
+      @internship_offers = finder.all.order(order_column => order_direction)
     end
 
     def create
@@ -93,6 +91,13 @@ module Dashboard
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
+    end
+
+    def finder
+      @finder ||= Finders::ListableInternshipOffer.new(
+        params: params.permit(:page, :latitude, :longitude, :radius),
+        user: current_user_or_visitor
+      )
     end
 
     def order_column

@@ -85,11 +85,7 @@ class InternshipOffer < ApplicationRecord
 
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
-  scope :for_user, lambda { |user:, coordinates:|
-    return merge(all) unless user # fuck it ; should have a User::Visitor type
 
-    merge(user.class.targeted_internship_offers(user: user, coordinates: coordinates))
-  }
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
   }
