@@ -29,7 +29,7 @@ module InternshipOffersHelper
     return "" unless internship_offer
 
     default_params = { id: internship_offer.id }
-    forwardable_params = params.permit(:sector_id, :latitude, :longitude)
+    forwardable_params = params.permit(:latitude, :longitude, :radius)
 
     internship_offer_path(default_params.merge(forwardable_params))
   end

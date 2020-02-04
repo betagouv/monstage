@@ -8,6 +8,7 @@ import {
   faArrowCircleUp,
   faBan,
   faBirthdayCake,
+  faBus,
   faCheck,
   faCheckCircle,
   faChevronCircleRight,
@@ -37,9 +38,11 @@ import {
   faSignature,
   faSmile,
   faTimes,
+  faTrain,
   faTrash,
   faUser,
   faUsers,
+  faWalking,
   faWheelchair,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -63,6 +66,7 @@ library.add(
   faArrowCircleUp,
   faBan,
   faBirthdayCake,
+  faBus,
   faCheck,
   faCheckCircle,
   faChevronCircleRight,
@@ -97,9 +101,11 @@ library.add(
   faSignature,
   faSmile,
   faTimes,
+  faTrain,
   faTrash,
   faUser,
   faUsers,
+  faWalking,
   faWheelchair,
 );
 
