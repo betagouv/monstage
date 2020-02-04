@@ -43,6 +43,10 @@ module Finders
                    radius: radius_params)
     end
 
+    # @note kinda messy but readable. refactored inheritance hell
+    # @see https://github.com/betagouv/monstage/pull/115 for clarification
+    # @todo (maybe.) not in rush to refactor this mess
+    #       at least the profile based query is explicit
     def scopes_for_user(query)
       case user
       when Users::Employer
