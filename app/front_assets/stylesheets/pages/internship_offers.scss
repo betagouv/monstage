@@ -93,7 +93,9 @@
 $sliderHeight: 20px;
 .slider-legend{
   position: relative;
-  height: $sliderHeight;
+  float: left;
+  top: -10px;
+  width: 100%;
 }
 $handleWidth: 60px;
 .slider-handle{
