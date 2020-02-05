@@ -1,6 +1,8 @@
-module Presenters
-  class WeekList
+# frozen_string_literal: true
 
+module Presenters
+  # render a lit of week easily with folding of internval
+  class WeekList
     def to_range_as_str
       to_range do |is_first:, is_last:, week:|
         if is_first
@@ -13,18 +15,16 @@ module Presenters
       end
     end
 
-    def to_range(&renderer)
-      first, last = weeks.minmax_by(&:id)
-
-      if weeks.size <= 5
-        weeks.map{ |week| yield(is_first: false, is_last: false, week: week) }
-             .join(", ")
+    def to_range(&block)
+      case weeks.size
+      when 0
+        ""
+      when 1
+        render_first_week_only(&block)
+      when 2..5
+        render_five_first_weeks(&block)
       else
-        [
-          "Disponible sur #{weeks.size} semaines :",
-          "du #{yield(is_first: true, is_last: false, week: first)}",
-          "au #{yield(is_first: false, is_last: true, week: last)}"
-        ].join(" ")
+        render_by_collapsing_date_from_first_to_last_week(&block)
       end
     end
 
@@ -33,10 +33,38 @@ module Presenters
            .join("\n")
     end
 
+    protected
+
+    def render_first_week_only
+      [
+        'Disponible la semaine',
+        yield(is_first: false, is_last: false, week: first_week)
+      ].join(' ')
+    end
+
+    def render_five_first_weeks
+      [
+        "Disponible sur #{weeks.size} semaines :",
+        weeks.map { |week| yield(is_first: false, is_last: false, week: week) }
+             .join(', ')
+      ].join(' ')
+    end
+
+    def render_by_collapsing_date_from_first_to_last_week
+      [
+        "Disponible sur #{weeks.size} semaines :",
+        "du #{yield(is_first: true, is_last: false, week: first_week)}",
+        "au #{yield(is_first: false, is_last: true, week: last_week)}"
+      ].join(' ')
+    end
+
     private
-    attr_reader :weeks
+
+    attr_reader :weeks, :first_week, :last_week
+
     def initialize(weeks:)
       @weeks = weeks
+      @first_week, @last_week = weeks.minmax_by(&:id)
     end
   end
 end
