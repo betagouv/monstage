@@ -66,7 +66,6 @@ module InternshipOffers
       operator = create(:operator)
       internship_offer = create(:internship_offer, operators: [operator],
                                                    is_public: true,
-                                                   group: "PREMIER MINISTRE",
                                                    max_candidates: 2)
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)

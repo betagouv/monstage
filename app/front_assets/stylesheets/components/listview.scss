@@ -1,10 +1,12 @@
 .listview-item{
   text-decoration: none;
+  cursor: pointer;
   a{ text-decoration: none;}
   &:first-child { border-top: 1px solid $nav-tabs-border-color; }
   border-bottom: 1px solid $nav-tabs-border-color;
 
-  &:hover{
+  &:hover,
+  &.highlighted-listview-item{
     text-decoration: none;
     background-color: $blue_light;
   }

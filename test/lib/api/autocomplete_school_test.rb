@@ -38,5 +38,11 @@ module Api
         assert_equal 1, result[:match_by_name].size
       end
     end
+
+    test '.as_json with dasherized city names' do
+      create(:api_school, city: "Mantes-la-Jolie")
+      result = AutocompleteSchool.new(term: "Mantes la jolie", limit: 5).as_json
+      assert_equal 1, result[:match_by_city].size
+    end
   end
 end

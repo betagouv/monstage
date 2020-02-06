@@ -6,14 +6,14 @@ module Reporting
     setup do
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
-      weeks = [Week.first, Week.last]
+      weeks = [::Week.first, ::Week.last]
       @internship_offer_agri_1 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
       @internship_offer_agri_2 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
       @internship_offer_wood = create(:internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10)
     end
 
     test '.group_by(:sector_name)' do
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -22,7 +22,7 @@ module Reporting
     end
 
     test 'computes internship_offer count by sector' do
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -34,7 +34,7 @@ module Reporting
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
       create(:internship_application, :submitted, internship_offer: @internship_offer_agri_2)
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -51,7 +51,7 @@ module Reporting
                                                   student: create(:student, :male))
       create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
                                                   student: create(:student, :male))
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -68,7 +68,7 @@ module Reporting
                                                   student: create(:student, :male))
       create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
                                                   student: create(:student, :male))
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -83,7 +83,7 @@ module Reporting
              internship_offer: @internship_offer_agri_1)
       create(:internship_application, :approved,
              internship_offer: @internship_offer_agri_2)
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -105,7 +105,7 @@ module Reporting
              internship_offer: @internship_offer_wood,
              student: create(:student, :male))
 
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 
@@ -127,7 +127,7 @@ module Reporting
              internship_offer: @internship_offer_wood,
              student: create(:student, :male))
 
-      results = Reporting::InternshipOffer.grouped_by_sector
+      results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
 

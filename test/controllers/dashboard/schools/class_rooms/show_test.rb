@@ -126,7 +126,7 @@ module Dashboard
             assert_select("#approve-student-#{student.id} a[href=?]",
                           dashboard_school_user_path(student.school, student, user: {has_parental_consent: true}))
           end
-          student_stats = Presenters::StudentStats.new(student: student)
+          student_stats = Presenters::Dashboard::StudentStats.new(student: student)
           assert_select ".test-student-#{student.id} span.applications_count",
                         text: student_stats.applications_count.to_s
           assert_select ".test-student-#{student.id} span.applications_approved_count",

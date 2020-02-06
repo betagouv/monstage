@@ -38,6 +38,15 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.french_nostopwords (
+    TEMPLATE = pg_catalog.snowball,
+    language = 'french' );
+
+
+--
 -- Name: fr; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
@@ -45,10 +54,10 @@ CREATE TEXT SEARCH CONFIGURATION public.fr (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR asciiword WITH french_stem;
+    ADD MAPPING FOR asciiword WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR word WITH public.unaccent, french_stem;
+    ADD MAPPING FOR word WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR numword WITH simple;
@@ -72,19 +81,19 @@ ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword_part WITH public.unaccent, french_stem;
+    ADD MAPPING FOR hword_part WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword_asciipart WITH french_stem;
+    ADD MAPPING FOR hword_asciipart WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR numhword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR asciihword WITH french_stem;
+    ADD MAPPING FOR asciihword WITH public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR hword WITH public.unaccent, french_stem;
+    ADD MAPPING FOR hword WITH public.unaccent, public.french_nostopwords;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR url_path WITH simple;
@@ -358,6 +367,38 @@ ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
 
 
 --
+-- Name: groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.groups (
+    id bigint NOT NULL,
+    is_public boolean,
+    name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
+
+
+--
 -- Name: internship_applications; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -469,9 +510,8 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
-    description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
-    max_occurence integer DEFAULT 1 NOT NULL,
+    internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
@@ -485,10 +525,9 @@ CREATE TABLE public.internship_offers (
     discarded_at timestamp without time zone,
     coordinates public.geography(Point,4326),
     employer_name character varying NOT NULL,
-    "group" character varying,
+    old_group character varying,
     employer_id bigint,
     school_id bigint,
-    employer_description character varying NOT NULL,
     sector_id bigint NOT NULL,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -506,9 +545,11 @@ CREATE TABLE public.internship_offers (
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
-    internship_offer_weeks_count integer,
+    description character varying DEFAULT ''::character varying NOT NULL,
+    employer_description character varying,
     total_male_approved_applications_count integer DEFAULT 0,
-    total_custom_track_approved_applications_count integer DEFAULT 0
+    total_custom_track_approved_applications_count integer DEFAULT 0,
+    group_id bigint
 );
 
 
@@ -711,8 +752,8 @@ CREATE TABLE public.users (
     api_token character varying,
     handicap text,
     custom_track boolean DEFAULT false NOT NULL,
-    discarded_at timestamp without time zone,
     accept_terms boolean DEFAULT false NOT NULL,
+    discarded_at timestamp without time zone,
     zipcode character varying,
     department_name character varying
 );
@@ -816,6 +857,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
+
+
+--
+-- Name: groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
 
 
 --
@@ -950,6 +998,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -1181,10 +1237,17 @@ CREATE INDEX index_internship_offers_on_employer_id ON public.internship_offers 
 
 
 --
--- Name: index_internship_offers_on_group; Type: INDEX; Schema: public; Owner: -
+-- Name: index_internship_offers_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_internship_offers_on_group ON public.internship_offers USING btree ("group");
+CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USING btree (group_id);
+
+
+--
+-- Name: index_internship_offers_on_old_group; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_old_group ON public.internship_offers USING btree (old_group);
 
 
 --
@@ -1296,7 +1359,7 @@ CREATE INDEX index_weeks_on_year ON public.weeks USING btree (year);
 -- Name: not_blocked_by_weeks_count_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (max_occurence, blocked_weeks_count);
+CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING btree (internship_offer_weeks_count, blocked_weeks_count);
 
 
 --
@@ -1310,7 +1373,7 @@ CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.intern
 -- Name: schools sync_schools_city_tsv; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('city_tsv', 'public.fr', 'city', 'name', 'zipcode');
+CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('city_tsv', 'public.fr', 'city', 'name');
 
 
 --
@@ -1343,6 +1406,14 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_34bc8b9f6c FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
+-- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
 
 
 --
@@ -1569,5 +1640,14 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191127144843'),
 ('20191211145010'),
 ('20191212090431');
+('20191212090431'),
+('20191218134559'),
+('20200114163150'),
+('20200114163210'),
+('20200114164134'),
+('20200114164236'),
+('20200115164034'),
+('20200122144920'),
+('20200129085225');
 
 

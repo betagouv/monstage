@@ -35,7 +35,7 @@ class AutocompleteSchool extends React.Component {
     autocompleteNoResult: false,
 
     schoolsInCitySuggestions: [],
-    classRoomsSuggestions: [],
+    classRoomsSuggestions: null,
   };
 
   constructor(props) {
@@ -56,6 +56,18 @@ class AutocompleteSchool extends React.Component {
     } else {
       this.emitRequest(cityName);
     }
+  };
+
+  currentCityString = () => {
+    const { city } = this.state;
+    const { existingSchool } = this.props;
+
+    if (city === null || city === undefined) {
+      return '';
+    }
+    return city.length === 0 && existingSchool
+      ? existingSchool.city
+      : city.replace(/<b>/g, '').replace(/<\/b>/g, '');
   };
 
   emitRequest = cityName => {
@@ -91,13 +103,13 @@ class AutocompleteSchool extends React.Component {
       autocompleteCitySuggestions: {},
       autocompleteSchoolsSuggestions: [],
       schoolsInCitySuggestions: [],
-      classRoomsSuggestions: [],
+      classRoomsSuggestions: null,
     });
   };
 
   onResetSearch = () => {
     this.setState({
-      city: '',
+      city: null,
 
       selectedSchool: null,
       selectedClassRoom: null,
@@ -106,22 +118,26 @@ class AutocompleteSchool extends React.Component {
       autocompleteSchoolsSuggestions: [],
 
       schoolsInCitySuggestions: [],
-      classRoomsSuggestions: [],
+      classRoomsSuggestions: null,
       autocompleteNoResult: false,
       currentRequest: null,
     });
   };
 
   onCityChange = event => {
-    this.setState({ city: event.target.value });
-
-    if (event.target.value.length > StartAutocompleteAtLength) {
-      this.fetchData(event.target.value);
+    if (event.target.value === '') {
+      this.onResetSearch();
     } else {
-      this.setState({
-        autocompleteCitySuggestions: {},
-        // autocompleteSchoolsSuggestions?
-      });
+      this.setState({ city: event.target.value });
+
+      if (event.target.value.length > StartAutocompleteAtLength) {
+        this.fetchData(event.target.value);
+      } else {
+        this.setState({
+          autocompleteCitySuggestions: {},
+          // autocompleteSchoolsSuggestions?
+        });
+      }
     }
   };
 
@@ -132,7 +148,7 @@ class AutocompleteSchool extends React.Component {
 
       autocompleteCitySuggestions: {},
       autocompleteSchoolsSuggestions: [],
-      classRoomsSuggestions: [],
+      classRoomsSuggestions: null,
     });
   };
 
@@ -185,11 +201,7 @@ class AutocompleteSchool extends React.Component {
             type="text"
             name={`${resourceName}[school][city]`}
             id={`${resourceName}_school_city`}
-            value={
-              city.length === 0 && existingSchool
-                ? existingSchool.city
-                : city.replace(/<b>/g, '').replace(/<\/b>/g, '')
-            }
+            value={this.currentCityString()}
             onChange={this.onCityChange}
           />
           <div className="input-group-append">
@@ -205,13 +217,18 @@ class AutocompleteSchool extends React.Component {
               </button>
             )}
             {currentRequest && (
-              <button type="button" className="btn btn-outline-secondary btn-clear-city">
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-clear-city"
+                onClick={this.onResetSearch}
+              >
                 <i className="fas fa-spinner fa-spin" />
               </button>
             )}
           </div>
         </div>
-        <ul className={`${classes || ''} list-group p-0 shadow-sm`}>
+
+        <ul className={`${classes || ''} list-group p-0 shadow-sm autocomplete-school-results`}>
           <li
             className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
               Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
@@ -336,16 +353,18 @@ class AutocompleteSchool extends React.Component {
     return (
       <div className="form-group">
         <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
-        {classRoomsSuggestions.length === 0 && !selectedClassRoom && !existingClassRoom && (
+
+        {classRoomsSuggestions === null && !selectedClassRoom && !existingClassRoom && (
           <input
             value="Veuillez choisir un collège"
             disabled
             className={`form-control ${classes || ''}`}
             type="text"
-            id={`${resourceName}_school_name`}
+            id={`${resourceName}_class_room`}
           />
         )}
-        {classRoomsSuggestions.length === 0 && existingClassRoom && (
+
+        {classRoomsSuggestions === null && existingClassRoom && (
           <>
             <input
               disabled
@@ -363,7 +382,8 @@ class AutocompleteSchool extends React.Component {
             />
           </>
         )}
-        {classRoomsSuggestions.length > 0 && (
+
+        {classRoomsSuggestions && classRoomsSuggestions.length > 0 && (
           <select
             className="form-control"
             name={`${resourceName}[class_room_id]`}
@@ -380,19 +400,35 @@ class AutocompleteSchool extends React.Component {
             ))}
           </select>
         )}
+        {classRoomsSuggestions && classRoomsSuggestions.length === 0 && (
+          <input
+            placeholder="Aucune classe disponible"
+            readOnly
+            name={`${resourceName}[class_room_id]`}
+            id={`${resourceName}_class_room_id`}
+            value=""
+            className={`form-control ${classes || ''}`}
+            type="text"
+          />
+        )}
       </div>
     );
   };
 
   render() {
     const { selectClassRoom } = this.props;
+    const { city } = this.state;
 
     return (
-      <>
+      <div class="autocomplete-school-container">
         {this.renderAutocompleteInput()}
-        {this.renderSchoolsInput()}
-        {selectClassRoom && this.renderClassRoomsInput()}
-      </>
+        {city !== null && (
+          <>
+            {this.renderSchoolsInput()}
+            {selectClassRoom && this.renderClassRoomsInput()}
+          </>
+        )}
+      </div>
     );
   }
 }

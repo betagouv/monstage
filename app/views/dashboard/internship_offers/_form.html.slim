@@ -27,8 +27,8 @@
         = form.label :is_public_false, 'privé', class: 'custom-control-label'
 
     div class="form-group form-group-select-group #{@internship_offer.is_public.nil? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
-      = form.label :group, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
-      = form.select :group, options_for_select(options_for_groups, selected: @internship_offer.group), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
+      = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
+      = form.select :group_id, options_for_select(options_for_groups, @internship_offer.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
 
   - unless current_user.is_a?(Users::Operator)
     fieldset.mt-4

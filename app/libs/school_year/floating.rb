@@ -7,7 +7,6 @@ module SchoolYear
       case current_month
       when january_to_may
         return Floating.new(date: Date.new(current_year, 6, 1)).beginning_of_period if last_week_of_may?
-
         Date.today
       when june_to_august then Date.new(current_year, 9, 1)
       when september_to_december then Date.today

@@ -150,11 +150,14 @@ class Ability
     can %i[index], Reporting::Acl do |acl|
       acl.allowed?
     end
+
+    can %i[index_and_filter], Reporting::InternshipOffer
   end
 
   def god_abilities
     can :show, :account
     can :manage, School
+    can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update destroy export], User
     can %i[read update export], InternshipOffer

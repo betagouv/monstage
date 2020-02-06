@@ -79,6 +79,23 @@ class IndexTest < ActionDispatch::IntegrationTest
                                  count: 0
   end
 
+  test 'GET #index as visitor does not show discarded offers' do
+    discarded_internship_offer = create(:internship_offer, discarded_at: 2.days.ago)
+    not_discarded_internship_offer = create(:internship_offer, discarded_at: nil)
+    get internship_offers_path
+    assert_presence_of(internship_offer: not_discarded_internship_offer)
+    assert_absence_of(internship_offer: discarded_internship_offer)
+  end
+
+  test 'GET #index as visitor does not show unpublished offers' do
+    published_internship_offer = create(:internship_offer, published_at: 2.days.ago)
+    not_published_internship_offer = create(:internship_offer)
+    not_published_internship_offer.update!(published_at: nil)
+    get internship_offers_path
+    assert_presence_of(internship_offer: published_internship_offer)
+    assert_absence_of(internship_offer: not_published_internship_offer)
+  end
+
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > internship_offer_weeks_count' do
     internship_offer_with_max_internship_offer_weeks_count_reached = create(:internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 2)
     internship_offer_without_max_internship_offer_weeks_count_reached = create(:internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 0)
@@ -233,34 +250,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student with sector_id, returns filtered content' do
-    sign_in(create(:student))
-    internship_1 = create(:internship_offer)
-    internship_2 = create(:internship_offer)
-
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: { sector_id: internship_1.sector_id }
-        assert_presence_of(internship_offer: internship_1)
-        assert_absence_of(internship_offer: internship_2)
-      end
-    end
-  end
-
-  test 'GET #index as student with sector_id ' \
-       'includes sector_id for listable behaviour on show page' do
-    sign_in(create(:student))
-    internship_1 = create(:internship_offer)
-    internship_2 = create(:internship_offer)
-
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: { sector_id: internship_1.sector_id }
-        assert_select("a[href=?]", internship_offer_path(id: internship_1, sector_id: internship_1.sector_id))
-      end
-    end
-  end
-
   test 'GET #index as student with latitude/longitude ' \
        'includes latitude/longitude for listable behaviour on show page' do
     sign_in(create(:student))
@@ -405,7 +394,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   #
   # Operator
   #
-  test 'GET #index as operator having departement-constraint only return internship offer with location constriant' do
+  test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
     included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
@@ -427,6 +416,21 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_presence_of(internship_offer: included_internship_offer)
     assert_presence_of(internship_offer: excluded_internship_offer)
+  end
+
+  test 'GET #index as operator can filter by coordinates' do
+    operator = create(:operator)
+    user_operator = create(:user_operator, operator: operator, department_name: nil)
+    excluded_internship_offer = create(:internship_offer, operators: [operator],
+                                                          coordinates: Coordinates.paris)
+    included_internship_offer = create(:internship_offer, operators: [operator],
+                                                          coordinates: Coordinates.bordeaux)
+    sign_in(user_operator)
+    get internship_offers_path(latitude: Coordinates.bordeaux[:latitude],
+                               longitude: Coordinates.bordeaux[:longitude])
+    assert_response :success
+    assert_presence_of(internship_offer: included_internship_offer)
+    assert_absence_of(internship_offer: excluded_internship_offer)
   end
 
   test 'GET #index as god returns all internship_offers' do

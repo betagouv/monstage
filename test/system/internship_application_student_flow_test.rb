@@ -9,37 +9,39 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     weeks = [Week.find_by(number: 1, year: 2020)]
     student = create(:student, school: create(:school, weeks: weeks))
     internship_offer = create(:internship_offer, weeks: weeks)
-    sign_in(student)
-    visit '/'
-    click_on 'Recherche'
-    click_on internship_offer.title
+    travel_to(weeks.first.week_date) do
+      sign_in(student)
+      visit '/'
+      click_on 'Recherche'
+      click_on internship_offer.title
 
-    # show application form
-    page.find '#internship-application-closeform', visible: false
-    click_on 'Je candidate'
-    page.find '#internship-application-closeform', visible: true
+      # show application form
+      page.find '#internship-application-closeform', visible: false
+      click_on 'Je candidate'
+      page.find '#internship-application-closeform', visible: true
 
-    # fill in application form
-    select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
-    fill_in 'internship_application_motivation', with: 'Je suis au taquet'
+      # fill in application form
+      select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
+      fill_in 'internship_application_motivation', with: 'Je suis au taquet'
 
-    assert_changes lambda {
-                     student.internship_applications
-                            .where(aasm_state: :drafted)
-                            .count
-                   },
-                   from: 0,
-                   to: 1 do
-      click_on 'Valider'
-    end
-    assert_changes lambda {
-                     student.internship_applications
-                            .where(aasm_state: :submitted)
-                            .count
-                   },
-                   from: 0,
-                   to: 1 do
-      click_on 'Envoyer'
+      assert_changes lambda {
+                       student.internship_applications
+                              .where(aasm_state: :drafted)
+                              .count
+                     },
+                     from: 0,
+                     to: 1 do
+        click_on 'Valider'
+      end
+      assert_changes lambda {
+                       student.internship_applications
+                              .where(aasm_state: :submitted)
+                              .count
+                     },
+                     from: 0,
+                     to: 1 do
+        click_on 'Envoyer'
+      end
     end
   end
 

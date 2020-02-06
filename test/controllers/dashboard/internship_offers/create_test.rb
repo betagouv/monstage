@@ -35,7 +35,7 @@ module InternshipOffers
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
-      # assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
+      assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
       assert_equal 2, created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
@@ -60,9 +60,9 @@ module InternshipOffers
                     text: 'Veuillez saisir et sélectionner une adresse avec ' \
                           "l'outil de complétion automatique"
       assert_select 'li label[for=internship_offer_zipcode]',
-                    text: "Veuillez reseigner le code postal de l'employeur"
+                    text: "Veuillez renseigner le code postal de l'employeur"
       assert_select 'li label[for=internship_offer_city]',
-                    text: "Veuillez reseigner la ville l'employeur"
+                    text: "Veuillez renseigner la ville l'employeur"
 
       assert_select '#internship_offer_is_public_true[checked]',
                     count: 0 # "ensure user select kind of group"

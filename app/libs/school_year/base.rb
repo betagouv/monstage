@@ -28,9 +28,8 @@ module SchoolYear
       9..12
     end
 
-
     def last_week_of_may?
-      last_day_of_may = Date.new(current_year, current_month, 31)
+      last_day_of_may = Date.new(current_year, 5, 31)
       date.between?(last_day_of_may.beginning_of_week, last_day_of_may.end_of_week)
     end
 

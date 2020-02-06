@@ -1,69 +1,53 @@
 module Reporting
-  class InternshipOffersController < ApplicationController
-    helper_method :safe_download_params
+  class InternshipOffersController < BaseReportingController
+    helper_method :dimension_is?, :presenter_for_dimension
 
     def index
       authorize! :index, Reporting::Acl.new(user: current_user, params: params)
 
       @offers = current_offers
-      @offers_by_publicy = is_public.present? ?
-                           [] :
-                           base_query.grouped_by_publicy
-    end
-
-    def download
-      authorize! :index, Reporting::Acl.new(user: current_user, params: params)
-
-      headers = Reporting::InternshipOffer.csv_headers(headers: {report_row_title: ""})
-      converter = Dto::ActiveRecordToCsv.new(entries: current_offers,
-                                             headers: headers)
-      send_data(converter.to_csv,
-                type: 'text/csv',
-                disposition: 'attachment',
-                filename: 'monstagedetroisieme-export.csv')
-    end
-
-    def safe_download_params
-      params.permit(:is_public,
-                    :department,
-                    :academy,
-                    :group)
+      respond_to do |format|
+        format.xlsx do
+          @offers = @offers.find_each(batch_size: 1000)
+          response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('offres')}.xlsx"]
+        end
+        format.html do
+        end
+      end
     end
 
     private
 
+    def dimension_is?(check, current)
+      current = 'sector' if current.nil?
+      return true if check == current
+      return false
+    end
+
     def current_offers
-      if is_public.present? && is_public == 'true'
-        base_query.grouped_by_group
-                  .map(&Presenters::InternshipOfferStatsByGroupName.method(:new))
-      else
-        base_query.grouped_by_sector
-                  .map(&Presenters::InternshipOfferStatsBySector.method(:new))
+      case params[:dimension]
+      when 'offers'
+        finder.dimension_offer
+      when 'group'
+        finder.dimension_by_group
+      when 'sector', nil
+        finder.dimension_by_sector
       end
     end
 
-    def base_query
-      base_query = Reporting::InternshipOffer.during_current_year
-      base_query = base_query.by_department(department: department) if department
-      base_query = base_query.by_group(group: group) if group
-      base_query = base_query.by_academy(academy: academy) if academy
-      base_query
+    def presenter_for_dimension
+      case params[:dimension]
+      when 'offers'
+        Presenters::Reporting::DimensionByOffer
+      when 'group'
+        Presenters::Reporting::DimensionByGroup
+      when 'sector', nil
+        Presenters::Reporting::DimensionBySector
+      end
     end
 
-    def is_public
-      params[:is_public]
-    end
-
-    def department
-      params[:department]
-    end
-
-    def group
-      params[:group]
-    end
-
-    def academy
-      params[:academy]
+    def finder
+      @finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)
     end
   end
 end

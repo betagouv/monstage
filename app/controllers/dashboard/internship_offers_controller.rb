@@ -2,13 +2,11 @@
 
 module Dashboard
   class InternshipOffersController < ApplicationController
-    include Finders::InternshipOffers
-
     before_action :authenticate_user!
     helper_method :order_direction
 
     def index
-      @internship_offers = query_internship_offers.order(order_column => order_direction)
+      @internship_offers = finder.all.order(order_column => order_direction)
     end
 
     def create
@@ -95,6 +93,13 @@ module Dashboard
       VALID_ORDER_COLUMNS.include?(params[:order])
     end
 
+    def finder
+      @finder ||= Finders::ListableInternshipOffer.new(
+        params: params.permit(:page, :latitude, :longitude, :radius),
+        user: current_user_or_visitor
+      )
+    end
+
     def order_column
       redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" }) if params[:order] && !valid_order_column?
       return params[:order] if params[:order] && valid_order_column?
@@ -116,7 +121,7 @@ module Dashboard
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group, :published_at,
+                    :is_public, :group_id, :published_at,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
                     operator_ids: [], coordinates: {}, week_ids: [])
     end

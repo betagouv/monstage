@@ -8,7 +8,6 @@ module Users
     has_many :students, through: :class_room
 
     include ManagedUser
-    include TargetableInternshipOffersForSchool
 
     def after_sign_in_path
       return url_helpers.account_path if [school, class_room].any?(&:blank?)

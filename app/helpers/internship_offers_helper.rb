@@ -9,8 +9,16 @@ module InternshipOffersHelper
   end
 
   def options_for_groups
-    Group::PUBLIC.map { |admin| [admin, { 'data-target' => 'internship-form.groupNamePublic' }] } +
-      Group::PRIVATE.map { |admin| [admin, { 'data-target' => 'internship-form.groupNamePrivate' }] }
+    Group.all.map do |group|
+      [
+        group.name,
+        group.id,
+        {
+          'data-target' => group.is_public? ?
+                           'internship-form.groupNamePublic' :
+                           'internship-form.groupNamePrivate' }
+        ]
+    end
   end
 
   def operator_name(internship_offer)
@@ -21,7 +29,7 @@ module InternshipOffersHelper
     return "" unless internship_offer
 
     default_params = { id: internship_offer.id }
-    forwardable_params = params.permit(:sector_id, :latitude, :longitude)
+    forwardable_params = params.permit(:latitude, :longitude, :radius)
 
     internship_offer_path(default_params.merge(forwardable_params))
   end

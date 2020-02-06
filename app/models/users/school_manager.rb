@@ -23,8 +23,6 @@ module Users
     belongs_to :school, optional: true
     has_many :main_teachers, through: :school
 
-    include TargetableInternshipOffersForSchool
-
     def students_by_class_room_for_registration(ignore_applicants:)
       school.class_rooms.inject([]) do |class_room_groups, class_room|
         class_room_groups.push([

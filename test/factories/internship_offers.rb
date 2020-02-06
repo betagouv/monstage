@@ -11,7 +11,7 @@ FactoryBot.define do
     tutor_phone { '0123456789' }
     tutor_email { 'eric@dubois.fr' }
     is_public { true }
-    group { Group::PUBLIC.first }
+    group { create(:group, is_public: true) }
     employer_description { 'on envoie du parpaing' }
     street { '1 rue du poulet' }
     zipcode { '75001' }
