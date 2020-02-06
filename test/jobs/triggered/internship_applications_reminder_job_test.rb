@@ -23,7 +23,7 @@ module Triggered
       InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
       internship_application.reload
       assert_nil internship_application.pending_reminder_sent_at
-      assert_nil internship_application.automatically_rejected_at
+      assert_nil internship_application.expired_at
       assert internship_application.submitted?
     end
 
@@ -34,35 +34,38 @@ module Triggered
                                       submitted_at: 8.days.ago,
                                       internship_offer: @internship_offer)
 
-      assert_changes -> { internship_application.reload.pending_reminder_sent_at },
-                     from: nil,
-                     to: Date.today do
-        InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-        assert_enqueued_emails 1
+      freeze_time do
+        assert_changes -> { internship_application.reload.pending_reminder_sent_at },
+                       from: nil,
+                       to: Time.now.utc do
+          InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
+          assert_enqueued_emails 1
+        end
       end
-      assert_nil internship_application.automatically_rejected_at
+      assert_nil internship_application.expired_at
 
       assert_no_emails do # ensure re-entrance does not send emails
         InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
       end
     end
 
-    test 'perform does sends email and reject!' \
+    test 'perform does sends email and expire!' \
          'when internship_applications is pending for more than 2 weeks' do
       internship_application = create(:internship_application,
                                       :submitted,
-                                      submitted_at: 15.days.ago,
+                                      submitted_at: 16.days.ago,
                                       internship_offer: @internship_offer)
 
-      assert_changes -> { internship_application.reload.rejected? },
-                     from: false,
-                     to: true do
-        InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-        assert_enqueued_emails 2 # one for student, one for employer
+      freeze_time do
+        assert_changes -> { internship_application.reload.expired? },
+                       from: false,
+                       to: true do
+          InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
+          assert_enqueued_emails 1 # one for employer
+        end
+        internship_application.reload
+        assert_equal Time.now.utc, internship_application.expired_at, 'expired_at not updated'
       end
-      internship_application.reload
-      assert_equal Date.today, internship_application.automatically_rejected_at, 'automatically_rejected_at not updated'
-
       assert_no_emails do # ensure re-entrance does not send emails
         InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
       end

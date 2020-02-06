@@ -17,7 +17,7 @@ module Triggered
       # in case of error rollback everything
       ActiveRecord::Base.transaction do
         update_remindable(remindable_application_ids)
-        update_and_reject_expirable(expirable_application_ids)
+        update_and_expire_expirable(expirable_application_ids)
 
         notify(employer: employer,
                remindable_application_ids: remindable_application_ids,
@@ -33,15 +33,13 @@ module Triggered
 
     def update_remindable(ids)
       InternshipApplication.where(id: ids)
-                           .update_all(pending_reminder_sent_at: Date.today)
+                           .update_all(pending_reminder_sent_at: Time.now.utc)
     end
 
-    def update_and_reject_expirable(ids)
+    def update_and_expire_expirable(ids)
       InternshipApplication.where(id: ids)
                            .each do |expirable_application|
-        expirable_application.reject!
-        expirable_application.automatically_rejected_at = Date.today
-        expirable_application.save!
+        expirable_application.expire!
       end
     end
 
