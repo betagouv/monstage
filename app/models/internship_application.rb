@@ -36,9 +36,9 @@ class InternshipApplication < ApplicationRecord
   }
 
   scope :remindable, lambda {
-    submitted
-      .not_reminded
-      .where(submitted_at: 15.days.ago..7.days.ago)
+    submitted.not_reminded
+             .where(submitted_at: 15.days.ago..7.days.ago)
+
   }
 
   scope :expirable, lambda {

@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2020_01_29_085225) do
     t.datetime "convention_signed_at"
     t.datetime "submitted_at"
     t.datetime "expired_at"
+    t.datetime "pending_reminder_sent_at"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true

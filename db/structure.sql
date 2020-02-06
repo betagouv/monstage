@@ -414,7 +414,8 @@ CREATE TABLE public.internship_applications (
     rejected_at timestamp without time zone,
     convention_signed_at timestamp without time zone,
     submitted_at timestamp without time zone,
-    expired_at timestamp without time zone
+    expired_at timestamp without time zone,
+    pending_reminder_sent_at timestamp without time zone
 );
 
 
