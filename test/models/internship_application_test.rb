@@ -149,6 +149,21 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
+  test 'transition via expire! changes aasm_state from submitted to expired' do
+    internship_application = create(:internship_application, :submitted)
+    assert_changes -> { internship_application.reload.aasm_state },
+                   from: 'submitted',
+                   to: 'expired' do
+      freeze_time do
+        assert_changes -> { internship_application.reload.expired_at },
+                       from: nil,
+                       to: Time.now.utc do
+          internship_application.expire!
+        end
+      end
+    end
+  end
+
   test 'transition via signed! changes aasm_state from approved to rejected' do
     internship_application = create(:internship_application, :approved)
     assert_changes -> { internship_application.reload.aasm_state },

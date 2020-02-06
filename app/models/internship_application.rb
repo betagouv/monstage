@@ -116,10 +116,16 @@ class InternshipApplication < ApplicationRecord
 
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :convention_signed
+    state :submitted, :approved, :rejected, :expired, :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: :transition_with_email
+    end
+
+    event :expire do
+      transitions from: :submitted, to: :expired, after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
     end
 
     event :approve do

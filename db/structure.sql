@@ -414,8 +414,7 @@ CREATE TABLE public.internship_applications (
     rejected_at timestamp without time zone,
     convention_signed_at timestamp without time zone,
     submitted_at timestamp without time zone,
-    pending_reminder_sent_at date,
-    automatically_rejected_at date
+    expired_at timestamp without time zone
 );
 
 
@@ -1639,7 +1638,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191120184442'),
 ('20191127144843'),
 ('20191211145010'),
-('20191212090431'),
 ('20191212090431'),
 ('20191218134559'),
 ('20200114163150'),
