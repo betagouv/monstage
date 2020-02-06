@@ -27,9 +27,9 @@
 
         - if can?(:update, @internship_offer) && @internship_offer.published_at?
           = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center px-1 px-sm-2', method: :patch do
-            .fas.fa-times
+            .fas.fa-eye-slash
             small.d-block
-              | Dépublier
+              | Masquer
 
         - if can?(:update, @internship_offer) && !@internship_offer.published_at?
           = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}), class: 'nav-link text-center px-1 px-sm-2', method: :patch do
