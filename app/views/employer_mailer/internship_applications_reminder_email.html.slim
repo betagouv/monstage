@@ -7,6 +7,6 @@ p
 
 - if @expirable_application_ids.size.positive?
   p
-    = "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@expirable_application_ids.size} candidature(s) ont étées automatiquement refusées."
+    = "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@expirable_application_ids.size} candidature(s) ont étées automatiquement expirées."
 
 p= link_to "Gérer mes candidatures",  dashboard_internship_offers_url
