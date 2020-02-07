@@ -59,8 +59,8 @@ module Dashboard
         sign_in(school_manager)
         get dashboard_school_class_rooms_path(school)
 
-        assert_select 'p.alert.alert-info', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-        assert_select 'p.alert.alert-info', text: "Indiquez les semaines de stage afin que les offres proposées aux élèvescorrespondent à ces dates."
+        assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
+        assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
