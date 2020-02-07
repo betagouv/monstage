@@ -1,9 +1,13 @@
+$sortLinkOffset: 15px;
+.align-top:first-child {
+  .sort-link, small {padding-left: $sortLinkOffset}
+}
 .sort-links{
   $sort-arrow-height: 15px;
   position: relative;
   .sort-link{
     position: absolute;
-    left: -15px;
+    left: -$sortLinkOffset;
     height: $sort-arrow-height;
     line-height: 8px;
     opacity: .5;
