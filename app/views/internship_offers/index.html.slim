@@ -1,10 +1,11 @@
-= render "title", internship_offers: @internship_offers
+= render "internship_offers/title", internship_offers: @internship_offers
+
 .row.bt-1.bt-light
   = react_component("SearchInternshipOffer",
                     { url: internship_offers_path,
                       initialRadius: params[:radius] || Finders::ListableInternshipOffer::DEFAULT_NEARBY_RADIUS_IN_METER,
                       currentCitySearch: params[:city] || current_user.try(:school).try(:city) },
-                    { class: 'col-12 bg-light p-3 filter-section' })
+                    { class: 'col-12 bg-light pt-2 filter-section' })
 
 - if @internship_offers.blank?
   .row

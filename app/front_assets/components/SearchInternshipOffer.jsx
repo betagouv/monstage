@@ -81,11 +81,7 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
       searchCityByName(searchTerm);
     }
   }, [searchTerm]);
-  // useEffect(() => {
-  //   if (radius !== initialRadius) {
-  //     filterOfferByLocation();
-  //   }
-  // }, [radius]);
+
   return (
     <Downshift
       initialInputValue={currentCitySearch || ''}
@@ -192,11 +188,11 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col ml-0 ml-sm-3">
               <div className="form-group mt-2 mb-0">
                 <button
                   type="submit"
-                  className="btn btn-warning btn-sm float-right float-sm-none px-3"
+                  className="btn btn-outline-dark btn-xs-sm float-right float-sm-none px-3"
                 >
                   <i className="fas fa-search" />
                   <span className="ml-1 d-none d-sm-inline">Rechercher</span>
