@@ -23,7 +23,7 @@ module Dashboard
       #
       # Index, SchoolManager, Teacher, MainTeacher, Other
       #
-      test 'GET class_rooms#index as school employees works' do
+      test 'GET class_rooms#index as school school employees works' do
         school = create(:school)
         roles = [create(:school_manager, school: school),
                  create(:main_teacher, school: school),
@@ -51,6 +51,16 @@ module Dashboard
                       edit_dashboard_school_path(school),
                       { count: 1 },
                       "missing link to manage school weeks"
+      end
+      test 'GET class_rooms#index as SchoolManager shows UX critical alert-info' do
+        school = create(:school)
+        school_manager = create(:school_manager, school: school)
+
+        sign_in(school_manager)
+        get dashboard_school_class_rooms_path(school)
+
+        assert_select 'p.alert.alert-info', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
+        assert_select 'p.alert.alert-info', text: "Indiquez les semaines de stage afin que les offres proposées aux élèvescorrespondent à ces dates."
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
