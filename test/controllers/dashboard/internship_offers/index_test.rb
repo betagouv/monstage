@@ -6,6 +6,14 @@ module Dashboard
   class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
+    def assert_presence_of(internship_offer:)
+      assert_select "tr.test-internship-offer-#{internship_offer.id}", 1
+    end
+
+    def assert_absence_of(internship_offer:)
+      assert_select "tr.test-internship-offer-#{internship_offer.id}", 0
+    end
+
     test 'GET #index as Employer displays internship_applications link' do
       internship_offer = create(:internship_offer)
       sign_in(internship_offer.employer)
@@ -144,5 +152,25 @@ module Dashboard
                     count: 1
     end
 
+    test 'GET #index as Operator works with geolocaton params' do
+      operator = create(:user_operator)
+      internship_offer_at_paris = create(:internship_offer, employer: operator, coordinates: Coordinates.paris)
+      internship_offer_at_bordeaux = create(:internship_offer, employer: operator, coordinates: Coordinates.bordeaux)
+      sign_in(operator)
+      location_filter = { latitude: Coordinates.bordeaux[:latitude],
+                          longitude: Coordinates.bordeaux[:longitude],
+                          radius: 1_000 }
+
+      get dashboard_internship_offers_path(location_filter)
+      assert_response :success
+      assert_absence_of(internship_offer: internship_offer_at_paris)
+      assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+
+      ordonencer_options = { order: :title, direction: :desc }
+      ordonencer_params = ordonencer_options.merge(location_filter)
+      assert_select "a.sort-link[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+                    1,
+                    "ordonencer links should contain geo filters"
+    end
   end
 end
