@@ -69,13 +69,11 @@ module Dashboard
       end
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
-        internship_applications = {
-          drafted: create(:internship_application, :drafted, student: student),
-          submitted: create(:internship_application, :submitted, student: student),
-          approved: create(:internship_application, :approved, student: student),
-          rejected: create(:internship_application, :rejected, student: student),
-          convention_signed: create(:internship_application, :convention_signed, student: student)
-        }
+        states = %i[drafted submitted approved rejected expired convention_signed]
+        internship_applications = states.inject({}) do |accu, state|
+          accu[state] = create(:internship_application, state, student: student)
+          accu
+        end
 
         sign_in(student)
         get dashboard_students_internship_applications_path(student)
@@ -99,6 +97,9 @@ module Dashboard
                       count: 1
         assert_select '.alert-internship-application-state',
                       text: "Candidature envoyée le #{I18n.localize(internship_applications[:submitted].submitted_at, format: :human_mm_dd)}.",
+                      count: 1
+        assert_select '.alert-internship-application-state',
+                      text: "Candidature expirée le #{I18n.localize(internship_applications[:expired].expired_at, format: :human_mm_dd)}.",
                       count: 1
       end
 

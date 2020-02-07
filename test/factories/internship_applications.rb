@@ -15,6 +15,13 @@ FactoryBot.define do
     aasm_state { :submitted }
     submitted_at { 3.days.ago }
   end
+
+  trait :expired do
+    aasm_state { :expired }
+    submitted_at { 15.days.ago }
+    expired_at { 3.days.ago }
+  end
+
   trait :approved do
     aasm_state { :approved }
     submitted_at { 3.days.ago }

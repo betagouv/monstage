@@ -12,9 +12,6 @@
       .col
         p.mb-0
           span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
-          br
-          span.warning-automatic-pending-reject
-            | En l'absence de réponse sous 15 jours, la candidature sera automatiquement refusée.
 
 - if @internship_offers.empty?
   p.text-muted Aucune offre publiée
