@@ -1,6 +1,11 @@
 .d-flex style="align-items: baseline"
   h1.h3= @school.name
   a.ml-1 href="#{account_path(section: 'school')}" Modifier
+
+-if defined?(render_ux_guidelines)
+  = render partial: 'dashboard/schools/ux_classrooms_and_weeks_guidelines', locals: {school: @school }
+
+
 ul.nav.nav-tabs.test-dashboard-nav.mb-2
   li.nav-item
     = link_to "Classes", dashboard_school_class_rooms_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}"

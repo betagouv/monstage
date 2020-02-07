@@ -52,6 +52,7 @@ module Dashboard
                       { count: 1 },
                       "missing link to manage school weeks"
       end
+
       test 'GET class_rooms#index as SchoolManager shows UX critical alert-info' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)

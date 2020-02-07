@@ -41,6 +41,17 @@ module Dashboard
       assert asserted_input_count > 0
     end
 
+    test 'GET class_rooms#index as SchoolManager shows UX critical alert-info' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+
+      sign_in(school_manager)
+      get edit_dashboard_school_path(@school.to_param)
+
+      assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
+      assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
+    end
+
     test 'GET edit as God works' do
       school = create(:school)
       sign_in(create(:god))

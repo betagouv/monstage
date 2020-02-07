@@ -1,0 +1,21 @@
+- if school.weeks.size.zero?
+  .row
+    .col-12
+      .alert.alert-info.alert-outlined.mb-2
+        .row.align-items-center.no-gutters
+          .col-1.col-sm-auto.text-center.mr-2
+            i.fa.fa-info-circle.fa-2x
+          .col
+            p.mb-0
+              | Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.
+
+- if school.class_rooms.size.zero?
+  .row
+    .col-12
+      .alert.alert-info.alert-outlined.mb-2
+        .row.align-items-center.no-gutters
+            .col-1.col-sm-auto.text-center.mr-2
+              i.fa.fa-info-circle.fa-2x
+            .col
+              p.mb-0
+                | Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire.
