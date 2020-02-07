@@ -4,6 +4,15 @@
     i.fas.fa-plus
     = " Déposer une offre"
 
+- if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
+  .alert.alert-warning.alert-outlined
+    .row.align-items-center.no-gutters
+      .col-1.col-sm-auto.text-center.mr-2
+        i.fa.fa-exclamation-triangle.fa-2x
+      .col
+        p.mb-0
+          span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
+
 - if @internship_offers.empty?
   p.text-muted Aucune offre publiée
 - else

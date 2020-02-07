@@ -28,6 +28,25 @@ class InternshipApplication < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  #
+  # Triggers scopes (used for transactional mails)
+  #
+  scope :not_reminded, lambda {
+    where(pending_reminder_sent_at: nil)
+  }
+
+  scope :remindable, lambda {
+    submitted.not_reminded
+             .where(submitted_at: 15.days.ago..7.days.ago)
+  }
+
+  scope :expirable, lambda {
+    submitted.where('submitted_at < :date', date: 15.days.ago)
+  }
+
+  #
+  # Ordering scopes (used for ordering in ui)
+  #
   scope :order_by_aasm_state, lambda {
     select("#{table_name}.*")
       .select(%(
@@ -43,6 +62,9 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  #
+  # Other stuffs
+  #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
@@ -93,10 +115,16 @@ class InternshipApplication < ApplicationRecord
 
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :convention_signed
+    state :submitted, :approved, :rejected, :expired, :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: :transition_with_email
+    end
+
+    event :expire do
+      transitions from: :submitted, to: :expired, after: proc { |*_args|
+        update!(expired_at: Time.now.utc)
+      }
     end
 
     event :approve do

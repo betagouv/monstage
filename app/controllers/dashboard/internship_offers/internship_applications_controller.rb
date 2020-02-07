@@ -7,9 +7,13 @@ module Dashboard
       before_action :find_internship_offer, only: %i[index update]
 
       def index
-        set_intership_applications
         authorize! :read, @internship_offer
         authorize! :index, InternshipApplication
+        @internship_applications = @internship_offer.internship_applications
+                                                    .where.not(aasm_state: [:drafted, :expired])
+                                                    .includes(:student, :week, :internship_offer, :internship_offer_week)
+                                                    .order(updated_at: :desc)
+                                                    .page(params[:page])
       end
 
       def update
@@ -27,14 +31,6 @@ module Dashboard
 
       def valid_transition?
         %w[approve! reject! signed! cancel!].include?(params[:transition])
-      end
-
-      def set_intership_applications
-        @internship_applications = @internship_offer.internship_applications
-                                                    .where.not(aasm_state: :drafted)
-                                                    .includes(:student, :week, :internship_offer, :internship_offer_week)
-                                                    .order(updated_at: :desc)
-                                                    .page(params[:page])
       end
 
       def find_internship_offer

@@ -37,4 +37,9 @@ FactoryBot.define do
     employer { create(:user_operator) }
     permalink { 'https://google.fr' }
   end
+
+  trait :discarded do
+    discarded_at { Time.now }
+  end
+
 end

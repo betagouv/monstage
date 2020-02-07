@@ -21,6 +21,10 @@ class User < ApplicationRecord
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
 
+  def self.drh
+    Users::Employer.where(email: 'drh@betagouv.fr').first
+  end
+
   def targeted_internship_offers
     InternshipOffer.kept
   end
