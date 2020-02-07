@@ -1,9 +1,23 @@
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
 - if @school.has_staff?
-  small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
+  .row
+    .col-12
+      small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
 
   .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
 
 - else
-  i Aucune personne de votre équipe pédagogique ne s'est inscrite sur la plateforme. Vous pourrez les voir ici lorsque ce sera le cas.
+  .row
+    .col-12
+      .alert.alert-info.alert-outlined.mb-2
+        .row.align-items-center.no-gutters
+          .col-1.col-sm-auto.text-center.mr-2
+            i.fa.fa-info-circle.fa-2x
+          .col
+            p.mb-0
+              span.test-presence-of-ux-guideline-invitation
+                | Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.
+              br
+              span.test-presence-of-ux-guideline-users-management
+                | Vous serez notifié(e) par courrier électronique de chaque inscription rattachée au collège.
