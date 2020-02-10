@@ -333,40 +333,6 @@ ALTER SEQUENCE public.email_whitelists_id_seq OWNED BY public.email_whitelists.i
 
 
 --
--- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.feedbacks (
-    id bigint NOT NULL,
-    email character varying NOT NULL,
-    comment text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    aasm_state character varying,
-    zammad_id character varying
-);
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.feedbacks_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
-
-
---
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -853,13 +819,6 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
-
-
---
 -- Name: groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -990,14 +949,6 @@ ALTER TABLE ONLY public.delayed_jobs
 
 ALTER TABLE ONLY public.email_whitelists
     ADD CONSTRAINT email_whitelists_pkey PRIMARY KEY (id);
-
-
---
--- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.feedbacks
-    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1647,6 +1598,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200114164236'),
 ('20200115164034'),
 ('20200122144920'),
-('20200129085225');
+('20200129085225'),
+('20200210135720');
 
 

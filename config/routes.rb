@@ -47,8 +47,6 @@ Rails.application.routes.draw do
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
     end
-
-    resources :feedbacks, only: :create
   end
 
   namespace :reporting, path: 'reporting' do

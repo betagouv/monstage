@@ -17,10 +17,6 @@ fr:
       not_approved: "Veuillez faire signer l'autorisation parentale à vos responsables légaux et la donner à votre professeur principal pour consulter la liste des stages."
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
   activerecord:
-    events:
-      feedback:
-        answer: Marquer comme En Cours
-        close: Clore
     models:
       sector:
         one: Secteur
@@ -58,9 +54,6 @@ fr:
       school:
         one: Collèges
         other: Collèges
-      feedback:
-        one: Avis
-        other: Avis
       internship_offer:
         one: Offre
         other: Offres
@@ -166,14 +159,6 @@ fr:
         gender: Sexe
         confirmed_at: Confirmé le
         has_parental_consent: Autorisation parentale
-      feedback:
-        aasm_state/open: Ouvert
-        aasm_state/in_progress: En Cours
-        aasm_state/closed: Clos
-        aasm_state: État
-        user: Utilisateur
-        comment: Commentaire
-        created_at: Créé le
       week:
         number: Numéro de semaine
         year: Année

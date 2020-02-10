@@ -36,13 +36,11 @@ RailsAdmin.config do |config|
     show
     edit
     delete
-    state
     export
   end
 
   config.included_models = %w[EmailWhitelist
                               School
-                              Feedback
                               InternshipOffer
                               Sector
                               Users::Student
