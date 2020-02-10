@@ -74,4 +74,5 @@
 
       tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}
 
-      = paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})
+.row
+  .col-12= paginate(@internship_offers, params: params[:sector_id] ? {sector_id: params[:sector_id]} : {})
