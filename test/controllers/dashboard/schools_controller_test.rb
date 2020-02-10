@@ -106,27 +106,6 @@ module Dashboard
       end
     end
 
-    test 'PATCH update as God update school & redirect to school list with anchor' do
-      sign_in(create(:god))
-      weeks_ids = [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
-      assert_difference('SchoolInternshipWeek.count', weeks_ids.size) do
-        patch(dashboard_school_path(@school.to_param),
-              params: {
-                school: {
-                  name: 'hello',
-                  visible: false,
-                  week_ids: weeks_ids
-                }
-              })
-        assert_redirected_to dashboard_schools_path(anchor: "school_#{@school.id}")
-        follow_redirect!
-        assert_select '#alert-success #alert-text', { text: 'Collège mis à jour avec succès' }, 1
-        @school.reload
-        assert_equal 'hello', @school.name
-        assert_equal false, @school.visible
-      end
-    end
-
     test 'PATCH update with missing params fails gracefuly' do
       sign_in(create(:school_manager, school: @school))
       patch(dashboard_school_path(@school.to_param), params: {})
