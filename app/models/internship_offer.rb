@@ -11,6 +11,10 @@ class InternshipOffer < ApplicationRecord
   PAGE_SIZE = 30
 
   rails_admin do
+    configure :created_at, :datetime do
+      date_format "BUGGY"
+    end
+
     list do
       field :title
       field :zipcode

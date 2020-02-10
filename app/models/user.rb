@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   include Discard::Model
-
+  include UserAdmin
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 

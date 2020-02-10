@@ -3,10 +3,12 @@ module Users
     include UserAdmin
 
     rails_admin do
+      configure :last_sign_in_at, :datetime
+      configure :created_at, :datetime
+
       list do
         field :sign_in_count
         field :last_sign_in_at
-        field :confirmed_at
         field :created_at
       end
     end

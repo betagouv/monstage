@@ -3,11 +3,19 @@ module UserAdmin
 
   included do
     rails_admin do
+      configure :confirmed_at, :datetime do
+        date_format "BUGGY"
+      end
+      configure :confirmed_atmation_sent_at, :datetime do
+        date_format "BUGGY"
+      end
+
       list do
         field :id
         field :email
         field :first_name
         field :last_name
+        field :confirmed_at
       end
 
       edit do
@@ -15,6 +23,7 @@ module UserAdmin
         field :email
         field :first_name
         field :last_name
+        field :confirmed_at
       end
 
       show do
