@@ -1,8 +1,0 @@
-h1 Mon tableau
-
-ul.nav.nav-pills.test-dashboard-nav
-  li.nav-item
-    = link_to "Gérer les collèges (#{School.count})", dashboard_schools_path, class: "nav-link #{current_page?(dashboard_schools_path) ? 'active' : ''}"
-
-  li.nav-item
-    = link_to "Gérer les avis (#{Feedback.count})", dashboard_feedbacks_path, class: "nav-link #{current_page?(dashboard_feedbacks_path) ? 'active' : ''}"
