@@ -75,9 +75,6 @@ gem 'aasm'
 gem 'kaminari'
 gem 'caxlsx_rails'
 
-# Admin
-gem "switch_user"
-
 gem 'rails_admin'
 gem 'rails_admin-i18n'
 

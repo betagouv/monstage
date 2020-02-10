@@ -352,7 +352,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    switch_user (1.5.2)
     temple (0.8.2)
     thor (1.0.1)
     thread_safe (0.3.6)
@@ -434,7 +433,6 @@ DEPENDENCIES
   slim-rails
   spring
   spring-watcher-listen
-  switch_user
   turbolinks
   tzinfo-data
   web-console

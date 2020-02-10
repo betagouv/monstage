@@ -293,6 +293,10 @@ fr:
       root_navigation:
         "Tableaux de suivis"
     actions:
+      switch_user:
+        menu: 'Impersonate'
+        title: 'Impersonating user...'
+        breadcrumb: 'Impersonation'
       kpi:
         title: 'Key Performance Indicators'
         breadcrumb: KPI

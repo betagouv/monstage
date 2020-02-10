@@ -160,6 +160,7 @@ class Ability
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
     can %i[read update destroy export], User
+    can :switch_user, User
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin

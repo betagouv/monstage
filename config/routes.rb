@@ -3,7 +3,6 @@
 Rails.application.routes.draw do
   match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
 
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount ActionCable.server => '/cable'
 
