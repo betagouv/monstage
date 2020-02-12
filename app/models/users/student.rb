@@ -74,7 +74,10 @@ module Users
     end
 
     def inactive_message
-      !confirmed? ? :unconfirmed : (has_parental_consent? ? super : :not_approved)
+      return :unconfirmed if !confirmed?
+      return :not_approved if !has_parental_consent
+
+      super
     end
 
     def custom_dashboard_path

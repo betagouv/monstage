@@ -25,7 +25,8 @@ module RailsAdmin
         end
 
         register_instance_option :controller do
-          Proc.new do
+          proc do
+            cookies.signed[Credentials.enc(:cookie_switch_back, prefix_env: false)] = current_user.id
             sign_in(@object, scope: :user)
             redirect_to @object.after_sign_in_path
           end
