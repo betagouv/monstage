@@ -4,7 +4,13 @@
 
   .row.mt-3
     .col-lg-6.col-12
-      h2.h3.text-black-50 Collèges
+      .d-flex.align-items-center.mb-4
+        h2.h3.text-black-50
+          | Collèges
+        = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-warning ml-auto ', data: {turbolinks: false} do
+          i.fas.fa-download
+          span Télécharger
+
 
       - # top, school sumup
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
@@ -25,7 +31,7 @@
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges non inscrits
 
-        table.table.table-statistics
+        table.table.mb-0.table-statistics
           thead
             tr.table-blue
               th Nom du collège
@@ -38,17 +44,12 @@
                 td.align-middle.border-left-1= Presenters::SchoolKind.new(kind: school_without_manager.kind).to_s
 
 
-        .card-body
-          p=link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-warning', data: {turbolinks: false} do
-            i.fas.fa-download
-            span Télécharger
-
       - # bottom, soon in internship
       .card.my-5
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges inscrits (avec semaine de stage à venir)
 
-        table.table.table-statistics
+        table.table.mb-0.table-statistics
           thead
             tr.table-blue
               th Nom du collège
@@ -66,71 +67,50 @@
                 td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
 
 
-        / .card-body
-        /   p=link_to "#", class: 'btn btn-warning' do
-        /     i.fas.fa-download
-        /     | &nbsp;
-        /     span Télécharger (TODO)
-
     .col-lg-6.col-12
-      h2.h3.text-black-50 Entreprises
+      .d-flex.align-items-center.mb-4
+        h2.h3.text-black-50
+          | Entreprises
+
+        - if params[:department]
+          =link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning ml-auto', data: {turbolinks: false} do
+            i.fas.fa-download
+            | &nbsp;
+            span Télécharger
 
       - # top, count sumup
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
 
-        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Offres
+        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Chiffres clés
 
         .row
-          .col-6.pr-2
-            .alert-warning.px-1.py-2.rounded
-              .row.align-items-center.no-gutters
-                .col-2.text-center
-                  i.fas.fa-file-alt.fa-2x.fa-fw
-                .col-4.text-center
-                  span.h4.text-white= total_internship_offers
-                .col.col-6
-                  span
-                    | Offres
-                    br
-                    | proposées
-
-          .col-6.pl-2
-            .alert-danger.px-1.py-2.rounded
-              .row.align-items-center.no-gutters
-                .col-2.text-center
-                  i.far.fa-handshake.fa-2x.fa-fw
-                .col-4.text-center
-                  span.h4.text-white= total_approved_applications_count
-                .col.col-6
-                  span Candidatures acceptées
-
-        - if params[:department]
-          .row.mt-3
-            .col-12
-              p=link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning', data: {turbolinks: false} do
-                i.fas.fa-download
-                | &nbsp;
-                span Télécharger
-
-      - # middle, count publicy
-      .pane.bg-white.shadow.rounded-lg.my-5.p-4
+          .col-12
+            .d-flex.align-items-center.mb-4
+              i.fa-fw.fas.fa-3x.fa-file-alt.text-warning
+              span.ml-3 Offres proposées
+              span.ml-auto.h2.text-warning= total_internship_offers
         .row
-          .col-6
-            h3.h5.text-blue-dark Secteur privé
+          .col-12
+            .d-flex.align-items-center.mb-4
+              i.fa-fw.far.fa-3x.fa-handshake.text-danger
+              span.ml-3 Candidatures acceptées
+              span.ml-auto.h2.text-danger= total_approved_applications_count
 
-            .row.align-items-center.no-gutters
-              .col-12
-                span.h2.text-blue-dark.mr-1= total_internship_offers_is_not_public
 
+        - # middle, count publicy
+        .row
+          .col-12
+            .d-flex.align-items-center.mb-4
+              i.fa-fw.fas.fa-3x.fa-building.text-cyan
+              span.ml-3 Secteur privé
+              span.ml-auto.h2.text-cyan= total_internship_offers_is_not_public
 
-          .col-6
-            h3.h5.text-cyan Secteur public
-
-            .row.align-items-center.no-gutters
-              .col-12
-                span.h2.text-cyan.mr-1= total_internship_offers_is_public
-              .col
-
+        .row
+          .col-12
+            .d-flex.align-items-center.mb-4
+              i.fa-fw.fas.fa-3x.fa-university.text-blue-dark
+              span.ml-3 Secteur public
+              span.ml-auto.h2.text-blue-dark= total_internship_offers_is_public
 
       .row.my-5
         .col-6
@@ -138,7 +118,7 @@
             .card-body
               h3.h5.text-dark.mb-1.card-title PaQte
 
-            table.table.table-statistics
+            table.table.mb-0.table-statistics
               thead
                 tr.table-blue
                   th Entreprise
@@ -154,7 +134,7 @@
             .card-body
               h3.h5.text-dark.mb-1.card-title Secteur public
 
-            table.table.table-statistics
+            table.table.mb-0.table-statistics
               thead
                 tr.table-blue
                   th Institution
