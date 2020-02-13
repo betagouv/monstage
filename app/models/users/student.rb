@@ -37,7 +37,6 @@ module Users
 
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id'
-    after_initialize :init
 
     attr_reader :handicap_present
 
@@ -61,10 +60,6 @@ module Users
 
     def to_s
       "#{super}, in school: #{school&.zipcode}"
-    end
-
-    def init
-      self.birth_date ||= 14.years.ago
     end
 
     # Block sign in if email is not confirmed and main teacher has not confirmed

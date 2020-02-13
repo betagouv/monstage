@@ -15,8 +15,6 @@
     "algoliasearch": "^3.32.0",
     "babel-eslint": "^10.0.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "better-dateinput-polyfill": "^3.2.3",
-    "better-dom": "^4.0.0",
     "bootstrap": "^4.3.1",
     "core-js": "^3.4.1",
     "downshift": "^4.0.8",

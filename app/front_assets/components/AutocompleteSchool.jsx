@@ -292,10 +292,8 @@ class AutocompleteSchool extends React.Component {
 
     const isWaitingCitySelection =
       schoolsInCitySuggestions.length === 0 && !selectedSchool && !existingSchool;
-    const isAlreadySelected =
-      schoolsInCitySuggestions.length === 0 && existingSchool;
-    const hasPendingSuggestion =
-      schoolsInCitySuggestions.length > 0;
+    const isAlreadySelected = schoolsInCitySuggestions.length === 0 && existingSchool;
+    const hasPendingSuggestion = schoolsInCitySuggestions.length > 0;
 
     return (
       <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
@@ -357,12 +355,10 @@ class AutocompleteSchool extends React.Component {
     const { selectedClassRoom, classRoomsSuggestions } = this.state;
     const { resourceName, existingClassRoom, classes } = this.props;
 
-     const isWaitingSchoolSelection =
+    const isWaitingSchoolSelection =
       classRoomsSuggestions === null && !selectedClassRoom && !existingClassRoom;
-    const isAlreadySelected =
-      classRoomsSuggestions === null && existingClassRoom;
-    const hasPendingSuggestion =
-      classRoomsSuggestions && classRoomsSuggestions.length > 0;
+    const isAlreadySelected = classRoomsSuggestions === null && existingClassRoom;
+    const hasPendingSuggestion = classRoomsSuggestions && classRoomsSuggestions.length > 0;
 
     return (
       <div className={`form-group ${isWaitingSchoolSelection ? 'opacity-05' : ''}`}>
@@ -403,6 +399,11 @@ class AutocompleteSchool extends React.Component {
             name={`${resourceName}[class_room_id]`}
             id={`${resourceName}_class_room_id`}
           >
+            {!selectedClassRoom && (
+              <option key="class-room-null" selected disabled>
+                -- Veuillez choisir une classe --
+              </option>
+            )}
             {(classRoomsSuggestions || []).map(classRoom => (
               <option
                 key={`class-room-${classRoom.id}`}

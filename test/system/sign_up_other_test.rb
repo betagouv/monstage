@@ -14,22 +14,22 @@ class SignUpOthersTest < ApplicationSystemTestCase
 
     # fails to create other with existing email
     assert_difference('Users::Other.count', 0) do
-      find_field('Ville ou nom de mon collège').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
 
       fill_in 'Prénom', with: 'Martin'
-      fill_in 'Nom', with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
+      find('#test-accept-terms').click
       click_on "Je m'inscris"
     end
 
     # create other
     assert_difference('Users::Other.count', 1) do
-      find_field('Ville ou nom de mon collège').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       # find('button', text: school_1.city).click
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click

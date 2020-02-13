@@ -13,18 +13,18 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     # fails to create employer with existing email
     assert_difference('Users::Employer.count', 0) do
       fill_in 'Prénom', with: 'Madame'
-      fill_in 'Nom', with: 'Accor'
+      find("input[name='user[last_name]']").fill_in  with: 'Accor'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_accept_terms"]').click
+      find('#test-accept-terms').click
       click_on "Je m'inscris"
     end
 
     # create employer
     assert_difference('Users::Employer.count', 1) do
       fill_in 'Prénom', with: 'Madame'
-      fill_in 'Nom', with: 'Accor'
+      find("input[name='user[last_name]']").fill_in  with: 'Accor'
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'

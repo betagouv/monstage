@@ -8,7 +8,7 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
-    assert_select 'label', /J'accepte les conditions d'utilisation/
+    assert_select '#test-accept-terms', /J'accepte les/
   end
 
   test 'GET new as a MainTeacher renders expected inputs' do

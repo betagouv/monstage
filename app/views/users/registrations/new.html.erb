@@ -12,7 +12,7 @@
       <%= react_component(
         "AutocompleteSchool",
         classes: 'col-12',
-        label: "Ville ou nom de mon collège",
+        label: "Nom (ou ville) de mon collège",
         required: true,
         resourceName: :user,
         selectClassRoom: can?(:choose_class_room, resource),
@@ -22,14 +22,6 @@
     <% end %>
 
     <div class="form-group">
-      <%= f.label :first_name do %>
-        Prénom
-        <%= f.rg2a_required_content_tag %>
-      <% end %>
-      <%= f.text_field :first_name, class: 'form-control', required: true %>
-    </div>
-
-    <div class="form-group">
       <%= f.label :last_name do %>
         Nom
         <%= f.rg2a_required_content_tag %>
@@ -37,13 +29,22 @@
       <%= f.text_field :last_name, class: 'form-control', required: true %>
     </div>
 
+    <div class="form-group">
+      <%= f.label :first_name do %>
+        Prénom
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.text_field :first_name, class: 'form-control', required: true %>
+    </div>
+
     <% if can?(:choose_gender_and_birthday, resource) %>
-      <div class="form-group">
+      <div class="form-group" data-controller="a11y-date-input">
         <%= f.label :birth_date do %>
-          Date de naissance
+          Date de naissance (jj/mm/aaaa)
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.date_field :birth_date, value: resource.birth_date.strftime('%Y-%m-%d'), class: 'form-control', required: true %>
+        <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: '  /  /', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+        <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
       </div>
 
       <div class="form-group">
@@ -54,7 +55,7 @@
                              class: 'custom-control-input',
                              id: "select-gender-girl",
                              required: true  %>
-          <%= f.label :gender, "Fille",
+          <%= f.label :gender, "féminin",
                                class: 'custom-control-label',
                                for: "select-gender-girl" %>
         </div>
@@ -63,7 +64,7 @@
                              "m",
                              class: 'custom-control-input',
                              id: "select-gender-boy"  %>
-          <%= f.label :gender, "Garçon",
+          <%= f.label :gender, "masculin",
                                class: 'custom-control-label',
                                for: "select-gender-boy" %>
         </div>
@@ -72,10 +73,12 @@
 
     <div class="form-group">
       <%= f.label :email do %>
-        <%= resource.type == 'Users::SchoolManager' ? 'Adresse électronique académique' : 'Adresse électronique (email)' %>
+        <%= resource.type == 'Users::SchoolManager' ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)' %>
         <%= f.rg2a_required_content_tag %>
+        <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
       <% end %>
-      <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+      <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+
       <small class="d-none" data-target="signup.emailHint"></small>
     </div>
 
@@ -111,9 +114,13 @@
         <div class="custom-control custom-checkbox">
           <%= f.check_box :handicap_present, class: 'custom-control-input', data: {action: "change->signup#toggleHandicap"} %>
           <%= f.label :handicap_present, class: 'custom-control-label' do %>
-            Je présente un handicap qui peut nécessiter une assistance particulière
+            <span class="fa-stack fa-2x float-right" style="color: rgb(21,81,150);">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fas fa-wheelchair fa-stack-1x fa-inverse"></i>
+            </span>
+            J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap.
           <% end %>
-          </div>
+        </div>
       </div>
 
       <div class="form-group <%= resource.handicap_present ? '' : 'd-none' %>" data-target="signup.handicapGroup">
@@ -130,7 +137,8 @@
       <div class="custom-control custom-checkbox">
         <%= f.check_box :accept_terms, class: 'custom-control-input' %>
         <%= f.label :accept_terms, class: 'custom-control-label' do %>
-          J'accepte les conditions d'utilisation
+          <span id="test-accept-terms">J'accepte les</span>
+          <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer"  %>
         <% end %>
       </div>
     </div>

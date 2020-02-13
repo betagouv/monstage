@@ -19,9 +19,9 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
-    assert_select 'div', /Je présente un handicap qui peut nécessiter une assistance particulière/
+    assert_select 'div', /J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap./
     assert_select 'label', /Indiquez ce dont vous avez besoin/
-    assert_select 'label', /J'accepte les conditions d'utilisation/
+    assert_select '#test-accept-terms', /J'accepte les/
   end
 
   test 'POST Create Student without class fails' do
