@@ -305,7 +305,7 @@ class AutocompleteSchool extends React.Component {
         </label>
         {isWaitingCitySelection && (
           <input
-            value="Veuillez choisir la ville du collège"
+            value=""
             disabled
             className={`form-control ${classes || ''}`}
             type="text"
@@ -366,7 +366,7 @@ class AutocompleteSchool extends React.Component {
 
         {isWaitingSchoolSelection && (
           <input
-            value="Veuillez choisir un collège"
+            value=""
             disabled
             className={`form-control ${classes || ''}`}
             type="text"

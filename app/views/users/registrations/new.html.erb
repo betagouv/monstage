@@ -1,4 +1,4 @@
-<div class='onboarding-card' data-controller="signup">
+<div class='onboarding-card mb-4' data-controller="signup">
   <header class="header-account">
     <h1 class="h2 text-center mb-0">Créer mon compte</h1>
   </header>
@@ -114,10 +114,7 @@
         <div class="custom-control custom-checkbox">
           <%= f.check_box :handicap_present, class: 'custom-control-input', data: {action: "change->signup#toggleHandicap"} %>
           <%= f.label :handicap_present, class: 'custom-control-label' do %>
-            <span class="fa-stack fa-2x float-right" style="color: rgb(21,81,150);">
-              <i class="fas fa-square fa-stack-2x"></i>
-              <i class="fas fa-wheelchair fa-stack-1x fa-inverse"></i>
-            </span>
+            <i class="fas fa-universal-access float-right fa-3x ml-2" style="color: rgb(42,120,228);"></i>
             J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap.
           <% end %>
         </div>
