@@ -1,12 +1,12 @@
 <% if @resource.pending_reconfirmation? %>
-  <p>Bonjour, nous venons de recevoir une demande de changement d'adresse électronique (email) pour votre compte monstagedetroisieme.fr.<p>
+  <p>Bonjour, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr.<p>
   <p>Avant de procéder merci de confirmer </p>
   <ul>
-    <li>Votre adresse électronique (email) actuelle est <%= @resource.email %></li>
-    <li>Votre nouvelle adresse électronique (email) sera <%= @resource.unconfirmed_email%></li>
+    <li>Votre Adresse électronique (e-mail) actuelle est <%= @resource.email %></li>
+    <li>Votre nouvelle Adresse électronique (e-mail) sera <%= @resource.unconfirmed_email%></li>
   </ul>
   <p>
-    <%= link_to "Je confirme changer l'adresse électronique (email) de mon compte monstage de troisieme.fr", confirmation_url(@resource, confirmation_token: @token) %>
+    <%= link_to "Je confirme changer l'Adresse électronique (e-mail) de mon compte monstage de troisieme.fr", confirmation_url(@resource, confirmation_token: @token) %>
   </p>
 <% else %>
   <p>Bienvenue <% @resource.first_name %>,</p>

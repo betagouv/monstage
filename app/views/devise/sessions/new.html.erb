@@ -1,4 +1,4 @@
-<div class='onboarding-card'>
+<div class='onboarding-card mb-4'>
   <header class="header-account">
     <h1 class="h2 text-center mb-0">Me connecter</h1>
     <p class="text-center mb-0"><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path %></p>
@@ -9,7 +9,7 @@
 
     <div class="form-group">
       <%= f.label :email do %>
-        Adresse électronique (email)
+        Adresse électronique (e-mail)
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', required: true, value: params[:email] %>

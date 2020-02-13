@@ -1361,14 +1361,6 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-better-dateinput-polyfill@^3.2.3:
-  version "3.2.8"
-  resolved "https://registry.yarnpkg.com/better-dateinput-polyfill/-/better-dateinput-polyfill-3.2.8.tgz#9779b585b37db4adbc6c354981c64404718f8939"
-
-better-dom@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/better-dom/-/better-dom-4.0.0.tgz#47a492fb00a929ea09a879f7b0ac2074b46096c1"
-
 big.js@^5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"

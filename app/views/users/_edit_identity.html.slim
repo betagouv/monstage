@@ -18,7 +18,7 @@ h1.h2.mb-3 Mon identité
       required: true
   .form-group
     = f.label :email do
-      = 'Adresse électronique (email)'
+      = 'Adresse électronique (e-mail)'
       = f.rg2a_required_content_tag
     = f.text_field :email, {class: 'form-control col-lg-6', required: true}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
 

@@ -7,8 +7,8 @@ h1.h2.mb-3 Mon collège
   - if current_user.respond_to?(:school)
     = react_component("AutocompleteSchool",
                       classes: 'col-12',
-                      label:"Ville ou se situe mon collège",
-                      required:true,
+                      label:"Nom (ou ville) de mon collège",
+                      required: true,
                       resourceName: :user,
                       selectClassRoom: @current_user.respond_to?(:class_room),
                       existingSchool: @current_user.try(:school).try(:as_json),

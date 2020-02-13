@@ -1,4 +1,4 @@
-<div class='onboarding-card'>
+<div class='onboarding-card mb-4'>
   <header class="header-account">
     <h1 class="h2 text-center mb-0"><%= t('.forgot_your_password') %></h1>
   </header>
@@ -8,7 +8,7 @@
     <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité. Pour cela rappelez-nous l’adresse électronique associée à votre compte.</p>
     <div class="form-group">
       <%= f.label :email do %>
-        Adresse électronique (email)
+        Adresse électronique (e-mail)
         <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>

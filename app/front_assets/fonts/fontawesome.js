@@ -44,11 +44,11 @@ import {
   faTimes,
   faTrain,
   faTrash,
+  faUniversalAccess,
   faUniversity,
   faUser,
   faUsers,
-  faWalking,
-  faWheelchair,
+  faWalking
 } from '@fortawesome/free-solid-svg-icons';
 
 // get list with ./infra/dev/find-font-awesome-icons.sh
@@ -112,11 +112,11 @@ library.add(
   faTimes,
   faTrain,
   faTrash,
+  faUniversalAccess,
   faUniversity,
   faUser,
   faUsers,
-  faWalking,
-  faWheelchair,
+  faWalking
 );
 
 // makes it works with Turbolink on document mutation
