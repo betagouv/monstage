@@ -6,72 +6,8 @@ module InternshipOffers
   class ShowTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    #
-    # content checks
-    #
-    test 'GET #show website url when present' do
-      internship_offer = create(:internship_offer, employer_website: 'http://google.com')
-      get internship_offer_path(internship_offer)
-
-      assert_response :success
-      assert_select 'a.test-employer-website[href=?]', internship_offer.employer_website
-    end
-
-    test 'GET #show does not show website url when absent' do
-      internship_offer = create(:internship_offer, employer_website: nil)
-      get internship_offer_path(internship_offer)
-
-      assert_response :success
-      assert_select 'a.test-employer-website', 0
-    end
-
-    test 'GET #show not logged increments view_count' do
-      internship_offer = create(:internship_offer)
-
-      assert_no_changes -> { internship_offer.reload.view_count } do
-        get internship_offer_path(internship_offer)
-      end
-    end
-
-    test 'GET #show logged as employer does not increment view_count' do
-      internship_offer = create(:internship_offer)
-      sign_in(internship_offer.employer)
-      assert_no_changes -> { internship_offer.reload.view_count } do
-        get internship_offer_path(internship_offer)
-      end
-    end
-
-    test 'GET #show logged as student does not increment view_count' do
-      internship_offer = create(:internship_offer)
-      sign_in(create(:student))
-      assert_changes -> { internship_offer.reload.view_count },
-                     from: 0,
-                     to: 1 do
-        get internship_offer_path(internship_offer)
-      end
-    end
-
-    #
-    # internship_applications checks
-    #
-    test 'GET #show as a visitor shows sign up form' do
-      internship_offer = create(:internship_offer, weeks: weeks)
-
-      get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/_visitor_form'
-    end
-
-    test 'GET #show displays application form for student' do
-      student = create(:student)
-      sign_in(student)
-      get internship_offer_path(create(:internship_offer))
-
-      assert_response :success
-      assert_select 'form[id=?]', 'new_internship_application'
-      assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
-    end
-
-    test 'GET #show does not display application form for school_manager when internship_offer is not reserved to school' do
+    # School Manager
+    test 'GET #show as SchoolManager does not display application when internship_offer is not reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)
@@ -89,7 +25,30 @@ module InternshipOffers
                     text: internship_offer.tutor_email
     end
 
-    test 'GET #show as a student who can apply shows an enabled button with candidate label' do
+    #
+    # Student
+    #
+    test 'GET #show as Student does increments view_count' do
+      internship_offer = create(:internship_offer)
+      sign_in(create(:student))
+      assert_changes -> { internship_offer.reload.view_count },
+                     from: 0,
+                     to: 1 do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show as Student displays application form' do
+      student = create(:student)
+      sign_in(student)
+      get internship_offer_path(create(:internship_offer))
+
+      assert_response :success
+      assert_select 'form[id=?]', 'new_internship_application'
+      assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
+    end
+
+    test 'GET #show as Student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
 
@@ -106,8 +65,7 @@ module InternshipOffers
       end
     end
 
-
-    test 'GET #show as a student a message when he cannot apply to a reserved internship offer' do
+    test 'GET #show as Student a message when he cannot apply to a reserved internship offer' do
       weeks = [Week.find_by(number: 1, year: 2020)]
       student = create(:student, school: create(:school, weeks: weeks))
       other_school = create(:school)
@@ -120,7 +78,7 @@ module InternshipOffers
       assert_select '#new_internship_application', 0
     end
 
-    test 'GET #show as a student who can apply to a reserved internship offer' do
+    test 'GET #show as Student who can apply to a reserved internship offer' do
       weeks = [Week.find_by(number: 1, year: 2020)]
       student = create(:student, school: create(:school, weeks: weeks))
       internship_offer = create(:internship_offer, school: student.school, weeks: weeks)
@@ -131,26 +89,7 @@ module InternshipOffers
       assert_select '#new_internship_application', 1
     end
 
-    test 'GET #show as a student displays weeks that matches school weeks' do
-      internship_weeks = [Week.find_by(number: 1, year: 2020),
-                          Week.find_by(number: 2, year: 2020),
-                          Week.find_by(number: 3, year: 2020),
-                          Week.find_by(number: 4, year: 2020)]
-      school = create(:school, weeks: [internship_weeks[1], internship_weeks[2]])
-      internship_offer = create(:internship_offer, weeks: internship_weeks)
-
-      travel_to(internship_weeks[0].week_date) do
-        sign_in(create(:student, school: school))
-
-        get internship_offer_path(internship_offer)
-        assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
-        assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
-        assert_select 'select option', text: internship_weeks[2].human_select_text_method, count: 1
-        assert_select 'select option', text: internship_weeks[3].human_select_text_method, count: 0
-      end
-    end
-
-    test 'GET #show as a student only displays weeks that are not blocked' do
+    test 'GET #show as Student only displays weeks that are not blocked' do
       max_candidates = 2
 
       internship_weeks = [Week.find_by(number: 1, year: 2020),
@@ -172,7 +111,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show as student with existing draft application shows the draft' do
+    test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
@@ -189,7 +128,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show as student with existing submitted, approved, rejected application shows _state component' do
+    test 'GET #show as Student with existing submitted, approved, rejected application shows _state component' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
@@ -207,20 +146,28 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show displays proper weeks' do
-      internship_offer = create(:internship_offer, weeks: [Week.find_by(number: 8, year: 2019), Week.find_by(number: 9, year: 2019), Week.find_by(number: 21, year: 2019), Week.find_by(number: 22, year: 2019)])
+    test 'GET #show as Student displays weeks that matches school weeks' do
+      week_not_matching = Week.find_by(number: 11, year: 2019)
+      matching_week = Week.find_by(number: 12, year: 2019)
 
-      school = create(:school, weeks: [Week.find_by(number: 8, year: 2019), Week.find_by(number: 21, year: 2019)])
+      internship_offer = create(:internship_offer,
+                                weeks: [matching_week,
+                                        week_not_matching])
+
+      school = create(:school, weeks: [matching_week])
       sign_in(create(:student, school: school))
-      travel_to(Date.new(2019, 5, 15)) do
+      travel_to(matching_week - 1.month) do
         get internship_offer_path(internship_offer)
 
         assert_response :success
-        assert_select 'option', text: 'Semaine du 20 mai au 26 mai'
+        assert_select 'option', text: week_not_matching.human_select_text_method,
+                                count: 0
+        assert_select 'option', text: matching_week.human_select_text_method,
+                                count: 1
       end
     end
 
-    test 'GET #show with API offer' do
+    test 'GET #show as Student with API offer' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:api_internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
@@ -230,7 +177,7 @@ module InternshipOffers
       assert_select 'a[href=?]', internship_offer.permalink
     end
 
-    test 'GET #show redirect to internship_offers when offer is discarded' do
+    test 'GET #show as Student redirects to internship_offers when offer is discarded' do
       internship_offer = create(:internship_offer)
       student = create(:student, school: create(:school))
       sign_in(student)
@@ -241,7 +188,7 @@ module InternshipOffers
       assert_redirected_to internship_offers_path
     end
 
-    test 'GET #show offers show next/previous navigation in list' do
+    test 'GET #show as Student shows next/previous navigation in list' do
       previous_out = create(:internship_offer, title: "previous_out")
       previous_in_page = create(:internship_offer, title: "previous")
       current = create(:internship_offer, title: "current")
@@ -261,7 +208,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show offers show next and not previous when no previous' do
+    test 'GET #show as Student shows next and not previous when no previous' do
       current = create(:internship_offer, title: "current")
       next_in_page = create(:internship_offer, title: "next")
       next_out = create(:internship_offer, title: "next_out")
@@ -279,7 +226,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show offers show previous and not next when no not' do
+    test 'GET #show as Student shows previous and not next when no not' do
       previous_out = create(:internship_offer, title: "previous_out")
       previous_in_page = create(:internship_offer, title: "previous")
       current = create(:internship_offer, title: "current")
@@ -297,7 +244,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show with forwards latitude/longitude in params to next/prev ' do
+    test 'GET #show as Student with forwards latitude, longitude & radius in params to next/prev ' do
       previous_in_page = create(:internship_offer, title: "previous")
       current = create(:internship_offer, title: "current")
       next_in_page = create(:internship_offer, title: "next")
@@ -306,34 +253,92 @@ module InternshipOffers
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
           sign_in(student)
-          get internship_offer_path(id: current, latitude: 1, longitude: 2)
+          get internship_offer_path(id: current, radius: 1_000, latitude: 1, longitude: 2)
 
           assert_response :success
           assert_select 'a[href=?]',
                         internship_offer_path(id: previous_in_page.id,
                                               latitude: 1,
-                                              longitude: 2)
+                                              longitude: 2,
+                                              radius: 1_000)
           assert_select 'a[href=?]',
                         internship_offer_path(id: next_in_page.id,
                                               latitude: 1,
-                                              longitude: 2)
+                                              longitude: 2,
+                                              radius: 1_000)
         end
       end
     end
 
-    test 'GET #show as Employer when internship_offer is unpublished' do
+    test 'GET #show as Student when school.weeks is empty show alert form' do
+      student = create(:student, school: create(:school))
+      internship_offer = create(:internship_offer)
+      student = create(:student, school: create(:school))
+      sign_in(student)
+
+      get internship_offer_path(internship_offer)
+
+    end
+
+    #
+    # Visitor
+    #
+    test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do
+      internship_offer = create(:internship_offer)
+      internship_offer.update!(published_at: nil)
+      get internship_offer_path(internship_offer)
+      assert_redirected_to internship_offers_path
+    end
+
+    test 'GET #show as Visitor shows sign up form' do
+      internship_offer = create(:internship_offer, weeks: weeks)
+
+      get internship_offer_path(internship_offer)
+      assert_template 'internship_applications/_visitor_form'
+    end
+
+    test 'GET #show as Visitor does not increment view_count' do
+      internship_offer = create(:internship_offer)
+
+      assert_no_changes -> { internship_offer.reload.view_count } do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show website url when present' do
+      internship_offer = create(:internship_offer, employer_website: 'http://google.com')
+      get internship_offer_path(internship_offer)
+
+      assert_response :success
+      assert_select 'a.test-employer-website[href=?]', internship_offer.employer_website
+    end
+
+    test 'GET #show does not show website url when absent' do
+      internship_offer = create(:internship_offer, employer_website: nil)
+      get internship_offer_path(internship_offer)
+
+      assert_response :success
+      assert_select 'a.test-employer-website', 0
+    end
+
+
+    #
+    # Employer
+    #
+    test 'GET #show as Employer does not increment view_count' do
+      internship_offer = create(:internship_offer)
+      sign_in(internship_offer.employer)
+      assert_no_changes -> { internship_offer.reload.view_count } do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show as Employer when internship_offer is unpublished works' do
       internship_offer = create(:internship_offer)
       internship_offer.update!(published_at: nil)
       sign_in(internship_offer.employer)
       get internship_offer_path(internship_offer)
       assert_response :success
-    end
-
-    test 'GET #show as visitor when internship_offer is unpublished' do
-      internship_offer = create(:internship_offer)
-      internship_offer.update!(published_at: nil)
-      get internship_offer_path(internship_offer)
-      assert_redirected_to internship_offers_path
     end
 
     test 'GET #show as Employer displays internship_applications link' do
