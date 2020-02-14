@@ -156,7 +156,7 @@ module InternshipOffers
 
       school = create(:school, weeks: [matching_week])
       sign_in(create(:student, school: school))
-      travel_to(matching_week - 1.month) do
+      travel_to(matching_week.week_date - 1.month) do
         get internship_offer_path(internship_offer)
 
         assert_response :success
