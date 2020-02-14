@@ -50,7 +50,7 @@ module Api
       assert_equal ['Missing employer_name'],
                    json_error['employer_name'],
                    'bad employer_name message'
-      assert_equal ['Missing zipcode'],
+      assert_equal ['Missing zipcode', 'Zipcode is invalid'],
                    json_error['zipcode'],
                    'bad zipcode message'
       assert_equal ['Missing city'],
