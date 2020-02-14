@@ -8,7 +8,7 @@ module Reporting
       @offers = current_offers
       respond_to do |format|
         format.xlsx do
-          @offers = @offers.find_each(batch_size: 1000)
+          @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
           response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('offres')}.xlsx"]
         end
         format.html do
@@ -30,7 +30,9 @@ module Reporting
         finder.dimension_offer
       when 'group'
         finder.dimension_by_group
-      when 'sector', nil
+      when 'sector'
+        finder.dimension_by_sector
+      else
         finder.dimension_by_sector
       end
     end
@@ -41,7 +43,9 @@ module Reporting
         Presenters::Reporting::DimensionByOffer
       when 'group'
         Presenters::Reporting::DimensionByGroup
-      when 'sector', nil
+      when 'sector'
+        Presenters::Reporting::DimensionBySector
+      else
         Presenters::Reporting::DimensionBySector
       end
     end

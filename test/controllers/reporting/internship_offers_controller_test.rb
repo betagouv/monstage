@@ -25,6 +25,7 @@ module Reporting
     test "GET #index as GOD success" do
       god = create(:god)
       sign_in(god)
+      create(:internship_offer)
       get reporting_internship_offers_path
       assert_response :success
     end
@@ -32,9 +33,27 @@ module Reporting
     test "GET #index as statistician success " \
          "when department params match his departement_name" do
       statistician = create(:statistician)
+      department_name = statistician.department_name
+      create(:internship_offer, department: department_name)
       sign_in(statistician)
-      get reporting_internship_offers_path(department: statistician.department_name)
+
+      get reporting_internship_offers_path(department: department_name)
       assert_response :success
+    end
+
+    test "GET #index.xlsx as statistician success " \
+         "when department params match his departement_name" do
+      statistician = create(:statistician)
+      department_name = statistician.department_name
+      create(:internship_offer, department: department_name)
+      sign_in(statistician)
+
+      %i[offers group sector].each do |dimension|
+        get(reporting_internship_offers_path(department: department_name,
+                                             dimension: dimension,
+                                             format: :xlsx))
+        assert_response :success
+      end
     end
 
     test "GET #index as statistician fails " \
