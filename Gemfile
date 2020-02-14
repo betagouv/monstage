@@ -59,8 +59,10 @@ group :staging do
   gem 'rest-client'
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+gem 'validates_zipcode'
+gem 'email_inquire'
 
 gem 'discard'
 gem 'slim-rails'
@@ -73,11 +75,11 @@ gem 'devise-i18n'
 
 gem 'aasm'
 gem 'kaminari'
+
 gem 'caxlsx_rails'
 
 gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 gem 'zammad_api'
-gem 'email_inquire'
 gem 'lograge'

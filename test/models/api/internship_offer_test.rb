@@ -12,6 +12,8 @@ class ApiInternshipOfferTest < ActiveSupport::TestCase
       employer_website: 'https://www.google.fr',
       'coordinates' => { latitude: 1, longitude: 1 },
       street: '7 rue du puits',
+      remote_id: 1,
+      employer: create(:employer),
       zipcode: '60580',
       city: 'Coye la foret',
       sector: create(:sector),
@@ -45,5 +47,13 @@ class ApiInternshipOfferTest < ActiveSupport::TestCase
     assert_equal({ "latitude" => Coordinates.paris[:latitude],
                    "longitude" => Coordinates.paris[:longitude] },
                  json["formatted_coordinates"])
+  end
+
+  test 'zipcode error' do
+    assert Api::InternshipOffer.new(@default_params).valid?
+
+    @default_params[:zipcode] = '0'
+
+    refute Api::InternshipOffer.new(@default_params).valid?
   end
 end

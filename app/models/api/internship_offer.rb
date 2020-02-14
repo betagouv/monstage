@@ -9,6 +9,7 @@ module Api
               :permalink,
               presence: true
 
+    validates :zipcode, zipcode: { country_code: :fr }
     validates :remote_id, uniqueness: { scope: :employer_id }
 
     after_initialize :init
