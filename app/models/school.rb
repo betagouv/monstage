@@ -6,6 +6,9 @@ class School < ApplicationRecord
   has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
                       class_name: 'Users::Student'
+  has_many :students_with_missing_school_week, dependent: :nullify,
+                                               class_name: 'Users::Student'
+
   has_many :main_teachers, dependent: :nullify,
                            class_name: 'Users::MainTeacher'
   has_many :teachers, dependent: :nullify,
