@@ -18,7 +18,7 @@ nav.navbar.navbar-light.py-0
       li.nav-item
         = link_to current_user.account_link_name, account_path, class: "nav-link pl-1 pr-1 py-4 #{account_controller?(user: current_user) ? 'active' : ''}"
       - if user_signed_in? && cookies.signed[Credentials.enc(:cookie_switch_back, prefix_env: false)].present?
-        li.nav-item= link_to 'Switch back', destroy_user_session_path, style: "background-color: #f00; color: #fff; font-weight: bold; text-decoration: underline", class: "nav-link pl-1 pr-1 py-4", method: :delete
+        li.nav-item= link_to 'Revenir en admin', destroy_user_session_path, style: "background-color: #f00; color: #fff; font-weight: bold; text-decoration: underline", class: "nav-link pl-1 pr-1 py-4", method: :delete
 
     - else
       li.nav-item.d-none.d-sm-block

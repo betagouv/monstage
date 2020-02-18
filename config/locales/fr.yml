@@ -294,9 +294,9 @@ fr:
         "Tableaux de suivis"
     actions:
       switch_user:
-        menu: 'Impersonate'
-        title: 'Impersonating user...'
-        breadcrumb: 'Impersonation'
+        menu: 'Se connecter avec ce compte'
+        title: 'Connexion en tant que...'
+        breadcrumb: 'Se connecter avec ce compte'
       kpi:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
