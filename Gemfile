@@ -82,4 +82,3 @@ gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 gem 'zammad_api'
-gem 'lograge'

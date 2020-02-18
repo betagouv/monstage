@@ -87,7 +87,6 @@ module Finders
       query
     end
 
-
     def coordinate_params
       return nil unless params.key?(:latitude) || params.key?(:longitude)
       geo_point_factory(latitude: params[:latitude], longitude: params[:longitude])
