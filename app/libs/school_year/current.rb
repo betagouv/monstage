@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolYear
   # period from beginning of school year until end
   class Current < Base
@@ -18,7 +20,8 @@ module SchoolYear
     end
 
     private
-    def initialize()
+
+    def initialize
       @date = Date.today
     end
   end

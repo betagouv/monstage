@@ -1,18 +1,19 @@
+# frozen_string_literal: true
+
 wb = xlsx_package.workbook
 
-
-wb.add_worksheet(name: "Collèges") do |sheet|
+wb.add_worksheet(name: 'Collèges') do |sheet|
   # headers
   sheet.add_row(
     [].concat(
       [presenter_for_dimension.dimension_name],
-      presenter_for_dimension.metrics.map{|metric_name| School.human_attribute_name(metric_name)}
+      presenter_for_dimension.metrics.map { |metric_name| School.human_attribute_name(metric_name) }
     )
   )
 
   # raws
   @schools.map(&presenter_for_dimension.method(:new))
-         .each do |presented_school|
+          .each do |presented_school|
     sheet.add_row(
       [].concat(
         [presented_school.dimension],

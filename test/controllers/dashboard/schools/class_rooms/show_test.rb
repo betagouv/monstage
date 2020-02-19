@@ -47,18 +47,18 @@ module Dashboard
           if student.has_parental_consent?
             assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-square", 1
             assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-check", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: false })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: false })
           else
             assert_select ".test-student-#{student.id} .has_parental_consent .far.fa-square", 1
-            assert_select "a[href=?]", "#approve-student-#{student.id}"
+            assert_select 'a[href=?]', "#approve-student-#{student.id}"
           end
           if student.custom_track?
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-check", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
           else
             assert_select ".test-student-#{student.id} .is_custom_track .far.fa-square", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
           end
         end
       end
@@ -124,7 +124,7 @@ module Dashboard
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
             assert_select("#approve-student-#{student.id} a[href=?]",
-                          dashboard_school_user_path(student.school, student, user: {has_parental_consent: true}))
+                          dashboard_school_user_path(student.school, student, user: { has_parental_consent: true }))
           end
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
           assert_select ".test-student-#{student.id} span.applications_count",

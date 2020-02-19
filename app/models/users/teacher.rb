@@ -18,8 +18,7 @@ module Users
         url_helpers.dashboard_school_class_room_path(school, class_room)
       ]
     rescue ActionController::UrlGenerationError
-      [
-      ]
+      []
     end
 
     def dashboard_name

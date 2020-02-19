@@ -1,0 +1,18 @@
+fr:
+  admin:
+    date:
+      formats:
+        default: ! '%d/%m/%Y'
+        long: ! '%e %B à %Hh%M'
+        short: ! '%d %b'
+        only_day: ! "%e"
+        very_long: '%A %d %B %Y'
+        day_names: [lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche]
+        abbr_day_names: [lun, mar, mer, jeu, ven, sam, dim]
+        month_names: [~, janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre]
+        abbr_month_names: [~, janv, févr, mars, avr, mai, juin, juill, août, sept, oct, nov, déc]
+        order:
+          - :day
+          - :month
+          - :year
+          - :hour

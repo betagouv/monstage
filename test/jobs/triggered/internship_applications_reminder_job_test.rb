@@ -6,7 +6,6 @@ module Triggered
   class InternshipApplicationsReminderJobTest < ActiveJob::TestCase
     include ActionMailer::TestHelper
 
-
     # @warning: sometimes it fails ; surprising,
     # try to empty deliveries before running the spec
     setup do

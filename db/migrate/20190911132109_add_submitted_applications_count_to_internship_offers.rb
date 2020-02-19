@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSubmittedApplicationsCountToInternshipOffers < ActiveRecord::Migration[6.0]
   def change
     add_column :internship_offers, :submitted_applications_count, :integer, default: 0, null: false

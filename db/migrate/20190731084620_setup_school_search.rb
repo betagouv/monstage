@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SetupSchoolSearch < ActiveRecord::Migration[5.2]
   def up
     enable_extension 'unaccent'
@@ -13,7 +15,6 @@ class SetupSchoolSearch < ActiveRecord::Migration[5.2]
   end
 
   def down
-
     remove_index :schools, :city_tsv
     remove_column :schools, :city_tsv
     remove_timestamps(:schools)

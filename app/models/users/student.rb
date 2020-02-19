@@ -35,7 +35,6 @@ module Users
                                       class_name: 'School',
                                       counter_cache: :missing_school_weeks_count
 
-
     belongs_to :class_room, optional: true
     validates :birth_date,
               :gender,
@@ -75,8 +74,8 @@ module Users
     end
 
     def inactive_message
-      return :unconfirmed if !confirmed?
-      return :not_approved if !has_parental_consent
+      return :unconfirmed unless confirmed?
+      return :not_approved unless has_parental_consent
 
       super
     end
@@ -106,8 +105,8 @@ module Users
       super
 
       update_columns(birth_date: nil, gender: nil, class_room_id: nil,
-      resume_educational_background: nil, resume_other: nil, resume_languages: nil,
-      handicap: nil)
+                     resume_educational_background: nil, resume_other: nil, resume_languages: nil,
+                     handicap: nil)
 
       internship_applications.map(&:anonymize)
     end

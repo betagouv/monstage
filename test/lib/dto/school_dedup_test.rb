@@ -9,7 +9,7 @@ module Dto
     end
 
     test '.dup? false' do
-      duplicate = create(:school, kind: :qpv_proche, code_uai: "lol")
+      duplicate = create(:school, kind: :qpv_proche, code_uai: 'lol')
       dedup = SchoolDedup.new(school: duplicate)
       refute dedup.dup?
     end
@@ -33,8 +33,8 @@ module Dto
 
     test '.migrate_all move users to same code_uai but not qpv_proche' do
       duplicate = create(:school, :with_school_manager,
-                                          kind: :qpv_proche,
-                                          code_uai: @code_uai)
+                         kind: :qpv_proche,
+                         code_uai: @code_uai)
 
       students = [create(:student, school: duplicate)]
       main_teachers = [create(:main_teacher, school: duplicate)]
@@ -54,10 +54,10 @@ module Dto
       end
     end
 
-     test '.migrate_all move class_rooms' do
+    test '.migrate_all move class_rooms' do
       duplicate = create(:school, :with_school_manager,
-                               kind: :qpv_proche,
-                               code_uai: @code_uai)
+                         kind: :qpv_proche,
+                         code_uai: @code_uai)
 
       class_room = create(:class_room, school: duplicate)
       dedup = SchoolDedup.new(school: duplicate)
@@ -71,9 +71,9 @@ module Dto
 
     test '.migrate_all move weeks' do
       duplicate = create(:school, :with_school_manager,
-                                  kind: :qpv_proche,
-                                  code_uai: @code_uai,
-                                  weeks: [Week.first])
+                         kind: :qpv_proche,
+                         code_uai: @code_uai,
+                         weeks: [Week.first])
 
       dedup = SchoolDedup.new(school: duplicate)
       assert_changes -> { @school_rep.reload.weeks.count },

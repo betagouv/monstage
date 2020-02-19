@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DedupQpvProcheWithQpv < ActiveRecord::Migration[6.0]
   def up
     School.where(kind: :qpv_proche).each do |possibly_duplicate|

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Dto
   # adapt api params to model
@@ -10,6 +11,7 @@ module Dto
     end
 
     private
+
     attr_reader :params, :user, :fallback_weeks
     def initialize(params:, user:, fallback_weeks:)
       @params = params

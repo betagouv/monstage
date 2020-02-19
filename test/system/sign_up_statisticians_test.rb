@@ -11,7 +11,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     # fails to create statistician with existing email
     assert_difference('Users::Statistician.count', 0) do
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -24,7 +24,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     create(:email_whitelist, email: email, zipcode: 60)
     assert_difference('Users::Statistician.count', 1) do
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'

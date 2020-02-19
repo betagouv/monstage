@@ -98,7 +98,7 @@ module Dashboard
         assert_select '.test-presence-of-ux-guideline-invitation',
                       text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
         assert_select '.test-presence-of-ux-guideline-users-management',
-                      text: "Vous serez notifié(e) par courrier électronique de chaque inscription rattachée au collège."
+                      text: 'Vous serez notifié(e) par courrier électronique de chaque inscription rattachée au collège.'
       end
 
       test 'GET users#index as SchoolManager contains list school members' do
@@ -119,7 +119,7 @@ module Dashboard
                       text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.",
                       count: 0
         assert_select '.test-presence-of-ux-guideline-users-management',
-                      text: "Vous serez notifié(e) par courrier électronique de chaque inscription rattachée au collège.",
+                      text: 'Vous serez notifié(e) par courrier électronique de chaque inscription rattachée au collège.',
                       count: 0
       end
 

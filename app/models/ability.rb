@@ -33,7 +33,7 @@ class Ability
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
       !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
-      !internship_offer.from_api?
+        !internship_offer.from_api?
     end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.id == user.id
@@ -148,9 +148,7 @@ class Ability
     can :view, :department_name
     can %i[read], InternshipOffer
 
-    can %i[index], Reporting::Acl do |acl|
-      acl.allowed?
-    end
+    can %i[index], Reporting::Acl, &:allowed?
 
     can %i[index_and_filter], Reporting::InternshipOffer
   end
@@ -166,7 +164,7 @@ class Ability
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
     can :read, :dashboard       # grant access to the dashboard
-    can :read, :kpi       # grant access to the dashboard
+    can :read, :kpi # grant access to the dashboard
     can %i[index], Reporting::Acl do |_acl|
       true
     end

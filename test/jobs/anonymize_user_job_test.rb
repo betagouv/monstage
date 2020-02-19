@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnonymizeUserJobTest < ActiveJob::TestCase
   include ActionMailer::TestHelper
 

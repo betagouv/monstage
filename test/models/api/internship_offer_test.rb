@@ -44,9 +44,9 @@ class ApiInternshipOfferTest < ActiveSupport::TestCase
   test '.as_json' do
     internship_offer = build(:api_internship_offer)
     json = internship_offer.as_json
-    assert_equal({ "latitude" => Coordinates.paris[:latitude],
-                   "longitude" => Coordinates.paris[:longitude] },
-                 json["formatted_coordinates"])
+    assert_equal({ 'latitude' => Coordinates.paris[:latitude],
+                   'longitude' => Coordinates.paris[:longitude] },
+                 json['formatted_coordinates'])
   end
 
   test 'zipcode error' do

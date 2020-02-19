@@ -70,9 +70,8 @@ module Dashboard
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
         states = %i[drafted submitted approved rejected expired convention_signed]
-        internship_applications = states.inject({}) do |accu, state|
+        internship_applications = states.each_with_object({}) do |state, accu|
           accu[state] = create(:internship_application, state, student: student)
-          accu
         end
 
         sign_in(student)
@@ -114,12 +113,11 @@ module Dashboard
       test 'GET internship_applications#show render navbar, timeline' do
         student = create(:student)
         sign_in(student)
-        internship_application = create(:internship_application, {
-          student: student,
-          aasm_state: :convention_signed,
-          convention_signed_at: 1.days.ago,
-          submitted_at: 2.days.ago
-        })
+        internship_application = create(:internship_application,
+                                        student: student,
+                                        aasm_state: :convention_signed,
+                                        convention_signed_at: 1.days.ago,
+                                        submitted_at: 2.days.ago)
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)

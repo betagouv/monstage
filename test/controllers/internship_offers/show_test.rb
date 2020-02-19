@@ -71,18 +71,18 @@ module InternshipOffers
                       "missing disabled input : #{disabled_selector}")
       end
 
-      assert_select(".student-form-missing-school-weeks",
+      assert_select('.student-form-missing-school-weeks',
                     { count: 1 },
-                    "missing rendering of student_form_missing_school_weeks")
-      assert_select("a[href=?]",
+                    'missing rendering of student_form_missing_school_weeks')
+      assert_select('a[href=?]',
                     account_path(user: { missing_school_weeks_id: student.school.id }))
       student.update(missing_school_weeks_id: school.id)
       get internship_offer_path(create(:internship_offer))
 
       assert_response :success
-      assert_select(".student-form-missing-school-weeks",
+      assert_select('.student-form-missing-school-weeks',
                     { count: 0 },
-                    "missing rendering of student_form_missing_school_weeks")
+                    'missing rendering of student_form_missing_school_weeks')
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
@@ -96,8 +96,8 @@ module InternshipOffers
         assert_select '#new_internship_application', 1
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
-        assert_select 'span.h1-label', text: "Je candidate"
-        assert_select '.btn-warning', text: "Je candidate"
+        assert_select 'span.h1-label', text: 'Je candidate'
+        assert_select '.btn-warning', text: 'Je candidate'
         assert_select 'textarea[id=internship_application_motivation]', count: 1
       end
     end
@@ -111,7 +111,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_select '.badge-school-reserved', text: "Stage reservé (aux élèves du collège #{internship_offer.school})",
-                                         count: 1
+                                              count: 1
       assert_select '#new_internship_application', 0
     end
 
@@ -226,11 +226,11 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do
-      previous_out = create(:internship_offer, title: "previous_out")
-      previous_in_page = create(:internship_offer, title: "previous")
-      current = create(:internship_offer, title: "current")
-      next_in_page = create(:internship_offer, title: "next")
-      next_out = create(:internship_offer, title: "next_out")
+      previous_out = create(:internship_offer, title: 'previous_out')
+      previous_in_page = create(:internship_offer, title: 'previous')
+      current = create(:internship_offer, title: 'current')
+      next_in_page = create(:internship_offer, title: 'next')
+      next_out = create(:internship_offer, title: 'next_out')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -246,9 +246,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next and not previous when no previous' do
-      current = create(:internship_offer, title: "current")
-      next_in_page = create(:internship_offer, title: "next")
-      next_out = create(:internship_offer, title: "next_out")
+      current = create(:internship_offer, title: 'current')
+      next_in_page = create(:internship_offer, title: 'next')
+      next_out = create(:internship_offer, title: 'next_out')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -264,9 +264,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows previous and not next when no not' do
-      previous_out = create(:internship_offer, title: "previous_out")
-      previous_in_page = create(:internship_offer, title: "previous")
-      current = create(:internship_offer, title: "current")
+      previous_out = create(:internship_offer, title: 'previous_out')
+      previous_in_page = create(:internship_offer, title: 'previous')
+      current = create(:internship_offer, title: 'current')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -282,9 +282,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student with forwards latitude, longitude & radius in params to next/prev ' do
-      previous_in_page = create(:internship_offer, title: "previous")
-      current = create(:internship_offer, title: "current")
-      next_in_page = create(:internship_offer, title: "next")
+      previous_in_page = create(:internship_offer, title: 'previous')
+      current = create(:internship_offer, title: 'current')
+      next_in_page = create(:internship_offer, title: 'next')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -314,7 +314,6 @@ module InternshipOffers
       sign_in(student)
 
       get internship_offer_path(internship_offer)
-
     end
 
     #
@@ -358,7 +357,6 @@ module InternshipOffers
       assert_select 'a.test-employer-website', 0
     end
 
-
     #
     # Employer
     #
@@ -391,7 +389,7 @@ module InternshipOffers
                     'missing edit internship_offer link for employer'
 
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer),
-                    { text: '0 candidatures', count: 1},
+                    { text: '0 candidatures', count: 1 },
                     'missing link to internship_applications for employer'
 
       assert_select 'a[href=?][data-method=delete]', dashboard_internship_offer_path(internship_offer),
@@ -402,9 +400,8 @@ module InternshipOffers
                     { text: "depuis le #{I18n.l(internship_offer.published_at, format: :human_mm_dd)}" },
                     'invalid published_at'
 
-      assert_template "dashboard/internship_offers/_delete_internship_offer_modal",
-                      "missing discard modal for employer"
+      assert_template 'dashboard/internship_offers/_delete_internship_offer_modal',
+                      'missing discard modal for employer'
     end
-
   end
 end

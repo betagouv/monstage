@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Finders
   class ReportingSchool
     def total_with_manager
@@ -26,6 +28,7 @@ module Finders
     end
 
     private
+
     attr_reader :params
     def initialize(params:)
       @params = params
@@ -34,7 +37,9 @@ module Finders
     def base_query
       query = Reporting::School.all
       query = query.where(visible: true)
-      query = query.where(department: params[:department]) if params[:department]
+      if params[:department]
+        query = query.where(department: params[:department])
+      end
       query
     end
   end

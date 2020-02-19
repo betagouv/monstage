@@ -49,7 +49,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-      assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
+      assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
     end
 
     test 'GET edit as God works' do

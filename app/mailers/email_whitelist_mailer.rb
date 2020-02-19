@@ -4,6 +4,6 @@ class EmailWhitelistMailer < ApplicationMailer
   def notify_ready(recipient_email:)
     @recipient_email = recipient_email
     mail(to: recipient_email,
-         subject: "Votre accès référent départemental")
+         subject: 'Votre accès référent départemental')
   end
 end

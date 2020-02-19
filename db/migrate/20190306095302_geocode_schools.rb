@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class GeocodeSchools < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports','geocode_cache.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports', 'geocode_cache.dump')
 
   def up
     geocode_searches_with_caching do
       School.all.map do |school|
-        school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
+        unless school.name.start_with?(/coll.ge/i)
+          school.name = "Collège #{school.name}"
+        end
         school.name = school.name.strip.split(' ').map(&:capitalize).join(' ')
         school.city = school.city.strip.split(' ').map(&:capitalize).join(' ')
 

@@ -11,8 +11,6 @@ module Users
             if school.is_a?(School)
               path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
               bindings[:view].content_tag(:a, school.name, href: path)
-            else
-              nil
             end
           end
         end
@@ -26,11 +24,11 @@ module Users
     def students_by_class_room_for_registration(ignore_applicants:)
       school.class_rooms.inject([]) do |class_room_groups, class_room|
         class_room_groups.push([
-          class_room.name,
-          class_room.students
-                    .reject { |student| ignore_applicants.include?(student) }
-                    .map { |student| [student.name, student.id]}
-        ])
+                                 class_room.name,
+                                 class_room.students
+                                           .reject { |student| ignore_applicants.include?(student) }
+                                           .map { |student| [student.name, student.id] }
+                               ])
       end
     end
 

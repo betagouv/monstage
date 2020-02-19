@@ -25,23 +25,22 @@ class School < ApplicationRecord
   before_create :lookup_department
 
   validates :city, :name, presence: true
-  VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche]
-
+  VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze
 
   scope :with_manager, lambda {
-      left_joins(:school_manager)
-        .group('schools.id')
-        .having("count(users.id) > 0")
-    }
+                         left_joins(:school_manager)
+                           .group('schools.id')
+                           .having('count(users.id) > 0')
+                       }
 
   scope :without_weeks, lambda {
     left_joins(:weeks)
-     .group('schools.id')
-     .having('count(school_internship_weeks.school_id) = 0')
+      .group('schools.id')
+      .having('count(school_internship_weeks.school_id) = 0')
   }
 
   scope :missing_school_week_count_gt, lambda { |thresold|
-    where("missing_school_weeks_count > ?", thresold)
+    where('missing_school_weeks_count > ?', thresold)
   }
 
   def select_text_method
@@ -49,7 +48,9 @@ class School < ApplicationRecord
   end
 
   def lookup_department
-    self.department = Department.lookup_by_zipcode(zipcode: zipcode) if zipcode.present?
+    if zipcode.present?
+      self.department = Department.lookup_by_zipcode(zipcode: zipcode)
+    end
   end
 
   def has_staff?
@@ -82,7 +83,6 @@ class School < ApplicationRecord
       field :zipcode do
         visible false
       end
-
     end
 
     edit do
@@ -102,16 +102,16 @@ class School < ApplicationRecord
       field :class_rooms
 
       field :street do
-        partial "void"
+        partial 'void'
       end
       field :zipcode do
-        partial "void"
+        partial 'void'
       end
       field :city do
-        partial "void"
+        partial 'void'
       end
       field :department do
-        partial "void"
+        partial 'void'
       end
     end
 

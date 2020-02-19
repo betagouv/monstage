@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmailWhitelist < ApplicationRecord
   validates :email, format: { with: Devise.email_regexp }, on: :create
   validates :zipcode, inclusion: { in: Department::MAP.keys }
@@ -22,6 +24,7 @@ class EmailWhitelist < ApplicationRecord
   end
 
   private
+
   def notify_account_ready
     EmailWhitelistMailer.notify_ready(recipient_email: email)
                         .deliver_later

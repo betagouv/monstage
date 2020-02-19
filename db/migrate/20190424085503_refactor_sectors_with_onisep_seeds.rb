@@ -12,7 +12,9 @@ class RefactorSectorsWithOnisepSeeds < ActiveRecord::Migration[5.2]
         name: row['GFE'].strip,
         gfe_name: row['GFE'].strip
       )
-      new_sector.publication_name ||= row['nom publication'].strip if row['nom publication'].present?
+      if row['nom publication'].present?
+        new_sector.publication_name ||= row['nom publication'].strip
+      end
       new_sector.save
       new_sectors.push(new_sector)
     end

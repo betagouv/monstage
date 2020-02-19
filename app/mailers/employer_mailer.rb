@@ -16,7 +16,6 @@ class EmployerMailer < ApplicationMailer
     @employer = employer
 
     mail(to: @employer.email,
-         subject: "Action requise : des candidatures vous attendent")
+         subject: 'Action requise : des candidatures vous attendent')
   end
 end
-

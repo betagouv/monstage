@@ -18,7 +18,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('#test-accept-terms').click
       click_on "Je m'inscris"
@@ -34,7 +34,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       click_on "Je m'inscris"
     end
   end

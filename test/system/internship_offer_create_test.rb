@@ -29,7 +29,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
         find('label', text: 'public').click
         select group.name, from: 'internship_offer_group_id'
-        fill_in "Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)", with: 'Paris, 13eme'
+        fill_in 'Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)', with: 'Paris, 13eme'
         page.all('.algolia-places div[role="option"]')[0].click
         fill_in "Rue ou compléments d'adresse", with: 'La rue qui existe pas dans algolia place / OSM'
         click_on "Enregistrer et publier l'offre"

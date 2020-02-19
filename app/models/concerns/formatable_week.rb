@@ -53,6 +53,5 @@ module FormatableWeek
     def end_of_week_with_years
       I18n.localize(week_date.end_of_week, format: :default)
     end
-
   end
 end

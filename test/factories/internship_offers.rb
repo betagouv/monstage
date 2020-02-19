@@ -41,5 +41,4 @@ FactoryBot.define do
   trait :discarded do
     discarded_at { Time.now }
   end
-
 end

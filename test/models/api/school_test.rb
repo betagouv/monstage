@@ -20,7 +20,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
     school_city = 'Orléans'
     school_name = 'Jean'
     orleans = create(:api_school, city: school_city,
-                                   name: school_name)
+                                  name: school_name)
 
     search_by_city_result = Api::School.autocomplete_by_name_or_city(term: school_city).first
     assert_equal "<b>#{school_city}</b>", search_by_city_result.pg_search_highlight_city
@@ -72,7 +72,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
     end
   end
 
-   test 'autocomplete_by_name_or_city find dasherized city names' do
+  test 'autocomplete_by_name_or_city find dasherized city names' do
     city = 'Mantes-la-Jolie'
     create(:api_school, city: city)
     city.split('').each.with_index do |_, idx|

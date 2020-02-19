@@ -38,7 +38,7 @@ module W3c
       end
     end
 
-     test 'custom_dashboard_path' do
+    test 'custom_dashboard_path' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       [
@@ -67,7 +67,7 @@ module W3c
       create(:other, school: school)
 
       sign_in(school_manager)
-      run_request_and_cache_response(report_as: "school_manager dashboard_school_users_path") do
+      run_request_and_cache_response(report_as: 'school_manager dashboard_school_users_path') do
         get dashboard_school_users_path(school)
         assert_response :success
       end
@@ -78,7 +78,7 @@ module W3c
       school_manager = create(:school_manager, school: school)
       create(:class_room, school: school)
       sign_in(school_manager)
-      run_request_and_cache_response(report_as: "school_manager dashboard_school_class_rooms_path") do
+      run_request_and_cache_response(report_as: 'school_manager dashboard_school_class_rooms_path') do
         get dashboard_school_class_rooms_path(school)
         assert_response :success
       end
@@ -88,7 +88,7 @@ module W3c
       school = create(:school)
       school_manager = create(:school_manager, school: school)
       sign_in(school_manager)
-      run_request_and_cache_response(report_as: "school_manager edit_dashboard_school_path") do
+      run_request_and_cache_response(report_as: 'school_manager edit_dashboard_school_path') do
         get edit_dashboard_school_path(school)
         assert_response :success
       end
@@ -100,7 +100,7 @@ module W3c
       teacher = create(:teacher, school: school_manager.school)
       class_room = create(:class_room, school: school)
       sign_in(teacher)
-      run_request_and_cache_response(report_as: "school_manager dashboard_school_class_room_path") do
+      run_request_and_cache_response(report_as: 'school_manager dashboard_school_class_room_path') do
         get dashboard_school_class_room_path(school, class_room)
         assert_response :success
       end
@@ -112,7 +112,7 @@ module W3c
       teacher = create(:teacher, school: school_manager.school)
       student = create(:student, school: school)
       sign_in(teacher)
-      run_request_and_cache_response(report_as: "school_manager dashboard_school_students_path") do
+      run_request_and_cache_response(report_as: 'school_manager dashboard_school_students_path') do
         get dashboard_school_students_path(school)
         assert_response :success
       end

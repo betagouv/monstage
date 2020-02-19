@@ -123,7 +123,7 @@ module Api
         params: {
           token: "Bearer #{@operator.api_token}",
           internship_offer: {
-            published_at: nil,
+            published_at: nil
           }
         }
       )
@@ -136,7 +136,7 @@ module Api
         params: {
           token: "Bearer #{@operator.api_token}",
           internship_offer: {
-            published_at: new_publication_date,
+            published_at: new_publication_date
           }
         }
       )
@@ -146,13 +146,13 @@ module Api
 
     test 'PATCH #update as operator does not change weeks with default' do
       travel_to(2.months.from_now) do
-        assert_no_changes -> {@internship_offer.reload.weeks.count } do
+        assert_no_changes -> { @internship_offer.reload.weeks.count } do
           patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
               token: "Bearer #{@operator.api_token}",
               internship_offer: {
-                published_at: nil,
+                published_at: nil
               }
             }
           )

@@ -1,4 +1,4 @@
-
+# frozen_string_literal: true
 
 class ImportRep < ActiveRecord::Migration[5.2]
   GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports', 'geocode_cache_rep.dump')
@@ -7,11 +7,13 @@ class ImportRep < ActiveRecord::Migration[5.2]
     add_column(:schools, :kind, :string)
     School.update_all(kind: :rep_plus)
     return if Rails.env.test?
+
     geocode_searches_with_caching do
       CSV.foreach(Rails.root.join('db/data_imports/college-rep.csv'), headers: { col_sep: ',' })
          .each
          .with_index do |row, i|
         next if i.zero?
+
         school = School.find_or_initialize_by(
           code_uai: row['Code UAI '].strip,
           name: row['Collèges '].strip,
@@ -19,7 +21,9 @@ class ImportRep < ActiveRecord::Migration[5.2]
           department: row['Départements '].strip,
           kind: :rep
         )
-        school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
+        unless school.name.start_with?(/coll.ge/i)
+          school.name = "Collège #{school.name}"
+        end
         school.name = school.name.strip.split(' ').map(&:capitalize).join(' ')
         school.city = school.city.strip.split(' ').map(&:capitalize).join(' ')
 
@@ -45,6 +49,7 @@ class ImportRep < ActiveRecord::Migration[5.2]
   end
 
   private
+
   def geocode_searches_with_caching
     cache = load_cache
     Geocoder.configure(lookup: :google,

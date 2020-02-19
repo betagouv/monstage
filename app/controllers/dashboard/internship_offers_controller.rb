@@ -87,7 +87,7 @@ module Dashboard
       rejected_applications_count
       approved_applications_count
       convention_signed_applications_count
-    ]
+    ].freeze
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
@@ -101,13 +101,19 @@ module Dashboard
     end
 
     def order_column
-      redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" }) if params[:order] && !valid_order_column?
+      if params[:order] && !valid_order_column?
+        redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" })
+      end
       return params[:order] if params[:order] && valid_order_column?
+
       :submitted_applications_count
     end
 
     def order_direction
-      return params[:direction] if params[:direction] && %w[asc desc].include?(params[:direction])
+      if params[:direction] && %w[asc desc].include?(params[:direction])
+        return params[:direction]
+      end
+
       :desc
     end
 

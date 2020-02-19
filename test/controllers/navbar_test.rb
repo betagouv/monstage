@@ -9,83 +9,83 @@ class NavbarTest < ActionDispatch::IntegrationTest
     @school = create(:school, :with_school_manager)
   end
 
-  test "employer" do
+  test 'employer' do
     employer = create(:employer)
     sign_in(employer)
     get employer.custom_dashboard_path
-    assert_select(".navbar a[href=\"#{root_path}\"]", count: 1, text: "Accueil")
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: employer.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a[href=\"#{root_path}\"]", count: 1, text: 'Accueil')
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: employer.dashboard_name,
+                                      count: 1)
   end
 
-  test "main_teacher" do
+  test 'main_teacher' do
     main_teacher = create(:main_teacher, school: @school,
                                          class_room: create(:class_room, school: @school))
     sign_in(main_teacher)
     get main_teacher.custom_dashboard_path
-    assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: main_teacher.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: 'Accueil')
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: main_teacher.dashboard_name,
+                                      count: 1)
   end
 
-  test "other" do
+  test 'other' do
     other = create(:other, school: @school)
     sign_in(other)
     get other.custom_dashboard_path
-    assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: other.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: 'Accueil')
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: other.dashboard_name,
+                                      count: 1)
   end
 
-  test "operator" do
+  test 'operator' do
     operator = create(:user_operator)
     sign_in(operator)
     get operator.custom_dashboard_path
     assert_select(".navbar a[href=\"#{reporting_internship_offers_path}\"]",
                   count: 1,
-                  text: "Mon tableau")
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: operator.dashboard_name,
-                                        count: 1)
+                  text: 'Mon tableau')
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: operator.dashboard_name,
+                                      count: 1)
   end
 
-  test "school_manager" do
+  test 'school_manager' do
     school_manager = @school.school_manager
     sign_in(school_manager)
     get school_manager.custom_dashboard_path
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: school_manager.dashboard_name,
-                                        count: 1)
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: school_manager.dashboard_name,
+                                      count: 1)
   end
 
-  test "student" do
+  test 'student' do
     student = create(:student)
     sign_in(student)
     get student.custom_dashboard_path
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: student.dashboard_name,
-                                        count: 1)
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: student.dashboard_name,
+                                      count: 1)
   end
 
-  test "teacher" do
+  test 'teacher' do
     teacher = create(:teacher, school: @school,
                                class_room: create(:class_room, school: @school))
     sign_in(teacher)
     get teacher.custom_dashboard_path
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: teacher.dashboard_name,
-                                        count: 1)
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: teacher.dashboard_name,
+                                      count: 1)
   end
 
-  test "statistician" do
+  test 'statistician' do
     statistician = create(:statistician)
     sign_in(statistician)
     get statistician.custom_dashboard_path
-    assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: statistician.dashboard_name,
+    assert_select('.navbar a.active', count: 1)
+    assert_select('.navbar a.active', text: statistician.dashboard_name,
                                       count: 1)
   end
 end

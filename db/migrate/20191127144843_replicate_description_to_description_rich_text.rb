@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReplicateDescriptionToDescriptionRichText < ActiveRecord::Migration[6.0]
   def change
     InternshipOffer.all.in_batches(of: 10) do |batch|

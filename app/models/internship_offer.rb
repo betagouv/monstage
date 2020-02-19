@@ -12,7 +12,7 @@ class InternshipOffer < ApplicationRecord
 
   rails_admin do
     configure :created_at, :datetime do
-      date_format "BUGGY"
+      date_format 'BUGGY'
     end
 
     list do
@@ -80,7 +80,6 @@ class InternshipOffer < ApplicationRecord
   validates :max_candidates, numericality: { only_integer: true,
                                              greater_than: 0,
                                              less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
-
 
   has_many :internship_applications, through: :internship_offer_weeks,
                                      dependent: :destroy
@@ -163,12 +162,17 @@ class InternshipOffer < ApplicationRecord
 
   def validate_group_is_public?
     return if group.nil?
-    errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
+
+    unless group.is_public?
+      errors.add(:group, 'Veuillez choisir une institution de tutelle')
+    end
   end
 
   def validate_group_is_not_public?
     return if group.nil?
-    errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
-  end
 
+    if group.is_public?
+      errors.add(:group, 'Veuillez choisir une institution de tutelle')
+    end
+  end
 end

@@ -11,7 +11,7 @@ require 'support/api_test_helpers'
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
-  parallelize_setup do |worker|
+  parallelize_setup do |_worker|
     # setup databases
     if ENV['CI'].blank?
       postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')

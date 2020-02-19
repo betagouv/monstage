@@ -12,6 +12,7 @@ module Presenters
     end
 
     private
+
     attr_reader :kind
     def initialize(kind:)
       @kind = kind

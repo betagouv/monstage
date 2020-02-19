@@ -5,7 +5,7 @@ Raven.configure do |config|
   config.environments = %w[staging production]
 
   # works async, if it fails, goes in queue
-  config.async = lambda { |event| SentryJob.perform_later(event) }
+  config.async = ->(event) { SentryJob.perform_later(event) }
 
   # record post data, helps with debug
   config.processors -= [Raven::Processor::PostData]

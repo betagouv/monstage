@@ -5,6 +5,7 @@ module Presenters
   module ClassRoom
     def self.or_null(class_room)
       return class_room if class_room
+
       Null.instance
     end
 

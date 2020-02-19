@@ -27,10 +27,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student)
     internship_offer_without_application = create(:internship_offer, title: 'ok')
     internship_offer_with_application = create(:internship_offer, title: 'o')
-    internship_application = create(:internship_application, {
-      student: student,
-      internship_offer_week: internship_offer_with_application.internship_offer_weeks.first
-    })
+    internship_application = create(:internship_application,
+                                    student: student,
+                                    internship_offer_week: internship_offer_with_application.internship_offer_weeks.first)
 
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -69,13 +68,13 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school)
     sign_in(student)
     get internship_offers_path
-    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
                                  count: 1
   end
 
   test 'GET #index as visitor when school.weeks is empty, shows warning' do
     get internship_offers_path
-    assert_select "#alert-text", text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
                                  count: 0
   end
 
@@ -208,8 +207,8 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student with page, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1)
-                          .times
-                          .map { create(:internship_offer, max_candidates: 2) }
+                        .times
+                        .map { create(:internship_offer, max_candidates: 2) }
 
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
@@ -259,7 +258,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path, params: { latitude: 1, longitude: 1 }
-        assert_select("a[href=?]", internship_offer_path(id: internship_1, latitude: 1, longitude: 1))
+        assert_select('a[href=?]', internship_offer_path(id: internship_1, latitude: 1, longitude: 1))
       end
     end
   end
@@ -286,9 +285,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     school_at_paris = create(:school, :at_paris)
     student = create(:student, school: school_at_paris)
     internship_offer_at_paris = create(:internship_offer, weeks: [week],
-                                                 coordinates: Coordinates.paris)
+                                                          coordinates: Coordinates.paris)
     internship_offer_at_bordeaux = create(:internship_offer, weeks: [week],
-                                                 coordinates: Coordinates.bordeaux)
+                                                             coordinates: Coordinates.bordeaux)
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
       sign_in(student)
       travel_to(Date.new(2019, 3, 1)) do
@@ -397,8 +396,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
-    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
-    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
+    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60_580)
+    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95_270)
     sign_in(user_operator)
     get internship_offers_path
     assert_response :success
@@ -409,8 +408,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: nil)
-    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
-    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
+    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60_580)
+    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95_270)
     sign_in(user_operator)
     get internship_offers_path
     assert_response :success

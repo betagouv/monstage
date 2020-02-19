@@ -29,14 +29,15 @@ class InternshipOffersController < ApplicationController
                                                  .build(user_id: current_user_id)
   end
 
-
   private
+
   def set_internship_offer
     @internship_offer = InternshipOffer.find(params[:id])
   end
 
   def flash_message_when_missing_school_weeks
     return unless current_user_or_visitor.missing_school_weeks?
+
     flash.now[:warning] = "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates."
   end
 
@@ -64,8 +65,9 @@ class InternshipOffersController < ApplicationController
     )
   end
 
-
   def increment_internship_offer_view_count
-    @internship_offer.increment!(:view_count) if current_user.is_a?(Users::Student)
+    if current_user.is_a?(Users::Student)
+      @internship_offer.increment!(:view_count)
+    end
   end
 end

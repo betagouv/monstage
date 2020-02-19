@@ -94,14 +94,14 @@ module Dashboard
         class_room_2 = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room_1)
         redirect_back = root_path
-        assert_changes -> { student.reload.class_room_id},
+        assert_changes -> { student.reload.class_room_id },
                        from: class_room_1.id,
                        to: class_room_2.id do
           patch dashboard_school_student_path(
-                  school,
-                  student,
-                  params: { student: { class_room_id: class_room_2.id} },
-                ),
+            school,
+            student,
+            params: { student: { class_room_id: class_room_2.id } }
+          ),
                 headers: { 'HTTP_REFERER' => redirect_back }
           assert_redirected_to redirect_back
         end

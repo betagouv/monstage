@@ -60,6 +60,7 @@ module Dashboard
       end
 
       private
+
       def class_rooms_params
         params.require(:class_room).permit(:name)
       end

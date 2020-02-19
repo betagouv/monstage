@@ -7,7 +7,7 @@ class PagesTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_template 'pages/home'
-    assert_select "a[href=?]", internship_offers_path
+    assert_select 'a[href=?]', internship_offers_path
   end
 
   test '10_commandements_d_une_bonne_offre' do

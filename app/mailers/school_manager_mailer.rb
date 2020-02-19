@@ -11,7 +11,7 @@ class SchoolManagerMailer < ApplicationMailer
 
   def missing_school_weeks(school_manager:)
     @school = school_manager.school
-    mail(subject: "Vos élèves souhaiteraient candidater à des offres",
+    mail(subject: 'Vos élèves souhaiteraient candidater à des offres',
          to: school_manager.email)
   end
 end

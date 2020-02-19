@@ -7,7 +7,7 @@ module W3c
     include Html5Validator
     include Devise::Test::IntegrationHelpers
 
-     test 'internship_offers_path' do
+    test 'internship_offers_path' do
       %i[employer
          student
          school_manager].each do |role|

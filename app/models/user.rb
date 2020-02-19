@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
   validates :email, format: { with: Devise.email_regexp }, on: :create
 
-  validates_inclusion_of :accept_terms, in: ["1", true],
+  validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
 
@@ -70,7 +70,7 @@ class User < ApplicationRecord
 
   def anonymize
     # Remove all personal information
-    email_for_job = self.email.dup
+    email_for_job = email.dup
 
     fields_to_reset = {
       email: SecureRandom.hex,

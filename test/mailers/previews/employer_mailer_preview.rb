@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmployerMailerPreview < ActionMailer::Preview
   def internship_applications_reminder_email
     employer = InternshipApplication.first

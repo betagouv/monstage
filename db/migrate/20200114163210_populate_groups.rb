@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PopulateGroups < ActiveRecord::Migration[6.0]
   def change
     OldGroup::PUBLIC.each do |group_name|

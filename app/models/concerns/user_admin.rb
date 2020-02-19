@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 module UserAdmin
   extend ActiveSupport::Concern
 
   included do
     rails_admin do
       configure :confirmed_at, :datetime do
-        date_format "BUGGY"
+        date_format 'BUGGY'
       end
       configure :confirmed_atmation_sent_at, :datetime do
-        date_format "BUGGY"
+        date_format 'BUGGY'
       end
 
       list do

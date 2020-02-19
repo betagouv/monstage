@@ -8,10 +8,9 @@ module Nearbyable
     validate :coordinates_are_valid?
 
     # rails admin fuck
-    def autocomplete
-    end
-    def autocomplete=(val)
-    end
+    def autocomplete; end
+
+    def autocomplete=(val); end
 
     scope :nearby, lambda { |latitude:, longitude:, radius:|
       query = format(%{
@@ -26,10 +25,10 @@ module Nearbyable
 
     def coordinates=(coordinates)
       case coordinates
-      when Hash then
+      when Hash
         super(geo_point_factory(latitude: coordinates[:latitude],
                                 longitude: coordinates[:longitude]))
-      when RGeo::Geographic::SphericalPointImpl then
+      when RGeo::Geographic::SphericalPointImpl
         super(coordinates)
       else
         super
@@ -37,7 +36,9 @@ module Nearbyable
     end
 
     def coordinates_are_valid?
-      return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+      if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+        return true
+      end
 
       errors.add(:coordinates, :blank)
     end
@@ -53,7 +54,5 @@ module Nearbyable
         zipcode
       ].compact.uniq.join(', ')
     end
-
-
   end
 end

@@ -106,23 +106,23 @@ class Department
     '2B' => 'Haute-Corse',
     '201' => 'Corse-du-Sud',
     '200' => 'Corse-du-Sud',
-    '2A' => 'Corse-du-Sud',
+    '2A' => 'Corse-du-Sud'
 
   }.freeze
 
   def self.lookup_by_zipcode(zipcode:)
-    if departement_identified_by_3_chars?(zipcode: zipcode)
-      key = zipcode[0..2]
-    else
-      key = zipcode[0..1]
-    end
+    key = if departement_identified_by_3_chars?(zipcode: zipcode)
+            zipcode[0..2]
+          else
+            zipcode[0..1]
+          end
     MAP[key]
   end
 
   def self.to_select(only: nil)
     list = only ? MAP.select { |code, _name| only.include?(code) }
                 : MAP.map
-    list.map { |code, name| "#{name}" }
+    list.map { |_code, name| name.to_s }
         .uniq
         .sort
   end
@@ -130,9 +130,9 @@ class Department
   # edge case for [971->978]
   def self.departement_identified_by_3_chars?(zipcode:)
     zipcode.starts_with?('97') ||
-    zipcode.starts_with?('202') ||
-    zipcode.starts_with?('206') ||
-    zipcode.starts_with?('201') ||
-    zipcode.starts_with?('200')
+      zipcode.starts_with?('202') ||
+      zipcode.starts_with?('206') ||
+      zipcode.starts_with?('201') ||
+      zipcode.starts_with?('200')
   end
 end

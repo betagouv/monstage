@@ -16,7 +16,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                                                             week: Week.find_by(number: 1, year: 2019))
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                  internship_offer_weeks: [
-                                                  internship_offer_week_1,
+                                                   internship_offer_week_1
                                                  ])
     internship_application = build(:internship_application, internship_offer_week: internship_offer_week_1)
     internship_application.save
@@ -34,16 +34,15 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                                                             week: Week.find_by(number: 3, year: 2019))
     internship_offer = create(:internship_offer, max_candidates: max_candidates,
                                                  internship_offer_weeks: [
-                                                  internship_offer_week_1,
-                                                  internship_offer_week_2,
-                                                  internship_offer_week_3
+                                                   internship_offer_week_1,
+                                                   internship_offer_week_2,
+                                                   internship_offer_week_3
                                                  ])
     internship_application = build(:internship_application, internship_offer_week: internship_offer_week_3)
     internship_application.save
     assert internship_application.errors.keys.include?(:internship_offer)
     assert_equal :has_no_spots_left, internship_application.errors.details[:internship_offer].first[:error]
   end
-
 
   test 'is not applicable twice on same week by same student' do
     weeks = [Week.find_by(number: 1, year: 2019)]

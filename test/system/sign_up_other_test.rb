@@ -19,7 +19,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
 
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'

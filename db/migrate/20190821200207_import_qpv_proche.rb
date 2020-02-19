@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 class ImportQpvProche < ActiveRecord::Migration[5.2]
-  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports','geocode_cache_qpv_proche.dump')
+  GEOCODE_CACHE_FILE = Rails.root.join('db', 'data_imports', 'geocode_cache_qpv_proche.dump')
 
   def up
     return if Rails.env.test?
+
     geocode_searches_with_caching do
       CSV.foreach(Rails.root.join('db/data_imports/college-qpv-proche.csv'), headers: { col_sep: ',' })
          .each
          .with_index do |row, i|
         next if i.zero?
+
         school = School.new(
           code_uai: row['NUMERO_UAI'].strip,
           name: row['Patromyne établissement'].strip,
@@ -16,7 +20,9 @@ class ImportQpvProche < ActiveRecord::Migration[5.2]
           kind: :qpv_proche,
           visible: false
         )
-        school.name = "Collège #{school.name}" unless school.name.start_with?(/coll.ge/i)
+        unless school.name.start_with?(/coll.ge/i)
+          school.name = "Collège #{school.name}"
+        end
         school.name = school.name.strip.split(' ').map(&:capitalize).join(' ')
         school.city = school.city.strip.split(' ').map(&:capitalize).join(' ')
 
@@ -37,7 +43,6 @@ class ImportQpvProche < ActiveRecord::Migration[5.2]
           end
         end
 
-
         puts "school created: #{school.inspect}"
       end
     end
@@ -48,6 +53,7 @@ class ImportQpvProche < ActiveRecord::Migration[5.2]
   end
 
   private
+
   def geocode_searches_with_caching
     cache = load_cache
     Geocoder.configure(lookup: :google,
@@ -63,12 +69,11 @@ class ImportQpvProche < ActiveRecord::Migration[5.2]
   rescue Errno::ENOENT => e
     {}
   rescue SyntaxError => e
-    fail 'FUCKIT cache failed'
+    raise 'FUCKIT cache failed'
     {}
   end
 
   def dump_cache(cache)
     File.write(GEOCODE_CACHE_FILE, YAML.dump(cache))
   end
-
 end

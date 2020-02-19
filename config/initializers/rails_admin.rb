@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
@@ -59,8 +61,8 @@ RailsAdmin.config do |config|
                               User]
 
   config.navigation_static_links = {
-    "Stats" => "/reporting/dashboards",
-    "Delayed Job" => "/admin/delayed_job",
-    "Zammad (Support)" => "https://monstage.zammad.com"
+    'Stats' => '/reporting/dashboards',
+    'Delayed Job' => '/admin/delayed_job',
+    'Zammad (Support)' => 'https://monstage.zammad.com'
   }
 end

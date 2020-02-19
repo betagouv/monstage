@@ -13,7 +13,7 @@ module ApiTestHelpers
   def json_response
     JSON.parse(response.body)
   rescue JSON::ParserError
-    fail "Not a json response"
+    raise 'Not a json response'
   end
 
   def json_code

@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors.keys.include?(:accept_terms)
     assert_equal user.errors.messages[:accept_terms][0],
                  "Veuillez accepter les conditions d'utilisation"
-    user = Users::SchoolManager.new(accept_terms: "1")
+    user = Users::SchoolManager.new(accept_terms: '1')
     user.valid?
     refute user.errors.keys.include?(:accept_terms)
   end
@@ -41,10 +41,10 @@ class UserTest < ActiveSupport::TestCase
     school = create(:school)
     class_room = create(:class_room, school: school)
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
-      current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
-      gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
-      resume_other: 'chocolat', resume_languages: 'FR',
-      handicap: 'malvoyant')
+                               current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
+                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               resume_other: 'chocolat', resume_languages: 'FR',
+                               handicap: 'malvoyant')
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
       student.anonymize
@@ -62,12 +62,11 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
-
   end
 
   test 'RGPD employer' do
     employer = create(:employer, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
-      current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
+                                 current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
 
     internship_offer = create(:internship_offer, employer: employer)
 
@@ -80,6 +79,6 @@ class UserTest < ActiveSupport::TestCase
   test 'validate email bad' do
     user = build(:employer, email: 'lol')
     refute user.valid?
-    assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
+    assert_equal ['Le format de votre email semble incorrect'], user.errors.messages[:email]
   end
 end

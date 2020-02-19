@@ -16,22 +16,22 @@ module BaseInternshipOffer
 
     scope :ignore_max_candidates_reached, lambda {
       joins(:internship_offer_weeks)
-       .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
+        .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
     }
 
     scope :ignore_max_internship_offer_weeks_reached, lambda {
       where('internship_offer_weeks_count > blocked_weeks_count')
     }
 
-    scope :ignore_already_applied, lambda { |user: |
+    scope :ignore_already_applied, lambda { |user:|
       where.not(id: joins(:internship_applications)
                       .merge(InternshipApplication.where(user_id: user.id)))
     }
 
     scope :mines_and_sumbmitted_to_operator, lambda { |user:|
-        left_joins(:internship_offer_operators)
-         .merge(where(internship_offer_operators: {operator_id: user.operator_id})
-                .or(where("internship_offers.employer_id = #{user.id}")))
+      left_joins(:internship_offer_operators)
+        .merge(where(internship_offer_operators: { operator_id: user.operator_id })
+              .or(where("internship_offers.employer_id = #{user.id}")))
     }
 
     scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
@@ -83,6 +83,7 @@ module BaseInternshipOffer
     def published?
       published_at.present?
     end
+
     def unpublished?
       !published?
     end
@@ -104,8 +105,12 @@ module BaseInternshipOffer
     #     we add a new description_rich_text element which is rendered when possiblee
     #   4. Bonus -> description will be used for description_tsv as template to extract keywords
     def replicate_rich_text_to_raw_fields
-      self.description = self.description_rich_text.to_plain_text if self.description_rich_text.to_s.present?
-      self.employer_description = self.employer_description_rich_text.to_plain_text if self.employer_description_rich_text.to_s.present?
+      if description_rich_text.to_s.present?
+        self.description = description_rich_text.to_plain_text
+      end
+      if employer_description_rich_text.to_s.present?
+        self.employer_description = employer_description_rich_text.to_plain_text
+      end
     end
 
     def preset_published_at_to_now
@@ -114,7 +119,7 @@ module BaseInternshipOffer
 
     def ready_to_enforce_less_text?
       Date.today.year >= 2019 && Date.today.month >= 9 ||
-      Date.today.year >= 2020
+        Date.today.year >= 2020
     end
   end
 end

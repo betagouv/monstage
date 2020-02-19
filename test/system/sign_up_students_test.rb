@@ -22,7 +22,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'masculin').click
       fill_in 'Adresse électronique', with: existing_email

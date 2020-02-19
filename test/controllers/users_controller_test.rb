@@ -121,7 +121,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     patch(account_path, params: {
             user: {
-              email: student_1.email,
+              email: student_1.email
             }
           })
 

@@ -25,7 +25,7 @@ module InternshipOffers
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
       Week.selectable_on_school_year.each do |week|
-        assert_select "label", text: week.select_text_method
+        assert_select 'label', text: week.select_text_method
       end
       assert_response :success
     end
@@ -42,7 +42,7 @@ module InternshipOffers
         assert_select 'input#all_year_long[disabled]'
 
         internship_offer.weeks.each do |week|
-          assert_select "label", text: week.select_text_method
+          assert_select 'label', text: week.select_text_method
         end
         assert_select 'input#internship_offer_max_candidates[disabled]'
       end
@@ -61,19 +61,19 @@ module InternshipOffers
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_response :success
-      assert_select "#internship_offer_is_public_true[checked]", count: 1 #"ensure user select kind of group"
-      assert_select "#internship_offer_is_public_false[checked]", count: 0 #"ensure user select kind of group"
-      assert_select ".form-group-select-group.d-none", count: 0
-      assert_select ".form-group-select-group", count: 1
+      assert_select '#internship_offer_is_public_true[checked]', count: 1 # "ensure user select kind of group"
+      assert_select '#internship_offer_is_public_false[checked]', count: 0 # "ensure user select kind of group"
+      assert_select '.form-group-select-group.d-none', count: 0
+      assert_select '.form-group-select-group', count: 1
 
-      assert_select "#internship_offer_with_operator_true[checked]", count: 1
-      assert_select "#internship_offer_with_operator_false[checked]", count: 0
-      assert_select "#internship_offer_with_operator_unknown[checked]", count: 0
-      assert_select ".operators-check-boxes.d-none", count: 0
-      assert_select ".operators-check-boxes", count: 1
+      assert_select '#internship_offer_with_operator_true[checked]', count: 1
+      assert_select '#internship_offer_with_operator_false[checked]', count: 0
+      assert_select '#internship_offer_with_operator_unknown[checked]', count: 0
+      assert_select '.operators-check-boxes.d-none', count: 0
+      assert_select '.operators-check-boxes', count: 1
 
-      assert_select "#internship_type_true[checked]", count: 1
-      assert_select "#internship_type_false[checked]", count: 0
+      assert_select '#internship_type_true[checked]', count: 1
+      assert_select '#internship_type_false[checked]', count: 0
 
       assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
       assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'

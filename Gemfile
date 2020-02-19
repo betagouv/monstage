@@ -6,20 +6,20 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.5'
 
 # fwk/server
-gem 'rails'
 gem 'puma'
+gem 'rails'
 
 # db
-gem 'pg'
 gem 'activerecord-postgis-adapter' # pg extension for geo queries
+gem 'pg'
 gem 'pg_search'                    # pg search for autocomplete
 
 # front end
+gem 'caxlsx_rails'
+gem 'react-rails'
 gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'
-gem 'react-rails'
-gem 'caxlsx_rails'
 
 # background jobs
 gem 'delayed_job_active_record'
@@ -39,16 +39,16 @@ gem 'devise'
 gem 'devise-i18n'
 
 # model/utils
-gem 'discard'
 gem 'aasm'
+gem 'discard'
 gem 'kaminari'
 # model/validators
-gem 'validates_zipcode'
 gem 'email_inquire'
+gem 'validates_zipcode'
 
 # dev utils
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -63,10 +63,10 @@ group :development do
   gem 'listen'
   gem 'web-console'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'activerecord-explain-analyze'
+  gem 'letter_opener'
   gem 'spring'
   gem 'spring-watcher-listen'
-  gem 'letter_opener'
-  gem 'activerecord-explain-analyze'
 end
 
 group :test do
@@ -75,8 +75,8 @@ group :test do
   gem 'minitest-reporters'
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'webdrivers'
   gem 'rails-controller-testing'
+  gem 'webdrivers'
 end
 
 group :test, :development do
@@ -86,5 +86,3 @@ end
 group :staging do
   gem 'rest-client' # not sure still in use?
 end
-
-

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_admin/config/actions'
 require 'rails_admin/config/actions/base'
 
 module RailsAdmin
   module Config
     module Actions
-      class Kpi <  RailsAdmin::Config::Actions::Base
+      class Kpi < RailsAdmin::Config::Actions::Base
         RailsAdmin::Config::Actions.register(self)
 
         register_instance_option :root? do

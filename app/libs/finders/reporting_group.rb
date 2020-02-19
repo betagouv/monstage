@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module Finders
   class ReportingGroup
     def groups_not_involved(is_public:)
-      Group.select("groups.*, count(internship_offers.id) as group_internship_offers_count")
+      Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
            .where(is_public: is_public)
            .joins(join_sources(is_public: is_public))
            .group('groups.id')
            .order(group_internship_offers_count: :desc)
     end
 
-
     private
+
     attr_reader :params
     def initialize(params:)
       @params = params
@@ -21,7 +23,9 @@ module Finders
 
       conditions = internship_offers[:group_id].eq(groups[:id])
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
-      conditions = conditions.and(internship_offers[:department]).eq(department_param) if department_param
+      if department_param
+        conditions = conditions.and(internship_offers[:department]).eq(department_param)
+      end
 
       groups.join(internship_offers, Arel::Nodes::OuterJoin)
             .on(conditions)

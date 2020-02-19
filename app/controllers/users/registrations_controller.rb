@@ -11,7 +11,7 @@ module Users
     # 2nd twice arrives, checks for existance of first that is not yet commited in PG
     # 1st is commited on PG
     # 2nd try to commit, rails raise ActiveRecord::RecordNotUnique
-    rescue_from(ActiveRecord::RecordNotUnique) do |error|
+    rescue_from(ActiveRecord::RecordNotUnique) do |_error|
       redirect_to after_inactive_sign_up_path_for(resource)
     end
     # GET /users/choose_profile
@@ -20,7 +20,9 @@ module Users
     # end
     def confirmation_standby
       flash.delete(:notice)
-      @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
+      if params[:email].present?
+        @confirmable_user = User.where(email: params[:email]).first
+      end
       @confirmable_user ||= nil
     end
 

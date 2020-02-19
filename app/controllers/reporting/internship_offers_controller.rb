@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reporting
   class InternshipOffersController < BaseReportingController
     helper_method :dimension_is?, :presenter_for_dimension
@@ -8,8 +10,10 @@ module Reporting
       @offers = current_offers
       respond_to do |format|
         format.xlsx do
-          @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
-          response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('offres')}.xlsx"]
+          if dimension_is?('offers', params[:dimension])
+            @offers = @offers.find_each(batch_size: 1000)
+          end
+          response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
         end
         format.html do
         end
@@ -21,7 +25,8 @@ module Reporting
     def dimension_is?(check, current)
       current = 'sector' if current.nil?
       return true if check == current
-      return false
+
+      false
     end
 
     def current_offers

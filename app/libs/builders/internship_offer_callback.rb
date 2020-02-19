@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # custom builder for InternshipOfferBuilder, can have duplicate
 module Builders
   class InternshipOfferCallback < Callback

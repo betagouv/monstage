@@ -61,7 +61,7 @@ Rails.application.configure do
 
   config.action_cable.mount_path = '/action_cable'
   config.action_cable.url = "wss://#{host_uri.host}"
-  config.action_cable.allowed_request_origins = [ host_uri.to_s ]
+  config.action_cable.allowed_request_origins = [host_uri.to_s]
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large

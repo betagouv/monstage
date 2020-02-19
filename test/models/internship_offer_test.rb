@@ -71,12 +71,11 @@ class InternshipOfferTest < ActiveSupport::TestCase
     refute internship_offer.has_operator?
   end
 
-
   test '.reverse_academy_by_zipcode works on create and save' do
     internship_offer = build(:internship_offer, zipcode: '75015')
     assert_changes -> { internship_offer.academy },
-                  from: '',
-                  to: 'Académie de Paris' do
+                   from: '',
+                   to: 'Académie de Paris' do
       internship_offer.save
     end
   end
@@ -84,16 +83,16 @@ class InternshipOfferTest < ActiveSupport::TestCase
   test '.reverse_department_by_zipcode works on create and save' do
     internship_offer = build(:internship_offer, zipcode: '62000', department: 'Arras')
     assert_changes -> { internship_offer.department },
-                  from: 'Arras',
-                  to: 'Pas-de-Calais' do
+                   from: 'Arras',
+                   to: 'Pas-de-Calais' do
       internship_offer.save
     end
   end
 
   test 'RGPD' do
     internship_offer = create(:internship_offer, tutor_name: 'Eric', tutor_phone: '0123456789',
-      tutor_email: 'eric@octo.com', title: 'Test', description: 'Test', employer_website: 'Test',
-      street: 'rue', employer_name: 'Octo', employer_description: 'Test')
+                                                 tutor_email: 'eric@octo.com', title: 'Test', description: 'Test', employer_website: 'Test',
+                                                 street: 'rue', employer_name: 'Octo', employer_description: 'Test')
 
     internship_offer.anonymize
 

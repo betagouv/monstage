@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddGroupToInternshipOffers < ActiveRecord::Migration[6.0]
   def change
     rename_column :internship_offers, :group, :old_group
