@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start 'rails'
+
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'minitest/reporters'
@@ -7,6 +10,7 @@ require 'minitest/autorun'
 require 'rails/test_help'
 
 require 'support/api_test_helpers'
+
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods

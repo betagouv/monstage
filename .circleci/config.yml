@@ -29,6 +29,12 @@ jobs: # a collection of steps
       #       sudo apt-get update
       #       sudo apt-get upgrade google-chrome-stable
 
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
       # Which version of bundler?
       - run:
           name: Which bundler?
@@ -80,9 +86,13 @@ jobs: # a collection of steps
             sudo apt-get install postgresql-client
             bundle exec bin/rails db:create db:structure:load --trace
 
+
       - run:
           name: Run TestUnit
-          command: PARALLEL_WORKERS=3 bundle exec rake test
+          command: |
+            ./cc-test-reporter before-build
+            PARALLEL_WORKERS=3 bundle exec rake test
+            ./cc-test-reporter after-build --coverage-input-type simplecov --exit-code $?
 
       # - run:
       #     name: Run TestSystem
@@ -91,6 +101,7 @@ jobs: # a collection of steps
       - run:
           name: w3c validation
           command: java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
+
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
