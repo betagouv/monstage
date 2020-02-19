@@ -1,4 +1,4 @@
-.row.student-form-missing-school-weeks
+.row
   .col-12
     .row.align-items-center.no-gutters
         .col-1.col-sm-auto.text-center.mr-2
@@ -7,11 +7,12 @@
           p.my-0
             | Pour candidater à un stage, il vous faut au moins une semaine de stage attribuée par votre chef d'établissement.
             br
-
-.row.my-3
-  .col-12
-    p
-      = "Afin d'accélérer la procédure, cliquez sur le bouton ci-dessous pour faire un rappel à "
-      strong chef d'établissement
-      | .
-    p.my-0= link_to "Je souhaite une semaine de stage", "", class: "btn btn-outline-warning"
+- if !current_user.missing_school_weeks_id.present?
+  .row.my-3.student-form-missing-school-weeks
+    .col-12
+      p
+        = "Afin d'accélérer la procédure, cliquez sur le bouton ci-dessous pour faire un rappel à "
+        strong chef d'établissement
+        | .
+      p.my-0= link_to account_path(user: {missing_school_weeks_id: current_user.school_id}), class: "btn btn-outline-warning", method: :patch do
+        | Je souhaite une semaine de stage

@@ -166,6 +166,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
+  test 'PATCH edit as student can change missing_school_weeks_id' do
+    school = create(:school)
+    student = create(:student, school: school)
+    sign_in(student)
+
+    patch(account_path, params: { user: { missing_school_weeks_id: school.id } })
+
+    assert_redirected_to account_path
+    student.reload
+    assert_equal student.school_id, student.missing_school_weeks_id
+    follow_redirect!
+    expected_custom_flash_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez candidater"
+    assert_select('#alert-text',
+                  text: expected_custom_flash_message)
+  end
+
   test 'PATCH edit as Operator can change department_name' do
     user_operator = create(:user_operator)
     sign_in(user_operator)

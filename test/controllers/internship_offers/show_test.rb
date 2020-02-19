@@ -74,7 +74,15 @@ module InternshipOffers
       assert_select(".student-form-missing-school-weeks",
                     { count: 1 },
                     "missing rendering of student_form_missing_school_weeks")
+      assert_select("a[href=?]",
+                    account_path(user: { missing_school_weeks_id: student.school.id }))
+      student.update(missing_school_weeks_id: school.id)
+      get internship_offer_path(create(:internship_offer))
 
+      assert_response :success
+      assert_select(".student-form-missing-school-weeks",
+                    { count: 0 },
+                    "missing rendering of student_form_missing_school_weeks")
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
