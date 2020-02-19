@@ -1,4 +1,6 @@
 [![CircleCI](https://circleci.com/gh/betagouv/monstage.svg?style=svg)](https://circleci.com/gh/betagouv/monstage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/914f0ce10a5e4bd862bd/maintainability)](https://codeclimate.com/github/betagouv/monstage/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/914f0ce10a5e4bd862bd/test_coverage)](https://codeclimate.com/github/betagouv/monstage/test_coverage)
 # README
 
 
