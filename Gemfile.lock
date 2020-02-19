@@ -142,7 +142,6 @@ GEM
       multipart-post (>= 1.2, < 3)
     ffi (1.12.2)
     foreman (0.87.0)
-    geocoder (1.6.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     haml (5.1.2)
@@ -381,8 +380,6 @@ GEM
     websocket-extensions (0.1.4)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zammad_api (1.0.5)
-      faraday (~> 0.9)
     zeitwerk (2.2.2)
 
 PLATFORMS
@@ -406,7 +403,6 @@ DEPENDENCIES
   email_inquire
   factory_bot_rails
   foreman
-  geocoder
   kaminari
   letter_opener
   listen
@@ -433,7 +429,6 @@ DEPENDENCIES
   web-console
   webdrivers
   webpacker
-  zammad_api
 
 RUBY VERSION
    ruby 2.6.5p114
