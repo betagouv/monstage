@@ -1,0 +1,7 @@
+Bonjour,
+
+Vous vous êtes inscrit sur monstagedetroisieme.fr pour votre établissement, mais n'avez pas sélectionné de semaines de stage.
+
+Sans cette démarche vos élèves ne pourront pas candidater. A l'heure actuelle, <%= @school.missing_school_weeks_count %> élève(s) n'ont pas pu candidater?
+
+Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : <%= edit_dashboard_school_url(@school) %>
