@@ -1,16 +1,52 @@
 $sortLinkOffset: 15px;
 .align-top:first-child {
-  .sort-link, small {padding-left: $sortLinkOffset}
+   // .sort-link, small {padding-left: $sortLinkOffset}
+}
+.table-dashboard-internship-offers{
+  table-layout: fixed;
+  width: 100%;
+  margin-bottom: 0;
+  tr{
+    th:first-child, td:first-child{ width: 34%}
+    th, td { width: 11%; }
+    td{
+      padding: 1rem .75rem;
+    }
+  }
+}
+.sortable-th{
+  position: relative;
+}
+@include media-breakpoint-up(sm) {
+  .hoverable-row-with-btn .btn-hoverable{
+    transition: opacity .4s ease;
+    opacity: 0;
+    display: block;
+    position: absolute;
+  }
+  .hoverable-row-with-btn:hover {
+    .btn-hoverable{
+      opacity: 1;
+    }
+  }
+}
+.breakable-word{
+  font-weight: bold;
+  font-size: 70%;
+  max-width: 80%;
+  word-wrap: break-word;
 }
 .sort-links{
   $sort-arrow-height: 15px;
-  position: relative;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  margin-top: -11px;
   .sort-link{
     position: absolute;
-    left: -$sortLinkOffset;
+    // left: -$sortLinkOffset;
     height: $sort-arrow-height;
     line-height: 8px;
-    opacity: .5;
     text-decoration: none;
   }
   .sort-link.active{

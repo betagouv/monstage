@@ -10,7 +10,14 @@
   border-right: 1px;
   border-right-style: solid;
 }
+.bl-1{
+  border-left: 1px;
+  border-left-style: solid;
+}
+
 .bt-light{
   border-color: rgba(0, 0, 0, 0.12);
 }
-
+.bb-blue{
+  border-bottom-color: $blue!important;
+}

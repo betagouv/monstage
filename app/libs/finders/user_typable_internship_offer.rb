@@ -41,7 +41,9 @@ module Finders
     end
 
     def employer_query
-      user.internship_offers.kept
+      query = user.internship_offers.kept
+      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      query
     end
 
     def god_query

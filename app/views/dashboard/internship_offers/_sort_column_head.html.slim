@@ -1,4 +1,5 @@
-= link_to dashboard_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius).merge(order: order, direction: direction)), class: "sort-link sort-link-#{direction.to_s == 'asc' ? 'up' : 'down'} align-bottom #{current_page?(dashboard_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius).merge(order: order, direction: direction))) ? 'active' : ''}", title: "Trier par #{sort_by_i18n} #{direction.to_s == 'asc' ? 'croissant' : 'descroissant'} " do
+- sort_params = params.permit(:city, :latitude, :longitude, :radius).merge(order: order, direction: direction)
+= link_to dashboard_internship_offers_path(sort_params), class: "sort-link text-warning sort-link-#{direction.to_s == 'asc' ? 'up' : 'down'} align-bottom #{current_page?(dashboard_internship_offers_path(sort_params)) ? 'active' : ''}", title: "Trier par #{sort_by_i18n} #{direction.to_s == 'asc' ? 'croissant' : 'descroissant'} " do
   - if direction.to_s == 'asc'
     | &#9650;
   - else
