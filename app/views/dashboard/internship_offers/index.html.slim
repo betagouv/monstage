@@ -38,19 +38,19 @@
               .row.no-gutters
                 .col-auto
                   small.breakable-word  Offre publiée
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "title", sort_by_i18n: "titre", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "title", sort_by_i18n: "titre", direction: order_direction}
 
             th.align-middle.d-none.d-md-table-cell.sortable-th.bb-blue
               .row.no-gutters
                 .col-auto
                   small.breakable-word  Vues
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "view_count", sort_by_i18n: "affichage", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "view_count", sort_by_i18n: "affichage", direction: order_direction}
 
             th.align-middle.sortable-th.bb-blue
               .row.no-gutters
                 .col-auto
                   small.breakable-word  Candidatures
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "total_applications_count", sort_by_i18n: "candidatures", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "total_applications_count", sort_by_i18n: "candidatures", direction: order_direction}
 
             th.align-middle.sortable-th.bb-blue
               .row.no-gutters
@@ -59,7 +59,7 @@
                     | Réponses
                     br
                     | à donner
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "convention_signed_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "convention_signed_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
 
             th.align-middle.d-none.d-md-table-cell.sortable-th.bb-blue
               .row.no-gutters
@@ -68,7 +68,8 @@
                     | Candidatures
                     br
                     | refusées
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "approved_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "approved_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
+
             th.align-middle.sortable-th.bb-blue
               .row.no-gutters
                 .col-auto
@@ -76,7 +77,8 @@
                     | En attente
                     br
                     | de convention
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "rejected_applications_count", sort_by_i18n: "candidatures refusées", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "rejected_applications_count", sort_by_i18n: "candidatures refusées", direction: order_direction}
+
             th.align-middle.sortable-th.bb-blue
               .row.no-gutters
                 .col-auto
@@ -84,7 +86,8 @@
                     | Convention
                     br
                     | signée
-                .col-1= render partial: "dashboard/internship_offers/sort_links", locals: { order: "submitted_applications_count", sort_by_i18n: "réponse à donner", direction: order_direction}
+                .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "submitted_applications_count", sort_by_i18n: "réponse à donner", direction: order_direction}
+
 
         tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}
 

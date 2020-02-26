@@ -1,6 +1,9 @@
 $sortLinkOffset: 15px;
-.align-top:first-child {
-   // .sort-link, small {padding-left: $sortLinkOffset}
+
+.min-width-20{
+  width: 20px;
+  position: relative;
+  left: 5px;
 }
 .table-dashboard-internship-offers{
   table-layout: fixed;
@@ -33,7 +36,6 @@ $sortLinkOffset: 15px;
 .breakable-word{
   font-weight: bold;
   font-size: 70%;
-  max-width: 80%;
   word-wrap: break-word;
 }
 .sort-links{
