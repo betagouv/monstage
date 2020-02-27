@@ -50,15 +50,25 @@ class InternshipOfferTest < ActiveSupport::TestCase
     refute internship_offer.has_spots_left?
   end
 
+  test 'sync_first_and_last_date' do
+    internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
+
+
+    internship_offer.save
+    internship_offer.reload
+    assert_equal internship_offer.first_date, Week.first.week_date.beginning_of_week
+    assert_equal internship_offer.last_date, Week.last.week_date.end_of_week
+  end
+
   test 'look for offers available in the future' do
     travel_to(Date.new(2020, 5, 15)) do
       internship_offer = create(:internship_offer, weeks: [Week.find_by(year: 2019, number: 50), Week.find_by(year: 2020, number: 10)])
-      assert_empty InternshipOffer.available_in_the_future
+      assert_empty InternshipOffer.in_the_future
 
       next_week = Week.find_by(year: 2020, number: 30)
       internship_offer.weeks << next_week
 
-      assert_equal 1, InternshipOffer.available_in_the_future.count
+      assert_equal 1, InternshipOffer.in_the_future.count
     end
   end
 

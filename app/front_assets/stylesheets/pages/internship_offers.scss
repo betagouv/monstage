@@ -5,22 +5,26 @@ $sortLinkOffset: 15px;
   position: relative;
   left: 5px;
 }
-.table-dashboard-internship-offers{
-  table-layout: fixed;
-  width: 100%;
-  margin-bottom: 0;
-  tr{
-    th:first-child, td:first-child{ width: 34%}
-    th, td { width: 11%; }
-    td{
-      padding: 1rem .75rem;
+@include media-breakpoint-up(sm) {
+  .table-dashboard-internship-offers{
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 0;
+    tr{
+      th:first-child, td:first-child{ width: 34%}
+      th, td { width: 11%; }
+      td{
+        padding: 1rem .75rem;
+      }
     }
   }
-}
-.sortable-th{
-  position: relative;
-}
-@include media-breakpoint-up(sm) {
+  .sortable-th{
+    position: relative;
+  }
+
+  .hoverable-row-with-btn:hover{
+    background-color: #e3f2fe;
+  }
   .hoverable-row-with-btn .btn-hoverable{
     transition: opacity .4s ease;
     opacity: 0;
@@ -33,11 +37,13 @@ $sortLinkOffset: 15px;
     }
   }
 }
+
 .breakable-word{
   font-weight: bold;
   font-size: 70%;
   word-wrap: break-word;
 }
+
 .sort-links{
   $sort-arrow-height: 15px;
   display: inline-block;
@@ -122,14 +128,17 @@ $sortLinkOffset: 15px;
   ul{
     list-style-type: none;
   }
-  .autocomplete-list-element:hover{
-    cursor: pointer;
-    background-color: $blue_light;
-  }
   .badge{
     font-size: 1rem;
   }
 }
+@include media-breakpoint-up(sm) {
+  .autocomplete-list-element:hover{
+    cursor: pointer;
+    background-color: $blue_light;
+  }
+}
+
 
 // slider
 $sliderHeight: 20px;
@@ -151,13 +160,17 @@ $handleWidth: 60px;
   padding: .25rem;
   background-color: $gray-500;
   color: $gray-100;
-  &:hover{
-    background-color: $gray-400;
-    color: $white;
-  }
-  &:active{
-    background-color: $gray-600;
-    color: $gray-200;
+}
+@include media-breakpoint-up(sm) {
+  .badge-clear {
+    &:hover{
+      background-color: $gray-400;
+      color: $white;
+    }
+    &:active{
+      background-color: $gray-600;
+      color: $gray-200;
+    }
   }
 }
 

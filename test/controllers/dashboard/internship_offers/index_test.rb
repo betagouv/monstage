@@ -22,15 +22,79 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
-    test 'GET #index as Employer' do
+    test 'GET #index without filter as Employer show published and unpublished, not in past' do
       employer = create(:employer)
       internship_offer_published = create(:internship_offer, employer: employer)
       internship_offer_unpublished = create(:internship_offer, employer: employer)
       internship_offer_unpublished.update_column(:published_at, nil)
+      internship_offer_in_the_past = create(
+        :internship_offer,
+        employer: employer,
+        weeks: [Week.where(number: Date.today.cweek - 2,
+                           year: Date.today.year)
+                    .first]
+      )
       sign_in(employer)
       get dashboard_internship_offers_path
-      assert_select ".test-internship-offer-#{internship_offer_published.id}"
-      assert_select ".test-internship-offer-#{internship_offer_unpublished.id}"
+      assert_select(".test-internship-offer-#{internship_offer_published.id}",
+                    { count: 1 },
+                    'should not have found published offer')
+      assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
+                    { count: 1 },
+                    'should found unpublished offer')
+      assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
+                    { count: 0 },
+                    'should not have found offer in the past')
+    end
+
+    test 'GET #index with filter=unpublished as Employer show unpublished offers only' do
+      employer = create(:employer)
+      internship_offer_published = create(:internship_offer, employer: employer)
+      internship_offer_unpublished = create(:internship_offer, employer: employer)
+      internship_offer_unpublished.update_column(:published_at, nil)
+      internship_offer_in_the_past = create(
+        :internship_offer,
+        employer: employer,
+        weeks: [Week.where(number: Date.today.cweek - 2,
+                           year: Date.today.year)
+                    .first]
+      )
+      sign_in(employer)
+      get dashboard_internship_offers_path(filter: :unpublished)
+      assert_select(".test-internship-offer-#{internship_offer_published.id}",
+                    { count: 0 },
+                    'should not have found published offer')
+      assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
+                    { count: 1 },
+                    'should found unpublished offer')
+      assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
+                    { count: 0 },
+                    'should not have found offer in the past')
+    end
+
+    test 'GET #index with filter=past as Employer show unpublished offers only' do
+      employer = create(:employer)
+      internship_offer_published = create(:internship_offer, employer: employer)
+      internship_offer_unpublished = create(:internship_offer, employer: employer)
+      internship_offer_unpublished.update_column(:published_at, nil)
+      internship_offer_in_the_past = create(
+        :internship_offer,
+        employer: employer,
+        weeks: [Week.where(number: Date.today.cweek - 2,
+                           year: Date.today.year)
+                    .first]
+      )
+      sign_in(employer)
+      get dashboard_internship_offers_path(filter: :past)
+      assert_select(".test-internship-offer-#{internship_offer_published.id}",
+                    { count: 0 },
+                    'should not have found published offer')
+      assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
+                    { count: 0 },
+                    'should found unpublished offer')
+      assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
+                    { count: 1 },
+                    'should not have found offer in the past')
     end
 
     test 'GET #index as Employer show view_count' do
@@ -58,13 +122,13 @@ module Dashboard
       internship_offer_2 = create(:internship_offer, view_count: 1, employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
-      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
+      assert_select "a.sort-link.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
+      assert_select "a.sort-link.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
       assert_select "table tbody tr:first .internship-item-title", text: internship_offer_1.title
       assert_select "table tbody tr:last .internship-item-title", text: internship_offer_2.title
       get dashboard_internship_offers_path(order: :view_count, direction: :asc)
-      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
-      assert_select "a.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
+      assert_select "a.sort-link.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
+      assert_select "a.sort-link.active[href=?]", dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
       assert_select "table tbody tr:last .internship-item-title", text: internship_offer_1.title
       assert_select "table tbody tr:first .internship-item-title", text: internship_offer_2.title
     end

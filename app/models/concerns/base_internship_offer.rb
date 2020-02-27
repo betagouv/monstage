@@ -2,6 +2,7 @@
 
 module BaseInternshipOffer
   extend ActiveSupport::Concern
+
   TITLE_MAX_CHAR_COUNT = 150
   OLD_DESCRIPTION_MAX_CHAR_COUNT = 750
   DESCRIPTION_MAX_CHAR_COUNT = 500
@@ -73,7 +74,8 @@ module BaseInternshipOffer
     has_many :weeks, through: :internship_offer_weeks
 
     before_validation :replicate_rich_text_to_raw_fields
-    before_save :reverse_academy_by_zipcode,
+    before_save :sync_first_and_last_date,
+                :reverse_academy_by_zipcode,
                 :reverse_department_by_zipcode
 
     before_create :preset_published_at_to_now
@@ -85,6 +87,16 @@ module BaseInternshipOffer
     end
     def unpublished?
       !published?
+    end
+
+
+    #
+    # callbacks
+    #
+    def sync_first_and_last_date
+      first_week, last_week = weeks.minmax_by(&:id)
+      self.first_date = first_week.week_date.beginning_of_week
+      self.last_date = last_week.week_date.end_of_week
     end
 
     def reverse_academy_by_zipcode

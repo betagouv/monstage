@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_10_135720) do
+ActiveRecord::Schema.define(version: 2020_02_27_162157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,6 +167,8 @@ ActiveRecord::Schema.define(version: 2020_02_10_135720) do
     t.integer "total_male_approved_applications_count", default: 0
     t.integer "total_custom_track_approved_applications_count", default: 0
     t.bigint "group_id"
+    t.date "first_date"
+    t.date "last_date"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
@@ -206,6 +208,7 @@ ActiveRecord::Schema.define(version: 2020_02_10_135720) do
     t.tsvector "city_tsv"
     t.string "kind"
     t.boolean "visible", default: true
+    t.integer "missing_school_weeks_count", default: 0
     t.index ["city_tsv"], name: "index_schools_on_city_tsv", using: :gin
     t.index ["coordinates"], name: "index_schools_on_coordinates", using: :gist
   end
@@ -254,10 +257,12 @@ ActiveRecord::Schema.define(version: 2020_02_10_135720) do
     t.datetime "discarded_at"
     t.string "zipcode"
     t.string "department_name"
+    t.bigint "missing_school_weeks_id"
     t.index ["api_token"], name: "index_users_on_api_token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["discarded_at"], name: "index_users_on_discarded_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["missing_school_weeks_id"], name: "index_users_on_missing_school_weeks_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["school_id"], name: "index_users_on_school_id"
   end
@@ -287,4 +292,5 @@ ActiveRecord::Schema.define(version: 2020_02_10_135720) do
   add_foreign_key "school_internship_weeks", "weeks"
   add_foreign_key "users", "class_rooms"
   add_foreign_key "users", "operators"
+  add_foreign_key "users", "schools", column: "missing_school_weeks_id"
 end

@@ -40,22 +40,11 @@ module Finders
                    radius: radius_params)
     end
 
-    def employer_query
-      query = user.internship_offers.kept
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
-      query
-    end
-
-    def god_query
-      query = InternshipOffer.kept
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
-      query
-    end
 
     def school_members_query
       coordinates = coordinate_params || user.try(:school).try(:coordinates)
       query = InternshipOffer.kept
-                             .available_in_the_future
+                             .in_the_future
                              .published
                              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
                              .ignore_max_candidates_reached
@@ -66,8 +55,14 @@ module Finders
       query
     end
 
+    def employer_query
+      query = user.internship_offers
+      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      query
+    end
+
     def operator_query
-      query = InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
+      query = InternshipOffer.mines_and_sumbmitted_to_operator(user: user)
       if coordinate_params
         query = query.merge(nearby_query_part(query, coordinate_params))
       elsif user.department_name.present?
@@ -84,11 +79,16 @@ module Finders
     end
 
     def visitor_query
-      query = InternshipOffer.kept.available_in_the_future.published
+      query = InternshipOffer.kept.in_the_future.published
       query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
       query
     end
 
+    def god_query
+      query = InternshipOffer.kept
+      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      query
+    end
 
     def coordinate_params
       return nil unless params.key?(:latitude) || params.key?(:longitude)
