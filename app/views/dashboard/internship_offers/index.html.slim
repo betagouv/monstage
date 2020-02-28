@@ -40,7 +40,7 @@
         - if @internship_offers.empty?
           p.text-muted Aucune offre publiée
         - else
-          table.table.table-rg2a.table-dashboard-internship-offers
+          table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers
             - cols = { title: "Offre publiée", view_count: "Affichages", internship_application_count: "Candidatures", internship_application_submitted_count: "Réponses à donner", internship_application_rejected_count: "Candidatures refusées", internship_application_approved_count: "En attente de convention", internship_application_convention_signed_count: "Convention signée"}
             thead
               tr

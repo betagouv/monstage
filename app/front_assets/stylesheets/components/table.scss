@@ -5,3 +5,14 @@
   background-color: $blue;
   color: #fff;
 }
+
+.table-sticky-thead{
+  position: relative;
+  border-collapse: collapse;
+  th {
+    top: 0;
+    position: sticky;
+    box-shadow: 0 2px 0px 0px $blue;
+    background-color: white;
+  }
+}
