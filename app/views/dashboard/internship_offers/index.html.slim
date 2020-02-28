@@ -19,12 +19,17 @@
 .fake-table
   .row
     ul.nav.nav-tabs.test-dashboard-nav.bb-1.bt-light.col-12
-      li.nav-item= link_to dashboard_internship_offers_path(params.permit(:latitude, :longitude, :radius, :order, :direction)), class: "nav-link #{params[:filter].blank? ? 'active' : ''}" do
-          | Offres en cours
-      li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "nav-link #{current_page?(dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
-          | Offres dépubliées
-      li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "nav-link #{current_page?(dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
-          | Offres passées
+      li.nav-item.d-inline.d-sm-none
+        span.nav-link= "Offres : "
+      li.nav-item= link_to dashboard_internship_offers_path(params.permit(:latitude, :longitude, :radius, :order, :direction)), class: "px-2 px-sm-3 nav-link #{params[:filter].blank? ? 'active' : ''}" do
+          span.d-none.d-sm-inline= "Offres "
+          span en cours
+      li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "px-2 px-sm-3 nav-link #{current_page?(dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
+          span.d-none.d-sm-inline= "Offres "
+          span dépubliées
+      li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "px-2 px-sm-3 nav-link #{current_page?(dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
+          span.d-none.d-sm-inline= "Offres "
+          span passées
 
   .tab-content
     .tab-pane.show.active
@@ -47,7 +52,7 @@
                 th.align-middle.sortable-th.bb-blue
                   .row.no-gutters
                     .col-auto
-                      small.breakable-word  Offre publiée
+                      small.breakable-word Offre publiée
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "title", sort_by_i18n: "titre", direction: order_direction}
 
                 th.align-middle.d-none.d-md-table-cell.sortable-th.bb-blue
