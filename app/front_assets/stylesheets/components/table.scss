@@ -9,10 +9,14 @@
 .table-sticky-thead{
   position: relative;
   border-collapse: collapse;
-  th {
+  thead {
+    z-index: 1;
     top: 0;
     position: sticky;
     box-shadow: 0 2px 0px 0px $blue;
-    background-color: white;
+
+    th{
+      background-color: white;
+    }
   }
 }
