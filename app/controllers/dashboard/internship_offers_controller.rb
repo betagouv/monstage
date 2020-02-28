@@ -99,7 +99,7 @@ module Dashboard
       case params[:filter]
       when 'unpublished' then InternshipOffer.where(published_at: nil)
       when 'past' then InternshipOffer.in_the_past
-      else InternshipOffer.kept.in_the_future
+      else InternshipOffer.published.in_the_future
       end
     end
 

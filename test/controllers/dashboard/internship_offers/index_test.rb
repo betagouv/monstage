@@ -40,7 +40,7 @@ module Dashboard
                     { count: 1 },
                     'should not have found published offer')
       assert_select(".test-internship-offer-#{internship_offer_unpublished.id}",
-                    { count: 1 },
+                    { count: 0 },
                     'should found unpublished offer')
       assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
                     { count: 0 },

@@ -56,13 +56,13 @@ module Finders
     end
 
     def employer_query
-      query = user.internship_offers
+      query = user.internship_offers.kept
       query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
       query
     end
 
     def operator_query
-      query = InternshipOffer.mines_and_sumbmitted_to_operator(user: user)
+      query = InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
       if coordinate_params
         query = query.merge(nearby_query_part(query, coordinate_params))
       elsif user.department_name.present?
