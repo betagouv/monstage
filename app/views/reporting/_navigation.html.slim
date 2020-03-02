@@ -23,7 +23,7 @@
 
 .row
   .col-12
-    ul.nav.nav-tabs.mb-2
+    ul.nav.nav-tabs.mb-3
       li.nav-item= link_to "Tableau de bord", reporting_dashboards_path(default_reporting_url_options(current_user)), class: "nav-link #{current_page?(reporting_dashboards_path) ? 'active' : ''}"
       li.nav-item= link_to "Offres", reporting_internship_offers_path(default_reporting_url_options(current_user)), class: "nav-link #{current_page?(reporting_internship_offers_path) ? 'active' : ''}"
 

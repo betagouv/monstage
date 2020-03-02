@@ -9,7 +9,7 @@
         "Convention en cours",
         "Sans stage"]
     thead
-      tr
+      tr.tr-white
         - cols.map.with_index do |col, i|
           th class="align-top #{i.zero? ? '' : 'text-center'}"
             small= col

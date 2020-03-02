@@ -1,3 +1,7 @@
+// border position solid
+.bt-0{
+  border-top: none;
+}
 .bt-1 {
   border-top: 1px;
   border-top-style: solid;
@@ -15,9 +19,10 @@
   border-left-style: solid;
 }
 
+// border-color
 .bt-light{
   border-color: rgba(0, 0, 0, 0.12);
 }
-.bb-blue{
-  border-bottom-color: $blue!important;
+.bc-light{
+  border-color: $nav-tabs-border-color;
 }

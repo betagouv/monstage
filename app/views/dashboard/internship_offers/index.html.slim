@@ -18,7 +18,7 @@
               span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
 .fake-table
   .row
-    ul.nav.nav-tabs.test-dashboard-nav.bb-1.bt-light.col-12
+    ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12
       li.nav-item.d-inline.d-sm-none
         span.nav-link= "Offres : "
       li.nav-item= link_to dashboard_internship_offers_path(params.permit(:latitude, :longitude, :radius, :order, :direction)), class: "px-2 px-sm-3 nav-link #{params[:filter].blank? ? 'active' : ''}" do
@@ -33,14 +33,14 @@
 
   .tab-content
     .tab-pane.show.active
-      .row.bt-light.br-1.bl-1
+      .row.bc-light.br-1.bl-1.bb-1
         = react_component("SearchInternshipOffer",
                           { url: dashboard_internship_offers_path,
                             initialRadius: params[:radius] || Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER,
                             currentCitySearch: params[:city] || current_user.try(:school).try(:city) },
                           { class: 'col-12 pt-2 filter-section' })
 
-      .row.bt-light.br-1.bl-1.bb-1
+      .row.bc-light.br-1.bl-1.bb-1
         .col-12
         - if @internship_offers.empty?
           p.text-muted Aucune offre publiée
@@ -48,26 +48,26 @@
           table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers
             - cols = { title: "Offre publiée", view_count: "Affichages", internship_application_count: "Candidatures", internship_application_submitted_count: "Réponses à donner", internship_application_rejected_count: "Candidatures refusées", internship_application_approved_count: "En attente de convention", internship_application_convention_signed_count: "Convention signée"}
             thead
-              tr
-                th.align-middle.sortable-th.bb-blue
+              tr.tr-white
+                th.align-middle.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word Offre publiée
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "title", sort_by_i18n: "titre", direction: order_direction}
 
-                th.align-middle.d-none.d-md-table-cell.sortable-th.bb-blue
+                th.align-middle.d-none.d-md-table-cell.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word  Vues
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "view_count", sort_by_i18n: "affichage", direction: order_direction}
 
-                th.align-middle.sortable-th.bb-blue
+                th.align-middle.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word  Candidatures
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "total_applications_count", sort_by_i18n: "candidatures", direction: order_direction}
 
-                th.align-middle.sortable-th.bb-blue
+                th.align-middle.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word
@@ -76,7 +76,7 @@
                         | à donner
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "convention_signed_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
 
-                th.align-middle.d-none.d-md-table-cell.sortable-th.bb-blue
+                th.align-middle.d-none.d-md-table-cell.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word
@@ -85,7 +85,7 @@
                         | refusées
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "approved_applications_count", sort_by_i18n: "candidatures en attente de convention", direction: order_direction}
 
-                th.align-middle.sortable-th.bb-blue
+                th.align-middle.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word
@@ -94,7 +94,7 @@
                         | de convention
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "rejected_applications_count", sort_by_i18n: "candidatures refusées", direction: order_direction}
 
-                th.align-middle.sortable-th.bb-blue
+                th.align-middle.sortable-th
                   .row.no-gutters
                     .col-auto
                       small.breakable-word
@@ -102,7 +102,6 @@
                         br
                         | signée
                     .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: "submitted_applications_count", sort_by_i18n: "réponse à donner", direction: order_direction}
-
 
             tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}
 

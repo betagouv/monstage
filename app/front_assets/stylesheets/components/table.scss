@@ -1,22 +1,20 @@
 .table-caption-top{
   caption { caption-side: top };
 }
-.table-blue{
-  background-color: $blue;
-  color: #fff;
-}
 
-.table-sticky-thead{
-  position: relative;
-  border-collapse: collapse;
-  thead {
-    z-index: 1;
-    top: 0;
-    position: sticky;
-    box-shadow: 0 2px 0px 0px $blue;
-
-    th{
-      background-color: white;
+@include media-breakpoint-up(sm) {
+  .hoverable-row-with-btn{
+    .btn-hoverable{
+      transition: opacity .4s ease;
+      opacity: 0;
+      display: block;
+      position: absolute;
+    }
+    &:hover{
+      background-color: #e3f2fe;
+      .btn-hoverable{
+      opacity: 1;
+      }
     }
   }
 }

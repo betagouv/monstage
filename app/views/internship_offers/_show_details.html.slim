@@ -11,7 +11,7 @@
 - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
   .row
     .col-12
-      .row.bg-light.py-3.bt-1.bt-light
+      .row.bg-light.py-3.bt-1.bc-light
         .col-12
           h2.h4 Tuteur
           p.text-muted.small Le tuteur ou la tutrice est la personne référente sur ce stage. Ses coordonnées sont publiées à ceux qui accompagnent les élèves pour savoir qui joindre en cas d'urgence
@@ -36,7 +36,7 @@
               .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
 .row
   .col-12
-    .row.bg-light.py-3.bt-1.bt-light
+    .row.bg-light.py-3.bt-1.bc-light
       .col-12
         h2.h4 Où se déroule ce stage ?
         p= internship_offer.employer_name

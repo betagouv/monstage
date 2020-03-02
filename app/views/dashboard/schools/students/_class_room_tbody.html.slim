@@ -1,8 +1,9 @@
 - class_room, students = student_by_class_room
-tbody class="test-class-room-#{class_room.id}"
-  tr
+thead
+  tr.tr-white
     th= class_room.name
     th
+tbody class="test-class-room-#{class_room.id}"
   - students.each do |student_in_class_room|
     tr class="test-student-#{student_in_class_room.id}"
       td data-head="#{student_in_class_room.name}"= student_in_class_room.name

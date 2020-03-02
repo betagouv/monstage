@@ -1,15 +1,15 @@
-tr.bg-light
-  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school }
+tr
+  td.align-middle.bl-1.bc-light= render partial: 'reporting/schools/table/td/name', locals: { school: school }
 
 
-  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school.weeks }
+  td.align-middle.bl-1.bc-light= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school.weeks }
 
 
-  td.align-middle.border-left-1.font-weight-bold.text-info= school.total_student_with_confirmation_count
+  td.align-middle.bl-1.bc-light.font-weight-bold.text-info= school.total_student_with_confirmation_count
 
   td.align-middle= school.total_student_with_parental_consent_count
 
-  td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: school.school_manager? }
+  td.align-middle.bl-1.bc-light= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: school.school_manager? }
 
 
   td.align-middle= school.total_main_teacher_count
