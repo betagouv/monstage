@@ -8,18 +8,27 @@
                alert-sticky
                alert-<%= bootstrap_style %>
                col-12
-               alert-dismissible
-               show
-               d-flex
-               align-items-center"
+               p-3
+               show"
         role="alert">
-        <% if %w[alert].include?(flash_kind.to_s) %>
-          <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
-        <% end %>
-        <span id="alert-text"><%= flash[flash_kind] %></span>
-        <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+
+        <div class="row align-items-center no-gutters container-alert-content">
+          <div class=" col-1 col-sm-auto text-center mr-2">
+            <% if %w[alert].include?(flash_kind.to_s) %>
+              <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
+            <% end %>
+            <% if %w[success].include?(flash_kind.to_s) %>
+              <i class="fas fa-2x mr-3 fa-check"></i>
+            <% end %>
+          </div>
+          <div class="col">
+            <span id="alert-text"><%= flash[flash_kind] %></span>
+          </div>
+
+          <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
+            Fermer <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       </div>
       <% end %>
   <% end %>
