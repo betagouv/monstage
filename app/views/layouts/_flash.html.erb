@@ -1,35 +1,38 @@
 <% unless flash.keys.size.zero? %>
-  <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
-    <% if flash.keys.include?(flash_kind) %>
-      <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'warning' else flash_kind end %>
-      <div
-        id="alert-<%= bootstrap_style %>"
-        class="alert
-               alert-sticky
-               alert-<%= bootstrap_style %>
-               col-12
-               p-3
-               show"
-        role="alert">
+  <div data-controller="flash">
+    <% %w[primary secondary success danger warning info light dark notice alert].map do |flash_kind| %>
+      <% if flash.keys.include?(flash_kind) %>
+        <% bootstrap_style = case flash_kind when 'notice' then 'success' when 'alert' then 'warning' else flash_kind end %>
+        <div
+          id="alert-<%= bootstrap_style %>"
+          class="alert
+                 alert-sticky
+                 alert-<%= bootstrap_style %>
+                 col-12
+                 p-3
+                 show"
+          role="alert"
+          data-target="flash.root">
 
-        <div class="row align-items-center no-gutters container-alert-content">
-          <div class=" col-1 col-sm-auto text-center mr-2">
-            <% if %w[alert].include?(flash_kind.to_s) %>
-              <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
-            <% end %>
-            <% if %w[success].include?(flash_kind.to_s) %>
-              <i class="fas fa-2x mr-3 fa-check"></i>
-            <% end %>
-          </div>
-          <div class="col">
-            <span id="alert-text"><%= flash[flash_kind] %></span>
-          </div>
+          <div class="row align-items-center no-gutters container-alert-content">
+            <div class=" col-1 col-sm-auto text-center mr-2">
+              <% if %w[alert].include?(flash_kind.to_s) %>
+                <i class="fas fa-2x mr-3 fa-exclamation-triangle"></i>
+              <% end %>
+              <% if %w[success].include?(flash_kind.to_s) %>
+                <i class="fas fa-2x mr-3 fa-check"></i>
+              <% end %>
+            </div>
+            <div class="col">
+              <span id="alert-text"><%= flash[flash_kind] %></span>
+            </div>
 
-          <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
-            Fermer <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="close alert-link" data-dismiss="alert" aria-label="Close">
+              Fermer <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
-      </div>
-      <% end %>
-  <% end %>
+        <% end %>
+    <% end %>
+  </div>
 <% end %>
