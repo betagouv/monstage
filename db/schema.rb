@@ -294,3 +294,4 @@ ActiveRecord::Schema.define(version: 2020_02_27_162157) do
   add_foreign_key "users", "operators"
   add_foreign_key "users", "schools", column: "missing_school_weeks_id"
 end
+    

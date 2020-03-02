@@ -6,7 +6,9 @@ module InternshipOffers
   class ShowTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
+    #
     # School Manager
+    #
     test 'GET #show as SchoolManager does not display application when internship_offer is not reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
@@ -46,6 +48,41 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application'
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
+    end
+
+    test 'GET #show as Student when school has not weeks' do
+      school = create(:school, weeks: [])
+      student = create(:student, school: school)
+      sign_in(student)
+      get internship_offer_path(create(:internship_offer))
+
+      assert_response :success
+      assert_select 'form[id=?]', 'new_internship_application', count: 1
+      disabled_input_selectors = %w[
+        internship_application[motivation]
+        internship_application[student_attributes][resume_educational_background]
+        internship_application[student_attributes][resume_other]
+        internship_application[student_attributes][resume_languages]
+        internship_application[student_attributes][phone]
+        internship_application[student_attributes][email]
+      ].map do |disabled_selector|
+        assert_select("[name='#{disabled_selector}'][disabled=disabled]",
+                      { count: 1 },
+                      "missing disabled input : #{disabled_selector}")
+      end
+
+      assert_select(".student-form-missing-school-weeks",
+                    { count: 1 },
+                    "missing rendering of student_form_missing_school_weeks")
+      assert_select("a[href=?]",
+                    account_path(user: { missing_school_weeks_id: student.school.id }))
+      student.update(missing_school_weeks_id: school.id)
+      get internship_offer_path(create(:internship_offer))
+
+      assert_response :success
+      assert_select(".student-form-missing-school-weeks",
+                    { count: 0 },
+                    "missing rendering of student_form_missing_school_weeks")
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do

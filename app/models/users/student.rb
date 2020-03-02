@@ -34,6 +34,12 @@ module Users
     end
 
     belongs_to :school
+    belongs_to :missing_school_weeks, optional: true,
+                                      foreign_key: 'missing_school_weeks_id',
+                                      class_name: 'School',
+                                      counter_cache: :missing_school_weeks_count
+
+
     belongs_to :class_room, optional: true
     validates :birth_date,
               :gender,

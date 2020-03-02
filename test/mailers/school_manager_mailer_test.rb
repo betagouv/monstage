@@ -11,4 +11,12 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     assert_includes email.to, school_manager.email
     assert_equal "Nouveau Professeur principal: #{main_teacher.first_name} #{main_teacher.last_name}", email.subject
   end
+
+  test 'missing_school_weeks' do
+    school = create(:school, :with_school_manager)
+
+    email = SchoolManagerMailer.missing_school_weeks(school_manager: school.school_manager)
+    assert_includes email.to, school.school_manager.email
+    assert_equal "Vos élèves souhaiteraient candidater à des offres", email.subject
+  end
 end

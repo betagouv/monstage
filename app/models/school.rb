@@ -6,6 +6,9 @@ class School < ApplicationRecord
   has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
                       class_name: 'Users::Student'
+  has_many :students_with_missing_school_week, dependent: :nullify,
+                                               class_name: 'Users::Student'
+
   has_many :main_teachers, dependent: :nullify,
                            class_name: 'Users::MainTeacher'
   has_many :teachers, dependent: :nullify,
@@ -23,6 +26,23 @@ class School < ApplicationRecord
 
   validates :city, :name, presence: true
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche]
+
+
+  scope :with_manager, lambda {
+      left_joins(:school_manager)
+        .group('schools.id')
+        .having("count(users.id) > 0")
+    }
+
+  scope :without_weeks, lambda {
+    left_joins(:weeks)
+     .group('schools.id')
+     .having('count(school_internship_weeks.school_id) = 0')
+  }
+
+  scope :missing_school_week_count_gt, lambda { |thresold|
+    where("missing_school_weeks_count > ?", thresold)
+  }
 
   def select_text_method
     "#{name} - #{city} - #{zipcode}"

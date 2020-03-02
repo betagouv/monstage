@@ -5,28 +5,55 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.5'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+# fwk/server
+gem 'rails'
+gem 'puma'
+
+# db
 gem 'pg'
 gem 'activerecord-postgis-adapter' # pg extension for geo queries
 gem 'pg_search'                    # pg search for autocomplete
-gem 'rails'
+
+# front end
+gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'
 gem 'react-rails'
+gem 'caxlsx_rails'
 
-# Use Puma as the app server
-gem 'bootsnap', require: false
+# background jobs
+gem 'delayed_job_active_record'
+gem 'delayed_job_web'
+
+# admin
+gem 'rails_admin'
+gem 'rails_admin-i18n'
+
+# instrumentation
 gem 'newrelic_rpm'
-gem 'puma'
+gem 'sentry-raven'
 
-gem 'geocoder'
+# acl
+gem 'cancancan'
+gem 'devise'
+gem 'devise-i18n'
+
+# model/utils
+gem 'discard'
+gem 'aasm'
+gem 'kaminari'
+# model/validators
+gem 'validates_zipcode'
+gem 'email_inquire'
+
+# dev utils
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'bootsnap', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
-gem 'activerecord-explain-analyze'
 
 group :development do
   gem 'foreman'
@@ -39,6 +66,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'letter_opener'
+  gem 'activerecord-explain-analyze'
 end
 
 group :test do
@@ -56,30 +84,7 @@ group :test, :development do
 end
 
 group :staging do
-  gem 'rest-client'
+  gem 'rest-client' # not sure still in use?
 end
 
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem 'validates_zipcode'
-gem 'email_inquire'
-
-gem 'discard'
-gem 'slim-rails'
-
-gem 'sentry-raven'
-
-gem 'cancancan'
-gem 'devise'
-gem 'devise-i18n'
-
-gem 'aasm'
-gem 'kaminari'
-
-gem 'caxlsx_rails'
-
-gem 'rails_admin'
-gem 'rails_admin-i18n'
-
-gem 'zammad_api'
-gem 'lograge'

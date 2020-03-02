@@ -627,7 +627,8 @@ CREATE TABLE public.schools (
     updated_at timestamp without time zone NOT NULL,
     city_tsv tsvector,
     kind character varying,
-    visible boolean DEFAULT true
+    visible boolean DEFAULT true,
+    missing_school_weeks_count integer DEFAULT 0
 );
 
 
@@ -723,7 +724,8 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     zipcode character varying,
-    department_name character varying
+    department_name character varying,
+    missing_school_weeks_id bigint
 );
 
 
@@ -1281,6 +1283,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_missing_school_weeks_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
+
+
+--
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1407,6 +1416,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_77a64a8062 FOREIGN KEY (school_id) REFERENCES public.schools(id);
+
+
+--
+-- Name: users fk_rails_8eea5d5e28; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_school_weeks_id) REFERENCES public.schools(id);
 
 
 --
@@ -1602,6 +1619,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200122144920'),
 ('20200129085225'),
 ('20200210135720'),
+('20200218163758'),
 ('20200227162157');
 
 

@@ -10,9 +10,7 @@ class UsersController < ApplicationController
   def update
     authorize! :update, current_user
     current_user.update!(user_params)
-    flash_message = 'Compte mis à jour avec succès.'
-    flash_message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).' if current_user.unconfirmed_email
-    redirect_back fallback_location: account_path, flash: { success: flash_message }
+    redirect_back fallback_location: account_path, flash: { success: current_flash_message }
   rescue ActiveRecord::RecordInvalid
     render :edit, status: :bad_request
   end
@@ -20,8 +18,18 @@ class UsersController < ApplicationController
   helper_method :current_section
   private
 
+  def current_flash_message
+    message = if params.dig(:user, :missing_school_weeks_id).present?
+              then "Nous allons prévenir votre chef d'établissement pour que vous puissiez candidater"
+              else 'Compte mis à jour avec succès.'
+              end
+    message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).' if current_user.unconfirmed_email
+    message
+  end
+
   def user_params
     params.require(:user).permit(:school_id,
+                                 :missing_school_weeks_id,
                                  :first_name,
                                  :last_name,
                                  :email,

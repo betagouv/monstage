@@ -1,0 +1,18 @@
+.row
+  .col-12
+    .row.align-items-center.no-gutters
+        .col-1.col-sm-auto.text-center.mr-2
+          i.fa.fa-exclamation-triangle.fa-2x
+        .col
+          p.my-0
+            | Vous ne pouvez pas candidater pour ce stage car votre chef d'établissement n'a pas renseigné les semaines de stage du collège   
+            br
+- if !current_user.missing_school_weeks_id.present?
+  .row.my-3.student-form-missing-school-weeks
+    .col-12
+      p
+        = "Cliquez sur le bouton ci-dessous pour prévenir votre chef d'établissement que vous ne pouvez pas candidater"
+        strong chef d'établissement
+        | .
+      p.my-0= link_to account_path(user: {missing_school_weeks_id: current_user.school_id}), class: "btn btn-outline-warning", method: :patch do
+        | Je souhaite une semaine de stage
