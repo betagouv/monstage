@@ -16,14 +16,19 @@ module Users
     validate :email_in_list
 
     def custom_dashboard_path
-      url_helpers.reporting_internship_offers_path(department: department_name)
+      url_helpers.reporting_dashboards_path(department: department_name)
     end
 
     def custom_dashboard_paths
       [
         url_helpers.reporting_internship_offers_path,
-        url_helpers.reporting_schools_path
+        url_helpers.reporting_schools_path,
+        url_helpers.reporting_dashboards_path,
       ]
+    end
+
+    def dashboard_name
+      'Statistiques'
     end
 
     def department_name
