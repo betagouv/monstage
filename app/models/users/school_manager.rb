@@ -3,8 +3,15 @@
 module Users
   class SchoolManager < User
     include UserAdmin
+
+    validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/
+    belongs_to :school, optional: true
+    has_many :main_teachers, through: :school
+
+
     rails_admin do
       list do
+        fields *UserAdmin::DEFAULTS_FIELDS
         field :school do
           pretty_value do
             school = bindings[:object].school
@@ -19,9 +26,6 @@ module Users
       end
     end
 
-    validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/
-    belongs_to :school, optional: true
-    has_many :main_teachers, through: :school
 
     def students_by_class_room_for_registration(ignore_applicants:)
       school.class_rooms.inject([]) do |class_room_groups, class_room|

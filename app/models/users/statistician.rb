@@ -7,6 +7,9 @@ module Users
       configure :created_at, :datetime
 
       list do
+        fields *UserAdmin::DEFAULTS_FIELDS
+        field :department_name
+        field :department_zipcode
         field :sign_in_count
         field :last_sign_in_at
         field :created_at
