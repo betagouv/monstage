@@ -6,7 +6,9 @@ module Dashboard
     helper_method :order_direction
 
     def index
-      @internship_offers = finder.all.order(order_column => order_direction)
+      @internship_offers = finder.all
+      @internship_offers = @internship_offers.merge(filter_scope)
+      @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
     def create
@@ -91,6 +93,14 @@ module Dashboard
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
+    end
+
+    def filter_scope
+      case params[:filter]
+      when 'unpublished' then InternshipOffer.where(published_at: nil)
+      when 'past' then InternshipOffer.in_the_past
+      else InternshipOffer.published.in_the_future
+      end
     end
 
     def finder

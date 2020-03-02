@@ -1,0 +1,36 @@
+.alert.alert-sticky{
+  z-index: 3;
+  position: fixed;
+
+}
+
+@include media-breakpoint-up(sm) {
+  .alert.alert-sticky {
+    top: 2rem;
+    right: 2rem;
+    max-width: 400px;
+
+    .container-alert-content{
+      position: relative;
+
+      .close{
+        position: absolute;
+        top: -0.5rem;
+        right: 0rem;
+        font-size: .7rem;
+        color: $white;
+        opacity: 1;
+        text-shadow: none;
+      }
+    }
+  }
+}
+@include media-breakpoint-down(xs) {
+  .alert.alert-sticky {
+    top: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    .close{display: none;}
+  }
+}

@@ -4,22 +4,19 @@
 
   .row.mt-3
     .col-12
-      table.table.table-statistics
+      table.table.table-statistics.table-sticky-thead
         thead
-          tr.table-blue
-
-            th.border-left-1= "Etablissement"
-            th.border-left-1 colspan="1"= "Semaines de stage"
-            th.border-left-1 colspan="2"= "Nombre d'élèves"
-            th.border-left-1 colspan="2"= "Personnel impliqué"
-
-
-          tr.bg-light
-            th.border-left-1
-            th.border-left-1= "Semaines"
-            th.border-left-1= "E-mail confirmé"
+          tr.tr-blue
+            th.bl-1.bc-light= "Etablissement"
+            th.bl-1.bc-light colspan="1"= "Semaines de stage"
+            th.bl-1.bc-light colspan="2"= "Nombre d'élèves"
+            th.bl-1.bc-light colspan="2"= "Personnel impliqué"
+          tr.tr-white
+            th.bl-1.bc-light
+            th.bl-1.bc-light= "Semaines"
+            th.bl-1.bc-light= "E-mail confirmé"
             th= "Accord parental validé"
-            th.border-left-1= "Chef établissement"
+            th.bl-1= "Chef établissement"
             th= "Professeurs principaux"
         tbody
           = render partial: 'reporting/schools/school', collection: @schools

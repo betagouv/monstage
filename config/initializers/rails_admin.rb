@@ -47,15 +47,15 @@ RailsAdmin.config do |config|
                               School
                               InternshipOffer
                               Sector
+                              Users::Other
                               Users::Student
-                              Users::Employer
                               Users::SchoolManager
                               Users::MainTeacher
                               Users::Teacher
-                              Users::Operator
-                              Users::Other
-                              Users::God
                               Users::Statistician
+                              Users::Operator
+                              Users::Employer
+                              Users::God
                               User]
 
   config.navigation_static_links = {

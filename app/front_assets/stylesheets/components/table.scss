@@ -1,7 +1,20 @@
 .table-caption-top{
   caption { caption-side: top };
 }
-.table-blue{
-  background-color: $blue;
-  color: #fff;
+
+@include media-breakpoint-up(sm) {
+  .hoverable-row-with-btn{
+    .btn-hoverable{
+      transition: opacity .4s ease;
+      opacity: 0;
+      display: block;
+      position: absolute;
+    }
+    &:hover{
+      background-color: #e3f2fe;
+      .btn-hoverable{
+      opacity: 1;
+      }
+    }
+  }
 }

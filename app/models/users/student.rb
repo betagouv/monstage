@@ -5,15 +5,19 @@ module Users
     include UserAdmin
     rails_admin do
       list do
-        field :school
-      end
-
-      edit do
+        fields *UserAdmin::DEFAULTS_FIELDS
+        field :school do
+          pretty_value do
+            school = bindings[:object].school
+            if school.is_a?(School)
+              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
+              bindings[:view].content_tag(:a, school.name, href: path)
+            else
+              nil
+            end
+          end
+        end
         field :has_parental_consent
-      end
-
-      show do
-        field :class_room
       end
 
       export do

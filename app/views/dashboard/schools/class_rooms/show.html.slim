@@ -19,7 +19,7 @@
 
 
 .row
-  table.table.table-hover.table-rg2a
+  table.table.table-hover.table-rg2a.table-sticky-thead
     - cols = ["Élève",
               "Autorisation parentale",
               "Cordée de réussite / Parcours d'excellence",
@@ -27,7 +27,7 @@
               "Reponses",
               "Convention signée"]
     thead
-      tr
+      tr.tr-white
         - cols.each do |col|
           th= col
     tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.order(:last_name, :first_name), locals: {cols: cols}

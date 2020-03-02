@@ -10,8 +10,17 @@ module Api
 
     def as_json(options={})
       result.inject(response_wrapper) do |accu, school|
-        accu[:match_by_city][school.pg_search_highlight_city] = Array(accu[:match_by_city][school.pg_search_highlight_city]).push(school) if school.match_by_city?(term)
-        accu[:match_by_name] = accu[:match_by_name].push(school) if !school.match_by_city?(term)
+        if school.match_by_city?(term)
+          accu[:match_by_city][school.pg_search_highlight_city] = append_result(
+            list: accu[:match_by_city][school.pg_search_highlight_city],
+            item: school,
+            sort_by: :name
+          )
+        else
+          accu[:match_by_name] = append_result(list: accu[:match_by_name],
+                                               item: school,
+                                               sort_by: :zipcode)
+        end
         accu
       end
     end
@@ -25,6 +34,10 @@ module Api
                            .where(visible: true)
                            .includes(:class_rooms)
                            .limit(limit)
+    end
+
+    def append_result(list:, item:, sort_by:)
+      Array(list).push(item).sort_by(&sort_by)
     end
   end
 end

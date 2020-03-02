@@ -215,7 +215,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       sign_in(create(:student))
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          InternshipOffer.stub :available_in_the_future, InternshipOffer.all do
+          InternshipOffer.stub :in_the_future, InternshipOffer.all do
             get internship_offers_path
             assert_presence_of(internship_offer: internship_offers.last)
             assert_absence_of(internship_offer: internship_offers.first)
@@ -236,7 +236,7 @@ class IndexTest < ActionDispatch::IntegrationTest
       sign_in(create(:student))
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
-          InternshipOffer.stub :available_in_the_future, InternshipOffer.all do
+          InternshipOffer.stub :in_the_future, InternshipOffer.all do
             get internship_offers_path
             assert_presence_of(internship_offer: internship_offers.last)
             assert_absence_of(internship_offer: internship_offers.first)

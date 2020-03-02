@@ -1,16 +1,32 @@
-$sortLinkOffset: 15px;
-.align-top:first-child {
-  .sort-link, small {padding-left: $sortLinkOffset}
+// custom dimension table for dashboard/internship_offers#index
+@include media-breakpoint-up(sm) {
+  .table-dashboard-internship-offers{
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 0;
+    tr{
+      th:first-child, td:first-child{ width: 34%}
+      th, td { width: 11%; }
+      td{
+        padding: 1rem .75rem;
+      }
+    }
+  }
 }
+
+// sorting headers for dashboard/internship_offers#index
+$sortLinkOffset: 15px;
 .sort-links{
   $sort-arrow-height: 15px;
-  position: relative;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  margin-top: -11px;
+
   .sort-link{
     position: absolute;
-    left: -$sortLinkOffset;
     height: $sort-arrow-height;
     line-height: 8px;
-    opacity: .5;
     text-decoration: none;
   }
   .sort-link.active{
@@ -23,6 +39,21 @@ $sortLinkOffset: 15px;
     top: $sort-arrow-height;
   }
 }
+
+// sort links container
+.min-width-20{
+  width: 20px;
+  position: relative;
+  left: 5px;
+}
+.breakable-word{
+  font-weight: bold;
+  font-size: 70%;
+  word-wrap: break-word;
+}
+
+
+// navigation arrows on internship_offers#index
 .list-item{
   color: $gray-300;
   width: 100%;
@@ -49,80 +80,3 @@ $sortLinkOffset: 15px;
   }
 }
 
-.ap-input{
-  padding-top: $input-btn-padding-y;
-  padding-bottom: $input-btn-padding-y;
-  line-height: $line-height-base;
-  font-size: 1rem;
-  border: 1px solid $input-border-color;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-  height: calc(1.25em + 1.5rem + 2px);
-}
-
-.last-visible{
-  position: relative;
-  display: inline-block;
-
-  &::before{
-    display: block;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    content: "";
-    background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
-  }
-}
-
-// autocomplete
-.search-in-place{
-  position: absolute;
-  top: 100%;
-  z-index: 1;
-  width: 100%;
-  ul{
-    list-style-type: none;
-  }
-  .autocomplete-list-element:hover{
-    cursor: pointer;
-    background-color: $blue_light;
-  }
-  .badge{
-    font-size: 1rem;
-  }
-}
-
-// slider
-$sliderHeight: 20px;
-.slider-legend{
-  position: relative;
-  float: left;
-  top: -10px;
-  width: 100%;
-}
-$handleWidth: 60px;
-.slider-handle{
-  position: absolute;
-  width: $handleWidth;
-  height: $sliderHeight;
-  margin-left: -$handleWidth/2;
-}
-
-.badge-clear{
-  padding: .25rem;
-  background-color: $gray-500;
-  color: $gray-100;
-  &:hover{
-    background-color: $gray-400;
-    color: $white;
-  }
-  &:active{
-    background-color: $gray-600;
-    color: $gray-200;
-  }
-}
-
-.footer-autocomplete{
-  border-top: 1px solid $nav-tabs-border-color;
-}

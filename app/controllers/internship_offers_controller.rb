@@ -37,6 +37,7 @@ class InternshipOffersController < ApplicationController
 
   def flash_message_when_missing_school_weeks
     return unless current_user_or_visitor.missing_school_weeks?
+
     flash.now[:warning] = "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates."
   end
 

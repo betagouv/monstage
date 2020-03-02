@@ -12,6 +12,12 @@ module Users
 
     before_create :set_api_token
 
+    rails_admin do
+      list do
+        fields *UserAdmin::DEFAULTS_FIELDS
+        field :operator
+      end
+    end
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError

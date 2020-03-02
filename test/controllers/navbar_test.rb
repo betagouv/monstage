@@ -46,7 +46,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     get operator.custom_dashboard_path
     assert_select(".navbar a[href=\"#{reporting_internship_offers_path}\"]",
                   count: 1,
-                  text: "Mon tableau")
+                  text: "Statistiques")
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: operator.dashboard_name,
                                         count: 1)
@@ -84,7 +84,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     statistician = create(:statistician)
     sign_in(statistician)
     get statistician.custom_dashboard_path
-    assert_select(".navbar a.active", count: 1)
+    assert_select(".navbar a.active", count: 1, text: "Statistiques")
     assert_select(".navbar a.active", text: statistician.dashboard_name,
                                       count: 1)
   end

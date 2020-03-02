@@ -31,17 +31,17 @@
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges non inscrits
 
-        table.table.mb-0.table-statistics
+        table.table.mb-0.table-statistics.table-sticky-thead
           thead
-            tr.table-blue
+            tr.tr-white
               th Nom du collège
               th Réseau d'éducation prioritaire
 
           tbody
             - schools_without_manager.each do |school_without_manager|
               tr
-                td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
-                td.align-middle.border-left-1= Presenters::SchoolKind.new(kind: school_without_manager.kind).to_s
+                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
+                td.align-middle= Presenters::SchoolKind.new(kind: school_without_manager.kind).to_s
 
 
       - # bottom, soon in internship
@@ -49,9 +49,9 @@
         .card-body
           h3.h5.text-dark.mb-1.card-title Collèges inscrits (avec semaine de stage à venir)
 
-        table.table.mb-0.table-statistics
+        table.table.mb-0.table-statistics.table-sticky-thead
           thead
-            tr.table-blue
+            tr.tr-white
               th Nom du collège
               th Nbr. de PP
               th Nbr. d'élèves
@@ -60,7 +60,7 @@
           tbody
             - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
               tr
-                td.align-middle.border-left-1= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
+                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
                 td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
                 td.align-middle= school_with_weeks_and_internship.total_student_count
                 td.align-middle= school_with_weeks_and_internship.internship_applications.approved.size
@@ -81,7 +81,7 @@
       - # top, count sumup
       .pane.bg-white.shadow.rounded-lg.my-5.p-4
 
-        h3.h5.text-dark.mb-3.bb-1.pb-2.bt-light Chiffres clés
+        h3.h5.text-dark.mb-3.bb-1.pb-2.bc-light Chiffres clés
 
         .row
           .col-12
@@ -118,9 +118,9 @@
             .card-body
               h3.h5.text-dark.mb-1.card-title PaQte
 
-            table.table.mb-0.table-statistics
+            table.table.mb-0.table-statistics.table-sticky-thead
               thead
-                tr.table-blue
+                tr.tr-white
                   th Entreprise
                   th Nb. d'offres
               tbody.small
@@ -134,9 +134,9 @@
             .card-body
               h3.h5.text-dark.mb-1.card-title Secteur public
 
-            table.table.mb-0.table-statistics
+            table.table.mb-0.table-statistics.table-sticky-thead
               thead
-                tr.table-blue
+                tr.tr-white
                   th Institution
                   th Nb. d'offres
               tbody.small

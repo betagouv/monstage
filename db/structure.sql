@@ -515,7 +515,9 @@ CREATE TABLE public.internship_offers (
     employer_description character varying,
     total_male_approved_applications_count integer DEFAULT 0,
     total_custom_track_approved_applications_count integer DEFAULT 0,
-    group_id bigint
+    group_id bigint,
+    first_date date,
+    last_date date
 );
 
 
@@ -1617,6 +1619,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200122144920'),
 ('20200129085225'),
 ('20200210135720'),
-('20200218163758');
+('20200218163758'),
+('20200227162157');
 
 

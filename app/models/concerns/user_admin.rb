@@ -1,44 +1,46 @@
 module UserAdmin
   extend ActiveSupport::Concern
+  DEFAULTS_FIELDS = %i[id email first_name last_name confirmed_at]
 
   included do
     rails_admin do
-      configure :confirmed_at, :datetime do
-        date_format "BUGGY"
-      end
-      configure :confirmed_atmation_sent_at, :datetime do
-        date_format "BUGGY"
-      end
-
       list do
-        field :id
-        field :email
-        field :first_name
-        field :last_name
-        field :confirmed_at
+        fields *DEFAULTS_FIELDS
       end
 
       edit do
-        field :id
-        field :email
-        field :first_name
-        field :last_name
-        field :confirmed_at
+        fields *DEFAULTS_FIELDS
+        field :has_parental_consent do
+          visible do
+            bindings[:object].is_a?(Users::Student)
+          end
+        end
       end
 
       show do
-        field :id
-        field :email
+        fields *UserAdmin::DEFAULTS_FIELDS
+        field :has_parental_consent do
+          visible do
+            bindings[:object].is_a?(Users::Student)
+          end
+        end
+      end
+
+      show do
+        fields *DEFAULTS_FIELDS
+        field :confirmation_sent_at do
+          date_format "KO"
+          strftime_format "%d/%m/%Y"
+        end
+
         field :phone
-        field :first_name
-        field :last_name
         field :school do
           visible do
             bindings[:object].respond_to?(:school)
           end
         end
-        field :confirmed_at
-        field :confirmation_sent_at
+
+
         field :sign_in_count
       end
     end

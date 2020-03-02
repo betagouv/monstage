@@ -40,20 +40,11 @@ module Finders
                    radius: radius_params)
     end
 
-    def employer_query
-      user.internship_offers.kept
-    end
-
-    def god_query
-      query = InternshipOffer.kept
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
-      query
-    end
 
     def school_members_query
       coordinates = coordinate_params || user.try(:school).try(:coordinates)
       query = InternshipOffer.kept
-                             .available_in_the_future
+                             .in_the_future
                              .published
                              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
                              .ignore_max_candidates_reached
@@ -61,6 +52,12 @@ module Finders
       query = query.merge(nearby_query_part(query, coordinates) ) if coordinates
       query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if !user.missing_school_weeks? && user.school
       query = query.merge(query.ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
+      query
+    end
+
+    def employer_query
+      query = user.internship_offers.kept
+      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
       query
     end
 
@@ -82,7 +79,13 @@ module Finders
     end
 
     def visitor_query
-      query = InternshipOffer.kept.available_in_the_future.published
+      query = InternshipOffer.kept.in_the_future.published
+      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      query
+    end
+
+    def god_query
+      query = InternshipOffer.kept
       query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
       query
     end

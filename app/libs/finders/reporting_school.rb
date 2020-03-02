@@ -19,7 +19,7 @@ module Finders
     end
 
     def fetch_with_weeks_and_internships
-      base_query.available_in_the_future
+      base_query.in_the_future
                 .select('schools.*')
                 .group('schools.id')
                 .preload(:weeks, :users)

@@ -7,6 +7,9 @@ module Users
       configure :created_at, :datetime
 
       list do
+        fields *UserAdmin::DEFAULTS_FIELDS
+        field :department_name
+        field :department_zipcode
         field :sign_in_count
         field :last_sign_in_at
         field :created_at
@@ -16,14 +19,19 @@ module Users
     validate :email_in_list
 
     def custom_dashboard_path
-      url_helpers.reporting_internship_offers_path(department: department_name)
+      url_helpers.reporting_dashboards_path(department: department_name)
     end
 
     def custom_dashboard_paths
       [
         url_helpers.reporting_internship_offers_path,
-        url_helpers.reporting_schools_path
+        url_helpers.reporting_schools_path,
+        url_helpers.reporting_dashboards_path,
       ]
+    end
+
+    def dashboard_name
+      'Statistiques'
     end
 
     def department_name

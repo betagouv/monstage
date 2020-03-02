@@ -214,7 +214,7 @@ fr:
     am: am
     formats:
       default: "%d %B %Y %Hh %Mmin %Ss"
-      long: "%A %d %B %Y %Hh%M"
+      long: "%d %B %Y %H:%M"
       short: "%d %b %Hh%M"
       human_mm_dd: "%e %B"
       human_mm_dd_hh: "%e %B à %Hh%M"

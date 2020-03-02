@@ -9,11 +9,21 @@ module FindableWeek
     }
 
     scope :older_than, lambda { |week:|
-      joins(:weeks).where('weeks.year > ? OR (weeks.year = ? AND weeks.number >= ?)', week.year, week.year, week.number)
+      joins(:weeks).where('weeks.year < :year OR (weeks.year = :year AND weeks.number >= :number)',
+                          year: week.year, number: week.number)
+    }
+    # maybe useless
+    scope :in_the_past, lambda {
+      where("last_date < ?", Date.today)
     }
 
-    scope :available_in_the_future, lambda {
-      older_than(week: Week.current)
+    scope :more_recent_than, lambda { |week:|
+      joins(:weeks).where('weeks.year > :year OR (weeks.year = :year AND weeks.number >= :number)',
+                          year: week.year, number: week.number)
+    }
+    # maybe useless
+    scope :in_the_future, lambda {
+      more_recent_than(week: Week.current)
     }
   end
 end

@@ -16,21 +16,21 @@
 
   .row.mt-3
     .col-12
-      table.table.table-statistics
+      table.table.table-statistics.table-sticky-thead
         thead
-          tr.table-blue
-            th.border-left-1= InternshipOffer.human_attribute_name(:sector_id)
-            th.border-left-1= InternshipOffer.human_attribute_name(:total_report_count)
-            th.border-left-1 colspan="3"= InternshipOffer.human_attribute_name(:total_applications_count)
-            th.border-left-1 colspan="4"= InternshipOffer.human_attribute_name(:approved_applications_count)
-          tr.bg-light
-            th.border-left-1
-            th.border-left-1= InternshipOffer.human_attribute_name(:total)
-            th.border-left-1= InternshipOffer.human_attribute_name(:total)
+          tr.tr-blue
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:sector_id)
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
+            th.bl-1.bc-light colspan="3"= InternshipOffer.human_attribute_name(:total_applications_count)
+            th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:approved_applications_count)
+          tr.tr-white
+            th.bl-1.bc-light
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
 
             th= InternshipOffer.human_attribute_name(:total_male_applications_count)
             th= InternshipOffer.human_attribute_name(:total_female_applications_count)
-            th.border-left-1= InternshipOffer.human_attribute_name(:total)
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
             th
               accr title="Cordée de la réussite, parcours d'éxcellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)

@@ -1,0 +1,34 @@
+// stick table thead with table.position=relative + thead.position=sticky
+// * nested th loose background color
+// * plus it fails with border-bottom (use box-shadow instead)
+.table-sticky-thead{
+  position: relative;
+  border-collapse: collapse;
+
+  thead {
+    z-index: 1;
+    top: 0;
+    position: sticky;
+    th{
+      border-top: none;
+    }
+  }
+
+  .tr-white{
+    box-shadow: 0 2px 0px 0px $blue;
+    th{
+      background-color: $white;
+    }
+  }
+
+  .tr-blue{
+    box-shadow: 0 2px 0px 0px rgb(97,161,201);
+    th{
+      color: $white;
+      background-color: $blue;
+      font-size: 1.1rem;
+      font-weight: normal;
+    }
+  }
+}
+
