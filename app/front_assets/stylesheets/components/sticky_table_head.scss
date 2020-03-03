@@ -6,17 +6,24 @@
   border-collapse: collapse;
 
   thead {
-    z-index: 1;
-    top: 0;
-    position: sticky;
     th{
+      z-index: 1;
+      position: sticky;
       border-top: none;
+      top:0
+    }
+    tr:first-child:not(:last-child) th{
+      height: 67px;
+    }
+    tr:last-child:not(:first-child) th{
+      top: 67px;
     }
   }
 
   .tr-white{
     box-shadow: 0 2px 0px 0px $blue;
     th{
+      box-shadow: 0 2px 0px 0px $blue;
       background-color: $white;
     }
   }
@@ -24,6 +31,7 @@
   .tr-blue{
     box-shadow: 0 2px 0px 0px rgb(97,161,201);
     th{
+      box-shadow: 0 2px 0px 0px rgb(97,161,201);
       color: $white;
       background-color: $blue;
       font-size: 1.1rem;
