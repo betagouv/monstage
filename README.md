@@ -1,9 +1,5 @@
 [![CircleCI](https://circleci.com/gh/betagouv/monstage.svg?style=svg)](https://circleci.com/gh/betagouv/monstage)
-# README
 
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
 # Infra
 Things you may want to cover:
@@ -20,6 +16,27 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : brew install postgis
 - Setup Postgis : rake db:gis:setup
+
+# Architecture (Boring)
+
+**backend**
+
+* Rails defaults
+* Postgres as RDBMS
+* Postgres with Postgis for geoqueries
+* Postgres FTS for autocomplete
+* Postgres with Delayed job for Async jobs
+* Postgres(notify) with ActionCable for wss://
+
+**frontend**
+
+* Turbolink based "SPA"
+* Using stimulus to improve some simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
+* Using react where stimulus because spagetthi code (lot of states/xhr) ex : student search for his school by city.name school.name, then choose school, then choose classroom. ex : someone search for internship offer by city.name and and {location}.radius)
+**hosting & services**
+
+* Heroku with some plugins (newrelic, papertrail, sendgrid, scheduler, sentry, vigil monitoring) [todo heroku-app.json/yml?]
+* Zammad for support
 
 # Build: test, dev
 
