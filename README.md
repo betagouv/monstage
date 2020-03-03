@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/betagouv/monstage.svg?style=svg)](https://circleci.com/gh/betagouv/monstage)
 
 
-# Infra
+# Setup
 Things you may want to cover:
 
 * Ruby version: 2.6.4
@@ -33,6 +33,7 @@ Things you may want to cover:
 * Turbolink based "SPA"
 * Using stimulus to improve some simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
 * Using react where stimulus because spagetthi code (lot of states/xhr) ex : student search for his school by city.name school.name, then choose school, then choose classroom. ex : someone search for internship offer by city.name and and {location}.radius)
+
 **hosting & services**
 
 * Heroku with some plugins (newrelic, papertrail, sendgrid, scheduler, sentry, vigil monitoring) [todo heroku-app.json/yml?]
