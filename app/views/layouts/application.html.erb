@@ -9,7 +9,6 @@
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
     <%= stylesheet_pack_tag 'application.css', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
-    <%= render partial: "layouts/analytics" %>
   </head>
 
   <body class="<%= env_class_name %> <%= body_class_name %>" data-controller='rg2a'>
@@ -48,5 +47,6 @@
         console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
       </script>
     <% end %>
+    <%= render partial: "layouts/analytics" %>
   </body>
 </html>
