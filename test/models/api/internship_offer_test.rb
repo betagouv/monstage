@@ -56,4 +56,11 @@ class ApiInternshipOfferTest < ActiveSupport::TestCase
 
     refute Api::InternshipOffer.new(@default_params).valid?
   end
+
+  test 'is_public does not changes' do
+    internship_offer = create(:api_internship_offer, is_public: true)
+    internship_offer.title = "booboop"
+    internship_offer.save!
+    assert InternshipOffer.pluck(:is_public).all?
+  end
 end

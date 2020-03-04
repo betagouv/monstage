@@ -16,7 +16,7 @@ module Api
 
     def init
       self.max_candidates ||= 1
-      self.is_public = false
+      self.is_public ||= false
     end
 
     def formatted_coordinates
