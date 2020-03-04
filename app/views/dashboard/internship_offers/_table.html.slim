@@ -1,0 +1,7 @@
+- cols = { title: "Offre publiée", view_count: "Vues", total_applications_count: "Candidatures", submitted_applications_count: "Réponses<br />à&nbsp;donner", rejected_applications_count: "Candidatures<br />refusées", approved_applications_count: "Candidatures<br />acceptées"}
+
+table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers
+
+  thead= render partial: "dashboard/internship_offers/table_header", locals: {cols: cols}
+
+  tbody= render partial: "employer_internship_offer", collection: @internship_offers, locals: {cols: cols}

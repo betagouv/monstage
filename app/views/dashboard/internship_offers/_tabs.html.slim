@@ -1,0 +1,12 @@
+ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12
+  li.nav-item.d-inline.d-sm-none
+    span.nav-link= "Offres : "
+  li.nav-item= link_to dashboard_internship_offers_path(params.permit(:latitude, :longitude, :radius, :order, :direction)), class: "px-2 px-sm-3 nav-link #{params[:filter].blank? ? 'active' : ''}" do
+      span.d-none.d-sm-inline= "Offres "
+      span en cours
+  li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "px-2 px-sm-3 nav-link #{current_page?(dashboard_internship_offers_path({filter: 'unpublished'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
+      span.d-none.d-sm-inline= "Offres "
+      span dépubliées
+  li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction))), class: "px-2 px-sm-3 nav-link #{current_page?(dashboard_internship_offers_path({filter: 'past'}.merge(params.permit(:latitude, :longitude, :radius, :order, :direction)))) ? 'active' : ''}" do
+      span.d-none.d-sm-inline= "Offres "
+      span passées

@@ -22,11 +22,9 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
         = " "
         | Répondre
 
-  td.align-middle.d-none.d-md-table-cell data-head="#{cols[:internship_application_rejected_count]}"
+  td.align-middle data-head="#{cols[:internship_application_rejected_count]}"
     span.badge= employer_internship_offer.rejected_applications_count
 
   td.align-middle data-head="#{cols[:internship_application_approved_count]}"
     span.badge= employer_internship_offer.approved_applications_count
 
-  td.align-middle data-head="#{cols[:internship_application_convention_signed_count]}"
-    span.badge= employer_internship_offer.convention_signed_applications_count
