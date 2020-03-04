@@ -170,7 +170,7 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
                   max={MAX_RADIUS}
                   id="radius"
                   name="radius"
-                  className="form-control-range form-control"
+                  className="form-control-range form-control px-0"
                   value={radius}
                   onChange={onRadiusChange}
                   step={5000}
