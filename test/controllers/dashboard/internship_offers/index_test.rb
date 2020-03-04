@@ -22,6 +22,23 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
+    test 'GET #index tabs forward expected params' do
+      sign_in(create(:employer))
+
+      forwarded_to_tabs_links = {
+        latitude: Coordinates.bordeaux[:latitude],
+        longitude: Coordinates.bordeaux[:longitude],
+        radius: 1_000,
+        city: 'bingobangobang',
+        order: 'total_applications_count',
+        direction: 'desc'
+      }
+      get dashboard_internship_offers_path(forwarded_to_tabs_links)
+      assert_select "a.nav-link[href=?]", dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_to_tabs_links))
+      assert_select "a.nav-link[href=?]", dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_to_tabs_links))
+      assert_select "a.nav-link[href=?]", dashboard_internship_offers_path(forwarded_to_tabs_links)
+    end
+
     test 'GET #index without filter as Employer show published and unpublished, not in past' do
       employer = create(:employer)
       internship_offer_published = create(:internship_offer, employer: employer)
@@ -35,6 +52,7 @@ module Dashboard
                     .first]
       )
       sign_in(employer)
+
       get dashboard_internship_offers_path
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
                     { count: 1 },
@@ -221,17 +239,21 @@ module Dashboard
       internship_offer_at_paris = create(:internship_offer, employer: operator, coordinates: Coordinates.paris)
       internship_offer_at_bordeaux = create(:internship_offer, employer: operator, coordinates: Coordinates.bordeaux)
       sign_in(operator)
-      location_filter = { latitude: Coordinates.bordeaux[:latitude],
-                          longitude: Coordinates.bordeaux[:longitude],
-                          radius: 1_000 }
 
-      get dashboard_internship_offers_path(location_filter)
+      location_params_forwarded_to_sort_links = {
+        latitude: Coordinates.bordeaux[:latitude],
+        longitude: Coordinates.bordeaux[:longitude],
+        radius: 1_000,
+        city: 'bingobangobang',
+        filter: 'active'
+      }
+      get dashboard_internship_offers_path(location_params_forwarded_to_sort_links)
       assert_response :success
       assert_absence_of(internship_offer: internship_offer_at_paris)
       assert_presence_of(internship_offer: internship_offer_at_bordeaux)
 
-      ordonencer_options = { order: :title, direction: :desc }
-      ordonencer_params = ordonencer_options.merge(location_filter)
+      sort_params = { order: :title, direction: :desc }
+      ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
       assert_select "a.sort-link[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
                     1,
                     "ordonencer links should contain geo filters"
