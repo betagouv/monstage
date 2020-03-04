@@ -17,28 +17,33 @@ const isValidMonth = monthStr => {
   return monthInt >= minMonth && monthInt <= maxMonth;
 };
 const isValidYear = yearStr => {
-  const minYear = 1950;
-  const maxYear = new Date().getFullYear();
-  const yearInt = parseInt(yearStr, 10);
+  const isTwoDigitsYear = yearStr.length == 2;
+  if (isTwoDigitsYear) {
+    return true
+  } else {
+    const minYear = 1950;
+    const maxYear = new Date().getFullYear();
+    const yearInt = parseInt(yearStr, 10);
 
-  return yearInt >= minYear && yearInt <= maxYear;
+    return yearInt >= minYear && yearInt <= maxYear;
+  }
 };
 
+// see: https://ux.stackexchange.com/questions/1232/most-user-friendly-form-fields-for-entering-date-time
 export default class extends Controller {
-  static targets = ['input', 'errorContainer'];
+  static targets = ['input'];
 
   validate() {
-    const $errorContainer = $(this.errorContainerTarget);
+    const $input = $(this.inputTarget);
     const { value } = this.inputTarget;
-    const match = /(?<day>\d{1,2})\/?(?<month>\d{1,2})\/?(?<year>\d{4})/.exec(value);
+    const match = /(?<day>\d{1,2})(\/|-)?(?<month>\d{1,2})(\/|-)?(?<year>\d{2,4})/.exec(value);
     const { day, month, year } = (match || {}).groups || {};
 
     if (isValidYear(year) && isValidMonth(month) && isValidDay(day)) {
-      hideElement($errorContainer);
-      $errorContainer.text('');
+      $input.val(`${day}/${month}/${year.toString().padStart(4, "20")}`)
+            .removeClass('is-invalid')
     } else {
-      showElement($errorContainer);
-      $errorContainer.text('Invalide');
+      $input.addClass('is-invalid')
     }
   }
 }
