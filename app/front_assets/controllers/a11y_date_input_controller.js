@@ -40,7 +40,7 @@ export default class extends Controller {
     const { day, month, year } = (match || {}).groups || {};
 
     if (isValidYear(year) && isValidMonth(month) && isValidDay(day)) {
-      $input.val(`${day}/${month}/${year.toString().padStart(4, "20")}`)
+      $input.val(`${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year.toString().padStart(4, "20")}`)
             .removeClass('is-invalid')
     } else {
       $input.addClass('is-invalid')
