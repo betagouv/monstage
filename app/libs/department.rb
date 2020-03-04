@@ -101,12 +101,12 @@ class Department
     '973' => 'Guyane',
     '974' => 'La Réunion',
     '976' => 'Mayotte',
+    '2B' => 'Haute-Corse',
+    '2A' => 'Corse-du-Sud',
     '202' => 'Haute-Corse',
     '206' => 'Haute-Corse',
-    '2B' => 'Haute-Corse',
     '201' => 'Corse-du-Sud',
     '200' => 'Corse-du-Sud',
-    '2A' => 'Corse-du-Sud',
 
   }.freeze
 
@@ -122,8 +122,8 @@ class Department
   def self.to_select(only: nil)
     list = only ? MAP.select { |code, _name| only.include?(code) }
                 : MAP.map
-    list.map { |code, name| "#{name}" }
-        .uniq
+    list.map { |code, name| ["#{code} - #{name}", "#{name}"] }
+        .uniq{|item| item[1]}
         .sort
   end
 
