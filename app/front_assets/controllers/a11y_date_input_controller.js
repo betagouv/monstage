@@ -17,7 +17,7 @@ const isValidMonth = monthStr => {
   return monthInt >= minMonth && monthInt <= maxMonth;
 };
 const isValidYear = yearStr => {
-  const isTwoDigitsYear = yearStr.length == 2;
+  const isTwoDigitsYear = yearStr && yearStr.length == 2;
   if (isTwoDigitsYear) {
     return true
   } else {
@@ -31,18 +31,23 @@ const isValidYear = yearStr => {
 
 // see: https://ux.stackexchange.com/questions/1232/most-user-friendly-form-fields-for-entering-date-time
 export default class extends Controller {
-  static targets = ['input'];
+  static targets = ['input', 'errorContainer'];
 
   validate() {
+    const $errorContainer = $(this.errorContainerTarget);
     const $input = $(this.inputTarget);
     const { value } = this.inputTarget;
     const match = /(?<day>\d{1,2})(\/|-)?(?<month>\d{1,2})(\/|-)?(?<year>\d{2,4})/.exec(value);
     const { day, month, year } = (match || {}).groups || {};
 
     if (isValidYear(year) && isValidMonth(month) && isValidDay(day)) {
+      hideElement($errorContainer);
+      $errorContainer.text('');
       $input.val(`${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year.toString().padStart(4, "20")}`)
             .removeClass('is-invalid')
     } else {
+      showElement($errorContainer);
+      $errorContainer.text('Veuillez saisir votre date de naissance au format jour/mois/année : jj/mm/aaaa');
       $input.addClass('is-invalid')
     }
   }

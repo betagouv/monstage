@@ -40,10 +40,11 @@
     <% if can?(:choose_gender_and_birthday, resource) %>
       <div class="form-group" data-controller="a11y-date-input">
         <%= f.label :birth_date do %>
-          Date de naissance (jj/mm/aaaa)
+          Date de naissance
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: '  /  /', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+        <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: 'jj/mm/aaaa', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+        <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
       </div>
 
       <div class="form-group">

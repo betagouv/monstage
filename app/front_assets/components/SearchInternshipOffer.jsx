@@ -62,7 +62,21 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
       event.preventDefault();
     }
   };
+  const unfilterOfferByLocation = event => {
+    const searchParams = new URLSearchParams(window.location.search);
 
+    searchParams.delete('page');
+    searchParams.delete('city');
+    searchParams.delete('latitude');
+    searchParams.delete('longitude');
+    searchParams.delete('radius');
+
+    Turbolinks.visit(`${url}?${searchParams.toString()}`);
+
+    if (event) {
+      event.preventDefault();
+    }
+  }
   const searchCityByName = () => {
     $.ajax({
       type: 'GET',
@@ -119,13 +133,13 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
                     })}
                   />
                   <div className="input-group-append">
-                    <a
-                      href={url}
+                    <button
+                      onClick={unfilterOfferByLocation}
                       title="Effacer les options de recherche"
                       className="btn btn-outline-secondary btn-clear-city"
                     >
                       <i className="fas fa-times" />
-                    </a>
+                    </button>
                   </div>
                   <div className="search-in-place bg-white shadow">
                     <ul
