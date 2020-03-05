@@ -82,3 +82,12 @@ div class="#{cycle("bg-light", "")} row"
               i.fas.fa-check.fa-2x.fa-fw
             .d-inline-flex
               = "Convention signée"
+
+        - if internship_application.expired?
+          div.d-flex.align-items-center
+            .d-inline-flex.mr-1
+              i.fas.fa-history.fa-2x.fa-fw
+            .d-inline-flex
+              = "Candidature expirée"
+              br
+              = "Le #{localize(internship_application.expired_at, format: :human_mm_dd_hh)}"

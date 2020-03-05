@@ -78,12 +78,12 @@ module InternshipApplications
       assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 0
     end
 
-    test 'GET #index with expired does not shows internship_application' do
+    test 'GET #index with expired shows internship_application' do
       internship_application = create(:internship_application, :expired)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
-      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 0
+      assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
     end
 
     test 'GET #index with submitted internship_application, shows approve/reject links' do

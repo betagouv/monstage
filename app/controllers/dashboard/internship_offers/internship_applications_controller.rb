@@ -10,7 +10,7 @@ module Dashboard
         authorize! :read, @internship_offer
         authorize! :index, InternshipApplication
         @internship_applications = @internship_offer.internship_applications
-                                                    .where.not(aasm_state: [:drafted, :expired])
+                                                    .where.not(aasm_state: [:drafted])
                                                     .includes(:student, :week, :internship_offer, :internship_offer_week)
                                                     .order(updated_at: :desc)
                                                     .page(params[:page])
