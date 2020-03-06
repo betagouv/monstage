@@ -12,7 +12,10 @@ class InternshipApplication < ApplicationRecord
   has_one :internship_offer, through: :internship_offer_week
   has_one :week, through: :internship_offer_week
 
-  validates :motivation, :internship_offer_week, presence: true, unless: :application_via_school_manager?
+  validates :motivation,
+            :internship_offer_week,
+            presence: true,
+            unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
 
   before_validation :internship_offer_has_spots_left?, on: :create
@@ -25,6 +28,10 @@ class InternshipApplication < ApplicationRecord
   after_save :update_all_counters
 
   accepts_nested_attributes_for :student, update_only: true
+
+  has_rich_text :approved_message
+  has_rich_text :rejected_message
+  has_rich_text :canceled_message
 
   paginates_per PAGE_SIZE
 

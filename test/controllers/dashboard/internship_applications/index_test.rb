@@ -8,10 +8,12 @@ module InternshipApplications
 
     def assert_has_link_count_to_transition(internship_application, transition, count)
       internship_offer = internship_application.internship_offer
-      assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_application_path(internship_offer,
-                                                                           internship_application,
-                                                                           transition: transition),
+      if count.positive?
+        assert_select 'form[action=?]',
+                      dashboard_internship_offer_internship_application_path(internship_offer,
+                                                                             internship_application)
+      end
+      assert_select "form input[name=\"transition\"][value=\"#{transition}\"]",
                     count: count
     end
 

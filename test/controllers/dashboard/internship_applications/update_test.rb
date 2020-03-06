@@ -7,7 +7,7 @@ module InternshipApplications
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
 
-    test 'PATCH #update with approve! transition sends email' do
+    test 'PATCH #update with approve! any no custom message transition sends email' do
       internship_application = create(:internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
@@ -17,6 +17,29 @@ module InternshipApplications
               params: { transition: :approve! })
         assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
+      assert InternshipApplication.last.approved?
+    end
+
+    test 'PATCH #update with approve! and a custom message transition sends email' do
+      internship_application = create(:internship_application, :submitted)
+      internship_offer = internship_application.internship_offer
+
+      sign_in(internship_offer.employer)
+
+      assert_enqueued_emails 1 do
+        update_url = dashboard_internship_offer_internship_application_path(
+          internship_offer,
+          internship_application
+        )
+        patch(update_url, params: {
+          transition: :approve!,
+          internship_application: { approved_message: 'OK' }
+        })
+        assert_redirected_to internship_offer.employer.after_sign_in_path
+      end
+      internship_application.reload
+
+      assert_equal "OK", internship_application.approved_message.try(:to_plain_text)
       assert InternshipApplication.last.approved?
     end
 
@@ -34,6 +57,28 @@ module InternshipApplications
       assert InternshipApplication.last.rejected?
     end
 
+    test 'PATCH #update with reject! and a custom message transition sends email' do
+      internship_application = create(:internship_application, :submitted)
+      internship_offer = internship_application.internship_offer
+
+      sign_in(internship_offer.employer)
+
+      assert_enqueued_emails 1 do
+        update_url = dashboard_internship_offer_internship_application_path(
+          internship_offer,
+          internship_application
+        )
+        patch(update_url, params: {
+          transition: :approve!,
+          internship_application: { rejected_message: 'OK' }
+        })
+        assert_redirected_to internship_offer.employer.after_sign_in_path
+      end
+      internship_application.reload
+
+      assert_equal "OK", internship_application.rejected_message.try(:to_plain_text)
+      assert InternshipApplication.last.approved?
+    end
     test 'PATCH #update with cancel! does not send email, change aasm_state' do
       internship_application = create(:internship_application, :approved)
 
@@ -47,6 +92,21 @@ module InternshipApplications
       internship_application.reload
 
       assert internship_application.rejected?
+    end
+
+    test 'PATCH #update with lol! fails gracefully' do
+      internship_application = create(:internship_application, :approved)
+
+      sign_in(internship_application.internship_offer.employer)
+
+      assert_enqueued_emails 0 do
+        patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+              params: { transition: :lol! })
+        assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+      end
+      internship_application.reload
+
+      assert internship_application.approved?
     end
 
     test 'PATCH #update as employer with signed! does not send email, change aasm_state' do
