@@ -10,6 +10,22 @@ class MessageForAasmState
            :canceled_message,
            to: :internship_application
 
+  MAP_TARGET_TO_BUTTON_COLOR = {
+    approve!: 'success',
+    cancel!: 'danger',
+    reject!: 'danger'
+  }
+
+  def target_action_color
+    MAP_TARGET_TO_BUTTON_COLOR.fetch(aasm_target)
+  end
+
+  #
+  # depending on target aasm_state, user edit custom message but
+  # action_text default is a bit tricky to initialize
+  # so depending on the targeted state, fetch the rich_text_object (void)
+  # and assign the body [which show on front end the text]
+  #
   MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE = {
     approve!: :approved_message,
     cancel!: :canceled_message,
@@ -22,16 +38,6 @@ class MessageForAasmState
     reject!: :on_rejected_message
   }
 
-  MAP_TARGET_TO_BUTTON_COLOR = {
-    approve!: 'success',
-    cancel!: 'danger',
-    reject!: 'danger'
-  }
-
-  def target_action_color
-    MAP_TARGET_TO_BUTTON_COLOR.fetch(aasm_target)
-  end
-
   def assigned_rich_text_attribute
     rich_text_object = MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE.fetch(aasm_target)
     rich_text_initializer = MAP_TARGET_TO_RICH_TEXT_INITIALIZER.fetch(aasm_target)
@@ -41,13 +47,13 @@ class MessageForAasmState
     rich_text_object
   end
 
+  private
+
   attr_reader :aasm_target, :internship_application
   def initialize(internship_application:, aasm_target:)
     @internship_application = internship_application
     @aasm_target = aasm_target
   end
-
-  private
 
   def on_approved_message
     <<~HTML.strip

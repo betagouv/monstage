@@ -11,8 +11,8 @@
   .modal-dialog role="document"
     .modal-content
       .modal-header
-        h5.modal-title
-          i class="fas #{fa_icon} #{aasm_notifier.target_action_color}"
+        h5 class="modal-title text-#{aasm_notifier.target_action_color}"
+          i class="fas #{fa_icon}"
           = " "
           = "#{modal_opener_label} la candidature"
 
