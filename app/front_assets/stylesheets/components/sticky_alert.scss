@@ -8,6 +8,7 @@
   .alert.alert-sticky {
     top: 2rem;
     right: 2rem;
+    padding: 2rem;
     max-width: 400px;
 
     .container-alert-content{
@@ -15,7 +16,7 @@
 
       .close{
         position: absolute;
-        top: -0.5rem;
+        top: -1.5rem;
         right: 0rem;
         font-size: .7rem;
         color: $white;
@@ -27,6 +28,7 @@
 }
 @include media-breakpoint-down(xs) {
   .alert.alert-sticky {
+    padding: 1rem;
     top: 0;
     right: 0;
     left: 0;
