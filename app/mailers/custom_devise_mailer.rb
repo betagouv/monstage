@@ -1,4 +1,7 @@
 class CustomDeviseMailer < Devise::Mailer
+  layout 'mailer'
+  append_view_path Rails.root.join('app', 'views', 'mailers', 'device_mailer')
+
   def confirmation_instructions(record, token, opts={})
     if record.is_a?(Users::MainTeacher) || record.is_a?(Users::Student)
       file_path = Rails.root.join('public', 'autorisation_parentale.pdf')
