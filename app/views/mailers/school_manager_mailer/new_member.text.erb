@@ -1,7 +1,7 @@
-Bonjour <%= @school_manager_presenter.full_name %>,
-
-Le <%= @member_presenter.role_name %> <%= @member_presenter.full_name %> vient de rejoindre la plateforme.
+<%= "Bonjour #{@school_manager_presenter.full_name}, le #{@member_presenter.role_name} #{ @member_presenter.full_name} vient de rejoindre la plateforme." %>
 
 Si vous avez un doute sur son identité, vous pouvez à tout moment le supprimer de votre établissement.
+
+<%= new_user_session_url %>
 
 Bonne journée

@@ -16,8 +16,8 @@ class StudentMailer < ApplicationMailer
          subject: "Votre candidature au stage #{@internship_application.internship_offer.title} a été rejetée")
   end
 
-  def account_activated_by_main_teacher_email
-    @user = params[:user]
+  def account_activated_by_main_teacher_email(user:)
+    @user = user
 
     mail(to: @user.email,
          subject: 'Votre compte sur monstagede3e.fr a été validé')

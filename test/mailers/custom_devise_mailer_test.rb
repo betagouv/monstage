@@ -20,7 +20,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
                     .map(&:filename)
                     .include?('autorisation-parentale.pdf'))
       else
-        assert(email.body.decoded.include?("Bienvenue"),
+        assert(email.html_part.body.include?("Bienvenue"),
                "bad body for #{user.type}")
       end
     end
@@ -30,6 +30,6 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     employer = create(:employer)
     employer.update!(email: 'nouvel@ema.le')
     email = CustomDeviseMailer.confirmation_instructions(employer, SecureRandom.hex)
-    assert email.body.decoded.include?("Bonjour, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr.")
+    assert email.html_part.body.include?("Bonjour, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr.")
   end
 end

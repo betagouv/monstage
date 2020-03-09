@@ -1,23 +1,18 @@
-p
+p style=(p_styles)
   | Madame, Monsieur,
   br
   | Vous avez été désigné, pour cette année scolaire, référent départemental pour l'opération "30 000 stages pour les élèves de troisième des quartiers prioritaires".
 
-p
-  | Vous pouvez dès à présent créer un compte sur
-  = " "
-  = link_to "www.monstagedetroisieme.fr", new_user_registration_url(as: 'Statistician', email: @recipient_email)
-  |.
+p style=(p_styles)
+  | Vous pouvez dès à présent créer un compte mon stagedetroisieme.fr
 
-p
+= render(partial: "mailers/call_to_action", locals: {href: new_user_registration_url(as: 'Statistician', email: @recipient_email), label:"Créer mon compte"})
+
+p style=(p_styles)
   | Cet accès est uniquement possible via l’adresse mail à laquelle ce message vous a été adressé.
   br
   | Il vous permettra le suivi du nombre d’offres de stage disponibles pour votre département, et le nombre de candidatures déposées par les élèves.
 
-p
+p style=(p_styles)
   | D’autres fonctionnalités seront offertes dans les prochaines semaines, à l’aune de vos retours.
-  br
-  | Restant à votre disposition pour toute question,
 
-p
-  L’équipe Mon Stage de 3e

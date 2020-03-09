@@ -1,7 +1,12 @@
 class SchoolManagerMailerPreview < ActionMailer::Preview
   def missing_school_weeks
     SchoolManagerMailer.missing_school_weeks(
-      school_manager: School.where(name: "Pasteur").first.school,
+      school_manager: Users::SchoolManager.first,
     )
+  end
+
+  def new_member
+    SchoolManagerMailer.new_member(school_manager: Users::SchoolManager.first,
+                                   member: Users::MainTeacher.first)
   end
 end

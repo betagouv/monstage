@@ -1,6 +1,6 @@
 class CustomDeviseMailer < Devise::Mailer
-  layout 'mailer'
-  append_view_path Rails.root.join('app', 'views', 'mailers', 'device_mailer')
+  include Layoutable
+  include Devise::Controllers::UrlHelpers
 
   def confirmation_instructions(record, token, opts={})
     if record.is_a?(Users::MainTeacher) || record.is_a?(Users::Student)
@@ -10,3 +10,4 @@ class CustomDeviseMailer < Devise::Mailer
     super(record, token, opts={})
   end
 end
+
