@@ -1,0 +1,23 @@
+<% if @resource.pending_reconfirmation? %>
+<%= "Bonjour #{@resource.first_name}, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr." %>
+
+Avant de procéder merci de confirmer :
+<%= "1. Votre Adresse électronique (e-mail) actuelle est #{@resource.email}" %>
+<%= "2. Votre nouvelle Adresse électronique (e-mail) sera #{@resource.unconfirmed_email}" %>
+
+<%= "Confirmer en cliquant sur le lien suivant : #{confirmation_url(@resource, confirmation_token: @token)}." %>
+<% else %>
+<%= "Bienvenue #{@resource.first_name}, cliquez sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
+
+<% if @resource.is_a?(Users::Student) %>
+En plus d'activer votre compte par email, veuillez :
+1. faire signer (par vos responsables légaux) l'autorisation parentale, en pièce jointe
+2. la rendre à votre professeur principal (qui confirmera votre accès à la plateforme, vous en serez notifié par mail)
+<% end %>
+<% if  @resource.is_a?(Users::MainTeacher) %>
+Vous trouverez notre modèle d'autorisation parentale en pièce jointe.
+Vos élèves doivent la faire signer par leurs responsables légaux, vous la rendre et que vous confirmiez l'avoir réçus via votre
+<% end %>
+
+Merci.
+<% end %>

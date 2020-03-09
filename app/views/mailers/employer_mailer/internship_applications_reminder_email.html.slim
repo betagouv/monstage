@@ -1,12 +1,12 @@
-p
+p style=p_styles
   = "Bonjour #{@employer.name},"
 
 - if @remindable_application_ids.size.positive?
-  p
+  p style=p_styles
     = "Vous avez actuellement #{@remindable_application_ids.size} candidature(s) en attente de réponse. En l'absence de réponse de votre part ; elle(s) seront automatiquement expirées après de 15 jours."
 
 - if @expirable_application_ids.size.positive?
-  p
+  p style=p_styles
     = "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@expirable_application_ids.size} candidature(s) ont étées automatiquement expirées."
 
-p= link_to "Gérer mes candidatures",  dashboard_internship_offers_url
+= render(partial: "mailers/call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})
