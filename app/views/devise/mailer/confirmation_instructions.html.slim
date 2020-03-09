@@ -7,7 +7,7 @@
     | Avant de procéder merci de confirmer
   ul
     li
-      | Votre Adresse électronique (e-mail) actuelle est
+      | Votre Adresse  électronique (e-mail) actuelle est
       = @resource.email
     li
       | Votre nouvelle Adresse électronique (e-mail) sera
@@ -17,8 +17,12 @@
 - else
   p style=p_styles
     | Bienvenue
-    - @resource.first_name
-    | , cliquez sur le lien suivant pour activer votre compte
+    = " #{@resource.first_name}"
+    | ,
+    br /
+    | Votre compte a bien été enregistré !
+    br /
+    | Cliquez sur le bouton ci-dessous afin d'activer votre compte.
   = render(partial: "mailers/call_to_action", locals: {href: confirmation_url(@resource, confirmation_token: @token), label:"Activer mon compte"})
 
   - if @resource.is_a?(Users::Student)
