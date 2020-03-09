@@ -26,8 +26,8 @@
       | Vous venez de recevoir un mail afin de confirmer votre inscription.
 
     p.mb-1.test-student-guidelines
-      = image_tag asset_pack_path("media/images/onboarding/confirm-desktop.svg"), alt: 'Activer par mail sur ordinateur', class: 'mb-3', style: "height: auto; width: 100%;", class: 'd-none d-md-block'
-      = image_tag asset_pack_path("media/images/onboarding/confirm-mobile.svg"), alt: 'Activer par mail sur ordinateur', class: 'mb-3', style: "height: auto; width: 100%;", class: 'd-block d-md-none'
+      = image_tag asset_pack_path("media/images/onboarding/confirm-desktop.svg"), alt: 'Activer par mail sur ordinateur', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
+      = image_tag asset_pack_path("media/images/onboarding/confirm-mobile.svg"), alt: 'Activer par mail sur ordinateur', style: "height: auto; width: 100%;", class: 'd-block d-md-none'
 
 
   - if @confirmable_user.is_a?(Users::Student)
