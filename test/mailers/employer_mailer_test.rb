@@ -10,7 +10,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
     assert_equal [internship_application.internship_offer.employer.email], email.to
-    assert email.decoded.include?(student.handicap)
+    assert email.html_part.body.include?(student.handicap)
   end
 
   test '.internship_applications_reminder_email delivers as expected' do

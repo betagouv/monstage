@@ -9,4 +9,10 @@ class EmployerMailerPreview < ActionMailer::Preview
       expirable_application_ids: employer.internship_applications
     )
   end
+
+  def internship_application_submitted_email
+    internship_application = InternshipApplication.submitted.first
+
+    EmployerMailer.internship_application_submitted_email(internship_application: internship_application)
+  end
 end
