@@ -3,6 +3,9 @@ import './logo-mon-stage-3e.svg';
 import './logo-beta-gouv-fr.png';
 import './autorisation_parentale.png';
 
+import './onboarding/confirm-desktop.svg';
+import './onboarding/confirm-mobile.svg';
+
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 
