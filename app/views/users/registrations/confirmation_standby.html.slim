@@ -1,4 +1,4 @@
-.onboarding-card.mb-4
+.onboarding-card.onboarding-card-lg.mb-4
   header.header-account
 
   - if !@confirmable_user
@@ -19,7 +19,7 @@
     h1.h3.text-blue.mt-4.mb-3.text-center.mb-0 Encore une petite étape...
 
     p.text-center
-      = "Votre compte a bien ete enregistré "
+      span.confirmation-text= "Votre compte a bien ete enregistré "
       strong= "(#{params[:email]})"
       = "."
       br

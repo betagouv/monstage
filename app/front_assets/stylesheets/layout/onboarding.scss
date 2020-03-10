@@ -5,6 +5,12 @@
   }
 }
 
+
+@include media-breakpoint-up(sm) {
+  .onboarding-card-sm{
+    width: 400px
+  }
+}
 @include media-breakpoint-up(sm) {
   .onboarding-card{
     background-color: #fff;
