@@ -43,10 +43,13 @@ Things you may want to cover:
 
 ## documentation
 
-* [controllers](https://github.com/betagouv/monstage/tree/master/app/controllers/README.md)
-* [models](https://github.com/betagouv/monstage/tree/master/app/models/README.md)
-* [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers/README.md)
-* [api](https://github.com/betagouv/monstage/tree/master/doc/README.md)
+## documentation (browse with github, having README.md at root of each folder)
+
+* [controllers](https://github.com/betagouv/monstage/tree/master/app/controllers)
+* [models](https://github.com/betagouv/monstage/tree/master/app/models)
+* [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
+* [api](https://github.com/betagouv/monstage/tree/master/doc)
+
 
 
 ## dev
