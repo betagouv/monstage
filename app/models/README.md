@@ -1,6 +1,4 @@
-# Info
-
-## Architecture
+# organisation & structure
 We keep our [app/models/*](https://github.com/betagouv/monstage/tree/master/app/models) as close as AR APIs. 
 
 By actively avoiding to populate models with utilities methods lots of business logic have been moved to [app/libs/*](https://github.com/betagouv/monstage/tree/master/app/libs) ex: 
@@ -20,7 +18,7 @@ User & Roles are based on device + cancancan + STI for each kind of roles, see:
 * [app/models/ability.rb](https://github.com/betagouv/monstage/tree/master/app/models/ability.rb) : sum up ACL per users
 
 
-## key concepts in our domain
+# key concepts in our domain
 
 ## date (week) matching : 
 * matching `entities` are `offers/students`. Constraint are :
