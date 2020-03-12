@@ -3,10 +3,6 @@ class CustomDeviseMailer < Devise::Mailer
   include Devise::Controllers::UrlHelpers
 
   def confirmation_instructions(record, token, opts={})
-    if record.is_a?(Users::MainTeacher) || record.is_a?(Users::Student)
-      file_path = Rails.root.join('public', 'autorisation_parentale.pdf')
-      attachments['autorisation-parentale.pdf'] = File.read(file_path)
-    end
     super(record, token, opts={})
   end
 end

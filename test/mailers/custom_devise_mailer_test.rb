@@ -15,14 +15,8 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
               create(:teacher, school: school) ]
     (roles + [school_manager]).each do |user|
       email = CustomDeviseMailer.confirmation_instructions(user, SecureRandom.hex)
-      if user.is_a?(Users::Student) || user.is_a?(Users::MainTeacher)
-        assert(email.attachments
-                    .map(&:filename)
-                    .include?('autorisation-parentale.pdf'))
-      else
-        assert(email.html_part.body.include?("Bienvenue"),
-               "bad body for #{user.type}")
-      end
+      assert(email.html_part.body.include?("Bienvenue"),
+             "bad body for #{user.type}")
     end
   end
 
