@@ -1,10 +1,10 @@
 # organisation & structure
-We keep our [app/models/*](https://github.com/betagouv/monstage/tree/master/app/models) as close as AR APIs. 
+We keep our [app/models/*](https://github.com/betagouv/monstage/tree/master/app/models) as close as AR APIs.
 
-By actively avoiding to populate models with utilities methods lots of business logic have been moved to [app/libs/*](https://github.com/betagouv/monstage/tree/master/app/libs) ex: 
+By actively avoiding to populate models with utilities methods lots of business logic have been moved to [app/libs/*](https://github.com/betagouv/monstage/tree/master/app/libs) ex:
 
 * data presentation logics in [app/libs/presenters/*](https://github.com/betagouv/monstage/tree/master/app/libs/presenters).
-* reporting dimension/metrics in [app/libs/presenters/reporting/*](https://github.com/betagouv/monstage/tree/master/app/libs/presenters/reporting). 
+* reporting dimension/metrics in [app/libs/presenters/reporting/*](https://github.com/betagouv/monstage/tree/master/app/libs/presenters/reporting).
 * complex query builder in [app/lib/finders/*](https://github.com/betagouv/monstage/tree/master/app/libs/finders).
 
 Also with inspirations from [CQRS](https://martinfowler.com/bliki/CQRS.html), we isolated some business logic into
@@ -20,7 +20,7 @@ User & Roles are based on device + cancancan + STI for each kind of roles, see:
 
 # key concepts in our domain
 
-## date (week) matching : 
+## date (week) matching :
 * matching `entities` are `offers/students`. Constraint are :
 	* [offer](https://github.com/betagouv/monstage/tree/master/app/models/internship_offer.rb) : an `offer` can be available on 1-n `week`(s)
 	* [student](https://github.com/betagouv/monstage/tree/master/app/models/users/student.rb) : a `student` is able to apply to an `offer` depending on its `school` opened `week`(s) (again, 1-n week(s)).
@@ -40,7 +40,7 @@ User & Roles are based on device + cancancan + STI for each kind of roles, see:
 	* see [nearbyable.rb](https://github.com/betagouv/monstage/tree/master/app/models/concerns/nearbyable.rb)
 
 
-## fulltext search : 
+## fulltext search :
 * context: for now searching is limited to `schools.name/city`
 
 * solution : no strong opinion here. We had postgres running, so we use its FTS feature with some updates :
