@@ -17,7 +17,7 @@ Things you may want to cover:
   - If you installed postgres with Homebrew, run : brew install postgis
 - Setup Postgis : rake db:gis:setup
 
-# Architecture (Boring)
+# Architecture
 
 **backend**
 
@@ -41,6 +41,14 @@ Things you may want to cover:
 
 # Build: test, dev
 
+## documentation
+
+* [controllers](https://github.com/betagouv/monstage/tree/master/app/controllers/README.md)
+* [models](https://github.com/betagouv/monstage/tree/master/app/models/README.md)
+* [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers/README.md)
+* [api](https://github.com/betagouv/monstage/tree/master/doc/README.md)
+
+
 ## dev
 
 **start project**
@@ -52,7 +60,6 @@ heroku local -f Procfile.dev
 ### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-* **consult emails sent in development environment with mail opener**:
 - mail should be opened automatically
 
 ## test
