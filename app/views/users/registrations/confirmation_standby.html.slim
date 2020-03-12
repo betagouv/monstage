@@ -28,22 +28,3 @@
     p.mb-1.test-student-guidelines
       = image_tag asset_pack_path("media/images/onboarding/confirm-desktop.svg"), alt: 'Activer par mail sur ordinateur', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
       = image_tag asset_pack_path("media/images/onboarding/confirm-mobile.svg"), alt: 'Activer par mail sur ordinateur', style: "height: auto; width: 100%;", class: 'd-block d-md-none'
-
-
-  - if @confirmable_user.is_a?(Users::Student)
-    p.mb-1.test-student-guidelines
-      | En plus de confirmer votre compte par email, il vous faudra :
-
-    ol.pl-3
-      li
-        | faire signer l'autorisation parentale à vos responsables légaux ;
-      li
-        | la rendre à votre professeur principal (qui confirmera votre accès à la plateforme, vous en serez notifié par mail).
-
-    .text-center
-      = link_to "#{root_url}/autorisation_parentale.pdf", title: 'Acceder à l\'autorisation parentale'  do
-        = image_tag asset_pack_path("media/images/autorisation_parentale.png"), alt: 'Couverture de l\'autorisation parentale', size: '200x283', class: 'mb-3 shadow-lg'
-        br
-        | Autorisation parentale
-        br
-        | PDF - 44KB
