@@ -1,4 +1,4 @@
-= form_for [:dashboard, @internship_offer], {data: {controller: 'internship-form'}} do |form|
+= form_with({model: @internship_offer, url: (@internship_offer.new_record? ? dashboard_internship_offers_path : dashboard_internship_offer_path(@internship_offer)), scope: :internship_offer, data: {controller: 'internship-form'}}) do |form|
   = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
@@ -183,7 +183,7 @@
             = form.text_field :department, class: "form-control", data: {target: 'algolia-place.departmentInput'}
 
 
-    .form-group data-controller='maxlength-input' data-maxlength-input-limit=BaseInternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
+    .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
       .label
         = "Description de l'organisme accueillant (facultatif)"
         small.form-text.text-muted Décrivez en 2 lignes l'établissement ou le service qui accueille l'élève : ses missions, ses spécialités

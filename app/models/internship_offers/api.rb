@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-module Api
-  class InternshipOffer < ApplicationRecord
-    include Nearbyable
-    include BaseInternshipOffer
-
+module InternshipOffers
+  class Api < InternshipOffer
     validates :remote_id,
               :permalink,
               presence: true
@@ -12,7 +9,21 @@ module Api
     validates :zipcode, zipcode: { country_code: :fr }
     validates :remote_id, uniqueness: { scope: :employer_id }
 
+    belongs_to :group, optional: true
     after_initialize :init
+
+    rails_admin do
+      list do
+        scopes [:from_api]
+        field :title
+      end
+
+      show do
+      end
+
+      edit do
+      end
+    end
 
     def init
       self.max_candidates ||= 1
