@@ -1,0 +1,26 @@
+{
+  "name": "Monstage",
+  "description": "Describe infrastructure.",
+  "website": "https://www.monstagedetroisieme.fr/",
+  "repository": "https://github.com/betagouv/monstage",
+
+  "scripts": {
+    "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
+  },
+
+  "environments": {
+    "review": {
+      "env": {
+        "RAILS_SERVE_STATIC_FILES": "true",
+        "RAILS_ENV": "review"
+      },
+      "addons": [
+        "heroku-postgresql:hobby-basic",
+        "mailtrap:unpaid",
+        "newrelic:wayne",
+        "papertrail:choklad",
+        "scheduler:standard"
+      ]
+    }
+  }
+}

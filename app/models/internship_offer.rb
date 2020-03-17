@@ -149,6 +149,10 @@ class InternshipOffer < ApplicationRecord
     discard
   end
 
+  def class_prefix_for_multiple_checkboxes
+    'internship_offer'
+  end
+
 
   #
   # callbacks

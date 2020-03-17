@@ -62,6 +62,10 @@ test:
   database: monstage_test
 
 
+review:
+  <<: *default
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
+
 staging:
   <<: *default
   url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
