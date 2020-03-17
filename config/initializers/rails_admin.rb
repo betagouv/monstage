@@ -45,8 +45,11 @@ RailsAdmin.config do |config|
 
   config.included_models = %w[EmailWhitelist
                               School
-                              InternshipOffer
                               Sector
+                              Group
+                              User
+                              InternshipOffers::Web
+                              InternshipOffers::Api
                               Users::Other
                               Users::Student
                               Users::SchoolManager
@@ -55,8 +58,7 @@ RailsAdmin.config do |config|
                               Users::Statistician
                               Users::Operator
                               Users::Employer
-                              Users::God
-                              User]
+                              Users::God]
 
   config.navigation_static_links = {
     "Stats" => "/reporting/dashboards",

@@ -21,7 +21,8 @@ div data-controller="internship-application-form"
     .row
       .col-12
         .p-3.bg-light-warning
-          = form_for [@internship_offer, @internship_application] do |f|
+          - is_creating =  @internship_application.try(:new_record?)
+          = form_for [@internship_offer, @internship_application], url: is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application), html: {method: is_creating ? :post : :patch} do |f|
             = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_application
             fieldset
               legend Ma candidature

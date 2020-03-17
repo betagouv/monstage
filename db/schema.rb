@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_27_162157) do
+ActiveRecord::Schema.define(version: 2020_03_12_131954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 2020_02_27_162157) do
     t.bigint "group_id"
     t.date "first_date"
     t.date "last_date"
+    t.string "type"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
@@ -294,4 +295,3 @@ ActiveRecord::Schema.define(version: 2020_02_27_162157) do
   add_foreign_key "users", "operators"
   add_foreign_key "users", "schools", column: "missing_school_weeks_id"
 end
-    

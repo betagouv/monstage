@@ -130,11 +130,11 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Operator' do
     operator = create(:user_operator)
     ability = Ability.new(operator)
-    assert(ability.can?(:create, Api::InternshipOffer.new),
+    assert(ability.can?(:create, InternshipOffers::Api.new),
            'Operator should be able to create internship_offers')
-    assert(ability.cannot?(:update, Api::InternshipOffer.new),
+    assert(ability.cannot?(:update, InternshipOffers::Api.new),
            'employers should not be able to update internship offer not belonging to him')
-    assert(ability.can?(:update, Api::InternshipOffer.new(employer: operator)),
+    assert(ability.can?(:update, InternshipOffers::Api.new(employer: operator)),
            'employers should be able to update internships offer that belongs to him')
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Reporting::Acl.new(user: operator, params: {}))
