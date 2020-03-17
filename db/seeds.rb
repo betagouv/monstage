@@ -2,6 +2,17 @@
 
 require 'csv'
 
+# school only exists a paris/bdx
+class Coordinates
+  def self.paris
+    { latitude: 48.866667, longitude: 2.333333 }
+  end
+
+  def self.bordeaux
+    { latitude: 44.837789, longitude: -0.57918 }
+  end
+end
+
 def populate_week_reference
   first_year = 2019
   last_year = 2050
@@ -26,16 +37,52 @@ def populate_week_reference
 end
 
 def populate_schools
-  CSV.foreach(Rails.root.join('db/data_imports/college-rep-plus.csv'), headers: { col_sep: ',' }) do |row, _i|
-    school = School.find_or_create_by(
-      code_uai: row['Code UAI'],
-      name: row['ETABLISSEMENT'],
-      city: row['Commune'],
-      department: row['Département']
-    )
-    puts "school created: #{school.inspect}"
-  end
+  # ActiveRecord::Base.transaction do
+    CSV.foreach(Rails.root.join('db/data_imports/college-rep-plus.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
+      next if i.zero?
+      school = School.find_or_create_by!(
+        code_uai: row['Code UAI'],
+        name: row['ETABLISSEMENT'],
+        city: row['Commune'],
+        department: row['Département'],
+        coordinates: geo_point_factory(
+            **([1,2].shuffle.first == 1 ?
+               Coordinates.paris :
+               Coordinates.bordeaux)
+        )
+      )
+    end
+  # end
 end
 
-populate_week_reference
-populate_schools
+def with_class_name_for_defaults(object)
+  object.first_name = "user"
+  object.last_name = object.class.name
+  object.accept_terms = true
+  object.confirmed_at = Time.now.utc
+  object
+end
+
+def add_operators
+  Operator.create(name: "MS3E-OPERATOR")
+end
+
+def add_review_users
+  with_class_name_for_defaults(Users::Employer.new(email: 'fourcade.m+review_employer@gmail.com', password: 'reviewapp')).save!
+  with_class_name_for_defaults(Users::God.new(email: 'fourcade.m+review_god@gmail.com', password: 'reviewapp')).save!
+  with_class_name_for_defaults(Users::Operator.new(email: 'fourcade.m+review_main_operator@gmail.com', password: 'reviewapp', operator: Operator.first)).save!
+  with_class_name_for_defaults(Users::SchoolManager.new(email: 'fourcade.m+review_school_manager@ac-monstagedetroisieme.fr', password: 'reviewapp', school: School.first)).save!
+  with_class_name_for_defaults(Users::MainTeacher.new(email: 'fourcade.m+review_main_teacher@gmail.com', password: 'reviewapp', school: School.first)).save!
+  with_class_name_for_defaults(Users::Other.new(email: 'fourcade.m+review_other@gmail.com', password: 'reviewapp', school: School.first)).save!
+  email_whitelist = EmailWhitelist.create!(email: 'fourcade.m+review_statistician@gmail.com', zipcode: 60)
+  with_class_name_for_defaults(Users::Statistician.new(email: 'fourcade.m+review_statistician@gmail.com', password: 'reviewapp')).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'fourcade.m+review_student@gmail.com', password: 'reviewapp', school: School.first, birth_date: 14.years.ago, gender: 'm', has_parental_consent: true)).save!
+  with_class_name_for_defaults(Users::Teacher.new(email: 'fourcade.m+review_teacher@gmail.com', password: 'reviewapp', school: School.first)).save!
+end
+
+if Rails.env == 'review'
+  populate_week_reference
+  populate_schools
+  add_operators
+  add_review_users
+end

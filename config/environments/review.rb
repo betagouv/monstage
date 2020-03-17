@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
+require 'rest_client'
 require 'json'
 
 Rails.application.configure do
+  HOST = ENV.fetch("HOST") {
+    "https://#{ENV.fetch('HEROKU_APP_NAME')}-#{ENV.fetch('HEROKU_PR_NUMBER') {'1'}}.herokuapp.com"
+  }
+
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
@@ -54,7 +59,7 @@ Rails.application.configure do
   # config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
-  host_uri = URI(ENV.fetch("HOST"))
+  host_uri = URI(HOST)
   domain_without_www = host_uri.host.gsub('www.', '')
 
   config.action_cable.mount_path = nil
@@ -80,21 +85,21 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: ENV.fetch("HOST") }
+  config.action_mailer.default_url_options = { host: HOST }
+
+  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Credentials.enc(:mailtrap, :api_token)}"
 
   first_inbox = JSON.parse(response)[0] # get first inbox
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-                                         user_name: ENV['SENDGRID_USERNAME'],
-                                         password: ENV['SENDGRID_PASSWORD'],
-                                         domain: ENV.fetch("HOST"),
-                                         address: 'smtp.sendgrid.net',
-                                         port: 587,
-                                         authentication: :plain,
-                                         enable_starttls_auto: true
-                                       }
-
+                                       user_name: first_inbox['username'],
+                                       password: first_inbox['password'],
+                                       address: first_inbox['domain'],
+                                       domain: first_inbox['domain'],
+                                       port: first_inbox['smtp_ports'][0],
+                                       authentication: :plain
+                                     }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
