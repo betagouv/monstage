@@ -2,9 +2,6 @@
   .col-12
     .d-flex.align-items-center.mb-4
       h1.h2.mb-0= "#{@internship_offers.empty? ? 'Vos' : @internship_offers.total_count} offres de stage"
-      = link_to new_dashboard_internship_offer_path, class: 'ml-auto btn btn-warning', style: 'height: max-content' do
-        i.fas.fa-plus
-        = " Déposer une offre"
 
 - if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
   .row
