@@ -1,86 +1,89 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
+  TITLE_MAX_CHAR_COUNT = 150
+  OLD_DESCRIPTION_MAX_CHAR_COUNT = 750
+  DESCRIPTION_MAX_CHAR_COUNT = 500
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
+  PAGE_SIZE = 30
+  MAX_CANDIDATES_PER_GROUP = 200
+
   # queries
-  include Nearbyable
   include Listable
   include FindableWeek
-  # base
-  include BaseInternshipOffer
+  include Nearbyable
+  include Discard::Model
 
-  PAGE_SIZE = 30
+  scope :by_sector, lambda { |sector_id|
+    where(sector_id: sector_id)
+  }
 
-  rails_admin do
-    configure :created_at, :datetime do
-      date_format "BUGGY"
-    end
+  scope :limited_to_department, lambda { |user:|
+    where(department: user.department_name)
+  }
+  scope :from_api, lambda {
+    where.not(permalink: nil)
+  }
+  scope :not_from_api, lambda {
+    where(permalink: nil)
+  }
+  scope :ignore_max_candidates_reached, lambda {
+    joins(:internship_offer_weeks)
+     .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
+  }
 
-    list do
-      field :title
-      field :zipcode
-      field :employer_name
-      field :group
-      field :is_public
-      field :department
-      field :created_at
-    end
+  scope :ignore_max_internship_offer_weeks_reached, lambda {
+    where('internship_offer_weeks_count > blocked_weeks_count')
+  }
 
-    show do
-      exclude_fields :blocked_weeks_count,
-                     :total_applications_count,
-                     :convention_signed_applications_count,
-                     :approved_applications_count,
-                     :total_male_applications_count,
-                     :total_male_convention_signed_applications_count,
-                     :total_custom_track_convention_signed_applications_count,
-                     :submitted_applications_count,
-                     :rejected_applications_count
-    end
+  scope :ignore_already_applied, lambda { |user: |
+    where.not(id: joins(:internship_applications)
+                    .merge(InternshipApplication.where(user_id: user.id)))
+  }
 
-    edit do
-      field :title
-      field :description
-      field :max_candidates
-      field :tutor_name
-      field :tutor_phone
-      field :tutor_email
-      field :employer_website
-      field :discarded_at
-      field :employer_name
-      field :is_public
-      field :group
-      field :employer_description
-      field :published_at
-    end
+  scope :mines_and_sumbmitted_to_operator, lambda { |user:|
+      left_joins(:internship_offer_operators)
+       .merge(where(internship_offer_operators: {operator_id: user.operator_id})
+              .or(where("internship_offers.employer_id = #{user.id}")))
+  }
 
-    export do
-      field :title
-      field :employer_name
-      field :group
-      field :zipcode
-      field :city
-      field :max_candidates
-      field :total_applications_count
-      field :convention_signed_applications_count
-    end
-  end
+  scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
+    where(school_id: [nil, school_id])
+  }
 
-  validates :street,
+  scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
+    by_weeks(weeks: weeks)
+  }
+
+  validates :title,
+            :employer_name,
+            :zipcode,
             :city,
-            :tutor_name,
-            :tutor_phone,
-            :tutor_email,
             presence: true
 
-  validates :is_public, inclusion: { in: [true, false] }
-  validate :validate_group_is_public?, if: :is_public?
-  validate :validate_group_is_not_public?, unless: :is_public?
+  validates :title, presence: true,
+                    length: { maximum: TITLE_MAX_CHAR_COUNT },
+                    if: :ready_to_enforce_less_text?
 
-  MAX_CANDIDATES_PER_GROUP = 200
-  validates :max_candidates, numericality: { only_integer: true,
-                                             greater_than: 0,
-                                             less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
+  validates :description, presence: true,
+                          length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT },
+                          unless: :ready_to_enforce_less_text?
 
+  validates :description, presence: true,
+                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT },
+                          if: :ready_to_enforce_less_text?
+
+  validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
+  validates :weeks, presence: true
+
+  has_rich_text :description_rich_text
+  has_rich_text :employer_description_rich_text
+
+  belongs_to :employer, polymorphic: true
+  belongs_to :sector
+
+  has_many :internship_offer_weeks, dependent: :destroy
+  has_many :weeks, through: :internship_offer_weeks
 
   has_many :internship_applications, through: :internship_offer_weeks,
                                      dependent: :destroy
@@ -90,31 +93,29 @@ class InternshipOffer < ApplicationRecord
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
 
-  scope :by_sector, lambda { |sector_id|
-    where(sector_id: sector_id)
-  }
+  before_validation :replicate_rich_text_to_raw_fields
+  before_save :sync_first_and_last_date,
+              :reverse_academy_by_zipcode,
+              :reverse_department_by_zipcode
 
-  after_initialize :init
-  before_create :reverse_academy_by_zipcode
+  before_create :preset_published_at_to_now
 
-  paginates_per PAGE_SIZE
+  scope :published, -> { where.not(published_at: nil) }
 
-  attr_reader :with_operator
-
-  def is_individual?
-    max_candidates == 1
+  def published?
+    published_at.present?
   end
 
-  def has_spots_left?
-    internship_offer_weeks.any?(&:has_spots_left?)
-  end
-
-  def is_fully_editable?
-    internship_applications.empty?
+  def unpublished?
+    !published?
   end
 
   def has_operator?
     !operators.empty?
+  end
+
+  def is_individual?
+    max_candidates == 1
   end
 
   def from_api?
@@ -125,9 +126,10 @@ class InternshipOffer < ApplicationRecord
     school.present?
   end
 
-  def init
-    self.max_candidates ||= 1
+  def is_fully_editable?
+    internship_applications.empty?
   end
+
 
   def total_female_applications_count
     total_applications_count - total_male_applications_count
@@ -147,28 +149,47 @@ class InternshipOffer < ApplicationRecord
     discard
   end
 
-  def duplicate
-    white_list = %w[title sector_id max_candidates
-                    tutor_name tutor_phone tutor_email employer_website
-                    employer_name street zipcode city department region academy
-                    is_public group school_id coordinates]
-
-    internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-    internship_offer.week_ids = week_ids
-    internship_offer.operator_ids = operator_ids
-    internship_offer.description_rich_text = description_rich_text
-    internship_offer.employer_description_rich_text = employer_description_rich_text
-    internship_offer
+  def class_prefix_for_multiple_checkboxes
+    'internship_offer'
   end
 
-  def validate_group_is_public?
-    return if group.nil?
-    errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
+
+  #
+  # callbacks
+  #
+  def sync_first_and_last_date
+    first_week, last_week = weeks.minmax_by(&:id)
+    self.first_date = first_week.week_date.beginning_of_week
+    self.last_date = last_week.week_date.end_of_week
   end
 
-  def validate_group_is_not_public?
-    return if group.nil?
-    errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
+  def reverse_academy_by_zipcode
+    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
   end
 
+  def reverse_department_by_zipcode
+    self.department = Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
+  # @note some possible confusion, miss-understanding here
+  #   1. Rich text was added after API
+  #   2. API already exposed a "description" attributes (not rich text) [in/out]
+  #     trying to upgrade description attribute was flacky
+  #     because API returned description as an ActionText record.
+  #   3. To avoid any circumvention (in/out) of the description
+  #     we add a new description_rich_text element which is rendered when possiblee
+  #   4. Bonus -> description will be used for description_tsv as template to extract keywords
+  def replicate_rich_text_to_raw_fields
+    self.description = self.description_rich_text.to_plain_text if self.description_rich_text.to_s.present?
+    self.employer_description = self.employer_description_rich_text.to_plain_text if self.employer_description_rich_text.to_s.present?
+  end
+
+  def preset_published_at_to_now
+    self.published_at = Time.now
+  end
+
+  def ready_to_enforce_less_text?
+    Date.today.year >= 2019 && Date.today.month >= 9 ||
+    Date.today.year >= 2020
+  end
 end

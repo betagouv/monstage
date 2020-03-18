@@ -36,12 +36,11 @@ Things you may want to cover:
 
 **hosting & services**
 
-* Heroku with some plugins (newrelic, papertrail, sendgrid, scheduler, sentry, vigil monitoring) [todo heroku-app.json/yml?]
-* Zammad for support
+* Hosting : Heroku with some plugins, see heroku manifest [app.json](https://github.com/betagouv/monstage/blob/master/app.json) for more details (app.json)
+* Support : Zammad for support
+* Analytics : [stats.data.gouv.fr](https://stats.data.gouv.fr)
 
 # Build: test, dev
-
-## documentation
 
 ## documentation (browse with github, having README.md at root of each folder)
 
@@ -79,19 +78,25 @@ heroku local -f Procfile.dev
 
 ```rails test:w3c```
 
-# Run: ci, staging, production
+# Run: ci, review, staging, production
 
 see build status at: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+regarding env var dependencies, but can be setuped via tools : ```infra/staging|production/set_env.sh```
 
-both environments are limit regarding env var dependencies, but can be setuped via tools : ```infra/staging|production/set_env.sh```
+## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
 
-## staging
+* deployed automatically via github/heroku for each pull requests.
+* see your PR on github for the review app link
+* seed: important heroku review app seeding is only done at opening of PR. if you change seed, close/open PR
+
+
+## staging app : [v2-test.monstagedetroisieme.fr](https://v2-test.monstagedetroisieme.fr)
 
 * deployement automated via CI (merge on master, push on staging)
 * push on staging can be "forced" manually using ```infra/staging/deploy.sh```
 * see other tools in ```infra/staging/*.sh```  (logs, console...)
 
-## production
+## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
 * prefer heroku promote staging ```infra/production/deploy/promote.sh```
 * can be "forced" manually using ```infra/production/deploy/push.sh```

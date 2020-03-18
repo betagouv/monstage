@@ -133,8 +133,8 @@ class Ability
     can :change, :department_name
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
-    can :create, Api::InternshipOffer
-    can %i[update discard], Api::InternshipOffer, employer_id: user.id
+    can :create, InternshipOffers::Api
+    can %i[update discard], InternshipOffers::Api, employer_id: user.id
     can %i[index update], InternshipApplication
     can :show, :api_token
 
@@ -165,6 +165,7 @@ class Ability
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :access, :rails_admin   # grant access to rails_admin
+    can :manage, InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi       # grant access to the dashboard
     can %i[index], Reporting::Acl do |_acl|

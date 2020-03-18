@@ -60,6 +60,10 @@ class School < ApplicationRecord
     name
   end
 
+  def class_prefix_for_multiple_checkboxes
+    'school'
+  end
+
   rails_admin do
     list do
       field :id

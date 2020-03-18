@@ -54,9 +54,12 @@ fr:
       school:
         one: Collèges
         other: Collèges
-      internship_offer:
-        one: Offre
-        other: Offres
+      internship_offers/web:
+        one: Offre Produit
+        other: Offres Produit
+      internship_offers/api:
+        one: Offre API
+        other: Offres API
       email_whitelist:
         one: Email autorisé du référent
         other: Email autorisés des référents
@@ -203,7 +206,7 @@ fr:
             public:
               inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
 
-        api/internship_offer:
+        internship_offers/api:
           attributes:
             title:
               blank: "Missing title"

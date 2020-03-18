@@ -83,8 +83,8 @@ group :test, :development do
   gem 'factory_bot_rails'
 end
 
-group :staging do
-  gem 'rest-client' # not sure still in use?
+group :review do
+  gem 'rest-client' # used by mailtrap for review apps
 end
 
 

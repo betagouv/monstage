@@ -145,7 +145,7 @@ module Api
         assert_response :created
       end
 
-      internship_offer = Api::InternshipOffer.first
+      internship_offer = InternshipOffers::Api.first
       assert_equal title, internship_offer.title
       assert_equal description, internship_offer.description
       assert_equal employer_name, internship_offer.employer_name
@@ -194,7 +194,7 @@ module Api
           assert_response :created
         end
 
-        internship_offer = Api::InternshipOffer.first
+        internship_offer = InternshipOffers::Api.first
         week_ids = internship_offer.weeks.map(&:id)
         Week.selectable_from_now_until_end_of_school_year.each do |week|
           assert week_ids.include?(week.id)

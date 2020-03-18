@@ -12,7 +12,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     group = create(:group, name: 'hello', is_public: true)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
-    assert_difference 'InternshipOffer.count' do
+    assert_difference 'InternshipOffers::Web.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit employer.custom_dashboard_path
         click_on 'Déposer une offre'
@@ -33,6 +33,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         page.all('.algolia-places div[role="option"]')[0].click
         fill_in "Rue ou compléments d'adresse", with: 'La rue qui existe pas dans algolia place / OSM'
         click_on "Enregistrer et publier l'offre"
+        find('.alert-sticky')
       end
     end
     assert_equal employer, InternshipOffer.first.employer

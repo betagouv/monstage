@@ -229,7 +229,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student with Api::InternshipOffer, returns paginated content' do
+  test 'GET #index as student with InternshipOffers::Api, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:api_internship_offer) }
 
     travel_to(Date.new(2019, 3, 1)) do
