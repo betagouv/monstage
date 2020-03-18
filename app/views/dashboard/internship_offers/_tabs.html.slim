@@ -1,17 +1,29 @@
 - forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order, :direction)
 
 ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
-  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path(forwarded_params), class: "px-2 px-sm-3 nav-link #{params[:filter].blank? ? 'active' : ''}" do
+  - is_active = params[:filter].blank?
+  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path(forwarded_params), class: "px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       span.d-none.d-md-inline= "Offres "
-      span.xs-capitalize en cours
+      span.xs-capitalize
+        | en cours
+        - if is_active
+          = " (#{internship_offers.total_count})"
 
-  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)), class: "px-2 px-sm-3 nav-link #{params[:filter] == 'unpublished' ? 'active' : ''}" do
+  - is_active = params[:filter] == 'unpublished'
+  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)), class: "px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       span.d-none.d-md-inline= "Offres "
-      span.xs-capitalize dépubliées
+      span.xs-capitalize
+        | dépubliées
+        - if is_active
+          = " (#{internship_offers.total_count})"
 
-  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)), class: "px-2 px-sm-3 nav-link #{params[:filter] == 'past' ? 'active' : ''}" do
+  - is_active = params[:filter] == 'past'
+  li.nav-item.nav-item-100= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)), class: "px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       span.d-none.d-md-inline= "Offres "
-      span.xs-capitalize passées
+      span.xs-capitalize
+        | passées
+        - if is_active
+          = " (#{internship_offers.total_count})"
 
   li.nav-item.col.pb-sm-3.pr-sm-0.actions.d-flex.d-sm-block.d-xs-stick.text-right
     = link_to new_dashboard_internship_offer_path, class: 'ml-auto btn btn-warning'
