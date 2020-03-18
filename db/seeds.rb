@@ -63,11 +63,22 @@ def with_class_name_for_defaults(object)
   object
 end
 
-def add_operators
-  Operator.create(name: "MS3E-OPERATOR")
+def populate_operators
+  Operator.create!(name: 'MS3E-OPERATOR-1')
+  Operator.create!(name: 'MS3E-OPERATOR-2')
 end
 
-def add_review_users
+def populate_sectors
+  Sector.create!(name: 'REVIEW-SECTOR-1')
+  Sector.create!(name: 'REVIEW-SECTOR-2')
+end
+
+def populate_groups
+  Sector.create!(name: 'PUBLIC GROUP', is_public: true)
+  Sector.create!(name: 'PRIVATE GROUP', is_public: false)
+end
+
+def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'fourcade.m+review_employer@gmail.com', password: 'reviewapp')).save!
   with_class_name_for_defaults(Users::God.new(email: 'fourcade.m+review_god@gmail.com', password: 'reviewapp')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'fourcade.m+review_main_operator@gmail.com', password: 'reviewapp', operator: Operator.first)).save!
@@ -83,6 +94,8 @@ end
 if Rails.env == 'review'
   populate_week_reference
   populate_schools
-  add_operators
-  add_review_users
+  populate_operators
+  populate_users
+  populate_sectors
+  populate_groups
 end
