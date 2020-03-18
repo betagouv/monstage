@@ -79,16 +79,16 @@ def populate_groups
 end
 
 def populate_users
-  with_class_name_for_defaults(Users::Employer.new(email: 'fourcade.m+review_employer@gmail.com', password: 'reviewapp')).save!
-  with_class_name_for_defaults(Users::God.new(email: 'fourcade.m+review_god@gmail.com', password: 'reviewapp')).save!
-  with_class_name_for_defaults(Users::Operator.new(email: 'fourcade.m+review_main_operator@gmail.com', password: 'reviewapp', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManager.new(email: 'fourcade.m+review_school_manager@ac-monstagedetroisieme.fr', password: 'reviewapp', school: School.first)).save!
-  with_class_name_for_defaults(Users::MainTeacher.new(email: 'fourcade.m+review_main_teacher@gmail.com', password: 'reviewapp', school: School.first)).save!
-  with_class_name_for_defaults(Users::Other.new(email: 'fourcade.m+review_other@gmail.com', password: 'reviewapp', school: School.first)).save!
-  email_whitelist = EmailWhitelist.create!(email: 'fourcade.m+review_statistician@gmail.com', zipcode: 60)
-  with_class_name_for_defaults(Users::Statistician.new(email: 'fourcade.m+review_statistician@gmail.com', password: 'reviewapp')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'fourcade.m+review_student@gmail.com', password: 'reviewapp', school: School.first, birth_date: 14.years.ago, gender: 'm', has_parental_consent: true)).save!
-  with_class_name_for_defaults(Users::Teacher.new(email: 'fourcade.m+review_teacher@gmail.com', password: 'reviewapp', school: School.first)).save!
+  with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
+  with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
+  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
+  with_class_name_for_defaults(Users::SchoolManager.new(email: 'school_manager@ac-ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::MainTeacher.new(email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::Other.new(email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
+  email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
+  with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', has_parental_consent: true)).save!
+  with_class_name_for_defaults(Users::Teacher.new(email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
 if Rails.env == 'review'
