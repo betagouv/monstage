@@ -45,7 +45,7 @@ module Dashboard
 
       def optional_internship_application_params
         params.fetch(:internship_application) { {} }
-              .permit(:approved_message,
+              .permit(:approved_message,:cancel_message,
                       :rejected_message,
                       :aasm_state)
       end
