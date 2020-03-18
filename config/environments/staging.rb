@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'json'
-
 Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
@@ -81,8 +79,6 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST") }
-
-  first_inbox = JSON.parse(response)[0] # get first inbox
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
