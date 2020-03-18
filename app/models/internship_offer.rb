@@ -102,6 +102,8 @@ class InternshipOffer < ApplicationRecord
 
   scope :published, -> { where.not(published_at: nil) }
 
+  paginates_per PAGE_SIZE
+
   def published?
     published_at.present?
   end
