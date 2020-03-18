@@ -74,8 +74,8 @@ def populate_sectors
 end
 
 def populate_groups
-  Sector.create!(name: 'PUBLIC GROUP', is_public: true)
-  Sector.create!(name: 'PRIVATE GROUP', is_public: false)
+  Group.create!(name: 'PUBLIC GROUP', is_public: true)
+  Group.create!(name: 'PRIVATE GROUP', is_public: false)
 end
 
 def populate_users

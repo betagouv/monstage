@@ -4,12 +4,19 @@
   "website": "https://www.monstagedetroisieme.fr/",
   "repository": "https://github.com/betagouv/monstage",
 
-  "scripts": {
-    "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
-  },
 
   "environments": {
+    "staging": {
+      "scripts": {
+        "postdeploy": "bundle exec bin/rails db:migrate"
+      }
+    },
+
     "review": {
+      "scripts": {
+        "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
+      },
+
       "env": {
         "RAILS_SERVE_STATIC_FILES": "true",
         "RAILS_ENV": "review"
@@ -21,6 +28,12 @@
         "papertrail:choklad",
         "scheduler:standard"
       ]
+    },
+
+    "production": {
+      "scripts": {
+        "postdeploy": "bundle exec bin/rails db:migrate"
+      }
     }
   }
 }
