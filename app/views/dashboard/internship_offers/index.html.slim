@@ -25,6 +25,12 @@
           p.text-muted Aucune offre publiée
         - else
           = render partial: 'dashboard/internship_offers/table'
+  - if @internship_offers.total_pages > @internship_offers.current_page
+    .row.d-flex.d-sm-none
+      .col-12.mt-3
+        .actions.d-flex.d-sm-block
+          = link_to path_to_next_page(@internship_offers), class: 'btn btn-outline-primary' do
+            | Plus de resultats
 
-  .row
+  .row.d-none.d-sm-flex
     .col-12.mt-3= paginate(@internship_offers)
