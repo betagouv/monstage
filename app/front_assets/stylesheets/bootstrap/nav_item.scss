@@ -1,0 +1,14 @@
+@include media-breakpoint-down(xs) {
+  .nav-xs-inline {
+    display: block;
+    text-align: center;
+    .nav-item{
+      display: inline-block;
+    }
+  }
+}
+@include media-breakpoint-down(sm) {
+  .xs-capitalize{
+    text-transform: capitalize;
+  }
+}

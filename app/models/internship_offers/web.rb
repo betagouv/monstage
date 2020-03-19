@@ -75,7 +75,6 @@ module InternshipOffers
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 
-    paginates_per PAGE_SIZE
 
     attr_reader :with_operator
 
