@@ -4,7 +4,7 @@
   "website": "https://www.monstagedetroisieme.fr/",
   "repository": "https://github.com/betagouv/monstage",
 
-
+  "formation": {},
   "environments": {
     "staging": {
       "scripts": {
