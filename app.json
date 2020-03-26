@@ -16,7 +16,14 @@
       "scripts": {
         "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
       },
-
+      "formation": {
+        "web": {
+          "quantity": 1
+        },
+        "worker": {
+          "quantity": 1
+        }
+      },
       "env": {
         "RAILS_SERVE_STATIC_FILES": "true",
         "RAILS_ENV": "review"
