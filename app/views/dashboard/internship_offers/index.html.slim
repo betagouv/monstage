@@ -16,8 +16,8 @@
         = react_component("SearchInternshipOffer",
                           { url: dashboard_internship_offers_path,
                             initialRadius: params[:radius] || Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER,
-                            currentCitySearch: params[:city] || current_user.try(:school).try(:city) },
-                          { class: 'col-12 pt-2 filter-section' })
+                            initialLocation: params[:city] || current_user.try(:school).try(:city) },
+                          { class: 'col-12 py-2 filter-section' })
 
       .row.bc-light.br-1.bl-1.bb-1
         .col-12= render partial: 'dashboard/internship_offers/table'

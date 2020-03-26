@@ -11,6 +11,11 @@
     font-size: 1rem;
   }
 }
+
+.small-placeholder::placeholder{
+  font-size: .7rem;
+  color: #767676;
+}
 @include media-breakpoint-up(sm) {
   .autocomplete-list-element:hover{
     cursor: pointer;

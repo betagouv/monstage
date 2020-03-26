@@ -13,3 +13,96 @@
   }
 
 }
+.search-bar{
+  .input-group-text,
+  .form-control{
+    background-color: $white;
+  }
+}
+
+
+@include media-breakpoint-down(xs) {
+  .search-bar{
+    background-color: $gray-200;
+    padding: 1rem 0;
+
+
+    .input-group-search{
+      width: 50%;
+
+      .input-group-text,
+      .form-control{
+        border-radius: 0;
+      }
+      .input-group-text{
+        border-left: 1px solid  $nav-tabs-border-color;
+        border-top-left-radius: 29px;
+        border-bottom-left-radius: 29px;
+      }
+      .form-control{
+        border-right: 1px solid  $nav-tabs-border-color;
+        border-top-right-radius: 29px;
+        border-bottom-right-radius: 29px;
+      }
+      &.focus-expanded{
+        flex: 0 0 75%;
+        max-width: 75%;
+      }
+      &.focus-collapsed{
+        flex: 0 0 25%;
+        max-width: 25%;
+        input{position: absolute; top:-10000px;}
+        .input-group-text{
+          border-radius: 29px;
+        }
+      }
+
+    }
+    .input-group-search-button{
+      border-radius: 0;
+      display: block;
+      width: 100%;
+    }
+
+
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .search-bar{
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    .input-group-text,
+    .form-control{
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+    .input-group-separator{
+      border-left: 1px solid  $nav-tabs-border-color;
+    }
+    .input-group-search-left-border{
+      border-left: 1px solid  $nav-tabs-border-color;
+      border-top-left-radius: 29px;
+      border-bottom-left-radius: 29px;
+    }
+    .input-group-search-button{
+      border-radius: 0;
+      border-right: 1px solid  $nav-tabs-border-color;
+      border-top-right-radius: 29px;
+      border-bottom-right-radius: 29px;
+    }
+  }
+}
+
+.input-group-text-bigger{
+  font-size: 1.2rem;
+  color:$primary;
+}

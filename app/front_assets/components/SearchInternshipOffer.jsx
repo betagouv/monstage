@@ -1,55 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Turbolinks from 'turbolinks';
-import Downshift from 'downshift';
-import $ from 'jquery';
 
-const MAX_RADIUS = 60000;
-const MIN_RADIUS = 5000;
-const KILO_METER = 1000;
+import LocationInput from './inputs/LocationInput';
+import KeywordInput from './inputs/KeywordInput';
 
-function radiusPercentage(radius) {
-  return Math.ceil((radius * 100) / MAX_RADIUS);
-}
-function radiusInKm(radius) {
-  return Math.ceil(radius / KILO_METER);
-}
+function SearchInternshipOffer({ url, initialLocation }) {
+  const searchParams = new URLSearchParams(window.location.search);
+  // default holded by url
+  const [term, setTerm] = useState(searchParams.get('term') || "");
+  const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
 
-function iconForRadius(radius) {
-  const comparableRadius = radiusInKm(radius);
+  // location is a bit trickier
+  const [location, setLocation] = useState(null);
+  const [focus, setFocus] = useState(null);
+  const filterOffers = event => {
+    if (location) {
+      searchParams.set('city', location.nom);
+      searchParams.set('latitude', location.centre.coordinates[1]);
+      searchParams.set('longitude', location.centre.coordinates[0]);
+    }
 
-  if (comparableRadius < 10) {
-    return 'fa-walking';
-  }
-  if (comparableRadius < 20) {
-    return 'fa-bus';
-  }
-  return 'fa-train';
-}
-
-function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
-  const [searchTerm, setSearchTerm] = useState(null);
-  const [downshiftSelectedItem, setDownshiftSelectedItem] = useState(null);
-  const [radius, setRadius] = useState(initialRadius);
-  const [searchResults, setSearchResults] = useState([]);
-
-  const fetchDone = result => {
-    setSearchResults(result);
-  };
-
-  const inputChange = event => {
-    setSearchTerm(event.target.value);
-  };
-
-  const onRadiusChange = event => {
-    setRadius(parseInt(event.target.value), 10);
-  };
-  const filterOfferByLocation = event => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    if (downshiftSelectedItem) {
-      searchParams.set('city', downshiftSelectedItem.nom);
-      searchParams.set('latitude', downshiftSelectedItem.centre.coordinates[1]);
-      searchParams.set('longitude', downshiftSelectedItem.centre.coordinates[0]);
+    if (term.length > 0) {
+      searchParams.set('term', term);
+    } else {
+      searchParams.delete('term');
     }
     if (radius) {
       searchParams.set('radius', radius);
@@ -62,161 +36,43 @@ function SearchInternshipOffer({ url, currentCitySearch, initialRadius }) {
       event.preventDefault();
     }
   };
-  const unfilterOfferByLocation = event => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    searchParams.delete('page');
-    searchParams.delete('city');
-    searchParams.delete('latitude');
-    searchParams.delete('longitude');
-    searchParams.delete('radius');
-
-    Turbolinks.visit(`${url}?${searchParams.toString()}`);
-
-    if (event) {
-      event.preventDefault();
-    }
-  }
-  const searchCityByName = () => {
-    $.ajax({
-      type: 'GET',
-      url: 'https://geo.api.gouv.fr/communes',
-      data: {
-        nom: searchTerm,
-        fields: ['nom', 'centre', 'departement', 'codesPostaux'].join(','),
-        limit: 10,
-        boost: 'population',
-      },
-    }).done(fetchDone);
-  };
-
-  useEffect(() => {
-    if (searchTerm && searchTerm.length > 0 && searchTerm != currentCitySearch) {
-      searchCityByName(searchTerm);
-    }
-  }, [searchTerm]);
 
   return (
-    <Downshift
-      initialInputValue={currentCitySearch || ''}
-      onChange={setDownshiftSelectedItem}
-      itemToString={item => (item ? item.nom : '')}
-    >
-      {({
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        isOpen,
-        inputValue,
-        highlightedIndex,
-        selectedItem,
-      }) => (
-        <form data-turbolink={false} onSubmit={filterOfferByLocation}>
-          <div className="form-row align-items-center">
-            <div className="col-auto mr-0 mr-sm-3">
-              <div className="form-group">
-                <label {...getLabelProps()} className="p-0" htmlFor="input-search-by-city">
-                  <strong>Autour de</strong>
-                </label>
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text">
-                      <i className="fas fa-map-marker-alt" />
-                    </span>
-                  </div>
-                  <input
-                    {...getInputProps({
-                      onChange: inputChange,
-                      value: inputValue,
-                      className: 'form-control',
-                    })}
-                  />
-                  <div className="input-group-append">
-                    <button
-                      onClick={unfilterOfferByLocation}
-                      title="Effacer les options de recherche"
-                      className="btn btn-outline-secondary btn-clear-city"
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  </div>
-                  <div className="search-in-place bg-white shadow">
-                    <ul
-                      {...getMenuProps({
-                        className: 'p-0 m-0',
-                      })}
-                    >
-                      {isOpen
-                        ? searchResults.map((item, index) => (
-                            <li
-                              {...getItemProps({
-                                className: `py-2 px-3 listview-item ${
-                                  highlightedIndex === index ? 'highlighted-listview-item' : ''
-                                }`,
-                                key: item.code,
-                                index,
-                                item,
-                                style: {
-                                  fontWeight: selectedItem === item ? 'bold' : 'normal',
-                                },
-                              })}
-                            >
-                              {`${item.nom} (${
-                                item.codesPostaux.length == 1 ? item.codesPostaux[0] : item.code
-                              })`}
-                            </li>
-                          ))
-                        : null}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-auto mr-0 mr-sm-3">
-              <div className="form-group">
-                <label className="font-weight-bold" htmlFor="radius">
-                  Dans un rayon de
-                </label>
-                <input
-                  type="range"
-                  min={MIN_RADIUS}
-                  max={MAX_RADIUS}
-                  id="radius"
-                  name="radius"
-                  className="form-control-range form-control px-0"
-                  value={radius}
-                  onChange={onRadiusChange}
-                  step={5000}
-                />
-                <div className="slider-legend small">
-                  <div
-                    className="slider-handle text-center"
-                    style={{ left: `${radiusPercentage(radius)}%` }}
-                  >
-                    <span className="mr-1">{radiusInKm(radius)} km</span>
-                    <span key={radius}>
-                      <i className={`fas ${iconForRadius(radius)}`} />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col ml-0 ml-sm-3">
-              <div className="form-group mt-2 mb-0">
-                <button
-                  type="submit"
-                  className="btn btn-outline-dark btn-xs-sm float-right float-sm-none px-3"
-                >
-                  <i className="fas fa-search" />
-                  <span className="ml-1 d-none d-sm-inline">Rechercher</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
-      )}
-    </Downshift>
+    <form data-turbolink={false} onSubmit={filterOffers}>
+      <div className="row search-bar">
+        <KeywordInput
+          term={term}
+          setTerm={setTerm}
+          focus={focus}
+          setFocus={setFocus}
+        />
+        <LocationInput
+          setRadius={setRadius}
+          radius={radius}
+          initialLocation={initialLocation}
+          setLocation={setLocation}
+          focus={focus}
+          setFocus={setFocus}
+        />
+
+        <div className="input-group-prepend d-flex d-xs-stick no-padding">
+          <button
+            type="submit"
+            className="input-group-search-button
+                       btn
+                       btn-warning
+                       btn-xs-sm
+                       float-right
+                       float-sm-none
+                       px-3
+                       rounded-xs-0"
+          >
+            <i className="fas fa-search" />
+            &nbsp; Rechercher
+          </button>
+        </div>
+      </div>
+    </form>
   );
 }
 export default SearchInternshipOffer;

@@ -1,11 +1,15 @@
-= render "internship_offers/title", internship_offers: @internship_offers
+h1.mb-4.text-muted.opacity-05
+  = "Candidater pour vos "
+  br.d-none.d-sm-block
+  | offres de stages préférés.
 
-.row.bt-1.bc-light
+.row.mb-4
   = react_component("SearchInternshipOffer",
                     { url: internship_offers_path,
-                      initialRadius: params[:radius] || Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER,
-                      currentCitySearch: params[:city] || current_user.try(:school).try(:city) },
-                    { class: 'col-12 bg-light pt-2 filter-section' })
+                      initialLocation: params[:city] || current_user.try(:school).try(:city)},
+                    { class: 'col-12' })
+
+= render "internship_offers/title", internship_offers: @internship_offers
 
 - if @internship_offers.blank?
   .row

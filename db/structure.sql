@@ -10,14 +10,14 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
 
@@ -55,6 +55,15 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 CREATE TEXT SEARCH DICTIONARY public.french_nostopwords (
     TEMPLATE = pg_catalog.snowball,
     language = 'french' );
+
+
+--
+-- Name: french_simple_dict; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.french_simple_dict (
+    TEMPLATE = pg_catalog.simple,
+    stopwords = 'french' );
 
 
 --
@@ -119,6 +128,71 @@ ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR "int" WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
+    ADD MAPPING FOR uint WITH simple;
+
+
+--
+-- Name: french_simple; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION public.french_simple (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR asciiword WITH public.french_simple_dict;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR word WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR hword_part WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR hword_asciipart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR asciihword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR hword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.french_simple
     ADD MAPPING FOR uint WITH simple;
 
 
@@ -416,6 +490,38 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_keywords; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_keywords (
+    id bigint NOT NULL,
+    word text NOT NULL,
+    ndoc integer NOT NULL,
+    nentry integer NOT NULL,
+    searchable boolean DEFAULT true NOT NULL
+);
+
+
+--
+-- Name: internship_offer_keywords_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_keywords_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_keywords_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internship_offer_keywords.id;
+
+
+--
 -- Name: internship_offer_operators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -529,7 +635,8 @@ CREATE TABLE public.internship_offers (
     group_id bigint,
     first_date date,
     last_date date,
-    type character varying
+    type character varying,
+    search_tsv tsvector
 );
 
 
@@ -849,6 +956,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_keywords id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_keywords_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -981,6 +1095,14 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT internship_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_keywords internship_offer_keywords_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_keywords
+    ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
 
 
 --
@@ -1232,6 +1354,13 @@ CREATE INDEX index_internship_offers_on_school_id ON public.internship_offers US
 
 
 --
+-- Name: index_internship_offers_on_search_tsv; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_search_tsv ON public.internship_offers USING gin (search_tsv);
+
+
+--
 -- Name: index_internship_offers_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1330,6 +1459,13 @@ CREATE INDEX index_weeks_on_year ON public.weeks USING btree (year);
 
 
 --
+-- Name: internship_offer_keywords_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX internship_offer_keywords_trgm ON public.internship_offer_keywords USING gin (word public.gin_trgm_ops);
+
+
+--
 -- Name: not_blocked_by_weeks_count_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1341,6 +1477,13 @@ CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING 
 --
 
 CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.internship_applications USING btree (user_id, internship_offer_week_id);
+
+
+--
+-- Name: internship_offers sync_internship_offers_tsv; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('search_tsv', 'public.fr', 'title', 'description', 'employer_description');
 
 
 --
@@ -1633,6 +1776,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200210135720'),
 ('20200218163758'),
 ('20200227162157'),
-('20200312131954');
+('20200312131954'),
+('20200322093818'),
+('20200322093819'),
+('20200325143657'),
+('20200325145511');
 
 
