@@ -121,6 +121,7 @@ class InternshipOffer < ApplicationRecord
               :reverse_department_by_zipcode
 
   before_create :preset_published_at_to_now
+  after_commit :sync_internship_offer_keywords
 
   scope :published, -> { where.not(published_at: nil) }
 
@@ -215,5 +216,9 @@ class InternshipOffer < ApplicationRecord
   def ready_to_enforce_less_text?
     Date.today.year >= 2019 && Date.today.month >= 9 ||
     Date.today.year >= 2020
+  end
+
+  def sync_internship_offer_keywords
+    SyncInternshipOfferKeywordsJob.perform_later
   end
 end

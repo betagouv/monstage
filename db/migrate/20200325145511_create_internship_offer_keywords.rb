@@ -11,11 +11,6 @@ class CreateInternshipOfferKeywords < ActiveRecord::Migration[6.0]
     CREATE INDEX internship_offer_keywords_trgm ON internship_offer_keywords
       USING GIN(word gin_trgm_ops);
     SQL
-    if InternshipOffer.count.positive?
-      rs = execute("select * from ts_stat($$SELECT to_tsvector('french_simple', unaccent(title) || ' ' || unaccent('description')) FROM internship_offers$$) ORDER  BY ndoc DESC")
-
-      InternshipOfferKeyword.insert_all(rs.to_a)
-    end
   end
 
   def down
