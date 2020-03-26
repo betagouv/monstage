@@ -12,7 +12,26 @@ class InternshipOffer < ApplicationRecord
   include Listable
   include FindableWeek
   include Nearbyable
+
+  # utils
   include Discard::Model
+  include PgSearch::Model
+
+  pg_search_scope :search_by_term,
+                  against: {
+                    title: 'A',
+                    description: 'B',
+                    employer_description: 'C'
+                  },
+                  ignoring: :accents,
+                  using: {
+                    tsearch: {
+                      dictionary: 'public.fr',
+                      tsvector_column: "search_tsv",
+                      prefix: true,
+                    }
+                  }
+
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -21,12 +40,15 @@ class InternshipOffer < ApplicationRecord
   scope :limited_to_department, lambda { |user:|
     where(department: user.department_name)
   }
+
   scope :from_api, lambda {
     where.not(permalink: nil)
   }
+
   scope :not_from_api, lambda {
     where(permalink: nil)
   }
+
   scope :ignore_max_candidates_reached, lambda {
     joins(:internship_offer_weeks)
      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
