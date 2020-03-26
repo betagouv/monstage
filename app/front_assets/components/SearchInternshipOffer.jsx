@@ -14,16 +14,16 @@ function SearchInternshipOffer({ url, initialLocation }) {
   const [location, setLocation] = useState(null);
   const [focus, setFocus] = useState(null);
   const filterOffers = event => {
-    if (location) {
-      searchParams.set('radius', radius);
+    if (location && location.nom != term) {
       searchParams.set('city', location.nom);
       searchParams.set('latitude', location.centre.coordinates[1]);
       searchParams.set('longitude', location.centre.coordinates[0]);
+      searchParams.set('radius', radius);
     } else {
       searchParams.delete('city');
       searchParams.delete('latitude');
-      searchParams.delete('longitude');
       searchParams.delete('radius');
+      searchParams.delete('longitude');
     }
 
     if (term.length > 0) {
