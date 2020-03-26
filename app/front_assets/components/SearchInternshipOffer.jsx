@@ -15,13 +15,15 @@ function SearchInternshipOffer({ url, initialLocation }) {
   const [focus, setFocus] = useState(null);
   const filterOffers = event => {
     if (location) {
+      searchParams.set('radius', radius);
       searchParams.set('city', location.nom);
       searchParams.set('latitude', location.centre.coordinates[1]);
       searchParams.set('longitude', location.centre.coordinates[0]);
     } else {
-      searchParams.delete('city', location.nom);
-      searchParams.delete('latitude', location.centre.coordinates[1]);
-      searchParams.delete('longitude', location.centre.coordinates[0]);
+      searchParams.delete('city');
+      searchParams.delete('latitude');
+      searchParams.delete('longitude');
+      searchParams.delete('radius');
     }
 
     if (term.length > 0) {
@@ -29,11 +31,7 @@ function SearchInternshipOffer({ url, initialLocation }) {
     } else {
       searchParams.delete('term');
     }
-    if (radius) {
-      searchParams.set('radius', radius);
-    } else {
-      searchParams.delete('radius');
-    }
+
     searchParams.delete('page');
 
     Turbolinks.visit(`${url}?${searchParams.toString()}`);
