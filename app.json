@@ -4,7 +4,19 @@
   "website": "https://www.monstagedetroisieme.fr/",
   "repository": "https://github.com/betagouv/monstage",
 
-  "formation": {},
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "standard-1x",
+      "type": "web"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "standard-1x",
+      "type": "worker"
+    }
+  },
+
   "environments": {
     "staging": {
       "scripts": {
@@ -16,19 +28,7 @@
       "scripts": {
         "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
       },
-      "formation": {
-        "web": {
-          "quantity": 1,
-          "size": "standard-1x",
-          "type": "web"
-        },
-        "worker": {
-          "quantity": 1,
-          "size": "standard-1x",
-          "type": "worker"
-        }
-      },
-      "env": {
+        "env": {
         "RAILS_SERVE_STATIC_FILES": "true",
         "RAILS_ENV": "review"
       },
