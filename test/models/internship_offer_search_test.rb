@@ -10,11 +10,9 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
 
   test 'search_by_term works' do
     assert_nothing_raised do
-      puts "InternshipOffer.count: #{InternshipOffer.count}"
       query = InternshipOffer.search_by_term("test")
                              .group(:id)
                              .page(1)
-      puts query.map{|obj| obj.inspect}.inspect
     end
   end
 end

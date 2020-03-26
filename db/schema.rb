@@ -13,6 +13,8 @@
 ActiveRecord::Schema.define(version: 2020_03_25_145511) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "unaccent"
@@ -102,6 +104,14 @@ ActiveRecord::Schema.define(version: 2020_03_25_145511) do
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
+  end
+
+  create_table "internship_offer_keywords", force: :cascade do |t|
+    t.text "word", null: false
+    t.integer "ndoc", null: false
+    t.integer "nentry", null: false
+    t.boolean "searchable", default: true, null: false
+    t.index ["word"], name: "internship_offer_keywords_trgm", opclass: :gin_trgm_ops, using: :gin
   end
 
   create_table "internship_offer_operators", force: :cascade do |t|
