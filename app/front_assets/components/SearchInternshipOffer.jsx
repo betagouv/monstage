@@ -18,6 +18,10 @@ function SearchInternshipOffer({ url, initialLocation }) {
       searchParams.set('city', location.nom);
       searchParams.set('latitude', location.centre.coordinates[1]);
       searchParams.set('longitude', location.centre.coordinates[0]);
+    } else {
+      searchParams.delete('city', location.nom);
+      searchParams.delete('latitude', location.centre.coordinates[1]);
+      searchParams.delete('longitude', location.centre.coordinates[0]);
     }
 
     if (term.length > 0) {
@@ -27,6 +31,8 @@ function SearchInternshipOffer({ url, initialLocation }) {
     }
     if (radius) {
       searchParams.set('radius', radius);
+    } else {
+      searchParams.delete('radius');
     }
     searchParams.delete('page');
 

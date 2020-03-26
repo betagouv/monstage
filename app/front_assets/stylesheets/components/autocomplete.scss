@@ -1,4 +1,4 @@
-// input
+// input dropdown, repositionned within its container
 .search-in-place{
   position: absolute;
   top: 100%;
@@ -47,27 +47,113 @@ $handleWidth: 60px;
   margin-left: -$handleWidth/2;
 }
 
-.badge-clear{
-  padding: .25rem;
-  background-color: $gray-500;
-  color: $gray-100;
+
+// search bar
+.search-bar{
+  // all white
+  .input-group-text,
+  .form-control{
+    background-color: $white;
+  }
 }
 
-// clear button
-@include media-breakpoint-up(sm) {
-  .badge-clear {
-    &:hover{
-      background-color: $gray-400;
-      color: $white;
+
+// mobile search bar
+@include media-breakpoint-down(xs) {
+  .search-bar{
+    background-color: $gray-200;
+    padding: 1rem 0;
+
+    // by default split controls in two equal elements with rounded sides
+    .input-group-search{
+      width: 50%;
+
+      .input-group-text,
+      .form-control{
+        border-radius: 0;
+      }
+      .input-group-text{
+        border-left: 1px solid  $nav-tabs-border-color;
+        border-top-left-radius: 29px;
+        border-bottom-left-radius: 29px;
+      }
+      .form-control{
+        border-right: 1px solid  $nav-tabs-border-color;
+        border-top-right-radius: 29px;
+        border-bottom-right-radius: 29px;
+      }
+
+      // collapsible behavior for one of the two inputs
+      // one is 75%, other 25% [kinda circled]
+      &.focus-expanded{
+        flex: 0 0 75%;
+        max-width: 75%;
+      }
+      &.focus-collapsed{
+        flex: 0 0 25%;
+        max-width: 25%;
+        input{
+          position: absolute;
+          top:-10000px;
+          width: 0;
+        }
+        .input-group-text{
+          border-radius: 29px;
+        }
+      }
     }
-    &:active{
-      background-color: $gray-600;
-      color: $gray-200;
+
+    // search button fullscreen
+    .input-group-search-button{
+      border-radius: 0;
+      display: block;
+      width: 100%;
     }
   }
 }
 
-// footer of list
-.footer-autocomplete{
-  border-top: 1px solid $nav-tabs-border-color;
+// desktop search bar
+@include media-breakpoint-up(sm) {
+  .search-bar{
+    // inputs are all aligned even using grid system
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+
+    // controls are bordered top/bottom, no left right
+    .input-group-text,
+    .form-control{
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+    // apply rounding at both start/end of input
+    .input-group-search-left-border{
+      border-left: 1px solid  $nav-tabs-border-color;
+      border-top-left-radius: 29px;
+      border-bottom-left-radius: 29px;
+    }
+    .input-group-search-button{
+      border-radius: 0;
+      border-right: 1px solid  $nav-tabs-border-color;
+      border-top-right-radius: 29px;
+      border-bottom-right-radius: 29px;
+    }
+
+    // plus a small separator
+    .input-group-separator{
+      border-left: 1px solid  $nav-tabs-border-color;
+    }
+  }
+}
+
+// prepend innput with bigger icon
+.input-group-text-bigger{
+  font-size: 1.2rem;
+  color:$primary;
 }
