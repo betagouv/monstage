@@ -13,13 +13,13 @@ import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';
 
-import './homepage/covid-bonne-pratique/mouchoir-a-usage-unique.svg';
-import './homepage/covid-bonne-pratique/se-laver-les-mains.svg';
-import './homepage/covid-bonne-pratique/se-saluer-a-distance.svg';
-import './homepage/covid-bonne-pratique/tousser-dans-son-coude.svg';
+import './homepage/bp/mouchoir-a-usage-unique.svg';
+import './homepage/bp/se-laver-les-mains.svg';
+import './homepage/bp/se-saluer-a-distance.svg';
+import './homepage/bp/tousser-dans-son-coude.svg';
 
-import './homepage/covid-alternatives/telemaque.jpg';
-import './homepage/covid-alternatives/jobirl-tutorat.jpg';
+import './homepage/alternatives/telemaque.jpg';
+import './homepage/alternatives/jobirl-tutorat.jpg';
 
 import './homepage/benefices/icon-accompagner-les-eleves.svg';
 import './homepage/benefices/icon-offrir-un-stage.svg';
