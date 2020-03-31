@@ -6,7 +6,7 @@ Things you may want to cover:
 
 * Ruby version: 2.6.4
 * Database
-- Install Postgres 11.5
+- Install Postgres 12
 - Initialize with : initdb /usr/local/var/postgres -E utf8
 - Create local db : createdb monstage
 - Start with : pg_ctl -D /usr/local/var/postgres start
