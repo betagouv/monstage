@@ -1,88 +1,74 @@
 @include media-breakpoint-up(sm) {
-  .homepage {
-    h1, h3, h4{
-      color: #3f3356;
-    }
-    h2{
-      color: #333;
-    }
-  }
+
   .big-tagline{
-    font-size: 22px;
+    font-size: 20px;
     line-height: 30px;
   }
-  .bg-cover-image-homepage{
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
-                      url('../images/homepage/mon-stage-de-3e-illustration.jpg');
-    background-position: bottom left, top right;
-    background-repeat: repeat, no-repeat;
-    background-size: contain, cover;
-  }
-  $homepage-icon-size: 80px;
-  .circled-icon{
-    background-color: #fff;
-    color: $blue;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.2);
-    height: $homepage-icon-size;
-    width: $homepage-icon-size;
-    border-radius: $homepage-icon-size/2;
 
+  .bg-cover-image-homepage{
+    background-image: url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
+
   .h1-home.text-white-sm,
   .text-white-sm{
     color: #fff;
   }
-  .h1-home{
-    font-size: 48px;
-    line-height: 58px;
+
+  .flex-md-column{
+    flex-direction: column !important;
   }
-  .h2-home{
-    font-size: 44px;
-  }
-  .h3-bis-home{
-    font-size: 24px;
-  }
-  .h3-home{
-    font-size: 30px;
-  }
-  .h4-home{
-    font-size: 18px;
-    line-height: 22px;
-  }
-  .h1-stat{
-    font-size: 62px;
-    color: $blue;
-    height: $homepage-icon-size;
-    line-height: $homepage-icon-size;
-  }
-  .h3-stat{
-    font-size: 32px;
-    height: 60px;
-    line-height: 60px;
+  .nav-pills-home{
+    border-right: 4px solid #DA000C;
   }
 }
-.container-sticky-note{
-  position: relative;
+
+// pills customization
+@include media-breakpoint-down(sm) {
+  .flex-md-reverse-column{
+    flex-direction: column-reverse;
+    .flex-md-column{
+      text-align: center;
+      display: block;
+      .nav-link{
+        display: inline-block;
+      }
+    }
+  }
 }
-.bg-white-250{
-  background-color: rgb(250,250,250);
+
+// alert
+.bg-covid-19-notice {
+  .relative{
+    position: relative;
+  }
+  .close{
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
-.sticky-note {
-  position: absolute;
-  top: 24px;
-  right: 0;
-  background-color: #cf004c;
-  color: white;
-  // font-weight: 900;
-  font-size: 24px;
+
+// bgs
+.bg-covid-19-notice {
+  background-color: #080091;
 }
-.mw-360{
-  max-width: 360px;
-  height: auto;
+
+.bg-light-blue{
+  background-color: rgb(247,248,252);
 }
-.text-blue{
-  color: $blue !important;
-}
-.bg-peacock-blue{
-  background-color: rgba(0, 102, 153, 0.9);
+
+// nav pills
+.nav-pills-home{
+  .nav-link{
+    border-radius: 0;
+  }
+  .nav-link.active{
+    color: #100090;
+    font-weight: bold;
+    background-color: rgba(17, 0, 145, 0.13);
+  }
 }

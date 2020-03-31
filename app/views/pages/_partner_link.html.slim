@@ -1,2 +1,2 @@
 = link_to partner_url, class: 'mx-3 my-3 d-inline-block', title: "Visiter le site de #{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}" do
-  = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), height: 69, alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+  = image_tag asset_pack_path("media/images/homepage/partenaires/#{partner_logo}"), alt: "#{partner_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}",class: 'img-fluid'
