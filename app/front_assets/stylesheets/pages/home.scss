@@ -1,5 +1,4 @@
 @include media-breakpoint-up(sm) {
-
   .big-tagline{
     font-size: 20px;
     line-height: 30px;
@@ -25,7 +24,6 @@
   }
 }
 
-// pills customization
 @include media-breakpoint-down(sm) {
   .flex-md-reverse-column{
     flex-direction: column-reverse;
@@ -39,6 +37,8 @@
   }
 }
 
+
+
 // alert
 .bg-covid-19-notice {
   .relative{
@@ -51,6 +51,14 @@
     right: 0;
   }
 }
+// pills customization
+@include media-breakpoint-down(xs) {
+  .bg-covid-19-notice .close{
+    right: -25px!important;
+    top: -10px!important;
+  }
+}
+
 
 // bgs
 .bg-covid-19-notice {
