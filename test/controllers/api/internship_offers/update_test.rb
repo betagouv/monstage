@@ -113,7 +113,7 @@ module Api
       assert_response :success
       assert_equal new_title, @internship_offer.reload.title
       week_instances.map do|week_instance|
-        assert_include internship_offer.reload.weeks.map(&:id), week_instance.id
+        assert_includes @internship_offer.reload.weeks.map(&:id), week_instance.id
       end
       assert_equal 2, @internship_offer.max_candidates
       assert_equal JSON.parse(@internship_offer.to_json), json_response
