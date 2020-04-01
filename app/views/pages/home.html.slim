@@ -87,7 +87,7 @@ s
 
       .col-12.col-md-6
         .tab-content
-          #pill-jobirl.tab-pane.fade.active.show role="tabpanel" aria-labelled="pill-jobirl"
+          #pill-jobirl.tab-pane.fade.active.show role="tabpanel"
             .card
 
               = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'), class: "card-img-top", alt: 'Illustration JobIRL'
@@ -102,14 +102,14 @@ s
                   | &nbsp;
                   i.fas.fa-chevron-right
 
-          #pill-tv.tab-pane role="tabpanel" aria-labelled="pill-tv"
+          #pill-tv.tab-pane role="tabpanel"
             .card
               = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'), class: "card-img-top", alt: 'Illustration Nation apprenante'
 
               .card-body
                 p France Télévisions, Radio France, Arte et le ministère de l’Éducation nationale se mobilisent pour mettre à la disposition des élèves, de leurs familles, et des enseignants, des programmes de qualité en lien avec les programmes scolaires.
                 p Les émissions diffusées à l’antenne seront ainsi identifiables par le visuel "Nation apprenante".
-          #pill-devoirs.tab-pane role="tabpanel" aria-labelle="pill-devoirs"
+          #pill-devoirs.tab-pane role="tabpanel"
             .card
               = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'), class: "card-img-top", alt: 'Illustration Télémaque'
               .card-body
@@ -164,7 +164,7 @@ s
 
     .row.align-items-center.pb-5
       .d-none.d-sm-flex.col-6
-        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'), class: 'img-fluid'
+        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'), class: 'img-fluid', alt: 'Illustration documents utiles'
       .col-12.col-sm-6.align-middle-items
         p Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
         p= link_to "Documents utiles", documents_utiles_path, class: "btn btn-outline-danger", title: 'Consulter les documents utiles'
