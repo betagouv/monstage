@@ -1,4 +1,4 @@
-.bg-covid-19-notice.alert.mb-0.rounded-0 role="alert"
+.bg-covid-19-notice.alert.p-0.mb-0.rounded-0 role="alert"
   .container.text-white
     .row.align-items-center.no-gutters.py-3.relative
       .col-md-2
@@ -9,33 +9,33 @@
           br.d-none.d-md-block
           = "à adopter."
 
-      .col-md-8.py-3.py-md-0.text-center
+      .offset-sm-2.col-sm-8.offset-md-0.col-md-8.py-3.py-md-0.text-center
         .row.no-gutters
           .col
             = image_tag asset_pack_path('media/images/homepage/bp/mouchoir-a-usage-unique.svg'), alt: "Illustration mouchoir a usage unique", height: 55, width: 55, class: 'mb-1'
             br
-            .small.d-none.d-md-inline
+            .smaller-line-height.d-none.d-md-inline-block
               | Se laver très régulièrement les mains
           .col
             = image_tag asset_pack_path('media/images/homepage/bp/se-laver-les-mains.svg'), alt: "Illustration se laver les mains", height: 55, width: 55, class: 'mb-1'
             br
-            .small.d-none.d-md-inline
+            .smaller-line-height.d-none.d-md-inline-block
               | Tousser ou éternuer dans son coude
           .col
             = image_tag asset_pack_path('media/images/homepage/bp/se-saluer-a-distance.svg'), alt: "Illustration se saluer a distance", height: 55, width: 55, class: 'mb-1'
             br
-            .small.d-none.d-md-inline
+            .smaller-line-height.d-none.d-md-inline-block
               | Utiliser des mouchoirs à usage unique
           .col
             = image_tag asset_pack_path('media/images/homepage/bp/tousser-dans-son-coude.svg'), alt: "Illustration tousser dans son coude", height: 55, width: 55, class: 'mb-1'
             br
-            .small.d-none.d-md-inline
+            .small.smaller-line-height.d-none.d-md-inline-block
               | Saluer sans se serrer la main, éviter les embrassades
 
       .col-md-2.text-center
         p.p-0.m-0
-          = link_to "ok", class: 'btn btn-outline-light' do
-            | En savoir plus
+          = link_to "https://www.gouvernement.fr/info-coronavirus ", class: 'btn btn-outline-light' do
+            | En sansvoir plus
             | &nbsp;
             i.fas.fa-chevron-right
 
@@ -68,22 +68,23 @@ s
 
     .row.pb-5.flex-md-reverse-column
       .col-12.col-md-6
-        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-5 role="tablist"
+        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5 role="tablist"
 
           = link_to "#pill-jobirl", class: 'p-3 nav-link active', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-jobirl", selected: true  }  do
             i.fas.fa-fw.fa-comments
             | &nbsp;
             span.d-none.d-md-inline JobIRL, 65 000 professionnels à votre écoute
 
+          = link_to "#pill-devoirs", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-devoirs", selected: false  }  do
+            i.fas.fa-fw.fa-mouse-pointer
+            | &nbsp;
+            span.d-none.d-md-inline Mon avenir en grand, pour développer votre potentiel !
+
           = link_to "#pill-tv", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-tv", selected: false  }  do
             i.fas.fa-fw.fa-desktop
             | &nbsp;
             span.d-none.d-md-inline Nation apprenante, vos cours à la télé !
 
-          = link_to "#pill-devoirs", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-devoirs", selected: false  }  do
-            i.fas.fa-fw.fa-mouse-pointer
-            | &nbsp;
-            span.d-none.d-md-inline Institut Télémaque, l’aide aux devoirs en ligne
 
       .col-12.col-md-6
         .tab-content
@@ -98,25 +99,33 @@ s
                 p Envoyez-leur directement un message sur www.jobirl.com.
 
                 p.mb-0= link_to "https://www.jobirl.com/", class: 'text-danger font-weight-bold' do
-                  | En savoir plus
+                  | Connectez-vous
                   | &nbsp;
                   i.fas.fa-chevron-right
 
-          #pill-tv.tab-pane role="tabpanel"
-            .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'), class: "card-img-top", alt: 'Illustration Nation apprenante'
-
-              .card-body
-                p France Télévisions, Radio France, Arte et le ministère de l’Éducation nationale se mobilisent pour mettre à la disposition des élèves, de leurs familles, et des enseignants, des programmes de qualité en lien avec les programmes scolaires.
-                p Les émissions diffusées à l’antenne seront ainsi identifiables par le visuel "Nation apprenante".
           #pill-devoirs.tab-pane role="tabpanel"
             .card
               = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'), class: "card-img-top", alt: 'Illustration Télémaque'
               .card-body
-                p Vous n’avez pas pu faire votre stage d’observation ?
-                p Il n’est pas trop tard pour découvrir le métier qui vous intéresse et en apprendre plus sur le monde de l’entreprise !
-                p 65 000 professionnels de tous secteurs sont là pour répondre à vos questions sur leurs métiers, leurs tâches au quotidien, leurs parcours également.
-                p.mb-0 Envoyez-leur directement un message sur www.jobirl.com.
+                p Le meilleur du web regroupé dans un outil pour vous orienter, vous motiver et développer votre potentiel !
+                p 400 outils pédagogiques - vidéos, quiz, sites internet - pour muscler votre culture G, découvrir des métiers et trouver des conseils, mais également pleins d’astuces pour réussir vos examens haut la main !
+                p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.htm", class: 'text-danger font-weight-bold' do
+                  | Connectez-vous
+                  | &nbsp;
+                  i.fas.fa-chevron-right
+
+
+          #pill-tv.tab-pane role="tabpanel"
+            .card
+              = image_tag asset_pack_path('media/images/homepage/alternatives/nation-apprenante.jpg'), class: "card-img-top", alt: 'Illustration Nation apprenante'
+
+              .card-body
+                p France Télévisions, Radio France, Arte et le ministère de l’Éducation nationale se mobilisent pour mettre à la disposition des élèves, de leurs familles, et des enseignants, des programmes de qualité en lien avec les programmes scolaires.
+                p Les émissions diffusées à l’antenne seront ainsi identifiables par le visuel "Nation apprenante".
+                p.mb-0= link_to "https://www.education.gouv.fr/operation-nation-apprenante-303174", class: 'text-danger font-weight-bold' do
+                  | Connectez-vous
+                  | &nbsp;
+                  i.fas.fa-chevron-right
 
 
 .bg-light-blue
@@ -128,7 +137,7 @@ s
     .row.pb-5
       .col-sm-12.col-md-5
         p.text-left.d-none.class_selector
-          d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo mon stage de troisieme", height: 100, class: ''
+          .d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo mon stage de troisieme", height: 100, class: ''
         h3.h3 Le monde professionnel s’ouvre à l’école
         p Cette plateforme, par la diversité de ses offres, va vous p Lorem ipsum...ermettre de réaliser une expérience enrichissante en lien avec votre orientation et votre projet personnel.
 
@@ -179,9 +188,9 @@ s
             p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.png"), alt: "Logo anct", height: 120
         .row.align-items-start
           .col-6
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire.png"), alt: "Logo ministere de la cohesion des territoire", height: 180
+            = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire.png"), alt: "Logo ministere de la cohesion des territoire", height: 180
           .col-6
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-education-nationale.png"), alt: "Logo ministere education nationale", height: 135
+            = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-education-nationale.png"), alt: "Logo ministere education nationale", height: 135
 
       .col-6
         h3.h3.py-5.text-center Nos partenaires

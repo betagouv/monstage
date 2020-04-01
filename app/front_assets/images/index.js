@@ -20,6 +20,7 @@ import './homepage/bp/tousser-dans-son-coude.svg';
 
 import './homepage/alternatives/telemaque.jpg';
 import './homepage/alternatives/jobirl-tutorat.jpg';
+import './homepage/alternatives/nation-apprenante.jpg';
 
 import './homepage/benefices/icon-accompagner-les-eleves.svg';
 import './homepage/benefices/icon-offrir-un-stage.svg';

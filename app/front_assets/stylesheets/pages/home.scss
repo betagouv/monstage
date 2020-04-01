@@ -19,11 +19,15 @@
   .flex-md-column{
     flex-direction: column !important;
   }
-  .nav-pills-home{
+  .nav-pills-home .nav-link.active{
     border-right: 4px solid #DA000C;
   }
 }
-
+.smaller-line-height{
+  line-height: 1rem; // to be fixed
+  font-size: 80%;
+  font-weight: 400;
+}
 @include media-breakpoint-down(sm) {
   .flex-md-reverse-column{
     flex-direction: column-reverse;
@@ -33,6 +37,13 @@
       .nav-link{
         display: inline-block;
       }
+    }
+  }
+  .nav-pills-home .nav-link{
+    text-decoration: none;
+    &.active{
+      border-top: 4px solid #DA000C;
+      border-right: none;
     }
   }
 }
@@ -54,8 +65,8 @@
 // pills customization
 @include media-breakpoint-down(xs) {
   .bg-covid-19-notice .close{
-    right: -25px!important;
-    top: -10px!important;
+    right: 5px!important;
+    top: 5px!important;
   }
 }
 
