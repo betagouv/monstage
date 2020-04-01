@@ -38,9 +38,8 @@ import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
 import './homepage/partenaires/Logo-jndj.jpg';
 import './homepage/partenaires/Logo-united-way.jpg';
 
-import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire.png';
-import './homepage/sponsors/Logo-anct.png';
-import './homepage/sponsors/Logo-ministere-education-nationale.png';
+import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
+import './homepage/sponsors/Logo-anct.jpg';
 
 import './documents_utiles/CarnetStagePro_USEA_WEB-2.jpg';
 import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
