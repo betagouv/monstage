@@ -9,6 +9,7 @@ import './onboarding/confirm-mobile.svg';
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 
+import './homepage/liseret.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';

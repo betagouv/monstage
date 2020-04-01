@@ -1,15 +1,11 @@
 .bg-covid-19-notice.alert.p-0.mb-0.rounded-0 role="alert"
   .container.text-white
     .row.align-items-center.no-gutters.py-3.relative
-      .col-md-2
-        p.text-center.text-md-right.p-0.pr-md-3.m-0.font-weight-bold
-          = "Face au Covid-19, "
-          br.d-none.d-md-block
-          = "des gestes simples "
-          br.d-none.d-md-block
-          = "à adopter."
+      .col-md-3#css-liseret
+        p.text-center.text-md-right.p-0.py-md-3.pr-md-5.m-0.font-weight-bold
+          = "Face au Covid-19, des gestes simples à adopter."
 
-      .offset-sm-2.col-sm-8.offset-md-0.col-md-8.py-3.py-md-0.text-center
+      .offset-sm-2.col-sm-7.offset-md-0.col-md-7.py-3.py-md-0.text-center
         .row.no-gutters
           .col
             = image_tag asset_pack_path('media/images/homepage/bp/mouchoir-a-usage-unique.svg'), alt: "Illustration mouchoir a usage unique", height: 55, width: 55, class: 'mb-1'
