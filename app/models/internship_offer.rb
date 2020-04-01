@@ -26,7 +26,7 @@ class InternshipOffer < ApplicationRecord
                   ignoring: :accents,
                   using: {
                     tsearch: {
-                      dictionary: 'public.fr',
+                      dictionary: 'public.config_search_with_synonym',
                       tsvector_column: "search_tsv",
                       prefix: true,
                     }

@@ -3,7 +3,7 @@ class BuildFtsIndexOnInternshipOffers < ActiveRecord::Migration[6.0]
     execute <<-SQL
       CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE
         ON internship_offers FOR EACH ROW EXECUTE PROCEDURE
-        tsvector_update_trigger(search_tsv, 'public.fr', title, description, employer_description);
+        tsvector_update_trigger(search_tsv, 'public.config_search_with_synonym', title, description, employer_description);
     SQL
     now = Time.current.to_s(:db)
     update("UPDATE internship_offers SET updated_at = '#{now}'")
