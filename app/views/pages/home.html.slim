@@ -55,16 +55,19 @@
 
     .row.d-none.d-sm-flex.pt-3.pt-sm-5
       .col-12.pt-5
-        p.scroller.text-center= image_tag asset_pack_path('media/images/homepage/scroll_down.svg'), alt: "Illustration scroller pour continuer", height: 55, width: 55
+        p.scroller.text-center
+          = link_to "#des-solutions-pour-vous-tout-de-suite" do
+            = image_tag asset_pack_path('media/images/homepage/scroll_down.svg'), alt: "Illustration scroller pour continuer", height: 55, width: 55
 
-s
+
 
 
 .bg-transparent
   .container
     .row
       .col-12
-        h2.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous, tout de suite.
+
+        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous, tout de suite.
 
     .row.pb-5.flex-md-reverse-column
       .col-12.col-md-6
