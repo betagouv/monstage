@@ -19,10 +19,16 @@ module Dashboard
       def update
         @internship_application = @internship_offer.internship_applications.find(params[:id])
         authorize! :update, @internship_application, InternshipApplication
-        @internship_application.send(params[:transition]) if valid_transition?
-        redirect_back fallback_location: current_user.after_sign_in_path,
-                      flash: { success: 'Candidature mise à jour avec succès' }
-      rescue AASM::InvalidTransition
+        if valid_transition?
+          @internship_application.send(params[:transition])
+          @internship_application.update!(optional_internship_application_params)
+          redirect_back fallback_location: current_user.after_sign_in_path,
+                        flash: { success: 'Candidature mise à jour avec succès' }
+        else
+          redirect_back fallback_location: current_user.after_sign_in_path,
+                        flash: { success: 'Impossible de traiter votre requète, veuillez contacter notre support' }
+        end
+      rescue AASM::InvalidTransition => e
         redirect_back fallback_location: current_user.after_sign_in_path,
                       flash: { warning: 'Cette candidature a déjà été traitée' }
       end
@@ -37,8 +43,12 @@ module Dashboard
         @internship_offer = InternshipOffer.find(params[:internship_offer_id])
       end
 
-      def internship_application_params
-        params.require(:internship_application).permit(:motivation, :internship_offer_week_id, :user_id)
+      def optional_internship_application_params
+        params.fetch(:internship_application) { {} }
+              .permit(:approved_message,
+                      :canceled_message,
+                      :rejected_message,
+                      :aasm_state)
       end
     end
   end

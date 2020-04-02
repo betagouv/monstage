@@ -1,5 +1,2 @@
-p style=p_styles
-  = "Bonjour, nous avons le regret de vous informer que votre candidature au stage #{@internship_application.internship_offer.title} a reçu une réponse défavorable."
+= @internship_application.rejected_message.to_s
 
-p style=p_styles
-  = "Soyez déterminés et continuez de chercher, il y a d’autres stages disposnibles qui correspondent à vos critères. Bon courage."

@@ -112,7 +112,7 @@ module Api
       end
       assert_response :success
       assert_equal new_title, @internship_offer.reload.title
-      week_instances.map do|week_instance|
+      week_instances.map do |week_instance|
         assert_includes @internship_offer.reload.weeks.map(&:id), week_instance.id
       end
       assert_equal 2, @internship_offer.max_candidates
