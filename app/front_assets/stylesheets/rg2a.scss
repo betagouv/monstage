@@ -28,6 +28,9 @@ abbr[title] {
       // display: flex;
       border-bottom: 1px $nav-tabs-border-color solid;
     }
+    tr:last-child{
+      border-bottom: none;
+    }
     td:first-child {
       display: block;
       width: 100%;

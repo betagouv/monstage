@@ -15,7 +15,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     assert_difference 'InternshipOffers::Web.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit employer.custom_dashboard_path
-        click_on 'Déposer une offre'
+        find('#test-create-offer').click
         fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
         find('#internship_offer_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
         select sectors.first.name, from: 'internship_offer_sector_id'

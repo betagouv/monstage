@@ -2,37 +2,87 @@
   "name": "Monstage",
   "description": "Describe infrastructure.",
   "website": "https://www.monstagedetroisieme.fr/",
+
   "repository": "https://github.com/betagouv/monstage",
 
+  "stack": "heroku-18",
+
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
 
   "environments": {
-    "staging": {
-      "scripts": {
-        "postdeploy": "bundle exec bin/rails db:migrate"
-      }
-    },
 
     "review": {
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:seed"
+        "postdeploy": "bundle exec bin/rails db:structure:load db:seed db:migrate"
       },
-
       "env": {
-        "RAILS_SERVE_STATIC_FILES": "true",
-        "RAILS_ENV": "review"
+        "RAILS_ENV": "review",
+        "RAILS_MAX_THREADS": 6,
+        "WEB_CONCURRENCY": 1
       },
       "addons": [
-        "heroku-postgresql:hobby-basic",
-        "mailtrap:unpaid",
-        "newrelic:wayne",
-        "papertrail:choklad",
-        "scheduler:standard"
+        {
+          "plan": "heroku-postgresql:hobby-basic",
+          "options": {
+            "version": "12"
+          }
+        },
+        { "plan": "newrelic:wayne" },
+        { "plan": "papertrail:choklad" },
+        { "plan": "scheduler:standard" },
+        { "plan": "mailtrap:unpaid" }
+      ]
+    },
+
+    "staging": {
+      "scripts": {
+        "postdeploy": "bundle exec bin/rails db:migrate"
+      },
+      "env": {
+        "RAILS_ENV": "staging",
+        "HOST": "https://v2-test.monstagedetroisieme.fr",
+        "RAILS_MAX_THREADS": 6,
+        "WEB_CONCURRENCY": 1
+      },
+      "addons": [
+        {
+          "plan": "heroku-postgresql:hobby-basic",
+          "options": {
+            "version": "12"
+          }
+        },
+        { "plan": "newrelic:wayne" },
+        { "plan": "papertrail:choklad" },
+        { "plan": "scheduler:standard" },
+        { "plan": "sendgrid:starter" }
       ]
     },
 
     "production": {
+      "addons": [
+        {
+          "plan": "heroku-postgresql:hobby-basic",
+          "options": {
+            "version": "12"
+          }
+        },
+        { "plan": "newrelic:hawke" },
+        { "plan": "papertrail:choklad" },
+        { "plan": "scheduler:standard" },
+        { "plan": "vigil:essentials" }
+      ],
       "scripts": {
         "postdeploy": "bundle exec bin/rails db:migrate"
+      },
+      "env": {
+        "RAILS_ENV": "production",
+        "HOST": "https://www.monstagedetroisieme.fr",
+        "RAILS_MAX_THREADS": 6,
+        "WEB_CONCURRENCY": 1
       }
     }
   }

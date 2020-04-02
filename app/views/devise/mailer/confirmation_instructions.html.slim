@@ -24,20 +24,3 @@
     br /
     | Cliquez sur le bouton ci-dessous afin d'activer votre compte.
   = render(partial: "mailers/call_to_action", locals: {href: confirmation_url(@resource, confirmation_token: @token), label:"Activer mon compte"})
-
-  - if @resource.is_a?(Users::Student)
-    p style=p_styles
-      | En plus d'activer votre compte par email, veuillez :
-    ul
-      li
-        | faire signer (par vos responsables légaux) l'autorisation parentale, en pièce jointe
-      li
-        | la rendre à votre professeur principal (qui confirmera votre accès à la plateforme, vous en serez notifié par mail).
-    p style=p_styles
-      | Merci.
-  - if @resource.is_a?(Users::MainTeacher)
-    p style=p_styles
-      |  Vous trouverez notre modèle d'autorisation parentale en pièce jointe.
-      br
-      |  Vos élèves doivent la faire signer par leurs responsables légaux, vous la rendre et que vous confirmiez l'avoir réçus via votre
-
