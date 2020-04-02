@@ -138,12 +138,17 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_application = create(:internship_application, :approved)
     assert_changes -> { internship_application.reload.aasm_state },
                    from: 'approved',
-                   to: 'rejected' do
+                   to: 'canceled' do
       freeze_time do
-        assert_changes -> { internship_application.reload.rejected_at },
+        assert_changes -> { internship_application.reload.canceled_at },
                        from: nil,
                        to: Time.now.utc do
-          internship_application.cancel!
+          mock_mail = MiniTest::Mock.new
+          mock_mail.expect(:deliver_later, true)
+          StudentMailer.stub :internship_application_canceled_email, mock_mail do
+            internship_application.cancel!
+          end
+          mock_mail.verify
         end
       end
     end
@@ -198,7 +203,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                                                        internship_offer_week: internship_offer_1.internship_offer_weeks.first)
     assert_changes -> { internship_application_to_be_canceled.reload.aasm_state },
                    from: 'approved',
-                   to: 'rejected' do
+                   to: 'expired' do
       internship_application_to_be_signed.signed!
     end
     assert internship_application_ignored_by_week.reload.approved?

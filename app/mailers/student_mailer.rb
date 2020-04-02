@@ -16,6 +16,13 @@ class StudentMailer < ApplicationMailer
          subject: "Votre candidature au stage #{@internship_application.internship_offer.title} a été rejetée")
   end
 
+  def internship_application_canceled_email(internship_application:)
+    @internship_application = internship_application
+
+    mail(to: @internship_application.student.email,
+         subject: "Votre candidature au stage #{@internship_application.internship_offer.title} a été annulée")
+  end
+
   def account_activated_by_main_teacher_email(user:)
     @user = user
 

@@ -79,19 +79,21 @@ module InternshipApplications
       assert_equal "OK", internship_application.rejected_message.try(:to_plain_text)
       assert InternshipApplication.last.approved?
     end
-    test 'PATCH #update with cancel! does not send email, change aasm_state' do
+    test 'PATCH #update with cancel! send email, change aasm_state' do
       internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
-      assert_enqueued_emails 0 do
+      assert_enqueued_emails 1 do
         patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-              params: { transition: :cancel! })
+              params: { transition: :cancel!,
+                        internship_application: { canceled_message: 'OK' } })
         assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
       internship_application.reload
 
-      assert internship_application.rejected?
+      assert_equal "OK", internship_application.canceled_message.try(:to_plain_text)
+      assert internship_application.canceled?
     end
 
     test 'PATCH #update with lol! fails gracefully' do

@@ -122,36 +122,40 @@ class InternshipApplication < ApplicationRecord
 
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :expired, :convention_signed
+    state :submitted, :approved, :rejected, :expired, :canceled, :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: :transition_with_email
     end
 
     event :expire do
-      transitions from: :submitted, to: :expired, after: proc { |*_args|
+      transitions from: %i[approved submitted drafted], to: :expired, after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
     end
 
     event :approve do
-      transitions from: %i[submitted rejected], to: :approved, after: :transition_with_email
+      transitions from: %i[submitted canceled rejected],
+                  to: :approved,
+                  after: :transition_with_email
     end
 
     event :reject do
-      transitions from: :submitted, to: :rejected, after: :transition_with_email
+      transitions from: :submitted,
+                  to: :rejected,
+                  after: :transition_with_email
     end
 
     event :cancel do
-      transitions from: %i[drafted submitted approved], to: :rejected, after: proc { |*_args|
-        update!(rejected_at: Time.now.utc)
-      }
+      transitions from: %i[drafted submitted approved],
+                  to: :canceled,
+                  after: :transition_with_email
     end
 
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        student.cancel_application_on_week(week: internship_offer_week.week,
+        student.expire_application_on_week(week: internship_offer_week.week,
                                            keep_internship_application_id: id)
       }
     end
