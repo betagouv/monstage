@@ -97,13 +97,13 @@ module Users
       'resume'
     end
 
-    def cancel_application_on_week(week:, keep_internship_application_id:)
+    def expire_application_on_week(week:, keep_internship_application_id:)
       internship_applications
         .where(aasm_state: %i[approved submitted drafted])
         .not_by_id(id: id)
         .joins(:internship_offer_week)
         .where("internship_offer_weeks.week_id = #{week.id}")
-        .map(&:cancel!)
+        .map(&:expire!)
     end
 
     def anonymize
