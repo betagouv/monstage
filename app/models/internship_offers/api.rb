@@ -33,6 +33,7 @@ module InternshipOffers
         field :remote_id
         field :permalink
         field :max_candidates
+        field :is_public
       end
 
       export do
@@ -45,6 +46,7 @@ module InternshipOffers
         field :approved_applications_count
         field :rejected_applications_count
         field :convention_signed_applications_count
+        field :is_public
       end
     end
 
