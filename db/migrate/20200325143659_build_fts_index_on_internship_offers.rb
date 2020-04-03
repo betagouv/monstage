@@ -7,6 +7,7 @@ class BuildFtsIndexOnInternshipOffers < ActiveRecord::Migration[6.0]
     SQL
     now = Time.current.to_s(:db)
     update("UPDATE internship_offers SET updated_at = '#{now}'")
+    SyncInternshipOfferKeywordsJob.perform_now
   end
 
   def down

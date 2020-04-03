@@ -23,8 +23,12 @@ class CreateInternshipOfferKeywords < ActiveRecord::Migration[6.0]
 
     execute <<-SQL
       ALTER  TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-        ALTER MAPPING FOR asciiword
+        ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, word, hword, hword_part
           WITH public.dict_internship_offer_keywords;
+    SQL
+    execute <<-SQL
+      ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+        DROP MAPPING FOR email, url, host, file, uint, url_path, sfloat, float, numword, numhword, version;
     SQL
   end
 
