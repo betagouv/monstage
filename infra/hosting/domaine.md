@@ -11,10 +11,7 @@ Nous y hébergons deux environnements :
 
 ## Environnement de test
 
-Actuellement accessible via : [https://betagouv-monstage-staging.herokuapp.com](https://betagouv-monstage-staging.herokuapp.com)
-
-Nous souhaitons l'exposer sur : **https://v2-test.monstagedetroisieme.fr**
-
+Actuellement accessible via : [https://v2-test.monstagedetroisieme.fr](https://v2-test.monstagedetroisieme.fr)
 
 Pour la configuration du CNAME, pouvez-vous faire pointer **v2-test.monstagedetroisieme.fr** sur **darwinian-orca-0cqovj7wszaz94zaelrzhewe.herokudns.com.** (attention le point a la fin est important)
 
@@ -27,11 +24,7 @@ v2-test                      IN CNAME  darwinian-orca-0cqovj7wszaz94zaelrzhewe.h
 
 ## Domaine de production
 
-Actuellement notre application de production est accessible via : [https://betagouv-monstage-prod.herokuapp.com](https://betagouv-monstage-prod.herokuapp.com)
-
-Cette application n'est pas encore prête a être lachée dans la nature (moche). Nous souhaitons donc l'exposer temporairement sur : **https://v2.monstagedetroisieme.fr**.
-
-A terme, nous utiliserons **https://monstagedetroisieme.fr** (avec le https://www.monstagedetroisieme.fr en redirection permanente sur https://monstagedetroisieme.fr). Nous reviendrons vers vous une fois l'application prête.
+Actuellement notre application de production est accessible via : [v2.monstagedetroisieme.fr](v2.monstagedetroisieme.fr)
 
 Pour la configuration du CNAME, pouvez-vous faire pointer **v2.monstagedetroisieme.fr** sur **elementary-watercress-nq42aaszcz812tznsspynlfk.herokudns.com.** (attention le point a la fin est important)
 
@@ -39,6 +32,6 @@ Pour la configuration du CNAME, pouvez-vous faire pointer **v2.monstagedetroisie
 Exemple d'entrée DNS :
 
 ```
-v2                      IN CNAME elementary-watercress-nq42aaszcz812tznsspynlfk.herokudns.com.
+www                      IN CNAME elementary-watercress-nq42aaszcz812tznsspynlfk.herokudns.com.
 ```
 

@@ -12,7 +12,10 @@ class InternshipApplication < ApplicationRecord
   has_one :internship_offer, through: :internship_offer_week
   has_one :week, through: :internship_offer_week
 
-  validates :motivation, :internship_offer_week, presence: true, unless: :application_via_school_manager?
+  validates :motivation,
+            :internship_offer_week,
+            presence: true,
+            unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
 
   before_validation :internship_offer_has_spots_left?, on: :create
@@ -25,6 +28,10 @@ class InternshipApplication < ApplicationRecord
   after_save :update_all_counters
 
   accepts_nested_attributes_for :student, update_only: true
+
+  has_rich_text :approved_message
+  has_rich_text :rejected_message
+  has_rich_text :canceled_message
 
   paginates_per PAGE_SIZE
 
@@ -115,36 +122,40 @@ class InternshipApplication < ApplicationRecord
 
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :expired, :convention_signed
+    state :submitted, :approved, :rejected, :expired, :canceled, :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: :transition_with_email
     end
 
     event :expire do
-      transitions from: :submitted, to: :expired, after: proc { |*_args|
+      transitions from: %i[approved submitted drafted], to: :expired, after: proc { |*_args|
         update!(expired_at: Time.now.utc)
       }
     end
 
     event :approve do
-      transitions from: %i[submitted rejected], to: :approved, after: :transition_with_email
+      transitions from: %i[submitted canceled rejected],
+                  to: :approved,
+                  after: :transition_with_email
     end
 
     event :reject do
-      transitions from: :submitted, to: :rejected, after: :transition_with_email
+      transitions from: :submitted,
+                  to: :rejected,
+                  after: :transition_with_email
     end
 
     event :cancel do
-      transitions from: %i[drafted submitted approved], to: :rejected, after: proc { |*_args|
-        update!(rejected_at: Time.now.utc)
-      }
+      transitions from: %i[drafted submitted approved],
+                  to: :canceled,
+                  after: :transition_with_email
     end
 
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        student.cancel_application_on_week(week: internship_offer_week.week,
+        student.expire_application_on_week(week: internship_offer_week.week,
                                            keep_internship_application_id: id)
       }
     end

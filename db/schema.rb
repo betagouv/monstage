@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_143659) do
     t.datetime "submitted_at"
     t.datetime "expired_at"
     t.datetime "pending_reminder_sent_at"
+    t.datetime "canceled_at"
     t.index ["aasm_state"], name: "index_internship_applications_on_aasm_state"
     t.index ["internship_offer_week_id"], name: "index_internship_applications_on_internship_offer_week_id"
     t.index ["user_id", "internship_offer_week_id"], name: "uniq_applications_per_internship_offer_week", unique: true

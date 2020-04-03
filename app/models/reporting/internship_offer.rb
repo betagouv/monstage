@@ -6,6 +6,7 @@ module Reporting
     def readonly?
       true
     end
+    self.inheritance_column = nil
 
     belongs_to :sector
     belongs_to :group, optional: true

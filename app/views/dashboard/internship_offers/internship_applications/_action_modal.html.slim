@@ -1,32 +1,28 @@
-div.modal id="#{approved ? "approve" : "reject"}-internship-application-#{internship_application.id}" tabindex="-1" role="dialog"
+- aasm_notifier = MessageForAasmState.new(internship_application: internship_application, aasm_target: aasm_target)
+
+= button_tag type: "button", data: { toggle: 'modal', target: "##{modal_id}" }, class: "btn btn-#{aasm_notifier.target_action_color} mx-1" do
+  i class="fas #{fa_icon}"
+  = " "
+  = modal_opener_label
+
+= form_with({model: internship_application, url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application), html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"}}) do |f|
+  = hidden_field_tag :transition, aasm_target
+
   .modal-dialog role="document"
-
     .modal-content
-      .modal-header
-        h5.modal-title
-          - if approved
-            i.fas.fa-check.text-success
-          - else
-            i.fas.fa-ban.text-danger
+      .modal-header.p-4
+        h5 class="modal-title"
+          = "#{modal_opener_label} la candidature"
 
-          = " "
-          = "#{approved ? "Accepter" : "Refuser"} la candidature"
         button type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
-      .modal-body
-        p.text-muted.small Message envoyé à  l'élève
-        p
-          = "Bonjour #{Presenters::User.new(user: internship_application.student).full_name},"
-          br
-          br
-          = "Votre candidature pour le stage \"#{internship_application.internship_offer.title}\" est #{approved ? "acceptée" : "refusée"} pour la semaine #{internship_application.week.short_select_text_method}."
-          - if approved
-            br
-            br
-            = "Vous devez maintenant faire signer la convention de stage."
 
-      .modal-footer.actions
+      .modal-body.px-4.py-0
+        = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
+
+        p.text-muted.small.mt-3.mb-0 Message envoyé à l'élève
+
+      .modal-footer.px-4.py-3.actions
         button type="button" class="btn btn-outline-warning" data-dismiss="modal" Annuler
 
-        = link_to dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: (approved ? :approve! : :reject!)), method: :patch, class: 'btn btn-warning' do
-              = "Envoyer"
+        = f.submit class: 'btn btn-warning', value: "Confirmer"

@@ -94,6 +94,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    capybara-screenshot (1.0.24)
+      capybara (>= 1.0, < 4)
+      launchy
     caxlsx (3.0.1)
       htmlentities (~> 4.3, >= 4.3.4)
       mimemagic (~> 0.3)
@@ -398,6 +401,7 @@ DEPENDENCIES
   byebug
   cancancan
   capybara
+  capybara-screenshot
   caxlsx_rails
   delayed_job_active_record
   delayed_job_web

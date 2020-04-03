@@ -5,7 +5,6 @@ target='staging'
 git remote -vvv | grep $target
 
 if [ $? -eq 0 ]; then
-  git push $target master:master
   exit $?
 else
   echo "missing git remote $target"

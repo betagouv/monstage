@@ -466,7 +466,8 @@ CREATE TABLE public.internship_applications (
     convention_signed_at timestamp without time zone,
     submitted_at timestamp without time zone,
     expired_at timestamp without time zone,
-    pending_reminder_sent_at timestamp without time zone
+    pending_reminder_sent_at timestamp without time zone,
+    canceled_at timestamp without time zone
 );
 
 
@@ -1780,6 +1781,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200322093818'),
 ('20200322093819'),
 ('20200325143657'),
-('20200325145511');
+('20200325145511'),
+('20200402140231');
 
 
