@@ -12,7 +12,7 @@ jobs: # a collection of steps
           PGUSER: monstage_test
           RAILS_ENV: test
           HOST: https://www.example.fr
-      - image: mfourcade/postgres-12-alpine-postgis-synonym:0.0.1 # database image with support of current dir
+      - image: mfourcade/postgres-12-alpine-postgis-synonym:0.0.2 # database image with support of current dir
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
