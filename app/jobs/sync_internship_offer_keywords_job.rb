@@ -4,7 +4,7 @@ class SyncInternshipOfferKeywordsJob < ActiveJob::Base
   def perform
     if InternshipOffer.count.positive?
       raw(query: "TRUNCATE TABLE internship_offer_keywords")
-      rs = raw(query: "select * from ts_stat($$SELECT to_tsvector('config_internship_offer_keywords', CONCAT(unaccent(title), ' ', unaccent(description), ' ', unaccent(employer_description))) FROM internship_offers$$) ORDER BY ndoc DESC")
+      rs = raw(query: "select * from ts_stat($$SELECT to_tsvector('public.config_internship_offer_keywords', CONCAT(unaccent(title), ' ', unaccent(description), ' ', unaccent(employer_description))) FROM internship_offers$$) ORDER BY ndoc DESC")
 
       InternshipOfferKeyword.insert_all(rs.to_a)
     end
