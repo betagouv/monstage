@@ -49,6 +49,24 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: dict_internship_offer_keywords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_internship_offer_keywords (
+    TEMPLATE = pg_catalog.simple,
+    stopwords = 'french' );
+
+
+--
+-- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
+    TEMPLATE = pg_catalog.thesaurus,
+    dictfile = 'thesaurus_monstage', dictionary = 'pg_catalog.french_stem' );
+
+
+--
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -58,12 +76,100 @@ CREATE TEXT SEARCH DICTIONARY public.french_nostopwords (
 
 
 --
--- Name: french_simple_dict; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+-- Name: config_internship_offer_keywords; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH DICTIONARY public.french_simple_dict (
-    TEMPLATE = pg_catalog.simple,
-    stopwords = 'french' );
+CREATE TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR asciiword WITH public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR word WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_part WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_asciipart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR asciihword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR uint WITH simple;
+
+
+--
+-- Name: config_search_with_synonym; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR "int" WITH simple;
 
 
 --
@@ -128,71 +234,6 @@ ALTER TEXT SEARCH CONFIGURATION public.fr
     ADD MAPPING FOR "int" WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.fr
-    ADD MAPPING FOR uint WITH simple;
-
-
---
--- Name: french_simple; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH CONFIGURATION public.french_simple (
-    PARSER = pg_catalog."default" );
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR asciiword WITH public.french_simple_dict;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR word WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR numword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR email WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR url WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR host WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR sfloat WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR version WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR hword_numpart WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR hword_part WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR hword_asciipart WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR numhword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR asciihword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR hword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR url_path WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR file WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR "float" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
-    ADD MAPPING FOR "int" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.french_simple
     ADD MAPPING FOR uint WITH simple;
 
 
@@ -1779,9 +1820,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200227162157'),
 ('20200312131954'),
 ('20200322093818'),
+('20200322093819'),
 ('20200325143657'),
 ('20200325143658'),
 ('20200325143659'),
+('20200325145511'),
 ('20200402140231');
 
 
