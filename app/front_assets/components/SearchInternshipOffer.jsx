@@ -6,18 +6,21 @@ import KeywordInput from './inputs/KeywordInput';
 
 function SearchInternshipOffer({ url, initialLocation }) {
   const searchParams = new URLSearchParams(window.location.search);
-  // default holded by url
-  const [term, setTerm] = useState(searchParams.get('term') || "");
+  // used by keyword input
+  const [keyword, setKeyword] = useState(searchParams.get('keyword') || "");
+  // used by location input
+  const [city, setCity] = useState(searchParams.get('city'));
+  const [latitude, setLatitude] = useState(searchParams.get('latitude'));
+  const [longitude, setLongitude] = useState(searchParams.get('longitude'));
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
-
-  // location is a bit trickier
-  const [location, setLocation] = useState(null);
+  // used by both
   const [focus, setFocus] = useState(null);
+
   const filterOffers = event => {
-    if (location && location.nom != term) {
-      searchParams.set('city', location.nom);
-      searchParams.set('latitude', location.centre.coordinates[1]);
-      searchParams.set('longitude', location.centre.coordinates[0]);
+    if (city) {
+      searchParams.set('city', city);
+      searchParams.set('latitude', latitude);
+      searchParams.set('longitude', longitude);
       searchParams.set('radius', radius);
     } else {
       searchParams.delete('city');
@@ -26,10 +29,10 @@ function SearchInternshipOffer({ url, initialLocation }) {
       searchParams.delete('longitude');
     }
 
-    if (term.length > 0) {
-      searchParams.set('term', term);
+    if (keyword.length > 0) {
+      searchParams.set('keyword', keyword);
     } else {
-      searchParams.delete('term');
+      searchParams.delete('keyword');
     }
 
     searchParams.delete('page');
@@ -45,16 +48,23 @@ function SearchInternshipOffer({ url, initialLocation }) {
     <form data-turbolink={false} onSubmit={filterOffers}>
       <div className="row search-bar">
         <KeywordInput
-          term={term}
-          setTerm={setTerm}
+          keyword={keyword}
+          setKeyword={setKeyword}
           focus={focus}
           setFocus={setFocus}
         />
         <LocationInput
-          setRadius={setRadius}
+          city={city}
+          longitude={longitude}
+          latitude={latitude}
+
+          setCity={setCity}
+          setLongitude={setLongitude}
+          setLatitude={setLatitude}
+
           radius={radius}
-          initialLocation={initialLocation}
-          setLocation={setLocation}
+          setRadius={setRadius}
+
           focus={focus}
           setFocus={setFocus}
         />

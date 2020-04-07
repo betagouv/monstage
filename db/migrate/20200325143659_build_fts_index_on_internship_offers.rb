@@ -7,10 +7,7 @@ class BuildFtsIndexOnInternshipOffers < ActiveRecord::Migration[6.0]
     SQL
     now = Time.current.to_s(:db)
     update("UPDATE internship_offers SET updated_at = '#{now}'")
-    if InternshipOffer.count.positive?
-      execute "TRUNCATE TABLE internship_offer_keywords"
-      execute "select * from ts_stat($$SELECT to_tsvector('public.config_internship_offer_keywords', CONCAT(unaccent(title), ' ', unaccent(description), ' ', unaccent(employer_description))) FROM internship_offers$$) ORDER BY ndoc DESC"
-    end
+    SyncInternshipOfferKeywordsJob.perform_now
   end
 
   def down

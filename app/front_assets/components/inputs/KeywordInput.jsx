@@ -4,11 +4,18 @@ import focusedInput from './FocusedInput';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
-function KeywordInput({ term, setTerm, focus, setFocus }) {
+function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
   const [searchResults, setSearchResults] = useState([]);
+
   const inputChange = event => {
-    setTerm(event.target.value);
+    setKeyword(event.target.value);
   };
+
+  const safeSetKeyword = item => {
+    if (item) {
+      setKeyword(item.word);
+    }
+  }
 
   const searchKeyword = () => {
     const endpoint = new URL(
@@ -16,7 +23,7 @@ function KeywordInput({ term, setTerm, focus, setFocus }) {
     );
     const searchParams = new URLSearchParams();
 
-    searchParams.append('term', term);
+    searchParams.append('keyword', keyword);
     endpoint.search = searchParams.toString();
 
     fetch(endpoint, { method: 'POST' })
@@ -25,18 +32,16 @@ function KeywordInput({ term, setTerm, focus, setFocus }) {
   };
 
   useEffect(() => {
-    if (term.length > 0) {
-      searchKeyword(term);
+    if (keyword && keyword.length > 0) {
+      searchKeyword(keyword);
     }
-  }, [term]);
+  }, [keyword]);
 
   return (
     <Downshift
-      initialInputValue={term}
-      onChange={item => {
-        setTerm(item.word)
-      }}
-      selectedItem={term}
+      initialInputValue={keyword}
+      onChange={safeSetKeyword}
+      selectedItem={keyword}
       itemToString={item => (item ? item.word : '')}
     >
       {({

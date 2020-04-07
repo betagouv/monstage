@@ -33,7 +33,7 @@ module InternshipOffersHelper
                                        :longitude,
                                        :radius,
                                        :city,
-                                       :term)
+                                       :keyword)
 
     internship_offer_path(default_params.merge(forwardable_params))
   end

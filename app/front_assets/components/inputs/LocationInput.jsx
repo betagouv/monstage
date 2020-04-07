@@ -3,30 +3,43 @@ import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
 
-const COMPONENT_FOCUS_LABEL = 'location'
-const buildValue = (searchTerm, radius) => searchTerm; // `${searchTerm} – ${radius / 1000}km`;
+const COMPONENT_FOCUS_LABEL = 'location';
 
 function LocationInput({
-  setRadius,
+  // getters
+  city,
+  latitude,
+  longitude,
+  // setters
+  setCity,
+  setLatitude,
+  setLongitude,
+  // forwarded to radiusInput
   radius,
-  initialRadius,
-  setLocation,
-  initialLocation,
+  setRadius,
+  // used by container
   focus,
   setFocus,
 }) {
-  const [searchTerm, setSearchTerm] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
   const inputChange = event => {
-    setSearchTerm(event.target.value);
+    setCity(event.target.value);
   };
+
+  const setLocation = item => {
+    if (item) {
+      setCity(item.nom);
+      setLatitude(item.centre.coordinates[1]);
+      setLongitude(item.centre.coordinates[0]);
+    }
+  }
 
   const searchCityByName = () => {
     const endpoint = new URL('https://geo.api.gouv.fr/communes');
     const searchParams = new URLSearchParams();
 
-    searchParams.append('nom', searchTerm);
+    searchParams.append('nom', city);
     searchParams.append('fields', ['nom', 'centre', 'departement', 'codesPostaux'].join(','));
     searchParams.append('limit', 10);
     searchParams.append('boost', 'population');
@@ -38,16 +51,17 @@ function LocationInput({
   };
 
   useEffect(() => {
-    if (searchTerm && searchTerm.length > 0 && searchTerm != initialLocation) {
-      searchCityByName(searchTerm);
+    if (city && city.length > 0) {
+      searchCityByName(city);
     }
-  }, [searchTerm]);
+  }, [city]);
 
   return (
     <Downshift
-      initialInputValue={initialLocation ? buildValue(initialLocation, radius) : ''}
+      initialInputValue={city}
       onChange={setLocation}
-      itemToString={item => (item ? buildValue(item.nom, radius) : '')}
+      selectedItem={city}
+      itemToString={item => item ? item.nom : ''}
     >
       {({
         getInputProps,
@@ -58,7 +72,7 @@ function LocationInput({
         inputValue,
         highlightedIndex,
         selectedItem,
-        openMenu
+        openMenu,
       }) => (
         <div
           className={`input-group input-group-search col ${focusedInput({
@@ -84,10 +98,10 @@ function LocationInput({
               className: 'form-control pl-2 input-group-search-right-border',
               id: 'input-search-by-city',
               placeholder: 'Lieu',
-              onFocus: (event) => {
-                setFocus(COMPONENT_FOCUS_LABEL)
-                openMenu(event)
-              }
+              onFocus: event => {
+                setFocus(COMPONENT_FOCUS_LABEL);
+                openMenu(event);
+              },
             })}
           />
 
@@ -97,7 +111,11 @@ function LocationInput({
                 className: 'p-0 m-0',
               })}
             >
-              {isOpen &&  <li><RadiusInput radius={radius} setRadius={setRadius}/></li>}
+              {isOpen && (
+                <li>
+                  <RadiusInput radius={radius} setRadius={setRadius} />
+                </li>
+              )}
               {isOpen
                 ? searchResults.map((item, index) => (
                     <li
@@ -126,7 +144,5 @@ function LocationInput({
     </Downshift>
   );
 }
-
-
 
 export default LocationInput;

@@ -455,7 +455,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', internship_offer_url(discarded_internship_offer), 0
   end
 
-  test 'GET #index as Visitor with search term find internship offer' do
+  test 'GET #index as Visitor with search keyword find internship offer' do
     assert false
   end
 end

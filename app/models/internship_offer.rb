@@ -17,7 +17,7 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
-  pg_search_scope :search_by_term,
+  pg_search_scope :search_by_keyword,
                   against: {
                     title: 'A',
                     description: 'B',
