@@ -48,16 +48,4 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
                  InternshipOffer.search_by_term("gendarme").count,
                  "can't find with synonym gendarme")
   end
-
-  test 'create sync keywords' do
-    assert false
-  end
-
-  test 'destroy sync keywords' do
-    assert false
-  end
-
-  test 'update sync keywords' do
-    assert false
-  end
 end

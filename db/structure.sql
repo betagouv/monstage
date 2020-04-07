@@ -1261,6 +1261,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_offer_keywords_on_word; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_offer_keywords_on_word ON public.internship_offer_keywords USING btree (word);
+
+
+--
 -- Name: index_internship_offer_operators_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1791,6 +1798,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200325143657'),
 ('20200325143658'),
 ('20200325143659'),
-('20200402140231');
+('20200402140231'),
+('20200407142759');
 
 

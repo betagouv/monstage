@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_02_140231) do
+ActiveRecord::Schema.define(version: 2020_04_07_142759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_140231) do
     t.integer "ndoc", null: false
     t.integer "nentry", null: false
     t.boolean "searchable", default: true, null: false
+    t.index ["word"], name: "index_internship_offer_keywords_on_word", unique: true
     t.index ["word"], name: "internship_offer_keywords_trgm", opclass: :gin_trgm_ops, using: :gin
   end
 
