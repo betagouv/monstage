@@ -4,7 +4,7 @@ class CreateKeywordTextSearchConfiguration < ActiveRecord::Migration[6.0]
         CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
           TEMPLATE = thesaurus,
           DictFile = thesaurus_monstage,
-          Dictionary = pg_catalog.french_stem
+          Dictionary = french_stem
         );
     SQL
     execute <<-SQL
@@ -14,7 +14,7 @@ class CreateKeywordTextSearchConfiguration < ActiveRecord::Migration[6.0]
     execute <<-SQL
       ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
         ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, word, hword, hword_part
-          WITH public.dict_search_with_synonoym, dict_internship_offer_keywords;
+          WITH public.dict_search_with_synonoym, pg_catalog.french_stem;
     SQL
     execute <<-SQL
       ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym

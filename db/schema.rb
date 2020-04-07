@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_140231) do
 
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
+    t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
     t.integer "internship_offer_weeks_count", default: 0, null: false
     t.string "tutor_name"
@@ -156,6 +157,7 @@ ActiveRecord::Schema.define(version: 2020_04_02_140231) do
     t.string "old_group"
     t.bigint "employer_id"
     t.bigint "school_id"
+    t.string "employer_description", null: false
     t.bigint "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.integer "total_applications_count", default: 0, null: false
@@ -173,8 +175,6 @@ ActiveRecord::Schema.define(version: 2020_04_02_140231) do
     t.integer "submitted_applications_count", default: 0, null: false
     t.integer "rejected_applications_count", default: 0, null: false
     t.datetime "published_at"
-    t.string "description", default: "", null: false
-    t.string "employer_description"
     t.integer "total_male_approved_applications_count", default: 0
     t.integer "total_custom_track_approved_applications_count", default: 0
     t.bigint "group_id"
@@ -269,7 +269,6 @@ ActiveRecord::Schema.define(version: 2020_04_02_140231) do
     t.boolean "custom_track", default: false, null: false
     t.boolean "accept_terms", default: false, null: false
     t.datetime "discarded_at"
-    t.string "zipcode"
     t.string "department_name"
     t.bigint "missing_school_weeks_id"
     t.index ["api_token"], name: "index_users_on_api_token"

@@ -10,6 +10,19 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -49,21 +62,12 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
--- Name: dict_internship_offer_keywords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_internship_offer_keywords (
-    TEMPLATE = pg_catalog.simple,
-    stopwords = 'french' );
-
-
---
 -- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
     TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'pg_catalog.french_stem' );
+    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
 
 --
@@ -83,61 +87,28 @@ CREATE TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR asciiword WITH public.dict_internship_offer_keywords;
+    ADD MAPPING FOR asciiword WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR word WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR numword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR email WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR url WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR host WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR sfloat WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR version WITH simple;
+    ADD MAPPING FOR word WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword_part WITH simple;
+    ADD MAPPING FOR hword_part WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword_asciipart WITH simple;
+    ADD MAPPING FOR hword_asciipart WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR numhword WITH simple;
+    ADD MAPPING FOR asciihword WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR asciihword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR url_path WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR file WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR "float" WITH simple;
+    ADD MAPPING FOR hword WITH french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
     ADD MAPPING FOR "int" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR uint WITH simple;
 
 
 --
@@ -148,25 +119,25 @@ CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.dict_internship_offer_keywords;
+    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR "int" WITH simple;
@@ -635,6 +606,7 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
+    description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
@@ -653,6 +625,7 @@ CREATE TABLE public.internship_offers (
     old_group character varying,
     employer_id bigint,
     school_id bigint,
+    employer_description character varying NOT NULL,
     sector_id bigint NOT NULL,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -670,8 +643,6 @@ CREATE TABLE public.internship_offers (
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
-    description character varying DEFAULT ''::character varying NOT NULL,
-    employer_description character varying,
     total_male_approved_applications_count integer DEFAULT 0,
     total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint,
@@ -884,7 +855,6 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
-    zipcode character varying,
     department_name character varying,
     missing_school_weeks_id bigint
 );
@@ -1525,7 +1495,7 @@ CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.intern
 -- Name: internship_offers sync_internship_offers_tsv; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('search_tsv', 'public.fr', 'title', 'description', 'employer_description');
+CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('search_tsv', 'public.config_search_with_synonym', 'title', 'description', 'employer_description');
 
 
 --
@@ -1776,7 +1746,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190802142452'),
 ('20190802163449'),
 ('20190807122943'),
-('20190808091244'),
 ('20190814075600'),
 ('20190814124142'),
 ('20190814152258'),
@@ -1807,7 +1776,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191127144843'),
 ('20191211145010'),
 ('20191212090431'),
-('20191218134559'),
 ('20200114163150'),
 ('20200114163210'),
 ('20200114164134'),
@@ -1820,11 +1788,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200227162157'),
 ('20200312131954'),
 ('20200322093818'),
-('20200322093819'),
 ('20200325143657'),
 ('20200325143658'),
 ('20200325143659'),
-('20200325145511'),
 ('20200402140231');
 
 
