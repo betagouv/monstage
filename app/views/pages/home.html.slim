@@ -106,8 +106,8 @@
             .card
               = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'), class: "card-img-top", alt: 'Illustration Télémaque'
               .card-body
-                p Le meilleur du web regroupé dans un outil pour vous orienter, vous motiver et développer votre potentiel !
-                p 400 outils pédagogiques - vidéos, quiz, sites internet - pour muscler votre culture G, découvrir des métiers et trouver des conseils, mais également pleins d’astuces pour réussir vos examens haut la main !
+                p Le meilleur du web regroupé dans un outil pour vous orienter et développer votre potentiel !
+                p 400 outils pédagogiques - vidéos, quiz, sites internet - pour muscler votre culture G, découvrir des métiers et trouver des conseils, mais également plein d’astuces pour rester motivés !
                 p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.htm", class: 'text-danger font-weight-bold' do
                   | Connectez-vous
                   | &nbsp;
@@ -195,6 +195,5 @@
         .col-12.text-center
           - partners_map_of_logo_url.each do |partner_logo, partner_url|
             = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
-
 
 
