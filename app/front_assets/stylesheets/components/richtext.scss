@@ -7,7 +7,9 @@
 .trix-button--icon-increase-nesting-level,
 .trix-button-group--file-tools,
 .trix-button--icon-attach,
-.trix-button-group--history-tools{display: none;}
+.trix-button-group--history-tools{
+  display: none!important;
+}
 
 trix-editor.form-control {
   height: auto;
@@ -21,4 +23,35 @@ trix-editor.form-control {
 
   margin-top: 0;
   margin-bottom: $paragraph-margin-bottom;
+}
+
+body{
+  trix-toolbar{
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+
+    border-top: 1px solid $nav-tabs-border-color;
+    border-left: 1px solid $nav-tabs-border-color;
+    border-right: 1px solid $nav-tabs-border-color;
+    border-bottom: none;
+    .trix-button{
+      border: none !important;
+    }
+    .trix-button-group{
+      margin-bottom: 0;
+      border:none;
+    }
+  }
+
+  trix-editor{
+    border: 1px solid $nav-tabs-border-color;
+
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+
+  }
 }

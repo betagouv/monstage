@@ -25,7 +25,6 @@ module Reporting
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
-
       assert_equal 2, agri_stats.total_report_count
       assert_equal 10, wood_stats.total_report_count
     end

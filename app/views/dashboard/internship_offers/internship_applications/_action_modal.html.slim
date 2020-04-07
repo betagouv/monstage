@@ -10,21 +10,17 @@
 
   .modal-dialog role="document"
     .modal-content
-      .modal-header
-        h5 class="modal-title text-#{aasm_notifier.target_action_color}"
-          i class="fas #{fa_icon}"
-          = " "
+      .modal-header.p-4
+        h5 class="modal-title"
           = "#{modal_opener_label} la candidature"
 
         button type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
 
-      .modal-body
-        p.text-muted.small Message envoyé à l'élève
-
+      .modal-body.px-4.py-0
         = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
 
       .modal-footer.actions
         button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler
-
+        
         = f.submit class: 'btn btn-primary', value: "Confirmer"

@@ -43,18 +43,18 @@ module Reporting
 
     test "GET #index.xlsx as statistician success " \
          "when department params match his departement_name" do
-      statistician = create(:statistician)
-      department_name = statistician.department_name
-      create(:internship_offer, department: department_name)
-      sign_in(statistician)
+      god = create(:god)
+      create(:internship_offer)
+      create(:api_internship_offer)
+      sign_in(god)
 
       %i[offers group sector].each do |dimension|
-        get(reporting_internship_offers_path(department: department_name,
-                                             dimension: dimension,
+        get(reporting_internship_offers_path(dimension: dimension,
                                              format: :xlsx))
         assert_response :success
       end
     end
+
 
     test "GET #index as statistician fails " \
          "when department params does not match his department_name" do

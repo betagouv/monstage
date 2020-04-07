@@ -5,9 +5,9 @@ require_relative '../config/environment'
 require 'minitest/reporters'
 require 'minitest/autorun'
 require 'rails/test_help'
-
+require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
-
+Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
