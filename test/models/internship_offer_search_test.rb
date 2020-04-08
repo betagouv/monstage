@@ -26,26 +26,26 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
     end
   end
 
-  test 'search_by_term does not raise an error' do
+  test 'search_by_keyword does not raise an error' do
     assert_nothing_raised do
-      query = InternshipOffer.search_by_term("test").group(:id).page(1)
+      query = InternshipOffer.search_by_keyword("test").group(:id).page(1)
     end
   end
 
   test 'search by term find by simple word' do
     iterate_word('docteur') do |word_part|
       assert_equal(1,
-                   InternshipOffer.search_by_term(word_part).count,
+                   InternshipOffer.search_by_keyword(word_part).count,
                    "can't find with #{word_part}")
     end
   end
 
   test 'search by term find by synonym' do
     assert_equal(2,
-                 InternshipOffer.search_by_term("police").count,
+                 InternshipOffer.search_by_keyword("police").count,
                  "can't find with synonym police")
     assert_equal(2,
-                 InternshipOffer.search_by_term("gendarme").count,
+                 InternshipOffer.search_by_keyword("gendarme").count,
                  "can't find with synonym gendarme")
   end
 end
