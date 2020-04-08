@@ -37,6 +37,5 @@ class SyncInternshipOfferKeywordsJobTest < ActiveJob::TestCase
                   to: 4 do
       SyncInternshipOfferKeywordsJob.perform_now
     end
-    refute hello_keyword.searchable
   end
 end
