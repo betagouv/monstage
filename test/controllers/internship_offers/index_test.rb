@@ -456,6 +456,13 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as Visitor with search keyword find internship offer' do
-    assert false
+    keyword = "foobar"
+    foundable_internship_offer = create(:internship_offer, title: keyword)
+    ignored_internship_offer = create(:internship_offer, title: 'bom')
+    SyncInternshipOfferKeywordsJob.perform_now
+    get internship_offers_path(keyword: keyword)
+    assert_response :success
+    assert_presence_of(internship_offer: foundable_internship_offer)
+    assert_absence_of(internship_offer: ignored_internship_offer)
   end
 end
