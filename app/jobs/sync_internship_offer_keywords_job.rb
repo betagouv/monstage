@@ -1,3 +1,12 @@
+# This jobs had been perf tested againt 2019-2020 all offers
+#   and run in ±500ms<1s to fetch all words in intership_offers
+# All words are extracted from internship_offers
+#   title
+#   description
+#   employer_description
+# All words are then simply tokenized with public.config_internship_offer_keywords
+# in the end only interesting words are kept to appear in search bar (later, unwanted words will be hidden by searchable)
+# computes ndoc (number of ndoc showing it), nentry (count all words)
 class SyncInternshipOfferKeywordsJob < ActiveJob::Base
   queue_as :default
 
@@ -9,9 +18,9 @@ class SyncInternshipOfferKeywordsJob < ActiveJob::Base
             SELECT to_tsvector(
               'public.config_internship_offer_keywords',
               CONCAT(
-                unaccent(title), ' ',
-                unaccent(description), ' ',
-                unaccent(employer_description)
+                title, ' ',
+                description, ' ',
+                employer_description
               )
             )
             FROM internship_offers

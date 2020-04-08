@@ -87,25 +87,25 @@ CREATE TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR asciiword WITH french_stem;
+    ADD MAPPING FOR asciiword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR word WITH french_stem;
+    ADD MAPPING FOR word WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword_part WITH french_stem;
+    ADD MAPPING FOR hword_part WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword_asciipart WITH french_stem;
+    ADD MAPPING FOR hword_asciipart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR asciihword WITH french_stem;
+    ADD MAPPING FOR asciihword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR hword WITH french_stem;
+    ADD MAPPING FOR hword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
     ADD MAPPING FOR "int" WITH simple;
@@ -119,25 +119,25 @@ CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, french_stem;
+    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR "int" WITH simple;

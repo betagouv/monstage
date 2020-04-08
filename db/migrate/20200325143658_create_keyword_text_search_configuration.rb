@@ -14,7 +14,7 @@ class CreateKeywordTextSearchConfiguration < ActiveRecord::Migration[6.0]
     execute <<-SQL
       ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
         ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, word, hword, hword_part
-          WITH public.dict_search_with_synonoym, pg_catalog.french_stem;
+          WITH public.dict_search_with_synonoym, unaccent, pg_catalog.french_stem;
     SQL
     execute <<-SQL
       ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym

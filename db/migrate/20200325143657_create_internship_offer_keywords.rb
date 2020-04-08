@@ -1,6 +1,7 @@
 class CreateInternshipOfferKeywords < ActiveRecord::Migration[6.0]
   def up
     enable_extension "pg_trgm"
+
     create_table :internship_offer_keywords do |t|
       t.text :word, null: false
       t.integer :ndoc, null: false
@@ -15,12 +16,6 @@ class CreateInternshipOfferKeywords < ActiveRecord::Migration[6.0]
 
     execute <<-SQL
       CREATE TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords (COPY = simple);
-    SQL
-
-    execute <<-SQL
-      ALTER  TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-        ALTER MAPPING FOR asciiword, asciihword, hword_asciipart, word, hword, hword_part
-          WITH pg_catalog.french_stem;
     SQL
 
     execute <<-SQL

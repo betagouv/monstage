@@ -17,6 +17,13 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
+  # public.config_search_with_synonym config is
+  # this TEXT SEARCH CONFIGURATION is based on 3 keys concepts
+  #   public.dict_search_with_synonoym : why allow us to links kind of same words for input search
+  #   unaccent : which tokenize content without accent [search is also applied without accent]
+  #.  french stem : which tokenize content for french FT
+  # plus some customization to ignores
+  #   email, url, host, file, int, float
   pg_search_scope :search_by_keyword,
                   against: {
                     title: 'A',
