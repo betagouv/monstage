@@ -6,7 +6,7 @@ class InternshipOffersController < ApplicationController
 
   with_options only: :show do
     before_action :set_internship_offer,
-                  :check_internship_offer_is_not_discarded_or_404,
+                  :check_internship_offer_is_not_discarded_or_redirect,
                   :check_internship_offer_is_published_or_redirect
 
     after_action :increment_internship_offer_view_count
@@ -41,17 +41,17 @@ class InternshipOffersController < ApplicationController
     flash.now[:warning] = "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates."
   end
 
-  def check_internship_offer_is_not_discarded_or_404
+  def check_internship_offer_is_not_discarded_or_redirect
     return unless @internship_offer.discarded?
 
-    redirect_to(internship_offers_path, flash: { warning: "Cette offre a été supprimée et n'est donc plus accessible" })
+    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre a été supprimée et n'est donc plus accessible" })
   end
 
   def check_internship_offer_is_published_or_redirect
     return if can?(:create, @internship_offer)
     return if @internship_offer.published?
 
-    redirect_to(internship_offers_path, flash: { warning: "Cette offre n'est plus disponible" })
+    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre n'est plus disponible" })
   end
 
   def current_user_id
@@ -60,7 +60,7 @@ class InternshipOffersController < ApplicationController
 
   def finder
     @finder ||= Finders::ListableInternshipOffer.new(
-      params: params.permit(:page, :latitude, :longitude, :radius),
+      params: params.permit(:page, :latitude, :longitude, :radius, :keyword),
       user: current_user_or_visitor
     )
   end

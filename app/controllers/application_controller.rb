@@ -18,4 +18,9 @@ class ApplicationController < ActionController::Base
   def current_user_or_visitor
     current_user || Users::Visitor.new
   end
+
+  helper_method :user_presenter
+  def user_presenter
+    @user_presenter ||= Presenters::User.new(current_user_or_visitor)
+  end
 end

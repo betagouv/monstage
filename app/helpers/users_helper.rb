@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module UsersHelper
+
+
   def main_partners_map_of_logo_url
     {
       "Logo-onisep.jpg" => "https://www.onisep.fr/"

@@ -27,4 +27,8 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
       end
     end
   end
+
+  test 'search by term, location, radius works' do
+    assert false
+  end
 end

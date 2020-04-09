@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_131954) do
+ActiveRecord::Schema.define(version: 2020_04_09_122859) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "unaccent"
@@ -105,6 +107,15 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
     t.index ["user_id"], name: "index_internship_applications_on_user_id"
   end
 
+  create_table "internship_offer_keywords", force: :cascade do |t|
+    t.text "word", null: false
+    t.integer "ndoc", null: false
+    t.integer "nentry", null: false
+    t.boolean "searchable", default: true, null: false
+    t.index ["word"], name: "index_internship_offer_keywords_on_word", unique: true
+    t.index ["word"], name: "internship_offer_keywords_trgm", opclass: :gin_trgm_ops, using: :gin
+  end
+
   create_table "internship_offer_operators", force: :cascade do |t|
     t.bigint "internship_offer_id"
     t.bigint "operator_id"
@@ -128,6 +139,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
 
   create_table "internship_offers", force: :cascade do |t|
     t.string "title", null: false
+    t.text "description", null: false
     t.integer "max_candidates", default: 1, null: false
     t.integer "internship_offer_weeks_count", default: 0, null: false
     t.string "tutor_name"
@@ -146,6 +158,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
     t.string "old_group"
     t.bigint "employer_id"
     t.bigint "school_id"
+    t.string "employer_description", null: false
     t.bigint "sector_id", null: false
     t.integer "blocked_weeks_count", default: 0, null: false
     t.integer "total_applications_count", default: 0, null: false
@@ -163,14 +176,13 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
     t.integer "submitted_applications_count", default: 0, null: false
     t.integer "rejected_applications_count", default: 0, null: false
     t.datetime "published_at"
-    t.string "description", default: "", null: false
-    t.string "employer_description"
     t.integer "total_male_approved_applications_count", default: 0
     t.integer "total_custom_track_approved_applications_count", default: 0
     t.bigint "group_id"
     t.date "first_date"
     t.date "last_date"
     t.string "type"
+    t.tsvector "search_tsv"
     t.index ["academy"], name: "index_internship_offers_on_academy"
     t.index ["coordinates"], name: "index_internship_offers_on_coordinates", using: :gist
     t.index ["department"], name: "index_internship_offers_on_department"
@@ -181,6 +193,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
     t.index ["old_group"], name: "index_internship_offers_on_old_group"
     t.index ["remote_id"], name: "index_internship_offers_on_remote_id"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
+    t.index ["search_tsv"], name: "index_internship_offers_on_search_tsv", using: :gin
     t.index ["sector_id"], name: "index_internship_offers_on_sector_id"
   end
 
@@ -257,7 +270,6 @@ ActiveRecord::Schema.define(version: 2020_03_12_131954) do
     t.boolean "custom_track", default: false, null: false
     t.boolean "accept_terms", default: false, null: false
     t.datetime "discarded_at"
-    t.string "zipcode"
     t.string "department_name"
     t.bigint "missing_school_weeks_id"
     t.index ["api_token"], name: "index_users_on_api_token"

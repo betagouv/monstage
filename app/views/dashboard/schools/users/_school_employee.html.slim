@@ -3,7 +3,7 @@
     = link_to dashboard_school_user_path(school_employee.school, school_employee), data: { confirm: "Êtes-vous sur ?"}, method: :delete, class: 'float-right btn btn-link' do
       i class="fas fa-trash fa-2x"
 
-  = Presenters::User.new(user: school_employee).short_name
+  = Presenters::User.new(school_employee).short_name
   br
-  = "#{Presenters::User.new(user: school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
+  = "#{Presenters::User.new(school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
 

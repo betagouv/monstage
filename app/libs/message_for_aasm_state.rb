@@ -57,7 +57,7 @@ class MessageForAasmState
 
   def on_approved_message
     <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(user: student).full_name},</p>
+      <p>Bonjour #{Presenters::User.new(student).full_name},</p>
       <p>Votre candidature pour le stage "#{internship_offer.title}" est acceptée pour la semaine #{week.short_select_text_method}.</p>
       <p>Vous devez maintenant faire signer la convention de stage.</p>
     HTML
@@ -65,14 +65,14 @@ class MessageForAasmState
 
   def on_rejected_message
     <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(user: student).full_name},</p>
+      <p>Bonjour #{Presenters::User.new(student).full_name},</p>
       <p>Votre candidature pour le stage "#{internship_offer.title}" est refusée pour la semaine #{week.short_select_text_method}.</p>
     HTML
   end
 
   def on_canceled_message
     <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(user: student).full_name},</p>
+      <p>Bonjour #{Presenters::User.new(student).full_name},</p>
       <p>Votre candidature pour le stage "#{internship_offer.title}" est annulée pour la semaine #{week.short_select_text_method}.</p>
     HTML
   end
