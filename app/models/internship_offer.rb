@@ -194,6 +194,10 @@ class InternshipOffer < ApplicationRecord
     self.last_date = last_week.week_date.end_of_week
   end
 
+  def ensure_good_zipcode
+    self.zipcode = self.zipcode.ljust(5, '0')
+  end
+
   def reverse_academy_by_zipcode
     self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
   end
