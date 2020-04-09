@@ -2,7 +2,6 @@
 
 class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
-  OLD_DESCRIPTION_MAX_CHAR_COUNT = 750
   DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
@@ -91,16 +90,10 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT },
-                    if: :ready_to_enforce_less_text?
+                    length: { maximum: TITLE_MAX_CHAR_COUNT }
 
   validates :description, presence: true,
-                          length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT },
-                          unless: :ready_to_enforce_less_text?
-
-  validates :description, presence: true,
-                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT },
-                          if: :ready_to_enforce_less_text?
+                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
   validates :weeks, presence: true
@@ -124,6 +117,7 @@ class InternshipOffer < ApplicationRecord
 
   before_validation :replicate_rich_text_to_raw_fields
   before_save :sync_first_and_last_date,
+              :ensure_good_zipcode,
               :reverse_academy_by_zipcode,
               :reverse_department_by_zipcode
 
@@ -221,11 +215,6 @@ class InternshipOffer < ApplicationRecord
 
   def preset_published_at_to_now
     self.published_at = Time.now
-  end
-
-  def ready_to_enforce_less_text?
-    Date.today.year >= 2019 && Date.today.month >= 9 ||
-    Date.today.year >= 2020
   end
 
   def sync_internship_offer_keywords
