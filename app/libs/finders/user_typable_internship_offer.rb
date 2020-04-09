@@ -38,6 +38,8 @@ module Finders
       query.nearby(latitude: coordinates.latitude,
                    longitude: coordinates.longitude,
                    radius: radius_params)
+           .with_distance_from(latitude: coordinates.latitude,
+                               longitude: coordinates.longitude)
     end
 
 
@@ -52,7 +54,7 @@ module Finders
       query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
       query = query.merge(nearby_query_part(query, coordinates) ) if coordinates
       query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if !user.missing_school_weeks? && user.school
-      query = query.merge(query.ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
+      query = query.merge(InternshipOffer.ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
       query
     end
 

@@ -185,7 +185,6 @@ class InternshipOffer < ApplicationRecord
     'internship_offer'
   end
 
-
   #
   # callbacks
   #
@@ -226,6 +225,9 @@ class InternshipOffer < ApplicationRecord
   end
 
   def sync_internship_offer_keywords
+    syncable_attribute_changed = [title_changed?, description_changed?, employer_description_changed?]
+
+    return if syncable_attribute_changed.none?
     SyncInternshipOfferKeywordsJob.perform_later
   end
 end

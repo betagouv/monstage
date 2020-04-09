@@ -21,7 +21,20 @@ module Nearbyable
           %d
         )
       }, table_name, longitude, latitude, radius)
+
       where(query)
+    }
+
+    scope :with_distance_from, lambda{|latitude:, longitude:|
+      query = format(%{
+        ST_Distance(
+          %s.coordinates,
+          ST_GeographyFromText('SRID=4326;POINT(%f %f)')
+        ) as relative_distance
+      }, table_name, longitude, latitude)
+
+      select(query)
+        .select("#{table_name}.*")
     }
 
     def coordinates=(coordinates)

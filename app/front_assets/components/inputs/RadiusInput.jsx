@@ -1,27 +1,7 @@
 import React from 'react';
+import DistanceIcon from '../icons/DistanceIcon';
 
-const MAX_RADIUS = 60000;
-const MIN_RADIUS = 5000;
-const KILO_METER = 1000;
-
-function radiusPercentage(radius) {
-  return Math.ceil((radius * 100) / MAX_RADIUS);
-}
-function radiusInKm(radius) {
-  return Math.ceil(radius / KILO_METER);
-}
-
-function iconForRadius(radius) {
-  const comparableRadius = radiusInKm(radius);
-
-  if (comparableRadius < 10) {
-    return 'fa-walking';
-  }
-  if (comparableRadius < 20) {
-    return 'fa-bus';
-  }
-  return 'fa-train';
-}
+import { MAX_RADIUS, MIN_RADIUS, radiusPercentage, radiusInKm } from '../../utils/geo';
 
 function RadiusInput({ radius, setRadius }) {
   const onRadiusChange = event => {
@@ -46,10 +26,7 @@ function RadiusInput({ radius, setRadius }) {
       />
       <div className="slider-legend small">
         <div className="slider-handle text-center" style={{ left: `${radiusPercentage(radius)}%` }}>
-          <span className="mr-1">{radiusInKm(radius)} km</span>
-          <span key={radius}>
-            <i className={`fas ${iconForRadius(radius)}`} />
-          </span>
+          <DistanceIcon radius={radius} />
         </div>
       </div>
     </div>
