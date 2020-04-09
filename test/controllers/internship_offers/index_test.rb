@@ -264,42 +264,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student returns internship_offer up to 60km nearby' do
-    week = Week.find_by(year: 2019, number: 10)
-    school_at_paris = create(:school, :at_paris)
-    student = create(:student, school: school_at_paris)
-    internship_offer = create(:internship_offer, weeks: [week],
-                                                 coordinates: Coordinates.paris)
-
-    InternshipOffer.stub :by_weeks, InternshipOffer.all do
-      sign_in(student)
-      travel_to(Date.new(2019, 3, 1)) do
-        get internship_offers_path
-        assert_response :success
-        assert_presence_of(internship_offer: internship_offer)
-      end
-    end
-  end
-
-  test 'GET #index as student returns internship_offer up by location' do
-    week = Week.find_by(year: 2019, number: 10)
-    school_at_paris = create(:school, :at_paris)
-    student = create(:student, school: school_at_paris)
-    internship_offer_at_paris = create(:internship_offer, weeks: [week],
-                                                 coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:internship_offer, weeks: [week],
-                                                 coordinates: Coordinates.bordeaux)
-    InternshipOffer.stub :by_weeks, InternshipOffer.all do
-      sign_in(student)
-      travel_to(Date.new(2019, 3, 1)) do
-        get internship_offers_path
-        assert_response :success
-        assert_presence_of(internship_offer: internship_offer_at_paris)
-        assert_absence_of(internship_offer: internship_offer_at_bordeaux)
-      end
-    end
-  end
-
   test 'GET #index?latitude=?&longitude=? as student returns internship_offer 60km around this location' do
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)

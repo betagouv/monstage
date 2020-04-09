@@ -25,10 +25,6 @@ class User < ApplicationRecord
     Users::Employer.where(email: 'drh@betagouv.fr').first
   end
 
-  def targeted_internship_offers
-    InternshipOffer.kept
-  end
-
   def missing_school_weeks?
     return false unless respond_to?(:school)
 

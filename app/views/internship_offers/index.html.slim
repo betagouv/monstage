@@ -5,8 +5,7 @@ h1.mb-4.text-muted.opacity-05
 
 .row.mb-4
   = react_component("SearchInternshipOffer",
-                    { url: internship_offers_path,
-                      initialLocation: params[:city] || current_user.try(:school).try(:city)},
+                    { url: internship_offers_path },
                     { class: 'col-12' })
 
 = render "internship_offers/title", internship_offers: @internship_offers

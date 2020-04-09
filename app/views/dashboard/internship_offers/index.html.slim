@@ -14,9 +14,7 @@
     .tab-pane.show.active
       .row.bc-light.br-1.bl-1.bb-1
         = react_component("SearchInternshipOffer",
-                          { url: dashboard_internship_offers_path,
-                            initialRadius: params[:radius] || Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER,
-                            initialLocation: params[:city] || current_user.try(:school).try(:city) },
+                          { url: dashboard_internship_offers_path },
                           { class: 'col-12 py-3 filter-section' })
 
       .row.bc-light.br-1.bl-1.bb-1

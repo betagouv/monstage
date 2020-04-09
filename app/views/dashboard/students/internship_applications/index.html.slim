@@ -4,7 +4,7 @@
       h1.h2.mb-3
         | Mes candidatures
     - else
-      h1.h2.mb-3= Presenters::User.new(user: @current_student).full_name
+      h1.h2.mb-3= Presenters::User.new(@current_student).full_name
     - unless current_user.is_a?(Users::Student)
       p= link_to dashboard_school_class_room_path(@current_student.school, @current_student.class_room) do
         i.fas.fa-chevron-left.mr-1
@@ -13,10 +13,10 @@
   .row
     .col-12.text-center
       h2.h4.mt-3.mb-2 Aucun stage sélectionné
-      = link_to "Rechercher un stage", internship_offers_path, class: 'btn btn-warning'
+      = link_to "Rechercher un stage", user_presenter.default_internship_offers_path, class: 'btn btn-warning'
 - else
   .row
     = render partial: "dashboard/students/internship_applications/student_internship_application", collection: @internship_applications
     .col-12
       .actions.d-flex.mt-3.d-sm-block.d-xs-stick
-        = link_to "Rechercher un autre stage", internship_offers_path, class: 'btn btn-warning'
+        = link_to "Rechercher un autre stage", user_presenter.default_internship_offers_path, class: 'btn btn-warning'

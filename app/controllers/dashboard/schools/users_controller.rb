@@ -11,7 +11,7 @@ module Dashboard
 
       def destroy
         user = @school.users.find(params[:id])
-        user_presenter = Presenters::User.new(user: user)
+        user_presenter = Presenters::User.new(user)
         authorize! :delete, user
         user.update!(school_id: nil)
         redirect_to dashboard_school_users_path(@school),

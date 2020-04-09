@@ -44,7 +44,6 @@ module Finders
 
 
     def school_members_query
-      coordinates = coordinate_params || user.try(:school).try(:coordinates)
       query = InternshipOffer.kept
                              .in_the_future
                              .published
@@ -52,7 +51,7 @@ module Finders
                              .ignore_max_candidates_reached
                              .ignore_max_internship_offer_weeks_reached
       query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinates) ) if coordinates
+      query = query.merge(nearby_query_part(query, coordinate_params) ) if coordinate_params
       query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if !user.missing_school_weeks? && user.school
       query = query.merge(InternshipOffer.ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
       query
