@@ -49,12 +49,6 @@
         "WEB_CONCURRENCY": 1
       },
       "addons": [
-        {
-          "plan": "heroku-postgresql:hobby-basic",
-          "options": {
-            "version": "12"
-          }
-        },
         { "plan": "newrelic:wayne" },
         { "plan": "papertrail:choklad" },
         { "plan": "scheduler:standard" },
@@ -64,12 +58,6 @@
 
     "production": {
       "addons": [
-        {
-          "plan": "heroku-postgresql:hobby-basic",
-          "options": {
-            "version": "12"
-          }
-        },
         { "plan": "newrelic:hawke" },
         { "plan": "papertrail:choklad" },
         { "plan": "scheduler:standard" },

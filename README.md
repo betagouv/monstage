@@ -4,18 +4,17 @@
 # Setup
 Things you may want to cover:
 
-* Ruby version: 2.6.4
-* Database
-- Install Postgres 12
-- Initialize with : initdb /usr/local/var/postgres -E utf8
-- Create local db : createdb monstage
-- Start with : pg_ctl -D /usr/local/var/postgres start
-- Stop with : pg_ctl -D /usr/local/var/postgres stop
-- Install html5validator : pip install html5validator
-- Install postgis :
+* Ruby version: 2.7.1
+* Database postgresql 12
+ - Initialize with : `initdb /usr/local/var/postgres -E utf8`
+ - Create local db : `createdb monstage`
+ - Start with : `pg_ctl -D /usr/local/var/postgres start`
+ - Stop with : `pg_ctl -D /usr/local/var/postgres stop`
+* Install html5validator : `pip install html5validator`
+* Install postgis :
   - If you are using Postgres.app, Postgis is already here
-  - If you installed postgres with Homebrew, run : brew install postgis
-- Setup Postgis : rake db:gis:setup
+  - If you installed postgres with Homebrew, run : `brew install postgis`
+  - Setup Postgis : `rake db:gis:setup`
 
 # Architecture
 
@@ -24,20 +23,23 @@ Things you may want to cover:
 * Rails defaults
 * Postgres as RDBMS
 * Postgres with Postgis for geoqueries
-* Postgres FTS for autocomplete
+* Postgres for FTS
 * Postgres with Delayed job for Async jobs
 * Postgres(notify) with ActionCable for wss://
 
 **frontend**
 
 * Turbolink based "SPA"
-* Using stimulus to improve some simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
-* Using react where stimulus because spagetthi code (lot of states/xhr) ex : student search for his school by city.name school.name, then choose school, then choose classroom. ex : someone search for internship offer by city.name and and {location}.radius)
+* Use [stimulus](https://stimulusjs.org/) to improve some simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
+* Use [react](https://reactjs.org/) when complexity grow ex :
+ * student search for his school by city.name school.name, then choose school, then choose classroom.
+ * someone search for internship offer by keyword, city.name and {location}.radius)
 
 **hosting & services**
 
-* Hosting : Heroku with some plugins, see heroku manifest [app.json](https://github.com/betagouv/monstage/blob/master/app.json) for more details (app.json)
-* Support : Zammad for support
+* Backend/Frontend : Heroku with some plugins, see heroku manifest [app.json](https://github.com/betagouv/monstage/blob/master/app.json) for more details (app.json)
+* DB : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
+* Support : [Zammad for support](monstage.zammad.com/)
 * Analytics : [stats.data.gouv.fr](https://stats.data.gouv.fr)
 
 # Build: test, dev
