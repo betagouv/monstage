@@ -17,6 +17,12 @@ Rails.application.routes.draw do
     get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
   end
 
+  resources :internship_offer_keywords, only: [] do
+    collection do
+      post :search
+    end
+  end
+
   resources :internship_offers, only: %i[index show] do
     resources :internship_applications, only: %i[create index show update]
   end

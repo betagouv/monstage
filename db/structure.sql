@@ -10,14 +10,27 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
 
@@ -49,12 +62,85 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
+    TEMPLATE = pg_catalog.thesaurus,
+    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+
+
+--
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
 CREATE TEXT SEARCH DICTIONARY public.french_nostopwords (
     TEMPLATE = pg_catalog.snowball,
     language = 'french' );
+
+
+--
+-- Name: config_internship_offer_keywords; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR asciiword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR word WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_part WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword_asciipart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR asciihword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR hword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
+    ADD MAPPING FOR "int" WITH simple;
+
+
+--
+-- Name: config_search_with_synonym; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+
+ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+    ADD MAPPING FOR "int" WITH simple;
 
 
 --
@@ -417,6 +503,38 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_keywords; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_keywords (
+    id bigint NOT NULL,
+    word text NOT NULL,
+    ndoc integer NOT NULL,
+    nentry integer NOT NULL,
+    searchable boolean DEFAULT true NOT NULL
+);
+
+
+--
+-- Name: internship_offer_keywords_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_keywords_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_keywords_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internship_offer_keywords.id;
+
+
+--
 -- Name: internship_offer_operators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -488,6 +606,7 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
+    description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
@@ -506,6 +625,7 @@ CREATE TABLE public.internship_offers (
     old_group character varying,
     employer_id bigint,
     school_id bigint,
+    employer_description character varying NOT NULL,
     sector_id bigint NOT NULL,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
@@ -523,14 +643,13 @@ CREATE TABLE public.internship_offers (
     submitted_applications_count integer DEFAULT 0 NOT NULL,
     rejected_applications_count integer DEFAULT 0 NOT NULL,
     published_at timestamp without time zone,
-    description character varying DEFAULT ''::character varying NOT NULL,
-    employer_description character varying,
     total_male_approved_applications_count integer DEFAULT 0,
     total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint,
     first_date date,
     last_date date,
-    type character varying
+    type character varying,
+    search_tsv tsvector
 );
 
 
@@ -736,7 +855,6 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
-    zipcode character varying,
     department_name character varying,
     missing_school_weeks_id bigint
 );
@@ -847,6 +965,13 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 --
 
 ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT nextval('public.internship_applications_id_seq'::regclass);
+
+
+--
+-- Name: internship_offer_keywords id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_keywords_id_seq'::regclass);
 
 
 --
@@ -982,6 +1107,14 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT internship_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_keywords internship_offer_keywords_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_keywords
+    ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
 
 
 --
@@ -1128,6 +1261,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_offer_keywords_on_word; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_internship_offer_keywords_on_word ON public.internship_offer_keywords USING btree (word);
+
+
+--
 -- Name: index_internship_offer_operators_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1233,6 +1373,13 @@ CREATE INDEX index_internship_offers_on_school_id ON public.internship_offers US
 
 
 --
+-- Name: index_internship_offers_on_search_tsv; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_search_tsv ON public.internship_offers USING gin (search_tsv);
+
+
+--
 -- Name: index_internship_offers_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1331,6 +1478,13 @@ CREATE INDEX index_weeks_on_year ON public.weeks USING btree (year);
 
 
 --
+-- Name: internship_offer_keywords_trgm; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX internship_offer_keywords_trgm ON public.internship_offer_keywords USING gin (word public.gin_trgm_ops);
+
+
+--
 -- Name: not_blocked_by_weeks_count_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1342,6 +1496,13 @@ CREATE INDEX not_blocked_by_weeks_count_index ON public.internship_offers USING 
 --
 
 CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.internship_applications USING btree (user_id, internship_offer_week_id);
+
+
+--
+-- Name: internship_offers sync_internship_offers_tsv; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('search_tsv', 'public.config_search_with_synonym', 'title', 'description', 'employer_description');
 
 
 --
@@ -1592,7 +1753,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190802142452'),
 ('20190802163449'),
 ('20190807122943'),
-('20190808091244'),
 ('20190814075600'),
 ('20190814124142'),
 ('20190814152258'),
@@ -1623,7 +1783,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20191127144843'),
 ('20191211145010'),
 ('20191212090431'),
-('20191218134559'),
 ('20200114163150'),
 ('20200114163210'),
 ('20200114164134'),
@@ -1635,6 +1794,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200218163758'),
 ('20200227162157'),
 ('20200312131954'),
-('20200402140231');
+('20200322093818'),
+('20200325143657'),
+('20200325143658'),
+('20200325143659'),
+('20200402140231'),
+('20200407142759'),
+('20200409122859');
 
 

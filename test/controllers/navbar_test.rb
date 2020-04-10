@@ -20,10 +20,15 @@ class NavbarTest < ActionDispatch::IntegrationTest
   end
 
   test "main_teacher" do
-    main_teacher = create(:main_teacher, school: @school,
-                                         class_room: create(:class_room, school: @school))
+    main_teacher = create(:main_teacher,
+                          school: @school,
+                          class_room: create(:class_room, school: @school))
     sign_in(main_teacher)
     get main_teacher.custom_dashboard_path
+    assert_select(
+      ".navbar a[href=?]",
+      Presenters::User.new(main_teacher).default_internship_offers_path
+    )
     assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: main_teacher.dashboard_name,
@@ -34,6 +39,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     other = create(:other, school: @school)
     sign_in(other)
     get other.custom_dashboard_path
+    assert_select(
+      ".navbar a[href=?]",
+      Presenters::User.new(other).default_internship_offers_path
+    )
     assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: other.dashboard_name,
@@ -56,6 +65,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     school_manager = @school.school_manager
     sign_in(school_manager)
     get school_manager.custom_dashboard_path
+    assert_select(
+      ".navbar a[href=?]",
+      Presenters::User.new(school_manager).default_internship_offers_path
+    )
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: school_manager.dashboard_name,
                                         count: 1)
@@ -65,6 +78,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
     student = create(:student)
     sign_in(student)
     get student.custom_dashboard_path
+    assert_select(
+      ".navbar a[href=?]",
+      Presenters::User.new(student).default_internship_offers_path
+    )
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: student.dashboard_name,
                                         count: 1)
@@ -75,6 +92,10 @@ class NavbarTest < ActionDispatch::IntegrationTest
                                class_room: create(:class_room, school: @school))
     sign_in(teacher)
     get teacher.custom_dashboard_path
+    assert_select(
+      ".navbar a[href=?]",
+      Presenters::User.new(teacher).default_internship_offers_path
+    )
     assert_select(".navbar a.active", count: 1)
     assert_select(".navbar a.active", text: teacher.dashboard_name,
                                         count: 1)

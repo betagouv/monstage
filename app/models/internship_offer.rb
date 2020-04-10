@@ -2,7 +2,6 @@
 
 class InternshipOffer < ApplicationRecord
   TITLE_MAX_CHAR_COUNT = 150
-  OLD_DESCRIPTION_MAX_CHAR_COUNT = 750
   DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
@@ -12,7 +11,33 @@ class InternshipOffer < ApplicationRecord
   include Listable
   include FindableWeek
   include Nearbyable
+
+  # utils
   include Discard::Model
+  include PgSearch::Model
+
+  # public.config_search_with_synonym config is
+  # this TEXT SEARCH CONFIGURATION is based on 3 keys concepts
+  #   public.dict_search_with_synonoym : why allow us to links kind of same words for input search
+  #   unaccent : which tokenize content without accent [search is also applied without accent]
+  #.  french stem : which tokenize content for french FT
+  # plus some customization to ignores
+  #   email, url, host, file, int, float
+  pg_search_scope :search_by_keyword,
+                  against: {
+                    title: 'A',
+                    description: 'B',
+                    employer_description: 'C'
+                  },
+                  ignoring: :accents,
+                  using: {
+                    tsearch: {
+                      dictionary: 'public.config_search_with_synonym',
+                      tsvector_column: "search_tsv",
+                      prefix: true,
+                    }
+                  }
+
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -21,12 +46,15 @@ class InternshipOffer < ApplicationRecord
   scope :limited_to_department, lambda { |user:|
     where(department: user.department_name)
   }
+
   scope :from_api, lambda {
     where.not(permalink: nil)
   }
+
   scope :not_from_api, lambda {
     where(permalink: nil)
   }
+
   scope :ignore_max_candidates_reached, lambda {
     joins(:internship_offer_weeks)
      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
@@ -62,16 +90,10 @@ class InternshipOffer < ApplicationRecord
             presence: true
 
   validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT },
-                    if: :ready_to_enforce_less_text?
+                    length: { maximum: TITLE_MAX_CHAR_COUNT }
 
   validates :description, presence: true,
-                          length: { maximum: OLD_DESCRIPTION_MAX_CHAR_COUNT },
-                          unless: :ready_to_enforce_less_text?
-
-  validates :description, presence: true,
-                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT },
-                          if: :ready_to_enforce_less_text?
+                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
   validates :weeks, presence: true
@@ -95,10 +117,12 @@ class InternshipOffer < ApplicationRecord
 
   before_validation :replicate_rich_text_to_raw_fields
   before_save :sync_first_and_last_date,
+              :ensure_good_zipcode,
               :reverse_academy_by_zipcode,
               :reverse_department_by_zipcode
 
   before_create :preset_published_at_to_now
+  after_commit :sync_internship_offer_keywords
 
   scope :published, -> { where.not(published_at: nil) }
 
@@ -155,7 +179,6 @@ class InternshipOffer < ApplicationRecord
     'internship_offer'
   end
 
-
   #
   # callbacks
   #
@@ -163,6 +186,10 @@ class InternshipOffer < ApplicationRecord
     first_week, last_week = weeks.minmax_by(&:id)
     self.first_date = first_week.week_date.beginning_of_week
     self.last_date = last_week.week_date.end_of_week
+  end
+
+  def ensure_good_zipcode
+    self.zipcode = self.zipcode.ljust(5, '0')
   end
 
   def reverse_academy_by_zipcode
@@ -190,8 +217,10 @@ class InternshipOffer < ApplicationRecord
     self.published_at = Time.now
   end
 
-  def ready_to_enforce_less_text?
-    Date.today.year >= 2019 && Date.today.month >= 9 ||
-    Date.today.year >= 2020
+  def sync_internship_offer_keywords
+    syncable_attribute_changed = [title_changed?, description_changed?, employer_description_changed?]
+
+    return if syncable_attribute_changed.none?
+    SyncInternshipOfferKeywordsJob.perform_later
   end
 end

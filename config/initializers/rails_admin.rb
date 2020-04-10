@@ -48,6 +48,7 @@ RailsAdmin.config do |config|
                               Sector
                               Group
                               User
+                              InternshipOfferKeyword
                               InternshipOffers::Web
                               InternshipOffers::Api
                               Users::Other

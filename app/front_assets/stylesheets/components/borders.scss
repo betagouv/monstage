@@ -26,3 +26,16 @@
 .bc-light{
   border-color: $nav-tabs-border-color;
 }
+
+.rounded-circle-right{
+  border-top-left-radius:0;
+  border-bottom-left-radius:0;
+  border-top-right-radius-radius:100%;
+  border-bottom-right-radius-radius:100%;
+}
+.rounded-circle-left{
+  border-top-left-radius:100%;
+  border-bottom-left-radius:100%;
+  border-top-right-radius-radius:0;
+  border-bottom-right-radius-radius:0;
+}

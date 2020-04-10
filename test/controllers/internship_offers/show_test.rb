@@ -214,7 +214,7 @@ module InternshipOffers
       assert_select 'a[href=?]', internship_offer.permalink
     end
 
-    test 'GET #show as Student redirects to internship_offers when offer is discarded' do
+    test 'GET #show as Student redirects to his tailored list of internship_offers when offer is discarded' do
       internship_offer = create(:internship_offer)
       student = create(:student, school: create(:school))
       sign_in(student)
@@ -222,7 +222,7 @@ module InternshipOffers
       internship_offer.discard
 
       get internship_offer_path(internship_offer)
-      assert_redirected_to internship_offers_path
+      assert_redirected_to Presenters::User.new(student).default_internship_offers_path
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do

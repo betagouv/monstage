@@ -10,7 +10,7 @@ div.modal id="approve-student-#{student.id}" tabindex="-1" role="dialog"
         p
           | Vous confirmez avoir reçu l'accord parental de
           = " "
-          = Presenters::User.new(user: student).full_name
+          = Presenters::User.new(student).full_name
 
       .modal-footer.actions
         button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler

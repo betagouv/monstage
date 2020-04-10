@@ -95,7 +95,6 @@ class InternshipOfferPaginationTest < ActiveSupport::TestCase
                         .limit(1)
     assert_equal @internship_offer_1, previous_item.first
 
-    # $debug = true
     previous_item = from.previous_from(current: @internship_offer_3,
                                        column: :total_applications_count,
                                        order: :asc)

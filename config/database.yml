@@ -68,7 +68,7 @@ review:
 
 staging:
   <<: *default
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
+  url: <%= ENV.fetch('CLEVER_DATABASE_URL') { ENV.fetch('DATABASE_URL', '') }.sub(/^postgres(ql)?/, "postgis") %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -91,7 +91,4 @@ staging:
 #
 production:
   <<: *default
-  database: monstage_production
-  username: monstage
-  password: <%= ENV['MONSTAGE_DATABASE_PASSWORD'] %>
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
+  url: <%= ENV.fetch('CLEVER_DATABASE_URL') { ENV.fetch('DATABASE_URL', '') }.sub(/^postgres(ql)?/, "postgis") %>
