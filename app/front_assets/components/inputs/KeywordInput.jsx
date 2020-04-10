@@ -55,6 +55,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
         selectedItem,
       }) => (
         <div
+          id='test-input-keyword-container'
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
@@ -76,6 +77,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
               value: inputValue,
               className: 'form-control pl-2',
               id: 'input-search-by-keyword',
+              name: 'keyword',
               placeholder: 'Profession',
               onFocus: () => {
                 setFocus(COMPONENT_FOCUS_LABEL);
