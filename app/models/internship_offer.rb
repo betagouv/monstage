@@ -220,10 +220,14 @@ class InternshipOffer < ApplicationRecord
   end
 
   def sync_internship_offer_keywords
-    syncable_attribute_changed = [title_changed?, description_changed?, employer_description_changed?]
+    previous_title, new_title = title_previous_change
+    previous_description, new_description = description_previous_change
+    previous_employer_description, new_employer_description = employer_description_previous_change
 
-    return if syncable_attribute_changed.none?
-
-    SyncInternshipOfferKeywordsJob.perform_later
+    if [previous_title != new_title,
+        previous_description != new_description,
+        previous_employer_description != new_employer_description].any?
+      SyncInternshipOfferKeywordsJob.perform_later
+    end
   end
 end
