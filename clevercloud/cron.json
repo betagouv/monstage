@@ -1,4 +1,4 @@
   [
-    "0 9 * * * bundle exec rails internship_application_reminders"
+    "0 9 * * * $ROOT/infra/crons/internship_application_reminders.sh"
   ]
 
