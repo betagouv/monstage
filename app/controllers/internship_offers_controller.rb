@@ -32,7 +32,10 @@ class InternshipOffersController < ApplicationController
   private
 
   def set_internship_offer
-    @internship_offer = InternshipOffer.find(params[:id])
+    @internship_offer = InternshipOffer.includes(:weeks)
+                                       .with_rich_text_description_rich_text
+                                       .with_rich_text_employer_description_rich_text
+                                       .find(params[:id])
   end
 
   def flash_message_when_missing_school_weeks
