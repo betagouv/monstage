@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module UserAdmin
   extend ActiveSupport::Concern
-  DEFAULTS_FIELDS = %i[id email first_name last_name confirmed_at]
+  DEFAULTS_FIELDS = %i[id email first_name last_name confirmed_at].freeze
 
   included do
     rails_admin do
@@ -29,8 +31,8 @@ module UserAdmin
       show do
         fields *DEFAULTS_FIELDS
         field :confirmation_sent_at do
-          date_format "KO"
-          strftime_format "%d/%m/%Y"
+          date_format 'KO'
+          strftime_format '%d/%m/%Y'
         end
 
         field :phone
@@ -39,7 +41,6 @@ module UserAdmin
             bindings[:object].respond_to?(:school)
           end
         end
-
 
         field :sign_in_count
       end

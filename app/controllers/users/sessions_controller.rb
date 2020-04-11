@@ -4,6 +4,7 @@ module Users
   class SessionsController < Devise::SessionsController
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
+
     private
 
     def remove_notice

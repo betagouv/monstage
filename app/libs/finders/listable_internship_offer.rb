@@ -16,14 +16,15 @@ module Finders
     end
 
     def previous_from(from:)
-       query_builder.base_query
-                    .order(id: :desc)
-                    .previous_from(current: from, column: :id, order: :desc)
-                    .limit(1)
-                    .first
+      query_builder.base_query
+                   .order(id: :desc)
+                   .previous_from(current: from, column: :id, order: :desc)
+                   .limit(1)
+                   .first
     end
 
     private
+
     attr_reader :query_builder
 
     def initialize(params:, user:)

@@ -20,7 +20,7 @@ class InternshipOffer < ApplicationRecord
   # this TEXT SEARCH CONFIGURATION is based on 3 keys concepts
   #   public.dict_search_with_synonoym : why allow us to links kind of same words for input search
   #   unaccent : which tokenize content without accent [search is also applied without accent]
-  #.  french stem : which tokenize content for french FT
+  # .  french stem : which tokenize content for french FT
   # plus some customization to ignores
   #   email, url, host, file, int, float
   pg_search_scope :search_by_keyword,
@@ -33,11 +33,10 @@ class InternshipOffer < ApplicationRecord
                   using: {
                     tsearch: {
                       dictionary: 'public.config_search_with_synonym',
-                      tsvector_column: "search_tsv",
-                      prefix: true,
+                      tsvector_column: 'search_tsv',
+                      prefix: true
                     }
                   }
-
 
   scope :by_sector, lambda { |sector_id|
     where(sector_id: sector_id)
@@ -57,22 +56,22 @@ class InternshipOffer < ApplicationRecord
 
   scope :ignore_max_candidates_reached, lambda {
     joins(:internship_offer_weeks)
-     .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
+      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
   }
 
   scope :ignore_max_internship_offer_weeks_reached, lambda {
     where('internship_offer_weeks_count > blocked_weeks_count')
   }
 
-  scope :ignore_already_applied, lambda { |user: |
+  scope :ignore_already_applied, lambda { |user:|
     where.not(id: joins(:internship_applications)
                     .merge(InternshipApplication.where(user_id: user.id)))
   }
 
   scope :mines_and_sumbmitted_to_operator, lambda { |user:|
-      left_joins(:internship_offer_operators)
-       .merge(where(internship_offer_operators: {operator_id: user.operator_id})
-              .or(where("internship_offers.employer_id = #{user.id}")))
+    left_joins(:internship_offer_operators)
+      .merge(where(internship_offer_operators: { operator_id: user.operator_id })
+            .or(where("internship_offers.employer_id = #{user.id}")))
   }
 
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
@@ -156,7 +155,6 @@ class InternshipOffer < ApplicationRecord
     internship_applications.empty?
   end
 
-
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
@@ -189,7 +187,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def ensure_good_zipcode
-    self.zipcode = self.zipcode.ljust(5, '0')
+    self.zipcode = zipcode.ljust(5, '0')
   end
 
   def reverse_academy_by_zipcode
@@ -209,8 +207,12 @@ class InternshipOffer < ApplicationRecord
   #     we add a new description_rich_text element which is rendered when possiblee
   #   4. Bonus -> description will be used for description_tsv as template to extract keywords
   def replicate_rich_text_to_raw_fields
-    self.description = self.description_rich_text.to_plain_text if self.description_rich_text.to_s.present?
-    self.employer_description = self.employer_description_rich_text.to_plain_text if self.employer_description_rich_text.to_s.present?
+    if description_rich_text.to_s.present?
+      self.description = description_rich_text.to_plain_text
+    end
+    if employer_description_rich_text.to_s.present?
+      self.employer_description = employer_description_rich_text.to_plain_text
+    end
   end
 
   def preset_published_at_to_now
@@ -221,6 +223,7 @@ class InternshipOffer < ApplicationRecord
     syncable_attribute_changed = [title_changed?, description_changed?, employer_description_changed?]
 
     return if syncable_attribute_changed.none?
+
     SyncInternshipOfferKeywordsJob.perform_later
   end
 end

@@ -29,8 +29,8 @@ class InternshipOffersController < ApplicationController
                                                  .build(user_id: current_user_id)
   end
 
-
   private
+
   def set_internship_offer
     @internship_offer = InternshipOffer.find(params[:id])
   end
@@ -65,8 +65,9 @@ class InternshipOffersController < ApplicationController
     )
   end
 
-
   def increment_internship_offer_view_count
-    @internship_offer.increment!(:view_count) if current_user.is_a?(Users::Student)
+    if current_user.is_a?(Users::Student)
+      @internship_offer.increment!(:view_count)
+    end
   end
 end

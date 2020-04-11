@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InternshipOfferKeyword < ApplicationRecord
   include PgSearch::Model
 
@@ -8,7 +10,7 @@ class InternshipOfferKeyword < ApplicationRecord
   # - it's searchable with pg_trgm for typo tolearant search (we are speaking to Freshman)
   # - it's curated via ActiveAdmin [searchable]
   pg_search_scope :search,
-                  against: {word:'A'},
+                  against: { word: 'A' },
                   ignoring: :accents,
                   using: :trigram
 end

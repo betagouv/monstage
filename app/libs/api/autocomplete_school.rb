@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class AutocompleteSchool
     def response_wrapper
@@ -8,8 +10,8 @@ module Api
       }
     end
 
-    def as_json(options={})
-      result.inject(response_wrapper) do |accu, school|
+    def as_json(_options = {})
+      result.each_with_object(response_wrapper) do |school, accu|
         if school.match_by_city?(term)
           accu[:match_by_city][school.pg_search_highlight_city] = append_result(
             list: accu[:match_by_city][school.pg_search_highlight_city],
@@ -21,11 +23,11 @@ module Api
                                                item: school,
                                                sort_by: :zipcode)
         end
-        accu
       end
     end
 
     private
+
     attr_reader :term, :limit, :result
     def initialize(term:, limit:)
       @term = term
@@ -41,4 +43,3 @@ module Api
     end
   end
 end
-

@@ -18,7 +18,7 @@ module Presenters
     def to_range(&block)
       case weeks.size
       when 0
-        ""
+        ''
       when 1
         render_first_week_only(&block)
       when 2..5

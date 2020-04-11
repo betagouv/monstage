@@ -45,8 +45,8 @@ class InternshipApplicationsController < ApplicationController
     @internship_application = InternshipApplication.create!(create_internship_application_params)
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
-  rescue ActiveRecord::RecordInvalid => error
-    @internship_application = error.record
+  rescue ActiveRecord::RecordInvalid => e
+    @internship_application = e.record
     render 'internship_offers/show', status: :bad_request
   end
 
@@ -66,11 +66,11 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :motivation,
-            student_attributes: [
-              :phone,
-              :resume_educational_background,
-              :resume_other,
-              :resume_languages
+            student_attributes: %i[
+              phone
+              resume_educational_background
+              resume_other
+              resume_languages
             ]
           )
   end
@@ -81,11 +81,11 @@ class InternshipApplicationsController < ApplicationController
             :motivation,
             :internship_offer_week_id,
             :user_id,
-            student_attributes: [
-              :phone,
-              :resume_educational_background,
-              :resume_other,
-              :resume_languages
+            student_attributes: %i[
+              phone
+              resume_educational_background
+              resume_other
+              resume_languages
             ]
           )
   end

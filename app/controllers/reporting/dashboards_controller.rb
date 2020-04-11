@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Reporting
   class DashboardsController < BaseReportingController
-    # todo refactor for understandable widgetization
+    # TODO: refactor for understandable widgetization
     def index
       authorize! :index, Reporting::Acl.new(user: current_user, params: params)
 
@@ -26,7 +28,7 @@ module Reporting
         # widget right, 2, showing PaQte not involved
         private_groups_not_involved: group_finder.groups_not_involved(is_public: false),
         # widget right, 2, showing public not involved
-        public_groups_not_involved: group_finder.groups_not_involved(is_public: true),
+        public_groups_not_involved: group_finder.groups_not_involved(is_public: true)
       }
     end
 
@@ -49,7 +51,7 @@ module Reporting
     end
 
     def group_finder
-      @group_finder ||= Finders::ReportingGroup.new(params:params.permit(:department))
+      @group_finder ||= Finders::ReportingGroup.new(params: params.permit(:department))
     end
   end
 end

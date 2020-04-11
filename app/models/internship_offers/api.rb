@@ -4,7 +4,7 @@ module InternshipOffers
   class Api < InternshipOffer
     rails_admin do
       configure :created_at, :datetime do
-        date_format "BUGGY"
+        date_format 'BUGGY'
       end
 
       list do
@@ -17,7 +17,6 @@ module InternshipOffers
         field :department
         field :created_at
       end
-
 
       edit do
         field :title
@@ -85,7 +84,7 @@ module InternshipOffers
       }
     end
 
-    def as_json(options={})
+    def as_json(options = {})
       super(options.merge(
         only: %i[title
                  description

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This jobs had been perf tested againt 2019-2020 all offers
 #   and run in ±500ms<1s to fetch all words in intership_offers
 # All words are extracted from internship_offers

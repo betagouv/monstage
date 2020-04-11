@@ -52,6 +52,4 @@ class Academy
       end
     end
   end
-
-
 end

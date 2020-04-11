@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MessageForAasmState
   # for html formatted default message
   delegate :student,
@@ -14,7 +16,7 @@ class MessageForAasmState
     approve!: 'success',
     cancel!: 'danger',
     reject!: 'danger'
-  }
+  }.freeze
 
   def target_action_color
     MAP_TARGET_TO_BUTTON_COLOR.fetch(aasm_target)
@@ -30,13 +32,13 @@ class MessageForAasmState
     approve!: :approved_message,
     cancel!: :canceled_message,
     reject!: :rejected_message
-  }
+  }.freeze
 
   MAP_TARGET_TO_RICH_TEXT_INITIALIZER = {
     approve!: :on_approved_message,
     cancel!: :on_canceled_message,
     reject!: :on_rejected_message
-  }
+  }.freeze
 
   def assigned_rich_text_attribute
     rich_text_object = MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE.fetch(aasm_target)

@@ -8,8 +8,8 @@ module Users
                                  dependent: :destroy
 
     has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
-                                      source: :internship_offer,
-                                      class_name: "InternshipOffer"
+             source: :internship_offer,
+             class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers
 

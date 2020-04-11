@@ -8,11 +8,11 @@ module Builders
       authorize :create, model
       internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
       callback.on_success.try(:call, internship_offer)
-    rescue ActiveRecord::RecordInvalid => error
-      if duplicate?(error.record)
-        callback.on_duplicate.try(:call, error.record)
+    rescue ActiveRecord::RecordInvalid => e
+      if duplicate?(e.record)
+        callback.on_duplicate.try(:call, e.record)
       else
-        callback.on_failure.try(:call, error.record)
+        callback.on_failure.try(:call, e.record)
       end
     end
 
@@ -21,8 +21,8 @@ module Builders
       authorize :update, instance
       instance.update!(preprocess_api_params(params, fallback_weeks: false))
       callback.on_success.try(:call, instance)
-    rescue ActiveRecord::RecordInvalid => error
-      callback.on_failure.try(:call, error.record)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
     end
 
     def discard(instance:)
@@ -47,6 +47,7 @@ module Builders
 
     def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
+
       opts = { params: params,
                user: user,
                fallback_weeks: fallback_weeks }
