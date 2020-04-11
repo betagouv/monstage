@@ -1,0 +1,4 @@
+  [
+    "0 9 * * * bundle exec rails internship_application_reminders"
+  ]
+
