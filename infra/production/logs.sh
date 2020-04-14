@@ -1,4 +1,4 @@
 #!/bin/bash
 set -x
 
-heroku logs -t -a betagouv-monstage-prod
+clever logs -a monstage-prod
