@@ -103,19 +103,10 @@ jobs: # a collection of steps
     steps:
       - checkout
       - run:
+          name: Deploy Master to Clever Cloud
           command: |
-            curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
-            cat >~/.netrc <<EOF
-            machine api.heroku.com
-              login $HEROKU_EMAIL
-              password $HEROKU_API_KEY
-            EOF
-            chmod 600 ~/.netrc
-      - run:
-          name: Deploy Master to Heroku
-          command: |
-            git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
-            heroku run rails db:migrate -a $HEROKU_APP_NAME
+            git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            git push -u clever master
 workflows:
   version: 2
   build-deploy:
