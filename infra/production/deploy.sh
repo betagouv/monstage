@@ -9,7 +9,7 @@ git remote -vvv | grep $target | grep 'clever'
 if [ ! $? -eq 0 ]; then
   echo "missing git remote $target"
   echo "please add $target repo"
-  echo "-> git remote add $target git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_27afdde4-bf1e-4100-aca2-2e587c240ee6.git"
+  echo "-> git remote add $target git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_cb8fb836-b0c7-43e1-ba2e-130a73626fa6.git"
   exit 1;
 fi
 
