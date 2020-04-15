@@ -37,10 +37,14 @@ Things you may want to cover:
 
 **hosting & services**
 
-* Backend/Frontend : Heroku with some plugins, see heroku manifest [app.json](https://github.com/betagouv/monstage/blob/master/app.json) for more details (app.json)
-* DB : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
-* Support : [Zammad for support](monstage.zammad.com/)
-* Analytics : [stats.data.gouv.fr](https://stats.data.gouv.fr)
+* Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
+* DB provider : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
+* Support Solution : [Zammad for support](monstage.zammad.com/)
+* Analytic Solution : [stats.data.gouv.fr](https://stats.data.gouv.fr)
+* API: Geolocation town search: [geo.api.gouv.fr](https://geo.api.gouv.fr/decoupage-administratif/communes)
+* Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
+* Bug monitoring solution: [sentry](https://sentry.io/)
+
 
 # Build: test, dev
 
@@ -58,7 +62,7 @@ Things you may want to cover:
 **start project**
 
 ```
-heroku local -f Procfile.dev
+foreman start -f Procfile.dev
 ```
 
 ### tooling: linting, etc...
@@ -100,8 +104,7 @@ regarding env var dependencies, but can be setuped via tools : ```infra/staging|
 
 ## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
-* prefer heroku promote staging ```infra/production/deploy/promote.sh```
-* can be "forced" manually using ```infra/production/deploy/push.sh```
+* prefer ```infra/production/deploy.sh```
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 

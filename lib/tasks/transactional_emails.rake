@@ -1,6 +1,6 @@
-# call by heroku cron daily at 9am
+# call by clever cloud cron daily at 9am
 # which does not support custom day cron. so inlined in code
-desc 'To be scheduled in cron a 8pm to remind employer to manage their internship applications'
+desc 'To be scheduled in cron a 9pm to remind employer to manage their internship applications'
 task internship_application_reminders: :environment do
   Rails.logger.info("Cron runned at #{Time.now.utc}(UTC), internship_application_reminders")
   if [Date.today.monday?, Date.today.thursday?].any?
@@ -8,9 +8,9 @@ task internship_application_reminders: :environment do
   end
 end
 
-# call by heroku cron daily at 9am
+# call by clever cloud cron daily at 9am
 # which does not support custom day cron. so inlined in code
-desc 'To be scheduled in cron a 8pm to remind employer to manage their internship applications'
+desc 'To be scheduled in cron a 9pm to remind employer to manage their internship applications'
 task school_missing_weeks_reminders: :environment do
   Rails.logger.info("Cron runned at #{Time.now.utc}(UTC), school_missing_weeks_reminders")
   if Date.today.monday?
