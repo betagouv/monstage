@@ -7,4 +7,4 @@ if [ ! -f "$SSH_PRIV" ]; then
   exit 1;
 fi;
 
-ssh -t ssh@sshgateway-clevercloud-customers.services.clever-cloud.com app_27afdde4-bf1e-4100-aca2-2e587c240ee6 "cd app_27afdde4-bf1e-4100-aca2-2e587c240ee6 ; bundle exec rails console"
+ssh -t ssh@sshgateway-clevercloud-customers.services.clever-cloud.com app_27afdde4-bf1e-4100-aca2-2e587c240ee6
