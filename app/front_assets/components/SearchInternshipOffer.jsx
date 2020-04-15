@@ -71,6 +71,7 @@ function SearchInternshipOffer({ url, initialLocation }) {
 
         <div className="input-group-prepend d-flex d-xs-stick no-padding">
           <button
+            id='test-submit-search'
             type="submit"
             className="input-group-search-button
                        btn

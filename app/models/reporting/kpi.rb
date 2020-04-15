@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reporting
   class Kpi
     def student_funnel_goal
@@ -11,11 +13,12 @@ module Reporting
     def school_manager_funnel_goal
       @school_manager_funnel_goal ||= {
         total: School.count,
-        with_school_manager: School.joins(:users).where(users: {type: Users::SchoolManager.name}).count
+        with_school_manager: School.joins(:users).where(users: { type: Users::SchoolManager.name }).count
       }
     end
+
     private
-    def initialize
-    end
+
+    def initialize; end
   end
 end

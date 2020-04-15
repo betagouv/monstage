@@ -1,22 +1,23 @@
+# frozen_string_literal: true
+
 module Presenters
   module Reporting
     class DimensionBySchool < BaseDimension
       ATTRS = %i[department
                  code_uai
-                 human_kind]
+                 human_kind].freeze
       METHODS = %i[total_student_count
                    total_main_teacher_count
                    total_approved_internship_applications_count
                    human_school_manager
                    full_address
-                   full_weeks]
-
+                   full_weeks].freeze
 
       def self.metrics
         [].concat(ATTRS, METHODS)
       end
 
-      delegate *self.metrics, to: :instance
+      delegate *metrics, to: :instance
 
       def self.dimension_name
         'Etablissement'
@@ -43,6 +44,7 @@ module Presenters
       end
 
       private
+
       attr_reader :instance
       def initialize(instance)
         @instance = instance

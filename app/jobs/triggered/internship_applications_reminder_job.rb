@@ -6,6 +6,7 @@ module Triggered
 
     def perform(employer)
       return unless current_trigger.notifiable?(employer)
+
       # cache ids otherwise notifiable behaviour is changed
       remindable_application_ids = employer.internship_applications
                                            .remindable
@@ -38,9 +39,7 @@ module Triggered
 
     def update_and_expire_expirable(ids)
       InternshipApplication.where(id: ids)
-                           .each do |expirable_application|
-        expirable_application.expire!
-      end
+                           .each(&:expire!)
     end
 
     def notify(employer:,

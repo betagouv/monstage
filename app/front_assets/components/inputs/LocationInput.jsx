@@ -75,6 +75,7 @@ function LocationInput({
         openMenu,
       }) => (
         <div
+          id='test-input-location-container'
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
@@ -96,6 +97,7 @@ function LocationInput({
               onChange: inputChange,
               value: inputValue,
               className: 'form-control pl-2 input-group-search-right-border',
+              name: "city",
               id: 'input-search-by-city',
               placeholder: 'Lieu',
               onFocus: event => {

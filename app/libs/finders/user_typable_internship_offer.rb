@@ -42,7 +42,6 @@ module Finders
                                longitude: coordinates.longitude)
     end
 
-
     def school_members_query
       query = InternshipOffer.kept
                              .in_the_future
@@ -50,23 +49,37 @@ module Finders
                              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
                              .ignore_max_candidates_reached
                              .ignore_max_internship_offer_weeks_reached
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinate_params) ) if coordinate_params
-      query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)) if !user.missing_school_weeks? && user.school
-      query = query.merge(InternshipOffer.ignore_already_applied(user: user)) if user.respond_to?(:internship_applications)
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
+      if !user.missing_school_weeks? && user.school
+        query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
+      end
+      if user.respond_to?(:internship_applications)
+        query = query.merge(InternshipOffer.ignore_already_applied(user: user))
+      end
       query
     end
 
     def employer_query
       query = user.internship_offers.kept
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
       query
     end
 
     def operator_query
       query = InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
       if coordinate_params
         query = query.merge(nearby_query_part(query, coordinate_params))
       elsif user.department_name.present?
@@ -77,38 +90,57 @@ module Finders
 
     def statistician_query
       query = InternshipOffer.kept
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
-      query = query.merge(query.limited_to_department(user: user)) if user.department_name
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
+      if user.department_name
+        query = query.merge(query.limited_to_department(user: user))
+      end
       query
     end
 
     def visitor_query
       query = InternshipOffer.kept.in_the_future.published
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
       query
     end
 
     def god_query
       query = InternshipOffer.kept
-      query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank)) if keyword_params
-      query = query.merge(nearby_query_part(query, coordinate_params)) if coordinate_params
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
       query
     end
 
     def keyword_params
       return nil unless params.key?(:keyword)
+
       params[:keyword]
     end
 
     def coordinate_params
       return nil unless params.key?(:latitude) || params.key?(:longitude)
+
       geo_point_factory(latitude: params[:latitude], longitude: params[:longitude])
     end
 
     def radius_params
-      return Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER unless params.key?(:radius)
+      unless params.key?(:radius)
+        return Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
+      end
+
       params[:radius]
     end
   end

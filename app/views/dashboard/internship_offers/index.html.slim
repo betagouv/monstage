@@ -18,7 +18,7 @@
                           { class: 'col-12 py-3 filter-section' })
 
       .row.bc-light.br-1.bl-1.bb-1
-        .col-12= render partial: 'dashboard/internship_offers/table'
+        .col-12.px-0= render partial: 'dashboard/internship_offers/table'
 
   - if @internship_offers.total_pages > @internship_offers.current_page
     .row.d-flex.d-sm-none
@@ -34,7 +34,7 @@
 - if @internship_offers.empty?
   .row
     .col-12
-      h1.h2.mt-4 Aucune offre n'a été publiée sur cette localisation
+      h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
       p.d-sm-block.d-none
         = link_to new_dashboard_internship_offer_path, class: 'btn btn-primary' do
           = "Déposer une offre "

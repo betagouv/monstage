@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   end
 
   helper_method :current_section
+
   private
 
   def current_flash_message
@@ -23,7 +24,9 @@ class UsersController < ApplicationController
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez candidater"
               else 'Compte mis à jour avec succès.'
               end
-    message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).' if current_user.unconfirmed_email
+    if current_user.unconfirmed_email
+      message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).'
+    end
     message
   end
 

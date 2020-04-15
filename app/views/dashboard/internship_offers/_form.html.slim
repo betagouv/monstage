@@ -1,4 +1,4 @@
-= form_with({model: @internship_offer, url: (@internship_offer.new_record? ? dashboard_internship_offers_path : dashboard_internship_offer_path(@internship_offer)), scope: :internship_offer, data: {controller: 'internship-form'}}) do |form|
+= form_with({model: @internship_offer, url: (@internship_offer.new_record? ? dashboard_internship_offers_path : dashboard_internship_offer_path(@internship_offer)), scope: :internship_offer, data: {controller: 'internship-form'}, local: true}) do |form|
   = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
@@ -151,7 +151,7 @@
 
             = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
 
-            input type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
+            input#internship_offer_coordinates_latitude type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
             input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
 
 

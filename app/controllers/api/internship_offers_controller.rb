@@ -70,7 +70,7 @@ module Api
               :max_candidates,
               :published_at,
               coordinates: {},
-              weeks: [],
+              weeks: []
             )
     end
   end

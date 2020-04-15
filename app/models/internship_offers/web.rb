@@ -4,7 +4,7 @@ module InternshipOffers
   class Web < InternshipOffer
     rails_admin do
       configure :created_at, :datetime do
-        date_format "BUGGY"
+        date_format 'BUGGY'
       end
 
       list do
@@ -75,7 +75,6 @@ module InternshipOffers
     after_initialize :init
     before_create :reverse_academy_by_zipcode
 
-
     attr_reader :with_operator
 
     def has_spots_left?
@@ -102,13 +101,18 @@ module InternshipOffers
 
     def validate_group_is_public?
       return if group.nil?
-      errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
+
+      unless group.is_public?
+        errors.add(:group, 'Veuillez choisir une institution de tutelle')
+      end
     end
 
     def validate_group_is_not_public?
       return if group.nil?
-      errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
-    end
 
+      if group.is_public?
+        errors.add(:group, 'Veuillez choisir une institution de tutelle')
+      end
+    end
   end
 end

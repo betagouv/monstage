@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Users
   class Statistician < User
     include UserAdmin
@@ -26,7 +28,7 @@ module Users
       [
         url_helpers.reporting_internship_offers_path,
         url_helpers.reporting_schools_path,
-        url_helpers.reporting_dashboards_path,
+        url_helpers.reporting_dashboards_path
       ]
     end
 

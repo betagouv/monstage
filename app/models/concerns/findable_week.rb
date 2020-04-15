@@ -14,7 +14,7 @@ module FindableWeek
     }
     # maybe useless
     scope :in_the_past, lambda {
-      where("last_date < ?", Date.today)
+      where('last_date < ?', Date.today)
     }
 
     scope :more_recent_than, lambda { |week:|

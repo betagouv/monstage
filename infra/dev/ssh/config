@@ -1,0 +1,2 @@
+Host *.clever-cloud.com
+   IdentityFile ~/.ssh/clevercloud-monstage

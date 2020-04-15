@@ -1,0 +1,7 @@
+{
+  "deploy" : {
+    "env": "<string>",
+    "rakegoals": ["db:migrate","assets:precompile"],
+    "static": "/public"
+  }
+}

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Api
   class School < ApplicationRecord
     include Nearbyable
@@ -15,21 +16,21 @@ module Api
                     using: {
                       tsearch: {
                         dictionary: 'public.fr',
-                        tsvector_column: "city_tsv",
-                        prefix: true,
+                        tsvector_column: 'city_tsv',
+                        prefix: true
                       }
                     }
 
-    scope :autocomplete_by_name_or_city, -> (term:) {
+    scope :autocomplete_by_name_or_city, lambda { |term:|
       search_by_name_and_city(term)
         .highlight_by_city(term)
         .highlight_by_name(term)
         .select("#{table_name}.*")
     }
 
-    scope :visible, -> () { where(visible: true) }
+    scope :visible, -> { where(visible: true) }
 
-    def as_json(options={})
+    def as_json(options = {})
       super(options.merge(only: %i[id name department zipcode],
                           methods: %i[class_rooms] +
                                    %i[name city] +
@@ -61,7 +62,7 @@ module Api
       # make a SQL select with ts_headline (highlight part of full text search match)
       # we use previously defined pg_search_scope in order to build the right ts_headline pg call
       # see: https://www.postgresql.org/docs/current/textsearch-controls.html
-      scope :"highlight_by_#{highlight_column}", -> (term) {
+      scope :"highlight_by_#{highlight_column}", lambda { |term|
         current_pg_search_scope = send(:"search_#{highlight_column}", term)
         select("#{current_pg_search_scope.tsearch.highlight.to_sql} as pg_search_highlight_#{highlight_column}")
       }
@@ -70,8 +71,8 @@ module Api
         current_attribute_value = send(highlight_column)
         current_pg_highlight_attribute_value = attributes["pg_search_highlight_#{highlight_column}"]
 
-        /<b>.*<\/b>/.match?(current_pg_highlight_attribute_value) ||
-            current_attribute_value.downcase.include?(term.downcase)
+        %r{<b>.*</b>}.match?(current_pg_highlight_attribute_value) ||
+          current_attribute_value.downcase.include?(term.downcase)
       end
 
       # read SQL result of ts_headline (highlight_by_#{highlight_column}) pg_search_highlight_#{highlight_column}

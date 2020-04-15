@@ -15,6 +15,7 @@ gem 'activerecord-postgis-adapter' # pg extension for geo queries
 gem 'pg_search'                    # pg search for autocomplete
 
 # front end
+gem 'uglifier'
 gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'

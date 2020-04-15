@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reporting
   class Acl
     def allowed?
@@ -5,6 +7,7 @@ module Reporting
     end
 
     private
+
     attr_reader :params, :user
     def initialize(params:, user:)
       @params = params

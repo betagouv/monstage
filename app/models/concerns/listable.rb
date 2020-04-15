@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Listable
   extend ActiveSupport::Concern
 
   included do
-    scope :next_from, lambda { |current:, column:,order:|
+    scope :next_from, lambda { |current:, column:, order:|
       operator = order == :asc ? '>' : '<'
 
       query = where("#{table_name}.#{column} #{operator} :current_column_value",

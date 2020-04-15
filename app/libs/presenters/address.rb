@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Presenters
   class Address
-
     def to_s
       [
         instance.street,
@@ -10,6 +11,7 @@ module Presenters
     end
 
     private
+
     attr_reader :instance
 
     def initialize(instance:)

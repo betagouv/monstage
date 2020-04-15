@@ -85,6 +85,7 @@ class InternshipApplication < ApplicationRecord
 
   def internship_offer_has_spots_left?
     return unless internship_offer_week.present?
+
     unless internship_offer.has_spots_left?
       errors.add(:internship_offer, :has_no_spots_left)
     end
@@ -98,7 +99,8 @@ class InternshipApplication < ApplicationRecord
 
   def at_most_one_application_per_student?
     return unless internship_offer_week.present?
-    if internship_offer.internship_applications.where(user_id: self.user_id).count > 0
+
+    if internship_offer.internship_applications.where(user_id: user_id).count > 0
       errors.add(:user_id, :duplicate)
     end
   end
@@ -108,12 +110,12 @@ class InternshipApplication < ApplicationRecord
   end
 
   def application_via_school_manager?
-    internship_offer && internship_offer.school
+    internship_offer&.school
   end
 
   def transition_with_email
-    new_state = self.aasm.to_state
-    update!(:"#{new_state}_at" => Time.now.utc)
+    new_state = aasm.to_state
+    update!("#{new_state}_at": Time.now.utc)
     mailer = new_state == :submitted ? EmployerMailer : StudentMailer
     mailer.send(:"internship_application_#{new_state}_email",
                 internship_application: self)

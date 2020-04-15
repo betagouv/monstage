@@ -14,7 +14,7 @@ module Presenters
                  department
                  academy
                  permalink
-                 view_count]
+                 view_count].freeze
       METHODS = %i[group_name
                    human_is_public
                    sector_name
@@ -22,13 +22,11 @@ module Presenters
                    full_employer
                    full_address
                    full_school
-                   full_weeks]
-
+                   full_weeks].freeze
 
       def self.metrics
         [].concat(ATTRS, METHODS)
       end
-
 
       delegate *ATTRS, to: :instance
 
@@ -38,7 +36,7 @@ module Presenters
 
       def human_max_candidates
         instance.max_candidates == 1 ?
-          " Stage individuel (un seul élève par stage)" :
+          ' Stage individuel (un seul élève par stage)' :
           " Stage collectif (par groupe de #{instance.max_candidates} élèves)"
       end
 
@@ -72,6 +70,7 @@ module Presenters
 
       def full_school
         return nil unless instance.school
+
         [instance.school.name, "#{instance.school.city} – CP #{instance.school.zipcode}"].compact.join("\n")
       end
 

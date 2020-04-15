@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Reporting
   class SchoolsController < BaseReportingController
     helper_method :presenter_for_dimension
@@ -9,14 +11,13 @@ module Reporting
                                          .page(params[:page])
       respond_to do |format|
         format.xlsx do
-          response.headers['Content-Disposition'] = %Q[attachment; filename="#{export_filename('etablissements')}.xlsx"]
+          response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('etablissements')}.xlsx")
         end
         format.html
       end
     end
 
     private
-
 
     def presenter_for_dimension
       Presenters::Reporting::DimensionBySchool
