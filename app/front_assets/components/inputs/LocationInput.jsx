@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
@@ -22,7 +23,7 @@ function LocationInput({
   setFocus,
 }) {
   const [searchResults, setSearchResults] = useState([]);
-
+  const [cityDebounced] = useDebounce(city, 100);
   const inputChange = event => {
     setCity(event.target.value);
   };
@@ -51,10 +52,10 @@ function LocationInput({
   };
 
   useEffect(() => {
-    if (city && city.length > 0) {
-      searchCityByName(city);
+    if (cityDebounced && cityDebounced.length > 2) {
+      searchCityByName(cityDebounced);
     }
-  }, [city]);
+  }, [cityDebounced]);
 
   return (
     <Downshift

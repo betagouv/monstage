@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
 
@@ -6,16 +7,16 @@ const COMPONENT_FOCUS_LABEL = 'keyword';
 
 function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
   const [searchResults, setSearchResults] = useState([]);
-
-  const inputChange = event => {
+  const [keywordDebounced] = useDebounce(keyword, 200);
+  const inputChange = (event) => {
     setKeyword(event.target.value);
   };
 
-  const safeSetKeyword = item => {
+  const safeSetKeyword = (item) => {
     if (item) {
       setKeyword(item.word);
     }
-  }
+  };
 
   const searchKeyword = () => {
     const endpoint = new URL(
@@ -27,22 +28,22 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
     endpoint.search = searchParams.toString();
 
     fetch(endpoint, { method: 'POST' })
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(setSearchResults);
   };
 
   useEffect(() => {
-    if (keyword && keyword.length > 0) {
-      searchKeyword(keyword);
+    if (keywordDebounced && keywordDebounced.length > 2) {
+      searchKeyword(keywordDebounced);
     }
-  }, [keyword]);
+  }, [keywordDebounced]);
 
   return (
     <Downshift
       initialInputValue={keyword}
       onChange={safeSetKeyword}
       selectedItem={keyword}
-      itemToString={item => (item ? item.word : '')}
+      itemToString={(item) => (item ? item.word : '')}
     >
       {({
         getInputProps,
@@ -55,7 +56,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
         selectedItem,
       }) => (
         <div
-          id='test-input-keyword-container'
+          id="test-input-keyword-container"
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
