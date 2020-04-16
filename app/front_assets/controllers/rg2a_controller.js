@@ -1,10 +1,20 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
 
+// see: https://github.com/turbolinks/turbolinks#making-transformations-idempotent
+// since we add a FA icon by hand,
+// avoid re-adding the icon on back-button hit which re-use a snapshot version of turbolink
+const TURBOLINK_IDEMPOTENT_CLASSNAME = 'rg2a-externnal';
+
 export default class extends Controller {
   connect() {
     $('a[target="_blank"]').each((i, el) => {
-      $(el).append('<i class="fas fa-external-link-alt fa-xs mx-1"></i>');
+      const $el = el;
+
+      if (!$(el).hasClass(TURBOLINK_IDEMPOTENT_CLASSNAME)) {
+        $(el).addClass(TURBOLINK_IDEMPOTENT_CLASSNAME);
+        $(el).append('<i class="fas fa-external-link-alt fa-xs mx-1"></i>');
+      }
     });
   }
 }
