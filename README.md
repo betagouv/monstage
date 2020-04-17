@@ -95,6 +95,33 @@ regarding env var dependencies, but can be setuped via tools : ```infra/staging|
 * see your PR on github for the review app link
 * seed: important heroku review app seeding is only done at opening of PR. if you change seed, close/open PR
 
+## staging/prod, ssh requirements
+**Setup SSH public key**
+
+```bash
+# add the pub key in your env 
+touch ~/.ssh/clevercloud-monstage.pub
+# you'll find the public key content in our kdbx file (search for clever cloud public key)
+# assigns appropriate rights 
+chmod 644 ~/.ssh/clevercloud-monstage.pub
+```
+
+**SSH SHS private key**
+
+```bash
+# create the priv key in your env 
+touch ~/.ssh/clevercloud-monstage
+# you'll find the pkey content in our kdbx file (search for clever-cloud private key)
+# assigns appropriate rights 
+chmod 600 ~/.ssh/clevercloud-monstage
+```
+
+**Use ssh key**
+
+```bash
+# ensure to use this key when connecting to clever hostnames 
+cat infra/dev/ssh/config >> ~/.ssh/config
+```
 
 ## staging app : [v2-test.monstagedetroisieme.fr](https://v2-test.monstagedetroisieme.fr)
 
@@ -104,7 +131,7 @@ regarding env var dependencies, but can be setuped via tools : ```infra/staging|
 
 ## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
-* prefer ```infra/production/deploy.sh```
+* push on production can be done manually using ```infra/production/deploy.sh```
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
