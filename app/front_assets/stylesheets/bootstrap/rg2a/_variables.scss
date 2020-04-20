@@ -53,3 +53,14 @@ $input-btn-padding-x: 1rem;
 $input-btn-padding-y: .75rem;
 $border-radius-lg: 1.25rem;
 $box-shadow-lg: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
+
+// pagination
+$pagination-color: $yellow;
+$pagination-border-width: 0;
+
+// pagination:active
+$pagination-active-color: $gray-900;
+$pagination-active-bg: transparent;
+
+// pagination:hover
+$pagination-hover-bg: transparent;

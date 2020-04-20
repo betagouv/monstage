@@ -1,5 +1,6 @@
-.row
-  .col-12
-    h1.h2.mb-4#internship-offers-count
+.row.mb-4.align-items-center
+  .col-12.col-md-6
+    h1.h2.mb-0#internship-offers-count
       = "#{internship_offers.total_count} #{'offre'.pluralize(internship_offers.total_count)} de stage"
 
+  nav.col-12.d-none.d-md-flex.col-md-6.mb-0.justify-content-end= paginate(@internship_offers,views_prefix: 'internship_offers',window: 2)
