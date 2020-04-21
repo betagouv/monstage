@@ -7,6 +7,7 @@ FactoryBot.define do
     name { 'Collègue evariste Gallois' }
     coordinates { Coordinates.paris }
     city { 'Paris' }
+    zipcode { '75015' }
     trait :at_paris do
       city { 'Paris' }
       name { 'Parisian school' }
@@ -19,6 +20,7 @@ FactoryBot.define do
       name { 'bordeaux school' }
       department { 'Gironde' }
       coordinates { Coordinates.bordeaux }
+      zipcode { '30072' }
     end
 
     trait :with_school_manager do
@@ -30,5 +32,6 @@ FactoryBot.define do
     name { 'Collègue evariste Gallois' }
     city { 'Paris' }
     coordinates { Coordinates.paris }
+    zipcode { '75015' }
   end
 end

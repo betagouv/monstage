@@ -2,6 +2,7 @@
 
 class School < ApplicationRecord
   include Nearbyable
+  include Zipcodable
 
   has_many :users, foreign_type: 'type'
   has_many :students, dependent: :nullify,
@@ -21,10 +22,10 @@ class School < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
 
-  before_save :lookup_department
-  before_create :lookup_department
-
   validates :city, :name, presence: true
+
+  validates :zipcode, zipcode: { country_code: :fr }
+
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze
 
   scope :with_manager, lambda {
@@ -45,12 +46,6 @@ class School < ApplicationRecord
 
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
-  end
-
-  def lookup_department
-    if zipcode.present?
-      self.department = Department.lookup_by_zipcode(zipcode: zipcode)
-    end
   end
 
   def has_staff?

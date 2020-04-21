@@ -7,6 +7,7 @@ class SchoolTest < ActiveSupport::TestCase
     school = School.new
     assert school.invalid?
     assert_not_empty school.errors[:coordinates]
+    assert_not_empty school.errors[:zipcode]
   end
 
   test 'Users associations' do

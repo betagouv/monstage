@@ -72,7 +72,7 @@ class SchoolSearchTest < ActiveSupport::TestCase
     end
   end
 
-   test 'autocomplete_by_name_or_city find dasherized city names' do
+  test 'autocomplete_by_name_or_city find dasherized city names' do
     city = 'Mantes-la-Jolie'
     create(:api_school, city: city)
     city.split('').each.with_index do |_, idx|

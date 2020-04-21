@@ -11,6 +11,7 @@ class InternshipOffer < ApplicationRecord
   include Listable
   include FindableWeek
   include Nearbyable
+  include Zipcodable
 
   # utils
   include Discard::Model
@@ -84,7 +85,6 @@ class InternshipOffer < ApplicationRecord
 
   validates :title,
             :employer_name,
-            :zipcode,
             :city,
             presence: true
 
@@ -116,9 +116,7 @@ class InternshipOffer < ApplicationRecord
 
   before_validation :replicate_rich_text_to_raw_fields
   before_save :sync_first_and_last_date,
-              :ensure_good_zipcode,
-              :reverse_academy_by_zipcode,
-              :reverse_department_by_zipcode
+              :reverse_academy_by_zipcode
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
@@ -186,18 +184,6 @@ class InternshipOffer < ApplicationRecord
     self.last_date = last_week.week_date.end_of_week
   end
 
-  def ensure_good_zipcode
-    self.zipcode = zipcode.ljust(5, '0')
-  end
-
-  def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
-  end
-
-  def reverse_department_by_zipcode
-    self.department = Department.lookup_by_zipcode(zipcode: zipcode)
-  end
-
   # @note some possible confusion, miss-understanding here
   #   1. Rich text was added after API
   #   2. API already exposed a "description" attributes (not rich text) [in/out]
@@ -217,6 +203,10 @@ class InternshipOffer < ApplicationRecord
 
   def preset_published_at_to_now
     self.published_at = Time.now
+  end
+
+  def reverse_academy_by_zipcode
+    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
   end
 
   def sync_internship_offer_keywords

@@ -86,4 +86,5 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     assert_equal student.school_id, @next_school.id
     assert_equal student.class_room_id, next_class_room.id
   end
+
 end
