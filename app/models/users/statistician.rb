@@ -20,8 +20,9 @@ module Users
 
     validate :email_in_list
 
-    has_one :email_whitelist, foreign_key: :user_id
+    has_one :email_whitelist, foreign_key: :user_id, dependent: :destroy
     validates :email_whitelist, presence: true
+    before_validation :assign_email_whitelist
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(department: department_name)
@@ -53,6 +54,11 @@ module Users
     end
 
     private
+
+    # on create, make sure to assign existing email whitelist
+    def assign_email_whitelist
+      self.email_whitelist = EmailWhitelist.where(email: email).first
+    end
 
     def email_in_list
       unless EmailWhitelist.exists?(email: email)

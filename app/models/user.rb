@@ -20,7 +20,6 @@ class User < ApplicationRecord
   delegate :application, to: Rails
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
-  has_one :email_whitelist, dependent: :destroy
 
   def self.drh
     Users::Employer.where(email: 'drh@betagouv.fr').first

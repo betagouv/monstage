@@ -24,7 +24,8 @@ module Users
                                              password_confirmation: 'tototo',
                                              first_name: 'Chef',
                                              last_name: 'Departement',
-                                             accept_terms: true)
+                                             accept_terms: true,
+                                             email_whitelist: whitelisted_email)
       assert statistician.valid?
     end
 
@@ -33,7 +34,7 @@ module Users
                                  email: 'fourcade.m@gmail.com',
                                  zipcode: '59')
 
-      statistician = create(:statistician, email: whitelisted_email.email)
+      statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
       assert_equal 'Nord (département français)|Nord', statistician.department_name
     end
 
