@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_122859) do
+ActiveRecord::Schema.define(version: 2020_04_21_142949) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_122859) do
     t.string "zipcode"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_email_whitelists_on_user_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -292,6 +294,7 @@ ActiveRecord::Schema.define(version: 2020_04_09_122859) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "class_rooms", "schools"
+  add_foreign_key "email_whitelists", "users"
   add_foreign_key "internship_applications", "internship_offer_weeks"
   add_foreign_key "internship_applications", "users"
   add_foreign_key "internship_offer_operators", "internship_offers"

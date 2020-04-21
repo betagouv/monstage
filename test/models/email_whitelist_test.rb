@@ -10,4 +10,16 @@ class EmailWhitelistTest < ActiveSupport::TestCase
       create(:email_whitelist, email: 'kikoo@lol.fr', zipcode: '60')
     end
   end
+
+  test 'destroy email whitelist also discard statistician' do
+    statistician = create(:statistician)
+    email_whitelist = create(:email_whitelist, email: statistician.email, user: statistician,  zipcode: 60)
+    freeze_time do
+        assert_changes(-> { statistician.reload.discarded_at.try(:utc) },
+                      from: nil,
+                      to:Time.now.utc) do
+        email_whitelist.destroy!
+      end
+    end
+  end
 end

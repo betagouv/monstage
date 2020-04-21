@@ -406,7 +406,8 @@ CREATE TABLE public.email_whitelists (
     email character varying,
     zipcode character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    user_id bigint
 );
 
 
@@ -1240,6 +1241,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 
 
 --
+-- Name: index_email_whitelists_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
 -- Name: index_internship_applications_on_aasm_state; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1601,6 +1609,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: email_whitelists fk_rails_8fe0f00dcd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_whitelists
+    ADD CONSTRAINT fk_rails_8fe0f00dcd FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_applications fk_rails_93579c3ede; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1800,6 +1816,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200325143659'),
 ('20200402140231'),
 ('20200407142759'),
-('20200409122859');
+('20200409122859'),
+('20200421142949');
 
 

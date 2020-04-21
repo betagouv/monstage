@@ -5,6 +5,8 @@ class EmailWhitelist < ApplicationRecord
   validates :zipcode, inclusion: { in: Department::MAP.keys }
 
   after_create :notify_account_ready
+  belongs_to :user, optional: true
+  after_destroy :discard_user
 
   rails_admin do
     list do
@@ -24,6 +26,10 @@ class EmailWhitelist < ApplicationRecord
   end
 
   private
+
+  def discard_user
+    user.discard!
+  end
 
   def notify_account_ready
     EmailWhitelistMailer.notify_ready(recipient_email: email)

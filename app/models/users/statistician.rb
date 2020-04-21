@@ -20,6 +20,9 @@ module Users
 
     validate :email_in_list
 
+    has_one :email_whitelist, foreign_key: :user_id
+    validates :email_whitelist, presence: true
+
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(department: department_name)
     end
@@ -41,7 +44,12 @@ module Users
     end
 
     def department_zipcode
-      EmailWhitelist.where(email: email).first.zipcode
+      email_whitelist.zipcode
+    end
+
+    def destroy
+      email_whitelist.delete
+      super
     end
 
     private

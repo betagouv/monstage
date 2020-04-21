@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 require 'test_helper'
+
 module Users
   class StatisticianTest < ActiveSupport::TestCase
     test 'creation fails' do
@@ -33,6 +35,17 @@ module Users
 
       statistician = create(:statistician, email: whitelisted_email.email)
       assert_equal 'Nord (département français)|Nord', statistician.department_name
+    end
+
+    test 'destroy also destroy email_whitelist' do
+      whitelisted_email = create(:email_whitelist,
+                                 email: 'fourcade.m@gmail.com',
+                                 zipcode: '59')
+
+      statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
+      assert_changes -> { EmailWhitelist.count }, -1 do
+        statistician.destroy
+      end
     end
   end
 end
