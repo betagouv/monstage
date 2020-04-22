@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_21_145109) do
+ActiveRecord::Schema.define(version: 2020_04_22_123045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 2020_04_21_145109) do
     t.index ["group_id"], name: "index_internship_offers_on_group_id"
     t.index ["internship_offer_weeks_count", "blocked_weeks_count"], name: "not_blocked_by_weeks_count_index"
     t.index ["old_group"], name: "index_internship_offers_on_old_group"
+    t.index ["published_at"], name: "index_internship_offers_on_published_at"
     t.index ["remote_id"], name: "index_internship_offers_on_remote_id"
     t.index ["school_id"], name: "index_internship_offers_on_school_id"
     t.index ["search_tsv"], name: "index_internship_offers_on_search_tsv", using: :gin

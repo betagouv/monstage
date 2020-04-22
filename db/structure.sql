@@ -1367,6 +1367,13 @@ CREATE INDEX index_internship_offers_on_old_group ON public.internship_offers US
 
 
 --
+-- Name: index_internship_offers_on_published_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_published_at ON public.internship_offers USING btree (published_at);
+
+
+--
 -- Name: index_internship_offers_on_remote_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1818,6 +1825,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200407142759'),
 ('20200409122859'),
 ('20200421142949'),
-('20200421145109');
+('20200421145109'),
+('20200422123045');
 
 

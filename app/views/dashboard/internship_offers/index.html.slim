@@ -8,6 +8,7 @@
           .col
             p.mb-0
               span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
+
 .fake-table
   .row= render partial: "dashboard/internship_offers/tabs", locals: {internship_offers: @internship_offers}
   .tab-content
