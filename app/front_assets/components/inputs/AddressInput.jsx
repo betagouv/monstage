@@ -44,6 +44,7 @@ export default function AddressInput({
   };
 
   const setFullAddressComponents = (item) => {
+    setFullAddress(item.properties.label);
     setStreet(
       [item.properties.housenumber, item.properties.street]
         .filter((component) => component)
@@ -78,24 +79,21 @@ export default function AddressInput({
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}
             selectedItem={fullAddress}
-            itemToString={(item) => (item ? item.nom : '')}
+            itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
           >
             {({
               getInputProps,
               getItemProps,
-              getLabelProps,
               getMenuProps,
               isOpen,
-              inputValue,
               highlightedIndex,
               selectedItem,
-              openMenu,
             }) => (
               <div id="test-input-full-address">
                 <input
                   {...getInputProps({
                     onChange: inputChange,
-                    value: inputValue,
+                    value: fullAddress,
                     className: 'form-control',
                     name: `${resourceName}_autocomplete`,
                     id: 'input-search-by-autocomplete',
