@@ -134,54 +134,15 @@
         small.form-text.text-muted Sélectionner le secteur d'activité correspondant au stage décrit
       = form.select :sector_id, options_from_collection_for_select(Sector.all.order(:name), :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
 
-  fieldset.mt-4 data={controller: 'algolia-place'}
+  fieldset.mt-4
     legend Où, Quand, Comment ?
-    div data={target: 'algolia-place.autocompleteFormGroup'} data-controller="help"
-      .form-row
-        .col-sm-12
-          .form-group
-            = form.label :autocomplete do
-              = "Ville du lieu où se déroule le stage  (la plus proche si vous ne trouvez pas la votre)"
-              = form.rg2a_required_content_tag
-              a.btn-absolute.btn.btn-link.py-0 data-action="click->help#toggle"
-                i.fa.fa-question-circle
-
-            .d-none.my-1.p-2.help-sign-content data-target="help.content"
-              | Si vous proposez le même stage dans un autre établissement, déposez une offre par établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux), indiquez l'adresse où l'élève devra se rendre au premier jour
-
-            = form.text_field :autocomplete, placeholder: "Saisir l'adresse et confirmer avec l'aide à la saisie", value: @internship_offer.formatted_autocomplete_address, required: true, data: {target: 'algolia-place.autocompleteInput'}
-
-            input#internship_offer_coordinates_latitude type="hidden" name="internship_offer[coordinates][latitude]" value=(@internship_offer.coordinates&.lat) data=({target: 'algolia-place.latitudeInput'})
-            input type="hidden" name="internship_offer[coordinates][longitude]" value=(@internship_offer.coordinates&.lon) data=({target: 'algolia-place.longitudeInput'})
-
-
-      .form-row
-        .col-sm-6
-          .form-group
-            = form.label :street do
-              = "Rue ou compléments d'adresse"
-              = form.rg2a_required_content_tag
-            = form.text_field :street, class: "form-control", data: {target: 'algolia-place.streetInput'}, required: true
-        .col-sm-4
-          .form-group
-            = form.label :city do
-              = 'Ville'
-              = form.rg2a_required_content_tag
-            = form.text_field :city, class: "form-control", required: true, data: {target: 'algolia-place.cityInput'}
-        .col-sm-2
-          .form-group
-            = form.label :zipcode do
-              = 'Code postal'
-              = form.rg2a_required_content_tag
-            = form.text_field :zipcode, class: "form-control", required: true, data: {target: 'algolia-place.zipcodeInput'}
-
-      .form-row
-        .col-sm-4
-          .form-group
-            = form.label :department do
-              = 'Département'
-            = form.text_field :department, class: "form-control", data: {target: 'algolia-place.departmentInput'}
-
+    = react_component("inputs/AddressInput", { resourceName: :internship_offer,
+                                currentStreet: @internship_offer.street,
+                                currentCity: @internship_offer.city,
+                                currentZipcode: @internship_offer.zipcode,
+                                currentLatitude: @internship_offer.coordinates.try(:lat).try(:to_f),
+                                currentLongitude: @internship_offer.coordinates.try(:lng).try(:to_f),
+                                currentFullAddress: @internship_offer.formatted_autocomplete_address})
 
     .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
       .label

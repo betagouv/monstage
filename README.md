@@ -41,7 +41,8 @@ Things you may want to cover:
 * DB provider : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
 * Support Solution : [Zammad for support](monstage.zammad.com/)
 * Analytic Solution : [stats.data.gouv.fr](https://stats.data.gouv.fr)
-* API: Geolocation town search: [geo.api.gouv.fr](https://geo.api.gouv.fr/decoupage-administratif/communes)
+* API: Town search: [geo.api.gouv.fr](https://geo.api.gouv.fr/decoupage-administratif/communes)
+* API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 * Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
 * Bug monitoring solution: [sentry](https://sentry.io/)
 
@@ -99,27 +100,27 @@ regarding env var dependencies, but can be setuped via tools : ```infra/staging|
 **Setup SSH public key**
 
 ```bash
-# add the pub key in your env 
+# add the pub key in your env
 touch ~/.ssh/clevercloud-monstage.pub
 # you'll find the public key content in our kdbx file (search for clever cloud public key)
-# assigns appropriate rights 
+# assigns appropriate rights
 chmod 644 ~/.ssh/clevercloud-monstage.pub
 ```
 
 **SSH SHS private key**
 
 ```bash
-# create the priv key in your env 
+# create the priv key in your env
 touch ~/.ssh/clevercloud-monstage
 # you'll find the pkey content in our kdbx file (search for clever-cloud private key)
-# assigns appropriate rights 
+# assigns appropriate rights
 chmod 600 ~/.ssh/clevercloud-monstage
 ```
 
 **Use ssh key**
 
 ```bash
-# ensure to use this key when connecting to clever hostnames 
+# ensure to use this key when connecting to clever hostnames
 cat infra/dev/ssh/config >> ~/.ssh/config
 ```
 

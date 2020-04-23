@@ -7,8 +7,8 @@ module Api
     setup do
       @school_city = 'Orléans'
       @school_name = 'Jean'
-      @orleans = create(:api_school, city: @school_city,
-                                     name: @school_name)
+      @orleans = create(:school, city: @school_city,
+                                 name: @school_name)
     end
 
     test '.as_json concat match_by_city with full match' do
@@ -40,7 +40,7 @@ module Api
     end
 
     test '.as_json with dasherized city names' do
-      create(:api_school, city: "Mantes-la-Jolie")
+      create(:school, city: "Mantes-la-Jolie")
       result = AutocompleteSchool.new(term: "Mantes la jolie", limit: 5).as_json
       assert_equal 1, result[:match_by_city].size
     end

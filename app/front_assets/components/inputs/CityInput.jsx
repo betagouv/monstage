@@ -6,7 +6,8 @@ import RadiusInput from './RadiusInput';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 
-function LocationInput({
+// see: https://geo.api.gouv.fr/decoupage-administratif/communes
+function CityInput({
   // getters
   city,
   latitude,
@@ -148,4 +149,4 @@ function LocationInput({
   );
 }
 
-export default LocationInput;
+export default CityInput;

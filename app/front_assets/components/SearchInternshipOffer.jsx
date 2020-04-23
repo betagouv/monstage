@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Turbolinks from 'turbolinks';
 
-import LocationInput from './inputs/LocationInput';
+import CityInput from './inputs/CityInput';
 import KeywordInput from './inputs/KeywordInput';
 
 function SearchInternshipOffer({ url, initialLocation }) {
@@ -53,7 +53,7 @@ function SearchInternshipOffer({ url, initialLocation }) {
           focus={focus}
           setFocus={setFocus}
         />
-        <LocationInput
+        <CityInput
           city={city}
           longitude={longitude}
           latitude={latitude}

@@ -25,8 +25,8 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
       find(:css, "label[for=internship_offer_week_ids_#{week.id}]").click
     end
     fill_in "Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)", with: 'Paris, 13eme'
-    page.all('.algolia-places div[role="option"]')[0].click
-    fill_in "Rue ou compléments d'adresse", with: 'La rue qui existe pas dans algolia place / OSM'
+    page.all('#test-input-full-address #downshift-1-item-0').click
+    fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
   end
 
   test 'can create internship offer' do

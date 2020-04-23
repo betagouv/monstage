@@ -60,9 +60,7 @@ module Dashboard
 
       assert_response :success
       assert_select 'form[action=?]', dashboard_school_path(@school)
-      assert_select 'input[name="school[name]"]'
-      assert_select 'input[name="school[coordinates][longitude]"]'
-      assert_select 'input[name="school[coordinates][latitude]"]'
+      assert_select 'div[data-react-class="inputs/AddressInput"]'
     end
 
     #
