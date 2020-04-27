@@ -16,7 +16,8 @@
       .row.bc-light.br-1.bl-1.bb-1
         = react_component("SearchInternshipOffer",
                           { url: dashboard_internship_offers_path },
-                          { class: 'col-12 py-3 filter-section' })
+                          { class: 'col-12 py-3 filter-section' }) do
+          .input-loading-skeleton
 
       .row.bc-light.br-1.bl-1.bb-1
         .col-12.px-0= render partial: 'dashboard/internship_offers/table'

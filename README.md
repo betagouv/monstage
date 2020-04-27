@@ -30,10 +30,10 @@ Things you may want to cover:
 **frontend**
 
 * Turbolink based "SPA"
-* Use [stimulus](https://stimulusjs.org/) to improve some simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
-* Use [react](https://reactjs.org/) when complexity grow ex :
- * student search for his school by city.name school.name, then choose school, then choose classroom.
- * someone search for internship offer by keyword, city.name and {location}.radius)
+* Use [stimulus](https://stimulusjs.org/) to improve simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
+* Use [react](https://reactjs.org/) when complexity grows ex :
+ * student searches for school by [city.name, school.name], then chooses school, then chooses classroom.
+ * someone searches for internship offers by keyword, city.name, {location}.radius, keyword
 
 **hosting & services**
 
@@ -69,7 +69,7 @@ foreman start -f Procfile.dev
 ### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-- mail should be opened automatically
+* mail should be opened automatically
 
 ## test
 
@@ -77,18 +77,19 @@ foreman start -f Procfile.dev
 
 ```rails test```
 
-### system / e2e, runs within a browswer __without__ (broken) JS
+### system / e2e, runs within a browswer (not run on CI, but with pre-commit hook)
 
-```rails test:system```
+* run in background: `rails test:system`
+* run with browser `CHROME=1 rails test:system`
 
-### w3c (using vnu.jar)
+
+### w3c (using vnu.jar, for now react components are not rendered)
 
 ```rails test:w3c```
 
 # Run: ci, review, staging, production
 
-see build status at: [CircleCI](https://circleci.com/gh/betagouv/monstage)
-regarding env var dependencies, but can be setuped via tools : ```infra/staging|production/set_env.sh```
+CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
 
 ## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
 
