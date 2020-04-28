@@ -163,6 +163,7 @@ class Ability
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelist
     can :manage, InternshipOfferKeyword
+    can :manage, Group
     can :access, :rails_admin   # grant access to rails_admin
     can :manage, InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
