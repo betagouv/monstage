@@ -1,10 +1,18 @@
-= javascript_pack_tag 'rails_admin', defer: true
-fieldset
-  = react_component("inputs/AddressInput", { resourceName: form.object.class_name,
-                              currentStreet: form.object.street,
-                              currentCity: form.object.city,
-                              currentZipcode: form.object.zipcode,
-                              currentLatitude: form.object.coordinates.try(:lat).try(:to_f),
-                              currentLongitude: form.object.coordinates.try(:lng).try(:to_f),
-                              currentFullAddress: form.object.formatted_autocomplete_address})
 
+= javascript_pack_tag 'rails_admin', defer: true
+hr
+.form-group.control-group
+
+  label.col-2
+    | adresse
+
+  .col-8.opacity-05= react_component("inputs/AddressInput", { resourceName: form.object.class.name.downcase,
+                                currentStreet: form.object.street,
+                                currentCity: form.object.city,
+                                currentZipcode: form.object.zipcode,
+                                currentLatitude: form.object.coordinates.try(:lat).try(:to_f),
+                                currentLongitude: form.object.coordinates.try(:lng).try(:to_f),
+                                currentFullAddress: form.object.formatted_autocomplete_address})
+
+
+hr
