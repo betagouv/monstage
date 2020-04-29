@@ -5,20 +5,6 @@
 
 .row
   .col-12.col-sm-6.text-center
-    = link_to root_path + 'autorisation_parentale.pdf', title: "Accéder à l'autorisation parentale d'accès à la plateforme"  do
-      = image_tag asset_pack_path("media/images/autorisation_parentale.png"), alt: "Aperçu  de l'autorisation parentale", size: '200x283', class: 'img-thumbnail'
-      p
-        br
-        | Autorisation parentale d'accès à la plateforme
-        br
-        | PDF - 61KB
-        br
-        | MonStageDeTroisieme
-
-    p
-      | L'autorisation parentale d'accès a la plateforme est un document essential pour permettre à monstagedetroisieme.fr de traiter les données d'utilisateurs mineurs.
-
-  .col-12.col-sm-6.text-center
     = link_to "#{root_url}/documents_utiles/USEA-Carnet-Stage-Education.pdf", title: 'Acceder à Carnet Stage Education'  do
       = image_tag asset_pack_path("media/images/documents_utiles/USEA-Carnet-Stage-Education.jpg"), alt: 'Couverture de Carnet Stage Education', size: '200x283', class: 'img-thumbnail'
       p

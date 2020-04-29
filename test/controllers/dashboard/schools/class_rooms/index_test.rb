@@ -81,7 +81,7 @@ module Dashboard
           assert_response :success
 
           # new link
-          assert_select 'a.btn[href=?]',
+          assert_select 'a.text-danger[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
