@@ -194,5 +194,5 @@
   .actions
     p.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment
 
-    = form.submit "Enregistrer et publier l'offre", class: 'btn btn-warning'
+    = form.submit "Enregistrer et publier l'offre", class: 'btn btn-primary'
     = link_to "Annuler", current_action?("new") || current_action?("create") ? dashboard_internship_offers_path : internship_offer_path(@internship_offer), title: 'Retourner sur mes stages', class: 'ml-3 btn-back'

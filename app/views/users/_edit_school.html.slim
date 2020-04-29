@@ -22,4 +22,4 @@ h1.h2.mb-3 Mon collège
       = f.select :operator_id, options_from_collection_for_select(Operator.all, :id, :name, current_user.operator), { prompt: operator_options_for_default }, class: "form-control", disabled: true
 
   .actions.d-flex.d-sm-block
-    = f.submit 'Enregistrer', class: 'btn btn-warning'
+    = f.submit 'Enregistrer', class: 'btn btn-primary'

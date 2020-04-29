@@ -3,10 +3,11 @@
 // Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
 $gray-600: #767676; // text muted color
 // Éviter les contrastes maximum (tel que noir #000000 sur blanc #FFFFFF).
-$gray-900: #494949;    // body text color
+$gray-900: #3F3256;    // body text color
 
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
-$blue:    #006699;
+// $primary:
+$blue:    #10008F;
 $blue_light: #e3f2fe;
 $blue_dark: rgb(47,94,167);
 $red:     #dc3545;

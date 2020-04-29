@@ -5,7 +5,7 @@ div data-controller="internship-application-form"
     = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
 
   div id="internship-application-openform" class="#{@internship_application.new_record? ? '' : 'd-none'}" data-target='internship-application-form.containerShowFormLink'
-    .actions.d-flex.d-sm-block.d-xs-stick= link_to "Je candidate", "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbolinks: 'false' }, class: 'btn btn-warning'
+    .actions.d-flex.d-sm-block.d-xs-stick= link_to "Je candidate", "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbolinks: 'false' }, class: 'btn btn-primary'
 
   div id="internship-application-closeform" class="#{@internship_application.new_record? ? 'd-none' : ''}" data-target="internship-application-form.containerForm"
     div id="internship-application-form"
@@ -55,8 +55,8 @@ div data-controller="internship-application-form"
               = render partial: "users/resume_fields", locals: { form: resume_form, disabled: disabled }
 
             .actions.d-flex.d-sm-block
-              = link_to "#internship-application-closeform", class: 'btn btn-outline-warning text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              = link_to "#internship-application-closeform", class: 'btn btn-outline-primary text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
                 i.fa.fa-chevron-left.mr-1
                 | Annuler
               span.mx-1= " "
-              = f.submit "Valider", { class: 'btn btn-warning', disabled: disabled }
+              = f.submit "Valider", { class: 'btn btn-primary', disabled: disabled }

@@ -7,7 +7,7 @@
       .d-flex.align-items-center.mb-4
         h2.h3.text-black-50
           | Collèges
-        = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-warning ml-auto ', data: {turbolinks: false} do
+        = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-primary ml-auto ', data: {turbolinks: false} do
           i.fas.fa-download
           span Télécharger
 
@@ -73,7 +73,7 @@
           | Entreprises
 
         - if params[:department]
-          =link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-warning ml-auto', data: {turbolinks: false} do
+          =link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)), class: 'btn btn-primary ml-auto', data: {turbolinks: false} do
             i.fas.fa-download
             | &nbsp;
             span Télécharger

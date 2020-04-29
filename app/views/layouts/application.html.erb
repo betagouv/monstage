@@ -11,9 +11,9 @@
     <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
   </head>
 
-  <body class="<%= env_class_name %> <%= body_class_name %>" data-controller='rg2a'>
+  <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
-    <div class="content">
+    <div class="content" data-controller='rg2a'>
       <header role="banner" class="custom-navbar <%= homepage? || statistics? ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
@@ -35,8 +35,8 @@
         </div>
       <% end %>
     </div>
-    <footer role="contentinfo">
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3">
+    <footer role="contentinfo" >
+      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
         <div class="container">
           <%= render 'layouts/footer' %>
         </div>

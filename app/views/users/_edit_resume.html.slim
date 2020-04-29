@@ -6,4 +6,4 @@ p Le CV aide l'employeur à découvrir votre parcours, vos habiletés et compét
 = form_for current_user, as: :user, url: account_path, method: :patch do |f|
   = render partial: "users/resume_fields", locals: { form: f, disabled: false}
 
-  .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-warning'
+  .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-primary'
