@@ -15,7 +15,7 @@ class MessageForAasmState
   MAP_TARGET_TO_BUTTON_COLOR = {
     approve!: 'danger',
     cancel!: 'outline-danger',
-    reject!: 'danger'
+    reject!: 'outline-danger'
   }.freeze
 
   def target_action_color
