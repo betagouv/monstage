@@ -11,7 +11,7 @@
       position: absolute;
     }
     &:hover{
-      background-color: #e3f2fe;
+      background-color: $blue_light;
       .btn-hoverable{
       opacity: 1;
       }
