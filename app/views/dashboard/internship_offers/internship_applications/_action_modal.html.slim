@@ -20,9 +20,7 @@
       .modal-body.px-4.py-0
         = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
 
-        p.text-muted.small.mt-3.mb-0 Message envoyé à l'élève
-
-      .modal-footer.px-4.py-3.actions
-        button type="button" class="btn btn-outline-warning" data-dismiss="modal" Annuler
-
-        = f.submit class: 'btn btn-warning', value: "Confirmer"
+      .modal-footer.actions
+        button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler
+        
+        = f.submit class: 'btn btn-primary', value: "Confirmer"

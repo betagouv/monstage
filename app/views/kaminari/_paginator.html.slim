@@ -7,13 +7,13 @@
     paginator    : the paginator that renders the pagination tags inside
 
 == paginator.render do
-  .row.no-gutters
+  .row.no-gutters.align-items-center
     .col-4.text-left.text-sm-right
       - unless current_page.first?
         .d-none.d-sm-inline-block== first_page_tag
         == prev_page_tag unless current_page.first?
-    .col-4.text-center
-      a.btn.btn-link.disabled= "Page #{current_page} / #{total_pages}"
+    .col-4.text-center.small.text-muted
+      = "Page #{current_page} / #{total_pages}"
     .col-4.text-right.text-sm-left
       - unless current_page.last?
         == next_page_tag unless current_page.last?

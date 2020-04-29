@@ -13,9 +13,9 @@ class MessageForAasmState
            to: :internship_application
 
   MAP_TARGET_TO_BUTTON_COLOR = {
-    approve!: 'success',
-    cancel!: 'danger',
-    reject!: 'danger'
+    approve!: 'danger',
+    cancel!: 'outline-danger',
+    reject!: 'outline-danger'
   }.freeze
 
   def target_action_color

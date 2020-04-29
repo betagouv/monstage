@@ -1,122 +1,199 @@
+.bg-covid-19-notice.alert.p-0.mb-0.rounded-0 role="alert"
+  .container.text-white
+    .row.align-items-center.no-gutters.py-3.relative
+      .col-md-3#css-liseret
+        p.text-center.text-md-right.p-0.py-md-3.pr-md-5.m-0.font-weight-bold
+          = "Face au Covid-19, des gestes simples à adopter."
+
+      .offset-sm-2.col-sm-7.offset-md-0.col-md-7.py-3.py-md-0.text-center
+        .row.no-gutters
+          .col
+            = image_tag asset_pack_path('media/images/homepage/bp/mouchoir-a-usage-unique.svg'), alt: "Illustration mouchoir a usage unique", height: 55, width: 55, class: 'mb-1'
+            br
+            .smaller-line-height.d-none.d-md-inline-block
+              | Se laver très régulièrement les mains
+          .col
+            = image_tag asset_pack_path('media/images/homepage/bp/se-laver-les-mains.svg'), alt: "Illustration se laver les mains", height: 55, width: 55, class: 'mb-1'
+            br
+            .smaller-line-height.d-none.d-md-inline-block
+              | Tousser ou éternuer dans son coude
+          .col
+            = image_tag asset_pack_path('media/images/homepage/bp/se-saluer-a-distance.svg'), alt: "Illustration se saluer a distance", height: 55, width: 55, class: 'mb-1'
+            br
+            .smaller-line-height.d-none.d-md-inline-block
+              | Utiliser des mouchoirs à usage unique
+          .col
+            = image_tag asset_pack_path('media/images/homepage/bp/tousser-dans-son-coude.svg'), alt: "Illustration tousser dans son coude", height: 55, width: 55, class: 'mb-1'
+            br
+            .small.smaller-line-height.d-none.d-md-inline-block
+              | Saluer sans se serrer la main, éviter les embrassades
+
+      .col-md-2.text-center
+        p.p-0.m-0
+          = link_to "https://www.gouvernement.fr/info-coronavirus ", class: 'btn btn-outline-light' do
+            | En savoir plus
+            | &nbsp;
+            i.fas.fa-chevron-right
+
+      button.text-white.close type="button" data-dismiss="alert" aria-label="Close"
+        | &times;
+
 .bg-cover-image-homepage
-  .container.py-5.container-sticky-note
+  .container
+    .row.py-3.py-sm-5
 
     .row.no-gutters
       .col-12.col-md-7
-        h1.h1-home.mb-5.text-center.text-sm-left.text-white-sm Le monde professionnel s’ouvre à l’école
-        p.big-tagline.text-center.text-sm-left.text-white-sm Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec  votre orientation et votre projet personnel.
-        p.big-tagline.mb-0.mb-sm-5.text-center.text-sm-left.text-white-sm
-          | Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou  découvrir de nouveaux secteurs ou activités.
+        h1.text-white-sm.text-center.text-sm-left   #RestezChezVous
+        p.big-tagline.font-weight-light.mb-sm-3.text-center.text-sm-left.text-white-sm La plateforme monstagedetroisieme.fr vous accompagne dans cette période exceptionnelle de confinement.
+        p.big-tagline.font-weight-light.mb-sm-3.text-center.text-sm-left.text-white-sm
+          | Sur cette page, vous retrouverez les initiatives de nos associations partenaires pour continuer à vous accompagner dans votre projet professionnel et votre orientation.
+
+    .row.d-none.d-sm-flex.pt-3.pt-sm-5
+      .col-12.pt-5
+        p.scroller.text-center
+          = link_to "#des-solutions-pour-vous-tout-de-suite" do
+            = image_tag asset_pack_path('media/images/homepage/scroll_down.svg'), alt: "Illustration scroller pour continuer", height: 55, width: 55
 
 
-        .actions.mt-3.d-flex.d-sm-inline
-          = link_to "Trouver un stage", internship_offers_path, class: 'btn btn-lg px-4 btn-outline-warning'
 
-    .row
-      p.sticky-note.d-none.d-md-block.px-3.py-2.text-center.mr-3
-        | STAGES RÉSERVÉS
-        br
-        | aux collèges REP et REP+
 
-.bg-warning.py-5.d-none.d-sm-block
+.bg-transparent
   .container
     .row
       .col-12
-        h3.h2-home.text-center Nous sommes à vos côtés pour…
 
-    .row.py-5
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Offrir un stage
-          p.text-center.h4-home Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Trouver un stage
-          p.text-center.h4-home À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
-      .col-sm-12.col-md-4.py-3
-        .bg-white.shadow-lg.rounded-lg.p-3.h-100
-          = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", class: 'my-3 d-block logo mx-auto', width: 160
-          h4.text-center.mb-3 Accompagner les élèves
-          p.text-center.h4-home Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
+        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous, tout de suite.
 
-.py-5.bg-white-250
-  .container
-    .row.align-items-center.no-gutters
-      .col-1.text-center.text-warning.d-none.d-md-block
-        i.fas.fa-2x.fa-exclamation-triangle
-      .col
-        h2.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des collèges  des réseaux d'éducation prioritaire (REP et REP+)
-        p.mt-2.mb-0.h4-home
-          = "Les élèves des autres collèges trouveront "
-          = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'h4-home' do
-            | toutes les informations utiles
-          = " sur le site EDUSCOL et chercheront des stages sur le portail "
-          = link_to "https://www.monstageenligne.fr", class: 'h4-home' do
-            | Mon stage en ligne
-          = " de l'ONISEP"
+    .row.pb-5.flex-md-reverse-column
+      .col-12.col-md-6
+        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5 role="tablist"
 
-.py-5
-  .container
-    .row
-      .col
-        = image_tag asset_pack_path('media/images/homepage/icon_documents_utiles.svg'), alt: "Icon documents utiles", class: 'my-3 mx-5 d-none d-md-block float-right ', size: "200x200"
+          = link_to "#pill-jobirl", class: 'p-3 nav-link active', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-jobirl", selected: true  }  do
+            i.fas.fa-fw.fa-comments
+            | &nbsp;
+            span.d-none.d-md-inline JobIRL, 65 000 professionnels à votre écoute
 
-        h3.h2-home Documents utiles
-        p.h4-home Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
-        p= link_to "Voir les documents", documents_utiles_path, class: "btn btn-lg btn-outline-warning shadow-lg"
+          = link_to "#pill-devoirs", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-devoirs", selected: false  }  do
+            i.fas.fa-fw.fa-mouse-pointer
+            | &nbsp;
+            span.d-none.d-md-inline Mon avenir en grand, pour développer votre potentiel !
+
+          = link_to "#pill-tv", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-tv", selected: false  }  do
+            i.fas.fa-fw.fa-desktop
+            | &nbsp;
+            span.d-none.d-md-inline Nation apprenante, vos cours à la télé !
 
 
-/ .bg-light-warning.py-5.d-none.d-sm-block
-/   .container
-/     .row
-/       .col-12
-/         h3.h2-home.text-center Chiffres clés
-/         h3.h3-home.text-center des stages de 3e sur le site
-/     .row.py-5
-/       / .col-sm-12.col-md-4.py-3
-/       .col-sm-12.offset-md-4.col-md-4.py-3
-/         .row
-/           .col-3
-/             .circled-icon.d-inline-flex.align-items-center
-/               i.fas.fa-3x.fa-layer-group.mx-auto
-/           .col-9
-/             h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_report_count)
-/             h6.h3-stat.m-0.p-0 stages offerts
-/       .col-sm-12.col-md-4.py-3
-/         .row
-/           .col-3
-/             .circled-icon.d-inline-flex.align-items-center
-/               i.fas.fa-3x.fa-arrow-circle-right.mx-auto
-/           .col-9
-/             h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_applications_count)
-/             h6.h3-stat.m-0.p-0 candidatures
-/       .col-sm-12.col-md-4.py-3
-/         .row
-/           .col-3
-/             .circled-icon.d-inline-flex.align-items-center
-/               i.fas.fa-3x.fa-check-circle.mx-auto
-/           .col-9
-/             h5.h1-stat.m-0.p-0= Reporting::InternshipOffer.total_for_year.sum(&:total_convention_signed_applications_count)
-/             h6.h3-stat.m-0.p-0 stages conclus
+      .col-12.col-md-6
+        .tab-content
+          #pill-jobirl.tab-pane.fade.active.show role="tabpanel"
+            .card
 
-.bg-white.py-5.d-none.d-sm-block
+              = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'), class: "card-img-top", alt: 'Illustration JobIRL'
+              .card-body
+                p Vous n’avez pas pu faire votre stage d’observation ?
+                p Il n’est pas trop tard pour découvrir le métier qui vous intéresse et en apprendre plus sur le monde de l’entreprise !
+                p 65 000 professionnels de tous secteurs sont là pour répondre à vos questions sur leurs métiers, leurs tâches au quotidien, leurs parcours également.
+                p Envoyez-leur directement un message sur www.jobirl.com.
+
+                p.mb-0= link_to "https://www.jobirl.com/", class: 'text-danger font-weight-bold' do
+                  | Connectez-vous
+                  | &nbsp;
+                  i.fas.fa-chevron-right
+
+          #pill-devoirs.tab-pane role="tabpanel"
+            .card
+              = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'), class: "card-img-top", alt: 'Illustration Télémaque'
+              .card-body
+                p Le meilleur du web regroupé dans un outil pour vous orienter et développer votre potentiel !
+                p 400 outils pédagogiques - vidéos, quiz, sites internet - pour muscler votre culture G, découvrir des métiers et trouver des conseils, mais également plein d’astuces pour rester motivés !
+                p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.htm", class: 'text-danger font-weight-bold' do
+                  | Connectez-vous
+                  | &nbsp;
+                  i.fas.fa-chevron-right
+
+
+          #pill-tv.tab-pane role="tabpanel"
+            .card
+              = image_tag asset_pack_path('media/images/homepage/alternatives/nation-apprenante.jpg'), class: "card-img-top", alt: 'Illustration Nation apprenante'
+
+              .card-body
+                p France Télévisions, Radio France, Arte et le ministère de l’Éducation nationale se mobilisent pour mettre à la disposition des élèves, de leurs familles, et des enseignants, des programmes de qualité en lien avec les programmes scolaires.
+                p Les émissions diffusées à l’antenne seront ainsi identifiables par le visuel "Nation apprenante".
+                p.mb-0= link_to "https://www.education.gouv.fr/operation-nation-apprenante-303174", class: 'text-danger font-weight-bold' do
+                  | Connectez-vous
+                  | &nbsp;
+                  i.fas.fa-chevron-right
+
+
+.bg-light-blue
   .container
     .row
       .col-12
-        h3.h3-home.mb-5.text-center Un projet porté par
-      .col-12
-        - %w[Logo-MCTRCT-CGET.png Logo-ministere-education-nationale.png].each do |sponsor_logo|
-          = image_tag asset_pack_path("media/images/homepage/sponsors/#{sponsor_logo}"), height: 221, class: 'mx-4', alt: "#{sponsor_logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}"
+        h3.h2.py-3.py-sm-5.mb-0.text-center À propos de monstagedetroisieme.fr
 
-      .col-12
-        h3.h3-home.my-5.text-center Nos partenaires
+    .row.pb-5
+      .col-sm-12.col-md-5
+        p.text-left.d-none.class_selector
+          span.d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo mon stage de troisieme", height: 100, class: ''
+        h3.h3 Le monde professionnel s’ouvre à l’école
+        p Cette plateforme, par la diversité de ses offres, va vous p Lorem ipsum...ermettre de réaliser une expérience enrichissante en lien avec votre orientation et votre projet personnel.
 
-      .col-12
-        - main_partners_map_of_logo_url.each do |partner_logo, partner_url|
-          = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
-        br
+        p Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou découvrir de nouveaux secteurs ou activités.
 
-        - partners_map_of_logo_url.each do |partner_logo, partner_url|
-          = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
+      .col-sm-12.col-md-5.offset-md-2
+        div
+          h4.h4.mb-3.align-bottom.d-inline-flex
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", height: 28, class: 'mr-3 d-none d-md-inline'
+            | Offrir un stage
+          p Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
+
+        div.mt-3.mt-md-5
+          h4.h4.mb-3.align-bottom.d-flex
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", height: 28, class: 'mr-3 d-none d-md-inline'
+            | Trouver un stage
+          p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
+
+        div.mt-3.mt-md-5
+          h4.h4.mb-3.align-bottom.d-flex
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", height: 28, class: 'mr-3 d-none d-md-inline'
+
+            | Accompagner les élèves
+          p.mb-0 Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
+
+
+
+.bg-white
+  .container
+    .row
+      .col-12
+        h4.h2.py-3.py-sm-5.mb-0.text-center Documents utiles
+
+    .row.align-items-center.pb-5
+      .d-none.d-sm-flex.col-6
+        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'), class: 'img-fluid', alt: 'Illustration documents utiles'
+      .col-12.col-sm-6.align-middle-items
+        p Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
+        p= link_to "Documents utiles", documents_utiles_path, class: "btn btn-outline-danger", title: 'Consulter les documents utiles'
+
+.bg-white.d-none.d-md-block
+  .container
+    .row.pb-5
+      .col-6
+        h3.h3.py-5.text-center Un projet porté par
+        .row
+          .col-12
+            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"), alt: "Logo anct", class: 'img-fluid'
+        .row
+          .col-12
+            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"), alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale", class: 'img-fluid'
+
+      .col-6
+        h3.h3.py-5.text-center Nos partenaires
+
+        .col-12.text-center
+          - partners_map_of_logo_url.each do |partner_logo, partner_url|
+            = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
+
+

@@ -12,10 +12,12 @@ body {
 .footer{
   border-top: 1px solid $gray-400;
   flex-shrink: 0;
-  color: rgb(241,241,241);
-  a{
-    text-decoration: none;
+  .footer-content{
     color: rgb(241,241,241);
+    a{
+      text-decoration: none;
+      color: rgb(241,241,241);
+    }
   }
   background-color: rgba(51, 51, 51, 0.9);
 }
@@ -28,3 +30,28 @@ body {
     font-weight: bold;
   }
 }
+@include media-breakpoint-up(sm) {
+ .sticky-footer-illustration{
+    background-image: url('../images/homepage/explications.svg');
+    background-position: top right;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+.fixed-footer{
+  position: fixed;
+  height: auto;
+  bottom:0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+// footer customisation
+@include media-breakpoint-down(sm) {
+  .h3-bis-home{
+    font-size: 1rem;
+    line-height: 1.1rem;
+  }
+}
+

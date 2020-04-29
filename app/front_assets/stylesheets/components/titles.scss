@@ -25,23 +25,13 @@ html h1,
 html .h1,
 html h2,
 html .h2,
-{
-  color: $blue;
-}
-
 html .h3,
-html h3
-{
-  color: $gray-900;
-}
-
+html h3,
 html h4,
-html .h4{
-  color: #666;
-}
+html .h4,
 html h5,
 html .h5{
-  color: #999
+  color: $blue;
 }
 html .gray-666{
   color: #666;
