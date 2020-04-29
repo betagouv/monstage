@@ -41,7 +41,7 @@
 
 
 .bg-light-blue.fixed-footer data-target="footer.fixedContent"
-  - if homepage?
+  - if !user_signed_in?
     .container
       .row.align-items-top.no-gutters.py-3
         .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
