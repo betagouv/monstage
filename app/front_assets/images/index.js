@@ -1,7 +1,6 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
 import './logo-beta-gouv-fr.png';
-import './autorisation_parentale.png';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';

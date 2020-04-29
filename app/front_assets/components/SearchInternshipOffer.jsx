@@ -75,7 +75,7 @@ function SearchInternshipOffer({ url, initialLocation }) {
             type="submit"
             className="input-group-search-button
                        btn
-                       btn-warning
+                       btn-danger
                        btn-xs-sm
                        float-right
                        float-sm-none
