@@ -16,7 +16,6 @@ FactoryBot.define do
       last_name { 'Roll' }
       gender { 'm' }
       birth_date { 14.years.ago }
-      has_parental_consent { true }
 
       school { create(:school) }
       trait :male do

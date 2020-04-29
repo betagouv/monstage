@@ -35,7 +35,7 @@ module Dashboard
         school = create(:school)
         class_room = create(:class_room, school: school)
         students = [
-          create(:student, class_room: class_room, school: school, has_parental_consent: true),
+          create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago),
           create(:student, class_room: class_room, school: school, custom_track: true),
           create(:student, class_room: class_room, school: school)
         ]
@@ -44,13 +44,11 @@ module Dashboard
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
           assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
-          if student.has_parental_consent?
-            assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-square", 1
-            assert_select ".test-student-#{student.id} .has_parental_consent .fas.fa-check", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { has_parental_consent: false })
+          if student.confirmed?
+            assert_select ".test-student-#{student.id} .student_confirmed .fas.fa-square", 1
+            assert_select ".test-student-#{student.id} .student_confirmed .fas.fa-check", 1
           else
-            assert_select ".test-student-#{student.id} .has_parental_consent .far.fa-square", 1
-            assert_select "a[href=?]", "#approve-student-#{student.id}"
+            assert_select ".test-student-#{student.id} .student_confirmed .far.fa-square", 1
           end
           if student.custom_track?
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
@@ -88,7 +86,7 @@ module Dashboard
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
           assert_select 'a[href=?]', dashboard_students_internship_applications_path(student)
-          if student.has_parental_consent?
+          if student.confirmed?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
           else
             assert_select ".test-student-#{student.id} .fas.fa-times", 1
@@ -112,19 +110,16 @@ module Dashboard
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
         students = [
-          create(:student, class_room: class_room, school: school, has_parental_consent: true),
-          create(:student, class_room: class_room, school: school, has_parental_consent: false),
-          create(:student, class_room: class_room, school: school, has_parental_consent: false)
+          create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago),
+          create(:student, class_room: class_room, school: school, confirmed_at: nil),
+          create(:student, class_room: class_room, school: school, confirmed_at: nil)
         ]
         sign_in(create(:main_teacher, school: school, class_room: class_room))
 
         get dashboard_school_class_room_path(school, class_room)
         students.map do |student|
-          if student.has_parental_consent?
+          if student.confirmed?
             assert_select ".test-student-#{student.id} .fas.fa-check", 1
-          else
-            assert_select("#approve-student-#{student.id} a[href=?]",
-                          dashboard_school_user_path(student.school, student, user: {has_parental_consent: true}))
           end
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
           assert_select ".test-student-#{student.id} span.applications_count",

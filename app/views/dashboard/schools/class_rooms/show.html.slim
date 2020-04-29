@@ -9,19 +9,10 @@
     = "PP : "
     = @class_room.main_teachers.map { |main_teacher| Presenters::User.new(main_teacher).full_name }.join(", ")
 
-.alert.alert-info.alert-outlined.my-3.p-1
-  .row.align-items-center.no-gutters
-    .col-2.col-sm-auto.text-center.p-3
-      i.fas.fa-file-pdf
-    .col
-       = link_to root_path + 'autorisation_parentale.pdf', title: "Accéder à l'autorisation parentale d'accès à la plateforme", class: 'nav-link px-0 py-1' do
-        = "Autorisation parentale d'accès à la plateforme (PDF – 61KB)"
-
-
 .row
   table.table.table-hover.table-rg2a.table-sticky-thead
     - cols = ["Élève",
-              "Autorisation parentale",
+              "Confirmé",
               "Cordée de réussite / Parcours d'excellence",
               "Nombre de candidatures",
               "Reponses",

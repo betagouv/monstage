@@ -15,14 +15,12 @@ module Users
             end
           end
         end
-        field :has_parental_consent
       end
 
       export do
         field :first_name
         field :last_name
         field :confirmed_at
-        field :has_parental_consent
         field :departement, :string do
           export_value do
             bindings[:object].school&.department
@@ -67,19 +65,6 @@ module Users
 
     def to_s
       "#{super}, in school: #{school&.zipcode}"
-    end
-
-    # Block sign in if email is not confirmed and main teacher has not confirmed
-    # that he received parental consent.
-    def active_for_authentication?
-      super && confirmed? && has_parental_consent?
-    end
-
-    def inactive_message
-      return :unconfirmed unless confirmed?
-      return :not_approved unless has_parental_consent
-
-      super
     end
 
     def custom_dashboard_path

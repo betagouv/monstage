@@ -12,20 +12,10 @@ module UserAdmin
 
       edit do
         fields *DEFAULTS_FIELDS
-        field :has_parental_consent do
-          visible do
-            bindings[:object].is_a?(Users::Student)
-          end
-        end
       end
 
       show do
         fields *UserAdmin::DEFAULTS_FIELDS
-        field :has_parental_consent do
-          visible do
-            bindings[:object].is_a?(Users::Student)
-          end
-        end
       end
 
       show do

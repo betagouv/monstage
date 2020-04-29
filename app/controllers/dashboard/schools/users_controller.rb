@@ -26,14 +26,7 @@ module Dashboard
 
         authorize! :update, user
         user.update!(user_params)
-
-        flash_content = {}
-        if params[:user][:has_parental_consent] == 'true'
-          flash_content = { success: "Le compte de #{user.name} a bien été autorisé" }
-          StudentMailer.account_activated_by_main_teacher_email(user: user).deliver_later
-        end
-
-        redirect_back fallback_location: root_path, flash: flash_content
+        redirect_back fallback_location: root_path
       rescue ActiveRecord::RecordInvalid
         redirect_back fallback_location: root_path, status: :bad_request
       end
@@ -41,7 +34,7 @@ module Dashboard
       private
 
       def user_params
-        params.require(:user).permit(:has_parental_consent, :custom_track)
+        params.require(:user).permit(:custom_track)
       end
     end
   end

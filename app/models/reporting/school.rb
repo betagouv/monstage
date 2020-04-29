@@ -53,8 +53,8 @@ module Reporting
               .size
     end
 
-    def total_student_with_parental_consent_count
-      students.select(&:has_parental_consent?)
+    def total_student_confirmed
+      students.select(&:confirmed?)
               .size
     end
 

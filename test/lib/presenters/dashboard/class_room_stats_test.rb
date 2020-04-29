@@ -19,11 +19,11 @@ module Presenters
                      @class_room_stats.total_student
       end
 
-      test '.total_student_with_parental_consent' do
-        create(:student, class_room: @class_room, has_parental_consent: false)
-        create(:student, class_room: @class_room, has_parental_consent: true)
+      test '.total_student_confirmed' do
+        create(:student, class_room: @class_room, confirmed_at: nil)
+        create(:student, class_room: @class_room, confirmed_at: 3.days.ago)
         assert_equal 1,
-                     @class_room_stats.total_student_with_parental_consent
+                     @class_room_stats.total_student_confirmed
       end
 
       test '.total_student_with_zero_application' do
