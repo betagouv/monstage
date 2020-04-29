@@ -7,9 +7,9 @@ module Presenters
         class_room.students.size
       end
 
-      def total_student_with_parental_consent
+      def total_student_confirmed
         class_room.students
-                  .select(&:has_parental_consent?)
+                  .select(&:confirmed?)
                   .size
       end
 

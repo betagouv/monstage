@@ -7,7 +7,7 @@ tr
 
   td.align-middle.bl-1.bc-light.font-weight-bold.text-blue= school.total_student_with_confirmation_count
 
-  td.align-middle= school.total_student_with_parental_consent_count
+  td.align-middle= school.total_student_confirmed
 
   td.align-middle.bl-1.bc-light= render partial: 'reporting/schools/table/td/school_manager', locals: { has_school_manager: school.school_manager? }
 

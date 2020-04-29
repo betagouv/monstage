@@ -131,8 +131,8 @@ module Dashboard
             stats = Presenters::Dashboard::ClassRoomStats.new(class_room: class_room)
             assert_select ".test-class-room-#{class_room.id} .total_student",
                           text: stats.total_student.to_s
-            assert_select ".test-class-room-#{class_room.id} .total_student_with_parental_consent",
-                          text: stats.total_student_with_parental_consent.to_s
+            assert_select ".test-class-room-#{class_room.id} .total_student_confirmed",
+                          text: stats.total_student_confirmed.to_s
             assert_select ".test-class-room-#{class_room.id} .total_student_with_zero_application",
                           text: stats.total_student_with_zero_application.to_s
             assert_select ".test-class-room-#{class_room.id} .total_pending_convention_signed",

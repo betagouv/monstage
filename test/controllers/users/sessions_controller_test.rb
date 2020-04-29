@@ -22,19 +22,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'POST session not confirmed render warning with icon' do
     pwd = 'okokok'
-    student = create(:student, password: pwd, confirmed_at: nil, has_parental_consent: true)
+    student = create(:student, password: pwd, confirmed_at: nil)
     post user_session_path(params: { user: { email: student.email, password: pwd } })
     assert_response :found
     follow_redirect!
     assert_select "#alert-warning #alert-text", text: 'Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient.'
-  end
-
-  test 'POST session without parent consent render warning with icon' do
-    pwd = 'okokok'
-    student = create(:student, password: pwd, confirmed_at: Time.now.utc, has_parental_consent: false)
-    post user_session_path(params: { user: { email: student.email, password: pwd } })
-    assert_response :found
-    follow_redirect!
-    assert_select "#alert-warning #alert-text", text: "Veuillez faire signer l'autorisation parentale à vos responsables légaux et la donner à votre professeur principal pour consulter la liste des stages."
   end
 end

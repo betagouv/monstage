@@ -87,7 +87,7 @@ def populate_users
   with_class_name_for_defaults(Users::Other.new(email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', has_parental_consent: true)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Teacher.new(email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 

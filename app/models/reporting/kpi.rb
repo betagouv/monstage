@@ -5,8 +5,7 @@ module Reporting
     def student_funnel_goal
       @student_funnel_goal ||= {
         total: Users::Student.count,
-        confirmed: Users::Student.where.not(confirmed_at: nil).count,
-        confirmed_and_has_parental_consent: Users::Student.where.not(confirmed_at: nil).where(has_parental_consent: true).count
+        confirmed: Users::Student.where.not(confirmed_at: nil).count
       }
     end
 

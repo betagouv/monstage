@@ -849,7 +849,6 @@ CREATE TABLE public.users (
     resume_educational_background text,
     resume_other text,
     resume_languages text,
-    has_parental_consent boolean DEFAULT false,
     operator_id bigint,
     api_token character varying,
     handicap text,
@@ -1826,6 +1825,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200409122859'),
 ('20200421142949'),
 ('20200421145109'),
-('20200422123045');
+('20200422123045'),
+('20200429115934');
 
 
