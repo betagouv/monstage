@@ -18,6 +18,7 @@
         - else
           = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
             = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+
       .ml-auto.d-flex
         - if can?(:discard, @internship_offer)
           a.nav-link.px-1.px-sm-2.ml-auto.text-center data-toggle="modal" data-target="#discard-internship-offer-modal"
@@ -46,8 +47,12 @@
         - if can?(:create, InternshipOffer)
           a.nav-link.px-1.px-sm-2.text-center href= new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
             .fas.fa-copy
-            small.d-block
-              | Dupliquer
+            - if SchoolYear::Current.new.between_june_to_august?
+              small.d-block.test-renew-button
+                | Renouveler
+            - else
+              small.d-block.test-duplicate-button
+                | Dupliquer
 
           a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_internship_offer_path
             .fas.fa-plus

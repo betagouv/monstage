@@ -406,5 +406,39 @@ module InternshipOffers
                       "missing discard modal for employer"
     end
 
+    test 'GET #show as employer before may or after september show duplicate/renew button' do
+      internship_offer = create(:internship_offer)
+      current_school_year = SchoolYear::Current.new
+
+      sign_in(internship_offer.employer)
+
+      travel_to(current_school_year.beginning_of_period - 1.month) do
+        get internship_offer_path(internship_offer)
+        assert_select ".test-duplicate-button", count: 0
+        assert_select ".test-renew-button", count: 1
+        assert_response :success
+      end
+
+      travel_to(current_school_year.beginning_of_period + 1.month) do
+        get internship_offer_path(internship_offer)
+        assert_select ".test-duplicate-button", count: 1
+        assert_select ".test-renew-button", count: 0
+        assert_response :success
+      end
+
+      travel_to(current_school_year.end_of_period - 1.month) do
+        get internship_offer_path(internship_offer)
+        assert_response :success
+        assert_select ".test-duplicate-button", count: 1
+        assert_select ".test-renew-button", count: 0
+      end
+
+      travel_to(current_school_year.end_of_period + 1.month) do
+        get internship_offer_path(internship_offer)
+        assert_response :success
+        assert_select ".test-duplicate-button", count: 0
+        assert_select ".test-renew-button", count: 1
+      end
+    end
   end
 end

@@ -5,6 +5,10 @@ module SchoolYear
     MONTH_OF_YEAR_SHIFT = 5
     DAY_OF_YEAR_SHIFT = 31
 
+    def between_june_to_august?
+      june_to_august.member?(current_month)
+    end
+
     private
 
     attr_reader :date
