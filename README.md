@@ -15,6 +15,7 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
+* copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
 
 # Architecture
 
