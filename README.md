@@ -16,10 +16,13 @@ Things you may want to cover:
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
 * copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
+* setup db:
+   * `./infra/dev/db.sh` (require a pg export)
+   * `./infra/test/db.sh`
 
 # Architecture
 
-**backend**
+## backend
 
 * Rails defaults
 * Postgres as RDBMS
@@ -28,7 +31,7 @@ Things you may want to cover:
 * Postgres with Delayed job for Async jobs
 * Postgres(notify) with ActionCable for wss://
 
-**frontend**
+## frontend
 
 * Turbolink based "SPA"
 * Use [stimulus](https://stimulusjs.org/) to improve simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
@@ -36,17 +39,28 @@ Things you may want to cover:
  * student searches for school by [city.name, school.name], then chooses school, then chooses classroom.
  * someone searches for internship offers by keyword, city.name, {location}.radius, keyword
 
-**hosting & services**
+## 3rd party services
 
+### Hosting
+* Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
 * DB provider : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
+
+### Solution
+
 * Support Solution : [Zammad for support](monstage.zammad.com/)
 * Analytic Solution : [stats.data.gouv.fr](https://stats.data.gouv.fr)
+
+### Api
+
 * API: Town search: [geo.api.gouv.fr](https://geo.api.gouv.fr/decoupage-administratif/communes)
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
+
+### Tooling
+
 * Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
 * Bug monitoring solution: [sentry](https://sentry.io/)
-
+* Mail: [sendgrid](https://sendgrid.com)
 
 # Build: test, dev
 
@@ -109,7 +123,7 @@ touch ~/.ssh/clevercloud-monstage.pub
 chmod 644 ~/.ssh/clevercloud-monstage.pub
 ```
 
-**SSH SHS private key**
+**Setup SHS private key**
 
 ```bash
 # create the priv key in your env
