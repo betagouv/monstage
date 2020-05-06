@@ -7,7 +7,11 @@ div data-controller="select-weeks"
     - if defined?(select_all) && defined?(disabled)
       .custom-control.custom-checkbox.mb-1
         = check_box_tag 'all_year_long', false, false, class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#handleToggleWeeks"}
-        = label_tag 'all_year_long', "Toute l'année", class: 'custom-control-label'
+        = label_tag 'all_year_long', class: 'custom-control-label' do
+          | Toute l'année scolaire
+          - school_year = SchoolYear::Current.new
+          = " #{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
+
 
     .custom-control-checkbox-list data-target="select-weeks.checkboxesContainer"
       - current_weeks.map do |week|
