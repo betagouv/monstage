@@ -29,12 +29,5 @@ module Monstage
     config.action_view.field_error_proc = Proc.new { |html_tag, instance| html_tag }
 
     config.middleware.use Rack::Deflater
-
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '/packs/*', headers: :any, methods: :get
-      end
-    end
   end
 end
