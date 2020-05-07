@@ -121,7 +121,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
     TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+    dictfile = 'thesaurus_astro', dictionary = 'french_stem' );
 
 
 --
