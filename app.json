@@ -17,7 +17,7 @@
 
     "review": {
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:seed db:migrate"
+        "postdeploy": "bundle exec bin/rails db:structure:load db:seed db:migrate SCHEMA=db/structure-review.sql"
       },
       "env": {
         "RAILS_ENV": "review",
