@@ -36,6 +36,6 @@
         { "plan": "scheduler:standard" },
         { "plan": "mailtrap:unpaid" }
       ]
-    },
+    }
   }
 }
