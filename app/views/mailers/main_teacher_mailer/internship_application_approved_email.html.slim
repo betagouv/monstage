@@ -1,0 +1,7 @@
+p style=p_styles
+  = "La candidature de #{@student_presenter.full_name} pour le stage \"#{@internship_application.internship_offer.title}\" a été acceptée."
+
+p style=p_styles
+  = "Retrouvez les contacts de l'entreprise dans votre espace."
+
+= render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Consulter"})

@@ -127,7 +127,11 @@ class InternshipApplication < ApplicationRecord
     state :submitted, :approved, :rejected, :expired, :canceled, :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: :transition_with_email
+      transitions from: :drafted, to: :submitted, after: proc {|*_args|
+        update!("submitted_at": Time.now.utc)
+        EmployerMailer.internship_application_submitted_email(internship_application: self)
+                      .deliver_later
+      }
     end
 
     event :expire do
@@ -139,19 +143,36 @@ class InternshipApplication < ApplicationRecord
     event :approve do
       transitions from: %i[submitted canceled rejected],
                   to: :approved,
-                  after: :transition_with_email
+                  after: proc {|*_args|
+      update!("approved_at": Time.now.utc)
+      StudentMailer.internship_application_approved_email(internship_application: self)
+                    .deliver_later
+      student.school.main_teachers.map do |main_teacher|
+        MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                                main_teacher: main_teacher)
+                         .deliver_later
+      end
+    }
     end
 
     event :reject do
       transitions from: :submitted,
                   to: :rejected,
-                  after: :transition_with_email
+                  after: proc {|*_args|
+      update!("rejected_at": Time.now.utc)
+      StudentMailer.internship_application_rejected_email(internship_application: self)
+                    .deliver_later
+    }
     end
 
     event :cancel do
       transitions from: %i[drafted submitted approved],
                   to: :canceled,
-                  after: :transition_with_email
+                  after: proc {|*_args|
+      update!("canceled_at": Time.now.utc)
+      StudentMailer.internship_application_canceled_email(internship_application: self)
+                    .deliver_later
+    }
     end
 
     event :signed do
