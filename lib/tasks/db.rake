@@ -21,7 +21,7 @@ namespace :db do
     # custom thesaurus does not works on heroku
     def change_custom_thesaurus
       filename = ENV["SCHEMA"] || File.join(ActiveRecord::Tasks::DatabaseTasks.db_dir, "structure.sql")
-      filename_review = ENV["SCHEMA"] || File.join(ActiveRecord::Tasks::DatabaseTasks.db_dir, "structure-review.sql")
+      filename_review = ENV["SCHEMA"] || File.join(Rails.root, 'infra', 'review', "structure-review.sql")
 
       custom_thesaurus = <<-SQL
         CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
