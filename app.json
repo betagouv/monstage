@@ -17,7 +17,7 @@
 
     "review": {
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:seed db:migrate"
+        "postdeploy": "./infra/review/postdeploy.sh"
       },
       "env": {
         "RAILS_ENV": "review",
@@ -36,6 +36,6 @@
         { "plan": "scheduler:standard" },
         { "plan": "mailtrap:unpaid" }
       ]
-    },
+    }
   }
 }

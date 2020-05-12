@@ -69,7 +69,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     refute internship_application_2.valid?
   end
 
-  test 'transition from draft to submit updates submitted_at' do
+  test 'transition from draft to submit updates submitted_at and send semail to employer' do
     internship_application = create(:internship_application, :drafted)
     freeze_time do
       assert_changes -> { internship_application.reload.submitted_at },
@@ -85,24 +85,43 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition from submited to approved send approved email' do
+  test 'transition from submited to approved send approved email to student' do
     internship_application = create(:internship_application, :submitted)
+
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,
                      to: Time.now.utc do
-        mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
-        StudentMailer.stub :internship_application_approved_email, mock_mail do
+        mock_mail_to_student = MiniTest::Mock.new
+        mock_mail_to_student.expect(:deliver_later, true)
+        StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
           internship_application.save
           internship_application.approve!
         end
-        mock_mail.verify
+        mock_mail_to_student.verify
       end
     end
   end
 
-  test 'transition from submited to rejected send rejected email' do
+  test 'transition from submited to approved send approved email to main_teacher' do
+    internship_application = create(:internship_application, :submitted)
+    student = internship_application.student
+    create(:school_manager, school: student.school)
+    create(:main_teacher, class_room: student.class_room,
+                          school: student.school)
+
+    mock_mail_to_main_teacher = MiniTest::Mock.new
+    mock_mail_to_main_teacher.expect(:deliver_later, true)
+
+    MainTeacherMailer.stub(:internship_application_approved_email,
+                       mock_mail_to_main_teacher) do
+      internship_application.save
+      internship_application.approve!
+    end
+    mock_mail_to_main_teacher.verify
+  end
+
+  test 'transition from submited to rejected send rejected email to student' do
     internship_application = create(:internship_application, :submitted)
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
