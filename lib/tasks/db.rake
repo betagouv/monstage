@@ -23,12 +23,12 @@ namespace :db do
       filename = ENV["SCHEMA"] || File.join(ActiveRecord::Tasks::DatabaseTasks.db_dir, "structure.sql")
       filename_review = ENV["SCHEMA"] || File.join(Rails.root, 'infra', 'review', "structure-review.sql")
 
-      custom_thesaurus = <<-SQL
+      custom_thesaurus = <<~SQL
         CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
           TEMPLATE = pg_catalog.snowball,
           language = 'french');
       SQL
-      thesaurus_matcher = /CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (.*)\;/m
+      thesaurus_matcher = /^CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym \(.*?\)\;$/m
       sql_structure_review = File.read(filename)
                                  .gsub(thesaurus_matcher,
                                        custom_thesaurus)
