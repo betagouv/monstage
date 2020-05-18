@@ -21,6 +21,7 @@ class School < ApplicationRecord
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
+  has_many :internship_offers
 
   validates :city, :name, presence: true
 
@@ -123,6 +124,7 @@ class School < ApplicationRecord
       field :city
       field :department
       field :class_rooms
+      field :internship_offers
       field :weeks do
         pretty_value do
           school = bindings[:object].weeks.map(&:short_select_text_method)
