@@ -22,7 +22,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     )
     email.deliver_now
     assert_emails 1
-    assert_equal "Action requise : des candidatures vous attendent", email.subject
+    assert_equal "Action requise – Gérez vos candidatures", email.subject
     assert_equal [internship_application.internship_offer.employer.email], email.to
   end
 end
