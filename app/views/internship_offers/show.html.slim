@@ -6,6 +6,8 @@
         i.fas.fa-arrow-circle-left
 
   .col-12.col-sm-10
+    = render "internship_offers/breadcrumb"
+
     - if can?(:create, @internship_offer)
       = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
     - else

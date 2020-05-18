@@ -314,12 +314,29 @@ module InternshipOffers
       sign_in(student)
 
       get internship_offer_path(internship_offer)
-
     end
 
     #
     # Visitor
     #
+    test 'GET #show as Visitor show breadcrumb with link to previous page' do
+      internship_offer = create(:internship_offer)
+      forwarded_params = { latitude: Coordinates.paris[:lat],
+                           longitude: Coordinates.paris[:lon],
+                           radius: 60_000,
+                           city: 'Mantes-la-Jolie',
+                           keyword: 'Boucher+ecarisseur',
+                           page: 5,
+                           filter: 'past' }
+
+      get internship_offer_path({id: internship_offer.id}.merge(forwarded_params))
+      assert_response :success
+      assert_select "#test-backlink"
+      assert_template 'internship_offers/_breadcrumb'
+      assert_select("a[href=?]",
+                    internship_offers_path(forwarded_params))
+    end
+
     test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do
       internship_offer = create(:internship_offer)
       internship_offer.update!(published_at: nil)
