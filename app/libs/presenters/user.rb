@@ -15,6 +15,10 @@ module Presenters
       "#{user.first_name} #{user.last_name}"
     end
 
+    def formal_name
+      "#{user.formal_name}"
+    end
+
     def role_name
       user.model_name.human
     end

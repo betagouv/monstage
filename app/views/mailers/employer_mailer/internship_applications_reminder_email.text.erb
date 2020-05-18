@@ -1,8 +1,11 @@
+<%= "Des candidatures vous attendent..." %>
+
 <%= "Bonjour #{@employer.name}," %>
 
 <% if @remindable_application_ids.size.positive? %>
 <%= "Vous avez actuellement #{@remindable_application_ids.size} candidature(s) en attente de réponse. En l'absence de réponse de votre part ; elle(s) seront automatiquement expirées après de 15 jours." %>
 <% end %>
+
 <% if @expirable_application_ids.size.positive? %>
 <%= "N'ayant pas donnée de réponse dans un délais de 15 jours, #{@expirable_application_ids.size} candidature(s) ont étées automatiquement expirées." %>
 <% end %>

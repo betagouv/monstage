@@ -1,7 +1,14 @@
-p style=p_styles
-  = "La candidature de #{@student_presenter.full_name} pour le stage \"#{@internship_application.internship_offer.title}\" a été acceptée."
+p style=head_styles
+  = "Convention de stage a remplir."
 
 p style=p_styles
-  = "Retrouvez les contacts de l'entreprise dans votre espace."
+  = "La candidature de "
+  strong ="#{@student_presenter.formal_name}"
+  = " pour le stage "
+  strong ="\"#{@internship_application.internship_offer.title}\""
+  = " a été acceptée."
 
-= render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Consulter"})
+p style=p_styles
+  = "Pour avancer sur la convention, retrouvez les contacts de l'entreprise dans votre espace."
+
+= render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Remplir la convention de stage"})
