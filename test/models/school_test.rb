@@ -27,4 +27,15 @@ class SchoolTest < ActiveSupport::TestCase
     assert_includes school.users, teacher
     assert_includes school.users, school_manager
   end
+
+   test 'destroy nullilfy internship_offers.shcool_id' do
+    school = create(:school)
+    internship_offer = create(:internship_offer, school: school)
+
+    assert_changes -> { internship_offer.reload.school.blank? },
+                  from: false,
+                  to: true do
+      school.destroy
+    end
+  end
 end
