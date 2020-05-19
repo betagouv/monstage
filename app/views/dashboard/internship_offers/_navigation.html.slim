@@ -1,6 +1,6 @@
 .row.bg-light.mt-n4
   .col-12
-    nav.navbar.px-0
+    ul.nav.navbar.px-0
 
       - if @internship_offer.published_at.present?
         .d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
@@ -63,7 +63,7 @@
 
 .row
   .col-12
-    h1.h2.mt-2 = @internship_offer.title
+    p.h2.mt-2 = @internship_offer.title
 
 - if can?(:discard, InternshipOffer)
   = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer
