@@ -82,11 +82,3 @@
               = link_to "Voir sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'text-danger font-weight-bold'
 
 
-- if user_signed_in?
-  - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-    - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
-    - disabled = applicable_weeks.size.zero?
-    = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
-- else
-    = render "internship_applications/forms/visitor"
-
