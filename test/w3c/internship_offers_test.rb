@@ -24,7 +24,7 @@ module W3c
         run_request_and_cache_response(report_as: "internship_offer_path_#{role}") do
           sign_in(create(role))
           get internship_offer_path(create(:internship_offer).to_param)
-          assert_response :success
+          assert_response(:success, "failed with role: #{role}")
         end
       end
     end

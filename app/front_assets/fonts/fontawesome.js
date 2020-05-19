@@ -10,6 +10,7 @@ import {
   faBirthdayCake,
   faBus,
   faBuilding,
+  faCalendarAlt,
   faCheck,
   faCheckCircle,
   faChevronCircleRight,
@@ -54,6 +55,7 @@ import {
   faUniversity,
   faUser,
   faUsers,
+  faUserTie,
   faWalking
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -79,6 +81,7 @@ library.add(
   faBirthdayCake,
   faBus,
   faBuilding,
+  faCalendarAlt,
   faCheck,
   faCheckCircle,
   faChevronCircleRight,
@@ -128,6 +131,7 @@ library.add(
   faUniversity,
   faUser,
   faUsers,
+  faUserTie,
   faWalking
 );
 

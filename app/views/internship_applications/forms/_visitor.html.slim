@@ -1,0 +1,17 @@
+#internship-application-form data-target="internship-application-form.containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
+  .row.bg-light-blue
+    .col-12
+      .row
+        .col-12.h2.h4.p-3.bg-covid-19-notice.text-white
+          span.h1-label.text-white Ma candidature
+          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white' do
+              i.fas.fa-times.fa-sm
+
+    .col-12
+      p
+        | Veuillez vous
+        = " "
+        = link_to "connecter", new_user_session_path
+        = " ou "
+        = link_to "créer un compte",new_user_registration_path(as: 'Student')
+        = " pour postuler."
