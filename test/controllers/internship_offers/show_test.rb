@@ -50,7 +50,7 @@ module InternshipOffers
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show as Student when school has not weeks' do
+    test 'GET #show as Student when school has no weeks' do
       school = create(:school, weeks: [])
       student = create(:student, school: school)
       sign_in(student)
@@ -73,7 +73,7 @@ module InternshipOffers
 
       assert_select(".student-form-missing-school-weeks",
                     { count: 1 },
-                    "missing rendering of student_form_missing_school_weeks")
+                    "missing rendering of call_to_action/student_missing_school_weeks")
       assert_select("a[href=?]",
                     account_path(user: { missing_school_weeks_id: student.school.id }))
       student.update(missing_school_weeks_id: school.id)
@@ -82,7 +82,7 @@ module InternshipOffers
       assert_response :success
       assert_select(".student-form-missing-school-weeks",
                     { count: 0 },
-                    "missing rendering of student_form_missing_school_weeks")
+                    "missing rendering of call_to_action/student_missing_school_weeks")
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
@@ -92,11 +92,10 @@ module InternshipOffers
       travel_to(weeks[0].week_date) do
         sign_in(create(:student, school: create(:school, weeks: weeks)))
         get internship_offer_path(internship_offer)
-        assert_template 'internship_applications/_student_form'
+        assert_template 'internship_applications/call_to_action/_student'
         assert_select '#new_internship_application', 1
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
-        assert_select 'span.h1-label', text: "Je candidate"
         assert_select '.btn-danger', text: "Je candidate"
         assert_select 'textarea[id=internship_application_motivation]', count: 1
       end
@@ -122,7 +121,7 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_template 'internship_applications/_student_form'
+      assert_template 'internship_applications/call_to_action/_student'
       assert_select '#new_internship_application', 1
     end
 
@@ -348,7 +347,7 @@ module InternshipOffers
       internship_offer = create(:internship_offer, weeks: weeks)
 
       get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/_visitor_form'
+      assert_template 'internship_applications/call_to_action/_visitor'
     end
 
     test 'GET #show as Visitor does not increment view_count' do

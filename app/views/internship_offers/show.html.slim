@@ -6,29 +6,13 @@
         i.fas.fa-arrow-circle-left
 
   .col-12.col-sm-10
-    = render "internship_offers/breadcrumb"
-
     - if can?(:create, @internship_offer)
       = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
     - else
-      = render "internship_offers/navigation", internship_offer: @internship_offer
+      = render "internship_offers/breadcrumb", internship_offer: @internship_offer
 
     = render "internship_offers/show_details", internship_offer: @internship_offer
 
-    - if @internship_offer.from_api?
-      .row
-        .col-12
-          .alert.alert-info.alert-info-api-internship-offer.my-3.mx-0
-            = "Offre publiée par #{operator_name(@internship_offer)}, candidatez à cette offre sur le site de "
-            = link_to operator_name(@internship_offer), @internship_offer.permalink, class: 'text-white', target: "_blank", rel: "external noopener noreferrer", title: "Candidater sur le site #{operator_name(@internship_offer)} (nouvelle fenêtre)"
-
-
-    - elsif user_signed_in?
-      - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-        = render partial: "internship_applications/student_form"
-
-    - else
-      = render partial: "internship_applications/visitor_form"
 
   .d-none.d-sm-flex.col-sm-1.align-items-center.text-right
     - if @next_internship_offer && support_listable?(current_user)

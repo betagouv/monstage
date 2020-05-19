@@ -1,57 +1,91 @@
-.row
-  .col-12
-    .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
-    = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
 
-    - internship_offer_weeks = internship_offer.internship_offer_weeks
-    - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
-
-    p.font-weight-bold= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
-
-- if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
-  .row
+div
+  .row.mt-3
     .col-12
-      .row.bg-light.py-3.bt-1.bc-light
+      .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
+
+      - internship_offer_weeks = internship_offer.internship_offer_weeks
+      - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
+
+  .row.bg-light-blue.py-3.mt-3
+    .col-12.mb-3
+      h2.h4 Information sur le stage
+    .col-12
+      .row
         .col-12
-          h2.h4 Tuteur
-          p.text-muted.small Le tuteur ou la tutrice est la personne référente sur ce stage. Ses coordonnées sont publiées à ceux qui accompagnent les élèves pour savoir qui joindre en cas d'urgence
+          h3.h5
+            - if internship_offer.is_individual?
+              i.fa-fw.fas.fa-users
+            - else
+              i.fa-fw.fas.fa-users
+            - if internship_offer.reserved_to_school?
+              i.fa-fw.fas.fa-school
 
-          div
-            .d-flex.my-2
-              .circle-font.text-info
-                i.fas.fa-user.fa-fw
-              .ml-2
-                strong.tutor_name= internship_offer.tutor_name
+            span.ml-1 De quel type de stage s'agit-il ?
+          = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
+      .row
+        .col-12
+          h3.h5
+            i.fa-fw.fas.fa-calendar-alt
+            span.ml-1 Quand ce stage est-il disponible ?
+          p= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
 
-            .d-flex.my-2
-              .circle-font.text-info
-                i.fas.fa-phone.fa-fw
-              .ml-2
-                = "Portable: "
-                span.tutor_phone= internship_offer.tutor_phone
+      - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
+        .row
+          .col-12
+            .row
+              .col-12
+                h3.h5
+                  i.fas.fa-user-tie
+                  span.ml-2 Tuteur
 
-            .d-flex.my-2
-              .circle-font.text-info
-                i.far.fa-envelope.fa-fw
-              .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
-.row
-  .col-12
-    .row.bg-light.py-3.bt-1.bc-light
-      .col-12
-        h2.h4 Où se déroule ce stage ?
-        p= internship_offer.employer_name
-        .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
-        - if internship_offer.employer_website.present?
-          p.text-truncate
-            = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
+                p.text-muted.small Le tuteur ou la tutrice est la personne référente sur ce stage. Ses coordonnées sont publiées à ceux qui accompagnent les élèves pour savoir qui joindre en cas d'urgence
 
-        .d-flex
-          .circle-font.text-info
-            i.fas.fa-map-marker-alt.fa
-          p.ml-2
-            = internship_offer.street
-            br
-            = "#{internship_offer.zipcode} #{internship_offer.city}"
-            br
-            br
-            = link_to "Afficher sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer"
+                div
+                  .d-flex.my-2
+                    .circle-font
+                      i.fas.fa-user.fa-fw
+                    .ml-2
+                      strong.tutor_name= internship_offer.tutor_name
+
+                  .d-flex.my-2
+                    .circle-font
+                      i.fas.fa-phone.fa-fw
+                    .ml-2
+                      = "Portable: "
+                      span.tutor_phone= internship_offer.tutor_phone
+
+                  .d-flex.my-2
+                    .circle-font
+                      i.far.fa-envelope.fa-fw
+                    .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
+      .row
+        .col-12
+          .row
+            .col-12
+              h3.h5
+                i.fa-fw.fa.fa-info-circle
+                span.ml-1= "L'entreprise: #{internship_offer.employer_name}"
+              .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+              - if internship_offer.employer_website.present?
+                p.text-truncate
+                  = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
+
+            .col-12
+              h3.h5
+                i.fa-fw.fa.fa-map-marker-alt
+                span.ml-1 Où se déroule ce stage ?
+              p
+                = internship_offer.street
+                br
+                = "#{internship_offer.zipcode} #{internship_offer.city}"
+                br
+                br
+                = link_to "Voir sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'text-danger font-weight-bold'
+
+
+  div data-controller="internship-application-form"
+    - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+      - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
+      - disabled = applicable_weeks.size.zero?
+      = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks

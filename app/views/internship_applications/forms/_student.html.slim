@@ -1,0 +1,56 @@
+div
+  .row.bg-light-blue
+    .col-12
+      - if !@internship_application.new_record? && !@internship_application.drafted?
+        = render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application}
+
+  .row.bg-light-blue#internship-application-form
+    .col-12
+      .row
+        .col-12.h2.h4.p-3.bg-covid-19-notice.text-white Ma candidature
+    .col-12
+      .py-3
+        - is_creating =  @internship_application.try(:new_record?)
+        = form_for [@internship_offer, @internship_application], url: is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application), html: {method: is_creating ? :post : :patch} do |f|
+          = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_applications
+          = f.rg2a_explain_required_asterisk
+
+          fieldset
+            .form-group
+              - if disabled
+                .label
+                  | Quelle semaine ?
+                  = f.rg2a_required_content_tag
+
+                = render partial: "internship_applications/forms/student_missing_school_weeks"
+
+              - else
+                = f.label :internship_offer_week_id, class: 'required' do
+                  | Quelle semaine ?
+                  = f.rg2a_required_content_tag
+                = f.select :internship_offer_week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+                  { prompt: '-- Choisir une semaine --'}, class: "form-control col-lg-6", required: true, disabled: disabled
+
+            - if current_user.is_a?(Users::Student)
+              = f.hidden_field :user_id
+
+            div class="form-group #{disabled ? 'opacity-05' : ''}"
+              = f.label :motivation, class: 'required' do
+                = "Pourquoi ce stage me motive"
+                small.form-text.text-muted.mt-0 Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
+                = f.rg2a_required_content_tag
+
+              = f.text_area :motivation, class: "form-control col-lg-6", required: true, disabled: disabled
+
+          = f.fields_for :student do |resume_form|
+            = render partial: "users/resume_fields", locals: { form: resume_form, disabled: disabled }
+
+          .actions.d-flex.d-sm-block
+            = link_to "#internship-application-closeform", class: 'btn btn-outline-primary text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              i.fa.fa-chevron-left.mr-1
+              | Annuler
+            span.mx-1= " "
+            = f.submit "Valider", { class: 'btn btn-danger', disabled: disabled }
+
+
+

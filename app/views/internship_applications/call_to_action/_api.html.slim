@@ -1,0 +1,4 @@
+.row
+  .col-12.text-center.alert-info-api-internship-offer
+    p= "Offre publiée par #{operator_name(@internship_offer)}"
+    p= link_to "Je candidate sur #{operator_name(@internship_offer)}", @internship_offer.permalink, class: 'btn-danger btn', target: "_blank", rel: "external noopener noreferrer", title: "Je candidate sur #{operator_name(@internship_offer)} (nouvelle fenêtre)"
