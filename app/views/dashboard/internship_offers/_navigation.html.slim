@@ -3,50 +3,52 @@
     ul.nav.navbar.px-0
 
       - if @internship_offer.published_at.present?
-        .d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
+        li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
           span.d-inline= "Annonce publiée en ligne"
           br
           span.d-inline.internship_offer-published_at= "depuis le #{l(@internship_offer.published_at, format: :human_mm_dd)}"
       - else
-        .d-flex.align-items-center.br-1.bc-light.pr-3
+        li.d-flex.align-items-center.br-1.bc-light.pr-3
           = "Annonce dé-publiée"
 
 
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
-          .nav-link.px-0.px-lg-3= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+          li.nav-item
+            .nav-link.px-0.px-lg-3= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
         - else
-          = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
-            = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+          li.nav-item
+            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
+              = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
-      .ml-auto.d-flex
+      li.ml-auto.d-flex
         - if can?(:discard, @internship_offer)
           a.nav-link.px-1.px-sm-2.ml-auto.text-center data-toggle="modal" data-target="#discard-internship-offer-modal"
-            .fas.fa-trash
+            i.fas.fa-trash
             small.d-block
               | Supprimer
 
         - if can?(:update, @internship_offer) && @internship_offer.published_at?
           = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: nil}), class: 'nav-link text-center px-1 px-sm-2', method: :patch do
-            .fas.fa-eye-slash
+            i.fas.fa-eye-slash
             small.d-block
               | Masquer
 
         - if can?(:update, @internship_offer) && !@internship_offer.published_at?
           = link_to dashboard_internship_offer_path(@internship_offer.to_param, internship_offer: {published_at: Time.now.iso8601(0)}), class: 'nav-link text-center px-1 px-sm-2', method: :patch do
-            .fas.fa-check
+            i.fas.fa-check
             small.d-block
               | Publier
 
         - if can?(:update, @internship_offer)
           a.nav-link.px-1.px-sm-2.text-center href=edit_dashboard_internship_offer_path(@internship_offer.to_param)
-            .fas.fa-pen
+            i.fas.fa-pen
             small.d-block
               | Modifier
 
         - if can?(:create, InternshipOffer)
           a.nav-link.px-1.px-sm-2.text-center href= new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
-            .fas.fa-copy
+            i.fas.fa-copy
             - if SchoolYear::Current.new.between_june_to_august?
               small.d-block.test-renew-button
                 | Renouveler
@@ -55,7 +57,7 @@
                 | Dupliquer
 
           a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_internship_offer_path
-            .fas.fa-plus
+            i.fas.fa-plus
             small.d-none.d-sm-block
               | Déposer une offre
             small.d-block.d-sm-none
