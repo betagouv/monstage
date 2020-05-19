@@ -5,7 +5,7 @@
       = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous' do
         i.fas.fa-arrow-circle-left
 
-  .col-12.col-sm-10
+  .col-12.col-sm-10 data-controller="internship-application-form"
     - if can?(:create, @internship_offer)
       = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
     - else

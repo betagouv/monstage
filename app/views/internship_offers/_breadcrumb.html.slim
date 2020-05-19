@@ -6,16 +6,15 @@
         |&nbsp;
         = "Retour aux stages"
 
-.row.align-items-center.bb-1.bc-light
-  .col-8
+.row.align-items-center.bb-1.bc-light#internship-application-closeform
+  .col-12.col-sm-8
     h1= internship_offer.title
 
-  .col-4.text-center
+  .col-12.col-sm-4.text-center
     - if internship_offer.from_api?
       = render "internship_applications/call_to_action/api", internship_offer: internship_offer
     - elsif user_signed_in?
       - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
         = render "internship_applications/call_to_action/student", internship_offer: internship_offer
-
     - else
       = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer

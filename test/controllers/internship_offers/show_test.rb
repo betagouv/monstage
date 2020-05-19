@@ -211,6 +211,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
       assert_response :success
       assert_select 'a[href=?]', internship_offer.permalink
+      assert_template 'internship_applications/call_to_action/_api'
     end
 
     test 'GET #show as Student redirects to his tailored list of internship_offers when offer is discarded' do
@@ -313,6 +314,8 @@ module InternshipOffers
       sign_in(student)
 
       get internship_offer_path(internship_offer)
+      assert_template 'internship_applications/call_to_action/_student'
+      assert_template 'internship_applications/forms/_student'
     end
 
     #
@@ -332,6 +335,8 @@ module InternshipOffers
       assert_response :success
       assert_select "#test-backlink"
       assert_template 'internship_offers/_breadcrumb'
+      assert_template 'internship_applications/call_to_action/_visitor'
+      assert_template 'internship_applications/forms/_visitor'
       assert_select("a[href=?]",
                     internship_offers_path(forwarded_params))
     end
