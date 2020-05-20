@@ -4,7 +4,7 @@ import Turbolinks from 'turbolinks';
 
 export default class extends Controller {
   connect() {
-    this.hammer = new Hammer(document.body, {});
+    this.hammer = new Hammer(document.body, { inputClass: Hammer.TouchInput });
 
     if (this.data.get('previousUrl').length > 0) {
       this.hammer.on('swipeleft', this.previous.bind(this));
