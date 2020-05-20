@@ -4,7 +4,9 @@ import Turbolinks from 'turbolinks';
 
 export default class extends Controller {
   connect() {
-    this.hammer = new Hammer(document.body, { inputClass: Hammer.TouchInput });
+    // see: http://hammerjs.github.io/tips/#i-cant-select-my-text-anymore
+    delete Hammer.defaults.cssProps.userSelect;
+    this.hammer = new Hammer(document.body, { });
 
     if (this.data.get('previousUrl').length > 0) {
       this.hammer.on('swipeleft', this.previous.bind(this));
