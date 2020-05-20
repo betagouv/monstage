@@ -25,14 +25,16 @@ div data-controller="internship-application-form"
           i.fas.fa-arrow-circle-right
 
 
-    .row
-      .col-12
-        - if user_signed_in?
-          - if @internship_offer.from_api?
-            - # used to avoidcrash on @internship_offer_has_spots_left?
-          - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-            - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
-            - disabled = applicable_weeks.size.zero?
-            = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
-        - else
-            = render "internship_applications/forms/visitor"
+  .row.no-gutters
+    .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
+    .col-12.col-sm-10
+      - if user_signed_in?
+        - if @internship_offer.from_api?
+          - # used to avoidcrash on @internship_offer_has_spots_left?
+        - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+          - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
+          - disabled = applicable_weeks.size.zero?
+          = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
+      - else
+          = render "internship_applications/forms/visitor"
+    .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
