@@ -26,6 +26,7 @@ import './homepage/benefices/icon-accompagner-les-eleves.png';
 import './homepage/benefices/icon-offrir-un-stage.png';
 import './homepage/benefices/icon-trouver-un-stage.png';
 
+
 import './homepage/partenaires/Logo-face.jpg';
 import './homepage/partenaires/Logo-degunsanstage.jpg';
 import './homepage/partenaires/Logo-jobirl.jpg';

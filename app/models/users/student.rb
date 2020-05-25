@@ -44,6 +44,10 @@ module Users
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id'
 
+    has_rich_text :resume_educational_background
+    has_rich_text :resume_other
+    has_rich_text :resume_languages
+
     attr_reader :handicap_present
 
     def has_zero_internship_application?
@@ -93,9 +97,10 @@ module Users
       super
 
       update_columns(birth_date: nil, gender: nil, class_room_id: nil,
-                     resume_educational_background: nil, resume_other: nil, resume_languages: nil,
                      handicap: nil)
-
+      self.resume_educational_background.try(:delete)
+      self.resume_other.try(:delete)
+      self.resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
     end
   end

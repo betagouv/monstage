@@ -32,6 +32,7 @@ class InternshipApplication < ApplicationRecord
   has_rich_text :approved_message
   has_rich_text :rejected_message
   has_rich_text :canceled_message
+  has_rich_text :motivation
 
   paginates_per PAGE_SIZE
 

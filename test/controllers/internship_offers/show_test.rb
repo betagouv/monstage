@@ -59,10 +59,6 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
       disabled_input_selectors = %w[
-        internship_application[motivation]
-        internship_application[student_attributes][resume_educational_background]
-        internship_application[student_attributes][resume_other]
-        internship_application[student_attributes][resume_languages]
         internship_application[student_attributes][phone]
         internship_application[student_attributes][email]
       ].map do |disabled_selector|
@@ -97,7 +93,6 @@ module InternshipOffers
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
         assert_select '.btn-danger', text: "Je candidate"
-        assert_select 'textarea[id=internship_application_motivation]', count: 1
       end
     end
 

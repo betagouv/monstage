@@ -9,6 +9,9 @@
 @import './rg2a';
 @import './environment';
 
+@import './effects/scroll';
+
+
 @import './components/autocomplete';
 @import './components/backgrounds';
 @import './components/badges';
@@ -37,4 +40,5 @@
 @import './pages/internship_applications';
 @import './pages/internship_offers';
 @import './pages/statistiques';
+
 @import 'trix';

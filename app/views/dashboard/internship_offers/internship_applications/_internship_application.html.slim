@@ -14,7 +14,7 @@ div class="#{cycle("bg-light", "")} row"
         p
           = "Pour la "
           strong= "semaine #{internship_application.week.short_select_text_method}"
-        p class="#{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
+        div class="reboot-trix-content #{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
 
         p
           a class="btn-link strong #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
@@ -24,18 +24,18 @@ div class="#{cycle("bg-light", "")} row"
           = render partial: "users/resume_details", locals: {student: internship_application.student}
 
           h3.h6 Parcours Scolaire
-          p.word-breakable-content= internship_application.student.resume_educational_background
+          .reboot-trix-content= internship_application.student.resume_educational_background.to_s
           h3.h6 Activités extra scolaires
-          p.word-breakable-content= internship_application.student.resume_other
+          .reboot-trix-content= internship_application.student.resume_other.to_s
           - if internship_application.student.resume_languages.present?
             h3.h6 Langues
-            p.word-breakable-content= internship_application.student.resume_languages
+            .reboot-trix-content= internship_application.student.resume_languages.to_s
 
           - if internship_application.student.handicap?
             h3.h6
               i.fas.fa-wheelchair
               Besoin d'accompagnement
-            p.word-breakable-content.student-handicap= internship_application.student.handicap
+            .reboot-trix-content.student-handicap= internship_application.student.handicap.to_s
 
           .actions
             - if internship_application.submitted?
