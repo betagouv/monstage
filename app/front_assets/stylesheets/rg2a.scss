@@ -1,5 +1,6 @@
 label, .label {
-  margin-bottom: .5rem;
+  font-weight: bold;
+  margin-bottom: .75rem;
   position: relative;
 
   abbr {
@@ -8,6 +9,9 @@ label, .label {
     top: 0;
     color: $red;
   }
+}
+.custom-control-label{
+  font-weight: normal;
 }
 // avoid underline/border bottom on abbr
 abbr[title] {

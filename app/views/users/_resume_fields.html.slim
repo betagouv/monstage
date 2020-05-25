@@ -1,30 +1,38 @@
 .row
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 col-md-6"
-    legend Mon Parcours
+  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+    legend.h3 Mon Parcours
     .form-group
-      = form.label :resume_educational_background do
+      = form.label :resume_educational_background, :"data-controller" => "rich-text-label" do
         = 'Parcours Scolaire'
         small.form-text.text-muted Classes suivies jusqu'à maintenant
-      = form.text_area :resume_educational_background, class: 'form-control col-lg-6', disabled: disabled
-    .form-group
-      = form.label :resume_other do
-        = 'Activités extra scolaires'
-        small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
-      = form.text_area :resume_other, class: 'form-control col-lg-6', disabled: disabled
-    .form-group
-      = form.label :resume_languages do
-        = 'Langues vivantes'
-        small.form-text.text-muted Langues étudiées et/ou parlées
-      = form.text_area :resume_languages, class: 'form-control col-lg-6', disabled: disabled
+      = form.rich_text_area :resume_educational_background, class: 'form-control col-12', disabled: disabled,  rows: 5
 
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 col-md-6"
-    legend Me contacter
-    .form-group
-      = form.label :phone do
-        = 'Mon numéro de téléphone'
-      = form.phone_field :phone, class: 'form-control col-lg-6', disabled: disabled
-    .form-group
-      = form.label :email do
-        = 'Adresse électronique (ex : mon@exemple.fr)'
-        small.form-text.text-muted L'employeur pourra vous recontacter par courrier électronique (celui de votre compte monstagedetroisieme.fr)
-      = form.email_field :email, class: 'form-control col-lg-6', required: true, readonly: true, disabled: disabled
+  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+    .row
+      .col-12.col-md-6
+        .form-group
+          = form.label :resume_other, :"data-controller" => "rich-text-label"  do
+            = 'Activités extra scolaires'
+            small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
+          = form.rich_text_area :resume_other, class: 'form-control col-12', disabled: disabled, rows: 3
+      .col-12.col-md-6
+        .form-group
+          = form.label :resume_languages, :"data-controller" => "rich-text-label"  do
+            = 'Langues vivantes'
+            small.form-text.text-muted Langues étudiées et/ou parlées
+          = form.rich_text_area :resume_languages, class: 'form-control col-12', disabled: disabled, rows: 3
+
+  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+    legend.h3 Me contacter
+    .row
+      .col-12.col-md-6
+        .form-group
+          = form.label :phone do
+            = 'Mon numéro de téléphone'
+          = form.phone_field :phone, class: 'form-control col-lg-12', disabled: disabled
+      .col-12.col-md-6
+        .form-group
+          = form.label :email do
+            = 'Adresse électronique (ex : mon@exemple.fr)'
+            small.form-text.text-muted L'employeur pourra vous recontacter par courrier électronique (celui de votre compte monstagedetroisieme.fr)
+          = form.email_field :email, class: 'form-control col-lg-12', required: true, readonly: true, disabled: disabled

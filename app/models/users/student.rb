@@ -44,6 +44,10 @@ module Users
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id'
 
+    has_rich_text :resume_educational_background
+    has_rich_text :resume_other
+    has_rich_text :resume_languages
+
     attr_reader :handicap_present
 
     def has_zero_internship_application?

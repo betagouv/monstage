@@ -21,17 +21,17 @@
   }
 
   .tr-white{
-    box-shadow: 0 2px 0px 0px $blue;
+    box-shadow: 0 2px 0px rgba($blue, .1);
     th{
-      box-shadow: 0 2px 0px 0px $blue;
+      box-shadow: 0 2px 0px rgba($blue, .1);
       background-color: $white;
     }
   }
 
   .tr-blue{
-    box-shadow: 0 2px 0px 0px rgb(97,161,201);
+    box-shadow: 0 2px 0px rgba(97,161,201,.1);
     th{
-      box-shadow: 0 2px 0px 0px rgb(97,161,201);
+      box-shadow: 0 2px 0px rgba(97,161,201,.1);
       color: $white;
       background-color: $blue;
       font-size: 1.1rem;
