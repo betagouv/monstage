@@ -93,7 +93,6 @@ module InternshipOffers
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
         assert_select '.btn-danger', text: "Je candidate"
-        assert_select 'textarea[id=internship_application_motivation]', count: 1
       end
     end
 
