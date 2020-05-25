@@ -21,9 +21,9 @@
   }
 
   .tr-white{
-    box-shadow: 0 2px 0px $blue,;
+    box-shadow: 0 2px 0px rgba($blue,.5);
     th{
-      box-shadow: 0 2px 0px $blue,;
+      box-shadow: 0 2px 0px rgba($blue,.5),;
       background-color: $white;
     }
   }
