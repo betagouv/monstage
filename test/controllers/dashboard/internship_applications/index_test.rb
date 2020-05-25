@@ -55,9 +55,9 @@ module InternshipApplications
       assert_select '.student-age', "#{student.age} ans"
       assert_select '.student-email', student.email
       assert_select '.student-phone', student.phone
-      assert_select 'p', student.resume_educational_background
-      assert_select 'p', student.resume_other
-      assert_select 'p', student.resume_languages
+      assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
+      assert_select '.reboot-trix-content', student.resume_other.to_plain_text
+      assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
     end
 
     test 'GET #index succeed when logged in as employer, shows handicap field when present' do

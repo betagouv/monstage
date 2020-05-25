@@ -1,7 +1,6 @@
 .row.bg-light.mt-n4
   .col-12
     ul.nav.navbar.px-0
-
       - if @internship_offer.published_at.present?
         li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
           span.d-inline= "Annonce publiée en ligne"
@@ -62,10 +61,9 @@
               | Déposer une offre
             small.d-block.d-sm-none
               | Ajouter
-
-.row
+.row.mt-3
   .col-12
-    p.h2.mt-2 = @internship_offer.title
+    = render "internship_offers/breadcrumb", internship_offer: @internship_offer
 
 - if can?(:discard, InternshipOffer)
   = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer

@@ -97,9 +97,10 @@ module Users
       super
 
       update_columns(birth_date: nil, gender: nil, class_room_id: nil,
-                     resume_educational_background: nil, resume_other: nil, resume_languages: nil,
                      handicap: nil)
-
+      self.resume_educational_background.try(:delete)
+      self.resume_other.try(:delete)
+      self.resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
     end
   end

@@ -59,10 +59,6 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
       disabled_input_selectors = %w[
-        internship_application[motivation]
-        internship_application[student_attributes][resume_educational_background]
-        internship_application[student_attributes][resume_other]
-        internship_application[student_attributes][resume_languages]
         internship_application[student_attributes][phone]
         internship_application[student_attributes][email]
       ].map do |disabled_selector|
