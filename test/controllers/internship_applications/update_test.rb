@@ -50,7 +50,7 @@ module InternshipApplications
       internship_application = create(:internship_application, :drafted, internship_offer: internship_offer,
                                                                          motivation: initial_motivation)
       sign_in(internship_application.student)
-      assert_changes -> { internship_application.reload.motivation },
+      assert_changes -> { internship_application.reload.motivation.to_plain_text },
                      from: initial_motivation,
                      to: new_motivation do
         patch internship_offer_internship_application_path(internship_offer,

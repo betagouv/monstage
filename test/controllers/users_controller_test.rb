@@ -105,9 +105,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to account_path
     student.reload
-    assert_equal 'background', student.resume_educational_background
-    assert_equal 'other', student.resume_other
-    assert_equal 'languages', student.resume_languages
+    assert_equal 'background', student.resume_educational_background.to_plain_text
+    assert_equal 'other', student.resume_other.to_plain_text
+    assert_equal 'languages', student.resume_languages.to_plain_text
     assert_equal '0665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1

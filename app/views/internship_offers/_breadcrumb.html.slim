@@ -1,0 +1,20 @@
+.row
+  .col-12
+    p
+      = link_to back_to_internship_offers_from_internship_offer_path(), {id: 'test-backlink', class: 'text-danger font-weight-bold'} do
+        i.fas.fa-chevron-left
+        |&nbsp;
+        = "Retour aux stages"
+
+.row.align-items-center#internship-application-closeform
+  .col-12.col-sm-8
+    p.h3= internship_offer.title
+
+  .col-12.col-sm-4.text-center.relative
+    - if internship_offer.from_api?
+      = render "internship_applications/call_to_action/api", internship_offer: internship_offer
+    - elsif user_signed_in?
+      - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+        = render "internship_applications/call_to_action/student", internship_offer: internship_offer
+    - else
+      = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer

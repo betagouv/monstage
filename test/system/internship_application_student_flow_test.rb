@@ -9,11 +9,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     weeks = [Week.find_by(number: 1, year: 2020)]
     student = create(:student, school: create(:school, weeks: weeks))
     internship_offer = create(:internship_offer, weeks: weeks)
+
     travel_to(weeks.first.week_date) do
       sign_in(student)
-      visit '/'
-      click_on 'Recherche'
-      click_on internship_offer.title
+      visit internship_offer_path(internship_offer)
 
       # show application form
       page.find '#internship-application-closeform', visible: false
@@ -41,6 +40,33 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      from: 0,
                      to: 1 do
         click_on 'Envoyer'
+      end
+    end
+  end
+
+  test 'student without school weeks can not submit application' do
+    weeks = [Week.find_by(number: 1, year: 2020)]
+    student = create(:student, school: create(:school, weeks: []))
+    internship_offer = create(:internship_offer, weeks: weeks)
+
+    travel_to(weeks.first.week_date) do
+      sign_in(student)
+      visit internship_offer_path(internship_offer)
+
+      # check application form opener and check form is hidden by default
+      page.find '#internship-application-closeform', visible: false
+      page.find('.test-missing-school-weeks', visible: false)
+
+      click_on 'Je candidate'
+
+      # check application is now here, ensure feature is here
+      page.find '#internship-application-closeform', visible: true
+      page.find('.test-missing-school-weeks', visible: true)
+      # page.find("a[href=?]", account_path(user: {missing_school_weeks_id: student.school_id}))
+      assert_changes lambda  { student.reload.missing_school_weeks_id },
+                     from: nil,
+                     to: student.school.id do
+        click_on 'Je souhaite une semaine de stage'
       end
     end
   end

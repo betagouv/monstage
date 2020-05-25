@@ -94,6 +94,7 @@ end
 if Rails.env == 'review'
   populate_week_reference
   populate_schools
+  School.update_all(updated_at: Time.now)
   populate_operators
   populate_users
   populate_sectors

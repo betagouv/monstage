@@ -32,14 +32,14 @@ module InternshipApplications
 
       created_internship_application = InternshipApplication.last
       assert_equal internship_offer.internship_offer_weeks.first.id, created_internship_application.internship_offer_week.id
-      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation
+      assert_equal 'Je suis trop motivé wesh', created_internship_application.motivation.to_plain_text
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload
       assert_equal '0665656540', student.phone
-      assert_equal 'resume_educational_background', student.resume_educational_background
-      assert_equal 'resume_other', student.resume_other
-      assert_equal 'resume_languages', student.resume_languages
+      assert_equal 'resume_educational_background', student.resume_educational_background.to_plain_text
+      assert_equal 'resume_other', student.resume_other.to_plain_text
+      assert_equal 'resume_languages', student.resume_languages.to_plain_text
     end
 
     test 'POST #create internship application failed' do

@@ -1,21 +1,21 @@
 .row.bg-dark-light
   .col-12
     h2.h5.my-2.gray-666 Ma motivation
-    p.word-breakable-content= internship_application.motivation
+    .reboot-trix-content= internship_application.motivation.to_s
 
 - unless is_resume_empty?(internship_application)
   h2.h5.mt-4.gray-666 Mon CV
   - if has_resume_educational_background?(internship_application)
     h3.h5.gray-999.mb-1 Parcours scolaire
-    p.word-breakable-content= internship_application.student.resume_educational_background
+    .reboot-trix-content= internship_application.student.resume_educational_background.to_s
 
   - if has_resume_other?(internship_application)
     h3.h5.gray-999.mb-1.mt-4 Activités extra scolaires
-    p.word-breakable-content= internship_application.student.resume_other
+    .reboot-trix-content= internship_application.student.resume_other.to_s
 
   - if has_resume_languages?(internship_application)
     h3.h5.gray-999.mb-1.mt-4 Langues
-    p.word-breakable-content= internship_application.student.resume_languages
+    .reboot-trix-content= internship_application.student.resume_languages.to_s
 
 h3.h5.gray-999.mb-1.mt-2 Mon identité
 = render partial: "users/resume_details", locals: {student: internship_application.student}

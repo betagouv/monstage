@@ -471,7 +471,6 @@ CREATE TABLE public.internship_applications (
     id bigint NOT NULL,
     user_id bigint,
     internship_offer_week_id bigint,
-    motivation text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     aasm_state character varying,
@@ -847,9 +846,6 @@ CREATE TABLE public.users (
     birth_date date,
     gender character varying,
     class_room_id bigint,
-    resume_educational_background text,
-    resume_other text,
-    resume_languages text,
     operator_id bigint,
     api_token character varying,
     handicap text,
@@ -1827,6 +1823,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200421142949'),
 ('20200421145109'),
 ('20200422123045'),
-('20200429115934');
+('20200429115934'),
+('20200520140525'),
+('20200520140800');
 
 

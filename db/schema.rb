@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_115934) do
+ActiveRecord::Schema.define(version: 2020_05_20_140800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(version: 2020_04_29_115934) do
   create_table "internship_applications", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "internship_offer_week_id"
-    t.text "motivation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "aasm_state"
@@ -263,9 +262,6 @@ ActiveRecord::Schema.define(version: 2020_04_29_115934) do
     t.date "birth_date"
     t.string "gender"
     t.bigint "class_room_id"
-    t.text "resume_educational_background"
-    t.text "resume_other"
-    t.text "resume_languages"
     t.bigint "operator_id"
     t.string "api_token"
     t.text "handicap"

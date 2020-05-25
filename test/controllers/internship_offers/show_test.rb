@@ -50,7 +50,7 @@ module InternshipOffers
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show as Student when school has not weeks' do
+    test 'GET #show as Student when school has no weeks' do
       school = create(:school, weeks: [])
       student = create(:student, school: school)
       sign_in(student)
@@ -59,10 +59,6 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
       disabled_input_selectors = %w[
-        internship_application[motivation]
-        internship_application[student_attributes][resume_educational_background]
-        internship_application[student_attributes][resume_other]
-        internship_application[student_attributes][resume_languages]
         internship_application[student_attributes][phone]
         internship_application[student_attributes][email]
       ].map do |disabled_selector|
@@ -73,7 +69,7 @@ module InternshipOffers
 
       assert_select(".student-form-missing-school-weeks",
                     { count: 1 },
-                    "missing rendering of student_form_missing_school_weeks")
+                    "missing rendering of call_to_action/student_missing_school_weeks")
       assert_select("a[href=?]",
                     account_path(user: { missing_school_weeks_id: student.school.id }))
       student.update(missing_school_weeks_id: school.id)
@@ -82,7 +78,7 @@ module InternshipOffers
       assert_response :success
       assert_select(".student-form-missing-school-weeks",
                     { count: 0 },
-                    "missing rendering of student_form_missing_school_weeks")
+                    "missing rendering of call_to_action/student_missing_school_weeks")
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
@@ -92,13 +88,11 @@ module InternshipOffers
       travel_to(weeks[0].week_date) do
         sign_in(create(:student, school: create(:school, weeks: weeks)))
         get internship_offer_path(internship_offer)
-        assert_template 'internship_applications/_student_form'
+        assert_template 'internship_applications/call_to_action/_student'
         assert_select '#new_internship_application', 1
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
-        assert_select 'span.h1-label', text: "Je candidate"
         assert_select '.btn-danger', text: "Je candidate"
-        assert_select 'textarea[id=internship_application_motivation]', count: 1
       end
     end
 
@@ -122,7 +116,7 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_template 'internship_applications/_student_form'
+      assert_template 'internship_applications/call_to_action/_student'
       assert_select '#new_internship_application', 1
     end
 
@@ -212,6 +206,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
       assert_response :success
       assert_select 'a[href=?]', internship_offer.permalink
+      assert_template 'internship_applications/call_to_action/_api'
     end
 
     test 'GET #show as Student redirects to his tailored list of internship_offers when offer is discarded' do
@@ -314,12 +309,33 @@ module InternshipOffers
       sign_in(student)
 
       get internship_offer_path(internship_offer)
-
+      assert_template 'internship_applications/call_to_action/_student'
+      assert_template 'internship_applications/forms/_student'
     end
 
     #
     # Visitor
     #
+    test 'GET #show as Visitor show breadcrumb with link to previous page' do
+      internship_offer = create(:internship_offer)
+      forwarded_params = { latitude: Coordinates.paris[:lat],
+                           longitude: Coordinates.paris[:lon],
+                           radius: 60_000,
+                           city: 'Mantes-la-Jolie',
+                           keyword: 'Boucher+ecarisseur',
+                           page: 5,
+                           filter: 'past' }
+
+      get internship_offer_path({id: internship_offer.id}.merge(forwarded_params))
+      assert_response :success
+      assert_select "#test-backlink"
+      assert_template 'internship_offers/_breadcrumb'
+      assert_template 'internship_applications/call_to_action/_visitor'
+      assert_template 'internship_applications/forms/_visitor'
+      assert_select("a[href=?]",
+                    internship_offers_path(forwarded_params))
+    end
+
     test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do
       internship_offer = create(:internship_offer)
       internship_offer.update!(published_at: nil)
@@ -331,7 +347,7 @@ module InternshipOffers
       internship_offer = create(:internship_offer, weeks: weeks)
 
       get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/_visitor_form'
+      assert_template 'internship_applications/call_to_action/_visitor'
     end
 
     test 'GET #show as Visitor does not increment view_count' do
