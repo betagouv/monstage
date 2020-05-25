@@ -260,7 +260,7 @@ fr:
         users/school_manager:
           attributes:
             email:
-              invalid: "Veuillez saisir une adresse mail académique"
+              invalid: "Veuillez saisir une adresse électronique (e-mail) académique"
 
         users/teacher:
           attributes:

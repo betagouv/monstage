@@ -1,13 +1,17 @@
 <% if @resource.pending_reconfirmation? %>
-<%= "Bonjour #{@resource.first_name}, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr." %>
+<%= "Bonjour #{@resource.formal_name}, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr." %>
 
 Avant de procéder merci de confirmer :
-<%= "1. Votre Adresse électronique (e-mail) actuelle est #{@resource.email}" %>
-<%= "2. Votre nouvelle Adresse électronique (e-mail) sera #{@resource.unconfirmed_email}" %>
+<%= "1. Votre Adresse électronique (e-mail) →  #{@resource.email}" %>
+<%= "2. Votre nouvelle Adresse électronique (e-mail) → #{@resource.unconfirmed_email}" %>
 
 <%= "Confirmer en cliquant sur le lien suivant : #{confirmation_url(@resource, confirmation_token: @token)}." %>
 <% else %>
-<%= "Bienvenue #{@resource.first_name}, cliquez sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
+<%= "Plus qu'une étape..." %>
+
+<%= "Bienvenue #{@resource.formal_name}" %>
+Votre compte a bien été enregistré !
+<%= "Cliquez ou copier/coller sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
 
 Merci.
 <% end %>

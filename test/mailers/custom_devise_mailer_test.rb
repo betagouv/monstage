@@ -24,6 +24,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     employer = create(:employer)
     employer.update!(email: 'nouvel@ema.le')
     email = CustomDeviseMailer.confirmation_instructions(employer, SecureRandom.hex)
-    assert email.html_part.body.include?("Bonjour, nous venons de recevoir une demande de changement d'Adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr.")
+    assert email.html_part.body.include?(employer.formal_name)
+    assert email.html_part.body.include?("nous venons de recevoir une demande de changement")
   end
 end

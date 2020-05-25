@@ -1,6 +1,15 @@
-p style=p_styles
-  = "Bonjour, Vous vous êtes inscrit sur monstagedetroisieme.fr pour votre établissement, mais n'avez pas sélectionné de semaines de stage. Sans cette démarche vos élèves ne pourront pas candidater. "
+p style=head_styles
+  | Vos élèves comptent sur vous !
 
 p style=p_styles
-  = "A l'heure actuelle, #{@school.missing_school_weeks_count} élève(s) n'ont pas pu candidater? Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : "
+  = "Bonjour #{@school_manager.name},"
+
+p style=p_styles
+  = "Vous vous êtes inscrit sur monstagedetroisieme.fr pour votre établissement, mais n'avez pas sélectionné de semaines de stage."
+  strong= " Sans cette démarche vos élèves ne pourront pas candidater. "
+
+p style=p_styles
+  = "A l'heure actuelle, "
+  strong style="color: #dc3545"= "#{@school.missing_school_weeks_count} élève(s) "
+  = "n'ont pas pu candidater. Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : "
 = render(partial: "mailers/call_to_action", locals: {href: edit_dashboard_school_url(@school), label:'Ajouter des semaines de stage'})

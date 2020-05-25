@@ -17,6 +17,6 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
 
     email = SchoolManagerMailer.missing_school_weeks(school_manager: school.school_manager)
     assert_includes email.to, school.school_manager.email
-    assert_equal "Vos élèves souhaiteraient candidater à des offres", email.subject
+    assert_equal "Action requise – Renseignez les semaines de stage de votre établissement", email.subject
   end
 end

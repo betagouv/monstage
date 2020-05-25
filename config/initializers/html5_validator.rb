@@ -17,7 +17,7 @@ module Html5Validator
   end
 
   def self.run
-    puts "running w3c validation with: \n#{files_to_validates.join("\n")}"
+    puts "running w3c validation with: java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only \n#{files_to_validates.join("\n")}"
     `java -jar node_modules/vnu-jar/build/dist/vnu.jar --errors-only #{RESPONSE_STORED_DIR.to_s}/*.html`
   end
 

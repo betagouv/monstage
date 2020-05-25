@@ -39,7 +39,7 @@ class User < ApplicationRecord
   end
 
   def name
-    "#{first_name} #{last_name}"
+    "#{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
   def after_sign_in_path
@@ -62,6 +62,17 @@ class User < ApplicationRecord
     [
       custom_dashboard_path
     ]
+  end
+
+  def gender_text
+    return "" if gender.blank?
+    return "Madame" if gender.eql?('f')
+    return "Monsieur" if gender.eql?('m')
+    ""
+  end
+
+  def formal_name
+    "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
   end
 
   def anonymize

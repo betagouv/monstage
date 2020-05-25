@@ -1,9 +1,9 @@
+<%= "Vous avez une nouvelle candidature !" %>
 
 <%= "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.name} vous a adressé une candidature." %>
 
 <% if @internship_application.student.handicap.present? %>
 <%= "Besoin d'aménagement pour l'élève #{@internship_application.student.handicap}" %>
 <% end %>
-
-<%= dashboard_internship_offer_internship_applications_url(@internship_application.internship_offer) %>
+Pour répondre, cliquez sur lien suivant <%= dashboard_internship_offer_internship_applications_url(@internship_application.internship_offer) %>
 
