@@ -45,6 +45,7 @@ def populate_schools
         name: row['ETABLISSEMENT'],
         city: row['Commune'],
         department: row['Département'],
+        zipcode: '75015',
         coordinates: geo_point_factory(
             **([1,2].shuffle.first == 1 ?
                Coordinates.paris :
