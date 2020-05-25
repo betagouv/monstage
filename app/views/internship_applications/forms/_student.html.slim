@@ -41,7 +41,7 @@
               = f.hidden_field :user_id
 
             div class="form-group #{disabled ? 'opacity-05' : ''}"
-              = f.label :motivation, :"class" => 'required', :"data-controller" => "rich-text-label" do
+              .label.required data-controller="rich-text-label" data-rich-text-label-for="internship_application_motivation"
                 = "Pourquoi ce stage me motive"
                 small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
                 = f.rg2a_required_content_tag

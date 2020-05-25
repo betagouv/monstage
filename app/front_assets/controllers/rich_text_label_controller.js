@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ['label'];
 
   focusTrixInput(event) {
-    document.getElementById(this.element.getAttribute('for'))
+    document.getElementById(this.data.get('for'))
             .focus();
 
     return event;
