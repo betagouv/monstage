@@ -18,7 +18,7 @@ class School < ApplicationRecord
                                 class_name: 'Users::SchoolManagement'
   has_many :others, -> { where(role: :other) },
                                 class_name: 'Users::SchoolManagement'
-  has_one :school_manager, -> { where(role: :school_manage) },
+  has_one :school_manager, -> { where(role: :school_manager) },
                                 class_name: 'Users::SchoolManagement'
 
   has_many :class_rooms, dependent: :destroy
