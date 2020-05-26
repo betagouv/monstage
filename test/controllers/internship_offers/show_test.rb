@@ -9,7 +9,7 @@ module InternshipOffers
     #
     # School Manager
     #
-    test 'GET #show as SchoolManager does not display application when internship_offer is not reserved to school' do
+    test 'GET #show as SchoolManagement does not display application when internship_offer is not reserved to school' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, class_room: class_room, school: school)

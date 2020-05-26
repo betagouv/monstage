@@ -5,11 +5,8 @@ class UserManager
   # otherwise expose RCE: params[:as]=Kernel.eval("do some magick")
   ROLES_BY_PARAMS = {
     'Employer' => Users::Employer,
-    'MainTeacher' => Users::MainTeacher,
-    'Other' => Users::Other,
-    'SchoolManager' => Users::SchoolManager,
+    'SchoolManagement' => Users::SchoolManagement,
     'Student' => Users::Student,
-    'Teacher' => Users::Teacher,
     'Operator' => Users::Operator,
     'Statistician' => Users::Statistician
   }.freeze

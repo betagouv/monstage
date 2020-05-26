@@ -18,24 +18,8 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-      test 'GET students#index as SchoolManager works' do
-        school = create(:school, :with_school_manager)
-        sign_in(school.school_manager)
 
-        get dashboard_school_students_path(school)
-        assert_response :success
-      end
-
-      test 'GET students#index as Other works' do
-        school = create(:school, :with_school_manager)
-        other = create(:other, school: school)
-        sign_in(other)
-
-        get dashboard_school_students_path(school)
-        assert_response :success
-      end
-
-      test 'GET students#index as MainTeacher works' do
+      test 'GET students#index as SchoolManagement works' do
         school = create(:school, :with_school_manager)
         main_teacher = create(:main_teacher, school: school)
         sign_in(main_teacher)
@@ -44,16 +28,7 @@ module Dashboard
         assert_response :success
       end
 
-      test 'GET students#index as Teacher works' do
-        school = create(:school, :with_school_manager)
-        teacher = create(:teacher, school: school)
-        sign_in(teacher)
-
-        get dashboard_school_students_path(school)
-        assert_response :success
-      end
-
-      test 'GET students#index as SchoolManager contains key navigations links' do
+      test 'GET students#index as SchoolManagement contains key navigations links' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
 
@@ -62,7 +37,7 @@ module Dashboard
         assert_select '.test-dashboard-nav a.active[href=?]', dashboard_school_students_path(school), count: 1
       end
 
-      test 'GET students#index as SchoolManager contains list school students' do
+      test 'GET students#index as SchoolManagement contains list school students' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         class_room_1 = create(:class_room, school: school)
@@ -87,7 +62,7 @@ module Dashboard
       #
       # update
       #
-      test 'PATCH students as SchoolManager change change class room' do
+      test 'PATCH students as SchoolManagement change change class room' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         class_room_1 = create(:class_room, school: school)

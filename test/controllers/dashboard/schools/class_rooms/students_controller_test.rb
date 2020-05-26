@@ -20,7 +20,7 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-      test 'GET show as SchoolManager works' do
+      test 'GET show as SchoolManagement works' do
         school = create(:school)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)

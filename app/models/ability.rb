@@ -9,13 +9,10 @@ class Ability
       case user.type
       when 'Users::Student' then student_abilities(user: user)
       when 'Users::Employer' then employer_abilities(user: user)
-      when 'Users::SchoolManager' then school_manager_abilities(user: user)
       when 'Users::God' then god_abilities
-      when 'Users::MainTeacher' then main_teacher_abilities(user: user)
-      when 'Users::Teacher' then teacher_abilities(user: user)
-      when 'Users::Other' then other_abilities(user: user)
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
+      when 'Users::SchoolManagement' then school_management_abilities(user: user)
       end
       shared_signed_in_user_abilities(user: user)
     else
@@ -47,8 +44,10 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
   end
 
-  def school_manager_abilities(user:)
-    can_create_and_manage_account(user: user)
+  def school_management_abilities(user:)
+    can_create_and_manage_account(user: user) do
+      can [:choose_class_room], User
+    end
     can_read_dashboard_students_internship_applications(user: user)
 
     can_manage_school(user: user) do
@@ -63,59 +62,11 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
-    can %i[update destroy], InternshipApplication do |internship_application|
-      user.school.students.where(id: internship_application.student.id).count > 0
-    end
-    can %i[see_tutor], InternshipOffer
-  end
-
-  def main_teacher_abilities(user:)
-    # user account rights
-    can_create_and_manage_account(user: user) do
-      can [:choose_class_room], User
-    end
-    can_read_dashboard_students_internship_applications(user: user)
-
-    # dashboard rights
-    can_manage_school(user: user) do
-      can [:manage_students], ClassRoom do |class_room|
-        class_room.id == user.class_room_id
-      end
-    end
     can :submit_internship_application, InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
-    can [:manage_school_students], School do |school|
-      school.id == user.school_id
-    end
-    can %i[see_tutor], InternshipOffer
-    can %i[update], InternshipApplication do |internship_application|
+    can %i[update destroy], InternshipApplication do |internship_application|
       user.school.students.where(id: internship_application.student.id).count > 0
-    end
-  end
-
-  def teacher_abilities(user:)
-    can_create_and_manage_account(user: user) do
-      can [:choose_class_room], User
-    end
-    can_read_dashboard_students_internship_applications(user: user)
-    can_manage_school(user: user)
-    can [:manage_school_students], School do |school|
-      school.id == user.school_id
-    end
-    can %i[see_tutor], InternshipOffer
-  end
-
-  def other_abilities(user:)
-    can_create_and_manage_account(user: user)
-    can_read_dashboard_students_internship_applications(user: user)
-    can_manage_school(user: user) do
-      can [:manage_school_users], School do |school|
-        school.id == user.school_id
-      end
-    end
-    can [:manage_school_students], School do |school|
-      school.id == user.school_id
     end
     can %i[see_tutor], InternshipOffer
   end
@@ -189,10 +140,7 @@ class Ability
 
   def student_managed_by?(student:, user:)
     student.school_id == user.school_id && (
-      user.is_a?(Users::Teacher) ||
-      user.is_a?(Users::MainTeacher) ||
-      user.is_a?(Users::SchoolManager) ||
-      user.is_a?(Users::Other)
+      user.is_a?(Users::SchoolManagement)
     )
   end
 

@@ -21,10 +21,10 @@ header.header-account
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
-        h2= "Je suis chef d'établissement"
+        h2= "Je suis membre de l'équipe pédagogique"
         p
           | Vous souhaitez que vos élèves trouvent un stage de qualité... Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block= link_to "Créer mon compte Membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-outline-primary'
 
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
@@ -35,21 +35,7 @@ header.header-account
           | Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
         .actions.d-flex.d-sm-block= link_to "Créer mon compte offreur", new_user_registration_path(as: 'Employer'), class: 'btn btn-outline-primary'
 
-  .col-12.col-md-6.my-3
-    .onboarding-col
-      .mt-3
-        h2= "Je suis membre de l'équipe pédagogique"
-        p
-          | Vous souhaitez que vos élèves trouvent un stage de qualité. cette plateforme vous permettra de les accompagner dans les meilleures conditions.
-
-        - [Users::MainTeacher, Users::Teacher, Users::Other].map do |role_class|
-          = link_to new_user_registration_path(as: role_class.name.demodulize), class: 'd-block my-1' do
-             i.fas.fa-chevron-circle-right.mr-1.text-primary
-             = "Créer mon compte #{role_class.model_name.human.downcase}"
-
-
-.row
-  .d-none.d-sm-block.col-12.col-md-6.my-3.offset-md-3
+  .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
         h2= "Je suis référent départemental"

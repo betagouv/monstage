@@ -13,10 +13,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
     assert_select 'a[href=?]', '/users/sign_up?as=Student'
     assert_select 'a[href=?]', '/users/sign_up?as=Employer'
-    assert_select 'a[href=?]', '/users/sign_up?as=SchoolManager'
-    assert_select 'a[href=?]', '/users/sign_up?as=MainTeacher'
-    assert_select 'a[href=?]', '/users/sign_up?as=Other'
-    assert_select 'a[href=?]', '/users/sign_up?as=Teacher'
+    assert_select 'a[href=?]', '/users/sign_up?as=SchoolManagement'
     assert_select 'a[href=?]', '/users/sign_up?as=Statistician'
   end
 

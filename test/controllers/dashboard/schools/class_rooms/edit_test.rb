@@ -8,9 +8,9 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # Edit, SchoolManager
+      # Edit, SchoolManagement
       #
-      test 'GET class_rooms#edit as SchoolManager render form' do
+      test 'GET class_rooms#edit as SchoolManagement render form' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
 

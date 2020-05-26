@@ -26,7 +26,7 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-      test 'DELETE #destroy as SchoolManager succeed' do
+      test 'DELETE #destroy as SchoolManagement succeed' do
         school = create(:school, :with_school_manager)
         main_teacher = create(:main_teacher, school: school)
         sign_in(school.school_manager)
@@ -58,7 +58,7 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-      test 'GET users#index as SchoolManager works' do
+      test 'GET users#index as SchoolManagement works' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
 
@@ -66,7 +66,7 @@ module Dashboard
         assert_response :success
       end
 
-      test 'GET users#index as SchoolManager contains key navigations links' do
+      test 'GET users#index as SchoolManagement contains key navigations links' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
 
@@ -76,7 +76,7 @@ module Dashboard
         assert_select '.test-dashboard-nav a.active[href=?]', dashboard_school_users_path(school), count: 1
       end
 
-      test 'GET users#index as SchoolManager contains UX guidelines when no staff' do
+      test 'GET users#index as SchoolManagement contains UX guidelines when no staff' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
 
@@ -86,7 +86,7 @@ module Dashboard
                       text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
       end
 
-      test 'GET users#index as SchoolManager contains list school members' do
+      test 'GET users#index as SchoolManagement contains list school members' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         school_employees = [
@@ -103,23 +103,6 @@ module Dashboard
         assert_select '.test-presence-of-ux-guideline-invitation',
                       text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.",
                       count: 0
-      end
-
-      test 'GET users#index as Other contains list school members' do
-        school = create(:school, :with_school_manager)
-        other = create(:other, school: school)
-        sign_in(other)
-        school_employees = [
-          create(:main_teacher, school: school),
-          create(:teacher, school: school),
-          create(:other, school: school)
-        ]
-
-        get dashboard_school_users_path(school)
-        assert_response :success
-        school_employees.each do |school_employee|
-          assert_select 'a[href=?]', dashboard_school_user_path(school, school_employee), count: 0
-        end
       end
     end
   end

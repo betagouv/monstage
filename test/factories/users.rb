@@ -36,7 +36,7 @@ FactoryBot.define do
 
     factory :school_manager, class: 'Users::SchoolManagement', parent: :user do
       type { 'Users::SchoolManagement' }
-      role { 'school_manager' }
+      role { Users::SchoolManagement.roles[:school_manager] }
 
       sequence(:email) { |n| "jean#{n}-claude@ac-dus.fr" }
     end

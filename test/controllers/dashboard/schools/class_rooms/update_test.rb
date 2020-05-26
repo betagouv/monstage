@@ -8,9 +8,9 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # Update, SchoolManager
+      # Update, SchoolManagement
       #
-      test 'PATCH class_rooms#update as SchoolManager update class_room' do
+      test 'PATCH class_rooms#update as SchoolManagement update class_room' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school, name: SecureRandom.hex)
         sign_in(school.school_manager)

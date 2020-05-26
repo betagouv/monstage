@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class SignUpTeachersTest < ApplicationSystemTestCase
+class SignUpTeacherTeachersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until teacher creation' do
     school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_manager = create(:school_manager, school: school_1)
@@ -12,10 +12,10 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
 
     # go to signup as teacher
-    visit new_user_registration_path(as: 'Teacher')
+    visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create teacher with existing email
-    assert_difference('Users::Teacher.count', 0) do
+    assert_difference('Users::SchoolManagement.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
@@ -35,7 +35,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
                  're-select of city after failure fails'
 
     # create teacher
-    assert_difference('Users::Teacher.count', 1) do
+    assert_difference('Users::SchoolManagement.count', 1) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
@@ -47,7 +47,7 @@ class SignUpTeachersTest < ApplicationSystemTestCase
     end
 
     # check created teacher has valid info
-    created_teacher = Users::Teacher.where(email: 'another@email.com').first
+    created_teacher = Users::SchoolManagement.where(email: 'another@email.com').first
     assert_equal school_1, created_teacher.school
     assert_equal class_room_1, created_teacher.class_room
     assert_equal 'Martin', created_teacher.first_name

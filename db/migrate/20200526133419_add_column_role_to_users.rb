@@ -7,7 +7,7 @@ class AddColumnRoleToUsers < ActiveRecord::Migration[6.0]
   end
 
   def down
-    add_column :users, :role
+    remove_column :users, :role
     execute <<-SQL
       DROP TYPE user_role;
     SQL

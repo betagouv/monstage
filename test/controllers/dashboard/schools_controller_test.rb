@@ -11,7 +11,7 @@ module Dashboard
     end
 
     #
-    # Edit, SchoolManager
+    # Edit, SchoolManagement
     #
     test 'GET edit not logged redirects to sign in' do
       get edit_dashboard_school_path(@school.to_param)
@@ -41,7 +41,7 @@ module Dashboard
       assert asserted_input_count > 0
     end
 
-    test 'GET class_rooms#index as SchoolManager shows UX critical alert-info' do
+    test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
 
@@ -64,7 +64,7 @@ module Dashboard
     end
 
     #
-    # Update as Student, SchoolManager & God
+    # Update as Student, SchoolManagement & God
     #
     test 'PATCH update not logged redirects to sign in' do
       patch(dashboard_school_path(@school.to_param),
@@ -88,7 +88,7 @@ module Dashboard
       assert_redirected_to root_path
     end
 
-    test 'PATCH update as SchoolManager update school & redirect to class rooms' do
+    test 'PATCH update as SchoolManagement update school & redirect to class rooms' do
       sign_in(create(:school_manager, school: @school))
       weeks_ids = [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
       assert_difference('SchoolInternshipWeek.count', weeks_ids.size) do
