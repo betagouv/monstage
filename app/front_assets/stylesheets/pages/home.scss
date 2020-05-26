@@ -24,17 +24,6 @@
     border-right: 4px solid #DA000C;
   }
 }
-.smaller-line-height{
-  line-height: 1rem; // to be fixed
-  font-size: 80%;
-  font-weight: 400;
-}
-@include media-breakpoint-up(md){
-  #css-liseret{
-    background: transparent url('../images/homepage/liseret.svg') center right no-repeat;
-    background-size: contain;
-  }
-}
 @include media-breakpoint-down(sm) {
 
   .flex-md-reverse-column{
