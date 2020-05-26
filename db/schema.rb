@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_20_140800) do
+ActiveRecord::Schema.define(version: 2020_05_26_133956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -236,48 +236,8 @@ ActiveRecord::Schema.define(version: 2020_05_20_140800) do
     t.string "uuid", default: "", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.string "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
-    t.string "phone"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "operator_name"
-    t.string "type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "school_id"
-    t.date "birth_date"
-    t.string "gender"
-    t.bigint "class_room_id"
-    t.bigint "operator_id"
-    t.string "api_token"
-    t.text "handicap"
-    t.boolean "custom_track", default: false, null: false
-    t.boolean "accept_terms", default: false, null: false
-    t.datetime "discarded_at"
-    t.string "department_name"
-    t.bigint "missing_school_weeks_id"
-    t.index ["api_token"], name: "index_users_on_api_token"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["discarded_at"], name: "index_users_on_discarded_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["missing_school_weeks_id"], name: "index_users_on_missing_school_weeks_id"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["school_id"], name: "index_users_on_school_id"
-  end
+# Could not dump table "users" because of following StandardError
+#   Unknown type 'user_role' for column 'role'
 
   create_table "weeks", force: :cascade do |t|
     t.integer "number"

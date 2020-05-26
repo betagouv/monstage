@@ -34,23 +34,30 @@ FactoryBot.define do
       type { 'Users::God' }
     end
 
-    factory :school_manager, class: 'Users::SchoolManager', parent: :user do
+    factory :school_manager, class: 'Users::SchoolManagement', parent: :user do
+      type { 'Users::SchoolManagement' }
+      role { 'school_manager' }
+
       sequence(:email) { |n| "jean#{n}-claude@ac-dus.fr" }
-      type { 'Users::SchoolManager' }
     end
 
-    factory :main_teacher, class: 'Users::MainTeacher', parent: :user do
-      type { 'Users::MainTeacher' }
+    factory :main_teacher, class: 'Users::SchoolManagement', parent: :user do
+      type { 'Users::SchoolManagement' }
+      role { 'main_teacher' }
+
       first_name { 'Madame' }
       last_name { 'Labutte' }
     end
 
-    factory :teacher, class: 'Users::Teacher', parent: :user do
-      type { 'Users::Teacher' }
+    factory :teacher, class: 'Users::SchoolManagement', parent: :user do
+      type { 'Users::SchoolManagement' }
+      role { 'teacher' }
     end
 
-    factory :other, class: 'Users::Other', parent: :user do
-      type { 'Users::Other' }
+    factory :other, class: 'Users::SchoolManagement', parent: :user do
+      type { 'Users::SchoolManagement' }
+      role { 'other' }
+
     end
 
     factory :statistician, class: 'Users::Statistician', parent: :user do
