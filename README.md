@@ -93,7 +93,7 @@ foreman start -f Procfile.dev
 
 ```rails test```
 
-### system / e2e, runs within a browswer (not run on CI, but with pre-commit hook)
+### system / e2e, runs within a browswer
 
 * run in background: `rails test:system`
 * run with browser `CHROME=1 rails test:system`
