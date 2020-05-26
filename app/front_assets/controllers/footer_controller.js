@@ -5,7 +5,7 @@ export default class extends Controller {
   static targets = ['placeholder', 'fixedContent'];
 
   close() {
-    hideElement($(this.element));
+    hideElement($(this.fixedContentTarget));
   }
 
   resize() {
