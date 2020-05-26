@@ -21,7 +21,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # fill in application form
       select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
-      fill_in 'internship_application_motivation', with: 'Je suis au taquet'
+      find('#internship_application_motivation', visible: false).set('Je suis au taquet')
 
       assert_changes lambda {
                        student.internship_applications
