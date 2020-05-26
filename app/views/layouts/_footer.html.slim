@@ -38,6 +38,7 @@
 .bg-light-blue.fixed-footer data-target="footer.fixedContent"
   - if show_restricted_to_anct?
     .container
+
       .row.align-items-top.no-gutters.py-3
         .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
         .col-md-8.col-12
@@ -51,3 +52,5 @@
               | Mon stage en ligne
             = " de l'ONISEP"
 
+      button type="button" class="close close-top-right" id="test-close-covid-notice" data-dismiss="modal" aria-label="Close" data-action="click->footer#close"
+        span aria-hidden="true" &times;
