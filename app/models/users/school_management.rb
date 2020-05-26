@@ -14,7 +14,7 @@ module Users
 
     belongs_to :class_room, optional: true
     has_many :students, through: :class_room
-    belongs_to :school, optional: true
+    belongs_to :school
 
     def after_sign_in_path
       return url_helpers.account_path if school.blank? || school.weeks.empty?
