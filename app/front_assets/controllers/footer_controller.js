@@ -6,6 +6,7 @@ export default class extends Controller {
 
   close() {
     hideElement($(this.fixedContentTarget));
+    this.resize();
   }
 
   resize() {

@@ -8,15 +8,9 @@ import './onboarding/confirm-mobile.svg';
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 
-import './homepage/liseret.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';
-
-import './homepage/bp/mouchoir-a-usage-unique.svg';
-import './homepage/bp/se-laver-les-mains.svg';
-import './homepage/bp/se-saluer-a-distance.svg';
-import './homepage/bp/tousser-dans-son-coude.svg';
 
 import './homepage/alternatives/telemaque.jpg';
 import './homepage/alternatives/jobirl-tutorat.jpg';

@@ -1,54 +1,16 @@
-.bg-covid-19-notice.alert.p-0.mb-0.rounded-0 role="alert"
-  .container.text-white
-    .row.align-items-center.no-gutters.py-3.relative
-      .col-md-3#css-liseret
-        p.text-center.text-md-right.p-0.py-md-3.pr-md-5.m-0.font-weight-bold
-          = "Face au Covid-19, des gestes simples à adopter."
-
-      .offset-sm-2.col-sm-7.offset-md-0.col-md-7.py-3.py-md-0.text-center
-        .row.no-gutters
-          .col
-            = image_tag asset_pack_path('media/images/homepage/bp/mouchoir-a-usage-unique.svg'), alt: "Illustration mouchoir a usage unique", height: 55, width: 55, class: 'mb-1'
-            br
-            .smaller-line-height.d-none.d-md-inline-block
-              | Se laver très régulièrement les mains
-          .col
-            = image_tag asset_pack_path('media/images/homepage/bp/se-laver-les-mains.svg'), alt: "Illustration se laver les mains", height: 55, width: 55, class: 'mb-1'
-            br
-            .smaller-line-height.d-none.d-md-inline-block
-              | Tousser ou éternuer dans son coude
-          .col
-            = image_tag asset_pack_path('media/images/homepage/bp/se-saluer-a-distance.svg'), alt: "Illustration se saluer a distance", height: 55, width: 55, class: 'mb-1'
-            br
-            .smaller-line-height.d-none.d-md-inline-block
-              | Utiliser des mouchoirs à usage unique
-          .col
-            = image_tag asset_pack_path('media/images/homepage/bp/tousser-dans-son-coude.svg'), alt: "Illustration tousser dans son coude", height: 55, width: 55, class: 'mb-1'
-            br
-            .small.smaller-line-height.d-none.d-md-inline-block
-              | Saluer sans se serrer la main, éviter les embrassades
-
-      .col-md-2.text-center
-        p.p-0.m-0
-          = link_to "https://www.gouvernement.fr/info-coronavirus ", class: 'btn btn-outline-light' do
-            | En savoir plus
-            | &nbsp;
-            i.fas.fa-chevron-right
-
-      button.text-white.close type="button" data-dismiss="alert" aria-label="Close"
-        | &times;
-
 .bg-cover-image-homepage
   .container
     .row.py-3.py-sm-5
 
-    .row.no-gutters
-      .col-12.col-md-7
-        h1.text-white-sm.text-center.text-sm-left   #RestezChezVous
-        p.big-tagline.font-weight-light.mb-sm-3.text-center.text-sm-left.text-white-sm La plateforme monstagedetroisieme.fr vous accompagne dans cette période exceptionnelle de confinement.
-        p.big-tagline.font-weight-light.mb-sm-3.text-center.text-sm-left.text-white-sm
-          | Sur cette page, vous retrouverez les initiatives de nos associations partenaires pour continuer à vous accompagner dans votre projet professionnel et votre orientation.
-
+    .row.no-gutters.py-5
+      .col-12
+        h1.text-white-sm.text-center.mb-3
+          | Candidater pour vos
+          br
+          | offres de stages préférés.
+        = react_component("SearchInternshipOffer",
+                              { url: internship_offers_path },
+                              { class: 'col-12' })
     .row.d-none.d-sm-flex.pt-3.pt-sm-5
       .col-12.pt-5
         p.scroller.text-center
@@ -63,7 +25,7 @@
     .row
       .col-12
 
-        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous, tout de suite.
+        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous accompagner avant, pendant, et apres votre stage/cursus?
 
     .row.pb-5.flex-md-reverse-column
       .col-12.col-md-6

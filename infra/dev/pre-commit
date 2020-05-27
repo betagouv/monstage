@@ -9,10 +9,4 @@ if [ $? -ne 0 ]; then
   exit 1;
 fi
 
-rails test:system -- --fail-fast
-if [ $? -ne 0 ]; then
-  echo "System test failed!"
-  exit 1;
-fi;
-
 exit 0
