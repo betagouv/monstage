@@ -17,7 +17,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
-
+      select "Autre fonction", from: 'user_role'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email

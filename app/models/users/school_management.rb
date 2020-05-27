@@ -4,13 +4,6 @@ module Users
   class SchoolManagement < User
     include UserAdmin
 
-    enum role: {
-      school_manager: 'school_manager',
-      teacher: 'teacher',
-      main_teacher: 'main_teacher',
-      other: 'other'
-    }
-
     validates :first_name,
               :last_name,
               :role,

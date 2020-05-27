@@ -3,10 +3,18 @@
 class User < ApplicationRecord
   include Discard::Model
   include UserAdmin
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
   include DelayedDeviseEmailSender
+
+  enum role: {
+    school_manager: 'school_manager',
+    teacher: 'teacher',
+    main_teacher: 'main_teacher',
+    other: 'other'
+  }
 
   validates :first_name, :last_name,
             presence: true

@@ -19,6 +19,7 @@ class SignUpTeacherTeachersTest < ApplicationSystemTestCase
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
+      select "Professeur", from: 'user_role'
       select(class_room_2.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
