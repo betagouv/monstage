@@ -4,7 +4,16 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 'emailHint', 'emailInput'];
+  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'label'];
+
+  updateLabel(event) {
+    debugger
+    $(this.labelTarget).text(
+      event.target.value == "school_manager" ?
+      "Adresse électronique académique" :
+      'Adresse électronique (e-mail)'
+    )
+  }
 
   toggleHandicap() {
     toggleElement($(this.handicapGroupTarget));

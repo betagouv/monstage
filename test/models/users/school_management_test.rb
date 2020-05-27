@@ -23,7 +23,6 @@ module Users
       assert school_manager.invalid?
       assert_not_empty school_manager.errors[:first_name]
       assert_not_empty school_manager.errors[:last_name]
-      assert_not_empty school_manager.errors[:school]
       assert_not_empty school_manager.errors[:email]
       assert_not_empty school_manager.errors[:accept_terms]
       assert_not_empty school_manager.errors[:password]
@@ -55,13 +54,13 @@ module Users
 
     test 'i18n' do
       assert_equal("Chef d'établissement",
-                   Users::SchoolManagement.human_attribute_name_for(:school_manager))
+                   Users::SchoolManagement.new(role: :school_manager).human_attribute_name_for)
       assert_equal("Professeur",
-                   Users::SchoolManagement.human_attribute_name_for(:teacher))
+                   Users::SchoolManagement.new(role: :teacher).human_attribute_name_for)
       assert_equal('Autres fonctions',
-                   Users::SchoolManagement.human_attribute_name_for(:other))
+                   Users::SchoolManagement.new(role: :other).human_attribute_name_for)
       assert_equal('Professeur principal',
-                   Users::SchoolManagement.human_attribute_name_for(:main_teacher))
+                   Users::SchoolManagement.new(role: :main_teacher).human_attribute_name_for)
     end
 
     test 'school_managemennt.after_sign_in_path with school but no weeks redirects to account_path' do

@@ -91,6 +91,7 @@ module Users
           operator_id
           handicap
           accept_terms
+          role
         ]
       )
     end

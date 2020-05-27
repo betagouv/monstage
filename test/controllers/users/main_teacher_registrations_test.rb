@@ -31,7 +31,7 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'POST #create with all params create SchoolManagement' do
+  test 'POST #create with all params create MainTeacher' do
     school = create(:school)
     school_manager = create(:school_manager, school: school)
     class_room = create(:class_room, name: '3e A', school: school)
@@ -44,7 +44,8 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Fourcade',
                                                     school_id: school.id,
                                                     class_room_id: class_room.id,
-                                                    accept_terms: '1' } })
+                                                    accept_terms: '1',
+                                                    role: :main_teacher } })
       assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.edu.fr')
     end
   end

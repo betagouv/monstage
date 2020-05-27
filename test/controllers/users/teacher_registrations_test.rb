@@ -45,7 +45,8 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Fourcade',
                                                     school_id: school.id,
                                                     class_room_id: class_room.id,
-                                                    accept_terms: '1' } })
+                                                    accept_terms: '1',
+                                                    role: :teacher } })
       assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.fr')
     end
   end

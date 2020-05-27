@@ -45,6 +45,7 @@ class Ability
   end
 
   def school_management_abilities(user:)
+    can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
     end

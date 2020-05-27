@@ -37,6 +37,15 @@
       <% end %>
       <%= f.text_field :first_name, class: 'form-control', required: true %>
     </div>
+    <% if can?(:choose_role, resource) %>
+    <div class="form-group">
+      <%= f.label :role do %>
+        Fonction
+        <%= f.rg2a_required_content_tag %>
+      <% end %>
+      <%= f.select :role, options_from_collection_for_select(Users::SchoolManagement.i18n_roles, :value, :text), { prompt: '-- Veuillez choisir une fonction --'}, { class: 'custom-select', required: true, data: {action: 'change->signup#updateLabel'} } %>
+    </div>
+    <% end %>
 
     <% if can?(:choose_gender_and_birthday, resource) %>
       <div class="form-group" data-controller="a11y-date-input">
@@ -74,9 +83,9 @@
 
     <div class="form-group">
       <%= f.label :email do %>
-        <%= resource.type == 'Users::SchoolManager' ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)' %>
-        <%= f.rg2a_required_content_tag %>
-        <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+          <span data-target="signup.label">Adresse électronique (e-mail)</span>
+          <%= f.rg2a_required_content_tag %>
+          <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
       <% end %>
       <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
 

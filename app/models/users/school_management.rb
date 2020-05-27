@@ -13,6 +13,7 @@ module Users
 
     validates :first_name,
               :last_name,
+              :role,
               presence: true
 
     validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/, if: :school_manager?
@@ -27,6 +28,12 @@ module Users
 
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?
+
+    def self.i18n_roles
+      rs= roles.map do |ruby_role, pg_role|
+        OpenStruct.new(value: ruby_role, text: I18n.t("enum.roles.#{ruby_role}"))
+      end
+    end
 
     def custom_dashboard_path
       return url_helpers.edit_dashboard_school_path(school) if school.present? && school.weeks.size.zero?

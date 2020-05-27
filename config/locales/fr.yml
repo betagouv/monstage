@@ -297,3 +297,9 @@ fr:
       next: Page suivante
       prev: Page précédente
 
+  enum:
+    roles:
+      school_manager: "Chef d'établissement"
+      teacher: "Professeur"
+      main_teacher: "Professeur principal"
+      other: "Autre fonction"
