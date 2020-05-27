@@ -20,7 +20,7 @@ module Presenters
     end
 
     def role_name
-      user.model_name.human
+      user.human_attribute_name_for
     end
 
     def default_internship_offers_path

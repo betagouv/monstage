@@ -15,28 +15,6 @@ class UserTest < ActiveSupport::TestCase
     refute user.errors.keys.include?(:accept_terms)
   end
 
-  test 'School manager creation' do
-    school_manager = Users::SchoolManagement.create(email: 'chef@etablissement.com',
-                                                 password: 'tototo',
-                                                 password_confirmation: 'tototo',
-                                                 first_name: 'Chef',
-                                                 last_name: 'Etablissement',
-                                                 school: build(:school),
-                                                 accept_terms: true)
-
-    assert school_manager.invalid?
-    assert_not_empty school_manager.errors[:email]
-
-    school_manager = Users::SchoolManagement.create(email: 'chef@ac-etablissement.com',
-                                                 password: 'tototo',
-                                                 password_confirmation: 'tototo',
-                                                 first_name: 'Chef',
-                                                 last_name: 'Etablissement',
-                                                 school: build(:school),
-                                                 accept_terms: true)
-    assert school_manager.valid?
-  end
-
   test 'RGPD student' do
     school = create(:school)
     class_room = create(:class_room, school: school)

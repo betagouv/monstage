@@ -28,21 +28,6 @@ module Users
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?
 
-    def self.human_attribute_name_for(role)
-      case role.to_sym
-      when :school_manager
-         "Chef d'établissement"
-      when :teacher
-         "Professeur"
-      when :other
-         'Autres fonctions'
-      when :main_teacher
-         'Professeur principal'
-       else
-        'Utilisateur'
-      end
-    end
-
     def custom_dashboard_path
       return url_helpers.edit_dashboard_school_path(school) if school.present? && school.weeks.size.zero?
       return url_helpers.dashboard_school_class_room_path(school, class_room) if school.present? && class_room.present?
