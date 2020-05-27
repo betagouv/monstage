@@ -59,7 +59,7 @@ class Ability
         school.id == user.school_id
       end
       can [:delete], User do |managed_user_from_school|
-        managed_user_from_school.school_id == user.school_id
+        managed_user_from_school.school_id == user.school_id && user.school_manager?
       end
     end
     can :submit_internship_application, InternshipApplication do |internship_application|

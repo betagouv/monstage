@@ -5,7 +5,11 @@ class ClassRoom < ApplicationRecord
   has_many :students, class_name: 'Users::Student',
                       dependent: :nullify
   has_many :school_managements, class_name: 'Users::SchoolManagement',
-                                dependent: :nullify
+                                dependent: :nullify do
+    def main_teachers
+      where(role: :main_teacher)
+    end
+  end
 
   def to_s
     name

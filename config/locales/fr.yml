@@ -247,25 +247,12 @@ fr:
               blank: Veuillez saisir un nom de famille
             reset_password_token:
               invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
-        users/main_teacher:
+        users/user_management:
           attributes:
             school_manager:
               blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux."
-
-        users/other:
-          attributes:
-            school_manager:
-              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les membres de l'équipe éducative."
-
-        users/school_manager:
-          attributes:
             email:
               invalid: "Veuillez saisir une adresse électronique (e-mail) académique"
-
-        users/teacher:
-          attributes:
-            school_manager:
-              blank: "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs."
 
         users/student:
           attributes:

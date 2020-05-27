@@ -14,6 +14,7 @@ module Dashboard
         user_presenter = Presenters::User.new(user)
         authorize! :delete, user
         user.update!(school_id: nil)
+
         redirect_to dashboard_school_users_path(@school),
                     flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été supprimé de votre collège" }
       rescue ActiveRecord::RecordInvalid
