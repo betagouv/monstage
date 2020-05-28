@@ -53,7 +53,6 @@ class School < ApplicationRecord
     "#{name} - #{city} - #{zipcode}"
   end
 
-  # perf?
   def has_staff?
     users.or(users.where(role: :teacher))
          .or(users.where(role: :main_teacher))
