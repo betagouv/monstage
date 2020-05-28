@@ -43,7 +43,7 @@
         Fonction
         <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.select :role, options_from_collection_for_select(Users::SchoolManagement.i18n_roles, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --'}, { class: 'custom-select', required: true, data: {action: 'change->signup#updateLabel'} } %>
+      <%= f.select :role, options_from_collection_for_select(Users::SchoolManagement.i18n_roles, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --'}, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
     </div>
     <% end %>
 

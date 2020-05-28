@@ -6,8 +6,8 @@ import { toggleElement, showElement, hideElement } from '../utils/dom';
 export default class extends Controller {
   static targets = ['handicapGroup', 'emailHint', 'emailInput', 'label'];
 
-  updateLabel(event) {
-    debugger
+  // on change email address, ensure user is shown academia address requirement when neeeded
+  refreshEmailFieldLabel(event) {
     $(this.labelTarget).text(
       event.target.value == "school_manager" ?
       "Adresse électronique académique" :
@@ -15,10 +15,12 @@ export default class extends Controller {
     )
   }
 
+  // show/hide handicap input if checkbox is checked
   toggleHandicap() {
     toggleElement($(this.handicapGroupTarget));
   }
 
+  // check email address formatting on email input blur (14yo student, not always good with email)
   onBlurEmailInput(event) {
     const email = event.target.value;
     if (email.length > 2) {
@@ -36,6 +38,7 @@ export default class extends Controller {
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
 
+    // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
     this.channelParams = { channel: 'MailValidationChannel', uid: Math.random().toString(36) };
     this.wssClient = ActionCable.createConsumer('/cable');
     this.validator = this.wssClient.subscriptions.create(this.channelParams, {
