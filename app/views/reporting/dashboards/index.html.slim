@@ -40,7 +40,7 @@
 
           tbody
             - schools_without_manager.each do |school_without_manager|
-              tr
+              tr id="test-school-without-manager-#{school_without_manager.id}"
                 td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_without_manager }
                 td.align-middle= Presenters::SchoolKind.new(kind: school_without_manager.kind).to_s
 
@@ -60,7 +60,7 @@
               th Semaines de stage
           tbody
             - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
-              tr
+              tr id="test-school-with-manager-#{school_with_weeks_and_internship.id}"
                 td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
                 td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
                 td.align-middle= school_with_weeks_and_internship.total_student_count

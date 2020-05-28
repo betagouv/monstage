@@ -11,6 +11,8 @@ module Reporting
     PAGE_SIZE = 100
 
     has_many :users, foreign_type: 'type'
+    has_many :students,       class_name: 'Users::Student'
+
     has_many :school_managements, dependent: :nullify,
                                   class_name: 'Users::SchoolManagement'
 
