@@ -55,7 +55,11 @@ class School < ApplicationRecord
 
   # perf?
   def has_staff?
-    main_teachers.count().positive? || teachers.count().positive? || others.count().positive?
+    users.or(users.where(role: :teacher))
+         .or(users.where(role: :main_teacher))
+         .or(users.where(role: :other))
+         .count
+         .positive?
   end
 
   def to_s

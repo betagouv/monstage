@@ -38,4 +38,27 @@ class SchoolTest < ActiveSupport::TestCase
       school.destroy
     end
   end
+
+  test 'has_staff' do
+    school = create(:school, :with_school_manager)
+    refute school.has_staff?
+
+    teacher = create(:teacher, school: school)
+    assert school.has_staff?
+    teacher.destroy!
+    school.reload
+    refute school.has_staff?
+
+    main_teacher = create(:main_teacher, school: school)
+    assert school.has_staff?
+    main_teacher.destroy!
+    school.reload
+    refute school.has_staff?
+
+    other = create(:other, school: school)
+    assert school.has_staff?
+    other.destroy!
+    school.reload
+    refute school.has_staff?
+  end
 end
