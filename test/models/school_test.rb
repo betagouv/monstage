@@ -39,26 +39,35 @@ class SchoolTest < ActiveSupport::TestCase
     end
   end
 
-  test 'has_staff' do
+  test 'has_staff with only manager' do
     school = create(:school, :with_school_manager)
     refute school.has_staff?
+  end
 
+  test 'has_staff with only teacher' do
+    school = create(:school, :with_school_manager)
     teacher = create(:teacher, school: school)
     assert school.has_staff?
-    teacher.destroy!
-    school.reload
     refute school.has_staff?
+  end
 
+  test 'has_staff with only main_teacher' do
+    school = create(:school, :with_school_manager)
     main_teacher = create(:main_teacher, school: school)
     assert school.has_staff?
-    main_teacher.destroy!
-    school.reload
-    refute school.has_staff?
+  end
 
+  test 'has_staff with only other' do
+    school = create(:school, :with_school_manager)
     other = create(:other, school: school)
     assert school.has_staff?
-    other.destroy!
-    school.reload
-    refute school.has_staff?
+  end
+
+  test 'has_staff with all kind of staff' do
+    school = create(:school, :with_school_manager)
+    main_teacher = create(:main_teacher, school: school)
+    other = create(:other, school: school)
+    teacher = create(:teacher, school: school)
+    assert school.has_staff?
   end
 end

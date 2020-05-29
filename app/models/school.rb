@@ -54,9 +54,7 @@ class School < ApplicationRecord
   end
 
   def has_staff?
-    users.or(users.where(role: :teacher))
-         .or(users.where(role: :main_teacher))
-         .or(users.where(role: :other))
+    users.where("role = 'teacher' or role = 'main_teacher' or role = 'other'")
          .count
          .positive?
   end
