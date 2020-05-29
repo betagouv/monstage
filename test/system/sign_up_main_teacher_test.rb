@@ -16,7 +16,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create main teacher with existing email
-    assert_difference('Users::SchoolManagement.count', 0) do
+    assert_difference('Users::SchoolManagement.main_teacher.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
@@ -36,7 +36,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
                  're-select of city after failure fails'
 
     # creates main teacher
-    assert_difference('Users::SchoolManagement.count', 1) do
+    assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint martin')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click

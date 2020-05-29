@@ -13,7 +13,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create other with existing email
-    assert_difference('Users::SchoolManagement.count', 0) do
+    assert_difference('Users::SchoolManagement.other.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
@@ -28,7 +28,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     end
 
     # create other
-    assert_difference('Users::SchoolManagement.count', 1) do
+    assert_difference('Users::SchoolManagement.other.count', 1) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       # find('button', text: school_1.city).click
       all('.list-group .list-group-item-action').first.click

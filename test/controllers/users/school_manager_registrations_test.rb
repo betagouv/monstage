@@ -13,7 +13,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
 
   test 'POST create School Manager responds with success' do
     school = create(:school)
-    assert_difference('Users::SchoolManagement.count', 1) do
+    assert_difference('Users::SchoolManagement.school_manager.count', 1) do
       post user_registration_path(params: { user: { email: 'chefetb@ac-edu.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',

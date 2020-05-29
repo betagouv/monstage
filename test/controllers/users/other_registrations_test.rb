@@ -19,7 +19,7 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST #create with missing params fails creation' do
-    assert_difference('Users::SchoolManagement.count', 0) do
+    assert_difference('Users::SchoolManagement.other.count', 0) do
       post user_registration_path(params: { user: { email: 'cpe@edu.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
@@ -35,7 +35,7 @@ class OtherRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST #create with all params create Other' do
     school = create(:school)
     school_manager = create(:school_manager, school: school)
-    assert_difference('Users::SchoolManagement.count', 1) do
+    assert_difference('Users::SchoolManagement.other.count', 1) do
       post user_registration_path(params: { user: { email: 'cpe@edu.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',

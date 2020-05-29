@@ -11,7 +11,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create school_manager with existing email
-    assert_difference('Users::SchoolManagement.count', 0) do
+    assert_difference('Users::SchoolManagement.school_manager.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
@@ -26,7 +26,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     end
 
     # create school_manager
-    assert_difference('Users::SchoolManagement.count', 1) do
+    assert_difference('Users::SchoolManagement.school_manager.count', 1) do
       fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-mail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
