@@ -48,7 +48,6 @@ class SchoolTest < ActiveSupport::TestCase
     school = create(:school, :with_school_manager)
     teacher = create(:teacher, school: school)
     assert school.has_staff?
-    refute school.has_staff?
   end
 
   test 'has_staff with only main_teacher' do
