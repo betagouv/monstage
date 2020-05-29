@@ -13,7 +13,10 @@ class InternshipApplication < ApplicationRecord
   has_one :week, through: :internship_offer_week
 
   validates :motivation,
-            :internship_offer_week,
+            presence: true,
+            unless: :old_format?
+
+  validates :internship_offer_week,
             presence: true,
             unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
@@ -187,5 +190,10 @@ class InternshipApplication < ApplicationRecord
 
   def anonymize
     update(motivation: 'NA')
+  end
+
+  def old_format?
+    return true if created_at < Date.parse("01/09/2020")
+    false
   end
 end
