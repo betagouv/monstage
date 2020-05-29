@@ -64,7 +64,7 @@ module Dashboard
     end
 
     #
-    # Update as Student, SchoolManagement & God
+    # Update as Visitor
     #
     test 'PATCH update not logged redirects to sign in' do
       patch(dashboard_school_path(@school.to_param),
@@ -84,7 +84,6 @@ module Dashboard
                 weeks_ids: [weeks(:week_2019_1).id, weeks(:week_2019_2).id]
               }
             })
-
       assert_redirected_to root_path
     end
 
