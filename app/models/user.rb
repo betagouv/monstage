@@ -32,21 +32,6 @@ class User < ApplicationRecord
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
 
-  def human_attribute_name_for
-    case role.to_sym
-    when :school_manager
-      "Chef d'établissement"
-    when :teacher
-      "Professeur"
-    when :other
-      'Autres fonctions'
-    when :main_teacher
-      'Professeur principal'
-    else
-      'Utilisateur'
-    end
-  end
-
   def self.drh
     Users::Employer.where(email: 'drh@betagouv.fr').first
   end

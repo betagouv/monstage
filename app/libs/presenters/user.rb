@@ -20,7 +20,7 @@ module Presenters
     end
 
     def role_name
-      user.human_attribute_name_for
+      UserManagemetRole.new(user: user).role
     end
 
     def default_internship_offers_path

@@ -22,6 +22,7 @@ module Dashboard
       test 'PATCH class_rooms#update with other fails' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
+
         [
           create(:student, school: school),
         ].each do |role|

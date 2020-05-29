@@ -52,17 +52,6 @@ module Users
       assert_includes school_manager.main_teachers.entries, main_teacher
     end
 
-    test 'i18n' do
-      assert_equal("Chef d'établissement",
-                   Users::SchoolManagement.new(role: :school_manager).human_attribute_name_for)
-      assert_equal("Professeur",
-                   Users::SchoolManagement.new(role: :teacher).human_attribute_name_for)
-      assert_equal('Autres fonctions',
-                   Users::SchoolManagement.new(role: :other).human_attribute_name_for)
-      assert_equal('Professeur principal',
-                   Users::SchoolManagement.new(role: :main_teacher).human_attribute_name_for)
-    end
-
     test 'school_managemennt.after_sign_in_path with school but no weeks redirects to account_path' do
       school_manager = create(:school_manager, school: create(:school, weeks: []))
       assert_equal(school_manager.after_sign_in_path,

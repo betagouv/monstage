@@ -83,7 +83,7 @@ module Dashboard
           create(:main_teacher, school: school),
           create(:other, school: school),
           create(:teacher, school: school)
-        ].each map do |role|
+        ].map do |role|
           sign_in(role)
           get dashboard_school_users_path(school)
           assert_response :success
