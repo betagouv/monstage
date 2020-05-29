@@ -78,12 +78,18 @@ module Dashboard
 
       test 'GET users#index as SchoolManagement contains UX guidelines when no staff' do
         school = create(:school, :with_school_manager)
-        sign_in(school.school_manager)
-
-        get dashboard_school_users_path(school)
-        assert_response :success
-        assert_select '.test-presence-of-ux-guideline-invitation',
-                      text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
+        [
+          create(:school_manager, school: school),
+          create(:main_teacher, school: school),
+          create(:other, school: school),
+          create(:teacher, school: school)
+        ].each map do |role|
+          sign_in(role)
+          get dashboard_school_users_path(school)
+          assert_response :success
+          assert_select '.test-presence-of-ux-guideline-invitation',
+                        text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
+        end
       end
 
       test 'GET users#index as SchoolManagement contains list school members' do
