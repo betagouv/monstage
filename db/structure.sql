@@ -1480,6 +1480,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: index_users_on_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_role ON public.users USING btree (role);
+
+
+--
 -- Name: index_users_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1839,6 +1846,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200520140525'),
 ('20200520140800'),
 ('20200526133419'),
-('20200526133956');
+('20200526133956'),
+('20200529045148');
 
 
