@@ -1,6 +1,5 @@
 module Presenters
   class UserManagemetRole
-
     def role
       case user.role.to_sym
       when :school_manager
