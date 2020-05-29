@@ -21,11 +21,16 @@ module Dashboard
 
       test 'GET students#index as SchoolManagement works' do
         school = create(:school, :with_school_manager)
-        main_teacher = create(:main_teacher, school: school)
-        sign_in(main_teacher)
-
-        get dashboard_school_students_path(school)
-        assert_response :success
+        [
+          create(:school_manager, school: school),
+          create(:main_teacher, school: school),
+          create(:other, school: school),
+          create(:teacher, school: school)
+        ].each do |role|
+          sign_in(role)
+          get dashboard_school_students_path(school)
+          assert_response :success
+        end
       end
 
       test 'GET students#index as SchoolManagement contains key navigations links' do
