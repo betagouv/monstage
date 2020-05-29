@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module Users
+  # involve all adults in school. each are 'roled'
+  #   school_manager (first registered, validated due to ac-xxx.fr email)
+  #   main_teacher (track and help students in one class)
+  #   teacher (any teacher can check & help students [they can choose class_room])
+  #   other (involve psychologists, teacher assistants etc...)
   class SchoolManagement < User
     include UserAdmin
 
@@ -11,10 +16,9 @@ module Users
 
     validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/, if: :school_manager?
 
+    belongs_to :school, optional: true
     belongs_to :class_room, optional: true
     has_many :students, through: :class_room
-    belongs_to :school, optional: true
-
     has_many :main_teachers, through: :school
 
     validate :only_join_managed_school, on: :create, unless: :school_manager?
