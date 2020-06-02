@@ -19,6 +19,7 @@ Things you may want to cover:
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
+* create rails master.key : `touch config/master.key`
 
 # Architecture
 
