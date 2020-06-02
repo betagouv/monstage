@@ -46,6 +46,7 @@ module InternshipApplications
       internship_offer = create(:internship_offer)
       student = create(:student)
       sign_in(student)
+
       valid_internship_application_params = { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
                                               motivation: 'Je suis trop motivé wesh',
                                               user_id: student.id }
@@ -53,14 +54,8 @@ module InternshipApplications
       assert_no_difference('InternshipApplication.count') do
         post(internship_offer_internship_applications_path(internship_offer),
              params: { internship_application: valid_internship_application_params.except(:motivation) })
+        assert_response :bad_request
       end
-      assert_response :bad_request
-
-      assert_no_difference('InternshipApplication.count') do
-        post(internship_offer_internship_applications_path(internship_offer),
-             params: { internship_application: valid_internship_application_params.except(:internship_offer_week_id) })
-      end
-      assert_response :bad_request
     end
   end
 end

@@ -14,7 +14,7 @@ class InternshipApplication < ApplicationRecord
 
   validates :motivation,
             presence: true,
-            unless: :old_format?
+            if: :new_format?
 
   validates :internship_offer_week,
             presence: true,
@@ -192,8 +192,9 @@ class InternshipApplication < ApplicationRecord
     update(motivation: 'NA')
   end
 
-  def old_format?
-    return true if created_at < Date.parse("01/09/2020")
-    false
+  def new_format?
+    return true if new_record?
+    return false if created_at < Date.parse("01/09/2020")
+    true
   end
 end
