@@ -10,13 +10,16 @@ class School < ApplicationRecord
   has_many :students_with_missing_school_week, dependent: :nullify,
                                                class_name: 'Users::Student'
 
-  has_many :main_teachers, dependent: :nullify,
-                           class_name: 'Users::MainTeacher'
-  has_many :teachers, dependent: :nullify,
-                      class_name: 'Users::Teacher'
-  has_many :others, dependent: :nullify,
-                    class_name: 'Users::Other'
-  has_one :school_manager, class_name: 'Users::SchoolManager'
+  has_many :school_managements, dependent: :nullify,
+                                class_name: 'Users::SchoolManagement'
+  has_many :main_teachers, -> { where(role: :main_teacher) },
+                                class_name: 'Users::SchoolManagement'
+  has_many :teachers, -> { where(role: :teacher) },
+                                class_name: 'Users::SchoolManagement'
+  has_many :others, -> { where(role: :other) },
+                                class_name: 'Users::SchoolManagement'
+  has_one :school_manager, -> { where(role: :school_manager) },
+                                class_name: 'Users::SchoolManagement'
 
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
@@ -28,6 +31,7 @@ class School < ApplicationRecord
   validates :zipcode, zipcode: { country_code: :fr }
 
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze
+
 
   scope :with_manager, lambda {
                          left_joins(:school_manager)
@@ -50,7 +54,9 @@ class School < ApplicationRecord
   end
 
   def has_staff?
-    main_teachers.present? || teachers.present? || others.present?
+    users.where("role = 'teacher' or role = 'main_teacher' or role = 'other'")
+         .count
+         .positive?
   end
 
   def to_s

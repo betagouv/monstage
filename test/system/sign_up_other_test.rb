@@ -10,14 +10,14 @@ class SignUpOthersTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
     student = create(:student, email: existing_email)
     # go to signup as other
-    visit new_user_registration_path(as: 'Other')
+    visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create other with existing email
-    assert_difference('Users::Other.count', 0) do
+    assert_difference('Users::SchoolManagement.other.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
-
+      select "Autre fonction", from: 'user_role'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
@@ -28,7 +28,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     end
 
     # create other
-    assert_difference('Users::Other.count', 1) do
+    assert_difference('Users::SchoolManagement.other.count', 1) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       # find('button', text: school_1.city).click
       all('.list-group .list-group-item-action').first.click
@@ -40,7 +40,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
     end
 
     # check created other has valid info
-    other = Users::Other.where(email: 'another@email.com').first
+    other = Users::SchoolManagement.where(email: 'another@email.com').first
     assert_equal school_1, other.school
     assert_equal 'Martin', other.first_name
     assert_equal 'Fourcade', other.last_name

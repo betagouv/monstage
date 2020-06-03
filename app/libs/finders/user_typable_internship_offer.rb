@@ -4,19 +4,13 @@ module Finders
   # build base query to request internship offers per user.type
   class UserTypableInternshipOffer
     MappingUserTypeWithScope = {
-      # same query for all kind of school memnbers
-      Users::MainTeacher.name => :school_members_query,
-      Users::Student.name => :school_members_query,
-      Users::Other.name => :school_members_query,
-      Users::SchoolManager.name => :school_members_query,
-      Users::Student.name => :school_members_query,
-      Users::Teacher.name => :school_members_query,
-      # custom queries for other kind of users
-      Users::Employer.name => :employer_query,
-      Users::Operator.name => :operator_query,
-      Users::Statistician.name => :statistician_query,
-      Users::Visitor.name => :visitor_query,
-      Users::God.name => :god_query
+      Users::SchoolManagement.name => :school_members_query,
+      Users::Student.name =>          :school_members_query,
+      Users::Employer.name =>         :employer_query,
+      Users::Operator.name =>         :operator_query,
+      Users::Statistician.name =>     :statistician_query,
+      Users::Visitor.name =>          :visitor_query,
+      Users::God.name =>              :god_query
     }.freeze
 
     def base_query

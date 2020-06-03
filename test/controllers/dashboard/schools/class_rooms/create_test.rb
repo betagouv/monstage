@@ -8,20 +8,28 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # Create, SchoolManager
+      # Create, SchoolManagement
       #
-      test 'POST class_rooms#create as SchoolManager responds with success' do
+      test 'POST class_rooms#create as SchoolManagement responds with success' do
         school = create(:school, :with_school_manager)
-        sign_in(school.school_manager)
-        class_room_name = SecureRandom.hex
-        assert_difference 'ClassRoom.count' do
-          post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
-          assert_redirected_to dashboard_school_class_rooms_path(school)
+
+        [
+          school.school_manager,
+          create(:main_teacher, school: school),
+          create(:other, school: school),
+          create(:teacher, school: school)
+        ].each do |role|
+          sign_in(role)
+          class_room_name = SecureRandom.hex
+          assert_difference 'ClassRoom.count' do
+            post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: class_room_name } }
+            assert_redirected_to dashboard_school_class_rooms_path(school)
+          end
+          assert_equal 1, ClassRoom.where(name: class_room_name).count
         end
-        assert_equal 1, ClassRoom.where(name: class_room_name).count
       end
 
-      test 'POST class_rooms#create with other roles fail' do
+      test 'POST class_rooms#create with student roles fail' do
         school = create(:school, :with_school_manager)
         [
           create(:student, school: school),

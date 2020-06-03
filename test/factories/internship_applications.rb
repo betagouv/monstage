@@ -33,6 +33,13 @@ FactoryBot.define do
     rejected_at { 2.days.ago }
   end
 
+  trait :canceled do
+    aasm_state { :canceled }
+    submitted_at { 3.days.ago }
+    rejected_at { 2.days.ago }
+    canceled_at { 2.days.ago }
+  end
+
   trait :convention_signed do
     aasm_state { :convention_signed }
     submitted_at { 3.days.ago }

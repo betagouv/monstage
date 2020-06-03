@@ -21,7 +21,7 @@ module Dashboard
 
 
       #
-      # Index, SchoolManager, Teacher, MainTeacher, Other
+      # Index, SchoolManagement
       #
       test 'GET class_rooms#index as school school employees works' do
         school = create(:school)
@@ -36,7 +36,7 @@ module Dashboard
         end
       end
 
-      test 'GET class_rooms#index as SchoolManager shows link to manage school' do
+      test 'GET class_rooms#index as SchoolManagement shows link to manage school' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
 
@@ -49,11 +49,11 @@ module Dashboard
                       "missing link to manage school users"
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 1 },
+                      { count: 2 },
                       "missing link to manage school weeks"
       end
 
-      test 'GET class_rooms#index as SchoolManager shows UX critical alert-info' do
+      test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
 

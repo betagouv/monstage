@@ -16,4 +16,10 @@ module UsersHelper
       "Logo-united-way.jpg" => "https://uwafrance.org",
     }.sort.to_h
   end
+
+  def user_roles_to_select
+    Users::SchoolManagement.roles.map do |ruby_role, pg_role|
+      OpenStruct.new(value: ruby_role, text: I18n.t("enum.roles.#{ruby_role}"))
+    end
+  end
 end

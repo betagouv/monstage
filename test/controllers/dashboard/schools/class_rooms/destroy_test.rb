@@ -8,16 +8,23 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # Edit, SchoolManager
+      # Edit, SchoolManagement
       #
-      test 'GET class_rooms#edit as SchoolManager render form' do
+      test 'GET class_rooms#destroy as SchoolManagement render form' do
         school = create(:school, :with_school_manager)
-        class_room = create(:class_room, school: school)
 
-        sign_in(school.school_manager)
-        assert_changes -> { ClassRoom.count }, -1 do
-          delete dashboard_school_class_room_path(school.to_param, class_room.to_param)
-          assert_redirected_to dashboard_school_class_rooms_path(school)
+        [
+          school.school_manager,
+          create(:main_teacher, school: school),
+          create(:other, school: school),
+          create(:teacher, school: school)
+        ].each do |role|
+          class_room = create(:class_room, school: school)
+          sign_in(role)
+          assert_changes -> { ClassRoom.count }, -1 do
+            delete dashboard_school_class_room_path(school.to_param, class_room.to_param)
+            assert_redirected_to dashboard_school_class_rooms_path(school)
+          end
         end
       end
 

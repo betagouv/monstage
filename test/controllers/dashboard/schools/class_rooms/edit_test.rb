@@ -8,15 +8,22 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # Edit, SchoolManager
+      # Edit, SchoolManagement
       #
-      test 'GET class_rooms#edit as SchoolManager render form' do
+      test 'GET class_rooms#edit as SchoolManagement render form' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
 
-        sign_in(school.school_manager)
-        get edit_dashboard_school_class_room_path(school.to_param, class_room.to_param)
-        assert_response :success
+        [
+          school.school_manager,
+          create(:main_teacher, school: school),
+          create(:other, school: school),
+          create(:teacher, school: school)
+        ].each do |role|
+          sign_in(school.school_manager)
+          get edit_dashboard_school_class_room_path(school.to_param, class_room.to_param)
+          assert_response :success
+        end
       end
 
       test 'GET class_rooms#edit with other roles fails' do

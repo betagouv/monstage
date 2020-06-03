@@ -11,11 +11,19 @@ module Reporting
     PAGE_SIZE = 100
 
     has_many :users, foreign_type: 'type'
-
-    has_one :school_manager,  class_name: 'Users::SchoolManager'
     has_many :students,       class_name: 'Users::Student'
-    has_many :teachers,       class_name: 'Users::Teacher'
-    has_many :main_teachers, class_name: 'Users::MainTeacher'
+
+    has_many :school_managements, dependent: :nullify,
+                                  class_name: 'Users::SchoolManagement'
+
+    has_many :main_teachers, -> { where(role: :main_teacher) },
+                                class_name: 'Users::SchoolManagement'
+    has_many :teachers, -> { where(role: :teacher) },
+                                  class_name: 'Users::SchoolManagement'
+    has_many :others, -> { where(role: :other) },
+                                  class_name: 'Users::SchoolManagement'
+    has_one :school_manager, -> { where(role: :school_manager) },
+                                  class_name: 'Users::SchoolManagement'
 
     has_many :school_internship_weeks
     has_many :weeks, through: :school_internship_weeks
@@ -63,13 +71,13 @@ module Reporting
     end
 
     def school_manager?
-      users.select { |user| user.is_a?(Users::SchoolManager) }
+      users.select { |user| user.school_manager? }
            .size
            .positive?
     end
 
     def total_main_teacher_count
-      users.select { |user| user.is_a?(Users::MainTeacher) }
+      users.select { |user| user.main_teacher? }
            .size
     end
 

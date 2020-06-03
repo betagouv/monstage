@@ -45,7 +45,7 @@ module Dashboard
         assert_select 'a[href=?]', dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application, transition: :signed!)
       end
 
-      test 'GET internship_applications#index as MainTeacher works and show convention button' do
+      test 'GET internship_applications#index as SchoolManagement works and show convention button' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
@@ -67,9 +67,16 @@ module Dashboard
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
         assert_select 'a.btn.btn-primary[href=?]', Presenters::User.new(student).default_internship_offers_path
       end
+
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
-        states = %i[drafted submitted approved rejected expired convention_signed]
+        states = %i[drafted
+                    submitted
+                    approved
+                    rejected
+                    expired
+                    convention_signed
+                    canceled]
         internship_applications = states.inject({}) do |accu, state|
           accu[state] = create(:internship_application, state, student: student)
           accu

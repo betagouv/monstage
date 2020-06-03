@@ -8,13 +8,14 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin')
     create(:student, email: existing_email)
     # go to signup as school_manager
-    visit new_user_registration_path(as: 'SchoolManager')
+    visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create school_manager with existing email
-    assert_difference('Users::SchoolManager.count', 0) do
+    assert_difference('Users::SchoolManagement.school_manager.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
+      select "Chef d'établissement", from: 'user_role'
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
@@ -25,11 +26,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     end
 
     # create school_manager
-    assert_difference('Users::SchoolManager.count', 1) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').first.click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
-
+    assert_difference('Users::SchoolManagement.school_manager.count', 1) do
       fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-mail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'

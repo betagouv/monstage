@@ -51,11 +51,8 @@ RailsAdmin.config do |config|
                               InternshipOfferKeyword
                               InternshipOffers::Web
                               InternshipOffers::Api
-                              Users::Other
                               Users::Student
-                              Users::SchoolManager
-                              Users::MainTeacher
-                              Users::Teacher
+                              Users::SchoolManagement
                               Users::Statistician
                               Users::Operator
                               Users::Employer

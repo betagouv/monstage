@@ -8,9 +8,9 @@ module Dashboard
       include Devise::Test::IntegrationHelpers
 
       #
-      # New, SchoolManager
+      # New, SchoolManagement
       #
-      test 'GET class_rooms#new as SchoolManager responds with success' do
+      test 'GET class_rooms#new as SchoolManagement responds with success' do
         school = create(:school)
         school_manager = create(:school_manager, school: school)
         class_room_name = SecureRandom.hex

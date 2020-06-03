@@ -19,7 +19,7 @@ Things you may want to cover:
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
-* create rails master.key : `touch config/master.key`
+* create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
 
 # Architecture
 
@@ -80,6 +80,8 @@ Things you may want to cover:
 **start project**
 
 ```
+bundle
+yarn
 foreman start -f Procfile.dev
 ```
 
@@ -110,11 +112,17 @@ CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
 
 ## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
 
+requirements: install heroku cli `https://devcenter.heroku.com/articles/heroku-cli`
+
 * deployed automatically via github/heroku for each pull requests.
 * see your PR on github for the review app link
 * seed: important heroku review app seeding is only done at opening of PR. if you change seed, close/open PR
 
-## staging/prod, ssh requirements
+## staging/prod
+
+**requirements**
+clever cloud cli : https://www.clever-cloud.com/doc/clever-tools/getting_started/
+
 **Setup SSH public key**
 
 ```bash
@@ -125,7 +133,7 @@ touch ~/.ssh/clevercloud-monstage.pub
 chmod 644 ~/.ssh/clevercloud-monstage.pub
 ```
 
-**Setup SHS private key**
+**Setup SSH private key**
 
 ```bash
 # create the priv key in your env

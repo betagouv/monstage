@@ -2,7 +2,7 @@
 
 Raven.configure do |config|
   config.dsn = Rails.application.credentials.sentry_dns
-  config.environments = %w[staging production]
+  config.environments = %w[review staging production]
 
   # works async, if it fails, goes in queue
   config.async = lambda { |event| SentryJob.perform_later(event) }

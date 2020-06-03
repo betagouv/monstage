@@ -13,23 +13,9 @@ module W3c
       end
     end
 
-    test 'register as MainTeacher' do
-      run_request_and_cache_response(report_as: 'new_user_registration_path_MainTeacher') do
-        get new_user_registration_path(as: 'MainTeacher')
-        assert_response :success
-      end
-    end
-
-    test 'register as Other' do
-      run_request_and_cache_response(report_as: 'new_user_registration_path_Other') do
-        get new_user_registration_path(as: 'Other')
-        assert_response :success
-      end
-    end
-
-    test 'register as SchoolManager' do
-      run_request_and_cache_response(report_as: 'new_user_registration_path_SchoolManager') do
-        get new_user_registration_path(as: 'SchoolManager')
+    test 'register as SchoolManagement' do
+      run_request_and_cache_response(report_as: 'new_user_registration_path_SchoolManagement') do
+        get new_user_registration_path(as: 'SchoolManagement')
         assert_response :success
       end
     end
@@ -37,13 +23,6 @@ module W3c
     test 'register as Student' do
       run_request_and_cache_response(report_as: 'new_user_registration_path_Student') do
         get new_user_registration_path(as: 'Student')
-        assert_response :success
-      end
-    end
-
-    test 'register as Teacher' do
-      run_request_and_cache_response(report_as: 'new_user_registration_path_Teacher') do
-        get new_user_registration_path(as: 'Teacher')
         assert_response :success
       end
     end

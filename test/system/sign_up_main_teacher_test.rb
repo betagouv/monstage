@@ -13,14 +13,14 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
 
     # go to signup as main teacher
-    visit new_user_registration_path(as: 'MainTeacher')
+    visit new_user_registration_path(as: 'SchoolManagement')
 
     # fails to create main teacher with existing email
-    assert_difference('Users::MainTeacher.count', 0) do
+    assert_difference('Users::SchoolManagement.main_teacher.count', 0) do
       find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
-
+      select "Professeur principal", from: 'user_role'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
@@ -36,8 +36,8 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
                  're-select of city after failure fails'
 
     # creates main teacher
-    assert_difference('Users::MainTeacher.count', 1) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
+    assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
+      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint martin')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
@@ -48,7 +48,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
     end
 
     # check created main teacher has valid info
-    created_main_teacher = Users::MainTeacher.where(email: 'another@email.com').first
+    created_main_teacher = Users::SchoolManagement.where(email: 'another@email.com').first
     assert_equal school_1, created_main_teacher.school
     assert_equal class_room_1, created_main_teacher.class_room
     assert_equal 'Martin', created_main_teacher.first_name

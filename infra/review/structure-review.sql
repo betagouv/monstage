@@ -62,6 +62,18 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: user_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.user_role AS ENUM (
+    'school_manager',
+    'teacher',
+    'main_teacher',
+    'other'
+);
+
+
+--
 -- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -853,7 +865,8 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department_name character varying,
-    missing_school_weeks_id bigint
+    missing_school_weeks_id bigint,
+    role public.user_role
 );
 
 
@@ -1468,6 +1481,13 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: index_users_on_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_role ON public.users USING btree (role);
+
+
+--
 -- Name: index_users_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1671,7 +1691,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1825,6 +1845,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200422123045'),
 ('20200429115934'),
 ('20200520140525'),
-('20200520140800');
+('20200520140800'),
+('20200526133419'),
+('20200526133956'),
+('20200529045148');
 
 
