@@ -19,6 +19,8 @@ Things you may want to cover:
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
+* create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
+
 
 # Architecture
 
@@ -124,7 +126,7 @@ touch ~/.ssh/clevercloud-monstage.pub
 chmod 644 ~/.ssh/clevercloud-monstage.pub
 ```
 
-**Setup SHS private key**
+**Setup SSH private key**
 
 ```bash
 # create the priv key in your env
