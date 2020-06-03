@@ -67,9 +67,16 @@ module Dashboard
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
         assert_select 'a.btn.btn-primary[href=?]', Presenters::User.new(student).default_internship_offers_path
       end
+
       test 'GET internship_applications#index render internship_applications' do
         student = create(:student)
-        states = %i[drafted submitted approved rejected expired convention_signed]
+        states = %i[drafted
+                    submitted
+                    approved
+                    rejected
+                    expired
+                    convention_signed
+                    canceled]
         internship_applications = states.inject({}) do |accu, state|
           accu[state] = create(:internship_application, state, student: student)
           accu
