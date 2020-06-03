@@ -8,7 +8,9 @@ header.header-account
   .mt-3.d-flex.d-sm-block
     = link_to "Je veux déposer une offre", new_user_registration_path(as: 'Employer'), class: 'btn btn-primary'
   .mt-3.d-flex.d-sm-block
-    = link_to "Je suis chef d'établissement", new_user_registration_path(as: 'SchoolManager'), class: 'btn btn-primary'
+    = link_to "Je suis membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-primary'
+  .mt-3.d-flex.d-sm-block
+    = link_to "Je suis référent départemental", new_user_registration_path(as: 'Statistician'), class: 'btn btn-primary'
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
@@ -21,19 +23,20 @@ header.header-account
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
-        h2= "Je suis membre de l'équipe pédagogique"
+        h2= "Je veux déposer une offre"
         p
-          | Vous souhaitez que vos élèves trouvent un stage de qualité... Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte Membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-outline-primary'
+          | Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
+        .actions.d-flex.d-sm-block= link_to "Créer mon compte offreur", new_user_registration_path(as: 'Employer'), class: 'btn btn-outline-primary'
+
 
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
       .mt-3
-        h2= "Je veux déposer une offre"
+        h2= "Je suis membre de l'équipe pédagogique"
         p
-          | Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte offreur", new_user_registration_path(as: 'Employer'), class: 'btn btn-outline-primary'
+          | Vous souhaitez que vos élèves trouvent un stage de qualité... Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
+        .actions.d-flex.d-sm-block= link_to "Créer mon compte Membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-outline-primary'
 
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
