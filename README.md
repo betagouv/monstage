@@ -80,6 +80,8 @@ Things you may want to cover:
 **start project**
 
 ```
+bundle
+yarn
 foreman start -f Procfile.dev
 ```
 
@@ -110,11 +112,17 @@ CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
 
 ## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
 
+requirements: install heroku cli `https://devcenter.heroku.com/articles/heroku-cli`
+
 * deployed automatically via github/heroku for each pull requests.
 * see your PR on github for the review app link
 * seed: important heroku review app seeding is only done at opening of PR. if you change seed, close/open PR
 
-## staging/prod, ssh requirements
+## staging/prod
+
+**requirements**
+clever cloud cli : https://www.clever-cloud.com/doc/clever-tools/getting_started/
+
 **Setup SSH public key**
 
 ```bash
