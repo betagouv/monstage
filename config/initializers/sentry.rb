@@ -10,8 +10,6 @@ Raven.configure do |config|
   # record post data, helps with debug
   config.processors -= [Raven::Processor::PostData]
 
-  config.current_environment =
-
   # by recording posts data, ensure we do not track password fields
   config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
 end
