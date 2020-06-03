@@ -21,7 +21,6 @@ Things you may want to cover:
    * `./infra/test/db.sh`
 * create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
 
-
 # Architecture
 
 ## backend
