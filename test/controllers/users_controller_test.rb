@@ -43,6 +43,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name="user[department_name]"]'
   end
 
+  test 'GET account_path(section: :school) as SchoolManagement' do
+    school = create(:school, :with_school_manager)
+    [
+      school.school_manager,
+      create(:main_teacher, school: school),
+      create(:teacher, school: school),
+      create(:other, school: school)
+    ].each do |role|
+      sign_in(role)
+      get account_path(section: 'school')
+      assert_select 'div[data-react-class="AutocompleteSchool"]'
+    end
+  end
+
   test 'No other role than operator should have an API token' do
     student = create(:student)
     sign_in(student)
