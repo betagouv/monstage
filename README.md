@@ -16,6 +16,8 @@ Things you may want to cover:
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
 * copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
+* avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
+
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
@@ -35,6 +37,7 @@ Things you may want to cover:
 ## frontend
 
 * Turbolink based "SPA"
+* Use [bootstrap](https://getbootstrap.com/docs/4.5/getting-started/introduction/)
 * Use [stimulus](https://stimulusjs.org/) to improve simple components ex: a11y datetime inputs, flash messages [auto hide on mobile], multi select inputs [just (un/)select a list of inputs]
 * Use [react](https://reactjs.org/) when complexity grows ex :
  * student searches for school by [city.name, school.name], then chooses school, then chooses classroom.
@@ -46,6 +49,7 @@ Things you may want to cover:
 * Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
 * DB provider : [CleverCloud](console.clever-cloud.com/), first contacted provider to support custom dictionnary
+* CDN : [AWS Cloudfront](https://console.aws.amazon.com/console/home)
 
 ### Solution
 
