@@ -1,6 +1,6 @@
 h1.h2.mb-3 Mon identité
 
-= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+= form_for(current_user, as: :user, url: account_path, method: :patch, data: {controller: "signup"}) do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
@@ -35,6 +35,14 @@ h1.h2.mb-3 Mon identité
         = 'Classe'
         = f.rg2a_required_content_tag
       = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id), { }, class: "form-control col-lg-6"
+
+
+  - if can?(:choose_role, current_user)
+    .form-group
+      = f.label :role do
+        = 'Fonction'
+        = f.rg2a_required_content_tag
+      .d-block= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role), { prompt: '-- Veuillez choisir une fonction --'}, { class: 'custom-select col-lg-6', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} }
 
 
   .actions.d-flex.d-sm-block
