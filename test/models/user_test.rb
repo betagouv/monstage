@@ -60,4 +60,27 @@ class UserTest < ActiveSupport::TestCase
     refute user.valid?
     assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
   end
+
+  test '#add_to_email_delivery' do
+    freeze_time do
+      # mocking
+      # mock_email_delivery = MiniTest::Mock.new
+      # mock_email_delivery.expect(:add_contact, false)
+
+      mock_service_new = MiniTest::Mock.new
+      # mock_service_new.expect(:new, mock_email_delivery)
+      mock_service_new.expect(:new, true)
+
+      employer = create(:employer)
+      puts "just created employer"
+      employer.first_name = "Baloo"
+      employer.save
+      puts "just changed to Baloo"
+      assert_changes -> { employer.reload.confirmed_at }, from: Time.now.utc, to: nil do
+        employer.confirmed_at = nil
+        employer.save
+        puts "just saved confirmed at at nil"
+      end
+    end
+  end
 end

@@ -3,11 +3,14 @@
 class User < ApplicationRecord
   include Discard::Model
   include UserAdmin
+  include ActiveModel::Dirty
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
 
   include DelayedDeviseEmailSender
+
+  after_save :add_to_contacts, if: :saved_change_to_confirmed_at?
 
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
@@ -107,6 +110,14 @@ class User < ApplicationRecord
 
   def destroy
     anonymize
+  end
+
+  def add_to_contacts
+    unless confirmed_at.nil?
+      email_delivery = Services::EmailDelivery.new(self)
+      # byebug
+      email_delivery.add_contact
+    end
   end
 
   rails_admin do

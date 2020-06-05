@@ -34,6 +34,9 @@ gem 'rails_admin-i18n'
 gem 'newrelic_rpm'
 gem 'sentry-raven'
 
+# email operator tool
+gem 'sendgrid-ruby'
+
 # acl
 gem 'cancancan'
 gem 'devise'
