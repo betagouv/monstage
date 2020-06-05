@@ -31,8 +31,8 @@ class NavbarTest < ActionDispatch::IntegrationTest
     )
     assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: main_teacher.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a.active", text: "Ma classe",
+                                      count: 1)
   end
 
   test "other" do
@@ -45,8 +45,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     )
     assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: other.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a.active", text: "Mon collège", count: 1)
   end
 
   test "operator" do
@@ -70,8 +69,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
       Presenters::User.new(school_manager).default_internship_offers_path
     )
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: school_manager.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a.active", text: "Mon collège", count: 1)
   end
 
   test "student" do
@@ -83,8 +81,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
       Presenters::User.new(student).default_internship_offers_path
     )
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: student.dashboard_name,
-                                        count: 1)
+    assert_select(".navbar a.active", text: student.dashboard_name, count: 1)
   end
 
   test "teacher" do
@@ -97,7 +94,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
       Presenters::User.new(teacher).default_internship_offers_path
     )
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: teacher.dashboard_name,
+    assert_select(".navbar a.active", text: "Ma classe",
                                         count: 1)
   end
 

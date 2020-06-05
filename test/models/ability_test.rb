@@ -86,6 +86,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.cannot?(:manage_school_users, another_school))
     assert(ability.can?(:manage_school_students, school_manager.school))
     assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.cannot?(:change, :class_room))
   end
 
   test 'MainTeacher' do
@@ -105,6 +106,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_students, main_teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
     assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:change, :class_room))
   end
 
   test 'Teacher' do
@@ -115,6 +117,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_students, teacher.school))
     assert(ability.cannot?(:manage_school_students, build(:school)))
+    assert(ability.can?(:change, :class_room))
   end
 
   test 'Other' do
@@ -125,6 +128,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_students, other.school))
     assert(ability.cannot?(:manage_school_students, another_school))
     assert(ability.can?(:manage, ClassRoom))
+    assert(ability.can?(:change, :class_room))
   end
 
   test 'Operator' do

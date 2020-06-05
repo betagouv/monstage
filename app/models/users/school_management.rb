@@ -49,7 +49,8 @@ module Users
     end
 
     def dashboard_name
-      'Mon Collège'
+      return 'Ma classe' if school.present? && class_room.present?
+      return 'Mon collège' if school.present?
     end
 
     private

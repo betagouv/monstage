@@ -43,6 +43,35 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name="user[department_name]"]'
   end
 
+  test 'GET account_path(section: :school) as SchoolManagement' do
+    school = create(:school, :with_school_manager)
+    [
+      school.school_manager,
+      create(:main_teacher, school: school),
+      create(:teacher, school: school),
+      create(:other, school: school)
+    ].each do |role|
+      sign_in(role)
+      get account_path(section: 'school')
+      assert_select 'div[data-react-class="AutocompleteSchool"]'
+    end
+  end
+
+  test 'GET account_path(section: :identiy) as SchoolManagement can change identity' do
+    school = create(:school, :with_school_manager)
+    [
+      school.school_manager,
+      create(:main_teacher, school: school),
+      create(:teacher, school: school),
+      create(:other, school: school)
+    ].each do |role|
+      sign_in(role)
+      get account_path(section: 'identity')
+      assert_template 'users/_edit_identity'
+      assert_select 'select[name="user[role]"]'
+    end
+  end
+
   test 'No other role than operator should have an API token' do
     student = create(:student)
     sign_in(student)
@@ -166,6 +195,27 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
+  test 'PATCH edit as SchoolManagement can change role' do
+    school = create(:school, :with_school_manager)
+    users = [
+      school.school_manager,
+      create(:main_teacher, school: school),
+      create(:teacher, school: school),
+      create(:other, school: school)
+    ]
+    users.each.with_index do |user_change_role, i|
+      sign_in(user_change_role)
+      role_before = user_change_role.role
+      role_after = (users[i + 1] || users[0]).role
+
+      assert_changes -> { user_change_role.reload.role },
+                     from: role_before,
+                     to: role_after do
+        patch(account_path, params: { user: { role: role_after } })
+      end
+    end
+  end
+
   test 'PATCH edit as student can change missing_school_weeks_id' do
     school = create(:school)
     student = create(:student, school: school)
@@ -209,24 +259,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
-  test 'GET #edit can change email' do
+  test 'GET #edit as Employer can change email' do
     sign_in(create(:employer))
     get account_path
 
     assert_response :success
     assert_select 'input#user_email[required]'
-  end
-
-  test 'GET edit as main_teacher can change school and class room' do
-    school = create(:school)
-    class_room = create(:class_room, school: school)
-    school_manager = create(:school_manager, school: school)
-    main_teacher = create(:main_teacher, school: school)
-
-    sign_in(main_teacher)
-
-    get account_path(section: 'school')
-    assert_response :success
-    assert_template 'users/_edit_school'
   end
 end

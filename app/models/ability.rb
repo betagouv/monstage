@@ -51,6 +51,8 @@ class Ability
     end
     can_read_dashboard_students_internship_applications(user: user)
 
+    can :change, :class_room unless user.school_manager?
+
     can_manage_school(user: user) do
       can %i[edit update], School
       can [:manage_school_users], School do |school|
