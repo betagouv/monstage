@@ -41,7 +41,8 @@ class UsersController < ApplicationController
                                  :class_room_id,
                                  :resume_educational_background,
                                  :resume_other,
-                                 :resume_languages)
+                                 :resume_languages,
+                                 :role)
   end
 
   def current_section
