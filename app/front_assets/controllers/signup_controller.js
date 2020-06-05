@@ -4,7 +4,7 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'label'];
+  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'phoneInuput'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
@@ -26,6 +26,16 @@ export default class extends Controller {
     if (email.length > 2) {
       this.validator.perform('validate', {
         email,
+        uid: this.channelParams.uid,
+      });
+    }
+  }
+
+  onBlurPhoneInput(event) {
+    const phone = event.target.value;
+    if (phone.length > 32) {
+      this.validator.perform('validate', {
+        phone,
         uid: this.channelParams.uid,
       });
     }

@@ -33,6 +33,7 @@ gem 'rails_admin-i18n'
 # instrumentation
 gem 'newrelic_rpm'
 gem 'sentry-raven'
+gem 'ovh', git: 'https://github.com/pierrax/OVH'
 
 # acl
 gem 'cancancan'

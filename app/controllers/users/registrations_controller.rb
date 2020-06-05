@@ -26,6 +26,14 @@ module Users
       @confirmable_user ||= nil
     end
 
+    def confirmation_phone_standby
+      flash.delete(:notice)
+      if params[:phone].present?
+        @confirmable_user = User.where(phone: params[:phone]).first
+      end
+      @confirmable_user ||= nil
+    end
+
     def resource_class
       UserManager.new.by_params(params: params)
     rescue KeyError
@@ -92,6 +100,7 @@ module Users
           handicap
           accept_terms
           role
+          phone
         ]
       )
     end
@@ -108,7 +117,12 @@ module Users
 
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
-      users_registrations_standby_path(email: resource.email)
+      if resource.phone.present?
+        #SendSmsJob.perform_later(resource.id)
+        users_registrations_phone_standby_path(phone: resource.phone) 
+      else
+        users_registrations_standby_path(email: resource.email)
+      end
     end
   end
 end

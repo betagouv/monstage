@@ -93,6 +93,17 @@
     </div>
 
     <div class="form-group">
+      <%= f.label :phone do %>
+        <%= 'Numéro de mobile' %>
+        <%= f.rg2a_required_content_tag %>
+        <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+      <% end %>
+      <%= f.text_field :phone, class: 'form-control', value: resource.phone.blank? ? params[:phone] : resource.phone, required: true, placeholder: "ex: 0601020304", data: {action: 'change->signup#onBlurPhoneInput', target: 'signup.phoneInput'} %>
+
+      <small class="d-none" data-target="signup.phoneHint"></small>
+    </div>
+
+    <div class="form-group">
       <%= f.label :password do %>
         Créer un mot de passe
         <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>

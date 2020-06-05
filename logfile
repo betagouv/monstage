@@ -1,0 +1,29 @@
+2020-06-02 17:51:05.276 CEST [99405] LOG:  starting PostgreSQL 12.3 on x86_64-apple-darwin19.4.0, compiled by Apple clang version 11.0.3 (clang-1103.0.32.59), 64-bit
+2020-06-02 17:51:05.278 CEST [99405] LOG:  listening on IPv6 address "::1", port 5432
+2020-06-02 17:51:05.278 CEST [99405] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2020-06-02 17:51:05.278 CEST [99405] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2020-06-02 17:51:05.289 CEST [99406] LOG:  database system was shut down at 2020-06-02 17:50:33 CEST
+2020-06-02 17:51:05.291 CEST [99405] LOG:  database system is ready to accept connections
+2020-06-02 17:51:14.889 CEST [99422] FATAL:  database "kizkiz_test" does not exist
+2020-06-02 17:51:17.345 CEST [99423] FATAL:  database "kizkiz_test" does not exist
+2020-06-02 17:51:20.946 CEST [99424] FATAL:  database "kizkiz_test" does not exist
+2020-06-02 17:52:28.971 CEST [99405] LOG:  received fast shutdown request
+2020-06-02 17:52:28.972 CEST [99405] LOG:  aborting any active transactions
+2020-06-02 17:52:28.973 CEST [99405] LOG:  background worker "logical replication launcher" (PID 99412) exited with exit code 1
+2020-06-02 17:52:28.974 CEST [99407] LOG:  shutting down
+2020-06-02 17:52:28.981 CEST [99405] LOG:  database system is shut down
+2020-06-02 17:52:56.246 CEST [99522] LOG:  starting PostgreSQL 12.3 on x86_64-apple-darwin19.4.0, compiled by Apple clang version 11.0.3 (clang-1103.0.32.59), 64-bit
+2020-06-02 17:52:56.247 CEST [99522] LOG:  listening on IPv6 address "::1", port 5432
+2020-06-02 17:52:56.247 CEST [99522] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2020-06-02 17:52:56.248 CEST [99522] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2020-06-02 17:52:56.263 CEST [99523] LOG:  database system was shut down at 2020-06-02 17:52:28 CEST
+2020-06-02 17:52:56.268 CEST [99522] LOG:  database system is ready to accept connections
+2020-06-03 01:03:55.138 CEST [99522] LOG:  server process (PID 7039) was terminated by signal 9: Killed: 9
+2020-06-03 01:03:55.142 CEST [99522] LOG:  terminating any other active server processes
+2020-06-03 01:03:55.144 CEST [99527] WARNING:  terminating connection because of crash of another server process
+2020-06-03 01:03:55.144 CEST [99527] DETAIL:  The postmaster has commanded this server process to roll back the current transaction and exit, because another server process exited abnormally and possibly corrupted shared memory.
+2020-06-03 01:03:55.144 CEST [99527] HINT:  In a moment you should be able to reconnect to the database and repeat your command.
+2020-06-03 01:03:55.154 CEST [99522] LOG:  all server processes terminated; reinitializing
+2020-06-03 01:03:55.169 CEST [99522] LOG:  startup process (PID 7040) was terminated by signal 9: Killed: 9
+2020-06-03 01:03:55.169 CEST [99522] LOG:  aborting startup due to startup process failure
+2020-06-03 01:03:55.173 CEST [99522] LOG:  database system is shut down

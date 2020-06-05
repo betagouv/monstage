@@ -21,6 +21,8 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
+  validates :phone, uniqueness: true, format: { with: /\A(06|07)\d{8}\z/,
+    message: "Numéro de téléphone invalide" }
 
   validates :email, format: { with: Devise.email_regexp }, on: :create
 
@@ -107,6 +109,10 @@ class User < ApplicationRecord
 
   def destroy
     anonymize
+  end
+
+  def create_phone_token
+    # TODO
   end
 
   rails_admin do

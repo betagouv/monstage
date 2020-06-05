@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
     get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
+    get '/users/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby'
   end
 
   resources :internship_offer_keywords, only: [] do
