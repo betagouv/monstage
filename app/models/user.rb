@@ -114,16 +114,16 @@ class User < ApplicationRecord
   end
 
   def add_to_contacts
-    return if email_previous_change.blank? ||
-              Rails.env == 'development'
+    return if Rails.env.development?
+    return if email_previous_change.blank?
 
     AddContactToSyncEmailDeliveryJob.perform_later(user: self)
   end
 
   def after_confirmation
     super
-    return if email_previous_change.try(:first).nil? ||
-              Rails.env == 'development'
+    return if Rails.env.development?
+    return if email_previous_change.try(:first).nil?
 
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
       email: email_previous_change.first

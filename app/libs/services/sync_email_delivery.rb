@@ -25,26 +25,10 @@ module Services
           contacts: [user_data(user: user)]
         }
       }
-
       response = @sendgrid_client.put(payload)
+      return true if response && ok_status(status: response.status_code)
 
-      unless response && ok_status(status: response.status_code)
-        error_message = build_error_message(
-          email: user.email,
-          action: 'add',
-          error: response_error(response: response)
-        )
-        Rails.logger.warn error_message
-        raise error_message
-      end
-    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::HTTPClientError => e
-      Rails.logger.error add_error_message(
-        email: user.email,
-        action: 'add',
-        error: e
-      )
-      raise e
+      handle_error(response: response, action: 'add', email: user.email)
     end
 
     def delete_contact(email:)
@@ -54,23 +38,9 @@ module Services
       payload = { query_params: { ids: sendgrid_user_email_id } }
       response = @sendgrid_client.delete(payload)
 
-      unless response && ok_status(status: response.status_code)
-        error_message = build_error_message(
-          email: email,
-          action: 'remove',
-          error: response_error(response: response)
-        )
-        Rails.logger.warn error_message
-        raise error_message
-      end
-    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::HTTPClientError => e
-      Rails.logger.error build_error_message(
-        email: user.email,
-        action: 'remove',
-        error: e
-      )
-      raise e
+      return true if response && ok_status(status: response.status_code)
+
+      handle_error(response: response, action: 'remove', email: email)
     end
 
     def fetch_sendgrid_email_id(email:)
@@ -81,12 +51,11 @@ module Services
       if response && ok_status(status: response.status_code)
         fetch_result.empty? ? nil : fetch_result.first[:id]
       else
-        error_message = build_error_message(
+        Rails.logger.warn build_error_message(
           email: email,
           action: 'fetch',
           error: response_error(response: response)
         )
-        Rails.logger.warn error_message
       end
     end
 
@@ -127,6 +96,17 @@ module Services
 
     def ok_status(status:)
       status.to_i.between?(200, 299)
+    end
+
+    def handle_error(response:, action:, email:)
+      error_message = build_error_message(
+        email: email,
+        action: action,
+        error: response_error(response: response)
+      )
+
+      Rails.logger.warn error_message
+      raise "invalid Sendrid response : #{error_message}"
     end
 
     def build_error_message(email:, action:, error: '')
