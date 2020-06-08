@@ -15,7 +15,8 @@ Minitest::Retry.use!(
   io: $stdout,
   exceptions_to_retry: [
     ActionView::Template::Error, # during test, sometimes fails on "unexpected token at ''", not fixable
-    DRb::DRbRemoteError          # sometimes capybara is too quick to run a test
+    DRb::DRbRemoteError,         # sometimes capybara is too quick to run a test
+    PG::InternalError            # sometimes postgis ref system is not yet ready
   ]
 )
 
