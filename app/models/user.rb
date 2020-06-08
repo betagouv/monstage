@@ -3,7 +3,6 @@
 class User < ApplicationRecord
   include Discard::Model
   include UserAdmin
-  include ActiveModel::Dirty
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
@@ -79,10 +78,11 @@ class User < ApplicationRecord
   end
 
   def gender_text
-    return "" if gender.blank?
-    return "Madame" if gender.eql?('f')
-    return "Monsieur" if gender.eql?('m')
-    ""
+    return '' if gender.blank?
+    return 'Madame' if gender.eql?('f')
+    return 'Monsieur' if gender.eql?('m')
+
+    ''
   end
 
   def formal_name
@@ -106,6 +106,7 @@ class User < ApplicationRecord
     discard!
 
     AnonymizeUserJob.perform_later(email_for_job)
+    RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
   end
 
   def destroy
@@ -113,11 +114,20 @@ class User < ApplicationRecord
   end
 
   def add_to_contacts
-    unless confirmed_at.nil?
-      email_delivery = Services::EmailDelivery.new(self)
-      # byebug
-      email_delivery.add_contact
-    end
+    return if email_previous_change.blank? ||
+              Rails.env == 'development'
+
+    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
+  end
+
+  def after_confirmation
+    super
+    return if email_previous_change.try(:first).nil? ||
+              Rails.env == 'development'
+
+    RemoveContactFromSyncEmailDeliveryJob.perform_later(
+      email: email_previous_change.first
+    )
   end
 
   rails_admin do
