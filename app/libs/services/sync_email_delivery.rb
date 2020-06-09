@@ -24,7 +24,7 @@ module Services
         }
       }
       request_with_error_handling(email: user.email, action: 'add') do
-        @sendgrid_client.put(payload)
+        sendgrid_client.put(payload)
       end
     end
 
@@ -35,13 +35,13 @@ module Services
       payload = { query_params: { ids: sendgrid_user_email_id } }
 
       request_with_error_handling(email: email, action: 'remove') do
-        @sendgrid_client.delete(payload)
+        sendgrid_client.delete(payload)
       end
     end
 
     def fetch_sendgrid_email_id(email:)
       payload = { request_body: { query: "email = '#{email}'" } }
-      response = @sendgrid_client.search.post(payload)
+      response = sendgrid_client.search.post(payload)
       fetch_result = parse_result(body: response.body)
 
       if response_ok?(response: response)
