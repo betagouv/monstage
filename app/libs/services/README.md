@@ -7,8 +7,8 @@ Since documentation is wildly missing in the sendgrid-ruby gem pages, note the f
 
 ### Api documentation 
 these two work
-response = sendgrid_client.marketing.contacts.get
-response = sendgrid_client.marketing.lists.get
+```response = sendgrid_client.marketing.contacts.get```
+```response = sendgrid_client.marketing.lists.get```
 see [this page](https://github.com/sendgrid/sendgrid-ruby/issues/391#issuecomment-583059532) for more details
 
 ### Custom fields
