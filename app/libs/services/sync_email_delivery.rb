@@ -99,7 +99,6 @@ module Services
       return true if response && ok_status(status: response.status_code)
 
       error_message = "Sendgrid api failed to #{action} #{email} to Sendgrid database"
-      Rails.logger.warn error_message
       raise "invalid Sendrid response : #{error_message}"
     end
   end
