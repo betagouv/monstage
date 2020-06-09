@@ -23,5 +23,36 @@ module Users
       end
       assert_equal [student], school.students_with_missing_school_week
     end
+
+    test 'validate wrong mobile phone format' do
+      user = build(:student, phone: '0111223344')
+      refute user.valid?
+      assert_equal ["Numéro de téléphone invalide"], user.errors.messages[:phone]
+    end
+
+    test 'validate wrong phone format' do
+      user = build(:student, phone: '0612')
+      refute user.valid?
+      assert_equal ["Numéro de téléphone invalide"], user.errors.messages[:phone]
+    end
+
+    test 'validate good phone format' do
+      user = build(:student, phone: '0611223344')
+      assert user.valid?
+    end
+
+    test 'no phone token creation after user creation' do
+      user = create(:student, phone: '')
+      assert_nil user.phone_token
+      assert_nil user.phone_token_validity
+    end
+
+    test 'phone token creation after user creation' do
+      user = create(:student, phone: '0711223344')
+      assert_not_nil user.phone_token
+      assert_equal 4, user.phone_token.size
+      assert_not_nil user.phone_token_validity
+      assert_equal true, user.phone_token_validity.between?(59.minutes.from_now, 61.minutes.from_now)
+    end
   end
 end

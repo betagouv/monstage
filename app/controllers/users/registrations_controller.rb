@@ -61,7 +61,7 @@ module Users
     def phone_validation
       user = User.find_by_phone(params[:phone])
       if user.phone_confirmable? && user.phone_token == params[:phone_token]
-        user.update(phone_token: nil, phone_token_validity: nil)
+        user.update(phone_token: nil, phone_token_validity: nil, confirmed_at: Time.now)
         redirect_to root_path, flash: { success: I18n.t('devise.confirmations.confirmed') }
       else
         redirect_to users_registrations_phone_standby_path(phone: params[:phone]), alert: "Le téléphone n'a pas pu être validé."

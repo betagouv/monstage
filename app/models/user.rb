@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
-  after_create :send_confirmation_sms if :phone.present?
+  after_create :send_confirmation_sms
 
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
@@ -114,6 +114,7 @@ class User < ApplicationRecord
   end
 
   def send_confirmation_sms
+    return unless phone.present?
     create_phone_token
     SendSmsJob.perform_later(self)
   end
