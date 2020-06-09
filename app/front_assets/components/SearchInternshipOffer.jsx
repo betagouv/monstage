@@ -7,13 +7,14 @@ import KeywordInput from './inputs/KeywordInput';
 import findBootstrapEnvironment from '../utils/responsive';
 
 function SearchInternshipOffer({ url, initialLocation, className }) {
+  const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
   const initialKeyword = searchParams.get('keyword') || "";
   const initialLatitude = searchParams.get('latitude');
   const initialLongitude = searchParams.get('longitude');
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
   const [keyword, setKeyword] = useState(initialKeyword);
@@ -25,7 +26,6 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   // used by both
   const [focus, setFocus] = useState(null);
 
-  const isMobile = findBootstrapEnvironment() == 'xs';
 
   const filterOffers = event => {
     if (city) {

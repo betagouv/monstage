@@ -87,7 +87,6 @@ $handleWidth: 60px;
 // mobile search bar
 @include media-breakpoint-down(xs) {
   .search-bar{
-    padding: 1rem 0;
 
     // by default split controls in two equal elements with rounded sides
     .input-group-search{
