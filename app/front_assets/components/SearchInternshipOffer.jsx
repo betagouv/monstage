@@ -4,7 +4,7 @@ import Turbolinks from 'turbolinks';
 import CityInput from './inputs/CityInput';
 import KeywordInput from './inputs/KeywordInput';
 
-function SearchInternshipOffer({ url, initialLocation }) {
+function SearchInternshipOffer({ url, initialLocation, className }) {
   const searchParams = new URLSearchParams(window.location.search);
   // used by keyword input
   const [keyword, setKeyword] = useState(searchParams.get('keyword') || "");
@@ -46,7 +46,7 @@ function SearchInternshipOffer({ url, initialLocation }) {
 
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
-      <div className="row search-bar">
+      <div className={`row search-bar ${className}`}>
         <KeywordInput
           keyword={keyword}
           setKeyword={setKeyword}
