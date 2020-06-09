@@ -18,17 +18,14 @@ module Services
     }.freeze
 
     def add_contact(user:)
-      return unless user.is_a? User
-
       payload = {
         request_body: {
           contacts: [user_data(user: user)]
         }
       }
-      response = @sendgrid_client.put(payload)
-      return true if response && ok_status(status: response.status_code)
-
-      handle_error(response: response, action: 'add', email: user.email)
+      request_with_error_handling(email: user.email, action: 'add') do
+        @sendgrid_client.put(payload)
+      end
     end
 
     def delete_contact(email:)
@@ -36,11 +33,10 @@ module Services
       return unless sendgrid_user_email_id
 
       payload = { query_params: { ids: sendgrid_user_email_id } }
-      response = @sendgrid_client.delete(payload)
 
-      return true if response && ok_status(status: response.status_code)
-
-      handle_error(response: response, action: 'remove', email: email)
+      request_with_error_handling(email: email, action: 'remove') do
+        @sendgrid_client.delete(payload)
+      end
     end
 
     def fetch_sendgrid_email_id(email:)
@@ -98,28 +94,13 @@ module Services
       status.to_i.between?(200, 299)
     end
 
-    def handle_error(response:, action:, email:)
-      error_message = build_error_message(
-        email: email,
-        action: action,
-        error: response_error(response: response)
-      )
+    def request_with_error_handling(email:, action:)
+      response = yield
+      return true if response && ok_status(status: response.status_code)
 
+      error_message = "Sendgrid api failed to #{action} #{email} to Sendgrid database"
       Rails.logger.warn error_message
       raise "invalid Sendrid response : #{error_message}"
-    end
-
-    def build_error_message(email:, action:, error: '')
-      # action in 'fetch' , 'add', 'remove'
-      "Sendgrid api failed to #{action} #{email} to Sendgrid database - #{error}"
-    end
-
-    def response_error(response:)
-      if response.nil?
-        ''
-      else "Status: #{response.status_code}. Erreur: " \
-           "#{parse_result(response.body)}"
-      end
     end
   end
 end
