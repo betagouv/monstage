@@ -1,20 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Turbolinks from 'turbolinks';
 
 import CityInput from './inputs/CityInput';
 import KeywordInput from './inputs/KeywordInput';
 
+import findBootstrapEnvironment from '../utils/responsive';
+
 function SearchInternshipOffer({ url, initialLocation, className }) {
   const searchParams = new URLSearchParams(window.location.search);
+
+  // hand made dirty tracking
+  const initialKeyword = searchParams.get('keyword') || "";
+  const initialLatitude = searchParams.get('latitude');
+  const initialLongitude = searchParams.get('longitude');
+  const [showSearch, setShowSearch] = useState(false);
+
   // used by keyword input
-  const [keyword, setKeyword] = useState(searchParams.get('keyword') || "");
+  const [keyword, setKeyword] = useState(initialKeyword);
   // used by location input
   const [city, setCity] = useState(searchParams.get('city'));
-  const [latitude, setLatitude] = useState(searchParams.get('latitude'));
-  const [longitude, setLongitude] = useState(searchParams.get('longitude'));
+  const [latitude, setLatitude] = useState(initialLatitude);
+  const [longitude, setLongitude] = useState(initialLongitude);
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
   // used by both
   const [focus, setFocus] = useState(null);
+
+  const isMobile = findBootstrapEnvironment() == 'xs';
 
   const filterOffers = event => {
     if (city) {
@@ -44,6 +55,19 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
     }
   };
 
+  // on mobile, only show button when needed
+  // maybe disable it on desktop when no change can be applied?
+  const dirtyTrackSearch = () => {
+    const keywordChanged = initialKeyword != keyword;
+    const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
+
+    setShowSearch(keywordChanged || coordinatesChanged)
+  }
+
+  if(isMobile) {
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
+  }
+
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
@@ -68,24 +92,25 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
           focus={focus}
           setFocus={setFocus}
         />
-
-        <div className="input-group-prepend d-flex d-xs-stick no-padding">
-          <button
-            id='test-submit-search'
-            type="submit"
-            className="input-group-search-button
-                       btn
-                       btn-danger
-                       btn-xs-sm
-                       float-right
-                       float-sm-none
-                       px-3
-                       rounded-xs-0"
-          >
-            <i className="fas fa-search" />
-            &nbsp; Rechercher
-          </button>
-        </div>
+        {showSearch && (
+          <div className={`input-group-prepend d-flex d-xs-stick no-padding`}>
+            <button
+              id='test-submit-search'
+              type="submit"
+              className="input-group-search-button
+                         btn
+                         btn-danger
+                         btn-xs-sm
+                         float-right
+                         float-sm-none
+                         px-3
+                         rounded-xs-0"
+            >
+              <i className="fas fa-search" />
+              &nbsp; Rechercher
+            </button>
+          </div>
+          )}
       </div>
     </form>
   );
