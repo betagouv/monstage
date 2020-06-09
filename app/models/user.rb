@@ -114,7 +114,6 @@ class User < ApplicationRecord
   end
 
   def add_to_contacts
-    return if Rails.env.development?
     return if email_previous_change.blank?
 
     AddContactToSyncEmailDeliveryJob.perform_later(user: self)
