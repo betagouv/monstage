@@ -91,7 +91,9 @@ module Services
     end
 
     def response_ok?(response: response)
-      status.to_i.between?(200, 299)
+     return false if response.nil?
+     
+     response.status.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)
