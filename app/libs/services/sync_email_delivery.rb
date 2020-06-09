@@ -98,8 +98,7 @@ module Services
       response = yield
       return true if response && ok_status(status: response.status_code)
 
-      error_message = "Sendgrid api failed to #{action} #{email} to Sendgrid database"
-      raise "invalid Sendrid response : #{error_message}"
+      raise  "Sendgrid api failed to #{action} #{email} to Sendgrid database"
     end
   end
 end
