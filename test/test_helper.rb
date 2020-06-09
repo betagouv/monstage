@@ -26,18 +26,6 @@ Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
-  def setup
-    stub_request(
-      :any,
-      "https://api.sendgrid.com/v3/marketing/contacts"
-    ).to_return(status: 200, body: "", headers: {})
-
-    stub_request(
-      :any,
-      "https://api.sendgrid.com/v3/marketing/contacts/search"
-    ).to_return(status: 200, body: "{\"result\":[]}", headers: {})
-  end
-
   parallelize_setup do |worker|
     # setup databases
     if ENV['CI'].blank?
