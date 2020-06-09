@@ -44,7 +44,7 @@ module Services
       response = @sendgrid_client.search.post(payload)
       fetch_result = parse_result(body: response.body)
 
-      if response && ok_status(status: response.status_code)
+      if response && ok_status?(status: response.status_code)
         fetch_result.empty? ? nil : fetch_result.first[:id]
       else
         Rails.logger.warn build_error_message(
@@ -90,13 +90,13 @@ module Services
       result.is_a?(Array) ? result.map(&:symbolize_keys) : nil
     end
 
-    def ok_status(status:)
+    def ok_status?(status:)
       status.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)
       response = yield
-      return true if response && ok_status(status: response.status_code)
+      return true if response && ok_status?(status: response.status_code)
 
       raise  "Sendgrid api failed to #{action} #{email} to Sendgrid database"
     end
