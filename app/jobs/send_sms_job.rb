@@ -3,15 +3,17 @@
 class SendSmsJob < ApplicationJob
   queue_as :default
 
-  def perform(user_id)
-    user = User.find(user_id)
-    user.create_phone_token
-    client = Ovh::Client.new
-    client.post("/sms/#{ENV['OVH_SMS_SERVICE']}/jobs", 
-      params: { 
-        'sender': 'MonStagede3e',
+  def perform(user)
+    client = OVH::REST.new(
+      Rails.application.credentials.ovh[:application_key],
+      Rails.application.credentials.ovh[:application_secret],
+      Rails.application.credentials.ovh[:consumer_key]
+    )
+    response = client.post("/sms/#{Rails.application.credentials.ovh[:sms_application]}/jobs", 
+      { 
+        'sender': Rails.application.credentials.ovh[:sender],
         'message': "Votre code de validation : #{user.phone_token}",
-        receivers: [recipient]
+        'receivers': ["+33#{user.phone[1..]}"]
       })
   end
 end

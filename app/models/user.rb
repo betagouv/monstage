@@ -9,6 +9,8 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
+  after_create :send_confirmation_sms if :phone.present?
+
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
   # 2.3.4. can register
@@ -22,7 +24,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name,
             presence: true
   validates :phone, uniqueness: true, format: { with: /\A(06|07)\d{8}\z/,
-    message: "Numéro de téléphone invalide" }
+    message: "Numéro de téléphone invalide" }, allow_blank: true
 
   validates :email, format: { with: Devise.email_regexp }, on: :create
 
@@ -111,8 +113,18 @@ class User < ApplicationRecord
     anonymize
   end
 
+  def send_confirmation_sms
+    create_phone_token
+    SendSmsJob.perform_later(self)
+  end
+
   def create_phone_token
-    # TODO
+    self.update(phone_token: sprintf('%04d',rand(10000)), 
+    phone_token_validity: 1.hour.from_now)
+  end
+
+  def phone_confirmable?
+    phone_token.present? && Time.now < phone_token_validity
   end
 
   rails_admin do

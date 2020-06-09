@@ -4,7 +4,7 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'phoneInuput'];
+  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'phoneInuput', 'label'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {

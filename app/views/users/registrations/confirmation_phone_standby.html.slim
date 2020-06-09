@@ -13,7 +13,7 @@
       = "Votre compte est déjà confirmé (#{params[:phone]})."
       br
       = "Veuillez vous "
-      = link_to "connecter", new_user_session_path(email: params[:email]), class: 'text-white'
+      = link_to "connecter", new_user_session_path(phone: params[:phone]), class: 'text-white'
 
   - else
     h1.h3.text-blue.mt-4.mb-3.text-center.mb-0 Encore une petite étape...
@@ -24,8 +24,13 @@
       = "."
       br
       | Vous venez de recevoir un sms afin de confirmer votre inscription.
+    .onboarding-card.onboarding-card-sm.mb-4
+      = form_tag phone_validation_path, method: :post do
+        = hidden_field_tag :phone, params[:phone]
+        .form-group
+          = label_tag :phone_token, 'Code de confirmation'
+          = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
+        .actions.d-flex.d-sm-block.text-center
+          = submit_tag 'Valider', class: 'btn btn-primary'
 
-    p.mb-1.test-student-guidelines
-      = image_tag asset_pack_path("media/images/onboarding/confirm-desktop.svg"), alt: 'Activer par mail sur ordinateur', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
-      = image_tag asset_pack_path("media/images/onboarding/confirm-mobile.svg"), alt: 'Activer par mail sur ordinateur', style: "height: auto; width: 100%;", class: 'd-block d-md-none'
  
