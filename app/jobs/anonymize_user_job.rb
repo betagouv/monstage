@@ -3,7 +3,7 @@
 class AnonymizeUserJob < ApplicationJob
   queue_as :default
 
-  def perform(email)
+  def perform(email:)
     UserMailer.anonymize_user(recipient_email: email).deliver_now
   end
 end

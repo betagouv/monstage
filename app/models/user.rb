@@ -105,7 +105,7 @@ class User < ApplicationRecord
 
     discard!
 
-    AnonymizeUserJob.perform_later(email_for_job)
+    AnonymizeUserJob.perform_later(email: email_for_job)
     RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
   end
 

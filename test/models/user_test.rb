@@ -63,7 +63,8 @@ class UserTest < ActiveSupport::TestCase
 
   test '#add_to_contacts is called whenever a user is created' do
     assert_enqueued_jobs 1, only: AddContactToSyncEmailDeliveryJob do
-      create(:student)
+      student = create(:student)
+      student.confirm
     end
   end
 
@@ -76,11 +77,20 @@ class UserTest < ActiveSupport::TestCase
 
   test 'when updating one\'s email both removing and adding contact jobs are enqueued' do
     student = create(:student)
-    student.email = "x#{student.email}"
-    student.confirmed_at = Time.now.utc
-    assert_enqueued_jobs 2 do
+
+    assert_enqueued_jobs 3 do
+      student.email = "alt_#{student.email}"
+      student.save #1
+      student.confirm #2 #3 Cannot avoid to launch the job twice.
+    end
+  end
+
+  test 'when updating one\'s first_name no jobs are enqueued' do
+    student = create(:student)
+    assert_no_enqueued_jobs do
+      student.email = "alt_#{student.first_name}"
       student.save
-      #TODO confirm
+      student.confirm
     end
   end
 end
