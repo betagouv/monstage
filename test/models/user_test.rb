@@ -61,26 +61,26 @@ class UserTest < ActiveSupport::TestCase
     assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
   end
 
-  test '#add_to_email_delivery' do
-    freeze_time do
-      # mocking
-      # mock_email_delivery = MiniTest::Mock.new
-      # mock_email_delivery.expect(:add_contact, false)
+  test '#add_to_contacts is called whenever a user is created' do
+    assert_enqueued_jobs 1, only: AddContactToSyncEmailDeliveryJob do
+      create(:student)
+    end
+  end
 
-      mock_service_new = MiniTest::Mock.new
-      # mock_service_new.expect(:new, mock_email_delivery)
-      mock_service_new.expect(:new, true)
+  test '#RemoveContactFromSyncEmailDeliveryJob is called whenever a user is anonymized' do
+    student = create(:student)
+    assert_enqueued_jobs 1, only: RemoveContactFromSyncEmailDeliveryJob do
+      student.anonymize
+    end
+  end
 
-      employer = create(:employer)
-      puts "just created employer"
-      employer.first_name = "Baloo"
-      employer.save
-      puts "just changed to Baloo"
-      assert_changes -> { employer.reload.confirmed_at }, from: Time.now.utc, to: nil do
-        employer.confirmed_at = nil
-        employer.save
-        puts "just saved confirmed at at nil"
-      end
+  test 'when updating one\'s email both removing and adding contact jobs are enqueued' do
+    student = create(:student)
+    student.email = "x#{student.email}"
+    student.confirmed_at = Time.now.utc
+    assert_enqueued_jobs 2 do
+      student.save
+      #TODO confirm
     end
   end
 end

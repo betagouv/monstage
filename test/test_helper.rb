@@ -8,6 +8,9 @@ require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
 require 'minitest/retry'
+require 'webmock/minitest'
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 Minitest::Retry.use!(
   retry_count:  3,
@@ -22,6 +25,18 @@ Minitest::Retry.use!(
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
+
+  def setup
+    stub_request(
+      :any,
+      "https://api.sendgrid.com/v3/marketing/contacts"
+    ).to_return(status: 200, body: "", headers: {})
+
+    stub_request(
+      :any,
+      "https://api.sendgrid.com/v3/marketing/contacts/search"
+    ).to_return(status: 200, body: "{\"result\":[]}", headers: {})
+  end
 
   parallelize_setup do |worker|
     # setup databases

@@ -120,6 +120,7 @@ class User < ApplicationRecord
     AddContactToSyncEmailDeliveryJob.perform_later(user: self)
   end
 
+  # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
     return if Rails.env.development?
