@@ -74,7 +74,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'when updating one\'s email both removing and adding contact jobs are enqueued' do
+  test "when updating one's email both removing and adding contact jobs are enqueued" do
     student = create(:student)
     student.email = "x#{student.email}"
     student.confirmed_at = Time.now.utc
