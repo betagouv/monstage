@@ -123,7 +123,6 @@ class User < ApplicationRecord
   # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
-    return if Rails.env.development?
     return if email_previous_change.try(:first).nil?
 
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
