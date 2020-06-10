@@ -4,10 +4,6 @@ require 'test_helper'
 module Reporting
   class InternshipOfferAggregateFunctionsTest < ActiveSupport::TestCase
     setup do
-      stub_request(
-        :any,
-        "https://api.sendgrid.com/v3/marketing/contacts"
-      ).to_return(status: 200, body: "", headers: {})
 
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
