@@ -49,6 +49,9 @@ module UserAdmin
         fields *UserAdmin::DEFAULTS_FIELDS
         field :role
         field :type
+        field :environment do
+          Rails.env
+        end
       end
     end
   end

@@ -7,7 +7,8 @@ module Services
       role: 'e2_T',
       monstage_id: 'e3_T',
       type: 'e4_T',
-      environment: 'e5_T'
+      environment: 'e5_T',
+      confirmed_at: 'e6_T'
     }.freeze
 
     def add_contact(user:)
