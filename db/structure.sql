@@ -10,6 +10,372 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tiger;
+
+
+--
+-- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tiger_data;
+
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA topology;
+
+
+--
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+
+--
+-- Name: plcoffee; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plcoffee WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plcoffee; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: plls; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plls WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plls; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: plv8; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plv8 WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plv8; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: autoinc; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS autoinc WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION autoinc; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: btree_gin; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS btree_gin WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION btree_gin; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: btree_gist; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION btree_gist; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: citext; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: cube; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS cube WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION cube; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: dblink; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: dict_int; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dict_int WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION dict_int; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: dict_xsyn; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dict_xsyn WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION dict_xsyn; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: earthdistance; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS earthdistance WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION earthdistance; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: file_fdw; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS file_fdw WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION file_fdw; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: insert_username; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS insert_username WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION insert_username; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: intagg; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS intagg WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION intagg; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: intarray; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS intarray WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION intarray; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: isn; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS isn WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION isn; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: lo; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS lo WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION lo; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: ltree; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS ltree WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION ltree; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: moddatetime; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS moddatetime WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION moddatetime; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pageinspect; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pageinspect WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pageinspect; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pg_buffercache; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_buffercache WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_buffercache; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pg_freespacemap; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_freespacemap WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_freespacemap; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -36,6 +402,45 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 
 --
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pgrowlocks; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgrowlocks WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgrowlocks; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: pgstattuple; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgstattuple WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgstattuple; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -44,6 +449,110 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 --
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: postgis_tiger_geocoder; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder WITH SCHEMA tiger;
+
+
+--
+-- Name: EXTENSION postgis_tiger_geocoder; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: postgis_topology; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgis_topology WITH SCHEMA topology;
+
+
+--
+-- Name: EXTENSION postgis_topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: postgres_fdw; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION postgres_fdw; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: refint; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS refint WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION refint; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: seg; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS seg WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION seg; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: sslinfo; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS sslinfo WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION sslinfo; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: tablefunc; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS tablefunc WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION tablefunc; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: tcn; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS tcn WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION tcn; Type: COMMENT; Schema: -; Owner: -
 --
 
 
@@ -62,6 +571,32 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
+-- Name: xml2; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS xml2 WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION xml2; Type: COMMENT; Schema: -; Owner: -
+--
+
+
+
+--
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -71,15 +606,6 @@ CREATE TYPE public.user_role AS ENUM (
     'main_teacher',
     'other'
 );
-
-
---
--- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
 
 --
@@ -120,38 +646,6 @@ ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
     ADD MAPPING FOR hword WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
-    ADD MAPPING FOR "int" WITH simple;
-
-
---
--- Name: config_search_with_synonym; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
-    PARSER = pg_catalog."default" );
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_numpart WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR "int" WITH simple;
 
 
@@ -1699,7 +2193,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
