@@ -2,6 +2,14 @@
 
 ## Sendgrid
 
+### Usage
+Jobs synchronize monstage db with sendgrid's on every environment. Please take care when considering a full extract of sendgrid contacts db of the different environments data come from.
+Custom fields are the following : 
+* monstage_id
+* role
+* type
+* environment (development, test, review, staging, production)
+
 Since documentation is wildly missing in the **sendgrid-ruby** gem pages, note the following
 
 ### Api documentation 
