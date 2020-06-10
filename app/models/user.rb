@@ -23,7 +23,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: true, format: { with: /\A(06|07)\d{8}\z/,
+  validates :phone, uniqueness: true, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
     message: "Numéro de téléphone invalide" }, allow_blank: true
 
   validates :email, format: { with: Devise.email_regexp }, on: :create

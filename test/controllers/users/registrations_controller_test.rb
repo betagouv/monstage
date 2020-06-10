@@ -48,8 +48,8 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au mail: #{email}.Veuillez créer un compte"
   end
 
-  test 'GET #users_registrations_phone_standby as student using path?phone=0611223344 with pending account' do
-    phone = '0611223344'
+  test 'GET #users_registrations_phone_standby as student using path?phone=+33611223344 with pending account' do
+    phone = '+33611223344'
     create(:student, phone: phone, confirmed_at: nil)
     get users_registrations_phone_standby_path(phone: phone)
     assert_response :success
@@ -57,15 +57,15 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #registrations_standby using path?phone=0611223344 with confirmed phone' do
-    phone = '0611223344'
+    phone = '+33611223344'
     create(:student, phone: phone, phone_token_validity: nil)
     get users_registrations_phone_standby_path(phone: phone)
     assert_response :success
     assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{phone}).Veuillez vous connecter"
   end
 
-  test 'GET #registrations_standby using path?phone=0611223344 with unknown account' do
-    phone = '0611223344'
+  test 'GET #registrations_standby using path?phone=+33611223344 with unknown account' do
+    phone = '+33611223344'
     get users_registrations_phone_standby_path(phone: phone)
     assert_response :success
     assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"

@@ -25,19 +25,19 @@ module Users
     end
 
     test 'validate wrong mobile phone format' do
-      user = build(:student, phone: '0111223344')
+      user = build(:student, phone: '+33111223344')
       refute user.valid?
       assert_equal ["Numéro de téléphone invalide"], user.errors.messages[:phone]
     end
 
     test 'validate wrong phone format' do
-      user = build(:student, phone: '0612')
+      user = build(:student, phone: '06111223344')
       refute user.valid?
       assert_equal ["Numéro de téléphone invalide"], user.errors.messages[:phone]
     end
 
     test 'validate good phone format' do
-      user = build(:student, phone: '0611223344')
+      user = build(:student, phone: '+33611223344')
       assert user.valid?
     end
 
@@ -48,7 +48,7 @@ module Users
     end
 
     test 'phone token creation after user creation' do
-      user = create(:student, phone: '0711223344')
+      user = create(:student, phone: '+33711223344')
       assert_not_nil user.phone_token
       assert_equal 4, user.phone_token.size
       assert_not_nil user.phone_token_validity

@@ -21,6 +21,7 @@
     "rails-ujs": "^5.2.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-phone-input-2": "^2.13.5",
     "react_ujs": "^2.5.0",
     "regenerator-runtime": "^0.13.3",
     "stimulus": "^1.1.1",
