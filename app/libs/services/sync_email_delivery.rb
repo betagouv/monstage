@@ -19,7 +19,7 @@ module Services
         }
       }
       request_with_error_handling(email: user.email, action: 'add') do
-        @sendgrid_client.put(payload)
+        sendgrid_client.put(payload)
       end
     end
 
@@ -30,15 +30,15 @@ module Services
       payload = { query_params: { ids: sendgrid_user_email_id } }
 
       request_with_error_handling(email: email, action: 'remove') do
-        @sendgrid_client.delete(payload)
+        sendgrid_client.delete(payload)
       end
     end
 
     def fetch_sendgrid_email_id(email:)
       payload = { request_body: { query: "email = '#{email}'" } }
-      response = @sendgrid_client.search.post(payload)
+      response = sendgrid_client.search.post(payload)
 
-      if response && ok_status(status: response.status_code)
+      if response_ok?(response: response)
         fetch_result = parse_result(body: response.body)
         fetch_result.empty? ? nil : fetch_result.first[:id]
       else
@@ -84,13 +84,15 @@ module Services
       result.is_a?(Array) ? result.map(&:symbolize_keys) : nil
     end
 
-    def ok_status(status:)
-      status.to_i.between?(200, 299)
+    def response_ok?(response:)
+     return false if response.nil?
+
+     response.status.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)
       response = yield
-      return true if response && ok_status(status: response.status_code)
+      return true if response_ok?(response: response)
 
       raise  "Sendgrid api failed to #{action} #{email} to Sendgrid database"
     end

@@ -8,9 +8,6 @@ require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
 require 'minitest/retry'
-require 'webmock/minitest'
-
-WebMock.disable_net_connect!(allow_localhost: true)
 
 Minitest::Retry.use!(
   retry_count:  3,

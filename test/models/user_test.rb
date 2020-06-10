@@ -75,7 +75,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'when updating one\'s email both removing and adding contact jobs are enqueued' do
+  test "when updating one's email both removing and adding contact jobs are enqueued" do
     student = create(:student)
 
     assert_enqueued_jobs 3 do
@@ -85,7 +85,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test 'when updating one\'s first_name no jobs are enqueued' do
+  test "when updating one's first_name no jobs are enqueued" do
     student = create(:student)
     assert_no_enqueued_jobs do
       student.email = "alt_#{student.first_name}"
