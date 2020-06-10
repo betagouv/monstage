@@ -7,8 +7,6 @@ module Users
   #   teacher (any teacher can check & help students [they can choose class_room])
   #   other (involve psychologists, teacher assistants etc...)
   class SchoolManagement < User
-    include UserAdmin
-
     validates :first_name,
               :last_name,
               :role,
