@@ -60,4 +60,37 @@ class UserTest < ActiveSupport::TestCase
     refute user.valid?
     assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
   end
+
+  test '#add_to_contacts is called whenever a user is created' do
+    assert_enqueued_jobs 1, only: AddContactToSyncEmailDeliveryJob do
+      student = create(:student)
+      student.confirm
+    end
+  end
+
+  test '#RemoveContactFromSyncEmailDeliveryJob is called whenever a user is anonymized' do
+    student = create(:student)
+    assert_enqueued_jobs 1, only: RemoveContactFromSyncEmailDeliveryJob do
+      student.anonymize
+    end
+  end
+
+  test "when updating one's email both removing and adding contact jobs are enqueued" do
+    student = create(:student)
+
+    assert_enqueued_jobs 3 do
+      student.email = "alt_#{student.email}"
+      student.save #1
+      student.confirm #2 #3 Cannot avoid to launch the job twice.
+    end
+  end
+
+  test "when updating one's first_name no jobs are enqueued" do
+    student = create(:student)
+    assert_no_enqueued_jobs do
+      student.email = "alt_#{student.first_name}"
+      student.save
+      student.confirm
+    end
+  end
 end

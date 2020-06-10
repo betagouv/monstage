@@ -2,8 +2,6 @@
 
 module Users
   class Statistician < User
-    include UserAdmin
-
     rails_admin do
       configure :last_sign_in_at, :datetime
       configure :created_at, :datetime

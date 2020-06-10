@@ -10,7 +10,7 @@ class AnonymizeUserJobTest < ActiveJob::TestCase
   teardown { ActionMailer::Base.deliveries = [] }
 
   test 'send email' do
-    AnonymizeUserJob.perform_now(recipient_email: 'fourcade.m@gmail.com')
+    AnonymizeUserJob.perform_now(email: 'fourcade.m@gmail.com')
     assert_emails 1
   end
 end
