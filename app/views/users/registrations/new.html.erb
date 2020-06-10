@@ -4,18 +4,16 @@
     <p  class="text-center mb-0"><%= link_to "J'ai déjà un compte", new_user_session_path %></p>
   </header>
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
-    <%= f.rg2a_explain_required_asterisk %>
     <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
     <%= f.text_field :type, hidden: true %>
-    <%= f.text_field :phone, hidden: true %>
 
     <% if can?(:choose_school, resource) %>
       <%= react_component(
         "AutocompleteSchool",
         classes: 'col-12',
         label: "Nom (ou ville) de mon collège",
-        required: true,
+        required: false,
         resourceName: :user,
         selectClassRoom: can?(:choose_class_room, resource),
         existingSchool: resource.school.as_json,
@@ -26,15 +24,13 @@
     <div class="form-group">
       <%= f.label :last_name do %>
         Nom
-        <%= f.rg2a_required_content_tag %>
       <% end %>
-      <%= f.text_field :last_name, class: 'form-control', required: true %>
+      <%= f.text_field :last_name, class: 'form-control' %>
     </div>
 
     <div class="form-group">
       <%= f.label :first_name do %>
         Prénom
-        <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.text_field :first_name, class: 'form-control', required: true %>
     </div>
@@ -42,7 +38,6 @@
     <div class="form-group">
       <%= f.label :role do %>
         Fonction
-        <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --' }, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
     </div>
@@ -52,14 +47,13 @@
       <div class="form-group" data-controller="a11y-date-input">
         <%= f.label :birth_date do %>
           Date de naissance
-          <%= f.rg2a_required_content_tag %>
         <% end %>
         <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: 'jj/mm/aaaa', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
         <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
       </div>
 
-      <div class="form-group">
-        <div class="label">Sexe <abbr title="(obligatoire)">*</abbr></div>
+      <div class="form-group form-check form-check-inline">
+        <div class="label">Sexe</div>
         <div class="custom-control custom-radio">
           <%= f.radio_button :gender,
                              "f",
@@ -85,7 +79,6 @@
     <div class="form-group">
       <%= f.label :email do %>
           <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-          <%= f.rg2a_required_content_tag %>
           <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
       <% end %>
       <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
@@ -96,17 +89,20 @@
     <div class="form-group">
       <%= f.label :phone do %>
         <%= 'Numéro de mobile' %>
-        <%= f.rg2a_required_content_tag %>
         <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
       <% end %>
-      <%= react_component("CountryPhoneSelect") %>
+      <%= react_component("CountryPhoneSelect", 
+        { 
+          name: 'user[phone]',
+          value: resource.phone
+        })
+      %>
     </div>
 
     <div class="form-group">
       <%= f.label :password do %>
         Créer un mot de passe
         <small class="form-text text-muted"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
-        <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true %>
     </div>
@@ -114,7 +110,6 @@
     <div class="form-group">
       <%= f.label :password_confirmation do %>
         Ressaisir le mot de passe
-        <%= f.rg2a_required_content_tag %>
       <% end %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true %>
     </div>
@@ -136,6 +131,7 @@
           <%= f.label :handicap_present, class: 'custom-control-label' do %>
             <i class="fas fa-universal-access float-right fa-3x ml-2" style="color: rgb(42,120,228);"></i>
             J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap.
+            <small class="text-muted">(optionnel)</small>
           <% end %>
         </div>
       </div>

@@ -187,9 +187,6 @@ class AutocompleteSchool extends React.Component {
       <div className="form-group">
         <label htmlFor={`${resourceName}_school_city`}>
           {label}
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
         </label>
 
         <div className="input-group">
@@ -299,9 +296,6 @@ class AutocompleteSchool extends React.Component {
       <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
         <label>
           Collège
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
         </label>
         {isWaitingCitySelection && (
           <input

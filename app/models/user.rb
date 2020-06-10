@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
+  before_validation :clean_phone
   after_create :send_confirmation_sms
 
   # school_managements includes different roles
@@ -24,7 +25,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name,
             presence: true
   validates :phone, uniqueness: true, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
-    message: "Numéro de téléphone invalide" }, allow_blank: true
+    message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
   validates :email, format: { with: Devise.email_regexp }, on: :create
 
@@ -132,5 +133,10 @@ class User < ApplicationRecord
     list do
       scopes [:kept]
     end
+  end
+
+  private
+  def clean_phone
+    self.phone = phone.delete(' ') unless phone.nil?
   end
 end
