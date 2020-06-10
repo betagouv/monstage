@@ -7,6 +7,7 @@ FactoryBot.define do
     sequence(:email) { |n| "jean#{n}-claude@dus.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
+    confirmation_sent_at { Time.now}
     accept_terms { true }
 
     factory :student, class: 'Users::Student', parent: :user do

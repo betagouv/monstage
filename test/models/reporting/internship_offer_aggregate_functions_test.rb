@@ -4,6 +4,7 @@ require 'test_helper'
 module Reporting
   class InternshipOfferAggregateFunctionsTest < ActiveSupport::TestCase
     setup do
+
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
       weeks = [::Week.first, ::Week.last]
