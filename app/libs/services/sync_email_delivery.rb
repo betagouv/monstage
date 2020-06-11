@@ -8,7 +8,7 @@ module Services
       monstage_id: 'e3_T',
       type: 'e4_T',
       environment: 'e5_T',
-      confirmed_at: 'e6_T'
+      confirmed_at: 'e6_D'
     }.freeze
 
     def add_contact(user:)
@@ -76,6 +76,7 @@ module Services
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:monstage_id]] = user.id.to_s
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:type]] = user.type
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:environment]] = Rails.env
+      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:confirmed_at]] = user.confirmed_at
       custom_fields
     end
 
