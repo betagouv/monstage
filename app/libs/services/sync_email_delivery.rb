@@ -88,7 +88,7 @@ module Services
     def response_ok?(response:)
      return false if response.nil?
 
-     response.status.to_i.between?(200, 299)
+     response.status_code.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)

@@ -9,8 +9,6 @@ class User < ApplicationRecord
 
   include DelayedDeviseEmailSender
 
-  after_save :add_to_contacts, if: :saved_change_to_confirmed_at?
-
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
   # 2.3.4. can register
@@ -113,17 +111,12 @@ class User < ApplicationRecord
     anonymize
   end
 
-  def add_to_contacts
-    return if email_previous_change.blank?
-
-    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
-  end
-
   # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
-    return if email_previous_change.try(:first).nil?
+    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
 
+    return if email_previous_change.try(:first).nil?
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
       email: email_previous_change.first
     )
