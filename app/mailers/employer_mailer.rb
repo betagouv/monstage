@@ -18,4 +18,12 @@ class EmployerMailer < ApplicationMailer
     mail(to: @employer.email,
          subject: 'Action requise – Gérez vos candidatures')
   end
+
+  def internship_application_canceled_by_student_email(internship_application:)
+    puts 'in internship_application_canceled_by_student_email !'
+    @internship_application = internship_application
+
+    mail(to: @internship_application.internship_offer.employer.email,
+         subject: "Information – Annulation de candidature")
+  end
 end

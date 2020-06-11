@@ -36,7 +36,7 @@ module Dashboard
       private
 
       def valid_transition?
-        %w[approve! reject! signed! cancel!].include?(params[:transition])
+        %w[approve! reject! signed! cancel! cancel_by_student!].include?(params[:transition])
       end
 
       def find_internship_offer

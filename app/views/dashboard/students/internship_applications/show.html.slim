@@ -32,6 +32,13 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
             = " Modifier"
           span.mx-1= " "
           = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-primary'
+      - if @internship_application.submitted? || @internship_application.approved?
+          = render "dashboard/internship_offers/internship_applications/action_modal",
+              internship_application: @internship_application,
+              aasm_target: :cancel_by_student!,
+              modal_opener_label: 'Décliner',
+              modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
+              fa_icon: "fa-ban"
 
   #tab-convention-detail data-target='dashboard-students-internship-application.conventionDetail'
     .row

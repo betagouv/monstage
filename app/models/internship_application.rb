@@ -118,6 +118,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def transition_with_email
+    # NOTE: where is it used ?
     new_state = aasm.to_state
     update!("#{new_state}_at": Time.now.utc)
     mailer = new_state == :submitted ? EmployerMailer : StudentMailer
@@ -128,7 +129,13 @@ class InternshipApplication < ApplicationRecord
 
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :expired, :canceled, :convention_signed
+    state :submitted,
+          :approved,
+          :rejected,
+          :expired,
+          :canceled,
+          :canceled_by_student,
+          :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc {|*_args|
@@ -176,6 +183,17 @@ class InternshipApplication < ApplicationRecord
       update!("canceled_at": Time.now.utc)
       StudentMailer.internship_application_canceled_email(internship_application: self)
                     .deliver_later
+    }
+    end
+
+    event :cancel_by_student do
+      transitions from: %i[submitted approved],
+                  to: :canceled_by_student,
+                  after: proc {|*_args|
+      update!("canceled_at": Time.now.utc)
+      EmployerMailer.internship_application_canceled_by_student_email(
+        internship_application: self
+      ).deliver_later
     }
     end
 
