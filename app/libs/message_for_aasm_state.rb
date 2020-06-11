@@ -87,7 +87,7 @@ class MessageForAasmState
       <p>#{internship_offer.employer.formal_name},</p>
       <p>
        Je ne suis pas en mesure d'accepter votre offre de stage "#{internship_offer.title}" prévu
-      pour la semaine #{week.short_select_text_method}. Voici pourquoi :
+      pour la semaine #{week.short_select_text_method}, car :
       </p>
     HTML
   end
