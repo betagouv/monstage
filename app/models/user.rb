@@ -27,7 +27,7 @@ class User < ApplicationRecord
   validates :phone, uniqueness: true, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
     message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
-  validates :email, format: { with: Devise.email_regexp }, on: :create
+  validates :email, format: { with: Devise.email_regexp }, allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
@@ -117,7 +117,7 @@ class User < ApplicationRecord
   def send_confirmation_sms
     return unless phone.present?
     create_phone_token
-    SendSmsJob.perform_later(self)
+    # SendSmsJob.perform_later(self)
   end
 
   def create_phone_token
@@ -135,8 +135,14 @@ class User < ApplicationRecord
     end
   end
 
+  def email_required?
+    true unless phone.present?
+  end
+
   private
   def clean_phone
     self.phone = phone.delete(' ') unless phone.nil?
   end
+
+  
 end

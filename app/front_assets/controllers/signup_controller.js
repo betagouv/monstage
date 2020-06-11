@@ -75,4 +75,14 @@ export default class extends Controller {
       this.wssClient.disconnect();
     } catch (e) {}
   }
+
+  chooseEmail() {
+    $('.select-channel .row').hide()
+    $('.email').removeClass("d-none")
+  }
+
+  choosePhone() {
+    $('.select-channel .row').hide()
+    $('.phone').removeClass("d-none")
+  }
 }

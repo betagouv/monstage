@@ -1,7 +1,11 @@
-.onboarding-card.onboarding-card-lg.mb-4
-  header.header-account
-
+.onboarding-card.onboarding-card-sm.mb-4
   - if !@confirmable_user
+    header.header-account.mb-2
+      .row.mx-0 style=("height: 250px") 
+        .col-12.d-flex.h-100
+          .row.align-self-end.ma-0
+            h1.h2.mb-5.mx-3 Encore une petite étape...
+
     p.alert.alert-danger
       = "Aucun compte n'est lié au téléphone: #{params[:phone]}."
       br
@@ -16,15 +20,19 @@
       = link_to "connecter", new_user_session_path(phone: params[:phone]), class: 'text-white'
 
   - else
-    h1.h3.text-blue.mt-4.mb-3.text-center.mb-0 Encore une petite étape...
-
-    p.text-center
-      span.confirmation-text= "Votre compte a bien été enregistré "
-      strong= "(#{params[:phone]})"
-      = "."
-      br
-      | Vous venez de recevoir un sms afin de confirmer votre inscription.
-    .onboarding-card.onboarding-card-sm.mb-4
+    header.header-account.mb-2
+      .row.mx-0 style=("height: 250px") 
+        .col-12.d-flex.h-100
+          .row.align-self-end.ma-0
+            h1.h2.mb-5.mx-3 Encore une petite étape...
+            br
+            p.mx-3
+              span.confirmation-text= "Votre compte a bien été enregistré "
+              strong= "(#{params[:phone]})"
+              = "."
+              br
+              | Vous venez de recevoir un sms afin de confirmer votre inscription.
+    .body
       = form_tag phone_validation_path, method: :post do
         = hidden_field_tag :phone, params[:phone]
         .form-group

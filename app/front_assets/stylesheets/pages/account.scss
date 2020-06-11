@@ -5,3 +5,25 @@
 .form-check-inline .label { 
   margin: 0 2em 0 0
 }
+
+.select-channel .container {
+  width: 100px;
+  height: 100px;
+  margin: 10px auto;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.select-channel .image {
+  border:1px solid $input-border-color;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px 5px;
+  &:hover {
+    border: 1px solid #2a10ff;
+  }
+  img {
+    margin: 0 auto;
+  }
+}

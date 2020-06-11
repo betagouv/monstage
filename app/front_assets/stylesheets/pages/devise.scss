@@ -1,5 +1,10 @@
 .header-account{
-  margin: 2rem 0;
+  padding: 0;
+  background: #F6F8FC 0% 0% no-repeat padding-box;
+  min-height: 250px;
+  .link-account a {
+    color: #DA000C
+  }
 }
 .btn-clear-city{
   background-color: $input-bg;
