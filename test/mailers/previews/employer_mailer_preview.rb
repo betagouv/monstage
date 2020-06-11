@@ -15,4 +15,14 @@ class EmployerMailerPreview < ActionMailer::Preview
 
     EmployerMailer.internship_application_submitted_email(internship_application: internship_application)
   end
+
+  def internship_application_canceled_by_student_email
+    internship_application = InternshipApplication.canceled_by_student.first
+    message_builder = MessageForAasmState.new(
+      internship_application: internship_application,
+      aasm_target: :cancel_by_student!
+    )
+    message_builder.assigned_rich_text_attribute
+    EmployerMailer.internship_application_canceled_by_student_email(internship_application: internship_application)
+  end
 end
