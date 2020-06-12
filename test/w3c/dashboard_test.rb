@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'application_system_test_case'
 
 module W3c
-  class DashboardTest < ActionDispatch::IntegrationTest
+  class DashboardTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
 
@@ -15,8 +15,7 @@ module W3c
       end
       sign_in(employer)
       run_request_and_cache_response(report_as: 'dashboard_internship_offers_path') do
-        get dashboard_internship_offers_path
-        assert_response :success
+        visit dashboard_internship_offers_path
       end
     end
 
@@ -24,8 +23,7 @@ module W3c
       stage_dev = create(:internship_offer)
       sign_in(stage_dev.employer)
       run_request_and_cache_response(report_as: 'edit_dashboard_internship_offer_path') do
-        get edit_dashboard_internship_offer_path(id: stage_dev.to_param)
-        assert_response :success
+        visit edit_dashboard_internship_offer_path(id: stage_dev.to_param)
       end
     end
 
@@ -33,8 +31,7 @@ module W3c
       employer = create(:employer)
       sign_in(employer)
       run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
-        get new_dashboard_internship_offer_path
-        assert_response :success
+        visit new_dashboard_internship_offer_path
       end
     end
 
@@ -53,8 +50,7 @@ module W3c
         report_as = "custom_dashboard_path_#{role}"
         run_request_and_cache_response(report_as: report_as) do
           sign_in(user)
-          get user.custom_dashboard_path
-          assert_response :success
+          visit user.custom_dashboard_path
         end
       end
     end
@@ -68,8 +64,7 @@ module W3c
 
       sign_in(school_manager)
       run_request_and_cache_response(report_as: "school_manager dashboard_school_users_path") do
-        get dashboard_school_users_path(school)
-        assert_response :success
+        visit dashboard_school_users_path(school)
       end
     end
 
@@ -79,8 +74,7 @@ module W3c
       create(:class_room, school: school)
       sign_in(school_manager)
       run_request_and_cache_response(report_as: "school_manager dashboard_school_class_rooms_path") do
-        get dashboard_school_class_rooms_path(school)
-        assert_response :success
+        visit dashboard_school_class_rooms_path(school)
       end
     end
 
@@ -89,8 +83,7 @@ module W3c
       school_manager = create(:school_manager, school: school)
       sign_in(school_manager)
       run_request_and_cache_response(report_as: "school_manager edit_dashboard_school_path") do
-        get edit_dashboard_school_path(school)
-        assert_response :success
+        visit edit_dashboard_school_path(school)
       end
     end
 
@@ -101,8 +94,7 @@ module W3c
       class_room = create(:class_room, school: school)
       sign_in(teacher)
       run_request_and_cache_response(report_as: "school_manager dashboard_school_class_room_path") do
-        get dashboard_school_class_room_path(school, class_room)
-        assert_response :success
+        visit dashboard_school_class_room_path(school, class_room)
       end
     end
 
@@ -113,8 +105,7 @@ module W3c
       student = create(:student, school: school)
       sign_in(teacher)
       run_request_and_cache_response(report_as: "school_manager dashboard_school_students_path") do
-        get dashboard_school_students_path(school)
-        assert_response :success
+        visit dashboard_school_students_path(school)
       end
     end
   end
