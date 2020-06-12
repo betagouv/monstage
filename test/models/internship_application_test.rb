@@ -153,19 +153,21 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition via cancel! changes aasm_state from approved to rejected' do
+  test 'transition via cancel_by_employer! changes ' \
+       'aasm_state from approved to rejected' do
     internship_application = create(:internship_application, :approved)
     assert_changes -> { internship_application.reload.aasm_state },
                    from: 'approved',
-                   to: 'canceled' do
+                   to: 'canceled_by_employer' do
       freeze_time do
         assert_changes -> { internship_application.reload.canceled_at },
                        from: nil,
                        to: Time.now.utc do
           mock_mail = MiniTest::Mock.new
           mock_mail.expect(:deliver_later, true)
-          StudentMailer.stub :internship_application_canceled_email, mock_mail do
-            internship_application.cancel!
+          StudentMailer.stub :internship_application_canceled_by_employer_email,
+                              mock_mail do
+                              internship_application.cancel_by_employer!
           end
           mock_mail.verify
         end
@@ -209,9 +211,11 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     student_2 = create(:student)
     internship_offer_1 = create(:internship_offer, weeks: weeks)
     internship_offer_2 = create(:internship_offer, weeks: weeks)
-    internship_application_to_be_canceled = create(:internship_application, :approved,
-                                                   internship_offer_week: internship_offer_1.internship_offer_weeks.first,
-                                                   student: student)
+    internship_application_to_be_canceled_by_employer = create(
+      :internship_application, :approved,
+      internship_offer_week: internship_offer_1.internship_offer_weeks.first,
+      student: student
+    )
     internship_application_to_be_signed = create(:internship_application, :approved,
                                                  internship_offer_week: internship_offer_2.internship_offer_weeks.first,
                                                  student: student)
@@ -220,7 +224,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                                                     student: student_2)
     internship_application_ignored_by_student = create(:internship_application, :approved,
                                                        internship_offer_week: internship_offer_1.internship_offer_weeks.first)
-    assert_changes -> { internship_application_to_be_canceled.reload.aasm_state },
+    assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
                    from: 'approved',
                    to: 'expired' do
       internship_application_to_be_signed.signed!

@@ -76,7 +76,7 @@ module Dashboard
                     rejected
                     expired
                     convention_signed
-                    canceled
+                    canceled_by_employer
                     canceled_by_student]
         internship_applications = states.inject({}) do |accu, state|
           accu[state] = create(:internship_application, state, student: student)

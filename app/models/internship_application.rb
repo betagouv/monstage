@@ -34,7 +34,8 @@ class InternshipApplication < ApplicationRecord
 
   has_rich_text :approved_message
   has_rich_text :rejected_message
-  has_rich_text :canceled_message
+  has_rich_text :canceled_by_employer_message
+  has_rich_text :canceled_by_student_message
   has_rich_text :motivation
 
   paginates_per PAGE_SIZE
@@ -134,7 +135,7 @@ class InternshipApplication < ApplicationRecord
           :approved,
           :rejected,
           :expired,
-          :canceled,
+          :canceled_by_employer,
           :canceled_by_student,
           :convention_signed
 
@@ -153,7 +154,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :approve do
-      transitions from: %i[submitted canceled rejected],
+      transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
                   after: proc {|*_args|
       update!("approved_at": Time.now.utc)
@@ -177,12 +178,12 @@ class InternshipApplication < ApplicationRecord
     }
     end
 
-    event :cancel do
+    event :cancel_by_employer do
       transitions from: %i[drafted submitted approved],
-                  to: :canceled,
+                  to: :canceled_by_employer,
                   after: proc {|*_args|
       update!("canceled_at": Time.now.utc)
-      StudentMailer.internship_application_canceled_email(internship_application: self)
+      StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
                     .deliver_later
     }
     end

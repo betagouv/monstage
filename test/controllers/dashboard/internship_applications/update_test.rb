@@ -79,21 +79,46 @@ module InternshipApplications
       assert_equal "OK", internship_application.rejected_message.try(:to_plain_text)
       assert InternshipApplication.last.approved?
     end
-    test 'PATCH #update with cancel! send email, change aasm_state' do
+
+    test 'PATCH #update with cancel_by_employer! send email, change aasm_state' do
       internship_application = create(:internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
       assert_enqueued_emails 1 do
         patch(dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
-              params: { transition: :cancel!,
-                        internship_application: { canceled_message: 'OK' } })
+              params: { transition: :cancel_by_employer!,
+                        internship_application: { canceled_by_employer_message: 'OK' } })
         assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
       internship_application.reload
 
-      assert_equal "OK", internship_application.canceled_message.try(:to_plain_text)
-      assert internship_application.canceled?
+      assert_equal "OK", internship_application.canceled_by_employer_message.try(:to_plain_text)
+      assert internship_application.canceled_by_employer?
+    end
+
+    test 'PATCH #update with cancel_by_student! send email, change aasm_state' do
+      student = create(:student)
+      internship_application = create(:internship_application, :submitted, student: student)
+
+      sign_in(internship_application.student)
+
+      assert_enqueued_emails 1 do
+        patch(
+          dashboard_internship_offer_internship_application_path(
+            internship_application.internship_offer, internship_application
+          ),
+          params: { transition: :cancel_by_student!,
+                    internship_application: { canceled_by_student_message: 'OK' }
+                  }
+        )
+        # assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
+        assert_redirected_to dashboard_students_internship_applications_path(student)
+      end
+      internship_application.reload
+
+      assert_equal "OK", internship_application.canceled_by_student_message.try(:to_plain_text)
+      assert internship_application.canceled_by_student?
     end
 
     test 'PATCH #update with lol! fails gracefully' do
