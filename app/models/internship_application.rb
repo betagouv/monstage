@@ -119,16 +119,6 @@ class InternshipApplication < ApplicationRecord
     internship_offer&.school
   end
 
-  def transition_with_email
-    # NOTE: where is it used ?
-    new_state = aasm.to_state
-    update!("#{new_state}_at": Time.now.utc)
-    mailer = new_state == :submitted ? EmployerMailer : StudentMailer
-    mailer.send(:"internship_application_#{new_state}_email",
-                internship_application: self)
-          .deliver_later
-  end
-
   aasm do
     state :drafted, initial: true
     state :submitted,
@@ -216,5 +206,11 @@ class InternshipApplication < ApplicationRecord
     return true if new_record?
     return false if created_at < Date.parse("01/09/2020")
     true
+  end
+
+  def back_to_submitted # DO NOT COMMIT ME
+    return unless Rails.env.development?
+
+    update_columns(canceled_at: nil, aasm_state: "submitted")
   end
 end
