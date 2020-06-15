@@ -207,10 +207,5 @@ class InternshipApplication < ApplicationRecord
     return false if created_at < Date.parse("01/09/2020")
     true
   end
-
-  def back_to_submitted # DO NOT COMMIT ME
-    return unless Rails.env.development?
-
-    update_columns(canceled_at: nil, aasm_state: "submitted")
-  end
 end
+
