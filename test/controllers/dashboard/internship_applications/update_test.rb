@@ -112,7 +112,6 @@ module InternshipApplications
                     internship_application: { canceled_by_student_message: 'OK' }
                   }
         )
-        # assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
         assert_redirected_to dashboard_students_internship_applications_path(student)
       end
       internship_application.reload
