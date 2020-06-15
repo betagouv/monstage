@@ -79,7 +79,6 @@ module InternshipOffers
     end
 
     test 'GET #new as Employer with duplicate_id with old offer' do
-      operator = create(:operator)
       internship_offer = create(:internship_offer)
       internship_offer.update(description_rich_text: nil, employer_description_rich_text: nil)
       internship_offer.update_column(:description, 'woot')

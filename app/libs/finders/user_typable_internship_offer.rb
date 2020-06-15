@@ -37,17 +37,13 @@ module Finders
     end
 
     def school_members_query
-      query = InternshipOffer.kept
-                             .in_the_future
-                             .published
-                             .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
-                             .ignore_max_candidates_reached
-                             .ignore_max_internship_offer_weeks_reached
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
-      end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
+      query = keywords_and_params_query do
+        InternshipOffer.kept
+                       .in_the_future
+                       .published
+                       .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+                       .ignore_max_candidates_reached
+                       .ignore_max_internship_offer_weeks_reached
       end
       if !user.missing_school_weeks? && user.school
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
@@ -59,36 +55,24 @@ module Finders
     end
 
     def employer_query
-      query = user.internship_offers.kept
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      keywords_and_params_query do
+        user.internship_offers.kept
       end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      end
-      query
     end
 
     def operator_query
-      query = InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      query = keywords_and_params_query do
+        InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
       end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      elsif user.department_name.present?
+      if user.department_name.present?
         query = query.merge(query.limited_to_department(user: user))
       end
       query
     end
 
     def statistician_query
-      query = InternshipOffer.kept
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
-      end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
+      query = keywords_and_params_query do
+        InternshipOffer.kept
       end
       if user.department_name
         query = query.merge(query.limited_to_department(user: user))
@@ -97,25 +81,15 @@ module Finders
     end
 
     def visitor_query
-      query = InternshipOffer.kept.in_the_future.published
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      keywords_and_params_query do
+        InternshipOffer.kept.in_the_future.published
       end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      end
-      query
     end
 
     def god_query
-      query = InternshipOffer.kept
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      keywords_and_params_query do
+        InternshipOffer.kept
       end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      end
-      query
     end
 
     def keyword_params
@@ -136,6 +110,17 @@ module Finders
       end
 
       params[:radius]
+    end
+
+    def keywords_and_params_query
+      query = yield
+      if keyword_params
+        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+      end
+      if coordinate_params
+        query = query.merge(nearby_query_part(query, coordinate_params))
+      end
+      query
     end
   end
 end
