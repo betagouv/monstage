@@ -96,56 +96,69 @@
         </div>
       <% end %>
 
-      <div class="select-channel my-4">
-        <label>
-          Comment vous contacter ?
-        </label>
+      <% if can?(:register_with_phone, resource) %>
+        <div class="select-channel my-4">
+          <label>
+            Comment vous contacter ?
+          </label>
 
-        <div>
-          <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
-        </div>
-        <div class='row my-2'>
-          <div class='col-6'>
-            <div class='image letter text-center' data-action="click->signup#chooseEmail">
-              <div class="container d-flex" >
-                <%= image_tag asset_pack_path('media/images/onboarding/email.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
+          <div>
+            <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
+          </div>
+          <div class='row my-2'>
+            <div class='col-6'>
+              <div class='image letter text-center' data-action="click->signup#chooseEmail">
+                <div class="container d-flex" >
+                  <%= image_tag asset_pack_path('media/images/onboarding/email.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
+                </div>
+                <div class='font-weight-bold'>Mail</div>
               </div>
-              <div class='font-weight-bold'>Mail</div>
+            </div>
+            <div class='col-6'>
+              <div class='image phone text-center' data-action="click->signup#choosePhone">
+                <div class="container d-flex">
+                  <%= image_tag asset_pack_path('media/images/onboarding/sms.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
+                </div>
+                <div class='font-weight-bold'>SMS</div>
+              </div>
             </div>
           </div>
-          <div class='col-6'>
-            <div class='image phone text-center' data-action="click->signup#choosePhone">
-              <div class="container d-flex">
-                <%= image_tag asset_pack_path('media/images/onboarding/sms.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
-              </div>
-              <div class='font-weight-bold'>SMS</div>
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div class="form-group email">
-        <%= f.label :email do %>
-            <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-            <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
-        <% end %>
-        <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+        <div class="form-group email">
+          <%= f.label :email do %>
+              <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+              <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+          <% end %>
+          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
 
-        <small class="d-none" data-target="signup.emailHint"></small>
-      </div>
+          <small class="d-none" data-target="signup.emailHint"></small>
+        </div>
 
-      <div class="form-group phone">
-        <%= f.label :phone do %>
-          <%= 'Numéro de mobile' %>
-          <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
-        <% end %>
-        <%= react_component("CountryPhoneSelect", 
-          { 
-            name: 'user[phone]',
-            value: resource.phone
-          })
-        %>
-      </div>
+        <div class="form-group phone">
+          <%= f.label :phone do %>
+            <%= 'Numéro de mobile' %>
+            <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+          <% end %>
+          <%= react_component("CountryPhoneSelect", 
+            { 
+              name: 'user[phone]',
+              value: resource.phone
+            })
+          %>
+        </div>
+      <% else %>
+        <div class="form-group">
+          <%= f.label :email do %>
+              <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+              <%= f.rg2a_required_content_tag %>
+              <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+          <% end %>
+          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+
+          <small class="d-none" data-target="signup.emailHint"></small>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :password do %>

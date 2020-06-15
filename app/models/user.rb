@@ -5,8 +5,10 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
-
+         :recoverable, :rememberable, :validatable, :confirmable, :trackable,
+         authentication_keys: [:login]
+  attr_writer :login
+  
   include DelayedDeviseEmailSender
 
   before_validation :clean_phone
@@ -24,10 +26,11 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: true, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
+  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
     message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
-  validates :email, format: { with: Devise.email_regexp }, allow_blank: true
+  validates :email, uniqueness: { allow_blank: true }, 
+    format: { with: Devise.email_regexp }, allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
@@ -135,11 +138,33 @@ class User < ApplicationRecord
     end
   end
 
+  def self.find_for_database_authentication(warden_conditions)
+    p 'in find for DB'
+    p 'in find for DB'
+    p 'in find for DB'
+    p 'in find for DB'
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions.to_h).where(["phone = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    elsif conditions.has_key?(:phone) || conditions.has_key?(:email)
+      where(conditions.to_h).first
+    end
+  end
+
   def email_required?
-    true unless phone.present?
+    #true unless phone.present?
+    false
+  end
+
+  def will_save_change_to_email?
+    false
   end
 
   private
+  def login
+    @login || self.username || self.email
+  end
+
   def clean_phone
     self.phone = phone.delete(' ') unless phone.nil?
   end

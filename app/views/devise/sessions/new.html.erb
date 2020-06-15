@@ -43,15 +43,16 @@
         </div>
       </div>
 
-      <div class="form-group email d-none">
+      <div class="form-group email">
         <%= f.label :email do %>
           Adresse électronique (e-mail)
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', required: true, value: params[:email] %>
+        <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', value: params[:email] %>
+        <small data-target="signup.emailHint"></small>
       </div>
 
-      <div class="form-group phone d-none">
+      <div class="form-group phone">
         <%= f.label :phone do %>
           <%= 'Numéro de mobile' %>
           <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
