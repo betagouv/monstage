@@ -216,12 +216,6 @@ module Dashboard
                     count: 0
       assert_select "tr.test-internship-offer-#{internship_offer_owned_by_operator.id}",
                     count: 1
-      assert_select "tr.test-internship-offer-#{internship_offer_delegated_to_opereator.id}",
-                    count: 1
-      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer_delegated_to_opereator),
-                    count: 0
-      assert_select 'a[href=?]', internship_offer_path(internship_offer_delegated_to_opereator),
-                    count: 1
     end
 
     test 'GET #index as Operator displays api_internship_offers' do

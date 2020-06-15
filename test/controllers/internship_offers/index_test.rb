@@ -361,8 +361,16 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
-    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
-    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
+    included_internship_offer = create(:internship_offer,
+                                        operators: [operator],
+                                        employer: user_operator,
+                                        zipcode: 60580
+                                      )
+    excluded_internship_offer = create(:internship_offer,
+                                        operators: [operator],
+                                        employer: user_operator,
+                                        zipcode: 95270
+                                      )
     sign_in(user_operator)
     get internship_offers_path
     assert_response :success
@@ -373,8 +381,16 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: nil)
-    included_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 60580)
-    excluded_internship_offer = create(:internship_offer,  operators: [operator], zipcode: 95270)
+    included_internship_offer = create(:internship_offer,
+                                        operators: [operator],
+                                        employer: user_operator,
+                                        zipcode: 60580
+                                      )
+    excluded_internship_offer = create(:internship_offer,
+                                        operators: [operator],
+                                        employer: user_operator,
+                                        zipcode: 95270
+                                      )
     sign_in(user_operator)
     get internship_offers_path
     assert_response :success
@@ -386,8 +402,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: nil)
     excluded_internship_offer = create(:internship_offer, operators: [operator],
+                                                          employer: user_operator,
                                                           coordinates: Coordinates.paris)
     included_internship_offer = create(:internship_offer, operators: [operator],
+                                                          employer: user_operator,
                                                           coordinates: Coordinates.bordeaux)
     sign_in(user_operator)
     get internship_offers_path(latitude: Coordinates.bordeaux[:latitude],

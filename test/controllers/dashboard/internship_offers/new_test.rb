@@ -33,11 +33,6 @@ module InternshipOffers
                     count: 0 # "ensure user select kind of group"
       assert_select '.form-group-select-group.d-none', count: 1
 
-      assert_select '#internship_offer_with_operator_true[checked]', count: 0
-      assert_select '#internship_offer_with_operator_false[checked]', count: 0
-      assert_select '#internship_offer_with_operator_unknown[checked]', count: 1
-      assert_select '.operators-check-boxes.d-none', count: 1
-
       assert_select '#internship_type_true[checked]', count: 0
       assert_select '#internship_type_false[checked]', count: 0
       assert_select '.form-group-select-max-candidates.d-none', count: 1
@@ -76,12 +71,6 @@ module InternshipOffers
                     count: 0 # "ensure user select kind of group"
       assert_select '.form-group-select-group.d-none', count: 0
       assert_select '.form-group-select-group', count: 1
-
-      assert_select '#internship_offer_with_operator_true[checked]', count: 1
-      assert_select '#internship_offer_with_operator_false[checked]', count: 0
-      assert_select '#internship_offer_with_operator_unknown[checked]', count: 0
-      assert_select '.operators-check-boxes.d-none', count: 0
-      assert_select '.operators-check-boxes', count: 1
 
       assert_select '#internship_type_true[checked]', count: 0
       assert_select '#internship_type_false[checked]', count: 1
