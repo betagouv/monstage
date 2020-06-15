@@ -84,10 +84,11 @@ class User < ApplicationRecord
   end
 
   def gender_text
-    return "" if gender.blank?
-    return "Madame" if gender.eql?('f')
-    return "Monsieur" if gender.eql?('m')
-    ""
+    return '' if gender.blank?
+    return 'Madame' if gender.eql?('f')
+    return 'Monsieur' if gender.eql?('m')
+
+    ''
   end
 
   def formal_name
@@ -110,7 +111,8 @@ class User < ApplicationRecord
 
     discard!
 
-    AnonymizeUserJob.perform_later(email_for_job)
+    AnonymizeUserJob.perform_later(email: email_for_job)
+    RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
   end
 
   def destroy
@@ -131,6 +133,17 @@ class User < ApplicationRecord
   def phone_confirmable?
     phone_token.present? && Time.now < phone_token_validity
   end
+  
+  # in case of an email update, former one has to be withdrawn
+  def after_confirmation
+    super
+    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
+
+    return if email_previous_change.try(:first).nil?
+    RemoveContactFromSyncEmailDeliveryJob.perform_later(
+      email: email_previous_change.first
+    )
+  end
 
   rails_admin do
     list do
@@ -139,10 +152,6 @@ class User < ApplicationRecord
   end
 
   def self.find_for_database_authentication(warden_conditions)
-    p 'in find for DB'
-    p 'in find for DB'
-    p 'in find for DB'
-    p 'in find for DB'
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
       where(conditions.to_h).where(["phone = :value OR lower(email) = :value", { :value => login.downcase }]).first

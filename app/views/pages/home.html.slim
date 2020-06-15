@@ -4,13 +4,15 @@
 
     .row.no-gutters.py-5
       .col-12
-        h1.text-white-sm.text-center.mb-3
-          | Candidater pour vos
+        h1.text-white.text-center.mb-3
+          | Postulez à vos
           br
           | offres de stages préférés.
         = react_component("SearchInternshipOffer",
-                              { url: internship_offers_path },
-                              { class: 'col-12' })
+                              { url: internship_offers_path,
+                              className: 'flex-column flex-sm-row not-focusable-search-bar' },
+                              { class: 'col-12' }) do
+              .input-loading-skeleton
     .row.d-none.d-sm-flex.pt-3.pt-sm-5
       .col-12.pt-5
         p.scroller.text-center
@@ -25,7 +27,7 @@
     .row
       .col-12
 
-        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous accompagner avant, pendant, et après votre stage ?
+        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous accompagner avant, pendant, et après votre stage
 
     .row.pb-5.flex-md-reverse-column
       .col-12.col-md-6

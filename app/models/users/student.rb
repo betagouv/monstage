@@ -2,34 +2,6 @@
 
 module Users
   class Student < User
-    include UserAdmin
-
-    rails_admin do
-      list do
-        fields *UserAdmin::DEFAULTS_FIELDS
-        field :school do
-          pretty_value do
-            school = bindings[:object].school
-            if school.is_a?(School)
-              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
-              bindings[:view].content_tag(:a, school.name, href: path)
-            end
-          end
-        end
-      end
-
-      export do
-        field :first_name
-        field :last_name
-        field :confirmed_at
-        field :departement, :string do
-          export_value do
-            bindings[:object].school&.department
-          end
-        end
-      end
-    end
-
     belongs_to :school
     belongs_to :missing_school_weeks, optional: true,
                                       foreign_key: 'missing_school_weeks_id',

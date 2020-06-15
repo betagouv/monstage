@@ -2,8 +2,6 @@
 
 module Users
   class God < User
-    include UserAdmin
-
     def custom_dashboard_path
       url_helpers.rails_admin_path
     end

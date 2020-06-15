@@ -2,8 +2,6 @@
 
 module Users
   class Operator < User
-    include UserAdmin
-
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 
@@ -18,6 +16,7 @@ module Users
         field :operator
       end
     end
+
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError

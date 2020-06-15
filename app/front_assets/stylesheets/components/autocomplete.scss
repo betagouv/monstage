@@ -77,7 +77,6 @@ $handleWidth: 60px;
 
 // search bar
 .search-bar{
-  &:hover{box-shadow: 0 1px 6px 0 rgba(32,33,36,0.28);}
   // all white
   .input-group-text,
   .form-control{
@@ -88,13 +87,9 @@ $handleWidth: 60px;
 // mobile search bar
 @include media-breakpoint-down(xs) {
   .search-bar{
-    background-color: $gray-200;
-    padding: 1rem 0;
 
     // by default split controls in two equal elements with rounded sides
     .input-group-search{
-      width: 50%;
-
       .input-group-text,
       .form-control{
         border-radius: 0;
@@ -109,25 +104,6 @@ $handleWidth: 60px;
         border-top-right-radius: 29px;
         border-bottom-right-radius: 29px;
       }
-
-      // collapsible behavior for one of the two inputs
-      // one is 75%, other 25% [kinda circled]
-      &.focus-expanded{
-        flex: 0 0 75%;
-        max-width: 75%;
-      }
-      &.focus-collapsed{
-        flex: 0 0 25%;
-        max-width: 25%;
-        input{
-          position: absolute;
-          top:-10000px;
-          width: 0;
-        }
-        .input-group-text{
-          border-radius: 29px;
-        }
-      }
     }
 
     // search button fullscreen
@@ -135,6 +111,35 @@ $handleWidth: 60px;
       border-radius: 0;
       display: block;
       width: 100%;
+    }
+  }
+
+  .focusable-search-bar{
+    .input-group-search{
+      width: 50%;
+    }
+    // collapsible behavior for one of the two inputs
+    // one is 75%, other 25% [kinda circled]
+    &.focus-expanded{
+      flex: 0 0 75%;
+      max-width: 75%;
+    }
+    &.focus-collapsed{
+      flex: 0 0 25%;
+      max-width: 25%;
+      input{
+        position: absolute;
+        top:-10000px;
+        width: 0;
+      }
+      .input-group-text{
+        border-radius: 29px;
+      }
+    }
+  }
+  .not-focusable-search-bar{
+    .input-group-search{
+      margin: .5rem 0;
     }
   }
 }

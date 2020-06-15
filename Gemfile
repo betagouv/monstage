@@ -35,6 +35,9 @@ gem 'newrelic_rpm'
 gem 'sentry-raven'
 gem 'ovh-rest'
 
+# email operator tool
+gem 'sendgrid-ruby'
+
 # acl
 gem 'cancancan'
 gem 'devise'
@@ -72,7 +75,6 @@ group :development do
 end
 
 group :test do
-
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara'
   gem 'minitest-reporters'

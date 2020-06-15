@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require 'application_system_test_case'
+
 module W3c
-  class HomeValidationTest < ActionDispatch::IntegrationTest
+  class HomeValidationTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
 
@@ -22,8 +23,7 @@ module W3c
       ].map do |page_path|
         run_request_and_cache_response(report_as: page_path.to_s) do
           path = Rails.application.routes.url_helpers.send(page_path)
-          get path
-          assert_response :success
+          visit path
         end
       end
     end
