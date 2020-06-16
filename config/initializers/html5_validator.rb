@@ -25,10 +25,11 @@ module Html5Validator
     yield
     basename = report_as.parameterize
     ext = '.html'
-    raise 'testing page without 200, not possible' if response.status != 200
+    # raise 'testing page without 200, not possible' if response.status != 200
 
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
-      fd.write(response.body)
+      find('#test-logo')
+      fd.write(page.body)
     end
   end
 end

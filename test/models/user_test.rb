@@ -63,7 +63,7 @@ class UserTest < ActiveSupport::TestCase
 
   test '#add_to_contacts is called whenever a user is created' do
     assert_enqueued_jobs 1, only: AddContactToSyncEmailDeliveryJob do
-      student = create(:student)
+      student = create(:student, confirmed_at: nil)
       student.confirm
     end
   end

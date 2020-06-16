@@ -1,3 +1,11 @@
+
+
+.bg-cover-image-homepage{
+background-image: url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+background-position: center center;
+background-repeat: no-repeat;
+background-size: cover;
+}
 @include media-breakpoint-up(sm) {
 
   .big-tagline{
@@ -5,17 +13,6 @@
     line-height: 30px;
   }
 
-  .bg-cover-image-homepage{
-    background-image: url('../images/homepage/mon-stage-de-3e-illustration.jpg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  .h1-home.text-white-sm,
-  .text-white-sm{
-    color: #fff;
-  }
 
   .flex-md-column{
     flex-direction: column !important;

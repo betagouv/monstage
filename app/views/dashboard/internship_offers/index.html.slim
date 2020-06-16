@@ -15,8 +15,8 @@
     .tab-pane.show.active
       .row.bc-light.br-1.bl-1.bb-1
         = react_component("SearchInternshipOffer",
-                          { url: dashboard_internship_offers_path },
-                          { class: 'col-12 py-3 filter-section' }) do
+                          { url: dashboard_internship_offers_path, className: 'flex-row focusable-search-bar' },
+                          { class: 'col-12 py-3' }) do
           .input-loading-skeleton
 
       .row.bc-light.br-1.bl-1.bb-1

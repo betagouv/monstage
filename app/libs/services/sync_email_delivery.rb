@@ -7,7 +7,8 @@ module Services
       role: 'e2_T',
       monstage_id: 'e3_T',
       type: 'e4_T',
-      environment: 'e5_T'
+      environment: 'e5_T',
+      confirmed_at: 'e6_D'
     }.freeze
 
     def add_contact(user:)
@@ -75,6 +76,7 @@ module Services
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:monstage_id]] = user.id.to_s
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:type]] = user.type
       custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:environment]] = Rails.env
+      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:confirmed_at]] = user.confirmed_at
       custom_fields
     end
 
@@ -87,7 +89,7 @@ module Services
     def response_ok?(response:)
      return false if response.nil?
 
-     response.status.to_i.between?(200, 299)
+     response.status_code.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)
