@@ -9,12 +9,14 @@ class MessageForAasmState
   # "exposed" attributes
   delegate :approved_message,
            :rejected_message,
-           :canceled_message,
+           :canceled_by_employer_message,
+           :canceled_by_student_message,
            to: :internship_application
 
   MAP_TARGET_TO_BUTTON_COLOR = {
     approve!: 'danger',
-    cancel!: 'outline-danger',
+    cancel_by_employer!: 'outline-danger',
+    cancel_by_student!: 'outline-danger',
     reject!: 'outline-danger'
   }.freeze
 
@@ -30,13 +32,15 @@ class MessageForAasmState
   #
   MAP_TARGET_TO_RICH_TEXT_ATTRIBUTE = {
     approve!: :approved_message,
-    cancel!: :canceled_message,
+    cancel_by_employer!: :canceled_by_employer_message,
+    cancel_by_student!: :canceled_by_student_message,
     reject!: :rejected_message
   }.freeze
 
   MAP_TARGET_TO_RICH_TEXT_INITIALIZER = {
     approve!: :on_approved_message,
-    cancel!: :on_canceled_message,
+    cancel_by_employer!: :on_canceled_by_employer_message,
+    cancel_by_student!: :on_canceled_by_student_message,
     reject!: :on_rejected_message
   }.freeze
 
@@ -72,10 +76,19 @@ class MessageForAasmState
     HTML
   end
 
-  def on_canceled_message
+  def on_canceled_by_employer_message
     <<~HTML.strip
       <p>Bonjour #{Presenters::User.new(student).formal_name},</p>
       <p>Votre candidature pour le stage "#{internship_offer.title}" est annulée pour la semaine #{week.short_select_text_method}.</p>
+    HTML
+  end
+
+  def on_canceled_by_student_message
+    <<~HTML.strip
+      <p>#{internship_offer.employer.formal_name},</p>
+      <p>Je ne suis pas en mesure d'accepter votre offre de stage
+      "#{internship_offer.title}" prévu pour la semaine
+      #{week.short_select_text_method}, car : </p>
     HTML
   end
 end
