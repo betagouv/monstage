@@ -398,13 +398,12 @@ $(function() {
       for (var i=0; i < (value.repeat ? value.repeat : 1); i++) {
         var isFile = value.type=='file'
         if (value.tag == 'input') {
-          item.append(`<input class="form-control"
-                              id="${value.name}"
-                              name="${value.name}"
-                              type="${value.type}"
-                              ${(isFile ? '' : 'placeholder="' + _this.T(value.placeholder) + '"')}
-                              ${(isFile ? '' : 'value="' + (defaultValue || ''))}
-                              />`)
+          var $input = $(`<input class="form-control" id="${value.name}" name="${value.name}" type="${value.type}" />`);
+          if (!isFile) {
+             $input.attr('placeholder', _this.T(value.placeholder));
+             $input.val(defaultValue || '');
+          }
+          item.append($input);
         }
         else if (value.tag == 'textarea') {
           item.append('<textarea class="form-control" id="'+value.name+'" name="' + value.name + '" placeholder="' + _this.T(value.placeholder) + '" rows="' + value.rows + '">' + (defaultValue || '') + '</textarea>')
