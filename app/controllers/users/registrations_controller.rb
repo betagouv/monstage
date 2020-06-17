@@ -67,6 +67,7 @@ module Users
       else
         redirect_to(users_registrations_phone_standby_path(phone: params[:phone]),
                     flash: { alert: I18n.t('devise.confirmations.unconfirmed') })
+      end
     end
 
     # GET /resource/edit
