@@ -62,10 +62,11 @@ module Users
       user = User.where(phone: params[:phone]).first
       if user.try(:phone_confirmable?) && user.phone_token == params[:phone_token]
         user.update(phone_token: nil, phone_token_validity: nil, confirmed_at: Time.now)
-        redirect_to root_path, flash: { success: I18n.t('devise.confirmations.confirmed') }
+        redirect_to(root_path,
+                    flash: { success: I18n.t('devise.confirmations.confirmed') })
       else
-        redirect_to users_registrations_phone_standby_path(phone: params[:phone]), alert: "Le téléphone n'a pas pu être validé."
-      end
+        redirect_to(users_registrations_phone_standby_path(phone: params[:phone]),
+                    flash: { alert: I18n.t('devise.confirmations.unconfirmed') })
     end
 
     # GET /resource/edit
@@ -129,7 +130,7 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
-        users_registrations_phone_standby_path(phone: resource.phone) 
+        users_registrations_phone_standby_path(phone: resource.phone)
       else
         users_registrations_standby_path(email: resource.email)
       end
