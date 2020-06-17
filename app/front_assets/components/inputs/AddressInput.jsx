@@ -65,15 +65,7 @@ export default function AddressInput({
   return (
     <div>
       <div className="form-group">
-        <label id="downshift-0-label" Label className="label" htmlFor={`${resourceName}_autocomplete`}>
-          Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
-          <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
-            <i className="fas fa-question-circle" />
-          </a>
-        </label>
+
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
@@ -82,6 +74,7 @@ export default function AddressInput({
             itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
           >
             {({
+              getLabelProps,
               getInputProps,
               getItemProps,
               getMenuProps,
@@ -90,6 +83,20 @@ export default function AddressInput({
               selectedItem,
             }) => (
               <div>
+                <label
+                  {...getLabelProps()}
+                  className= "label"
+                  htmlFor=`${resourceName}_autocomplete`
+                >
+                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
+                  <abbr title="(obligatoire)" aria-hidden="true">
+                    *
+                  </abbr>
+                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                    <i className="fas fa-question-circle" />
+                  </a>
+                </label>
+
                 <div id="test-input-full-address">
                   <input
                     {...getInputProps({
