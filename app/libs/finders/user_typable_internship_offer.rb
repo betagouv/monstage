@@ -37,7 +37,7 @@ module Finders
     end
 
     def school_members_query
-      query = keywords_and_params_query do
+      query = keywords_and_coordinates_query do
         InternshipOffer.kept
                        .in_the_future
                        .published
@@ -55,14 +55,14 @@ module Finders
     end
 
     def employer_query
-      keywords_and_params_query do
+      keywords_and_coordinates_query do
         user.internship_offers.kept
       end
     end
 
     def operator_query
-      query = keywords_and_params_query do
-        InternshipOffer.kept.mines_and_sumbmitted_to_operator(user: user)
+      query = keywords_and_coordinates_query do
+        InternshipOffer.kept.submitted_by_operator(user: user)
       end
       if user.department_name.present?
         query = query.merge(query.limited_to_department(user: user))
@@ -71,7 +71,7 @@ module Finders
     end
 
     def statistician_query
-      query = keywords_and_params_query do
+      query = keywords_and_coordinates_query do
         InternshipOffer.kept
       end
       if user.department_name
@@ -81,13 +81,13 @@ module Finders
     end
 
     def visitor_query
-      keywords_and_params_query do
+      keywords_and_coordinates_query do
         InternshipOffer.kept.in_the_future.published
       end
     end
 
     def god_query
-      keywords_and_params_query do
+      keywords_and_coordinates_query do
         InternshipOffer.kept
       end
     end
@@ -112,7 +112,7 @@ module Finders
       params[:radius]
     end
 
-    def keywords_and_params_query
+    def keywords_and_coordinates_query
       query = yield
       if keyword_params
         query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))

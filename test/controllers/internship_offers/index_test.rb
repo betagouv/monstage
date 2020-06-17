@@ -409,7 +409,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_absence_of(internship_offer: excluded_internship_offer)
   end
 
-  test "GET #index lists offers that an operator's collegue has created" do
+  test "GET #index lists offers that an operator's colleague has created" do
     operator = create(:operator)
     user_operator_1 = create(:user_operator, operator: operator, department_name: nil)
     user_operator_2 = create(:user_operator, operator: operator, department_name: nil)
