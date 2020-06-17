@@ -43,7 +43,7 @@ fr:
       not_found_in_database: "%{authentication_keys} ou mot de passe incorrect."
       timeout: Votre session est expirée, veuillez vous reconnecter pour continuer.
       unauthenticated: Vous devez vous connecter ou vous enregistrer pour continuer.
-      unconfirmed: "Vous devez confirmer votre compte par %{authentication_keys}".
+      unconfirmed: "Vous devez confirmer votre compte par %{authentication_keys}."
     mailer:
       confirmation_instructions:
         action: Confirmer mon courriel
