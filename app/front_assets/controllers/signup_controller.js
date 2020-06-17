@@ -4,7 +4,13 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'label'];
+  static targets = ['handicapGroup', 
+                    'emailHint', 
+                    'emailInput', 
+                    'label', 
+                    'emailBloc', 
+                    'phoneBloc', 
+                    'selectChannel'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
@@ -77,14 +83,14 @@ export default class extends Controller {
   }
 
   chooseEmail() {
-    $('.select-channel .row').hide()
-    $('.email').removeClass("d-none")
-    $('.phone').remove()
+    $(this.selectChannelTarget).hide()
+    $(this.emailBlocTarget).removeClass("d-none")
+    $(this.phoneBlocTarget).remove()
   }
 
   choosePhone() {
-    $('.select-channel .row').hide()
-    $('.phone').removeClass("d-none")
-    $('.email').remove()
+    $(this.selectChannelTarget).hide()
+    $(this.phoneBlocTarget).removeClass("d-none")
+    $(this.emailBlocTarget).remove()
   }
 }

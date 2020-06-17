@@ -19,7 +19,7 @@
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
-      <div class="select-channel my-4">
+      <div data-target="signup.selectChannel" class="select-channel my-4">
         <label>
           Comment vous Connecter ?
         </label>
@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="form-group email d-none">
+      <div data-target="signup.emailBloc" class="form-group email d-none">
         <%= f.label :email do %>
           Adresse électronique (e-mail)
           <%= f.rg2a_required_content_tag %>
@@ -52,7 +52,7 @@
         <small data-target="signup.emailHint"></small>
       </div>
 
-      <div class="form-group phone d-none">
+      <div data-target="signup.phoneBloc" class="form-group phone d-none">
         <%= f.label :phone do %>
           <%= 'Numéro de mobile' %>
           <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
@@ -75,13 +75,11 @@
           <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
         <% end %>
       </div>
-
-      <% if devise_mapping.rememberable? %>
-        <div class="form-group form-check">
-          <%= f.check_box :remember_me, class: 'form-check-input' %>
-          <%= f.label :remember_me, class: 'form-check-label' %>
-        </div>
-      <% end %>
+      
+      <div class="form-group form-check">
+        <%= f.check_box :remember_me, class: 'form-check-input' %>
+        <%= f.label :remember_me, class: 'form-check-label' %>
+      </div>
 
       <div class="actions d-flex d-sm-block text-center">
         <%= f.submit t('.sign_in'), class: 'btn btn-primary' %>

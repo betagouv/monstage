@@ -122,7 +122,7 @@ class User < ApplicationRecord
   def send_confirmation_sms
     return unless phone.present?
     create_phone_token
-    # SendSmsJob.perform_later(self)
+    SendSmsJob.perform_later(self)
   end
 
   def create_phone_token
@@ -161,7 +161,6 @@ class User < ApplicationRecord
   end
 
   def email_required?
-    #true unless phone.present?
     false
   end
 
