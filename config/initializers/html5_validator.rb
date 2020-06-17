@@ -26,7 +26,7 @@ module Html5Validator
     basename = report_as.parameterize
     ext = '.html'
     # raise 'testing page without 200, not possible' if response.status != 200
-    find('#test-logo')
+    # find('#test-logo')
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
