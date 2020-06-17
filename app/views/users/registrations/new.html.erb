@@ -125,7 +125,7 @@
           </div>
         </div>
 
-        <div class="form-group email">
+        <div class="form-group email d-none">
           <%= f.label :email do %>
               <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
@@ -135,7 +135,7 @@
           <small class="d-none" data-target="signup.emailHint"></small>
         </div>
 
-        <div class="form-group phone">
+        <div class="form-group phone d-none">
           <%= f.label :phone do %>
             <%= 'Numéro de mobile' %>
             <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>

@@ -2,14 +2,14 @@
 
 module Users
   class SessionsController < Devise::SessionsController
-    before_action :configure_sign_in_params, only: [:new]
+    before_action :configure_sign_in_params, only: %i[new create]
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
 
     def create
-      params[:user][:phone] = params[:user][:phone].delete(' ')
       if params[:user][:phone].present?
-        user = User.where(phone: params[:user][:phone]).first
+        phone = params[:user][:phone].delete(' ')
+        user = User.where(phone: phone).first
         if user && user.valid_password?(params[:user][:password])
           sign_in(user)
           redirect_to root_path

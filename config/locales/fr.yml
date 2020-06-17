@@ -15,6 +15,8 @@ fr:
         signed_up_but_unconfirmed: Un message d'activation vous a été envoyé par email. Veuillez suivre les instructions qu'il contient.
     failure:
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
+    passwords:
+      update: 'Mot de passe mis à jour.'
   activerecord:
     models:
       sector:

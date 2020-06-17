@@ -79,10 +79,12 @@ export default class extends Controller {
   chooseEmail() {
     $('.select-channel .row').hide()
     $('.email').removeClass("d-none")
+    $('.phone').remove()
   }
 
   choosePhone() {
     $('.select-channel .row').hide()
     $('.phone').removeClass("d-none")
+    $('.email').remove()
   }
 }

@@ -111,6 +111,7 @@ module Users
           accept_terms
           role
           phone
+          email
         ]
       )
     end

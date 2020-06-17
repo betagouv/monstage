@@ -1,22 +1,67 @@
-<div class='onboarding-card onboarding-card-sm mb-4'>
-  <header class="header-account">
-    <h1 class="h2 text-center mb-0"><%= t('.forgot_your_password') %></h1>
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
+  <header class="header-account mb-2">
+    <div class="row mx-0" style="height: 250px">
+      <div class="col-8 d-flex h-100">
+        <div class='row align-self-end ma-0'>
+          <h1 class="h2 mb-5 mx-3"><%= t('.forgot_your_password') %></h1>
+        </div>
+      </div>
+    </div>
   </header>
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-    <%= f.rg2a_explain_required_asterisk %>
-    <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
-    <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité. Pour cela rappelez-nous l’adresse électronique associée à votre compte.</p>
-    <div class="form-group">
-      <%= f.label :email do %>
-        Adresse électronique (e-mail)
-        <%= f.rg2a_required_content_tag %>
-      <% end %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control', required: true %>
-    </div>
+  <div class="body">
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= f.rg2a_explain_required_asterisk %>
+      <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
+      <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité.</p>
+      <p>Pour cela rappelez-nous l’adresse électronique ou le nuémro de téléphone mobile associé à votre compte.</p>
+      
+      
+      <div class="select-channel my-4">
+        <div class='row my-2'>
+          <div class='col-6'>
+            <div class='image letter text-center' data-action="click->signup#chooseEmail">
+              <div class="container d-flex" >
+                <%= image_tag asset_pack_path('media/images/onboarding/email.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
+              </div>
+              <div class='font-weight-bold'>Mail</div>
+            </div>
+          </div>
+          <div class='col-6'>
+            <div class='image phone text-center' data-action="click->signup#choosePhone">
+              <div class="container d-flex">
+                <%= image_tag asset_pack_path('media/images/onboarding/sms.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
+              </div>
+              <div class='font-weight-bold'>SMS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group email d-none">
+        <%= f.label :email do %>
+            <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+            <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+        <% end %>
+        <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
 
-    <div class="actions d-flex d-sm-block text-center">
-      <%= f.submit "Envoyer", class: 'btn btn-primary' %>
-    </div>
-  <% end %>
+        <small class="d-none" data-target="signup.emailHint"></small>
+      </div>
+      <div class="form-group phone d-none">
+        <%= f.label :phone do %>
+          <%= 'Numéro de mobile' %>
+          <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+        <% end %>
+        <%= react_component("CountryPhoneSelect", 
+          { 
+            name: 'user[phone]',
+            value: resource.phone
+          })
+        %>
+      </div>
+    
+      <div class="actions d-flex d-sm-block text-center">
+        <%= f.submit "Envoyer", class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
 </div>
 <%= render "devise/shared/links" %>
