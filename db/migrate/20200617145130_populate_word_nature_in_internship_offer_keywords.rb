@@ -28,11 +28,11 @@ class PopulateWordNatureInInternshipOfferKeywords < ActiveRecord::Migration[6.0]
       if keyword.word.length <= 2
         make_unsearchable(id: keyword.id)
       else
-        natures = Services::SyncDictionnary.new(word: keyword.word)
-                                           .natures
-                                           .sort
-                                           .join(SEPARATOR)
-                                           .truncate(199)
+        natures = Services::SyncAcademyDictionnary.new(word: keyword.word)
+                                                  .natures
+                                                  .sort
+                                                  .join(SEPARATOR)
+                                                  .truncate(199)
 
         if natures == '' || all_rejected_natures?(natures: natures)
           update_keyword(id: keyword.id, natures: '', searchable: false)

@@ -1,5 +1,5 @@
 module Services
-  class SyncDictionnary
+  class SyncAcademyDictionnary
 
     DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'
     ANOMALY = ['AN']
