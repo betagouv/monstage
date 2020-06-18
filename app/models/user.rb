@@ -12,7 +12,7 @@ class User < ApplicationRecord
   include DelayedDeviseEmailSender
 
   before_validation :clean_phone
-  after_create :send_confirmation_sms
+  after_create :send_sms_token
 
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
@@ -39,6 +39,8 @@ class User < ApplicationRecord
   delegate :application, to: Rails
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
+
+  MAX_DAILY_PHONE_RESET = 3
 
   def self.drh
     Users::Employer.where(email: 'drh@betagouv.fr').first
@@ -119,7 +121,15 @@ class User < ApplicationRecord
     anonymize
   end
 
-  def send_confirmation_sms
+  def reset_password_by_phone
+    if phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
+      send_sms_token
+      self.update(phone_password_reset_count: phone_password_reset_count + 1,
+                  last_phone_password_reset: Time.now)
+    end
+  end
+
+  def send_sms_token
     return unless phone.present?
     create_phone_token
     SendSmsJob.perform_later(self)
@@ -132,6 +142,13 @@ class User < ApplicationRecord
 
   def phone_confirmable?
     phone_token.present? && Time.now < phone_token_validity
+  end
+
+  def confirm_phone_token
+    self.update(phone_token: nil, 
+                phone_token_validity: nil, 
+                confirmed_at: Time.now,
+                phone_password_reset_count: 0)
   end
   
   # in case of an email update, former one has to be withdrawn

@@ -94,4 +94,18 @@ class UserTest < ActiveSupport::TestCase
       student.confirm
     end
   end
+
+  test "#reset_password_by_phone when max count" do
+    student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 3)
+    student.reset_password_by_phone
+    assert_equal student.phone_password_reset_count, 3
+    assert student.last_phone_password_reset < 1.minute.ago
+  end
+
+  test "#reset_password_by_phone when resetable" do
+    student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 1)
+    student.reset_password_by_phone
+    assert_equal student.phone_password_reset_count, 2
+    assert student.last_phone_password_reset > 1.minute.ago
+  end
 end

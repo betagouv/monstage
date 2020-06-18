@@ -8,7 +8,7 @@ module Users
         phone = params[:user][:phone].delete(' ')
         user = User.where(phone: phone).first
         if user
-          user.send_confirmation_sms
+          user.reset_password_by_phone
           redirect_to phone_edit_password_path(phone: phone)
         else
            super
@@ -25,7 +25,7 @@ module Users
       phone = params[:phone].delete(' ')
       user = User.where(phone: phone).first
       if user.try(:phone_confirmable?) && user.phone_token == params[:phone_token]
-        user.update(phone_token: nil, phone_token_validity: nil, confirmed_at: Time.now)
+        user.confirm_phone_token
         redirect_to root_path, flash: { success: I18n.t('devise.passwords.updated') }
       else
         redirect_to phone_edit_password_path(phone: params[:phone]), alert: "Le téléphone mobile ou le code est invalide."

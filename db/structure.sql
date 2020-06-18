@@ -867,7 +867,9 @@ CREATE TABLE public.users (
     missing_school_weeks_id bigint,
     role public.user_role,
     phone_token character varying,
-    phone_token_validity timestamp without time zone
+    phone_token_validity timestamp without time zone,
+    phone_password_reset_count integer DEFAULT 0,
+    last_phone_password_reset timestamp without time zone
 );
 
 
@@ -1860,6 +1862,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200605093223'),
 ('20200612075359'),
 ('20200615113918'),
-('20200612075359');
+('20200618141221');
 
 
