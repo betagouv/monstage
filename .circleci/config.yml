@@ -82,11 +82,11 @@ jobs: # a collection of steps
 
       - run:
           name: Run TestUnit
-          command: PARALLEL_WORKERS=3 bundle exec rake test
+          command: PARALLEL_WORKERS=2 bundle exec rake test
 
       - run:
           name: Run TestSystem
-          command: PARALLEL_WORKERS=2 bundle exec rake test:system
+          command: PARALLEL_WORKERS=1 bundle exec rake test:system
 
       - run:
           name: w3c validation
