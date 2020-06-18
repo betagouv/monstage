@@ -2,23 +2,17 @@
 
 module Users
   class SessionsController < Devise::SessionsController
+    include Phonable
     before_action :configure_sign_in_params, only: %i[new create]
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
 
     def create
-      if params[:user][:phone].present?
-        phone = params[:user][:phone].delete(' ')
-        user = User.where(phone: phone).first
-        if user && user.valid_password?(params[:user][:password])
-          sign_in(user)
+      if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
+          sign_in(fetch_user_by_phone)
           redirect_to root_path
-        else
-          super
-        end
-      else
-        super
       end
+      super
     end
 
 
