@@ -64,7 +64,7 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group">
+      <div className="form-group"  id="test-input-full-address">
 
         <div className="container-downshift">
           <Downshift
@@ -84,9 +84,9 @@ export default function AddressInput({
             }) => (
               <div>
                 <label
-                  {...getLabelProps()}
-                  className= "label"
-                  htmlFor=`${resourceName}_autocomplete`
+                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
+
+
                 >
                   Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
                   <abbr title="(obligatoire)" aria-hidden="true">
@@ -97,7 +97,7 @@ export default function AddressInput({
                   </a>
                 </label>
 
-                <div id="test-input-full-address">
+                <div>
                   <input
                     {...getInputProps({
                       onChange: inputChange,

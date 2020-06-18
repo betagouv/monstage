@@ -439,7 +439,6 @@ $(function() {
     else {
       $('body').append($element)
     }
-
   }
 
   // thanks
