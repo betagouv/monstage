@@ -25,6 +25,7 @@ class CountryPhoneSelect extends React.Component {
         inputStyle={{width: '100%', 'borderRadius': '3px'}}
         inputProps={{
           name: this.props.name,
+          id: 'phone-input'
         }}
       />
     )

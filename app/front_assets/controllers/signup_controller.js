@@ -82,15 +82,35 @@ export default class extends Controller {
     } catch (e) {}
   }
 
+  checkEmail() {
+    this.displayField(this.phoneBlocTarget, this.emailBlocTarget)
+  }
+  
   chooseEmail() {
-    $(this.selectChannelTarget).hide()
-    $(this.emailBlocTarget).removeClass("d-none")
-    $(this.phoneBlocTarget).remove()
+    $('#channel-phone').attr('checked', false)
+    $('#channel-email').attr('checked', true)
+    this.checkEmail()
   }
 
+  checkPhone() {
+    this.displayField(this.emailBlocTarget, this.phoneBlocTarget)
+  }
+  
   choosePhone() {
-    $(this.selectChannelTarget).hide()
-    $(this.phoneBlocTarget).removeClass("d-none")
-    $(this.emailBlocTarget).remove()
+    $('#channel-email').attr('checked', false)
+    $('#channel-phone').attr('checked', true)
+    this.checkPhone()
+  }
+
+  displayField(fieldToHide, fieldToDisplay) {
+    $(fieldToHide).hide()
+    $(fieldToHide).addClass('d-none')
+    $(fieldToDisplay).hide()
+    $(fieldToDisplay).removeClass('d-none')
+    $(fieldToDisplay).slideDown()
+  }
+
+  focusPhone() {
+    $('#phone-input').focus()
   }
 }

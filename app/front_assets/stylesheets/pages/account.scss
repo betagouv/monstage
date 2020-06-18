@@ -6,24 +6,69 @@
   margin: 0 2em 0 0
 }
 
-.select-channel .container {
-  width: 100px;
-  height: 100px;
-  margin: 10px auto;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
+.select-channel {
+  .channel-radio-label {
+    height: 150px;
+    width: 100%;
+    border:1px solid $input-border-color;
+    border-radius: 5px;
+    margin: auto;
+    position: relative;
+    transition: 0.5s;
+    cursor: pointer;
+    transition: all .7s ease-in-out;
+    &:hover {
+      border: 1px solid #2a10ff;
+    }
+    .image-channel {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      left: calc(50% - 50px);
+      top: calc(50% - 60px);
+      transition: transform 0.2s linear;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .image-sms {
+      background-image: url('../images/onboarding/sms_grey.svg');
+    }
+    .image-email {
+      background-image: url('../images/onboarding/email_grey.svg');
+    }
+  }
+  .channel-radio-label:hover > .image-channel {
+    transform: scale(1.1);
+  }
+  .channel-radio-label:hover > .image-sms {
+    background-image: url('../images/onboarding/sms_blue.svg');
+  }
+  .channel-radio-label:hover > .image-email {
+    background-image: url('../images/onboarding/email_blue.svg');
+  }
+  .channel-radio-label > span {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, 80%);
+  }
+  input[type="radio"]{
+    -webkit-appearance: none;
+  }
+  input[type="radio"]:checked + .channel-radio-label {
+    .image-channel {
+      transform: scale(1.1); 
+    }
+    .image-email {
+      background-image: url('../images/onboarding/email_blue.svg');
+    }
+    .image-sms {
+      background-image: url('../images/onboarding/sms_blue.svg');
+    }
+  }
+  
 }
-
-.select-channel .image {
-  border:1px solid $input-border-color;
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 10px 5px;
-  &:hover {
-    border: 1px solid #2a10ff;
-  }
-  img {
-    margin: 0 auto;
-  }
+.react-tel-input .form-control:focus, .react-tel-input .form-control.open {
+  border-color: #2a10ff !important;
+  box-shadow: 0 0 0 0.2rem rgba(16, 0, 143, 0.25) !important;
 }

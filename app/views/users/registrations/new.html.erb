@@ -1,5 +1,5 @@
 <div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
-  <header class="header-account mb-2">
+  <header class="header-account header-onboarding-card mt-0 mb-2">
     <div class="row mx-0" style="height: 250px">
       <div class="col-6 d-flex h-100">
         <div class='row align-self-end ma-0'>
@@ -76,7 +76,7 @@
                                   class: 'custom-control-input',
                                   id: "select-gender-girl",
                                   required: true  %>
-                <%= f.label :gender, "féminin",
+                <%= f.label :gender, "Féminin",
                                     class: 'custom-control-label',
                                     for: "select-gender-girl" %>
               </div>
@@ -87,7 +87,7 @@
                                   "m",
                                   class: 'custom-control-input',
                                   id: "select-gender-boy"  %>
-                <%= f.label :gender, "masculin",
+                <%= f.label :gender, "Masculin",
                                     class: 'custom-control-label',
                                     for: "select-gender-boy" %>
               </div>
@@ -107,20 +107,34 @@
           </div>
           <div data-target="signup.selectChannel" class='row my-2'>
             <div class='col-6'>
-              <div class='image letter text-center' data-action="click->signup#chooseEmail">
-                <div class="container d-flex" >
-                  <%= image_tag asset_pack_path('media/images/onboarding/email.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
-                </div>
-                <div class='font-weight-bold'>Mail</div>
-              </div>
+              <%= radio_button_tag :channel,
+                                  "email",
+                                  false,
+                                  id: 'channel-email',
+                                  'data-action' => "change->signup#checkEmail" %>
+                <%= label_tag :channel, "Email",
+                                    class: 'channel-radio-label',
+                                    for: "select-channel-email",
+                                    "data-action" => "click->signup#chooseEmail" do %>
+                  <div class="image-channel image-email"></div>
+                  <span>Email</span>
+                <% end %>
+
             </div>
             <div class='col-6'>
-              <div class='image phone text-center' data-action="click->signup#choosePhone">
-                <div class="container d-flex">
-                  <%= image_tag asset_pack_path('media/images/onboarding/sms.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
-                </div>
-                <div class='font-weight-bold'>SMS</div>
-              </div>
+              <%= radio_button_tag :channel,
+                                  "phone",
+                                  false,
+                                  class: 'channel-radio-button',
+                                  id: 'channel-phone',
+                                  'data-action' => "change->signup#checkPhone" %>
+                <%= label_tag :channel, "SMS",
+                                    class: 'channel-radio-label',
+                                    for: "select-channel-phone",
+                                    'data-action' => "click->signup#choosePhone" do %>
+                  <div class="image-channel image-sms"></div>
+                  <span>SMS</span>
+                <% end %>
             </div>
           </div>
         </div>
@@ -136,7 +150,7 @@
         </div>
 
         <div data-target="signup.phoneBloc" class="form-group phone d-none">
-          <%= f.label :phone do %>
+          <%= f.label :phone, 'data-action' => "click->signup#focusPhone" do %>
             <%= 'Numéro de mobile' %>
             <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
           <% end %>

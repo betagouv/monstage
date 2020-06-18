@@ -5,9 +5,9 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable,
-         authentication_keys: [:login]
-  attr_writer :login
+         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+         # authentication_keys: [:login]
+  #attr_writer :login
   
   include DelayedDeviseEmailSender
 
@@ -170,7 +170,7 @@ class User < ApplicationRecord
 
   private
   def login
-    @login || self.username || self.email
+    @login || self.email || self.phone
   end
 
   def clean_phone
