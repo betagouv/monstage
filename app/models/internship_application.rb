@@ -34,7 +34,8 @@ class InternshipApplication < ApplicationRecord
 
   has_rich_text :approved_message
   has_rich_text :rejected_message
-  has_rich_text :canceled_message
+  has_rich_text :canceled_by_employer_message
+  has_rich_text :canceled_by_student_message
   has_rich_text :motivation
 
   paginates_per PAGE_SIZE
@@ -49,6 +50,7 @@ class InternshipApplication < ApplicationRecord
   scope :remindable, lambda {
     submitted.not_reminded
              .where(submitted_at: 15.days.ago..7.days.ago)
+             .where(canceled_at: nil)
   }
 
   scope :expirable, lambda {
@@ -117,18 +119,15 @@ class InternshipApplication < ApplicationRecord
     internship_offer&.school
   end
 
-  def transition_with_email
-    new_state = aasm.to_state
-    update!("#{new_state}_at": Time.now.utc)
-    mailer = new_state == :submitted ? EmployerMailer : StudentMailer
-    mailer.send(:"internship_application_#{new_state}_email",
-                internship_application: self)
-          .deliver_later
-  end
-
   aasm do
     state :drafted, initial: true
-    state :submitted, :approved, :rejected, :expired, :canceled, :convention_signed
+    state :submitted,
+          :approved,
+          :rejected,
+          :expired,
+          :canceled_by_employer,
+          :canceled_by_student,
+          :convention_signed
 
     event :submit do
       transitions from: :drafted, to: :submitted, after: proc {|*_args|
@@ -145,7 +144,7 @@ class InternshipApplication < ApplicationRecord
     end
 
     event :approve do
-      transitions from: %i[submitted canceled rejected],
+      transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
                   after: proc {|*_args|
       update!("approved_at": Time.now.utc)
@@ -169,13 +168,24 @@ class InternshipApplication < ApplicationRecord
     }
     end
 
-    event :cancel do
+    event :cancel_by_employer do
       transitions from: %i[drafted submitted approved],
-                  to: :canceled,
+                  to: :canceled_by_employer,
                   after: proc {|*_args|
       update!("canceled_at": Time.now.utc)
-      StudentMailer.internship_application_canceled_email(internship_application: self)
+      StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
                     .deliver_later
+    }
+    end
+
+    event :cancel_by_student do
+      transitions from: %i[submitted approved],
+                  to: :canceled_by_student,
+                  after: proc {|*_args|
+      update!("canceled_at": Time.now.utc)
+      EmployerMailer.internship_application_canceled_by_student_email(
+        internship_application: self
+      ).deliver_later
     }
     end
 
@@ -198,3 +208,4 @@ class InternshipApplication < ApplicationRecord
     true
   end
 end
+

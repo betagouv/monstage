@@ -36,7 +36,13 @@ module Dashboard
       private
 
       def valid_transition?
-        %w[approve! reject! signed! cancel!].include?(params[:transition])
+        %w[
+          approve!
+          reject!
+          signed!
+          cancel_by_employer!
+          cancel_by_student!
+        ].include?(params[:transition])
       end
 
       def find_internship_offer
@@ -46,7 +52,8 @@ module Dashboard
       def optional_internship_application_params
         params.fetch(:internship_application) { {} }
               .permit(:approved_message,
-                      :canceled_message,
+                      :canceled_by_employer_message,
+                      :canceled_by_student_message,
                       :rejected_message,
                       :aasm_state)
       end

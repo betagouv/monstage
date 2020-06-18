@@ -106,9 +106,9 @@ foreman start -f Procfile.dev
 * run with browser `CHROME=1 rails test:system`
 
 
-### w3c (using vnu.jar, for now react components are not rendered)
+### w3c (using vnu.jar)
 
-```rails test:w3c```
+```./infra/test/w3c.sh```
 
 # Run: ci, review, staging, production
 

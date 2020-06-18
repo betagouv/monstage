@@ -296,7 +296,7 @@ class AutocompleteSchool extends React.Component {
 
     return (
       <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
-        <label>
+        <label htmlFor={`${resourceName}_school_name`}>
           Collège
           <abbr title="(obligatoire)" aria-hidden="true">
             *
@@ -369,7 +369,7 @@ class AutocompleteSchool extends React.Component {
             disabled
             className={`form-control ${classes || ''}`}
             type="text"
-            id={`${resourceName}_class_room`}
+            id={`${resourceName}_class_room_id`}
           />
         )}
 

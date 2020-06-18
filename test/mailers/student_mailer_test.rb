@@ -26,10 +26,12 @@ class StudentMailerTest < ActionMailer::TestCase
     assert_equal [internship_application.student.email], email.to
   end
 
-  test 'email sent when internship application is canceled' do
+  test 'email sent when internship application is canceled by employer' do
     internship_application = create(:internship_application)
 
-    email = StudentMailer.internship_application_canceled_email(internship_application: internship_application)
+    email = StudentMailer.internship_application_canceled_by_employer_email(
+      internship_application: internship_application
+    )
 
     email.deliver_now
     assert_emails 1

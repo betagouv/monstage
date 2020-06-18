@@ -24,6 +24,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     weeks.map do |week|
       find(:css, "label[for=internship_offer_week_ids_#{week.id}]").click
     end
+
     find("#internship_offer_autocomplete").fill_in(with: 'Paris, 13eme')
     find('#test-input-full-address #downshift-2-item-0').click
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"

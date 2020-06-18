@@ -15,6 +15,7 @@ module W3c
 
     test 'register as SchoolManagement' do
       run_request_and_cache_response(report_as: 'new_user_registration_path_SchoolManagement') do
+
         visit new_user_registration_path(as: 'SchoolManagement')
       end
     end
