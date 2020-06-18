@@ -16,9 +16,6 @@ Minitest::Retry.use!(
   exceptions_to_retry: [
     ActionView::Template::Error, # during test, sometimes fails on "unexpected token at ''", not fixable
     PG::InternalError,           # sometimes postgis ref system is not yet ready
-    DRb::DRbRemoteError,         # sometimes capybara is too quick to run a test
-    Selenium::WebDriver::Error::UnknownError, # sometimes Selenium is not yet ready
-    Selenium::WebDriver::Error::StaleElementReferenceError # again selenium...
   ]
 )
 
