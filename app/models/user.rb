@@ -130,7 +130,7 @@ class User < ApplicationRecord
     phone_token_validity: 1.hour.from_now)
   end
 
-  def phone_confirmable?(token)
+  def phone_confirmable?
     phone_token.present? && Time.now < phone_token_validity
   end
 
