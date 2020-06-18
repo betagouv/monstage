@@ -86,7 +86,7 @@ jobs: # a collection of steps
 
       - run:
           name: Run TestSystem
-          command: bundle exec rake test:system
+          command: PARALLEL_WORKERS=2 bundle exec rake test:system
 
       - run:
           name: w3c validation
