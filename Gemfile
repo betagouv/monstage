@@ -50,7 +50,7 @@ gem 'kaminari'
 gem 'validates_zipcode'
 gem 'email_inquire'
 
-# Http client
+# Http client, also used by mailtrap for review apps
 gem 'rest-client'
 
 # dev utils
