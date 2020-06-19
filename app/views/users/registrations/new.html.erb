@@ -4,7 +4,7 @@
       <div class="col-6 d-flex h-100">
         <div class='row align-self-end ma-0'>
           <h1 class="h2 mb-5 mx-3">Créer mon compte</h1>
-          <p  class="my-3 mx-3 link-account"><%= link_to "J'ai déjà un compte", new_user_session_path %></p>
+          <p  class="my-3 mx-3 link-account"><%= link_to "J'ai déjà un compte", new_user_session_path, class: 'text-danger' %></p>
         </div>
       </div>
       <div class="col-6 d-flex h-100 flex-row align-items-end justify-content-end">
@@ -97,47 +97,11 @@
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <div class="select-channel my-4">
-          <label>
-            Comment vous contacter ?
-          </label>
-
+        <%= render 'users/select_channel', label: 'Comment vous contacter ?' do %>
           <div>
             <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
           </div>
-          <div data-target="signup.selectChannel" class='row my-2'>
-            <div class='col-6'>
-              <%= radio_button_tag :channel,
-                                  "email",
-                                  false,
-                                  id: 'channel-email',
-                                  'data-action' => "change->signup#checkEmail" %>
-                <%= label_tag :channel, "Email",
-                                    class: 'channel-radio-label',
-                                    for: "select-channel-email",
-                                    "data-action" => "click->signup#chooseEmail" do %>
-                  <div class="image-channel image-email"></div>
-                  <span>Email</span>
-                <% end %>
-
-            </div>
-            <div class='col-6'>
-              <%= radio_button_tag :channel,
-                                  "phone",
-                                  false,
-                                  class: 'channel-radio-button',
-                                  id: 'channel-phone',
-                                  'data-action' => "change->signup#checkPhone" %>
-                <%= label_tag :channel, "SMS",
-                                    class: 'channel-radio-label',
-                                    for: "select-channel-phone",
-                                    'data-action' => "click->signup#choosePhone" do %>
-                  <div class="image-channel image-sms"></div>
-                  <span>SMS</span>
-                <% end %>
-            </div>
-          </div>
-        </div>
+        <% end %>
 
         <div data-target="signup.emailBloc" class="form-group email d-none">
           <%= f.label :email do %>

@@ -6,8 +6,6 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
-         # authentication_keys: [:login]
-  #attr_writer :login
   
   include DelayedDeviseEmailSender
 
@@ -172,15 +170,6 @@ class User < ApplicationRecord
     end
   end
 
-  def self.find_for_database_authentication(warden_conditions)
-    conditions = warden_conditions.dup
-    if login = conditions.delete(:login)
-      where(conditions.to_h).where(["phone = :value OR lower(email) = :value", { :value => login.downcase }]).first
-    elsif conditions.has_key?(:phone) || conditions.has_key?(:email)
-      where(conditions.to_h).first
-    end
-  end
-
   def email_required?
     false
   end
@@ -190,13 +179,8 @@ class User < ApplicationRecord
   end
 
   private
-  def login
-    @login || self.email || self.phone
-  end
 
   def clean_phone
     self.phone = phone.delete(' ') unless phone.nil?
   end
-
-
 end

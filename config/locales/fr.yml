@@ -162,7 +162,7 @@ fr:
         school: "Collège"
         gender: Sexe
         confirmed_at: Confirmé le
-        phone: Téléphone
+        phone: Téléphone mobile
       week:
         number: Numéro de semaine
         year: Année

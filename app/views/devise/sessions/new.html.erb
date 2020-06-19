@@ -4,7 +4,7 @@
       <div class="col-6 d-flex h-100">
         <div class='row align-self-end ma-0'>
           <h1 class="h2 mb-5 mx-3">Me connecter</h1>
-          <p  class="my-3 mx-3 link-account"><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path %></p>
+          <p  class="my-3 mx-3 link-account"><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: 'text-danger' %></p>
         </div>
       </div>
       <div class="col-6 d-flex h-100 flex-row align-items-end justify-content-end">
@@ -18,30 +18,8 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
-
-      <div data-target="signup.selectChannel" class="select-channel my-4">
-        <label>
-          Comment vous Connecter ?
-        </label>
-        <div class='row my-2'>
-          <div class='col-6'>
-            <div class='image letter text-center' data-action="click->signup#chooseEmail">
-              <div class="container d-flex" >
-                <%= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
-              </div>
-              <div class='font-weight-bold'>Mail</div>
-            </div>
-          </div>
-          <div class='col-6'>
-            <div class='image phone text-center' data-action="click->signup#choosePhone">
-              <div class="container d-flex">
-                <%= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), class:'row justify-content-center align-self-center', alt: "Mon stage de 3e", width: 50, height: 45 %>
-              </div>
-              <div class='font-weight-bold'>SMS</div>
-            </div>
-          </div>
-        </div>
-      </div>
+     
+      <%= render 'users/select_channel', label: 'Comment vous Connecter ?' %>
 
       <div data-target="signup.emailBloc" class="form-group email d-none">
         <%= f.label :email do %>

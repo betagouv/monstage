@@ -7,6 +7,7 @@ export default class extends Controller {
   static targets = ['handicapGroup', 
                     'emailHint', 
                     'emailInput', 
+                    'phoneInput', 
                     'label', 
                     'emailBloc', 
                     'phoneBloc', 
@@ -83,7 +84,7 @@ export default class extends Controller {
   }
 
   checkEmail() {
-    this.displayField(this.phoneBlocTarget, this.emailBlocTarget)
+    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
   
   chooseEmail() {
@@ -93,7 +94,7 @@ export default class extends Controller {
   }
 
   checkPhone() {
-    this.displayField(this.emailBlocTarget, this.phoneBlocTarget)
+    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
   }
   
   choosePhone() {
@@ -102,7 +103,8 @@ export default class extends Controller {
     this.checkPhone()
   }
 
-  displayField(fieldToHide, fieldToDisplay) {
+  displayField(fielfToClean, fieldToHide, fieldToDisplay) {
+    $(fielfToClean).val('')
     $(fieldToHide).hide()
     $(fieldToHide).addClass('d-none')
     $(fieldToDisplay).hide()

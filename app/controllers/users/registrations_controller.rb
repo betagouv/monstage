@@ -55,6 +55,7 @@ module Users
 
     # POST /resource
     def create
+      clean_phone_param
       super do |resource|
         @current_ability = Ability.new(resource)
       end

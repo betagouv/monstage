@@ -1,0 +1,39 @@
+<div data-target="signup.selectChannel" class="select-channel my-4">
+  <label>
+   <%= label %>
+  </label>
+  <%= yield %>
+  <div data-target="signup.selectChannel" class='row my-2'>
+    <div class='col-6'>
+      <%= radio_button_tag :channel,
+                          "email",
+                          false,
+                          id: 'channel-email',
+                          'data-action' => "change->signup#checkEmail" %>
+      <%= label_tag :channel, "Email",
+                            class: 'channel-radio-label',
+                            for: "select-channel-email",
+                            "data-action" => "click->signup#chooseEmail" do %>
+        <div class="image-channel image-email"></div>
+        <span>Email</span>
+      <% end %>
+    </div>
+    <div class='col-6'>
+      <%= radio_button_tag :channel,
+                          "phone",
+                          false,
+                          class: 'channel-radio-button',
+                          id: 'channel-phone',
+                          'data-action' => "change->signup#checkPhone" %>
+      <%= label_tag :channel,
+                    "SMS",
+                    class: 'channel-radio-label',
+                    for: "select-channel-phone",
+                    'data-action' => "click->signup#choosePhone" do %>
+        <div class="image-channel image-sms"></div>
+        <span>SMS</span>
+      <% end %>
+    </div>
+  </div>
+
+  
