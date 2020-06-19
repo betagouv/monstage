@@ -2,6 +2,8 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    include Phonable
+
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
@@ -59,9 +61,8 @@ module Users
     end
 
     def phone_validation
-      user = User.where(phone: params[:phone]).first
-      if user.try(:phone_confirmable?) && user.phone_token == params[:phone_token]
-        user.update(phone_token: nil, phone_token_validity: nil, confirmed_at: Time.now)
+      if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])
+        fetch_user_by_phone.confirm_by_phone!
         redirect_to(root_path,
                     flash: { success: I18n.t('devise.confirmations.confirmed') })
       else

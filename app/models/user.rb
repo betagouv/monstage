@@ -29,7 +29,7 @@ class User < ApplicationRecord
   validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
     message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
-  validates :email, uniqueness: { allow_blank: true }, 
+  validates :email, uniqueness: { allow_blank: true },
     format: { with: Devise.email_regexp }, allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
@@ -136,7 +136,7 @@ class User < ApplicationRecord
   end
 
   def create_phone_token
-    self.update(phone_token: sprintf('%04d',rand(10000)), 
+    self.update(phone_token: sprintf('%04d',rand(10000)),
     phone_token_validity: 1.hour.from_now)
   end
 
@@ -144,13 +144,17 @@ class User < ApplicationRecord
     phone_token.present? && Time.now < phone_token_validity
   end
 
-  def confirm_phone_token
+  def confirm_by_phone!
     self.update(phone_token: nil, 
                 phone_token_validity: nil, 
                 confirmed_at: Time.now,
                 phone_password_reset_count: 0)
   end
   
+  def check_phone_token?(token)
+    phone_confirmable? && phone_token == token
+  end
+
   # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
@@ -194,5 +198,5 @@ class User < ApplicationRecord
     self.phone = phone.delete(' ') unless phone.nil?
   end
 
-  
+
 end
