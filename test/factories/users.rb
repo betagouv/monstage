@@ -9,8 +9,8 @@ FactoryBot.define do
     confirmed_at { Time.now }
     confirmation_sent_at { Time.now}
     accept_terms { true }
-    phone_token { 'abc' }
-    phone_token_validity { '' }
+    phone_token { nil }
+    phone_token_validity { nil }
     phone_password_reset_count { 0 }
     last_phone_password_reset { 10.days.ago }
 

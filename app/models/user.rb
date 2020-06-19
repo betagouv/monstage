@@ -33,6 +33,7 @@ class User < ApplicationRecord
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
+  validate :email_or_phone
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -182,5 +183,12 @@ class User < ApplicationRecord
 
   def clean_phone
     self.phone = phone.delete(' ') unless phone.nil?
+  end
+
+  def email_or_phone
+    if email.blank? && phone.blank?
+      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.") 
+      errors.add(:phone, "Un email ou un téléphone mobile est nécessaire.")
+    end
   end
 end
