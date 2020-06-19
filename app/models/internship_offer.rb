@@ -69,10 +69,11 @@ class InternshipOffer < ApplicationRecord
                     .merge(InternshipApplication.where(user_id: user.id)))
   }
 
-  scope :mines_and_sumbmitted_to_operator, lambda { |user:|
+  scope :submitted_by_operator, lambda { |user:|
     left_joins(:internship_offer_operators)
-      .merge(where(internship_offer_operators: { operator_id: user.operator_id })
-            .or(where("internship_offers.employer_id = #{user.id}")))
+      .merge(where(internship_offer_operators: { operator_id: user.operator_id }).or(
+             where("internship_offers.employer_id = #{user.id}"))
+            )
   }
 
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
