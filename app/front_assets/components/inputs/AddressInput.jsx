@@ -64,16 +64,8 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group">
-        <label className="label" htmlFor={`${resourceName}_autocomplete`}>
-          Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
-          <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
-            <i className="fas fa-question-circle" />
-          </a>
-        </label>
+      <div className="form-group"  id="test-input-full-address">
+
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
@@ -82,6 +74,7 @@ export default function AddressInput({
             itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
           >
             {({
+              getLabelProps,
               getInputProps,
               getItemProps,
               getMenuProps,
@@ -89,44 +82,61 @@ export default function AddressInput({
               highlightedIndex,
               selectedItem,
             }) => (
-              <div id="test-input-full-address">
-                <input
-                  {...getInputProps({
-                    onChange: inputChange,
-                    value: fullAddress,
-                    className: 'form-control',
-                    name: `${resourceName}_autocomplete`,
-                    id: 'internship_offer_autocomplete',
-                    placeholder: 'Adresse',
-                  })}
-                />
+              <div>
+                <label
+                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
 
-                <div className="search-in-place bg-white shadow">
-                  <ul
-                    {...getMenuProps({
-                      className: 'p-0 m-0',
+
+                >
+                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
+                  <abbr title="(obligatoire)" aria-hidden="true">
+                    *
+                  </abbr>
+                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                    <i className="fas fa-question-circle" />
+                  </a>
+                </label>
+
+                <div>
+                  <input
+                    {...getInputProps({
+                      onChange: inputChange,
+                      value: fullAddress,
+                      className: 'form-control',
+                      name: `${resourceName}_autocomplete`,
+                      id: 'internship_offer_autocomplete',
+                      placeholder: 'Adresse',
                     })}
-                  >
-                    {isOpen
-                      ? searchResults.map((item, index) => (
-                          <li
-                            {...getItemProps({
-                              className: `py-2 px-3 listview-item ${
-                                highlightedIndex === index ? 'highlighted-listview-item' : ''
-                              }`,
-                              key: `${item.properties.id}-${item.properties.label}`,
-                              index,
-                              item,
-                              style: {
-                                fontWeight: selectedItem === item ? 'bold' : 'normal',
-                              },
-                            })}
-                          >
-                            {item.properties.label}
-                          </li>
-                        ))
-                      : null}
-                  </ul>
+                  />
+                </div>
+                <div>
+                  <div className="search-in-place bg-white shadow">
+                    <ul
+                      {...getMenuProps({
+                        className: 'p-0 m-0',
+                      })}
+                    >
+                      {isOpen
+                        ? searchResults.map((item, index) => (
+                              <li
+                              {...getItemProps({
+                                className: `py-2 px-3 listview-item ${
+                                  highlightedIndex === index ? 'highlighted-listview-item' : ''
+                                }`,
+                                key: `${item.properties.id}-${item.properties.label}`,
+                                index,
+                                item,
+                                style: {
+                                  fontWeight: selectedItem === item ? 'bold' : 'normal',
+                                },
+                              })}
+                            >
+                              {item.properties.label}
+                            </li>
+                          ))
+                        : null}
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}

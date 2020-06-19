@@ -5,7 +5,7 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  test 'student can draft, submit internship_applications' do
+  test 'student can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     student = create(:student, school: create(:school, weeks: weeks))
     internship_offer = create(:internship_offer, weeks: weeks)
@@ -41,6 +41,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      to: 1 do
         click_on 'Envoyer'
       end
+      click_on 'Candidature envoyée le'
+      click_on 'Afficher ma candidature'
+      click_on 'Décliner'
+      click_on 'Confirmer'
+      assert page.has_content?('Candidature déclinée')
+      assert_equal 1, student.internship_applications
+                             .where(aasm_state: :canceled_by_student)
+                             .count
     end
   end
 
@@ -78,7 +86,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       submitted: create(:internship_application, :submitted, student: student),
       approved: create(:internship_application, :approved, student: student),
       rejected: create(:internship_application, :rejected, student: student),
-      convention_signed: create(:internship_application, :convention_signed, student: student)
+      convention_signed: create(:internship_application, :convention_signed, student: student),
+      canceled_by_student: create(:internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'

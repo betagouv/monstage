@@ -1,0 +1,10 @@
+Information annulation
+
+<%="#{@internship_application.internship_offer.employer.formal_name}, "%>
+
+L'élève de 3e du "<%= @internship_application.student.school.name %>",
+<%= @internship_application.student.formal_name %>, 
+vous informe qu'il décline votre proposition de stage : 
+"<%= @internship_application.internship_offer.title%>". 
+Il vous en donne les raisons ici :
+<%= @internship_application.canceled_by_student_message.to_plain_text%>

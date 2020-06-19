@@ -101,11 +101,11 @@ module InternshipApplications
       assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
       assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 1)
-      assert_has_link_count_to_transition(internship_application, :cancel!, 0)
+      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
-    test 'GET #index as Employer with approved internship_application, shows cancel! & signed! links' do
+    test 'GET #index as Employer with approved internship_application, shows cancel_by_employer! & signed! links' do
       internship_application = create(:internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
@@ -117,7 +117,7 @@ module InternshipApplications
       assert_select '.collapsible.d-none', 1
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
-      assert_has_link_count_to_transition(internship_application, :cancel!, 1)
+      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 1)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
@@ -128,7 +128,7 @@ module InternshipApplications
       assert_response :success
       assert_has_link_count_to_transition(internship_application, :approve!, 1)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
-      assert_has_link_count_to_transition(internship_application, :cancel!, 0)
+      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
 
@@ -139,7 +139,7 @@ module InternshipApplications
       assert_response :success
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
-      assert_has_link_count_to_transition(internship_application, :cancel!, 0)
+      assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 0)
       assert_has_link_count_to_transition(internship_application, :signed!, 0)
     end
   end

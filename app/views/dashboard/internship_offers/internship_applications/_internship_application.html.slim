@@ -14,7 +14,12 @@ div class="#{cycle("bg-light", "")} row"
         p
           = "Pour la "
           strong= "semaine #{internship_application.week.short_select_text_method}"
-        div class="reboot-trix-content #{internship_application.submitted? ? '' : 'text-truncate-max-height-50'} #{internship_application.rejected? ? 'd-none' : ''}" data-target='internship-application-index.motivation'= internship_application.motivation
+          - if internship_application.submitted?
+            div class="reboot-trix-content"                                     data-target='internship-application-index.motivation'= internship_application.motivation.to_s
+          - elsif internship_application.rejected?
+            div class="reboot-trix-content text-truncate-max-height-50 d-none"  data-target='internship-application-index.motivation'= internship_application.motivation.to_s
+          - else
+            div class="reboot-trix-content text-truncate-max-height-50"         data-target='internship-application-index.motivation'= internship_application.motivation.to_s
 
         p
           a class="btn-link strong #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"

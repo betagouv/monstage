@@ -18,13 +18,15 @@ class StudentMailerPreview < ActionMailer::Preview
     StudentMailer.internship_application_rejected_email(internship_application: internship_application)
   end
 
-  def internship_application_canceled_email
-    internship_application = InternshipApplication.canceled.first
+  def internship_application_canceled_by_employer_email
+    internship_application = InternshipApplication.canceled_by_employer.first
     message_builder = MessageForAasmState.new(internship_application: internship_application,
-                                              aasm_target: :cancel!)
+                                              aasm_target: :cancel_by_employer!)
 
     message_builder.assigned_rich_text_attribute
-    StudentMailer.internship_application_canceled_email(internship_application: internship_application)
+    StudentMailer.internship_application_canceled_by_employer_email(
+      internship_application: internship_application
+    )
   end
 
   def account_activated_by_main_teacher_email
