@@ -2,7 +2,11 @@
 
 class PopulateWordNatureInInternshipOfferKeywords < ActiveRecord::Migration[6.0]
   def up
-    InternshipOfferKeyword.qualify_words
+    # If done as commented below, this would take too much CPU from production 
+    # and jeopardize the platform stability. It has to be done outside
+    # this populating migration
+
+    # InternshipOfferKeyword.search_word_qualification
   end
 
   def down

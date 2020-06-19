@@ -31,7 +31,7 @@ class SyncInternshipOfferKeywordsJob < ActiveJob::Base
       SQL
       InternshipOfferKeyword.upsert_all(rs.to_a, unique_by: %w[word])
     end
-    InternshipOfferKeyword.qualify_words
+    InternshipOfferKeyword.search_word_qualification
   end
 
   def query(sql)

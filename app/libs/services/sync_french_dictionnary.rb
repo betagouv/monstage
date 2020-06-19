@@ -1,8 +1,8 @@
 module Services
-  class SyncAcademyDictionnary
+  class SyncFrenchDictionnary
 
-    DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'
-    ANOMALY = ['AN']
+    DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'.freeze
+    ANOMALY = ['AN'].freeze
 
     def search
       dictionnary_client.post(

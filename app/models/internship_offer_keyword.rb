@@ -38,22 +38,26 @@ class InternshipOfferKeyword < ApplicationRecord
       .order(Arel.sql("similarity(word, '#{quoted_term}') DESC"))
   }
 
-  def self.qualify_words
+  def self.search_word_qualification
     where('word_nature is null').find_each(batch_size: 100) do |keyword|
-      if keyword.word.length <= 2
-        make_unsearchable(id: keyword.id)
-      else
-        natures = Services::SyncAcademyDictionnary.new(word: keyword.word)
-                                                  .natures
-                                                  .sort
-                                                  .join(SEPARATOR)
-                                                  .truncate(199)
+      qualify_single_word(keyword: keyword)
+    end
+  end
 
-        if natures == '' || all_rejected_natures?(natures: natures)
-          update_keyword(id: keyword.id, natures: natures, searchable: false)
-        else
-          update_keyword(id: keyword.id, natures: natures, searchable: true)
-        end
+  def self.qualify_single_word(keyword:)
+    if keyword.word.length <= 2
+      make_unsearchable(id: keyword.id)
+    else
+      natures = Services::SyncFrenchDictionnary.new(word: keyword.word)
+                                               .natures
+                                               .sort
+                                               .join(SEPARATOR)
+                                               .truncate(199)
+
+      if natures == '' || all_rejected_natures?(natures: natures)
+        update_keyword(id: keyword.id, natures: natures, searchable: false)
+      else
+        update_keyword(id: keyword.id, natures: natures, searchable: true)
       end
     end
   end
