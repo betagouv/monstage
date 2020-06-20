@@ -41,25 +41,14 @@ module InternshipOffers
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
 
-    test 'GET #edit as Operator does not shows choose operator section' do
-      user_operator = create(:user_operator)
-      sign_in(user_operator)
-      operator = create(:operator)
-      create(:internship_offer, employer: user_operator)
-
-      get new_dashboard_internship_offer_path
-      assert_response :success
-      assert_select "#internship_offer_operator_ids_#{operator.id}", count: 0
-    end
-
     test 'GET #new as visitor redirects to internship_offers' do
       get new_dashboard_internship_offer_path
       assert_redirected_to user_session_path
     end
 
     test 'GET #new as Employer with duplicate_id' do
-      operator = create(:operator)
-      internship_offer = create(:internship_offer, operators: [operator],
+      operator = create(:user_operator)
+      internship_offer = create(:internship_offer, employer: operator,
                                                    is_public: true,
                                                    max_candidates: 2)
       sign_in(internship_offer.employer)

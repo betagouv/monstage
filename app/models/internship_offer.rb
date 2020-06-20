@@ -70,10 +70,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :submitted_by_operator, lambda { |user:|
-    left_joins(:internship_offer_operators)
-      .merge(where(internship_offer_operators: { operator_id: user.operator_id }).or(
-             where("internship_offers.employer_id = #{user.id}"))
-            )
+    merge(user.operator.internship_offers)
   }
 
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
@@ -109,8 +106,6 @@ class InternshipOffer < ApplicationRecord
 
   has_many :internship_applications, through: :internship_offer_weeks,
                                      dependent: :destroy
-  has_many :internship_offer_operators, dependent: :destroy
-  has_many :operators, through: :internship_offer_operators
 
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true

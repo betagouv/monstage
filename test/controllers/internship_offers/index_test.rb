@@ -362,11 +362,11 @@ class IndexTest < ActionDispatch::IntegrationTest
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
     included_internship_offer = create(:internship_offer,
-                                        operators: [operator],
+                                        employer: user_operator,
                                         zipcode: 60580
                                       )
     excluded_internship_offer = create(:internship_offer,
-                                        operators: [operator],
+                                        employer: user_operator,
                                         zipcode: 95270
                                       )
     sign_in(user_operator)
@@ -380,11 +380,11 @@ class IndexTest < ActionDispatch::IntegrationTest
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: nil)
     included_internship_offer = create(:internship_offer,
-                                        operators: [operator],
+                                        employer: user_operator,
                                         zipcode: 60580
                                       )
     excluded_internship_offer = create(:internship_offer,
-                                        operators: [operator],
+                                        employer: user_operator,
                                         zipcode: 95270
                                       )
     sign_in(user_operator)
@@ -397,9 +397,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as operator can filter by coordinates' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: nil)
-    excluded_internship_offer = create(:internship_offer, operators: [operator],
+    excluded_internship_offer = create(:internship_offer, employer: user_operator,
                                                           coordinates: Coordinates.paris)
-    included_internship_offer = create(:internship_offer, operators: [operator],
+    included_internship_offer = create(:internship_offer, employer: user_operator,
                                                           coordinates: Coordinates.bordeaux)
     sign_in(user_operator)
     get internship_offers_path(latitude: Coordinates.bordeaux[:latitude],
@@ -413,14 +413,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     operator = create(:operator)
     user_operator_1 = create(:user_operator, operator: operator, department_name: nil)
     user_operator_2 = create(:user_operator, operator: operator, department_name: nil)
-    internship_offer_1 = create(:internship_offer,
-                                operators: [operator],
-                                employer: user_operator_1
-                                )
-    internship_offer_2 = create(:internship_offer,
-                                operators: [operator],
-                                employer: user_operator_2
-                               )
+    internship_offer_1 = create(:internship_offer, employer: user_operator_1)
+    internship_offer_2 = create(:internship_offer, employer: user_operator_2)
     sign_in(user_operator_1)
     get internship_offers_path
     assert_response :success
@@ -434,15 +428,11 @@ class IndexTest < ActionDispatch::IntegrationTest
     user_operator_1 = create(:user_operator, operator: operator_1, department_name: nil)
     user_operator_2 = create(:user_operator, operator: operator_2, department_name: nil)
     internship_offer_1 = create(:internship_offer,
-                                operators: [operator_1],
                                 employer: user_operator_1,
-                                zipcode: 95270
-                                )
+                                zipcode: 95270)
     internship_offer_2 = create(:internship_offer,
-                                operators: [operator_2],
                                 employer: user_operator_2,
-                                zipcode: 95270
-                               )
+                                zipcode: 95270)
     sign_in(user_operator_1)
     get internship_offers_path
     assert_response :success

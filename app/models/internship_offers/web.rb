@@ -93,7 +93,6 @@ module InternshipOffers
 
       internship_offer = InternshipOffer.new(attributes.slice(*white_list))
       internship_offer.week_ids = week_ids
-      internship_offer.operator_ids = operator_ids
       internship_offer.description_rich_text = (description_rich_text.present? ?
                                                 description_rich_text.to_s :
                                                 description)
