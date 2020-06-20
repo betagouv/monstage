@@ -134,10 +134,6 @@ class InternshipOffer < ApplicationRecord
     !published?
   end
 
-  def has_operator?
-    !operators.empty?
-  end
-
   def is_individual?
     max_candidates == 1
   end
