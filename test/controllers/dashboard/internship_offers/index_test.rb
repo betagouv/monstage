@@ -205,11 +205,11 @@ module Dashboard
     end
 
     test 'GET #index as Operator displays internship_applications link' do
-      operator = create(:user_operator)
-      another_internship_offer = create(:internship_offer)
-      internship_offer_owned_by_operator = create(:internship_offer, employer: operator)
-      internship_offer_delegated_to_opereator = create(:internship_offer, operators: [operator.operator])
-      sign_in(operator)
+      operator_1 = create(:user_operator)
+      operator_2 = create(:user_operator)
+      internship_offer_owned_by_operator = create(:internship_offer, employer: operator_1)
+      another_internship_offer = create(:internship_offer, employer: operator_2)
+      sign_in(operator_1)
       get dashboard_internship_offers_path
       assert_response :success
       assert_select "tr.test-internship-offer-#{another_internship_offer.id}",
