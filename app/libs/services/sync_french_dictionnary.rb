@@ -5,13 +5,16 @@ module Services
     ANOMALY = ['AN'].freeze
 
     def search
-      dictionnary_client.post(
-        {
-          term: word,
-          options: "1"
-        },
-        { Accept: :json }
-      )
+      params = { term: word, options: '1' }
+      url = URI "#{DICTIONNARY_BASE_URL}?#{params.to_query}"
+
+      https = Net::HTTP.new(url.host, url.port)
+      https.use_ssl = true
+
+      request = Net::HTTP::Post.new(url)
+      request["Accept"] = "application/json"
+
+      https.request(request)
     end
 
     def natures
@@ -30,11 +33,10 @@ module Services
 
     private
 
-    attr_reader :word, :dictionnary_client
+    attr_reader :word
 
     def initialize(word:)
       @word = word
-      @dictionnary_client = RestClient::Resource.new DICTIONNARY_BASE_URL
     end
 
     # Available metadata are : url, label, nbhomograph, score, nature

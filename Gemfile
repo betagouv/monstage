@@ -50,9 +50,6 @@ gem 'kaminari'
 gem 'validates_zipcode'
 gem 'email_inquire'
 
-# Http client, also used by mailtrap for review apps
-gem 'rest-client'
-
 # dev utils
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootsnap', require: false
@@ -90,6 +87,10 @@ end
 
 group :test, :development do
   gem 'factory_bot_rails'
+end
+
+group :review do
+  gem 'rest-client' # used by mailtrap for review apps
 end
 
 
