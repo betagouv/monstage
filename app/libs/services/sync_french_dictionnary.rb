@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module Services
   class SyncFrenchDictionnary
-
-    DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'.freeze
+    DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'
     ANOMALY = ['AN'].freeze
 
     def search
@@ -12,9 +13,11 @@ module Services
       https.use_ssl = true
 
       request = Net::HTTP::Post.new(url)
-      request["Accept"] = "application/json"
+      request['Accept'] = 'application/json'
 
       https.request(request)
+    ensure
+      https.finish if https.try(:active?)
     end
 
     def natures

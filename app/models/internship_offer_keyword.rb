@@ -35,12 +35,15 @@ class InternshipOfferKeyword < ApplicationRecord
   scope :search, lambda {|term|
     quoted_term = ActiveRecord::Base.connection.quote_string(term)
     where('word % :term', term: term)
+      .where(searchable: true)
       .order(Arel.sql("similarity(word, '#{quoted_term}') DESC"))
   }
 
   def self.search_word_qualification
-    where('word_nature is null').find_each(batch_size: 100) do |keyword|
-      qualify_single_word(keyword: keyword)
+    where('word_nature is null')
+      .where(searchable: true)
+      .find_each(batch_size: 100) do |keyword|
+        qualify_single_word(keyword: keyword)
     end
   end
 
@@ -76,6 +79,8 @@ class InternshipOfferKeyword < ApplicationRecord
   end
 
   def self.all_rejected_natures?(natures:)
-    (natures.split(SEPARATOR) - REJECTED_NATURES).empty?
+    natures.split(SEPARATOR)
+           .difference(REJECTED_NATURES)
+           .empty?
   end
 end
