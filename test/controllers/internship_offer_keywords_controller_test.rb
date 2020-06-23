@@ -15,7 +15,7 @@ class InternshipOfferKeywordsControllerTest < ActionDispatch::IntegrationTest
                               description: 'Des plantes, des fleurs, des légumes',
                               employer_description: 'De la nature, du bien être')
     SyncInternshipOfferKeywordsJob.perform_now
-
+    InternshipOfferKeyword.update_all(searchable: true)
     post(search_internship_offer_keywords_path, params:{ keyword: 'Hortic' })
 
     assert_response :success
