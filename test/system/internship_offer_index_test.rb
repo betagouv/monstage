@@ -33,7 +33,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     searched_internship_offer = create(:internship_offer, title: searched_keyword)
     not_searched_internship_offer = create(:internship_offer)
     SyncInternshipOfferKeywordsJob.perform_now
-
+    InternshipOfferKeyword.update_all(searcable: true)
     visit internship_offers_path
     # check everything is here by default
     assert_presence_of(internship_offer: searched_internship_offer)
