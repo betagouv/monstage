@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_074942) do
+ActiveRecord::Schema.define(version: 2020_06_20_134004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -116,15 +116,6 @@ ActiveRecord::Schema.define(version: 2020_06_22_074942) do
     t.string "word_nature", limit: 200
     t.index ["word"], name: "index_internship_offer_keywords_on_word", unique: true
     t.index ["word"], name: "internship_offer_keywords_trgm", opclass: :gin_trgm_ops, using: :gin
-  end
-
-  create_table "internship_offer_operators", force: :cascade do |t|
-    t.bigint "internship_offer_id"
-    t.bigint "operator_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["internship_offer_id"], name: "index_internship_offer_operators_on_internship_offer_id"
-    t.index ["operator_id"], name: "index_internship_offer_operators_on_operator_id"
   end
 
   create_table "internship_offer_weeks", force: :cascade do |t|
@@ -254,8 +245,6 @@ ActiveRecord::Schema.define(version: 2020_06_22_074942) do
   add_foreign_key "email_whitelists", "users"
   add_foreign_key "internship_applications", "internship_offer_weeks"
   add_foreign_key "internship_applications", "users"
-  add_foreign_key "internship_offer_operators", "internship_offers"
-  add_foreign_key "internship_offer_operators", "operators"
   add_foreign_key "internship_offer_weeks", "internship_offers"
   add_foreign_key "internship_offer_weeks", "weeks"
   add_foreign_key "internship_offers", "groups"

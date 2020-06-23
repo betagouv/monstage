@@ -49,11 +49,9 @@ module InternshipOffers
     end
 
     test 'GET #edit with default fields' do
-      operator = create(:operator)
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:internship_offer, is_public: true,
-                                                   operators: [operator],
                                                    max_candidates: 1,
                                                    tutor_name: 'fourtin mourcade',
                                                    tutor_email: 'fourtin@mour.cade',
@@ -72,17 +70,6 @@ module InternshipOffers
       assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
       assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
       assert_select 'a.btn-back[href=?]', internship_offer_path(internship_offer)
-    end
-
-    test 'GET #edit as Operator with disabled fields if applications exist' do
-      user_operator = create(:user_operator)
-      sign_in(user_operator)
-      operator = create(:operator)
-      internship_offer = create(:internship_offer, employer: user_operator)
-
-      get edit_dashboard_internship_offer_path(internship_offer)
-      assert_response :success
-      assert_select "#internship_offer_operator_ids_#{operator.id}", count: 0
     end
   end
 end
