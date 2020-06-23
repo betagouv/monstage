@@ -19,6 +19,7 @@ if [ ! -f "$SSH_PRIV" ]; then
   exit 1;
 fi;
 
+git pull origin master
 git push $target master:master
 VERSION=$(sentry-cli releases propose-version)
 sentry-cli releases new $VERSION
