@@ -523,7 +523,8 @@ CREATE TABLE public.internship_offer_keywords (
     word text NOT NULL,
     ndoc integer NOT NULL,
     nentry integer NOT NULL,
-    searchable boolean DEFAULT true NOT NULL
+    searchable boolean DEFAULT true NOT NULL,
+    word_nature character varying(200) DEFAULT NULL::character varying
 );
 
 
@@ -1772,6 +1773,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200526133956'),
 ('20200529045148'),
 ('20200612075359'),
-('20200620134004');
+('20200620134004'),
+('20200622074942');
 
 
