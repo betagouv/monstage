@@ -4,6 +4,7 @@ require 'test_helper'
 
 class IndexTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ::ApiTestHelpers
 
   def assert_presence_of(internship_offer:)
     assert_select "[data-test-id=#{internship_offer.id}]", 1
@@ -466,7 +467,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     keyword = "foobar"
     foundable_internship_offer = create(:internship_offer, title: keyword)
     ignored_internship_offer = create(:internship_offer, title: 'bom')
+
+    dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
+
     get internship_offers_path(keyword: keyword)
     assert_response :success
     assert_presence_of(internship_offer: foundable_internship_offer)

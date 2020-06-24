@@ -8,6 +8,7 @@ require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
 require 'minitest/retry'
+require 'webmock/minitest'
 
 Minitest::Retry.use!(
   retry_count:  3,
@@ -18,6 +19,8 @@ Minitest::Retry.use!(
     PG::InternalError,           # sometimes postgis ref system is not yet ready
   ]
 )
+
+WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase

@@ -74,6 +74,8 @@ group :development do
 end
 
 group :test do
+  # External api calls isolation
+  gem 'webmock'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara'
   gem 'minitest-reporters'
