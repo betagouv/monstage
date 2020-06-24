@@ -227,7 +227,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     student.reload
     assert_equal student.school_id, student.missing_school_weeks_id
     follow_redirect!
-    expected_custom_flash_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez candidater"
+    expected_custom_flash_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
     assert_select('#alert-text',
                   text: expected_custom_flash_message)
   end
