@@ -20,7 +20,12 @@ Minitest::Retry.use!(
   ]
 )
 
-WebMock.disable_net_connect!(allow_localhost: true)
+WebMock.disable_net_connect!(
+  allow: [
+    /127\.0\.0\.1/,
+    /chromedriver\.storage\.googleapis\.com/
+  ]
+)
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase
