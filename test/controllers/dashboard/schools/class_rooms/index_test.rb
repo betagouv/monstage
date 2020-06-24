@@ -135,8 +135,8 @@ module Dashboard
                           text: stats.total_student_confirmed.to_s
             assert_select ".test-class-room-#{class_room.id} .total_student_with_zero_application",
                           text: stats.total_student_with_zero_application.to_s
-            assert_select ".test-class-room-#{class_room.id} .total_pending_convention_signed",
-                          text: stats.total_pending_convention_signed.to_s
+            # assert_select ".test-class-room-#{class_room.id} .total_pending_convention_signed",
+            #               text: stats.total_pending_convention_signed.to_s
             assert_select ".test-class-room-#{class_room.id} .total_student_with_zero_internship",
                           text: stats.total_student_with_zero_internship.to_s
           end
