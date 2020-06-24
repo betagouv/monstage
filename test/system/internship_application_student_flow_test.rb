@@ -43,9 +43,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       end
       click_on 'Candidature envoyée le'
       click_on 'Afficher ma candidature'
-      click_on 'Décliner'
+      click_on 'Annuler'
       click_on 'Confirmer'
-      assert page.has_content?('Candidature déclinée')
+      assert page.has_content?('Candidature annulée')
       assert_equal 1, student.internship_applications
                              .where(aasm_state: :canceled_by_student)
                              .count
