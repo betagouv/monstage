@@ -39,3 +39,9 @@
   border-top-right-radius-radius:0;
   border-bottom-right-radius-radius:0;
 }
+
+@include media-breakpoint-down(xs) {
+  .rounded-xs-0{
+    border-radius: 0
+  }
+}

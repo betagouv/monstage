@@ -93,7 +93,7 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
           setFocus={setFocus}
         />
         {showSearch && (
-          <div className={`input-group-prepend d-flex d-xs-stick no-padding`}>
+          <div className={`input-group-prepend d-flex d-xs-stick p-0`}>
             <button
               id='test-submit-search'
               type="submit"
