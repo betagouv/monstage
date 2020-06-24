@@ -22,6 +22,17 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
+    test 'GET #index as Visitor redirects to sign in path' do
+      get dashboard_internship_offers_path
+      assert_redirected_to user_session_path
+    end
+
+    test 'GET #index as Student is forbidden' do
+      sign_in(create(:student))
+      get dashboard_internship_offers_path
+      assert_redirected_to root_path
+    end
+
     test 'GET #index tabs forward expected params' do
       sign_in(create(:employer))
 

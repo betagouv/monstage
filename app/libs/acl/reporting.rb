@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Reporting
-  class Acl
+module Acl
+  class Reporting
     def allowed?
       user.department_name == params[:department]
     end
