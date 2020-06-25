@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def current_flash_message
     message = if params.dig(:user, :missing_school_weeks_id).present?
-              then "Nous allons prévenir votre chef d'établissement pour que vous puissiez candidater"
+              then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
     if current_user.unconfirmed_email
