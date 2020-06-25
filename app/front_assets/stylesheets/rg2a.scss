@@ -1,11 +1,11 @@
 label, .label {
   font-weight: bold;
-  margin-bottom: .75rem;
+  margin-bottom: .65rem;
   position: relative;
 
   abbr {
     position: absolute;
-    left: -0.75em;
+    left: -$input-btn-padding-x;
     top: 0;
     color: $red;
   }
