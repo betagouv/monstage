@@ -13,7 +13,14 @@
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
 }
-
+.autocomplete-school-container .custom-label-container{
+  input:focus + label,
+  select:focus + label,
+  input:valid + label,
+  select:valid + label {
+    z-index: 4;
+  }
+}
 .custom-label-container{
   position: relative;
   transition: 0.2s;

@@ -28,7 +28,7 @@
           "AutocompleteSchool",
           classes: 'col-12',
           label: "Nom (ou ville) de mon collège",
-          required: false,
+          required: true,
           resourceName: :user,
           selectClassRoom: can?(:choose_class_room, resource),
           existingSchool: resource.school.as_json,
