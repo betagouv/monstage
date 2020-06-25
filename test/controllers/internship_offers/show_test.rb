@@ -104,7 +104,7 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_select '.badge-school-reserved', text: "Stage reservé (aux élèves du collège #{internship_offer.school})",
+      assert_select '.badge-school-reserved', text: "Stage reservé (aux élèves de l'établissement #{internship_offer.school})",
                                          count: 1
       assert_select '#new_internship_application', 0
     end

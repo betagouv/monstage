@@ -51,8 +51,8 @@ fr:
         one: Référent départemental
         other: Référents départemental
       school:
-        one: Collèges
-        other: Collèges
+        one: Etablissement
+        other: Etablissements
       internship_offers/web:
         one: Offre Produit
         other: Offres Produit
@@ -147,7 +147,7 @@ fr:
         full_tutor: 'Tuteur'
         full_employer: 'Employeur'
         full_address: "Adresse de l'offre"
-        full_school: "Réservée au collège"
+        full_school: "Réservée à l'établissement"
         full_weeks: Semaines
       user:
         first_name: Prénom
@@ -157,7 +157,7 @@ fr:
         teacher: "Professeur"
         other: "Autres fonctions"
         class_room: "Classe"
-        school: "Collège"
+        school: "Etablissement"
         gender: Sexe
         confirmed_at: Confirmé le
       week:

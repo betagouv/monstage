@@ -1,4 +1,4 @@
-h1.h2.mb-3 Mon collège
+h1.h2.mb-3 Mon établissement
 
 = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
   = f.rg2a_explain_required_asterisk
@@ -7,7 +7,7 @@ h1.h2.mb-3 Mon collège
   - if current_user.respond_to?(:school)
     = react_component("AutocompleteSchool",
                       classes: 'col-12',
-                      label:"Nom (ou ville) de mon collège",
+                      label:"Nom (ou ville) de mon établissement",
                       required: true,
                       resourceName: :user,
                       selectClassRoom: can?(:change, :class_room),
