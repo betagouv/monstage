@@ -1,6 +1,7 @@
 <div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
   <header class="header-account header-onboarding-card mt-0 mb-2">
     <div class="row mx-0" style="height: 250px">
+
       <div class="col-6 d-flex h-100">
         <div class='row align-self-end ma-0'>
           <h1 class="h2 mb-5 mx-3">Créer mon compte</h1>
@@ -15,7 +16,9 @@
     </div>
   </header>
   <div class="body">
+
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
+      <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
       <%= f.text_field :type, hidden: true %>
