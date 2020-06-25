@@ -19,13 +19,6 @@ module Presenters
                   .size
       end
 
-      # def total_pending_convention_signed
-      #   class_room.students
-      #             .reject(&:has_convention_signed_internship_application?)
-      #             .select(&:has_approved_internship_application?)
-      #             .size
-      # end
-
       def total_student_with_zero_internship
         class_room.students
                   .reject(&:has_convention_signed_internship_application?)
