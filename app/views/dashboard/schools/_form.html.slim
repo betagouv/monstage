@@ -4,14 +4,14 @@
 
   - if current_user.is_a?(Users::God)
     fieldset
-      legend= "Etablissement (#{@school.kind})"
+      legend= "Établissement (#{@school.kind})"
 
       .form-group
         = f.label :name do
           = "Nom de l'établissement"
           = f.rg2a_required_content_tag
 
-        = f.text_field :name, class: "form-control col-lg-6", required: true
+        = f.text_field :name, class: "form-control col-lg-6", required:true
 
       .form-group
         .custom-control.custom-checkbox

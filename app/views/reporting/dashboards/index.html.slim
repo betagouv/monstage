@@ -6,7 +6,7 @@
     .col-lg-6.col-12
       .d-flex.align-items-center.mb-4
         h2.h3.text-black-50
-          | Etablissements
+          | Établissements
         = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-danger ml-auto ', data: {turbolinks: false} do
           i.fas.fa-download
           | &nbsp;
@@ -18,7 +18,7 @@
         .row
           p.col-6.text-left
             span.h2.text-body= total_schools_with_manager
-            span.text-black-50= " Etablissements"
+            span.text-black-50= " Établissements"
           p.col-6.text-right
             span.h3.text-body ="#{total_schools_ratio}%"
 
@@ -30,7 +30,7 @@
       - # middle, school engaged
       .card.my-5
         .card-body
-          h3.h5.text-dark.mb-1.card-title Etablissements non inscrits
+          h3.h5.text-dark.mb-1.card-title Établissements non inscrits
 
         table.table.mb-0.table-statistics.table-sticky-thead
           thead
@@ -48,7 +48,7 @@
       - # bottom, soon in internship
       .card.my-5
         .card-body
-          h3.h5.text-dark.mb-1.card-title Etablissements inscrits (avec semaine de stage à venir)
+          h3.h5.text-dark.mb-1.card-title Établissements inscrits (avec semaine de stage à venir)
 
         table.table.mb-0.table-statistics.table-sticky-thead
           thead
