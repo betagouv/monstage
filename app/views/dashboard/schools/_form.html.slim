@@ -4,14 +4,14 @@
 
   - if current_user.is_a?(Users::God)
     fieldset
-      legend= "Collège (#{@school.kind})"
+      legend= "Établissement (#{@school.kind})"
 
       .form-group
         = f.label :name do
-          = "Nom du collège"
+          = "Nom de l'établissement"
           = f.rg2a_required_content_tag
 
-        = f.text_field :name, class: "form-control col-lg-6", required: true
+        = f.text_field :name, class: "form-control col-lg-6", required:true
 
       .form-group
         .custom-control.custom-checkbox
@@ -33,7 +33,7 @@
   - else
     fieldset
       legend= "Semaines de stage"
-      = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: "Semaines de stage du collège" }
+      = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: "Semaines de stage de l'établissement" }
 
 
   .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-primary'

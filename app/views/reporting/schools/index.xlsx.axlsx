@@ -1,7 +1,7 @@
 wb = xlsx_package.workbook
 
 
-wb.add_worksheet(name: "Collèges") do |sheet|
+wb.add_worksheet(name: "Établissements") do |sheet|
   # headers
   sheet.add_row(
     [].concat(

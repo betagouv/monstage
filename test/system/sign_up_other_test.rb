@@ -4,9 +4,9 @@ require 'application_system_test_case'
 
 class SignUpOthersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until other creation' do
-    school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin', zipcode: '77515')
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_manager = create(:school_manager, school: school_1)
-    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait')
+    school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait')
     existing_email = 'fourcade.m@gmail.com'
     student = create(:student, email: existing_email)
     # go to signup as other
@@ -14,7 +14,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
 
     # fails to create other with existing email
     assert_difference('Users::SchoolManagement.other.count', 0) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select "Autre fonction", from: 'user_role'
@@ -29,7 +29,7 @@ class SignUpOthersTest < ApplicationSystemTestCase
 
     # create other
     assert_difference('Users::SchoolManagement.other.count', 1) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       # find('button', text: school_1.city).click
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click

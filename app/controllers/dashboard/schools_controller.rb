@@ -27,10 +27,10 @@ module Dashboard
       @school.update!(internship_weeks_params)
       if current_user.is_a?(Users::God)
         redirect_to(dashboard_schools_path(anchor: "school_#{@school.id}"),
-                    flash: { success: 'Collège mis à jour avec succès' })
+                    flash: { success: 'Etablissement mis à jour avec succès' })
       else
         redirect_to(dashboard_school_class_rooms_path(@school),
-                    flash: { success: 'Collège mis à jour avec succès' })
+                    flash: { success: 'Etablissement mis à jour avec succès' })
       end
     rescue ActiveRecord::RecordInvalid
       @available_weeks = Week.selectable_on_school_year
