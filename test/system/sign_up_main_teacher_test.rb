@@ -4,9 +4,9 @@ require 'application_system_test_case'
 
 class SignUpMainTeachersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until main teacherr creation' do
-    school_1 = create(:school, name: 'Collège Test 1', city: 'Saint-Martin')
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin')
     school_manager = create(:school_manager, school: school_1)
-    school_2 = create(:school, name: 'Collège Test 2', city: 'Saint-Parfait')
+    school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     class_room_2 = create(:class_room, name: '3e B', school: school_2)
     existing_email = 'fourcade.m@gmail.com'
@@ -17,7 +17,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
 
     # fails to create main teacher with existing email
     assert_difference('Users::SchoolManagement.main_teacher.count', 0) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
       select "Professeur principal", from: 'user_role'
@@ -32,12 +32,12 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
 
     # ensure failure reset form as expected
     assert_equal school_2.city,
-                 find_field('Nom (ou ville) de mon collège').value,
+                 find_field('Nom (ou ville) de mon établissement').value,
                  're-select of city after failure fails'
 
     # creates main teacher
     assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
-      find_field('Nom (ou ville) de mon collège').fill_in(with: 'Saint martin')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint martin')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')

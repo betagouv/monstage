@@ -45,7 +45,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     )
     assert_select(".navbar a[href=\"#{root_path}\"]", count: 0, text: "Accueil")
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: "Mon collège", count: 1)
+    assert_select(".navbar a.active", text: "Mon établissement", count: 1)
   end
 
   test "operator" do
@@ -69,7 +69,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
       Presenters::User.new(school_manager).default_internship_offers_path
     )
     assert_select(".navbar a.active", count: 1)
-    assert_select(".navbar a.active", text: "Mon collège", count: 1)
+    assert_select(".navbar a.active", text: "Mon établissement", count: 1)
   end
 
   test "student" do

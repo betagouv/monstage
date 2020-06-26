@@ -20,7 +20,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     sign_in(school_manager)
     visit account_path(section: :school)
 
-    assert_equal(find_field('Nom (ou ville) de mon collège').value,
+    assert_equal(find_field('Nom (ou ville) de mon établissement').value,
                  @default_school_city,
                  "can't find default school.city")
     assert_equal(find(:css, '#user_school_name').value,
@@ -39,9 +39,9 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     assert_changes -> { school_manager.reload.school_id },
                   from: @default_school.id,
                   to: @next_school.id do
-      fill_in("Nom (ou ville) de mon collège", with: @next_school_city[0..3])
+      fill_in("Nom (ou ville) de mon établissement", with: @next_school_city[0..3])
       all(".autocomplete-school-results .list-group-item-action").first.click
-      assert_equal find_field('Nom (ou ville) de mon collège').value,
+      assert_equal find_field('Nom (ou ville) de mon établissement').value,
                    @next_school_city,
                    "can't find next school.city"
 
@@ -76,7 +76,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
                  all('#user_class_room_name').size,
                  'expected class room input not present')
 
-    fill_in("Nom (ou ville) de mon collège", with: @next_school_city[0..3])
+    fill_in("Nom (ou ville) de mon établissement", with: @next_school_city[0..3])
     all(".autocomplete-school-results .list-group-item-action").first.click
     find("label[for=\"select-school-#{@next_school.id}\"]").click
     select(next_class_room.name, from: 'user_class_room_id')

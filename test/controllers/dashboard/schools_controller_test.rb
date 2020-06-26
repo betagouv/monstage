@@ -99,7 +99,7 @@ module Dashboard
               })
         assert_redirected_to dashboard_school_class_rooms_path(@school)
         follow_redirect!
-        assert_select '#alert-success #alert-text', { text: 'Collège mis à jour avec succès' }, 1
+        assert_select '#alert-success #alert-text', { text: 'Etablissement mis à jour avec succès' }, 1
       end
     end
 
