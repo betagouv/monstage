@@ -16,7 +16,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # show application form
       page.find '#internship-application-closeform', visible: false
-      click_on 'Je candidate'
+      click_on 'Je postule'
       page.find '#internship-application-closeform', visible: true
 
       # fill in application form
@@ -65,7 +65,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find '#internship-application-closeform', visible: false
       page.find('.test-missing-school-weeks', visible: false)
 
-      click_on 'Je candidate'
+      click_on 'Je postule'
 
       # check application is now here, ensure feature is here
       page.find '#internship-application-closeform', visible: true

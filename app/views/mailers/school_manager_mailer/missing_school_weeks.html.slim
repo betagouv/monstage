@@ -6,10 +6,10 @@ p style=p_styles
 
 p style=p_styles
   = "Vous vous êtes inscrit sur monstagedetroisieme.fr pour votre établissement, mais n'avez pas sélectionné de semaines de stage."
-  strong= " Sans cette démarche vos élèves ne pourront pas candidater. "
+  strong= " Sans cette démarche vos élèves ne pourront pas postuler. "
 
 p style=p_styles
   = "A l'heure actuelle, "
   strong style="color: #dc3545"= "#{@school.missing_school_weeks_count} élève(s) "
-  = "n'ont pas pu candidater. Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : "
+  = "n'ont pas pu postuler. Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : "
 = render(partial: "mailers/call_to_action", locals: {href: edit_dashboard_school_url(@school), label:'Ajouter des semaines de stage'})
