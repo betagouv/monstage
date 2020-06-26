@@ -101,6 +101,7 @@ fr:
         is_public: Secteur public
         human_is_public: Public/Privé
         sector: Secteur
+        school_track: Filière
         max_candidates: Nbr. max de candidats
         human_max_candidates: Stage individuel/collectif
         tutor_name: Nom du tuteur
@@ -191,6 +192,8 @@ fr:
               blank: "Veuillez renseigner la ville l'employeur"
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
+            school_track:
+              required: "Veuillez choisir une filière pour l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
             employer:
@@ -223,6 +226,8 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
+            school_track:
+              blank: "Missing school_track"
             weeks:
               blank: "Missing weeks"
             remote_id:
@@ -303,3 +308,9 @@ fr:
       teacher: "Professeur"
       main_teacher: "Professeur principal"
       other: "Autre fonction"
+
+    school_tracks:
+      troisieme_generale: '3e générale'
+      troisieme_prep_pro: '3e prépa métier'
+      troisieme_segpa: '3e SEGPA'
+      bac_pro: 'Bac pro'

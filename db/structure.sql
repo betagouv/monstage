@@ -62,6 +62,18 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: internship_offer_school_track; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.internship_offer_school_track AS ENUM (
+    'troisieme_generale',
+    'troisieme_prep_pro',
+    'troisieme_segpa',
+    'bac_pro'
+);
+
+
+--
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -630,7 +642,8 @@ CREATE TABLE public.internship_offers (
     first_date date,
     last_date date,
     type character varying,
-    search_tsv tsvector
+    search_tsv tsvector,
+    school_track public.internship_offer_school_track
 );
 
 
@@ -1775,6 +1788,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200612075359'),
 ('20200620134004'),
 ('20200622074942'),
-('20200622080019');
+('20200622080019'),
+('20200625154637');
 
 

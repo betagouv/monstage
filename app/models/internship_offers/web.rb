@@ -86,7 +86,7 @@ module InternshipOffers
     end
 
     def duplicate
-      white_list = %w[title sector_id max_candidates
+      white_list = %w[title sector_id max_candidates school_track
                       tutor_name tutor_phone tutor_email employer_website
                       employer_name street zipcode city department region academy
                       is_public group school_id coordinates first_date last_date]

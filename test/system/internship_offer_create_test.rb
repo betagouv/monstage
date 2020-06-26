@@ -5,7 +5,7 @@ require 'application_system_test_case'
 class InternshipOffersCreateTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  def fill_in_form(sector:, group:, weeks:)
+  def fill_in_form(sector:, group:, weeks:, school_track:)
     fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
     find('#internship_offer_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
     fill_in 'Nom du tuteu/trice', with: 'Brice Durand'
@@ -17,6 +17,10 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     find('label', text: 'public').click
     if sector
      select sector.name, from: 'internship_offer_sector_id'
+    end
+    if school_track
+      select I18n.t("enum.school_tracks.#{school_track}"),
+             from: 'internship_offer_school_track'
     end
     if group
       select group.name, from: 'internship_offer_group_id'
@@ -42,6 +46,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_form(sector: sectors.first,
+                     school_track: InternshipOffer.school_tracks.keys.sample.to_sym,
                      group: group,
                      weeks: available_weeks)
         click_on "Enregistrer et publier l'offre"
@@ -61,7 +66,12 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     travel_to(Date.new(2019, 3, 1)) do
       visit employer.custom_dashboard_path
       find('#test-create-offer').click
-      fill_in_form(sector: nil, group: group, weeks: available_weeks)
+      fill_in_form(
+        sector: nil,
+        group: group,
+        weeks: available_weeks,
+        school_track: InternshipOffer.school_tracks.keys.sample.to_sym
+      )
       click_on "Enregistrer et publier l'offre"
       find("#error_explanation")
     end

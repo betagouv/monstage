@@ -18,6 +18,7 @@ module InternshipOffers
         zipcode: '60580',
         city: 'Coye la foret',
         sector: create(:sector),
+        school_track: InternshipOffer.school_tracks.keys.sample.to_sym,
         weeks: [weeks(:week_2019_1)],
         permalink: 'https://google.fr'
       }

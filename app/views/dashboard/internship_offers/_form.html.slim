@@ -97,7 +97,20 @@
         = "Secteur d'activité du stage"
         = form.rg2a_required_content_tag
         small.form-text.text-muted Sélectionner le secteur d'activité correspondant au stage décrit
-      = form.select :sector_id, options_from_collection_for_select(Sector.all.order(:name), :id, :name, @internship_offer.sector_id), { prompt: sectors_options_for_default }, class: "form-control col-lg-6"
+      = form.select :sector_id,
+                    options_from_collection_for_select(Sector.all.order(:name), :id, :name, @internship_offer.sector_id),
+                    { prompt: sectors_options_for_default },
+                    class: "form-control col-lg-6"
+
+    .form-group
+      = form.label :school_track do
+        = "Filière associée à ce stage"
+        = form.rg2a_required_content_tag
+        small.form-text.text-muted Sélectionner la filière correspondant au stage décrit
+      = form.select :school_track,
+                    options_for_select(options_for_school_tracks, @internship_offer.school_track),
+                    { prompt: school_track_options_for_default },
+                    { class: "form-control col-lg-6" }
 
   fieldset.mt-4
     legend Où, Quand, Comment ?

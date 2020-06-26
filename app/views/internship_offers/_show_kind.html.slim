@@ -1,4 +1,6 @@
 p
+  = "Stage destiné à la filière #{tr_school_track(internship_offer)}"
+  br
   - if internship_offer.is_individual?
     span.badge-internship-offer-alone= " Stage individuel (un seul élève par stage)"
   - else

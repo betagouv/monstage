@@ -37,4 +37,20 @@ module InternshipOffersHelper
 
     internship_offer_path(default_params.merge(forwardable_params))
   end
+
+  def school_track_options_for_default
+    '-- Veuillez sélectionner une filière --'
+  end
+
+  def options_for_school_tracks
+    scholl_tracks_hash_translated = {}
+    InternshipOffer.school_tracks.map do |key, val|
+      scholl_tracks_hash_translated[I18n.t("enum.school_tracks.#{key}")] = val
+    end
+    scholl_tracks_hash_translated
+  end
+
+  def tr_school_track(internship_offer)
+    I18n.t("enum.school_tracks.#{internship_offer.school_track}")
+  end
 end
