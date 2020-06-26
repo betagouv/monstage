@@ -8,6 +8,7 @@ require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
 require 'minitest/retry'
+require 'webmock/minitest'
 
 Minitest::Retry.use!(
   retry_count:  3,
@@ -16,6 +17,13 @@ Minitest::Retry.use!(
   exceptions_to_retry: [
     ActionView::Template::Error, # during test, sometimes fails on "unexpected token at ''", not fixable
     PG::InternalError,           # sometimes postgis ref system is not yet ready
+  ]
+)
+
+WebMock.disable_net_connect!(
+  allow: [
+    /127\.0\.0\.1/,
+    /chromedriver\.storage\.googleapis\.com/
   ]
 )
 

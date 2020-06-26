@@ -33,11 +33,6 @@ module InternshipOffers
                     count: 0 # "ensure user select kind of group"
       assert_select '.form-group-select-group.d-none', count: 1
 
-      assert_select '#internship_offer_with_operator_true[checked]', count: 0
-      assert_select '#internship_offer_with_operator_false[checked]', count: 0
-      assert_select '#internship_offer_with_operator_unknown[checked]', count: 1
-      assert_select '.operators-check-boxes.d-none', count: 1
-
       assert_select '#internship_type_true[checked]', count: 0
       assert_select '#internship_type_false[checked]', count: 0
       assert_select '.form-group-select-max-candidates.d-none', count: 1
@@ -46,25 +41,14 @@ module InternshipOffers
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
 
-    test 'GET #edit as Operator does not shows choose operator section' do
-      user_operator = create(:user_operator)
-      sign_in(user_operator)
-      operator = create(:operator)
-      create(:internship_offer, employer: user_operator)
-
-      get new_dashboard_internship_offer_path
-      assert_response :success
-      assert_select "#internship_offer_operator_ids_#{operator.id}", count: 0
-    end
-
     test 'GET #new as visitor redirects to internship_offers' do
       get new_dashboard_internship_offer_path
       assert_redirected_to user_session_path
     end
 
     test 'GET #new as Employer with duplicate_id' do
-      operator = create(:operator)
-      internship_offer = create(:internship_offer, operators: [operator],
+      operator = create(:user_operator)
+      internship_offer = create(:internship_offer, employer: operator,
                                                    is_public: true,
                                                    max_candidates: 2)
       sign_in(internship_offer.employer)
@@ -77,12 +61,6 @@ module InternshipOffers
       assert_select '.form-group-select-group.d-none', count: 0
       assert_select '.form-group-select-group', count: 1
 
-      assert_select '#internship_offer_with_operator_true[checked]', count: 1
-      assert_select '#internship_offer_with_operator_false[checked]', count: 0
-      assert_select '#internship_offer_with_operator_unknown[checked]', count: 0
-      assert_select '.operators-check-boxes.d-none', count: 0
-      assert_select '.operators-check-boxes', count: 1
-
       assert_select '#internship_type_true[checked]', count: 0
       assert_select '#internship_type_false[checked]', count: 1
       assert_select '.form-group-select-max-candidates.d-none', count: 0
@@ -90,7 +68,6 @@ module InternshipOffers
     end
 
     test 'GET #new as Employer with duplicate_id with old offer' do
-      operator = create(:operator)
       internship_offer = create(:internship_offer)
       internship_offer.update(description_rich_text: nil, employer_description_rich_text: nil)
       internship_offer.update_column(:description, 'woot')

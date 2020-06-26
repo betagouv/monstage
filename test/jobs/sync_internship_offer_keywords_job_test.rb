@@ -2,6 +2,12 @@
 
 require 'test_helper'
 class SyncInternshipOfferKeywordsJobTest < ActiveJob::TestCase
+  include ::ApiTestHelpers
+
+  def setup
+    dictionnary_api_call_stub
+  end
+
   test 'insert all keywords' do
     create(:internship_offer, title: "hello", description: "boom", employer_description: "bim")
 

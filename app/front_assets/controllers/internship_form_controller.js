@@ -27,17 +27,6 @@ export default class extends Controller {
     }
   }
 
-  handleClickWithOperator(event) {
-    if (event.target.value === 'true') {
-      showElement($(this.operatorsBlockTarget));
-    } else {
-      hideElement($(this.operatorsBlockTarget));
-      $(this.operatorTargets).each((i, el) => {
-        el.checked = false;
-      });
-    }
-  }
-
   handleClickIsPublic(event) {
     const { value } = event.target;
     showElement($(this.groupBlockTarget));

@@ -73,16 +73,6 @@ module InternshipsOffers
       end
     end
 
-    test '.has_operator?' do
-      operator = create(:operator)
-      internship_offer = create(:internship_offer, operators: [operator])
-      assert internship_offer.has_operator?
-
-      internship_offer = create(:internship_offer)
-      refute internship_offer.has_operator?
-    end
-
-
     test '.reverse_academy_by_zipcode works on create and save' do
       internship_offer = build(:internship_offer, zipcode: '75015')
       assert_changes -> { internship_offer.academy },

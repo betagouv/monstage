@@ -34,6 +34,8 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
     assert(ability.cannot?(:dashboard_show, create(:internship_application)))
+    assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
+           'employers should be able to index InternshipOfferDashboard')
   end
 
   test 'Employer' do
@@ -49,6 +51,8 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to discard internships offer not belonging to him')
     assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
            'employers should be able to discard internships offer that belongs to him')
+    assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
+           'employers should be able to index InternshipOfferDashboard')
   end
 
   test 'God' do
@@ -65,7 +69,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:read, User)
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
-    assert ability.can?(:index, Reporting::Acl.new(user: god, params: {}))
+    assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
   end
 
   test 'SchoolManager' do
@@ -137,10 +141,12 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:create, InternshipOffers::Api.new),
            'Operator should be able to create internship_offers')
     assert(ability.cannot?(:update, InternshipOffers::Api.new),
-           'employers should not be able to update internship offer not belonging to him')
+           'Operator should not be able to update internship offer not belonging to him')
     assert(ability.can?(:update, InternshipOffers::Api.new(employer: operator)),
-           'employers should be able to update internships offer that belongs to him')
-    assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
-    assert ability.can?(:index, Reporting::Acl.new(user: operator, params: {}))
+           'Operator should be able to update internships offer that belongs to him')
+    assert(ability.can?(:index_and_filter, Reporting::InternshipOffer))
+    assert(ability.can?(:index, Acl::Reporting.new(user: operator, params: {})))
+    assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: operator)),
+           'Operator should be able to index InternshipOfferDashboard')
   end
 end

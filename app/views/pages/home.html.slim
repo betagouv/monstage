@@ -10,7 +10,7 @@
           | offres de stages préférés.
         = react_component("SearchInternshipOffer",
                               { url: internship_offers_path,
-                              className: 'flex-column flex-sm-row not-focusable-search-bar' },
+                              className: 'd-block d-sm-flex not-focusable-search-bar' },
                               { class: 'col-12' }) do
               .input-loading-skeleton
     .row.d-none.d-sm-flex.pt-3.pt-sm-5
@@ -111,13 +111,13 @@
           h4.h4.mb-3.align-bottom.d-inline-flex
             = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", height: 28, class: 'mr-3 d-none d-md-inline'
             | Offrir un stage
-          p Déposer vos offres de stages  à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
+          p Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
 
         div.mt-3.mt-md-5
           h4.h4.mb-3.align-bottom.d-flex
             = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", height: 28, class: 'mr-3 d-none d-md-inline'
             | Trouver un stage
-          p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et candidatez à vos offres préférées.
+          p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et postulez à vos offres préférées.
 
         div.mt-3.mt-md-5
           h4.h4.mb-3.align-bottom.d-flex

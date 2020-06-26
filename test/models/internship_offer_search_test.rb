@@ -3,6 +3,7 @@
 require 'test_helper'
 
 class InternshipOfferSearchTest < ActiveSupport::TestCase
+  include ::ApiTestHelpers
   setup do
     FactoryBot.create(:internship_offer,
                       title: 'docteur',
@@ -16,6 +17,7 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
                       title: 'gendarme',
                       description: 'stage dans une xxx',
                       employer_description: '')
+    dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
   end
 

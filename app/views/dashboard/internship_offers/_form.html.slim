@@ -30,41 +30,6 @@
       = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
       = form.select :group_id, options_for_select(options_for_groups, @internship_offer.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
 
-  - unless current_user.is_a?(Users::Operator)
-    fieldset.mt-4
-      legend Accompagnement (facultatif)
-
-      p.text-muted
-        | Si vous souhaitez être accompagnés dans la préparation de vos collaborateurs et collaboratrices et/ou dans l'accueil des élèves, vous pouvez soliciter un opérateur.
-        = " "
-        = link_to "En savoir plus sur les opérateurs", operators_path, target: '_blank', rel: "external noopener noreferrer", title: 'En savoir plus (nouvelle fenêtre)'
-
-      .form-group
-        .label
-          = "Un opérateur vous accompagne-t-il ?"
-          = form.rg2a_required_content_tag
-
-        .custom-control.custom-radio
-          = form.radio_button :with_operator, true, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id].present? ? false : @internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
-          = form.label :with_operator_true, 'Oui', class: 'custom-control-label'
-        .custom-control.custom-radio
-          = form.radio_button :with_operator, false, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id].present? ? false : !@internship_offer.has_operator?), data: { action: 'change->internship-form#handleClickWithOperator' }
-          = form.label :with_operator_false, 'Non', class: 'custom-control-label'
-        .custom-control.custom-radio
-          = form.radio_button :with_operator, :unknown, class: 'custom-control-input', required: true, checked: (@internship_offer.new_record? && !params[:duplicate_id]), data: { action: 'change->internship-form#handleClickWithOperator' }
-          = form.label :with_operator_unknown, 'Je ne sais pas', class: 'custom-control-label'
-
-      div class="form-group operators-check-boxes #{@internship_offer.has_operator? ? '' : 'd-none'}" data-target="internship-form.operatorsBlock"
-        .label
-          = "Quel opérateur vous accompagne"
-
-        .custom-control.custom-checkbox.custom-control-checkbox-list
-          - Operator.order(:name).all.map do| operator|
-            .custom-control.custom-checkbox
-              = form.check_box :operator_ids, {multiple: true,  class: 'custom-control-input', disabled: current_user.is_a?(Users::Operator), data: { target: 'internship-form.operator' } }, operator.id, false
-              = form.label :operator_ids, for: "internship_offer_operator_ids_#{operator.id}", class: 'custom-control-label' do
-                = operator.name
-
   fieldset.mt-4
     legend Offre de stage
     .form-group

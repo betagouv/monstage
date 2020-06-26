@@ -22,6 +22,17 @@ module Dashboard
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 
+    test 'GET #index as Visitor redirects to sign in path' do
+      get dashboard_internship_offers_path
+      assert_redirected_to user_session_path
+    end
+
+    test 'GET #index as Student is forbidden' do
+      sign_in(create(:student))
+      get dashboard_internship_offers_path
+      assert_redirected_to root_path
+    end
+
     test 'GET #index tabs forward expected params' do
       sign_in(create(:employer))
 
@@ -205,22 +216,16 @@ module Dashboard
     end
 
     test 'GET #index as Operator displays internship_applications link' do
-      operator = create(:user_operator)
-      another_internship_offer = create(:internship_offer)
-      internship_offer_owned_by_operator = create(:internship_offer, employer: operator)
-      internship_offer_delegated_to_opereator = create(:internship_offer, operators: [operator.operator])
-      sign_in(operator)
+      operator_1 = create(:user_operator)
+      operator_2 = create(:user_operator)
+      internship_offer_owned_by_operator = create(:internship_offer, employer: operator_1)
+      another_internship_offer = create(:internship_offer, employer: operator_2)
+      sign_in(operator_1)
       get dashboard_internship_offers_path
       assert_response :success
       assert_select "tr.test-internship-offer-#{another_internship_offer.id}",
                     count: 0
       assert_select "tr.test-internship-offer-#{internship_offer_owned_by_operator.id}",
-                    count: 1
-      assert_select "tr.test-internship-offer-#{internship_offer_delegated_to_opereator.id}",
-                    count: 1
-      assert_select 'a[href=?]', edit_dashboard_internship_offer_path(internship_offer_delegated_to_opereator),
-                    count: 0
-      assert_select 'a[href=?]', internship_offer_path(internship_offer_delegated_to_opereator),
                     count: 1
     end
 

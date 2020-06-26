@@ -2,12 +2,6 @@
 
 # used in internships#index
 module InternshipOffersHelper
-  def current_sector
-    return Sector.find(params[:sector_id]) if params[:sector_id]
-
-    nil
-  end
-
   def options_for_groups
     Group.all.map do |group|
       [
