@@ -182,25 +182,6 @@ export default function AddressInput({
             />
           </div>
         </div>
-        <div className="col-sm-4">
-          <div className="form-group">
-            <label htmlFor={`${resourceName}_city`}>
-              Ville
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
-            </label>
-            <input
-              className="form-control"
-              required="required"
-              value={city}
-              type="text"
-              readOnly
-              name={`${resourceName}[city]`}
-              id={`${resourceName}_city`}
-            />
-          </div>
-        </div>
         <div className="col-sm-2">
           <div className="form-group">
             <label htmlFor={`${resourceName}_zipcode`}>
@@ -217,6 +198,25 @@ export default function AddressInput({
               name={`${resourceName}[zipcode]`}
               id={`${resourceName}_zipcode`}
               readOnly
+            />
+          </div>
+        </div>
+        <div className="col-sm-4">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_city`}>
+              Ville
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <input
+              className="form-control"
+              required="required"
+              value={city}
+              type="text"
+              readOnly
+              name={`${resourceName}[city]`}
+              id={`${resourceName}_city`}
             />
           </div>
         </div>
