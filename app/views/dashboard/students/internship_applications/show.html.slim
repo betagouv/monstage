@@ -36,7 +36,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
           = render "dashboard/internship_offers/internship_applications/action_modal",
               internship_application: @internship_application,
               aasm_target: :cancel_by_student!,
-              modal_opener_label: 'Décliner',
+              modal_opener_label: 'Annuler',
               modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
               fa_icon: "fa-ban"
 
@@ -45,11 +45,11 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
     .row
       .col-12.py-2
-        p La convention est fournie par le collège. Vous pouvez demander un modèle de convention à votre professeur principal.
-        p Elle doit être remplie et signée par les responsables légaux puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne au collège.
+        p La convention est fournie par l'établissement. Vous pouvez demander un modèle de convention à votre professeur principal.
+        p Elle doit être remplie et signée par les responsables légaux puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne à l'établissement.
         p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
 
         h3.h4 À quoi sert la convention ?
         p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
 
-        p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom du collège, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.
+        p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom de l'établissement, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.

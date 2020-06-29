@@ -1,6 +1,7 @@
 html, body{
   height: 100%;
 }
+
 body {
   display: flex;
   flex-direction: column;
@@ -23,6 +24,9 @@ body {
 }
 
 @include media-breakpoint-down(xs) {
+  .content {
+    min-height: 100%;
+  }
   .footer{
     font-size: 12px;
   }

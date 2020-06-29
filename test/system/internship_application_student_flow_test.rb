@@ -16,7 +16,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # show application form
       page.find '#internship-application-closeform', visible: false
-      click_on 'Je candidate'
+      click_on 'Je postule'
       page.find '#internship-application-closeform', visible: true
 
       # fill in application form
@@ -43,9 +43,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       end
       click_on 'Candidature envoyée le'
       click_on 'Afficher ma candidature'
-      click_on 'Décliner'
+      click_on 'Annuler'
       click_on 'Confirmer'
-      assert page.has_content?('Candidature déclinée')
+      assert page.has_content?('Candidature annulée')
       assert_equal 1, student.internship_applications
                              .where(aasm_state: :canceled_by_student)
                              .count
@@ -65,7 +65,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find '#internship-application-closeform', visible: false
       page.find('.test-missing-school-weeks', visible: false)
 
-      click_on 'Je candidate'
+      click_on 'Je postule'
 
       # check application is now here, ensure feature is here
       page.find '#internship-application-closeform', visible: true

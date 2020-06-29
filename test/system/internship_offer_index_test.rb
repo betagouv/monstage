@@ -4,6 +4,7 @@ require 'application_system_test_case'
 
 class StudentFilterOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include ::ApiTestHelpers
 
   def assert_presence_of(internship_offer:)
     assert_selector "a[href='#{internship_offer_path(internship_offer)}']",
@@ -32,7 +33,10 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     searched_keyword = "helloworld"
     searched_internship_offer = create(:internship_offer, title: searched_keyword)
     not_searched_internship_offer = create(:internship_offer)
+
+    dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
+    InternshipOfferKeyword.update_all(searchable: true)
 
     visit internship_offers_path
     # check everything is here by default

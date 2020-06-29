@@ -111,7 +111,7 @@ module Dashboard
                       text: "Candidature expirée le #{I18n.localize(internship_applications[:expired].expired_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.alert-internship-application-state',
-                      text: "Candidature déclinée le #{I18n.localize(internship_applications[:canceled_by_student].canceled_at, format: :human_mm_dd)}.",
+                      text: "Candidature annulée le #{I18n.localize(internship_applications[:canceled_by_student].canceled_at, format: :human_mm_dd)}.",
                       count: 1
       end
 

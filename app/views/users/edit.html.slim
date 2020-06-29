@@ -5,7 +5,7 @@
     = link_to 'Mon CV', account_path(section: 'resume'), class: "list-group-item list-group-item-action #{'active' if current_section == 'resume'}"
   = link_to 'Mon identité', account_path(section: 'identity'), class: "list-group-item list-group-item-action #{'active' if current_section == 'identity'}"
   - if can?(:choose_school, current_user)
-    = link_to 'Mon collège', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if current_section == 'school'}"
+    = link_to 'Mon établissement', account_path(section: 'school'), class: "list-group-item list-group-item-action #{'active' if current_section == 'school'}"
   - if can?(:show, :api_token)
     = link_to 'API', account_path(section: 'api'), class: "list-group-item list-group-item-action #{'active' if current_section == 'api'}"
   = link_to destroy_user_session_path, class: "list-group-item list-group-item-action text-danger", method: :delete do

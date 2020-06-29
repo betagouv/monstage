@@ -184,13 +184,7 @@ class AutocompleteSchool extends React.Component {
 
     const { resourceName, existingSchool, label, required, classes } = this.props;
     return (
-      <div className="form-group">
-        <label htmlFor={`${resourceName}_school_city`}>
-          {label}
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
-        </label>
+      <div className="form-group custom-label-container">
         <div className="input-group">
           <input
             className={`form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'}`}
@@ -203,6 +197,13 @@ class AutocompleteSchool extends React.Component {
             value={this.currentCityString()}
             onChange={this.onCityChange}
           />
+          <label htmlFor={`${resourceName}_school_city`}>
+            {label}
+            <abbr title="(obligatoire)" aria-hidden="true">
+              *
+            </abbr>
+          </label>
+
           <div className="input-group-append">
             {!currentRequest && (
               <button
@@ -244,7 +245,7 @@ class AutocompleteSchool extends React.Component {
             >
               <span dangerouslySetInnerHTML={{ __html: currentCity }} />
               <span className="badge-secondary badge-pill small">
-                {autocompleteCitySuggestions[currentCity].length} collège
+                {autocompleteCitySuggestions[currentCity].length} établissement
                 {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
               </span>
             </li>
@@ -255,7 +256,7 @@ class AutocompleteSchool extends React.Component {
               (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
             }`}
           >
-            Collège(s)
+            Etablissement(s)
           </li>
           {(autocompleteSchoolsSuggestions || []).map(currentSchool => (
             <li
@@ -277,7 +278,7 @@ class AutocompleteSchool extends React.Component {
           {autocompleteNoResult && (
             <li className="list-group-item list-group-item-info small">
               Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné est un
-              collège REP ou REP+.
+              établissement REP ou REP+.
             </li>
           )}
         </ul>
@@ -297,22 +298,30 @@ class AutocompleteSchool extends React.Component {
     return (
       <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
         <label htmlFor={`${resourceName}_school_name`}>
-          Collège
+          Etablissement
           <abbr title="(obligatoire)" aria-hidden="true">
             *
           </abbr>
         </label>
         {isWaitingCitySelection && (
-          <input
-            value=""
-            disabled
-            className={`form-control ${classes || ''}`}
-            type="text"
-            id={`${resourceName}_school_name`}
-          />
+          <div class="custom-label-container">
+            <input
+              value=""
+              disabled
+              className={`form-control ${classes || ''}`}
+              type="text"
+              id={`${resourceName}_school_name`}
+            />
+            <label htmlFor={`${resourceName}_school_name`}>
+              Collège
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+          </div>
         )}
         {isAlreadySelected && (
-          <>
+          <div class="custom-label-container">
             <input
               readOnly
               disabled
@@ -322,8 +331,14 @@ class AutocompleteSchool extends React.Component {
               name={`${resourceName}[school_name]`}
               id={`${resourceName}_school_name`}
             />
+            <label htmlFor={`${resourceName}_school_name`}>
+              Collège
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
             <input type="hidden" value={existingSchool.id} name={`${resourceName}[school_id]`} />
-          </>
+          </div>
         )}
         {hasPendingSuggestion && (
           <div>
@@ -360,8 +375,7 @@ class AutocompleteSchool extends React.Component {
     const hasPendingSuggestion = classRoomsSuggestions && classRoomsSuggestions.length > 0;
 
     return (
-      <div className={`form-group ${isWaitingSchoolSelection ? 'opacity-05' : ''}`}>
-        <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+      <div className={`form-group custom-label-container ${isWaitingSchoolSelection ? 'opacity-05' : ''}`}>
 
         {isWaitingSchoolSelection && (
           <input
@@ -425,6 +439,7 @@ class AutocompleteSchool extends React.Component {
             type="text"
           />
         )}
+        <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
       </div>
     );
   };

@@ -30,4 +30,12 @@ module ApiTestHelpers
   rescue JSON::ParserError
     response.body
   end
+
+  def dictionnary_api_call_stub
+    stub_request(:any, /dictionnaire-academie.fr/).to_return(
+      status: 200,
+      body: "{\"result\":[{\"nature\":\"n.f.\",\"score\":1}]}",
+      headers: {}
+    )
+  end
 end

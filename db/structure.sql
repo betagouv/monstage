@@ -523,7 +523,8 @@ CREATE TABLE public.internship_offer_keywords (
     word text NOT NULL,
     ndoc integer NOT NULL,
     nentry integer NOT NULL,
-    searchable boolean DEFAULT true NOT NULL
+    searchable boolean DEFAULT true NOT NULL,
+    word_nature character varying(200) DEFAULT NULL::character varying
 );
 
 
@@ -544,38 +545,6 @@ CREATE SEQUENCE public.internship_offer_keywords_id_seq
 --
 
 ALTER SEQUENCE public.internship_offer_keywords_id_seq OWNED BY public.internship_offer_keywords.id;
-
-
---
--- Name: internship_offer_operators; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.internship_offer_operators (
-    id bigint NOT NULL,
-    internship_offer_id bigint,
-    operator_id bigint,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: internship_offer_operators_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.internship_offer_operators_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: internship_offer_operators_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.internship_offer_operators_id_seq OWNED BY public.internship_offer_operators.id;
 
 
 --
@@ -988,13 +957,6 @@ ALTER TABLE ONLY public.internship_offer_keywords ALTER COLUMN id SET DEFAULT ne
 
 
 --
--- Name: internship_offer_operators id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_operators ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_operators_id_seq'::regclass);
-
-
---
 -- Name: internship_offer_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1128,14 +1090,6 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.internship_offer_keywords
     ADD CONSTRAINT internship_offer_keywords_pkey PRIMARY KEY (id);
-
-
---
--- Name: internship_offer_operators internship_offer_operators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_operators
-    ADD CONSTRAINT internship_offer_operators_pkey PRIMARY KEY (id);
 
 
 --
@@ -1285,20 +1239,6 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 --
 
 CREATE UNIQUE INDEX index_internship_offer_keywords_on_word ON public.internship_offer_keywords USING btree (word);
-
-
---
--- Name: index_internship_offer_operators_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_operators_on_internship_offer_id ON public.internship_offer_operators USING btree (internship_offer_id);
-
-
---
--- Name: index_internship_offer_operators_on_operator_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_operators_on_operator_id ON public.internship_offer_operators USING btree (operator_id);
 
 
 --
@@ -1562,14 +1502,6 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
--- Name: internship_offer_operators fk_rails_256357b65e; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_operators
-    ADD CONSTRAINT fk_rails_256357b65e FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
-
-
---
 -- Name: internship_applications fk_rails_32ed157946; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1679,14 +1611,6 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
-
-
---
--- Name: internship_offer_operators fk_rails_f2bf160031; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offer_operators
-    ADD CONSTRAINT fk_rails_f2bf160031 FOREIGN KEY (operator_id) REFERENCES public.operators(id);
 
 
 --
@@ -1849,7 +1773,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200325143659'),
 ('20200402140231'),
 ('20200407142759'),
-('20200409122859'),
 ('20200421142949'),
 ('20200421145109'),
 ('20200422123045'),
@@ -1862,6 +1785,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200605093223'),
 ('20200612075359'),
 ('20200615113918'),
-('20200618141221');
-
+('20200618141221'),
+('20200620134004'),
+('20200622074942'),
+('20200622080019');
 

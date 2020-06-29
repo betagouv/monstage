@@ -44,9 +44,9 @@ class ReservedSchoolInput extends React.Component {
               checked={checkedOrHasExistingSchool}
               onChange={this.handleChange}
             />
-            <span className="ml-1">Ce stage est reservé à un collège uniquement ?</span>
+            <span className="ml-1">Ce stage est reservé à un établissement uniquement ?</span>
             <small className="form-text text-muted">
-              Les stages reservés ne seront proposés qu'aux élèves du collège selectionné
+              Les stages reservés ne seront proposés qu'aux élèves de l'établissement selectionné
             </small>
           </label>
         </div>

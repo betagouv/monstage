@@ -81,6 +81,7 @@ class Ability
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can %i[index update], InternshipApplication
+    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end
 
   def operator_abilities(user:)
@@ -93,9 +94,9 @@ class Ability
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
     can %i[index update], InternshipApplication
     can :show, :api_token
-
+    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index], Reporting::Acl do |_acl|
+    can %i[index], Acl::Reporting do |_acl|
       true
     end
   end
@@ -104,7 +105,7 @@ class Ability
     can :view, :department_name
     can %i[read], InternshipOffer
 
-    can %i[index], Reporting::Acl, &:allowed?
+    can %i[index], Acl::Reporting, &:allowed?
 
     can %i[index_and_filter], Reporting::InternshipOffer
   end
@@ -124,7 +125,7 @@ class Ability
     can :manage, InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi # grant access to the dashboard
-    can %i[index], Reporting::Acl do |_acl|
+    can %i[index], Acl::Reporting do |_acl|
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer

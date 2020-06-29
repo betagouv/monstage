@@ -35,7 +35,7 @@ module InternshipApplications
     end
 
     test 'GET #index succeed when logged in as employer, shows default fields' do
-      school = create(:school, city: 'Paris', name: 'Mon collège')
+      school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
                                  phone: '+33665656565',
                                  email: 'student@edu.school',
@@ -61,7 +61,7 @@ module InternshipApplications
     end
 
     test 'GET #index succeed when logged in as employer, shows handicap field when present' do
-      school = create(:school, city: 'Paris', name: 'Mon collège')
+      school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
                                  handicap: 'cotorep')
       internship_application = create(:internship_application, :submitted, student: student)
