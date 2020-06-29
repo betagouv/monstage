@@ -107,34 +107,9 @@
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <%= render 'users/select_channel', label: 'Comment vous contacter ?' do %>
-          <div>
-            <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
-          </div>
+        <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource do %>
+          <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
         <% end %>
-
-        <div data-target="signup.emailBloc" class="form-group email d-none">
-          <%= f.label :email do %>
-              <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-              <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
-          <% end %>
-          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
-          <small class="d-none" data-target="signup.emailHint"></small>
-        </div>
-
-        <div data-target="signup.phoneBloc" class="form-group phone d-none">
-          <%= f.label :phone, 'data-action' => "click->signup#focusPhone" do %>
-            <%= 'Numéro de mobile' %>
-            <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
-          <% end %>
-          <%= react_component("CountryPhoneSelect",
-            {
-              name: 'user[phone]',
-              value: resource.phone
-            })
-          %>
-
-        </div>
       <% else %>
         <div class="form-group">
           <%= f.label :email do %>
