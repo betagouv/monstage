@@ -39,6 +39,8 @@ export default class extends Controller {
   }
 
   connect() {
+    console.log("Hello controller")
+
     const _that = this;
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;

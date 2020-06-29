@@ -1,4 +1,4 @@
-<div data-target="signup.selectChannel" class="form-group select-channel">
+<div class="form-group select-channel">
   <div class="label">
     <%= label %>
     <div>
@@ -6,16 +6,16 @@
     </div>
   </div>
 
-  <div data-target="signup.selectChannel" class='row my-2'>
+  <div class='row my-2' data-controller="select_channel">
     <div class='col-6'>
       <%= form.radio_button :channel,
                           "email",
                           id: 'channel-email',
-                          'data-action' => "change->signup#checkEmail" %>
+                          'data-action' => "change->select_channel#checkEmail" %>
       <%= form.label :channel, "Email",
                             class: 'channel-radio-label',
                             for: "select-channel-email",
-                            "data-action" => "click->signup#chooseEmail" do %>
+                            "data-action" => "click->select_channel#chooseEmail" do %>
         <div class="image-channel image-email"></div>
         <span>Email</span>
       <% end %>
@@ -25,12 +25,12 @@
                           "phone",
                           class: 'channel-radio-button',
                           id: 'channel-phone',
-                          'data-action' => "change->signup#checkPhone" %>
+                          'data-action' => "change->select_channel#checkPhone" %>
       <%= form.label :channel,
                     "SMS",
                     class: 'channel-radio-label',
                     for: "select-channel-phone",
-                    'data-action' => "click->signup#choosePhone" do %>
+                    'data-action' => "click->select_channel#choosePhone" do %>
         <div class="image-channel image-sms"></div>
         <span>SMS</span>
       <% end %>
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<div data-target="signup.emailBloc" class="form-group email d-none">
+<div data-target="select_channel.emailBloc" class="form-group email d-none">
   <%= form.label :email do %>
     <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
     <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
@@ -46,9 +46,9 @@
   <%= form.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", autofocus: params[:email].blank? ? true : false, data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
   <small class="d-none" data-target="signup.emailHint"></small>
 </div>
-<div data-target="signup.phoneBloc" class="form-group phone d-none">
-  <%= form.label :phone, 'data-action' => "click->signup#focusPhone" do %>
-    <%= 'Numéro de mobile' %>
+<div data-target="select_channel.phoneBloc" class="form-group phone">
+  <%= form.label :phone, 'data-action' => "click->select_channel#focusPhone" do %>
+    <span>Numéro de mobile</span>
     <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
   <% end %>
   <%= react_component("CountryPhoneSelect",
