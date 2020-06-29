@@ -4,10 +4,11 @@ require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
 
-  test 'GET works and autofocus email' do
+  test 'GET works' do
     get new_user_session_path
     assert_response :success
-    assert_select "#user_email[autofocus=autofocus]"
+    assert_select "#user_email"
+    assert_select "#channel-phone"
     assert_select "#user_password[autofocus=autofocus]", count: 0
   end
 
