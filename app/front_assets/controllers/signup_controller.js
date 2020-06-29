@@ -4,7 +4,14 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 'emailHint', 'emailInput', 'label'];
+  static targets = ['handicapGroup', 
+                    'emailHint', 
+                    'emailInput', 
+                    'phoneInput', 
+                    'label', 
+                    'emailBloc', 
+                    'phoneBloc', 
+                    'selectChannel'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
@@ -74,5 +81,38 @@ export default class extends Controller {
     try {
       this.wssClient.disconnect();
     } catch (e) {}
+  }
+
+  checkEmail() {
+    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
+  }
+  
+  chooseEmail() {
+    $('#channel-phone').attr('checked', false)
+    $('#channel-email').attr('checked', true)
+    this.checkEmail()
+  }
+
+  checkPhone() {
+    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
+  }
+  
+  choosePhone() {
+    $('#channel-email').attr('checked', false)
+    $('#channel-phone').attr('checked', true)
+    this.checkPhone()
+  }
+
+  displayField(fielfToClean, fieldToHide, fieldToDisplay) {
+    $(fielfToClean).val('')
+    $(fieldToHide).hide()
+    $(fieldToHide).addClass('d-none')
+    $(fieldToDisplay).hide()
+    $(fieldToDisplay).removeClass('d-none')
+    $(fieldToDisplay).slideDown()
+  }
+
+  focusPhone() {
+    $('#phone-input').focus()
   }
 }

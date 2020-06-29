@@ -12,5 +12,54 @@
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
+}
+.autocomplete-school-container .custom-label-container{
+  input:focus + label,
+  select:focus + label,
+  input:valid + label,
+  select:valid + label {
+    z-index: 4;
+  }
+}
+.custom-label-container{
+  position: relative;
+  transition: 0.2s;
 
+  // padding: $input-padding-y $input-padding-x;
+  label {
+    top: $input-padding-y;
+    // position label at same position as input content
+    // to do so, we split the input padding-x between left [offset label]/padding[give some space around the label]
+    left: $input-padding-x/2;
+    padding-left: $input-padding-x/2;
+    padding-right: $input-padding-x/2;
+    position: absolute;
+    display: inline-block;
+
+    line-height: $input-line-height;
+    transition: all .2s;
+    abbr{
+      margin-left: -($input-padding-x/2);
+    }
+  }
+
+  input:focus + label,
+  select:focus + label {
+    color: $input-focus-border-color;
+  }
+
+  input:focus + label,
+  select:focus + label,
+  input:valid + label,
+  select:valid + label {
+    background-color: $input-bg;
+    top: 0;
+    margin-top: -10px;
+
+  }
+  input:placeholder-shown:not(:focus)::placeholder {
+    opacity: 0;
+  }
+  input:placeholder-shown:not(:focus) + * {
+  }
 }

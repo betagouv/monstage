@@ -22,7 +22,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:student, email: email, confirmed_at: nil)
     get users_registrations_standby_path(email: email)
     assert_response :success
-    assert_select 'span.confirmation-text', text: "Votre compte a bien ete enregistré"
+    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
   end
 
   test 'GET #registrations_standby as employer using path?email=fourcade.m@gmail.com with pending account' do
@@ -30,7 +30,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:employer, email: email, confirmed_at: nil)
     get users_registrations_standby_path(email: email)
     assert_response :success
-    assert_select 'span.confirmation-text', text: "Votre compte a bien ete enregistré"
+    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
   end
 
   test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with confirmed account' do
@@ -46,5 +46,28 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     get users_registrations_standby_path(email: email)
     assert_response :success
     assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au mail: #{email}.Veuillez créer un compte"
+  end
+
+  test 'GET #users_registrations_phone_standby as student using path?phone=+33611223344 with pending account' do
+    phone = '+33611223344'
+    create(:student, phone: phone, confirmed_at: nil)
+    get users_registrations_phone_standby_path(phone: phone)
+    assert_response :success
+    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
+  end
+
+  test 'GET #registrations_standby using path?phone=0611223344 with confirmed phone' do
+    phone = '+33611223344'
+    create(:student, phone: phone, phone_token_validity: nil)
+    get users_registrations_phone_standby_path(phone: phone)
+    assert_response :success
+    assert_select '.alert.alert-success', text: "Votre compte est déjà confirmé (#{phone}).Veuillez vous connecter"
+  end
+
+  test 'GET #registrations_standby using path?phone=+33611223344 with unknown account' do
+    phone = '+33611223344'
+    get users_registrations_phone_standby_path(phone: phone)
+    assert_response :success
+    assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"
   end
 end

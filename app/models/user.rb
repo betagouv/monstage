@@ -6,8 +6,11 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
-
+  
   include DelayedDeviseEmailSender
+
+  before_validation :clean_phone
+  after_create :send_sms_token
 
   # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
@@ -21,16 +24,22 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
+  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
+    message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
-  validates :email, format: { with: Devise.email_regexp }, on: :create
+  validates :email, uniqueness: { allow_blank: true },
+    format: { with: Devise.email_regexp }, allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
+  validate :email_or_phone
 
   delegate :application, to: Rails
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
+
+  MAX_DAILY_PHONE_RESET = 3
 
   def self.drh
     Users::Employer.where(email: 'drh@betagouv.fr').first
@@ -111,6 +120,40 @@ class User < ApplicationRecord
     anonymize
   end
 
+  def reset_password_by_phone
+    if phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
+      send_sms_token
+      self.update(phone_password_reset_count: phone_password_reset_count + 1,
+                  last_phone_password_reset: Time.now)
+    end
+  end
+
+  def send_sms_token
+    return unless phone.present?
+    create_phone_token
+    SendSmsJob.perform_later(self)
+  end
+
+  def create_phone_token
+    self.update(phone_token: sprintf('%04d',rand(10000)),
+    phone_token_validity: 1.hour.from_now)
+  end
+
+  def phone_confirmable?
+    phone_token.present? && Time.now < phone_token_validity
+  end
+
+  def confirm_by_phone!
+    self.update(phone_token: nil, 
+                phone_token_validity: nil, 
+                confirmed_at: Time.now,
+                phone_password_reset_count: 0)
+  end
+  
+  def check_phone_token?(token)
+    phone_confirmable? && phone_token == token
+  end
+
   # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
@@ -125,6 +168,27 @@ class User < ApplicationRecord
   rails_admin do
     list do
       scopes [:kept]
+    end
+  end
+
+  def email_required?
+    false
+  end
+
+  def will_save_change_to_email?
+    false
+  end
+
+  private
+
+  def clean_phone
+    self.phone = phone.delete(' ') unless phone.nil?
+  end
+
+  def email_or_phone
+    if email.blank? && phone.blank?
+      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.") 
+      errors.add(:phone, "Un email ou un téléphone mobile est nécessaire.")
     end
   end
 end

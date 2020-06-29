@@ -21,7 +21,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
       current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
       gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
-      resume_other: 'chocolat', resume_languages: 'FR',
+      resume_other: 'chocolat', resume_languages: 'FR', phone: '+33600110011',
       handicap: 'malvoyant')
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
@@ -40,6 +40,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
+    assert_not_equal '+33600110011', student.phone
 
   end
 
@@ -92,5 +93,19 @@ class UserTest < ActiveSupport::TestCase
       student.save
       student.confirm
     end
+  end
+
+  test "#reset_password_by_phone when max count" do
+    student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 3)
+    student.reset_password_by_phone
+    assert_equal student.phone_password_reset_count, 3
+    assert student.last_phone_password_reset < 1.minute.ago
+  end
+
+  test "#reset_password_by_phone when resetable" do
+    student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 1)
+    student.reset_password_by_phone
+    assert_equal student.phone_password_reset_count, 2
+    assert student.last_phone_password_reset > 1.minute.ago
   end
 end

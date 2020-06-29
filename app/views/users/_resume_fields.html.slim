@@ -28,8 +28,8 @@
       .col-12.col-md-6
         .form-group
           = form.label :phone do
-            = 'Mon numéro de téléphone'
-          = form.phone_field :phone, class: 'form-control col-lg-12', disabled: disabled
+            = 'Numéro de mobile'
+          = react_component("CountryPhoneSelect", { name: 'user[phone]', value: current_user.phone })
       .col-12.col-md-6
         .form-group
           = form.label :email do

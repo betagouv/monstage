@@ -9,12 +9,17 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     registrations: 'users/registrations',
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    passwords: 'users/passwords'
   }
 
   devise_scope :user do
     get 'users/choose_profile' => 'users/registrations#choose_profile'
     get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
+    get '/users/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby'
+    post '/users/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
+    get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
+    post '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
   end
 
   resources :internship_offer_keywords, only: [] do

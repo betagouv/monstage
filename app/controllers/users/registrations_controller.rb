@@ -2,6 +2,8 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    include Phonable
+
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
@@ -26,6 +28,14 @@ module Users
       @confirmable_user ||= nil
     end
 
+    def confirmation_phone_standby
+      flash.delete(:notice)
+      if params[:phone].present?
+        @confirmable_user = User.where(phone: params[:phone]).first
+      end
+      @confirmable_user ||= nil
+    end
+
     def resource_class
       UserManager.new.by_params(params: params)
     rescue KeyError
@@ -45,8 +55,20 @@ module Users
 
     # POST /resource
     def create
+      clean_phone_param
       super do |resource|
         @current_ability = Ability.new(resource)
+      end
+    end
+
+    def phone_validation
+      if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])
+        fetch_user_by_phone.confirm_by_phone!
+        redirect_to(root_path,
+                    flash: { success: I18n.t('devise.confirmations.confirmed') })
+      else
+        redirect_to(users_registrations_phone_standby_path(phone: params[:phone]),
+                    flash: { alert: I18n.t('devise.confirmations.unconfirmed') })
       end
     end
 
@@ -92,6 +114,8 @@ module Users
           handicap
           accept_terms
           role
+          phone
+          email
         ]
       )
     end
@@ -108,7 +132,11 @@ module Users
 
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
-      users_registrations_standby_path(email: resource.email)
+      if resource.phone.present?
+        users_registrations_phone_standby_path(phone: resource.phone)
+      else
+        users_registrations_standby_path(email: resource.email)
+      end
     end
   end
 end

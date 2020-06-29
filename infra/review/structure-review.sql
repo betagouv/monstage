@@ -835,7 +835,11 @@ CREATE TABLE public.users (
     discarded_at timestamp without time zone,
     department_name character varying,
     missing_school_weeks_id bigint,
-    role public.user_role
+    role public.user_role,
+    phone_token character varying,
+    phone_token_validity timestamp without time zone,
+    phone_password_reset_count integer DEFAULT 0,
+    last_phone_password_reset timestamp without time zone
 );
 
 
@@ -1403,7 +1407,7 @@ CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
+CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
@@ -1411,6 +1415,13 @@ CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
+
+
+--
+-- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_phone ON public.users USING btree (phone);
 
 
 --
@@ -1773,7 +1784,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200526133419'),
 ('20200526133956'),
 ('20200529045148'),
+('20200605093223'),
 ('20200612075359'),
+('20200615113918'),
+('20200618141221'),
 ('20200620134004'),
 ('20200622074942'),
 ('20200622080019');

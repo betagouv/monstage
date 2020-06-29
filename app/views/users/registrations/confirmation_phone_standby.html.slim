@@ -1,0 +1,42 @@
+.onboarding-card.onboarding-card-sm.mb-4
+  - if !@confirmable_user
+    header.header-account.mb-2
+      .row.mx-0 style=("height: 250px") 
+        .col-12.d-flex.h-100
+          .row.align-self-end.ma-0
+            h1.h2.mb-5.mx-3 Encore une petite étape...
+
+    p.alert.alert-danger
+      = "Aucun compte n'est lié au téléphone: #{params[:phone]}."
+      br
+      = "Veuillez "
+      = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
+
+  - elsif @confirmable_user.confirmed_at
+    p.alert.alert-success
+      = "Votre compte est déjà confirmé (#{params[:phone]})."
+      br
+      = "Veuillez vous "
+      = link_to "connecter", new_user_session_path(phone: params[:phone]), class: 'text-white'
+
+  - else
+    header.header-account.mb-2
+      .row.mx-0 style=("height: 250px") 
+        .col-12.d-flex.h-100
+          .row.align-self-end.ma-0
+            h1.h2.mb-5.mx-3 Encore une petite étape...
+            br
+            p.mx-3
+              span.confirmation-text= "Votre compte a bien été enregistré "
+              strong= "(#{params[:phone]})"
+              = "."
+              br
+              | Vous venez de recevoir un sms afin de confirmer votre inscription.
+    .body
+      = form_tag phone_validation_path, method: :post do
+        = hidden_field_tag :phone, params[:phone]
+        .form-group
+          = label_tag :phone_token, 'Code de confirmation'
+          = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
+        .actions.d-flex.d-sm-block.text-center
+          = submit_tag 'Valider', class: 'btn btn-primary'
