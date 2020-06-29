@@ -17,7 +17,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
 
     # fails to create main teacher with existing email
     assert_difference('Users::SchoolManagement.main_teacher.count', 0) do
-      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint-Parfait')
       all('.list-group .list-group-item-action').last.click
       find("label[for=\"select-school-#{school_2.id}\"]").click
       select "Professeur principal", from: 'user_role'
@@ -37,7 +37,7 @@ class SignUpMainTeachersTest < ApplicationSystemTestCase
 
     # creates main teacher
     assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
-      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint martin')
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint-Martin')
       all('.list-group .list-group-item-action').first.click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
