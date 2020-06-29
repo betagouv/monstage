@@ -40,7 +40,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student
     assert_difference('Users::Student.count', 1) do
-      byebug
       find('label', text: 'Email').click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
