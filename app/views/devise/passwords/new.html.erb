@@ -14,9 +14,9 @@
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
       <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité.</p>
       <p>Pour cela rappelez-nous l’adresse électronique ou le nuémro de téléphone mobile associé à votre compte.</p>
-      
-      <%= render 'users/select_channel', label: '' %>
-      
+
+      <%= render 'users/select_channel', label: '', form: f%>
+
       <div data-target="signup.emailBloc" class="form-group email d-none">
         <%= f.label :email do %>
             <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
@@ -31,14 +31,14 @@
           <%= 'Numéro de mobile' %>
           <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
         <% end %>
-        <%= react_component("CountryPhoneSelect", 
-          { 
+        <%= react_component("CountryPhoneSelect",
+          {
             name: 'user[phone]',
             value: resource.phone
           })
         %>
       </div>
-    
+
       <div class="actions d-flex d-sm-block text-center">
         <%= f.submit "Envoyer", class: 'btn btn-primary' %>
       </div>
