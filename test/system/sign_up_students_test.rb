@@ -24,7 +24,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
-      find('label', text: 'masculin').click
+      find('label', text: 'Masculin').click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
