@@ -4,7 +4,7 @@ module Phonable
   end
 
   def safe_phone_param
-    [ params[:user][:phone], params[:phone] ].compact
+    [ params[:user]&.[](:phone), params[:phone] ].compact
                                              .first
                                              .delete(' ')
   end

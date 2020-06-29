@@ -11,6 +11,7 @@ module Users
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
           sign_in(fetch_user_by_phone)
           redirect_to root_path
+          return
       end
       super
     end

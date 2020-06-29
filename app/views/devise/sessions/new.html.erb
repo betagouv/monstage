@@ -26,7 +26,7 @@
           Adresse électronique (e-mail)
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', value: params[:email] %>
+        <%= f.email_field :email, autofocus: params[:email].blank? ? true : false, autocomplete: "email", class: 'form-control ', value: params[:email], data: {target: 'signup.emailInput'} %>
         <small data-target="signup.emailHint"></small>
       </div>
 
