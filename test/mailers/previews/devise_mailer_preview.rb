@@ -1,15 +1,29 @@
 class DeviseMailerPreview < ActionMailer::Preview
 
   %w[Employer
-     MainTeacher
      Operator
-     Other
-     SchoolManager
      Statistician
      Student
-     Teacher].map do |role|
-    define_method(:"confirmation_instructions_#{role.downcase}")   do
-      CustomDeviseMailer.confirmation_instructions(Users.const_get(role).first, "token", {})
+     ].map do |user|
+    define_method(:"confirmation_instructions_#{user.downcase}") do
+      CustomDeviseMailer.confirmation_instructions(
+        Users.const_get(user).first,
+        "token",
+        {}
+    )
+    end
+  end
+
+  %w[school_manager
+    teacher
+    main_teacher
+    other].map do |role|
+    define_method(:"confirmation_instructions_#{role.downcase}") do
+      CustomDeviseMailer.confirmation_instructions(
+        Users::SchoolManagement.find_by(role: role),
+        "token",
+        {}
+    )
     end
   end
 
