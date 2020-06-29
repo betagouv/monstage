@@ -45,6 +45,12 @@ class User < ApplicationRecord
     Users::Employer.where(email: 'drh@betagouv.fr').first
   end
 
+  def channel
+    return :phone if phone.present?
+    return :email if email.present?
+    nil
+  end
+
   def missing_school_weeks?
     return false unless respond_to?(:school)
 
