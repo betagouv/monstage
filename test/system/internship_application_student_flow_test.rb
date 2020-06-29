@@ -5,6 +5,27 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
+  test 'student can not submit application wheen school have not choosen week' do
+    student = create(:student, school: create(:school, weeks: []))
+    internship_offer = create(:internship_offer, weeks: weeks)
+
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    click_on 'Je postule'
+    disabled_input_selectors = %w[
+      internship_application[student_attributes][phone]
+      internship_application[student_attributes][email]
+    ].map do |disabled_selector|
+      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
+    end
+
+    assert_changes -> { student.reload.missing_school_weeks_id },
+                   from: nil,
+                   to: student.school_id do
+      click_on "Je souhaite une semaine de stage"
+    end
+  end
+
   test 'student can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     student = create(:student, school: create(:school, weeks: weeks))
