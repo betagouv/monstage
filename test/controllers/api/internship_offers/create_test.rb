@@ -157,7 +157,7 @@ module Api
       assert_equal city, internship_offer.city
 
       assert_equal sector, internship_offer.sector
-      assert_equal Builders::InternshipOfferBuilder::DEFAULT_SCHOOL_TRACK, internship_offer.school_track
+      assert_equal Builders::InternshipOfferBuilder::DEFAULT_SCHOOL_TYPE.to_s, internship_offer.school_type
       week_instances.to_a.map do |week_instance|
         assert_includes internship_offer.weeks.map(&:id), week_instance.id
       end
@@ -204,7 +204,7 @@ module Api
       end
     end
 
-    test 'POST #create as operator with specific school_track sets it' do
+    test 'POST #create as operator with specific school_type sets it' do
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       sector = create(:sector, uuid: SecureRandom.uuid)
 
@@ -224,7 +224,7 @@ module Api
                 zipcode: '60580',
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
-                school_track: 'bac_pro',
+                school_type: :high_school,
                 remote_id: 'remote_id',
                 permalink: 'http://google.fr/permalink',
               }
@@ -234,7 +234,7 @@ module Api
         end
 
         internship_offer = InternshipOffers::Api.first
-        assert_equal 'bac_pro', internship_offer.school_track
+        assert_equal 'high_school', internship_offer.school_type
       end
     end
   end

@@ -38,19 +38,19 @@ module InternshipOffersHelper
     internship_offer_path(default_params.merge(forwardable_params))
   end
 
-  def school_track_options_for_default
-    '-- Veuillez sélectionner une filière --'
+  def school_type_options_for_default
+    '-- Veuillez sélectionner un niveau scolaire --'
   end
 
-  def options_for_school_tracks
+  def options_for_school_types
     scholl_tracks_hash_translated = {}
-    InternshipOffer.school_tracks.map do |key, val|
-      scholl_tracks_hash_translated[I18n.t("enum.school_tracks.#{key}")] = val
+    InternshipOffer.school_types.map do |key, val|
+      scholl_tracks_hash_translated[I18n.t("enum.school_types.#{key}")] = val
     end
     scholl_tracks_hash_translated
   end
 
-  def tr_school_track(internship_offer)
-    I18n.t("enum.school_tracks.#{internship_offer.school_track}")
+  def tr_school_type(internship_offer)
+    I18n.t("enum.school_types.#{internship_offer.school_type}")
   end
 end

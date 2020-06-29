@@ -131,7 +131,7 @@ ActiveRecord::Schema.define(version: 2020_06_25_154637) do
   end
 
 # Could not dump table "internship_offers" because of following StandardError
-#   Unknown type 'internship_offer_school_track' for column 'school_track'
+#   Unknown type 'internship_offer_school_type' for column 'school_type'
 
   create_table "operators", force: :cascade do |t|
     t.string "name"

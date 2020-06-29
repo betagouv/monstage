@@ -62,6 +62,16 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: internship_offer_school_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.internship_offer_school_type AS ENUM (
+    'middle_school',
+    'high_school'
+);
+
+
+--
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -348,7 +358,7 @@ CREATE TABLE public.class_rooms (
     name character varying,
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
 );
 
 
@@ -631,7 +641,8 @@ CREATE TABLE public.internship_offers (
     first_date date,
     last_date date,
     type character varying,
-    search_tsv tsvector
+    search_tsv tsvector,
+    school_type public.internship_offer_school_type
 );
 
 
@@ -1776,6 +1787,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200612075359'),
 ('20200620134004'),
 ('20200622074942'),
-('20200622080019');
+('20200622080019'),
+('20200625154637');
 
 

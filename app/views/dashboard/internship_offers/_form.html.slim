@@ -103,13 +103,13 @@
                     class: "form-control col-lg-6"
 
     .form-group
-      = form.label :school_track do
-        = "Filière associée à ce stage"
+      = form.label :school_type do
+        = "Niveau scolaire associé à ce stage"
         = form.rg2a_required_content_tag
-        small.form-text.text-muted Sélectionner la filière correspondant au stage décrit
-      = form.select :school_track,
-                    options_for_select(options_for_school_tracks, @internship_offer.school_track),
-                    { prompt: school_track_options_for_default },
+        small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
+      = form.select :school_type,
+                    options_for_select(options_for_school_types, @internship_offer.school_type),
+                    { prompt: school_type_options_for_default },
                     { class: "form-control col-lg-6" }
 
   fieldset.mt-4

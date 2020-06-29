@@ -37,7 +37,7 @@ fr:
         other: professeurs principaux
       users/teacher:
         one: Professeur
-        other: Profresseurs
+        other: Professeurs
       users/operator:
         one: Opérateur
         other: Opérateurs
@@ -101,7 +101,7 @@ fr:
         is_public: Secteur public
         human_is_public: Public/Privé
         sector: Secteur
-        school_track: Filière
+        school_type: Niveau scolaire
         max_candidates: Nbr. max de candidats
         human_max_candidates: Stage individuel/collectif
         tutor_name: Nom du tuteur
@@ -192,8 +192,8 @@ fr:
               blank: "Veuillez renseigner la ville l'employeur"
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
-            school_track:
-              required: "Veuillez choisir une filière pour l'offre de stage"
+            school_type:
+              required: "Veuillez choisir le niveau scolaire correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
             employer:
@@ -308,6 +308,10 @@ fr:
       teacher: "Professeur"
       main_teacher: "Professeur principal"
       other: "Autre fonction"
+
+    school_types:
+      middle_school: '3e'
+      high_school: 'Lycée'
 
     school_tracks:
       troisieme_generale: '3e générale'

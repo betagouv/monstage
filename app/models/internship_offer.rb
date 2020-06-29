@@ -81,17 +81,15 @@ class InternshipOffer < ApplicationRecord
     by_weeks(weeks: weeks)
   }
 
-  enum school_track: {
-    troisieme_generale: 'troisieme_generale',
-    troisieme_prep_pro: 'troisieme_prep_pro',
-    troisieme_segpa: 'troisieme_segpa',
-    bac_pro: 'bac_pro'
+  enum school_type: {
+    middle_school: 'middle_school',
+    high_school: 'high_school'
   }
 
   validates :title,
             :employer_name,
             :city,
-            :school_track,
+            :school_type,
             presence: true
 
   validates :title, presence: true,

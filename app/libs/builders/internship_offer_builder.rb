@@ -3,7 +3,7 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder
-    DEFAULT_SCHOOL_TRACK = 'troisieme_generale'
+    DEFAULT_SCHOOL_TYPE = :middle_school
 
     def create(params:)
       yield callback if block_given?
@@ -71,9 +71,9 @@ module Builders
     end
 
     def add_defaults_to_params(params)
-      return params if params[:school_track]
+      return params if params[:school_type]
 
-      params.merge(school_track: DEFAULT_SCHOOL_TRACK)
+      params.merge(school_type: DEFAULT_SCHOOL_TYPE)
     end
 
     def duplicate?(internship_offer)

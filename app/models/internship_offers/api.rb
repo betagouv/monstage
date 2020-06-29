@@ -28,7 +28,7 @@ module InternshipOffers
         field :zipcode
         field :city
         field :sector
-        field :school_track
+        field :school_type
         field :weeks
         field :remote_id
         field :permalink
@@ -98,7 +98,7 @@ module InternshipOffers
                  remote_id
                  permalink
                  sector_uuid
-                 school_track
+                 school_type
                  max_candidates
                  published_at],
         methods: [:formatted_coordinates]
