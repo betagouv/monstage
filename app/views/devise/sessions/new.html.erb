@@ -1,4 +1,4 @@
-<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel="<%= resource.channel %>">
   <header class="header-account mb-2">
     <div class="row mx-0" style="height: 250px">
       <div class="col-6 d-flex h-100">
@@ -18,7 +18,7 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
-     
+
       <%= render 'users/select_channel', label: 'Comment vous Connecter ?', form: f, resource: resource %>
 
       <div class="form-group">
@@ -31,7 +31,7 @@
           <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
         <% end %>
       </div>
-      
+
       <div class="form-group form-check">
         <%= f.check_box :remember_me, class: 'form-check-input' %>
         <%= f.label :remember_me, class: 'form-check-label' %>
@@ -41,7 +41,7 @@
         <%= f.submit t('.sign_in'), class: 'btn btn-primary' %>
       </div>
     <% end %>
-  </div>  
+  </div>
 </div>
 <p class="onboarding-footer text-center my-3">
   <%= link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe, new_user_confirmation_path(resource_name), class: "small" %>
