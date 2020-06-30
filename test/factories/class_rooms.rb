@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :class_room do
     name { 'MyString' }
+    school_track { 'troisieme_segpa' }
   end
 end

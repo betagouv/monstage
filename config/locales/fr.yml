@@ -315,6 +315,6 @@ fr:
 
     school_tracks:
       troisieme_generale: '3e générale'
-      troisieme_prep_pro: '3e prépa métier'
+      troisieme_prepa_metier: '3e prépa métier'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'

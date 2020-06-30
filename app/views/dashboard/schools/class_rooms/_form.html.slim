@@ -17,10 +17,7 @@
       | Filière
       = form.rg2a_required_content_tag
     = form.select :school_track,
-                    options_for_select(
-                      options_for_school_tracks,
-                      @class_room.school_track
-                    ),
+                    options_for_select(options_for_school_tracks, @class_room.school_track),
                     { prompt: school_track_options_for_default },
                     { class: "form-control col-lg-6" }
 
