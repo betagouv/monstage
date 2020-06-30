@@ -4,14 +4,13 @@ import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['handicapGroup', 
-                    'emailHint', 
-                    'emailInput', 
-                    'phoneInput', 
-                    'label', 
-                    'emailBloc', 
-                    'phoneBloc', 
-                    'selectChannel'];
+  static targets = ['handicapGroup',
+                    'emailHint',
+                    'emailInput',
+                    'phoneInput',
+                    'label',
+                    'emailBloc',
+                    'phoneBloc'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
@@ -88,29 +87,24 @@ export default class extends Controller {
   }
 
   checkChannel() {
-    if($('#channel-email').is(':checked')) { this.checkEmail() }
-    if($('#channel-phone').is(':checked')) { this.checkPhone() }
+    switch (this.data.get('channel')) {
+      case 'email':
+        this.checkEmail();
+        break;
+      case 'phone':
+        this.checkPhone();
+        break;
+      default:
+        return;
+    }
   }
 
   checkEmail() {
     this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
-  
-  chooseEmail() {
-    $('#channel-phone').attr('checked', false)
-    $('#channel-email').attr('checked', true)
-    this.checkEmail()
-  }
 
   checkPhone() {
-    console.log('phone !')
     this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
-  }
-  
-  choosePhone() {
-    $('#channel-email').attr('checked', false)
-    $('#channel-phone').attr('checked', true)
-    this.checkPhone()
   }
 
   displayField(fielfToClean, fieldToHide, fieldToDisplay) {
