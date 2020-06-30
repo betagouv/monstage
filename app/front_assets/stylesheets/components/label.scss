@@ -42,7 +42,11 @@
     background-color: $input-bg;
     top: 0;
     margin-top: -10px;
+  }
 
+  input[readonly] + label,
+  select[readonly] + label {
+    background-color: $input-disabled-bg;
   }
   input:placeholder-shown:not(:focus)::placeholder {
     opacity: 0;
