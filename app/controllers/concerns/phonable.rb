@@ -1,6 +1,7 @@
 module Phonable
   def by_phone?
-    params[:channel] == "phone"
+    [params[:user]&.[](:channel),
+    params[:channel]].compact.first =="phone"
   end
 
   def safe_phone_param

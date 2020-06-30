@@ -801,7 +801,7 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 
 CREATE TABLE public.users (
     id bigint NOT NULL,
-    email character varying DEFAULT ''::character varying NOT NULL,
+    email character varying DEFAULT ''::character varying,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
@@ -1789,6 +1789,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200618141221'),
 ('20200620134004'),
 ('20200622074942'),
-('20200622080019');
+('20200622080019'),
+('20200629133744');
 
 
