@@ -33,6 +33,8 @@
     color: $input-focus-border-color;
   }
 
+  input[readonly] + label,
+  select[readonly] + label,
   input:focus + label,
   select:focus + label,
   input:valid + label,
