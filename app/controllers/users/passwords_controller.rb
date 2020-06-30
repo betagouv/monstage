@@ -7,6 +7,7 @@ module Users
       if by_phone? && fetch_user_by_phone
         fetch_user_by_phone.reset_password_by_phone
         redirect_to phone_edit_password_path(phone: safe_phone_param)
+        return
       end
       super
     end

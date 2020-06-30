@@ -1,9 +1,9 @@
 <div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
   <header class="header-account mb-2">
-    <div class="row mx-0" style="height: 250px">
-      <div class="col-8 d-flex h-100">
+    <div class="row mx-0">
+      <div class="col-12 d-flex h-100">
         <div class='row align-self-end ma-0'>
-          <h1 class="h2 mb-5 mx-3"><%= t('.forgot_your_password') %></h1>
+          <h1 class="h2 mx-3"><%= t('.forgot_your_password') %></h1>
         </div>
       </div>
     </div>
@@ -16,28 +16,6 @@
       <p>Pour cela rappelez-nous l’adresse électronique ou le nuémro de téléphone mobile associé à votre compte.</p>
 
       <%= render 'users/select_channel', label: '', form: f%>
-
-      <div data-target="signup.emailBloc" class="form-group email d-none">
-        <%= f.label :email do %>
-            <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-            <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
-        <% end %>
-        <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
-
-        <small class="d-none" data-target="signup.emailHint"></small>
-      </div>
-      <div data-target="signup.phoneBloc" class="form-group phone d-none">
-        <%= f.label :phone do %>
-          <%= 'Numéro de mobile' %>
-          <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
-        <% end %>
-        <%= react_component("CountryPhoneSelect",
-          {
-            name: 'user[phone]',
-            value: resource.phone
-          })
-        %>
-      </div>
 
       <div class="actions d-flex d-sm-block text-center">
         <%= f.submit "Envoyer", class: 'btn btn-primary' %>
