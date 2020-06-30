@@ -76,7 +76,9 @@ export default class extends Controller {
       },
     });
 
-    this.checkChannel();
+    setTimeout(function () {
+      _that.checkChannel();
+    }, 100);
   }
 
   disconnect() {
@@ -91,7 +93,6 @@ export default class extends Controller {
   }
 
   checkEmail() {
-    console.log('checkemail !')
     this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
   
@@ -102,6 +103,7 @@ export default class extends Controller {
   }
 
   checkPhone() {
+    console.log('phone !')
     this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
   }
   

@@ -15,7 +15,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # go to signup as student
     visit new_user_registration_path(as: 'Student')
 
-    # fails to create student with existing email
+    # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       all('.list-group .list-group-item-action').first.click
@@ -31,6 +31,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('#test-accept-terms').click
       click_on "Je m'inscris"
+      find('label', text: 'Un compte est déjà associé à cet email')
+      assert_equal existing_email, find('#user_email').value
     end
 
     # ensure failure reset form as expected
