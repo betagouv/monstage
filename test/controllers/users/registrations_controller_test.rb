@@ -70,4 +70,11 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.alert.alert-danger', text: "Aucun compte n'est lié au téléphone: #{phone}.Veuillez créer un compte"
   end
+
+  test 'POST #phone_validation redirect to sign in with phone preselected' do
+    phone = '+33611223344'
+    student = create(:student, email: nil, phone: phone, phone_token: '1234')
+    post phone_validation_path(phone: phone, phone_token: student.phone_token)
+    assert_redirected_to new_user_session_path(phone: phone)
+  end
 end

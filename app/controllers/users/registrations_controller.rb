@@ -64,7 +64,7 @@ module Users
     def phone_validation
       if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])
         fetch_user_by_phone.confirm_by_phone!
-        redirect_to(root_path,
+        redirect_to(new_user_session_path(phone: fetch_user_by_phone.phone),
                     flash: { success: I18n.t('devise.confirmations.confirmed') })
       else
         redirect_to(users_registrations_phone_standby_path(phone: params[:phone]),
