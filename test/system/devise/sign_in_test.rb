@@ -20,10 +20,21 @@ class SignInTest < ApplicationSystemTestCase
     error_message = find('#alert-text').text
     assert_equal "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient.",
                  error_message
+
     user.confirm
+    visit new_user_session_path
+    find('label', text: 'Email').click
+    fill_in 'Adresse électronique', with: email
+    fill_in 'Mot de passe', with: 'koko'
+    click_on "Connexion"
+    error_message = find('#alert-text').text
+    assert_equal "Courriel ou mot de passe incorrect.",
+                 error_message
+
+    fill_in 'Mot de passe', with: password
 
     click_on "Connexion"
-    find 'span', text: "Mon compte"
+    find "a[href=\"#{account_path}\"]"
   end
 
    test 'not confirmed with phone' do
@@ -48,8 +59,16 @@ class SignInTest < ApplicationSystemTestCase
                  error_message
 
     user.confirm
+    visit new_user_session_path
     find('label', text: 'SMS').click
     execute_script("document.getElementById('phone-input').value = '#{phone}';")
+    fill_in 'Mot de passe', with: 'koko'
+    click_on "Connexion"
+
+    error_message = find('#alert-text').text
+    assert_equal "Courriel ou mot de passe incorrect.",
+                 error_message
+
     fill_in 'Mot de passe', with: password
     click_on "Connexion"
     find "a[href=\"#{account_path}\"]"

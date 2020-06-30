@@ -84,7 +84,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
       find('label', text: 'SMS').click
-      find("#phone-input").fill_in with: existing_phone
+      execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('#test-accept-terms').click
@@ -98,8 +98,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student with phone
     assert_difference('Users::Student.count', 1) do
-      find('label', text: 'SMS').click
-      find("#phone-input").fill_in with: '+33600112233'
+      execute_script("document.getElementById('phone-input').value = '+33637607756';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"

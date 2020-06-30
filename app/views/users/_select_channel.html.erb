@@ -8,29 +8,27 @@
 
   <div class='row my-2' >
     <div class='col-6'>
-      <%= form.radio_button :channel,
-                          "email",
-                          id: 'channel-email',
-                          'data-action' => "change->signup#checkEmail" %>
       <%= form.label :channel, "Email",
                             class: 'channel-radio-label',
-                            for: "select-channel-email",
-                            "data-action" => "click->signup#chooseEmail" do %>
+                            for: "select-channel-email" do %>
+        <%= form.radio_button :channel,
+                          "email",
+                          id: 'select-channel-email',
+                          'data-action' => "change->signup#checkEmail" %>
         <div class="image-channel image-email"></div>
         <span>Email</span>
       <% end %>
     </div>
     <div class='col-6'>
-      <%= form.radio_button :channel,
-                          "phone",
-                          class: 'channel-radio-button',
-                          id: 'channel-phone',
-                          'data-action' => "change->signup#checkPhone" %>
       <%= form.label :channel,
                     "SMS",
                     class: 'channel-radio-label',
-                    for: "select-channel-phone",
-                    'data-action' => "click->signup#choosePhone" do %>
+                    for: "select-channel-phone" do %>
+        <%= form.radio_button :channel,
+                          "phone",
+                          class: 'channel-radio-button',
+                          id: 'select-channel-phone',
+                          'data-action' => "change->signup#checkPhone" %>
         <div class="image-channel image-sms"></div>
         <span>SMS</span>
       <% end %>
