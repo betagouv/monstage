@@ -1,0 +1,31 @@
+= form_for [:dashboard, @school, @class_room] do |form|
+  = form.rg2a_explain_required_asterisk
+  = render "layouts/form_errors", resource: @class_room, resource_name: :class_room
+
+  .form-group
+    = form.label :name do
+      | Nom de la classe
+      = form.rg2a_required_content_tag
+    = form.text_field :name,
+                      required: true,
+                      class: 'form-control col-lg-6',
+                      placeholder: 'Nom de la classe'
+
+
+  .form-group
+    = form.label :school_track do
+      | Filière
+      = form.rg2a_required_content_tag
+    = form.select :school_track,
+                    options_for_select(
+                      options_for_school_tracks,
+                      @class_room.school_track
+                    ),
+                    { prompt: school_track_options_for_default },
+                    { class: "form-control col-lg-6" }
+
+  .actions
+    = form.submit 'Enregistrer', class: 'btn btn-primary'
+    = link_to 'Annuler',
+              dashboard_school_class_rooms_path(@school),
+              class: 'btn btn-link'

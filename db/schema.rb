@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_25_154637) do
+ActiveRecord::Schema.define(version: 2020_06_27_095219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -50,13 +50,8 @@ ActiveRecord::Schema.define(version: 2020_06_25_154637) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "class_rooms", force: :cascade do |t|
-    t.string "name"
-    t.bigint "school_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_class_rooms_on_school_id"
-  end
+# Could not dump table "class_rooms" because of following StandardError
+#   Unknown type 'class_room_school_track' for column 'school_track'
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
