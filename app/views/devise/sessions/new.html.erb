@@ -1,5 +1,5 @@
 <div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel="<%= resource.channel %>">
-  <header class="header-account mb-2">
+  <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0" style="height: 250px">
       <div class="col-6 d-flex h-100">
         <div class='row align-self-end ma-0'>
@@ -21,12 +21,12 @@
 
       <%= render 'users/select_channel', label: 'Comment vous Connecter ?', form: f, resource: resource %>
 
-      <div class="form-group">
+      <div class="form-group custom-label-container">
+        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  ', required: true, autofocus: params[:email].blank? ? false : true %>
         <%= f.label :password do %>
           Mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  ', required: true, autofocus: params[:email].blank? ? false : true %>
         <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
           <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
         <% end %>

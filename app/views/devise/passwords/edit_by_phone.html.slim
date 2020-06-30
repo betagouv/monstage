@@ -1,13 +1,12 @@
 .onboarding-card.onboarding-card-sm.mb-4
-    header.header-account.mb-2
-      .col-12
-        h1.h2 Encore une petite étape...
-        p
-          span.confirmation-text= "Votre demande a bien été enregistrée "
-          strong= "(#{params[:phone]})"
-          = "."
-          br
-          | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
+    header.header-account
+      h1.h2.text-center Encore une petite étape...
+      p.px-3
+        span.confirmation-text= "Votre demande a bien été enregistrée "
+        strong= "(#{params[:phone]})"
+        = "."
+        br
+        | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
     .body
       = form_tag phone_update_password_path, method: :post do
         .form-group.phone

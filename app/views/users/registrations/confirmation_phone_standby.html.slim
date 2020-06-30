@@ -1,10 +1,7 @@
 .onboarding-card.onboarding-card-sm.mb-4
   - if !@confirmable_user
-    header.header-account.mb-2
-      .row.mx-0 style=("height: 250px") 
-        .col-12.d-flex.h-100
-          .row.align-self-end.ma-0
-            h1.h2.mb-5.mx-3 Encore une petite étape...
+    header.header-account
+      h1.h2.text-center Encore une petite étape...
 
     p.alert.alert-danger
       = "Aucun compte n'est lié au téléphone: #{params[:phone]}."
@@ -20,23 +17,28 @@
       = link_to "connecter", new_user_session_path(phone: params[:phone]), class: 'text-white'
 
   - else
-    header.header-account.mb-2
-      .row.mx-0 style=("height: 250px") 
-        .col-12.d-flex.h-100
-          .row.align-self-end.ma-0
-            h1.h2.mb-5.mx-3 Encore une petite étape...
-            br
-            p.mx-3
-              span.confirmation-text= "Votre compte a bien été enregistré "
-              strong= "(#{params[:phone]})"
-              = "."
-              br
-              | Vous venez de recevoir un sms afin de confirmer votre inscription.
+    header.header-account
+      h1.h2.text-center Encore une petite étape...
     .body
+      p
+        span.confirmation-text= "Votre compte a bien été enregistré "
+        strong= "(#{params[:phone]})"
+        = "."
+        br
+        | Vous venez de recevoir un sms afin de confirmer votre inscription.
+
       = form_tag phone_validation_path, method: :post do
+        p.small.text-muted aria-hidden='true'
+            = "Les champs avec "
+            abbr class='text-danger' title='(obligatoire)' *
+            = " sont obligatoires."
         = hidden_field_tag :phone, params[:phone]
-        .form-group
-          = label_tag :phone_token, 'Code de confirmation'
+        .form-group.custom-label-container
           = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
+          = label_tag :phone_token do
+            = 'Code de confirmation'
+            = content_tag(:abbr, '*', title: '(obligatoire)',
+                                      aria: { hidden: 'true' })
+
         .actions.d-flex.d-sm-block.text-center
           = submit_tag 'Valider', class: 'btn btn-primary'
