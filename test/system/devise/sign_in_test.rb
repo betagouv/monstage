@@ -39,17 +39,19 @@ class SignInTest < ApplicationSystemTestCase
 
     # fails to create employer with existing email
     find('label', text: 'SMS').click
-    find('#phone-input').fill_in(with: phone)
+    execute_script("document.getElementById('phone-input').value = '#{phone}';")
+
     fill_in 'Mot de passe', with: password
     click_on "Connexion"
     error_message = find('#alert-text').text
-    assert_equal "Courriel ou mot de passe incorrect.",
+    assert_equal "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient.",
                  error_message
 
     user.confirm
+    find('label', text: 'SMS').click
+    execute_script("document.getElementById('phone-input').value = '#{phone}';")
     fill_in 'Mot de passe', with: password
     click_on "Connexion"
-
     find "a[href=\"#{account_path}\"]"
   end
 end
