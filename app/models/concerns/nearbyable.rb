@@ -63,9 +63,9 @@ module Nearbyable
     def formatted_autocomplete_address
       [
         street,
-        city,
-        zipcode
-      ].compact.uniq.join(', ')
+        zipcode,
+        city
+      ].compact.uniq.join(' ')
     end
   end
 end
