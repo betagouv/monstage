@@ -2,7 +2,7 @@
   <header class="header-account">
     <h1 class="h2 text-center mb-0">Renvoyer le messsage d'activation</h1>
   </header>
-  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: 'body' }) do |f| %>
     <%= f.rg2a_explain_required_asterisk %>
     <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
     <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>

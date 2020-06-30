@@ -49,7 +49,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     email = 'fourcade.m@gmail.com'
     student = create(:student, email: email, phone: nil, password: pwd, confirmed_at: 2.days.ago)
     post user_session_path(params: { user: { channel: 'email',
-                                             phone: student.email,
+                                             email: student.email,
                                              password: pwd } })
     assert_response :found
     follow_redirect!
