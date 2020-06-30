@@ -67,11 +67,12 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
       visit employer.custom_dashboard_path
       find('#test-create-offer').click
       fill_in_form(
-        sector: nil,
+        sector: sector,
         group: group,
         weeks: available_weeks,
         school_type: InternshipOffer.school_types.keys.sample.to_sym
       )
+      fill_in 'internship_offer_title', with: 'a' * 501
       click_on "Enregistrer et publier l'offre"
       find("#error_explanation")
     end

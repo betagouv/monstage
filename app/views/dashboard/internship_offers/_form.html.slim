@@ -99,8 +99,8 @@
         small.form-text.text-muted Sélectionner le secteur d'activité correspondant au stage décrit
       = form.select :sector_id,
                     options_from_collection_for_select(Sector.all.order(:name), :id, :name, @internship_offer.sector_id),
-                    { prompt: sectors_options_for_default },
-                    class: "form-control col-lg-6"
+                    { include_blank: sectors_options_for_default },
+                    { class: "form-control col-lg-6", required: true }
 
     .form-group
       = form.label :school_type do
@@ -109,8 +109,8 @@
         small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
       = form.select :school_type,
                     options_for_select(options_for_school_types, @internship_offer.school_type),
-                    { prompt: school_type_options_for_default },
-                    { class: "form-control col-lg-6" }
+                    { include_blank: school_type_options_for_default },
+                    { class: "form-control col-lg-6", required: true }
 
   fieldset.mt-4
     legend Où, Quand, Comment ?
