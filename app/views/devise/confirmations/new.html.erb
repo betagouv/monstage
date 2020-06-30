@@ -1,4 +1,4 @@
-<div class='onboarding-card onboarding-card-sm mb-4'>
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup">
   <header class="header-account">
     <h1 class="h2 text-center mb-0">Renvoyer le messsage d'activation</h1>
   </header>
@@ -6,13 +6,10 @@
     <%= f.rg2a_explain_required_asterisk %>
     <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
     <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>
-    <div class="form-group">
-      <%= f.label :email do %>
-        Adresse électronique (e-mail)
-        <%= f.rg2a_required_content_tag %>
-      <% end %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control', required: true %>
-    </div>
+    <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource do %>
+        <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
+    <% end %>
+
 
     <div class="actions d-flex d-sm-block text-center">
       <%= f.submit "Renvoyer", class: 'btn btn-primary' %>
