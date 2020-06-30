@@ -25,6 +25,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to new_user_session_path
     end
   end
+
   test 'POST create by phone' do
     student = create(:student, email: nil, phone: '+33637607756')
     assert_enqueued_jobs 1, only: SendSmsJob do

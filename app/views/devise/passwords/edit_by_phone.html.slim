@@ -1,34 +1,33 @@
 .onboarding-card.onboarding-card-sm.mb-4
     header.header-account.mb-2
-      .row.mx-0 style=("height: 250px") 
-        .col-12.d-flex.h-100
-          .row.align-self-end.ma-0
-            h1.h2.mb-5.mx-3 Encore une petite étape...
-            br
-            p.mx-3
-              span.confirmation-text= "Votre demande a bien été enregistrée "
-              strong= "(#{params[:phone]})"
-              = "."
-              br
-              | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
+      .col-12
+        h1.h2 Encore une petite étape...
+        p
+          span.confirmation-text= "Votre demande a bien été enregistrée "
+          strong= "(#{params[:phone]})"
+          = "."
+          br
+          | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
     .body
       = form_tag phone_update_password_path, method: :post do
         .form-group.phone
           = label_tag 'Numéro de mobile'
-          = react_component("CountryPhoneSelect", { name: 'phone', value: ''})
-        .form-group
+          = react_component("CountryPhoneSelect", { name: 'phone', value: params[:phone]})
+        .form-group.custom-label-container
+          = number_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
           = label_tag :phone_token, 'Code de confirmation'
-          = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
-        .form-group
+        .form-group.custom-label-container
+          = password_field_tag :password, '', autofocus: true, autocomplete: "new-password", required: true, class: 'form-control'
           = label_tag :password do
             ' Nouveau mot de passe
             - if @minimum_password_length
               small.form-text.text-muted= t('devise.shared.minimum_password_length', count: @minimum_password_length)
-          = password_field_tag :password, '', autofocus: true, autocomplete: "new-password", required: true, class: 'form-control'
-        .form-group
-          = label_tag :password_confirmation do
-            ' Confirmer nouveau mot de passe
+
+        .form-group.custom-label-container
           = password_field_tag :password_confirmation, '', autocomplete: "off", required: true, class: 'form-control'
+          = label_tag :password_confirmation do
+            ' Confirmez votre nouveau mot de passe
+
         .actions.d-flex.d-sm-block.text-center
           = submit_tag 'Valider', class: 'btn btn-primary'
 
