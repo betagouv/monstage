@@ -25,7 +25,7 @@
       padding-right: 1rem;
       padding-bottom: 1rem;
       padding-top: 1rem;
-      input[type="radio"]:checked+label { 
+      input[type="radio"]:checked+label {
         color: $blue
       }
     }
@@ -42,7 +42,6 @@
 .header-onboarding-card {
   padding: 0;
   background: #F6F8FC 0% 0% no-repeat padding-box;
-  min-height: 250px;
 }
 
 
