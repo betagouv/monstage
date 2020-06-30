@@ -83,7 +83,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find('label', text: 'Masculin').click
       find('label', text: 'SMS').click
       find("#phone-input").fill_in with: existing_phone
-      byebug
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('#test-accept-terms').click
@@ -102,7 +101,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
-      byebug
     end
   end
 end
