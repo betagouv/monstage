@@ -39,8 +39,6 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log("Hello controller")
-
     const _that = this;
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;
@@ -77,6 +75,8 @@ export default class extends Controller {
         }
       },
     });
+
+    this.checkChannel();
   }
 
   disconnect() {
@@ -85,7 +85,13 @@ export default class extends Controller {
     } catch (e) {}
   }
 
+  checkChannel() {
+    if($('#channel-email').is(':checked')) { this.checkEmail() }
+    if($('#channel-phone').is(':checked')) { this.checkPhone() }
+  }
+
   checkEmail() {
+    console.log('checkemail !')
     this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
   
