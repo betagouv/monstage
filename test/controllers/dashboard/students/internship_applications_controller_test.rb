@@ -99,7 +99,7 @@ module Dashboard
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.alert-success .alert-internship-application-state',
-                      text: "Convention reçue le #{I18n.localize(internship_applications[:convention_signed].convention_signed_at, format: :human_mm_dd)}.",
+                      text: "Candidature acceptée le #{I18n.localize(internship_applications[:convention_signed].convention_signed_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.alert-internship-application-state',
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
