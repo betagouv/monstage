@@ -33,4 +33,12 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to phone_edit_password_path(phone: student.phone)
     end
   end
+
+  test 'PUT update by phone' do
+    student = create(:student, email: nil, phone: '+33637607756')
+    student.create_phone_token 
+    params = { phone: student.phone, phone_token: student.phone_token, password: 'newpassword' }
+    put phone_update_password_path, params: params
+    assert_equal true, User.last.valid_password?('newpassword')
+  end
 end

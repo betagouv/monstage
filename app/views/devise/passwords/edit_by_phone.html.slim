@@ -8,7 +8,7 @@
         br
         | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
     .body
-      = form_tag phone_update_password_path, method: :post do
+      = form_tag phone_update_password_path, method: :put do
         .form-group.phone
           = label_tag 'Numéro de mobile'
           = react_component("CountryPhoneSelect", { name: 'phone', value: params[:phone]})
