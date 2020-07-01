@@ -47,7 +47,11 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       .col-12.py-2= render partial: "dashboard/students/internship_applications/states/#{@internship_application.aasm_state}", locals: {internship_application: @internship_application }
     .row
       .col-12.py-2
-        p La convention est fournie par l'établissement. Vous pouvez demander un modèle de convention à votre professeur principal.
+        h3.h4 Prochaine étape, la convention de stage
+        - if current_user.is_a?(Users::Student)
+          p La convention est fournie par l'établissement. Vous pouvez demander un modèle de convention à votre professeur principal.
+        - else
+          p La convention est fournie par l'établissement, son modèle est généralement fourni par le professeur principal.
         p Elle doit être remplie et signée par les responsables légaux puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne à l'établissement.
         p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
 
