@@ -12,9 +12,9 @@ class CountryPhoneSelect extends React.Component {
 
   render() {
     return (
-      <PhoneInput 
-        country={'fr'} 
-        onlyCountries={['fr', 'gf', 'mq', 'nc', 'pf', 're']} 
+      <PhoneInput
+        country={'fr'}
+        onlyCountries={['fr', 'gf', 'mq', 'nc', 'pf', 're']}
         value={this.props.value || ''}
         disabled={this.props.disabled || false}
         placeholder={"ex 6 11 22 33 44"}

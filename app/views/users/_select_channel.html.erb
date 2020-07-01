@@ -7,30 +7,32 @@
   </div>
 
   <div class='row my-2' >
-    <div class='col-6'>
+    <div class='col-6 d-table'>
       <%= form.label :channel, "Email",
-                            class: 'channel-radio-label',
+                            class: 'channel-radio-label d-table-cell align-middle',
                             for: "select-channel-email" do %>
+
+        <i class="fa fa-fw fa-4x far fa-envelope"></i>
+        <br />
         <%= form.radio_button :channel,
-                          "email",
-                          id: 'select-channel-email',
-                          'data-action' => "change->signup#checkEmail" %>
-        <span class="image-channel image-email"></span>
-        <span>Email</span>
+                        "email",
+                        id: 'select-channel-email',
+                        'data-action' => "change->signup#checkEmail" %>
+        Email
       <% end %>
     </div>
-    <div class='col-6'>
+    <div class='col-6 d-table'>
       <%= form.label :channel,
                     "SMS",
-                    class: 'channel-radio-label',
+                    class: 'channel-radio-label  d-table-cell align-middle',
                     for: "select-channel-phone" do %>
+        <i class="fa fa-fw fa-4x fas fa-sms"></i>
+        <br/>
         <%= form.radio_button :channel,
-                          "phone",
-                          class: 'channel-radio-button',
-                          id: 'select-channel-phone',
-                          'data-action' => "change->signup#checkPhone" %>
-        <span class="image-channel image-sms"></span>
-        <span>SMS</span>
+                        "phone",
+                        id: 'select-channel-phone',
+                        'data-action' => "change->signup#checkPhone" %>
+        SMS
       <% end %>
     </div>
   </div>
@@ -45,7 +47,7 @@
   <small class="d-none" data-target="signup.emailHint"></small>
 </div>
 <div data-target="signup.phoneBloc" class="form-group phone d-none">
-  <%= form.label :phone, 'data-action' => "click->signup#focusPhone" do %>
+  <%= form.label :phone, 'data-action' => "click->signup#focusPhone", for: 'phone-input' do %>
     <span>Numéro de mobile</span>
     <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
   <% end %>
