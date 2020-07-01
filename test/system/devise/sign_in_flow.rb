@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class SignInTest < ApplicationSystemTestCase
+class SignInFlowTest < ApplicationSystemTestCase
   test 'not confirmed with email' do
     password = 'kikoolol'
     email = 'fourcade.m@gmail.com'
