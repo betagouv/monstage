@@ -10,7 +10,11 @@ export default class extends Controller {
                     'phoneInput',
                     'label',
                     'emailBloc',
-                    'phoneBloc'];
+                    'phoneBloc',
+                    'passwordHint',
+                    'passwordInput',
+                    'passwordConfirmationHint',
+                    'passwordConfirmationInput'];
 
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
@@ -84,6 +88,44 @@ export default class extends Controller {
     try {
       this.wssClient.disconnect();
     } catch (e) {}
+  }
+
+  checkPassword() {
+    const passwordHintElement = this.passwordHintTarget;
+    const passwordInputTargetElement = this.passwordInputTarget;
+    const $hint = $(passwordHintElement);
+    const $input = $(passwordInputTargetElement);
+    if (passwordInputTargetElement.value.length === 0) {
+      $input.attr('class', 'form-control');
+      $hint.attr('class', 'text-muted');
+      passwordHintElement.innerText = '(6 caractères au moins)';
+    } else if (passwordInputTargetElement.value.length < 6) {
+      $input.attr('class', 'form-control is-invalid');
+      $hint.attr('class', 'invalid-feedback');
+      passwordHintElement.innerText = 'Ce mot de passe est trop court, veuillez corriger.';
+    } else {
+      $input.attr('class', 'form-control is-valid');
+      $hint.attr('class', 'd-none');
+    }
+  }
+
+  checkPasswordConfirmation() {
+    const passwordConfirmationHintElement = this.passwordConfirmationHintTarget;
+    const passwordConfirmationInputTargetElement = this.passwordConfirmationInputTarget;
+    const $hint = $(passwordConfirmationHintElement);
+    const $input = $(passwordConfirmationInputTargetElement);
+    if (passwordConfirmationInputTargetElement.value.length === 0) {
+      $input.attr('class', 'form-control');
+      $hint.attr('class', 'text-muted');
+      passwordConfirmationHintElement.innerText = '';
+    } else if (passwordConfirmationInputTargetElement.value !== this.passwordInputTarget.value) {
+      $input.attr('class', 'form-control is-invalid');
+      $hint.attr('class', 'invalid-feedback');
+      passwordConfirmationHintElement.innerText = 'Les mot de passe ne correspondent pas, veuillez corriger.';
+    } else {
+      $input.attr('class', 'form-control is-valid');
+      $hint.attr('class', 'd-none');
+    }
   }
 
   checkChannel() {

@@ -66,7 +66,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     class_room_2 = create(:class_room, name: '3e B', school: school_2)
-    existing_phone = '+33600110011'
+    existing_phone = '+330600110011'
     birth_date = 14.years.ago
     student = create(:student, phone: existing_phone)
 
@@ -98,7 +98,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student with phone
     assert_difference('Users::Student.count', 1) do
-      execute_script("document.getElementById('phone-input').value = '+33637607756';")
+      execute_script("document.getElementById('phone-input').value = '+330637607756';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"

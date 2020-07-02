@@ -18,7 +18,7 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'CREATE#user_confirmation by phone' do
-    student = create(:student, phone: '+33637607756',
+    student = create(:student, phone: '+330637607756',
                                email: nil,
                                confirmed_at: nil)
     assert_enqueued_jobs 1, only: SendSmsJob do

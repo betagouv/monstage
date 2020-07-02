@@ -13,7 +13,7 @@ class SendSmsJob < ApplicationJob
       { 
         'sender': Rails.application.credentials.ovh[:sender],
         'message': "Votre code de validation : #{user.phone_token}",
-        'receivers': [user.phone]
+        'receivers': [user.formatted_phone]
       })
   end
 end

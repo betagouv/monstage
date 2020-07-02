@@ -105,7 +105,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
   test 'transition from submited to approved does not send approved email to student w/o email' do
     internship_application = create(:internship_application, :submitted)
-    internship_application.student.update!(email: nil, phone: '+33611223344')
+    internship_application.student.update!(email: nil, phone: '+330611223344')
 
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
@@ -158,7 +158,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
   test 'transition from submited to rejected does not send email to student w/o email' do
     internship_application = create(:internship_application, :submitted)
-    internship_application.student.update!(email: nil, phone: '+33611223344')
+    internship_application.student.update!(email: nil, phone: '+330611223344')
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
@@ -191,7 +191,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
   test 'transition from rejected to approved does not send email to student w/o email' do
     internship_application = create(:internship_application, :rejected)
-    internship_application.student.update!(email: nil, phone: '+33611223344')
+    internship_application.student.update!(email: nil, phone: '+330611223344')
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,

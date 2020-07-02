@@ -10,7 +10,7 @@
       <p>Pour changer votre mot de passe, nous devons d’abord vérifier votre identité.</p>
       <p>Pour cela rappelez-nous l’adresse électronique ou le numéro de téléphone mobile associé à votre compte.</p>
       <%= f.rg2a_explain_required_asterisk %>
-      <%= render 'users/select_channel', label: '', form: f%>
+      <%= render 'users/select_channel', label: '', form: f, phone: 'SMS'%>
 
       <div class="actions d-flex d-sm-block text-center">
         <%= f.submit "Envoyer", class: 'btn btn-primary' %>

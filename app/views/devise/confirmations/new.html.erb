@@ -8,7 +8,7 @@
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
       <p>Pour finaliser votre inscription, nous devons d’abord vérifier votre identité. Pour cela indiquez-nous l’adresse électronique associée à votre compte.</p>
       <%= f.rg2a_explain_required_asterisk %>
-      <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource do %>
+      <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource, phone: 'SMS' do %>
           <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
       <% end %>
 

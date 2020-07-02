@@ -15,15 +15,17 @@ class CountryPhoneSelect extends React.Component {
       <PhoneInput
         country={'fr'}
         onlyCountries={['fr', 'gf', 'mq', 'nc', 'pf', 're']}
+        countryCodeEditable={false}
         value={this.props.value || ''}
         disabled={this.props.disabled || false}
-        placeholder={"ex 6 11 22 33 44"}
+        placeholder={"ex 06 11 22 33 44"}
         localization={{
           fr: 'France Métropolitaine',
           gf: 'Guyane',
           pf: 'Polynésie Française',
           nc: 'Nouvelle Calédonie'
         }}
+        masks={{fr: '.. .. .. .. ..'}}
         inputStyle={{width: '100%', 'borderRadius': '3px'}}
         inputProps={{
           name: this.props.name,

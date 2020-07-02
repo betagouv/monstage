@@ -27,7 +27,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST create by phone' do
-    student = create(:student, email: nil, phone: '+33637607756')
+    student = create(:student, email: nil, phone: '+330637607756')
     assert_enqueued_jobs 1, only: SendSmsJob do
       post user_password_path, params: { user: { channel: :phone, phone: student.phone } }
       assert_redirected_to phone_edit_password_path(phone: student.phone)
@@ -35,7 +35,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'PUT update by phone' do
-    student = create(:student, email: nil, phone: '+33637607756')
+    student = create(:student, email: nil, phone: '+330637607756')
     student.create_phone_token 
     params = { phone: student.phone, phone_token: student.phone_token, password: 'newpassword' }
     put phone_update_password_path, params: params

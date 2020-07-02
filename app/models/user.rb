@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}(6|7)\d{8}\z/,
+  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/,
     message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
   validates :email, uniqueness: { allow_blank: true },
@@ -132,6 +132,10 @@ class User < ApplicationRecord
       self.update(phone_password_reset_count: phone_password_reset_count + 1,
                   last_phone_password_reset: Time.now)
     end
+  end
+
+  def formatted_phone
+    phone[0..4].gsub('0', '') + phone[5..]
   end
 
   def send_sms_token

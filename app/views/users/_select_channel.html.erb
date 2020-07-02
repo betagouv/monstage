@@ -26,13 +26,13 @@
                     "SMS",
                     class: 'channel-radio-label  d-table-cell align-middle',
                     for: "select-channel-phone" do %>
-        <i class="fa fa-fw fa-4x fas fa-sms"></i>
+        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
         <br/>
         <%= form.radio_button :channel,
                         "phone",
                         id: 'select-channel-phone',
                         'data-action' => "change->signup#checkPhone" %>
-        SMS
+          <%= phone %>
       <% end %>
     </div>
   </div>

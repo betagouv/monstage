@@ -36,7 +36,7 @@ class PasswordFlowTest < ApplicationSystemTestCase
 
   test 'ask new password with phone' do
     password = 'kikoolol'
-    phone = '+33637607756'
+    phone = '+330637607756'
     user = create(:student, email: nil,
                             phone: phone,
                             password: password,

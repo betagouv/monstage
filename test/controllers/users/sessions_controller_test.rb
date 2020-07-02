@@ -34,7 +34,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'POST session with phone' do
     pwd = 'okokok'
-    phone = "+33637607756"
+    phone = "+330637607756"
     student = create(:student, email:nil, phone: phone, password: pwd, confirmed_at: 2.days.ago)
     post user_session_path(params: { user: { channel: 'phone',
                                              phone: student.phone,

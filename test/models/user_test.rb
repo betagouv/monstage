@@ -21,7 +21,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
       current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
       gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
-      resume_other: 'chocolat', resume_languages: 'FR', phone: '+33600110011',
+      resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
       handicap: 'malvoyant')
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
@@ -40,7 +40,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
-    assert_not_equal '+33600110011', student.phone
+    assert_not_equal '+330600110011', student.phone
 
   end
 
@@ -107,5 +107,10 @@ class UserTest < ActiveSupport::TestCase
     student.reset_password_by_phone
     assert_equal student.phone_password_reset_count, 2
     assert student.last_phone_password_reset > 1.minute.ago
+  end
+
+  test "formatted_phone" do
+    student = create(:student, phone: '+330611223344')
+    assert_equal '+330611223344', student.formatted_phone
   end
 end

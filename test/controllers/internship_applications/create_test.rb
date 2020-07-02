@@ -17,7 +17,7 @@ module InternshipApplications
           motivation: 'Je suis trop motivé wesh',
           user_id: student.id,
           student_attributes: {
-            phone: '+33656565400',
+            phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
             resume_other: 'resume_other',
             resume_languages: 'resume_languages'
@@ -36,7 +36,7 @@ module InternshipApplications
       assert_equal student.id, created_internship_application.student.id
 
       student = student.reload
-      assert_equal '+33656565400', student.phone
+      assert_equal '+330656565400', student.phone
       assert_equal 'resume_educational_background', student.resume_educational_background.to_plain_text
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
