@@ -226,8 +226,8 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
-            school_track:
-              blank: "Missing school_track"
+            school_type:
+              blank: "Missing school_type"
             weeks:
               blank: "Missing weeks"
             remote_id:
@@ -315,6 +315,6 @@ fr:
 
     school_tracks:
       troisieme_generale: '3e générale'
-      troisieme_prep_pro: '3e prépa métier'
+      troisieme_prepa_metier: '3e prépa métier'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'

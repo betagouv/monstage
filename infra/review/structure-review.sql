@@ -10,6 +10,34 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tiger;
+
+
+--
+-- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA tiger_data;
+
+
+--
+-- Name: topology; Type: SCHEMA; Schema: -; Owner: -
+--
+
+CREATE SCHEMA topology;
+
+
+--
+-- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
+
+
+--
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -59,6 +87,18 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+
+
+--
+-- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.class_room_school_track AS ENUM (
+    'troisieme_generale',
+    'troisieme_prepa_metier',
+    'troisieme_segpa',
+    'bac_pro'
+);
 
 
 --
@@ -359,6 +399,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    school_track public.class_room_school_track
 );
 
 
@@ -1626,7 +1667,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1788,6 +1829,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200620134004'),
 ('20200622074942'),
 ('20200622080019'),
-('20200625154637');
+('20200625154637'),
+('20200627095219');
 
 

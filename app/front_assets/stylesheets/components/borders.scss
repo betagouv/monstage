@@ -39,6 +39,14 @@
   border-top-right-radius-radius:0;
   border-bottom-right-radius-radius:0;
 }
+.border-class-type{
+  font-size: 60%;
+  font-weight: 400;
+  border: 1px $blue_dark solid;
+  border-radius: 5px;
+  margin-right : 0.4rem;
+  padding: 0.2rem;
+}
 
 @include media-breakpoint-down(xs) {
   .rounded-xs-0{
