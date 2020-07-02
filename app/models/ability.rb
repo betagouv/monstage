@@ -66,11 +66,11 @@ class Ability
         managed_user_from_school.school_id == user.school_id && user.school_manager?
       end
     end
-    can :submit_internship_application, InternshipApplication do |internship_application|
+    can %i[submit_internship_application validate_convention], InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
     can %i[update destroy], InternshipApplication do |internship_application|
-      user.school.students.where(id: internship_application.student.id).count > 0
+      user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
   end

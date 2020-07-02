@@ -22,6 +22,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       # fill in application form
       select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
       find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+      refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
 
       assert_changes lambda {
                        student.internship_applications
@@ -41,11 +42,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      to: 1 do
         click_on 'Envoyer'
       end
+      assert page.has_content?('Candidature envoyée')
       click_on 'Candidature envoyée le'
+      assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
       click_on 'Afficher ma candidature'
       click_on 'Annuler'
       click_on 'Confirmer'
       assert page.has_content?('Candidature annulée')
+      assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
       assert_equal 1, student.internship_applications
                              .where(aasm_state: :canceled_by_student)
                              .count
