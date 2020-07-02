@@ -98,8 +98,10 @@ module Dashboard
         assert_select '.alert-warning .alert-internship-application-state',
                       text: "Candidature acceptée le #{I18n.localize(internship_applications[:approved].approved_at, format: :human_mm_dd)}.",
                       count: 1
+        # following test looks very much the same as the former one because
+        # the view shows the same info for this particular state
         assert_select '.alert-success .alert-internship-application-state',
-                      text: "Candidature acceptée le #{I18n.localize(internship_applications[:convention_signed].convention_signed_at, format: :human_mm_dd)}.",
+                      text: "Candidature acceptée le #{I18n.localize(internship_applications[:convention_signed].approved_at, format: :human_mm_dd)}.",
                       count: 1
         assert_select '.alert-internship-application-state',
                       text: "Candidature refusée le #{I18n.localize(internship_applications[:rejected].rejected_at, format: :human_mm_dd)}.",
@@ -130,6 +132,7 @@ module Dashboard
           student: student,
           aasm_state: :convention_signed,
           convention_signed_at: 1.days.ago,
+          approved_at: 1.days.ago,
           submitted_at: 2.days.ago
         })
 
