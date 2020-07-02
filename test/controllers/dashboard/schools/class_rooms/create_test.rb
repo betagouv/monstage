@@ -31,6 +31,7 @@ module Dashboard
             assert_redirected_to dashboard_school_class_rooms_path(school)
           end
           assert_equal 1, ClassRoom.where(name: class_room_name).count
+          assert_equal 'troisieme_segpa', ClassRoom.where(name: class_room_name).first.school_track
         end
       end
 
