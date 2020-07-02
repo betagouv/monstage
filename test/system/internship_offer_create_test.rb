@@ -46,7 +46,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_form(sector: sectors.first,
-                     school_type: InternshipOffer.school_types.keys.sample.to_sym,
+                     school_type: :middle_school,
                      group: group,
                      weeks: available_weeks)
         click_on "Enregistrer et publier l'offre"
@@ -70,7 +70,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
         sector: sector,
         group: group,
         weeks: available_weeks,
-        school_type: InternshipOffer.school_types.keys.sample.to_sym
+        school_type: :middle_school
       )
       fill_in 'internship_offer_title', with: 'a' * 501
       click_on "Enregistrer et publier l'offre"

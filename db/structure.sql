@@ -10,15 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 
-
-
---
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
-
-
 --
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
