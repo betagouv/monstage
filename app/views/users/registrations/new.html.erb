@@ -54,7 +54,7 @@
       </div>
       <% if can?(:choose_role, resource) %>
       <div class="form-group custom-label-container">
-        <%= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --' }, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
+        <%= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role), { prompt: '' }, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
         <%= f.label :role do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
@@ -112,14 +112,13 @@
           <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
         <% end %>
       <% else %>
-        <div class="form-group">
+        <div class="form-group custom-label-container">
+          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
           <%= f.label :email do %>
               <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
-              <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
           <% end %>
-          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
-
+          <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
           <small class="d-none" data-target="signup.emailHint"></small>
         </div>
       <% end %>
