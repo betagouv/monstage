@@ -111,6 +111,6 @@ class UserTest < ActiveSupport::TestCase
 
   test "formatted_phone" do
     student = create(:student, phone: '+330611223344')
-    assert_equal '+330611223344', student.formatted_phone
+    assert_equal '+33611223344', student.formatted_phone
   end
 end
