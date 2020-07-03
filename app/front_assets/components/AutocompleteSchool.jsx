@@ -184,14 +184,7 @@ class AutocompleteSchool extends React.Component {
 
     const { resourceName, existingSchool, label, required, classes } = this.props;
     return (
-      <div className="form-group">
-        <label htmlFor={`${resourceName}_school_city`}>
-          {label}
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
-        </label>
-
+      <div className="form-group custom-label-container">
         <div className="input-group">
           <input
             className={`form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'}`}
@@ -204,6 +197,13 @@ class AutocompleteSchool extends React.Component {
             value={this.currentCityString()}
             onChange={this.onCityChange}
           />
+          <label htmlFor={`${resourceName}_school_city`}>
+            {label}
+            <abbr title="(obligatoire)" aria-hidden="true">
+              *
+            </abbr>
+          </label>
+
           <div className="input-group-append">
             {!currentRequest && (
               <button
@@ -297,23 +297,25 @@ class AutocompleteSchool extends React.Component {
 
     return (
       <div className={`form-group ${isWaitingCitySelection ? 'opacity-05' : ''}`}>
-        <label htmlFor={`${resourceName}_school_name`}>
-          Etablissement
-          <abbr title="(obligatoire)" aria-hidden="true">
-            *
-          </abbr>
-        </label>
         {isWaitingCitySelection && (
-          <input
-            value=""
-            disabled
-            className={`form-control ${classes || ''}`}
-            type="text"
-            id={`${resourceName}_school_name`}
-          />
+          <div class="custom-label-container">
+            <input
+              value=""
+              disabled
+              className={`form-control ${classes || ''}`}
+              type="text"
+              id={`${resourceName}_school_name`}
+            />
+            <label htmlFor={`${resourceName}_school_name`}>
+              Collège
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+          </div>
         )}
         {isAlreadySelected && (
-          <>
+          <div class="custom-label-container">
             <input
               readOnly
               disabled
@@ -323,8 +325,14 @@ class AutocompleteSchool extends React.Component {
               name={`${resourceName}[school_name]`}
               id={`${resourceName}_school_name`}
             />
+            <label htmlFor={`${resourceName}_school_name`}>
+              Collège
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
             <input type="hidden" value={existingSchool.id} name={`${resourceName}[school_id]`} />
-          </>
+          </div>
         )}
         {hasPendingSuggestion && (
           <div>
@@ -361,17 +369,19 @@ class AutocompleteSchool extends React.Component {
     const hasPendingSuggestion = classRoomsSuggestions && classRoomsSuggestions.length > 0;
 
     return (
-      <div className={`form-group ${isWaitingSchoolSelection ? 'opacity-05' : ''}`}>
-        <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+      <div className={`form-group custom-label-container ${isWaitingSchoolSelection ? 'opacity-05' : ''}`}>
 
         {isWaitingSchoolSelection && (
-          <input
-            value=""
-            disabled
-            className={`form-control ${classes || ''}`}
-            type="text"
-            id={`${resourceName}_class_room_id`}
-          />
+          <>
+            <input
+              value=""
+              disabled
+              className={`form-control ${classes || ''}`}
+              type="text"
+              id={`${resourceName}_class_room_id`}
+            />
+            <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          </>
         )}
 
         {isAlreadySelected && (
@@ -385,6 +395,7 @@ class AutocompleteSchool extends React.Component {
               name={`${resourceName}[class_room_name]`}
               id={`${resourceName}_class_room_name`}
             />
+            <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
             <input
               value={existingClassRoom.id}
               type="hidden"
@@ -394,37 +405,43 @@ class AutocompleteSchool extends React.Component {
         )}
 
         {hasPendingSuggestion && (
-          <select
-            className="form-control"
-            name={`${resourceName}[class_room_id]`}
-            id={`${resourceName}_class_room_id`}
-          >
-            {!selectedClassRoom && (
-              <option key="class-room-null" selected disabled>
-                -- Veuillez choisir une classe --
-              </option>
-            )}
-            {(classRoomsSuggestions || []).map(classRoom => (
-              <option
-                key={`class-room-${classRoom.id}`}
-                value={classRoom.id}
-                selected={selectedClassRoom && selectedClassRoom.id === classRoom.id}
-              >
-                {classRoom.name}
-              </option>
-            ))}
-          </select>
+          <>
+            <select
+              className="form-control"
+              name={`${resourceName}[class_room_id]`}
+              id={`${resourceName}_class_room_id`}
+            >
+              {!selectedClassRoom && (
+                <option key="class-room-null" selected disabled>
+                  -- Veuillez choisir une classe --
+                </option>
+              )}
+              {(classRoomsSuggestions || []).map(classRoom => (
+                <option
+                  key={`class-room-${classRoom.id}`}
+                  value={classRoom.id}
+                  selected={selectedClassRoom && selectedClassRoom.id === classRoom.id}
+                >
+                  {classRoom.name}
+                </option>
+              ))}
+            </select>
+            <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          </>
         )}
         {classRoomsSuggestions && classRoomsSuggestions.length === 0 && (
-          <input
-            placeholder="Aucune classe disponible"
-            readOnly
-            name={`${resourceName}[class_room_id]`}
-            id={`${resourceName}_class_room_id`}
-            value=""
-            className={`form-control ${classes || ''}`}
-            type="text"
-          />
+          <>
+            <input
+              placeholder="Aucune classe disponible"
+              readOnly
+              name={`${resourceName}[class_room_id]`}
+              id={`${resourceName}_class_room_id`}
+              value=""
+              className={`form-control ${classes || ''}`}
+              type="text"
+            />
+            <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          </>
         )}
       </div>
     );

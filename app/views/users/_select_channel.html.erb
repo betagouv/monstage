@@ -1,0 +1,60 @@
+<div class="form-group select-channel">
+  <div class="label">
+    <%= label %>
+    <div>
+      <%= yield %>
+    </div>
+  </div>
+
+  <div class='row my-2' >
+    <div class='col-6 d-table'>
+      <%= form.label :channel, "Email",
+                            class: 'channel-radio-label d-table-cell align-middle',
+                            for: "select-channel-email" do %>
+
+        <i class="fa fa-fw fa-4x far fa-envelope"></i>
+        <br />
+        <%= form.radio_button :channel,
+                        "email",
+                        id: 'select-channel-email',
+                        'data-action' => "change->signup#checkEmail" %>
+        Email
+      <% end %>
+    </div>
+    <div class='col-6 d-table'>
+      <%= form.label :channel,
+                    "SMS",
+                    class: 'channel-radio-label  d-table-cell align-middle',
+                    for: "select-channel-phone" do %>
+        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
+        <br/>
+        <%= form.radio_button :channel,
+                        "phone",
+                        id: 'select-channel-phone',
+                        'data-action' => "change->signup#checkPhone" %>
+          <%= phone %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div data-target="signup.emailBloc" class="form-group email d-none">
+  <%= form.label :email do %>
+    <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+    <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+  <% end %>
+  <%= form.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", autofocus: params[:email].blank? ? true : false, data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+  <small class="d-none" data-target="signup.emailHint"></small>
+</div>
+<div data-target="signup.phoneBloc" class="form-group phone d-none">
+  <%= form.label :phone, 'data-action' => "click->signup#focusPhone", for: 'phone-input' do %>
+    <span>Numéro de mobile</span>
+    <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+  <% end %>
+  <%= react_component("CountryPhoneSelect",
+    {
+      name: 'user[phone]',
+      value: resource.phone
+    })
+  %>
+</div>

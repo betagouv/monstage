@@ -45,7 +45,7 @@ export default class extends Controller {
       $errorContainer.text('');
       $input.val(`${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year.toString().padStart(4, "20")}`)
             .removeClass('is-invalid')
-    } else {
+    } else if (value != ''){
       showElement($errorContainer);
       $errorContainer.text('Veuillez saisir votre date de naissance au format jour/mois/année : jj/mm/aaaa');
       $input.addClass('is-invalid')

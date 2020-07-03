@@ -1,3 +1,25 @@
 .nav-no-bullet {
   list-style: none;
 }
+
+.form-check-inline .label {
+  margin: 0 2em 0 0
+}
+
+.select-channel {
+  .channel-radio-label {
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    border:1px solid $input-border-color;
+    border-radius: 5px;
+    margin: auto;
+    position: relative;
+  }
+}
+
+.react-tel-input .form-control:focus, .react-tel-input .form-control.open {
+  border-color: $input-border-color !important;
+  background-color: $input-bg;
+  box-shadow: 0 0 0 0.2rem rgba(16, 0, 143, 0.25) !important;
+}

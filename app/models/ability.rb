@@ -41,7 +41,8 @@ class Ability
            choose_school
            choose_class_room
            choose_gender_and_birthday
-           choose_handicap], User
+           choose_handicap
+           register_with_phone], User
     can_read_dashboard_students_internship_applications(user: user)
   end
 

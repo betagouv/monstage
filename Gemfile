@@ -33,6 +33,7 @@ gem 'rails_admin-i18n'
 # instrumentation
 gem 'newrelic_rpm'
 gem 'sentry-raven'
+gem 'ovh-rest'
 
 # email operator tool
 gem 'sendgrid-ruby'

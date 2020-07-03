@@ -1,0 +1,32 @@
+.onboarding-card.onboarding-card-sm.mb-4
+    header.header-account
+      h1.h2.text-center Encore une petite étape...
+      p.px-3
+        span.confirmation-text= "Votre demande a bien été enregistrée "
+        strong= "(#{params[:phone]})"
+        = "."
+        br
+        | Vous venez de recevoir un code par sms afin de confirmer votre demande de changment de mot de passe.
+    .body
+      = form_tag phone_update_password_path, method: :put do
+        .form-group.phone
+          = label_tag 'Numéro de mobile'
+          = react_component("CountryPhoneSelect", { name: 'phone', value: params[:phone]})
+        .form-group.custom-label-container
+          = number_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
+          = label_tag :phone_token, 'Code de confirmation'
+        .form-group.custom-label-container
+          = password_field_tag :password, '', autofocus: true, autocomplete: "new-password", required: true, class: 'form-control'
+          = label_tag :password do
+            ' Nouveau mot de passe
+            - if @minimum_password_length
+              small.form-text.text-muted= t('devise.shared.minimum_password_length', count: @minimum_password_length)
+
+        .form-group.custom-label-container
+          = password_field_tag :password_confirmation, '', autocomplete: "off", required: true, class: 'form-control'
+          = label_tag :password_confirmation do
+            ' Confirmez votre nouveau mot de passe
+
+        .actions.d-flex.d-sm-block.text-center
+          = submit_tag 'Valider', class: 'btn btn-primary'
+
