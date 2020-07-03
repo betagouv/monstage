@@ -28,6 +28,12 @@
     }
   }
 
+  select + label {
+    top: 0;
+    margin-top: -10px;
+    background-color: $input-bg;
+  }
+
   input:focus + label,
   select:focus + label,
   textarea:focus + label {
@@ -36,13 +42,10 @@
   }
 
   input[readonly] + label,
-  select[readonly] + label,
   textarea[readonly] + label,
   input:focus + label,
-  select:focus + label,
   textarea:focus + label,
   input:valid + label,
-  select:valid + label,
   textarea:valid + label {
     background-color: $input-bg;
     top: 0;
