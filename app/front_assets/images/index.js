@@ -4,6 +4,7 @@ import './logo-beta-gouv-fr.png';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
+import './onboarding/student.svg';
 
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';

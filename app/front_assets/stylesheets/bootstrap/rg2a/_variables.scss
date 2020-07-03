@@ -50,7 +50,7 @@ $input-border-radius-sm: 0;
 $custom-select-border-radius: 0;
 // $input-focus-box-shadow:
 
-$input-btn-padding-x: 1rem;
+$input-btn-padding-x: .75rem;
 $input-btn-padding-y: .75rem;
 $border-radius-lg: 1.25rem;
 $box-shadow-lg: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
@@ -58,7 +58,7 @@ $box-shadow-lg: 0 7px 64px 0 rgba(0, 0, 0, 0.2);
 // pagination
 $pagination-color: $red;
 $pagination-border-width: 0;
-
+$form-group-margin-bottom: 2rem;
 // pagination:active
 $pagination-active-color: $gray-900;
 $pagination-active-bg: transparent;

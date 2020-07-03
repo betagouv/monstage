@@ -2,6 +2,16 @@
 
 module Users
   class ConfirmationsController < Devise::ConfirmationsController
+    include Phonable
+    def create
+      if by_phone? && fetch_user_by_phone
+        SendSmsJob.perform_later(fetch_user_by_phone)
+        redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
+        return
+      end
+      super
+    end
+
     def show
       self.resource = resource_class.confirm_by_token(params[:confirmation_token])
       yield resource if block_given?

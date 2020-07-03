@@ -37,7 +37,7 @@ module InternshipApplications
     test 'GET #index succeed when logged in as employer, shows default fields' do
       school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
-                                 phone: '0665656565',
+                                 phone: '+330665656565',
                                  email: 'student@edu.school',
                                  birth_date: 14.years.ago,
                                  resume_educational_background: 'resume_educational_background',

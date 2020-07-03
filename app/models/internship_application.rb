@@ -149,7 +149,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc {|*_args|
       update!("approved_at": Time.now.utc)
       StudentMailer.internship_application_approved_email(internship_application: self)
-                    .deliver_later
+                    .deliver_later if self.student.email.present?
       student.school.main_teachers.map do |main_teacher|
         MainTeacherMailer.internship_application_approved_email(internship_application: self,
                                                                 main_teacher: main_teacher)
@@ -164,7 +164,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc {|*_args|
       update!("rejected_at": Time.now.utc)
       StudentMailer.internship_application_rejected_email(internship_application: self)
-                    .deliver_later
+                    .deliver_later if self.student.email.present?
     }
     end
 
@@ -174,7 +174,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc {|*_args|
       update!("canceled_at": Time.now.utc)
       StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
-                    .deliver_later
+                    .deliver_later if self.student.email.present?
     }
     end
 

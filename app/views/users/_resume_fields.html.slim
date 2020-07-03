@@ -27,9 +27,9 @@
     .row
       .col-12.col-md-6
         .form-group
-          = form.label :phone do
-            = 'Mon numéro de téléphone'
-          = form.phone_field :phone, class: 'form-control col-lg-12', disabled: disabled
+          = form.label :phone, for: 'phone-input' do
+            = 'Numéro de mobile'
+          = react_component("CountryPhoneSelect", { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: true })
       .col-12.col-md-6
         .form-group
           = form.label :email do

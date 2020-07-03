@@ -1,0 +1,66 @@
+.autocomplete-school-container .custom-label-container{
+  input:focus + label,
+  select:focus + label,
+  input:valid + label,
+  select:valid + label {
+    z-index: 4;
+  }
+}
+.custom-label-container{
+  position: relative;
+  transition: 0.2s;
+
+  // padding: $input-padding-y $input-padding-x;
+  label {
+    top: $input-padding-y;
+    // position label at same position as input content
+    // to do so, we split the input padding-x between left [offset label]/padding[give some space around the label]
+    left: $input-padding-x/2;
+    padding-left: $input-padding-x/2;
+    padding-right: $input-padding-x/2;
+    position: absolute;
+    display: inline-block;
+
+    line-height: $input-line-height;
+    transition: all .2s;
+    abbr{
+      margin-left: -($input-padding-x/2);
+    }
+  }
+
+  select + label {
+    top: 0;
+    margin-top: -10px;
+    background-color: $input-bg;
+  }
+
+  input:focus + label,
+  select:focus + label,
+  textarea:focus + label {
+    color: $input-focus-border-color;
+    font-size: 0.8rem;
+  }
+
+  input[readonly] + label,
+  textarea[readonly] + label,
+  input:focus + label,
+  textarea:focus + label,
+  input:valid + label,
+  textarea:valid + label {
+    background-color: $input-bg;
+    top: 0;
+    margin-top: -10px;
+    font-size: 0.8rem;
+  }
+
+  input[readonly] + label,
+  select[readonly] + label,
+  textarea[readonly] + label {
+    background-color: $input-disabled-bg;
+  }
+  input:placeholder-shown:not(:focus)::placeholder {
+    opacity: 0;
+  }
+  input:placeholder-shown:not(:focus) + * {
+  }
+}

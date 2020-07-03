@@ -119,7 +119,7 @@
                                 currentCity: @internship_offer.city,
                                 currentZipcode: @internship_offer.zipcode,
                                 currentLatitude: @internship_offer.coordinates.try(:lat).try(:to_f),
-                                currentLongitude: @internship_offer.coordinates.try(:lng).try(:to_f),
+                                currentLongitude: @internship_offer.coordinates.try(:lon).try(:to_f),
                                 currentFullAddress: @internship_offer.formatted_autocomplete_address})
 
     .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT

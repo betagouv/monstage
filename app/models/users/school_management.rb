@@ -25,7 +25,7 @@ module Users
     after_create :notify_school_manager, if: :notifiable?
 
     def self.i18n_roles
-      rs= roles.map do |ruby_role, pg_role|
+      roles.map do |ruby_role, _|
         OpenStruct.new(value: ruby_role, text: I18n.t("enum.roles.#{ruby_role}"))
       end
     end

@@ -128,7 +128,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
               resume_educational_background: 'background',
               resume_other: 'other',
               resume_languages: 'languages',
-              phone: '0665656540'
+              phone: '+330665656540'
             }
           })
 
@@ -137,7 +137,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'background', student.resume_educational_background.to_plain_text
     assert_equal 'other', student.resume_other.to_plain_text
     assert_equal 'languages', student.resume_languages.to_plain_text
-    assert_equal '0665656540', student.phone
+    assert_equal '+330665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
