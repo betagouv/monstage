@@ -8,7 +8,7 @@ class Week < ApplicationRecord
            dependent: :destroy
   has_many :internship_offers,
            through: :internship_offer_weeks,
-           class_name: 'InternshipOffers::Web'
+           class_name: 'InternshipOffers::WeeklyFramedOffer'
 
   has_many :school_internship_weeks, dependent: :destroy
   has_many :schools, through: :school_internship_weeks
