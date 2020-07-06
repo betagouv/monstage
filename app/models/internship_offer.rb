@@ -55,15 +55,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :ignore_max_candidates_reached, lambda {
-    joins(:internship_offer_weeks)
-      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
-  }
-
-  scope :ignore_max_internship_offer_weeks_reached, lambda {
-    where('internship_offer_weeks_count > blocked_weeks_count')
-  }
-
   scope :ignore_already_applied, lambda { |user:|
     where.not(id: joins(:internship_applications)
                     .merge(InternshipApplication.where(user_id: user.id)))
@@ -75,10 +66,6 @@ class InternshipOffer < ApplicationRecord
 
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
     where(school_id: [nil, school_id])
-  }
-
-  scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
-    by_weeks(weeks: weeks)
   }
 
   enum school_type: {
@@ -99,20 +86,12 @@ class InternshipOffer < ApplicationRecord
                           length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :weeks, presence: true
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
   belongs_to :employer, polymorphic: true
   belongs_to :sector
-
-  has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
-
-  has_many :internship_applications, through: :internship_offer_weeks,
-                                     dependent: :destroy
-
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
 
@@ -147,10 +126,6 @@ class InternshipOffer < ApplicationRecord
     school.present?
   end
 
-  def is_fully_editable?
-    internship_applications.empty?
-  end
-
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
@@ -161,12 +136,35 @@ class InternshipOffer < ApplicationRecord
 
   def anonymize
     fields_to_reset = {
-      tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
-      description: 'NA', employer_website: 'NA', street: 'NA',
-      employer_name: 'NA', employer_description: 'NA'
+      tutor_name: 'NA',
+      tutor_phone: 'NA',
+      tutor_email: 'NA',
+      title: 'NA',
+      description: 'NA',
+      employer_website: 'NA',
+      street: 'NA',
+      employer_name: 'NA',
+      employer_description: 'NA'
     }
     update(fields_to_reset)
     discard
+  end
+
+  def duplicate
+    white_list = %w[type title sector_id max_candidates school_type
+                    tutor_name tutor_phone tutor_email employer_website
+                    employer_name street zipcode city department region academy
+                    is_public group school_id coordinates first_date last_date]
+
+    internship_offer = InternshipOffer.new(attributes.slice(*white_list))
+    internship_offer.description_rich_text = (description_rich_text.present? ?
+                                              description_rich_text.to_s :
+                                              description)
+    internship_offer.employer_description_rich_text = (employer_description_rich_text.present? ?
+                                                       employer_description_rich_text.to_s :
+                                                       employer_description)
+
+    internship_offer
   end
 
   def class_prefix_for_multiple_checkboxes

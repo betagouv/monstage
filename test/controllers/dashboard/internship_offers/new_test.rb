@@ -74,6 +74,7 @@ module InternshipOffers
       internship_offer.update_column(:employer_description, 'woot woot')
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
+      assert_response :success
       assert_select "input[name=\"internship_offer[description_rich_text]\"][value=\"woot\"]"
       assert_select "input[name=\"internship_offer[employer_description_rich_text]\"][value=\"woot woot\"]"
     end

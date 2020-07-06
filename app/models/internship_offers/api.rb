@@ -2,6 +2,8 @@
 
 module InternshipOffers
   class Api < InternshipOffer
+    include WeeklyFramed
+
     rails_admin do
       configure :created_at, :datetime do
         date_format 'BUGGY'
@@ -48,6 +50,9 @@ module InternshipOffers
         field :convention_signed_applications_count
         field :is_public
       end
+
+      show do
+      end
     end
 
     validates :remote_id,
@@ -60,18 +65,6 @@ module InternshipOffers
     belongs_to :group, optional: true
     after_initialize :init
 
-    rails_admin do
-      list do
-        scopes [:from_api]
-        field :title
-      end
-
-      show do
-      end
-
-      edit do
-      end
-    end
 
     def init
       self.max_candidates ||= 1

@@ -23,7 +23,7 @@ module FindableWeek
     }
     # maybe useless
     scope :in_the_future, lambda {
-      more_recent_than(week: Week.current)
+      where("last_date < :now", now: Time.now)
     }
   end
 end
