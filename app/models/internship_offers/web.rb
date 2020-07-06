@@ -81,7 +81,7 @@ module InternshipOffers
               presence: true
 
     validates :is_public, inclusion: { in: [true, false] }
-    validates :weeks, preseence: true
+    validates :weeks, presence: true
     validate :validate_group_is_public?, if: :is_public?
     validate :validate_group_is_not_public?, unless: :is_public?
 
