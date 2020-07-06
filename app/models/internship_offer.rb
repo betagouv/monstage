@@ -99,16 +99,13 @@ class InternshipOffer < ApplicationRecord
                           length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :weeks, presence: true
+
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
   belongs_to :employer, polymorphic: true
   belongs_to :sector
-
-  has_many :internship_applications, through: :internship_offer_weeks,
-                                     dependent: :destroy
 
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true

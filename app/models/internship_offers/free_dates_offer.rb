@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 module InternshipOffers
-
-
-  # ================================
-  # The following class is to disapear
-  # ================================
-
-
-
-  class Web < InternshipOffer
+  class FreeDatesOffer < InternshipOffer
     rails_admin do
       configure :created_at, :datetime do
         date_format 'BUGGY'
@@ -70,8 +62,6 @@ module InternshipOffers
              dependent: :destroy,
              foreign_key: :internship_offer_id
     has_many :weeks, through: :internship_offer_weeks
-    has_many :internship_applications, through: :internship_offer_weeks,
-                                       dependent: :destroy
 
     validates :street,
               :city,
@@ -81,7 +71,6 @@ module InternshipOffers
               presence: true
 
     validates :is_public, inclusion: { in: [true, false] }
-    validates :weeks, preseence: true
     validate :validate_group_is_public?, if: :is_public?
     validate :validate_group_is_not_public?, unless: :is_public?
 

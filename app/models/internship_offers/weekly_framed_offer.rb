@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 module InternshipOffers
-
-
-  # ================================
-  # The following class is to disapear
-  # ================================
-
-
-
-  class Web < InternshipOffer
+  class WeeklyFramedOffer < InternshipOffer
     rails_admin do
       configure :created_at, :datetime do
         date_format 'BUGGY'
