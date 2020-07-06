@@ -107,9 +107,6 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, polymorphic: true
   belongs_to :sector
 
-  has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
-
   has_many :internship_applications, through: :internship_offer_weeks,
                                      dependent: :destroy
 

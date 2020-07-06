@@ -58,6 +58,12 @@ module InternshipOffers
     validates :remote_id, uniqueness: { scope: :employer_id }
 
     belongs_to :group, optional: true
+
+    has_many :internship_offer_weeks,
+             dependent: :destroy,
+             foreign_key: :internship_offer_id
+    has_many :weeks, through: :internship_offer_weeks
+
     after_initialize :init
 
     rails_admin do

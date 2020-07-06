@@ -58,6 +58,11 @@ module InternshipOffers
       end
     end
 
+    has_many :internship_offer_weeks,
+             dependent: :destroy,
+             foreign_key: :internship_offer_id
+    has_many :weeks, through: :internship_offer_weeks
+
     validates :street,
               :city,
               :tutor_name,

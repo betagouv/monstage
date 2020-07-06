@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class InternshipOfferWeek < ApplicationRecord
-  belongs_to :internship_offer, counter_cache: true
+  belongs_to :internship_offer,
+             counter_cache: true,
+             class_name: 'InternshipOffers::Web'
   belongs_to :week
 
   has_many :internship_applications, dependent: :destroy
