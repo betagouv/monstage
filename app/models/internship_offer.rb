@@ -68,6 +68,10 @@ class InternshipOffer < ApplicationRecord
     where(school_id: [nil, school_id])
   }
 
+  scope :in_the_future, lambda {
+    where("last_date < :now", now: Time.now)
+  }
+
   enum school_type: {
     middle_school: 'middle_school',
     high_school: 'high_school'

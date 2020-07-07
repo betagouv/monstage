@@ -4,6 +4,7 @@ module FindableWeek
   extend ActiveSupport::Concern
 
   included do
+
     scope :by_weeks, lambda { |weeks:|
       joins(:weeks).where(weeks: { id: weeks.ids })
     }
@@ -21,9 +22,6 @@ module FindableWeek
       joins(:weeks).where('weeks.year > :year OR (weeks.year = :year AND weeks.number >= :number)',
                           year: week.year, number: week.number)
     }
-    # maybe useless
-    scope :in_the_future, lambda {
-      where("last_date < :now", now: Time.now)
-    }
+
   end
 end
