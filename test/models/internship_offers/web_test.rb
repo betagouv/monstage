@@ -53,13 +53,12 @@ module InternshipsOffers
     end
 
     test 'sync_first_and_last_date' do
-      internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
-
-
-      internship_offer.save
-      internship_offer.reload
-      assert_equal internship_offer.first_date, Week.first.week_date.beginning_of_week
-      assert_equal internship_offer.last_date, Week.last.week_date.end_of_week
+      first_week = Week.find_by(year: 2019, number: 50)
+      last_week = Week.find_by(year: 2020, number: 2)
+      internship_offer = create(:internship_offer, max_candidates: 2, weeks: [last_week, first_week])
+      
+      assert_equal internship_offer.first_date, first_week.week_date.beginning_of_week
+      assert_equal internship_offer.last_date, last_week.week_date.end_of_week
     end
 
     test 'look for offers available in the future' do
