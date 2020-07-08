@@ -69,7 +69,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :in_the_future, lambda {
-    where("last_date < :now", now: Time.now)
+    where("last_date > :now", now: Time.now)
   }
 
   enum school_type: {
@@ -179,7 +179,8 @@ class InternshipOffer < ApplicationRecord
   # callbacks
   #
   def sync_first_and_last_date
-    first_week, last_week = weeks.minmax_by(&:id)
+    ordered_weeks = weeks.sort{ |a, b| [a.year, a.number] <=> [b.year, b.number] }
+    first_week, last_week = ordered_weeks.first, ordered_weeks.last
     self.first_date = first_week.week_date.beginning_of_week
     self.last_date = last_week.week_date.end_of_week
   end

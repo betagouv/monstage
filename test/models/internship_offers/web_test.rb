@@ -69,6 +69,7 @@ module InternshipsOffers
 
         next_week = Week.find_by(year: 2020, number: 30)
         internship_offer.weeks << next_week
+        internship_offer.save
 
         assert_equal 1, InternshipOffers::Web.in_the_future.count
       end
