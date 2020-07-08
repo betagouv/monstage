@@ -16,7 +16,7 @@ module Users
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id' do
       def weekly_framed
-        where(type: InternshipApplications::WeeklyFramed.name)
+        where(type: InternshipApplications::WeeklyFramedApplication.name)
       end
     end
 

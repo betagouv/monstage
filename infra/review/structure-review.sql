@@ -371,7 +371,7 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -516,7 +516,7 @@ CREATE TABLE public.internship_applications (
     expired_at timestamp without time zone,
     pending_reminder_sent_at timestamp without time zone,
     canceled_at timestamp without time zone,
-    type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying
+    type character varying DEFAULT 'InternshipApplications::WeeklyFramedApplication'::character varying
 );
 
 
@@ -1651,7 +1651,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
