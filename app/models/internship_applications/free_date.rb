@@ -1,7 +1,7 @@
 module InternshipApplications
   class FreeDate < InternshipApplication
     def weekly_framed?
-      true
+      false
     end
   end
 end

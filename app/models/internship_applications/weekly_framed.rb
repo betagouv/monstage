@@ -1,9 +1,7 @@
 module InternshipApplications
   # wraps weekly logic
   class WeeklyFramed < InternshipApplication
-    def weekly_framed?
-      true
-    end
+
     belongs_to :internship_offer_week
     has_one :internship_offer, through: :internship_offer_week
     has_one :week, through: :internship_offer_week
@@ -26,6 +24,10 @@ module InternshipApplications
       unless internship_offer_week.try(:has_spots_left?)
         errors.add(:internship_offer_week, :has_no_spots_left)
       end
+    end
+
+    def weekly_framed?
+      true
     end
   end
 end
