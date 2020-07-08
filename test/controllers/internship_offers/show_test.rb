@@ -213,12 +213,12 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do
-      previous_out = create(:internship_offer, title: "previous_out")
+      previous_out     = create(:internship_offer, title: "previous_out")
       previous_in_page = create(:internship_offer, title: "previous")
-      current = create(:internship_offer, title: "current")
-      next_in_page = create(:internship_offer, title: "next")
-      next_out = create(:internship_offer, title: "next_out")
-      student = create(:student, school: create(:school))
+      current          = create(:internship_offer, title: "current")
+      next_in_page     = create(:internship_offer, title: "next")
+      next_out         = create(:internship_offer, title: "next_out")
+      student          = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do
