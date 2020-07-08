@@ -49,7 +49,7 @@ module Finders
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
       end
       if user.respond_to?(:internship_applications)
-        query = query.merge(InternshipOffers::Web.ignore_already_applied(user: user))
+        query = query.merge(InternshipOffer.ignore_already_applied(user: user))
       end
       query
     end

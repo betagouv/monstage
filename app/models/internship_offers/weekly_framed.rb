@@ -41,12 +41,6 @@ module InternshipOffers
       scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
         by_weeks(weeks: weeks)
       }
-
-      scope :ignore_already_applied, lambda { |user:|
-        where.not(
-          id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id))
-        )
-      }
     end
   end
 end
