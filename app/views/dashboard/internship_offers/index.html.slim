@@ -1,4 +1,4 @@
-- if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
+- if current_user.is_a?(Users::Employer) && current_user.submitted_internship_applications_count.positive?
   .row
     .col-12
       .alert.alert-warning.alert-outlined
@@ -7,7 +7,7 @@
             i.fa.fa-exclamation-triangle.fa-2x
           .col
             p.mb-0
-              span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
+              span.warning-pending-notifications= "Vous avez #{current_user.submitted_internship_applications_count} candidature(s) en attente de réponse."
 
 .fake-table
   .row= render partial: "dashboard/internship_offers/tabs", locals: {internship_offers: @internship_offers}

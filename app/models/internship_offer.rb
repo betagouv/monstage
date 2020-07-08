@@ -56,8 +56,19 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :ignore_already_applied, lambda { |user:|
-    where.not(id: joins(:internship_applications)
-                    .merge(InternshipApplication.where(user_id: user.id)))
+    all
+  }
+
+  scope :ignore_max_candidates_reached, lambda {
+    all
+  }
+
+  scope :ignore_max_internship_offer_weeks_reached, lambda {
+    all
+  }
+
+  scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
+   all
   }
 
   scope :submitted_by_operator, lambda { |user:|
@@ -109,6 +120,10 @@ class InternshipOffer < ApplicationRecord
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
+
+  def is_fully_editable?
+    true
+  end
 
   def published?
     published_at.present?
