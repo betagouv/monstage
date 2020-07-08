@@ -55,20 +55,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :ignore_max_candidates_reached, lambda {
-    joins(:internship_offer_weeks)
-      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
-  }
-
-  scope :ignore_max_internship_offer_weeks_reached, lambda {
-    where('internship_offer_weeks_count > blocked_weeks_count')
-  }
-
-  scope :ignore_already_applied, lambda { |user:|
-    where.not(id: joins(:internship_applications)
-                    .merge(InternshipApplication.where(user_id: user.id)))
-  }
-
   scope :submitted_by_operator, lambda { |user:|
     merge(user.operator.internship_offers)
   }
@@ -77,13 +63,19 @@ class InternshipOffer < ApplicationRecord
     where(school_id: [nil, school_id])
   }
 
-  scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
-    by_weeks(weeks: weeks)
+  scope :in_the_future, lambda {
+    where("last_date > :now", now: Time.now)
+  }
+
+  enum school_type: {
+    middle_school: 'middle_school',
+    high_school: 'high_school'
   }
 
   validates :title,
             :employer_name,
             :city,
+            :school_type,
             presence: true
 
   validates :title, presence: true,
@@ -93,20 +85,16 @@ class InternshipOffer < ApplicationRecord
                           length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :weeks, presence: true
+
+  has_many :internship_applications, as: :internship_offer,
+                                     foreign_key: 'internship_offer_id',
+                                     foreign_type: 'internship_offer_type'
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
   belongs_to :employer, polymorphic: true
   belongs_to :sector
-
-  has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
-
-  has_many :internship_applications, through: :internship_offer_weeks,
-                                     dependent: :destroy
-
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
 
@@ -142,7 +130,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def is_fully_editable?
-    internship_applications.empty?
+    true
   end
 
   def total_female_applications_count
@@ -155,12 +143,35 @@ class InternshipOffer < ApplicationRecord
 
   def anonymize
     fields_to_reset = {
-      tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
-      description: 'NA', employer_website: 'NA', street: 'NA',
-      employer_name: 'NA', employer_description: 'NA'
+      tutor_name: 'NA',
+      tutor_phone: 'NA',
+      tutor_email: 'NA',
+      title: 'NA',
+      description: 'NA',
+      employer_website: 'NA',
+      street: 'NA',
+      employer_name: 'NA',
+      employer_description: 'NA'
     }
     update(fields_to_reset)
     discard
+  end
+
+  def duplicate
+    white_list = %w[type title sector_id max_candidates school_type
+                    tutor_name tutor_phone tutor_email employer_website
+                    employer_name street zipcode city department region academy
+                    is_public group school_id coordinates first_date last_date]
+
+    internship_offer = InternshipOffer.new(attributes.slice(*white_list))
+    internship_offer.description_rich_text = (description_rich_text.present? ?
+                                              description_rich_text.to_s :
+                                              description)
+    internship_offer.employer_description_rich_text = (employer_description_rich_text.present? ?
+                                                       employer_description_rich_text.to_s :
+                                                       employer_description)
+
+    internship_offer
   end
 
   def class_prefix_for_multiple_checkboxes
@@ -171,7 +182,8 @@ class InternshipOffer < ApplicationRecord
   # callbacks
   #
   def sync_first_and_last_date
-    first_week, last_week = weeks.minmax_by(&:id)
+    ordered_weeks = weeks.sort{ |a, b| [a.year, a.number] <=> [b.year, b.number] }
+    first_week, last_week = ordered_weeks.first, ordered_weeks.last
     self.first_date = first_week.week_date.beginning_of_week
     self.last_date = last_week.week_date.end_of_week
   end

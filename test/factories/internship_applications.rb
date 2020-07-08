@@ -2,9 +2,17 @@
 
 FactoryBot.define do
   factory :internship_application do
+    internship_offer_type { 'InternshipOffer' }
     student { create(:student) }
-    internship_offer_week { create(:internship_offer_week) }
+    internship_offer { create(:internship_offer) }
     motivation { 'Suis hyper motivé' }
+  end
+
+  trait :weekly do
+    type { 'InternshipApplications::WeeklyFramedApplication' }
+    before(:create) do |ia|
+      ia.internship_offer_week = create(:internship_offer_week, internship_offer: ia.internship_offer)
+    end
   end
 
   trait :drafted do

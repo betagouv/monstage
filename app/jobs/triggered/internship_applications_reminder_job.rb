@@ -6,12 +6,13 @@ module Triggered
 
     def perform(employer)
       return unless current_trigger.notifiable?(employer)
-
       # cache ids otherwise notifiable behaviour is changed
-      remindable_application_ids = employer.internship_applications
+      remindable_application_ids = InternshipApplication.joins(:internship_offer)
+                                           .where("internship_offers.employer_id = #{employer.id}")
                                            .remindable
                                            .pluck(:id)
-      expirable_application_ids = employer.internship_applications
+      expirable_application_ids = InternshipApplication.joins(:internship_offer)
+                                          .where("internship_offers.employer_id = #{employer.id}")
                                           .expirable
                                           .pluck(:id)
 

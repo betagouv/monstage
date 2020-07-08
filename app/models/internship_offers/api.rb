@@ -2,6 +2,8 @@
 
 module InternshipOffers
   class Api < InternshipOffer
+    include WeeklyFramed
+
     rails_admin do
       configure :created_at, :datetime do
         date_format 'BUGGY'
@@ -28,6 +30,7 @@ module InternshipOffers
         field :zipcode
         field :city
         field :sector
+        field :school_type
         field :weeks
         field :remote_id
         field :permalink
@@ -47,6 +50,9 @@ module InternshipOffers
         field :convention_signed_applications_count
         field :is_public
       end
+
+      show do
+      end
     end
 
     validates :remote_id,
@@ -59,18 +65,6 @@ module InternshipOffers
     belongs_to :group, optional: true
     after_initialize :init
 
-    rails_admin do
-      list do
-        scopes [:from_api]
-        field :title
-      end
-
-      show do
-      end
-
-      edit do
-      end
-    end
 
     def init
       self.max_candidates ||= 1
@@ -97,6 +91,7 @@ module InternshipOffers
                  remote_id
                  permalink
                  sector_uuid
+                 school_type
                  max_candidates
                  published_at],
         methods: [:formatted_coordinates]

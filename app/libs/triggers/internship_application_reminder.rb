@@ -10,10 +10,14 @@ module Triggers
     end
 
     def notifiable?(employer)
-      internship_applications = employer.internship_applications
+      # internship_applications = employer.internship_applications
       [
-        internship_applications.remindable,
-        internship_applications.expirable
+        InternshipApplication.joins(:internship_offer)
+                             .where("internship_offers.employer_id = #{employer.id}")
+                             .remindable,
+        InternshipApplication.joins(:internship_offer)
+                             .where("internship_offers.employer_id = #{employer.id}")
+                             .expirable
       ].map(&:count).any?(&:positive?)
     end
 

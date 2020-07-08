@@ -138,7 +138,7 @@ module InternshipOffers
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
-      internship_application = create(:internship_application, :drafted, motivation: 'au taquet',
+      internship_application = create(:internship_application, :weekly, :drafted, motivation: 'au taquet',
                                                                          student: student,
                                                                          internship_offer: internship_offer,
                                                                          week: weeks.last)
@@ -156,10 +156,10 @@ module InternshipOffers
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
       internship_applications = {
-        submitted: create(:internship_application, :submitted, student: student),
-        approved: create(:internship_application, :approved, student: student),
-        rejected: create(:internship_application, :rejected, student: student),
-        convention_signed: create(:internship_application, :convention_signed, student: student)
+        submitted: create(:internship_application, :weekly, :submitted, student: student),
+        approved: create(:internship_application, :weekly, :approved, student: student),
+        rejected: create(:internship_application, :weekly, :rejected, student: student),
+        convention_signed: create(:internship_application, :weekly, :convention_signed, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
@@ -213,12 +213,12 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do
-      previous_out = create(:internship_offer, title: "previous_out")
+      previous_out     = create(:internship_offer, title: "previous_out")
       previous_in_page = create(:internship_offer, title: "previous")
-      current = create(:internship_offer, title: "current")
-      next_in_page = create(:internship_offer, title: "next")
-      next_out = create(:internship_offer, title: "next_out")
-      student = create(:student, school: create(:school))
+      current          = create(:internship_offer, title: "current")
+      next_in_page     = create(:internship_offer, title: "next")
+      next_out         = create(:internship_offer, title: "next_out")
+      student          = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
         InternshipOffer.stub :by_weeks, InternshipOffer.all do

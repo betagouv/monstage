@@ -47,7 +47,6 @@ class PasswordFlowTest < ApplicationSystemTestCase
     execute_script("document.getElementById('phone-input').value = '#{phone}';")
     click_on 'Envoyer'
     user.reload
-    byebug
     execute_script("document.getElementById('phone-input').value = '#{phone}';")
     fill_in 'Code de confirmation', with: user.phone_token
     fill_in('Nouveau mot de passe', with: 'okokok')

@@ -55,6 +55,7 @@ module Dashboard
                       :canceled_by_employer_message,
                       :canceled_by_student_message,
                       :rejected_message,
+                      :school_type,
                       :aasm_state)
       end
     end

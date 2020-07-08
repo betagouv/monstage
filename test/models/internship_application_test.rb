@@ -38,7 +38,8 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                                                   internship_offer_week_2,
                                                   internship_offer_week_3
                                                  ])
-    internship_application = build(:internship_application, internship_offer_week: internship_offer_week_3)
+    internship_application = build(:internship_application, internship_offer: internship_offer_week_3.internship_offer,
+                                                            internship_offer_week: internship_offer_week_3)
     internship_application.save
     assert internship_application.errors.keys.include?(:internship_offer)
     assert_equal :has_no_spots_left, internship_application.errors.details[:internship_offer].first[:error]
@@ -49,10 +50,12 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     weeks = [Week.find_by(number: 1, year: 2019)]
     student = create(:student)
     internship_offer = create(:internship_offer, weeks: weeks)
-    internship_application_1 = create(:internship_application, student: student,
+    internship_application_1 = create(:internship_application, :weekly, student: student,
+                                                               internship_offer: internship_offer,
                                                                internship_offer_week: internship_offer.internship_offer_weeks.first)
     assert internship_application_1.valid?
     internship_application_2 = build(:internship_application, student: student,
+                                                              internship_offer: internship_offer,
                                                               internship_offer_week: internship_offer.internship_offer_weeks.first)
     refute internship_application_2.valid?
   end
@@ -61,16 +64,16 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     weeks = [Week.find_by(number: 1, year: 2019), Week.find_by(number: 2, year: 2019)]
     student = create(:student)
     internship_offer = create(:internship_offer, weeks: weeks)
-    internship_application_1 = create(:internship_application, student: student,
+    internship_application_1 = create(:internship_application, internship_offer: internship_offer, student: student,
                                                                internship_offer_week: internship_offer.internship_offer_weeks.first)
     assert internship_application_1.valid?
-    internship_application_2 = build(:internship_application, student: student,
+    internship_application_2 = build(:internship_application, internship_offer: internship_offer, student: student,
                                                               internship_offer_week: internship_offer.internship_offer_weeks.last)
     refute internship_application_2.valid?
   end
 
   test 'transition from draft to submit updates submitted_at and send semail to employer' do
-    internship_application = create(:internship_application, :drafted)
+    internship_application = create(:internship_application, :weekly, :drafted)
     freeze_time do
       assert_changes -> { internship_application.reload.submitted_at },
                      from: nil,
@@ -86,7 +89,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to student' do
-    internship_application = create(:internship_application, :submitted)
+    internship_application = create(:internship_application, :weekly, :submitted)
 
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
@@ -98,13 +101,13 @@ class InternshipApplicationTest < ActiveSupport::TestCase
           internship_application.save
           internship_application.approve!
         end
-        assert_nothing_raised { mock_mail_to_student.verify } 
+        assert_nothing_raised { mock_mail_to_student.verify }
       end
     end
   end
 
   test 'transition from submited to approved does not send approved email to student w/o email' do
-    internship_application = create(:internship_application, :submitted)
+    internship_application = create(:internship_application, :weekly, :submitted)
     internship_application.student.update!(email: nil, phone: '+330611223344')
 
     freeze_time do
@@ -123,7 +126,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to main_teacher' do
-    internship_application = create(:internship_application, :submitted)
+    internship_application = create(:internship_application, :weekly, :submitted)
     student = internship_application.student
     create(:school_manager, school: student.school)
     create(:main_teacher, class_room: student.class_room,
@@ -141,7 +144,11 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to rejected send rejected email to student' do
-    internship_application = create(:internship_application, :submitted)
+    internship_offer = create(:internship_offer)
+    internship_application = create(:internship_application, :weekly,
+                                    :submitted,
+                                    internship_offer: internship_offer,
+                                    internship_offer_week: build(:internship_offer_week, internship_offer: internship_offer))
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
@@ -157,7 +164,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to rejected does not send email to student w/o email' do
-    internship_application = create(:internship_application, :submitted)
+    internship_application = create(:internship_application, :weekly, :submitted)
     internship_application.student.update!(email: nil, phone: '+330611223344')
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
@@ -174,7 +181,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from rejected to approved send approved email' do
-    internship_application = create(:internship_application, :rejected)
+    internship_application = create(:internship_application, :weekly, :rejected)
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,
@@ -190,7 +197,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from rejected to approved does not send email to student w/o email' do
-    internship_application = create(:internship_application, :rejected)
+    internship_application = create(:internship_application, :weekly, :rejected)
     internship_application.student.update!(email: nil, phone: '+330611223344')
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
@@ -208,7 +215,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
   test 'transition via cancel_by_employer! changes ' \
        'aasm_state from approved to rejected' do
-    internship_application = create(:internship_application, :approved)
+    internship_application = create(:internship_application, :weekly, :approved)
     assert_changes -> { internship_application.reload.aasm_state },
                    from: 'approved',
                    to: 'canceled_by_employer' do
@@ -229,7 +236,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition via expire! changes aasm_state from submitted to expired' do
-    internship_application = create(:internship_application, :submitted)
+    internship_application = create(:internship_application, :weekly, :submitted)
     assert_changes -> { internship_application.reload.aasm_state },
                    from: 'submitted',
                    to: 'expired' do
@@ -244,7 +251,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition via signed! changes aasm_state from approved to rejected' do
-    internship_application = create(:internship_application, :approved)
+    internship_application = create(:internship_application, :weekly, :approved)
     assert_changes -> { internship_application.reload.aasm_state },
                    from: 'approved',
                    to: 'convention_signed' do
@@ -270,12 +277,15 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       student: student
     )
     internship_application_to_be_signed = create(:internship_application, :approved,
+                                                 internship_offer: internship_offer_2,
                                                  internship_offer_week: internship_offer_2.internship_offer_weeks.first,
                                                  student: student)
     internship_application_ignored_by_week = create(:internship_application, :approved,
+                                                 internship_offer: internship_offer_1,
                                                     internship_offer_week: internship_offer_1.internship_offer_weeks.last,
                                                     student: student_2)
     internship_application_ignored_by_student = create(:internship_application, :approved,
+                                                 internship_offer: internship_offer_1,
                                                        internship_offer_week: internship_offer_1.internship_offer_weeks.first)
     assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
                    from: 'approved',
@@ -287,7 +297,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'RGPD' do
-    internship_application = create(:internship_application, motivation: 'amazing')
+    internship_application = create(:internship_application, :weekly, motivation: 'amazing')
 
     internship_application.anonymize
 
