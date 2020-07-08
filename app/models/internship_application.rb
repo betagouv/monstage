@@ -5,24 +5,15 @@ class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
 
-  belongs_to :internship_offer_week
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
-
-  has_one :internship_offer, through: :internship_offer_week
-  has_one :week, through: :internship_offer_week
 
   validates :motivation,
             presence: true,
             if: :new_format?
 
-  validates :internship_offer_week,
-            presence: true,
-            unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
 
-  before_validation :internship_offer_has_spots_left?, on: :create
-  before_validation :internship_offer_week_has_spots_left?, on: :create
   before_validation :at_most_one_application_per_student?, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
@@ -88,6 +79,7 @@ class InternshipApplication < ApplicationRecord
   def student_is_custom_track?
     student.custom_track?
   end
+
 
   def internship_offer_has_spots_left?
     return unless internship_offer_week.present?

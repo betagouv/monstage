@@ -9,7 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-
 --
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -515,7 +514,8 @@ CREATE TABLE public.internship_applications (
     submitted_at timestamp without time zone,
     expired_at timestamp without time zone,
     pending_reminder_sent_at timestamp without time zone,
-    canceled_at timestamp without time zone
+    canceled_at timestamp without time zone,
+    type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying
 );
 
 
@@ -1650,7 +1650,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1817,6 +1817,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200622080019'),
 ('20200625154637'),
 ('20200627095219'),
-('20200629133744');
+('20200629133744'),
+('20200708120719');
 
 

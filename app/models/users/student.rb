@@ -14,7 +14,11 @@ module Users
               presence: true
 
     has_many :internship_applications, dependent: :destroy,
-                                       foreign_key: 'user_id'
+                                       foreign_key: 'user_id' do
+      def weekly_framed
+        where(type: InternshipApplications::WeeklyFramed.name)
+      end
+    end
 
     has_rich_text :resume_educational_background
     has_rich_text :resume_other
@@ -60,8 +64,8 @@ module Users
       internship_applications
         .where(aasm_state: %i[approved submitted drafted])
         .not_by_id(id: id)
-        .joins(:internship_offer_week)
-        .where("internship_offer_weeks.week_id = #{week.id}")
+        .weekly_framed
+        .select { |application| application.week.id == week.id }
         .map(&:expire!)
     end
 
