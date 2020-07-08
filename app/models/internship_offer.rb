@@ -55,11 +55,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :ignore_already_applied, lambda { |user:|
-    where.not(id: joins(:internship_applications)
-                    .merge(InternshipApplication.where(user_id: user.id)))
-  }
-
   scope :submitted_by_operator, lambda { |user:|
     merge(user.operator.internship_offers)
   }

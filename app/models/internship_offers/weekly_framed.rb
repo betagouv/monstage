@@ -23,6 +23,13 @@ module InternshipOffers
         internship_applications.empty?
       end
 
+      scope :ignore_already_applied, lambda { |user:|
+        where(type: ['InternshipOffers::Web', 'InternshipOffers::Api'] )
+        .where.not(id: joins(internship_offer_weeks: :internship_applications)
+                      .merge(InternshipApplication.where(user_id: user.id))
+                   )
+      }
+
       def duplicate
         internship_offer = super
         internship_offer.week_ids = week_ids
