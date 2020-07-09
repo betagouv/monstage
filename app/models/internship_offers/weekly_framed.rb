@@ -78,9 +78,6 @@ module InternshipOffers
     before_create :reverse_academy_by_zipcode
 
     attr_reader :with_operator
-    def init
-      self.max_candidates ||= 1
-    end
 
     def validate_group_is_public?
       return if group.nil?

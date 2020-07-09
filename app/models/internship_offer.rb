@@ -81,27 +81,19 @@ class InternshipOffer < ApplicationRecord
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_applications, as: :internship_offer,
-                                     foreign_key: 'internship_offer_id' #do
-  #   def weekly_framed
-  #     where(type: InternshipOffers::WeeklyFramed.name)
-  #   end
-
-  #   def free_date
-  #     where(type: InternshipOffers::FreeDate.name)
-  #   end
-
-  # end
-
-
-  has_rich_text :description_rich_text
-  has_rich_text :employer_description_rich_text
+                                     foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true
   belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
 
+
+  has_rich_text :description_rich_text
+  has_rich_text :employer_description_rich_text
+
   before_validation :replicate_rich_text_to_raw_fields
+
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
 
@@ -181,16 +173,6 @@ class InternshipOffer < ApplicationRecord
     'internship_offer'
   end
 
-  #
-  # callbacks
-  #
-  def sync_first_and_last_date
-    ordered_weeks = weeks.sort{ |a, b| [a.year, a.number] <=> [b.year, b.number] }
-    first_week, last_week = ordered_weeks.first, ordered_weeks.last
-    self.first_date = first_week.week_date.beginning_of_week
-    self.last_date = last_week.week_date.end_of_week
-  end
-
   # @note some possible confusion, miss-understanding here
   #   1. Rich text was added after API
   #   2. API already exposed a "description" attributes (not rich text) [in/out]
@@ -227,4 +209,9 @@ class InternshipOffer < ApplicationRecord
       SyncInternshipOfferKeywordsJob.perform_later
     end
   end
+
+  def init
+    self.max_candidates ||= 1
+  end
+
 end

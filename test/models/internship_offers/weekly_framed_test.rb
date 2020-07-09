@@ -126,5 +126,10 @@ module InternshipsOffers
       assert_equal internship_offer.employer_description_rich_text.to_plain_text.strip,
                    duplicated_internship_offer.employer_description_rich_text.to_plain_text.strip
     end
+
+    test 'default max_candidates' do
+      assert_equal 1, InternshipOffers::WeeklyFramed.new.max_candidates
+      assert_equal 1, InternshipOffers::WeeklyFramed.new(max_candidates: '').max_candidates
+    end
   end
 end

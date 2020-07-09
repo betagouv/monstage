@@ -64,10 +64,9 @@ module InternshipOffers
     belongs_to :group, optional: true
     after_initialize :init
 
-
     def init
-      self.max_candidates ||= 1
       self.is_public ||= false
+      super
     end
 
     def formatted_coordinates
