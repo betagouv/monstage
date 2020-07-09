@@ -30,8 +30,18 @@ module InternshipOffers
     #
     # Student
     #
-    test 'GET #show as Student does increments view_count' do
+    test 'GET #show weekly framed as Student does increments view_count' do
       internship_offer = create(:internship_offer)
+      sign_in(create(:student))
+      assert_changes -> { internship_offer.reload.view_count },
+                     from: 0,
+                     to: 1 do
+        get internship_offer_path(internship_offer)
+      end
+    end
+
+    test 'GET #show free date as Student does increments view_count' do
+      internship_offer = create(:free_date_internship_offer)
       sign_in(create(:student))
       assert_changes -> { internship_offer.reload.view_count },
                      from: 0,

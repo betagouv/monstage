@@ -1,8 +1,10 @@
 module InternshipOffers
   class FreeDate < InternshipOffer
-    has_many :internship_applications
     after_initialize :init
 
+    def has_spots_left?
+      true
+    end
     #
     # callbacks
     #

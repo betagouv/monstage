@@ -1,9 +1,9 @@
 .row.mt-3
   .col-12
     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
-
-    - internship_offer_weeks = internship_offer.internship_offer_weeks
-    - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
+    - if internship_offer.respond_to?(:internship_offer_weeks)
+      - internship_offer_weeks = internship_offer.internship_offer_weeks
+      - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
 
 .row.bg-light-blue.py-3.mt-3
   .col-12.mb-3
@@ -26,7 +26,9 @@
         h3.h5
           i.fa-fw.fas.fa-calendar-alt
           span.ml-1 Quand ce stage est-il disponible ?
-        p= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
+
+        - if internship_offer.respond_to?(:internship_offer_weeks)
+          p= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
 
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
       .row
