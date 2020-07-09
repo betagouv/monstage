@@ -3,8 +3,6 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder
-    DEFAULT_SCHOOL_TYPE = :middle_school
-
     def create(params:)
       yield callback if block_given?
       authorize :create, model
@@ -50,8 +48,6 @@ module Builders
     def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
 
-      params = add_defaults_to_params params
-
       opts = { params: params,
                user: user,
                fallback_weeks: fallback_weeks }
@@ -67,13 +63,7 @@ module Builders
     def model
       return ::InternshipOffers::Api if from_api?
 
-      ::InternshipOffers::Web
-    end
-
-    def add_defaults_to_params(params)
-      return params if params[:school_type]
-
-      params.merge(school_type: DEFAULT_SCHOOL_TYPE)
+      ::InternshipOffers::WeeklyFramed
     end
 
     def duplicate?(internship_offer)

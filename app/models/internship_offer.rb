@@ -67,15 +67,9 @@ class InternshipOffer < ApplicationRecord
     where("last_date > :now", now: Time.now)
   }
 
-  enum school_type: {
-    middle_school: 'middle_school',
-    high_school: 'high_school'
-  }
-
   validates :title,
             :employer_name,
             :city,
-            :school_type,
             presence: true
 
   validates :title, presence: true,
@@ -167,7 +161,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def duplicate
-    white_list = %w[type title sector_id max_candidates school_type
+    white_list = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date]

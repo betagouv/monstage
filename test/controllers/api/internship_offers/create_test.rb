@@ -224,7 +224,7 @@ module Api
                 zipcode: '60580',
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
-                school_type: :high_school,
+                type: InternshipOffers::WeeklyFramed.name,
                 remote_id: 'remote_id',
                 permalink: 'http://google.fr/permalink',
               }

@@ -2,7 +2,7 @@
 
 module InternshipOffers
   class Api < InternshipOffer
-    include WeeklyFramed
+    include WeeklyFramable
 
     rails_admin do
       configure :created_at, :datetime do
@@ -30,7 +30,6 @@ module InternshipOffers
         field :zipcode
         field :city
         field :sector
-        field :school_type
         field :weeks
         field :remote_id
         field :permalink
@@ -91,7 +90,6 @@ module InternshipOffers
                  remote_id
                  permalink
                  sector_uuid
-                 school_type
                  max_candidates
                  published_at],
         methods: [:formatted_coordinates]

@@ -74,16 +74,6 @@ CREATE TYPE public.class_room_school_track AS ENUM (
 
 
 --
--- Name: internship_offer_school_type; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.internship_offer_school_type AS ENUM (
-    'middle_school',
-    'high_school'
-);
-
-
---
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -658,8 +648,7 @@ CREATE TABLE public.internship_offers (
     first_date date,
     last_date date,
     type character varying,
-    search_tsv tsvector,
-    school_type public.internship_offer_school_type
+    search_tsv tsvector
 );
 
 
@@ -1669,7 +1658,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1841,6 +1830,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709105933'),
 ('20200709110316'),
 ('20200709111802'),
-('20200709121046');
+('20200709121046'),
+('20200709135354');
 
 

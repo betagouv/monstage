@@ -38,8 +38,8 @@ module Finders
 
     def school_members_query
       query = keywords_and_coordinates_query do
-        
-        InternshipOffers::Web.kept
+
+        InternshipOffers::WeeklyFramed.kept
                        .in_the_future
                        .published
                        .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
@@ -50,10 +50,10 @@ module Finders
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
       end
       if user.respond_to?(:internship_applications)
-        query = query.merge(InternshipOffers::Web.ignore_already_applied(user: user))
+        query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
         #TODO ajouter  les offres sans date
       end
-      
+
       query
     end
 

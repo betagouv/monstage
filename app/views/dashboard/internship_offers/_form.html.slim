@@ -102,13 +102,13 @@
                     { class: "form-control col-lg-6", required: true }
 
     .form-group
-      = form.label :school_type do
+      = form.label :type do
         = "Niveau scolaire associé à ce stage"
         = form.rg2a_required_content_tag
         small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
-      = form.select :school_type,
-                    options_for_select(options_for_school_types, @internship_offer.school_type),
-                    { include_blank: school_type_options_for_default },
+      = form.select :type,
+                    options_for_select(options_for_internship_type, @internship_offer.type),
+                    { include_blank: internship_offer_type_options_for_default },
                     { class: "form-control col-lg-6", required: true }
 
   fieldset.mt-4
