@@ -91,6 +91,9 @@ class InternshipOffer < ApplicationRecord
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
 
+  has_many :internship_applications, as: :internship_offer,
+                                     foreign_key: 'internship_offer_id'
+
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 

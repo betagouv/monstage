@@ -180,10 +180,10 @@ module Dashboard
       employer = create(:employer)
       void_internship_offer = create(:internship_offer, employer: employer)
       internship_offer_with_pending_response = create(:internship_offer, employer: employer)
-      create(:internship_application, :submitted,
+      create(:internship_application, :weekly, :submitted,
                                       internship_offer: internship_offer_with_pending_response)
       internship_offer_with_application = create(:internship_offer, employer: employer)
-      create(:internship_application, :approved,
+      create(:internship_application, :weekly, :approved,
                                       internship_offer: internship_offer_with_application)
 
       sign_in(employer)
@@ -200,11 +200,11 @@ module Dashboard
       employer = create(:employer)
       discarded_internship_offer = create(:internship_offer, :discarded, employer: employer)
       kept_internship_offer = create(:internship_offer, employer: employer)
-      create(:internship_application, :submitted,
+      create(:internship_application, :weekly, :submitted,
                                       internship_offer: discarded_internship_offer)
-      create(:internship_application, :submitted,
+      create(:internship_application, :weekly, :submitted,
                                       internship_offer: kept_internship_offer)
-      create(:internship_application, :approved,
+      create(:internship_application, :weekly, :approved,
                                       internship_offer: kept_internship_offer)
 
       sign_in(employer)

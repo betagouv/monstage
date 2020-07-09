@@ -12,9 +12,6 @@ module InternshipOffers
 
       has_many :weeks, through: :internship_offer_weeks
 
-      has_many :internship_applications, through: :internship_offer_weeks,
-                                         dependent: :destroy
-
       def has_spots_left?
         internship_offer_weeks.any?(&:has_spots_left?)
       end

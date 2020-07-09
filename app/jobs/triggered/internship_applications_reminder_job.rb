@@ -6,7 +6,6 @@ module Triggered
 
     def perform(employer)
       return unless current_trigger.notifiable?(employer)
-
       # cache ids otherwise notifiable behaviour is changed
       remindable_application_ids = InternshipApplication.joins(:internship_offer)
                                            .where("internship_offers.employer_id = #{employer.id}")

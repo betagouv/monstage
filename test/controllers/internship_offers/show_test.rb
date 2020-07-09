@@ -138,7 +138,7 @@ module InternshipOffers
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
-      internship_application = create(:internship_application, :drafted, motivation: 'au taquet',
+      internship_application = create(:internship_application, :weekly, :drafted, motivation: 'au taquet',
                                                                          student: student,
                                                                          internship_offer: internship_offer,
                                                                          week: weeks.last)
@@ -156,10 +156,10 @@ module InternshipOffers
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
       internship_applications = {
-        submitted: create(:internship_application, :submitted, student: student),
-        approved: create(:internship_application, :approved, student: student),
-        rejected: create(:internship_application, :rejected, student: student),
-        convention_signed: create(:internship_application, :convention_signed, student: student)
+        submitted: create(:internship_application, :weekly, :submitted, student: student),
+        approved: create(:internship_application, :weekly, :approved, student: student),
+        rejected: create(:internship_application, :weekly, :rejected, student: student),
+        convention_signed: create(:internship_application, :weekly, :convention_signed, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
