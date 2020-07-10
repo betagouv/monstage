@@ -15,7 +15,7 @@ module InternshipApplications
     def internship_offer_has_spots_left?
       return unless internship_offer_week.present?
 
-      unless internship_offer.has_spots_left?
+      unless internship_offer_week.has_spots_left?
         errors.add(:internship_offer, :has_no_spots_left)
       end
     end
