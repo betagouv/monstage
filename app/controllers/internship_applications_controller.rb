@@ -81,6 +81,9 @@ class InternshipApplicationsController < ApplicationController
             :motivation,
             :internship_offer_week_id,
             :user_id,
+            :type,
+            :internship_offer_type,
+            :internship_offer_id,
             student_attributes: %i[
               phone
               resume_educational_background
