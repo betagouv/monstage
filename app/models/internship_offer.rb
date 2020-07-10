@@ -67,6 +67,14 @@ class InternshipOffer < ApplicationRecord
     where("last_date > :now", now: Time.now)
   }
 
+  scope :ignore_max_candidates_reached, lambda {
+    all # TODO : max_candidates specs for FreeDate required
+  }
+
+  scope :ignore_max_internship_offer_weeks_reached, lambda {
+    all # TODO : specs for FreeDate required
+  }
+
   validates :title,
             :employer_name,
             :city,
