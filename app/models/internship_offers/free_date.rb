@@ -2,6 +2,10 @@ module InternshipOffers
   class FreeDate < InternshipOffer
     after_initialize :init
 
+    def free_date?
+      true
+    end
+
     def has_spots_left?
       true
     end

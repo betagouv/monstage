@@ -32,6 +32,10 @@ module InternshipOffers
         by_weeks(weeks: weeks)
       }
 
+      def weekly?
+        true
+      end
+
       def has_spots_left?
         internship_offer_weeks.any?(&:has_spots_left?)
       end
@@ -58,7 +62,6 @@ module InternshipOffers
         internship_offer.week_ids = week_ids
         internship_offer
       end
-
     end
   end
 end
