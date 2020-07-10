@@ -53,7 +53,7 @@ module Finders
 
       if user.try(:middle_school?)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-      # else
+      # elsif user.try(:high_school?)
         # query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
