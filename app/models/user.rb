@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
-  
+
   include DelayedDeviseEmailSender
 
   before_validation :clean_phone
@@ -154,12 +154,12 @@ class User < ApplicationRecord
   end
 
   def confirm_by_phone!
-    self.update(phone_token: nil, 
-                phone_token_validity: nil, 
+    self.update(phone_token: nil,
+                phone_token_validity: nil,
                 confirmed_at: Time.now,
                 phone_password_reset_count: 0)
   end
-  
+
   def check_phone_token?(token)
     phone_confirmable? && phone_token == token
   end
@@ -193,7 +193,7 @@ class User < ApplicationRecord
 
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.") 
+      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.")
       errors.add(:phone, "Un email ou un téléphone mobile est nécessaire.")
     end
   end

@@ -46,12 +46,15 @@ module Finders
                                       .ignore_max_candidates_reached
                                       .ignore_max_internship_offer_weeks_reached
       end
+
       if !user.missing_school_weeks? && user.school
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
       end
-      if user.respond_to?(:internship_applications)
+
+      if user.try(:middle_school?)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        #TODO ajouter  les offres sans date
+      # else
+        # query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
       query
