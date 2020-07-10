@@ -26,7 +26,7 @@ class ClassRoom < ApplicationRecord
   end
 
   def high_school?
-    high_school?
+    bac_pro?
   end
 
   def applicable?(internship_offer)
