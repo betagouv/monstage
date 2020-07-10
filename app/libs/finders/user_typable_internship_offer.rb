@@ -40,11 +40,11 @@ module Finders
       query = keywords_and_coordinates_query do
 
         InternshipOffers::WeeklyFramed.kept
-                       .in_the_future
-                       .published
-                       .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
-                       .ignore_max_candidates_reached
-                       .ignore_max_internship_offer_weeks_reached
+                                      .in_the_future
+                                      .published
+                                      .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+                                      .ignore_max_candidates_reached
+                                      .ignore_max_internship_offer_weeks_reached
       end
       if !user.missing_school_weeks? && user.school
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
