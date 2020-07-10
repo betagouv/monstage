@@ -106,8 +106,9 @@ module InternshipOffers
       sign_in(student)
       get internship_offer_path(internship_offer)
 
-      assert_select '.badge-school-reserved', text: "Stage reservé (aux élèves de l'établissement #{internship_offer.school})",
-                                         count: 1
+      assert_select '.badge-school-reserved',
+                    text: "Stage reservé (aux élèves de l'établissement #{internship_offer.school})",
+                    count: 1
       assert_select '#new_internship_application', 0
     end
 
@@ -148,10 +149,15 @@ module InternshipOffers
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:internship_offer, weeks: weeks)
       student = create(:student, school: create(:school, weeks: weeks))
-      internship_application = create(:internship_application, :weekly, :drafted, motivation: 'au taquet',
-                                                                         student: student,
-                                                                         internship_offer: internship_offer,
-                                                                         week: weeks.last)
+      internship_application = create(:internship_application,
+                                      :weekly,
+                                      :drafted,
+                                      motivation: 'au taquet',
+                                      student: student,
+                                      internship_offer: internship_offer,
+                                      internship_offer_type: InternshipOffers::WeeklyFramed.name,
+                                      internship_offer_id: internship_offer.id,
+                                      week: weeks.last)
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(student)
         get internship_offer_path(internship_offer)
