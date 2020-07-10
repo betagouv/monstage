@@ -5,9 +5,9 @@ class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
 
-  belongs_to :internship_offer, polymorphic: true,
-                                foreign_key: :internship_offer_id,
-                                foreign_type: :internship_offer_type
+  belongs_to :internship_offer, polymorphic: true#,
+                                # foreign_key: :internship_offer_id,
+                                # foreign_type: :internship_offer_type
 
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
@@ -101,6 +101,7 @@ class InternshipApplication < ApplicationRecord
 
   def at_most_one_application_per_student?
     return unless internship_offer_week.present?
+
     if internship_offer.internship_applications.where(user_id: user_id).count > 0
       errors.add(:user_id, :duplicate)
     end
