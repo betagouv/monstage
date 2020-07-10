@@ -26,6 +26,18 @@ module InternshipApplications
       end
     end
 
+    def at_most_one_application_per_student?
+      return unless internship_offer_week.present?
+
+      if internship_offer_week.internship_offer
+                              .internship_applications
+                              .where(user_id: user_id)
+                              .count
+                              .positive?
+        errors.add(:user_id, :duplicate)
+      end
+    end
+
     def weekly_framed?
       true
     end
