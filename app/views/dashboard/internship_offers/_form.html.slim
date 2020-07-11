@@ -88,7 +88,6 @@
           | ; utilisez des mots simples. Qu'est-ce que l'élève va découvrir (ou faire) pendant sa semaine de stage ? Donnez 3 qualités requises (aimer bricoler, être bavard, aimer écrire ...).
           = " "
           = link_to "Besoin d'aide à la rédaction ?", les_10_commandements_d_une_bonne_offre_path, title: "Consulter les 10 commandements d'une bonne offre de stage (nouvelle fenêtre)", target: "_blank", rel: "external noopener noreferrer"
-
       = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
       small.form-text data-target="maxlength-input.trixElementCharCount"
 
@@ -102,15 +101,6 @@
                     { include_blank: sectors_options_for_default },
                     { class: "form-control col-lg-6", required: true }
 
-    .form-group
-      = form.label :school_type do
-        = "Niveau scolaire associé à ce stage"
-        = form.rg2a_required_content_tag
-        small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
-      = form.select :school_type,
-                    options_for_select(options_for_school_types, @internship_offer.school_type),
-                    { include_blank: school_type_options_for_default },
-                    { class: "form-control col-lg-6", required: true }
 
   fieldset.mt-4
     legend Où, Quand, Comment ?
@@ -143,7 +133,18 @@
                         selectClassRoom: false,
                         existingSchool: @internship_offer.school.as_json)
 
-    = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
+    .form-group
+      = form.label :type do
+        = "Niveau scolaire associé à ce stage"
+        = form.rg2a_required_content_tag
+        small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
+      = form.select :type,
+                    options_for_select(options_for_internship_type, @internship_offer.type),
+                    { include_blank: internship_offer_type_options_for_default },
+                    { class: "form-control col-lg-6", required: true, data: { action: 'change->internship-form#onChooseType', target: 'internship-form.selectType' } }
+
+
+    div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 
   fieldset.mt-4
     legend Tuteur/trice de stage

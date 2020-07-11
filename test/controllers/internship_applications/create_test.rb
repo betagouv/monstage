@@ -9,13 +9,17 @@ module InternshipApplications
 
     test 'POST #create internship application as student' do
       internship_offer = create(:internship_offer)
-      student = create(:student)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
       valid_params = {
         internship_application: {
           internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
           motivation: 'Je suis trop motivé wesh',
           user_id: student.id,
+          internship_offer_id: internship_offer.id,
+          internship_offer_type: InternshipOffer.name,
+          type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
             phone: '+330656565400',
             resume_educational_background: 'resume_educational_background',
@@ -24,10 +28,12 @@ module InternshipApplications
           }
         }
       }
-
       assert_difference('InternshipApplication.count', 1) do
         post(internship_offer_internship_applications_path(internship_offer), params: valid_params)
-        assert_redirected_to internship_offer_internship_application_path(internship_offer, InternshipApplication.last)
+        assert_redirected_to internship_offer_internship_application_path(
+          internship_offer,
+          InternshipApplication.last
+        )
       end
 
       created_internship_application = InternshipApplication.last
@@ -44,7 +50,8 @@ module InternshipApplications
 
     test 'POST #create internship application failed' do
       internship_offer = create(:internship_offer)
-      student = create(:student)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
 
       valid_internship_application_params = { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,

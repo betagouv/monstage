@@ -157,7 +157,6 @@ module Api
       assert_equal city, internship_offer.city
 
       assert_equal sector, internship_offer.sector
-      assert_equal Builders::InternshipOfferBuilder::DEFAULT_SCHOOL_TYPE.to_s, internship_offer.school_type
       week_instances.to_a.map do |week_instance|
         assert_includes internship_offer.weeks.map(&:id), week_instance.id
       end
@@ -201,40 +200,6 @@ module Api
         Week.selectable_from_now_until_end_of_school_year.each do |week|
           assert week_ids.include?(week.id)
         end
-      end
-    end
-
-    test 'POST #create as operator with specific school_type sets it' do
-      operator = create(:user_operator, api_token: SecureRandom.uuid)
-      sector = create(:sector, uuid: SecureRandom.uuid)
-
-      travel_to(Date.new(2019, 3, 1)) do
-        assert_difference('InternshipOffer.count', 1) do
-          post api_internship_offers_path(
-            params: {
-              token: "Bearer #{operator.api_token}",
-              internship_offer: {
-                title: 'title',
-                description: 'description',
-                employer_name: 'employer_name',
-                employer_description: 'employer_description',
-                employer_website: 'http://employer_website.com',
-                'coordinates' => { latitude: 1, longitude: 1 },
-                street: 'street',
-                zipcode: '60580',
-                city: 'Coye la forêt',
-                sector_uuid: sector.uuid,
-                school_type: :high_school,
-                remote_id: 'remote_id',
-                permalink: 'http://google.fr/permalink',
-              }
-            }
-          )
-          assert_response :created
-        end
-
-        internship_offer = InternshipOffers::Api.first
-        assert_equal 'high_school', internship_offer.school_type
       end
     end
   end

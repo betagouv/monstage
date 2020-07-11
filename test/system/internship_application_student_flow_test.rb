@@ -5,8 +5,9 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  test 'student can not submit application wheen school have not choosen week' do
-    student = create(:student, school: create(:school, weeks: []))
+  test 'student in troisieme_generale can not submit application wheen school have not choosen week and can ask for a week' do
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer, weeks: weeks)
 
     sign_in(student)
@@ -26,9 +27,21 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
+  test 'student not in class room can not ask for week' do
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    internship_offer = create(:internship_offer, weeks: weeks)
+
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    page.find "a", text: "Mon profil"
+    assert_select "a", text: "Je postule", count: 0
+  end
+
   test 'student can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
-    student = create(:student, school: create(:school, weeks: weeks))
+    school = create(:school, weeks: weeks)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
@@ -44,7 +57,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
       find('#internship_application_motivation', visible: false).set('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
-
       assert_changes lambda {
                        student.internship_applications
                               .where(aasm_state: :drafted)
@@ -53,7 +65,9 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      from: 0,
                      to: 1 do
         click_on 'Valider'
+        page.find("a.btn.btn-danger", text: 'Envoyer')
       end
+
       assert_changes lambda {
                        student.internship_applications
                               .where(aasm_state: :submitted)
@@ -63,6 +77,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      to: 1 do
         click_on 'Envoyer'
       end
+
       assert page.has_content?('Candidature envoyée')
       click_on 'Candidature envoyée le'
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
@@ -79,7 +94,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'student without school weeks can not submit application' do
     weeks = [Week.find_by(number: 1, year: 2020)]
-    student = create(:student, school: create(:school, weeks: []))
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
@@ -105,14 +121,15 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'student can browse his internship_applications' do
-    student = create(:student)
+    school = create(:school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_applications = {
-      drafted: create(:internship_application, :drafted, student: student),
-      submitted: create(:internship_application, :submitted, student: student),
-      approved: create(:internship_application, :approved, student: student),
-      rejected: create(:internship_application, :rejected, student: student),
-      convention_signed: create(:internship_application, :convention_signed, student: student),
-      canceled_by_student: create(:internship_application, :canceled_by_student, student: student)
+      drafted: create(:internship_application, :weekly, :drafted, student: student),
+      submitted: create(:internship_application, :weekly, :submitted, student: student),
+      approved: create(:internship_application, :weekly, :approved, student: student),
+      rejected: create(:internship_application, :weekly, :rejected, student: student),
+      convention_signed: create(:internship_application, :weekly, :convention_signed, student: student),
+      canceled_by_student: create(:internship_application, :weekly, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'

@@ -20,13 +20,15 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     end
     if school_type
       select I18n.t("enum.school_types.#{school_type}"),
-             from: 'internship_offer_school_type'
+             from: 'internship_offer_type'
     end
     if group
       select group.name, from: 'internship_offer_group_id'
     end
-    weeks.map do |week|
-      find(:css, "label[for=internship_offer_week_ids_#{week.id}]").click
+    if weeks.size.positive?
+      weeks.map do |week|
+        find(:css, "label[for=internship_offer_week_ids_#{week.id}]").click
+      end
     end
 
     find("#internship_offer_autocomplete").fill_in(with: 'Paris, 13eme')
@@ -34,14 +36,14 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
   end
 
-  test 'can create internship offer' do
+  test 'can create internship offer WeeklyFramed' do
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
-    assert_difference 'InternshipOffers::Web.count' do
+    assert_difference 'InternshipOffers::WeeklyFramed.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
@@ -49,6 +51,29 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
                      school_type: :middle_school,
                      group: group,
                      weeks: available_weeks)
+        click_on "Enregistrer et publier l'offre"
+        find('.alert-sticky')
+      end
+    end
+    assert_equal employer, InternshipOffer.first.employer
+    assert_equal 'User', InternshipOffer.first.employer_type
+  end
+
+  test 'can create internship offer free type' do
+    schools = [create(:school), create(:school)]
+    sectors = [create(:sector), create(:sector)]
+    employer = create(:employer)
+    group = create(:group, name: 'hello', is_public: true)
+    sign_in(employer)
+    available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
+    assert_difference 'InternshipOffers::FreeDate.count' do
+      travel_to(Date.new(2019, 3, 1)) do
+        visit employer.custom_dashboard_path
+        find('#test-create-offer').click
+        fill_in_form(sector: sectors.first,
+                     school_type: :high_school,
+                     group: group,
+                     weeks: [])
         click_on "Enregistrer et publier l'offre"
         find('.alert-sticky')
       end

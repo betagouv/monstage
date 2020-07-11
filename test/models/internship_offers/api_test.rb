@@ -18,7 +18,6 @@ module InternshipOffers
         zipcode: '60580',
         city: 'Coye la foret',
         sector: create(:sector),
-        school_type: InternshipOffer.school_types.keys.sample.to_sym,
         weeks: [weeks(:week_2019_1)],
         permalink: 'https://google.fr'
       }
@@ -57,6 +56,11 @@ module InternshipOffers
       @default_params[:zipcode] = '0'
 
       refute InternshipOffers::Api.new(@default_params).valid?
+    end
+
+    test 'default max_candidates' do
+      assert_equal 1, InternshipOffers::Api.new.max_candidates
+      assert_equal 1, InternshipOffers::Api.new(max_candidates: '').max_candidates
     end
 
     test 'is_public does not changes' do

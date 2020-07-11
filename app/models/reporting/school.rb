@@ -45,6 +45,10 @@ module Reporting
         .group('schools.id')
         .having('count(users.id) = 0')
     }
+    # maybe useless
+    scope :in_the_future, lambda {
+      more_recent_than(week: ::Week.current)
+    }
 
     paginates_per PAGE_SIZE
 

@@ -34,7 +34,7 @@ module InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:internship_offer, employer: employer)
-      internship_application = create(:internship_application, :submitted, internship_offer: internship_offer)
+      internship_application = create(:internship_application, :weekly, :submitted, internship_offer: internship_offer)
 
       travel_to(internship_offer.weeks.first.week_date - 1.week) do
         get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)

@@ -30,6 +30,9 @@ export default class extends Controller {
   }
 
   handleSubmit(event) {
+    if (this.data.get('skip')) {
+      return event;
+    }
     if (!this.hasAtLeastOneCheckbox()) {
       this.onAtLeastOneWeekSelected();
     } else {

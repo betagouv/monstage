@@ -3,31 +3,30 @@
 require 'test_helper'
 
 module InternshipsOffers
-  class WebTest < ActiveSupport::TestCase
+  class WeeklyFramedTest < ActiveSupport::TestCase
     test 'association internship_offer_weeks' do
-      internship_offer = InternshipOffers::Web.new
+      internship_offer = InternshipOffers::WeeklyFramed.new
       assert_equal internship_offer.internship_offer_weeks, []
     end
 
     test 'association weeks' do
-      internship_offer = InternshipOffers::Web.new
+      internship_offer = InternshipOffers::WeeklyFramed.new
       assert_equal internship_offer.weeks, []
     end
 
     test 'school (restricted_school)' do
-      internship_offer = InternshipOffers::Web.new
+      internship_offer = InternshipOffers::WeeklyFramed.new
       assert_nil internship_offer.school
       assert internship_offer.build_school.is_a?(School)
     end
 
     test 'test presence of fields' do
-      internship_offer = InternshipOffers::Web.new
+      internship_offer = InternshipOffers::WeeklyFramed.new
 
       assert internship_offer.invalid?
       assert_not_empty internship_offer.errors[:title]
       assert_not_empty internship_offer.errors[:description]
       assert_not_empty internship_offer.errors[:sector]
-      assert_not_empty internship_offer.errors[:school_type]
       assert_not_empty internship_offer.errors[:tutor_name]
       assert_not_empty internship_offer.errors[:tutor_phone]
       assert_not_empty internship_offer.errors[:tutor_email]
@@ -53,24 +52,24 @@ module InternshipsOffers
     end
 
     test 'sync_first_and_last_date' do
-      internship_offer = create(:internship_offer, max_candidates: 2, weeks: [Week.first, Week.last])
+      first_week = Week.find_by(year: 2019, number: 50)
+      last_week = Week.find_by(year: 2020, number: 2)
+      internship_offer = create(:internship_offer, max_candidates: 2, weeks: [last_week, first_week])
 
-
-      internship_offer.save
-      internship_offer.reload
-      assert_equal internship_offer.first_date, Week.first.week_date.beginning_of_week
-      assert_equal internship_offer.last_date, Week.last.week_date.end_of_week
+      assert_equal internship_offer.first_date, first_week.week_date.beginning_of_week
+      assert_equal internship_offer.last_date, last_week.week_date.end_of_week
     end
 
     test 'look for offers available in the future' do
       travel_to(Date.new(2020, 5, 15)) do
         internship_offer = create(:internship_offer, weeks: [Week.find_by(year: 2019, number: 50), Week.find_by(year: 2020, number: 10)])
-        assert_empty InternshipOffers::Web.in_the_future
+        assert_empty InternshipOffers::WeeklyFramed.in_the_future
 
         next_week = Week.find_by(year: 2020, number: 30)
         internship_offer.weeks << next_week
+        internship_offer.save
 
-        assert_equal 1, InternshipOffers::Web.in_the_future.count
+        assert_equal 1, InternshipOffers::WeeklyFramed.in_the_future.count
       end
     end
 
@@ -126,6 +125,11 @@ module InternshipsOffers
                    duplicated_internship_offer.description_rich_text.to_plain_text.strip
       assert_equal internship_offer.employer_description_rich_text.to_plain_text.strip,
                    duplicated_internship_offer.employer_description_rich_text.to_plain_text.strip
+    end
+
+    test 'default max_candidates' do
+      assert_equal 1, InternshipOffers::WeeklyFramed.new.max_candidates
+      assert_equal 1, InternshipOffers::WeeklyFramed.new(max_candidates: '').max_candidates
     end
   end
 end

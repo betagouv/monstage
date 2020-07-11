@@ -72,7 +72,6 @@ Depuis la page [API](https://www.monstagedetroisieme.fr/account/api), récupére
     city : Nom de la ville où se déroule le stage
 
     sector_uuid : Identifiant unique du secteurs, voir référentiel *(1)
-    school_type : '3e' ou bien 'lycée', les deux destinations possibles du stage.
     weeks : Liste des semaines pendant lequel celui ci est accessible voir référentiel *(2)
 
     remote_id: l'identifiant unique du coté operateur|collectivité|association
@@ -189,7 +188,6 @@ En plus de ses erreurs transverses, les erreurs spécifiques à un appel seront 
 * **internship_offer.zipcode** *(string, required)*
 * **internship_offer.city** *(string, required)*
 * **internship_offer.sector_uuid** *(integer, required)*
-* **internship_offer.school_type** *(enum as string)* : 'middle_school'|'high_school'. Par défaut: middle_school. Les deux valeurs désignent respectivement la classe de 3e ou le lycée.
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **remote_id** *(string, required)*: l'identifiant unique du coté operateur|collectivité|association
 * **permalink** *(url, required)*
