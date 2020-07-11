@@ -11,7 +11,7 @@ module W3c
       employer = create(:employer)
       internship_offer = create(:internship_offer, employer: employer)
       %i[drafted submitted approved rejected convention_signed].map do |aasm_state|
-        create(:internship_application, aasm_state: aasm_state, internship_offer: internship_offer)
+        create(:internship_application, :weekly, aasm_state: aasm_state, internship_offer: internship_offer)
       end
       sign_in(employer)
       run_request_and_cache_response(report_as: 'dashboard_internship_offers_path') do
