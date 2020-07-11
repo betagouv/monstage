@@ -5,8 +5,9 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  test 'student can not submit application wheen school have not choosen week' do
-    student = create(:student, school: create(:school, weeks: []))
+  test 'student in troisieme_generale can not submit application wheen school have not choosen week and can ask for a week' do
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer, weeks: weeks)
 
     sign_in(student)
@@ -24,6 +25,17 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    to: student.school_id do
       click_on "Je souhaite une semaine de stage"
     end
+  end
+
+  test 'student not in class room can not ask for week' do
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    internship_offer = create(:internship_offer, weeks: weeks)
+
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    page.find "a", text: "Mon profil"
+    assert_select "a", text: "Je postule", count: 0
   end
 
   test 'student can draft, submit, and cancel(by_student) internship_applications' do
@@ -82,7 +94,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
   test 'student without school weeks can not submit application' do
     weeks = [Week.find_by(number: 1, year: 2020)]
-    student = create(:student, school: create(:school, weeks: []))
+    school = create(:school, weeks: [])
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
