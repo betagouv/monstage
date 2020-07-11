@@ -12,12 +12,17 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Student' do
-    student = create(:student)
+    internship_offer = create(:internship_offer)
+    school = create(:school, weeks: [internship_offer.weeks.first])
+    student = create(:student, class_room: create(:class_room, :troisieme_generale, school: school))
     ability = Ability.new(student)
-    internship_application = create(:internship_application, :weekly, student: student)
+    internship_application = create(:internship_application,
+                                    student: student,
+                                    internship_offer: internship_offer,
+                                    internship_offer_week: internship_offer.internship_offer_weeks.first)
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
-    assert(ability.can?(:apply, InternshipOffer.new),
+    assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
     assert(ability.cannot?(:manage, InternshipOffer.new),
                            'students should not be able to con manage internships')

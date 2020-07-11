@@ -24,9 +24,6 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
-    delegate :middle_school?, to: :class_room, allow_nil: true
-    delegate :high_school?, to: :class_room, allow_nil: true
-
     attr_reader :handicap_present
 
     def internship_applications_type

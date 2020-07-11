@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :internship_application do
     type { 'InternshipApplications::WeeklyFramed' }
-    applicable_type { 'InternshipOffer' }
     student { create(:student) }
     internship_offer { create(:internship_offer) }
     motivation { 'Suis hyper motivé' }
