@@ -7,7 +7,7 @@ import SchoolTypeInput from './inputs/SchoolTypeInput';
 
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, className }) {
+function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -86,11 +86,11 @@ function SearchInternshipOffer({ url, className }) {
 
   const toggleMiddleSchool = () => {
     if (middleSchool && !highSchool) {return}
-    setMiddleSchool(!middleSchool) 
+    setMiddleSchool(!middleSchool)
   }
-  const toggleHighSchool = () => { 
+  const toggleHighSchool = () => {
     if (highSchool && !middleSchool) {return}
-    setHighSchool(!highSchool) 
+    setHighSchool(!highSchool)
   }
 
   return (
@@ -144,6 +144,7 @@ function SearchInternshipOffer({ url, className }) {
           highSchool={highSchool}
           toggleMiddleSchool={toggleMiddleSchool}
           toggleHighSchool={toggleHighSchool}
+          schoolTypeVisibility={schoolTypeVisibility}
         />
       </div>
     </form>
