@@ -42,18 +42,23 @@ module InternshipOffersHelper
     '-- Veuillez sélectionner un niveau scolaire --'
   end
 
+  def tr_school_prefix
+    'activerecord.attributes.internship_offer.internship_type'
+  end
+
   def options_for_internship_type
     [
-      [I18n.t('enum.school_types.middle_school'), InternshipOffers::WeeklyFramed.name],
-      [I18n.t('enum.school_types.high_school'), InternshipOffers::FreeDate.name]
+      [I18n.t("#{tr_school_prefix}.middle_school"), InternshipOffers::WeeklyFramed.name],
+      [I18n.t("#{tr_school_prefix}.high_school"), InternshipOffers::FreeDate.name]
     ]
   end
 
   def tr_school_type(internship_offer)
+
     case internship_offer.class
-    when InternshipOffers::WeeklyFramed then return I18n.t("enum.school_types.middle_school")
-    when InternshipOffers::FreeDate then return I18n.t('enum.school_types.high_school')
-    else return I18n.t('enum.school_types.middle_school')
+    when InternshipOffers::WeeklyFramed then return I18n.t("#{tr_school_prefix}.middle_school")
+    when InternshipOffers::FreeDate then return I18n.t("#{tr_school_prefix}.high_school")
+    else return I18n.t("#{tr_school_prefix}.middle_school")
     end
   end
 end

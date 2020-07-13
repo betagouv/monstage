@@ -152,6 +152,9 @@ fr:
         full_address: "Adresse de l'offre"
         full_school: "Réservée à l'établissement"
         full_weeks: Semaines
+        internship_type:
+          middle_school: 'Collège'
+          high_school: 'Lycée'
       user:
         first_name: Prénom
         last_name: Nom
@@ -314,10 +317,6 @@ fr:
       teacher: "Professeur"
       main_teacher: "Professeur principal"
       other: "Autre fonction"
-
-    school_types:
-      middle_school: 'Collège'
-      high_school: 'Lycée'
 
     school_tracks:
       troisieme_generale: '3e générale'
