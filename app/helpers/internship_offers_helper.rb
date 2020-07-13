@@ -54,7 +54,6 @@ module InternshipOffersHelper
   end
 
   def tr_school_type(internship_offer)
-
     case internship_offer.class
     when InternshipOffers::WeeklyFramed then return I18n.t("#{tr_school_prefix}.middle_school")
     when InternshipOffers::FreeDate then return I18n.t("#{tr_school_prefix}.high_school")

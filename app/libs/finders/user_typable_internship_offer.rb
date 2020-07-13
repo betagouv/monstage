@@ -39,9 +39,9 @@ module Finders
     def school_members_query
       query = common_filter do
         InternshipOffer.kept
-                      .in_the_future
-                      .published
-                      .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+                       .in_the_future
+                       .published
+                       .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
 
       if user.try(:middle_school?)
