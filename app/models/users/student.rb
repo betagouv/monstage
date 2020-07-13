@@ -26,6 +26,13 @@ module Users
 
     attr_reader :handicap_present
 
+    def internship_applications_type
+      return nil unless class_room.present?
+      return InternshipApplications::FreeDate.name if class_room.bac_pro?
+      return InternshipApplications::WeeklyFramed.name unless class_room.bac_pro?
+      nil
+    end
+
     def has_zero_internship_application?
       internship_applications.all
                              .size

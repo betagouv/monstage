@@ -29,13 +29,13 @@ div data-controller="internship-application-form"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     .col-12.col-sm-10
       - if user_signed_in?
-        - if @internship_offer.from_api?
-          - # used to avoidcrash on @internship_offer_has_spots_left?
-        - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-          - if @internship_offer.respond_to?(:internship_offer_weeks)
+        - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+          - if @internship_offer.weekly?
             - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
             - disabled = applicable_weeks.size.zero?
-            = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
+            = render "internship_applications/forms/weekly", disabled: disabled, applicable_weeks: applicable_weeks
+          - if @internship_offer.free_date?
+            = render "internship_applications/forms/free_date", disabled: false
       - else
           = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left

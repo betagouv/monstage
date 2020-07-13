@@ -1,0 +1,3 @@
+div id="internship-application-openform" class="#{@internship_application.new_record? ? '' : 'd-none'}" data-target='internship-application-form.containerShowFormLink'
+  .actions.d-flex.d-sm-block.d-xs-stick= link_to "Je postule", "#internship-application-form", data: {action: 'click->internship-application-form#showForm', turbolinks: 'false' }, class: 'btn btn-danger'
+

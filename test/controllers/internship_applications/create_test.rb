@@ -9,7 +9,8 @@ module InternshipApplications
 
     test 'POST #create internship application as student' do
       internship_offer = create(:internship_offer)
-      student = create(:student)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
       valid_params = {
         internship_application: {
@@ -17,7 +18,7 @@ module InternshipApplications
           motivation: 'Je suis trop motivé wesh',
           user_id: student.id,
           internship_offer_id: internship_offer.id,
-          internship_offer_type: InternshipOffers::WeeklyFramed.name,
+          internship_offer_type: InternshipOffer.name,
           type: InternshipApplications::WeeklyFramed.name,
           student_attributes: {
             phone: '+330656565400',
@@ -49,7 +50,8 @@ module InternshipApplications
 
     test 'POST #create internship application failed' do
       internship_offer = create(:internship_offer)
-      student = create(:student)
+      school = create(:school, weeks: [internship_offer.weeks.first])
+      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
 
       valid_internship_application_params = { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,

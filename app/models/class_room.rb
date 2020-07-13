@@ -21,6 +21,20 @@ class ClassRoom < ApplicationRecord
     end
   end
 
+  def middle_school?
+    [ troisieme_segpa?, troisieme_generale?, troisieme_prepa_metier? ].any?
+  end
+
+  def high_school?
+    bac_pro?
+  end
+
+  def applicable?(internship_offer)
+    return true if internship_offer.free_date? && high_school?
+    return true if internship_offer.weekly? && middle_school?
+    return false
+  end
+
   def to_s
     name
   end

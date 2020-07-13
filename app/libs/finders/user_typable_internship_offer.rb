@@ -38,20 +38,21 @@ module Finders
 
     def school_members_query
       query = common_filter do
-        InternshipOffers::WeeklyFramed.kept
-                                      .in_the_future
-                                      .published
-                                      .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
-                                      .ignore_max_candidates_reached
-                                      .ignore_max_internship_offer_weeks_reached
+        InternshipOffer.kept
+                      .in_the_future
+                      .published
+                      .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
 
-      if !user.missing_school_weeks? && user.school
-        query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
-      end
-      if user.respond_to?(:internship_applications)
+      if user.try(:middle_school?)
+        if !user.missing_school_weeks?
+          query = query.merge(InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
+        end
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        #TODO ajouter  les offres sans date
+        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
+        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
+      # elsif user.try(:high_school?)
+        # query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
       query

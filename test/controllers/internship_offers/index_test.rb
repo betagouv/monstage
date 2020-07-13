@@ -25,9 +25,10 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student ignores internship_offers with existing applicaiton' do
-    student = create(:student)
     internship_offer_without_application = create(:internship_offer, title: 'ok')
-    internship_offer_with_application = create(:internship_offer, title: 'o')
+    school = create(:school, weeks: internship_offer_without_application.weeks)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    internship_offer_with_application = create(:internship_offer, title: 'o', weeks: internship_offer_without_application.weeks)
     internship_application = create(:internship_application, {
       student: student,
       internship_offer_week: internship_offer_with_application.internship_offer_weeks.first
@@ -100,7 +101,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > internship_offer_weeks_count' do
     internship_offer_with_max_internship_offer_weeks_count_reached = create(:internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 2)
     internship_offer_without_max_internship_offer_weeks_count_reached = create(:internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 0)
-    student = create(:student)
+    school = create(:school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -115,13 +117,14 @@ class IndexTest < ActionDispatch::IntegrationTest
        'as much internship_application as max_candidates number' do
     max_candidates = 1
     week = Week.first
+    school = create(:school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
                                 build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                               week: Week.first)
                               ])
-    student = create(:student)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -179,7 +182,8 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                  internship_offer_weeks: [blocked_internship_week,
                                                                           not_blocked_internship_week])
 
-    sign_in(create(:student, school: school))
+    sign_in(create(:student, school: school,
+                             class_room: create(:class_room, :troisieme_generale, school: school)))
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       get internship_offers_path
@@ -232,7 +236,6 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student with InternshipOffers::Api, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:api_internship_offer) }
-
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -308,7 +311,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student ignores internship_offer not in school.weeks' do
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
-    student = create(:student, school: school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     offer_overlaping_school_weeks = create(:internship_offer, weeks: [week])
     offer_not_overlaping_school_weeks = create(:internship_offer, weeks: [Week.find_by(year: 2019, number: 11)])
     sign_in(student)

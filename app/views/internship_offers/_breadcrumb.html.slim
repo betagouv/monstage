@@ -14,7 +14,10 @@
     - if internship_offer.from_api?
       = render "internship_applications/call_to_action/api", internship_offer: internship_offer
     - elsif user_signed_in?
-      - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-        = render "internship_applications/call_to_action/student", internship_offer: internship_offer
+      -if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+        - if @internship_offer.weekly?
+          = render "internship_applications/call_to_action/weekly", internship_offer: internship_offer
+        - if @internship_offer.free_date?
+          = render "internship_applications/call_to_action/free_date", internship_offer: @internship_offer
     - else
       = render "internship_applications/call_to_action/visitor", internship_offer: internship_offer

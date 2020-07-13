@@ -104,7 +104,6 @@ class InternshipOffer < ApplicationRecord
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
 
-
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
@@ -142,6 +141,14 @@ class InternshipOffer < ApplicationRecord
 
   def is_fully_editable?
     true
+  end
+
+  def weekly?
+    false
+  end
+
+  def free_date?
+    false
   end
 
   def total_female_applications_count

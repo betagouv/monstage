@@ -13,10 +13,10 @@ module InternshipOffers
       has_many :weeks, through: :internship_offer_weeks
 
       scope :ignore_already_applied, lambda { |user:|
+        # where.not(id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id)))
         where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'] )
-        .where.not(id: joins(internship_offer_weeks: :internship_applications)
-                      .merge(InternshipApplication.where(user_id: user.id))
-                   )
+          .where.not(id: joins(internship_offer_weeks: :internship_applications)
+                      .merge(InternshipApplication.where(user_id: user.id)))
       }
 
       scope :ignore_max_candidates_reached, lambda {
@@ -31,6 +31,10 @@ module InternshipOffers
       scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
         by_weeks(weeks: weeks)
       }
+
+      def weekly?
+        true
+      end
 
       def has_spots_left?
         internship_offer_weeks.any?(&:has_spots_left?)
@@ -58,7 +62,6 @@ module InternshipOffers
         internship_offer.week_ids = week_ids
         internship_offer
       end
-
     end
   end
 end

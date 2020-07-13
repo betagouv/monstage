@@ -26,7 +26,8 @@ class InternshipOffersController < ApplicationController
                                                  .first
     end
     @internship_application ||= @internship_offer.internship_applications
-                                                 .build(user_id: current_user_id)
+                                                 .build(user_id: current_user_id,
+                                                        type: current_user.try(:internship_applications_type))
   end
 
   private
