@@ -14,9 +14,11 @@ module Finders
     }.freeze
 
     def base_query
-      send(MappingUserTypeWithScope.fetch(user.type))
-        .group(:id)
-        .page(params[:page])
+      school_type_filter do
+        send(MappingUserTypeWithScope.fetch(user.type))
+          .group(:id)
+          .page(params[:page])
+      end
     end
 
     private
@@ -26,6 +28,15 @@ module Finders
     def initialize(user:, params:)
       @user = user
       @params = params
+    end
+
+    def school_type_filter
+      query = yield
+      return query if middle_school_param? && high_school_param?
+
+      query = middle_school_query(query) if middle_school_param?
+      query = high_school_query(query) if high_school_param?
+      query
     end
 
     def nearby_query_part(query, coordinates)
@@ -45,16 +56,17 @@ module Finders
       end
 
       if user.try(:middle_school?)
-        if !user.missing_school_weeks?
-          query = query.merge(InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
+        unless user.missing_school_weeks?
+          query = query.merge(
+            InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
+          )
         end
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
-      # elsif user.try(:high_school?)
+      elsif user.try(:high_school)
         # query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
-
       query
     end
 
@@ -96,13 +108,13 @@ module Finders
       end
     end
 
-    def middle_school?
+    def middle_school_param?
       return nil unless params.key?(:middle_school)
 
       params[:middle_school].to_s == 'true'
     end
 
-    def high_school?
+    def high_school_param?
       return nil unless params.key?(:high_school)
 
       params[:high_school].to_s == 'true'
@@ -128,18 +140,10 @@ module Finders
       params[:radius]
     end
 
-    # common fiter deals with
-    # - keywords,
-    # - coordinates
-    # - and school_types
     def common_filter
       query = yield
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
-      return query if middle_school? && high_school?
-
-      query = middle_school_query(query) if middle_school?
-      query = high_school_query(query) if high_school?
       query
     end
 
