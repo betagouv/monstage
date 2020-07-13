@@ -37,8 +37,7 @@ module Finders
     end
 
     def school_members_query
-      query = keywords_and_coordinates_query do
-
+      query = common_filter do
         InternshipOffers::WeeklyFramed.kept
                                       .in_the_future
                                       .published
@@ -46,6 +45,7 @@ module Finders
                                       .ignore_max_candidates_reached
                                       .ignore_max_internship_offer_weeks_reached
       end
+
       if !user.missing_school_weeks? && user.school
         query = query.merge(query.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
       end
@@ -58,13 +58,13 @@ module Finders
     end
 
     def employer_query
-      keywords_and_coordinates_query do
+      common_filter do
         user.internship_offers.kept
       end
     end
 
     def operator_query
-      query = keywords_and_coordinates_query do
+      query = common_filter do
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
       if user.department_name.present?
@@ -74,7 +74,7 @@ module Finders
     end
 
     def statistician_query
-      query = keywords_and_coordinates_query do
+      query = common_filter do
         InternshipOffer.kept
       end
       if user.department_name
@@ -84,15 +84,27 @@ module Finders
     end
 
     def visitor_query
-      keywords_and_coordinates_query do
+      common_filter do
         InternshipOffer.kept.in_the_future.published
       end
     end
 
     def god_query
-      keywords_and_coordinates_query do
+      common_filter do
         InternshipOffer.kept
       end
+    end
+
+    def middle_school?
+      return nil unless params.key?(:middle_school)
+
+      params[:middle_school].to_s == 'true'
+    end
+
+    def high_school?
+      return nil unless params.key?(:high_school)
+
+      params[:high_school].to_s == 'true'
     end
 
     def keyword_params
@@ -115,15 +127,35 @@ module Finders
       params[:radius]
     end
 
-    def keywords_and_coordinates_query
+    # common fiter deals with
+    # - keywords,
+    # - coordinates
+    # - and school_types
+    def common_filter
       query = yield
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
-      end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      end
+      query = keyword_query(query) if keyword_params
+      query = nearby_query(query) if coordinate_params
+      return query if middle_school? && high_school?
+
+      query = middle_school_query(query) if middle_school?
+      query = high_school_query(query) if high_school?
       query
+    end
+
+    def keyword_query(query)
+      query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+    end
+
+    def nearby_query(query)
+      query.merge(nearby_query_part(query, coordinate_params))
+    end
+
+    def middle_school_query(query)
+      query.merge(InternshipOffer.weekly_framed)
+    end
+
+    def high_school_query(query)
+      query.merge(InternshipOffer.free_date)
     end
   end
 end
