@@ -3,17 +3,20 @@ import Turbolinks from 'turbolinks';
 
 import CityInput from './inputs/CityInput';
 import KeywordInput from './inputs/KeywordInput';
+import SchoolTypeInput from './inputs/SchoolTypeInput';
 
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, initialLocation, className }) {
+function SearchInternshipOffer({ url, className }) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
-  const initialKeyword = searchParams.get('keyword') || "";
-  const initialLatitude = searchParams.get('latitude');
-  const initialLongitude = searchParams.get('longitude');
+  const initialKeyword      = searchParams.get('keyword') || "";
+  const initialLatitude     = searchParams.get('latitude');
+  const initialLongitude    = searchParams.get('longitude');
+  const initialMiddleSchool = (searchParams.get('middle_school') === 'true');
+  const initialHighSchool   = (searchParams.get('high_school') === 'true');
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -23,11 +26,23 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const [latitude, setLatitude] = useState(initialLatitude);
   const [longitude, setLongitude] = useState(initialLongitude);
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+
   // used by both
   const [focus, setFocus] = useState(null);
+    // Checkboxes initialization
+  const initMidSchool = (searchParams.get('middle_school') === null) ? true : initialMiddleSchool;
 
+  const [middleSchool, setMiddleSchool] = useState(initMidSchool );
+  const [highSchool, setHighSchool] = useState(initialHighSchool);
+
+  const noSchoolChecked = () => !middleSchool && !highSchool
 
   const filterOffers = event => {
+    if (noSchoolChecked()) { searchParams.set('middle_school', true) }
+
+    searchParams.set('middle_school', middleSchool)
+    searchParams.set('high_school', highSchool)
+
     if (city) {
       searchParams.set('city', city);
       searchParams.set('latitude', latitude);
@@ -60,12 +75,22 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
+    const schoolTypeChanged = initialHighSchool != highSchool || initialMiddleSchool != middleSchool;
 
-    setShowSearch(keywordChanged || coordinatesChanged)
+    setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged)
   }
 
   if(isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, middleSchool, highSchool]);
+  }
+
+  const toggleMiddleSchool = () => {
+    if (middleSchool && !highSchool) {return}
+    setMiddleSchool(!middleSchool) 
+  }
+  const toggleHighSchool = () => { 
+    if (highSchool && !middleSchool) {return}
+    setHighSchool(!highSchool) 
   }
 
   return (
@@ -111,6 +136,15 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
             </button>
           </div>
           )}
+      </div>
+      <br/>
+      <div>
+        <SchoolTypeInput
+          middleSchool={middleSchool}
+          highSchool={highSchool}
+          toggleMiddleSchool={toggleMiddleSchool}
+          toggleHighSchool={toggleHighSchool}
+        />
       </div>
     </form>
   );
