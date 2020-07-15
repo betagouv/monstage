@@ -1,0 +1,6 @@
+- if internship_offer.class.name == InternshipOffers::WeeklyFramed.name
+  span.middle-school-badge= tr_school_type(internship_offer)
+- elsif internship_offer.class.name == InternshipOffers::FreeDate.name
+  span.high-school-badge= tr_school_type(internship_offer)
+- else
+  span.middle-school-badge= tr_school_type(internship_offer)

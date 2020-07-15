@@ -4,7 +4,7 @@ tr.hoverable-row-with-btn
 
       .row.mb-2
         .col-sm-1.col-2
-          span.border-class-type= tr_school_type(internship_offer)
+          = render 'internship_offers/html/school_type_badge', internship_offer: internship_offer
         .col-sm-11.col-10
           p.text-strong.internship-item-title.mb-1= internship_offer.title
       p.text-muted.internship-item-city.small.mb-1= "du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd)}"
