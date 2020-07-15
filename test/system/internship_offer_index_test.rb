@@ -142,7 +142,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     page.check('Collège')
     page.uncheck('Lycée')
     find('button#test-submit-search').click
-    assert_absence_of(internship_offer: internship_offer_weekly)
+    assert_presence_of(internship_offer: internship_offer_weekly)
     assert_absence_of(internship_offer: internship_offer_free)
     assert_equal page.all(:css, '.middle-school-badge').count, 1
     assert_equal page.all(:css, '.high-school-badge').count, 0

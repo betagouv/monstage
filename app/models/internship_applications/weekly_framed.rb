@@ -6,11 +6,16 @@ module InternshipApplications
 
     has_one :week, through: :internship_offer_week
 
+    delegate :update_all_counters, to: :internship_application_counter_hook
+
+    after_save :update_all_counters
+
+    before_validation :internship_offer_has_spots_left?, on: :create
+    before_validation :internship_offer_week_has_spots_left?, on: :create
+
     validates :internship_offer_week,
               presence: true,
               unless: :application_via_school_manager?
-    before_validation :internship_offer_has_spots_left?, on: :create
-    before_validation :internship_offer_week_has_spots_left?, on: :create
 
     def internship_offer_has_spots_left?
       return unless internship_offer_week.present?

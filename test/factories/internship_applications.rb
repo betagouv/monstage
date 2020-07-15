@@ -2,9 +2,16 @@
 
 FactoryBot.define do
   factory :internship_application do
-    type { 'InternshipApplications::WeeklyFramed' }
+    type { InternshipApplications::WeeklyFramed.name }
     student { create(:student) }
     internship_offer { create(:internship_offer) }
+    motivation { 'Suis hyper motivé' }
+  end
+
+  factory :internship_application_free_date, class: InternshipApplications::FreeDate do
+    type { InternshipApplications::FreeDate.name }
+    student { create(:student) }
+    internship_offer { create(:free_date_internship_offer) }
     motivation { 'Suis hyper motivé' }
   end
 

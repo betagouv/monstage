@@ -32,10 +32,13 @@ module Finders
 
     def school_type_filter
       query = yield
-      return query if middle_school_param? && high_school_param?
-
-      query = middle_school_query(query) if middle_school_param?
-      query = high_school_query(query) if high_school_param?
+      if middle_school_param? && high_school_param?
+        query = middle_school_query(query).or(high_school_query(query))
+      elsif middle_school_param?
+        query = middle_school_query(query)
+      elsif high_school_param?
+        query = high_school_query(query)
+      end
       query
     end
 

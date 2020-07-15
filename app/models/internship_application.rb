@@ -7,7 +7,7 @@ class InternshipApplication < ApplicationRecord
 
   belongs_to :internship_offer, polymorphic: true
 
-  belongs_to :student, class_name: 'Users::Student',
+  belongs_to :student, class_name:  'Users::Student',
                        foreign_key: 'user_id'
 
   validates :motivation,
@@ -18,10 +18,7 @@ class InternshipApplication < ApplicationRecord
 
   before_validation :at_most_one_application_per_student?, on: :create
 
-  delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
-
-  after_save :update_all_counters
 
   accepts_nested_attributes_for :student, update_only: true
 
@@ -73,6 +70,8 @@ class InternshipApplication < ApplicationRecord
   #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
+  scope :weekly_framed, -> { where(type: InternshipApplication::WeeklyFramed.name) }
+  scope :free_date, -> { where(type: InternshipApplication::FreeDate.name) }
 
   def student_is_male?
     student.gender == 'm'
@@ -94,14 +93,6 @@ class InternshipApplication < ApplicationRecord
   def internship_offer_week_has_spots_left?
     unless internship_offer_week.try(:has_spots_left?)
       errors.add(:internship_offer_week, :has_no_spots_left)
-    end
-  end
-
-  def at_most_one_application_per_student?
-    return unless internship_offer_week.present?
-
-    if internship_offer.internship_applications.where(user_id: user_id).count > 0
-      errors.add(:user_id, :duplicate)
     end
   end
 
