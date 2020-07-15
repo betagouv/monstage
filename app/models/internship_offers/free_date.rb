@@ -18,10 +18,10 @@ module InternshipOffers
       self.last_date = school_year.end_of_period
     end
 
-    # where.not(id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id)))
     scope :ignore_already_applied, lambda { |user:|
-      where.not(id: joins(internship_applications: :internship_applications)
-           .merge(InternshipApplication.where(user_id: user.id)))
+      where.not(
+        id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id))
+      )
     }
   end
 end
