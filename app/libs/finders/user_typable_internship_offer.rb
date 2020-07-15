@@ -32,11 +32,12 @@ module Finders
 
     def school_type_filter
       query = yield
-      if middle_school_param? && high_school_param?
+      if middle_school_param && high_school_param ||
+          middle_school_param.nil? && high_school_param.nil?
         query = middle_school_query(query).or(high_school_query(query))
-      elsif middle_school_param?
+      elsif middle_school_param
         query = middle_school_query(query)
-      elsif high_school_param?
+      elsif high_school_param
         query = high_school_query(query)
       else
         query = query.merge(InternshipOffer.weekly_framed.free_date)
@@ -113,13 +114,13 @@ module Finders
       end
     end
 
-    def middle_school_param?
+    def middle_school_param
       return nil unless params.key?(:middle_school)
 
       params[:middle_school].to_s == 'true'
     end
 
-    def high_school_param?
+    def high_school_param
       return nil unless params.key?(:high_school)
 
       params[:high_school].to_s == 'true'
