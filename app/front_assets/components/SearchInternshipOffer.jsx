@@ -36,11 +36,9 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const [middleSchool, setMiddleSchool] = useState(initMidSchool );
   const [highSchool, setHighSchool] = useState(initHighSchool);
 
-  const noSchoolChecked = () => !middleSchool && !highSchool
 
   const filterOffers = event => {
-    if (noSchoolChecked()) { searchParams.set('middle_school', true) }
-
+    if (!middleSchool && !highSchool) { return true}
     searchParams.set('middle_school', middleSchool)
     searchParams.set('high_school', highSchool)
 
@@ -85,14 +83,8 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
     useEffect(dirtyTrackSearch, [latitude, longitude, keyword, middleSchool, highSchool]);
   }
 
-  const toggleMiddleSchool = () => {
-    if (middleSchool && !highSchool) {return}
-    setMiddleSchool(!middleSchool)
-  }
-  const toggleHighSchool = () => {
-    if (highSchool && !middleSchool) {return}
-    setHighSchool(!highSchool)
-  }
+  const toggleMiddleSchool = () => setMiddleSchool(!middleSchool)
+  const toggleHighSchool = () => setHighSchool(!highSchool)
 
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
