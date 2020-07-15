@@ -9,12 +9,12 @@ module Reporting
     setup do
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
-      @internship_offer_agri_1 = create(:internship_offer, sector: @sector_agri, max_candidates: 2)
-      @internship_offer_agri_2 = create(:internship_offer, sector: @sector_agri, max_candidates: 2)
-      @internship_offer_wood = create(:internship_offer, sector: @sector_wood, max_candidates: 10)
-      create(:internship_application, :submitted, :weekly, internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :submitted, :weekly, internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :submitted, :weekly, internship_offer: @internship_offer_agri_2)
+      @internship_offer_agri_1 = create(:weekly_internship_offer, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_agri_2 = create(:weekly_internship_offer, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_wood = create(:weekly_internship_offer, sector: @sector_wood, max_candidates: 10)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2)
     end
 
     test "GET #index not logged fails" do
@@ -25,7 +25,7 @@ module Reporting
     test "GET #index as GOD success" do
       god = create(:god)
       sign_in(god)
-      create(:internship_offer)
+      create(:weekly_internship_offer)
       get reporting_internship_offers_path
       assert_response :success
     end
@@ -34,7 +34,7 @@ module Reporting
          "when department params match his departement_name" do
       statistician = create(:statistician)
       department_name = statistician.department_name
-      create(:internship_offer, department: department_name)
+      create(:weekly_internship_offer, department: department_name)
       sign_in(statistician)
 
       get reporting_internship_offers_path(department: department_name)
@@ -44,7 +44,7 @@ module Reporting
     test "GET #index.xlsx as statistician success " \
          "when department params match his departement_name" do
       god = create(:god)
-      create(:internship_offer)
+      create(:weekly_internship_offer)
       create(:api_internship_offer)
       sign_in(god)
 

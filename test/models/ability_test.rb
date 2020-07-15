@@ -12,11 +12,11 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Student' do
-    internship_offer = create(:internship_offer)
+    internship_offer = create(:weekly_internship_offer)
     school = create(:school, weeks: [internship_offer.weeks.first])
     student = create(:student, class_room: create(:class_room, :troisieme_generale, school: school))
     ability = Ability.new(student)
-    internship_application = create(:internship_application,
+    internship_application = create(:weekly_internship_application,
                                     student: student,
                                     internship_offer: internship_offer,
                                     internship_offer_week: internship_offer.internship_offer_weeks.first)
@@ -38,7 +38,7 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose handicap')
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:internship_application, :weekly)))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
     assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
            'employers should be able to index InternshipOfferDashboard')
   end
@@ -81,7 +81,7 @@ class AbilityTest < ActiveSupport::TestCase
     student = create(:student)
     another_school = create(:school)
     school_manager = create(:school_manager, school: student.school)
-    internship_application = create(:internship_application, :weekly, student: student)
+    internship_application = create(:weekly_internship_application, student: student)
     ability = Ability.new(school_manager)
     assert(ability.cannot?(:show, School),
            'school_manager should be able show school')
@@ -89,7 +89,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:destroy, internship_application))
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:internship_application, :weekly)))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
     assert(ability.can?(:see_tutor, InternshipOffer))
     assert(ability.can?(:manage_school_users, school_manager.school))
     assert(ability.cannot?(:manage_school_users, another_school))
@@ -102,7 +102,7 @@ class AbilityTest < ActiveSupport::TestCase
     student = create(:student)
     school_manager = create(:school_manager, school: student.school)
     main_teacher = create(:main_teacher, school: student.school)
-    internship_application = create(:internship_application, :weekly, student: student)
+    internship_application = create(:weekly_internship_application, student: student)
     ability = Ability.new(main_teacher)
     assert(ability.can?(:show, :account),
            'students should be able to access their account')

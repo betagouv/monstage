@@ -18,19 +18,19 @@ module InternshipApplications
     end
 
     test 'GET internship_applications#index redirects to new_user_session_path when not logged in' do
-      get dashboard_internship_offer_internship_applications_path(create(:internship_offer))
+      get dashboard_internship_offer_internship_applications_path(create(:weekly_internship_offer))
       assert_redirected_to new_user_session_path
     end
 
     test 'GET #index redirects to root_path when logged in as student' do
       sign_in(create(:student))
-      get dashboard_internship_offer_internship_applications_path(create(:internship_offer))
+      get dashboard_internship_offer_internship_applications_path(create(:weekly_internship_offer))
       assert_redirected_to root_path
     end
 
     test 'GET #index redirects to root_path when logged as different employer than internship_offer.employer' do
       sign_in(create(:employer))
-      get dashboard_internship_offer_internship_applications_path(create(:internship_offer))
+      get dashboard_internship_offer_internship_applications_path(create(:weekly_internship_offer))
       assert_redirected_to root_path
     end
 
@@ -43,7 +43,7 @@ module InternshipApplications
                                  resume_educational_background: 'resume_educational_background',
                                  resume_other: 'resume_other',
                                  resume_languages: 'resume_languages')
-      internship_application = create(:internship_application, :weekly, :submitted, student: student)
+      internship_application = create(:weekly_internship_application, :submitted, student: student)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -64,7 +64,7 @@ module InternshipApplications
       school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
                                  handicap: 'cotorep')
-      internship_application = create(:internship_application, :weekly, :submitted, student: student)
+      internship_application = create(:weekly_internship_application, :submitted, student: student)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -73,7 +73,7 @@ module InternshipApplications
     end
 
     test 'GET #index with drafted does not shows internship_application' do
-      internship_application = create(:internship_application, :weekly, :drafted)
+      internship_application = create(:weekly_internship_application, :drafted)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -81,7 +81,7 @@ module InternshipApplications
     end
 
     test 'GET #index with expired shows internship_application' do
-      internship_application = create(:internship_application, :weekly, :expired)
+      internship_application = create(:weekly_internship_application, :expired)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -89,7 +89,7 @@ module InternshipApplications
     end
 
     test 'GET #index with submitted internship_application, shows approve/reject links' do
-      internship_application = create(:internship_application, :weekly, :submitted)
+      internship_application = create(:weekly_internship_application, :submitted)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -106,7 +106,7 @@ module InternshipApplications
     end
 
     test 'GET #index as Employer with approved internship_application, shows cancel_by_employer! & signed! links' do
-      internship_application = create(:internship_application, :weekly, :approved)
+      internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -122,7 +122,7 @@ module InternshipApplications
     end
 
     test 'GET #index with rejected offer, shows approve' do
-      internship_application = create(:internship_application, :weekly, :rejected)
+      internship_application = create(:weekly_internship_application, :rejected)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
@@ -133,7 +133,7 @@ module InternshipApplications
     end
 
     test 'GET #index with convention_signed offer, does not shows any link' do
-      internship_application = create(:internship_application, :weekly, :convention_signed)
+      internship_application = create(:weekly_internship_application, :convention_signed)
       sign_in(internship_application.internship_offer.employer)
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success

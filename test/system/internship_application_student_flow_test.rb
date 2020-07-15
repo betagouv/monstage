@@ -5,10 +5,12 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  test 'student in troisieme_generale can not submit application wheen school have not choosen week and can ask for a week' do
+
+  test 'student can not submit application wheen school have not choosen week' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer = create(:internship_offer, weeks: weeks)
+    student = create(:student, school: create(:school, weeks: []))
+    internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
     visit internship_offer_path(internship_offer)
@@ -30,7 +32,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer = create(:internship_offer, weeks: weeks)
+    internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
     visit internship_offer_path(internship_offer)
@@ -42,7 +44,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: weeks)
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer = create(:internship_offer, weeks: weeks)
+    internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
       sign_in(student)
@@ -96,7 +98,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer = create(:internship_offer, weeks: weeks)
+    internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
       sign_in(student)
@@ -124,12 +126,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
     internship_applications = {
-      drafted: create(:internship_application, :weekly, :drafted, student: student),
-      submitted: create(:internship_application, :weekly, :submitted, student: student),
-      approved: create(:internship_application, :weekly, :approved, student: student),
-      rejected: create(:internship_application, :weekly, :rejected, student: student),
-      convention_signed: create(:internship_application, :weekly, :convention_signed, student: student),
-      canceled_by_student: create(:internship_application, :weekly, :canceled_by_student, student: student)
+      drafted: create(:weekly_internship_application, :drafted, student: student),
+      submitted: create(:weekly_internship_application, :submitted, student: student),
+      approved: create(:weekly_internship_application, :approved, student: student),
+      rejected: create(:weekly_internship_application, :rejected, student: student),
+      convention_signed: create(:weekly_internship_application, :convention_signed, student: student),
+      canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
     visit '/'

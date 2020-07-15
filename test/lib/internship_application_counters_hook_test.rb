@@ -6,8 +6,8 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   setup do
     @week = Week.find_by(number: 1, year: 2019)
     @internship_offer_week = build(:internship_offer_week, week: @week)
-    @internship_offer = build(:internship_offer, internship_offer_weeks: [@internship_offer_week])
-    @internship_application = build(:internship_application, internship_offer_week: @internship_offer_week,
+    @internship_offer = build(:weekly_internship_offer, internship_offer_weeks: [@internship_offer_week])
+    @internship_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week,
                                                              internship_offer: @internship_offer)
   end
 
@@ -49,8 +49,9 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
   end
 
   test '.update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count' do
-    create(:internship_application, :drafted, internship_offer_week: @internship_offer_week,
-                                              internship_offer: @internship_offer)
+    create(:weekly_internship_application, :drafted,
+           internship_offer_week: @internship_offer_week,
+           internship_offer: @internship_offer)
 
     assert_equal 0, @internship_offer.reload.total_applications_count
   end

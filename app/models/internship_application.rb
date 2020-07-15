@@ -16,8 +16,6 @@ class InternshipApplication < ApplicationRecord
 
   validates :student, uniqueness: { scope: :internship_offer_week_id }
 
-  before_validation :at_most_one_application_per_student?, on: :create
-
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
 
@@ -97,16 +95,15 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def at_most_one_application_per_student?
-    return unless internship_offer_week.present?
-
-    if internship_offer.internship_applications.where(user_id: user_id).count > 0
-      errors.add(:user_id, :duplicate)
-    end
-  end
-
   def internship_application_counter_hook
-    InternshipApplicationCountersHook.new(internship_application: self)
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationCountersHook::WeeklyFramed.new(internship_application: self)
+    when InternshipApplications::FreeDate
+      InternshipApplicationCountersHook::FreeDate.new(internship_application: self)
+    else
+      fail 'can not process stats for this kind of internship_application'
+    end
   end
 
   def application_via_school_manager?
@@ -175,12 +172,12 @@ class InternshipApplication < ApplicationRecord
     event :cancel_by_student do
       transitions from: %i[submitted approved],
                   to: :canceled_by_student,
-                  after: proc {|*_args|
-      update!("canceled_at": Time.now.utc)
-      EmployerMailer.internship_application_canceled_by_student_email(
-        internship_application: self
-      ).deliver_later
-    }
+                  after: proc { |*_args|
+        update!("canceled_at": Time.now.utc)
+        EmployerMailer.internship_application_canceled_by_student_email(
+          internship_application: self
+        ).deliver_later
+      }
     end
 
     event :signed do
