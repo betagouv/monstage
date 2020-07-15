@@ -54,6 +54,7 @@ FactoryBot.define do
     trait :weekly do
       internship_offer { create(:weekly_internship_offer) }
       before(:create) do |ia|
+        # kind of trick
         if ia.internship_offer_week.blank?
           ia.internship_offer_week = create(:internship_offer_week, internship_offer: ia.internship_offer)
         end
