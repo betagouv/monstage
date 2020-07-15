@@ -31,9 +31,10 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const [focus, setFocus] = useState(null);
     // Checkboxes initialization
   const initMidSchool = (searchParams.get('middle_school') === null) ? true : initialMiddleSchool;
+  const initHighSchool = (searchParams.get('middle_school') === null) ? true : initialHighSchool;
 
   const [middleSchool, setMiddleSchool] = useState(initMidSchool );
-  const [highSchool, setHighSchool] = useState(initialHighSchool);
+  const [highSchool, setHighSchool] = useState(initHighSchool);
 
   const noSchoolChecked = () => !middleSchool && !highSchool
 
