@@ -94,4 +94,29 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
+
+  test 'search filters : middle_school and high_school checkBoxes' do
+    internship_offer_weekly = create(:internship_offer, title: 'middle_school offer')
+    internship_offer_free   = create(:free_date_internship_offer, title: 'high_school offer')
+
+    visit internship_offers_path
+
+    assert_presence_of(internship_offer: internship_offer_weekly)
+    assert_presence_of(internship_offer: internship_offer_free)
+
+    page.uncheck('Collège')
+    find('button#test-submit-search').click
+    assert_absence_of(internship_offer: internship_offer_weekly)
+    assert_presence_of(internship_offer: internship_offer_free)
+    assert_equal page.all(:css, '.middle-school-badge').count, 0
+    assert_equal page.all(:css, '.high-school-badge').count, 1
+
+    page.check('Collège')
+    page.uncheck('Lycée')
+    find('button#test-submit-search').click
+    assert_absence_of(internship_offer: internship_offer_weekly)
+    assert_absence_of(internship_offer: internship_offer_free)
+    assert_equal page.all(:css, '.middle-school-badge').count, 1
+    assert_equal page.all(:css, '.high-school-badge').count, 0
+  end
 end
