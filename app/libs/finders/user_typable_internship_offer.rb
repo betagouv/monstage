@@ -38,6 +38,8 @@ module Finders
         query = middle_school_query(query)
       elsif high_school_param?
         query = high_school_query(query)
+      else
+        query = query.merge(InternshipOffer.weekly_framed.free_date)
       end
       query
     end

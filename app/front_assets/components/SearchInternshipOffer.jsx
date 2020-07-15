@@ -36,9 +36,7 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const [middleSchool, setMiddleSchool] = useState(initMidSchool );
   const [highSchool, setHighSchool] = useState(initHighSchool);
 
-
   const filterOffers = event => {
-    if (!middleSchool && !highSchool) { return true}
     searchParams.set('middle_school', middleSchool)
     searchParams.set('high_school', highSchool)
 
