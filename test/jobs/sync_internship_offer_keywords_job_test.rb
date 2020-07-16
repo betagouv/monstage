@@ -9,7 +9,7 @@ class SyncInternshipOfferKeywordsJobTest < ActiveJob::TestCase
   end
 
   test 'insert all keywords' do
-    create(:internship_offer, title: "hello", description: "boom", employer_description: "bim")
+    create(:weekly_internship_offer, title: "hello", description: "boom", employer_description: "bim")
 
     assert_changes -> {InternshipOfferKeyword.count},
                   from: 0,
@@ -19,11 +19,11 @@ class SyncInternshipOfferKeywordsJobTest < ActiveJob::TestCase
   end
 
   test 'upsert old keyword maintain ndoc counter and searchable' do
-    create(:internship_offer, title: "hello", description: "boom", employer_description: "bim")
+    create(:weekly_internship_offer, title: "hello", description: "boom", employer_description: "bim")
     SyncInternshipOfferKeywordsJob.perform_now
     hello_keyword = InternshipOfferKeyword.where(word: "hello").first
     hello_keyword.update!(searchable: false)
-    create(:internship_offer, title: "hello", description: "boom", employer_description: "bim")
+    create(:weekly_internship_offer, title: "hello", description: "boom", employer_description: "bim")
 
     assert_changes -> { hello_keyword.reload.ndoc },
                   from: 1,
@@ -34,9 +34,9 @@ class SyncInternshipOfferKeywordsJobTest < ActiveJob::TestCase
   end
 
   test 'upsert new keyword works' do
-    create(:internship_offer, title: "hello", description: "boom", employer_description: "bim")
+    create(:weekly_internship_offer, title: "hello", description: "boom", employer_description: "bim")
     SyncInternshipOfferKeywordsJob.perform_now
-    create(:internship_offer, title: "new", description: "boom", employer_description: "bim")
+    create(:weekly_internship_offer, title: "new", description: "boom", employer_description: "bim")
 
     assert_changes -> { InternshipOfferKeyword.count },
                   from: 3,

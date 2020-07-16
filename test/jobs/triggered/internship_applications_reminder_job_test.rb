@@ -10,14 +10,14 @@ module Triggered
     # @warning: sometimes it fails ; surprising,
     # try to empty deliveries before running the spec
     setup do
-      @internship_offer = create(:internship_offer)
+      @internship_offer = create(:weekly_internship_offer)
       ActionMailer::Base.deliveries = []
     end
     teardown { ActionMailer::Base.deliveries = [] }
 
     test 'perform does not send email ' \
          'when internship_applications is pending for less than a week' do
-      internship_application = create(:internship_application, :submitted, :weekly,
+      internship_application = create(:weekly_internship_application, :submitted,
                                       submitted_at: 1.day.ago,
                                       internship_offer: @internship_offer)
       InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
@@ -29,9 +29,7 @@ module Triggered
 
     test 'perform sends email and update pending_reminder_sent_at' \
          'when internship_applications is pending for more than 1 a week' do
-      internship_application = create(:internship_application,
-                                      :submitted,
-                                      :weekly,
+      internship_application = create(:weekly_internship_application, :submitted,
                                       submitted_at: 8.days.ago,
                                       internship_offer: @internship_offer)
 
@@ -52,9 +50,7 @@ module Triggered
 
     test 'perform does sends email and expire!' \
          'when internship_applications is pending for more than 2 weeks' do
-      internship_application = create(:internship_application,
-                                      :weekly,
-                                      :submitted,
+      internship_application = create(:weekly_internship_application, :submitted,
                                       submitted_at: 16.days.ago,
                                       internship_offer: @internship_offer)
 

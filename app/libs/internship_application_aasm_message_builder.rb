@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class MessageForAasmState
-  # for html formatted default message
-  delegate :student,
-           :internship_offer,
-           :week,
-           to: :internship_application
+# wire default rich text message with internship_application rich text attributes
+# * approved_message (on internship_application aasm transition approved)
+# * rejected_message (on internship_application aasm transition rejected)
+# * canceled_by_employer_message (on internship_application aasm transition canceled_by_employer)
+# * canceled_by_student_message (on internship_application aasm transition canceled_by_student)
+class InternshipApplicationAasmMessageBuilder
   # "exposed" attributes
   delegate :approved_message,
            :rejected_message,
@@ -59,36 +59,5 @@ class MessageForAasmState
   def initialize(internship_application:, aasm_target:)
     @internship_application = internship_application
     @aasm_target = aasm_target
-  end
-
-  def on_approved_message
-    <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(student).formal_name},</p>
-      <p>Votre candidature pour le stage "#{internship_offer.title}" est acceptée pour la semaine #{week.short_select_text_method}.</p>
-      <p>Vous devez maintenant faire signer la convention de stage.</p>
-    HTML
-  end
-
-  def on_rejected_message
-    <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(student).formal_name},</p>
-      <p>Votre candidature pour le stage "#{internship_offer.title}" est refusée pour la semaine #{week.short_select_text_method}.</p>
-    HTML
-  end
-
-  def on_canceled_by_employer_message
-    <<~HTML.strip
-      <p>Bonjour #{Presenters::User.new(student).formal_name},</p>
-      <p>Votre candidature pour le stage "#{internship_offer.title}" est annulée pour la semaine #{week.short_select_text_method}.</p>
-    HTML
-  end
-
-  def on_canceled_by_student_message
-    <<~HTML.strip
-      <p>#{internship_offer.employer.formal_name},</p>
-      <p>Je ne suis pas en mesure d'accepter votre offre de stage
-      "#{internship_offer.title}" prévu pour la semaine
-      #{week.short_select_text_method}, car : </p>
-    HTML
   end
 end

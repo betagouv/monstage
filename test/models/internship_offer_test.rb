@@ -7,12 +7,12 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
   test 'create enqueue SyncInternshipOfferKeywordsJob' do
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
-      create(:internship_offer)
+      create(:weekly_internship_offer)
     end
   end
 
   test 'destroy enqueue SyncInternshipOfferKeywordsJob' do
-    internship_offer = create(:internship_offer)
+    internship_offer = create(:weekly_internship_offer)
 
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
       internship_offer.destroy
@@ -20,7 +20,7 @@ class InternshipOfferTest < ActiveSupport::TestCase
   end
 
   test 'update title enqueues SyncInternshipOfferKeywordsJob' do
-    internship_offer = create(:internship_offer)
+    internship_offer = create(:weekly_internship_offer)
 
     assert_enqueued_jobs 1, only: SyncInternshipOfferKeywordsJob do
       internship_offer.update(title: "bingo bango bang")

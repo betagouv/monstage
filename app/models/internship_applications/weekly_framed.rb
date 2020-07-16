@@ -10,17 +10,24 @@ module InternshipApplications
 
     after_save :update_all_counters
 
-    before_validation :internship_offer_has_spots_left?, on: :create
-    before_validation :internship_offer_week_has_spots_left?, on: :create
-
     validates :internship_offer_week,
               presence: true,
               unless: :application_via_school_manager?
 
+    before_validation :at_most_one_application_per_student?, on: :create
+    before_validation :internship_offer_has_spots_left?, on: :create
+    before_validation :internship_offer_week_has_spots_left?, on: :create
+
+    def approvable?
+      return false unless internship_offer_week.present?
+      return false unless internship_offer.has_spots_left?
+      true
+    end
+
     def internship_offer_has_spots_left?
       return unless internship_offer_week.present?
 
-      unless internship_offer_week.has_spots_left?
+      unless internship_offer.has_spots_left?
         errors.add(:internship_offer, :has_no_spots_left)
       end
     end
@@ -41,10 +48,6 @@ module InternshipApplications
                               .positive?
         errors.add(:user_id, :duplicate)
       end
-    end
-
-    def weekly_framed?
-      true
     end
   end
 end

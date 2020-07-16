@@ -48,7 +48,7 @@ module InternshipOffers
 
     test 'GET #new as Employer with duplicate_id' do
       operator = create(:user_operator)
-      internship_offer = create(:internship_offer, employer: operator,
+      internship_offer = create(:weekly_internship_offer, employer: operator,
                                                    is_public: true,
                                                    max_candidates: 2)
       sign_in(internship_offer.employer)
@@ -68,7 +68,7 @@ module InternshipOffers
     end
 
     test 'GET #new as Employer with duplicate_id with old offer' do
-      internship_offer = create(:internship_offer)
+      internship_offer = create(:weekly_internship_offer)
       internship_offer.update(description_rich_text: nil, employer_description_rich_text: nil)
       internship_offer.update_column(:description, 'woot')
       internship_offer.update_column(:employer_description, 'woot woot')

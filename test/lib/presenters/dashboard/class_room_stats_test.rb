@@ -29,14 +29,13 @@ module Presenters
       test '.total_student_with_zero_application' do
         student_1 = create(:student, class_room: @class_room)
         student_1_applications = [
-          create(:internship_application, :weekly, :submitted, student: student_1),
-          create(:internship_application, :weekly, :submitted, student: student_1)
+          create(:weekly_internship_application, :submitted, student: student_1),
+          create(:weekly_internship_application, :submitted, student: student_1)
         ]
-
         student_2 = create(:student, class_room: @class_room)
         student_2_applications = [
-          create(:internship_application, :weekly, :submitted, student: student_2),
-          create(:internship_application, :weekly, :submitted, student: student_2)
+          create(:weekly_internship_application, :submitted, student: student_2),
+          create(:weekly_internship_application, :submitted, student: student_2)
         ]
 
         student_3 = create(:student, class_room: @class_room)
@@ -47,34 +46,16 @@ module Presenters
                      @class_room_stats.total_student_with_zero_application
       end
 
-      # test '.total_pending_convention_signed' do
-      #   student_1 = create(:student, class_room: @class_room)
-      #   student_1_applications = [
-      #     create(:internship_application, :weekly, :approved, student: student_1),
-      #     create(:internship_application, :weekly, :rejected, student: student_1)
-      #   ]
-
-      #   student_2 = create(:student, class_room: @class_room)
-      #   student_2_applications = [
-      #     create(:internship_application, :weekly, :convention_signed, student: student_2),
-      #     create(:internship_application, :weekly, :approved, student: student_2)
-      #   ]
-
-      #   student_3 = create(:student, class_room: @class_room)
-      #   assert_equal 1,
-      #                @class_room_stats.total_pending_convention_signed
-      # end
-
       test '.total_student_with_zero_internship' do
         student_1 = create(:student, class_room: @class_room)
         student_1_applications = [
-          create(:internship_application, :weekly, :approved, student: student_1),
-          create(:internship_application, :weekly, :rejected, student: student_1)
+          create(:weekly_internship_application, :approved, student: student_1),
+          create(:weekly_internship_application, :rejected, student: student_1)
         ]
         student_2 = create(:student, class_room: @class_room)
         student_2_applications = [
-          create(:internship_application, :weekly, :convention_signed, student: student_2),
-          create(:internship_application, :weekly, :approved, student: student_2)
+          create(:weekly_internship_application, :convention_signed, student: student_2),
+          create(:weekly_internship_application, :approved, student: student_2)
         ]
 
         student_3 = create(:student, class_room: @class_room)

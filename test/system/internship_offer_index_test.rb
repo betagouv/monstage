@@ -18,7 +18,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   test 'navigation & interaction works' do
     school = create(:school)
     student = create(:student, school: school)
-    internship_offer = create(:internship_offer)
+    internship_offer = create(:weekly_internship_offer)
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -31,8 +31,8 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
 
   test 'search by keyword works' do
     searched_keyword = "helloworld"
-    searched_internship_offer = create(:internship_offer, title: searched_keyword)
-    not_searched_internship_offer = create(:internship_offer)
+    searched_internship_offer = create(:weekly_internship_offer, title: searched_keyword)
+    not_searched_internship_offer = create(:weekly_internship_offer)
 
     dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
@@ -65,9 +65,9 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   end
 
   test 'search by location works' do
-    internship_offer_at_paris = create(:internship_offer,
+    internship_offer_at_paris = create(:weekly_internship_offer,
                                        coordinates: Coordinates.paris)
-    internship_offer_at_bordeaux = create(:internship_offer,
+    internship_offer_at_bordeaux = create(:weekly_internship_offer,
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path

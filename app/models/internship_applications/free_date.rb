@@ -1,7 +1,7 @@
 module InternshipApplications
   class FreeDate < InternshipApplication
-    def weekly_framed?
-      false
+    def approvable?
+      true
     end
 
     def at_most_one_application_per_student?

@@ -13,7 +13,6 @@ module InternshipOffers
       has_many :weeks, through: :internship_offer_weeks
 
       scope :ignore_already_applied, lambda { |user:|
-        # where.not(id: joins(:internship_applications).merge(InternshipApplication.where(user_id: user.id)))
         where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'] )
           .where.not(id: joins(internship_offer_weeks: :internship_applications)
                       .merge(InternshipApplication.where(user_id: user.id)))

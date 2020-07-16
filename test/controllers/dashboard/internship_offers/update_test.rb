@@ -7,20 +7,20 @@ module InternshipOffers
     include Devise::Test::IntegrationHelpers
 
     test 'PATCH #update as visitor redirects to user_session_path' do
-      internship_offer = create(:internship_offer)
+      internship_offer = create(:weekly_internship_offer)
       patch(dashboard_internship_offer_path(internship_offer.to_param), params: {})
       assert_redirected_to user_session_path
     end
 
     test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
-      internship_offer = create(:internship_offer)
+      internship_offer = create(:weekly_internship_offer)
       sign_in(create(:employer))
       patch(dashboard_internship_offer_path(internship_offer.to_param), params: { internship_offer: { title: '' } })
       assert_redirected_to root_path
     end
 
     test 'PATCH #update as employer owning internship_offer updates internship_offer' do
-      internship_offer = create(:internship_offer)
+      internship_offer = create(:weekly_internship_offer)
       new_title = 'new title'
       new_group = create(:group, is_public: false, name: 'woop')
       sign_in(internship_offer.employer)
@@ -39,7 +39,7 @@ module InternshipOffers
     end
 
     test 'PATCH #update as employer owning internship_offer can publish/unpublish offer' do
-      internship_offer = create(:internship_offer)
+      internship_offer = create(:weekly_internship_offer)
       published_at = 2.days.ago.utc
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.published_at.to_i },
@@ -52,7 +52,7 @@ module InternshipOffers
 
     test 'PATCH #update as employer is able to remove school' do
       school = create(:school)
-      internship_offer = create(:internship_offer, school: school)
+      internship_offer = create(:weekly_internship_offer, school: school)
       published_at = 2.days.ago.utc
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.school },

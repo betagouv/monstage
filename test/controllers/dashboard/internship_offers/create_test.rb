@@ -15,7 +15,7 @@ module InternshipOffers
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:internship_offer, employer: employer)
+      internship_offer = build(:weekly_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                  .attributes
@@ -45,7 +45,7 @@ module InternshipOffers
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:internship_offer, employer: employer)
+      internship_offer = build(:weekly_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
