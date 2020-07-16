@@ -19,6 +19,8 @@ class InternshipApplication < ApplicationRecord
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
 
+  after_save :update_all_counters
+
   accepts_nested_attributes_for :student, update_only: true
 
   has_rich_text :approved_message

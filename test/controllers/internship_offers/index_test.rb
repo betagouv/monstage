@@ -99,9 +99,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as visitor or student default shows both middle school and high school offers' do
-    #Visitor
-    internship_offer_weekly = create(:internship_offer)
+    internship_offer_weekly = create(:weekly_internship_offer)
     internship_offer_free   = create(:free_date_internship_offer)
+    #Visitor
     get internship_offers_path
     assert_presence_of(internship_offer: internship_offer_weekly)
     assert_presence_of(internship_offer: internship_offer_free)

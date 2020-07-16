@@ -14,11 +14,9 @@ module Finders
     }.freeze
 
     def base_query
-      school_type_filter do
-        send(MappingUserTypeWithScope.fetch(user.type))
-          .group(:id)
-          .page(params[:page])
-      end
+      send(MappingUserTypeWithScope.fetch(user.type))
+        .group(:id)
+        .page(params[:page])
     end
 
     private
@@ -30,18 +28,10 @@ module Finders
       @params = params
     end
 
-    def school_type_filter
-      query = yield
-      if middle_school_param && high_school_param ||
-          middle_school_param.nil? && high_school_param.nil?
-        query = middle_school_query(query).or(high_school_query(query))
-      elsif middle_school_param
-        query = middle_school_query(query)
-      elsif high_school_param
-        query = high_school_query(query)
-      else
-        query = query.merge(InternshipOffer.weekly_framed.free_date)
-      end
+    def school_type_filter(query)
+      query = middle_school_query(query) if school_type_param == 'middle_school'
+      query = high_school_query(query) if school_type_param == 'high_school'
+      query = query.merge(InternshipOffer.none) if school_type_param == 'none'
       query
     end
 
@@ -54,12 +44,7 @@ module Finders
     end
 
     def school_members_query
-      query = common_filter do
-        InternshipOffer.kept
-                       .in_the_future
-                       .published
-                       .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
-      end
+      query = InternshipOffer.all
 
       if user.try(:middle_school?)
         unless user.missing_school_weeks?
@@ -71,7 +56,13 @@ module Finders
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
       elsif user.try(:high_school)
-        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
+        query = InternshipOffers::FreeDate.ignore_already_applied(user: user)
+      end
+
+      query = common_filter do
+        query.kept.in_the_future
+              .published
+              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
       query
     end
@@ -114,16 +105,10 @@ module Finders
       end
     end
 
-    def middle_school_param
-      return nil unless params.key?(:middle_school)
+    def school_type_param
+      return nil unless params.key?(:school_type)
 
-      params[:middle_school].to_s == 'true'
-    end
-
-    def high_school_param
-      return nil unless params.key?(:high_school)
-
-      params[:high_school].to_s == 'true'
+      params[:school_type]
     end
 
     def keyword_params
@@ -150,6 +135,7 @@ module Finders
       query = yield
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
+      query = school_type_filter(query)
       query
     end
 

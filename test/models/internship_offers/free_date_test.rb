@@ -26,10 +26,10 @@ module InternshipsOffers
     test 'scope ignore_already_applied does not show applied offers' do
       student = create(:student)
       create(:free_date_internship_offer)
-      internship_offer = create(:free_date_internship_offer)
+      free_date_internship_offer = create(:free_date_internship_offer)
       create(
-        :internship_application_free_date,
-        internship_offer: internship_offer,
+        :free_date_internship_application,
+        internship_offer: free_date_internship_offer,
         student: student
       )
       assert_equal InternshipOffers::FreeDate.ignore_already_applied(user: student)

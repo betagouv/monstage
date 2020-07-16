@@ -7,7 +7,7 @@ import SchoolTypeInput from './inputs/SchoolTypeInput';
 
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
+function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -15,8 +15,7 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const initialKeyword      = searchParams.get('keyword') || "";
   const initialLatitude     = searchParams.get('latitude');
   const initialLongitude    = searchParams.get('longitude');
-  const initialMiddleSchool = (searchParams.get('middle_school') === 'true');
-  const initialHighSchool   = (searchParams.get('high_school') === 'true');
+  const initialSchoolType   = searchParams.get('school_type');
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -29,16 +28,13 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
 
   // used by both
   const [focus, setFocus] = useState(null);
-    // Checkboxes initialization
-  const initMidSchool = (searchParams.get('middle_school') === null) ? true : initialMiddleSchool;
-  const initHighSchool = (searchParams.get('middle_school') === null) ? true : initialHighSchool;
+    // Checkbox initialization
+  const initSchoolType = (searchParams.get('school_type') === null) ? 'both' : initialSchoolType;
 
-  const [middleSchool, setMiddleSchool] = useState(initMidSchool );
-  const [highSchool, setHighSchool] = useState(initHighSchool);
+  const [schoolType, setSchoolType] = useState(initSchoolType);
 
   const filterOffers = event => {
-    searchParams.set('middle_school', middleSchool)
-    searchParams.set('high_school', highSchool)
+    searchParams.set('school_type', schoolType)
 
     if (city) {
       searchParams.set('city', city);
@@ -72,17 +68,52 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
-    const schoolTypeChanged = initialHighSchool != highSchool || initialMiddleSchool != middleSchool;
+    const schoolTypeChanged = initialSchoolType != schoolType
 
     setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged)
   }
 
   if(isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, middleSchool, highSchool]);
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
   }
 
-  const toggleMiddleSchool = () => setMiddleSchool(!middleSchool)
-  const toggleHighSchool = () => setHighSchool(!highSchool)
+  const toggleMiddleSchool = () => {
+    switch (schoolType) {
+      case 'both':
+        setSchoolType('high_school');
+        break;
+      case 'high_school':
+        setSchoolType('both');
+        break;
+      case 'middle_school':
+        setSchoolType('none');
+        break;
+      case 'none':
+        setSchoolType('middle_school');
+        break;
+      default:
+        console.log('SNO toggleMiddleSchool');
+    }
+  }
+
+  const toggleHighSchool = () => {
+    switch (schoolType) {
+      case 'both':
+        setSchoolType('middle_school');
+        break;
+      case 'high_school':
+        setSchoolType('none');
+        break;
+      case 'middle_school':
+        setSchoolType('both');
+        break;
+      case 'none':
+        setSchoolType('high_school');
+        break;
+      default:
+        console.log('SNO toggleHighSchool');
+    }
+  }
 
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
@@ -131,8 +162,7 @@ function SearchInternshipOffer({ url, schoolTypeVisibility=true, className }) {
       <br/>
       <div>
         <SchoolTypeInput
-          middleSchool={middleSchool}
-          highSchool={highSchool}
+          schoolType={schoolType}
           toggleMiddleSchool={toggleMiddleSchool}
           toggleHighSchool={toggleHighSchool}
           schoolTypeVisibility={schoolTypeVisibility}

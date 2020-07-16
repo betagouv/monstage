@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-function SchoolTypeInput({middleSchool, toggleMiddleSchool, highSchool, toggleHighSchool, schoolTypeVisibility}) {
+function SchoolTypeInput({schoolType, toggleMiddleSchool, toggleHighSchool, schoolTypeVisibility}) {
 
   const visibility = (schoolTypeVisibility == null) ? true : schoolTypeVisibility
   const schoolTypeClass = "text-muted pl-5 form-inline"
@@ -15,7 +15,7 @@ function SchoolTypeInput({middleSchool, toggleMiddleSchool, highSchool, toggleHi
           <input
             type="checkbox"
             name="middle_school"
-            checked={middleSchool}
+            checked={(schoolType === 'both') || (schoolType === 'middle_school')}
             onChange={toggleMiddleSchool}
             className="mr-1"
           />Collège
@@ -26,7 +26,7 @@ function SchoolTypeInput({middleSchool, toggleMiddleSchool, highSchool, toggleHi
           <input
             type="checkbox"
             name="high_school"
-            checked={highSchool}
+            checked={(schoolType === 'both') || (schoolType === 'high_school')}
             onChange={toggleHighSchool}
             className="mr-1"
           />Lycée
