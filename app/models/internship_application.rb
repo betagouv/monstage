@@ -72,44 +72,6 @@ class InternshipApplication < ApplicationRecord
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
-  def student_is_male?
-    student.gender == 'm'
-  end
-
-  def student_is_custom_track?
-    student.custom_track?
-  end
-
-
-  def internship_offer_has_spots_left?
-    return unless internship_offer_week.present?
-
-    unless internship_offer.has_spots_left?
-      errors.add(:internship_offer, :has_no_spots_left)
-    end
-  end
-
-  def internship_offer_week_has_spots_left?
-    unless internship_offer_week.try(:has_spots_left?)
-      errors.add(:internship_offer_week, :has_no_spots_left)
-    end
-  end
-
-  def internship_application_counter_hook
-    case self
-    when InternshipApplications::WeeklyFramed
-      InternshipApplicationCountersHook::WeeklyFramed.new(internship_application: self)
-    when InternshipApplications::FreeDate
-      InternshipApplicationCountersHook::FreeDate.new(internship_application: self)
-    else
-      fail 'can not process stats for this kind of internship_application'
-    end
-  end
-
-  def application_via_school_manager?
-    internship_offer&.school
-  end
-
   aasm do
     state :drafted, initial: true
     state :submitted,
@@ -187,6 +149,29 @@ class InternshipApplication < ApplicationRecord
                                            keep_internship_application_id: id)
       }
     end
+  end
+
+  def student_is_male?
+    student.gender == 'm'
+  end
+
+  def student_is_custom_track?
+    student.custom_track?
+  end
+
+  def internship_application_counter_hook
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationCountersHook::WeeklyFramed.new(internship_application: self)
+    when InternshipApplications::FreeDate
+      InternshipApplicationCountersHook::FreeDate.new(internship_application: self)
+    else
+      fail 'can not process stats for this kind of internship_application'
+    end
+  end
+
+  def application_via_school_manager?
+    internship_offer&.school
   end
 
   def anonymize
