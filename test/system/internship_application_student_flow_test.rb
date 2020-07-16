@@ -5,7 +5,6 @@ require 'application_system_test_case'
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
@@ -20,7 +19,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   test 'student can not submit application wheen school have not choosen week' do
     school = create(:school, weeks: [])
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    student = create(:student, school: create(:school, weeks: []))
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
@@ -33,7 +31,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
     # check application is now here, ensure feature is here
     page.find '#internship-application-closeform', visible: true
-    page.find('.test-missing-school-weeks', visible: true)
+    page.find('.student-form-missing-school-weeks', visible: true)
 
     # check form disabled
     disabled_input_selectors = %w[
