@@ -44,7 +44,6 @@ module InternshipsOffers
 
       internship_offer.internship_offer_weeks.each do |internship_offer_week|
         internship_offer.max_candidates.times do
-          # byebug
           create(:weekly_internship_application, internship_offer: internship_offer_week.internship_offer,
                                                  internship_offer_week: internship_offer_week,
                                                  aasm_state: 'convention_signed')

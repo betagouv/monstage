@@ -14,6 +14,12 @@ module InternshipApplications
     before_validation :internship_offer_has_spots_left?, on: :create
     before_validation :internship_offer_week_has_spots_left?, on: :create
 
+    def approvable?
+      return false unless internship_offer_week.present?
+      return false unless internship_offer.has_spots_left?
+      true
+    end
+
     def internship_offer_has_spots_left?
       return unless internship_offer_week.present?
 
@@ -38,10 +44,6 @@ module InternshipApplications
                               .positive?
         errors.add(:user_id, :duplicate)
       end
-    end
-
-    def weekly_framed?
-      true
     end
   end
 end
