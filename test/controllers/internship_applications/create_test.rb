@@ -94,7 +94,10 @@ module InternshipApplications
       student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
 
-      valid_internship_application_params = { internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
+      valid_internship_application_params = { internship_offer_id: internship_offer.id,
+                                              internship_offer_type: InternshipOffer.name,
+                                              internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
+                                              type: InternshipApplications::FreeDate.name,
                                               motivation: 'Je suis trop motivé wesh',
                                               user_id: student.id }
 

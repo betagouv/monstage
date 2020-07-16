@@ -150,7 +150,7 @@ class InternshipApplicationCountersHookTest < ActiveSupport::TestCase
       @internship_application.save!
     end
 
-    second_application = build(:internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
+    second_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
                                                         student: create(:student, gender: 'f'))
     second_application.aasm_state = :submitted
 
