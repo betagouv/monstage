@@ -151,23 +151,34 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  def internship_application_counter_hook
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
+    when InternshipApplications::FreeDate
+      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
+    else
+      fail 'can not process stats for this kind of internship_application'
+    end
+  end
+
+  def internship_application_aasm_message_builder(aasm_target:)
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
+    when InternshipApplications::FreeDate
+      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
+    else
+      fail 'can not build aasm message for this kind of internship_application'
+    end
+  end
+
   def student_is_male?
     student.gender == 'm'
   end
 
   def student_is_custom_track?
     student.custom_track?
-  end
-
-  def internship_application_counter_hook
-    case self
-    when InternshipApplications::WeeklyFramed
-      InternshipApplicationCountersHook::WeeklyFramed.new(internship_application: self)
-    when InternshipApplications::FreeDate
-      InternshipApplicationCountersHook::FreeDate.new(internship_application: self)
-    else
-      fail 'can not process stats for this kind of internship_application'
-    end
   end
 
   def application_via_school_manager?

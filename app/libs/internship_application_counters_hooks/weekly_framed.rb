@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module InternshipApplicationCountersHook
-  class WeeklyFramed
+module InternshipApplicationCountersHooks
+  class WeeklyFramed < InternshipApplicationCountersHook
     delegate :internship_offer, to: :internship_application
     delegate :internship_offer_week, to: :internship_application
 
