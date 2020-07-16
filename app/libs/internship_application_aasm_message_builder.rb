@@ -1,4 +1,10 @@
 # frozen_string_literal: true
+
+# wire default rich text message with internship_application rich text attributes
+# * approved_message (on internship_application aasm transition approved)
+# * rejected_message (on internship_application aasm transition rejected)
+# * canceled_by_employer_message (on internship_application aasm transition canceled_by_employer)
+# * canceled_by_student_message (on internship_application aasm transition canceled_by_student)
 class InternshipApplicationAasmMessageBuilder
   # "exposed" attributes
   delegate :approved_message,
