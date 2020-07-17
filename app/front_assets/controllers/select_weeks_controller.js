@@ -3,7 +3,12 @@ import { Controller } from 'stimulus';
 import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint'];
+  static targets = [
+    'checkboxesContainer',
+    'weekCheckboxes',
+    'hint',
+    'yearCheckBox'
+  ];
 
   connect() {
     if (this.getForm() === null) {
@@ -11,6 +16,9 @@ export default class extends Controller {
     }
 
     $(this.getForm()).on('submit', this.handleSubmit.bind(this));
+
+    $(this.yearCheckBoxTarget).prop("checked", true);
+    hideElement($(this.checkboxesContainerTarget))
   }
 
   // toggle all weeks options
@@ -18,6 +26,8 @@ export default class extends Controller {
     $(this.weekCheckboxesTargets).each((i, el) => {
       $(el).prop('checked', $(event.target).prop('checked'));
     });
+    let container = $(this.checkboxesContainerTarget)
+    return ($(event.target).prop('checked')) ? hideElement(container) : showElement(container)
   }
 
   // on week checked
