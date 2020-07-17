@@ -98,6 +98,22 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_absence_of(internship_offer: not_published_internship_offer)
   end
 
+  test 'GET #index as visitor or student default shows both middle school and high school offers' do
+    internship_offer_weekly = create(:weekly_internship_offer)
+    internship_offer_free   = create(:free_date_internship_offer)
+    #Visitor
+    get internship_offers_path
+    assert_presence_of(internship_offer: internship_offer_weekly)
+    assert_presence_of(internship_offer: internship_offer_free)
+    #Student
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    sign_in(student)
+    get internship_offers_path
+    assert_presence_of(internship_offer: internship_offer_weekly)
+    assert_presence_of(internship_offer: internship_offer_free)
+  end
+
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > internship_offer_weeks_count' do
     school = create(:school)
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))

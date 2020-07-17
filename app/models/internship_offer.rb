@@ -75,6 +75,14 @@ class InternshipOffer < ApplicationRecord
     all # TODO : specs for FreeDate required
   }
 
+  scope :weekly_framed, lambda {
+    where(type: InternshipOffers::WeeklyFramed.name)
+  }
+
+  scope :free_date, lambda {
+    where(type: InternshipOffers::FreeDate.name)
+  }
+
   validates :title,
             :employer_name,
             :city,

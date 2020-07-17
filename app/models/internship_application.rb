@@ -7,7 +7,7 @@ class InternshipApplication < ApplicationRecord
 
   belongs_to :internship_offer, polymorphic: true
 
-  belongs_to :student, class_name: 'Users::Student',
+  belongs_to :student, class_name:  'Users::Student',
                        foreign_key: 'user_id'
 
   validates :motivation,
@@ -71,6 +71,8 @@ class InternshipApplication < ApplicationRecord
   #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
+  scope :weekly_framed, -> { where(type: InternshipApplication::WeeklyFramed.name) }
+  scope :free_date, -> { where(type: InternshipApplication::FreeDate.name) }
 
   aasm do
     state :drafted, initial: true

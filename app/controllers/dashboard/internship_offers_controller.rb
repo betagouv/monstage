@@ -107,7 +107,13 @@ module Dashboard
 
     def finder
       @finder ||= Finders::ListableInternshipOffer.new(
-        params: params.permit(:page, :latitude, :longitude, :radius),
+        params: params.permit(
+          :page,
+          :latitude,
+          :longitude,
+          :radius,
+          :school_type
+        ),
         user: current_user_or_visitor
       )
     end
@@ -141,7 +147,7 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    coordinates: {}, week_ids: [])
+                    :school_type, coordinates: {}, week_ids: [])
     end
   end
 end

@@ -7,12 +7,12 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   include ::ApiTestHelpers
 
   def assert_presence_of(internship_offer:)
-    assert_selector "a[href='#{internship_offer_path(internship_offer)}']",
+    assert_selector "a[data-test-id='#{internship_offer.id}']",
                     count: 1
   end
 
   def assert_absence_of(internship_offer:)
-    assert_no_selector "a[href='#{internship_offer_path(internship_offer)}']"
+    assert_no_selector "a[data-test-id='#{internship_offer.id}']"
   end
 
   test 'navigation & interaction works' do
@@ -93,5 +93,38 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     find('button#test-submit-search').click
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+  end
+
+  test 'search filters as student : middle_school and high_school checkBoxes' do
+    school = create(:school)
+    student = create(:student, school: school)
+    weekly_internship_offer = create(:weekly_internship_offer)
+    free_date_internship_offer   = create(:free_date_internship_offer)
+    sign_in(student)
+
+    visit internship_offers_path
+
+    # all offers presents
+    assert_presence_of(internship_offer: weekly_internship_offer)
+    assert_presence_of(internship_offer: free_date_internship_offer)
+
+    # filter
+    find('label[for="toggle-choose-school-type"]').click
+    find('label[for="search-by-middle-school"]').click
+    find('button#test-submit-search').click
+    assert_presence_of(internship_offer: weekly_internship_offer)
+    assert_absence_of(internship_offer: free_date_internship_offer)
+
+    # filtered by middle-school
+    find('label[for="search-by-high-school"]').click
+    find('button#test-submit-search').click
+    assert_absence_of(internship_offer: weekly_internship_offer)
+    assert_presence_of(internship_offer: free_date_internship_offer)
+
+    # uncheck selection
+    find('label[for="toggle-choose-school-type"]').click
+    find('button#test-submit-search').click
+    assert_presence_of(internship_offer: weekly_internship_offer)
+    assert_presence_of(internship_offer: free_date_internship_offer)
   end
 end

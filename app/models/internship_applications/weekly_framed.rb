@@ -6,6 +6,10 @@ module InternshipApplications
 
     has_one :week, through: :internship_offer_week
 
+    delegate :update_all_counters, to: :internship_application_counter_hook
+
+    after_save :update_all_counters
+
     validates :internship_offer_week,
               presence: true,
               unless: :application_via_school_manager?

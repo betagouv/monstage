@@ -3,17 +3,19 @@ import Turbolinks from 'turbolinks';
 
 import CityInput from './inputs/CityInput';
 import KeywordInput from './inputs/KeywordInput';
+import SchoolTypeInput from './inputs/SchoolTypeInput';
 
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, initialLocation, className }) {
+function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
-  const initialKeyword = searchParams.get('keyword') || "";
-  const initialLatitude = searchParams.get('latitude');
-  const initialLongitude = searchParams.get('longitude');
+  const initialKeyword      = searchParams.get('keyword') || "";
+  const initialLatitude     = searchParams.get('latitude');
+  const initialLongitude    = searchParams.get('longitude');
+  const initialSchoolType   = searchParams.get('school_type');
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -23,11 +25,20 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const [latitude, setLatitude] = useState(initialLatitude);
   const [longitude, setLongitude] = useState(initialLongitude);
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+
   // used by both
   const [focus, setFocus] = useState(null);
 
+  // Checkbox initialization
+  const [schoolType, setSchoolType] = useState(searchParams.get('school_type'))
 
   const filterOffers = event => {
+    if (schoolType) {
+      searchParams.set('school_type', schoolType)
+    } else {
+      searchParams.delete('school_type');
+    }
+
     if (city) {
       searchParams.set('city', city);
       searchParams.set('latitude', latitude);
@@ -60,12 +71,13 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
+    const schoolTypeChanged = initialSchoolType != schoolType
 
-    setShowSearch(keywordChanged || coordinatesChanged)
+    setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged)
   }
 
   if(isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
   }
 
   return (
@@ -112,6 +124,15 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
           </div>
           )}
       </div>
+      <br/>
+      {schoolTypeVisibility && (
+        <div>
+          <SchoolTypeInput
+            schoolType={schoolType}
+            setSchoolType={setSchoolType}
+          />
+        </div>
+      )}
     </form>
   );
 }

@@ -28,6 +28,13 @@ module Finders
       @params = params
     end
 
+    def school_type_filter(query)
+      query = middle_school_query(query) if school_type_param == 'middle_school'
+      query = high_school_query(query) if school_type_param == 'high_school'
+      query = query.merge(InternshipOffer.none) if school_type_param == 'none'
+      query
+    end
+
     def nearby_query_part(query, coordinates)
       query.nearby(latitude: coordinates.latitude,
                    longitude: coordinates.longitude,
@@ -37,36 +44,39 @@ module Finders
     end
 
     def school_members_query
-      query = keywords_and_coordinates_query do
+      query = InternshipOffer.all
 
-        InternshipOffer.kept
-                      .in_the_future
-                      .published
-                      .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
-      end
-
-      if user.try(:middle_school?)
-        if !user.missing_school_weeks?
-          query = query.merge(InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks))
+      if user.try(:middle_school?) && school_type_param != 'high_school'
+        unless user.missing_school_weeks?
+          query = query.merge(
+            InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
+          )
         end
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
-      # elsif user.try(:high_school?)
-        # query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
+
+      elsif user.try(:high_school) && school_type_param != 'middle_school'
+        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
+      query = common_filter do
+        query.kept
+             .in_the_future
+             .published
+             .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+      end
       query
     end
 
     def employer_query
-      keywords_and_coordinates_query do
+      common_filter do
         user.internship_offers.kept
       end
     end
 
     def operator_query
-      query = keywords_and_coordinates_query do
+      query = common_filter do
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
       if user.department_name.present?
@@ -76,7 +86,7 @@ module Finders
     end
 
     def statistician_query
-      query = keywords_and_coordinates_query do
+      query = common_filter do
         InternshipOffer.kept
       end
       if user.department_name
@@ -86,15 +96,21 @@ module Finders
     end
 
     def visitor_query
-      keywords_and_coordinates_query do
+      common_filter do
         InternshipOffer.kept.in_the_future.published
       end
     end
 
     def god_query
-      keywords_and_coordinates_query do
+      common_filter do
         InternshipOffer.kept
       end
+    end
+
+    def school_type_param
+      return nil unless params.key?(:school_type)
+
+      params[:school_type]
     end
 
     def keyword_params
@@ -117,15 +133,28 @@ module Finders
       params[:radius]
     end
 
-    def keywords_and_coordinates_query
+    def common_filter
       query = yield
-      if keyword_params
-        query = query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
-      end
-      if coordinate_params
-        query = query.merge(nearby_query_part(query, coordinate_params))
-      end
+      query = keyword_query(query) if keyword_params
+      query = nearby_query(query) if coordinate_params
+      query = school_type_filter(query)
       query
+    end
+
+    def keyword_query(query)
+      query.merge(InternshipOffer.search_by_keyword(params[:keyword]).group(:rank))
+    end
+
+    def nearby_query(query)
+      query.merge(nearby_query_part(query, coordinate_params))
+    end
+
+    def middle_school_query(query)
+      query.merge(InternshipOffer.weekly_framed)
+    end
+
+    def high_school_query(query)
+      query.merge(InternshipOffer.free_date)
     end
   end
 end

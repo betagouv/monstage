@@ -19,7 +19,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
      select sector.name, from: 'internship_offer_sector_id'
     end
     if school_type
-      select I18n.t("enum.school_types.#{school_type}"),
+      select I18n.t("activerecord.attributes.internship_offer.internship_type.#{school_type}"),
              from: 'internship_offer_type'
     end
     if group
