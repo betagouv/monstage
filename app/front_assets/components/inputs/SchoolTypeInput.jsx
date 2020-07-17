@@ -13,7 +13,7 @@ function SchoolTypeInput({schoolType, setSchoolType}) {
   }
 
   return (
-    <div className="form-group form-check form-check-inline">
+    <div className="form-group form-check form-check-inline p-0 m-0">
       <div class="custom-control custom-checkbox">
         <input id="toggle-choose-school-type"
                className="custom-control-input"
