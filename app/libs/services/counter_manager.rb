@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Services::CounterManager.reset_internship_offer_counters
+# Services::CounterManager.reset_internship_offer_weeks_counter
 module Services
   class CounterManager
     def self.reset_internship_offer_counters
@@ -22,8 +23,8 @@ module Services
     end
 
     def self.reset_internship_offer_weeks_counter
-      InternshipOffer.find_each do |internship_offer|
-        InternshipOffer.reset_counters(internship_offer.id, :internship_offer_weeks)
+      InternshipOffers::WeeklyFramed.find_each do |internship_offer|
+        InternshipOffers::WeeklyFramed.reset_counters(internship_offer.id, :internship_offer_weeks)
       end
     end
   end
