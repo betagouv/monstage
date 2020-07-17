@@ -95,6 +95,15 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
 
 
 --
+-- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
+    TEMPLATE = pg_catalog.thesaurus,
+    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+
+
+--
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -1378,6 +1387,13 @@ CREATE INDEX index_internship_offers_on_sector_id ON public.internship_offers US
 
 
 --
+-- Name: index_internship_offers_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
 -- Name: index_school_internship_weeks_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1657,7 +1673,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1830,6 +1846,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709110316'),
 ('20200709111802'),
 ('20200709121046'),
-('20200709135354');
+('20200709135354'),
+('20200717134317');
 
 

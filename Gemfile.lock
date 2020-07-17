@@ -106,15 +106,11 @@ GEM
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
     childprocess (3.0.0)
-    cliver (0.3.2)
     concurrent-ruby (1.1.6)
     connection_pool (2.2.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.6)
-    cuprite (0.10)
-      capybara (>= 2.1, < 4)
-      ferrum (~> 0.8.0)
     damerau-levenshtein (1.3.2)
     delayed_job (4.1.8)
       activesupport (>= 3.0, < 6.1)
@@ -149,11 +145,6 @@ GEM
       railties (>= 5.0.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    ferrum (0.8)
-      addressable (~> 2.6)
-      cliver (~> 0.3)
-      concurrent-ruby (~> 1.1)
-      websocket-driver (>= 0.6, < 0.8)
     ffi (1.13.1)
     foreman (0.87.1)
     globalid (0.4.2)
@@ -430,7 +421,6 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   caxlsx_rails
-  cuprite
   delayed_job_active_record
   delayed_job_web
   devise
