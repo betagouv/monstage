@@ -87,7 +87,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('#test-accept-terms').set(true)
+      find('label[for="user_handicap_present"]').click
       click_on "Je m'inscris"
     end
 
