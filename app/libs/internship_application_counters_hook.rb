@@ -1,7 +1,7 @@
 # base class for hooks on internship_applications (compute various counters for dashboard/reporting
 class InternshipApplicationCountersHook
 
-  def default_internship_offer_counters_attributes
+  def internship_offer_counters_attributes
     {
       total_applications_count: total_applications_count,
       total_male_applications_count: total_male_applications_count,
