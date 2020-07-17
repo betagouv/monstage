@@ -15,7 +15,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: bad_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('#test-accept-terms').click
+      find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 

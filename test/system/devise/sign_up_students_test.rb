@@ -29,7 +29,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('#test-accept-terms').click
+      find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
       find('label', text: 'Un compte est déjà associé à cet email')
       assert_equal existing_email, find('#user_email').value
@@ -87,7 +87,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('label[for="user_handicap_present"]').click
+      find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 
