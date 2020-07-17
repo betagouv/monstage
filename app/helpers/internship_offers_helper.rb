@@ -21,7 +21,9 @@ module InternshipOffersHelper
   end
 
   def forwardable_params
-    params.permit(*%i[latitude longitude radius city keyword page filter])
+    params.permit(
+      *%i[latitude longitude radius city keyword page filter school_type]
+    )
   end
 
   def back_to_internship_offers_from_internship_offer_path
