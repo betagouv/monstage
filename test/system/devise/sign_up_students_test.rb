@@ -87,7 +87,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      execute_script("document.getElementById('user_accept_terms').value = '1';")
       click_on "Je m'inscris"
     end
 
@@ -98,6 +97,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student with phone
     assert_difference('Users::Student.count', 1) do
+      byebug
+      find('.form-group label[for="user_accept_terms"]').click
       execute_script("document.getElementById('phone-input').value = '+330637607756';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
