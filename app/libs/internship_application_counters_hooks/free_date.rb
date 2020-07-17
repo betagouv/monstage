@@ -8,7 +8,7 @@ module InternshipApplicationCountersHooks
     # BEWARE: order matters
     def update_all_counters
       # update_internship_offer_week_counters
-      # update_internship_offer_counters
+      internship_offer.update(default_internship_offer_counters_attributes)
     end
   end
 end

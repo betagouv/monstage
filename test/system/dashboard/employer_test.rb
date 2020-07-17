@@ -4,8 +4,6 @@ require 'application_system_test_case'
 module Dashboard
   class AutocompleteSchoolTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
-    include ActiveJob::TestHelper
-    include ActionMailer::TestHelper
 
     AASM_STATES = %i[submitted
                      expired
