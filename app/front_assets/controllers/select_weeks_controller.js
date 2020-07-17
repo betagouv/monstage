@@ -26,8 +26,12 @@ export default class extends Controller {
     $(this.weekCheckboxesTargets).each((i, el) => {
       $(el).prop('checked', $(event.target).prop('checked'));
     });
-    let container = $(this.checkboxesContainerTarget)
-    return ($(event.target).prop('checked')) ? hideElement(container) : showElement(container)
+
+    const container = $(this.checkboxesContainerTarget);
+    if($(event.target).prop('checked')) { hideElement(container) }
+    else { showElement(container); }
+
+    $(this.yearCheckBoxTarget).focus({preventScroll:false});
   }
 
   // on week checked
