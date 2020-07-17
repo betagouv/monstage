@@ -34,7 +34,12 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
   const [schoolType, setSchoolType] = useState(initSchoolType);
 
   const filterOffers = event => {
-    searchParams.set('school_type', schoolType)
+
+    if(schoolType =='both'){
+      searchParams.delete('school_type');
+    } else {
+      searchParams.set('school_type', schoolType)
+    }
 
     if (city) {
       searchParams.set('city', city);
