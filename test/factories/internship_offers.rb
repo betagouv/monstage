@@ -32,7 +32,6 @@ FactoryBot.define do
 
     trait :free_date_internship_offer do
       employer { create(:employer) }
-
     end
 
     trait :discarded do

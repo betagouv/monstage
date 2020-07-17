@@ -6,13 +6,22 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ::ApiTestHelpers
 
-  def assert_presence_of(internship_offer:)
-    assert_selector "a[href='#{internship_offer_path(internship_offer)}']",
-                    count: 1
+  def assert_presence_of(internship_offer:, school_type: nil)
+    if school_type.nil?
+      assert_selector "a[href='#{internship_offer_path(internship_offer)}']",
+                      count: 1
+    else
+      assert_selector "a[href='#{internship_offer_path(internship_offer, school_type: school_type)}']",
+                      count: 1
+    end
   end
 
-  def assert_absence_of(internship_offer:)
-    assert_no_selector "a[href='#{internship_offer_path(internship_offer)}']"
+  def assert_absence_of(internship_offer:, school_type: nil)
+    if school_type.nil?
+      assert_no_selector "a[href='#{internship_offer_path(internship_offer)}']"
+    else
+      assert_no_selector "a[href='#{internship_offer_path(internship_offer, school_type: school_type)}']"
+    end
   end
 
   test 'navigation & interaction works' do
@@ -96,7 +105,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   end
 
   test 'search filters as visitor : middle_school and high_school checkBoxes' do
-    internship_offer_weekly = create(:internship_offer)
+    internship_offer_weekly = create(:weekly_internship_offer)
     internship_offer_free   = create(:free_date_internship_offer)
 
     visit internship_offers_path
@@ -106,16 +115,16 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
 
     page.uncheck('Collège')
     find('button#test-submit-search').click
-    assert_absence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
-    assert_equal page.all(:css, '.middle-school-badge').count, 0
-    assert_equal page.all(:css, '.high-school-badge').count, 1
+    assert_absence_of(internship_offer: internship_offer_weekly, school_type: 'middle_school')
+    assert_presence_of(internship_offer: internship_offer_free, school_type: 'high_school')
+    assert_equal page.all(:css, 'span.middle-school-badge').count, 0
+    assert_equal page.all(:css, 'span.high-school-badge').count, 1
 
     page.check('Collège')
     page.uncheck('Lycée')
     find('button#test-submit-search').click
-    assert_absence_of(internship_offer: internship_offer_weekly)
-    assert_absence_of(internship_offer: internship_offer_free)
+    assert_absence_of(internship_offer: internship_offer_weekly, school_type: 'high_school')
+    assert_absence_of(internship_offer: internship_offer_free, school_type: 'middle_school')
     assert_equal page.all(:css, '.middle-school-badge').count, 1
     assert_equal page.all(:css, '.high-school-badge').count, 0
   end
@@ -123,7 +132,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   test 'search filters as student : middle_school and high_school checkBoxes' do
     school = create(:school)
     student = create(:student, school: school)
-    internship_offer_weekly = create(:internship_offer)
+    internship_offer_weekly = create(:weekly_internship_offer)
     internship_offer_free   = create(:free_date_internship_offer)
     sign_in(student)
 
@@ -134,16 +143,16 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
 
     page.uncheck('Collège')
     find('button#test-submit-search').click
-    assert_absence_of(internship_offer: internship_offer_weekly)
-    assert_presence_of(internship_offer: internship_offer_free)
+    assert_absence_of(internship_offer: internship_offer_weekly, school_type: 'middle_school')
+    assert_presence_of(internship_offer: internship_offer_free, school_type: 'high_school')
     assert_equal page.all(:css, '.middle-school-badge').count, 0
     assert_equal page.all(:css, '.high-school-badge').count, 1
 
     page.check('Collège')
     page.uncheck('Lycée')
     find('button#test-submit-search').click
-    assert_presence_of(internship_offer: internship_offer_weekly)
-    assert_absence_of(internship_offer: internship_offer_free)
+    assert_presence_of(internship_offer: internship_offer_weekly, school_type: 'middle_school')
+    assert_absence_of(internship_offer: internship_offer_free, school_type: 'high_school')
     assert_equal page.all(:css, '.middle-school-badge').count, 1
     assert_equal page.all(:css, '.high-school-badge').count, 0
   end
