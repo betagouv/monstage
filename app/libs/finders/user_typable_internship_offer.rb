@@ -57,7 +57,7 @@ module Finders
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
 
       elsif user.try(:high_school) && school_type_param != 'middle_school'
-        query = InternshipOffers::FreeDate.ignore_already_applied(user: user)
+        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
       query = common_filter do

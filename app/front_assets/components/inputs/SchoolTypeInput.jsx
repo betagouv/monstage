@@ -1,38 +1,59 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 
-function SchoolTypeInput({schoolType, toggleMiddleSchool, toggleHighSchool, schoolTypeVisibility}) {
+function SchoolTypeInput({schoolType, setSchoolType}) {
+  const [filterByTypeEnabled, setfilterByTypeEnabled] = useState(schoolType !== null)
+  const isOptionShown = schoolType != null || filterByTypeEnabled
 
-  const visibility = (schoolTypeVisibility == null) ? true : schoolTypeVisibility
-  const schoolTypeClass = "text-muted pl-5 form-inline"
-  const visibilityClass = (visibility) ? schoolTypeClass : schoolTypeClass + " d-none"
+  const onTogglefilterByTypeEnabled = (event) => {
+    setfilterByTypeEnabled(event.target.checked);
+    if (!event.target.checked) {
+      setSchoolType(null)
+    }
+  }
 
   return (
-    <span id="schoolType" className={visibilityClass} style={{fontWeight: 'lighter'}} >
-      Afficher les offres de :
-      <div id="middleSchoolType " className="checkBox pl-3">
-        <label>
-          <input
-            type="checkbox"
-            name="middle_school"
-            checked={(schoolType === 'both') || (schoolType === 'middle_school')}
-            onChange={toggleMiddleSchool}
-            className="mr-1"
-          />Collège
+    <div className="form-group form-check form-check-inline">
+      <div class="custom-control custom-checkbox">
+        <input id="toggle-choose-school-type"
+               className="custom-control-input"
+               type="checkbox"
+               checked={isOptionShown}
+               onChange={onTogglefilterByTypeEnabled}
+               />
+        <label className="custom-control-label mr-3" htmlFor='toggle-choose-school-type'>
+          {" Filtrer par niveau scolaire"}
         </label>
       </div>
-      <div id="highSchoolType " className="checkBox pl-3">
-        <label>
+      <div className={`custom-control custom-radio custom-control-inline ${isOptionShown ? '' : 'd-none'}`}>
           <input
-            type="checkbox"
-            name="high_school"
-            checked={(schoolType === 'both') || (schoolType === 'high_school')}
-            onChange={toggleHighSchool}
-            className="mr-1"
-          />Lycée
+            type="radio"
+            name="school_type"
+            checked={schoolType === 'middle_school'}
+            value="middle_school"
+            onChange={(event) => setSchoolType(event.target.value)}
+            className="custom-control-input"
+            id="search-by-middle-school"
+          />
+        <label className="custom-control-label" htmlFor="search-by-middle-school">
+            Collège
         </label>
       </div>
-    </span>
+      <div className={`custom-control custom-radio custom-control-inline ${isOptionShown ? '' : 'd-none'}`}>
+        <input
+          type="radio"
+          name="school_type"
+          value="high_school"
+          checked={schoolType === 'high_school'}
+          onChange={(event) => setSchoolType(event.target.value)}
+          className="custom-control-input"
+          id="search-by-high-school"
+        />
+        <label className="custom-control-label" htmlFor="search-by-high-school">
+          Lycée
+        </label>
+      </div>
+    </div>
   );
 }
 export default SchoolTypeInput;

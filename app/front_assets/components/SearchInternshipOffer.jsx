@@ -28,17 +28,15 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
 
   // used by both
   const [focus, setFocus] = useState(null);
-    // Checkbox initialization
-  const initSchoolType = (searchParams.get('school_type') === null) ? 'both' : initialSchoolType;
 
-  const [schoolType, setSchoolType] = useState(initSchoolType);
+  // Checkbox initialization
+  const [schoolType, setSchoolType] = useState(searchParams.get('school_type'))
 
   const filterOffers = event => {
-
-    if(schoolType =='both'){
-      searchParams.delete('school_type');
-    } else {
+    if (schoolType) {
       searchParams.set('school_type', schoolType)
+    } else {
+      searchParams.delete('school_type');
     }
 
     if (city) {
@@ -80,44 +78,6 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
 
   if(isMobile) {
     useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
-  }
-
-  const toggleMiddleSchool = () => {
-    switch (schoolType) {
-      case 'both':
-        setSchoolType('high_school');
-        break;
-      case 'high_school':
-        setSchoolType('both');
-        break;
-      case 'middle_school':
-        setSchoolType('none');
-        break;
-      case 'none':
-        setSchoolType('middle_school');
-        break;
-      default:
-        console.log('SNO toggleMiddleSchool');
-    }
-  }
-
-  const toggleHighSchool = () => {
-    switch (schoolType) {
-      case 'both':
-        setSchoolType('middle_school');
-        break;
-      case 'high_school':
-        setSchoolType('none');
-        break;
-      case 'middle_school':
-        setSchoolType('both');
-        break;
-      case 'none':
-        setSchoolType('high_school');
-        break;
-      default:
-        console.log('SNO toggleHighSchool');
-    }
   }
 
   return (
@@ -165,14 +125,14 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
           )}
       </div>
       <br/>
-      <div>
-        <SchoolTypeInput
-          schoolType={schoolType}
-          toggleMiddleSchool={toggleMiddleSchool}
-          toggleHighSchool={toggleHighSchool}
-          schoolTypeVisibility={schoolTypeVisibility}
-        />
-      </div>
+      {schoolTypeVisibility && (
+        <div>
+          <SchoolTypeInput
+            schoolType={schoolType}
+            setSchoolType={setSchoolType}
+          />
+        </div>
+      )}
     </form>
   );
 }
