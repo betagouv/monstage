@@ -147,8 +147,10 @@ class InternshipApplication < ApplicationRecord
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        student.expire_application_on_week(week: internship_offer_week.week,
-                                           keep_internship_application_id: id)
+        if respond_to?(:internship_offer_week)
+          student.expire_application_on_week(week: internship_offer_week.week,
+                                             keep_internship_application_id: id)
+        end
       }
     end
   end
