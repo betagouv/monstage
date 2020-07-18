@@ -82,7 +82,7 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-retry'
   gem 'selenium-webdriver'
-  # gem 'cuprite'
+  gem 'cuprite'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'webdrivers'
   gem 'rails-controller-testing'
