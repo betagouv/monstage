@@ -6,7 +6,6 @@ require 'minitest/reporters'
 require 'minitest/autorun'
 require 'rails/test_help'
 require 'capybara-screenshot/minitest'
-# require "capybara/cuprite"
 require 'support/api_test_helpers'
 require 'minitest/retry'
 require 'webmock/minitest'
@@ -29,26 +28,6 @@ WebMock.disable_net_connect!(
 )
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
-
-Capybara.register_driver(:cuprite) do |app|
-  Capybara::Cuprite::Driver.new(
-    app,
-    **{
-      window_size: [1200, 800],
-      # See additional options for Dockerized environment in the respective section of this article
-      browser_options: {},
-      # Increase Chrome startup wait time (required for stable CI builds)
-      process_timeout: 10,
-      # Enable debugging capabilities
-      inspector: true,
-      # Allow running Chrome in a headful mode by setting HEADLESS env
-      # var to a falsey value
-      headless: !ENV["HEADLESS"].in?(%w[n 0 no false])
-    }
-  )
-end
-
-Capybara.default_driver = Capybara.javascript_driver = :cuprite
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
