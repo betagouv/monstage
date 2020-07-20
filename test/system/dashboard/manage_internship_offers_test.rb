@@ -4,6 +4,9 @@ require 'application_system_test_case'
 
 class ManageInternshipOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  def wait_form_submitted
+    find('.alert-sticky')
+  end
 
   def fill_in_form(sector:, group:, weeks:, school_type:)
     fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
@@ -53,7 +56,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                      group: group,
                      weeks: available_weeks)
         click_on "Enregistrer et publier l'offre"
-        find('.alert-sticky')
+        wait_form_submitted
       end
     end
     assert_equal employer, InternshipOffer.first.employer
@@ -76,7 +79,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                      group: group,
                      weeks: [])
         click_on "Enregistrer et publier l'offre"
-        find('.alert-sticky')
+        wait_form_submitted
       end
     end
     assert_equal employer, InternshipOffer.first.employer
@@ -86,8 +89,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'can edit internship offer' do
     employer = create(:employer)
     internship_offers = [
-      create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer:employer)
+      create(:weekly_internship_offer, employer: employer,
+                                       description_rich_text: 'boucher'),
+      create(:free_date_internship_offer, employer:employer,
+                                          description_rich_text: 'boucher')
     ]
     sign_in(employer)
 
@@ -95,7 +100,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit edit_dashboard_internship_offer_path(internship_offer)
       fill_in 'internship_offer_title', with: 'editok'
       click_on "Enregistrer et publier l'offre"
-      find('.alert-sticky')
+      wait_form_submitted
       assert_equal 'editok', internship_offer.reload.title
     end
   end
@@ -129,11 +134,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.published_at } do
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-        find('.alert-sticky')
-        assert_equal nil, internship_offer.reload.published_at,'fail to unpublish'
+        wait_form_submitted
+        assert_nil internship_offer.reload.published_at,'fail to unpublish'
         freeze_time do
           page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
-          find('.alert-sticky')
+          wait_form_submitted
           assert_equal Time.now, internship_offer.reload.published_at,'fail to republish'
         end
       end
