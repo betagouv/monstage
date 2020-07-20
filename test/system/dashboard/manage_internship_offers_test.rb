@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class InternshipOffersCreateTest < ApplicationSystemTestCase
+class ManageInternshipOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
   def fill_in_form(sector:, group:, weeks:, school_type:)
@@ -26,6 +26,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
       select group.name, from: 'internship_offer_group_id'
     end
     if weeks.size.positive?
+      find('label[for="all_year_long"]').click
       weeks.map do |week|
         find(:css, "label[for=internship_offer_week_ids_#{week.id}]").click
       end
@@ -36,7 +37,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
   end
 
-  test 'can create internship offer WeeklyFramed' do
+  test 'can create InternshipOffers::WeeklyFramed' do
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
@@ -59,7 +60,7 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     assert_equal 'User', InternshipOffer.first.employer_type
   end
 
-  test 'can create internship offer free type' do
+  test 'can create InternshipOffers::FreeDate' do
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
@@ -80,6 +81,63 @@ class InternshipOffersCreateTest < ApplicationSystemTestCase
     end
     assert_equal employer, InternshipOffer.first.employer
     assert_equal 'User', InternshipOffer.first.employer_type
+  end
+
+  test 'can edit internship offer' do
+    employer = create(:employer)
+    internship_offers = [
+      create(:weekly_internship_offer, employer: employer),
+      create(:free_date_internship_offer, employer:employer)
+    ]
+    sign_in(employer)
+
+    internship_offers.each do |internship_offer|
+      visit edit_dashboard_internship_offer_path(internship_offer)
+      fill_in 'internship_offer_title', with: 'editok'
+      click_on "Enregistrer et publier l'offre"
+      find('.alert-sticky')
+      assert_equal 'editok', internship_offer.reload.title
+    end
+  end
+
+  test 'can discard internship_offer' do
+    employer = create(:employer)
+    internship_offers = [
+      create(:weekly_internship_offer, employer: employer),
+      create(:free_date_internship_offer, employer:employer)
+    ]
+    sign_in(employer)
+
+    internship_offers.each do |internship_offer|
+      visit dashboard_internship_offer_path(internship_offer)
+      assert_changes -> { internship_offer.reload.discarded_at } do
+        page.find('a[data-target="#discard-internship-offer-modal"]').click
+        page.find("#discard-internship-offer-modal .btn-primary").click
+      end
+    end
+  end
+
+  test 'can publish/unpublish internship_offer' do
+    employer = create(:employer)
+    internship_offers = [
+      create(:weekly_internship_offer, employer: employer),
+      create(:free_date_internship_offer, employer:employer)
+    ]
+    sign_in(employer)
+
+    internship_offers.each do |internship_offer|
+      visit dashboard_internship_offer_path(internship_offer)
+      assert_changes -> { internship_offer.reload.published_at } do
+        page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+        find('.alert-sticky')
+        assert_equal nil, internship_offer.reload.published_at,'fail to unpublish'
+        freeze_time do
+          page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
+          find('.alert-sticky')
+          assert_equal Time.now, internship_offer.reload.published_at,'fail to republish'
+        end
+      end
+    end
   end
 
   test 'fails gracefuly' do

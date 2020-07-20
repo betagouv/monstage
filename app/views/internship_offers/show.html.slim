@@ -38,3 +38,6 @@ div data-controller="internship-application-form"
       - else
           = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
+
+- if can?(:discard, InternshipOffer)
+  = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer

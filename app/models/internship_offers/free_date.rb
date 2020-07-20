@@ -1,6 +1,7 @@
 module InternshipOffers
   class FreeDate < InternshipOffer
     after_initialize :init
+    attr_accessor :week_ids
 
     def free_date?
       true

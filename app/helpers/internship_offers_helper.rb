@@ -2,6 +2,12 @@
 
 # used in internships#index
 module InternshipOffersHelper
+  def preselect_all_weeks?(object)
+    is_new_record = object.new_record?
+    is_preselectable_entity = object.is_a?(InternshipOffers::WeeklyFramed) || object.is_a?(InternshipOffer)
+    is_new_record && is_preselectable_entity
+  end
+
   def options_for_groups
     Group.all.map do |group|
       [
