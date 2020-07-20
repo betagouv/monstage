@@ -96,7 +96,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      find('.form-group label[for="user_accept_terms"]').click
+      execute_script("document.getElementById('user_accept_terms').checked = true")
       safe_submit
     end
 
