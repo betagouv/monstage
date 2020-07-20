@@ -26,7 +26,7 @@
 
       <% if can?(:choose_school, resource) %>
         <%= react_component(
-          "AutocompleteSchool",
+          "SearchSchool",
           classes: 'col-12',
           label: "Nom (ou ville) de mon établissement",
           required: true,

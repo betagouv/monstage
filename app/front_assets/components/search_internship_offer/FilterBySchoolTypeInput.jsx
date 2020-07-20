@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 
-function SchoolTypeInput({schoolType, setSchoolType}) {
+function FilterBySchoolTypeInput({schoolType, setSchoolType}) {
   const [filterByTypeEnabled, setfilterByTypeEnabled] = useState(schoolType !== null)
   const isOptionShown = schoolType != null || filterByTypeEnabled
 
@@ -56,4 +56,4 @@ function SchoolTypeInput({schoolType, setSchoolType}) {
     </div>
   );
 }
-export default SchoolTypeInput;
+export default FilterBySchoolTypeInput;

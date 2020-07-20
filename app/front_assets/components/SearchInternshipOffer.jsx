@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Turbolinks from 'turbolinks';
 
-import CityInput from './inputs/CityInput';
-import KeywordInput from './inputs/KeywordInput';
-import SchoolTypeInput from './inputs/SchoolTypeInput';
-
 import findBootstrapEnvironment from '../utils/responsive';
+
+import CityInput from './search_internship_offer/CityInput';
+import KeywordInput from './search_internship_offer/KeywordInput';
+import FilterBySchoolTypeInput from './search_internship_offer/FilterBySchoolTypeInput';
 
 function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
@@ -127,7 +127,7 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
       <br/>
       {schoolTypeVisibility && (
         <div>
-          <SchoolTypeInput
+          <FilterBySchoolTypeInput
             schoolType={schoolType}
             setSchoolType={setSchoolType}
           />
