@@ -14,7 +14,26 @@ export default class extends Controller {
     'selectGroupName',
     'operatorsBlock',
     'operator',
+    'selectType',
+    'weeksContainer'
   ];
+
+  onChooseType(event) {
+    this.chooseType(event.target.value)
+  }
+
+  chooseType(value) {
+    switch (value) {
+      case 'InternshipOffers::WeeklyFramed':
+        showElement($(this.weeksContainerTarget))
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip', true)
+        break;
+      case 'InternshipOffers::FreeDate':
+        hideElement($(this.weeksContainerTarget));
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip', false)
+        break;
+    }
+  }
 
   // show/hide group internship custom controls
   toggleInternshipType(event) {
@@ -70,6 +89,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.chooseType(this.selectTypeTarget.value)
     this.element.addEventListener('submit', this.validateForm, false);
   }
 

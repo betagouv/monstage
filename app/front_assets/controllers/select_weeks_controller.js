@@ -18,6 +18,11 @@ export default class extends Controller {
     $(this.weekCheckboxesTargets).each((i, el) => {
       $(el).prop('checked', $(event.target).prop('checked'));
     });
+    if(event.target.checked){
+       hideElement($(this.checkboxesContainerTarget));
+    } else{
+      showElement($(this.checkboxesContainerTarget));
+    }
   }
 
   // on week checked
@@ -30,6 +35,9 @@ export default class extends Controller {
   }
 
   handleSubmit(event) {
+    if (this.data.get('skip')) {
+      return event;
+    }
     if (!this.hasAtLeastOneCheckbox()) {
       this.onAtLeastOneWeekSelected();
     } else {

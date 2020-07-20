@@ -8,7 +8,7 @@ module InternshipApplications
     include ActionMailer::TestHelper
 
     test 'PATCH #update with approve! any no custom message transition sends email' do
-      internship_application = create(:internship_application, :submitted)
+      internship_application = create(:weekly_internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -21,7 +21,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update with approve! and a custom message transition sends email' do
-      internship_application = create(:internship_application, :submitted)
+      internship_application = create(:weekly_internship_application, :submitted)
       internship_offer = internship_application.internship_offer
 
       sign_in(internship_offer.employer)
@@ -44,7 +44,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update with reject! transition sends email' do
-      internship_application = create(:internship_application, :submitted)
+      internship_application = create(:weekly_internship_application, :submitted)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -58,7 +58,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update with reject! and a custom message transition sends email' do
-      internship_application = create(:internship_application, :submitted)
+      internship_application = create(:weekly_internship_application, :submitted)
       internship_offer = internship_application.internship_offer
 
       sign_in(internship_offer.employer)
@@ -81,7 +81,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update with cancel_by_employer! send email, change aasm_state' do
-      internship_application = create(:internship_application, :approved)
+      internship_application = create(:weekly_internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -99,7 +99,7 @@ module InternshipApplications
 
     test 'PATCH #update with cancel_by_student! send email, change aasm_state' do
       student = create(:student)
-      internship_application = create(:internship_application, :submitted, student: student)
+      internship_application = create(:weekly_internship_application, :submitted, student: student)
 
       sign_in(internship_application.student)
 
@@ -121,7 +121,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update with lol! fails gracefully' do
-      internship_application = create(:internship_application, :approved)
+      internship_application = create(:weekly_internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -136,7 +136,7 @@ module InternshipApplications
     end
 
     test 'PATCH #update as employer with signed! does not send email, change aasm_state' do
-      internship_application = create(:internship_application, :approved)
+      internship_application = create(:weekly_internship_application, :approved)
 
       sign_in(internship_application.internship_offer.employer)
 
@@ -152,7 +152,7 @@ module InternshipApplications
     test 'PATCH #update as school manager works' do
       school = create(:school, :with_school_manager)
       student = create(:student, school: school)
-      internship_application = create(:internship_application, :approved, student: student)
+      internship_application = create(:weekly_internship_application, :approved, student: student)
 
       sign_in(school.school_manager)
 

@@ -48,6 +48,7 @@ module Api
               :remote_id,
               :permalink,
               :sector_uuid,
+              :type,
               :max_candidates,
               coordinates: {},
               weeks: []

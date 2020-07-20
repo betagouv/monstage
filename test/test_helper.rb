@@ -23,11 +23,14 @@ Minitest::Retry.use!(
 WebMock.disable_net_connect!(
   allow: [
     /127\.0\.0\.1/,
+    /github.com/,
+    /github-production-release-asset*/,
     /chromedriver\.storage\.googleapis\.com/
   ]
 )
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
+
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 

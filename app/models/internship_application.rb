@@ -5,25 +5,16 @@ class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
 
-  belongs_to :internship_offer_week
-  belongs_to :student, class_name: 'Users::Student',
-                       foreign_key: 'user_id'
+  belongs_to :internship_offer, polymorphic: true
 
-  has_one :internship_offer, through: :internship_offer_week
-  has_one :week, through: :internship_offer_week
+  belongs_to :student, class_name:  'Users::Student',
+                       foreign_key: 'user_id'
 
   validates :motivation,
             presence: true,
             if: :new_format?
 
-  validates :internship_offer_week,
-            presence: true,
-            unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
-
-  before_validation :internship_offer_has_spots_left?, on: :create
-  before_validation :internship_offer_week_has_spots_left?, on: :create
-  before_validation :at_most_one_application_per_student?, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
@@ -80,44 +71,8 @@ class InternshipApplication < ApplicationRecord
   #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
-
-  def student_is_male?
-    student.gender == 'm'
-  end
-
-  def student_is_custom_track?
-    student.custom_track?
-  end
-
-  def internship_offer_has_spots_left?
-    return unless internship_offer_week.present?
-
-    unless internship_offer.has_spots_left?
-      errors.add(:internship_offer, :has_no_spots_left)
-    end
-  end
-
-  def internship_offer_week_has_spots_left?
-    unless internship_offer_week.try(:has_spots_left?)
-      errors.add(:internship_offer_week, :has_no_spots_left)
-    end
-  end
-
-  def at_most_one_application_per_student?
-    return unless internship_offer_week.present?
-
-    if internship_offer.internship_applications.where(user_id: user_id).count > 0
-      errors.add(:user_id, :duplicate)
-    end
-  end
-
-  def internship_application_counter_hook
-    InternshipApplicationCountersHook.new(internship_application: self)
-  end
-
-  def application_via_school_manager?
-    internship_offer&.school
-  end
+  scope :weekly_framed, -> { where(type: InternshipApplication::WeeklyFramed.name) }
+  scope :free_date, -> { where(type: InternshipApplication::FreeDate.name) }
 
   aasm do
     state :drafted, initial: true
@@ -181,21 +136,57 @@ class InternshipApplication < ApplicationRecord
     event :cancel_by_student do
       transitions from: %i[submitted approved],
                   to: :canceled_by_student,
-                  after: proc {|*_args|
-      update!("canceled_at": Time.now.utc)
-      EmployerMailer.internship_application_canceled_by_student_email(
-        internship_application: self
-      ).deliver_later
-    }
+                  after: proc { |*_args|
+        update!("canceled_at": Time.now.utc)
+        EmployerMailer.internship_application_canceled_by_student_email(
+          internship_application: self
+        ).deliver_later
+      }
     end
 
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        student.expire_application_on_week(week: internship_offer_week.week,
-                                           keep_internship_application_id: id)
+        if respond_to?(:internship_offer_week)
+          student.expire_application_on_week(week: internship_offer_week.week,
+                                             keep_internship_application_id: id)
+        end
       }
     end
+  end
+
+  def internship_application_counter_hook
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
+    when InternshipApplications::FreeDate
+      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
+    else
+      fail 'can not process stats for this kind of internship_application'
+    end
+  end
+
+  def internship_application_aasm_message_builder(aasm_target:)
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
+    when InternshipApplications::FreeDate
+      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
+    else
+      fail 'can not build aasm message for this kind of internship_application'
+    end
+  end
+
+  def student_is_male?
+    student.gender == 'm'
+  end
+
+  def student_is_custom_track?
+    student.custom_track?
+  end
+
+  def application_via_school_manager?
+    internship_offer&.school
   end
 
   def anonymize

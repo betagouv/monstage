@@ -26,14 +26,14 @@ class InternshipOffersController < ApplicationController
                                                  .first
     end
     @internship_application ||= @internship_offer.internship_applications
-                                                 .build(user_id: current_user_id)
+                                                 .build(user_id: current_user_id,
+                                                        type: current_user.try(:internship_applications_type))
   end
 
   private
 
   def set_internship_offer
-    @internship_offer = InternshipOffer.includes(:weeks)
-                                       .with_rich_text_description_rich_text
+    @internship_offer = InternshipOffer.with_rich_text_description_rich_text
                                        .with_rich_text_employer_description_rich_text
                                        .find(params[:id])
   end
@@ -63,7 +63,14 @@ class InternshipOffersController < ApplicationController
 
   def finder
     @finder ||= Finders::ListableInternshipOffer.new(
-      params: params.permit(:page, :latitude, :longitude, :radius, :keyword),
+      params: params.permit(
+        :page,
+        :latitude,
+        :longitude,
+        :radius,
+        :keyword,
+        :school_type
+      ),
       user: current_user_or_visitor
     )
   end

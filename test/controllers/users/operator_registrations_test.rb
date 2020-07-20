@@ -11,7 +11,7 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'label', /Opérateur/
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'GET new as a Operator renders expected inputs' do

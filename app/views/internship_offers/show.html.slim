@@ -1,6 +1,5 @@
 div data-controller="internship-application-form"
   .row.no-gutters data-controller='list-navigation' data-list-navigation-next-url=listable_internship_offer_path(@next_internship_offer) data-list-navigation-previous-url=listable_internship_offer_path(@previous_internship_offer)
-
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
       - if @previous_internship_offer && support_listable?(current_user)
         = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous' do
@@ -29,12 +28,16 @@ div data-controller="internship-application-form"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     .col-12.col-sm-10
       - if user_signed_in?
-        - if @internship_offer.from_api?
-          - # used to avoidcrash on @internship_offer_has_spots_left?
-        - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-          - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
-          - disabled = applicable_weeks.size.zero?
-          = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
+        - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+          - if @internship_offer.weekly?
+            - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
+            - disabled = applicable_weeks.size.zero?
+            = render "internship_applications/forms/weekly", disabled: disabled, applicable_weeks: applicable_weeks
+          - if @internship_offer.free_date?
+            = render "internship_applications/forms/free_date", disabled: false
       - else
           = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
+
+- if can?(:discard, InternshipOffer)
+  = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer

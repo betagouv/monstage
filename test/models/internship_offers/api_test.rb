@@ -58,6 +58,11 @@ module InternshipOffers
       refute InternshipOffers::Api.new(@default_params).valid?
     end
 
+    test 'default max_candidates' do
+      assert_equal 1, InternshipOffers::Api.new.max_candidates
+      assert_equal 1, InternshipOffers::Api.new(max_candidates: '').max_candidates
+    end
+
     test 'is_public does not changes' do
       internship_offer = create(:api_internship_offer, is_public: true)
       internship_offer.title = "booboop"

@@ -8,7 +8,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'input', value: 'SchoolManagement', hidden: 'hidden'
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'POST create School Manager responds with success' do
