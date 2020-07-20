@@ -85,6 +85,7 @@ CREATE TYPE public.user_role AS ENUM (
 );
 
 
+
 --
 -- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
@@ -92,16 +93,6 @@ CREATE TYPE public.user_role AS ENUM (
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
   TEMPLATE = pg_catalog.snowball,
   language = 'french');
-
-
-
---
--- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
 
 --
