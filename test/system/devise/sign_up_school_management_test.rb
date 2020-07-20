@@ -13,7 +13,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     # fails to create school_manager with existing email
     assert_difference('Users::SchoolManagement.school_manager.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').first.click
+      find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select "Chef d'établissement", from: 'user_role'
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
