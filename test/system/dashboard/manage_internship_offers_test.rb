@@ -89,13 +89,14 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'can edit internship offer' do
     employer = create(:employer)
     internship_offers = [
-      create(:weekly_internship_offer, employer: employer,
-                                       description_rich_text: 'boucher'),
-      create(:free_date_internship_offer, employer:employer,
-                                          description_rich_text: 'boucher')
+      create(:weekly_internship_offer, employer: employer),
+      create(:free_date_internship_offer, employer:employer)
     ]
     sign_in(employer)
-
+    internship_offers.map do |internship_offer|
+      internship_offer.description_rich_text = 'okok'
+      internship_offer.save
+    end
     internship_offers.each do |internship_offer|
       visit edit_dashboard_internship_offer_path(internship_offer)
       fill_in 'internship_offer_title', with: 'editok'
