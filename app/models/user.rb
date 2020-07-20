@@ -25,10 +25,10 @@ class User < ApplicationRecord
   validates :first_name, :last_name,
             presence: true
   validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/,
-    message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
+                                                                 message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
 
   validates :email, uniqueness: { allow_blank: true },
-    format: { with: Devise.email_regexp }, allow_blank: true
+                    format: { with: Devise.email_regexp }, allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
@@ -51,6 +51,7 @@ class User < ApplicationRecord
   def channel
     return :phone if phone.present?
     return :email if email.present?
+
     nil
   end
 
@@ -132,8 +133,8 @@ class User < ApplicationRecord
   def reset_password_by_phone
     if phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
       send_sms_token
-      self.update(phone_password_reset_count: phone_password_reset_count + 1,
-                  last_phone_password_reset: Time.now)
+      update(phone_password_reset_count: phone_password_reset_count + 1,
+             last_phone_password_reset: Time.now)
     end
   end
 
@@ -143,13 +144,14 @@ class User < ApplicationRecord
 
   def send_sms_token
     return unless phone.present?
+
     create_phone_token
     SendSmsJob.perform_later(self)
   end
 
   def create_phone_token
-    self.update(phone_token: sprintf('%04d',rand(10000)),
-    phone_token_validity: 1.hour.from_now)
+    update(phone_token: format('%04d', rand(10_000)),
+           phone_token_validity: 1.hour.from_now)
   end
 
   def phone_confirmable?
@@ -157,10 +159,10 @@ class User < ApplicationRecord
   end
 
   def confirm_by_phone!
-    self.update(phone_token: nil,
-                phone_token_validity: nil,
-                confirmed_at: Time.now,
-                phone_password_reset_count: 0)
+    update(phone_token: nil,
+           phone_token_validity: nil,
+           confirmed_at: Time.now,
+           phone_password_reset_count: 0)
   end
 
   def check_phone_token?(token)
@@ -173,6 +175,7 @@ class User < ApplicationRecord
     AddContactToSyncEmailDeliveryJob.perform_later(user: self)
 
     return if email_previous_change.try(:first).nil?
+
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
       email: email_previous_change.first
     )
@@ -196,8 +199,8 @@ class User < ApplicationRecord
 
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.")
-      errors.add(:phone, "Un email ou un téléphone mobile est nécessaire.")
+      errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
+      errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
     end
   end
 end

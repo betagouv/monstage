@@ -16,7 +16,7 @@ module Presenters
     end
 
     def formal_name
-      "#{user.formal_name}"
+      user.formal_name.to_s
     end
 
     def role_name

@@ -5,6 +5,7 @@ module Acl
     def allowed?
       return true if user.is_a?(Users::Employer)
       return true if user.is_a?(Users::Operator)
+
       false
     end
 

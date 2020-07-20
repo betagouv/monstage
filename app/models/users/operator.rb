@@ -12,7 +12,7 @@ module Users
 
     rails_admin do
       list do
-        fields *UserAdmin::DEFAULTS_FIELDS
+        fields(*UserAdmin::DEFAULTS_FIELDS)
         field :operator
       end
     end

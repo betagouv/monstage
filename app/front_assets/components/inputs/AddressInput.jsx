@@ -64,14 +64,15 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group"  id="test-input-full-address">
-
+      <div className="form-group" id="test-input-full-address">
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}
             selectedItem={fullAddress}
-            itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
+            itemToString={(item) => {
+              item && item.properties ? item.properties.label : '';
+            }}
           >
             {({
               getLabelProps,
@@ -84,11 +85,13 @@ export default function AddressInput({
             }) => (
               <div>
                 <label
-                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
-
-
+                  {...getLabelProps({
+                    className: 'label',
+                    htmlFor: `${resourceName}_autocomplete`,
+                  })}
                 >
-                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
+                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la
+                  votre)
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
@@ -118,7 +121,7 @@ export default function AddressInput({
                     >
                       {isOpen
                         ? searchResults.map((item, index) => (
-                              <li
+                            <li
                               {...getItemProps({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''

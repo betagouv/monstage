@@ -82,17 +82,13 @@ module InternshipOffers
     def validate_group_is_public?
       return if group.nil?
 
-      unless group.is_public?
-        errors.add(:group, 'Veuillez choisir une institution de tutelle')
-      end
+      errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
     end
 
     def validate_group_is_not_public?
       return if group.nil?
 
-      if group.is_public?
-        errors.add(:group, 'Veuillez choisir une institution de tutelle')
-      end
+      errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
     end
   end
 end

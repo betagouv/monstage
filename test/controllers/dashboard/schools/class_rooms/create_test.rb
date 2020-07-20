@@ -26,7 +26,7 @@ module Dashboard
               class_room: {
                 name: class_room_name,
                 school_track: :troisieme_segpa
-               }
+              }
             }
             assert_redirected_to dashboard_school_class_rooms_path(school)
           end
@@ -38,7 +38,7 @@ module Dashboard
       test 'POST class_rooms#create with student roles fail' do
         school = create(:school, :with_school_manager)
         [
-          create(:student, school: school),
+          create(:student, school: school)
         ].each do |role|
           sign_in(role)
           post dashboard_school_class_rooms_path(school.to_param), params: { class_room: { name: 'test' } }

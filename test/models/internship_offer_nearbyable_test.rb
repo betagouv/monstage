@@ -9,6 +9,6 @@ class InternshipOfferNearbyableTest < ActiveSupport::TestCase
     internship_offers = InternshipOffer.with_distance_from(latitude: coordinates_bordeaux[:latitude],
                                                            longitude: coordinates_bordeaux[:longitude])
                                        .all
-    assert_equal 499841.82156578, internship_offers.first.relative_distance
+    assert_equal 499_841.82156578, internship_offers.first.relative_distance
   end
 end

@@ -18,16 +18,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('#internship_offer_employer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
     fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
     find('label', text: 'public').click
-    if sector
-     select sector.name, from: 'internship_offer_sector_id'
-    end
+    select sector.name, from: 'internship_offer_sector_id' if sector
     if school_type
       select I18n.t("activerecord.attributes.internship_offer.internship_type.#{school_type}"),
              from: 'internship_offer_type'
     end
-    if group
-      select group.name, from: 'internship_offer_group_id'
-    end
+    select group.name, from: 'internship_offer_group_id' if group
     if weeks.size.positive?
       find('label[for="all_year_long"]').click
       weeks.map do |week|
@@ -35,7 +31,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       end
     end
 
-    find("#internship_offer_autocomplete").fill_in(with: 'Paris, 13eme')
+    find('#internship_offer_autocomplete').fill_in(with: 'Paris, 13eme')
     find('#test-input-full-address #downshift-2-item-0').click
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
   end
@@ -90,7 +86,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer:employer)
+      create(:free_date_internship_offer, employer: employer)
     ]
     sign_in(employer)
     internship_offers.each do |internship_offer|
@@ -108,7 +104,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer:employer)
+      create(:free_date_internship_offer, employer: employer)
     ]
     sign_in(employer)
 
@@ -116,7 +112,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         page.find('a[data-target="#discard-internship-offer-modal"]').click
-        page.find("#discard-internship-offer-modal .btn-primary").click
+        page.find('#discard-internship-offer-modal .btn-primary').click
       end
     end
   end
@@ -125,7 +121,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
-      create(:free_date_internship_offer, employer:employer)
+      create(:free_date_internship_offer, employer: employer)
     ]
     sign_in(employer)
 
@@ -134,7 +130,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_changes -> { internship_offer.reload.published_at } do
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
         wait_form_submitted
-        assert_nil internship_offer.reload.published_at,'fail to unpublish'
+        assert_nil internship_offer.reload.published_at, 'fail to unpublish'
 
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
         wait_form_submitted
@@ -162,7 +158,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       )
       fill_in 'internship_offer_title', with: 'a' * 501
       click_on "Enregistrer et publier l'offre"
-      find("#error_explanation")
+      find('#error_explanation')
     end
   end
 end

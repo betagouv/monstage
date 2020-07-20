@@ -5,12 +5,12 @@ module Finders
   class UserTypableInternshipOffer
     MappingUserTypeWithScope = {
       Users::SchoolManagement.name => :school_members_query,
-      Users::Student.name =>          :school_members_query,
-      Users::Employer.name =>         :employer_query,
-      Users::Operator.name =>         :operator_query,
-      Users::Statistician.name =>     :statistician_query,
-      Users::Visitor.name =>          :visitor_query,
-      Users::God.name =>              :god_query
+      Users::Student.name => :school_members_query,
+      Users::Employer.name => :employer_query,
+      Users::Operator.name => :operator_query,
+      Users::Statistician.name => :statistician_query,
+      Users::Visitor.name => :visitor_query,
+      Users::God.name => :god_query
     }.freeze
 
     def base_query
@@ -79,9 +79,7 @@ module Finders
       query = common_filter do
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
-      if user.department_name.present?
-        query = query.merge(query.limited_to_department(user: user))
-      end
+      query = query.merge(query.limited_to_department(user: user)) if user.department_name.present?
       query
     end
 
@@ -89,9 +87,7 @@ module Finders
       query = common_filter do
         InternshipOffer.kept
       end
-      if user.department_name
-        query = query.merge(query.limited_to_department(user: user))
-      end
+      query = query.merge(query.limited_to_department(user: user)) if user.department_name
       query
     end
 
@@ -126,9 +122,7 @@ module Finders
     end
 
     def radius_params
-      unless params.key?(:radius)
-        return Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
-      end
+      return Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER unless params.key?(:radius)
 
       params[:radius]
     end

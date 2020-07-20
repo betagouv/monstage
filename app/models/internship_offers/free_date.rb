@@ -10,6 +10,7 @@ module InternshipOffers
     def has_spots_left?
       true
     end
+
     #
     # callbacks
     #

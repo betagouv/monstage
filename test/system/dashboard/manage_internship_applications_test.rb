@@ -1,4 +1,3 @@
-
 require 'application_system_test_case'
 
 module Dashboard
@@ -11,7 +10,7 @@ module Dashboard
                      rejected
                      canceled_by_employer
                      canceled_by_student
-                     convention_signed]
+                     convention_signed].freeze
     setup do
       @employer = create(:employer)
     end
@@ -51,8 +50,8 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]", count: 1
       click_on 'Accepter'
       assert_changes -> { weekly_internship_application.reload.approved? },
-                    from: false,
-                    to: true do
+                     from: false,
+                     to: true do
         click_on 'Confirmer'
         find '#alert-text', text: 'Candidature mise à jour avec succès'
       end
@@ -68,8 +67,8 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]", count: 1
       click_on 'Refuser'
       assert_changes -> { free_date_internship_application.reload.rejected? },
-                    from: false,
-                    to: true do
+                     from: false,
+                     to: true do
         click_on 'Confirmer'
         find '#alert-text', text: 'Candidature mise à jour avec succès'
       end

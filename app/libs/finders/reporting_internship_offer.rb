@@ -52,13 +52,9 @@ module Finders
 
     def base_query
       base_query = Reporting::InternshipOffer.during_current_year
-      if department_param
-        base_query = base_query.by_department(department: department_param)
-      end
+      base_query = base_query.by_department(department: department_param) if department_param
       base_query = base_query.by_group(group: group_param) if group_param
-      if academy_param
-        base_query = base_query.by_academy(academy: academy_param)
-      end
+      base_query = base_query.by_academy(academy: academy_param) if academy_param
       base_query = base_query.where(is_public: public_param) if public_param
       base_query
     end

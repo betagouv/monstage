@@ -25,7 +25,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
     assert(ability.cannot?(:manage, InternshipOffer.new),
-                           'students should not be able to con manage internships')
+           'students should not be able to con manage internships')
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
     assert(ability.can?(:choose_school, student),

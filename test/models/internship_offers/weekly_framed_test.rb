@@ -78,8 +78,8 @@ module InternshipsOffers
     test '.reverse_academy_by_zipcode works on create and save' do
       internship_offer = build(:weekly_internship_offer, zipcode: '75015')
       assert_changes -> { internship_offer.academy },
-                    from: '',
-                    to: 'Académie de Paris' do
+                     from: '',
+                     to: 'Académie de Paris' do
         internship_offer.save
       end
     end
@@ -87,16 +87,16 @@ module InternshipsOffers
     test '.reverse_department_by_zipcode works on create and save' do
       internship_offer = build(:weekly_internship_offer, zipcode: '62000', department: 'Arras')
       assert_changes -> { internship_offer.department },
-                    from: 'Arras',
-                    to: 'Pas-de-Calais' do
+                     from: 'Arras',
+                     to: 'Pas-de-Calais' do
         internship_offer.save
       end
     end
 
     test 'RGPD' do
       internship_offer = create(:weekly_internship_offer, tutor_name: 'Eric', tutor_phone: '0123456789',
-        tutor_email: 'eric@octo.com', title: 'Test', description: 'Test', employer_website: 'Test',
-        street: 'rue', employer_name: 'Octo', employer_description: 'Test')
+                                                          tutor_email: 'eric@octo.com', title: 'Test', description: 'Test', employer_website: 'Test',
+                                                          street: 'rue', employer_name: 'Octo', employer_description: 'Test')
 
       internship_offer.anonymize
 
@@ -121,7 +121,7 @@ module InternshipsOffers
 
     test 'duplicate' do
       internship_offer = create(:weekly_internship_offer, description_rich_text: 'abc',
-                                                   employer_description_rich_text: 'def')
+                                                          employer_description_rich_text: 'def')
       duplicated_internship_offer = internship_offer.duplicate
       assert_equal internship_offer.description_rich_text.to_plain_text.strip,
                    duplicated_internship_offer.description_rich_text.to_plain_text.strip

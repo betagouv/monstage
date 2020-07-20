@@ -7,7 +7,7 @@ module Users
       configure :created_at, :datetime
 
       list do
-        fields *UserAdmin::DEFAULTS_FIELDS
+        fields(*UserAdmin::DEFAULTS_FIELDS)
         field :department_name
         field :department_zipcode
         field :sign_in_count
@@ -59,9 +59,7 @@ module Users
     end
 
     def email_in_list
-      unless EmailWhitelist.exists?(email: email)
-        errors.add(:email, 'Cette adresse électronique n\'est pas autorisée')
-      end
+      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelist.exists?(email: email)
     end
   end
 end

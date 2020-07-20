@@ -6,6 +6,7 @@ module Triggered
 
     def perform(employer)
       return unless current_trigger.notifiable?(employer)
+
       # cache ids otherwise notifiable behaviour is changed
       internship_applications = employer.internship_applications
 

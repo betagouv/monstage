@@ -17,7 +17,7 @@ module Presenters
         [].concat(ATTRS, METHODS)
       end
 
-      delegate *metrics, to: :instance
+      delegate(*metrics, to: :instance)
 
       def self.dimension_name
         'Etablissement'

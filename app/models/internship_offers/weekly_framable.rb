@@ -13,7 +13,7 @@ module InternshipOffers
       has_many :weeks, through: :internship_offer_weeks
 
       scope :ignore_already_applied, lambda { |user:|
-        where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'] )
+        where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'])
           .where.not(id: joins(internship_offer_weeks: :internship_applications)
                       .merge(InternshipApplication.where(user_id: user.id)))
       }
@@ -47,8 +47,9 @@ module InternshipOffers
       # callbacks
       #
       def sync_first_and_last_date
-        ordered_weeks = weeks.sort{ |a, b| [a.year, a.number] <=> [b.year, b.number] }
-        first_week, last_week = ordered_weeks.first, ordered_weeks.last
+        ordered_weeks = weeks.sort { |a, b| [a.year, a.number] <=> [b.year, b.number] }
+        first_week = ordered_weeks.first
+        last_week = ordered_weeks.last
         self.first_date = first_week.week_date.beginning_of_week
         self.last_date = last_week.week_date.end_of_week
       end
@@ -64,4 +65,3 @@ module InternshipOffers
     end
   end
 end
-

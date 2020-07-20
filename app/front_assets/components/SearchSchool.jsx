@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
-import SchoolPropType from '../prop_types/school';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
+import SchoolPropType from '../prop_types/school';
 import RadioListSchoolInput from './search_school/RadioListSchoolInput';
 import ClassRoomInput from './search_school/ClassRoomInput';
+
 const StartAutocompleteAtLength = 2;
 
 export default function SearchSchool({
-classes, //PropTypes.string
-label, //PropTypes.string.isRequired
-required, //PropTypes.bool.isRequired
-resourceName, //PropTypes.string.isRequired
-selectClassRoom, //PropTypes.bool.isRequired
-existingSchool, //PropTypes.objectOf(SchoolPropType)
-existingClassRoom, //PropTypes.objectOf(PropTypes.object)
+  classes, // PropTypes.string
+  label, // PropTypes.string.isRequired
+  required, // PropTypes.bool.isRequired
+  resourceName, // PropTypes.string.isRequired
+  selectClassRoom, // PropTypes.bool.isRequired
+  existingSchool, // PropTypes.objectOf(SchoolPropType)
+  existingClassRoom, // PropTypes.objectOf(PropTypes.object)
 }) {
   const [currentRequest, setCurrentRequest] = useState(null);
   const [requestError, setRequestError] = useState(null);
@@ -40,15 +41,15 @@ existingClassRoom, //PropTypes.objectOf(PropTypes.object)
       : city.replace(/<b>/g, '').replace(/<\/b>/g, '');
   };
 
-  const emitRequest = cityName => {
-    setCurrentRequest($.ajax({type: 'POST',
-                              url: '/api/schools/search',
-                              data: { query: cityName }
-                            }).done(fetchDone)
-                              .fail(fetchFail))
+  const emitRequest = (cityName) => {
+    setCurrentRequest(
+      $.ajax({ type: 'POST', url: '/api/schools/search', data: { query: cityName } })
+        .done(fetchDone)
+        .fail(fetchFail),
+    );
   };
 
-  const fetchDone = result => {
+  const fetchDone = (result) => {
     setAutocompleteCitySuggestions(result.match_by_city);
     setSearchSchoolsSuggestions(result.match_by_name);
     setAutocompleteNoResult(result.no_match);
@@ -90,9 +91,9 @@ existingClassRoom, //PropTypes.objectOf(PropTypes.object)
     setCity(selectedItem);
 
     if (autocompleteCitySuggestions.hasOwnProperty(selectedItem)) {
-      setCity(selectedItem)
-      setSchoolsInCitySuggestions(autocompleteCitySuggestions[selectedItem])
-      setClassRoomsSuggestions(null)
+      setCity(selectedItem);
+      setSchoolsInCitySuggestions(autocompleteCitySuggestions[selectedItem]);
+      setClassRoomsSuggestions(null);
     } else {
       setCity(selectedItem.city);
       setSchoolsInCitySuggestions([selectedItem]);
@@ -102,154 +103,176 @@ existingClassRoom, //PropTypes.objectOf(PropTypes.object)
 
     setAutocompleteCitySuggestions({});
     setSearchSchoolsSuggestions([]);
-  }
+  };
 
   const renderAutocompleteInput = () => {
     return (
       <Downshift
-          initialInputValue={city}
-          onChange={onDownshiftChange}
-          selectedItem={city}
-          itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
-        >
-          {({
-            getLabelProps,
-            getInputProps,
-            getItemProps,
-            getMenuProps,
-            isOpen,
-            highlightedIndex,
-            selectedItem,
-          }) => (
-            <div className="form-group custom-label-container">
-              <div className="input-group">
-                <input
-                  required={required}
-
-                  {...getInputProps({
-                    onChange: (e) => { setCity(event.target.value) },
-                    value: currentCityString(),
-                    className: `form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'}`,
-                    name: `${resourceName}[school][city]`,
-                    id: `${resourceName}_school_city`,
-                    placeholder: 'Adresse',
-                  })}
-                />
-                <label {...getLabelProps({className: "label",
-                                        htmlFor: `${resourceName}_school_city` })}>
-                 {label}
-                 <abbr title="(obligatoire)" aria-hidden="true">
-                   *
-                 </abbr>
-               </label>
-               <div className="input-group-append">
-                 {!currentRequest && (
-                    <button
-                      type="button"
-                      className={`btn btn-outline-secondary btn-clear-city ${
-                        autocompleteNoResult ? '' : 'rounded-0'
-                      }`}
-                      onClick={onResetSearch}
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  )}
-                  {currentRequest && (
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary btn-clear-city"
-                      onClick={onResetSearch}
-                    >
-                      <i className="fas fa-spinner fa-spin" />
-                    </button>
-                  )}
-               </div>
+        initialInputValue={city}
+        onChange={onDownshiftChange}
+        selectedItem={city}
+        itemToString={(item) => {
+          item && item.properties ? item.properties.label : '';
+        }}
+      >
+        {({
+          getLabelProps,
+          getInputProps,
+          getItemProps,
+          getMenuProps,
+          isOpen,
+          highlightedIndex,
+          selectedItem,
+        }) => (
+          <div className="form-group custom-label-container">
+            <div className="input-group">
+              <input
+                required={required}
+                {...getInputProps({
+                  onChange: (e) => {
+                    setCity(event.target.value);
+                  },
+                  value: currentCityString(),
+                  className: `form-control ${classes || ''} ${
+                    autocompleteNoResult ? '' : 'rounded-0'
+                  }`,
+                  name: `${resourceName}[school][city]`,
+                  id: `${resourceName}_school_city`,
+                  placeholder: 'Adresse',
+                })}
+              />
+              <label
+                {...getLabelProps({ className: 'label', htmlFor: `${resourceName}_school_city` })}
+              >
+                {label}
+                <abbr title="(obligatoire)" aria-hidden="true">
+                  *
+                </abbr>
+              </label>
+              <div className="input-group-append">
+                {!currentRequest && (
+                  <button
+                    type="button"
+                    className={`btn btn-outline-secondary btn-clear-city ${
+                      autocompleteNoResult ? '' : 'rounded-0'
+                    }`}
+                    onClick={onResetSearch}
+                  >
+                    <i className="fas fa-times" />
+                  </button>
+                )}
+                {currentRequest && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary btn-clear-city"
+                    onClick={onResetSearch}
+                  >
+                    <i className="fas fa-spinner fa-spin" />
+                  </button>
+                )}
               </div>
-              <div className="search-in-place bg-white shadow">
-                <ul
-                  {...getMenuProps({
-                    className: `${classes || ''} list-group p-0 shadow-sm autocomplete-school-results`,
-                  })}
-                >
-                  {isOpen
-                    ? (
-                        <>
-                          <li
-                            className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
-                              Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
-                            }`}
-                          >
-                            Ville(s)
-                          </li>
-                          {Object.keys(autocompleteCitySuggestions || {}).map((currentCity, index) => (
-                              <li {...getItemProps({
-                                index,
-                                item: currentCity,
-                                className: `list-group-item list-group-item-action d-flex justify-content-between align-items-center listview-item ${
-                                  highlightedIndex === index ? 'highlighted-listview-item' : ''
-                                }`,
-                                key: `city-${currentCity}`
-                              })}>
-                                <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-                                <span className="badge-secondary badge-pill small">
-                                  {autocompleteCitySuggestions[currentCity].length} établissement
-                                  {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
-                                </span>
-                              </li>
-                          ))}
-                          <li
-                            className={`list-group-item  list-group-item-secondary small py-2 ${
-                              (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
-                            }`}
-                          >
-                            Etablissement(s)
-                          </li>
-                          {(autocompleteSchoolsSuggestions || []).reduce((accumulator, currentSchool) => {
-                            const index = accumulator.itemIndex++;
+            </div>
+            <div className="search-in-place bg-white shadow">
+              <ul
+                {...getMenuProps({
+                  className: `${
+                    classes || ''
+                  } list-group p-0 shadow-sm autocomplete-school-results`,
+                })}
+              >
+                {isOpen ? (
+                  <>
+                    <li
+                      className={`list-group-item list-group-item-secondary rounded-0 small py-2 ${
+                        Object.keys(autocompleteCitySuggestions || {}).length > 0 ? '' : 'd-none'
+                      }`}
+                    >
+                      Ville(s)
+                    </li>
+                    {Object.keys(autocompleteCitySuggestions || {}).map((currentCity, index) => (
+                      <li
+                        {...getItemProps({
+                          index,
+                          item: currentCity,
+                          className: `list-group-item list-group-item-action d-flex justify-content-between align-items-center listview-item ${
+                            highlightedIndex === index ? 'highlighted-listview-item' : ''
+                          }`,
+                          key: `city-${currentCity}`,
+                        })}
+                      >
+                        <span dangerouslySetInnerHTML={{ __html: currentCity }} />
+                        <span className="badge-secondary badge-pill small">
+                          {autocompleteCitySuggestions[currentCity].length} établissement
+                          {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
+                        </span>
+                      </li>
+                    ))}
+                    <li
+                      className={`list-group-item  list-group-item-secondary small py-2 ${
+                        (autocompleteSchoolsSuggestions || []).length > 0 ? '' : 'd-none'
+                      }`}
+                    >
+                      Etablissement(s)
+                    </li>
+                    {
+                      (autocompleteSchoolsSuggestions || []).reduce(
+                        (accumulator, currentSchool) => {
+                          const index = accumulator.itemIndex++;
 
-                            accumulator.result.push(
-                              <li {...getItemProps({
+                          accumulator.result.push(
+                            <li
+                              {...getItemProps({
                                 index,
                                 item: currentSchool,
                                 className: `list-group-item list-group-item-action text-left listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
                                 }`,
-                                key: `school-${currentSchool.id}`
-                              })}>
-                                <span dangerouslySetInnerHTML={{ __html: currentSchool.pg_search_highlight_name }} />
-                                <br />
-                                <small>
-                                  {currentSchool.city} – {currentSchool.zipcode}
-                                </small>
-                              </li>
-                            )
-                            return accumulator;
-                          }, {result: [], itemIndex: Object.keys(autocompleteCitySuggestions || {}).length}).result}
-                        </>
-                      )
-                    : null}
-                    {requestError && (
-                      <li className="list-group-item list-group-item-danger small">{requestError}</li>
-                    )}
-                    {autocompleteNoResult && (
-                      <li className="list-group-item list-group-item-info small">
-                        Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné est un
-                        établissement REP ou REP+.
-                      </li>
-                    )}
-                </ul>
-              </div>
+                                key: `school-${currentSchool.id}`,
+                              })}
+                            >
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: currentSchool.pg_search_highlight_name,
+                                }}
+                              />
+                              <br />
+                              <small>
+                                {currentSchool.city} – {currentSchool.zipcode}
+                              </small>
+                            </li>,
+                          );
+                          return accumulator;
+                        },
+                        {
+                          result: [],
+                          itemIndex: Object.keys(autocompleteCitySuggestions || {}).length,
+                        },
+                      ).result
+                    }
+                  </>
+                ) : null}
+                {requestError && (
+                  <li className="list-group-item list-group-item-danger small">{requestError}</li>
+                )}
+                {autocompleteNoResult && (
+                  <li className="list-group-item list-group-item-info small">
+                    Aucun résultat pour votre recherche. Assurez-vous que l’établissement renseigné
+                    est un établissement REP ou REP+.
+                  </li>
+                )}
+              </ul>
             </div>
-          )}
-        </Downshift>
-      )
+          </div>
+        )}
+      </Downshift>
+    );
   };
 
   useEffect(() => {
     if (city && city.length > StartAutocompleteAtLength) {
       emitRequest(city);
     } else {
-      setAutocompleteCitySuggestions({})
+      setAutocompleteCitySuggestions({});
     }
   }, [city]);
 
@@ -258,11 +281,28 @@ existingClassRoom, //PropTypes.objectOf(PropTypes.object)
       {renderAutocompleteInput()}
       {city !== null && (
         <>
-          {<RadioListSchoolInput setClassRoomsSuggestions={setClassRoomsSuggestions} selectedSchool={selectedSchool} setSelectedSchool={setSelectedSchool} schoolsInCitySuggestions={schoolsInCitySuggestions} resourceName={resourceName} existingSchool={existingSchool} classes={classes} />}
-          {selectClassRoom && <ClassRoomInput selectedClassRoom={selectedClassRoom} classRoomsSuggestions={classRoomsSuggestions} resourceName={resourceName} existingClassRoom={existingClassRoom} classes={classes} />}
+          {
+            <RadioListSchoolInput
+              setClassRoomsSuggestions={setClassRoomsSuggestions}
+              selectedSchool={selectedSchool}
+              setSelectedSchool={setSelectedSchool}
+              schoolsInCitySuggestions={schoolsInCitySuggestions}
+              resourceName={resourceName}
+              existingSchool={existingSchool}
+              classes={classes}
+            />
+          }
+          {selectClassRoom && (
+            <ClassRoomInput
+              selectedClassRoom={selectedClassRoom}
+              classRoomsSuggestions={classRoomsSuggestions}
+              resourceName={resourceName}
+              existingClassRoom={existingClassRoom}
+              classes={classes}
+            />
+          )}
         </>
       )}
     </div>
   );
 }
-

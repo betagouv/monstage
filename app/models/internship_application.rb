@@ -7,7 +7,7 @@ class InternshipApplication < ApplicationRecord
 
   belongs_to :internship_offer, polymorphic: true
 
-  belongs_to :student, class_name:  'Users::Student',
+  belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
 
   validates :motivation,
@@ -85,7 +85,7 @@ class InternshipApplication < ApplicationRecord
           :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc {|*_args|
+      transitions from: :drafted, to: :submitted, after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
         EmployerMailer.internship_application_submitted_email(internship_application: self)
                       .deliver_later
@@ -101,47 +101,53 @@ class InternshipApplication < ApplicationRecord
     event :approve do
       transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
-                  after: proc {|*_args|
-      update!("approved_at": Time.now.utc)
-      StudentMailer.internship_application_approved_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-      student.school.main_teachers.map do |main_teacher|
-        MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                main_teacher: main_teacher)
-                         .deliver_later
-      end
-    }
+                  after: proc { |*_args|
+                           update!("approved_at": Time.now.utc)
+                           if student.email.present?
+                             StudentMailer.internship_application_approved_email(internship_application: self)
+                                          .deliver_later
+                           end
+                           student.school.main_teachers.map do |main_teacher|
+                             MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                                                     main_teacher: main_teacher)
+                                              .deliver_later
+                           end
+                         }
     end
 
     event :reject do
       transitions from: :submitted,
                   to: :rejected,
-                  after: proc {|*_args|
-      update!("rejected_at": Time.now.utc)
-      StudentMailer.internship_application_rejected_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-    }
+                  after: proc { |*_args|
+                           update!("rejected_at": Time.now.utc)
+                           if student.email.present?
+                             StudentMailer.internship_application_rejected_email(internship_application: self)
+                                          .deliver_later
+                           end
+                         }
     end
 
     event :cancel_by_employer do
       transitions from: %i[drafted submitted approved],
                   to: :canceled_by_employer,
-                  after: proc {|*_args|
-      update!("canceled_at": Time.now.utc)
-      StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-    }
+                  after: proc { |*_args|
+                           update!("canceled_at": Time.now.utc)
+                           if student.email.present?
+                             StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
+                                          .deliver_later
+                           end
+                         }
     end
 
     event :cancel_by_student do
       transitions from: %i[submitted approved],
                   to: :canceled_by_student,
                   after: proc { |*_args|
-        update!("canceled_at": Time.now.utc)
-        EmployerMailer.internship_application_canceled_by_student_email(
-          internship_application: self
-        ).deliver_later
-      }
+                           update!("canceled_at": Time.now.utc)
+                           EmployerMailer.internship_application_canceled_by_student_email(
+                             internship_application: self
+                           ).deliver_later
+                         }
     end
 
     event :signed do
@@ -162,7 +168,7 @@ class InternshipApplication < ApplicationRecord
     when InternshipApplications::FreeDate
       InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
     else
-      fail 'can not process stats for this kind of internship_application'
+      raise 'can not process stats for this kind of internship_application'
     end
   end
 
@@ -173,7 +179,7 @@ class InternshipApplication < ApplicationRecord
     when InternshipApplications::FreeDate
       InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
     else
-      fail 'can not build aasm message for this kind of internship_application'
+      raise 'can not build aasm message for this kind of internship_application'
     end
   end
 
@@ -195,8 +201,8 @@ class InternshipApplication < ApplicationRecord
 
   def new_format?
     return true if new_record?
-    return false if created_at < Date.parse("01/09/2020")
+    return false if created_at < Date.parse('01/09/2020')
+
     true
   end
 end
-

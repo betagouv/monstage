@@ -4,7 +4,6 @@ require 'test_helper'
 module Reporting
   class InternshipOfferAggregateFunctionsTest < ActiveSupport::TestCase
     setup do
-
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
       weeks = [::Week.first, ::Week.last]
@@ -44,13 +43,13 @@ module Reporting
 
     test 'computes internship_offer total_male_applications_count' do
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :female))
+                                                         student: create(:student, :female))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_wood,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -61,13 +60,13 @@ module Reporting
 
     test 'computes internship_offer total_female_applications_count' do
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :female))
+                                                         student: create(:student, :female))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_wood,
-                                                  student: create(:student, :male))
+                                                         student: create(:student, :male))
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]

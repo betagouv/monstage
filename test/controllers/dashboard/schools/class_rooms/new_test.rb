@@ -25,7 +25,7 @@ module Dashboard
       test 'GET class_rooms#new with other roles fail' do
         school = create(:school, :with_school_manager)
         [
-          create(:student, school: school),
+          create(:student, school: school)
         ].each do |role|
           sign_in(role)
           get new_dashboard_school_class_room_path(school.to_param)

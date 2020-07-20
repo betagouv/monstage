@@ -18,8 +18,6 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-
-
       #
       # Index, SchoolManagement
       #
@@ -46,11 +44,11 @@ module Dashboard
         assert_select 'a.nav-link[href=?]',
                       dashboard_school_users_path(school),
                       { count: 1 },
-                      "missing link to manage school users"
+                      'missing link to manage school users'
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
                       { count: 2 },
-                      "missing link to manage school weeks"
+                      'missing link to manage school weeks'
       end
 
       test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
@@ -61,7 +59,7 @@ module Dashboard
         get dashboard_school_class_rooms_path(school)
 
         assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-        assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
+        assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
@@ -94,7 +92,7 @@ module Dashboard
 
           assert_select 'a.float-right[href=?]',
                         dashboard_school_class_room_path(school, class_room_with_student),
-                        {count: 0}, # do not show destroy on classrooms with students,
+                        { count: 0 }, # do not show destroy on classrooms with students,
                         "link to destroy class_room with student present for #{role}"
 
           # edit links

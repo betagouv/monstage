@@ -23,7 +23,7 @@ module InternshipApplicationCountersHooks
       @internship_offer.save!
       @internship_application.aasm_state = :drafted
 
-      assert_no_changes -> {@internship_offer.reload.total_applications_count} do
+      assert_no_changes -> { @internship_offer.reload.total_applications_count } do
         @internship_application.save!
       end
     end

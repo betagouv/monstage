@@ -19,7 +19,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
@@ -31,12 +31,12 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       click_on "Je m'inscris"
     end
   end
 
-   test 'navigation & interaction works until teacher creation' do
+  test 'navigation & interaction works until teacher creation' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_manager = create(:school_manager, school: school_1)
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '77555')
@@ -52,10 +52,10 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-1').click
       find("label[for=\"select-school-#{school_2.id}\"]").click
-      select "Professeur", from: 'user_role'
+      select 'Professeur', from: 'user_role'
       select(class_room_2.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'

@@ -5,11 +5,9 @@ require 'application_system_test_case'
 class SignUpStudentsTest < ApplicationSystemTestCase
   # unfortunatelly on CI tests fails
   def safe_submit
-    begin
-      click_on "Je m'inscris"
-    rescue Selenium::WebDriver::Error::ElementClickInterceptedError
-      execute_script("document.getElementById('new_user').submit()")
-    end
+    click_on "Je m'inscris"
+  rescue Selenium::WebDriver::Error::ElementClickInterceptedError
+    execute_script("document.getElementById('new_user').submit()")
   end
 
   test 'navigation & interaction works until student creation' do
@@ -31,7 +29,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
       find('label', text: 'Email').click
@@ -89,7 +87,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in  with: 'Fourcade'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
       find('label', text: 'SMS').click

@@ -6,9 +6,7 @@ module Dto
       migrate_users if school.users.count.positive?
       migrate_weeks if school.weeks.count.positive?
       migrate_class_rooms if school.class_rooms.count.positive?
-      if InternshipOffer.where(school_id: school.id).count.positive?
-        migrate_internship_offers
-      end
+      migrate_internship_offers if InternshipOffer.where(school_id: school.id).count.positive?
       real.save!
       school.reload
       school.destroy!

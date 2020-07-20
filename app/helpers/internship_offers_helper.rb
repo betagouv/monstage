@@ -14,9 +14,11 @@ module InternshipOffersHelper
         group.name,
         group.id,
         {
-          'data-target' => group.is_public? ?
-                           'internship-form.groupNamePublic' :
-                           'internship-form.groupNamePrivate'
+          'data-target' => if group.is_public?
+                             'internship-form.groupNamePublic'
+                           else
+                             'internship-form.groupNamePrivate'
+end
         }
       ]
     end
@@ -28,12 +30,12 @@ module InternshipOffersHelper
 
   def forwardable_params
     params.permit(
-      *%i[latitude longitude radius city keyword page filter school_type]
+      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_type
     )
   end
 
   def back_to_internship_offers_from_internship_offer_path
-    default_params = { }
+    default_params = {}
 
     internship_offers_path(default_params.merge(forwardable_params))
   end
@@ -63,9 +65,9 @@ module InternshipOffersHelper
 
   def tr_school_type(internship_offer)
     case internship_offer.class.name
-    when 'InternshipOffers::WeeklyFramed' then return I18n.t("#{tr_school_prefix}.middle_school")
-    when 'InternshipOffers::FreeDate' then return I18n.t("#{tr_school_prefix}.high_school")
-    else return I18n.t("#{tr_school_prefix}.middle_school")
+    when 'InternshipOffers::WeeklyFramed' then I18n.t("#{tr_school_prefix}.middle_school")
+    when 'InternshipOffers::FreeDate' then I18n.t("#{tr_school_prefix}.high_school")
+    else I18n.t("#{tr_school_prefix}.middle_school")
     end
   end
 end

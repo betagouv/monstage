@@ -64,7 +64,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :in_the_future, lambda {
-    where("last_date > :now", now: Time.now)
+    where('last_date > :now', now: Time.now)
   }
 
   scope :ignore_max_candidates_reached, lambda {
@@ -182,12 +182,16 @@ class InternshipOffer < ApplicationRecord
                     is_public group school_id coordinates first_date last_date]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-    internship_offer.description_rich_text = (description_rich_text.present? ?
-                                              description_rich_text.to_s :
-                                              description)
-    internship_offer.employer_description_rich_text = (employer_description_rich_text.present? ?
-                                                       employer_description_rich_text.to_s :
-                                                       employer_description)
+    internship_offer.description_rich_text = (if description_rich_text.present?
+                                                description_rich_text.to_s
+                                              else
+                                                description
+end)
+    internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
+                                                         employer_description_rich_text.to_s
+                                                       else
+                                                         employer_description
+end)
 
     internship_offer
   end
@@ -205,9 +209,7 @@ class InternshipOffer < ApplicationRecord
   #     we add a new description_rich_text element which is rendered when possiblee
   #   4. Bonus -> description will be used for description_tsv as template to extract keywords
   def replicate_rich_text_to_raw_fields
-    if description_rich_text.to_s.present?
-      self.description = description_rich_text.to_plain_text
-    end
+    self.description = description_rich_text.to_plain_text if description_rich_text.to_s.present?
     if employer_description_rich_text.to_s.present?
       self.employer_description = employer_description_rich_text.to_plain_text
     end
@@ -236,5 +238,4 @@ class InternshipOffer < ApplicationRecord
   def init
     self.max_candidates ||= 1
   end
-
 end

@@ -24,7 +24,7 @@ class ReservedSchoolInput extends React.Component {
     checked: null,
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ checked: event.target.checked });
   };
 

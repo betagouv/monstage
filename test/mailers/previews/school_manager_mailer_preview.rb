@@ -1,7 +1,7 @@
 class SchoolManagerMailerPreview < ActionMailer::Preview
   def missing_school_weeks
     SchoolManagerMailer.missing_school_weeks(
-      school_manager: Users::SchoolManagement.school_managers.first,
+      school_manager: Users::SchoolManagement.school_managers.first
     )
   end
 

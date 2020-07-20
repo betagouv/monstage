@@ -67,7 +67,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
     MainTeacherMailer.stub(:internship_application_approved_email,
-                       mock_mail_to_main_teacher) do
+                           mock_mail_to_main_teacher) do
       internship_application.save
       internship_application.approve!
     end
@@ -154,8 +154,8 @@ class InternshipApplicationTest < ActiveSupport::TestCase
           mock_mail = MiniTest::Mock.new
           mock_mail.expect(:deliver_later, true)
           StudentMailer.stub :internship_application_canceled_by_employer_email,
-                              mock_mail do
-                              internship_application.cancel_by_employer!
+                             mock_mail do
+            internship_application.cancel_by_employer!
           end
           mock_mail.verify
         end

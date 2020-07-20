@@ -7,7 +7,7 @@ function RadioListSchoolInput({
   schoolsInCitySuggestions,
   existingSchool,
   resourceName,
-  classes
+  classes,
 }) {
   const isWaitingCitySelection =
     schoolsInCitySuggestions.length === 0 && !selectedSchool && !existingSchool;
@@ -55,7 +55,7 @@ function RadioListSchoolInput({
       )}
       {hasPendingSuggestion && (
         <div>
-          {(schoolsInCitySuggestions || []).map(school => (
+          {(schoolsInCitySuggestions || []).map((school) => (
             <div className="custom-control custom-radio" key={`school-${school.id}`}>
               <input
                 type="radio"
@@ -79,6 +79,6 @@ function RadioListSchoolInput({
       )}
     </div>
   );
-};
+}
 
 export default RadioListSchoolInput;

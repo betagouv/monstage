@@ -12,8 +12,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
     sign_in(student)
     visit internship_offer_path(internship_offer)
-    page.find "a", text: "Mon profil"
-    assert_select "a", text: "Je postule", count: 0
+    page.find 'a', text: 'Mon profil'
+    assert_select 'a', text: 'Je postule', count: 0
   end
 
   test 'student can not submit application wheen school have not choosen week' do
@@ -44,7 +44,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     assert_changes -> { student.reload.missing_school_weeks_id },
                    from: nil,
                    to: student.school_id do
-      click_on "Je souhaite une semaine de stage"
+      click_on 'Je souhaite une semaine de stage'
     end
   end
 
@@ -68,8 +68,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-
-   test 'student in troisieme_generale can draft, submit, and cancel(by_student) internship_applications' do
+  test 'student in troisieme_generale can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: weeks)
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
@@ -96,7 +95,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      from: 0,
                      to: 1 do
         click_on 'Valider'
-        page.find("a.btn.btn-danger", text: 'Envoyer')
+        page.find('a.btn.btn-danger', text: 'Envoyer')
       end
 
       assert_changes lambda {
@@ -146,7 +145,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    from: 0,
                    to: 1 do
       click_on 'Valider'
-      page.find("a.btn.btn-danger", text: 'Envoyer')
+      page.find('a.btn.btn-danger', text: 'Envoyer')
     end
 
     assert_changes lambda {

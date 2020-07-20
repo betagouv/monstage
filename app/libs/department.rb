@@ -120,8 +120,11 @@ class Department
   end
 
   def self.to_select(only: nil)
-    list = only ? MAP.select { |code, _name| only.include?(code) }
-                : MAP.map
+    list = if only
+             MAP.select { |code, _name| only.include?(code) }
+           else
+             MAP.map
+end
     list.map { |code, name| ["#{code} - #{name}", name.to_s] }
         .uniq { |item| item[1] }
         .sort

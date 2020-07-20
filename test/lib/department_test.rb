@@ -8,7 +8,7 @@ class DepartmentTest < ActiveSupport::TestCase
   end
 
   test '.to_select only include uniq results' do
-    assert_equal 1, Department.to_select.map{|option| option[1]}.grep(/Corse-du-Sud/).size
+    assert_equal 1, Department.to_select.map { |option| option[1] }.grep(/Corse-du-Sud/).size
   end
 
   test '.to_select is sorted by alnum' do

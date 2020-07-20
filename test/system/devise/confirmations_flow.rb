@@ -17,8 +17,8 @@ class ConfirmationFlowTest < ApplicationSystemTestCase
     click_on 'Renvoyer'
     user.reload
     assert_changes -> { user.reload.confirmed? },
-                    from: false,
-                    to: true do
+                   from: false,
+                   to: true do
       visit user_confirmation_path(confirmation_token: user.confirmation_token)
     end
   end
@@ -37,8 +37,8 @@ class ConfirmationFlowTest < ApplicationSystemTestCase
     click_on 'Renvoyer'
     user.reload
     assert_changes -> { user.reload.confirmed? },
-                    from: false,
-                    to: true do
+                   from: false,
+                   to: true do
       fill_in 'Code de confirmation', with: user.phone_token
       click_on 'Valider'
     end

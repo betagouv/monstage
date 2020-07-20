@@ -146,9 +146,8 @@ class Ability
   end
 
   def student_managed_by?(student:, user:)
-    student.school_id == user.school_id && (
+    student.school_id == user.school_id &&
       user.is_a?(Users::SchoolManagement)
-    )
   end
 
   def shared_signed_in_user_abilities(user:)

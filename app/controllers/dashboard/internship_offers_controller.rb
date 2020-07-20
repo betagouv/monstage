@@ -71,13 +71,13 @@ module Dashboard
 
     def new
       authorize! :create, InternshipOffer
-      if params[:duplicate_id].present?
-        @internship_offer = current_user.internship_offers
+      @internship_offer = if params[:duplicate_id].present?
+                            current_user.internship_offers
                                         .find(params[:duplicate_id])
                                         .duplicate
-      else
-        @internship_offer = InternshipOffer.new
-      end
+                          else
+                            InternshipOffer.new
+                          end
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -128,9 +128,7 @@ module Dashboard
     end
 
     def order_direction
-      if params[:direction] && %w[asc desc].include?(params[:direction])
-        return params[:direction]
-      end
+      return params[:direction] if params[:direction] && %w[asc desc].include?(params[:direction])
 
       :desc
     end

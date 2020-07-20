@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module InternshipApplicationAasmMessageBuilders
   class FreeDate < InternshipApplicationAasmMessageBuilder
     # for html formatted default message

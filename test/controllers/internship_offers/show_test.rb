@@ -81,18 +81,18 @@ module InternshipOffers
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
 
-      assert_select(".student-form-missing-school-weeks",
+      assert_select('.student-form-missing-school-weeks',
                     { count: 1 },
-                    "missing rendering of call_to_action/student_missing_school_weeks")
-      assert_select("a[href=?]",
+                    'missing rendering of call_to_action/student_missing_school_weeks')
+      assert_select('a[href=?]',
                     account_path(user: { missing_school_weeks_id: student.school.id }))
       student.update(missing_school_weeks_id: school.id)
       get internship_offer_path(create(:weekly_internship_offer))
 
       assert_response :success
-      assert_select(".student-form-missing-school-weeks",
+      assert_select('.student-form-missing-school-weeks',
                     { count: 0 },
-                    "missing rendering of call_to_action/student_missing_school_weeks")
+                    'missing rendering of call_to_action/student_missing_school_weeks')
     end
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
@@ -109,7 +109,7 @@ module InternshipOffers
         assert_template 'internship_applications/forms/_weekly'
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
-        assert_select '.btn-danger', text: "Je postule"
+        assert_select '.btn-danger', text: 'Je postule'
       end
     end
 
@@ -150,8 +150,8 @@ module InternshipOffers
       available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
                                                                 week: internship_weeks[1])
       internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
-                                                   internship_offer_weeks: [blocked_internship_week,
-                                                                            available_internship_week])
+                                                          internship_offer_weeks: [blocked_internship_week,
+                                                                                   available_internship_week])
       travel_to(internship_weeks[0].week_date - 1.week) do
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
         get internship_offer_path(internship_offer)
@@ -161,7 +161,7 @@ module InternshipOffers
       end
     end
 
-     test 'GET #show as Student with existing draft application shows the draft' do
+    test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:weekly_internship_offer, weeks: weeks)
       school = create(:school, weeks: weeks)
@@ -213,8 +213,8 @@ module InternshipOffers
 
       school = create(:school, weeks: [matching_week])
       sign_in(create(:student,
-                       class_room: create(:class_room, :troisieme_generale, school: school),
-                       school: school))
+                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     school: school))
       travel_to(matching_week.week_date - 1.month) do
         get internship_offer_path(internship_offer)
 
@@ -249,11 +249,11 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do
-      previous_out = create(:weekly_internship_offer, title: "previous_out")
-      previous_in_page = create(:weekly_internship_offer, title: "previous")
-      current = create(:weekly_internship_offer, title: "current")
-      next_in_page = create(:weekly_internship_offer, title: "next")
-      next_out = create(:weekly_internship_offer, title: "next_out")
+      previous_out = create(:weekly_internship_offer, title: 'previous_out')
+      previous_in_page = create(:weekly_internship_offer, title: 'previous')
+      current = create(:weekly_internship_offer, title: 'current')
+      next_in_page = create(:weekly_internship_offer, title: 'next')
+      next_out = create(:weekly_internship_offer, title: 'next_out')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -269,9 +269,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows next and not previous when no previous' do
-      current = create(:weekly_internship_offer, title: "current")
-      next_in_page = create(:weekly_internship_offer, title: "next")
-      next_out = create(:weekly_internship_offer, title: "next_out")
+      current = create(:weekly_internship_offer, title: 'current')
+      next_in_page = create(:weekly_internship_offer, title: 'next')
+      next_out = create(:weekly_internship_offer, title: 'next_out')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -287,9 +287,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student shows previous and not next when no not' do
-      previous_out = create(:weekly_internship_offer, title: "previous_out")
-      previous_in_page = create(:weekly_internship_offer, title: "previous")
-      current = create(:weekly_internship_offer, title: "current")
+      previous_out = create(:weekly_internship_offer, title: 'previous_out')
+      previous_in_page = create(:weekly_internship_offer, title: 'previous')
+      current = create(:weekly_internship_offer, title: 'current')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -305,9 +305,9 @@ module InternshipOffers
     end
 
     test 'GET #show as Student with forwards latitude, longitude & radius in params to next/prev ' do
-      previous_in_page = create(:weekly_internship_offer, title: "previous")
-      current = create(:weekly_internship_offer, title: "current")
-      next_in_page = create(:weekly_internship_offer, title: "next")
+      previous_in_page = create(:weekly_internship_offer, title: 'previous')
+      current = create(:weekly_internship_offer, title: 'current')
+      next_in_page = create(:weekly_internship_offer, title: 'next')
       student = create(:student, school: create(:school))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -355,13 +355,13 @@ module InternshipOffers
                            page: 5,
                            filter: 'past' }
 
-      get internship_offer_path({id: internship_offer.id}.merge(forwarded_params))
+      get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
       assert_response :success
-      assert_select "#test-backlink"
+      assert_select '#test-backlink'
       assert_template 'internship_offers/_breadcrumb'
       assert_template 'internship_applications/call_to_action/_visitor'
       assert_template 'internship_applications/forms/_visitor'
-      assert_select("a[href=?]",
+      assert_select('a[href=?]',
                     internship_offers_path(forwarded_params))
     end
 
@@ -403,7 +403,6 @@ module InternshipOffers
       assert_select 'a.test-employer-website', 0
     end
 
-
     #
     # Employer
     #
@@ -436,7 +435,7 @@ module InternshipOffers
                     'missing edit internship_offer link for employer'
 
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer),
-                    { text: '0 candidatures', count: 1},
+                    { text: '0 candidatures', count: 1 },
                     'missing link to internship_applications for employer'
 
       assert_select 'a[href=?][data-method=delete]', dashboard_internship_offer_path(internship_offer),
@@ -447,8 +446,8 @@ module InternshipOffers
                     { text: "depuis le #{I18n.l(internship_offer.published_at, format: :human_mm_dd)}" },
                     'invalid published_at'
 
-      assert_template "dashboard/internship_offers/_delete_internship_offer_modal",
-                      "missing discard modal for employer"
+      assert_template 'dashboard/internship_offers/_delete_internship_offer_modal',
+                      'missing discard modal for employer'
     end
 
     test 'GET #show as employer before may or after september show duplicate/renew button' do
@@ -459,30 +458,30 @@ module InternshipOffers
 
       travel_to(current_school_year.beginning_of_period - 1.month) do
         get internship_offer_path(internship_offer)
-        assert_select ".test-duplicate-button", count: 0
-        assert_select ".test-renew-button", count: 1
+        assert_select '.test-duplicate-button', count: 0
+        assert_select '.test-renew-button', count: 1
         assert_response :success
       end
 
       travel_to(current_school_year.beginning_of_period + 1.month) do
         get internship_offer_path(internship_offer)
-        assert_select ".test-duplicate-button", count: 1
-        assert_select ".test-renew-button", count: 0
+        assert_select '.test-duplicate-button', count: 1
+        assert_select '.test-renew-button', count: 0
         assert_response :success
       end
 
       travel_to(current_school_year.end_of_period - 1.month) do
         get internship_offer_path(internship_offer)
         assert_response :success
-        assert_select ".test-duplicate-button", count: 1
-        assert_select ".test-renew-button", count: 0
+        assert_select '.test-duplicate-button', count: 1
+        assert_select '.test-renew-button', count: 0
       end
 
       travel_to(current_school_year.end_of_period + 1.month) do
         get internship_offer_path(internship_offer)
         assert_response :success
-        assert_select ".test-duplicate-button", count: 0
-        assert_select ".test-renew-button", count: 1
+        assert_select '.test-duplicate-button', count: 0
+        assert_select '.test-renew-button', count: 1
       end
     end
   end

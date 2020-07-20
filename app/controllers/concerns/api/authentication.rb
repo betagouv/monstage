@@ -21,9 +21,7 @@ module Api
       end
 
       def authenticate_api_user!
-        unless current_api_user
-          render_error(code: 'UNAUTHORIZED', error: 'wrong api token', status: :unauthorized)
-        end
+        render_error(code: 'UNAUTHORIZED', error: 'wrong api token', status: :unauthorized) unless current_api_user
       end
     end
   end

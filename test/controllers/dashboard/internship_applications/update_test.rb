@@ -32,14 +32,14 @@ module InternshipApplications
           internship_application
         )
         patch(update_url, params: {
-          transition: :approve!,
-          internship_application: { approved_message: 'OK' }
-        })
+                transition: :approve!,
+                internship_application: { approved_message: 'OK' }
+              })
         assert_redirected_to internship_offer.employer.after_sign_in_path
       end
       internship_application.reload
 
-      assert_equal "OK", internship_application.approved_message.try(:to_plain_text)
+      assert_equal 'OK', internship_application.approved_message.try(:to_plain_text)
       assert InternshipApplication.last.approved?
     end
 
@@ -69,14 +69,14 @@ module InternshipApplications
           internship_application
         )
         patch(update_url, params: {
-          transition: :approve!,
-          internship_application: { rejected_message: 'OK' }
-        })
+                transition: :approve!,
+                internship_application: { rejected_message: 'OK' }
+              })
         assert_redirected_to internship_offer.employer.after_sign_in_path
       end
       internship_application.reload
 
-      assert_equal "OK", internship_application.rejected_message.try(:to_plain_text)
+      assert_equal 'OK', internship_application.rejected_message.try(:to_plain_text)
       assert InternshipApplication.last.approved?
     end
 
@@ -93,7 +93,7 @@ module InternshipApplications
       end
       internship_application.reload
 
-      assert_equal "OK", internship_application.canceled_by_employer_message.try(:to_plain_text)
+      assert_equal 'OK', internship_application.canceled_by_employer_message.try(:to_plain_text)
       assert internship_application.canceled_by_employer?
     end
 
@@ -109,14 +109,13 @@ module InternshipApplications
             internship_application.internship_offer, internship_application
           ),
           params: { transition: :cancel_by_student!,
-                    internship_application: { canceled_by_student_message: 'OK' }
-                  }
+                    internship_application: { canceled_by_student_message: 'OK' } }
         )
         assert_redirected_to dashboard_students_internship_applications_path(student)
       end
       internship_application.reload
 
-      assert_equal "OK", internship_application.canceled_by_student_message.try(:to_plain_text)
+      assert_equal 'OK', internship_application.canceled_by_student_message.try(:to_plain_text)
       assert internship_application.canceled_by_student?
     end
 

@@ -78,9 +78,8 @@ module Dashboard
                     convention_signed
                     canceled_by_employer
                     canceled_by_student]
-        internship_applications = states.inject({}) do |accu, state|
+        internship_applications = states.each_with_object({}) do |state, accu|
           accu[state] = create(:weekly_internship_application, state, student: student)
-          accu
         end
 
         sign_in(student)
@@ -129,12 +128,12 @@ module Dashboard
         student = create(:student)
         sign_in(student)
         internship_application = create(:weekly_internship_application, {
-          student: student,
-          aasm_state: :convention_signed,
-          convention_signed_at: 1.days.ago,
-          approved_at: 1.days.ago,
-          submitted_at: 2.days.ago
-        })
+                                          student: student,
+                                          aasm_state: :convention_signed,
+                                          convention_signed_at: 1.days.ago,
+                                          approved_at: 1.days.ago,
+                                          submitted_at: 2.days.ago
+                                        })
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)

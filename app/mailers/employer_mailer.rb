@@ -5,7 +5,7 @@ class EmployerMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.internship_offer.employer.email,
-         subject: "Action requise – Répondre à la candidature")
+         subject: 'Action requise – Répondre à la candidature')
   end
 
   def internship_applications_reminder_email(employer:,
@@ -24,6 +24,6 @@ class EmployerMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.internship_offer.employer.email,
-         subject: "Information – Annulation de candidature")
+         subject: 'Information – Annulation de candidature')
   end
 end

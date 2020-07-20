@@ -6,6 +6,7 @@ module ApplicationHelper
     return false if user_signed_in?
     return false if current_page?(internship_offers_path)
     return false if params[:id] && current_page?(internship_offer_path(id: params[:id]))
+
     true
   end
 

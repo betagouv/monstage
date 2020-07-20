@@ -49,4 +49,3 @@ FactoryBot.define do
                                          parent: :internship_offer
   end
 end
-

@@ -30,7 +30,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   end
 
   test 'search by keyword works' do
-    searched_keyword = "helloworld"
+    searched_keyword = 'helloworld'
     searched_internship_offer = create(:weekly_internship_offer, title: searched_keyword)
     not_searched_internship_offer = create(:weekly_internship_offer)
 
@@ -44,7 +44,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: not_searched_internship_offer)
 
     # start searching
-    fill_in("Mot clé", with: searched_keyword[0..5])
+    fill_in('Mot clé', with: searched_keyword[0..5])
     find('#test-input-keyword-container .listview-item').click
     assert_equal searched_keyword,
                  find('#test-input-keyword-container #input-search-by-keyword').value,
@@ -56,7 +56,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_absence_of(internship_offer: not_searched_internship_offer)
 
     # reset search and submit
-    fill_in("Mot clé", with: '')
+    fill_in('Mot clé', with: '')
 
     # submit search and check result had been filtered
     find('button#test-submit-search').click
@@ -76,9 +76,9 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
 
     # application_system_test_casert searching
-    fill_in("Autour de", with: "Pari")
+    fill_in('Autour de', with: 'Pari')
     find('#test-input-location-container #downshift-1-item-0').click
-    assert_equal "Paris",
+    assert_equal 'Paris',
                  find('#test-input-location-container #input-search-by-city').value,
                  'click on list view does not fill location input'
 
@@ -88,7 +88,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_absence_of(internship_offer: internship_offer_at_bordeaux)
 
     # reset search and submit
-    fill_in("Autour de", with: '')
+    fill_in('Autour de', with: '')
     # submit search and check result had been filtered
     find('button#test-submit-search').click
     assert_presence_of(internship_offer: internship_offer_at_paris)
@@ -99,7 +99,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student, school: school)
     weekly_internship_offer = create(:weekly_internship_offer)
-    free_date_internship_offer   = create(:free_date_internship_offer)
+    free_date_internship_offer = create(:free_date_internship_offer)
     sign_in(student)
 
     visit internship_offers_path

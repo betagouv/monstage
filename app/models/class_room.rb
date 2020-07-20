@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
-
   enum school_track: {
     troisieme_generale: 'troisieme_generale',
     troisieme_prepa_metier: 'troisieme_prepa_metier',
@@ -22,7 +21,7 @@ class ClassRoom < ApplicationRecord
   end
 
   def middle_school?
-    [ troisieme_segpa?, troisieme_generale?, troisieme_prepa_metier? ].any?
+    [troisieme_segpa?, troisieme_generale?, troisieme_prepa_metier?].any?
   end
 
   def high_school?
@@ -32,7 +31,8 @@ class ClassRoom < ApplicationRecord
   def applicable?(internship_offer)
     return true if internship_offer.free_date? && high_school?
     return true if internship_offer.weekly? && middle_school?
-    return false
+
+    false
   end
 
   def to_s
