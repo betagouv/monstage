@@ -27,7 +27,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').first.click
+      find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
@@ -85,7 +85,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # fails to create student with existing email
     assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').first.click
+      find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'

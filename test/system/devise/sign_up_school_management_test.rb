@@ -50,7 +50,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     # fails to create teacher with existing email
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').last.click
+      find('#downshift-0-item-1').click
       find("label[for=\"select-school-#{school_2.id}\"]").click
       select "Professeur", from: 'user_role'
       select(class_room_2.name, from: 'user_class_room_id')
@@ -71,7 +71,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     # create teacher
     assert_difference('Users::SchoolManagement.teacher.count', 1) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      all('.list-group .list-group-item-action').first.click
+      find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: 'another@email.com'
