@@ -31,7 +31,6 @@ module Finders
     def school_type_filter(query)
       query = middle_school_query(query) if school_type_param == 'middle_school'
       query = high_school_query(query) if school_type_param == 'high_school'
-      query = query.merge(InternshipOffer.none) if school_type_param == 'none'
       query
     end
 
