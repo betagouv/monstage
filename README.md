@@ -103,7 +103,7 @@ foreman start -f Procfile.dev
 ### system / e2e, runs within a browswer
 
 * run in background: `rails test:system`
-* run with browser `BROWSER=1 rails test:system`
+* run with browser `BROWSER=firefox|chrome rails test:system`
 
 
 ### w3c (using vnu.jar)
