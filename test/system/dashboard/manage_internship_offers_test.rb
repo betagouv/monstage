@@ -93,13 +93,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       create(:free_date_internship_offer, employer:employer)
     ]
     sign_in(employer)
-    internship_offers.map do |internship_offer|
-      internship_offer.description_rich_text = 'okok'
-      internship_offer.save
-    end
     internship_offers.each do |internship_offer|
       visit edit_dashboard_internship_offer_path(internship_offer)
       fill_in 'internship_offer_title', with: 'editok'
+      find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
+
       click_on "Enregistrer et publier l'offre"
       wait_form_submitted
       assert_equal 'editok', internship_offer.reload.title
