@@ -92,6 +92,64 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
+def populate_internship_offers
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Offre 3e/collège',
+    description_rich_text: 'une offre au top',
+    employer_description_rich_text: 'maraichers',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+  InternshipOffers::Api.create!(
+    employer: Users::Operator.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Offre de partenaire 3e uniquement',
+    description_rich_text: 'une offre au top',
+    employer_description_rich_text: 'maraichers',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    remote_id: '1',
+    permalink: 'https://www.google.fr',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Offre lycee',
+    description_rich_text: 'une offre au top',
+    employer_description_rich_text: 'maraichers',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+end
+
 if Rails.env == 'review'
   populate_week_reference
   populate_schools
@@ -100,4 +158,5 @@ if Rails.env == 'review'
   populate_users
   populate_sectors
   populate_groups
+  populate_internship_offers
 end
