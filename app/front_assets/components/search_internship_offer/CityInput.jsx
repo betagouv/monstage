@@ -3,6 +3,7 @@ import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
+import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 

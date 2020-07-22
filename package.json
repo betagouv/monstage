@@ -28,7 +28,8 @@
     "trix": "^1.0.0",
     "turbolinks": "^5.2.0",
     "url-search-params-polyfill": "^8.0.0",
-    "use-debounce": "^3.4.1"
+    "use-debounce": "^3.4.1",
+    "whatwg-fetch": "^3.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.2",

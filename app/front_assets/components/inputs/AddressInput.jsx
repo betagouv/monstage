@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
+import { fetch } from 'whatwg-fetch';
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
