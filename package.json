@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.7.2",
-    "@babel/polyfill": "^7.10.4",
     "@babel/preset-react": "^7.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
     "@fortawesome/free-regular-svg-icons": "^5.8.2",
