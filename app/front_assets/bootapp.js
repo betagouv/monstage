@@ -1,11 +1,14 @@
+// rails stack
 import '@stimulus/polyfills';
 import Rails from 'rails-ujs';
 import { Application } from 'stimulus';
 import { definitionsFromContext } from 'stimulus/webpack-helpers';
+import Turbolinks from 'turbolinks';
+
+// icons
 import 'fonts/fontawesome';
 
 Rails.start();
-import Turbolinks from 'turbolinks';
 Turbolinks.start();
 const application = Application.start()
 

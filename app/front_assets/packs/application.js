@@ -7,8 +7,14 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 import "core-js/stable";
+
 import "regenerator-runtime/runtime";
 import '../stylesheets/application.scss';
+
+// react polyfills (ie<11), see: https://reactjs.org/docs/javascript-environment-requirements.html
+import 'raf/polyfill';
+import 'core-js/es/map';
+import 'core-js/es/set';
 
 import Alert from 'bootstrap'
 import Dropdown from 'bootstrap'
