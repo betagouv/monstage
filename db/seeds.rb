@@ -92,7 +92,7 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
-if Rails.env == 'review'
+if Rails.env.development? || Rails.env.review?
   populate_week_reference
   populate_schools
   School.update_all(updated_at: Time.now)

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
+  include AASM
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
@@ -120,6 +121,21 @@ class InternshipOffer < ApplicationRecord
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
+
+  aasm do
+    state :drafted, initial: true
+    state :step_2,
+          :step_3,
+          :submitted,
+          :approved,
+          :rejected
+
+    event :submit do
+      transitions from: :step_3, to: :submitted, after: proc {|*_args|
+        update!("submitted_at": Time.now.utc)
+      }
+    end
+  end
 
   def published?
     published_at.present?

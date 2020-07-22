@@ -88,13 +88,7 @@ export default function AddressInput({
 
 
                 >
-                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
-                  <abbr title="(obligatoire)" aria-hidden="true">
-                    *
-                  </abbr>
-                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
-                    <i className="fas fa-question-circle" />
-                  </a>
+                  Adresse du lieu où se déroule le stage
                 </label>
 
                 <div>
@@ -142,11 +136,6 @@ export default function AddressInput({
             )}
           </Downshift>
         </div>
-        <div className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
-          Si vous proposez le même stage dans un autre établissement, déposez une offre par
-          établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux),
-          indiquez l'adresse où l'élève devra se rendre au premier jour
-        </div>
         <input
           id={`${resourceName}_coordinates_latitude`}
           value={latitude}
@@ -161,13 +150,10 @@ export default function AddressInput({
         />
       </div>
       <div className="form-row">
-        <div className="col-sm-6">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_street`}>
               Rue ou compléments d'adresse
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
             </label>
             <input
               className="form-control"
@@ -182,32 +168,10 @@ export default function AddressInput({
             />
           </div>
         </div>
-        <div className="col-sm-2">
-          <div className="form-group">
-            <label htmlFor={`${resourceName}_zipcode`}>
-              Code postal
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
-            </label>
-            <input
-              className="form-control"
-              required="required"
-              value={zipcode}
-              type="text"
-              name={`${resourceName}[zipcode]`}
-              id={`${resourceName}_zipcode`}
-              readOnly
-            />
-          </div>
-        </div>
-        <div className="col-sm-4">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_city`}>
               Ville
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
             </label>
             <input
               className="form-control"
@@ -217,6 +181,22 @@ export default function AddressInput({
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
+            />
+          </div>
+        </div>
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_zipcode`}>
+              Code postal
+            </label>
+            <input
+              className="form-control"
+              required="required"
+              value={zipcode}
+              type="text"
+              name={`${resourceName}[zipcode]`}
+              id={`${resourceName}_zipcode`}
+              readOnly
             />
           </div>
         </div>

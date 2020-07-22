@@ -475,6 +475,40 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreements (
+    id bigint NOT NULL,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone,
+    aasm_state character varying,
+    internship_application_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_agreements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreements_id_seq OWNED BY public.internship_agreements.id;
+
+
+--
 -- Name: internship_applications; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -630,7 +664,10 @@ CREATE TABLE public.internship_offers (
     first_date date,
     last_date date,
     type character varying,
-    search_tsv tsvector
+    search_tsv tsvector,
+    aasm_state character varying,
+    organisation_id bigint,
+    mentor_id bigint
 );
 
 
@@ -651,6 +688,39 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
+
+
+--
+-- Name: mentors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.mentors (
+    id bigint NOT NULL,
+    name character varying,
+    email character varying,
+    phone character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: mentors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.mentors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: mentors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.mentors_id_seq OWNED BY public.mentors.id;
 
 
 --
@@ -680,6 +750,44 @@ CREATE SEQUENCE public.operators_id_seq
 --
 
 ALTER SEQUENCE public.operators_id_seq OWNED BY public.operators.id;
+
+
+--
+-- Name: organisations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.organisations (
+    id bigint NOT NULL,
+    name character varying,
+    street character varying,
+    zipcode character varying,
+    city character varying,
+    website character varying,
+    description text,
+    coordinates public.geography(Point,4326),
+    is_public boolean,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: organisations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.organisations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: organisations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 
 --
@@ -741,7 +849,8 @@ CREATE TABLE public.schools (
     city_tsv tsvector,
     kind character varying,
     visible boolean DEFAULT true,
-    missing_school_weeks_count integer DEFAULT 0
+    missing_school_weeks_count integer DEFAULT 0,
+    internship_agreement_online boolean DEFAULT false
 );
 
 
@@ -943,6 +1052,13 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: internship_agreements id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreements ALTER COLUMN id SET DEFAULT nextval('public.internship_agreements_id_seq'::regclass);
+
+
+--
 -- Name: internship_applications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -971,10 +1087,24 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: mentors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.mentors ALTER COLUMN id SET DEFAULT nextval('public.mentors_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.operators ALTER COLUMN id SET DEFAULT nextval('public.operators_id_seq'::regclass);
+
+
+--
+-- Name: organisations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('public.organisations_id_seq'::regclass);
 
 
 --
@@ -1077,6 +1207,14 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: internship_agreements internship_agreements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreements
+    ADD CONSTRAINT internship_agreements_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: internship_applications internship_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1109,11 +1247,27 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: mentors mentors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.mentors
+    ADD CONSTRAINT mentors_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: operators operators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.operators
     ADD CONSTRAINT operators_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: organisations organisations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisations
+    ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1211,6 +1365,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreements_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreements_on_internship_application_id ON public.internship_agreements USING btree (internship_application_id);
 
 
 --
@@ -1312,10 +1473,24 @@ CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USI
 
 
 --
+-- Name: index_internship_offers_on_mentor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_mentor_id ON public.internship_offers USING btree (mentor_id);
+
+
+--
 -- Name: index_internship_offers_on_old_group; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_internship_offers_on_old_group ON public.internship_offers USING btree (old_group);
+
+
+--
+-- Name: index_internship_offers_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_organisation_id ON public.internship_offers USING btree (organisation_id);
 
 
 --
@@ -1351,6 +1526,13 @@ CREATE INDEX index_internship_offers_on_search_tsv ON public.internship_offers U
 --
 
 CREATE INDEX index_internship_offers_on_sector_id ON public.internship_offers USING btree (sector_id);
+
+
+--
+-- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_organisations_on_coordinates ON public.organisations USING gist (coordinates);
 
 
 --
@@ -1790,6 +1972,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200620134004'),
 ('20200622074942'),
 ('20200622080019'),
-('20200629133744');
+('20200629133744'),
+('20200709081408'),
+('20200715144451'),
+('20200721124215'),
+('20200721150028'),
+('20200722141350'),
+('20200722144039');
 
 

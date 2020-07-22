@@ -33,7 +33,6 @@ export default class extends Controller {
     if (event.target.value === 'true') {
       $(this.groupLabelTarget).html(`
         Institution de tutelle
-        <abbr title="(obligatoire)" aria-hidden="true">*</abbr>
       `);
       $(this.selectGroupNameTarget).prop('required', true);
     } else {
@@ -67,6 +66,39 @@ export default class extends Controller {
       document.getElementById('js-internship_offer_autocomplete').focus();
     }
     return event;
+  }
+
+  validateStep1(event) {
+    event.preventDefault()
+    $("#step-1").addClass('d-none')
+    $("#step-1").hide()
+    $("#step-2").removeClass('d-none')
+    $("#step-2").slideDown()
+    $('html,body').animate({scrollTop: $("#step-2").offset().top},'slow');
+  }
+
+  validateStep2(event) {
+    event.preventDefault()
+    $("#step-2").addClass('d-none')
+    $("#step-2").hide()
+    $("#step-3").removeClass('d-none')
+    $("#step-3").slideDown()
+    $('html,body').animate({scrollTop: $("#step-3").offset().top},'slow');
+  }
+
+  handleToggleWeeklyPlanning(event){
+    console.log('check')
+    if($('#same_daily_planning').is(":checked")){
+      $("#daily-planning").addClass('d-none')
+      $("#daily-planning").hide()
+      $("#weekly-planning").removeClass('d-none')
+      $("#weekly-planning").slideDown()
+    } else {
+      $("#weekly-planning").addClass('d-none')
+      $("#weekly-planning").hide()
+      $("#daily-planning").removeClass('d-none')
+      $("#daily-planning").slideDown()
+    }
   }
 
   connect() {

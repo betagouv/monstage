@@ -81,6 +81,12 @@ module Dashboard
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
+    def step_2
+    end
+
+    def step_3
+    end
+
     private
 
     VALID_ORDER_COLUMNS = %w[

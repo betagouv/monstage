@@ -1,0 +1,29 @@
+.row.my-4
+  .col-12
+    ul.nav.align-items-center.no-gutters.nav-link-icons-timeline
+      li.col-4.nav-item
+        .nav-link.trailing-nav-link-icon.nav-link-icon-with-label.nav-link-icon-with-label-success
+          span.d-inline-flex.align-items-center.nav-link-icon 
+            .number
+              - if @internship_offer.present?
+                i.fa.fa-check
+              - else
+                | 1
+          br
+          small= "Information sur l'entreprise"
+      li.col-4.nav-item
+        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if @internship_offer.present?)
+          span.d-inline-flex.align-items-center.nav-link-icon
+            .number
+              - if stepper_step_2_completed?(@internship_offer)
+                i.fa.fa-check
+              - else
+                | 2
+          br
+          small= "L'offre de stage"
+      li.col-4.nav-item
+        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if stepper_step_2_completed?(@internship_offer))
+          span.d-inline-flex.align-items-center.nav-link-icon
+            .number 3
+          br
+          small= "Informations Complémentaires"
