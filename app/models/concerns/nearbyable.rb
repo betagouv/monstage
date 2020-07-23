@@ -49,9 +49,7 @@ module Nearbyable
     end
 
     def coordinates_are_valid?
-      if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
-        return true
-      end
+      return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
 
       errors.add(:coordinates, :blank)
     end

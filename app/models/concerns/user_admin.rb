@@ -7,7 +7,7 @@ module UserAdmin
   included do
     rails_admin do
       list do
-        fields *DEFAULTS_FIELDS
+        fields(*DEFAULTS_FIELDS)
         field :school do
           pretty_value do
             object = bindings[:object]
@@ -21,15 +21,15 @@ module UserAdmin
       end
 
       edit do
-        fields *DEFAULTS_FIELDS
+        fields(*DEFAULTS_FIELDS)
       end
 
       show do
-        fields *UserAdmin::DEFAULTS_FIELDS
+        fields(*UserAdmin::DEFAULTS_FIELDS)
       end
 
       show do
-        fields *DEFAULTS_FIELDS
+        fields(*DEFAULTS_FIELDS)
         field :confirmation_sent_at do
           date_format 'KO'
           strftime_format '%d/%m/%Y'
@@ -46,7 +46,7 @@ module UserAdmin
       end
 
       export do
-        fields *UserAdmin::DEFAULTS_FIELDS
+        fields(*UserAdmin::DEFAULTS_FIELDS)
         field :role
         field :type
       end

@@ -26,7 +26,7 @@
 
       <% if can?(:choose_school, resource) %>
         <%= react_component(
-          "AutocompleteSchool",
+          "SearchSchool",
           classes: 'col-12',
           label: "Nom (ou ville) de mon établissement",
           required: true,
@@ -178,14 +178,14 @@
         <div class="custom-control custom-checkbox">
           <%= f.check_box :accept_terms, class: 'custom-control-input' %>
           <%= f.label :accept_terms, class: 'custom-control-label' do %>
-            <span id="test-accept-terms">J'accepte les</span>
-            <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer"  %>
+            J'accepte les
           <% end %>
+          <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'font-weight-normal'  %>
         </div>
       </div>
 
       <div class="actions d-flex d-sm-block text-center">
-        <%= f.submit "Je m'inscris", class: 'btn btn-primary' %>
+        <%= f.submit "Je m'inscris", class: 'btn btn-primary', id: 'test-create-user' %>
       </div>
     <% end %>
   </div>

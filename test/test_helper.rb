@@ -11,27 +11,30 @@ require 'minitest/retry'
 require 'webmock/minitest'
 
 Minitest::Retry.use!(
-  retry_count:  3,
+  retry_count: 3,
   verbose: true,
   io: $stdout,
   exceptions_to_retry: [
     ActionView::Template::Error, # during test, sometimes fails on "unexpected token at ''", not fixable
-    PG::InternalError,           # sometimes postgis ref system is not yet ready
+    PG::InternalError # sometimes postgis ref system is not yet ready
   ]
 )
 
 WebMock.disable_net_connect!(
   allow: [
     /127\.0\.0\.1/,
+    /github.com/,
+    /github-production-release-asset*/,
     /chromedriver\.storage\.googleapis\.com/
   ]
 )
 
 Capybara.save_path = Rails.root.join('tmp/screenshots')
+
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
-  parallelize_setup do |worker|
+  parallelize_setup do |_worker|
     # setup databases
     if ENV['CI'].blank?
       postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')

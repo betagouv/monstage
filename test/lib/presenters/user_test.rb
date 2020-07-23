@@ -13,7 +13,7 @@ module Presenters
 
     test '.role_name' do
       assert_equal "Chef d'établissement", UserManagemetRole.new(user: @school_manager).role
-      assert_equal "Professeur", UserManagemetRole.new(user: @teacher).role
+      assert_equal 'Professeur', UserManagemetRole.new(user: @teacher).role
       assert_equal 'Autres fonctions', UserManagemetRole.new(user: @other).role
       assert_equal 'Professeur principal', UserManagemetRole.new(user: @main_teacher).role
     end

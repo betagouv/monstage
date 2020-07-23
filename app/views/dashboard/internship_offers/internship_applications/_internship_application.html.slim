@@ -12,8 +12,9 @@ div class="#{cycle("bg-light", "")} row"
       .col-11.col-sm-8
         h2.h4 name="internship-application-#{internship_application.id}"= "Candidature de #{internship_application.student.name} reçue le #{localize(internship_application.created_at, format: "%d %B")}"
         p
-          = "Pour la "
-          strong= "semaine #{internship_application.week.short_select_text_method}"
+          - if internship_application.respond_to?(:week)
+            = "Pour la "
+            strong= "semaine #{internship_application.week.short_select_text_method}"
           - if internship_application.submitted?
             div class="reboot-trix-content"                                     data-target='internship-application-index.motivation'= internship_application.motivation.to_s
           - elsif internship_application.rejected?
@@ -46,9 +47,10 @@ div class="#{cycle("bg-light", "")} row"
             - if internship_application.submitted?
               = render "dashboard/internship_offers/internship_applications/actions/approve", internship_application: internship_application
 
+            - if internship_application.submitted?
               = render "dashboard/internship_offers/internship_applications/actions/reject", internship_application: internship_application
 
-            - if internship_application.rejected? && internship_application.internship_offer_week.has_spots_left?
+            - if internship_application.rejected?
               = render "dashboard/internship_offers/internship_applications/actions/approve", internship_application: internship_application
 
             - if internship_application.approved?

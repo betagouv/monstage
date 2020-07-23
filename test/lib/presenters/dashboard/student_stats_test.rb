@@ -12,33 +12,33 @@ module Presenters
 
       test '.applications_count' do
         another_student = create(:student)
-        create(:internship_application, student: another_student)
-        create(:internship_application, student: @student)
+        create(:weekly_internship_application, student: another_student)
+        create(:weekly_internship_application, student: @student)
         assert_equal 1, @student_stats.applications_count
       end
 
       test '.applications_approved_count' do
-        create(:internship_application, :approved, student: @student)
-        create(:internship_application, :rejected, student: @student)
-        create(:internship_application, :convention_signed, student: @student)
+        create(:weekly_internship_application, :approved, student: @student)
+        create(:weekly_internship_application, :rejected, student: @student)
+        create(:weekly_internship_application, :convention_signed, student: @student)
         assert_equal 1, @student_stats.applications_approved_count
       end
 
       test '.applications_with_convention_signed_count' do
-        create(:internship_application, :approved, student: @student)
-        create(:internship_application, :rejected, student: @student)
-        create(:internship_application, :convention_signed, student: @student)
-        create(:internship_application, :convention_signed, student: @student)
-        create(:internship_application, :convention_signed, student: @student)
+        create(:weekly_internship_application, :approved, student: @student)
+        create(:weekly_internship_application, :rejected, student: @student)
+        create(:weekly_internship_application, :convention_signed, student: @student)
+        create(:weekly_internship_application, :convention_signed, student: @student)
+        create(:weekly_internship_application, :convention_signed, student: @student)
         assert_equal 3, @student_stats.applications_with_convention_signed_count
       end
 
       test '.internship_location' do
-        internship_offer = build(:internship_offer, street: '7 rue du puits',
-                                                    city: 'Coye la foret',
-                                                    zipcode: '60580')
-        create(:internship_application, :convention_signed, student: @student,
-                                                            internship_offer: internship_offer)
+        internship_offer = build(:weekly_internship_offer, street: '7 rue du puits',
+                                                           city: 'Coye la foret',
+                                                           zipcode: '60580')
+        create(:weekly_internship_application, :convention_signed, student: @student,
+                                                                   internship_offer: internship_offer)
         assert_equal [internship_offer.formatted_autocomplete_address],
                      @student_stats.internship_locations
       end
@@ -50,9 +50,9 @@ module Presenters
           tutor_email: 'kikoolol@gmail.com'
         }
         tutors = StudentStats::Tutor.new(**tutor_kwargs)
-        internship_offer = build(:internship_offer, **tutor_kwargs)
-        create(:internship_application, :convention_signed, student: @student,
-                                                            internship_offer: internship_offer)
+        internship_offer = build(:weekly_internship_offer, **tutor_kwargs)
+        create(:weekly_internship_application, :convention_signed, student: @student,
+                                                                   internship_offer: internship_offer)
 
         tutor = @student_stats.internship_tutors.first
         assert_equal tutor.tutor_name, internship_offer.tutor_name

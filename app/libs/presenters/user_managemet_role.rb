@@ -16,6 +16,7 @@ module Presenters
     end
 
     private
+
     attr_reader :user
     def initialize(user:)
       @user = user

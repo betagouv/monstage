@@ -10,7 +10,7 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors.keys.include?(:accept_terms)
     assert_equal user.errors.messages[:accept_terms][0],
                  "Veuillez accepter les conditions d'utilisation"
-    user = Users::SchoolManagement.new(accept_terms: "1")
+    user = Users::SchoolManagement.new(accept_terms: '1')
     user.valid?
     refute user.errors.keys.include?(:accept_terms)
   end
@@ -19,10 +19,10 @@ class UserTest < ActiveSupport::TestCase
     school = create(:school)
     class_room = create(:class_room, school: school)
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
-      current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
-      gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
-      resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
-      handicap: 'malvoyant')
+                               current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
+                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
+                               handicap: 'malvoyant')
 
     assert_enqueued_jobs 1, only: AnonymizeUserJob do
       student.anonymize
@@ -41,14 +41,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
     assert_not_equal '+330600110011', student.phone
-
   end
 
   test 'RGPD employer' do
     employer = create(:employer, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
-      current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
+                                 current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
 
-    internship_offer = create(:internship_offer, employer: employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
 
     employer.anonymize
 
@@ -59,7 +58,7 @@ class UserTest < ActiveSupport::TestCase
   test 'validate email bad' do
     user = build(:employer, email: 'lol')
     refute user.valid?
-    assert_equal ["Le format de votre email semble incorrect"], user.errors.messages[:email]
+    assert_equal ['Le format de votre email semble incorrect'], user.errors.messages[:email]
   end
 
   test '#add_to_contacts is called whenever a user is created' do
@@ -81,8 +80,8 @@ class UserTest < ActiveSupport::TestCase
 
     assert_enqueued_jobs 3 do
       student.email = "alt_#{student.email}"
-      student.save #1
-      student.confirm #2 #3 Cannot avoid to launch the job twice.
+      student.save # 1
+      student.confirm # 2 #3 Cannot avoid to launch the job twice.
     end
   end
 
@@ -95,21 +94,21 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test "#reset_password_by_phone when max count" do
+  test '#reset_password_by_phone when max count' do
     student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 3)
     student.reset_password_by_phone
     assert_equal student.phone_password_reset_count, 3
     assert student.last_phone_password_reset < 1.minute.ago
   end
 
-  test "#reset_password_by_phone when resetable" do
+  test '#reset_password_by_phone when resetable' do
     student = create(:student, last_phone_password_reset: 1.hours.ago, phone_password_reset_count: 1)
     student.reset_password_by_phone
     assert_equal student.phone_password_reset_count, 2
     assert student.last_phone_password_reset > 1.minute.ago
   end
 
-  test "formatted_phone" do
+  test 'formatted_phone' do
     student = create(:student, phone: '+330611223344')
     assert_equal '+33611223344', student.formatted_phone
   end

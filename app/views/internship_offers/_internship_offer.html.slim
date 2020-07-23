@@ -2,7 +2,12 @@ tr.hoverable-row-with-btn
   td.p-0
     = link_to listable_internship_offer_path(internship_offer), class: 'col-12 p-3 d-block', data: { "test-id": "#{internship_offer.id}" }
 
-      p.text-strong.internship-item-title.mb-1= internship_offer.title
+      .row.mb-2
+        .col-12
+          p.text-strong.internship-item-title.mb-1
+            = render 'internship_offers/html/school_type_badge', internship_offer: internship_offer
+
+            = internship_offer.title
       p.text-muted.internship-item-city.small.mb-1= "du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd)}"
 
       .text-muted.internship-item-city.small.mb-0

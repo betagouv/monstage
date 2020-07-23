@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 # Services::CounterManager.reset_internship_offer_counters
+# Services::CounterManager.reset_internship_offer_weeks_counter
 module Services
   class CounterManager
     def self.reset_internship_offer_counters
       InternshipOffer.update_all(
-        blocked_weeks_count: 0,
         total_applications_count: 0,
-        convention_signed_applications_count: 0,
-        approved_applications_count: 0,
-        submitted_applications_count: 0,
-        rejected_applications_count: 0,
         total_male_applications_count: 0,
+        submitted_applications_count: 0,
+        approved_applications_count: 0,
+        total_male_approved_applications_count: 0,
+        total_custom_track_approved_applications_count: 0,
+        rejected_applications_count: 0,
+        convention_signed_applications_count: 0,
         total_male_convention_signed_applications_count: 0,
         total_custom_track_convention_signed_applications_count: 0
       )
@@ -22,8 +24,8 @@ module Services
     end
 
     def self.reset_internship_offer_weeks_counter
-      InternshipOffer.find_each do |internship_offer|
-        InternshipOffer.reset_counters(internship_offer.id, :internship_offer_weeks)
+      InternshipOffers::WeeklyFramed.find_each do |internship_offer|
+        InternshipOffers::WeeklyFramed.reset_counters(internship_offer.id, :internship_offer_weeks)
       end
     end
   end

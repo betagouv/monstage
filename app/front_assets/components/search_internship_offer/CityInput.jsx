@@ -3,6 +3,7 @@ import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
+import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 
@@ -25,17 +26,17 @@ function CityInput({
 }) {
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(city, 100);
-  const inputChange = event => {
+  const inputChange = (event) => {
     setCity(event.target.value);
   };
 
-  const setLocation = item => {
+  const setLocation = (item) => {
     if (item) {
       setCity(item.nom);
       setLatitude(item.centre.coordinates[1]);
       setLongitude(item.centre.coordinates[0]);
     }
-  }
+  };
 
   const searchCityByName = () => {
     const endpoint = new URL('https://geo.api.gouv.fr/communes');
@@ -48,7 +49,7 @@ function CityInput({
     endpoint.search = searchParams.toString();
 
     fetch(endpoint)
-      .then(response => response.json())
+      .then((response) => response.json())
       .then(setSearchResults);
   };
 
@@ -63,7 +64,7 @@ function CityInput({
       initialInputValue={city}
       onChange={setLocation}
       selectedItem={city}
-      itemToString={item => item ? item.nom : ''}
+      itemToString={(item) => (item ? item.nom : '')}
     >
       {({
         getInputProps,
@@ -77,7 +78,7 @@ function CityInput({
         openMenu,
       }) => (
         <div
-          id='test-input-location-container'
+          id="test-input-location-container"
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
@@ -99,10 +100,10 @@ function CityInput({
               onChange: inputChange,
               value: inputValue,
               className: 'form-control pl-2 input-group-search-right-border',
-              name: "city",
+              name: 'city',
               id: 'input-search-by-city',
               placeholder: 'Lieu',
-              onFocus: event => {
+              onFocus: (event) => {
                 setFocus(COMPONENT_FOCUS_LABEL);
                 openMenu(event);
               },

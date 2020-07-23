@@ -62,6 +62,18 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 
 --
+-- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.class_room_school_track AS ENUM (
+    'troisieme_generale',
+    'troisieme_prepa_metier',
+    'troisieme_segpa',
+    'bac_pro'
+);
+
+
+--
 -- Name: user_role; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -73,6 +85,7 @@ CREATE TYPE public.user_role AS ENUM (
 );
 
 
+
 --
 -- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
@@ -80,7 +93,6 @@ CREATE TYPE public.user_role AS ENUM (
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
   TEMPLATE = pg_catalog.snowball,
   language = 'french');
-
 
 
 --
@@ -348,7 +360,8 @@ CREATE TABLE public.class_rooms (
     name character varying,
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -526,7 +539,11 @@ CREATE TABLE public.internship_applications (
     submitted_at timestamp without time zone,
     expired_at timestamp without time zone,
     pending_reminder_sent_at timestamp without time zone,
-    canceled_at timestamp without time zone
+    canceled_at timestamp without time zone,
+    type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying,
+    internship_offer_id bigint,
+    applicable_type character varying,
+    internship_offer_type character varying
 );
 
 
@@ -1383,6 +1400,13 @@ CREATE INDEX index_internship_applications_on_aasm_state ON public.internship_ap
 
 
 --
+-- Name: index_internship_applications_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_applications_on_internship_offer_id ON public.internship_applications USING btree (internship_offer_id);
+
+
+--
 -- Name: index_internship_applications_on_internship_offer_week_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1534,6 +1558,12 @@ CREATE INDEX index_internship_offers_on_sector_id ON public.internship_offers US
 --
 
 CREATE INDEX index_organisations_on_coordinates ON public.organisations USING gist (coordinates);
+
+
+-- Name: index_internship_offers_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
 
 
 --
@@ -1741,6 +1771,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: internship_applications fk_rails_75752a1ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_applications
+    ADD CONSTRAINT fk_rails_75752a1ac2 FOREIGN KEY (internship_offer_id) REFERENCES public.internship_offers(id);
+
+
+--
 -- Name: internship_offers fk_rails_77a64a8062; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1808,7 +1846,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1973,12 +2011,19 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200620134004'),
 ('20200622074942'),
 ('20200622080019'),
+('20200625154637'),
+('20200627095219'),
 ('20200629133744'),
+('20200708120719'),
 ('20200709081408'),
+('20200709105933'),
+('20200709110316'),
+('20200709111802'),
+('20200709121046'),
+('20200709135354'),
 ('20200715144451'),
+('20200717134317');
 ('20200721124215'),
 ('20200721150028'),
 ('20200722141350'),
 ('20200722144039');
-
-

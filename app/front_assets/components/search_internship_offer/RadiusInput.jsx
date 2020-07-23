@@ -1,10 +1,10 @@
 import React from 'react';
 import DistanceIcon from '../icons/DistanceIcon';
 
-import { MAX_RADIUS, MIN_RADIUS, radiusPercentage, radiusInKm } from '../../utils/geo';
+import { MAX_RADIUS, MIN_RADIUS, radiusPercentage } from '../../utils/geo';
 
 function RadiusInput({ radius, setRadius }) {
-  const onRadiusChange = event => {
+  const onRadiusChange = (event) => {
     setRadius(parseInt(event.target.value, 10));
   };
 

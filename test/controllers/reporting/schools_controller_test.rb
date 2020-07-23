@@ -13,7 +13,7 @@ module Reporting
     end
 
     test 'get index as Statistician' \
-         "when department params match his departement_name" do
+         'when department params match his departement_name' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_schools_path(department: statistician.department_name)
@@ -21,16 +21,16 @@ module Reporting
     end
 
     test 'get index.xlsx as Statistician' \
-         "when department params match his departement_name" do
+         'when department params match his departement_name' do
       statistician = create(:statistician)
-        sign_in(statistician)
+      sign_in(statistician)
       get reporting_schools_path(department: statistician.department_name,
                                  format: :xlsx)
       assert_response :success
     end
 
-    test "GET #index as statistician fails " \
-         "when department params does not match his department_name" do
+    test 'GET #index as statistician fails ' \
+         'when department params does not match his department_name' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_schools_path(department: 'Ain')

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
+import { fetch } from 'whatwg-fetch';
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
@@ -64,14 +65,15 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group"  id="test-input-full-address">
-
+      <div className="form-group" id="test-input-full-address">
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}
             selectedItem={fullAddress}
-            itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
+            itemToString={(item) => {
+              item && item.properties ? item.properties.label : '';
+            }}
           >
             {({
               getLabelProps,
@@ -84,9 +86,10 @@ export default function AddressInput({
             }) => (
               <div>
                 <label
-                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
-
-
+                  {...getLabelProps({
+                    className: 'label',
+                    htmlFor: `${resourceName}_autocomplete`,
+                  })}
                 >
                   Adresse du lieu où se déroule le stage
                 </label>
@@ -112,7 +115,7 @@ export default function AddressInput({
                     >
                       {isOpen
                         ? searchResults.map((item, index) => (
-                              <li
+                            <li
                               {...getItemProps({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''

@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Turbolinks from 'turbolinks';
 
-import CityInput from './inputs/CityInput';
-import KeywordInput from './inputs/KeywordInput';
-
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, initialLocation, className }) {
+import CityInput from './search_internship_offer/CityInput';
+import KeywordInput from './search_internship_offer/KeywordInput';
+import FilterBySchoolTypeInput from './search_internship_offer/FilterBySchoolTypeInput';
+
+function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
-  const initialKeyword = searchParams.get('keyword') || "";
+  const initialKeyword = searchParams.get('keyword') || '';
   const initialLatitude = searchParams.get('latitude');
   const initialLongitude = searchParams.get('longitude');
+  const initialSchoolType = searchParams.get('school_type');
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -23,11 +25,20 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const [latitude, setLatitude] = useState(initialLatitude);
   const [longitude, setLongitude] = useState(initialLongitude);
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+
   // used by both
   const [focus, setFocus] = useState(null);
 
+  // Checkbox initialization
+  const [schoolType, setSchoolType] = useState(searchParams.get('school_type'));
 
-  const filterOffers = event => {
+  const filterOffers = (event) => {
+    if (schoolType) {
+      searchParams.set('school_type', schoolType);
+    } else {
+      searchParams.delete('school_type');
+    }
+
     if (city) {
       searchParams.set('city', city);
       searchParams.set('latitude', latitude);
@@ -60,42 +71,35 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
+    const schoolTypeChanged = initialSchoolType != schoolType;
 
-    setShowSearch(keywordChanged || coordinatesChanged)
-  }
+    setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged);
+  };
 
-  if(isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
+  if (isMobile) {
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
   }
 
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
-        <KeywordInput
-          keyword={keyword}
-          setKeyword={setKeyword}
-          focus={focus}
-          setFocus={setFocus}
-        />
+        <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
           city={city}
           longitude={longitude}
           latitude={latitude}
-
           setCity={setCity}
           setLongitude={setLongitude}
           setLatitude={setLatitude}
-
           radius={radius}
           setRadius={setRadius}
-
           focus={focus}
           setFocus={setFocus}
         />
         {showSearch && (
-          <div className={`input-group-prepend d-flex d-xs-stick p-0`}>
+          <div className="input-group-prepend d-flex d-xs-stick p-0">
             <button
-              id='test-submit-search'
+              id="test-submit-search"
               type="submit"
               className="input-group-search-button
                          btn
@@ -110,8 +114,14 @@ function SearchInternshipOffer({ url, initialLocation, className }) {
               &nbsp; Rechercher
             </button>
           </div>
-          )}
+        )}
       </div>
+      <br />
+      {schoolTypeVisibility && (
+        <div>
+          <FilterBySchoolTypeInput schoolType={schoolType} setSchoolType={setSchoolType} />
+        </div>
+      )}
     </form>
   );
 }

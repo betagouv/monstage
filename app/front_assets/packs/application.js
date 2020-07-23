@@ -6,8 +6,15 @@
 //
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
+// rails pollyfills (ie<11), see: https://github.com/rails/webpacker/issues/1963
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+
+// react polyfills (ie<11), see: https://reactjs.org/docs/javascript-environment-requirements.html
+import 'raf/polyfill';
+import 'core-js/es/map';
+import 'core-js/es/set';
+
 import '../stylesheets/application.scss';
 
 import Alert from 'bootstrap'

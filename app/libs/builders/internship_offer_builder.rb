@@ -63,7 +63,7 @@ module Builders
     def model
       return ::InternshipOffers::Api if from_api?
 
-      ::InternshipOffers::Web
+      InternshipOffer
     end
 
     def duplicate?(internship_offer)

@@ -11,19 +11,19 @@ module Reporting
     PAGE_SIZE = 100
 
     has_many :users, foreign_type: 'type'
-    has_many :students,       class_name: 'Users::Student'
+    has_many :students, class_name: 'Users::Student'
 
     has_many :school_managements, dependent: :nullify,
                                   class_name: 'Users::SchoolManagement'
 
     has_many :main_teachers, -> { where(role: :main_teacher) },
-                                class_name: 'Users::SchoolManagement'
+             class_name: 'Users::SchoolManagement'
     has_many :teachers, -> { where(role: :teacher) },
-                                  class_name: 'Users::SchoolManagement'
+             class_name: 'Users::SchoolManagement'
     has_many :others, -> { where(role: :other) },
-                                  class_name: 'Users::SchoolManagement'
+             class_name: 'Users::SchoolManagement'
     has_one :school_manager, -> { where(role: :school_manager) },
-                                  class_name: 'Users::SchoolManagement'
+            class_name: 'Users::SchoolManagement'
 
     has_many :school_internship_weeks
     has_many :weeks, through: :school_internship_weeks
@@ -44,6 +44,10 @@ module Reporting
       left_joins(:school_manager)
         .group('schools.id')
         .having('count(users.id) = 0')
+    }
+    # maybe useless
+    scope :in_the_future, lambda {
+      more_recent_than(week: ::Week.current)
     }
 
     paginates_per PAGE_SIZE

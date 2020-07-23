@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module InternshipOffers
-  class Web < InternshipOffer
+  class WeeklyFramed < InternshipOffer
+    include WeeklyFramable
+
     rails_admin do
       configure :created_at, :datetime do
         date_format 'BUGGY'
@@ -77,46 +79,16 @@ module InternshipOffers
 
     attr_reader :with_operator
 
-    def has_spots_left?
-      internship_offer_weeks.any?(&:has_spots_left?)
-    end
-
-    def init
-      self.max_candidates ||= 1
-    end
-
-    def duplicate
-      white_list = %w[title sector_id max_candidates
-                      tutor_name tutor_phone tutor_email employer_website
-                      employer_name street zipcode city department region academy
-                      is_public group school_id coordinates first_date last_date]
-
-      internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-      internship_offer.week_ids = week_ids
-      internship_offer.description_rich_text = (description_rich_text.present? ?
-                                                description_rich_text.to_s :
-                                                description)
-      internship_offer.employer_description_rich_text = (employer_description_rich_text.present? ?
-                                                         employer_description_rich_text.to_s :
-                                                         employer_description)
-
-      internship_offer
-    end
-
     def validate_group_is_public?
       return if group.nil?
 
-      unless group.is_public?
-        errors.add(:group, 'Veuillez choisir une institution de tutelle')
-      end
+      errors.add(:group, 'Veuillez choisir une institution de tutelle') unless group.is_public?
     end
 
     def validate_group_is_not_public?
       return if group.nil?
 
-      if group.is_public?
-        errors.add(:group, 'Veuillez choisir une institution de tutelle')
-      end
+      errors.add(:group, 'Veuillez choisir une institution de tutelle') if group.is_public?
     end
   end
 end

@@ -15,7 +15,7 @@
   background-color: rgb(82,201,160);
 }
 @include media-breakpoint-down(xs) {
-.bg-light-gray-sm{
-  background-color: $gray-200;
-}
+  .bg-light-gray-sm{
+    background-color: $gray-200;
+  }
 }
