@@ -1664,7 +1664,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public;
+SET search_path TO "$user", public, topology;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1835,10 +1835,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200708120719'),
 ('20200709105933'),
 ('20200709110316'),
-('20200723125600'),
+('20200709111800'),
 ('20200709111801'),
 ('20200709111802'),
+('20200709121046'),
 ('20200709135354'),
-('20200717134317');
+('20200717134317'),
+('20200723125613');
 
 
