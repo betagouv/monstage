@@ -3,8 +3,8 @@ div data-controller="internship-application-form"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
       - if @previous_internship_offer && support_listable?(current_user)
         = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous' do
-          i.fa-icon.fas.fa-arrow-circle-left
-          span.mt-3.d-block.list-item-label.small Offre Précédente
+          i.fa-icon.fas.fa-chevron-left.text-danger.opacity-05
+          span.mt-3.d-block.list-item-label.small.text-danger Offre Précédente
     .col-12.col-sm-10
       table.table.table-sticky-thead
         thead
@@ -21,8 +21,8 @@ div data-controller="internship-application-form"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-right
       - if @next_internship_offer && support_listable?(current_user)
         = link_to listable_internship_offer_path(@next_internship_offer), class: 'list-item list-item-next' do
-          i.fa-icon.fas.fa-arrow-circle-right
-          span.mt-3.d-block.list-item-label.small Offre Suivante
+          i.fa-icon.fas.fa-chevron-right.text-danger.opacity-05
+          span.mt-3.d-block.list-item-label.small.text-danger Offre Suivante
 
   .row.no-gutters
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left

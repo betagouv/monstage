@@ -8,7 +8,11 @@
 
 .row.align-items-center#internship-application-closeform
   .col-12.col-sm-8
-    p.h3= internship_offer.title
+    p.h3
+      = internship_offer.title
+
+    p= render 'internship_offers/html/school_type_badge', internship_offer: internship_offer
+
 
   .col-12.col-sm-4.text-center.relative
     - if internship_offer.from_api?
