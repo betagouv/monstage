@@ -13,6 +13,12 @@ module InternshipOffersHelper
     return listable_internship_offer_path(object, anchor: 'internship-application-form')
   end
 
+  def internship_offer_application_html_opts(object, opts)
+    opts = opts.merge({title: 'Voir l\'offre en détail'})
+    opts = opts.merge({title: 'Voir l\'offre en détail (nouvelle fenêtre)', target: '_blank', rel: 'external noopener noreferrer'}) if object.from_api?
+    opts
+  end
+
   def options_for_groups
     Group.all.map do |group|
       [
