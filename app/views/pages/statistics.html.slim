@@ -1,7 +1,9 @@
 h1.mb-5.text-center Statistiques
 h3 Historique - vue générale
-p
-| Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore necessitatibus quia cupiditate, iusto harum....
+p La bourse d'échange de stages que propose le service trouve sa place au
+  centre d'un réseau d'entreprises, d'établissements scolaires ou de quartiers prioritaires,
+  et d'associations jusqu'ici en mal d'outils. Les premières années sont celles
+  de la promotion du service et de l'accroissement de son périmètre fonctionnel.
 
 .row
   .col-md
@@ -11,12 +13,12 @@ p
         i.fa.fa-calendar-alt.fa-3x.text-primary
         .ml-3
         span.ml-auto.h3.text-dark 2 ans
-    strong.mr-4 Remarque
-    span Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum expedita pariatur ...
+    / strong.mr-4 Remarque
+    / span Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum expedita pariatur ...
 
   .col-md
     .pane.bg-white.shadow.rounded-lg.my-4.p-4
-      h3.h5.pb-3.text-center Etablissements utilisateurs
+      h3.h5.pb-3.text-center Établissements utilisateurs
       .d-flex.justify-content-between
         i.fa.fa-school.fa-3x.text-primary.my-auto
         .row
@@ -28,10 +30,10 @@ p
           .col-12.text-center
             span.ml-auto.h5 2020
             br
-            span.ml-auto.h3.text-dark 1100
-    span
-      strong.mr-4 Remarque
-    span Lorem, ipsum dolor sit amet
+            span.ml-auto.h3.text-dark 1430
+    / span
+    /   strong.mr-4 Remarque
+    / span Lorem, ipsum dolor sit amet
 
   .col-md
     .pane.bg-white.shadow.rounded-lg.my-4.p-4
@@ -48,11 +50,15 @@ p
             span.ml-auto.h5 2020
             br
             span.ml-auto.h3.text-dark 3
+            / Users::Operator.where('created_at < ?', Time.new(2019,07,01)).count
+            / ClassRoom.where('created_at < ?', Time.new(2020,01,01)).count
+            / School.where('created_at < ?', Time.new(2020,01,01)).count
+
 
 .row
   .col-md.mt-2
     .pane.bg-white.shadow.rounded-lg.my-4.p-4
-      h3.h5.pb-3.text-center Sociétés participantes en 2020
+      h3.h5.pb-3.text-center Établissements participants en 2020
       .d-flex.justify-content-between
         i.fa.fa-building.fa-3x.text-primary.my-auto
         .row
@@ -65,8 +71,8 @@ p
             span.ml-auto.h5 Privé
             br
             span.ml-auto.h3.text-dark 1100
-    strong.mr-4 Remarque
-    span Lorem, ipsum dolor sit amet
+    / strong.mr-4 Remarque
+    / span Lorem, ipsum dolor sit amet
   .col-md.mt-2
     .pane.bg-white.shadow.rounded-lg.my-4.p-4
       h3.h5.pb-3.text-center Propositions de stage en 2020
@@ -82,12 +88,12 @@ p
             span.ml-auto.h5 Privé
             br
             span.ml-auto.h3.text-dark 250
-    strong.mr-4 Remarque
-    span 2020, annus horribilis, année de SARS-COV-2
+    / strong.mr-4 Remarque
+    / span 2020, annus horribilis, année de SARS-COV-2
 
 h3.mt-5
-  i.fa.fa-users.mr-2.fa-2x.text-warning
-  | Les élèves de 3e en REP+
+  i.fa.fa-users.mr-2.fa-2x
+  | Les élèves de 3e en REP, REP+ et QPV
 p
 | Grâce à l'énergie de nos partenaires associatifs et des établissements scolaires, de nombreux stages ont pu être organisés en faveur de jeunes de troisième
 
@@ -101,14 +107,14 @@ p
           .col-12.text-center
             span.m-auto.h5 2019
             br
-            span.m-auto.h3.text-warning 1020
+            span.m-auto.h3 1020
         .row
           .col-12.text-center
             span.ml-auto.h5 2020
             br
             span.ml-auto.h5.text-muted Stages annulés
     strong.mr-4 Remarque
-    span Lorem, ipsum dolor sit amet
+    span 2020, annus horribilis, année de SARS-COV-2, qui a annulé la quasi totalité des stages
 
 
 
