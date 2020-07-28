@@ -109,21 +109,17 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: free_date_internship_offer)
 
     # filter
-    find('label[for="toggle-choose-school-type"]').click
     find('label[for="search-by-middle-school"]').click
-    find('button#test-submit-search').click
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: free_date_internship_offer)
 
     # filtered by middle-school
     find('label[for="search-by-high-school"]').click
-    find('button#test-submit-search').click
     assert_absence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: free_date_internship_offer)
 
     # uncheck selection
-    find('label[for="toggle-choose-school-type"]').click
-    find('button#test-submit-search').click
+    find('label[for="search-by-high-school"]').click
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: free_date_internship_offer)
   end
