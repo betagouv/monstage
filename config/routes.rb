@@ -60,6 +60,7 @@ Rails.application.routes.draw do
     get 'internship_offers/new/step_3', to: 'mentors#new', as: 'internship_offers_step_3'
 
     resources :organisations, only: %i[new create]
+    resources :mentors, only: %i[new create]
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]

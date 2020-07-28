@@ -3,7 +3,7 @@
     .row
       h1.h2.mb-3 Déposer une offre de stage
     
-    = form_with({model: @organisation, url: (@organisation.new_record? ? dashboard_internship_offers_path : dashboard_internship_offer_path(@organisation)), scope: :internship_offer, data: {controller: 'internship-form'}, local: true}) do |form|
+    = form_for @organisation, url: dashboard_organisations_path(@organisation), html: { 'data-controller': 'internship-form'} do |form|
       = render "dashboard/internship_offers/stepper"
       = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
 
@@ -12,8 +12,8 @@
           .col-6
             legend.my-4 Information sur l'entreprise
             .form-group
-              = form.label :employer_name, "Nom de l’entreprise proposant l’offre"
-              = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété.com', required: true
+              = form.label :name, "Nom de l’entreprise proposant l’offre"
+              = form.text_field :name, class: 'form-control', placeholder: 'MaSociété.com', required: true
 
             .form-group
               .label Secteur
@@ -29,9 +29,9 @@
 
             div class="form-group form-group-select-group #{@organisation.is_public.nil? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
               = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
-              / = form.select :group_id, options_for_select(options_for_groups, @organisation.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control col-lg-6", data: {target: 'internship-form.selectGroupName'}
+              / = form.select :group_id, options_for_select(options_for_groups, @organisation.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'internship-form.selectGroupName'}
 
-            = react_component("inputs/AddressInput", { resourceName: :internship_offer,
+            = react_component("inputs/AddressInput", { resourceName: :organisation,
                                     currentStreet: @organisation.street,
                                     currentCity: @organisation.city,
                                     currentZipcode: @organisation.zipcode,
@@ -44,7 +44,7 @@
                 | Description de l'entreprise (optionnel)
                 
 
-              = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
+              = form.rich_text_area :description, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
               small.form-text data-target="maxlength-input.trixElementCharCount"
             
             .form-group
@@ -54,8 +54,8 @@
               = form.url_field :website, class: 'form-control', placeholder: @organisation.website || "https://"
             
             .mt-3
-              = link_to '#step-2', data: { :action => 'click->internship-form#validateStep1'}, class: 'btn btn-primary', type: 'button' do
-                ' Suivant
+              = button_tag :submit, class: 'btn btn-primary' do
+                | Suivant 
                 i.fas.fa-arrow-right
 
           .col-6

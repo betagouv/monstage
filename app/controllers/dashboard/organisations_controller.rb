@@ -9,6 +9,13 @@ module Dashboard
     end
 
     def create
+      @organisation = Organisation.new(organisation_params)
+      if @organisation.save
+        redirect_to new_dashboard_internship_offer_path(organisation_id: @organisation.id)
+      else
+        
+        render :new
+      end
     end
 
     private
@@ -18,12 +25,12 @@ module Dashboard
               :name,
               :street,
               :address_2,
-              :zip_code,
+              :zipcode,
               :city,
               :description,
               :website,
               :is_public,
-              :coordinates)
+              coordinates: {})
     end
   end
 end

@@ -60,14 +60,14 @@ module InternshipOffers
       end
     end
 
-    validates :street,
-              :city,
-              :tutor_name,
-              :tutor_phone,
-              :tutor_email,
-              presence: true
+    # validates :street,
+    #           :city,
+    #           :tutor_name,
+    #           :tutor_phone,
+    #           :tutor_email,
+    #           presence: true
 
-    validates :is_public, inclusion: { in: [true, false] }
+    # validates :is_public, inclusion: { in: [true, false] }
     validate :validate_group_is_public?, if: :is_public?
     validate :validate_group_is_not_public?, unless: :is_public?
 
@@ -75,7 +75,7 @@ module InternshipOffers
                                                greater_than: 0,
                                                less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
     after_initialize :init
-    before_create :reverse_academy_by_zipcode
+    # before_create :reverse_academy_by_zipcode
 
     attr_reader :with_operator
 

@@ -2,10 +2,6 @@
 
 div data-controller="select-weeks" data-target='internship-form.weeksContainer' data-select-weeks-skip="false"
   .form-group
-    div.label
-      = label
-      = form.rg2a_required_content_tag
-
     - if defined?(select_all) && defined?(disabled)
       .custom-control.custom-checkbox.mb-1
         = check_box_tag 'all_year_long', true, preselect_all, { class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#handleToggleWeeks"}}
