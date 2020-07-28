@@ -28,6 +28,8 @@
           - internship_offer_weeks = internship_offer.internship_offer_weeks
           - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
           p= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
+        - else
+          p= "du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
 
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
       .row

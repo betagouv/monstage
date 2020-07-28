@@ -8,7 +8,7 @@ tr.hoverable-row-with-btn
 
           p.text-strong.internship-item-badge.mb-3
             = render 'internship_offers/html/school_type_badge', internship_offer: internship_offer
-            span.text-sky-blue.px-2= "du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd)}"
+            span.text-sky-blue.px-2= "du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
 
 
           p.max-lines-3= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_plain_text : internship_offer.description
