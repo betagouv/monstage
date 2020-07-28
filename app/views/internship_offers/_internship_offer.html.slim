@@ -25,7 +25,7 @@ tr.hoverable-row-with-btn
                 = react_component("icons/DistanceIcon", radius: internship_offer.relative_distance)
 
         .d-none.d-sm-block.col-sm-3.text-center.align-self-center
-          = link_to listable_internship_offer_path(internship_offer), class: 'btn btn-primary mb-3' do
+          = link_to internship_offer_application_path(internship_offer), class: 'btn btn-primary mb-3' do
             | Je candidate
           br
           span= link_to listable_internship_offer_path(internship_offer), class: 'text-danger' do

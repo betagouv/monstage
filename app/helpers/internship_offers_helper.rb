@@ -8,6 +8,11 @@ module InternshipOffersHelper
     is_new_record && is_preselectable_entity
   end
 
+  def internship_offer_application_path(object)
+    return object.permalink if object.from_api?
+    return listable_internship_offer_path(object, anchor: 'internship-application-form')
+  end
+
   def options_for_groups
     Group.all.map do |group|
       [
@@ -40,10 +45,10 @@ end
     internship_offers_path(default_params.merge(forwardable_params))
   end
 
-  def listable_internship_offer_path(internship_offer)
+  def listable_internship_offer_path(internship_offer, options = {})
     return '' unless internship_offer
 
-    default_params = { id: internship_offer.id }
+    default_params = options.merge(id: internship_offer.id)
 
     internship_offer_path(default_params.merge(forwardable_params))
   end
