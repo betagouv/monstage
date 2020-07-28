@@ -1,0 +1,47 @@
+fr:
+  dashboard:
+    internship_offers:
+      index:
+        page_title: 'Mes offres'
+      edit:
+        page_title: "Offre de stage '%{name}'"
+      new:
+        page_title: "Déposer une offre de stage"
+    students:
+      internship_applications:
+        index:
+          page_title: 'Mes candidatures'
+        show:
+          page_title: "Candidature '%{name}'"
+  internship_offers:
+    index:
+      page_title: 'Recherche de stages'
+    show:
+      page_title: "Offre de stage '%{name}'"
+  pages:
+    accessibilite:
+      page_title: "Accessibilité"
+    conditions_d_utilisation:
+      page_title: "Conditions d'utilisation"
+    contact:
+      page_title: "Contact"
+    home:
+      page_title: "Accueil"
+    mentions_legales:
+      page_title: 'Mentions légales'
+  users:
+    edit:
+      page_title: 'Mon compte'
+    registrations:
+      choose_profile:
+        page_title: Créer mon compte
+      confirmation_standby:
+        page_title: Inscription en attente de confirmation
+      new:
+        page_title: "S'inscrire"
+    sessions:
+      new:
+        page_title: "Connection"
+
+
+

@@ -63,4 +63,14 @@ module ApplicationHelper
   def current_action?(action_name)
     controller.action_name.to_s == action_name.to_s
   end
+
+  def page_title
+    if content_for?(:page_title)
+      content_for :page_title
+    else
+      t("#{controller_path.tr('/', '.')}.#{action_name}.page_title",
+        default: 'Monstage'
+      )
+    end
+  end
 end

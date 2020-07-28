@@ -1,3 +1,4 @@
+- content_for :page_title, t(".page_title", name: @internship_application.internship_offer.title)
 h1.h2.mb-3 = @internship_application.internship_offer.title
 
 div data-controller="dashboard-students-internship-application" data-dashboard-students-internship-application-state=@internship_application.aasm_state
