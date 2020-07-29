@@ -4,7 +4,6 @@ class RemoveInternshipOffersSchoolType < ActiveRecord::Migration[6.0]
     execute <<-SQL
       DROP TYPE internship_offer_school_type;
     SQL
-    # InternshipOffer.update_all(type: InternshipOffers::WeeklyFramed.name)
   end
 
   def down
