@@ -7,6 +7,7 @@ require 'minitest/autorun'
 require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
+require 'support/cached_pages_helpers'
 require 'minitest/retry'
 require 'webmock/minitest'
 

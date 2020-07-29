@@ -56,7 +56,7 @@ fr:
       page_title: "Conditions d'utilisation"
     contact:
       page_title: "Contact"
-    documents-utiles:
+    documents_utiles:
       page_title: "Documents utiles"
     exemple_offre_ideale_ministere:
       page_title: "Exemple d'offre idéale (ministère)"
@@ -89,6 +89,8 @@ fr:
     edit:
       page_title: "Mon compte"
     passwords:
+      new:
+        page_title: 'Nouveau mot de passe'
       update:
         page_title: "Mise à jour du mot de passe"
     registrations:

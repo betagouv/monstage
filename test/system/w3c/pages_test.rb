@@ -6,6 +6,7 @@ module W3c
   class HomeValidationTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
+    include CachedPagesHelpers
 
     test 'static pages' do
       %i[
@@ -26,6 +27,10 @@ module W3c
           visit path
         end
       end
+    end
+
+    test 'pages have a non default page title' do
+      check_page_title
     end
   end
 end
