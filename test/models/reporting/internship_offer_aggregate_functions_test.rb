@@ -4,13 +4,12 @@ require 'test_helper'
 module Reporting
   class InternshipOfferAggregateFunctionsTest < ActiveSupport::TestCase
     setup do
-
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
       weeks = [::Week.first, ::Week.last]
-      @internship_offer_agri_1 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
-      @internship_offer_agri_2 = create(:internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
-      @internship_offer_wood = create(:internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10)
+      @internship_offer_agri_1 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_agri_2 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
+      @internship_offer_wood = create(:weekly_internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10)
     end
 
     test '.group_by(:sector_name)' do
@@ -31,9 +30,9 @@ module Reporting
     end
 
     test 'computes internship_offer total_applications_count' do
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_2)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1)
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2)
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -43,14 +42,14 @@ module Reporting
     end
 
     test 'computes internship_offer total_male_applications_count' do
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :male))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :female))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_2,
-                                                  student: create(:student, :male))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
-                                                  student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
+                                                         student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
+                                                         student: create(:student, :female))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2,
+                                                         student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_wood,
+                                                         student: create(:student, :male))
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -60,14 +59,14 @@ module Reporting
     end
 
     test 'computes internship_offer total_female_applications_count' do
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :male))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_1,
-                                                  student: create(:student, :female))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_agri_2,
-                                                  student: create(:student, :male))
-      create(:internship_application, :submitted, internship_offer: @internship_offer_wood,
-                                                  student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
+                                                         student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_1,
+                                                         student: create(:student, :female))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2,
+                                                         student: create(:student, :male))
+      create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_wood,
+                                                         student: create(:student, :male))
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
       wood_stats = results[1]
@@ -77,11 +76,11 @@ module Reporting
     end
 
     test 'computes internship_offer approved_applications_count' do
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1)
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_2)
       results = Reporting::InternshipOffer.dimension_by_sector
       agri_stats = results[0]
@@ -92,16 +91,16 @@ module Reporting
     end
 
     test 'computes internship_offer total_male_approved_applications_count' do
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1,
              student: create(:student, :male))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1,
              student: create(:student, :female))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_2,
              student: create(:student, :male))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_wood,
              student: create(:student, :male))
 
@@ -114,16 +113,16 @@ module Reporting
     end
 
     test 'computes internship_offer total_female_approved_applications_count' do
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1,
              student: create(:student, :male))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_1,
              student: create(:student, :female))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_agri_2,
              student: create(:student, :male))
-      create(:internship_application, :approved,
+      create(:weekly_internship_application, :approved,
              internship_offer: @internship_offer_wood,
              student: create(:student, :male))
 

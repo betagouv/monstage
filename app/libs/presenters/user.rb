@@ -16,7 +16,7 @@ module Presenters
     end
 
     def formal_name
-      "#{user.formal_name}"
+      user.formal_name.to_s
     end
 
     def role_name
@@ -28,10 +28,15 @@ module Presenters
       return internship_offers_path unless user.respond_to?(:school)
       return internship_offers_path if user.school.nil?
 
-      internship_offers_path(city: user.school.city,
-                             latitude: user.school.coordinates.lat,
-                             longitude: user.school.coordinates.lon,
-                             radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER)
+      opts = {
+        city: user.school.city,
+        latitude: user.school.coordinates.lat,
+        longitude: user.school.coordinates.lon,
+        radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
+      }
+      opts[:school_type] = :middle_school if user.try(:middle_school?)
+      opts[:school_type] = :high_school if user.try(:high_school?)
+      internship_offers_path(opts)
     end
 
     private

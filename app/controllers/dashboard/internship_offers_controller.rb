@@ -71,13 +71,13 @@ module Dashboard
 
     def new
       authorize! :create, InternshipOffer
-      if params[:duplicate_id].present?
-        @internship_offer = current_user.internship_offers
+      @internship_offer = if params[:duplicate_id].present?
+                            current_user.internship_offers
                                         .find(params[:duplicate_id])
                                         .duplicate
-      else
-        @internship_offer = InternshipOffer.new
-      end
+                          else
+                            InternshipOffer.new
+                          end
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -107,7 +107,13 @@ module Dashboard
 
     def finder
       @finder ||= Finders::ListableInternshipOffer.new(
-        params: params.permit(:page, :latitude, :longitude, :radius),
+        params: params.permit(
+          :page,
+          :latitude,
+          :longitude,
+          :radius,
+          :school_type
+        ),
         user: current_user_or_visitor
       )
     end
@@ -122,9 +128,7 @@ module Dashboard
     end
 
     def order_direction
-      if params[:direction] && %w[asc desc].include?(params[:direction])
-        return params[:direction]
-      end
+      return params[:direction] if params[:direction] && %w[asc desc].include?(params[:direction])
 
       :desc
     end
@@ -139,9 +143,9 @@ module Dashboard
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group_id, :published_at,
+                    :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    coordinates: {}, week_ids: [])
+                    :school_type, coordinates: {}, week_ids: [])
     end
   end
 end

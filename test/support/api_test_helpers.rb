@@ -13,7 +13,7 @@ module ApiTestHelpers
   def json_response
     JSON.parse(response.body)
   rescue JSON::ParserError
-    fail "Not a json response"
+    raise 'Not a json response'
   end
 
   def json_code
@@ -34,7 +34,7 @@ module ApiTestHelpers
   def dictionnary_api_call_stub
     stub_request(:any, /dictionnaire-academie.fr/).to_return(
       status: 200,
-      body: "{\"result\":[{\"nature\":\"n.f.\",\"score\":1}]}",
+      body: '{"result":[{"nature":"n.f.","score":1}]}',
       headers: {}
     )
   end

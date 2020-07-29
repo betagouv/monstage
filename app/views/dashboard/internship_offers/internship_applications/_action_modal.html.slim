@@ -1,4 +1,4 @@
-- aasm_notifier = MessageForAasmState.new(internship_application: internship_application, aasm_target: aasm_target)
+- aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: aasm_target)
 
 = button_tag type: "button", data: { toggle: 'modal', target: "##{modal_id}" }, class: "btn btn-#{aasm_notifier.target_action_color} mx-1" do
   i class="fas #{fa_icon}"

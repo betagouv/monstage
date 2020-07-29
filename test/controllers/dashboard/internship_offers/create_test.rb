@@ -11,32 +11,60 @@ module InternshipOffers
       assert_redirected_to user_session_path
     end
 
-    test 'POST #create as employer creates the post' do
+    test 'POST #create/InternshipOffers::WeeklyFramed as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:internship_offer, employer: employer)
+      internship_offer = build(:weekly_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
-      assert_difference('InternshipOffer.count', 1) do
-        params = internship_offer
-                 .attributes
-                 .merge(week_ids: weeks.map(&:id),
-                        'coordinates' => { latitude: 1, longitude: 1 },
-                        school_id: school.id,
-                        max_candidates: 2,
-                        description_rich_text: '<div>description</div>',
-                        employer_description_rich_text: '<div>hop+employer_description</div>',
-                        employer_id: internship_offer.employer_id,
-                        employer_type: 'Users::Employer')
+      params = internship_offer
+               .attributes
+               .merge('type' => InternshipOffers::WeeklyFramed.name,
+                      'week_ids' => weeks.map(&:id),
+                      'coordinates' => { latitude: 1, longitude: 1 },
+                      'school_id' => school.id,
+                      'description_rich_text' => '<div>description</div>',
+                      'employer_description_rich_text' => '<div>hop+employer_description</div>',
+                      'employer_id' => internship_offer.employer_id,
+                      'employer_type' => 'Users::Employer')
 
+      assert_difference('InternshipOffer.count', 1) do
         post(dashboard_internship_offers_path, params: { internship_offer: params })
       end
       created_internship_offer = InternshipOffer.last
+      assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
       assert_equal weeks.map(&:id), created_internship_offer.week_ids
       assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
-      assert_equal 2, created_internship_offer.max_candidates
+      assert_equal params['max_candidates'], created_internship_offer.max_candidates
+      assert_redirected_to internship_offer_path(created_internship_offer)
+    end
+
+    test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
+      school = create(:school)
+      employer = create(:employer)
+      weeks = [weeks(:week_2019_1)]
+      internship_offer = build(:weekly_internship_offer, employer: employer)
+      sign_in(internship_offer.employer)
+      params = internship_offer
+               .attributes
+               .merge('type' => InternshipOffers::FreeDate.name,
+                      'coordinates' => { latitude: 1, longitude: 1 },
+                      'school_id' => school.id,
+                      'description_rich_text' => '<div>description</div>',
+                      'employer_description_rich_text' => '<div>hop+employer_description</div>',
+                      'employer_id' => internship_offer.employer_id,
+                      'employer_type' => 'Users::Employer')
+
+      assert_difference('InternshipOffer.count', 1) do
+        post(dashboard_internship_offers_path, params: { internship_offer: params })
+      end
+      created_internship_offer = InternshipOffer.last
+      assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
+      assert_equal employer, created_internship_offer.employer
+      assert_equal school, created_internship_offer.school
+      assert_equal params['max_candidates'], created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 

@@ -1,19 +1,17 @@
 require 'test_helper'
 
-
 class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
   setup do
     class ActiveRecord::Validations::UniquenessValidator
-      alias_method :saved_validate_each, :validate_each
-      def validate_each(record, attribute, value)
+      alias saved_validate_each validate_each
+      def validate_each(_record, _attribute, _value)
         true
       end
     end
   end
   teardown do
-
     class ActiveRecord::Validations::UniquenessValidator
-      alias_method :validate_each, :saved_validate_each
+      alias validate_each saved_validate_each
     end
   end
 
@@ -42,11 +40,10 @@ class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
             city: 'Élancourt'
           },
           school_id: school.id,
-          type: "Users::Student"
+          type: 'Users::Student'
         }
       }
     )
     assert_redirected_to users_registrations_standby_path(email: email)
   end
 end
-

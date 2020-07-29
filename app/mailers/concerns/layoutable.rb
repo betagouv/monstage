@@ -15,28 +15,28 @@ module Layoutable
     # for consistent email formatting accross email reader,
     # ensure <p> styles are always style with p style={p_styles}
     helper_method :p_styles, :head_styles
-    def p_styles(options={})
+    def p_styles(options = {})
       {
         'font-family' => '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
-        'font-size'=> '15px',
+        'font-size' => '15px',
         'font-weight' => 'normal',
         'margin' => '0',
         'margin-bottom' => '15px;'
       }.merge(options)
-       .map {|k,v| "#{k}:#{v}" }
-       .join(';')
+        .map { |k, v| "#{k}:#{v}" }
+        .join(';')
     end
 
-    def head_styles(options={})
+    def head_styles(options = {})
       {
         'font-family' => '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
-        'font-size'=> '24px',
+        'font-size' => '24px',
         'font-weight' => 'bold',
         'margin' => '0',
         'margin-bottom' => '15px;'
       }.merge(options)
-       .map {|k,v| "#{k}:#{v}" }
-       .join(';')
+        .map { |k, v| "#{k}:#{v}" }
+        .join(';')
     end
   end
 end

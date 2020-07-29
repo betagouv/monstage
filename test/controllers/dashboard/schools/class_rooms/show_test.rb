@@ -46,10 +46,10 @@ module Dashboard
           if student.custom_track?
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-check", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
           else
             assert_select ".test-student-#{student.id} .is_custom_track .far.fa-square", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
           end
 
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
@@ -57,7 +57,6 @@ module Dashboard
                         text: student_stats.applications_count.to_s
           assert_select ".test-student-#{student.id} span.applications_approved_count",
                         text: student_stats.applications_approved_count.to_s
-
         end
       end
 

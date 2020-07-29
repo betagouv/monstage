@@ -1,7 +1,5 @@
-h1.text-muted.opacity-05.text-center.text-sm-left
-  = "Postulez à vos "
-  br.d-none.d-sm-block
-  | offres de stages préférés.
+h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
+  = "Postulez à des offres de stages."
 
 
 .row
@@ -9,7 +7,7 @@ h1.text-muted.opacity-05.text-center.text-sm-left
     thead
       tr.tr-white
         th.p-0
-          .pb-3.pb-sm-4.pt-3.pt-sm-4.bg-light-gray-sm
+          .pb-4.pb-sm-0.pt-4.pt-sm-3.bg-light-gray-sm.mb-3.mb-sm-4
             = react_component("SearchInternshipOffer",
                               { url: internship_offers_path, className: 'flex-row focusable-search-bar' },
                               { class: 'col-12' }) do

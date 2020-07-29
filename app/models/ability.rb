@@ -30,7 +30,8 @@ class Ability
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
       !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
-        !internship_offer.from_api?
+        !internship_offer.from_api? &&
+        user.try(:class_room).try(:applicable?, internship_offer)
     end
     can %i[submit_internship_application update], InternshipApplication do |internship_application|
       internship_application.student.id == user.id
@@ -145,9 +146,8 @@ class Ability
   end
 
   def student_managed_by?(student:, user:)
-    student.school_id == user.school_id && (
+    student.school_id == user.school_id &&
       user.is_a?(Users::SchoolManagement)
-    )
   end
 
   def shared_signed_in_user_abilities(user:)

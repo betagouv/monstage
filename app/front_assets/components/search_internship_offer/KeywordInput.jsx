@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
+import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 

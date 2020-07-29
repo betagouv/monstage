@@ -53,7 +53,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     ].each do |role|
       sign_in(role)
       get account_path(section: 'school')
-      assert_select 'div[data-react-class="AutocompleteSchool"]'
+      assert_select 'div[data-react-class="SearchSchool"]'
     end
   end
 
@@ -150,7 +150,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     patch(account_path, params: {
             user: {
-              email: student_1.email,
+              email: student_1.email
             }
           })
 

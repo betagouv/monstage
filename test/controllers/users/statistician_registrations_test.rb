@@ -14,11 +14,11 @@ class StatiticianRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'POST #create with missing params fails creation' do
-    email = "bing@bongo.bang"
+    email = 'bing@bongo.bang'
     create :email_whitelist, email: email, zipcode: '60'
     assert_difference('Users::Statistician.count', 1) do
       post user_registration_path(params: { user: { email: email,

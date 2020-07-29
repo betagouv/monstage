@@ -101,7 +101,6 @@ module Api
       operator = create(:user_operator, api_token: SecureRandom.uuid)
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
       sector = create(:sector, uuid: SecureRandom.uuid)
-
       title = 'title'
       description = 'description'
       employer_name = 'employer_name'

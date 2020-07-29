@@ -3,6 +3,5 @@
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: ENV['CHROME'] ? :chrome : :headless_chrome,
-                       screen_size: [1400, 1400]
+  driven_by :selenium, using: ENV.fetch('BROWSER') { 'headless_chrome' }.to_sym
 end

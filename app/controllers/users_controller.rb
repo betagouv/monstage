@@ -24,9 +24,7 @@ class UsersController < ApplicationController
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
-    if current_user.unconfirmed_email
-      message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).'
-    end
+    message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).' if current_user.unconfirmed_email
     message
   end
 

@@ -27,13 +27,13 @@ module Users
     test 'validate wrong mobile phone format' do
       user = build(:student, phone: '+330111223344')
       refute user.valid?
-      assert_equal ["Veuillez modifier le numéro de téléphone mobile"], user.errors.messages[:phone]
+      assert_equal ['Veuillez modifier le numéro de téléphone mobile'], user.errors.messages[:phone]
     end
 
     test 'validate wrong phone format' do
       user = build(:student, phone: '06111223344')
       refute user.valid?
-      assert_equal ["Veuillez modifier le numéro de téléphone mobile"], user.errors.messages[:phone]
+      assert_equal ['Veuillez modifier le numéro de téléphone mobile'], user.errors.messages[:phone]
     end
 
     test 'validate good phone format' do

@@ -1,4 +1,3 @@
-
 class StudentMailerPreview < ActionMailer::Preview
   def internship_application_approved_email
     internship_application = InternshipApplication.approved.first

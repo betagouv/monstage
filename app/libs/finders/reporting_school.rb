@@ -37,9 +37,7 @@ module Finders
     def base_query
       query = Reporting::School.all
       query = query.where(visible: true)
-      if params[:department]
-        query = query.where(department: params[:department])
-      end
+      query = query.where(department: params[:department]) if params[:department]
       query
     end
   end

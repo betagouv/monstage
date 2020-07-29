@@ -6,24 +6,24 @@ module Api
 
     def create
       internship_offer_builder.create(params: create_internship_offer_params) do |on|
-        on.success &method(:render_created)
-        on.failure &method(:render_validation_error)
-        on.duplicate &method(:render_duplicate)
+        on.success(&method(:render_created))
+        on.failure(&method(:render_validation_error))
+        on.duplicate(&method(:render_duplicate))
       end
     end
 
     def update
       internship_offer_builder.update(instance: InternshipOffer.find_by!(remote_id: params[:id]),
                                       params: update_internship_offer_params) do |on|
-        on.success &method(:render_ok)
-        on.failure &method(:render_validation_error)
+        on.success(&method(:render_ok))
+        on.failure(&method(:render_validation_error))
       end
     end
 
     def destroy
       internship_offer_builder.discard(instance: InternshipOffer.find_by!(remote_id: params[:id])) do |on|
-        on.success &method(:render_no_content)
-        on.failure &method(:render_discard_error)
+        on.success(&method(:render_no_content))
+        on.failure(&method(:render_discard_error))
       end
     end
 
@@ -48,6 +48,7 @@ module Api
               :remote_id,
               :permalink,
               :sector_uuid,
+              :type,
               :max_candidates,
               coordinates: {},
               weeks: []

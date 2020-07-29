@@ -92,6 +92,71 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
+def populate_internship_offers
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Stage assistant.e ressources humaines - Du temps pour moi',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+  InternshipOffers::Api.create!(
+    employer: Users::Operator.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: "Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
+    description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement de toutes leurs technologies informatique depuis nos locaux et comment ils arrivent, tous les jours, à gérer en équipe, des bases de données, de la virtualisation, des applications etc.",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    remote_id: '1',
+    permalink: 'https://www.google.fr',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
+- Présentation de la recette interrégionale (service de perception).
+- Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises), d’un bureau de douane spécialisé dans les produits énergétiques et d’un bureau de douanes fiscalité et contributions indirectes.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte des services douaniers de Valenciennes',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'La douane assure des missions fiscales et de lutte contre les trafics illicites et la criminalité organisée.',
+    employer_website: "http://www.prefectures-regions.gouv.fr/hauts-de-france/Region-et-institutions/Organisation-administrative-de-la-region/Les-services-de-l-Etat-en-region/Direction-interregionale-des-douanes/Direction-interregionale-des-douanes",
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+  )
+end
+
 if Rails.env == 'review'
   populate_week_reference
   populate_schools
@@ -100,4 +165,5 @@ if Rails.env == 'review'
   populate_users
   populate_sectors
   populate_groups
+  populate_internship_offers
 end

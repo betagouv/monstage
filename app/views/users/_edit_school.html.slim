@@ -5,7 +5,7 @@ h1.h2.mb-3 Mon établissement
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
   - if current_user.respond_to?(:school)
-    = react_component("AutocompleteSchool",
+    = react_component("SearchSchool",
                       classes: 'col-12',
                       label:"Nom (ou ville) de mon établissement",
                       required: true,

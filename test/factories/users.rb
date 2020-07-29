@@ -7,7 +7,7 @@ FactoryBot.define do
     sequence(:email) { |n| "jean#{n}-claude@dus.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
-    confirmation_sent_at { Time.now}
+    confirmation_sent_at { Time.now }
     accept_terms { true }
     phone_token { nil }
     phone_token_validity { nil }
@@ -62,7 +62,6 @@ FactoryBot.define do
     factory :other, class: 'Users::SchoolManagement', parent: :user do
       type { 'Users::SchoolManagement' }
       role { 'other' }
-
     end
 
     factory :statistician, class: 'Users::Statistician', parent: :user do

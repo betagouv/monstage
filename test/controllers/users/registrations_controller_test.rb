@@ -22,7 +22,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:student, email: email, confirmed_at: nil)
     get users_registrations_standby_path(email: email)
     assert_response :success
-    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
+    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
   end
 
   test 'GET #registrations_standby as employer using path?email=fourcade.m@gmail.com with pending account' do
@@ -30,7 +30,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:employer, email: email, confirmed_at: nil)
     get users_registrations_standby_path(email: email)
     assert_response :success
-    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
+    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
   end
 
   test 'GET #registrations_standby using path?email=fourcade.m@gmail.com with confirmed account' do
@@ -53,7 +53,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     create(:student, phone: phone, confirmed_at: nil)
     get users_registrations_phone_standby_path(phone: phone)
     assert_response :success
-    assert_select 'span.confirmation-text', text: "Votre compte a bien été enregistré"
+    assert_select 'span.confirmation-text', text: 'Votre compte a bien été enregistré'
   end
 
   test 'GET #registrations_standby using path?phone=0611223344 with confirmed phone' do

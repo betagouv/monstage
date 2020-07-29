@@ -49,7 +49,7 @@ RailsAdmin.config do |config|
                               Group
                               User
                               InternshipOfferKeyword
-                              InternshipOffers::Web
+                              InternshipOffers::WeeklyFramed
                               InternshipOffers::Api
                               Users::Student
                               Users::SchoolManagement
