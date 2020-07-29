@@ -24,14 +24,18 @@ tr.hoverable-row-with-btn
               .icon-container.d-inline-block.ml-3
                 = react_component("icons/DistanceIcon", radius: internship_offer.relative_distance)
 
-        .d-none.d-sm-block.col-sm-3.text-center.align-self-center
+        .d-none.d-sm-block.col-sm-3.text-right.align-self-center
           - if can?(:apply, internship_offer) || !user_signed_in? || internship_offer.from_api?
             = link_to internship_offer_application_path(internship_offer), internship_offer_application_html_opts(internship_offer, class: 'btn btn-primary mb-3') do
-              | Je candidate
+              | Je postule
+              - if !internship_offer.from_api?
+                i.fas.fa-fw.fa-xs.ml-1.fa-rocket
+
             br
-          span= link_to listable_internship_offer_path(internship_offer), class: 'text-danger' do
+          = link_to listable_internship_offer_path(internship_offer), class: 'text-danger' do
             | Voir l'annonce
-            | &nbsp;
-            .fas.fa-chevron-right
+            span.icon-link
+              | &nbsp;
+              .fas.fa-chevron-right
 
 
