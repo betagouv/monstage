@@ -11,9 +11,10 @@ module Dashboard
     def create
       @mentor = Mentor.new(mentor_params)
       if @mentor.save
-        redirect_to new_dashboard_internship_offer_path(mentor_id: @mentor.id)
+        InternshipOffer.create_with_params(params[:mentor][:organisation_id], params[:mentor][:internship_offer_info_id], @mentor.id)
+        redirect_to dashboard_internship_offers_path,
+          flash: { success: t('dashboard.internship_offer.created') }
       else
-        
         render :new
       end
     end

@@ -18,18 +18,16 @@
             .form-group
               .label Secteur
               .row
-                .col-4.col-xs-4
-                  .custom-control.custom-radio
-                    = form.radio_button :is_public, true, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
-                    = form.label :is_public_true, 'public', class: 'custom-control-label'
-                .col-4.col-xs-4
-                  .custom-control.custom-radio
-                    = form.radio_button :is_public, false, class: 'custom-control-input', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
-                    = form.label :is_public_false, 'privé', class: 'custom-control-label'
+                .col-8
+                  .toggle-radio
+                    = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
+                    = form.label :is_public_true, 'Public', class: ''
+                    = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
+                    = form.label :is_public_false, 'Privé', class: ''
 
             div class="form-group form-group-select-group #{@organisation.is_public.nil? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
               = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
-              / = form.select :group_id, options_for_select(options_for_groups, @organisation.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'internship-form.selectGroupName'}
+              = form.select :group_id, options_for_select(options_for_groups, @organisation.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'internship-form.selectGroupName'}
 
             = react_component("inputs/AddressInput", { resourceName: :organisation,
                                     currentStreet: @organisation.street,

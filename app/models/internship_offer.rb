@@ -89,8 +89,8 @@ class InternshipOffer < ApplicationRecord
   #           :city,
   #           presence: true
 
-  validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT }
+  # validates :title, presence: true,
+  #                   length: { maximum: TITLE_MAX_CHAR_COUNT }
 
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
@@ -100,16 +100,17 @@ class InternshipOffer < ApplicationRecord
                                      foreign_key: 'internship_offer_id'
 
   # belongs_to :employer, polymorphic: true
-  belongs_to :sector
+  # belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
+  has_one :internship_offer_info
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
   before_validation :replicate_rich_text_to_raw_fields
 
-  before_save :sync_first_and_last_date
+  # before_save :sync_first_and_last_date
               # :reverse_academy_by_zipcode
 
   before_create :preset_published_at_to_now
@@ -215,6 +216,20 @@ end)
     'internship_offer'
   end
 
+  def self.create_with_params(organisation_id, internship_offer_info_id, mentor_id)
+    offer = InternshipOffer.new(
+      organisation_id: organisation_id,
+      internship_offer_info_id: internship_offer_info_id,
+      mentor_id: mentor_id)
+
+    if offer.save
+      p 'ok'
+    else
+      p offer.errors
+    end
+  
+  end
+
   # @note some possible confusion, miss-understanding here
   #   1. Rich text was added after API
   #   2. API already exposed a "description" attributes (not rich text) [in/out]
@@ -235,7 +250,7 @@ end)
   end
 
   def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
+    self.academy = Academy.lookup_by_zipcode(zipcode: organisation.zipcode)
   end
 
   def sync_internship_offer_keywords

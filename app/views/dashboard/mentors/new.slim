@@ -7,10 +7,13 @@
         = render "dashboard/internship_offers/stepper"
         = render "layouts/form_errors", resource: @mentor, resource_name: :internship_offer
 
+        = form.hidden_field :organisation_id, value: params[:organisation_id]
+        = form.hidden_field :internship_offer_info_id, value: params[:internship_offer_info_id]
+
         fieldset#step-2.mt-4
           .row.mt-3
             .col-6
-              legend.my-4 Offre de stage
+              legend.my-4 Informations Complémentaires
               .form-group
                 = form.label :name do
                   = 'Nom du tuteur/trice'
@@ -29,7 +32,7 @@
                   .col-8.text-center
                     = form.submit "Publier l'offre !", class: 'btn btn-primary'
                   .coll-4 style="display: flex;align-items: center"
-                    / = link_to "Annuler", current_action?("new") || current_action?("create") ? dashboard_internship_offers_path : internship_offer_path(@internship_offer), title: 'Retourner sur mes stages', class: 'ml-3 btn-back'
+                    = link_to "Annuler", dashboard_internship_offers_path, title: 'Retourner sur mes stages', class: 'ml-3 btn-back'
                 .row
                   .col-8.text-center
                     .mx-5.mt-2

@@ -303,7 +303,9 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
-
+  dashboard:
+    internship_offer:
+      created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
   views:
     pagination:
       last: Dernière page

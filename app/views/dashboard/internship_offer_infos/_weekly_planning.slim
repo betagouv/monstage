@@ -1,0 +1,28 @@
+div
+  .custom-control.custom-checkbox.mb-1
+    = check_box_tag 'same_daily_planning', true, true, class: 'custom-control-input', data: {action: "change->internship-form#handleToggleWeeklyPlanning"}
+    = label_tag 'same_daily_planning', 'Les horaires sont les mêmes toute la semaine', class: 'custom-control-label'
+
+  #weekly-planning.mt-3
+    .row
+      .col-5
+        = select_tag :weekly_start, options_for_select((6..22).map{|h| "#{h}:00"}, selected: '9:00'), class: "form-control"
+      .col-1 style="display: flex;align-items: center;justify-content: center;"
+        | à  
+      .col-5
+        = select_tag :weekly_end, options_for_select((6..22).map{|h| "#{h}:00"}, selected: '17:00'), class: "form-control"
+
+  #daily-planning.mt-3.d-none
+    - %w(Lundi Mardi Mercredi Jeudi Vendredi Samedi).each do |weekday|
+      .row.mt-3
+        .col-12
+          = label_tag weekday
+      .row
+        .col-5
+          = select_tag :daily_start, options_for_select((6..22).map{|h| "#{h}:00"}, selected: '9:00'), class: "form-control"
+        .col-1 style="display: flex;align-items: center;justify-content: center;"
+          | à  
+        .col-5
+          = select_tag :daily_end, options_for_select((6..22).map{|h| "#{h}:00"}, selected: '17:00'), class: "form-control"
+
+  

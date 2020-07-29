@@ -575,6 +575,42 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_infos; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_infos (
+    id bigint NOT NULL,
+    title character varying,
+    description text,
+    max_candidates integer,
+    school_id integer,
+    type character varying,
+    sector_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_infos_id_seq OWNED BY public.internship_offer_infos.id;
+
+
+--
 -- Name: internship_offer_keywords; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -646,28 +682,28 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
-    title character varying NOT NULL,
-    description text NOT NULL,
+    title character varying,
+    description character varying,
     max_candidates integer DEFAULT 1 NOT NULL,
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
     employer_website character varying,
-    street text NOT NULL,
-    zipcode character varying NOT NULL,
-    city character varying NOT NULL,
-    is_public boolean NOT NULL,
+    street character varying,
+    zipcode character varying,
+    city character varying,
+    is_public boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     discarded_at timestamp without time zone,
     coordinates public.geography(Point,4326),
-    employer_name character varying NOT NULL,
+    employer_name character varying,
     old_group character varying,
     employer_id bigint,
     school_id bigint,
-    employer_description character varying NOT NULL,
-    sector_id bigint NOT NULL,
+    employer_description character varying,
+    sector_id bigint,
     blocked_weeks_count integer DEFAULT 0 NOT NULL,
     total_applications_count integer DEFAULT 0 NOT NULL,
     convention_signed_applications_count integer DEFAULT 0 NOT NULL,
@@ -693,7 +729,8 @@ CREATE TABLE public.internship_offers (
     search_tsv tsvector,
     aasm_state character varying,
     organisation_id bigint,
-    mentor_id bigint
+    mentor_id bigint,
+    internship_offer_info_id bigint
 );
 
 
@@ -722,9 +759,9 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 CREATE TABLE public.mentors (
     id bigint NOT NULL,
-    name character varying,
-    email character varying,
-    phone character varying,
+    name character varying NOT NULL,
+    email character varying NOT NULL,
+    phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -784,14 +821,16 @@ ALTER SEQUENCE public.operators_id_seq OWNED BY public.operators.id;
 
 CREATE TABLE public.organisations (
     id bigint NOT NULL,
-    name character varying,
-    street character varying,
-    zipcode character varying,
-    city character varying,
+    name character varying NOT NULL,
+    street character varying NOT NULL,
+    zipcode character varying NOT NULL,
+    city character varying NOT NULL,
     website character varying,
     description text,
     coordinates public.geography(Point,4326),
-    is_public boolean,
+    department character varying DEFAULT ''::character varying NOT NULL,
+    is_public boolean DEFAULT false NOT NULL,
+    group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1092,6 +1131,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_infos id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_infos ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_infos_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_keywords id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1246,6 +1292,14 @@ ALTER TABLE ONLY public.internship_agreements
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT internship_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_infos internship_offer_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_infos
+    ADD CONSTRAINT internship_offer_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -1429,6 +1483,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_offer_infos_on_sector_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_infos_on_sector_id ON public.internship_offer_infos USING btree (sector_id);
+
+
+--
 -- Name: index_internship_offer_keywords_on_word; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1506,6 +1567,13 @@ CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USI
 
 
 --
+-- Name: index_internship_offers_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_internship_offer_info_id ON public.internship_offers USING btree (internship_offer_info_id);
+
+
+--
 -- Name: index_internship_offers_on_mentor_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1562,16 +1630,24 @@ CREATE INDEX index_internship_offers_on_sector_id ON public.internship_offers US
 
 
 --
+-- Name: index_internship_offers_on_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
 -- Name: index_organisations_on_coordinates; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_organisations_on_coordinates ON public.organisations USING gist (coordinates);
 
 
--- Name: index_internship_offers_on_type; Type: INDEX; Schema: public; Owner: -
+--
+-- Name: index_organisations_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree (group_id);
 
 
 --
@@ -2026,13 +2102,17 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709081408'),
 ('20200709105933'),
 ('20200709110316'),
-('20200723125600'),
-('20200723125601'),
+('20200709111800'),
+('20200709111801'),
 ('20200709111802'),
 ('20200709135354'),
 ('20200715144451'),
-('20200717134317');
+('20200717134317'),
 ('20200721124215'),
 ('20200721150028'),
 ('20200722141350'),
-('20200722144039');
+('20200728094217'),
+('20200729071625'),
+('20200730144039');
+
+

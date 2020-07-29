@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :organisation do
     name { "MyString" }
-    address_1 { "MyString" }
-    address_2 { "MyString" }
-    zip_code { "MyString" }
+    street { "12 rue" }
+    zipcode { "MyString" }
     city { "MyString" }
+    is_public { true }
     website { "MyString" }
     description { "MyText" }
   end
