@@ -8,7 +8,7 @@
   .col-12
     .row
       .col-12
-        h3.h5
+        h3.h6
           - if internship_offer.is_individual?
             i.fa-fw.fas.fa-users
           - else
@@ -18,23 +18,13 @@
 
           span.ml-1 De quel type de stage s'agit-il ?
         = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
-    .row
-      .col-12
-        h3.h5
-          i.fa-fw.fas.fa-calendar-alt
-          span.ml-1 Quand ce stage est-il disponible ?
-
-        - if internship_offer.weekly?
-          - internship_offer_weeks = internship_offer.internship_offer_weeks
-          - internship_offer_weeks = internship_offer_weeks.applicable(user: current_user, internship_offer: internship_offer) if current_user.respond_to?(:school)
-          p= Presenters::WeekList.new(weeks: internship_offer_weeks.entries.map(&:week)).to_range_as_str
 
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
       .row
         .col-12
           .row
             .col-12
-              h3.h5
+              h3.h6
                 i.fas.fa-user-tie
                 span.ml-2 Tuteur
 
@@ -62,7 +52,7 @@
       .col-12
         .row
           .col-12
-            h3.h5
+            h3.h6
               i.fa-fw.fa.fa-info-circle
               span.ml-1= "L'entreprise: #{internship_offer.employer_name}"
             .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
@@ -71,7 +61,7 @@
                 = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
 
           .col-12
-            h3.h5
+            h3.h6
               i.fa-fw.fa.fa-map-marker-alt
               span.ml-1 Où se déroule ce stage ?
             p

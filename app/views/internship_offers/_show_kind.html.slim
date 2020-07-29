@@ -1,6 +1,4 @@
 p
-  = "Stage destiné au niveau scolaire de #{tr_school_type(internship_offer).downcase}"
-  br
   - if internship_offer.is_individual?
     span.badge-internship-offer-alone= " Stage individuel (un seul élève par stage)"
   - else

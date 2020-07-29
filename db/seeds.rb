@@ -99,9 +99,10 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Offre 3e/collège',
-    description_rich_text: 'une offre au top',
-    employer_description_rich_text: 'maraichers',
+    title: 'Stage assistant.e ressources humaines - Du temps pour moi',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
@@ -117,9 +118,9 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Offre de partenaire 3e uniquement',
-    description_rich_text: 'une offre au top',
-    employer_description_rich_text: 'maraichers',
+    title: "Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
+    description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement de toutes leurs technologies informatique depuis nos locaux et comment ils arrivent, tous les jours, à gérer en équipe, des bases de données, de la virtualisation, des applications etc.",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
@@ -131,14 +132,20 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
   )
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
+- Présentation de la recette interrégionale (service de perception).
+- Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises), d’un bureau de douane spécialisé dans les produits énergétiques et d’un bureau de douanes fiscalité et contributions indirectes.
+MULTI_LINE
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Offre lycee',
-    description_rich_text: 'une offre au top',
-    employer_description_rich_text: 'maraichers',
+    title: 'Découverte des services douaniers de Valenciennes',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'La douane assure des missions fiscales et de lutte contre les trafics illicites et la criminalité organisée.',
+    employer_website: "http://www.prefectures-regions.gouv.fr/hauts-de-france/Region-et-institutions/Organisation-administrative-de-la-region/Les-services-de-l-Etat-en-region/Direction-interregionale-des-douanes/Direction-interregionale-des-douanes",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',

@@ -28,12 +28,6 @@ module Finders
       @params = params
     end
 
-    def school_type_filter(query)
-      query = middle_school_query(query) if school_type_param == 'middle_school'
-      query = high_school_query(query) if school_type_param == 'high_school'
-      query
-    end
-
     def nearby_query_part(query, coordinates)
       query.nearby(latitude: coordinates.latitude,
                    longitude: coordinates.longitude,
@@ -130,7 +124,8 @@ module Finders
       query = yield
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
-      query = school_type_filter(query)
+      query = middle_school_query(query) if school_type_param == 'middle_school'
+      query = high_school_query(query) if school_type_param == 'high_school'
       query
     end
 
