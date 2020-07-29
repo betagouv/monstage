@@ -19,6 +19,7 @@ module Dashboard
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
       assert_response :success
+      assert_select 'title', "Mes offres | Monstage"
       assert_select "tr.test-internship-offer-#{internship_offer.id}"
     end
 

@@ -18,7 +18,7 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-      test 'GET students#index as SchoolManagement works' do
+      test 'GET students#index as SchoolManagement works and shows a title' do
         school = create(:school, :with_school_manager)
         [
           create(:school_manager, school: school),
@@ -29,6 +29,7 @@ module Dashboard
           sign_in(role)
           get dashboard_school_students_path(school)
           assert_response :success
+          assert_select 'title', "Élèves des classes du #{school.name} | Monstage"
         end
       end
 

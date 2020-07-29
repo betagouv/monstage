@@ -1,3 +1,4 @@
+- content_for :page_title, t(".page_title", name: @school.name)
 = render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true }
 
 

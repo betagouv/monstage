@@ -10,7 +10,7 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'GET #choose_profile' do
     get users_choose_profile_path
-
+    assert_select 'title', "Création de compte | Monstage"
     assert_select 'a[href=?]', '/users/sign_up?as=Student'
     assert_select 'a[href=?]', '/users/sign_up?as=Employer'
     assert_select 'a[href=?]', '/users/sign_up?as=SchoolManagement'

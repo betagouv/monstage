@@ -48,6 +48,7 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
+      assert_select 'title', 'Mes candidatures | Monstage'
       assert_select 'h2', "Candidature de #{internship_application.student.name} reçue le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
       assert_select '.student-name', student.name
       assert_select '.school-name', school.name

@@ -14,9 +14,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select "[data-test-id=#{internship_offer.id}]", 0
   end
 
-  test 'GET #index as "Users::Visitor" works' do
+  test 'GET #index as "Users::Visitor" works and has a page title' do
     get internship_offers_path
     assert_response :success
+    assert_select 'title', "Recherche de stages | Monstage"
   end
 
   test 'GET #index with coordinates as "Users::Visitor" works' do

@@ -7,6 +7,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
     get new_user_registration_path(as: 'SchoolManagement')
 
     assert_response :success
+    assert_select 'title', "Inscription | Monstage"
     assert_select 'input', value: 'SchoolManagement', hidden: 'hidden'
     assert_select 'label', /J'accepte les/
   end

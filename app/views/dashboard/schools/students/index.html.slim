@@ -1,3 +1,4 @@
+- content_for :page_title, t(".page_title", name: @school.name)
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
 - students_by_class_room = @school.students.group_by {|student| Presenters::ClassRoom.or_null(student.class_room) }
