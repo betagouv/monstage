@@ -72,6 +72,7 @@ module Dashboard
 
         get dashboard_school_users_path(school)
         assert_response :success
+        assert_select 'title', "Professeurs du #{school.name} | Monstage"
         assert_select '.test-dashboard-nav a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
         assert_select '.test-dashboard-nav a.active[href=?]', dashboard_school_users_path(school), count: 1
       end

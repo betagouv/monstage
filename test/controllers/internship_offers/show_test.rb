@@ -20,12 +20,14 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
 
       assert_response :success
+      assert_select 'title', "Offre de stage '#{internship_offer.title}' | Monstage"
       assert_select 'form[id=?]', 'new_internship_application', count: 0
       assert_select 'strong.tutor_name', text: internship_offer.tutor_name
       assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
       assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]",
                     text: internship_offer.tutor_email
     end
+
 
     #
     # Student
@@ -363,6 +365,23 @@ module InternshipOffers
       assert_template 'internship_applications/forms/_visitor'
       assert_select('a[href=?]',
                     internship_offers_path(forwarded_params))
+    end
+
+    test 'GET #show as Visitor - canonical links works' do
+      internship_offer = create(:weekly_internship_offer)
+      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\/(.*)' \/>")
+
+      forwarded_params = { city: 'Mantes-la-Jolie' }
+      get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
+      assert_match(regexp, response.body)
+      id_arr = response.body.match(regexp).captures
+      assert_equal id_arr.first.to_i, internship_offer.id
+
+      forwarded_params.merge({ page: 2 })
+      get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
+      assert_match(regexp, response.body)
+      id_arr = response.body.match(regexp).captures
+      assert_equal id_arr.first.to_i, internship_offer.id
     end
 
     test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do

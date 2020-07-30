@@ -12,6 +12,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'input', value: 'Student', hidden: 'hidden'
 
+    assert_select 'title', "Inscription | Monstage"
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
     assert_select 'label', /Date de naissance/

@@ -31,6 +31,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_response :success
+      assert_select 'title', 'Semaines de stage | Monstage'
       assert_select 'form[action=?]', dashboard_school_path(@school)
       available_weeks = Week.selectable_on_school_year
       asserted_input_count = 0

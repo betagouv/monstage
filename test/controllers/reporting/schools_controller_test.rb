@@ -18,6 +18,7 @@ module Reporting
       sign_in(statistician)
       get reporting_schools_path(department: statistician.department_name)
       assert_response :success
+      assert_select 'title', "Statistiques sur les établissements | Monstage"
     end
 
     test 'get index.xlsx as Statistician' \

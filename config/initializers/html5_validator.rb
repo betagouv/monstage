@@ -30,6 +30,15 @@ module Html5Validator
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
+      assert page_title_ok?(page.body)
     end
+  end
+
+  def page_title_ok?(data)
+    titles_array = data.match(/<title>(.*)<\/title>/).captures
+    return false if titles_array.count > 1
+    return false if titles_array.first == 'Monstage'
+
+    true
   end
 end

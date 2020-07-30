@@ -27,6 +27,7 @@ module InternshipOffers
       sign_in(employer)
       get new_dashboard_internship_offer_path
 
+      assert_select 'title', "Déposer une offre de stage | Monstage"
       assert_select '#internship_offer_is_public_true[checked]',
                     count: 0 # "ensure user select kind of group"
       assert_select '#internship_offer_is_public_false[checked]',

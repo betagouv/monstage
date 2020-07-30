@@ -13,6 +13,7 @@ module InternshipApplications
       get internship_offer_internship_application_path(internship_offer,
                                                        internship_application)
       assert_response :success
+      assert_select 'title', 'Ma candidature | Monstage'
       assert_select "a.btn-danger[href=\"#{internship_offer_internship_application_path(internship_offer, internship_application, transition: :submit!)}\"]"
       assert_select 'a.btn-danger[data-method=patch]'
       assert_select '.student-email', internship_application.student.email

@@ -22,12 +22,13 @@ module Reporting
       assert_response 302
     end
 
-    test 'GET #index as GOD success' do
+    test 'GET #index as GOD success and has a page title' do
       god = create(:god)
       sign_in(god)
       create(:weekly_internship_offer)
       get reporting_internship_offers_path
       assert_response :success
+      assert_select 'title', "Statistiques des offres | Monstage"
     end
 
     test 'GET #index as statistician success ' \
