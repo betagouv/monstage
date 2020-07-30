@@ -25,6 +25,15 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'GET #index canonical links works' do
+    get internship_offers_path
+    refute_match /<link rel='canonical' href='http:\/\/www.example.com\/internship_offers' \>/, response.body
+    get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
+    assert_match /<link rel='canonical' href='http:\/\/www.example.com\/internship_offers' \>/, response.body
+    get internship_offers_path(latitude: 44.8378, longitude: -0.579512, page: 2)
+    assert_match /<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\?page=2' \>/, response.body
+  end
+
   test 'GET #index as student ignores internship_offers with existing applicaiton' do
     internship_offer_without_application = create(:weekly_internship_offer, title: 'ok')
     school = create(:school, weeks: internship_offer_without_application.weeks)

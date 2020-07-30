@@ -74,6 +74,8 @@ module ApplicationHelper
     end
   end
 
+  # canonical links target internship offers only. They point to offers with
+  # their page number parameter only
   def canonical_link
     return unless controller_path == 'internship_offers'
     return if params.reject { |para,_| para.in?(%w[controller action id page]) }.empty?

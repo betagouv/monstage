@@ -28,6 +28,7 @@ module InternshipOffers
                     text: internship_offer.tutor_email
     end
 
+
     #
     # Student
     #
@@ -364,6 +365,25 @@ module InternshipOffers
       assert_template 'internship_applications/forms/_visitor'
       assert_select('a[href=?]',
                     internship_offers_path(forwarded_params))
+    end
+
+    test 'GET #show as Visitor - canonical links works' do
+      internship_offer = create(:weekly_internship_offer)
+      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\/(.*)' \>")
+      get internship_offers_path({ id: internship_offer.id })
+      refute_match(regexp, response.body)
+
+      forwarded_params = { city: 'Mantes-la-Jolie' }
+      get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
+      assert_match(regexp, response.body)
+      id_arr = response.body.match(regexp).captures
+      assert_equal id_arr.first.to_i, internship_offer.id
+
+      forwarded_params.merge({ page: 2 })
+      get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
+      assert_match(regexp, response.body)
+      id_arr = response.body.match(regexp).captures
+      assert_equal id_arr.first.to_i, internship_offer.id
     end
 
     test 'GET #show as Visitor when internship_offer is unpublished redirects to home' do
