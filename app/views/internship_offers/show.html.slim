@@ -1,4 +1,5 @@
-- content_for :page_title, t(".page_title", name: @internship_offer.title)
+- content_for(:page_title, t(".page_title", name: @internship_offer.title))
+- content_for(:canonical_url, internship_offer_path(@internship_offer))
 div data-controller="internship-application-form"
   .row.no-gutters data-controller='list-navigation' data-list-navigation-next-url=listable_internship_offer_path(@next_internship_offer) data-list-navigation-previous-url=listable_internship_offer_path(@previous_internship_offer)
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
