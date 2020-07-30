@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr" >
   <head>
-    <%= canonical_link %>
+    <% if content_for?(:canonical_url) %>
+      <link rel='canonical' href='<%= yield(canonical_url)' %> />
+    <% end %>
     <title><%= page_title %> | Monstage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
