@@ -369,9 +369,7 @@ module InternshipOffers
 
     test 'GET #show as Visitor - canonical links works' do
       internship_offer = create(:weekly_internship_offer)
-      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\/(.*)' \>")
-      get internship_offers_path({ id: internship_offer.id })
-      refute_match(regexp, response.body)
+      regexp = Regexp.new("<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\/(.*)' \/>")
 
       forwarded_params = { city: 'Mantes-la-Jolie' }
       get internship_offer_path({ id: internship_offer.id }.merge(forwarded_params))
