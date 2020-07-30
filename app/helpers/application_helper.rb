@@ -74,30 +74,4 @@ module ApplicationHelper
     end
   end
 
-  # canonical links target internship offers only. They point to offers with
-  # their page number parameter only
-  def canonical_link
-    return unless controller_path == 'internship_offers'
-    return if params.reject { |para,_| para.in?(%w[controller action id page]) }.empty?
-
-    uri_path, base_url, page_query = canonical_uri_helper(request)
-    case action_name
-    when 'index'
-      link_url = "#{base_url}/internship_offers#{page_query}"
-    when 'show'
-      link_url = "#{base_url}#{uri_path}"
-    end
-    "<link rel='canonical' href='#{link_url}' >".html_safe
-  end
-
-  def canonical_uri_helper(request)
-    uri = URI.parse request.original_url
-
-    base_url = "#{uri.scheme}://#{uri.host}"
-    base_url = uri.port.to_i == 80 ? base_url : "#{base_url}:#{uri.port}"
-
-    page_query = params[:page] ? "?#{{page: params[:page]}.to_query}" : ''
-
-    [uri.path, base_url, page_query]
-  end
 end
