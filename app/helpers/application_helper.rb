@@ -75,9 +75,4 @@ module ApplicationHelper
       "#{dyn_page_name} | #{default}" unless dyn_page_name == default
     end
   end
-
-  def internship_offers_canonical_url
-    params[:page] ? internship_offers_url(page: params[:page]) :
-                    internship_offers_url
-  end
 end
