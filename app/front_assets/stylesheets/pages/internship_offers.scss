@@ -60,40 +60,14 @@ $sortLinkOffset: 15px;
   width: 100%;
   text-decoration: none;
 }
- .fa,
- .list-item .svg-inline--fa{
-  color: $blue
- }
+
 .list-item-label{
-  font-size: .5rem;
-  color: $blue
+  font-size: .8rem;
 }
-@include media-breakpoint-up(xs) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 1rem;
-  }
+.list-item .fa,
+.list-item .svg-inline--fa{
+  font-size: 2rem;
 }
-
-@include media-breakpoint-up(sm) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 2rem;
-  }
-}
-@include media-breakpoint-up(md) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 3rem;
-  }
-}
-@include media-breakpoint-up(lg) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 4rem;
-  }
-}
-
 
 .container-downshift{position: relative;}
 
@@ -106,3 +80,8 @@ $sortLinkOffset: 15px;
   background-size: cover;
 }
 
+@include media-breakpoint-up(xs) {
+  .internship-item-badge{
+    line-height: 1.5;
+  }
+}

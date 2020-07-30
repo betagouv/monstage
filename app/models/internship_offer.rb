@@ -77,7 +77,8 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :weekly_framed, lambda {
-    where(type: InternshipOffers::WeeklyFramed.name)
+    where(type: [InternshipOffers::WeeklyFramed.name,
+                 InternshipOffers::Api.name])
   }
 
   scope :free_date, lambda {

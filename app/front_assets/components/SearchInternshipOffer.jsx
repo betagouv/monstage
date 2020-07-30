@@ -5,9 +5,8 @@ import findBootstrapEnvironment from '../utils/responsive';
 
 import CityInput from './search_internship_offer/CityInput';
 import KeywordInput from './search_internship_offer/KeywordInput';
-import FilterBySchoolTypeInput from './search_internship_offer/FilterBySchoolTypeInput';
 
-function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) {
+function SearchInternshipOffer({ url, className}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -15,7 +14,7 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) 
   const initialKeyword = searchParams.get('keyword') || '';
   const initialLatitude = searchParams.get('latitude');
   const initialLongitude = searchParams.get('longitude');
-  const initialSchoolType = searchParams.get('school_type');
+
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -29,16 +28,8 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) 
   // used by both
   const [focus, setFocus] = useState(null);
 
-  // Checkbox initialization
-  const [schoolType, setSchoolType] = useState(searchParams.get('school_type'));
 
   const filterOffers = (event) => {
-    if (schoolType) {
-      searchParams.set('school_type', schoolType);
-    } else {
-      searchParams.delete('school_type');
-    }
-
     if (city) {
       searchParams.set('city', city);
       searchParams.set('latitude', latitude);
@@ -71,13 +62,12 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) 
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
-    const schoolTypeChanged = initialSchoolType != schoolType;
 
-    setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged);
+    setShowSearch(keywordChanged || coordinatesChanged);
   };
 
   if (isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
   }
 
   return (
@@ -116,12 +106,6 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility = true }) 
           </div>
         )}
       </div>
-      <br />
-      {schoolTypeVisibility && (
-        <div>
-          <FilterBySchoolTypeInput schoolType={schoolType} setSchoolType={setSchoolType} />
-        </div>
-      )}
     </form>
   );
 }
