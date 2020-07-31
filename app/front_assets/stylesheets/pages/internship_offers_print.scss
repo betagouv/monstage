@@ -1,0 +1,6 @@
+@media print {
+  .col-12.print-only {
+    color: red;
+    display: none !important;
+  }
+}
