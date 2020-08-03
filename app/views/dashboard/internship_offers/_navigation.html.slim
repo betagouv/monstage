@@ -1,5 +1,5 @@
 .row.bg-light.mt-n4
-  .col-12
+  .col-12.d-print-none
     ul.nav.navbar.px-0
       - if @internship_offer.published_at.present?
         li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
@@ -44,6 +44,12 @@
             i.fas.fa-pen
             small.d-block
               | Modifier
+
+        - if can?(:read, @internship_offer)
+          a.nav-link.px-1.px-sm-2.text-center.d-none.d-md-block onClick='javascript:window.print();return false;'
+            i.fas.fa-print
+            small.d-block
+              | Imprimer
 
         - if can?(:create, InternshipOffer)
           a.nav-link.px-1.px-sm-2.text-center href= new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)

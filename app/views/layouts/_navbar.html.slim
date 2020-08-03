@@ -5,7 +5,7 @@ nav.navbar.navbar-light.py-0
       span class="badge badge-warning d-none d-sm-inline"
         = current_user.class.name
 
-  ul.nav.nav-banner.float-xs-none.float-sm-right
+  ul.nav.nav-banner.float-xs-none.float-sm-right.d-print-none
     - if user_signed_in?
       - if current_user.is_a?(Users::Employer)
         li.nav-item

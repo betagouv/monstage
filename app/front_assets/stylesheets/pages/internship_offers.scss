@@ -53,6 +53,11 @@ $sortLinkOffset: 15px;
   word-wrap: break-word;
 }
 
+// offer show page:  coloring in blue each item of navigation bar
+li > a.nav-link , li > a:hover.nav-link{
+  color: $blue;
+}
+
 
 // navigation arrows on internship_offers#index
 .list-item{
