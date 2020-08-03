@@ -1,3 +1,16 @@
+@import "./bootstrap/rg2a/_variables";
 @media print {
-  .d-custom-print-none{ display: none; }
+  // overriding
+  .middle-school-badge {
+    border: 1px solid $blue_sky;
+    color: $gray-600;
+  }
+  .high-school-badge {
+    border: 1px solid $green_lime;
+    color: $gray-600;
+  }
+  // original styles
+  .print-footer{
+    color: $gray-900;
+  }
 }
