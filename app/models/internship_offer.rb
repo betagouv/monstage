@@ -104,7 +104,9 @@ class InternshipOffer < ApplicationRecord
   # belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
-  has_one :internship_offer_info
+  belongs_to :organisation
+  belongs_to :mentor
+  belongs_to :internship_offer_info
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text

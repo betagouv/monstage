@@ -4,7 +4,7 @@ class InternshipOffersController < ApplicationController
   before_action :authenticate_user!, only: %i[create edit update destroy]
   before_action :flash_message_when_missing_school_weeks, only: :index
 
-  with_options only: :show do
+  with_options only: [:show, :edit, :update] do
     before_action :set_internship_offer,
                   :check_internship_offer_is_not_discarded_or_redirect,
                   :check_internship_offer_is_published_or_redirect
@@ -28,6 +28,16 @@ class InternshipOffersController < ApplicationController
     @internship_application ||= @internship_offer.internship_applications
                                                  .build(user_id: current_user_id,
                                                         type: current_user.try(:internship_applications_type))
+  end
+
+  def edit
+    @organisation = @internship_offer.organisation
+    @internship_offer_info = @internship_offer.internship_offer_info
+    @mentor = @internship_offer.mentor
+    @available_weeks = Week.selectable_from_now_until_end_of_school_year
+  end
+
+  def update
   end
 
   private

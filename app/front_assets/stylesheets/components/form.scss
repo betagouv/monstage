@@ -99,7 +99,7 @@
 	input:checked + label {
 		background-color: $blue;
 		color: #FFF;
-		box-shadow: $activeShadow;
+		box-shadow: 0 0 10px rgba(#4B9DEA, .5);
 		border-color: $blue;
 		z-index: 1;
 	}

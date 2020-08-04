@@ -96,6 +96,15 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
 
 
 --
+-- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
+    TEMPLATE = pg_catalog.thesaurus,
+    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+
+
+--
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -1922,7 +1931,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -2104,7 +2113,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200721124215'),
 ('20200721150028'),
 ('20200722141350'),
-('20200723125613');
+('20200723125613'),
 ('20200728094217'),
 ('20200729071625'),
 ('20200730144039');

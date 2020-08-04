@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :internship_offers, only: %i[index show] do
+  resources :internship_offers, only: %i[index show edit] do
     resources :internship_applications, only: %i[create index show update]
   end
 
@@ -59,9 +59,9 @@ Rails.application.routes.draw do
     get 'internship_offers/new/step_2', to: 'internship_offers#new', as: 'internship_offers_step_2'
     get 'internship_offers/new/step_3', to: 'mentors#new', as: 'internship_offers_step_3'
 
-    resources :organisations, only: %i[new create]
-    resources :internship_offer_infos, only: %i[new create]
-    resources :mentors, only: %i[new create]
+    resources :organisations
+    resources :internship_offer_infos
+    resources :mentors
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]

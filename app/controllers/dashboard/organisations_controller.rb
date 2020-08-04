@@ -27,7 +27,7 @@ module Dashboard
               :street,
               :zipcode,
               :city,
-              :description,
+              :description_rich_text,
               :website,
               :is_public,
               :group_id,
