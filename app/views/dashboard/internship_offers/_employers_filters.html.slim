@@ -1,17 +1,13 @@
 .bg-light
-  .row.my-3.py-2 data-controller="internship-offers-sorting"
+  .row.my-3.py-2
     .col-2
       p.filter-box.h-100.justify-content-center
         strong.pl-3 Trier par
     .col-3
-      .filter-box.h-100.justify-content-center data-action="click->internship-offers-sorting#internshipDate"
-        .in-line
-          span data-target="internship-offers-sorting.internship"
-            i.fas.fa-chevron-right.mr-2
-          span.underlined dates de stage
+      .filter-box.h-100.justify-content-center
+        = link_to "dates de stage",
+                  dashboard_internship_offer_internship_applications_path(order: 'internshipDate')
     .col
-      .filter-box.h-100.justify-content-center data-action="click->internship-offers-sorting#applicationDate"
-        .in-line
-          span data-target="internship-offers-sorting.application"
-            i.fas.fa-chevron-right.mr-2
-          span.underlined dates de candidatures
+      .filter-box.h-100.justify-content-center
+        = link_to "dates de candidatures",
+                  dashboard_internship_offer_internship_applications_path(order: 'applicationDate')

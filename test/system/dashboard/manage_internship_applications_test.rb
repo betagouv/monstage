@@ -105,7 +105,7 @@ module Dashboard
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
 
-      find("span.underlined", text: 'dates de stage').click
+      click_on('dates de stage')
       if week_1.id < week_2. id # normal case
         within(".bg-light.row") do
           find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
@@ -116,7 +116,7 @@ module Dashboard
         end
       end
 
-      find("span.underlined", text: 'dates de candidature').click
+      click_on('dates de candidature')
       within(".bg-light.row") do
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
