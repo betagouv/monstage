@@ -66,13 +66,29 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  scope :no_date_index, lambda {
+    where.not(aasm_state: [:drafted])
+    .includes(
+      :student,
+      :internship_offer
+    ).default_order
+  }
+
+  scope :with_date_index, ->(internship_offer:){
+    joins(internship_offer_week: :internship_offer)
+    .where('internship_offers.id = ?', internship_offer.id)
+    .where.not('internship_applications.aasm_state = ?', 'drafted')
+    .includes(:student, :internship_offer)
+  }
+
   #
   # Other stuffs
   #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
-  scope :weekly_framed, -> { where(type: InternshipApplication::WeeklyFramed.name) }
-  scope :free_date, -> { where(type: InternshipApplication::FreeDate.name) }
+  scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
+  scope :default_order, ->{ order(updated_at: :desc) }
 
   aasm do
     state :drafted, initial: true

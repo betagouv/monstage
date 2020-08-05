@@ -53,6 +53,12 @@ $sortLinkOffset: 15px;
   word-wrap: break-word;
 }
 
+.filter-box{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 
 // navigation arrows on internship_offers#index
 .list-item{

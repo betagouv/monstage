@@ -3,17 +3,18 @@
 module Dashboard
   module InternshipOffers
     class InternshipApplicationsController < ApplicationController
+      ORDER_WITH_INTERNSHIP_DATE = 'internshipDate'
       before_action :authenticate_user!
       before_action :find_internship_offer, only: %i[index update]
 
       def index
         authorize! :read, @internship_offer
         authorize! :index, InternshipApplication
-        @internship_applications = @internship_offer.internship_applications
-                                                    .where.not(aasm_state: [:drafted])
-                                                    .includes(:student, :internship_offer)
-                                                    .order(updated_at: :desc)
-                                                    .page(params[:page])
+        @internship_applications = filter_by_week_or_application_date(
+          @internship_offer,
+          params[:order]
+        )
+        @internship_applications = @internship_applications.page(params[:page])
       end
 
       def update
@@ -34,6 +35,24 @@ module Dashboard
       end
 
       private
+
+      def filter_by_week_or_application_date(internship_offer, params_order)
+        return internship_offer.internship_applications.no_date_index unless internship_offer.weekly?
+
+        internship_applications = InternshipApplications::WeeklyFramed.with_date_index(
+          internship_offer: internship_offer
+        )
+        if params_order == ORDER_WITH_INTERNSHIP_DATE
+          internship_applications.order(
+            'internship_offer_weeks.week_id ASC',
+            'internship_applications.updated_at ASC'
+          )
+        else
+          internship_applications.order(
+            'internship_applications.updated_at ASC'
+          )
+        end
+      end
 
       def valid_transition?
         %w[
