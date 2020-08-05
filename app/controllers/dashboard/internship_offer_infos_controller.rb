@@ -30,11 +30,12 @@ module Dashboard
             .permit(
               :title, 
               :employer_type, 
-              # :type, 
+              :type, 
               :sector_id, 
               :school_id, 
-              :max_candidates
-              # week_ids: []
+              :description_rich_text, 
+              :max_candidates,
+              week_ids: []
               )
     end
   end

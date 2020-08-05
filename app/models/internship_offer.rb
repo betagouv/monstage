@@ -108,10 +108,10 @@ class InternshipOffer < ApplicationRecord
   belongs_to :mentor
   belongs_to :internship_offer_info
 
-  has_rich_text :description_rich_text
+  has_rich_text :offer_description_rich_text
   has_rich_text :employer_description_rich_text
 
-  before_validation :replicate_rich_text_to_raw_fields
+  # before_validation :replicate_rich_text_to_raw_fields
 
   # before_save :sync_first_and_last_date
               # :reverse_academy_by_zipcode

@@ -68,8 +68,8 @@ module InternshipOfferInfos
     #           presence: true
 
     # validates :is_public, inclusion: { in: [true, false] }
-    validate :validate_group_is_public?, if: :is_public?
-    validate :validate_group_is_not_public?, unless: :is_public?
+    #validate :validate_group_is_public?, if: false #lambda { |ioi| ioi.organisation.is_public? }
+    #validate :validate_group_is_not_public?, unless: true #lambda { |ioi| ioi.organisation.is_public? }
 
     validates :max_candidates, numericality: { only_integer: true,
                                                greater_than: 0,

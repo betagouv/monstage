@@ -34,7 +34,7 @@
         .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
           .label data-rich-text-label-for='internship_offer_info_description_rich_text' data-controller="rich-text-label"
             | Activité prévues
-          = form.rich_text_area :description, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
+          = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
             small.form-text data-target="maxlength-input.trixElementCharCount"
 
         .form-group
@@ -69,7 +69,7 @@
             .col-6.text-center.small
               ' (un groupe de plusieurs élèves)
 
-        div class="form-group form-group-select-max-candidates #{@internship_offer_info.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
+        div class="form-group form-group-select-max-candidates d-none #{@internship_offer_info.is_individual? ? 'd-none' : ''}" data-target='internship-form.maxCandidatesGroup'
           = form.label :max_candidates do
             = 'Nombre de stagiaires maximum par groupe'
             small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif

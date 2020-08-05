@@ -587,6 +587,10 @@ CREATE TABLE public.internship_offer_infos (
     school_id integer,
     type character varying,
     sector_id bigint,
+    first_date date,
+    last_date date,
+    weeks_count integer DEFAULT 0 NOT NULL,
+    internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

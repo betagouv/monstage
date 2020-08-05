@@ -4,13 +4,13 @@ div data-controller="select-weeks" data-target='internship-form.weeksContainer' 
   .form-group
     - if defined?(select_all) && defined?(disabled)
       .custom-control.custom-checkbox.mb-1
-        = check_box_tag 'all_year_long', true, preselect_all, { class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#handleToggleWeeks"}}
+        = check_box_tag 'all_year_long', true, select_all, { class: 'custom-control-input', disabled: disabled, data: {action: "change->select-weeks#handleToggleWeeks"}}
         = label_tag 'all_year_long', class: 'custom-control-label' do
           | Toute l'année scolaire
           - school_year = SchoolYear::Current.new
           = " #{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
 
-    div class="custom-control-checkbox-list my-3 #{preselect_all ? 'd-none' : ''}" data-target="select-weeks.checkboxesContainer"
+    div class="custom-control-checkbox-list my-3 #{select_all ? 'd-none' : ''}" data-target="select-weeks.checkboxesContainer"
       - current_weeks.map do |week|
         .custom-control.custom-checkbox
           = form.check_box :week_ids, { multiple: true, class: 'custom-control-input', disabled: defined?(disabled) && disabled, data: {target: 'select-weeks.weekCheckboxes', action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}), week.id, false
