@@ -58,7 +58,12 @@
             .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
             - if internship_offer.employer_website.present?
               p
-                = link_to internship_offer.employer_website, internship_offer.employer_website, target: "_blank", class: 'test-employer-website', title: "#{internship_offer.employer_website} (nouvelle fenêtre)", rel: "external noopener noreferrer"
+                = link_to internship_offer.employer_website,
+                          internship_offer.employer_website,
+                          target: "_blank",
+                          class: 'test-employer-website',
+                          title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
+                          rel: "external noopener noreferrer"
 
           .col-12
             h3.h6
@@ -68,8 +73,12 @@
               = internship_offer.street
               br
               = "#{internship_offer.zipcode} #{internship_offer.city}"
-              br
-              br
-              = link_to "Voir sur une carte", internship_offer.osm_url, target: "_blank", title: "Afficher sur une carte (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'text-danger font-weight-bold'
+              .d-print-none.mt-3
+                = link_to "Voir sur une carte",
+                          internship_offer.osm_url,
+                          target: "_blank",
+                          title: "Afficher sur une carte (nouvelle fenêtre)",
+                          rel: "external noopener noreferrer",
+                          class: 'text-danger font-weight-bold'
 
 

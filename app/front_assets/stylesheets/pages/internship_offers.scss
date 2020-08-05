@@ -57,6 +57,9 @@ $sortLinkOffset: 15px;
   position: relative;
   display: flex;
   flex-direction: column;
+// offer show page:  coloring in blue each item of navigation bar
+li > a.nav-link , li > a:hover.nav-link{
+  color: $blue;
 }
 
 
