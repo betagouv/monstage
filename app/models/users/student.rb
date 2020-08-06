@@ -57,7 +57,8 @@ module Users
     end
 
     def custom_dashboard_path
-      url_helpers.dashboard_students_internship_applications_path(self)
+      # url_helpers.dashboard_students_internship_applications_path(self)
+      url_helpers.internship_offers_path
     end
 
     def dashboard_name
