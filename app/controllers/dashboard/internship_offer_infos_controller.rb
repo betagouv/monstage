@@ -12,15 +12,15 @@ module Dashboard
 
     def create
       @internship_offer_info = InternshipOfferInfo.new(internship_offer_info_params)
-
       if @internship_offer_info.save
         redirect_to new_dashboard_mentor_path(
           organisation_id: params[:internship_offer_info][:organisation_id],
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
-        
-        render :new
+        @internship_offer_info = InternshipOfferInfo.new
+        @available_weeks = Week.selectable_from_now_until_end_of_school_year
+        render :new, status: :bad_request
       end
     end
 

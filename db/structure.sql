@@ -575,6 +575,39 @@ ALTER SEQUENCE public.internship_applications_id_seq OWNED BY public.internship_
 
 
 --
+-- Name: internship_offer_info_weeks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_offer_info_weeks (
+    id bigint NOT NULL,
+    internship_offer_info_id bigint,
+    week_id bigint,
+    total_applications_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_offer_info_weeks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_offer_info_weeks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_offer_info_weeks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_offer_info_weeks_id_seq OWNED BY public.internship_offer_info_weeks.id;
+
+
+--
 -- Name: internship_offer_infos; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1135,6 +1168,13 @@ ALTER TABLE ONLY public.internship_applications ALTER COLUMN id SET DEFAULT next
 
 
 --
+-- Name: internship_offer_info_weeks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_info_weeks ALTER COLUMN id SET DEFAULT nextval('public.internship_offer_info_weeks_id_seq'::regclass);
+
+
+--
 -- Name: internship_offer_infos id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1296,6 +1336,14 @@ ALTER TABLE ONLY public.internship_agreements
 
 ALTER TABLE ONLY public.internship_applications
     ADD CONSTRAINT internship_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_offer_info_weeks internship_offer_info_weeks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_info_weeks
+    ADD CONSTRAINT internship_offer_info_weeks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1484,6 +1532,20 @@ CREATE INDEX index_internship_applications_on_internship_offer_week_id ON public
 --
 
 CREATE INDEX index_internship_applications_on_user_id ON public.internship_applications USING btree (user_id);
+
+
+--
+-- Name: index_internship_offer_info_weeks_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_info_weeks_on_internship_offer_info_id ON public.internship_offer_info_weeks USING btree (internship_offer_info_id);
+
+
+--
+-- Name: index_internship_offer_info_weeks_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offer_info_weeks_on_week_id ON public.internship_offer_info_weeks USING btree (week_id);
 
 
 --
@@ -1899,6 +1961,14 @@ ALTER TABLE ONLY public.internship_applications
 
 
 --
+-- Name: internship_offer_info_weeks fk_rails_9d43a53fc8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_info_weeks
+    ADD CONSTRAINT fk_rails_9d43a53fc8 FOREIGN KEY (internship_offer_info_id) REFERENCES public.internship_offer_infos(id);
+
+
+--
 -- Name: internship_offers fk_rails_aaa97f3a41; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1920,6 +1990,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
+
+
+--
+-- Name: internship_offer_info_weeks fk_rails_e9c5c89c26; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_info_weeks
+    ADD CONSTRAINT fk_rails_e9c5c89c26 FOREIGN KEY (week_id) REFERENCES public.weeks(id);
 
 
 --
@@ -2119,6 +2197,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200723125613'),
 ('20200728094217'),
 ('20200729071625'),
-('20200730144039');
+('20200730144039'),
+('20200805195040');
 
 

@@ -6,11 +6,11 @@ module InternshipOfferInfos
     included do
       validates :weeks, presence: true
 
-      has_many :internship_offer_weeks, dependent: :destroy,
-                                        foreign_key: :internship_offer_id,
-                                        inverse_of: :internship_offer
+      has_many :internship_offer_info_weeks, dependent: :destroy,
+                                        foreign_key: :internship_offer_info_id,
+                                        inverse_of: :internship_offer_info
 
-      has_many :weeks, through: :internship_offer_weeks
+      has_many :weeks, through: :internship_offer_info_weeks
 
       scope :ignore_already_applied, lambda { |user:|
         where(type: ['InternshipOffers::WeeklyFramed', 'InternshipOffers::Api'])
@@ -24,7 +24,7 @@ module InternshipOfferInfos
       }
 
       scope :ignore_max_internship_offer_weeks_reached, lambda {
-        where('internship_offer_weeks_count > blocked_weeks_count')
+        where('weeks_count > blocked_weeks_count')
       }
 
       scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
@@ -40,7 +40,7 @@ module InternshipOfferInfos
       end
 
       def is_fully_editable?
-        internship_applications.empty?
+        true #internship_applications.empty?
       end
 
       #
