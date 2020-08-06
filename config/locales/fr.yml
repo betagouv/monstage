@@ -156,17 +156,18 @@ fr:
           middle_school: 'Collège'
           high_school: 'Lycée'
       user:
-        first_name: Prénom
-        last_name: Nom
-        school_manager: "Chef d'établissement"
-        main_teacher: "Professeur principal"
-        teacher: "Professeur"
-        other: "Autres fonctions"
+        accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
-        school: "Etablissement"
-        gender: Sexe
         confirmed_at: Confirmé le
+        first_name: Prénom
+        gender: Sexe
+        last_name: Nom
+        main_teacher: "Professeur principal"
+        other: "Autres fonctions"
         phone: Téléphone mobile
+        school: "Etablissement"
+        school_manager: "Chef d'établissement"
+        teacher: "Professeur"
       week:
         number: Numéro de semaine
         year: Année
