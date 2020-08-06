@@ -22,14 +22,14 @@ module Dashboard
         if valid_transition?
           @internship_application.send(params[:transition])
           @internship_application.update!(optional_internship_application_params)
-          redirect_back fallback_location: current_user.after_sign_in_path,
+          redirect_back fallback_location: current_user.custom_dashboard_path,
                         flash: { success: 'Candidature mise à jour avec succès' }
         else
-          redirect_back fallback_location: current_user.after_sign_in_path,
+          redirect_back fallback_location: current_user.custom_dashboard_path,
                         flash: { success: 'Impossible de traiter votre requète, veuillez contacter notre support' }
         end
       rescue AASM::InvalidTransition => e
-        redirect_back fallback_location: current_user.after_sign_in_path,
+        redirect_back fallback_location: current_user.custom_dashboard_path,
                       flash: { warning: 'Cette candidature a déjà été traitée' }
       end
 
