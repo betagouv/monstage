@@ -22,17 +22,17 @@
             small.form-text.text-muted Langues étudiées et/ou parlées
           = form.rich_text_area :resume_languages, class: 'form-control col-12', disabled: disabled, rows: 3
 
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+  fieldset class="#{phone_mail_disabled ? 'opacity-05' : ''} col-12 mb-4"
     legend.h3 Me contacter
     .row
       .col-12.col-md-6
         .form-group
           = form.label :phone, for: 'phone-input' do
             = 'Numéro de mobile'
-          = react_component("inputs/CountryPhoneSelect", { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: true })
+          = react_component("inputs/CountryPhoneSelect", { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
       .col-12.col-md-6
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
             small.form-text.text-muted L'employeur pourra vous recontacter par courrier électronique (celui de votre compte monstagedetroisieme.fr)
-          = form.email_field :email, class: 'form-control col-lg-12', required: true, readonly: true, disabled: disabled
+          = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled

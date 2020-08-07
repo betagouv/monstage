@@ -7,7 +7,7 @@ class CountryPhoneSelect extends React.Component {
   static propTypes = {
     name: PropTypes.string,
     value: PropTypes.string,
-    disabled: PropTypes.boolean,
+    disabled: PropTypes.bool,
   };
 
   render() {
