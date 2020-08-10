@@ -1,0 +1,11 @@
+.bg-light.p-3.my-3
+  .row
+    .col-12
+      strong= "Trier : "
+      = link_to "par date de candidature",
+                dashboard_internship_offer_internship_applications_path(order: 'applicationDate'),
+                class: [nil, 'applicationDate'].include?(params[:order]) ? 'font-weight-bold' : ''
+      = " | "
+      = link_to "dates de stage",
+                dashboard_internship_offer_internship_applications_path(order: 'internshipDate'),
+                class: params[:order] == 'internshipDate' ? 'font-weight-bold' : ''
