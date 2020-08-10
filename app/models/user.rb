@@ -35,7 +35,8 @@ class User < ApplicationRecord
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
-  validate :email_or_phone, on: :create
+  validate :email_or_phone
+  validate :keep_email_existence, on: :update
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -204,6 +205,15 @@ class User < ApplicationRecord
     if email.blank? && phone.blank?
       errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
       errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
+    end
+  end
+
+  def keep_email_existence
+    if email_was.present? && email.blank?
+      errors.add(
+        :email,
+        'Il faut conserver un email valide pour assurer la continuité du service'
+      )
     end
   end
 end

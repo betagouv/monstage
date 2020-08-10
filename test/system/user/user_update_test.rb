@@ -29,9 +29,9 @@ class UserUpdateTest < ApplicationSystemTestCase
     assert success_message == 'Compte mis à jour avec succès.'
   end
 
-  test 'student will not update his phone number with a wrong formatted phone number' do
-    student_2 = create(:student)
-    sign_in(student_2)
+  test 'student will not update his phone number with a badly formatted phone number' do
+    student = create(:student)
+    sign_in(student)
     visit account_path
 
     user_phone_selector = find(:css, '#phone-input')
