@@ -38,7 +38,8 @@
               = f.rich_text_area :motivation, class: "form-control col-12", required: true, disabled: disabled, rows: 5
 
           = f.fields_for :student do |resume_form|
-            = render partial: "users/resume_fields", locals: { form: resume_form, disabled: disabled }
+            = render partial: "users/resume_fields",
+                     locals: { form: resume_form, disabled: disabled, phone_mail_disabled: true }
 
           .actions.d-flex.d-sm-block
             = link_to "#internship-application-closeform", class: 'btn btn-outline-primary text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do

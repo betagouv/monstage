@@ -9,7 +9,7 @@ module Users
                    Rails.application
                         .routes
                         .url_helpers
-                        .dashboard_students_internship_applications_path(student_id: student.id))
+                        .internship_offers_path)
     end
 
     test 'student.missing_school_week' do

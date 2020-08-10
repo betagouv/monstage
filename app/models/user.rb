@@ -24,16 +24,19 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/,
-                                                                 message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
+  validates :phone, uniqueness: { allow_blank: true },
+                    format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/, message: 'Veuillez modifier le numéro de téléphone mobile' },
+                    allow_blank: true
 
   validates :email, uniqueness: { allow_blank: true },
-                    format: { with: Devise.email_regexp }, allow_blank: true
+                    format: { with: Devise.email_regexp },
+                    allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
   validate :email_or_phone
+  validate :keep_email_existence, on: :update
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -194,6 +197,7 @@ class User < ApplicationRecord
   private
 
   def clean_phone
+    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
   end
 
@@ -201,6 +205,15 @@ class User < ApplicationRecord
     if email.blank? && phone.blank?
       errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
       errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
+    end
+  end
+
+  def keep_email_existence
+    if email_was.present? && email.blank?
+      errors.add(
+        :email,
+        'Il faut conserver un email valide pour assurer la continuité du service'
+      )
     end
   end
 end

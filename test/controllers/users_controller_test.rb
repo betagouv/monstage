@@ -110,6 +110,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name="user[class_room_id]"]'
   end
 
+  test 'GET edit as student also allow him to change class_room' do
+    student = create(:student, phone: '+330623042585')
+
+    sign_in(student)
+    get account_path(section: 'identity')
+
+    assert_select 'select[name="user[class_room_id]"]'
+  end
+
   test 'GET edit render as Statistician shows a readonly input on email' do
     statistician = create(:statistician)
 
@@ -140,6 +149,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal '+330665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as student cannot nullify his email' do
+    error_message = 'Il faut conserver un email valide pour assurer la continuité du service'
+    student = create(:student, phone: '+330623042585', email: 'test@test.fr')
+    sign_in(student)
+
+    patch(account_path, params: { user: { email: '' } })
+    refute student.reload.unconfirmed_email == ''
+    assert_template 'users/edit'
+    assert_select '#error_explanation li:first label', { text: error_message }, 1
   end
 
   test 'PATCH failures does not crashes' do

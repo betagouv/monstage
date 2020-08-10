@@ -56,6 +56,10 @@ module Users
       "#{super}, in school: #{school&.zipcode}"
     end
 
+    def after_sign_in_path
+      url_helpers.internship_offers_path
+    end
+
     def custom_dashboard_path
       url_helpers.dashboard_students_internship_applications_path(self)
     end
