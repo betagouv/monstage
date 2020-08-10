@@ -116,7 +116,7 @@ module Dashboard
         end
       end
 
-      click_on('dates de candidature')
+      click_on('par date de candidature')
       within(".bg-light.row") do
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
