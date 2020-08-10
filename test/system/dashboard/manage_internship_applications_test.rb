@@ -57,6 +57,71 @@ module Dashboard
       end
     end
 
+    test 'weekly_internship_applications internship offers in show view can be filtered' do
+      student_1, student_2 = [ create(:student), create(:student) ]
+      week_1, week_2 = Week.where(year: Time.now.year)
+                           .order(number: :asc)
+                           .limit(2)
+                           .to_a
+
+      internship_offer = create(
+        :weekly_internship_offer,
+        weeks: [week_1, week_2],
+        employer: @employer,
+        max_candidates: 2
+      )
+      internship_offer_week_1 = create(
+        :internship_offer_week,
+        week: week_1,
+        internship_offer: internship_offer
+      )
+      internship_offer_week_2 = create(
+        :internship_offer_week,
+        week: week_2,
+        internship_offer: internship_offer
+      )
+
+      early_application_for_week_2 = create(
+        :weekly_internship_application,
+        aasm_state: :submitted,
+        submitted_at: 3.days.ago,
+        internship_offer_week: internship_offer_week_2,
+        student: student_2
+      )
+
+      late_application_for_week_1 = create(
+        :weekly_internship_application,
+        aasm_state: :submitted,
+        submitted_at: 2.days.ago,
+        internship_offer_week: internship_offer_week_1,
+        student: student_1
+      )
+      sign_in(@employer)
+
+      visit dashboard_internship_offer_internship_applications_path(internship_offer.id)
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+      find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
+      within(".bg-light.row") do
+        find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+      end
+
+      click_on('dates de stage')
+      if week_1.id < week_2. id # normal case
+        within(".bg-light.row") do
+          find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
+        end
+      else # might happen with fixture random order creation
+        within(".bg-light.row") do
+          find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+        end
+      end
+
+      click_on('par date de candidature')
+      within(".bg-light.row") do
+        find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+      end
+    end
+
     test 'show free_date_internship_applications internship offers' do
       free_date_internship_application = create(:free_date_internship_application,
                                                 :submitted,
