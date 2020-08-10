@@ -1,8 +1,11 @@
 h1.h2.mb-3 Candidatures pour le stage
 h2.h3= @internship_offer.title
-- if @internship_offer.weekly?
-  = render partial: 'dashboard/internship_offers/employers_filters'
+
 = link_to "Voir l'offre de stage", internship_offer_path(@internship_offer)
+
+- if @internship_offer.weekly?
+  = render partial: 'dashboard/internship_offers/internship_applications/filters'
+
 - if @internship_applications.empty?
   .row
     .col-1.col-sm-1
