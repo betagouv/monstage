@@ -623,7 +623,8 @@ CREATE TABLE public.internship_offer_infos (
     first_date date,
     last_date date,
     weeks_count integer DEFAULT 0 NOT NULL,
-    internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    daily_hours text[] DEFAULT '{}'::text[],
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

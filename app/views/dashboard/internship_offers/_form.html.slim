@@ -81,7 +81,7 @@
             
           = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable? }
 
-          = render partial: "internship_offers/weekly_planning"
+          = render partial: "internship_offers/daily_hours"
         
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"

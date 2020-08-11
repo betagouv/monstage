@@ -106,13 +106,17 @@ export default class extends Controller {
   }
 
   handleToggleWeeklyPlanning(event){
-    console.log('check')
     if($('#same_daily_planning').is(":checked")){
+      $('#weekly_start').val('9:00')
+      $('#weekly_end').val('17:00')
       $("#daily-planning").addClass('d-none')
       $("#daily-planning").hide()
       $("#weekly-planning").removeClass('d-none')
       $("#weekly-planning").slideDown()
     } else {
+      console.log("check")
+      $('#weekly_start').val('--')
+      $('#weekly_end').val('--')
       $("#weekly-planning").addClass('d-none')
       $("#weekly-planning").hide()
       $("#daily-planning").removeClass('d-none')

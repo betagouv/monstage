@@ -10,6 +10,8 @@ class CreateInternshipOfferInfos < ActiveRecord::Migration[6.0]
       t.date :first_date
       t.date :last_date
       t.integer :weeks_count, null: false, default: 0
+      t.text :weekly_hours, array: true, default: []
+      t.text :daily_hours, array: true, default: []
 
       t.timestamps
     end
