@@ -106,7 +106,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :group, optional: true
   belongs_to :organisation
   belongs_to :mentor
-  belongs_to :internship_offer_info
+  has_one :internship_offer_info, inverse_of:  :internship_offer
 
   has_rich_text :offer_description_rich_text
   has_rich_text :employer_description_rich_text
@@ -118,6 +118,8 @@ class InternshipOffer < ApplicationRecord
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
+
+  accepts_nested_attributes_for :organisation, :internship_offer_info, :mentor, allow_destroy: true
 
   scope :published, -> { where.not(published_at: nil) }
 
@@ -219,18 +221,18 @@ end)
     'internship_offer'
   end
 
-  def self.create_with_params(organisation_id, internship_offer_info_id, mentor_id)
-    offer = InternshipOffer.new(
+  def self.create_with_params(organisation_id, mentor_id)
+    internship_offer = InternshipOffer.new(
       organisation_id: organisation_id,
-      internship_offer_info_id: internship_offer_info_id,
-      mentor_id: mentor_id)
-
-    if offer.save
+      mentor_id: mentor_id
+    )
+    if internship_offer.save
       p 'ok'
     else
-      p offer.errors
+      p 'errors'
+      p internship_offer.errors
     end
-  
+    internship_offer
   end
 
   # @note some possible confusion, miss-understanding here

@@ -31,6 +31,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def edit
+    # @internship_offer = InternshipOffer.find(params[:id])
     @organisation = @internship_offer.organisation
     @internship_offer_info = @internship_offer.internship_offer_info
     @mentor = @internship_offer.mentor
@@ -43,7 +44,7 @@ class InternshipOffersController < ApplicationController
   private
 
   def set_internship_offer
-    @internship_offer = InternshipOffer.with_rich_text_description_rich_text
+    @internship_offer = InternshipOffer.with_rich_text_offer_description_rich_text
                                        .with_rich_text_employer_description_rich_text
                                        .find(params[:id])
   end

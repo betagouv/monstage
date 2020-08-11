@@ -3,11 +3,13 @@
 class InternshipOfferInfo < ApplicationRecord
   MAX_CANDIDATES_PER_GROUP = 200
   TITLE_MAX_CHAR_COUNT = 150
+  DESCRIPTION_MAX_CHAR_COUNT= 500
     
   # Relation
   belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
+  belongs_to :internship_offer, inverse_of: :internship_offer_info, optional: true
 
   has_rich_text :description_rich_text
 

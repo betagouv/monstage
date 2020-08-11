@@ -19,7 +19,17 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
+      p 'preprocess_api_params(params, fallback_weeks: false)'
+      p preprocess_api_params(params, fallback_weeks: false)
+      # byebug
+      # p InternshipOffer.create(params).errors
       instance.update!(preprocess_api_params(params, fallback_weeks: false))
+      p 'errors'
+      p instance.errors
+      p instance.errors
+      p instance.errors
+      p instance.errors
+
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -46,7 +56,12 @@ module Builders
     end
 
     def preprocess_api_params(params, fallback_weeks:)
+      p 'in preprocess '
+      p params
+      # byebug
+
       return params unless from_api?
+      p 'after return'
 
       opts = { params: params,
                user: user,
