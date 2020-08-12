@@ -2,7 +2,7 @@
   = render "dashboard/internship_offers/stepper"
   = render "layouts/form_errors", resource: @internship_offer_info, resource_name: :internship_offer_info
 
-  = form.hidden_field :organisation_id, value: params[:organisation_id]
+  = form.hidden_field :organisation_id, value: @organisation_id
 
   // STEP 2
   fieldset#step-2.mt-4

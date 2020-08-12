@@ -85,4 +85,20 @@ end
     else I18n.t("#{tr_school_prefix}.middle_school")
     end
   end
+
+  def select_weekly_start(internship_offer)
+    internship_offer.daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:first) || '9:00'
+  end
+
+  def select_weekly_end(internship_offer)
+    internship_offer.daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:last) || '17:00'
+  end
+
+  def select_daily_start(internship_offer, day)
+    internship_offer.daily_hours.present? ? internship_offer.daily_hours[day].first : '9:00'
+  end
+
+  def select_daily_end(internship_offer, day)
+    internship_offer.daily_hours.present? ? internship_offer.daily_hours[day].last : '17:00'
+  end
 end

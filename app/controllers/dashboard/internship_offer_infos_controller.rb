@@ -8,6 +8,7 @@ module Dashboard
       @internship_offer_info = InternshipOfferInfo.new
       #authorize! :create, InternshipOffer
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      @organisation_id = params[:organisation_id]
     end
 
     def create
@@ -20,9 +21,9 @@ module Dashboard
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
-        @internship_offer_info = InternshipOfferInfo.new
         @available_weeks = Week.selectable_from_now_until_end_of_school_year
-        render :new, organisation_id: organisation_id, status: :bad_request
+        @organisation_id = organisation_id
+        render :new, status: :bad_request
       end
     end
 
