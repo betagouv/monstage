@@ -106,7 +106,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :group, optional: true
   belongs_to :organisation, optional: true
   belongs_to :mentor, optional: true
-  has_one :internship_offer_info, inverse_of:  :internship_offer
+  belongs_to :internship_offer_info
 
   has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text

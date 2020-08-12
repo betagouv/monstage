@@ -12,16 +12,17 @@ module Dashboard
 
     def create
       @internship_offer_info = InternshipOfferInfo.new(internship_offer_info_params.merge!(prepare_daily_hours(params)))
+      organisation_id = params[:internship_offer_info][:organisation_id]
 
       if @internship_offer_info.save
         redirect_to new_dashboard_internship_offer_path(
-          organisation_id: params[:internship_offer_info][:organisation_id],
+          organisation_id: organisation_id,
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
         @internship_offer_info = InternshipOfferInfo.new
         @available_weeks = Week.selectable_from_now_until_end_of_school_year
-        render :new, status: :bad_request
+        render :new, organisation_id: organisation_id, status: :bad_request
       end
     end
 

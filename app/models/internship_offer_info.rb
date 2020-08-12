@@ -9,7 +9,7 @@ class InternshipOfferInfo < ApplicationRecord
   belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
-  belongs_to :internship_offer, inverse_of: :internship_offer_info, optional: true
+  belongs_to :internship_offer, optional: true
 
   has_rich_text :description_rich_text
 
