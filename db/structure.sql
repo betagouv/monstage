@@ -613,7 +613,6 @@ ALTER SEQUENCE public.internship_offer_info_weeks_id_seq OWNED BY public.interns
 
 CREATE TABLE public.internship_offer_infos (
     id bigint NOT NULL,
-    internship_offer_id bigint,
     title character varying,
     description text,
     max_candidates integer,
@@ -767,8 +766,11 @@ CREATE TABLE public.internship_offers (
     type character varying,
     search_tsv tsvector,
     aasm_state character varying,
+    internship_offer_info_id bigint,
     organisation_id bigint,
-    mentor_id bigint
+    mentor_id bigint,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    daily_hours text[] DEFAULT '{}'::text[]
 );
 
 
@@ -1550,13 +1552,6 @@ CREATE INDEX index_internship_offer_info_weeks_on_week_id ON public.internship_o
 
 
 --
--- Name: index_internship_offer_infos_on_internship_offer_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_infos_on_internship_offer_id ON public.internship_offer_infos USING btree (internship_offer_id);
-
-
---
 -- Name: index_internship_offer_infos_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1638,6 +1633,13 @@ CREATE INDEX index_internship_offers_on_employer_id ON public.internship_offers 
 --
 
 CREATE INDEX index_internship_offers_on_group_id ON public.internship_offers USING btree (group_id);
+
+
+--
+-- Name: index_internship_offers_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_internship_offer_info_id ON public.internship_offers USING btree (internship_offer_info_id);
 
 
 --

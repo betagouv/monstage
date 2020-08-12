@@ -16,6 +16,7 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
+          # Mentor.create() TO DO
           redirect_to(internship_offer_path(created_internship_offer),
                       flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
         end
@@ -38,12 +39,6 @@ module Dashboard
     end
 
     def update
-      p 'in update'
-      p 'params'
-      p params
-      p 'internship_offer_params'
-      p internship_offer_params
-
       internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
         on.success do |updated_internship_offer|
@@ -51,18 +46,12 @@ module Dashboard
                       flash: { success: 'Votre annonce a bien été modifiée' })
         end
         on.failure do |failed_internship_offer|
-          p 'error in block'
-          p failed_internship_offer.errors
-          p failed_internship_offer.errors
-          p failed_internship_offer.errors
-
           @internship_offer = failed_internship_offer
           @available_weeks = Week.selectable_on_school_year
           render :edit, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
-      p 'missing params'
       @internship_offer = InternshipOffer.find(params[:id])
       @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request
@@ -91,12 +80,6 @@ module Dashboard
                             InternshipOffer.new
                           end
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
-    end
-
-    def step_2
-    end
-
-    def step_3
     end
 
     private
@@ -163,33 +146,7 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type, :description,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, coordinates: {}, week_ids: [],
-                    # :internship_offer_info_attributes => [
-                    #   :title,
-                    #   # :employer_type, 
-                    #   # :type, 
-                    #   :sector_id, 
-                    #   # :school_id, 
-                    #   :description_rich_text, 
-                    #   # :max_candidates,
-                    #   # :weekly_start,
-                    #   # :weekly_end,
-                    #   # :daily_hours,
-                    #   # week_ids: []
-                    # ],
-                    :organisation_attributes => [
-                      :name,
-                      :street,
-                      :zipcode,
-                      :city,
-                      :description_rich_text,
-                      :website,
-                      :is_public,
-                      :group_id,
-                      :organisation_autocomplete,
-                      coordinates: {}
-                    ]
-                  )
+                    :school_type, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
     end
   end
 end

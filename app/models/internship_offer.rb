@@ -11,8 +11,8 @@ class InternshipOffer < ApplicationRecord
   # queries
   include Listable
   include FindableWeek
-  # include Nearbyable
-  # include Zipcodable
+  include Nearbyable
+  include Zipcodable
 
   # utils
   include Discard::Model
@@ -85,13 +85,13 @@ class InternshipOffer < ApplicationRecord
     where(type: InternshipOffers::FreeDate.name)
   }
 
-  # validates :title,
-  #           :employer_name,
-  #           :city,
-  #           presence: true
+  validates :title,
+            :employer_name,
+            :city,
+            presence: true
 
-  # validates :title, presence: true,
-  #                   length: { maximum: TITLE_MAX_CHAR_COUNT }
+  validates :title, presence: true,
+                    length: { maximum: TITLE_MAX_CHAR_COUNT }
 
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
@@ -100,21 +100,21 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
-  # belongs_to :employer, polymorphic: true
-  # belongs_to :sector
+  belongs_to :employer, polymorphic: true, optional: true
+  belongs_to :sector
   belongs_to :school, optional: true # reserved to school
   belongs_to :group, optional: true
-  belongs_to :organisation
-  belongs_to :mentor
+  belongs_to :organisation, optional: true
+  belongs_to :mentor, optional: true
   has_one :internship_offer_info, inverse_of:  :internship_offer
 
-  has_rich_text :offer_description_rich_text
+  has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
 
-  # before_validation :replicate_rich_text_to_raw_fields
+  before_validation :replicate_rich_text_to_raw_fields
 
-  # before_save :sync_first_and_last_date
-              # :reverse_academy_by_zipcode
+  before_save :sync_first_and_last_date
+              :reverse_academy_by_zipcode
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords

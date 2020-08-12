@@ -6,6 +6,7 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize :create, model
+      params = concat_params(params)
       internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
@@ -19,17 +20,7 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      p 'preprocess_api_params(params, fallback_weeks: false)'
-      p preprocess_api_params(params, fallback_weeks: false)
-      # byebug
-      # p InternshipOffer.create(params).errors
       instance.update!(preprocess_api_params(params, fallback_weeks: false))
-      p 'errors'
-      p instance.errors
-      p instance.errors
-      p instance.errors
-      p instance.errors
-
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -56,12 +47,7 @@ module Builders
     end
 
     def preprocess_api_params(params, fallback_weeks:)
-      p 'in preprocess '
-      p params
-      # byebug
-
       return params unless from_api?
-      p 'after return'
 
       opts = { params: params,
                user: user,
@@ -91,6 +77,36 @@ module Builders
       return nil if ability.can?(*vargs)
 
       raise CanCan::AccessDenied
+    end
+
+    def concat_params(params)
+      info = InternshipOfferInfo.find(params[:internship_offer_info_id])
+      organisation = Organisation.find(params[:organisation_id])
+      organisation_params = {
+        employer_name: organisation.name,
+        street: organisation.street,
+        zipcode: organisation.zipcode,
+        city: organisation.city,
+        employer_website: organisation.website,
+        description: organisation.description,
+        coordinates: organisation.coordinates,
+        is_public: organisation.is_public,
+        group_id: organisation.group_id
+      }
+      internship_offer_info_params = {
+        title: info.title,
+        description_rich_text: info.description_rich_text,
+        max_candidates: info.max_candidates,
+        school_id: info.school_id,
+        first_date: info.first_date,
+        last_date: info.last_date,
+        weekly_hours: info.weekly_hours,
+        daily_hours: info.daily_hours,
+        sector_id: info.sector_id,
+        type: info.type.gsub('Info', '')
+      }
+
+      params.merge(organisation_params).merge(internship_offer_info_params)
     end
   end
 end

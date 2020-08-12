@@ -14,7 +14,7 @@ module Dashboard
       @internship_offer_info = InternshipOfferInfo.new(internship_offer_info_params.merge!(prepare_daily_hours(params)))
 
       if @internship_offer_info.save
-        redirect_to new_dashboard_mentor_path(
+        redirect_to new_dashboard_internship_offer_path(
           organisation_id: params[:internship_offer_info][:organisation_id],
           internship_offer_info_id: @internship_offer_info.id,
         )

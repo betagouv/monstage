@@ -1,7 +1,6 @@
 class CreateInternshipOfferInfos < ActiveRecord::Migration[6.0]
   def change
     create_table :internship_offer_infos do |t|
-      t.references :internship_offer
       t.string :title
       t.text :description
       t.integer :max_candidates

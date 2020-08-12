@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module InternshipOffers
-  class Api < InternshipOffer
+module InternshipOfferInfos
+  class Api < InternshipOfferInfo
     include WeeklyFramable
 
     rails_admin do
