@@ -64,6 +64,9 @@ class Ability
       can [:manage_school_students], School do |school|
         school.id == user.school_id
       end
+      can [:manage_school_internship_agreements], School do |school|
+        school.id == user.school_id
+      end
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id && user.school_manager?
       end

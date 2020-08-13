@@ -21,3 +21,7 @@ ul.nav.nav-tabs.test-dashboard-nav.mb-2
   - if can? :manage_school_students, @school
     li.nav-item
       = link_to "Élèves", dashboard_school_students_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_students_path(school)) ? 'active' : ''}"
+  
+  - if can? :manage_school_students, @school
+    li.nav-item
+      = link_to "Conventions à signer", dashboard_school_internship_agreements_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_agreements_path(school)) ? 'active' : ''}"

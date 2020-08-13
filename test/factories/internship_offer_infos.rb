@@ -13,5 +13,9 @@ FactoryBot.define do
     trait :weekly_internship_offer_info do
       weeks { [Week.first] }
     end
+
+    factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],
+                                      class: 'InternshipOfferInfos::WeeklyFramed',
+                                      parent: :internship_offer_info
   end
 end

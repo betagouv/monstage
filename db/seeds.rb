@@ -92,6 +92,17 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
+def populate_students
+  with_class_name_for_defaults(Users::Student.new(email: 'student1@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student2@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student3@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student4@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student11@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student12@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student13@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student14@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room_id: 2)).save!
+end
+
 def populate_internship_offers
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
@@ -166,4 +177,5 @@ if Rails.env.development? || Rails.env.review?
   populate_sectors
   populate_groups
   populate_internship_offers
+  populate_students
 end

@@ -1,0 +1,19 @@
+.row.mt-3
+  h5= class_room[:name]
+.row
+  .col-12.px-0
+    table.table.table-hover.table-sticky-thead
+      thead
+        tr.tr-white
+          th.pl-0 Elève
+          th Candidature acceptée
+          th
+      tbody class="test-class-room-#{class_room[:id]}"
+        - applications.each do |application|
+          tr class="test-student-#{application.id}"
+            td.pl-0 data-head="#{application.student.name}"= application.student.name
+            td data-head="#{application.internship_offer.title}"= application.internship_offer.title
+            td.full-width data-head="Action"
+              .actions.d-flex.d-sm-block.text-center
+                = link_to '#', class: 'btn btn-primary btn-sm ml-2' do
+                  i.fa.fa-pen
