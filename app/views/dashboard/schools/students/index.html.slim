@@ -1,4 +1,4 @@
-= render partial: 'dashboard/navbar', locals: { school: @school }
+= render partial: 'dashboard/navbar', locals: { school: @school, applications_badge: @applications }
 
 - students_by_class_room = @school.students.group_by {|student| Presenters::ClassRoom.or_null(student.class_room) }
 

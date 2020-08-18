@@ -7,6 +7,7 @@ module Dashboard
 
       def index
         authorize! :manage_school_students, @school
+        navbar_badges
       end
 
       def update
