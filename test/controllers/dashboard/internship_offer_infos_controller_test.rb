@@ -28,7 +28,7 @@ module Dashboard
           internship_offer_info: {
             sector_id: sector.id,
             title: 'PDG stagiaire',
-            type: 'InternshipOfferInfos::FreeDate',
+            type: 'InternshipOfferInfos::WeeklyFramed',
             description_rich_text: '<div><b>Activités de découverte</b></div>',
             'week_ids' => weeks.map(&:id),
             organisation_id: 1
@@ -49,11 +49,11 @@ module Dashboard
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
-      assert_equal 'InternshipOfferInfos::FreeDate', created_internship_offer_info.type
+      assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description
       assert_equal [["10:00", "13:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ['', '']], created_internship_offer_info.daily_hours
-      # assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
-      assert_redirected_to new_dashboard_mentor_path(
+      assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
+      assert_redirected_to new_dashboard_internship_offer_path(
         organisation_id: 1,
         internship_offer_info_id: created_internship_offer_info.id,
       )

@@ -6,7 +6,7 @@ module Dashboard
 
     def new
       @internship_offer_info = InternshipOfferInfo.new
-      #authorize! :create, InternshipOffer
+      #authorize! :create, InternshipOfferInfo
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       @organisation_id = params[:organisation_id]
     end

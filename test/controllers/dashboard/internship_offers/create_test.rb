@@ -15,6 +15,7 @@ module InternshipOffers
       sign_in(create(:employer))
       weeks = [weeks(:week_2019_1)]
       internship_offer_info = create(:weekly_internship_offer_info)
+
       organisation = create(:organisation)
       params = {
         tutor_name: 'Jean Paul',
@@ -29,10 +30,9 @@ module InternshipOffers
       end
       created_internship_offer = InternshipOffer.last
       assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
-      assert_equal school, created_internship_offer.school
-      assert_equal weeks.map(&:id), created_internship_offer.week_ids
+      assert_equal internship_offer_info.weeks.map(&:id), created_internship_offer.week_ids
       assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
-      assert_equal params['max_candidates'], created_internship_offer.max_candidates
+      assert_equal internship_offer_info.max_candidates, created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 

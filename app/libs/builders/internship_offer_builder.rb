@@ -103,7 +103,8 @@ module Builders
         weekly_hours: info.weekly_hours,
         daily_hours: info.daily_hours,
         sector_id: info.sector_id,
-        type: info.type.gsub('Info', '')
+        type: info.type.gsub('Info', ''),
+        week_ids: info.weeks.map(&:id)
       }
 
       params.merge(organisation_params).merge(internship_offer_info_params)

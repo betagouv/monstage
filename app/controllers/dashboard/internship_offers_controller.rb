@@ -46,6 +46,8 @@ module Dashboard
                       flash: { success: 'Votre annonce a bien été modifiée' })
         end
         on.failure do |failed_internship_offer|
+          
+
           @internship_offer = failed_internship_offer
           @available_weeks = Week.selectable_on_school_year
           render :edit, status: :bad_request
