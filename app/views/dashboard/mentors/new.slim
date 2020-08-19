@@ -21,7 +21,7 @@
               .form-group
                 = form.label :email do
                   = 'Adresse électronique / Email'
-                = form.email_field :email, class: 'form-control', required: true, value: @mentor.name || current_user.email
+                = form.email_field :email, class: 'form-control', required: true, value: @mentor.email || current_user.email
               .form-group
                 = form.label :phone do
                   = "Numéro de téléphone"

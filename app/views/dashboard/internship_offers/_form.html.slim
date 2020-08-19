@@ -125,7 +125,7 @@
 
           = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable? }
 
-          = render partial: "dashboard/internship_offer_infos/daily_hours"
+          = render partial: "dashboard/internship_offer_infos/daily_hours", locals: { internship_offer: @internship_offer }
         
 
   fieldset#step-2.mt-4

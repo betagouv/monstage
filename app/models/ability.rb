@@ -83,7 +83,7 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     can %i[create see_tutor], InternshipOffer
-    can %i[read update discard], InternshipOffer#, employer_id: user.id
+    can %i[read update discard], InternshipOffer, employer_id: user.id
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end
