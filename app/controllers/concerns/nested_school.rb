@@ -16,6 +16,7 @@ module NestedSchool
                                             .includes({student: [:class_room]}, :internship_offer)
                                             .approved
                                             .where(student: @school.students)
+      @students_without_class_room = @school.students.where(class_room_id: nil).count
     end
   end
 end

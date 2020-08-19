@@ -5,7 +5,6 @@ tr class="test-class-room-#{class_room.id}"
     .row.no-gutters
       .col-8.col-sm-12
         h2.h5.mb-0.d-none.d-sm-block
-          span.border-class-type= tr_school_track(class_room.school_track)
           = link_to dashboard_school_class_room_path(school, class_room), class: 'small' do
             = class_room.name
 

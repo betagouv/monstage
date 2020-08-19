@@ -1,4 +1,4 @@
-= render partial: 'dashboard/navbar', locals: { school: @school, applications_badge: @applications }
+= render partial: 'dashboard/navbar', locals: { school: @school, applications_badge: @applications, students_badge: @students_without_class_room }
 
 - @applications_by_class_room.each do |class_room, applications|
   = render partial: 'class_room_tbody', locals: { class_room: class_room, applications: applications }

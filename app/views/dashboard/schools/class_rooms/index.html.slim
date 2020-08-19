@@ -1,19 +1,22 @@
-= render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true, applications_badge: @applications }
+= render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true, applications_badge: @applications, students_badge: @students_without_class_room }
 
 
-.row
-  table.table.table-hover.table-rg2a.table-sticky-thead
-    - cols = ["Classe",
-        "Inscrits/Validés",
-        "Sans candidature",
-        "Sans stage"]
-    thead
-      tr.tr-white
-        - cols.map.with_index do |col, i|
-          th class="align-top #{i.zero? ? '' : 'text-center'}"
-            small= col
-    tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms.order(:name)), locals: { school: @school, cols: cols }
+- @school.class_rooms.order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
+  .row.mt-5
+    h5.mb-0= tr_school_track(school_track)
+  .row
+    table.table.table-hover.table-rg2a.table-sticky-thead
+      - cols = ["Classe",
+          "Inscrits/Validés",
+          "Sans candidature",
+          "Sans stage"]
+      thead
+        tr.tr-white
+          - cols.map.with_index do |col, i|
+            th class="align-top #{i.zero? ? '' : 'text-center'}"
+              small= col
+      tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
 
-  - if can?(:create, ClassRoom)
-    .col-12
-      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'text-danger font-weight-bold'
+- if can?(:create, ClassRoom)
+  .col-12
+    = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'text-danger font-weight-bold'
