@@ -50,15 +50,12 @@ Rails.application.routes.draw do
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
+      put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
     end
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
-
-    get 'internship_offers/new/step_1', to: 'organisations#new', as: 'internship_offers_step_1'
-    get 'internship_offers/new/step_2', to: 'internship_offers#new', as: 'internship_offers_step_2'
-    get 'internship_offers/new/step_3', to: 'mentors#new', as: 'internship_offers_step_3'
 
     resources :organisations
     resources :internship_offer_infos
