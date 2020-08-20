@@ -2,22 +2,14 @@
 
 module Services
   class SyncFrenchDictionnary
+    include NetUtil
+
     DICTIONNARY_BASE_URL = 'https://www.dictionnaire-academie.fr/search'
     ANOMALY = ['AN'].freeze
 
     def search
       params = { term: word, options: '1' }
-      url = URI "#{DICTIONNARY_BASE_URL}?#{params.to_query}"
-
-      https = Net::HTTP.new(url.host, url.port)
-      https.use_ssl = true
-
-      request = Net::HTTP::Post.new(url)
-      request['Accept'] = 'application/json'
-
-      https.request(request)
-    ensure
-      https.finish if https.try(:active?)
+      post_query(resource_url: DICTIONNARY_BASE_URL, params: params)
     end
 
     def natures
@@ -42,25 +34,21 @@ module Services
       @word = word
     end
 
-    # Available metadata are : url, label, nbhomograph, score, nature
     def metadatas(response:)
       if response_ok?(response: response)
         parse_result(body: response.body)
       else
-        Rails.logger.warn 'Dictionnaire-Academie failed in ' \
+        Rails.logger.warn "#{URI(DICTIONNARY_BASE_URL).host} failed in " \
                           "its seach for #{word}"
       end
     end
 
     def parse_result(body:)
+      # Available metadata are : url, label, nbhomograph, score, nature
       parsed_body = JSON.parse(body)
-      parsed_body.is_a?(Hash) ? parsed_body.fetch('result', ANOMALY) : ANOMALY
-    end
+      return ANOMALY unless parsed_body.is_a?(Hash)
 
-    def response_ok?(response:)
-      return false if response.nil?
-
-      response.code.to_i.between?(200, 299)
+      parsed_body.fetch('result', ANOMALY)
     end
   end
 end

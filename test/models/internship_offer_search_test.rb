@@ -10,7 +10,7 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
                       description: 'stage dans un xxx',
                       employer_description: '')
     FactoryBot.create(:weekly_internship_offer,
-                      title: 'police',
+                      title: 'policier',
                       description: 'stage dans un xxx',
                       employer_description: '')
     FactoryBot.create(:weekly_internship_offer,
@@ -45,8 +45,8 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
 
   test 'search by term find by synonym' do
     assert_equal(2,
-                 InternshipOffer.search_by_keyword('police').count,
-                 "can't find with synonym police")
+                 InternshipOffer.search_by_keyword('policier').count,
+                 "can't find with synonym policier")
     assert_equal(2,
                  InternshipOffer.search_by_keyword('gendarme').count,
                  "can't find with synonym gendarme")
