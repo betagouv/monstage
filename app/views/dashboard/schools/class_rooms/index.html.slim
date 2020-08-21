@@ -39,14 +39,15 @@
       - cols = ["Classe",
           "Inscrits/Validés",
           "Sans candidature",
-          "Sans stage"]
+          "Sans stage", ""]
       thead
         tr.tr-white
           - cols.map.with_index do |col, i|
-            th class="align-top #{i.zero? ? '' : 'text-center'}"
+            th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
               small= col
       tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
 
 - if can?(:create, ClassRoom)
-  .col-12
-    = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'text-danger font-weight-bold'
+  .row
+    .col-12.my-3
+      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn-primary btn'
