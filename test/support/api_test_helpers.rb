@@ -37,5 +37,10 @@ module ApiTestHelpers
       body: '{"result":[{"nature":"n.f.","score":1}]}',
       headers: {}
     )
+    stub_request(:any, /cnrtl.fr/).to_return(
+      status: 200,
+      body: '{<html><body><div class="syno_format"><a>synonym</a></div></body></html>}',
+      headers: {}
+    )
   end
 end

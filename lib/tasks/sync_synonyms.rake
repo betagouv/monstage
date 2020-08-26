@@ -3,6 +3,8 @@ require 'fileutils'
 
 namespace :internship_offer_keywords do
   # Step 1- as god in production, you can retrieve csv file of InternshipOfferKeyword
+  # and set up one's keyword table with production's
+  desc 'Retrieving data from external synonyms dictionnary for db update'
   # Step 1 is for local machine
   desc 'Import csv production keywords into dev db'
   task :import_csv_file, [] => :environment do
@@ -33,14 +35,16 @@ namespace :internship_offer_keywords do
   end
 
   # step 2
-  # Step 2 is for local machine
-  desc 'Retrieving data from external synonyms dictionnary for db update'
+  # Step 2 is for local machine to get external data for keywords : to be run once
   task :get_synonyms, [] => :environment do
     InternshipOfferKeyword.where(searchable: true).each do |keyword|
       synonyms = Services::SyncCnrtlSynonym.new(word: keyword.word).synonyms
+      synonyms_record = InternshipOfferKeyword.csv_truncated(
+        words: synonyms,
+        length: 199
+      )
       InternshipOfferKeyword.where(id: keyword.id)
-                            .update(synonyms: total_length_limited(synonyms, 199))
-
+                            .update(synonyms: synonyms_record)
     end
 
     say_in_green 'task is finished'
@@ -48,7 +52,7 @@ namespace :internship_offer_keywords do
 
   # step 3
   # Step 3 is for local machine
-  # The generated file will setup production db
+  # The generated file will be used to setup production db at next step
   desc 'updating csv file by adding synonyms in a new file'
   task :add_synonyms_to_csv, [] => :environment do
     require 'csv'
@@ -79,7 +83,7 @@ namespace :internship_offer_keywords do
   end
 
   # step 4
-  # Step 4 is for production and local
+  # Step 4 is for production and local : it updates synonyms in keyword from file data
   desc 'updating db with a synonyms file'
   task :update_db_with_synonyms, [] => :environment do
     require 'csv'
@@ -131,17 +135,6 @@ namespace :internship_offer_keywords do
 
   # Utils
   #=========
-  def total_length_limited(words, length)
-    separator = ";"
-    words_joined = ''
-    words.each do |word|
-      initial_word = words_joined
-      words_joined += "#{separator}#{word}"
-      return initial_word[1..-1] if words_joined.length >= length
-    end
-    words_joined[1..-1]
-  end
-
   def say_in_green(str)
     puts "\e[32m=====> #{str} <=====\e[0m"
   end
@@ -156,5 +149,4 @@ namespace :internship_offer_keywords do
     t_end = Time.now
     say_in_green "#{label} performed in : #{(t_end.to_f-t_start.to_f)}"
   end
-
 end

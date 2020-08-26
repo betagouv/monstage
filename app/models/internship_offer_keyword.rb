@@ -52,12 +52,12 @@ class InternshipOfferKeyword < ApplicationRecord
         # update_thesaurus_file TODO
     end
 
-    # new keywords are
-    # - searchable by default
-    # and their
-    # - word_nature is null by default (word nature example : 'v.tr; prép.')
-
-    # This methods aims at providing both searchability and synonyms
+    # by default , new keywords are
+    # - searchable with a null word_nature
+    # This methods aims at providing db with
+    # - searchability
+    # - word_nature (word nature example : 'v.tr; prép.')
+    # - synonyms 
     def qualify_single_word(keyword:)
       synonyms = []
       natures = []
@@ -72,22 +72,28 @@ class InternshipOfferKeyword < ApplicationRecord
           #                                      .synonyms[0..MAX_SYNONYM_COUNT]
         end
       end
-      InternshipOfferKeyword.where(id: keyword.id)
-                            .update(
-                              word_nature: total_length_limited(words: natures, length: 199),
-                              searchable: searchable,
-                              synonyms: total_length_limited(words: synonyms, length: 199)
-                            )
+      self.where(id: keyword.id)
+          .update(
+            word_nature: csv_truncated(words: natures, length: 199),
+            searchable: searchable,
+            synonyms: csv_truncated(words: synonyms, length: 199)
+          )
     end
 
     def update_thesaurus_file
       CSV.open(THESAURUS_FILE_PATH, "wb" ) do |csv|
-        InternshipOfferKeyword.where(searchable: true)
-                              .where.not('synonyms = ?', '')
-                              .each do |keyword|
-                                make_thesaurus_lines(keyword: keyword, csv: csv)
-                              end
+        self.where(searchable: true)
+            .where.not('synonyms = ?', '')
+            .each do |keyword|
+              make_thesaurus_lines(keyword: keyword, csv: csv)
+            end
       end
+    end
+
+    def csv_truncated(words:, length:)
+      words.join(SEPARATOR).truncate(
+        length, separator: SEPARATOR, omission: ''
+      )
     end
 
     private
@@ -95,16 +101,6 @@ class InternshipOfferKeyword < ApplicationRecord
     def searchable?(keyword:, natures:)
       any_accepted_nature?(natures: natures) &&
       !stop_word?(keyword: keyword)
-    end
-
-    def total_length_limited(words:, length:) # TODO
-      words_joined = ''
-      words.each do |word|
-        words_so_far = words_joined
-        words_joined = "#{words_joined}#{SEPARATOR}#{word}"
-        return words_so_far[1..-1] if words_joined.length >= length
-      end
-      words_joined[1..-1]
     end
 
     def any_accepted_nature?(natures:)
@@ -119,16 +115,23 @@ class InternshipOfferKeyword < ApplicationRecord
 
     def make_thesaurus_lines(keyword:, csv:)
       keyword.synonyms.split(';').each do |syn|
-        cleaned_synonynms = stop_word_cleaned(synonyms: syn)
-        csv << ["#{cleaned_synonynms} : #{keyword.word}"] unless cleaned_synonynms.match(/\A\s*\?\s*\z/)
+        cleaned_synonym = stop_word_cleaned(synonym: syn)
+        next if question_mark_only?(cleaned_synonym)
+
+        csv << ["#{cleaned_synonym} : #{keyword.word}"]
       end
       csv
     end
 
-    def stop_word_cleaned(synonyms:)
-      synonyms.gsub(/\b(\w{2})\b/, '?')
-              .gsub(/\b(#{STOP_WORDS.join('|')}})\b/i, '?')
+    def stop_word_cleaned(synonym:)
+      synonym.gsub(/\b(\w{2})\b/, '?')
+             .gsub(/\b(#{STOP_WORDS.join('|')}})\b/i, '?')
 
+    end
+
+    def question_mark_only?(word)
+      word.gsub(/\s+/, '')
+          .match?(/\A\?+\z/)
     end
   end
 end
