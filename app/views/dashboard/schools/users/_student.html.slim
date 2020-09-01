@@ -54,7 +54,7 @@ tr class="d-flex test-student-#{student.id}"
         small Pos
         br
         span.applications_approved_count= student_stats.applications_approved_count
-  td.col-2 data-controller='students'
+  td.col-2
     .row
       .col-12
         = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }

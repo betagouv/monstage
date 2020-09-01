@@ -2,10 +2,10 @@ import $ from 'jquery';
 import { Controller } from 'stimulus';
 
 export default class extends Controller {
-  static targets = ['fakeButton'];
+  static targets = ['submitButton'];
 
   selectStudentClassRoom() {
-    const fakeButton = this.fakeButtonTarget;
-    $(fakeButton).prop("disabled", false);
+    const submitButton = this.submitButtonTarget;
+    $(submitButton).prop("disabled", false);
   }
 }

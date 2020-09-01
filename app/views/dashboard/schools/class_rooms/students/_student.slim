@@ -3,7 +3,7 @@ thead
     th.col-8
       small Elève
     th.col-4
-tbody class="class-room" data-controller='students'
+tbody class="class-room"
   = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block d-sm-flex') do
     - students.each do |student|
       tr class="d-flex"
