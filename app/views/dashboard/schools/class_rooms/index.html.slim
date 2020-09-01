@@ -1,51 +1,51 @@
 = render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true, applications_badge: @applications, students_badge: @students_without_class_room }
 
-- if @students_without_class_room.present?
-  .row.mt-3 data-controller='students'
-    .col-8.text-danger.font-weight-bold
-      .row.pt-2
-        .col1.lead
-          i.fa.fa-exclamation-triangle
-        .col-11
-          small.font-weight-bold 
-          | Certains de vos élèves ont besoin d'être affecté à une classe pour pouvoir postuler à des stages
-    .col-4.text-right data-controller='students'
-      = button_to 'Enregistrer les modifications', '#',  disabled: false, class: 'btn-primary btn', data: { 'target': 'students.fakeButton', 'action': 'click->students#clickFakeButton' }
-  .row data-controller='students'
-    .col-12.px-0
-      table.table.table-hover.table-sticky-thead
-        / = render partial: 'dashboard/schools/class_rooms/students/student', locals: {class_rooms: @school.class_rooms, students: @students_without_class_room }
+div data-controller='students'
+  - if @students_without_class_room.present?
+    .row.mt-3
+      .col-8.text-danger.font-weight-bold
+        .row.pt-2
+          .col1.lead
+            i.fa.fa-exclamation-triangle
+          .col-11
+            small.font-weight-bold
+            | Certains de vos élèves ont besoin d'être affecté à une classe pour pouvoir postuler à des stages
+      .col-4.text-right
+        = button_to 'Enregistrer les modifications', '#',  disabled: true, class: 'btn-primary btn', data: { 'target': 'students.fakeButton', 'action': '' }
+
+    .row
+      .col-12.px-0
+        = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block d-sm-flex') do
+          table.table.table-hover.table-sticky-thead
+            thead
+              tr.d-flex.tr-white
+                th.col-8
+                  small Elève
+                th.col-4
+            tbody class="class-room"
+              - @students_without_class_room.each do |student|
+                tr class="d-flex"
+                  td.col-8 data-head="#{student.name}"= student.name
+                  td.col-4 data-head="Action"
+                    = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
+
+
+
+  - @school.class_rooms.order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
+    .row.mt-5
+      h5.mb-0= tr_school_track(school_track)
+    .row
+      table.table.table-hover.table-rg2a.table-sticky-thead
+        - cols = ["Classe",
+            "Inscrits/Validés",
+            "Sans candidature",
+            "Sans stage", ""]
         thead
-          tr.d-flex.tr-white
-            th.col-8
-              small Elève
-            th.col-4
-        tbody class="class-room" data-controller='students'
-          = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block d-sm-flex') do
-            - @students_without_class_room.each do |student|
-              tr class="d-flex"
-                td.col-8 data-head="#{student.name}"= student.name
-                td.col-4 data-head="Action"
-                  = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
-                    
-            = submit_tag "Enregister", class: 'btn btn-primary btn-sm ml-2', data: { 'target': 'students.hiddenButton' }
-
-
-- @school.class_rooms.order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
-  .row.mt-5
-    h5.mb-0= tr_school_track(school_track)
-  .row
-    table.table.table-hover.table-rg2a.table-sticky-thead
-      - cols = ["Classe",
-          "Inscrits/Validés",
-          "Sans candidature",
-          "Sans stage", ""]
-      thead
-        tr.tr-white
-          - cols.map.with_index do |col, i|
-            th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
-              small= col
-      tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
+          tr.tr-white
+            - cols.map.with_index do |col, i|
+              th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
+                small= col
+        tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
 
 - if can?(:create, ClassRoom)
   .row
