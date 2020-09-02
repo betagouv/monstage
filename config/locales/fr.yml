@@ -55,9 +55,12 @@ fr:
       school:
         one: Etablissement
         other: Etablissements
-      internship_offers/web:
-        one: Offre Produit
-        other: Offres Produit
+      internship_offers/weekly_framed:
+        one: Offre 3eme générale
+        other: Offres 3eme générale
+      internship_offers/free_date:
+        one: Offre de la voie pro
+        other: Offres de la voie pro
       internship_offers/api:
         one: Offre API
         other: Offres API
@@ -99,6 +102,8 @@ fr:
         description: Description
         zipcode: Code postal
         employer_name: Employeur
+        employer_email: Email de l'employeur
+        employer_phone: Téléphone de l'employeur
         group: Groupe ou institution
         is_public: Secteur public
         human_is_public: Public/Privé
