@@ -1,5 +1,5 @@
 module InternshipOfferInfos
-  class FreeDate < InternshipOfferInfo
+  class FreeDateInfo < InternshipOfferInfo
     after_initialize :init
     attr_accessor :week_ids
 

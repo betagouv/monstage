@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InternshipOfferInfos
+module InternshipOffers
   class Api < InternshipOffer
     include WeeklyFramable
 

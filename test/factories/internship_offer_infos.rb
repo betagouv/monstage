@@ -8,14 +8,14 @@ FactoryBot.define do
     weeks_count { 0 }
     weekly_hours { ['9:00','17:00'] }
     daily_hours { [] }
-    type { 'InternshipOfferInfos::WeeklyFramed' }
+    type { 'InternshipOfferInfos::WeeklyFramedInfo' }
 
     trait :weekly_internship_offer_info do
       weeks { [Week.first] }
     end
 
     factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],
-                                      class: 'InternshipOfferInfos::WeeklyFramed',
+                                      class: 'InternshipOfferInfos::WeeklyFramedInfo',
                                       parent: :internship_offer_info
   end
 end

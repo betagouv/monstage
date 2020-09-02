@@ -21,12 +21,12 @@ class InternshipOfferInfo < ApplicationRecord
 
   # Scopes 
   scope :weekly_framed, lambda {
-    where(type: [InternshipOfferInfos::WeeklyFramed.name,
-                 InternshipOfferInfos::Api.name])
+    where(type: [InternshipOfferInfos::WeeklyFramedInfo.name,
+                 InternshipOfferInfos::ApiInfo.name])
   }
 
   scope :free_date, lambda {
-    where(type: InternshipOfferInfos::FreeDate.name)
+    where(type: InternshipOfferInfos::FreeDateInfo.name)
   }
 
 
