@@ -78,6 +78,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/operators', to: 'pages#operators'
+  get '/javascript-required', to: 'pages#javascript_required'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
