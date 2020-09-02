@@ -25,7 +25,7 @@ module Users
       'Mon compte'
     end
 
-    def anonymize
+    def anonymize(send_email: true)
       super
 
       internship_offers.map(&:anonymize)

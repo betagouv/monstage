@@ -81,10 +81,12 @@ module Users
         .map(&:expire!)
     end
 
-    def anonymize
-      super
+    def anonymize(send_email: true)
+      super(send_email: send_email)
 
-      update_columns(birth_date: nil, gender: nil, class_room_id: nil,
+      update_columns(birth_date: nil,
+                     gender: nil,
+                     class_room_id: nil,
                      handicap: nil)
       resume_educational_background.try(:delete)
       resume_other.try(:delete)

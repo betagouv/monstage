@@ -109,7 +109,7 @@ class User < ApplicationRecord
     "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
   end
 
-  def anonymize
+  def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
 
@@ -119,14 +119,19 @@ class User < ApplicationRecord
       last_name: 'NA',
       phone: nil,
       current_sign_in_ip: nil,
-      last_sign_in_ip: nil
+      last_sign_in_ip: nil,
+      anonymized: true
     }
     update_columns(fields_to_reset)
 
     discard!
 
-    AnonymizeUserJob.perform_later(email: email_for_job)
+    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
     RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+  end
+
+  def archive
+    anonymize(send_email: false)
   end
 
   def destroy
