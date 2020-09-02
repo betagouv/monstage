@@ -4,6 +4,12 @@ module InternshipOffers
     extend ActiveSupport::Concern
 
     included do
+      def visible
+        return "oui" if published?
+
+        "non"
+      end
+
       rails_admin do
         configure :created_at, :datetime do
           date_format 'BUGGY'
@@ -55,6 +61,7 @@ module InternshipOffers
           field :zipcode
           field :departement
           field :city
+          field :visible
         end
       end
     end
