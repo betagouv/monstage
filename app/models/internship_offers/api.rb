@@ -3,7 +3,6 @@
 module InternshipOffers
   class Api < InternshipOffer
     include WeeklyFramable
-    include ActiveAdminable
 
     rails_admin do
       configure :created_at, :datetime do
