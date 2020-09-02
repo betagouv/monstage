@@ -99,6 +99,8 @@ fr:
         description: Description
         zipcode: Code postal
         employer_name: Employeur
+        employer_email: Email de l'employeur
+        employer_phone: Téléphone de l'employeur
         group: Groupe ou institution
         is_public: Secteur public
         human_is_public: Public/Privé

@@ -3,6 +3,7 @@
 module InternshipOffers
   class Api < InternshipOffer
     include WeeklyFramable
+    include ActiveAdminable
 
     rails_admin do
       configure :created_at, :datetime do
@@ -39,15 +40,22 @@ module InternshipOffers
 
       export do
         field :title
-        field :employer_name
-        field :zipcode
-        field :city
+        field :description
+        field :group
         field :max_candidates
         field :total_applications_count
-        field :approved_applications_count
-        field :rejected_applications_count
         field :convention_signed_applications_count
-        field :is_public
+        field :group
+        field :employer_name
+        field :employer_email
+        field :employer_phone
+        field :tutor_name
+        field :tutor_phone
+        field :tutor_email
+        field :street
+        field :zipcode
+        field :departement
+        field :city
       end
 
       show do

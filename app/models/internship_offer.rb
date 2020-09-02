@@ -120,6 +120,13 @@ class InternshipOffer < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+
+  def departement
+    Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
   def published?
     published_at.present?
   end
@@ -187,12 +194,12 @@ class InternshipOffer < ApplicationRecord
                                                 description_rich_text.to_s
                                               else
                                                 description
-end)
+                                              end)
     internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
                                                          employer_description_rich_text.to_s
                                                        else
                                                          employer_description
-end)
+                                                       end)
 
     internship_offer
   end
