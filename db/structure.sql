@@ -864,7 +864,8 @@ CREATE TABLE public.users (
     phone_token character varying,
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
-    last_phone_password_reset timestamp without time zone
+    last_phone_password_reset timestamp without time zone,
+    anonymized boolean DEFAULT false NOT NULL
 );
 
 
@@ -1850,6 +1851,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709121046'),
 ('20200709135354'),
 ('20200717134317'),
-('20200723125613');
+('20200723125613'),
+('20200902143358'),
+('20200902145712');
 
 
