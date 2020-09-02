@@ -60,7 +60,7 @@ module Dashboard
     end
 
     
-    test 'POST create render new when missing params' do
+    test 'POST create render new when missing params, prefill form' do
       sign_in(create(:employer))
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
@@ -77,6 +77,36 @@ module Dashboard
           }
         })
         assert_response :bad_request
+        
     end
+
+    # test 'POST #create as employer with invalid data, prefill form' do
+    #   sign_in(create(:employer))
+    #   post(dashboard_internship_offers_path, params: {
+    #          internship_offer: {
+    #            title: 'hello',
+    #            is_public: false,
+    #            group: 'Accenture',
+    #            max_candidates: 2
+    #          }
+    #        })
+    #   assert_select 'li label[for=internship_offer_coordinates]',
+    #                 text: 'Veuillez saisir et sélectionner une adresse avec ' \
+    #                       "l'outil de complétion automatique"
+    #   assert_select 'li label[for=internship_offer_zipcode]',
+    #                 text: "Veuillez renseigner le code postal de l'employeur"
+    #   assert_select 'li label[for=internship_offer_city]',
+    #                 text: "Veuillez renseigner la ville l'employeur"
+
+    #   assert_select '#internship_offer_is_public_true[checked]',
+    #                 count: 0 # "ensure user select kind of group"
+    #   assert_select '#internship_offer_is_public_false[checked]',
+    #                 count: 1 # "ensure user select kind of group"
+    #   assert_select '.form-group-select-group.d-none', count: 0
+
+    #   assert_select '#internship_type_true[checked]', count: 0
+    #   assert_select '#internship_type_false[checked]', count: 1
+    #   assert_select '.form-group-select-max-candidates.d-none', count: 0
+    # end
   end
 end

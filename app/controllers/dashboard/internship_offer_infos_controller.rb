@@ -49,10 +49,10 @@ module Dashboard
 
     def prepare_daily_hours(params)
       if params[:weekly_start].present? && params[:weekly_end].present?
-        { weekly_hours: [params[:weekly_start], params[:weekly_end]] }
+        { weekly_hours: [params[:weekly_start], params[:weekly_end]], title: '' }
       else
         daily_planning_hours = (0..5).map { |i| [params["daily_start_#{i}".to_sym], params["daily_end_#{i}".to_sym]] }
-        { daily_hours: daily_planning_hours }
+        { daily_hours: daily_planning_hours, title: '' }
       end
     end
   end

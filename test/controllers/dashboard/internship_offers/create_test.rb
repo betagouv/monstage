@@ -15,7 +15,6 @@ module InternshipOffers
       sign_in(create(:employer))
       weeks = [weeks(:week_2019_1)]
       internship_offer_info = create(:weekly_internship_offer_info)
-
       organisation = create(:organisation)
       params = {
         tutor_name: 'Jean Paul',
@@ -37,20 +36,22 @@ module InternshipOffers
     end
 
     test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
-      school = create(:school)
       employer = create(:employer)
+      sign_in(employer)
+      school = create(:school)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:weekly_internship_offer, employer: employer)
-      sign_in(internship_offer.employer)
-      params = internship_offer
-               .attributes
-               .merge('type' => InternshipOffers::FreeDate.name,
-                      'coordinates' => { latitude: 1, longitude: 1 },
-                      'school_id' => school.id,
-                      'description_rich_text' => '<div>description</div>',
-                      'employer_description_rich_text' => '<div>hop+employer_description</div>',
-                      'employer_id' => internship_offer.employer_id,
-                      'employer_type' => 'Users::Employer')
+      internship_offer_info = create(:weekly_internship_offer_info, 
+                                      school: school,
+                                      type: InternshipOfferInfos::FreeDateInfo.name)
+      organisation = create(:organisation)
+
+      params = {
+        tutor_name: 'Jean Paul',
+        tutor_email: 'jp@gmail.com',
+        tutor_phone: '0102030405',
+        internship_offer_info_id: internship_offer_info.id,
+        organisation_id: organisation.id
+      }
 
       assert_difference('InternshipOffer.count', 1) do
         post(dashboard_internship_offers_path, params: { internship_offer: params })
@@ -59,7 +60,6 @@ module InternshipOffers
       assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
-      assert_equal params['max_candidates'], created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
@@ -67,35 +67,6 @@ module InternshipOffers
       sign_in(create(:employer))
       post(dashboard_internship_offers_path, params: { internship_offer: {} })
       assert_response :bad_request
-    end
-
-    test 'POST #create as employer with invalid data, prefill form' do
-      sign_in(create(:employer))
-      post(dashboard_internship_offers_path, params: {
-             internship_offer: {
-               title: 'hello',
-               is_public: false,
-               group: 'Accenture',
-               max_candidates: 2
-             }
-           })
-      assert_select 'li label[for=internship_offer_coordinates]',
-                    text: 'Veuillez saisir et sélectionner une adresse avec ' \
-                          "l'outil de complétion automatique"
-      assert_select 'li label[for=internship_offer_zipcode]',
-                    text: "Veuillez renseigner le code postal de l'employeur"
-      assert_select 'li label[for=internship_offer_city]',
-                    text: "Veuillez renseigner la ville l'employeur"
-
-      assert_select '#internship_offer_is_public_true[checked]',
-                    count: 0 # "ensure user select kind of group"
-      assert_select '#internship_offer_is_public_false[checked]',
-                    count: 1 # "ensure user select kind of group"
-      assert_select '.form-group-select-group.d-none', count: 0
-
-      assert_select '#internship_type_true[checked]', count: 0
-      assert_select '#internship_type_false[checked]', count: 1
-      assert_select '.form-group-select-max-candidates.d-none', count: 0
     end
   end
 end
