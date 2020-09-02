@@ -618,6 +618,7 @@ CREATE TABLE public.internship_offer_infos (
     description text,
     max_candidates integer,
     school_id integer,
+    employer_id integer,
     type character varying,
     sector_id bigint,
     first_date date,

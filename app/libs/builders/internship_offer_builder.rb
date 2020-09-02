@@ -91,7 +91,9 @@ module Builders
         description: organisation.description,
         coordinates: organisation.coordinates,
         is_public: organisation.is_public,
-        group_id: organisation.group_id
+        group_id: organisation.group_id,
+        employer_id: manage_employer(organisation.id),
+        employer_type: 'User'
       }
       internship_offer_info_params = {
         title: info.title,
@@ -109,5 +111,10 @@ module Builders
 
       params.merge(organisation_params).merge(internship_offer_info_params)
     end
+
+    def manage_employer(organisation_id)
+      @user.is_a?(Users::Employer) ? @user.id : organisation_id
+    end
   end
+
 end

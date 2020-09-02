@@ -67,6 +67,8 @@ module InternshipOfferInfos
     #           :tutor_email,
     #           presence: true
 
+    validates :weeks, presence: { message: 'Veuillez saisir au moins une semaine de stage' }
+
     # validates :is_public, inclusion: { in: [true, false] }
     #validate :validate_group_is_public?, if: false #lambda { |ioi| ioi.organisation.is_public? }
     #validate :validate_group_is_not_public?, unless: true #lambda { |ioi| ioi.organisation.is_public? }

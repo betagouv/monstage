@@ -37,6 +37,7 @@ module Dashboard
               :type, 
               :sector_id, 
               :school_id, 
+              :employer_id,
               :description_rich_text, 
               :max_candidates,
               :weekly_start,

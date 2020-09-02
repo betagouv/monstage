@@ -5,6 +5,7 @@ class CreateInternshipOfferInfos < ActiveRecord::Migration[6.0]
       t.text :description
       t.integer :max_candidates
       t.integer :school_id
+      t.integer :employer_id
       t.string :type
       t.belongs_to :sector
       t.date :first_date
