@@ -38,7 +38,15 @@ class InternshipOffersController < ApplicationController
     @available_weeks = Week.selectable_from_now_until_end_of_school_year
   end
 
-  def update
+  def recopy
+    internship_offer = InternshipOffer.find(params[:internship_offer_id])
+    @organisation = internship_offer.organisation || Organisation.build_from_internship_offer(internship_offer)
+    @internship_offer_info = internship_offer.internship_offer_info || InternshipOfferInfo.last
+    @mentor = internship_offer.mentor || Mentor.last
+    @internship_offer = current_user.internship_offers
+                                      .find(params[:internship_offer_id])
+                                      .duplicate
+    @available_weeks = Week.selectable_from_now_until_end_of_school_year
   end
 
   private

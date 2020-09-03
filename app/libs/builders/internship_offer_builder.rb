@@ -61,6 +61,10 @@ module Builders
       context == :api
     end
 
+    def from_duplicate?
+      params[:internship_offer_info_id].blank?
+    end
+
     def model
       return ::InternshipOffers::Api if from_api?
 
@@ -80,7 +84,7 @@ module Builders
     end
 
     def concat_params(params)
-      return params if from_api?
+      return params if from_api? || from_duplicate?
       info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       organisation = Organisation.find(params[:organisation_id])
       organisation_params = {

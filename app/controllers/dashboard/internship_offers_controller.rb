@@ -84,11 +84,9 @@ module Dashboard
                           end
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
-
-    def recopy
-    end
     
     def duplicate
+      p 'duplicate'
     end
 
     private

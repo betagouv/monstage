@@ -7,6 +7,8 @@
       = render "dashboard/internship_offers/stepper"
       = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
 
+      = form.hidden_field :duplicate_id, value: params[:duplicate_id]
+
       fieldset#step-1.mt-4
         .row.mt-3
           .col-6
