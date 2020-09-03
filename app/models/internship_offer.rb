@@ -222,17 +222,10 @@ end)
   end
 
   def self.create_with_params(organisation_id, mentor_id)
-    internship_offer = InternshipOffer.new(
+    internship_offer = InternshipOffer.create(
       organisation_id: organisation_id,
       mentor_id: mentor_id
     )
-    if internship_offer.save
-      p 'ok'
-    else
-      p 'errors'
-      p internship_offer.errors
-    end
-    internship_offer
   end
 
   # @note some possible confusion, miss-understanding here
@@ -255,7 +248,7 @@ end)
   end
 
   def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: organisation.zipcode)
+    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode || organisation.zipcode)
   end
 
   def sync_internship_offer_keywords

@@ -12,7 +12,7 @@ module Users
               :role,
               presence: true
 
-    #validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/, if: :school_manager?
+    validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/, if: :school_manager?
 
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true

@@ -80,6 +80,7 @@ module Builders
     end
 
     def concat_params(params)
+      return params if from_api?
       info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       organisation = Organisation.find(params[:organisation_id])
       organisation_params = {

@@ -65,7 +65,13 @@ module InternshipOffers
 
     test 'POST #create as employer with missing params' do
       sign_in(create(:employer))
-      post(dashboard_internship_offers_path, params: { internship_offer: {} })
+      organisation = create(:organisation)
+      internship_offer_info = create(:internship_offer_info)
+      params = {
+        internship_offer_info_id: internship_offer_info.id,
+        organisation_id: organisation.id
+      }
+      post(dashboard_internship_offers_path, params: params)
       assert_response :bad_request
     end
   end
