@@ -28,7 +28,7 @@ class SignInFlowTest < ApplicationSystemTestCase
     fill_in 'Mot de passe', with: 'koko'
     click_on 'Connexion'
     error_message = find('#alert-text').text
-    assert_equal 'Courriel ou mot de passe incorrect.',
+    assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrect.',
                  error_message
 
     fill_in 'Mot de passe', with: password
@@ -66,7 +66,7 @@ class SignInFlowTest < ApplicationSystemTestCase
     click_on 'Connexion'
 
     error_message = find('#alert-text').text
-    assert_equal 'Courriel ou mot de passe incorrect.',
+    assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrects.',
                  error_message
 
     fill_in 'Mot de passe', with: password

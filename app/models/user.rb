@@ -203,8 +203,7 @@ class User < ApplicationRecord
 
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
-      errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
+      errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
     end
   end
 
