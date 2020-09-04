@@ -855,7 +855,8 @@ CREATE TABLE public.users (
     phone_token character varying,
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
-    last_phone_password_reset timestamp without time zone
+    last_phone_password_reset timestamp without time zone,
+    anonymized boolean DEFAULT false NOT NULL
 );
 
 
@@ -1664,7 +1665,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1841,6 +1842,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709121046'),
 ('20200709135354'),
 ('20200717134317'),
-('20200723125613');
+('20200723125613'),
+('20200902143358'),
+('20200902145712');
 
 
