@@ -52,7 +52,7 @@
         small.form-text.text-muted Sélectionner la filière scolaire souhaitée
         = form.select :school_track,
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], @internship_offer.school_track ),
-                      { prompt: 'Choisir une filière'},
+                      { include_blank: '-- Veuillez choisir une filière --' },
                       { class: "form-control", required: true, data: { action: "change->internship-form#induceType", target: 'internship-form.selectType'} }
 
     = form.hidden_field :type , {data: {target: "internship-form.type"}}
