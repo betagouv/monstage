@@ -46,6 +46,18 @@
       = form.text_field :title, class: "form-control col-lg-6", required: true
 
     .form-group
+      = form.label :school_track do
+        = "Filière cible"
+        = form.rg2a_required_content_tag
+        small.form-text.text-muted Sélectionner la filière scolaire souhaitée
+        = form.select :school_track,
+                      grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], @internship_offer.school_track ),
+                      { prompt: 'Choisir une filière'},
+                      { class: "form-control", required: true, data: { action: "change->internship-form#induceType", target: 'internship-form.selectType'} }
+
+    = form.hidden_field :type , {data: {target: "internship-form.type"}}
+
+    .form-group
       div.label
         = "Type de stage"
         = form.rg2a_required_content_tag
@@ -132,17 +144,6 @@
                         resourceName: :internship_offer,
                         selectClassRoom: false,
                         existingSchool: @internship_offer.school.as_json)
-
-    .form-group
-      = form.label :type do
-        = "Niveau scolaire associé à ce stage"
-        = form.rg2a_required_content_tag
-        small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
-      = form.select :type,
-                    options_for_select(options_for_internship_type, @internship_offer.type),
-                    { include_blank: internship_offer_type_options_for_default },
-                    { class: "form-control col-lg-6", required: true, data: { action: 'change->internship-form#onChooseType', target: 'internship-form.selectType' } }
-
 
     div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !@internship_offer.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 

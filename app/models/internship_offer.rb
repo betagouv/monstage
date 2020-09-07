@@ -87,6 +87,7 @@ class InternshipOffer < ApplicationRecord
   validates :title,
             :employer_name,
             :city,
+            :school_track,
             presence: true
 
   validates :title, presence: true,

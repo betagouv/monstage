@@ -8,6 +8,7 @@ export default class extends Controller {
     'maxCandidatesInput',
     'selectSchoolBlock',
     'groupBlock',
+    'type',
     'groupLabel',
     'groupNamePublic',
     'groupNamePrivate',
@@ -20,6 +21,12 @@ export default class extends Controller {
 
   onChooseType(event) {
     this.chooseType(event.target.value)
+  }
+
+  induceType(event){
+    const induced_type = (event.target.value == 'troisieme_generale') ? 'InternshipOffers::WeeklyFramed' : 'InternshipOffers::FreeDate';
+    $(this.typeTarget).attr('value', induced_type)
+    this.chooseType(induced_type);
   }
 
   chooseType(value) {
