@@ -86,10 +86,10 @@ CREATE TYPE public.user_role AS ENUM (
 
 
 --
--- Name: dict_search_with_synonym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+-- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonym (
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
     TEMPLATE = pg_catalog.thesaurus,
     dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
@@ -143,25 +143,25 @@ CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
     PARSER = pg_catalog."default" );
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR hword_numpart WITH simple;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonym, public.unaccent, french_stem;
+    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
 
 ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
     ADD MAPPING FOR "int" WITH simple;
@@ -575,8 +575,7 @@ CREATE TABLE public.internship_offer_keywords (
     ndoc integer NOT NULL,
     nentry integer NOT NULL,
     searchable boolean DEFAULT true NOT NULL,
-    word_nature character varying(200) DEFAULT NULL::character varying,
-    synonyms character varying(200) DEFAULT NULL::character varying
+    word_nature character varying(200) DEFAULT NULL::character varying
 );
 
 
