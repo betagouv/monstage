@@ -496,40 +496,6 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
--- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.internship_agreements (
-    id bigint NOT NULL,
-    start_date timestamp without time zone,
-    end_date timestamp without time zone,
-    aasm_state character varying,
-    internship_application_id bigint,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: internship_agreements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.internship_agreements_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: internship_agreements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.internship_agreements_id_seq OWNED BY public.internship_agreements.id;
-
-
---
 -- Name: internship_applications; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -646,14 +612,14 @@ ALTER SEQUENCE public.internship_offer_weeks_id_seq OWNED BY public.internship_o
 CREATE TABLE public.internship_offers (
     id bigint NOT NULL,
     title character varying NOT NULL,
-    description character varying NOT NULL,
+    description text NOT NULL,
     max_candidates integer DEFAULT 1 NOT NULL,
     internship_offer_weeks_count integer DEFAULT 0 NOT NULL,
     tutor_name character varying,
     tutor_phone character varying,
     tutor_email character varying,
     employer_website character varying,
-    street character varying NOT NULL,
+    street text NOT NULL,
     zipcode character varying NOT NULL,
     city character varying NOT NULL,
     is_public boolean NOT NULL,
@@ -1004,13 +970,6 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
--- Name: internship_agreements id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_agreements ALTER COLUMN id SET DEFAULT nextval('public.internship_agreements_id_seq'::regclass);
-
-
---
 -- Name: internship_applications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1142,14 +1101,6 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
-
-
---
--- Name: internship_agreements internship_agreements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_agreements
-    ADD CONSTRAINT internship_agreements_pkey PRIMARY KEY (id);
 
 
 --
@@ -1287,13 +1238,6 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
-
-
---
--- Name: index_internship_agreements_on_internship_application_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_agreements_on_internship_application_id ON public.internship_agreements USING btree (internship_application_id);
 
 
 --
@@ -1899,14 +1843,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200627095219'),
 ('20200629133744'),
 ('20200708120719'),
-('20200709081408'),
 ('20200709105933'),
 ('20200709110316'),
 ('20200709111800'),
 ('20200709111801'),
 ('20200709111802'),
+('20200709121046'),
 ('20200709135354'),
 ('20200717134317'),
+('20200723125613'),
 ('20200902143358'),
 ('20200902145712'),
 ('20200904083343');
