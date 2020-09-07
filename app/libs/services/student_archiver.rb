@@ -4,9 +4,18 @@ module Services
 
     def run
       archive_students
+      archive_class_rooms
     end
 
+
     private
+    def archive_class_rooms
+      ClassRoom.where(created_at: (begins_at..ends_at))
+               .where.not(anonymized: true)
+               .in_batches(of: 10)
+               .each_record(&:archive)
+    end
+
     def archive_students
       Users::Student.where(created_at: (begins_at..ends_at))
                     .where.not(anonymized: true)
