@@ -90,8 +90,8 @@ CREATE TYPE public.user_role AS ENUM (
 --
 
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+  TEMPLATE = pg_catalog.snowball,
+  language = 'french');
 
 
 --
