@@ -95,15 +95,6 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
 
 
 --
--- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
-
-
---
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
