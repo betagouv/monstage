@@ -95,12 +95,13 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'search filters as student : middle_school and high_school checkBoxes' do
-    school = create(:school)
-    student = create(:student, school: school)
-    weekly_internship_offer = create(:weekly_internship_offer)
+  test 'search filters as teacher : middle_school and high_school checkBoxes' do
+    school                     = create(:school)
+    school_manager             = create(:school_manager, school: school)
+    teacher                    = create(:main_teacher, school: school)
+    weekly_internship_offer    = create(:weekly_internship_offer)
     free_date_internship_offer = create(:free_date_internship_offer)
-    sign_in(student)
+    sign_in(teacher)
 
     visit internship_offers_path
 
@@ -122,5 +123,20 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     find('label[for="search-by-high-school"]').click
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: free_date_internship_offer)
+  end
+
+  test 'search filters as student are not available' do
+    school = create(:school)
+    student = create(:student, school: school)
+    weekly_internship_offer = create(:weekly_internship_offer)
+    free_date_internship_offer = create(:free_date_internship_offer)
+    sign_in(student)
+
+    visit internship_offers_path
+
+    assert_selector '#label[for="search-by-middle-school"]',
+                    count: 0
+    assert_selector '#label[for="search-by-high-school"]',
+                    count: 0
   end
 end

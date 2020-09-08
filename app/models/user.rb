@@ -42,9 +42,6 @@ class User < ApplicationRecord
   delegate :routes, to: :application
   delegate :url_helpers, to: :routes
 
-  delegate :middle_school?, to: :class_room, allow_nil: true
-  delegate :high_school?, to: :class_room, allow_nil: true
-
   MAX_DAILY_PHONE_RESET = 3
 
   def self.drh
@@ -199,7 +196,12 @@ class User < ApplicationRecord
     false
   end
 
+  def has_no_class_room?
+    class_room.nil?
+  end
+
   private
+
 
   def clean_phone
     self.phone = nil if phone == '+33'

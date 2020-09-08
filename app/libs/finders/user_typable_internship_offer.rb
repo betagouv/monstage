@@ -59,6 +59,7 @@ module Finders
              .published
              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
+      query = school_track_query(query, user) if user.is_a?(Users::Student)
       query
     end
 
@@ -135,6 +136,12 @@ module Finders
 
     def nearby_query(query)
       query.merge(nearby_query_part(query, coordinate_params))
+    end
+
+    def school_track_query(query, user)
+      return query if user.has_no_class_room?
+
+      query.merge(InternshipOffer.where(school_track: user&.school_track))
     end
 
     def middle_school_query(query)

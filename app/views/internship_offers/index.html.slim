@@ -13,8 +13,8 @@ h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
                               { url: internship_offers_path, className: 'flex-row focusable-search-bar' },
                               { class: 'col-12' }) do
               .input-loading-skeleton
-
-          .col-12= render "internship_offers/title", internship_offers: @internship_offers
+          - unless current_user.is_a?(Users::Student)
+            .col-12= render "internship_offers/title", internship_offers: @internship_offers 
     tbody
       - if @internship_offers.blank?
         tr
