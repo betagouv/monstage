@@ -93,7 +93,6 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
     TEMPLATE = pg_catalog.thesaurus,
     dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
-
 --
 -- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
@@ -656,7 +655,8 @@ CREATE TABLE public.internship_offers (
     first_date date,
     last_date date,
     type character varying,
-    search_tsv tsvector
+    search_tsv tsvector,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -1853,6 +1853,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200717134317'),
 ('20200723125613'),
 ('20200902143358'),
-('20200902145712');
+('20200902145712'),
+('20200904083343');
 
 

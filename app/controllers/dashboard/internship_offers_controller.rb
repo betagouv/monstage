@@ -145,7 +145,7 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, coordinates: {}, week_ids: [])
+                    :school_type, :school_track, coordinates: {}, week_ids: [])
     end
   end
 end
