@@ -2,7 +2,9 @@
   "deploy" : {
     "env": "<string>",
     "rakegoals": ["db:migrate","assets:precompile"],
-    "sidekiq": true,
+    "sidekiq": [
+      "./config/sidekiq.yml"
+    ],
     "static": "/public"
   }
 }
