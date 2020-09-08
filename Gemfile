@@ -23,8 +23,7 @@ gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
+gem 'sidekiq'
 
 # admin
 gem 'rails_admin'
