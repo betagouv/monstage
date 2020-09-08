@@ -67,6 +67,11 @@ class User < ApplicationRecord
       .try(:zero?)
   end
 
+  def missing_school?
+    return true if respond_to?(:school) && school.blank?
+    false
+  end
+
   def to_s
     "logged in as : #{type}[##{id}]"
   end

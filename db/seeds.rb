@@ -157,7 +157,7 @@ MULTI_LINE
   )
 end
 
-if Rails.env == 'review'
+if Rails.env == 'review' || Rails.env.development?
   populate_week_reference
   populate_schools
   School.update_all(updated_at: Time.now)
