@@ -23,8 +23,12 @@ export default class extends Controller {
     this.chooseType(event.target.value)
   }
 
-  induceType(event){
-    const induced_type = (event.target.value == 'troisieme_generale') ? 'InternshipOffers::WeeklyFramed' : 'InternshipOffers::FreeDate';
+  onInduceType(event) {
+    this.induceType(event.target.value)
+  }
+
+  induceType(value){
+    const induced_type = (value == 'troisieme_generale') ? 'InternshipOffers::WeeklyFramed' : 'InternshipOffers::FreeDate';
     $(this.typeTarget).attr('value', induced_type)
     this.chooseType(induced_type);
   }
@@ -96,7 +100,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.chooseType(this.selectTypeTarget.value)
+    this.induceType(this.selectTypeTarget.value)
     this.element.addEventListener('submit', this.validateForm, false);
   }
 

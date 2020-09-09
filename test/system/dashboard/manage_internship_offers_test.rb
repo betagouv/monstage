@@ -109,6 +109,25 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
+
+  test 'can edit school_track of an internship offer back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:free_date_internship_offer, employer: employer)
+    sign_in(employer)
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    select '3e générale'
+    click_on "Enregistrer et publier l'offre"
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    select 'Bac pro'
+    fill_in 'internship_offer_title', with: 'editok'
+    find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
+    click_on "Enregistrer et publier l'offre"
+    wait_form_submitted
+    assert_equal 'editok', internship_offer.reload.title
+  end
+
   test 'can discard internship_offer' do
     employer = create(:employer)
     internship_offers = [
