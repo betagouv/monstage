@@ -36,10 +36,11 @@ module Finders
                                longitude: coordinates.longitude)
     end
 
+    # school_members gather students and other profiles/roles
     def school_members_query
       query = InternshipOffer.all
 
-      if user.try(:middle_school?) && school_type_param != 'high_school'
+      if user.try(:class_room).try(:troisieme_generale?)
         unless user.missing_school_weeks?
           query = query.merge(
             InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
@@ -49,7 +50,7 @@ module Finders
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
 
-      elsif user.try(:high_school) && school_type_param != 'middle_school'
+      elsif user.try(:class_room).try(:professional_school_track?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
@@ -59,7 +60,7 @@ module Finders
              .published
              .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
-      query = school_track_query(query, user) if user.is_a?(Users::Student)
+      query = user_school_track_query(query, user) if user.is_a?(Users::Student)
       query
     end
 
@@ -97,10 +98,10 @@ module Finders
       end
     end
 
-    def school_type_param
-      return nil unless params.key?(:school_type)
+    def school_track_param
+      return nil unless params.key?(:school_track)
 
-      params[:school_type]
+      params[:school_track]
     end
 
     def keyword_params
@@ -125,8 +126,7 @@ module Finders
       query = yield
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
-      query = middle_school_query(query) if school_type_param == 'middle_school'
-      query = high_school_query(query) if school_type_param == 'high_school'
+      query = school_track_query(query) if school_track_param
       query
     end
 
@@ -138,18 +138,14 @@ module Finders
       query.merge(nearby_query_part(query, coordinate_params))
     end
 
-    def school_track_query(query, user)
+    def school_track_query(query)
+      query.merge(InternshipOffer.where(school_track: school_track_param))
+    end
+
+    def user_school_track_query(query, user)
       return query if user.has_no_class_room?
 
       query.merge(InternshipOffer.where(school_track: user&.school_track))
-    end
-
-    def middle_school_query(query)
-      query.merge(InternshipOffer.weekly_framed)
-    end
-
-    def high_school_query(query)
-      query.merge(InternshipOffer.free_date)
     end
   end
 end

@@ -3,14 +3,14 @@ import Turbolinks from 'turbolinks';
 
 function FilterInternshipOffer() {
   const searchParams = new URLSearchParams(window.location.search);
-  const initialSchoolType = searchParams.get('school_type');
-  const [schoolType, setSchoolType] = useState(searchParams.get('school_type'));
+  // const initialSchoolTrack = searchParams.get('school_track');
+  const [schoolTrack, setSchoolTrack] = useState(searchParams.get('school_track'));
 
   // clear selected radio
   const clearRadioOnDoubleClick = (event) => {
-    if (schoolType !== null && event.target.value === schoolType) {
-      setSchoolType(null);
-      searchParams.delete('school_type');
+    if (schoolTrack !== null && event.target.value === schoolTrack) {
+      setSchoolTrack(null);
+      searchParams.delete('school_track');
       Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
       event.preventDefault();
     }
@@ -19,46 +19,76 @@ function FilterInternshipOffer() {
 
   // switch radio
   const filterOffers = (event) => {
-   setSchoolType(event.target.value)
+   setSchoolTrack(event.target.value)
    if (event.target.value) {
-      searchParams.set('school_type', event.target.value);
+      searchParams.set('school_track', event.target.value);
     } else {
-      searchParams.delete('school_type');
+      searchParams.delete('school_track');
     }
     Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
   }
 
   return (
-    <div className="form-group form-inline justify-content-center justify-content-sm-start justify-content-md-center p-0 m-0 custom-radio-boxes">
-      <span class="font-weight-normal mr-1">Filtrer par : </span>
-      <div className='custom-radio-box-control custom-radio-box-control-prepend '>
+    <div className="form-group form-inline justify-content-center p-0 m-0 custom-radio-boxes align-middle" >
+      <span className="font-weight-normal justify-content-sm-center mr-1">Filtrer par : </span>
+      <div className='custom-radio-box-control custom-radio-box-control-prepend'>
         <input
           type="radio"
-          name="school_type"
-          checked={schoolType === 'middle_school'}
-          value="middle_school"
+          name="school_track"
+          checked={schoolTrack === 'troisieme_generale'}
+          value="troisieme_generale"
           onClick={(event) => clearRadioOnDoubleClick(event)}
           onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input"
-          id="search-by-middle-school"
+          className="custom-radio-box-control-input col-sm-12"
+          id="search-by-troisieme-generale"
         />
-        <label className="label mb-0" htmlFor="search-by-middle-school">
-          Collège
+        <label className="label mb-0" htmlFor="search-by-troisieme-generale">
+          3e générale
+        </label>
+      </div>
+      <div className='custom-radio-box-control custom-radio-box-control'>
+        <input
+          type="radio"
+          name="school_track"
+          checked={schoolTrack === 'troisieme_segpa'}
+          value="troisieme_segpa"
+          onClick={(event) => clearRadioOnDoubleClick(event)}
+          onChange={(event) => filterOffers(event)}
+          className="custom-radio-box-control-input col-sm-12"
+          id="search-by-troisieme-segpa"
+        />
+        <label className="label mb-0" htmlFor="search-by-troisieme-segpa">
+          3e SEGPA
+        </label>
+      </div>
+      <div className='custom-radio-box-control custom-radio-box-control'>
+        <input
+          type="radio"
+          name="school_track"
+          checked={schoolTrack === 'troisieme_prepa_metier'}
+          value="troisieme_prepa_metier"
+          onClick={(event) => clearRadioOnDoubleClick(event)}
+          onChange={(event) => filterOffers(event)}
+          className="custom-radio-box-control-input col-sm-12"
+          id="search-by-troisieme-prepa-metier"
+        />
+        <label className="label mb-0" htmlFor="search-by-troisieme-prepa-metier">
+          3e prépa métier
         </label>
       </div>
       <div className="custom-radio-box-control  custom-radio-box-control-append">
         <input
           type="radio"
-          name="school_type"
-          value="high_school"
-          checked={schoolType === 'high_school'}
+          name="school_track"
+          value="bac_pro"
+          checked={schoolTrack === 'bac_pro'}
           onClick={(event) => clearRadioOnDoubleClick(event)}
           onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input"
-          id="search-by-high-school"
+          className="custom-radio-box-control-input col-sm-12"
+          id="search-by-bac-pro"
         />
-        <label className="label mb-0" htmlFor="search-by-high-school">
-          Lycée
+        <label className="label mb-0" htmlFor="search-by-bac-pro">
+          Bac Pro
         </label>
       </div>
     </div>

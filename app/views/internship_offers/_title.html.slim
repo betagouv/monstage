@@ -1,9 +1,13 @@
 .row.align-items-center.no-gutters
+  .col-12
+    = react_component("FilterInternshipOffer")
+.row.align-items-center.no-gutters.pt-4
   .col-12.col-md-4.order-3.order-md-1.mb-3.mb-sm-3.text-center.text-sm-left
     p.h2.mb-0#internship-offers-count
       strong= "#{internship_offers.total_count}"
       = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
 
-  .col-12.col-md-4.order-1.order-md-2.mb-3.mb-sm-3.text-center.text-sm-left= react_component("FilterInternshipOffer")
 
-  ul.col-12.d-none.d-md-flex.order-3.col-md-4.mb-0.mb-sm-3.justify-content-end= paginate(@internship_offers,views_prefix: 'internship_offers', window: 2)
+
+  ul.col-12.d-none.d-md-flex.order-3.col-md-4.mb-0.mb-sm-3.justify-content-end
+    = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)

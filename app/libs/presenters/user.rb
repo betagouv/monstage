@@ -34,8 +34,7 @@ module Presenters
         longitude: user.school.coordinates.lon,
         radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
       }
-      opts[:school_type] = :middle_school if user.try(:middle_school?)
-      opts[:school_type] = :high_school if user.try(:high_school?)
+      opts.merge!({school_track: user.try(:school_track)}) if user.try(:school_track)
       internship_offers_path(opts)
     end
 

@@ -69,7 +69,7 @@ class InternshipOffersController < ApplicationController
         :longitude,
         :radius,
         :keyword,
-        :school_type
+        :school_track
       ),
       user: current_user_or_visitor
     )

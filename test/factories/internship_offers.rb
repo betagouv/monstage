@@ -31,7 +31,28 @@ FactoryBot.define do
       employer { create(:employer) }
     end
 
+    trait :troisieme_generale_internship_offer do
+      weeks { [Week.first] }
+      school_track { :troisieme_generale }
+      employer { create(:employer) }
+    end
+
     trait :free_date_internship_offer do
+      employer { create(:employer ) }
+      school_track { :bac_pro}
+    end
+
+    trait :troisieme_segpa_internship_offer do
+      employer { create(:employer ) }
+      school_track { :troisieme_segpa}
+    end
+
+    trait :troisieme_prepa_metier_internship_offer do
+      employer { create(:employer ) }
+      school_track { :troisieme_prepa_metier_}
+    end
+
+    trait :bac_pro_internship_offer do
       employer { create(:employer ) }
       school_track { :bac_pro}
     end
@@ -43,12 +64,27 @@ FactoryBot.define do
     factory :api_internship_offer, traits: [:api_internship_offer],
                                    class: 'InternshipOffers::Api',
                                    parent: :weekly_internship_offer
+
     factory :weekly_internship_offer, traits: [:weekly_internship_offer],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
+    factory :troisieme_generale_internship_offer, traits: [:troisieme_generale_internship_offer],
+                                                  class: 'InternshipOffers::WeeklyFramed',
+                                                  parent: :internship_offer
+
+
     factory :free_date_internship_offer, traits: [:free_date_internship_offer],
                                          class: 'InternshipOffers::FreeDate',
                                          parent: :internship_offer
+    factory :troisieme_segpa_internship_offer, traits: [:troisieme_segpa_internship_offer],
+                                               class: 'InternshipOffers::FreeDate',
+                                               parent: :internship_offer
+    factory :troisieme_prepa_metier_internship_offer, traits: [:troisieme_prepa_metier_internship_offer],
+                                                      class: 'InternshipOffers::FreeDate',
+                                                      parent: :internship_offer
+    factory :bac_pro_internship_offer, traits: [:bac_pro_internship_offer],
+                                       class: 'InternshipOffers::FreeDate',
+                                       parent: :internship_offer
 
   end
 end
