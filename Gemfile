@@ -24,6 +24,7 @@ gem 'caxlsx_rails'
 
 # background jobs
 gem 'sidekiq'
+gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
 gem 'rails_admin'
