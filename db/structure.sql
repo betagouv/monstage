@@ -10,34 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: tiger; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA tiger;
-
-
---
--- Name: tiger_data; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA tiger_data;
-
-
---
--- Name: topology; Type: SCHEMA; Schema: -; Owner: -
---
-
-CREATE SCHEMA topology;
-
-
---
--- Name: SCHEMA topology; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON SCHEMA topology IS 'PostGIS Topology schema';
-
-
---
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -118,6 +90,15 @@ CREATE TYPE public.user_role AS ENUM (
 --
 
 CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
+    TEMPLATE = pg_catalog.thesaurus,
+    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
+
+
+--
+-- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
     TEMPLATE = pg_catalog.thesaurus,
     dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
@@ -1633,7 +1614,7 @@ ALTER TABLE ONLY public.internship_offer_weeks
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user", public, topology;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20190207111844'),
@@ -1807,8 +1788,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709111800'),
 ('20200709111801'),
 ('20200709111802'),
+('20200709121046'),
 ('20200709135354'),
 ('20200717134317'),
+('20200723125613'),
 ('20200902143358'),
 ('20200902145712'),
 ('20200904083343'),
