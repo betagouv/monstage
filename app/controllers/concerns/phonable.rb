@@ -7,7 +7,7 @@ module Phonable
   def safe_phone_param
     [params[:user]&.[](:phone), params[:phone]].compact
                                                .first
-                                               .delete(' ')
+                                               .try(:delete, ' ')
   end
 
   def clean_phone_param
