@@ -12,7 +12,7 @@
               small.font-weight-bold
               | Certains de vos élèves ont besoin d'être affecté à une classe pour pouvoir postuler à des stages
         .col-4.text-right
-          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.fakeButton' }
+          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
 
       .row
         .col-12.px-0
@@ -29,7 +29,7 @@
                   td.col-4 data-head="Action"
                     = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
 
-- @school.class_rooms.order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
+- @school.class_rooms.includes([:students]).order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
   .row.mt-5
     h5.mb-0= tr_school_track(school_track)
   .row
