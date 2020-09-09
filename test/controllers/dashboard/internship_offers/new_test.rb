@@ -65,10 +65,7 @@ module InternshipOffers
     end
 
     test 'GET #new as Employer with duplicate_id with old offer' do
-      internship_offer = create(:weekly_internship_offer)
-      internship_offer.update(description_rich_text: nil, employer_description_rich_text: nil)
-      internship_offer.update_column(:description, 'woot')
-      internship_offer.update_column(:employer_description, 'woot woot')
+      internship_offer = create(:weekly_internship_offer, tutor_name: 'Jean', tutor_email: 'jean@mail.com', tutor_phone: '0102030405')
       organisation = create(:organisation)
       internship_offer_info = create(:internship_offer_info)
       sign_in(internship_offer.employer)
@@ -76,8 +73,11 @@ module InternshipOffers
                                               organisation_id: organisation.id, 
                                               internship_offer_info_id: internship_offer_info.id)
       assert_response :success
-      assert_select 'input[name="internship_offer[description_rich_text]"][value="woot"]'
-      assert_select 'input[name="internship_offer[employer_description_rich_text]"][value="woot woot"]'
+      Capybara::Screenshot.screenshot_and_save_page
+      assert_select '#internship_offer_tutor_name'
+      assert_select 'input[name="internship_offer[tutor_name]"][value="Jean"]'
+      assert_select 'input[name="internship_offer[tutor_email]"][value="jean@mail.com"]'
+      assert_select 'input[name="internship_offer[tutor_phone]"][value="0102030405"]'
     end
   end
 end

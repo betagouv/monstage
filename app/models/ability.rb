@@ -84,6 +84,8 @@ class Ability
     can :show, :account
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    can %i[create read update discard], InternshipOfferInfo, employer_id: user.id
+    can %i[create read update discard], Organisation
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end

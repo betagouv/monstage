@@ -48,18 +48,18 @@
                         resourceName: :internship_offer_info,
                         selectClassRoom: false,
                         existingSchool: @internship_offer_info.school.as_json)
-
+          
           .toggle-radio.mb-1
             = radio_button_tag :internship_type,
                                 true,
-                                @internship_offer_info.new_record? && @internship_offer_info.errors.empty? ? false : @internship_offer_info.is_individual?,
+                                @internship_offer_info.new_record? && @internship_offer_info.errors.empty? && params[:duplicate_id].blank? ? false : @internship_offer_info.is_individual?,
                                 class: '',
                                 disabled: !@internship_offer_info.is_fully_editable?,
                                 data: { action: "change->internship-form#toggleInternshipType" }
             = label_tag :internship_type_true, 'Individuel'
             = radio_button_tag :internship_type,
                                 false,
-                                @internship_offer_info.new_record? && @internship_offer_info.errors.empty? && !params[:duplicate_id].present? ? false : !@internship_offer_info.is_individual?,
+                                @internship_offer_info.new_record? && @internship_offer_info.errors.empty? && params[:duplicate_id].blank? ? false : !@internship_offer_info.is_individual?,
                                 class: '',
                                 disabled: !@internship_offer_info.is_fully_editable?,
                                 data: { action: "change->internship-form#toggleInternshipType" }

@@ -7,10 +7,12 @@ module Dashboard
     def new
       @organisation = Organisation.build_from_internship_offer(InternshipOffer.find(params[:duplicate_id])) if params[:duplicate_id].present?
       @organisation ||= Organisation.new
+      authorize! :create, Organisation
     end
 
     def create
       @organisation = Organisation.new(organisation_params)
+      authorize! :create, Organisation
       if @organisation.save
         redirect_to new_dashboard_internship_offer_info_path(organisation_id: @organisation.id,
                                                              duplicate_id: params[:organisation][:duplicate_id])

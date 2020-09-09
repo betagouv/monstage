@@ -14,6 +14,28 @@ module Dashboard
       assert_redirected_to user_session_path
     end
 
+    test 'GET #new as Employer with duplicate_id with old offer' do
+      internship_offer = create(:weekly_internship_offer,
+                                employer_name: 'Apple',
+                                street: '12 rue des bois',
+                                city: 'Paris',
+                                zipcode: '75001',
+                                employer_website: 'https://www.site.com',
+                                description: 'ma description',
+                                is_public: 'true',
+                              )
+      sign_in(internship_offer.employer)
+      get new_dashboard_organisation_path(duplicate_id: internship_offer.id)
+      assert_response :success
+      assert_select 'input[name="organisation[name]"][value="Apple"]'
+      # assert_select 'input[name="organisation[street]"][value="12 rue des bois"]'
+      # assert_select 'input[name="organisation[zipcode]"][value="75001"]'
+      # assert_select 'input[name="organisation[city]"][value="Paris"]'
+      # assert_select 'input[name="organisation[description_rich_text]"][value="Jean"]'
+      # assert_select 'input[name="organisation[is_public]"][value="true"]'
+      # assert_select 'input[name="organisation[website]"][value="https://www.site.com"]'
+    end
+
     #
     # Create Organisation
     #

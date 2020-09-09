@@ -65,4 +65,19 @@ class InternshipOfferInfo < ApplicationRecord
   def init
     self.max_candidates ||= 1
   end
+
+  def self.build_from_internship_offer(internship_offer)
+    info = InternshipOfferInfo.new(
+      title: internship_offer.employer_name,
+      description: internship_offer.description,
+      max_candidates: internship_offer.max_candidates,
+      school_id: internship_offer.school_id,
+      employer_id: internship_offer.employer_id,
+      type: "InternshipOfferInfos::#{internship_offer.type.split('::').last}Info",
+      sector_id: internship_offer.sector_id,
+      daily_hours: internship_offer.daily_hours,
+    )
+    info.weeks << internship_offer.weeks
+    info
+  end
 end

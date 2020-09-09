@@ -5,8 +5,9 @@ module Dashboard
     before_action :authenticate_user!
 
     def new
-      @internship_offer_info = InternshipOfferInfo.new
-      #authorize! :create, InternshipOfferInfo
+      @internship_offer_info = InternshipOfferInfo.build_from_internship_offer(InternshipOffer.find(params[:duplicate_id])) if params[:duplicate_id].present?
+      @internship_offer_info ||= InternshipOfferInfo.new
+      authorize! :create, InternshipOfferInfo
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       @organisation_id = params[:organisation_id]
     end
@@ -29,13 +30,14 @@ module Dashboard
 
     def edit
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
-      #authorize! :create, InternshipOfferInfo
+      authorize! :edit, InternshipOfferInfo
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       @organisation_id = params[:organisation_id]
     end
 
     def update
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
+      authorize! :update, InternshipOfferInfo
       organisation_id = params[:internship_offer_info][:organisation_id]
 
       if InternshipOfferInfo.update(internship_offer_info_params.merge!(prepare_daily_hours(params)))
