@@ -24,6 +24,7 @@ gem 'caxlsx_rails'
 
 # background jobs
 gem 'sidekiq'
+gem 'redis-namespace'
 
 # admin
 gem 'rails_admin'

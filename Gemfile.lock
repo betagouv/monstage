@@ -279,6 +279,8 @@ GEM
       railties (>= 3.2)
       tilt
     redis (4.2.2)
+    redis-namespace (1.8.0)
+      redis (>= 3.0.4)
     regexp_parser (1.7.1)
     remotipart (1.4.4)
     responders (3.0.1)
@@ -427,6 +429,7 @@ DEPENDENCIES
   rails_admin
   rails_admin-i18n
   react-rails
+  redis-namespace
   rest-client
   rubocop
   selenium-webdriver
