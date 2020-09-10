@@ -35,6 +35,10 @@ module InternshipOffers
         true
       end
 
+      def free_date?
+        false
+      end
+
       def has_spots_left?
         internship_offer_weeks.any?(&:has_spots_left?)
       end
