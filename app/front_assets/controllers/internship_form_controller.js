@@ -28,7 +28,7 @@ export default class extends Controller {
   }
 
   induceType(value){
-    const induced_type = (value == 'troisieme_generale') ? 'InternshipOffers::WeeklyFramed' : 'InternshipOffers::FreeDate';
+    const induced_type = (value == 'bac_pro') ? 'InternshipOffers::FreeDate' : 'InternshipOffers::WeeklyFramed';
     $(this.typeTarget).attr('value', induced_type)
     this.chooseType(induced_type);
   }
