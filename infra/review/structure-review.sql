@@ -94,6 +94,7 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
   language = 'french');
 
 
+
 --
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
