@@ -72,6 +72,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET account_path(section: :identity) as main_teacher when removed from school' do
+    school = create(:school, :with_school_manager)
+    main_teacher = create(:main_teacher, school: school)
+    main_teacher.school = nil
+    main_teacher.save!
+
+    sign_in(main_teacher)
+    get account_path(section: 'identity')
+    assert_redirected_to account_path(section: :school)
+  end
+
   test 'No other role than operator should have an API token' do
     student = create(:student)
     sign_in(student)

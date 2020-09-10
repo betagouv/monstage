@@ -78,4 +78,29 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal 'fourcade.m@gmail.com', created_student.email
     assert_equal 'cotorep', created_student.handicap
   end
+
+  test 'sentry#1885447470, registration with no js/html5 fails gracefully' do
+    birth_date = 14.years.ago
+    assert_difference('Users::Student.count', 0) do
+      post user_registration_path(
+          params: {
+            user: {
+              accept_terms: 1,
+              birth_date: birth_date,
+              channel: 'phone',
+              email: '',
+              first_name: 'Jephthina' ,
+              gender: 'f',
+              handicap: nil,
+              handicap_present: 0,
+              last_name: "Théodore ",
+              password: "[Filtered]",
+              password_confirmation: "[Filtered]",
+              type: Users::Student.name
+            }
+          }
+        )
+        assert_response 200
+    end
+  end
 end
