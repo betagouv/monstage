@@ -5,7 +5,5 @@ class FixMissingInternshipOfferIdOnInternshipApplication < ActiveRecord::Migrati
       ia.internship_offer_type = 'InternshipOffer'
       ia.save
     end
-    change_column :internship_applications, :internship_offer_id, :bigint, null: false
-    change_column :internship_applications, :internship_offer_type, :string, null: false
   end
 end
