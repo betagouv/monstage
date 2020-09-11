@@ -476,9 +476,9 @@ CREATE TABLE public.internship_applications (
     pending_reminder_sent_at timestamp without time zone,
     canceled_at timestamp without time zone,
     type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying,
-    internship_offer_id bigint,
+    internship_offer_id bigint NOT NULL,
     applicable_type character varying,
-    internship_offer_type character varying
+    internship_offer_type character varying NOT NULL
 );
 
 
@@ -1796,6 +1796,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200902145712'),
 ('20200904083343'),
 ('20200909065612'),
-('20200909134849');
+('20200909134849'),
+('20200911153501');
 
 
