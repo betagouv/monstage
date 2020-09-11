@@ -42,5 +42,8 @@ module W3c
       select 'Bac pro'
       page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "0")
     end
+
+    test 'School reporting can be filtered by school_track' do
+    end
   end
 end
