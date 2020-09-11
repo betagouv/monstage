@@ -23,8 +23,8 @@ fr:
         one: Secteur
         other: Secteurs
       user:
-        one: Utilisateur
-        other: Utilisateurs
+        one: Personnel pédagogique
+        other: Personnels pédagogiques
       users/student:
         one: Élève
         other: Élèves
@@ -51,7 +51,7 @@ fr:
         other: Autres utilisateurs
       users/statistician:
         one: Référent départemental
-        other: Référents départemental
+        other: Référents départementaux
       school:
         one: Etablissement
         other: Etablissements
@@ -254,7 +254,7 @@ fr:
         user:
           attributes:
             email:
-              blank: "Veuillez saisir un email"
+              blank: "Veuillez saisir un email ou un numéro de téléphone"
               taken: "Un compte est déjà associé à cet email"
               invalid: "Le format de votre email semble incorrect"
             password:
@@ -266,8 +266,8 @@ fr:
             last_name:
               blank: Veuillez saisir un nom de famille
             phone:
-              blank: "Veuillez saisir un téléphone"
-              taken: "Un compte est déjà associé à ce téléphone"
+              blank: "Veuillez saisir un numéro de téléphone"
+              taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
               invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
         users/user_management:

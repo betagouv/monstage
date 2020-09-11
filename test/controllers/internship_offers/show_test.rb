@@ -503,5 +503,22 @@ module InternshipOffers
         assert_select '.test-renew-button', count: 1
       end
     end
+
+    test 'sentry#1813654266, god can see api internship offer' do
+      weekly_internship_offer = create(:weekly_internship_offer)
+      free_date_internship_offer = create(:free_date_internship_offer)
+      api_internship_offer = create(:api_internship_offer)
+
+      sign_in(create(:god))
+
+      get internship_offer_path(weekly_internship_offer)
+      assert_response :success
+
+      get internship_offer_path(api_internship_offer)
+      assert_response :success
+
+      get internship_offer_path(free_date_internship_offer)
+      assert_response :success
+    end
   end
 end
