@@ -123,7 +123,7 @@ class Ability
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin
-    can :manage, InternshipOffers::Api
+    can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi # grant access to the dashboard
     can %i[index], Acl::Reporting do |_acl|

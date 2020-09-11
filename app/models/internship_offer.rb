@@ -151,15 +151,6 @@ class InternshipOffer < ApplicationRecord
   def is_fully_editable?
     true
   end
-
-  def weekly?
-    false
-  end
-
-  def free_date?
-    false
-  end
-
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
