@@ -192,7 +192,6 @@ class InternshipOffer < ApplicationRecord
                                                        else
                                                          employer_description
                                                        end)
-
     internship_offer
   end
 
