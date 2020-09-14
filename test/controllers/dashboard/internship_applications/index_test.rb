@@ -61,6 +61,22 @@ module InternshipApplications
       assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
     end
 
+    test 'GET #index (sentry#1887730132) succeed with weekly_internship_application when logged in as employer, and student is archived' do
+      school = create(:school, city: 'Paris', name: 'Mon établissement')
+      student = create(:student, school: school,
+                                 phone: '+330665656565',
+                                 email: 'student@edu.school',
+                                 birth_date: 14.years.ago,
+                                 resume_educational_background: 'resume_educational_background',
+                                 resume_other: 'resume_other',
+                                 resume_languages: 'resume_languages')
+      internship_application = create(:weekly_internship_application, :submitted, student: student)
+      student.archive
+      sign_in(internship_application.internship_offer.employer)
+      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      assert_response :success
+    end
+
     test 'GET #index succeed with free_date_internship_application when logged in as employer, shows default fields' do
       school = create(:school, city: 'Paris', name: 'Mon établissement')
       student = create(:student, school: school,
