@@ -44,12 +44,12 @@ FactoryBot.define do
 
     trait :troisieme_segpa_internship_offer do
       employer { create(:employer ) }
-      school_track { :troisieme_segpa}
+      school_track { :troisieme_segpa }
     end
 
     trait :troisieme_prepa_metier_internship_offer do
       employer { create(:employer ) }
-      school_track { :troisieme_prepa_metier_}
+      school_track { :troisieme_prepa_metier }
     end
 
     trait :bac_pro_internship_offer do
