@@ -3,7 +3,6 @@ import Turbolinks from 'turbolinks';
 
 function FilterInternshipOffer() {
   const searchParams = new URLSearchParams(window.location.search);
-  // const initialSchoolTrack = searchParams.get('school_track');
   const [schoolTrack, setSchoolTrack] = useState(searchParams.get('school_track'));
 
   // clear selected radio
