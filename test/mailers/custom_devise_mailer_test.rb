@@ -27,4 +27,18 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     assert email.html_part.body.include?(employer.formal_name)
     assert email.html_part.body.include?('nous venons de recevoir une demande de changement')
   end
+
+  test 'user creates his account' do
+    student = create(:student, confirmed_at: nil)
+    email = CustomDeviseMailer.confirmation_instructions(student, SecureRandom.hex)
+    assert email.subject , "test"
+  end
+
+  test 'user updates his email' do
+    student = create(:student)
+    student.unconfirmed_email = 'test@yahoo.fr'
+    email = CustomDeviseMailer.confirmation_instructions(student, SecureRandom.hex)
+    email.subject
+    assert_equal email.subject , "testte t"
+  end
 end
