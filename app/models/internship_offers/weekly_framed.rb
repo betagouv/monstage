@@ -16,6 +16,12 @@ module InternshipOffers
         field :department
         field :created_at
       end
+
+      export do
+        field :weeks_count
+        field :first_monday
+        field :last_monday
+      end
     end
 
     validates :street,
