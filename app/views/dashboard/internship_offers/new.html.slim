@@ -32,7 +32,7 @@
                   .col-8.text-center
                     = form.submit "Publier l'offre !", class: 'btn btn-primary'
                   .coll-4 style="display: flex;align-items: center"
-                    = link_to "Annuler", edit_dashboard_internship_offer_info_path(params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Retourner sur mes stages', class: 'ml-3 btn-back'
+                    = link_to "Annuler", edit_dashboard_internship_offer_info_path(params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Retourner sur mes stages', class: 'ml-3 btn-back' if params[:internship_offer_info_id] && params[:organisation_id]
                 .row
                   .col-8.text-center
                     .mx-5.mt-2
