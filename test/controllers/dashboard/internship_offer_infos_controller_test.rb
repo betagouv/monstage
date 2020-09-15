@@ -38,7 +38,6 @@ module Dashboard
         employer_name: 'Apple',
         description: 'ma description',
         max_candidates: 1,
-        # school_id: 'Paris',
       )
       get new_dashboard_internship_offer_info_path(organisation_id: organisation.id,
                                                   duplicate_id: internship_offer.id)
@@ -46,11 +45,7 @@ module Dashboard
       assert_response :success
       available_weeks = Week.selectable_from_now_until_end_of_school_year
       asserted_input_count = 2
-      assert_select 'input[name="internship_offer_info[type]"]'
       assert_select 'input[name="internship_offer_info[title]"][value="Apple"]'
-      assert_select 'input[name="internship_offer_info[sector_id]"][value="#{internship_offer.sector_id}"]'
-      assert_select 'input[name="internship_offer_info[description_rich_text]"][value="ma description"]'
-      assert_select 'input[name="internship_offer_info[school_id]"][value="#{internship_offer.school_id}"]'
       assert_select 'input[name="internship_offer_info[max_candidates]"][value="1"]'
       available_weeks.each do |week|
         assert_select "input[id=internship_offer_info_week_ids_#{week.id}]"

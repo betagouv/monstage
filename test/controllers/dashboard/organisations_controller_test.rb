@@ -28,12 +28,8 @@ module Dashboard
       get new_dashboard_organisation_path(duplicate_id: internship_offer.id)
       assert_response :success
       assert_select 'input[name="organisation[name]"][value="Apple"]'
-      # assert_select 'input[name="organisation[street]"][value="12 rue des bois"]'
-      # assert_select 'input[name="organisation[zipcode]"][value="75001"]'
-      # assert_select 'input[name="organisation[city]"][value="Paris"]'
-      # assert_select 'input[name="organisation[description_rich_text]"][value="Jean"]'
-      # assert_select 'input[name="organisation[is_public]"][value="true"]'
-      # assert_select 'input[name="organisation[website]"][value="https://www.site.com"]'
+      assert_select 'input[name="organisation[is_public]"][value="true"]'
+      assert_select 'input[name="organisation[website]"][value="https://www.site.com"]'
     end
 
     #
