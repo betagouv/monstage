@@ -8,7 +8,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('.alert-sticky')
   end
 
-  def fill_in_form(sector:, group:, weeks:, school_type:)
+  def fill_in_form(sector:, group:, weeks:, school_track:)
     fill_in 'internship_offer_title', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
     find('#internship_offer_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
     fill_in 'Nom du tuteu/trice', with: 'Brice Durand'
@@ -19,9 +19,18 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     fill_in 'Site web (facultatif)', with: 'https://beta.gouv.fr/'
     find('label', text: 'public').click
     select sector.name, from: 'internship_offer_sector_id' if sector
-    if school_type
-      select I18n.t("activerecord.attributes.internship_offer.internship_type.#{school_type}"),
-             from: 'internship_offer_type'
+    if school_track
+      select I18n.t("enum.school_tracks.#{school_track}"),
+             from: 'internship_offer_school_track'
+      if school_track == :troisieme_generale
+        page.execute_script(
+          "document.getElementById('internship_offer_type').value = 'InternshipOffers::WeeklyFramed'"
+        )
+      else
+        page.execute_script(
+          "document.getElementById('internship_offer_type').value = 'InternshipOffers::FreeDate'"
+        )
+      end
     end
     select group.name, from: 'internship_offer_group_id' if group
     if weeks.size.positive?
@@ -48,7 +57,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_form(sector: sectors.first,
-                     school_type: :middle_school,
+                     school_track: :troisieme_generale,
                      group: group,
                      weeks: available_weeks)
         click_on "Enregistrer et publier l'offre"
@@ -71,7 +80,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_form(sector: sectors.first,
-                     school_type: :high_school,
+                     school_track: :bac_pro,
                      group: group,
                      weeks: [])
         click_on "Enregistrer et publier l'offre"
@@ -98,6 +107,25 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       wait_form_submitted
       assert_equal 'editok', internship_offer.reload.title
     end
+  end
+
+
+  test 'can edit school_track of an internship offer back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:free_date_internship_offer, employer: employer)
+    sign_in(employer)
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    select '3e générale'
+    click_on "Enregistrer et publier l'offre"
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    select 'Bac pro'
+    fill_in 'internship_offer_title', with: 'editok'
+    find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
+    click_on "Enregistrer et publier l'offre"
+    wait_form_submitted
+    assert_equal 'editok', internship_offer.reload.title
   end
 
   test 'can discard internship_offer' do
@@ -154,7 +182,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         sector: sector,
         group: group,
         weeks: available_weeks,
-        school_type: :middle_school
+        school_track: :troisieme_generale
       )
       fill_in 'internship_offer_title', with: 'a' * 501
       click_on "Enregistrer et publier l'offre"

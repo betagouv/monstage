@@ -22,4 +22,10 @@ class EmailWhitelistTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'sentry#1887500611 destroy email whitelist does not fails when no user' do
+    email_whitelist = create(:email_whitelist, email: 'fourcade.m@gmail.com', zipcode: 60)
+
+    assert_nothing_raised { email_whitelist.destroy! }
+  end
 end

@@ -393,45 +393,6 @@ ALTER SEQUENCE public.class_rooms_id_seq OWNED BY public.class_rooms.id;
 
 
 --
--- Name: delayed_jobs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.delayed_jobs (
-    id bigint NOT NULL,
-    priority integer DEFAULT 0 NOT NULL,
-    attempts integer DEFAULT 0 NOT NULL,
-    handler text NOT NULL,
-    last_error text,
-    run_at timestamp without time zone,
-    locked_at timestamp without time zone,
-    failed_at timestamp without time zone,
-    locked_by character varying,
-    queue character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: delayed_jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.delayed_jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: delayed_jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.delayed_jobs_id_seq OWNED BY public.delayed_jobs.id;
-
-
---
 -- Name: email_whitelists; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -549,9 +510,9 @@ CREATE TABLE public.internship_applications (
     pending_reminder_sent_at timestamp without time zone,
     canceled_at timestamp without time zone,
     type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying,
-    internship_offer_id bigint,
+    internship_offer_id bigint NOT NULL,
     applicable_type character varying,
-    internship_offer_type character varying
+    internship_offer_type character varying NOT NULL
 );
 
 
@@ -772,7 +733,8 @@ CREATE TABLE public.internship_offers (
     organisation_id bigint,
     mentor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[]
+    daily_hours text[] DEFAULT '{}'::text[],
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -1054,7 +1016,8 @@ CREATE TABLE public.users (
     phone_token character varying,
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
-    last_phone_password_reset timestamp without time zone
+    last_phone_password_reset timestamp without time zone,
+    anonymized boolean DEFAULT false NOT NULL
 );
 
 
@@ -1135,13 +1098,6 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 --
 
 ALTER TABLE ONLY public.class_rooms ALTER COLUMN id SET DEFAULT nextval('public.class_rooms_id_seq'::regclass);
-
-
---
--- Name: delayed_jobs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.delayed_jobs ALTER COLUMN id SET DEFAULT nextval('public.delayed_jobs_id_seq'::regclass);
 
 
 --
@@ -1304,14 +1260,6 @@ ALTER TABLE ONLY public.class_rooms
 
 
 --
--- Name: delayed_jobs delayed_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.delayed_jobs
-    ADD CONSTRAINT delayed_jobs_pkey PRIMARY KEY (id);
-
-
---
 -- Name: email_whitelists email_whitelists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1453,13 +1401,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.weeks
     ADD CONSTRAINT weeks_pkey PRIMARY KEY (id);
-
-
---
--- Name: delayed_jobs_priority; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX delayed_jobs_priority ON public.delayed_jobs USING btree (priority, run_at);
 
 
 --
@@ -2203,6 +2144,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200728094217'),
 ('20200729071625'),
 ('20200730144039'),
-('20200805195040');
+('20200805195040'),
+('20200902143358'),
+('20200902145712'),
+('20200904083343'),
+('20200909065612'),
+('20200909134849'),
+('20200911153501'),
+('20200911160718');
 
 

@@ -72,6 +72,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET account_path(section: :identity) as main_teacher when removed from school' do
+    school = create(:school, :with_school_manager)
+    main_teacher = create(:main_teacher, school: school)
+    main_teacher.school = nil
+    main_teacher.save!
+
+    sign_in(main_teacher)
+    get account_path(section: 'identity')
+    assert_redirected_to account_path(section: :school)
+  end
+
   test 'No other role than operator should have an API token' do
     student = create(:student)
     sign_in(student)
@@ -110,6 +121,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name="user[class_room_id]"]'
   end
 
+  test 'GET edit as student also allow him to change class_room' do
+    student = create(:student, phone: '+330623042585')
+
+    sign_in(student)
+    get account_path(section: 'identity')
+
+    assert_select 'select[name="user[class_room_id]"]'
+  end
+
   test 'GET edit render as Statistician shows a readonly input on email' do
     statistician = create(:statistician)
 
@@ -140,6 +160,17 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal '+330665656540', student.phone
     follow_redirect!
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+  test 'PATCH edit as student cannot nullify his email' do
+    error_message = 'Il faut conserver un email valide pour assurer la continuité du service'
+    student = create(:student, phone: '+330623042585', email: 'test@test.fr')
+    sign_in(student)
+
+    patch(account_path, params: { user: { email: '' } })
+    refute student.reload.unconfirmed_email == ''
+    assert_template 'users/edit'
+    assert_select '#error_explanation li:first label', { text: error_message }, 1
   end
 
   test 'PATCH failures does not crashes' do

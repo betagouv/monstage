@@ -24,16 +24,19 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/,
-                                                                 message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
+  validates :phone, uniqueness: { allow_blank: true },
+                    format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/, message: 'Veuillez modifier le numéro de téléphone mobile' },
+                    allow_blank: true
 
   validates :email, uniqueness: { allow_blank: true },
-                    format: { with: Devise.email_regexp }, allow_blank: true
+                    format: { with: Devise.email_regexp },
+                    allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
   validate :email_or_phone
+  validate :keep_email_existence, on: :update
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -62,6 +65,11 @@ class User < ApplicationRecord
       .try(:weeks)
       .try(:size)
       .try(:zero?)
+  end
+
+  def missing_school?
+    return true if respond_to?(:school) && school.blank?
+    false
   end
 
   def to_s
@@ -106,7 +114,7 @@ class User < ApplicationRecord
     "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
   end
 
-  def anonymize
+  def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
 
@@ -116,14 +124,19 @@ class User < ApplicationRecord
       last_name: 'NA',
       phone: nil,
       current_sign_in_ip: nil,
-      last_sign_in_ip: nil
+      last_sign_in_ip: nil,
+      anonymized: true
     }
     update_columns(fields_to_reset)
 
     discard!
 
-    AnonymizeUserJob.perform_later(email: email_for_job)
+    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
     RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+  end
+
+  def archive
+    anonymize(send_email: false)
   end
 
   def destroy
@@ -194,13 +207,22 @@ class User < ApplicationRecord
   private
 
   def clean_phone
+    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
   end
 
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
-      errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
+      errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
+    end
+  end
+
+  def keep_email_existence
+    if email_was.present? && email.blank?
+      errors.add(
+        :email,
+        'Il faut conserver un email valide pour assurer la continuité du service'
+      )
     end
   end
 end

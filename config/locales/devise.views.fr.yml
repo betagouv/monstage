@@ -2,6 +2,7 @@ fr:
   activerecord:
     attributes:
       user:
+        accept_terms: Conditions d'utilisation
         confirmation_sent_at: Date d'envoi de la confirmation
         confirmation_token: Clé de confirmation du mot de passe
         confirmed_at: Confirmé à
@@ -37,10 +38,10 @@ fr:
     failure:
       already_authenticated: Vous êtes déjà connecté(e).
       inactive: Votre compte n’est pas encore activé.
-      invalid: "%{authentication_keys} ou mot de passe incorrect."
+      invalid: "%{authentication_keys}, numéro de téléphone ou mot de passe incorrects."
       last_attempt: Il vous reste une chance avant que votre compte soit bloqué.
       locked: Votre compte est verrouillé.
-      not_found_in_database: "%{authentication_keys} ou mot de passe incorrect."
+      not_found_in_database: "%{authentication_keys}, numéro de téléphone ou mot de passe incorrects."
       timeout: Votre session est expirée, veuillez vous reconnecter pour continuer.
       unauthenticated: Vous devez vous connecter ou vous enregistrer pour continuer.
       unconfirmed: "Vous devez confirmer votre compte par %{authentication_keys}."
@@ -137,8 +138,9 @@ fr:
       already_confirmed: a déjà été confirmé(e)
       confirmation_period_expired: doit être confirmé(e) en %{period}, veuillez en demander un(e) autre
       expired: est expiré, veuillez en demander un autre
-      not_found: n’a pas été trouvé(e)
+      not_found: "%{attribute} introuvable"
       not_locked: n’était pas verrouillé(e)
       not_saved:
         one: 'une erreur a empêché ce (cet ou cette) %{resource} d’être enregistré(e) :'
         other: "%{count} erreurs ont empêché ce (cet ou cette) %{resource} d’être enregistré(e) :"
+      unknown_phone_number: 'Ce numéro de téléphone est inconnu'

@@ -6,6 +6,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'GET works' do
     get new_user_session_path
     assert_response :success
+    assert_select 'title', "Connexion | Monstage"
     assert_select '#user_email'
     assert_select '#select-channel-phone'
     assert_select '#user_password[autofocus=autofocus]', count: 0

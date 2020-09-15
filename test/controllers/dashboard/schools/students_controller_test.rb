@@ -10,7 +10,7 @@ module Dashboard
       #
       # update by group
       #
-      test 'PATCH students as SchoolManagement change class room by group' do
+      test 'PATCH students as SchoolManagement change change class room' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         class_room_1 = create(:class_room, school: school)

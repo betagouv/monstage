@@ -33,7 +33,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
     page.find('.student-form-missing-school-weeks', visible: true)
 
-    # check form disabled
+    # check for phone and email fields disabled
     disabled_input_selectors = %w[
       internship_application[student_attributes][phone]
       internship_application[student_attributes][email]

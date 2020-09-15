@@ -15,7 +15,7 @@ class UserTest < ActiveSupport::TestCase
     refute user.errors.keys.include?(:accept_terms)
   end
 
-  test 'RGPD student' do
+  test 'anonymize student' do
     school = create(:school)
     class_room = create(:class_room, school: school)
     student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
@@ -41,9 +41,26 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal 'chocolat', student.resume_languages
     assert_not_equal 'malvoyant', student.handicap
     assert_not_equal '+330600110011', student.phone
+    assert_not_equal false, student.anonymized
   end
 
-  test 'RGPD employer' do
+  test 'archive student' do
+    school = create(:school)
+    class_room = create(:class_room, school: school)
+    student = create(:student, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
+                               current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1', birth_date: '01/01/2000',
+                               gender: 'm', class_room_id: class_room.id, resume_educational_background: 'Zer',
+                               resume_other: 'chocolat', resume_languages: 'FR', phone: '+330600110011',
+                               handicap: 'malvoyant')
+
+    assert_enqueued_jobs 0, only: AnonymizeUserJob do
+      student.archive
+    end
+
+    assert_equal true, student.anonymized
+  end
+
+  test 'anonymize employer' do
     employer = create(:employer, email: 'test@test.com', first_name: 'Toto', last_name: 'Tata',
                                  current_sign_in_ip: '127.0.0.1', last_sign_in_ip: '127.0.0.1')
 

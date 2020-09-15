@@ -15,7 +15,8 @@ import 'raf/polyfill';
 import 'core-js/es/map';
 import 'core-js/es/set';
 
-import '../stylesheets/application.scss';
+import '../stylesheets/screen.scss';
+import '../stylesheets/print.scss';
 
 import Alert from 'bootstrap'
 import Dropdown from 'bootstrap'

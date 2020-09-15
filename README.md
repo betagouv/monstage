@@ -31,8 +31,8 @@ Things you may want to cover:
 * Postgres as RDBMS
 * Postgres with Postgis for geoqueries
 * Postgres for FTS
-* Postgres with Delayed job for Async jobs
 * Postgres(notify) with ActionCable for wss://
+* Redis & Sidekiq for Async jobs
 
 ## frontend
 

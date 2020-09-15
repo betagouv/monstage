@@ -88,6 +88,7 @@ class InternshipOffer < ApplicationRecord
   validates :title,
             :employer_name,
             :city,
+            :school_track,
             presence: true
 
   validates :title, presence: true,
@@ -139,6 +140,13 @@ class InternshipOffer < ApplicationRecord
       }
     end
   end
+  
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+
+  def departement
+    Department.lookup_by_zipcode(zipcode: zipcode)
+  end
 
   def published?
     published_at.present?
@@ -163,15 +171,6 @@ class InternshipOffer < ApplicationRecord
   def is_fully_editable?
     true
   end
-
-  def weekly?
-    false
-  end
-
-  def free_date?
-    false
-  end
-
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
@@ -207,12 +206,12 @@ class InternshipOffer < ApplicationRecord
                                                 description_rich_text.to_s
                                               else
                                                 description
-end)
+                                              end)
     internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
                                                          employer_description_rich_text.to_s
                                                        else
                                                          employer_description
-end)
+                                                       end)
 
     internship_offer
   end

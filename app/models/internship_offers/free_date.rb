@@ -3,6 +3,24 @@ module InternshipOffers
     after_initialize :init
     attr_accessor :week_ids
 
+    include ActiveAdminable
+    # ActiveAdmin index specifics
+    rails_admin do
+      list do
+        field :title
+        field :zipcode
+        field :employer_name
+        field :group
+        field :is_public
+        field :department
+        field :created_at
+      end
+    end
+
+    def weekly?
+      false
+    end
+
     def free_date?
       true
     end

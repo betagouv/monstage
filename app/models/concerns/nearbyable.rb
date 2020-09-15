@@ -55,6 +55,8 @@ module Nearbyable
     end
 
     def osm_url
+      return "http://www.openstreetmap.org/" unless coordinates_are_valid?
+
       "http://www.openstreetmap.org/?mlat=#{coordinates.lat}&mlon=#{coordinates.lon}&zoom=12"
     end
 

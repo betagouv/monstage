@@ -75,6 +75,9 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
+    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:free_date_internship_offer))
+    refute ability.can?(:apply, create(:api_internship_offer))
   end
 
   test 'SchoolManager' do

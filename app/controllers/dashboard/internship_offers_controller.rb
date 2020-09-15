@@ -149,7 +149,7 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type, :description,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
+                    :school_type, :school_track, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
     end
 
     def internship_offer_params

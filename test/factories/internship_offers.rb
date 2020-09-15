@@ -28,10 +28,12 @@ FactoryBot.define do
     trait :weekly_internship_offer do
       weeks { [Week.first] }
       employer { create(:employer) }
+      school_track { :troisieme_generale }
     end
 
     trait :free_date_internship_offer do
       employer { create(:employer) }
+      school_track { :bac_pro }
     end
 
     trait :discarded do

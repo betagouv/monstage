@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
+  authenticate :user, lambda { |u| u.is_a?(Users::God) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount ActionCable.server => '/cable'
@@ -89,6 +92,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/operators', to: 'pages#operators'
+  get '/javascript-required', to: 'pages#javascript_required'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

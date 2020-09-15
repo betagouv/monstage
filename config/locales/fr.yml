@@ -23,8 +23,8 @@ fr:
         one: Secteur
         other: Secteurs
       user:
-        one: Utilisateur
-        other: Utilisateurs
+        one: Personnel pédagogique
+        other: Personnels pédagogiques
       users/student:
         one: Élève
         other: Élèves
@@ -51,13 +51,16 @@ fr:
         other: Autres utilisateurs
       users/statistician:
         one: Référent départemental
-        other: Référents départemental
+        other: Référents départementaux
       school:
         one: Etablissement
         other: Etablissements
-      internship_offers/web:
-        one: Offre Produit
-        other: Offres Produit
+      internship_offers/weekly_framed:
+        one: Offre 3eme générale
+        other: Offres 3eme générale
+      internship_offers/free_date:
+        one: Offre de la voie pro
+        other: Offres de la voie pro
       internship_offers/api:
         one: Offre API
         other: Offres API
@@ -99,6 +102,8 @@ fr:
         description: Description
         zipcode: Code postal
         employer_name: Employeur
+        employer_email: Email de l'employeur
+        employer_phone: Téléphone de l'employeur
         group: Groupe ou institution
         is_public: Secteur public
         human_is_public: Public/Privé
@@ -156,17 +161,18 @@ fr:
           middle_school: 'Collège'
           high_school: 'Lycée'
       user:
-        first_name: Prénom
-        last_name: Nom
-        school_manager: "Chef d'établissement"
-        main_teacher: "Professeur principal"
-        teacher: "Professeur"
-        other: "Autres fonctions"
+        accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
-        school: "Etablissement"
-        gender: Sexe
         confirmed_at: Confirmé le
+        first_name: Prénom
+        gender: Sexe
+        last_name: Nom
+        main_teacher: "Professeur principal"
+        other: "Autres fonctions"
         phone: Téléphone mobile
+        school: "Etablissement"
+        school_manager: "Chef d'établissement"
+        teacher: "Professeur"
       week:
         number: Numéro de semaine
         year: Année
@@ -245,7 +251,7 @@ fr:
         user:
           attributes:
             email:
-              blank: "Veuillez saisir un email"
+              blank: "Veuillez saisir un email ou un numéro de téléphone"
               taken: "Un compte est déjà associé à cet email"
               invalid: "Le format de votre email semble incorrect"
             password:
@@ -257,8 +263,8 @@ fr:
             last_name:
               blank: Veuillez saisir un nom de famille
             phone:
-              blank: "Veuillez saisir un téléphone"
-              taken: "Un compte est déjà associé à ce téléphone"
+              blank: "Veuillez saisir un numéro de téléphone"
+              taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
               invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
         users/user_management:
