@@ -11,10 +11,9 @@ module InternshipOffers
       end
 
       def supplied_applications
-        supplied = InternshipApplication.where(internship_offer_id: id)
-                                        .where(aasm_state: ['approved', 'convention_signed'])
-                                        .count
-        supplied.positive? ? "oui" : "non"
+        InternshipApplication.where(internship_offer_id: id)
+                             .where(aasm_state: ['approved', 'convention_signed'])
+                             .count
       end
 
       rails_admin do

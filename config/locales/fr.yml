@@ -134,7 +134,7 @@ fr:
         first_monday: Premier lundi de stage
         last_monday: Dernier lundi de stage
         sector_id: Secteurs professionnels
-        supplied_applications: Pourvu
+        supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
         total_report_count: Nbr. d'offres proposées
