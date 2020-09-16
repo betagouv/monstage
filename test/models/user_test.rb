@@ -129,4 +129,33 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, phone: '+330611223344')
     assert_equal '+33611223344', student.formatted_phone
   end
+
+  test 'user creates his account' do
+    mock_mail = MiniTest::Mock.new
+    mock_mail.expect(:deliver_later, true)
+    CustomDeviseMailer.stub :confirmation_instructions, mock_mail do
+      student = create(:student, confirmed_at: nil)
+    end
+    mock_mail.verify
+  end
+
+  test 'user updates his email' do
+    student = create(:student)
+    mock_mail = MiniTest::Mock.new
+    mock_mail.expect(:deliver_later, true)
+    CustomDeviseMailer.stub :update_email_instructions, mock_mail do
+      student.update(email: 'myemail@mail.com')
+    end
+    mock_mail.verify
+  end
+
+  test 'user adds email' do
+    student = create(:student, email: nil, phone: '+330611223344')
+    mock_mail = MiniTest::Mock.new
+    mock_mail.expect(:deliver_later, true)
+    CustomDeviseMailer.stub :add_email_instructions, mock_mail do
+      student.update(email: 'myemail@mail.com')
+    end
+    mock_mail.verify
+  end
 end
