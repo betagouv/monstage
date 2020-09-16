@@ -6,11 +6,13 @@ class CustomDeviseMailer < Devise::Mailer
 
   def update_email_instructions(record, token, opts = {})
     @resource = record
-    mail(to: record.email, subject: 'Kikoo bonjour')
+    @token = token
+    mail(to: record.email, subject: "Action requise - Confirmez votre changement d'adresse électronique (e-mail)")
   end
 
-  def add_email_instructions(record, token, opts = {})
-    @resource = record
-    mail(to: record.email, subject: 'Kikoo rebonjour')
+  def add_email_instructions(user)
+    @resource = user
+    @token = token
+    mail(to: user.unconfirmed_email, subject: 'Action requise - Confirmez votre nouvelle adresse électronique (e-mail)')
   end
 end

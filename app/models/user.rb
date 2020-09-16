@@ -211,10 +211,12 @@ class User < ApplicationRecord
       generate_confirmation_token!
     end
     if add_email_to_phone_account?
-      devise_mailer.add_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
+      devise_mailer.add_email_instructions(self)
+                   .deliver_later
     else
       unless @skip_confirmation_notification
-        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
+        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
+                  .deliver_later
       end
     end
   end
