@@ -34,7 +34,7 @@ class DeviseMailerPreview < ActionMailer::Preview
   def add_email_instructions
     user = Users::Student.first
     user.unconfirmed_email = 'new@email.fr'
-    CustomDeviseMailer.add_email_instructions(user, 'token', {})
+    CustomDeviseMailer.add_email_instructions(user)
   end
 
   def password_change

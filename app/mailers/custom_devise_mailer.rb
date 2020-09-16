@@ -12,7 +12,7 @@ class CustomDeviseMailer < Devise::Mailer
 
   def add_email_instructions(user)
     @resource = user
-    @token = token
+    @token = user.confirmation_token
     mail(to: user.unconfirmed_email, subject: 'Action requise - Confirmez votre nouvelle adresse électronique (e-mail)')
   end
 end
