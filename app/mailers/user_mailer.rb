@@ -9,4 +9,8 @@ class UserMailer < ApplicationMailer
     mail(to: record.email, subject: 'Kikoo bonjour')
   end
 
+  def add_email_instructions(record, token, opts = {})
+    mail(to: record.email, subject: 'Kikoo rebonjour')
+  end
+
 end
