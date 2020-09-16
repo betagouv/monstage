@@ -206,17 +206,15 @@ class User < ApplicationRecord
 
 
   def send_reconfirmation_instructions
-    byebug
     @reconfirmation_required = false
     unless @raw_confirmation_token
       generate_confirmation_token!
     end
     if add_email_to_phone_account?
-      byebug
-      UserMailer.add_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
+      devise_mailer.add_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
     else
       unless @skip_confirmation_notification
-        return UserMailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
+        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email }).deliver_later
       end
     end
   end

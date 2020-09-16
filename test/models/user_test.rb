@@ -136,14 +136,14 @@ class UserTest < ActiveSupport::TestCase
     CustomDeviseMailer.stub :confirmation_instructions, mock_mail do
       student = create(:student, confirmed_at: nil)
     end
-    mock_mail.verify    
+    mock_mail.verify
   end
 
   test 'user updates his email' do
     student = create(:student)
     mock_mail = MiniTest::Mock.new
     mock_mail.expect(:deliver_later, true)
-    UserMailer.stub :update_email_instructions, mock_mail do
+    CustomDeviseMailer.stub :update_email_instructions, mock_mail do
       student.update(email: 'myemail@mail.com')
     end
     mock_mail.verify
@@ -153,7 +153,7 @@ class UserTest < ActiveSupport::TestCase
     student = create(:student, email: nil, phone: '+330611223344')
     mock_mail = MiniTest::Mock.new
     mock_mail.expect(:deliver_later, true)
-    UserMailer.stub :update_email_instructions, mock_mail do
+    CustomDeviseMailer.stub :add_email_instructions, mock_mail do
       student.update(email: 'myemail@mail.com')
     end
     mock_mail.verify
