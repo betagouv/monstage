@@ -1,20 +1,17 @@
-h1.h2.mb-3 Candidatures pour le stage
-h2.h3= @internship_offer.title
+.row
+  .col-md-8.offset-md-2
+    - if @internship_offer.weekly?
+      = render partial: 'dashboard/internship_offers/internship_applications/filters'
 
-= link_to "Voir l'offre de stage", internship_offer_path(@internship_offer)
+    - if @internship_applications.empty?
+      .row
+        .col-1.col-sm-1
+        .col-11.col-sm-8
+          p
+          i Aucune candidature reçue à ce jour
+        .col-11.col-sm-3
 
-- if @internship_offer.weekly?
-  = render partial: 'dashboard/internship_offers/internship_applications/filters'
+    - else
+      = render partial: 'dashboard/internship_offers/internship_applications/internship_application', collection: @internship_applications
 
-- if @internship_applications.empty?
-  .row
-    .col-1.col-sm-1
-    .col-11.col-sm-8
-      p
-      i Aucune candidature reçue à ce jour
-    .col-11.col-sm-3
-
-- else
-  = render partial: 'dashboard/internship_offers/internship_applications/internship_application', collection: @internship_applications
-
-  = paginate(@internship_applications)
+      = paginate(@internship_applications)

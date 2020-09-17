@@ -9,11 +9,6 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
 
   td.align-middle data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     span.fa-fw.badge= employer_internship_offer.total_applications_count
-    - if employer_internship_offer.total_applications_count.positive?
-      = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable small' do
-        i.fa-fw.fas.fa-eye
-        = " "
-        | Afficher
   td.align-middle data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     span.fa-fw.badge= employer_internship_offer.submitted_applications_count
     - if employer_internship_offer.submitted_applications_count.positive?
@@ -26,5 +21,13 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
     span.badge= employer_internship_offer.rejected_applications_count
 
   td.align-middle data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    span.badge= employer_internship_offer.approved_applications_count
+    .row.justify-content-between.px-3
+      span.px-3.badge= employer_internship_offer.approved_applications_count
+      - if employer_internship_offer.total_applications_count.positive?
+        span.px-3 
+          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable' do
+            i.fa.fa-eye
+          
+
+
 
