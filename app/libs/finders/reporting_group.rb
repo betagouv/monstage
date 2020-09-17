@@ -24,6 +24,7 @@ module Finders
       conditions = internship_offers[:group_id].eq(groups[:id])
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
       conditions = conditions.and(internship_offers[:department]).eq(department_param) if department_param
+      conditions = conditions.and(internship_offers[:school_track]).eq(school_track) if school_track
 
       groups.join(internship_offers, Arel::Nodes::OuterJoin)
             .on(conditions)
@@ -32,6 +33,10 @@ module Finders
 
     def department_param
       params[:department]
+    end
+
+    def school_track
+      params[:school_track]
     end
   end
 end
