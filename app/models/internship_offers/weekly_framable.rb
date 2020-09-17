@@ -39,6 +39,20 @@ module InternshipOffers
         false
       end
 
+      def weeks_count
+        internship_offer_weeks.count
+      end
+
+      def first_monday
+        I18n.l internship_offer_weeks.first.week.week_date,
+               format: Week::WEEK_DATE_FORMAT
+      end
+
+      def last_monday
+        I18n.l internship_offer_weeks.last.week.week_date,
+               format: Week::WEEK_DATE_FORMAT
+      end
+
       def has_spots_left?
         internship_offer_weeks.any?(&:has_spots_left?)
       end

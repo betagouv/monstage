@@ -123,6 +123,7 @@ class InternshipOffer < ApplicationRecord
 
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
+  delegate :name, to: :sector, prefix: true
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
