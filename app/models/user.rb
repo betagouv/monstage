@@ -216,7 +216,7 @@ class User < ApplicationRecord
     else
       unless @skip_confirmation_notification
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
-                  .deliver_later
+                     .deliver_later
       end
     end
   end

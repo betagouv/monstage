@@ -26,6 +26,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
                                  unconfirmed_email: 'destination@to.com')
     email = CustomDeviseMailer.update_email_instructions(employer, SecureRandom.hex)
     assert_equal [origin_email], email.to
+    assert %r{(#{email.from.join('|')})}, email.from
     assert_equal "Action requise - Confirmez votre changement d'adresse électronique (e-mail)", email.subject
     assert email.html_part.body.include?(employer.formal_name)
     assert email.html_part.body.include?('nous venons de recevoir une demande de changement')
