@@ -82,7 +82,7 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST") }
 
-  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.delivery_method = :mailjet
   ActionMailer::Base.smtp_settings = {
     user_name: ENV['SMTP_USERNAME'],
     password: ENV['SMTP_PASSWORD'],
