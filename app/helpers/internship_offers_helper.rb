@@ -2,6 +2,10 @@
 
 # used in internships#index
 module InternshipOffersHelper
+  def duplicating?
+    params[:duplicate_id].present?
+  end
+
   def preselect_all_weeks?(object)
     is_new_record = object.new_record?
     is_preselectable_entity = object.is_a?(InternshipOffers::WeeklyFramed) || object.is_a?(InternshipOffer)

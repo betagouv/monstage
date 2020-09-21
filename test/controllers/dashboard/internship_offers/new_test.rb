@@ -28,6 +28,7 @@ module InternshipOffers
       get new_dashboard_internship_offer_path
 
       assert_select 'title', "Déposer une offre de stage | Monstage"
+      assert_select 'h1', 'Déposer une offre de stage'
       assert_select '#internship_offer_is_public_true[checked]',
                     count: 0 # "ensure user select kind of group"
       assert_select '#internship_offer_is_public_false[checked]',
@@ -54,6 +55,7 @@ module InternshipOffers
                                                           max_candidates: 2)
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
+      assert_select 'h1', "Renouveller l'offre pour l'année courante"
       assert_select "input[value=\"#{internship_offer.title}\"]", count: 1
       assert_select '#internship_offer_is_public_true[checked]',
                     count: 1 # "ensure user select kind of group"

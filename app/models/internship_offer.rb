@@ -125,6 +125,8 @@ class InternshipOffer < ApplicationRecord
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
 
+  attr_writer :duplicating
+
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
   end
@@ -183,6 +185,7 @@ class InternshipOffer < ApplicationRecord
                     is_public group school_id coordinates first_date last_date]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
+    internship_offer.duplicating = true
     internship_offer.description_rich_text = (if description_rich_text.present?
                                                 description_rich_text.to_s
                                               else

@@ -51,11 +51,6 @@
             small.d-block
               | Imprimer
 
-        - if can?(:create, InternshipOffer)
-          a.nav-link.px-1.px-sm-2.text-center href=new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
-            i.fas.fa-copy
-              small.d-block.test-renew-button
-                | Renouveler
 
           a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_internship_offer_path
             i.fas.fa-plus
@@ -63,7 +58,7 @@
               | Déposer une offre
             small.d-block.d-sm-none
               | Ajouter
+
 .row.mt-3
   .col-12
     = render "internship_offers/breadcrumb", internship_offer: @internship_offer
-
