@@ -7,7 +7,7 @@ module Finders
       Users::SchoolManagement.name => :school_members_query,
       Users::Student.name => :school_members_query,
       Users::Employer.name => :employer_query,
-      Users::Operator.name => :operator_query,
+      Users::Operator.name => :visitor_query,
       Users::Statistician.name => :statistician_query,
       Users::Visitor.name => :visitor_query,
       Users::God.name => :god_query
@@ -66,14 +66,6 @@ module Finders
       common_filter do
         user.internship_offers.kept
       end
-    end
-
-    def operator_query
-      query = common_filter do
-        InternshipOffer.kept.submitted_by_operator(user: user)
-      end
-      query = query.merge(query.limited_to_department(user: user)) if user.department_name.present?
-      query
     end
 
     def statistician_query
