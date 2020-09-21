@@ -4,12 +4,12 @@ module Finders
   # build base query to request internship offers per user.type
   class UserTypableInternshipOffer
     MappingUserTypeWithScope = {
+      Users::Visitor.name => :visitor_query,
+      Users::Operator.name => :visitor_query,
       Users::SchoolManagement.name => :school_members_query,
       Users::Student.name => :school_members_query,
       Users::Employer.name => :employer_query,
-      Users::Operator.name => :visitor_query,
       Users::Statistician.name => :statistician_query,
-      Users::Visitor.name => :visitor_query,
       Users::God.name => :god_query
     }.freeze
 
