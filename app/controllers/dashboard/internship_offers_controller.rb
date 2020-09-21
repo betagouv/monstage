@@ -112,7 +112,8 @@ module Dashboard
           :latitude,
           :longitude,
           :radius,
-          :school_type
+          :school_type,
+          :keyword
         ),
         user: current_user_or_visitor
       )
