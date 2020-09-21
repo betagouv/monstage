@@ -22,7 +22,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     if school_track
       select I18n.t("enum.school_tracks.#{school_track}"),
              from: 'internship_offer_school_track'
-      # internship_offer_type setup
       if school_track == :troisieme_generale
         page.execute_script(
           "document.getElementById('internship_offer_type').value = 'InternshipOffers::WeeklyFramed'"
@@ -32,7 +31,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
           "document.getElementById('internship_offer_type').value = 'InternshipOffers::FreeDate'"
         )
       end
-      # -----
     end
 
     select group.name, from: 'internship_offer_group_id' if group
