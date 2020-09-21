@@ -420,7 +420,7 @@ DEPENDENCIES
   newrelic_rpm
   ovh-rest
   pg
-  pg_search
+  pg_search (= 2.3.2)
   puma
   rails
   rails-controller-testing
