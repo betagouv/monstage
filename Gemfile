@@ -12,7 +12,9 @@ gem 'puma'
 # db
 gem 'pg'
 gem 'activerecord-postgis-adapter' # pg extension for geo queries
-gem 'pg_search'                    # pg search for autocomplete
+
+# don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
+gem 'pg_search', '2.3.2'                    # pg search for autocomplete
 
 # front end
 gem 'uglifier'

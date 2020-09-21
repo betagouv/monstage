@@ -1,7 +1,7 @@
 - content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
 = render partial: 'dashboard/navbar', locals: { school: @school }
 
-- students_by_class_room = @school.students.group_by {|student| Presenters::ClassRoom.or_null(student.class_room) }
+- students_by_class_room = @school.students.where(anonymized: false).group_by {|student| Presenters::ClassRoom.or_null(student.class_room) }
 
 .row
   .col-12.px-0

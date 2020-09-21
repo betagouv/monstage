@@ -50,16 +50,19 @@ module Dashboard
         school_students = [
           create(:student, school: school, class_room: class_room_1),
           create(:student, school: school, class_room: class_room_2),
-          create(:student, school: school, class_room: nil)
+          create(:student, school: school, class_room: nil),
+          create(:student, school: school, class_room: nil, anonymized: true)
         ]
 
         get dashboard_school_students_path(school)
         assert_response :success
+
         school_students.each do |school_student|
           class_room = Presenters::ClassRoom.or_null(school_student.class_room)
           class_room_tbody_class_name = ".test-class-room-#{class_room.id}"
           assert_select(class_room_tbody_class_name) do
-            assert_select ".test-student-#{school_student.id}"
+            assert_select ".test-student-#{school_student.id}",
+                          count: school_student.anonymized? ? 0 : 1
           end
         end
       end
@@ -67,7 +70,7 @@ module Dashboard
       #
       # update
       #
-      test 'PATCH students as SchoolManagement change change class room' do
+      test 'PATCH students as SchoolManagement change class room' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         class_room_1 = create(:class_room, school: school)
