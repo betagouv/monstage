@@ -51,6 +51,56 @@ module Dashboard
       assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
+        test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
+      operator = create(:operator)
+      user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
+      included_internship_offer = create(:weekly_internship_offer,
+                                         employer: user_operator,
+                                         zipcode: 60_580)
+      excluded_internship_offer = create(:weekly_internship_offer,
+                                         employer: user_operator,
+                                         zipcode: 95_270)
+      sign_in(user_operator)
+      get dashboard_internship_offers_path
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer)
+      assert_absence_of(internship_offer: excluded_internship_offer)
+    end
+
+    test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do
+      operator = create(:operator)
+      user_operator = create(:user_operator, operator: operator, department_name: nil)
+      included_internship_offer = create(:weekly_internship_offer,
+                                         employer: user_operator,
+                                         zipcode: 60_580)
+      excluded_internship_offer = create(:weekly_internship_offer,
+                                         employer: user_operator,
+                                         zipcode: 95_270)
+      sign_in(user_operator)
+      get dashboard_internship_offers_path
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer)
+      assert_presence_of(internship_offer: excluded_internship_offer)
+      assert_presence_of(internship_offer: excluded_internship_offer)
+    end
+
+    test 'GET #index as operator can filter by coordinates' do
+      operator = create(:operator)
+      user_operator = create(:user_operator, operator: operator, department_name: nil)
+      excluded_internship_offer = create(:weekly_internship_offer, employer: user_operator,
+                                                                   coordinates: Coordinates.paris)
+      included_internship_offer = create(:weekly_internship_offer, employer: user_operator,
+                                                                   coordinates: Coordinates.bordeaux)
+      sign_in(user_operator)
+      get dashboard_internship_offers_path(
+        latitude: Coordinates.bordeaux[:latitude],
+        longitude: Coordinates.bordeaux[:longitude]
+      )
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer)
+      assert_absence_of(internship_offer: excluded_internship_offer)
+    end
+
     test 'GET #index as Visitor redirects to sign in path' do
       get dashboard_internship_offers_path
       assert_redirected_to user_session_path
