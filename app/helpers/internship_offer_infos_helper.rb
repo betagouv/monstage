@@ -18,7 +18,7 @@ module InternshipOfferInfosHelper
                              'internship-form.groupNamePublic'
                            else
                              'internship-form.groupNamePrivate'
-end
+                           end
         }
       ]
     end

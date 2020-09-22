@@ -25,7 +25,6 @@ Rails.application.routes.draw do
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
   end
 
-
   resources :internship_offer_keywords, only: [] do
     collection do
       post :search
@@ -63,14 +62,11 @@ Rails.application.routes.draw do
 
     resources :organisations
     resources :internship_offer_infos
-    resources :mentors
+    resources :internship_agreements
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
     end
-
-    resources :internship_agreements
-
   end
 
   namespace :reporting, path: 'reporting' do

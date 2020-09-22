@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  include AASM
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
@@ -125,21 +124,6 @@ class InternshipOffer < ApplicationRecord
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
-
-  aasm do
-    state :drafted, initial: true
-    state :step_2,
-          :step_3,
-          :submitted,
-          :approved,
-          :rejected
-
-    event :submit do
-      transitions from: :step_3, to: :submitted, after: proc {|*_args|
-        update!("submitted_at": Time.now.utc)
-      }
-    end
-  end
   
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
@@ -218,13 +202,6 @@ class InternshipOffer < ApplicationRecord
 
   def class_prefix_for_multiple_checkboxes
     'internship_offer'
-  end
-
-  def self.create_with_params(organisation_id, mentor_id)
-    internship_offer = InternshipOffer.create(
-      organisation_id: organisation_id,
-      mentor_id: mentor_id
-    )
   end
 
   # @note some possible confusion, miss-understanding here

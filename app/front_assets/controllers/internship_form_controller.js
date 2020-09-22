@@ -98,24 +98,6 @@ export default class extends Controller {
     return event;
   }
 
-  validateStep1(event) {
-    event.preventDefault()
-    $("#step-1").addClass('d-none')
-    $("#step-1").hide()
-    $("#step-2").removeClass('d-none')
-    $("#step-2").slideDown()
-    $('html,body').animate({scrollTop: $("#step-2").offset().top},'slow');
-  }
-
-  validateStep2(event) {
-    event.preventDefault()
-    $("#step-2").addClass('d-none')
-    $("#step-2").hide()
-    $("#step-3").removeClass('d-none')
-    $("#step-3").slideDown()
-    $('html,body').animate({scrollTop: $("#step-3").offset().top},'slow');
-  }
-
   handleToggleWeeklyPlanning(event){
     if($('#same_daily_planning').is(":checked")){
       $('#weekly_start').val('9:00')
