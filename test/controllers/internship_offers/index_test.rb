@@ -386,7 +386,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   #
   # Operator
   #
-  test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
+  test 'GET #index as operator having departement-constraint return internship offers anyway' do
     operator = create(:operator)
     user_operator = create(:user_operator, operator: operator, department_name: 'Oise')
     included_internship_offer = create(:weekly_internship_offer,
@@ -399,7 +399,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path
     assert_response :success
     assert_presence_of(internship_offer: included_internship_offer)
-    assert_absence_of(internship_offer: excluded_internship_offer)
+    assert_presence_of(internship_offer: excluded_internship_offer)
   end
 
   test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do
@@ -446,7 +446,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_presence_of(internship_offer: internship_offer_2)
   end
 
-  test 'GET #index does not list offers that another operator has created' do
+  test 'GET #index does list offers that another operator has created' do
     operator_1 = create(:operator)
     operator_2 = create(:operator)
     user_operator_1 = create(:user_operator, operator: operator_1, department_name: nil)
@@ -461,7 +461,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path
     assert_response :success
     assert_presence_of(internship_offer: internship_offer_1)
-    assert_absence_of(internship_offer: internship_offer_2)
+    assert_presence_of(internship_offer: internship_offer_2)
   end
 
   test 'GET #index as god returns all internship_offers' do
