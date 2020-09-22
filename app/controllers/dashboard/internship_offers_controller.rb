@@ -16,7 +16,7 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          # Mentor.create() TO DO
+          Mentor.create(name: created_internship_offer.tutor_name, email: created_internship_offer.tutor_email, phone: created_internship_offer.tutor_phone)
           redirect_to(internship_offer_path(created_internship_offer),
                       flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
         end

@@ -25,14 +25,20 @@ module InternshipOffers
       }
 
       assert_difference('InternshipOffer.count', 1) do
-        post(dashboard_internship_offers_path, params: { internship_offer: params })
+        assert_difference('Mentor.count', 1) do
+          post(dashboard_internship_offers_path, params: { internship_offer: params })
+        end
       end
       created_internship_offer = InternshipOffer.last
+      created_mentor = Mentor.last
       assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
       assert_equal internship_offer_info.weeks.map(&:id), created_internship_offer.week_ids
       assert_equal weeks.size, created_internship_offer.internship_offer_weeks_count
       assert_equal internship_offer_info.max_candidates, created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_equal created_mentor.name, params[:tutor_name]
+      assert_equal created_mentor.email, params[:tutor_email]
+      assert_equal created_mentor.phone, params[:tutor_phone]
     end
 
     test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
