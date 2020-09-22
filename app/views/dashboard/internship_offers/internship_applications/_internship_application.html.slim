@@ -75,7 +75,8 @@ div class="#{cycle("bg-light", "")} row"
               = "En attente de convention"
           div.mt-2
             .d-inline-flex
-              = link_to 'Créer la convention en ligne', '#', class: 'btn btn-outline-danger'
+              - if Rails.application.credentials.convention_activated
+                = link_to 'Créer la convention en ligne', '#', class: 'btn btn-outline-danger'
 
         - if internship_application.rejected?
           div.d-flex.align-items-center
