@@ -204,11 +204,33 @@ class User < ApplicationRecord
     false
   end
 
+
+  def send_reconfirmation_instructions
+    @reconfirmation_required = false
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
+    if add_email_to_phone_account?
+      devise_mailer.add_email_instructions(self)
+                   .deliver_later
+    else
+      unless @skip_confirmation_notification
+        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
+                     .deliver_later
+      end
+    end
+  end
+
+
   private
 
   def clean_phone
     self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
+  end
+
+  def add_email_to_phone_account?
+    phone.present? && confirmed? && email.blank?
   end
 
   def email_or_phone

@@ -2,6 +2,10 @@
 
 # used in internships#index
 module InternshipOffersHelper
+  def duplicating?
+    params[:duplicate_id].present?
+  end
+
   def preselect_all_weeks?(object)
     is_new_record = object.new_record?
     is_preselectable_entity = object.is_a?(InternshipOffers::WeeklyFramed) || object.is_a?(InternshipOffer)
@@ -45,7 +49,11 @@ end
     )
   end
 
-  def back_to_internship_offers_from_internship_offer_path
+  def back_to_internship_offers_from_internship_offer_path(current_user)
+    if current_user.is_a?(Users::Employer) || current_user.is_a?(Users::Operator)
+      return dashboard_internship_offers_path
+    end
+
     default_params = {}
 
     internship_offers_path(default_params.merge(forwardable_params))

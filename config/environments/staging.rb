@@ -84,14 +84,14 @@ Rails.application.configure do
 
   ActionMailer::Base.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
-                                         user_name: ENV['SENDGRID_USERNAME'],
-                                         password: ENV['SENDGRID_PASSWORD'],
-                                         domain: ENV.fetch("HOST"),
-                                         address: 'smtp.sendgrid.net',
-                                         port: 587,
-                                         authentication: :plain,
-                                         enable_starttls_auto: true
-                                       }
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    domain: ENV.fetch('HOST'),
+    address: ENV['SMTP_ADDRESS'],
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 
 
   # Ignore bad email addresses and do not raise email delivery errors.

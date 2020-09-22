@@ -1,7 +1,11 @@
 .row.mx-5
   .col-12
     .row
-      h1.h2.mb-3 Déposer une offre de stage
+      h1.h2.mb-3
+        - if duplicating?
+          | Renouveller l'offre pour l'année courante
+        - else
+          | Déposer une offre de stage
     
       = form_for @internship_offer, url: dashboard_internship_offers_path(@internship_offer), html: { 'data-controller': 'internship-form'} do |form|
         = render "dashboard/internship_offers/stepper"

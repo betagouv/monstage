@@ -119,7 +119,7 @@ fr:
         employer_description: Description de l'employeur
         internship_offer_weeks_count: Nombre de semaines
         created_at: "Crée le"
-        street: Adresse
+        street: Adresse du lieu de stage
         city: Ville
         department: Département
         academy: Académie
@@ -130,7 +130,11 @@ fr:
         weeks:
           one: Semaine de stage
           other: Semaines de stage
+        weeks_count: Nbr. de semaines proposées
+        first_monday: Premier lundi de stage
+        last_monday: Dernier lundi de stage
         sector_id: Secteurs professionnels
+        supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
         total_report_count: Nbr. d'offres proposées

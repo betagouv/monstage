@@ -18,7 +18,7 @@ module Dashboard
         on.success do |created_internship_offer|
           Mentor.create(name: created_internship_offer.tutor_name, email: created_internship_offer.tutor_email, phone: created_internship_offer.tutor_phone)
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
+                      flash: { success: on_create_success_message })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -96,6 +96,12 @@ module Dashboard
       approved_applications_count
       convention_signed_applications_count
     ].freeze
+
+    def on_create_success_message
+      params.dig(:internship_offer, :duplicating) ?
+      'Votre offre de stage a été renouvelée pour cette année scolaire.' :
+      'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.'
+    end
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
