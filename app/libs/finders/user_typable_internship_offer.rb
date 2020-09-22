@@ -3,30 +3,11 @@
 module Finders
   # build base query to request internship offers per user.type
   class UserTypableInternshipOffer
-    MappingUserTypeWithScope = {
-      Users::SchoolManagement.name => :school_members_query,
-      Users::Student.name => :school_members_query,
-      Users::Employer.name => :employer_query,
-      Users::Operator.name => :operator_query,
-      Users::Statistician.name => :statistician_query,
-      Users::Visitor.name => :visitor_query,
-      Users::God.name => :god_query
-    }.freeze
 
-    def base_query
-      send(MappingUserTypeWithScope.fetch(user.type))
-        .group(:id)
-        .page(params[:page])
-    end
-
-    private
+    protected
 
     attr_reader :user, :params
 
-    def initialize(user:, params:)
-      @user = user
-      @params = params
-    end
 
     def nearby_query_part(query, coordinates)
       query.nearby(latitude: coordinates.latitude,

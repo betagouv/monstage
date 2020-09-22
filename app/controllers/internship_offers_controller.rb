@@ -71,7 +71,8 @@ class InternshipOffersController < ApplicationController
         :keyword,
         :school_type
       ),
-      user: current_user_or_visitor
+      user: current_user_or_visitor,
+      purpose: 'front_search'
     )
   end
 

@@ -27,8 +27,14 @@ module Finders
 
     attr_reader :query_builder
 
-    def initialize(params:, user:)
-      @query_builder = UserTypableInternshipOffer.new(params: params, user: user)
+    def initialize(params:, user:, purpose: )
+      if purpose == 'dashboard_search'
+        @query_builder = UserTypableInternshipOfferDashboard.new(params: params, user: user)
+      elsif purpose == 'front_search'
+        @query_builder = UserTypableInternshipOfferFront.new(params: params, user: user)
+      else
+        raise 'Missing purpose in Finders::ListableInternshipOffer'
+      end
     end
   end
 end
