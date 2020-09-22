@@ -112,13 +112,14 @@ module Dashboard
     end
 
     def finder
-      @finder ||= Finders::ListableInternshipOffer.new(
+      @finder ||= Finders::InternshipOfferPublisher.new(
         params: params.permit(
           :page,
           :latitude,
           :longitude,
           :radius,
-          :school_type
+          :school_type,
+          :keyword
         ),
         user: current_user_or_visitor
       )
