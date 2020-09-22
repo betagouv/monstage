@@ -20,7 +20,35 @@ module Dashboard
       get dashboard_internship_offers_path
       assert_response :success
       assert_select 'title', "Mes offres | Monstage"
-      assert_select "tr.test-internship-offer-#{internship_offer.id}"
+      assert_presence_of(internship_offer: internship_offer)
+    end
+
+    test 'GET #index as employer returns his internship_offers' do
+      employer = create(:employer)
+      included_internship_offer = create(:weekly_internship_offer, employer: employer, title: 'Hellow-me')
+      excluded_internship_offer = create(:weekly_internship_offer, title: 'Not hellow-me')
+      sign_in(employer)
+      get dashboard_internship_offers_path
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer)
+      assert_absence_of(internship_offer: excluded_internship_offer)
+    end
+
+    test 'GET #index as operator returns his internship_offers as well as other offers from similar operator' do
+      operator = create(:operator)
+      operator_2 = create(:operator)
+      user_operator_1 = create(:user_operator, operator: operator)
+      user_operator_1_bis = create(:user_operator, operator: operator)
+      user_operator_2 = create(:user_operator, operator: operator_2)
+      included_internship_offer_1 = create(:weekly_internship_offer, employer: user_operator_1)
+      included_internship_offer_1_bis = create(:weekly_internship_offer, employer: user_operator_1_bis)
+      excluded_internship_offer = create(:weekly_internship_offer, employer: user_operator_2)
+      sign_in(user_operator_1)
+      get dashboard_internship_offers_path
+      assert_response :success
+      assert_presence_of(internship_offer: included_internship_offer_1)
+      assert_presence_of(internship_offer: included_internship_offer_1_bis)
+      assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
     test 'GET #index as Visitor redirects to sign in path' do

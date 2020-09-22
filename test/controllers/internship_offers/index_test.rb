@@ -372,7 +372,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   #
   # Employer
   #
-  test 'GET #index as employer returns his internship_offers' do
+  test 'GET #index as employer returns all internship offers' do
     employer = create(:employer)
     included_internship_offer = create(:weekly_internship_offer, employer: employer, title: 'Hellow-me')
     excluded_internship_offer = create(:weekly_internship_offer, title: 'Not hellow-me')
@@ -380,9 +380,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path
     assert_response :success
     assert_presence_of(internship_offer: included_internship_offer)
-    assert_absence_of(internship_offer: excluded_internship_offer)
+    assert_presence_of(internship_offer: excluded_internship_offer)
   end
-
 
   test 'GET #index as god returns all internship_offers' do
     sign_in(create(:god))
