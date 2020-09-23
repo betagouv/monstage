@@ -96,15 +96,6 @@ CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
 
 
 --
--- Name: dict_search_with_synonoyms; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoyms (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
-
-
---
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -729,13 +720,13 @@ CREATE TABLE public.internship_offers (
     last_date date,
     type character varying,
     search_tsv tsvector,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
     mentor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[],
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    daily_hours text[] DEFAULT '{}'::text[]
 );
 
 
@@ -2151,9 +2142,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
+('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
-('20200918161455'),
 ('20200918165533');
 
 
