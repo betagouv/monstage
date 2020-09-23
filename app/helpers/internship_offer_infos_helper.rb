@@ -4,10 +4,10 @@
 module InternshipOfferInfosHelper
   def preselect_all_weeks?(object)
     is_new_record = object.new_record?
-    is_preselectable_entity = object.is_a?(InternshipOfferInfos::WeeklyFramedInfo) || object.is_a?(InternshipOfferInfo)
+    is_preselectable_entity = object.is_a?(InternshipOfferInfos::WeeklyFramedInfo) || object.is_a?(InternshipOfferInfo) || object.is_a?(InternshipOffers::WeeklyFramed)
     is_new_record && is_preselectable_entity
   end
-  
+
   def internship_offer_info_type_options_for_default
     '-- Veuillez sélectionner un niveau scolaire --'
   end

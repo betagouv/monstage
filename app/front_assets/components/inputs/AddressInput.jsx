@@ -92,6 +92,12 @@ export default function AddressInput({
                   })}
                 >
                   Adresse du lieu où se déroule le stage
+                  <abbr title="(obligatoire)" aria-hidden="true">
+                    *
+                  </abbr>
+                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                    <i className="fas fa-question-circle" />
+                  </a>
                 </label>
 
                 <div>
@@ -138,6 +144,11 @@ export default function AddressInput({
               </div>
             )}
           </Downshift>
+        </div>
+        <div className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
+          Si vous proposez le même stage dans un autre établissement, déposez une offre par
+          établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux),
+          indiquez l'adresse où l'élève devra se rendre au premier jour
         </div>
         <input
           id={`${resourceName}_coordinates_latitude`}

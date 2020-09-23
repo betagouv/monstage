@@ -63,6 +63,7 @@ export default class extends Controller {
     if (event.target.value === 'true') {
       $(this.groupLabelTarget).html(`
         Institution de tutelle
+        <abbr title="(obligatoire)" aria-hidden="true">*</abbr>
       `);
       $(this.selectGroupNameTarget).prop('required', true);
     } else {

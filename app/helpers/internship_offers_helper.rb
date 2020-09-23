@@ -6,12 +6,6 @@ module InternshipOffersHelper
     params[:duplicate_id].present?
   end
 
-  def preselect_all_weeks?(object)
-    is_new_record = object.new_record?
-    is_preselectable_entity = object.is_a?(InternshipOffers::WeeklyFramed) || object.is_a?(InternshipOffer)
-    is_new_record && is_preselectable_entity
-  end
-
   def internship_offer_application_path(object)
     return object.permalink if object.from_api?
     return listable_internship_offer_path(object, anchor: 'internship-application-form')

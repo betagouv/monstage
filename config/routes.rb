@@ -33,7 +33,6 @@ Rails.application.routes.draw do
 
   resources :internship_offers, only: %i[index show edit] do
     resources :internship_applications, only: %i[create index show update]
-    get 'recopy', to: 'internship_offers#recopy'
   end
 
   namespace :api, path: 'api' do
@@ -57,6 +56,7 @@ Rails.application.routes.draw do
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
+      get 'recopy', to: 'internship_offers#recopy'
       post 'duplicate', to: 'internship_offers#duplicate'
     end
 

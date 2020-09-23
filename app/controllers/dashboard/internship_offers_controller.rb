@@ -85,6 +85,17 @@ module Dashboard
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
+    def recopy
+    internship_offer = InternshipOffer.find(params[:internship_offer_id])
+    @organisation = internship_offer.organisation || Organisation.build_from_internship_offer(internship_offer)
+    @internship_offer_info = internship_offer.internship_offer_info || InternshipOfferInfo.last
+    @internship_offer = current_user.internship_offers
+                                      .find(params[:internship_offer_id])
+                                      .duplicate
+    @available_weeks = Week.selectable_from_now_until_end_of_school_year
+  end
+
+
     private
 
     VALID_ORDER_COLUMNS = %w[
@@ -148,8 +159,8 @@ module Dashboard
                                                         context: :web)
     end
 
-    def internship_params(type)
-      params.require(type.to_sym)
+    def internship_offer_params
+      params.require(:internship_offer)
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
@@ -157,19 +168,5 @@ module Dashboard
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
                     :school_type, :school_track, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
     end
-
-    def internship_offer_params
-      case params
-      when -> (h) { h[:internship_offers_free_date].present? }
-        internship_params('internship_offers_free_date')
-      when -> (h) { h[:internship_offers_weekly_framed].present? }
-        internship_params('internship_offers_weekly_framed')
-      when -> (h) { h[:internship_offers].present? }
-        internship_params('internship_offers')
-      else
-        internship_params('internship_offer')
-      end
-    end
-
   end
 end
