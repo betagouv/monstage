@@ -45,7 +45,7 @@ class Organisation < ApplicationRecord
       zipcode: internship_offer.zipcode,
       city: internship_offer.city,
       website: internship_offer.employer_website,
-      description: internship_offer.description,
+      description: internship_offer.employer_description,
       coordinates: internship_offer.coordinates,
       department: internship_offer.department,
       is_public: internship_offer.is_public,
