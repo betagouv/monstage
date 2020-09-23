@@ -2,12 +2,12 @@
 = render partial: 'dashboard/navbar', locals: { school: @school, applications_badge: @applications }
 
 - if @school.has_staff?
-  .row
-    .col-12
-      small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
+  - if current_user.role == "school_manager"
+    .row
+      .col-12
+        small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
 
   .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
-
 - else
   .row
     .col-12

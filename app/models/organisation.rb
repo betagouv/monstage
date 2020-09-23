@@ -1,6 +1,6 @@
 class Organisation < ApplicationRecord
   DESCRIPTION_MAX_CHAR_COUNT = 500
-  
+
   # queries
   include FindableWeek
   include Nearbyable
@@ -11,8 +11,8 @@ class Organisation < ApplicationRecord
   include PgSearch::Model
 
   # Relations
-  belongs_to :group, optional: true 
-  
+  belongs_to :group, optional: true
+
   # Validations
   validates :name, :street, :zipcode, :city, presence: true
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
