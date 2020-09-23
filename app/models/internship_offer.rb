@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  TITLE_MAX_CHAR_COUNT = 150
-  DESCRIPTION_MAX_CHAR_COUNT = 500
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
-  MAX_CANDIDATES_PER_GROUP = 200
 
   # queries
   include Listable
   include FindableWeek
   include Nearbyable
   include Zipcodable
+
+  include Offerable
 
   # utils
   include Discard::Model
@@ -90,9 +89,6 @@ class InternshipOffer < ApplicationRecord
             :school_track,
             presence: true
 
-  validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT }
-
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
   validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
@@ -101,17 +97,11 @@ class InternshipOffer < ApplicationRecord
                                      foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true, optional: true
-  belongs_to :sector
-  belongs_to :school, optional: true # reserved to school
-  belongs_to :group, optional: true
   belongs_to :organisation, optional: true
   belongs_to :mentor, optional: true
   belongs_to :internship_offer_info, optional: true
 
-  has_rich_text :description_rich_text
   has_rich_text :employer_description_rich_text
-
-  before_validation :replicate_rich_text_to_raw_fields
 
   before_save :sync_first_and_last_date
               :reverse_academy_by_zipcode
@@ -143,21 +133,6 @@ class InternshipOffer < ApplicationRecord
     !published?
   end
 
-  def is_individual?
-    max_candidates == 1
-  end
-
-  def from_api?
-    permalink.present?
-  end
-
-  def reserved_to_school?
-    school.present?
-  end
-
-  def is_fully_editable?
-    true
-  end
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
@@ -241,9 +216,5 @@ class InternshipOffer < ApplicationRecord
         previous_employer_description != new_employer_description].any?
       SyncInternshipOfferKeywordsJob.perform_later
     end
-  end
-
-  def init
-    self.max_candidates ||= 1
   end
 end

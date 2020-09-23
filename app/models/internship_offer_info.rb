@@ -1,23 +1,10 @@
 # frozen_string_literal: true
 
 class InternshipOfferInfo < ApplicationRecord
-  MAX_CANDIDATES_PER_GROUP = 200
-  TITLE_MAX_CHAR_COUNT = 150
-  DESCRIPTION_MAX_CHAR_COUNT= 500
-    
+  include Offerable
+
   # Relation
-  belongs_to :sector
-  belongs_to :school, optional: true # reserved to school
-  belongs_to :group, optional: true
   belongs_to :internship_offer, optional: true
-
-  has_rich_text :description_rich_text
-
-  before_validation :replicate_rich_text_to_raw_fields
-  
-  # Validations
-  validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT }
 
   # Scopes 
   scope :weekly_framed, lambda {
@@ -29,27 +16,10 @@ class InternshipOfferInfo < ApplicationRecord
     where(type: InternshipOfferInfos::FreeDateInfo.name)
   }
 
-
   def replicate_rich_text_to_raw_fields
     self.description = description_rich_text.to_plain_text if description_rich_text.to_s.present?
   end
   
-  def is_individual?
-    max_candidates == 1
-  end
-
-  def from_api?
-    permalink.present?
-  end
-
-  def reserved_to_school?
-    school.present?
-  end
-
-  def is_fully_editable?
-    true
-  end
-
   def weekly?
     false
   end
@@ -60,10 +30,6 @@ class InternshipOfferInfo < ApplicationRecord
 
   def class_prefix_for_multiple_checkboxes
     'internship_offer_info'
-  end
-
-  def init
-    self.max_candidates ||= 1
   end
 
   def self.build_from_internship_offer(internship_offer)

@@ -7,50 +7,6 @@ module InternshipOfferInfosHelper
     is_preselectable_entity = object.is_a?(InternshipOfferInfos::WeeklyFramedInfo) || object.is_a?(InternshipOfferInfo)
     is_new_record && is_preselectable_entity
   end
-
-  def options_for_groups
-    Group.all.map do |group|
-      [
-        group.name,
-        group.id,
-        {
-          'data-target' => if group.is_public?
-                             'internship-form.groupNamePublic'
-                           else
-                             'internship-form.groupNamePrivate'
-                           end
-        }
-      ]
-    end
-  end
-
-  def operator_name(internship_offer_info)
-    internship_offer_info.employer.operator.name
-  end
-
-  def forwardable_params
-    params.permit(
-      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_type
-    )
-  end
-
-  def back_to_internship_offer_infos_from_internship_offer_info_path
-    default_params = {}
-
-    internship_offer_infos_path(default_params.merge(forwardable_params))
-  end
-
-  def listable_internship_offer_info_path(internship_offer_info)
-    return '' unless internship_offer_info
-
-    default_params = { id: internship_offer_info.id }
-
-    internship_offer_info_path(default_params.merge(forwardable_params))
-  end
-
-  def stepper_step_2_completed?(internship_offer_info)
-    internship_offer_info.try(:aasm_state) == 'step_3'
-  end
   
   def internship_offer_info_type_options_for_default
     '-- Veuillez sélectionner un niveau scolaire --'

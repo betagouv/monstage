@@ -66,10 +66,6 @@ end
 
     internship_offer_path(default_params.merge(forwardable_params))
   end
-
-  def stepper_step_2_completed?(internship_offer)
-    internship_offer.try(:aasm_state) == 'step_3'
-  end
   
   def internship_offer_type_options_for_default
     '-- Veuillez sélectionner un niveau scolaire --'
