@@ -1,4 +1,5 @@
 module Dashboard
+  # WIP, not yet implemented, will host agreement signing
   class InternshipAgreementsController < ApplicationController
 
     def new
@@ -18,19 +19,20 @@ module Dashboard
 
     private
 
+    # TBD
     def internship_agreement_params
       params.require(:internship_agreement)
             .permit(
-              # :employer_id, 
-              # :employer_type, 
               :internship_offer_id,
               :school_id)
+              # :employer_id,
+              # :employer_type,
               # :student_id)
               # :employer_name,
-              # :is_public, 
+              # :is_public,
               # :group_id)
-              # :tutor_name, 
-              # :tutor_email, 
+              # :tutor_name,
+              # :tutor_email,
               # :tutor_email)
     end
   end
