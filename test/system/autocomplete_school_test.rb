@@ -77,6 +77,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
                  'expected class room input not present')
 
     fill_in('Nom (ou ville) de mon établissement', with: @next_school_city[0..3])
+    byebug
     all('.autocomplete-school-results .list-group-item-action').first.click
     find("label[for=\"select-school-#{@next_school.id}\"]").click
     select(next_class_room.name, from: 'user_class_room_id')

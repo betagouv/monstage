@@ -4,8 +4,8 @@
   fieldset#step-1.mt-4
     .row.mt-3
       .col-6
-        legend.my-4 Information sur l'entreprise
         .form-group
+          legend.my-4 Information sur l'entreprise
           = form.label :employer_name, "Nom de l’entreprise proposant l’offre"
           = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété.com', required: true
         .form-group
@@ -57,8 +57,8 @@
   fieldset.mt-4
     .row.mt-3
       .col-6
-        legend.my-4 Offre de stage
         .form-group
+          legend.my-4 Offre de stage
           = form.label :type do
             = "Niveau scolaire associé à ce stage"
             small.form-text.text-muted Sélectionner le niveau scolaire correspondant au stage décrit
@@ -131,8 +131,8 @@
   fieldset.mt-4
     .row.mt-3
       .col-6
-        legend.my-4 Informations Complémentaires
         .form-group
+          legend.my-4 Informations Complémentaires
           = form.label :tutor_name do
             = 'Nom du tuteur/trice'
           = form.text_field :tutor_name, class: 'form-control', required: true, value: @internship_offer.tutor_name || current_user.name
