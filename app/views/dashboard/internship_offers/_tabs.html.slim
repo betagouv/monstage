@@ -23,6 +23,13 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
         => "Passées"
         - if is_active
           = " (#{internship_offers.total_count})"
+  - is_active = all_states_counters[:to_be_signed].positive?
+  li.nav-item= link_to dashboard_internship_offers_path({filter: 'approved_applications_count'}.merge(forwarded_params)),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+      div.my-auto
+        => "Conventions à signer"
+        = render partial: 'dashboard/internship_offers/badge',
+                 locals: { status: :to_be_signed, is_active: is_active, all_states_counters: all_states_counters }
 
 
 
