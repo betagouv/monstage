@@ -1,4 +1,4 @@
-fieldset.mt-4
+fieldset.mt-4 data-controller="internship-offer-infos data-internship-offer-infos-base-type=#{resource.class}"
   .row.mt-3
     .col-6
       legend.my-4 Offre de stage
@@ -11,7 +11,7 @@ fieldset.mt-4
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
                       { include_blank: '-- Veuillez choisir une filière --' },
                       { class: "form-control", required: true,  data: {action: "change->internship-form#onInduceType", target: 'internship-form.selectType'} }
-      = form.hidden_field :type , value: "#{resource.class.name}s:WeeklyFramed#{ 'Info' if resource.class.name.include?('Info') }", data: { 'target': "internship-form.type" }
+      = form.hidden_field :type , data: { 'target': "internship-form.type" }
       .form-group
         = form.label :title do
           | Intitulé du stage
