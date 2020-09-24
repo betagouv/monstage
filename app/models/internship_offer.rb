@@ -86,7 +86,6 @@ class InternshipOffer < ApplicationRecord
   validates :title,
             :employer_name,
             :city,
-            :school_track,
             presence: true
 
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }

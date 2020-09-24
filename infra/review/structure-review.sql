@@ -580,7 +580,8 @@ CREATE TABLE public.internship_offer_infos (
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -720,13 +721,13 @@ CREATE TABLE public.internship_offers (
     last_date date,
     type character varying,
     search_tsv tsvector,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
     mentor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[]
+    daily_hours text[] DEFAULT '{}'::text[],
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
@@ -2142,9 +2143,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
-('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
-('20200918165533');
+('20200918165533'),
+('20200924093439');
 
 

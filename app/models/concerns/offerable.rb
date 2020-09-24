@@ -15,6 +15,7 @@ module Offerable
     
     # Validations
     validates :title, presence: true, length: { maximum: TITLE_MAX_CHAR_COUNT }
+    validates :school_track, presence: true
 
     has_rich_text :description_rich_text
 
