@@ -2,13 +2,12 @@
   .col-12
     .row
       h1.h2.mb-3 Déposer une offre de stage
-    
-    = form_for @organisation, url: dashboard_organisations_path(@organisation), html: { 'data-controller': 'internship-form'} do |form|
+
+    = form_for @organisation, url: dashboard_organisations_path(@organisation) do |form|
       = render "dashboard/internship_offers/stepper"
       = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
 
       = form.hidden_field :duplicate_id, value: params[:duplicate_id]
 
       = render 'form_fields', { resource: @organisation, form: form, submit_button: true }
-      
-      
+

@@ -6,8 +6,8 @@
           | Renouveller l'offre pour l'année courante
         - else
           | Déposer une offre de stage
-    
-      = form_for @internship_offer, url: dashboard_internship_offers_path(@internship_offer), html: { 'data-controller': 'internship-form'} do |form|
+
+      = form_for @internship_offer, url: dashboard_internship_offers_path(@internship_offer) do |form|
         = render "dashboard/internship_offers/stepper"
         = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
@@ -25,4 +25,3 @@
             .col-8.text-center
               .mx-5.mt-2
                 p.small.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment
-        

@@ -15,7 +15,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     find('#internship_offer_info_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
     find('label', text: 'Individuel').click
     find('label[for="all_year_long"]').click
-    
+
   end
 
   test 'can create InternshipOfferInfos::WeeklyFramed' do
@@ -25,13 +25,13 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     organisation = create(:organisation)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
-    assert_difference 'InternshipOfferInfos::WeeklyFramedInfo.count' do
+    assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_form(school_track: :middle_school,
                      sector: sectors.first,
                      weeks: available_weeks)
-        
+
         click_on "Suivant"
       end
     end
@@ -44,7 +44,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     organisation = create(:organisation)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
-    assert_difference 'InternshipOfferInfos::FreeDateInfo.count' do
+    assert_difference 'InternshipOfferInfos::FreeDate.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_form(school_track: :high_school,

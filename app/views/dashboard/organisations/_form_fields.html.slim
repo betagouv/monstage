@@ -1,4 +1,4 @@
-fieldset.mt-4
+fieldset.mt-4 data-controller='organisation-form'
   .row.mt-3
     .col-6
       legend.my-4 Information sur l'entreprise
@@ -6,17 +6,17 @@ fieldset.mt-4
         = form.label resource.is_a?(Organisation) ? :name : :employer_name, "Nom de l’entreprise proposant l’offre"
         = form.text_field resource.is_a?(Organisation) ? :name : :employer_name, class: 'form-control', placeholder: 'MaSociété.com', required: true
       .form-group
-        .label Secteur 
+        .label Secteur
         .row
           .col-8
             .toggle-radio
-              = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
+              = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
               = form.label :is_public_true, 'Public', class: ''
-              = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->internship-form#handleClickIsPublic' }
+              = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
               = form.label :is_public_false, 'Privé', class: ''
-      div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-target="internship-form.groupBlock"
-        = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'internship-form.groupLabel'}
-        = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'internship-form.selectGroupName'}
+      div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-target="organisation-form.groupBlock"
+        = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'organisation-form.groupLabel'}
+        = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'organisation-form.selectGroupName'}
       = react_component("inputs/AddressInput", { resourceName: resource.class.name.underscore.to_sym,
                               currentStreet: resource.street,
                               currentCity: resource.city,
@@ -29,17 +29,17 @@ fieldset.mt-4
           | Description de l'entreprise (optionnel)
         = form.rich_text_area resource.is_a?(Organisation) ? :description_rich_text : :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
         small.form-text data-target="maxlength-input.trixElementCharCount"
-      
+
       .form-group
         = form.label resource.is_a?(Organisation) ? :website : :employer_website do
           = 'Site web (facultatif)'
           small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
         = form.url_field resource.is_a?(Organisation) ? :website : :employer_website, class: 'form-control', placeholder: resource.is_a?(Organisation) ? resource.website : resource.employer_website || "https://"
-      
+
       - if submit_button
         .mt-3
           = button_tag :submit, class: 'btn btn-primary' do
-            | Suivant 
+            | Suivant
             i.fas.fa-arrow-right
     .col-6
       .warning-bloc.bc-light

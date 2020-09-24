@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module InternshipOfferInfos
-  class ApiInfo < InternshipOfferInfo
+  class WeeklyFramed < InternshipOfferInfo
     include WeeklyFramable
-    include Apisable
+    include OfferWeeklyFramable
   end
 end

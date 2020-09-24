@@ -46,9 +46,9 @@ module InternshipOffers
       sign_in(employer)
       school = create(:school)
       weeks = [weeks(:week_2019_1)]
-      internship_offer_info = create(:weekly_internship_offer_info, 
+      internship_offer_info = create(:weekly_internship_offer_info,
                                       school: school,
-                                      type: InternshipOfferInfos::FreeDateInfo.name)
+                                      type: InternshipOfferInfos::FreeDate.name)
       organisation = create(:organisation)
 
       params = {
