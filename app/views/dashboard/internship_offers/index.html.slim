@@ -1,16 +1,8 @@
 - if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
-  .row
-    .col-12
-      .alert.alert-warning.alert-outlined
-        .row.align-items-center.no-gutters
-          .col-1.col-sm-auto.text-center.mr-2
-            i.fa.fa-exclamation-triangle.fa-2x
-          .col
-            p.mb-0
-              span.warning-pending-notifications= "Vous avez #{current_user.internship_applications.submitted.count} candidature(s) en attente de réponse."
 
 .fake-table
-  .row= render partial: "dashboard/internship_offers/tabs", locals: {internship_offers: @internship_offers}
+  .row= render partial: "dashboard/internship_offers/tabs",
+               locals: { internship_offers: @internship_offers, all_states_counters: @all_states_counters }
   .tab-content
     .tab-pane.show.active
       .row.bc-light.br-1.bl-1.bb-1
@@ -37,7 +29,3 @@
   .row
     .col-12
       h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
-      p.d-sm-block.d-none
-        = link_to new_dashboard_internship_offer_path, class: 'btn btn-primary' do
-          = "Déposer une offre "
-          i.fas.fa-plus
