@@ -728,13 +728,13 @@ CREATE TABLE public.internship_offers (
     last_date date,
     type character varying,
     search_tsv tsvector,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
     mentor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[],
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    daily_hours text[] DEFAULT '{}'::text[]
 );
 
 
@@ -2133,14 +2133,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200709111800'),
 ('20200709111801'),
 ('20200709111802'),
-('20200709121046'),
 ('20200709135354'),
 ('20200715144451'),
 ('20200717134317'),
 ('20200721124215'),
 ('20200721150028'),
 ('20200722141350'),
-('20200723125613'),
 ('20200728094217'),
 ('20200729071625'),
 ('20200730144039'),
@@ -2151,6 +2149,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200909065612'),
 ('20200909134849'),
 ('20200911153501'),
-('20200911160718');
+('20200911160718'),
+('20200918161455'),
+('20200918165533');
 
 

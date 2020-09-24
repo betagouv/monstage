@@ -76,6 +76,11 @@ class InternshipOffer < ApplicationRecord
     all # TODO : specs for FreeDate required
   }
 
+  scope :unpublished, -> { where(published_at: nil) }
+  scope :published, -> { where.not(published_at: nil) }
+
+  scope :to_be_signed,->{ where(aasm_state: 'approved') }
+
   scope :weekly_framed, lambda {
     where(type: [InternshipOffers::WeeklyFramed.name,
                  InternshipOffers::Api.name])
@@ -122,7 +127,6 @@ class InternshipOffer < ApplicationRecord
 
   accepts_nested_attributes_for :organisation, :internship_offer_info, :mentor, allow_destroy: true
 
-  scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
 
@@ -140,7 +144,7 @@ class InternshipOffer < ApplicationRecord
       }
     end
   end
-  
+
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
 

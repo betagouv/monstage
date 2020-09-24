@@ -143,7 +143,7 @@ module Dashboard
       internship_offer = create(:weekly_internship_offer)
       sign_in(internship_offer.employer)
       get dashboard_internship_offers_path
-      assert_select 'a[href=?]', dashboard_internship_offers_path(order: 'view_count', direction: 'asc')
+      assert_select 'a[href=?]', dashboard_internship_offers_path(order: 'view_count', direction: 'desc')
     end
 
     test 'GET #index with order & direction works' do
@@ -152,13 +152,13 @@ module Dashboard
       internship_offer_2 = create(:weekly_internship_offer, view_count: 1, employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.sort-link.active[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
-      assert_select 'a.sort-link.active[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
+      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
+      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
       assert_select 'table tbody tr:first .internship-item-title', text: internship_offer_1.title
       assert_select 'table tbody tr:last .internship-item-title', text: internship_offer_2.title
       get dashboard_internship_offers_path(order: :view_count, direction: :asc)
-      assert_select 'a.sort-link.active[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
-      assert_select 'a.sort-link.active[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
+      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
+      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
       assert_select 'table tbody tr:last .internship-item-title', text: internship_offer_1.title
       assert_select 'table tbody tr:first .internship-item-title', text: internship_offer_2.title
     end
@@ -194,7 +194,7 @@ module Dashboard
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Répondre', count: 0
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
       assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: 'Répondre'
-      assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer_with_application), text: 'Afficher'
+      assert_select 'a[href=?]', dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
     end
 
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
@@ -203,16 +203,20 @@ module Dashboard
       kept_internship_offer = create(:weekly_internship_offer, employer: employer)
       create(:weekly_internship_application, :submitted,
              internship_offer: discarded_internship_offer)
-      create(:weekly_internship_application, :submitted,
-             internship_offer: kept_internship_offer)
-      create(:weekly_internship_application, :approved,
-             internship_offer: kept_internship_offer)
+      2.times {
+        create(:weekly_internship_application, :submitted,
+               internship_offer: kept_internship_offer)
+      }
+      3.times {
+        create(:weekly_internship_application, :approved,
+               internship_offer: kept_internship_offer)
+      }
 
       sign_in(employer)
       get dashboard_internship_offers_path
 
-      assert_select '.warning-pending-notifications',
-                    text: 'Vous avez 1 candidature(s) en attente de réponse.',
+      assert_select '.fa-fw.red-notification-badge',
+                    text: '2',
                     count: 1
     end
 

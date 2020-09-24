@@ -8,9 +8,11 @@ module Dashboard
     def index
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
 
-      @internship_offers = finder.all
-      @internship_offers = @internship_offers.merge(filter_scope)
-      @internship_offers = @internship_offers.order(order_column => order_direction)
+      @internship_offers   = finder.all
+      @internship_offers   = @internship_offers.merge(filter_scope)
+      @internship_offers   = @internship_offers.order(order_column => order_direction)
+
+      @all_states_counters = all_states_counters
     end
 
     def create
@@ -90,11 +92,11 @@ module Dashboard
     VALID_ORDER_COLUMNS = %w[
       title
       view_count
-      total_applications_count
-      submitted_applications_count
       rejected_applications_count
       approved_applications_count
+      submitted_applications_count
       convention_signed_applications_count
+      total_applications_count
     ].freeze
 
     def valid_order_column?
@@ -103,10 +105,16 @@ module Dashboard
 
     def filter_scope
       case params[:filter]
-      when 'unpublished' then InternshipOffer.where(published_at: nil)
-      when 'past' then InternshipOffer.in_the_past
+      when 'unpublished'                 then InternshipOffer.unpublished
+      when 'past'                        then InternshipOffer.in_the_past
+      when 'approved_applications_count' then InternshipOffer.in_the_future.to_be_signed
       else InternshipOffer.published.in_the_future
       end
+    end
+
+    def all_states_counters
+      filtered_offers = finder.all
+      { to_be_signed: filtered_offers.in_the_future.to_be_signed.to_a.count }
     end
 
     def finder
@@ -116,7 +124,8 @@ module Dashboard
           :latitude,
           :longitude,
           :radius,
-          :school_type
+          :school_type,
+          :keyword
         ),
         user: current_user_or_visitor
       )
