@@ -2,10 +2,7 @@
   .col-12
     .row
       h1.h2.mb-3
-        - if duplicating?
-          | Renouveller l'offre pour l'année courante
-        - else
-          | Déposer une offre de stage
+        | Déposer une offre de stage
 
       = form_for @internship_offer, url: dashboard_internship_offers_path(@internship_offer) do |form|
         = render "dashboard/internship_offers/stepper"
@@ -13,8 +10,11 @@
 
         = form.hidden_field :organisation_id, value: params[:organisation_id]
         = form.hidden_field :internship_offer_info_id, value: params[:internship_offer_info_id]
+        = form.hidden_field :employer_id, value: current_user.id
+        = form.hidden_field :employer_type, value: "User"
 
         = render 'dashboard/internship_offers/mentor_form_fields', { resource: @internship_offer, form: form, submit_button: true, warning_bloc: true }
+
         .actions
           .row
             .col-8.text-center

@@ -56,7 +56,6 @@ Rails.application.routes.draw do
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
-      get 'recopy', to: 'internship_offers#recopy'
       post 'duplicate', to: 'internship_offers#duplicate'
     end
 

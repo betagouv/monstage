@@ -29,7 +29,6 @@ export default class extends Controller {
 
   chooseType(value) {
     const baseType = this.data.get('baseType');
-    debugger
     switch (value) {
       case `${baseType}s::WeeklyFramed`:
         showElement($(this.weeksContainerTarget))

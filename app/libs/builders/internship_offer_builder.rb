@@ -83,8 +83,12 @@ module Builders
       raise CanCan::AccessDenied
     end
 
+    # TODO: mhhh, maybe extract?
+    # from api we assign current user
+    # used by stepper which does not sends all data butonly, InternshipOfferInfo.id & Organisation.id
     def concat_params(params)
       return params if from_api? || from_duplicate?(params)
+
       info = InternshipOfferInfo.find(params[:internship_offer_info_id])
       organisation = Organisation.find(params[:organisation_id])
       organisation_params = {
@@ -97,8 +101,6 @@ module Builders
         coordinates: organisation.coordinates,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
-        employer_id: manage_employer(organisation.id),
-        employer_type: 'User'
       }
       internship_offer_info_params = {
         title: info.title,
@@ -111,14 +113,10 @@ module Builders
         daily_hours: info.daily_hours,
         sector_id: info.sector_id,
         type: info.type.gsub('Info', ''),
-        week_ids: info.try(:weeks).try(:map) { |w| w.id } 
+        week_ids: info.try(:weeks).try(:map) { |w| w.id }
       }
 
       params.merge(organisation_params).merge(internship_offer_info_params)
-    end
-
-    def manage_employer(organisation_id)
-      @user.is_a?(Users::Employer) ? @user.id : organisation_id
     end
   end
 

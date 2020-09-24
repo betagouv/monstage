@@ -73,6 +73,9 @@ module Dashboard
       end
     end
 
+    # TODO: split
+    # => 1. when duplication, use new action duplicate
+    # => 2. when computing 3 step wizard, add mentor controller
     def new
       authorize! :create, InternshipOffer
       @internship_offer = if params[:duplicate_id].present?
@@ -83,18 +86,11 @@ module Dashboard
                             InternshipOffer.new
                           end
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
+
+      render params[:duplicate_id].present? ?
+             :duplicate :
+             :new # new is step 3 from wizard
     end
-
-    def recopy
-    internship_offer = InternshipOffer.find(params[:internship_offer_id])
-    @organisation = internship_offer.organisation || Organisation.build_from_internship_offer(internship_offer)
-    @internship_offer_info = internship_offer.internship_offer_info || InternshipOfferInfo.last
-    @internship_offer = current_user.internship_offers
-                                      .find(params[:internship_offer_id])
-                                      .duplicate
-    @available_weeks = Week.selectable_from_now_until_end_of_school_year
-  end
-
 
     private
 

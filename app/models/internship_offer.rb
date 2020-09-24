@@ -113,7 +113,7 @@ class InternshipOffer < ApplicationRecord
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
-  
+
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
@@ -160,7 +160,10 @@ class InternshipOffer < ApplicationRecord
     white_list = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
-                    is_public group school_id coordinates first_date last_date]
+                    is_public group school_id coordinates first_date last_date
+                    school_track
+                    internship_offer_info_id organisation_id mentor_id
+                    weekly_hours daily_hours]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
     internship_offer.duplicating = true
