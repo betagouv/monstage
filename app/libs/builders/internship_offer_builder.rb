@@ -4,7 +4,7 @@ module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder
 
-    # called by dashboard/stepper/mentor#create during creating with steps
+    # called by dashboard/stepper/tutor#create during creating with steps
     def create_from_stepper(tutor:, organisation:, internship_offer_info:)
       yield callback if block_given?
       authorize :create, model
@@ -14,7 +14,7 @@ module Builders
           .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
           .merge(preprocess_tutor_to_params(tutor))
           .merge(employer_id: user.id, employer_type: 'User')
-          .merge(tutor: tutor, organisation:organisation, internship_offer_info: internship_offer_info)
+          .merge(tutor: tutor, organisation: organisation, internship_offer_info: internship_offer_info)
       )
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e

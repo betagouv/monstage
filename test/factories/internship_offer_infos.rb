@@ -5,6 +5,7 @@ FactoryBot.define do
     max_candidates { 1 }
     sector { create(:sector) }
     school { create(:school) }
+    employer { create(:employer) }
     weeks_count { 0 }
     weekly_hours { ['9:00','17:00'] }
     daily_hours { [] }

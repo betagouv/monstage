@@ -108,8 +108,6 @@ class InternshipOffer < ApplicationRecord
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
 
-  accepts_nested_attributes_for :organisation, :internship_offer_info, :tutor, allow_destroy: true
-
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE

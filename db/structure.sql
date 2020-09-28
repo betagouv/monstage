@@ -569,7 +569,7 @@ CREATE TABLE public.internship_offer_infos (
     description text,
     max_candidates integer,
     school_id integer,
-    employer_id integer,
+    employer_id bigint NOT NULL,
     type character varying,
     sector_id bigint,
     first_date date,
@@ -719,13 +719,13 @@ CREATE TABLE public.internship_offers (
     last_date date,
     type character varying,
     search_tsv tsvector,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
-    tutor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    tutor_id bigint
 );
 
 
@@ -794,7 +794,8 @@ CREATE TABLE public.organisations (
     is_public boolean DEFAULT false NOT NULL,
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    employer_id bigint NOT NULL
 );
 
 
@@ -941,7 +942,8 @@ CREATE TABLE public.tutors (
     tutor_email character varying NOT NULL,
     tutor_phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    employer_id bigint NOT NULL
 );
 
 
@@ -1851,6 +1853,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: internship_offer_infos fk_rails_65006c3093; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offer_infos
+    ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_applications fk_rails_75752a1ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1907,6 +1917,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: tutors fk_rails_af56aa365a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutors
+    ADD CONSTRAINT fk_rails_af56aa365a FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: active_storage_attachments fk_rails_c3b3935057; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1928,6 +1946,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.internship_offer_info_weeks
     ADD CONSTRAINT fk_rails_e9c5c89c26 FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
+-- Name: organisations fk_rails_f1474651e9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.organisations
+    ADD CONSTRAINT fk_rails_f1474651e9 FOREIGN KEY (employer_id) REFERENCES public.users(id);
 
 
 --
@@ -2134,12 +2160,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
+('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
 ('20200918165533'),
+('20200923164419'),
 ('20200924093439'),
 ('20200928102905'),
 ('20200928122922'),
-('20200928134336');
+('20200928134336'),
+('20200928143259'),
+('20200928145005'),
+('20200928145102'),
+('20200928150637');
 
 

@@ -5,6 +5,7 @@ class InternshipOfferInfo < ApplicationRecord
 
   # Relation
   belongs_to :internship_offer, optional: true
+  belongs_to :employer, class_name: 'User'
 
   # Scopes
   scope :weekly_framed, lambda {

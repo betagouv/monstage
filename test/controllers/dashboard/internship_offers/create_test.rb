@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module InternshipOffers
+module Dashboard::InternshipOffers
   class CreateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -67,17 +67,6 @@ module InternshipOffers
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
-    test 'POST #create (duplicate)  as employer with missing params' do
-      sign_in(create(:employer))
-      organisation = create(:organisation)
-      internship_offer_info = create(:internship_offer_info)
-      params = {
-        internship_offer_info_id: internship_offer_info.id,
-        organisation_id: organisation.id
-      }
-      post(dashboard_internship_offers_path, params: params)
-      assert_response :bad_request
-    end
 
     test 'POST #create as employer with missing params' do
       sign_in(create(:employer))

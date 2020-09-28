@@ -1,6 +1,7 @@
 class Tutor < ApplicationRecord
   # Validations
   validates :tutor_name, :tutor_phone, :tutor_email, presence: true
+  belongs_to :employer, class_name: 'User'
 
   def anonymize
     fields_to_reset = {

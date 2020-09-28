@@ -39,10 +39,7 @@ module Dashboard
     end
 
     def update
-      @internship_offer = InternshipOffer.find(params[:id])
-      authorize! :update, @internship_offer
-
-      internship_offer_builder.update(instance: @internship_offer,
+      internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
         on.success do |updated_internship_offer|
           redirect_to(internship_offer_path(updated_internship_offer),
@@ -145,9 +142,9 @@ module Dashboard
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group_id, :published_at, :type, :description,
+                    :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, :school_track, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
+                    :school_type, :school_track, coordinates: {}, week_ids: [])
     end
   end
 end

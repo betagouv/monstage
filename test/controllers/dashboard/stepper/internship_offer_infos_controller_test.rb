@@ -15,9 +15,10 @@ module Dashboard::Stepper
     end
 
     test 'GET #new as employer show valid form' do
-      sign_in(create(:employer))
+      employer = create(:employer)
+      sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
-        organisation = create(:organisation)
+        organisation = create(:organisation, employer: employer)
         get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
 
         assert_response :success
@@ -31,36 +32,12 @@ module Dashboard::Stepper
       end
     end
 
-    test 'edit' do
-      title = 'ok'
-      new_title = 'ko'
-      employer = create(:employer)
-      organisation = create(:organisation)
-      internship_offer_info = create(:weekly_internship_offer_info,
-                                     title: title)
-      sign_in(employer)
-      assert_changes -> { internship_offer_info.reload.title },
-                    from: title,
-                    to: new_title do
-        patch(
-          dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id),
-          params: {
-            internship_offer_info: internship_offer_info.attributes.merge({
-              title: new_title,
-            })
-          }
-        )
-        assert_redirected_to new_dashboard_stepper_tutor_path(
-          organisation_id: organisation.id,
-          internship_offer_info_id: internship_offer_info.id,
-        )
-      end
-    end
     #
     # Create InternshipOfferInfo
     #
     test 'POST create redirects to new tutor' do
-      sign_in(create(:employer))
+      employer = create(:employer)
+      sign_in(employer)
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
 
@@ -102,7 +79,8 @@ module Dashboard::Stepper
 
 
     test 'POST create render new when missing params, prefill form' do
-      sign_in(create(:employer))
+      employer = create(:employer)
+      sign_in(employer)
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
 
@@ -122,6 +100,36 @@ module Dashboard::Stepper
         assert_select '#internship_offer_info_max_candidates[value="3"]'
         assert_select '#internship_type_true[checked]', count: 0
         assert_select '#internship_type_false[checked]', count: 1
+    end
+
+    # todo, prevent editing other internship_offer_info
+    test 'GET Edit' do
+      title = 'ok'
+      new_title = 'ko'
+      employer = create(:employer)
+      organisation = create(:organisation, employer: employer)
+      internship_offer_info = create(:weekly_internship_offer_info,
+                                     employer: employer,
+                                     title: title)
+      sign_in(employer)
+      assert_changes -> { internship_offer_info.reload.title },
+                    from: title,
+                    to: new_title do
+        patch(
+          dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id),
+          params: {
+            internship_offer_info: internship_offer_info.attributes.merge({
+              title: new_title,
+            })
+          }
+        )
+        assert_redirected_to new_dashboard_stepper_tutor_path(
+          organisation_id: organisation.id,
+          internship_offer_info_id: internship_offer_info.id,
+        )
+      end
+
+      # TODO : test patch update!
     end
   end
 end

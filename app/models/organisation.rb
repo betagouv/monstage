@@ -2,7 +2,6 @@ class Organisation < ApplicationRecord
   DESCRIPTION_MAX_CHAR_COUNT = 500
 
   # queries
-  include FindableWeek
   include Nearbyable
   include Zipcodable
 
@@ -12,6 +11,7 @@ class Organisation < ApplicationRecord
 
   # Relations
   belongs_to :group, optional: true
+  belongs_to :employer, class_name: 'User'
 
   # Validations
   validates :name, :street, :zipcode, :city, presence: true
