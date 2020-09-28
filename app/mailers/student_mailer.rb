@@ -4,8 +4,7 @@ class StudentMailer < ApplicationMailer
   def internship_application_approved_email(internship_application:)
     @internship_application = internship_application
 
-    mail(from: @internship_application.internship_offer.employer.email,
-         to: @internship_application.student.email,
+    mail(to: @internship_application.student.email,
          subject: "Votre candidature au stage #{@internship_application.internship_offer.title} a été acceptée")
   end
 
