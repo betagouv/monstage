@@ -4,25 +4,24 @@
   // used when
   = form.hidden_field :employer_id, value: current_user.id
   = form.hidden_field :employer_type, value: "User"
-  = form.hidden_field :duplicating
 
   // used when posted from stepper
   = form.hidden_field :organisation_id, value: @internship_offer.organisation_id
 
   = form.hidden_field :internship_offer_info_id, value: @internship_offer.internship_offer_info_id
 
-  = form.hidden_field :mentor_id, value: @internship_offer.mentor_id
+  = form.hidden_field :tutor_id, value: @internship_offer.tutor_id
 
   // Organisation
-  = render 'dashboard/organisations/form_fields', { resource: @internship_offer, form: form, submit_button: false }
+  = render 'dashboard/stepper/organisations/form_fields', { resource: @internship_offer, form: form, submit_button: false }
 
   hr
   // OfferInfo
-  = render 'dashboard/internship_offer_infos/form_fields', { resource: @internship_offer, form: form, submit_button: false }
+  = render 'dashboard/stepper/internship_offer_infos/form_fields', { resource: @internship_offer, form: form, submit_button: false }
 
   hr
-  // Mentor
-  = render 'dashboard/internship_offers/mentor_form_fields', { resource: @internship_offer, form: form, submit_button: false, warning_bloc: false }
+  // Tutor
+  = render 'dashboard/stepper/tutors/form_fields', { resource: @internship_offer, form: form, submit_button: false, warning_bloc: false }
 
   .actions
     .row

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module Dashboard
+module Dashboard::Stepper
   class InternshipOfferInfosControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -10,7 +10,7 @@ module Dashboard
     # New InternshipOfferInfo
     #
     test 'GET new not logged redirects to sign in' do
-      get new_dashboard_internship_offer_info_path
+      get new_dashboard_stepper_internship_offer_info_path
       assert_redirected_to user_session_path
     end
 
@@ -18,7 +18,7 @@ module Dashboard
       sign_in(create(:employer))
       travel_to(Date.new(2019, 3, 1)) do
         organisation = create(:organisation)
-        get new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
+        get new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
 
         assert_response :success
         available_weeks = Week.selectable_from_now_until_end_of_school_year
@@ -31,38 +31,41 @@ module Dashboard
       end
     end
 
-    test 'GET #new as employer with duplicate_id with old offer' do
-      sign_in(create(:employer))
+    test 'edit' do
+      title = 'ok'
+      new_title = 'ko'
+      employer = create(:employer)
       organisation = create(:organisation)
-      internship_offer = create(:weekly_internship_offer,
-        employer_name: 'Apple',
-        description: 'ma description',
-        max_candidates: 1,
-      )
-      get new_dashboard_internship_offer_info_path(organisation_id: organisation.id,
-                                                  duplicate_id: internship_offer.id)
-
-      assert_response :success
-      available_weeks = Week.selectable_from_now_until_end_of_school_year
-      asserted_input_count = 2
-      assert_select 'input[name="internship_offer_info[title]"][value="Apple"]'
-      assert_select 'input[name="internship_offer_info[max_candidates]"][value="1"]'
-      available_weeks.each do |week|
-        assert_select "input[id=internship_offer_info_week_ids_#{week.id}]"
-        asserted_input_count += 1
+      internship_offer_info = create(:weekly_internship_offer_info,
+                                     title: title)
+      sign_in(employer)
+      assert_changes -> { internship_offer_info.reload.title },
+                    from: title,
+                    to: new_title do
+        patch(
+          dashboard_stepper_internship_offer_info_path(id: internship_offer_info.id, organisation_id: organisation.id),
+          params: {
+            internship_offer_info: internship_offer_info.attributes.merge({
+              title: new_title,
+            })
+          }
+        )
+        assert_redirected_to new_dashboard_stepper_tutor_path(
+          organisation_id: organisation.id,
+          internship_offer_info_id: internship_offer_info.id,
+        )
       end
     end
-
     #
     # Create InternshipOfferInfo
     #
-    test 'POST create redirects to new mentor' do
+    test 'POST create redirects to new tutor' do
       sign_in(create(:employer))
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
 
       post(
-        dashboard_internship_offer_infos_path,
+        dashboard_stepper_internship_offer_infos_path(organisation_id: 1),
         params: {
           internship_offer_info: {
             sector_id: sector.id,
@@ -70,7 +73,6 @@ module Dashboard
             type: 'InternshipOfferInfos::WeeklyFramed',
             description_rich_text: '<div><b>Activités de découverte</b></div>',
             'week_ids' => weeks.map(&:id),
-            organisation_id: 1
           },
           daily_start_0: '10:00',
           daily_end_0: '13:00',
@@ -92,7 +94,7 @@ module Dashboard
       assert_equal 'Activités de découverte', created_internship_offer_info.description
       assert_equal [["10:00", "13:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ['', '']], created_internship_offer_info.daily_hours
       assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
-      assert_redirected_to new_dashboard_internship_offer_path(
+      assert_redirected_to new_dashboard_stepper_tutor_path(
         organisation_id: 1,
         internship_offer_info_id: created_internship_offer_info.id,
       )
@@ -105,7 +107,7 @@ module Dashboard
       weeks = [weeks(:week_2019_1)]
 
       post(
-        dashboard_internship_offer_infos_path,
+        dashboard_stepper_internship_offer_infos_path,
         params: {
           internship_offer_info: {
             sector_id: sector.id,

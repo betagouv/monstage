@@ -3,10 +3,28 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder
+
+    # called by dashboard/stepper/mentor#create during creating with steps
+    def create_from_stepper(tutor:, organisation:, internship_offer_info:)
+      yield callback if block_given?
+      authorize :create, model
+
+      internship_offer = model.create!(
+        {}.merge(preprocess_organisation_to_params(organisation))
+          .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
+          .merge(preprocess_tutor_to_params(tutor))
+          .merge(employer_id: user.id, employer_type: 'User')
+          .merge(tutor: tutor, organisation:organisation, internship_offer_info: internship_offer_info)
+      )
+      callback.on_success.try(:call, internship_offer)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    end
+
+    # called by internship_offers#create (duplicate), api/internship_offers#create
     def create(params:)
       yield callback if block_given?
       authorize :create, model
-      params = concat_params(params)
       internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
@@ -57,12 +75,46 @@ module Builders
                            .sanitize
     end
 
-    def from_api?
-      context == :api
+    def preprocess_organisation_to_params(organisation)
+      {
+        employer_name: organisation.name,
+        employer_website: organisation.website,
+        coordinates: organisation.coordinates,
+        street: organisation.street,
+        zipcode: organisation.zipcode,
+        city: organisation.city,
+        description: organisation.description,
+        is_public: organisation.is_public,
+        group_id: organisation.group_id,
+      }
     end
 
-    def from_duplicate?(params)
-      params[:internship_offer_info_id].blank?
+    def preprocess_internship_offer_info_to_params(internship_offer_info)
+      {
+        title: internship_offer_info.title,
+        description_rich_text: internship_offer_info.description_rich_text,
+        max_candidates: internship_offer_info.max_candidates,
+        school_id: internship_offer_info.school_id,
+        first_date: internship_offer_info.first_date,
+        last_date: internship_offer_info.last_date,
+        weekly_hours: internship_offer_info.weekly_hours,
+        daily_hours: internship_offer_info.daily_hours,
+        sector_id: internship_offer_info.sector_id,
+        type: internship_offer_info.type.gsub('Info', ''),
+        week_ids: internship_offer_info.try(:weeks).try(:map) { |w| w.id }
+      }
+    end
+
+    def preprocess_tutor_to_params(tutor)
+      {
+        tutor_name: tutor.tutor_name,
+        tutor_email: tutor.tutor_email,
+        tutor_phone: tutor.tutor_phone
+      }
+    end
+
+    def from_api?
+      context == :api
     end
 
     def model
@@ -81,42 +133,6 @@ module Builders
       return nil if ability.can?(*vargs)
 
       raise CanCan::AccessDenied
-    end
-
-    # TODO: mhhh, maybe extract?
-    # from api we assign current user
-    # used by stepper which does not sends all data butonly, InternshipOfferInfo.id & Organisation.id
-    def concat_params(params)
-      return params if from_api? || from_duplicate?(params)
-
-      info = InternshipOfferInfo.find(params[:internship_offer_info_id])
-      organisation = Organisation.find(params[:organisation_id])
-      organisation_params = {
-        employer_name: organisation.name,
-        street: organisation.street,
-        zipcode: organisation.zipcode,
-        city: organisation.city,
-        employer_website: organisation.website,
-        description: organisation.description,
-        coordinates: organisation.coordinates,
-        is_public: organisation.is_public,
-        group_id: organisation.group_id,
-      }
-      internship_offer_info_params = {
-        title: info.title,
-        description_rich_text: info.description_rich_text,
-        max_candidates: info.max_candidates,
-        school_id: info.school_id,
-        first_date: info.first_date,
-        last_date: info.last_date,
-        weekly_hours: info.weekly_hours,
-        daily_hours: info.daily_hours,
-        sector_id: info.sector_id,
-        type: info.type.gsub('Info', ''),
-        week_ids: info.try(:weeks).try(:map) { |w| w.id }
-      }
-
-      params.merge(organisation_params).merge(internship_offer_info_params)
     end
   end
 

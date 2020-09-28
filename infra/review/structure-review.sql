@@ -693,7 +693,6 @@ CREATE TABLE public.internship_offers (
     discarded_at timestamp without time zone,
     coordinates public.geography(Point,4326),
     employer_name character varying,
-    old_group character varying,
     employer_id bigint,
     school_id bigint,
     employer_description character varying,
@@ -724,7 +723,7 @@ CREATE TABLE public.internship_offers (
     aasm_state character varying,
     internship_offer_info_id bigint,
     organisation_id bigint,
-    mentor_id bigint,
+    tutor_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
@@ -748,39 +747,6 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
-
-
---
--- Name: mentors; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.mentors (
-    id bigint NOT NULL,
-    name character varying NOT NULL,
-    email character varying NOT NULL,
-    phone character varying NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
--- Name: mentors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.mentors_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: mentors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.mentors_id_seq OWNED BY public.mentors.id;
 
 
 --
@@ -964,6 +930,39 @@ CREATE SEQUENCE public.sectors_id_seq
 --
 
 ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
+
+
+--
+-- Name: tutors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tutors (
+    id bigint NOT NULL,
+    tutor_name character varying NOT NULL,
+    tutor_email character varying NOT NULL,
+    tutor_phone character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: tutors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.tutors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tutors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.tutors_id_seq OWNED BY public.tutors.id;
 
 
 --
@@ -1157,13 +1156,6 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
--- Name: mentors id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.mentors ALTER COLUMN id SET DEFAULT nextval('public.mentors_id_seq'::regclass);
-
-
---
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1196,6 +1188,13 @@ ALTER TABLE ONLY public.schools ALTER COLUMN id SET DEFAULT nextval('public.scho
 --
 
 ALTER TABLE ONLY public.sectors ALTER COLUMN id SET DEFAULT nextval('public.sectors_id_seq'::regclass);
+
+
+--
+-- Name: tutors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutors ALTER COLUMN id SET DEFAULT nextval('public.tutors_id_seq'::regclass);
 
 
 --
@@ -1325,14 +1324,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: mentors mentors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.mentors
-    ADD CONSTRAINT mentors_pkey PRIMARY KEY (id);
-
-
---
 -- Name: operators operators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1378,6 +1369,14 @@ ALTER TABLE ONLY public.schools
 
 ALTER TABLE ONLY public.sectors
     ADD CONSTRAINT sectors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tutors tutors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tutors
+    ADD CONSTRAINT tutors_pkey PRIMARY KEY (id);
 
 
 --
@@ -1579,20 +1578,6 @@ CREATE INDEX index_internship_offers_on_internship_offer_info_id ON public.inter
 
 
 --
--- Name: index_internship_offers_on_mentor_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offers_on_mentor_id ON public.internship_offers USING btree (mentor_id);
-
-
---
--- Name: index_internship_offers_on_old_group; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offers_on_old_group ON public.internship_offers USING btree (old_group);
-
-
---
 -- Name: index_internship_offers_on_organisation_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1632,6 +1617,13 @@ CREATE INDEX index_internship_offers_on_search_tsv ON public.internship_offers U
 --
 
 CREATE INDEX index_internship_offers_on_sector_id ON public.internship_offers USING btree (sector_id);
+
+
+--
+-- Name: index_internship_offers_on_tutor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_tutor_id ON public.internship_offers USING btree (tutor_id);
 
 
 --
@@ -2146,6 +2138,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200911153501'),
 ('20200911160718'),
 ('20200918165533'),
-('20200924093439');
+('20200924093439'),
+('20200928102905'),
+('20200928122922'),
+('20200928134336');
 
 

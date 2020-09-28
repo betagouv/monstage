@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-module Dashboard
+module Dashboard::Stepper
   class OrganisationsController < ApplicationController
     before_action :authenticate_user!
 
     def new
-      @organisation = Organisation.build_from_internship_offer(InternshipOffer.find(params[:duplicate_id])) if params[:duplicate_id].present?
-      @organisation ||= Organisation.new
       authorize! :create, Organisation
+
+      @organisation = Organisation.new
     end
 
     def create
-      @organisation = Organisation.new(organisation_params)
       authorize! :create, Organisation
+
+      @organisation = Organisation.new(organisation_params)
       if @organisation.save
-        redirect_to new_dashboard_internship_offer_info_path(organisation_id: @organisation.id,
-                                                             duplicate_id: params[:organisation][:duplicate_id])
+        redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
       else
         render :new, status: :bad_request
       end

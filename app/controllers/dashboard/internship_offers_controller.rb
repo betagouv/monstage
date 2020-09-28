@@ -13,12 +13,12 @@ module Dashboard
       @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
+    # duplicate submit
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          Mentor.create(name: created_internship_offer.tutor_name, email: created_internship_offer.tutor_email, phone: created_internship_offer.tutor_phone)
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: on_create_success_message })
+                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -73,23 +73,14 @@ module Dashboard
       end
     end
 
-    # TODO: split
-    # => 1. when duplication, use new action duplicate
-    # => 2. when computing 3 step wizard, add mentor controller
+    # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = if params[:duplicate_id].present?
-                            current_user.internship_offers
-                                        .find(params[:duplicate_id])
-                                        .duplicate
-                          else
-                            InternshipOffer.new
-                          end
-      @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      @internship_offer = current_user.internship_offers
+                                      .find(params[:duplicate_id])
+                                      .duplicate
 
-      render params[:duplicate_id].present? ?
-             :duplicate :
-             :new # new is step 3 from wizard
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
     private
@@ -103,12 +94,6 @@ module Dashboard
       approved_applications_count
       convention_signed_applications_count
     ].freeze
-
-    def on_create_success_message
-      params.dig(:internship_offer, :duplicating) ?
-      'Votre offre de stage a été renouvelée pour cette année scolaire.' :
-      'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.'
-    end
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])

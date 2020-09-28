@@ -168,6 +168,9 @@ export default function AddressInput({
           <div className="form-group">
             <label htmlFor={`${resourceName}_street`}>
               Rue ou compléments d'adresse
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
             </label>
             <input
               className="form-control"
@@ -186,6 +189,9 @@ export default function AddressInput({
           <div className="form-group">
             <label htmlFor={`${resourceName}_city`}>
               Ville
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
             </label>
             <input
               className="form-control"
@@ -202,6 +208,9 @@ export default function AddressInput({
           <div className="form-group">
             <label htmlFor={`${resourceName}_zipcode`}>
               Code postal
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
             </label>
             <input
               className="form-control"

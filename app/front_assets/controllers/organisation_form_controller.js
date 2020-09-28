@@ -30,7 +30,7 @@ export default class extends Controller {
       `);
       $(this.selectGroupNameTarget).prop('required', true);
     } else {
-      $(this.groupLabelTarget).text('Groupe (facultatif)');
+      $(this.groupLabelTarget).text('Groupe (optionnel)');
       $(this.selectGroupNameTarget).prop('required', false);
     }
     this.toggleGroupNames(value === 'true');

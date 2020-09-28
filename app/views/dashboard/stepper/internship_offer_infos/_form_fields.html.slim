@@ -2,6 +2,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
   .row.mt-3
     .col-6
       legend.my-4 Offre de stage
+      = form.hidden_field :employer_id, value: current_user.id
 
       .form-group
         = form.label :school_track do
@@ -40,6 +41,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
       .form-group
         div.label
           = "Type de stage"
+          = form.rg2a_required_content_tag
         = react_component("ReservedSchoolInput",
                       label:"Ville ou nom de l'établissement auquel le stage est reservé",
                       required: false,
@@ -75,10 +77,12 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         = form.number_field :max_candidates, value: resource.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !resource.is_fully_editable?, data: { target: "internship-offer-infos.maxCandidatesInput" }
 
       .form-group
-        .label Semaine(s) et horaires ou vous pourrez accueillir le stagiaire
+        .label
+          | Semaine(s) et horaires ou vous pourrez accueillir le stagiaire
+          = form.rg2a_required_content_tag
 
         = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: false, disabled: !resource.is_fully_editable? }
-        = render partial: "dashboard/internship_offer_infos/daily_hours", locals: { internship_offer: resource }
+        = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { internship_offer: resource }
       - if submit_button
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"

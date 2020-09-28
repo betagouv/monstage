@@ -27,7 +27,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
       travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
+        visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_form(school_track: :troisieme_generale,
                      sector: sectors.first,
                      weeks: available_weeks)
@@ -46,7 +46,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::FreeDate.count' do
       travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
+        visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
         fill_in_form(school_track: :troisieme_generale,
                      sector: sectors.first,
                      weeks: available_weeks)
@@ -62,7 +62,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     travel_to(Date.new(2019, 3, 1)) do
-      visit new_dashboard_internship_offer_info_path(organisation_id: organisation.id)
+      visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
       fill_in_form(school_track: :troisieme_generale,
         sector: sectors.first,
         weeks: available_weeks)

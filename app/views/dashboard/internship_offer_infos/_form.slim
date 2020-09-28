@@ -1,9 +1,0 @@
-= form_with({model: @internship_offer_info, url: (@internship_offer_info.new_record? ? dashboard_internship_offer_infos_path : dashboard_internship_offer_info_path(@internship_offer_info)), scope: :internship_offer_info, local: true}) do |form|
-  = render "dashboard/internship_offers/stepper"
-  = render "layouts/form_errors", resource: @internship_offer_info, resource_name: :internship_offer_info
-
-  = form.hidden_field :organisation_id, value: @organisation_id
-  = form.hidden_field :duplicate_id, value: params[:duplicate_id]
-
-  = render 'form_fields', { form: form, resource: @internship_offer_info, submit_button: true}
-

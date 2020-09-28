@@ -56,11 +56,14 @@ Rails.application.routes.draw do
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
-      post 'duplicate', to: 'internship_offers#duplicate'
     end
 
-    resources :organisations
-    resources :internship_offer_infos
+    namespace :stepper do
+      resources :organisations, only: %i[create new edit update]
+      resources :internship_offer_infos, only: %i[create new edit update]
+      resources :tutors, only: %i[create new edit update]
+    end
+
     resources :internship_agreements
 
     namespace :students, path: '/:student_id/' do

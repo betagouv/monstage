@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module Dashboard
+module Dashboard::Stepper
   class OrganisationsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -10,26 +10,8 @@ module Dashboard
     # New Organisation
     #
     test 'GET new not logged redirects to sign in' do
-      get new_dashboard_organisation_path
+      get new_dashboard_stepper_organisation_path
       assert_redirected_to user_session_path
-    end
-
-    test 'GET #new as Employer with duplicate_id with old offer' do
-      internship_offer = create(:weekly_internship_offer,
-                                employer_name: 'Apple',
-                                street: '12 rue des bois',
-                                city: 'Paris',
-                                zipcode: '75001',
-                                employer_website: 'https://www.site.com',
-                                description: 'ma description',
-                                is_public: 'true',
-                              )
-      sign_in(internship_offer.employer)
-      get new_dashboard_organisation_path(duplicate_id: internship_offer.id)
-      assert_response :success
-      assert_select 'input[name="organisation[name]"][value="Apple"]'
-      assert_select 'input[name="organisation[is_public]"][value="true"]'
-      assert_select 'input[name="organisation[website]"][value="https://www.site.com"]'
     end
 
     #
@@ -39,7 +21,7 @@ module Dashboard
       sign_in(create(:employer))
 
       post(
-        dashboard_organisations_path,
+        dashboard_stepper_organisations_path,
         params: {
           organisation: {
             name: 'BigCorp',
@@ -60,15 +42,15 @@ module Dashboard
       assert_equal 'Activités de découverte', created_organisation.description
       assert_equal 'www.website.com', created_organisation.website
       assert_equal true, created_organisation.is_public
-      assert_redirected_to new_dashboard_internship_offer_info_path(organisation_id: created_organisation.id)
+      assert_redirected_to new_dashboard_stepper_internship_offer_info_path(organisation_id: created_organisation.id)
     end
 
-    
+
     test 'POST create render new when missing params' do
       sign_in(create(:employer))
 
       post(
-        dashboard_organisations_path,
+        dashboard_stepper_organisations_path,
         params: {
           organisation: {
             street: '12 rue des bois',
