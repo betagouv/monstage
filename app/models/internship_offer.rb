@@ -102,7 +102,7 @@ class InternshipOffer < ApplicationRecord
 
   has_rich_text :employer_description_rich_text
 
-  before_save :sync_first_and_last_date
+  before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
 
   before_create :preset_published_at_to_now
