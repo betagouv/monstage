@@ -1,15 +1,14 @@
-.p-3
+.p-2
   .row
-    .col-2.text-right.pt-3
+    .col-2.text-right.pt-2
       span.small Trier par
     .col-8.text-center
-      = form_tag(url: dashboard_internship_offer_internship_applications_path, method: :get, html: { 'data-controller': 'internship-form'}) do
-        .form-group
+      = form_tag(url: dashboard_internship_offer_internship_applications_path, method: :get) do
+        .form-group data-controller='applications-order'
           .toggle-radio
-            = radio_button_tag :order, 'applicationDate', [nil, 'applicationDate'].include?(params[:order]), class: ''
-            = label :order, 'Date de candidature', class: 'small pointer'
-            = radio_button_tag :order, 'internshipDate', params[:order] == 'internshipDate', class: ''
-            = label :order, 'Date de stage', class: 'small pointer'
+            = radio_button_tag :order, 'applicationDate', [nil, 'applicationDate'].include?(params[:order]), class: '', 'data-target':"applications-order.applicationDate"
+            = label :order, 'Dates de candidature', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
+            = radio_button_tag :order, 'internshipDate', params[:order] == 'internshipDate', class: '', 'data-target':"applications-order.internshipDate"
+            = label :order, 'Dates de stage', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
           = submit_tag 'Submit', class: 'd-none', id: 'hidden-button'
 
-  

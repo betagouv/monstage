@@ -1,14 +1,18 @@
 - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: aasm_target)
 
-= button_tag type: "button", data: { toggle: 'modal', target: "##{modal_id}" }, class: "btn btn-#{aasm_notifier.target_action_color} mx-1" do
+= button_tag type: "button",
+             data: { toggle: 'modal', target: "##{modal_id}" },
+             class: "btn btn-#{aasm_notifier.target_action_color} mx-1 px-5" do
   i class="fas #{fa_icon}"
   = " "
   = modal_opener_label
 
-= form_with({ model: internship_application, url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application), html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"} }) do |f|
+= form_with({ model: internship_application,
+              url: dashboard_internship_offer_internship_application_path(internship_application.internship_offer, internship_application),
+              html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"} }) do |f|
   = hidden_field_tag :transition, aasm_target
 
-  .modal-dialog role="document"
+  .modal-dialog.modal-lg role="document"
     .modal-content
       .modal-header.p-4
         h5 class="modal-title"
@@ -21,6 +25,6 @@
         = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
 
       .modal-footer.actions
-        button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler
 
         = f.submit class: 'btn btn-primary', value: "Confirmer"
+        button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler
