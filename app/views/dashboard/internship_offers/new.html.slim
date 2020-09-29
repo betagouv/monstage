@@ -1,28 +1,9 @@
+- content_for :page_title, "#{t(".page_title", name: @internship_offer.title)} | Monstage"
+
 .row.mx-5
   .col-12
     .row
       h1.h2.mb-3
-        - if duplicating?
-          | Renouveller l'offre pour l'année courante
-        - else
-          | Déposer une offre de stage
-    
-      = form_for @internship_offer, url: dashboard_internship_offers_path(@internship_offer), html: { 'data-controller': 'internship-form'} do |form|
-        = render "dashboard/internship_offers/stepper"
-        = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
+        | Renouveller l'offre pour l'année courante
 
-        = form.hidden_field :organisation_id, value: params[:organisation_id]
-        = form.hidden_field :internship_offer_info_id, value: params[:internship_offer_info_id]
-
-        = render 'dashboard/internship_offers/mentor_form_fields', { resource: @internship_offer, form: form, submit_button: true, warning_bloc: true }
-        .actions
-          .row
-            .col-8.text-center
-              = form.submit "Publier l'offre !", class: 'btn btn-primary'
-            .coll-4 style="display: flex;align-items: center"
-              = link_to "Annuler", edit_dashboard_internship_offer_info_path(params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Retourner sur mes stages', class: 'ml-3 btn-back' if params[:internship_offer_info_id] && params[:organisation_id]
-          .row
-            .col-8.text-center
-              .mx-5.mt-2
-                p.small.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment
-        
+= render "form", submit_text: "Dupliquer l'offre"

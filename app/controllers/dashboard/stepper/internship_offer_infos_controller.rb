@@ -1,53 +1,56 @@
 # frozen_string_literal: true
 
-module Dashboard
+module Dashboard::Stepper
+  # Step 2 of internship offer creation: fill in offer details/info
   class InternshipOfferInfosController < ApplicationController
     before_action :authenticate_user!
 
+    # render step 2
     def new
-      @internship_offer_info = InternshipOfferInfo.build_from_internship_offer(InternshipOffer.find(params[:duplicate_id])) if params[:duplicate_id].present?
-      @internship_offer_info ||= InternshipOfferInfo.new
       authorize! :create, InternshipOfferInfo
+
+      @internship_offer_info = InternshipOfferInfo.new
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
-      @organisation_id = params[:organisation_id]
     end
 
+    # process step 2
     def create
-      @internship_offer_info = InternshipOfferInfo.new(internship_offer_info_params.merge!(prepare_daily_hours(params)))
-      organisation_id = params[:internship_offer_info][:organisation_id]
+      authorize! :create, InternshipOfferInfo
 
-      if @internship_offer_info.save
-        redirect_to new_dashboard_internship_offer_path(
-          organisation_id: organisation_id,
-          internship_offer_info_id: @internship_offer_info.id,
-        )
-      else
-        @available_weeks = Week.selectable_from_now_until_end_of_school_year
-        @organisation_id = organisation_id
-        render :new, status: :bad_request
-      end
+      @internship_offer_info = InternshipOfferInfo.new(
+        {}.merge(internship_offer_info_params)
+          .merge(prepare_daily_hours(params))
+          .merge(employer_id: current_user.id)
+      )
+      @internship_offer_info.save!
+      redirect_to(new_dashboard_stepper_tutor_path(
+                    organisation_id: params[:organisation_id],
+                    internship_offer_info_id: @internship_offer_info.id
+      ))
+    rescue ActiveRecord::RecordInvalid
+      @available_weeks = Week.selectable_from_now_until_end_of_school_year
+      render :new, status: :bad_request
     end
 
+    # render back to step 2
     def edit
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
-      authorize! :edit, InternshipOfferInfo
+      authorize! :edit, @internship_offer_info
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
-      @organisation_id = params[:organisation_id]
     end
 
+    # process update following a back to step 2 (info was created, it's updated)
     def update
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
-      authorize! :update, InternshipOfferInfo
-      organisation_id = params[:internship_offer_info][:organisation_id]
+      authorize! :update, @internship_offer_info
 
       if InternshipOfferInfo.update(internship_offer_info_params.merge!(prepare_daily_hours(params)))
-        redirect_to new_dashboard_internship_offer_path(
-          organisation_id: organisation_id,
+        redirect_to  new_dashboard_stepper_tutor_path(
+          organisation_id: params[:organisation_id],
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
         @available_weeks = Week.selectable_from_now_until_end_of_school_year
-        @organisation_id = organisation_id
         render :new, status: :bad_request
       end
     end
@@ -57,13 +60,13 @@ module Dashboard
     def internship_offer_info_params
       params.require(:internship_offer_info)
             .permit(
-              :title, 
-              :employer_type, 
-              :type, 
-              :sector_id, 
-              :school_id, 
+              :title,
+              :employer_type,
+              :type,
+              :sector_id,
+              :school_id,
               :employer_id,
-              :description_rich_text, 
+              :description_rich_text,
               :max_candidates,
               :weekly_start,
               :weekly_end,

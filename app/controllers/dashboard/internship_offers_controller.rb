@@ -13,12 +13,12 @@ module Dashboard
       @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
+    # duplicate submit
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          Mentor.create(name: created_internship_offer.tutor_name, email: created_internship_offer.tutor_email, phone: created_internship_offer.tutor_phone)
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: on_create_success_message })
+                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -39,10 +39,7 @@ module Dashboard
     end
 
     def update
-      @internship_offer = InternshipOffer.find(params[:id])
-      authorize! :update, @internship_offer
-
-      internship_offer_builder.update(instance: @internship_offer,
+      internship_offer_builder.update(instance: InternshipOffer.find(params[:id]),
                                       params: internship_offer_params) do |on|
         on.success do |updated_internship_offer|
           redirect_to(internship_offer_path(updated_internship_offer),
@@ -73,28 +70,15 @@ module Dashboard
       end
     end
 
+    # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = if params[:duplicate_id].present?
-                            current_user.internship_offers
-                                        .find(params[:duplicate_id])
-                                        .duplicate
-                          else
-                            InternshipOffer.new
-                          end
+      @internship_offer = current_user.internship_offers
+                                      .find(params[:duplicate_id])
+                                      .duplicate
+
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
-
-    def recopy
-    internship_offer = InternshipOffer.find(params[:internship_offer_id])
-    @organisation = internship_offer.organisation || Organisation.build_from_internship_offer(internship_offer)
-    @internship_offer_info = internship_offer.internship_offer_info || InternshipOfferInfo.last
-    @internship_offer = current_user.internship_offers
-                                      .find(params[:internship_offer_id])
-                                      .duplicate
-    @available_weeks = Week.selectable_from_now_until_end_of_school_year
-  end
-
 
     private
 
@@ -107,12 +91,6 @@ module Dashboard
       approved_applications_count
       convention_signed_applications_count
     ].freeze
-
-    def on_create_success_message
-      params.dig(:internship_offer, :duplicating) ?
-      'Votre offre de stage a été renouvelée pour cette année scolaire.' :
-      'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.'
-    end
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
@@ -127,13 +105,14 @@ module Dashboard
     end
 
     def finder
-      @finder ||= Finders::ListableInternshipOffer.new(
+      @finder ||= Finders::InternshipOfferPublisher.new(
         params: params.permit(
           :page,
           :latitude,
           :longitude,
           :radius,
-          :school_type
+          :school_type,
+          :keyword
         ),
         user: current_user_or_visitor
       )
@@ -164,9 +143,9 @@ module Dashboard
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group_id, :published_at, :type, :description,
+                    :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, :school_track, :internship_offer_info_id, :organisation_id, coordinates: {}, week_ids: [])
+                    :school_type, :school_track, coordinates: {}, week_ids: [])
     end
   end
 end

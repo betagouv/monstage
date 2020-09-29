@@ -50,7 +50,7 @@ RailsAdmin.config do |config|
                               User
                               InternshipOfferKeyword
                               InternshipOffers::WeeklyFramed
-                              InternshipOfferInfos::WeeklyFramedInfo
+                              InternshipOfferInfos::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
                               Users::Student

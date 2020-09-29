@@ -1,0 +1,25 @@
+.row.mx-5
+  .col-12
+    .row
+      h1.h2.mb-3
+        | Déposer une offre de stage
+
+    = form_with({model: @tutor, url: dashboard_stepper_tutors_path(organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]), scope: :internship_offer_info, local: true}) do |form|
+
+      = render "dashboard/stepper/steps"
+
+      = form.rg2a_explain_required_asterisk
+
+      = render "layouts/form_errors", resource: @tutor, resource_name: :tutor
+
+      = render 'dashboard/stepper/tutors/form_fields', { resource: @tutor, form: form, submit_button: false, warning_bloc: true }
+      .actions
+        .row
+          .col-8.text-center
+            = form.submit "Publier l'offre !", class: 'btn btn-primary'
+          .coll-4 style="display: flex;align-items: center"
+            = link_to "Annuler", edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre', class: 'ml-3 btn-back'
+        .row
+          .col-8.text-center
+            .mx-5.mt-2
+              p.small.text-muted Vous pourrez modifier ou supprimer l'offre à tout moment

@@ -10,8 +10,10 @@ module Users
              class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers # ,
-    # source: :employer#,
-    # source_type: "InternshipApplication"
+
+    has_many :organisations
+    has_many :tutors
+    has_many :internship_offers_infos
 
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path

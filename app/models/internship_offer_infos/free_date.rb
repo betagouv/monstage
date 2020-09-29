@@ -1,5 +1,5 @@
 module InternshipOfferInfos
-  class FreeDateInfo < InternshipOfferInfo
+  class FreeDate < InternshipOfferInfo
     include Freeable
   end
 end

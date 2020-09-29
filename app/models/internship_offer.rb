@@ -95,30 +95,26 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
-  belongs_to :employer, polymorphic: true, optional: true
+  belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
-  belongs_to :mentor, optional: true
+  belongs_to :tutor, optional: true
   belongs_to :internship_offer_info, optional: true
 
   has_rich_text :employer_description_rich_text
 
-  before_save :sync_first_and_last_date
+  before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
 
-  accepts_nested_attributes_for :organisation, :internship_offer_info, :mentor, allow_destroy: true
-
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
-  
+
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
-
-  attr_writer :duplicating
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -160,10 +156,12 @@ class InternshipOffer < ApplicationRecord
     white_list = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
-                    is_public group school_id coordinates first_date last_date]
+                    is_public group school_id coordinates first_date last_date
+                    school_track
+                    internship_offer_info_id organisation_id tutor_id
+                    weekly_hours daily_hours]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-    internship_offer.duplicating = true
     internship_offer.description_rich_text = (if description_rich_text.present?
                                                 description_rich_text.to_s
                                               else

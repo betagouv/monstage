@@ -301,6 +301,10 @@ fr:
             student:
               taken: 'Vous ne pouvez pas postuler deux fois à la même offre'
   admin:
+    table_headers:
+      last_created: 'last_created'
+    toggle_navigation: 'toggle_navigation'
+
     misc:
       root_navigation:
         "Tableaux de suivis"
@@ -321,7 +325,7 @@ fr:
       last: Dernière page
       first: Première page
       next: Page suivante
-      prev: Page précédente
+      previous: Page précédente
 
   enum:
     roles:

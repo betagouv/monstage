@@ -25,7 +25,6 @@ module Dashboard
             .permit(
               :internship_offer_id,
               :school_id)
-              # :employer_id,
               # :employer_type,
               # :student_id)
               # :employer_name,

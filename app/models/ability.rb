@@ -82,10 +82,16 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
+    # internship_offer mgmt
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
-    can %i[create read update discard], InternshipOfferInfo, employer_id: user.id
-    can %i[create read update discard], Organisation
+    # internship_offer stepper
+    can %i[create], InternshipOfferInfo
+    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[create], Organisation
+    can %i[update edit], Organisation, employer_id: user.id
+    can %i[create], Tutor
+
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
   end
@@ -98,6 +104,14 @@ class Ability
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
+    # internship_offer stepper
+    can %i[create], InternshipOfferInfo
+    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[create], Organisation
+    can %i[update edit], Organisation, employer_id: user.id
+    can %i[create], Tutor
+
+
     can %i[index update], InternshipApplication
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?

@@ -24,9 +24,9 @@ module InternshipOffersHelper
         group.id,
         {
           'data-target' => if group.is_public?
-                             'internship-form.groupNamePublic'
+                             'organisation-form.groupNamePublic'
                            else
-                             'internship-form.groupNamePrivate'
+                             'organisation-form.groupNamePrivate'
 end
         }
       ]
@@ -60,7 +60,7 @@ end
 
     internship_offer_path(default_params.merge(forwardable_params))
   end
-  
+
   def internship_offer_type_options_for_default
     '-- Veuillez sélectionner un niveau scolaire --'
   end
