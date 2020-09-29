@@ -9,7 +9,6 @@ class StudentMailerTest < ActionMailer::TestCase
 
     email.deliver_now
     assert_emails 1
-    assert_equal [internship_application.internship_offer.employer.email], email.from
     assert_equal [internship_application.student.email], email.to
   end
 

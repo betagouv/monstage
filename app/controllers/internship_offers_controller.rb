@@ -62,7 +62,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def finder
-    @finder ||= Finders::ListableInternshipOffer.new(
+    @finder ||= Finders::InternshipOfferConsumer.new(
       params: params.permit(
         :page,
         :latitude,
