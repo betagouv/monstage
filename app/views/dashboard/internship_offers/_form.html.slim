@@ -1,4 +1,5 @@
 = form_with({model: @internship_offer, url:  dashboard_internship_offer_path(@internship_offer), scope: :internship_offer, data: { controller: 'internship-form'}, local: true}) do |form|
+  = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
   = form.hidden_field :organisation_id, value: @internship_offer.organisation_id
   = form.hidden_field :internship_offer_info_id, value: @internship_offer.internship_offer_info_id
