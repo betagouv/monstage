@@ -25,6 +25,24 @@ module Dashboard::Stepper
 
     # TODO: edit/update. other back does not works. which is missing
 
+    # render back to step 1
+    def edit
+      @organisation = Organisation.find(params[:id])
+      authorize! :edit, @organisation
+    end
+
+    # process update following a back to step 1
+    def update
+      @organisation = Organisation.find(params[:id])
+      authorize! :update, @organisation
+
+      if @organisation.update!(organisation_params)
+        redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
+      else
+        render :new, status: :bad_request
+      end
+    end
+
     private
     def organisation_params
       params.require(:organisation)
