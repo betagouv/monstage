@@ -1,11 +1,14 @@
-.bg-light.p-3.my-3
+.p-1
   .row
-    .col-12
-      strong= "Trier : "
-      = link_to "par date de candidature",
-                dashboard_internship_offer_internship_applications_path(order: 'applicationDate'),
-                class: [nil, 'applicationDate'].include?(params[:order]) ? 'font-weight-bold' : ''
-      = " | "
-      = link_to "dates de stage",
-                dashboard_internship_offer_internship_applications_path(order: 'internshipDate'),
-                class: params[:order] == 'internshipDate' ? 'font-weight-bold' : ''
+    .col-2.text-right.pt-2
+      span.small Trier par
+    .col-8.text-center
+      = form_tag(url: dashboard_internship_offer_internship_applications_path, method: :get) do
+        .form-group data-controller='applications-order'
+          .toggle-radio
+            = radio_button_tag :order, 'applicationDate', [nil, 'applicationDate'].include?(params[:order]), class: '', 'data-target':"applications-order.applicationDate"
+            = label :order, 'Dates de candidature', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
+            = radio_button_tag :order, 'internshipDate', params[:order] == 'internshipDate', class: '', 'data-target':"applications-order.internshipDate"
+            = label :order, 'Dates de stage', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
+          = submit_tag 'Submit', class: 'd-none', id: 'hidden-button'
+

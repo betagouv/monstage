@@ -6,7 +6,7 @@ import findBootstrapEnvironment from '../utils/responsive';
 import CityInput from './search_internship_offer/CityInput';
 import KeywordInput from './search_internship_offer/KeywordInput';
 
-function SearchInternshipOffer({ url, className}) {
+function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -101,7 +101,7 @@ function SearchInternshipOffer({ url, className}) {
                          rounded-xs-0"
             >
               <i className="fas fa-search" />
-              &nbsp; Rechercher
+              &nbsp; {(searchWordVisible) ? "Rechercher" : ""}
             </button>
           </div>
         )}
