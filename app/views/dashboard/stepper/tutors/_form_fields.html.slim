@@ -18,6 +18,15 @@ fieldset.mt-4
           = form.rg2a_required_content_tag
           small.form-text.text-muted Pour faciliter la prise de contact, indiquez le numéro de mobile
         = form.phone_field :tutor_phone, class: 'form-control', required: true
+      .actions
+        .row.mt-5
+          .col-6.text-left style="display: flex;align-items: center"
+            = link_to edit_dashboard_stepper_internship_offer_info_path(params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre' do
+              i.fa.fa-arrow-left
+          .col-6.text-right
+            = form.submit "Publier l'offre !", class: 'btn btn-primary' do
+              i.fas.fa-arrow-right
+
     - if warning_bloc
       .col-6
         .warning-bloc.bc-light

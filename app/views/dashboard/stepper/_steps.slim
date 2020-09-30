@@ -12,7 +12,7 @@
           br
           small= "Information sur l'entreprise"
       li.col-4.nav-item
-        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if (@internship_offer_info.present? || @internship_offer.present? ))
+        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if (@internship_offer_info.present? || @tutor.present? ))
           span.d-inline-flex.align-items-center.nav-link-icon
             .number
               - if @internship_offer.present?
@@ -22,7 +22,7 @@
           br
           small= "L'offre de stage"
       li.col-4.nav-item
-        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if @internship_offer.present?)
+        .nav-link.nav-link-icon-with-label class=('nav-link-icon-with-label-success' if @tutor.present?)
           span.d-inline-flex.align-items-center.nav-link-icon
             .number 3
           br
