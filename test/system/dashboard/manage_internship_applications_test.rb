@@ -48,7 +48,7 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]", count: 1
-      find('a.btn-link.strong', text: 'Tout afficher +', exact_text: true)
+      find('a.btn-link', text: 'Tout afficher +', exact_text: true)
       find('.d-block.btn-link').click
       click_on 'Accepter'
       assert_changes -> { weekly_internship_application.reload.approved? },
