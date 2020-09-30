@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
+  MAX_CANDIDATES_PER_GROUP = 200
+  TITLE_MAX_CHAR_COUNT = 150
+  DESCRIPTION_MAX_CHAR_COUNT= 500
 
   # queries
   include Listable
@@ -10,7 +13,8 @@ class InternshipOffer < ApplicationRecord
   include Nearbyable
   include Zipcodable
 
-  include Offerable
+  include StepperProxy::InternshipOfferInfo
+  include StepperProxy::Organisation
 
   # utils
   include Discard::Model
@@ -84,23 +88,24 @@ class InternshipOffer < ApplicationRecord
   }
 
   validates :title,
-            :employer_name,
             :city,
             presence: true
 
   validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
 
-  validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
 
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true
-  belongs_to :organisation, optional: true
-  belongs_to :tutor, optional: true
-  belongs_to :internship_offer_info, optional: true
+
+  has_one :organisation
+  has_one :tutor
+  has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text
+
+  after_initialize :init
 
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
@@ -116,6 +121,8 @@ class InternshipOffer < ApplicationRecord
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
 
+  before_validation :replicate_rich_text_to_raw_fields
+
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
   end
@@ -126,6 +133,22 @@ class InternshipOffer < ApplicationRecord
 
   def unpublished?
     !published?
+  end
+
+  def from_api?
+    permalink.present?
+  end
+
+  def reserved_to_school?
+    school.present?
+  end
+
+  def is_fully_editable?
+    true
+  end
+
+  def init
+    self.max_candidates ||= 1
   end
 
   def total_female_applications_count

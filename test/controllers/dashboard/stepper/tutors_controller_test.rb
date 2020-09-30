@@ -107,15 +107,14 @@ module Dashboard::Stepper
                    'school_track not copied')
 
       # recopy organisation
-      assert_equal organisation.name, created_internship_offer.employer_name
+      assert_equal organisation.employer_name, created_internship_offer.employer_name
       assert_equal organisation.street, created_internship_offer.street
       assert_equal organisation.zipcode, created_internship_offer.zipcode
       assert_equal organisation.city, created_internship_offer.city
-      assert_equal organisation.website, created_internship_offer.employer_website
-      assert_equal organisation.description, created_internship_offer.description
+      assert_equal organisation.employer_website, created_internship_offer.employer_website
+      assert_equal organisation.employer_description, created_internship_offer.employer_description
       assert_equal organisation.coordinates, created_internship_offer.coordinates
       assert_equal organisation.is_public, created_internship_offer.is_public
-      assert_equal organisation.department, created_internship_offer.department
       assert_equal organisation.group_id, created_internship_offer.group_id
 
       # recopy tutor
@@ -124,9 +123,8 @@ module Dashboard::Stepper
       assert_equal created_tutor.tutor_email, created_internship_offer.tutor_email
 
       # other feature, with real default
-      assert_equal(nil,
-                   created_internship_offer.discarded_at,
-                   'discarded_at should start with nil')
+      assert_nil(created_internship_offer.discarded_at,
+                 'discarded_at should start with nil')
 
       assert_in_delta(Time.current,
                       created_internship_offer.published_at,

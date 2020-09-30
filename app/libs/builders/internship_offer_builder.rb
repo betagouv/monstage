@@ -8,14 +8,14 @@ module Builders
     def create_from_stepper(tutor:, organisation:, internship_offer_info:)
       yield callback if block_given?
       authorize :create, model
-
-      internship_offer = model.create!(
+      internship_offer = model.new(
         {}.merge(preprocess_organisation_to_params(organisation))
           .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
           .merge(preprocess_tutor_to_params(tutor))
           .merge(employer_id: user.id, employer_type: 'User')
-          .merge(tutor: tutor, organisation: organisation, internship_offer_info: internship_offer_info)
+          .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
       )
+      internship_offer.save!
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -77,32 +77,31 @@ module Builders
 
     def preprocess_organisation_to_params(organisation)
       {
-        employer_name: organisation.name,
-        employer_website: organisation.website,
+        employer_name: organisation.employer_name,
+        employer_website: organisation.employer_website,
         coordinates: organisation.coordinates,
         street: organisation.street,
         zipcode: organisation.zipcode,
         city: organisation.city,
-        description: organisation.description,
+        employer_description_rich_text: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
       }
     end
 
     def preprocess_internship_offer_info_to_params(internship_offer_info)
-      {
+      params = {
         title: internship_offer_info.title,
         description_rich_text: internship_offer_info.description_rich_text,
         max_candidates: internship_offer_info.max_candidates,
         school_id: internship_offer_info.school_id,
-        first_date: internship_offer_info.first_date,
-        last_date: internship_offer_info.last_date,
         weekly_hours: internship_offer_info.weekly_hours,
         daily_hours: internship_offer_info.daily_hours,
         sector_id: internship_offer_info.sector_id,
         type: internship_offer_info.type.gsub('Info', ''),
-        week_ids: internship_offer_info.try(:weeks).try(:map) { |w| w.id }
       }
+      params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
+      params
     end
 
     def preprocess_tutor_to_params(tutor)

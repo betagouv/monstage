@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :organisation do
-    name { "MyCorp" }
+    employer_name { "MyCorp" }
+    employer_website { "https://website.com" }
+    employer_description { "MyText" }
     street { '1 rue du poulet' }
     zipcode { '75001' }
     city { 'Paris' }
     coordinates { Coordinates.paris }
     is_public { true }
-    website { "https://website.com" }
-    description { "MyText" }
     group { create(:group, is_public: true) }
   end
 end

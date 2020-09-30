@@ -1,5 +1,13 @@
 module InternshipOfferInfos
   class FreeDate < InternshipOfferInfo
-    include Freeable
+    attr_accessor :week_ids
+
+    def weekly?
+      false
+    end
+
+    def free_date?
+      true
+    end
   end
 end

@@ -5,7 +5,6 @@ module Nearbyable
   extend ActiveSupport::Concern
 
   included do
-    validate :coordinates_are_valid?
 
     # rails admin fuck
     def autocomplete; end
@@ -48,12 +47,6 @@ module Nearbyable
       end
     end
 
-    def coordinates_are_valid?
-      return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
-
-      errors.add(:coordinates, :blank)
-    end
-
     def osm_url
       return "http://www.openstreetmap.org/" unless coordinates_are_valid?
 
@@ -67,5 +60,13 @@ module Nearbyable
         city
       ].compact.uniq.join(' ')
     end
+
+    validate :coordinates_are_valid?
+    def coordinates_are_valid?
+      return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+
+      errors.add(:coordinates, :blank)
+    end
+
   end
 end

@@ -572,7 +572,6 @@ CREATE TABLE public.internship_offer_infos (
     employer_id bigint NOT NULL,
     type character varying,
     sector_id bigint,
-    first_date date,
     last_date date,
     weeks_count integer DEFAULT 0 NOT NULL,
     internship_offer_info_weeks_count integer DEFAULT 0 NOT NULL,
@@ -783,12 +782,12 @@ ALTER SEQUENCE public.operators_id_seq OWNED BY public.operators.id;
 
 CREATE TABLE public.organisations (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    employer_name character varying NOT NULL,
     street character varying NOT NULL,
     zipcode character varying NOT NULL,
     city character varying NOT NULL,
-    website character varying,
-    description text,
+    employer_website character varying,
+    employer_description text,
     coordinates public.geography(Point,4326),
     department character varying DEFAULT ''::character varying NOT NULL,
     is_public boolean DEFAULT false NOT NULL,
@@ -2172,6 +2171,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200928143259'),
 ('20200928145005'),
 ('20200928145102'),
-('20200928150637');
+('20200928150637'),
+('20200929081733'),
+('20200930155341');
 
 

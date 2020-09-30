@@ -4,11 +4,26 @@ module InternshipOffers
   class WeeklyFramed < InternshipOffer
     include WeeklyFramable
     include ActiveAdminable
-    include OfferWeeklyFramable
+    # ActiveAdmin index specifics
+    rails_admin do
+      list do
+        scopes [:not_from_api]
+        field :title
+        field :zipcode
+        field :employer_name
+        field :group
+        field :is_public
+        field :department
+        field :created_at
+      end
 
-    validates :is_public, inclusion: { in: [true, false] }
-    validate :validate_group_is_public?, if: :is_public?
-    validate :validate_group_is_not_public?, unless: :is_public?
+      export do
+        field :weeks_count
+        field :first_monday
+        field :last_monday
+      end
+    end
+
     validates :street,
               :city,
               :tutor_name,
@@ -16,7 +31,11 @@ module InternshipOffers
               :tutor_email,
               presence: true
 
-   
+
+    validates :max_candidates, numericality: { only_integer: true,
+                                               greater_than: 0,
+                                               less_than_or_equal_to: MAX_CANDIDATES_PER_GROUP }
+    after_initialize :init
     before_create :reverse_academy_by_zipcode
   end
 end

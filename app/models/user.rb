@@ -204,7 +204,6 @@ class User < ApplicationRecord
     false
   end
 
-
   def send_reconfirmation_instructions
     @reconfirmation_required = false
     unless @raw_confirmation_token
@@ -220,7 +219,6 @@ class User < ApplicationRecord
       end
     end
   end
-
 
   private
 

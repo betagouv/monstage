@@ -19,6 +19,7 @@ module Dashboard::Stepper
     #
     test 'POST create redirects to new internship offer info' do
       employer = create(:employer)
+      group  = create(:group, is_public: true)
       sign_in(employer)
 
       assert_changes "Organisation.count", 1 do
@@ -26,25 +27,26 @@ module Dashboard::Stepper
           dashboard_stepper_organisations_path,
           params: {
             organisation: {
-              name: 'BigCorp',
+              employer_name: 'BigCorp',
               street: '12 rue des bois',
               zipcode: '75001',
               city: 'Paris',
               coordinates: { latitude: 1, longitude: 1 },
-              description_rich_text: '<div><b>Activités de découverte</b></div>',
-              is_public: 'true',
-              website: 'www.website.com'
+              employer_description_rich_text: '<div><b>Activités de découverte</b></div>',
+              is_public: group.is_public,
+              group_id: group.id,
+              employer_website: 'www.website.com'
             }
           })
       end
 
       created_organisation = Organisation.last
-      assert_equal 'BigCorp', created_organisation.name
+      assert_equal 'BigCorp', created_organisation.employer_name
       assert_equal '12 rue des bois', created_organisation.street
       assert_equal '75001', created_organisation.zipcode
       assert_equal 'Paris', created_organisation.city
-      assert_equal 'Activités de découverte', created_organisation.description
-      assert_equal 'www.website.com', created_organisation.website
+      assert_equal 'Activités de découverte', created_organisation.employer_description_rich_text.to_plain_text.to_s
+      assert_equal 'www.website.com', created_organisation.employer_website
       assert_equal employer.id, created_organisation.employer_id
       assert_equal true, created_organisation.is_public
 

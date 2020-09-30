@@ -47,12 +47,12 @@ module Dashboard::Stepper
     def organisation_params
       params.require(:organisation)
             .permit(
-              :name,
+              :employer_name,
               :street,
               :zipcode,
               :city,
-              :description_rich_text,
-              :website,
+              :employer_description_rich_text,
+              :employer_website,
               :is_public,
               :group_id,
               :organisation_autocomplete,
