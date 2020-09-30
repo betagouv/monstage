@@ -15,7 +15,9 @@
         .col-9
           .d-flex.flex-row.align-items-baseline
             h1.h5.mb-3.font-weight-light.mr-2= "Proposition de stage : "
-            h1.h5.mb-3= @internship_offer.title
+            h1.h5.mb-3
+              = link_to internship_offers_path(@internship_offer) , class: 'icon-link' do
+                = @internship_offer.title
 
       - if @internship_offer.weekly?
         = render partial: 'dashboard/internship_offers/internship_applications/filters'

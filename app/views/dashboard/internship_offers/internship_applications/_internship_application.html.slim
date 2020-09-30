@@ -67,7 +67,7 @@
             i.fas.fa-wheelchair
             Besoin d'accompagnement
           .reboot-trix-content.student-handicap= internship_application.student.handicap.to_s
-        .actions.mt-4
+        .d-flex.flex-row.mt-4
           - if internship_application.submitted?
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application

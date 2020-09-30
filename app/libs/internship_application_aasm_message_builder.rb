@@ -15,13 +15,10 @@ class InternshipApplicationAasmMessageBuilder
 
   MAP_TARGET_TO_BUTTON_COLOR = {
     approve!: 'primary',
-    cancel_by_employer!: 'outline-danger',
-    cancel_by_student!: 'outline-danger',
-    reject!: 'outline-danger'
+    cancel_by_employer!: 'outline-danger no-border',
+    cancel_by_student!: 'outline-danger no-border',
+    reject!: 'outline-danger no-border'
   }.freeze
-  # cancel_by_employer!: 'outline-danger no-border',
-  # cancel_by_student!: 'outline-danger no-border',
-  # reject!: 'outline-danger no-border'
 
   def target_action_color
     MAP_TARGET_TO_BUTTON_COLOR.fetch(aasm_target)
