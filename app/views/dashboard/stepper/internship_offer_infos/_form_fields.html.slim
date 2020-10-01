@@ -83,6 +83,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
 
         = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: false, disabled: !resource.is_fully_editable? }
         = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { internship_offer: resource }
+
       - if submit_button
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"
@@ -90,5 +91,9 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
               i.fa.fa-arrow-left
           .col-6.text-right
             = button_tag :submit, class: 'btn btn-primary' do
-              | Suivant 
+              | Suivant
               i.fas.fa-arrow-right
+    - if warning_bloc
+      .col-6= render partial: 'dashboard/stepper/warning_block'
+
+

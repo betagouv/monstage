@@ -5,6 +5,8 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
+      after_initialize :init
+
       enum school_track: {
         troisieme_generale: 'troisieme_generale',
         troisieme_prepa_metier: 'troisieme_prepa_metier',
@@ -29,6 +31,9 @@ module StepperProxy
         max_candidates == 1
       end
 
+       def init
+        self.max_candidates ||= 1
+      end
     end
   end
 end

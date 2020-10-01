@@ -1,4 +1,4 @@
-= form_with({model: @internship_offer, url:  dashboard_internship_offer_path(@internship_offer), scope: :internship_offer, data: { controller: 'internship-form'}, local: true}) do |form|
+= form_with({model: @internship_offer, url: (@internship_offer.new_record? ? dashboard_internship_offers_path() : dashboard_internship_offer_path(@internship_offer)), scope: :internship_offer, data: { controller: 'internship-form'}, local: true}) do |form|
   = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
@@ -14,11 +14,11 @@
   = form.hidden_field :tutor_id, value: @internship_offer.tutor_id
 
   // Organisation
-  = render 'dashboard/stepper/organisations/form_fields', { resource: @internship_offer, form: form, submit_button: false }
+  = render 'dashboard/stepper/organisations/form_fields', { resource: @internship_offer, form: form, warning_bloc: false, submit_button: false }
 
   hr
   // OfferInfo
-  = render 'dashboard/stepper/internship_offer_infos/form_fields', { resource: @internship_offer, form: form, submit_button: false }
+  = render 'dashboard/stepper/internship_offer_infos/form_fields', { resource: @internship_offer, form: form, warning_bloc: false, submit_button: false }
 
   hr
   // Tutor

@@ -13,7 +13,7 @@ module StepperProxy
       validates :employer_description, length: { maximum: InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
       validates :is_public, inclusion: { in: [true, false] }
 
-      validates :group, presence: true, unless: Proc.new { |obj| obj.from_api? }
+      # validates :group, presence: true, unless: :from_api?
       validate :validate_group_is_public?, if: :is_public?
       validate :validate_group_is_not_public?, unless: :is_public?
 

@@ -40,39 +40,41 @@ module Dashboard::Stepper
       sign_in(employer)
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
-
-      post(
-        dashboard_stepper_internship_offer_infos_path(organisation_id: 1),
-        params: {
-          internship_offer_info: {
-            sector_id: sector.id,
-            title: 'PDG stagiaire',
-            type: 'InternshipOfferInfos::WeeklyFramed',
-            description_rich_text: '<div><b>Activités de découverte</b></div>',
-            'week_ids' => weeks.map(&:id),
-          },
-          daily_start_0: '10:00',
-          daily_end_0: '13:00',
-          daily_start_1: '9:00',
-          daily_end_1: '17:00',
-          daily_start_2: '9:00',
-          daily_end_2: '17:00',
-          daily_start_3: '9:00',
-          daily_end_3: '17:00',
-          daily_start_4: '9:00',
-          daily_end_4: '17:00',
-          daily_start_5: '',
-          daily_end_5: ''
-        })
+      organisation = create(:organisation, employer: employer)
+      assert_difference('InternshipOfferInfo.count') do
+        post(
+          dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
+          params: {
+            internship_offer_info: {
+              sector_id: sector.id,
+              title: 'PDG stagiaire',
+              type: 'InternshipOfferInfos::WeeklyFramed',
+              description_rich_text: '<div><b>Activités de découverte</b></div>',
+              'week_ids' => weeks.map(&:id),
+            },
+            daily_start_0: '10:00',
+            daily_end_0: '13:00',
+            daily_start_1: '9:00',
+            daily_end_1: '17:00',
+            daily_start_2: '9:00',
+            daily_end_2: '17:00',
+            daily_start_3: '9:00',
+            daily_end_3: '17:00',
+            daily_start_4: '9:00',
+            daily_end_4: '17:00',
+            daily_start_5: '',
+            daily_end_5: ''
+          })
+      end
       created_internship_offer_info = InternshipOfferInfo.last
       assert_equal 'PDG stagiaire', created_internship_offer_info.title
       assert_equal sector.id, created_internship_offer_info.sector_id
       assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
-      assert_equal 'Activités de découverte', created_internship_offer_info.description
+      assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
       assert_equal [["10:00", "13:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ['', '']], created_internship_offer_info.daily_hours
       assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
       assert_redirected_to new_dashboard_stepper_tutor_path(
-        organisation_id: 1,
+        organisation_id: organisation.id,
         internship_offer_info_id: created_internship_offer_info.id,
       )
     end
@@ -83,9 +85,9 @@ module Dashboard::Stepper
       sign_in(employer)
       sector = create(:sector)
       weeks = [weeks(:week_2019_1)]
-
+      organisation = create(:organisation, employer: employer)
       post(
-        dashboard_stepper_internship_offer_infos_path,
+        dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
         params: {
           internship_offer_info: {
             sector_id: sector.id,

@@ -16,7 +16,6 @@ module Dashboard::Stepper
     # process step 2
     def create
       authorize! :create, InternshipOfferInfo
-
       @internship_offer_info = InternshipOfferInfo.new(
         {}.merge(internship_offer_info_params)
           .merge(prepare_daily_hours(params))

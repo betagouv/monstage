@@ -61,8 +61,6 @@ module InternshipOffers
     validates :zipcode, zipcode: { country_code: :fr }
     validates :remote_id, uniqueness: { scope: :employer_id }
 
-    after_initialize :init
-
     def init
       self.is_public ||= false
       super

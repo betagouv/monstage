@@ -7,4 +7,4 @@
       = render "dashboard/stepper/steps"
       = form.rg2a_explain_required_asterisk
       = render "layouts/form_errors", resource: @organisation, resource_name: :internship_offer
-      = render 'dashboard/stepper/organisations/form_fields', { resource: @organisation, form: form, submit_button: true }
+      = render 'dashboard/stepper/organisations/form_fields', { resource: @organisation, form: form, submit_button: true, warning_bloc: true }
