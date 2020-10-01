@@ -16,6 +16,7 @@ module Dashboard::Stepper
                                              internship_offer_info_id: internship_offer_info.id)
 
         assert_response :success
+        assert_select 'input[name="tutor[tutor_name]"]'
       end
     end
 
@@ -27,9 +28,10 @@ module Dashboard::Stepper
       get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                             internship_offer_info_id: internship_offer_info.id)
 
-      assert_select('a.btn-back[href=?]',
+      assert_select('a[href=?]',
                     edit_dashboard_stepper_internship_offer_info_path(
-                      internship_offer_info.id,
+                      id: internship_offer_info.id,
+                      internship_offer_info_id: internship_offer_info.id,
                       organisation_id: organisation.id
                     ))
     end

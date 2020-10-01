@@ -43,7 +43,7 @@ module Dashboard::Stepper
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
       authorize! :update, @internship_offer_info
 
-      if InternshipOfferInfo.update(internship_offer_info_params.merge!(prepare_daily_hours(params)))
+      if @internship_offer_info.update(internship_offer_info_params.merge!(prepare_daily_hours(params)))
         redirect_to  new_dashboard_stepper_tutor_path(
           organisation_id: params[:organisation_id],
           internship_offer_info_id: @internship_offer_info.id,

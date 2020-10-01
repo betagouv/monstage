@@ -1,4 +1,4 @@
-= form_with({model: @internship_offer_info, url: (@internship_offer_info.new_record? ? dashboard_stepper_internship_offer_infos_path(organisation_id: params[:organisation_id]) : dashboard_stepper_internship_offer_info_path(id: @internship_offer_info, organisation_id: params[:organisation_id])), scope: :internship_offer_info, local: true}) do |form|
+= form_with({model: @internship_offer_info, url: (@internship_offer_info.new_record? ? dashboard_stepper_internship_offer_infos_path(organisation_id: params[:organisation_id]) : dashboard_stepper_internship_offer_info_path(id: @internship_offer_info, internship_offer_info_id: @internship_offer_info.id, organisation_id: params[:organisation_id])), scope: :internship_offer_info, local: true}) do |form|
 
   = render "dashboard/stepper/steps"
 
