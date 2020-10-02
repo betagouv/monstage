@@ -1,9 +1,7 @@
 fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-infos-base-type="#{resource.class.to_s.split("s::").first}"
+  legend.my-4 Offre de stage
   .row.mt-3
     .col-6
-      legend.my-4 Offre de stage
-      = form.hidden_field :employer_id, value: current_user.id
-
       .form-group
         = form.label :school_track do
           = "Filière cible"
