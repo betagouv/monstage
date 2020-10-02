@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :internship_offers, only: %i[index show edit] do
+  resources :internship_offers, only: %i[index show] do
     resources :internship_applications, only: %i[create index show update]
   end
 
@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     namespace :stepper do
       resources :organisations, only: %i[create new edit update]
       resources :internship_offer_infos, only: %i[create new edit update]
-      resources :tutors, only: %i[create new edit update]
+      resources :tutors, only: %i[create new]
     end
 
     resources :internship_agreements
