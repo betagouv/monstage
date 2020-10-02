@@ -10,7 +10,6 @@ class InternshipOffer < ApplicationRecord
   # queries
   include Listable
   include FindableWeek
-  include Nearbyable
   include Zipcodable
 
   include StepperProxy::InternshipOfferInfo

@@ -14,15 +14,13 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     select sector.name, from: 'internship_offer_info_sector_id' if sector
     find('#internship_offer_info_description_rich_text', visible: false).set("Le dev plus qu'une activité, un lifestyle.\n Venez découvrir comment creer les outils qui feront le monde de demain")
     find('label', text: 'Individuel').click
-    find('label[for="all_year_long"]').click
-
   end
 
   test 'can create InternshipOfferInfos::WeeklyFramed' do
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
-    organisation = create(:organisation)
+    organisation = create(:organisation, employer: employer)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
@@ -33,6 +31,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
                      weeks: available_weeks)
 
         click_on "Suivant"
+        find('label', text: 'Nom du tuteur/trice')
       end
     end
   end
@@ -41,16 +40,17 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     schools = [create(:school), create(:school)]
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
-    organisation = create(:organisation)
+    organisation = create(:organisation, employer: employer)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::FreeDate.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-        fill_in_form(school_track: :troisieme_generale,
+        fill_in_form(school_track: :bac_pro,
                      sector: sectors.first,
                      weeks: available_weeks)
         click_on "Suivant"
+        find('label', text: 'Nom du tuteur/trice')
       end
     end
   end
@@ -58,7 +58,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
   test 'fails gracefuly' do
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
-    organisation = create(:organisation)
+    organisation = create(:organisation, employer: employer)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     travel_to(Date.new(2019, 3, 1)) do

@@ -1,6 +1,5 @@
 class Organisation < ApplicationRecord
   include StepperProxy::Organisation
-  include Nearbyable
 
   # for ACL
   belongs_to :employer, class_name: 'User'

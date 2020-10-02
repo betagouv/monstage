@@ -14,7 +14,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
     find('#test-input-full-address #downshift-2-item-0').click
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
 
-    find('#organisation_description_rich_text', visible: false).set("Une super cool entreprise")
+    find('#organisation_employer_description_rich_text', visible: false).set("Une super cool entreprise")
     fill_in 'Site web (optionnel)', with: 'https://beta.gouv.fr/'
   end
 
@@ -54,7 +54,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       find('#test-create-offer').click
       fill_in_form(is_public: true, group: group)
       as = 'a' * 501
-      find('#organisation_description_rich_text', visible: false).set(as)
+      find('#organisation_employer_description_rich_text', visible: false).set(as)
       click_on "Suivant"
       find('#error_explanation')
     end

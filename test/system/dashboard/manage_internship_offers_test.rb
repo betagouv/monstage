@@ -17,12 +17,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'can create InternshipOffer' do
     employer = create(:employer)
     sign_in(employer)
-    organisation = create(:organisation)
-    internship_offer_info = create(:weekly_internship_offer_info)
+    organisation = create(:organisation, employer: employer)
+    internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_internship_offer_path(organisation_id: organisation.id, 
-          internship_offer_info_id: internship_offer_info.id)
+        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
+                                               internship_offer_info_id: internship_offer_info.id)
         fill_in_form
         click_on "Publier l'offre !"
         wait_form_submitted
@@ -37,7 +37,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
-    fill_in 'Nom de l’entreprise proposant l’offre', with: 'New Company'
+    find('input[name="internship_offer[employer_name]"]').fill_in(with: 'New Company')
 
     click_on "Modifier l'offre"
     wait_form_submitted
@@ -105,11 +105,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'fails gracefuly' do
     employer = create(:employer)
-    organisation = create(:organisation)
-    internship_offer_info = create(:internship_offer_info)
-    sign_in(employer)  
-    visit new_dashboard_internship_offer_path(organisation_id: organisation.id, 
-      internship_offer_info_id: internship_offer_info.id)
+    organisation = create(:organisation, employer: employer)
+    internship_offer_info = create(:internship_offer_info, employer: employer)
+    sign_in(employer)
+    visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
+                                           internship_offer_info_id: internship_offer_info.id)
     fill_in_form
     fill_in 'Numéro de téléphone', with: 'abc'
     click_on "Publier l'offre !"

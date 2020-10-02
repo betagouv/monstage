@@ -13,6 +13,10 @@ class InternshipOfferInfo < ApplicationRecord
     false
   end
 
+  def from_api?
+    false
+  end
+
   def is_fully_editable?
     true
   end

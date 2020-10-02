@@ -20,6 +20,10 @@ module StepperProxy
       validates :max_candidates, numericality: { only_integer: true,
                                                  greater_than: 0,
                                                  less_than_or_equal_to: InternshipOffer::MAX_CANDIDATES_PER_GROUP }
+      validates :description, presence: true,
+                              length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT },
+                              if: :from_api?
+      validate :validate_description_rich_text_length, unless: :from_api?
 
       # Relations
       belongs_to :school, optional: true # reserved to school
@@ -31,7 +35,11 @@ module StepperProxy
         max_candidates == 1
       end
 
-       def init
+      def validate_description_rich_text_length
+        description_rich_text.to_plain_text.size < InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+      end
+
+      def init
         self.max_candidates ||= 1
       end
     end

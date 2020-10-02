@@ -174,7 +174,7 @@ module Dashboard::Stepper
       assert_difference('InternshipOffer.count', 1) do
         post(
           dashboard_stepper_tutors_path(organisation_id: organisation.id,
-                                         internship_offer_info_id: internship_offer_info.id),
+                                        internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
               tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
