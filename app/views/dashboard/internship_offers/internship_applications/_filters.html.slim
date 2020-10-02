@@ -2,13 +2,12 @@
   .row
     .col-2.text-right.pt-2
       span.small Trier par
-    .col-8.text-center
-      = form_tag(url: dashboard_internship_offer_internship_applications_path, method: :get) do
-        .form-group data-controller='applications-order'
-          .toggle-radio
-            = radio_button_tag :order, 'applicationDate', [nil, 'applicationDate'].include?(params[:order]), class: '', 'data-target':"applications-order.applicationDate"
-            = label :order, 'Dates de candidature', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
-            = radio_button_tag :order, 'internshipDate', params[:order] == 'internshipDate', class: '', 'data-target':"applications-order.internshipDate"
-            = label :order, 'Dates de stage', class: 'small pointer', 'data-action':'click->applications-order#applicationOrderHandle'
-          = submit_tag 'Submit', class: 'd-none', id: 'hidden-button'
+    .col-8.text-center.d-flex
+      - btn_class = 'wide-btn d-flex align-items-center mb-2 text-smaller h5'
+      = link_to "Dates de candidature",
+                dashboard_internship_offer_internship_applications_path(order: 'applicationDate'),
+                class: [nil, 'applicationDate'].include?(params[:order]) ? "#{btn_class} blue btn-radius-left" : "#{btn_class} white btn-radius-left"
+      = link_to "Dates de stage",
+                dashboard_internship_offer_internship_applications_path(order: 'internshipDate'),
+                class: (params[:order] == 'internshipDate' ? "#{btn_class} blue btn-radius-right" : "#{btn_class} white btn-radius-right")
 

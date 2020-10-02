@@ -30,7 +30,9 @@ html h3,
 html h4,
 html .h4,
 html h5,
-html .h5{
+html .h5,
+html h6,
+html .h6{
   color: $blue;
 }
 html .gray-666{
@@ -52,7 +54,9 @@ html .gray-999{
   html h4,
   html .h4,
   html h5,
-  html .h5
+  html .h5,
+  html h6,
+  html .h6
   {
     // font-weight: 600;
   }
@@ -81,7 +85,15 @@ html .gray-999{
     font-size: $html-font-size-base;
     line-height: ($html-font-size-base) * $mobile-line-height-ratio;
   }
+  html h6,
+  html .h6 {
+    font-size: $html-font-size-base * 0.75;
+    line-height: ($html-font-size-base * 0.75) * $mobile-line-height-ratio;
+  }
 }
 .text-bigger{
   font-size: $html-font-size-base * 1.125;
+}
+.text-smaller{
+  font-size: $html-font-size-base / 1.125;
 }

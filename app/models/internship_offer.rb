@@ -78,8 +78,6 @@ class InternshipOffer < ApplicationRecord
   scope :unpublished, -> { where(published_at: nil) }
   scope :published, -> { where.not(published_at: nil) }
 
-  scope :to_be_signed,->{ where(aasm_state: 'approved') }
-
   scope :weekly_framed, lambda {
     where(type: [InternshipOffers::WeeklyFramed.name,
                  InternshipOffers::Api.name])
@@ -125,23 +123,6 @@ class InternshipOffer < ApplicationRecord
   scope :published, -> { where.not(published_at: nil) }
 
   paginates_per PAGE_SIZE
-
-  # accepts_nested_attributes_for :organisation, :internship_offer_info, :mentor, allow_destroy: true
-
-  # aasm do
-  #   state :drafted, initial: true
-  #   state :step_2,
-  #         :step_3,
-  #         :submitted,
-  #         :approved,
-  #         :rejected
-
-  #   event :submit do
-  #     transitions from: :step_3, to: :submitted, after: proc {|*_args|
-  #       update!("submitted_at": Time.now.utc)
-  #     }
-  #   end
-  # end
 
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true

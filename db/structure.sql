@@ -618,13 +618,7 @@ CREATE TABLE public.internship_offers (
     last_date date,
     type character varying,
     search_tsv tsvector,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    aasm_state character varying,
-    internship_offer_info_id bigint,
-    organisation_id bigint,
-    mentor_id bigint,
-    weekly_hours text[] DEFAULT '{}'::text[],
-    daily_hours text[] DEFAULT '{}'::text[]
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
 );
 
 
