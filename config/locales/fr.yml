@@ -190,6 +190,8 @@ fr:
           attributes: &organisation_errors
             employer_name:
               blank: "Veuillez saisir le nom de l'employeur"
+            employer_description_rich_text:
+              too_long: La description doit faire au maximum 250 caractères
             coordinates:
               blank: "Veuillez saisir et sélectionner une adresse avec l'outil de complétion automatique"
             zipcode:
@@ -209,9 +211,6 @@ fr:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
               blank: "Le stage doit être soit collectif, soit individuel"
-            description:
-              blank: "Veuillez saisir une description pour l'offre de stage"
-              too_long: La description doit faire au maximum 500 caractères
             description_rich_text:
               blank: "Veuillez saisir une description pour l'offre de stage"
               too_long: La description doit faire au maximum 500 caractères

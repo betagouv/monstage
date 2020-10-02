@@ -29,7 +29,7 @@ fieldset.mt-4 data-controller='organisation-form'
                               currentLatitude: resource.coordinates.try(:lat).try(:to_f),
                               currentLongitude: resource.coordinates.try(:lon).try(:to_f),
                               currentFullAddress: resource.formatted_autocomplete_address})
-      .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+      .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
         .label data-rich-text-label-for='organisation_description_rich_text' data-controller="rich-text-label"
           | Description de l'entreprise (optionnel)
         = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }

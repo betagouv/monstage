@@ -53,7 +53,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
       visit employer.custom_dashboard_path
       find('#test-create-offer').click
       fill_in_form(is_public: true, group: group)
-      as = 'a' * 501
+      as = 'a' * (InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT + 2)
       find('#organisation_employer_description_rich_text', visible: false).set(as)
       click_on "Suivant"
       find('#error_explanation')

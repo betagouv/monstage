@@ -27,17 +27,5 @@ module Dashboard::InternshipOffers
       assert_select '.form-group-select-max-candidates.d-none', count: 0
       assert_select '.form-group-select-max-candidates', count: 1
     end
-
-    test 'GET #new as Employer with duplicate_id with old offer' do
-      internship_offer = create(:weekly_internship_offer)
-      internship_offer.update(description_rich_text: nil, employer_description_rich_text: nil)
-      internship_offer.update_column(:description, 'woot')
-      internship_offer.update_column(:employer_description, 'woot woot')
-      sign_in(internship_offer.employer)
-      get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
-      assert_response :success
-      assert_select 'input[name="internship_offer[description_rich_text]"][value="woot"]'
-      assert_select 'input[name="internship_offer[employer_description_rich_text]"][value="woot woot"]'
-    end
   end
 end

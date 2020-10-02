@@ -25,7 +25,7 @@ module StepperProxy
       has_rich_text :employer_description_rich_text
 
       def employer_description_rich_text_length
-        employer_description_rich_text.to_plain_text.size < InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+        errors.add(:employer_description_rich_text, :too_long) if employer_description_rich_text.to_plain_text.size > InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
       end
 
       def validate_group_is_public?

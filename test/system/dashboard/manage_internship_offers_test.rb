@@ -37,11 +37,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
-    find('input[name="internship_offer[employer_name]"]').fill_in(with: 'New Company')
+    find('input[name="internship_offer[employer_name]"]').fill_in(with: 'NewCompany')
 
     click_on "Modifier l'offre"
     wait_form_submitted
-    assert_equal 'New Company', internship_offer.reload.employer_name
+    assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
   # test 'can edit school_track of an internship offer back and forth' do
@@ -101,18 +101,5 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                         delta = 10
       end
     end
-  end
-
-  test 'fails gracefuly' do
-    employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
-    internship_offer_info = create(:internship_offer_info, employer: employer)
-    sign_in(employer)
-    visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
-                                           internship_offer_info_id: internship_offer_info.id)
-    fill_in_form
-    fill_in 'Numéro de téléphone', with: 'abc'
-    click_on "Publier l'offre !"
-    find('#error_explanation')
   end
 end

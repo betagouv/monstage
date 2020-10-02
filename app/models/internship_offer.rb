@@ -211,8 +211,8 @@ class InternshipOffer < ApplicationRecord
   #     we add a new description_rich_text element which is rendered when possiblee
   #   4. Bonus -> description will be used for description_tsv as template to extract keywords
   def replicate_rich_text_to_raw_fields
-    self.description = description_rich_text.to_plain_text if description_rich_text.to_s.present?
-    if employer_description_rich_text.to_s.present?
+    self.description = description_rich_text.to_plain_text if description_rich_text && description_rich_text.to_s.present?
+    if employer_description_rich_text && employer_description_rich_text.to_s.present?
       self.employer_description = employer_description_rich_text.to_plain_text
     end
   end

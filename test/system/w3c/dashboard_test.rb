@@ -27,11 +27,11 @@ module W3c
       end
     end
 
-    test 'new_dashboard_internship_offer_path' do
-      employer = create(:employer)
-      sign_in(employer)
+    test 'new_dashboard_internship_offer_path(duplicate_id)' do
+      stage_dev = create(:weekly_internship_offer)
+      sign_in(stage_dev.employer)
       run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
-        visit new_dashboard_internship_offer_path
+        visit new_dashboard_internship_offer_path(duplicate_id: stage_dev.id)
       end
     end
 

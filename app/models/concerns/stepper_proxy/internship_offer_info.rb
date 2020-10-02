@@ -36,7 +36,8 @@ module StepperProxy
       end
 
       def validate_description_rich_text_length
-        description_rich_text.to_plain_text.size < InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
+        errors.add(:description_rich_text, :blank) if description_rich_text.to_plain_text.size.zero?
+        errors.add(:description_rich_text, :too_long) if description_rich_text.to_plain_text.size > InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
       end
 
       def init
