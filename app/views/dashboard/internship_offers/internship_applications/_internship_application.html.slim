@@ -75,7 +75,7 @@ div class="#{cycle("bg-light", "")} row"
               = "En attente de convention"
           div.mt-2
             .d-inline-flex
-              - if Rails.application.credentials.convention_activated
+              - if ENV['CONVENTION_ENABLED']
                 = link_to 'Créer la convention en ligne', '#', class: 'btn btn-outline-danger'
 
         - if internship_application.rejected?

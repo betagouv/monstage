@@ -17,11 +17,11 @@
                 = application.internship_offer.title
             td.col-sm-3 style="width: 300px" data-head="Action"
               .actions.d-flex.d-sm-block.text-right
-                - if Rails.application.credentials.convention_activated
+                - if ENV['CONVENTION_ENABLED']
                   = link_to '#', class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
                     i.fa.fa-pen
                     span.text-action
                       |  Signer la convention
-               
+
 
           = render "dashboard/internship_offers/internship_applications/show_modal", application:application

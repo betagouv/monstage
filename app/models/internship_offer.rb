@@ -14,6 +14,7 @@ class InternshipOffer < ApplicationRecord
 
   include StepperProxy::InternshipOfferInfo
   include StepperProxy::Organisation
+  include StepperProxy::Tutor
 
   # utils
   include Discard::Model
@@ -85,13 +86,6 @@ class InternshipOffer < ApplicationRecord
   scope :free_date, lambda {
     where(type: InternshipOffers::FreeDate.name)
   }
-
-  validates :title,
-            :city,
-            presence: true
-
-  validates :description, length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
-
 
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
@@ -222,7 +216,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def reverse_academy_by_zipcode
-    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode || organisation.zipcode)
+    self.academy = Academy.lookup_by_zipcode(zipcode: zipcode)
   end
 
   def sync_internship_offer_keywords
