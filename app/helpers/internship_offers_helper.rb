@@ -2,8 +2,16 @@
 
 # used in internships#index
 module InternshipOffersHelper
-  def duplicating?
-    params[:duplicate_id].present?
+  def preselect_all_weeks?(object)
+    is_new_record = object.new_record?
+    is_preselectable_entity = [
+      InternshipOfferInfo,
+      InternshipOfferInfos::WeeklyFramed,
+      InternshipOffer,
+      InternshipOffers::WeeklyFramed
+    ]
+
+    is_new_record && is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end
 
   def internship_offer_application_path(object)
@@ -27,7 +35,7 @@ module InternshipOffersHelper
                              'organisation-form.groupNamePublic'
                            else
                              'organisation-form.groupNamePrivate'
-end
+                           end
         }
       ]
     end
@@ -59,29 +67,6 @@ end
     default_params = options.merge(id: internship_offer.id)
 
     internship_offer_path(default_params.merge(forwardable_params))
-  end
-
-  def internship_offer_type_options_for_default
-    '-- Veuillez sélectionner un niveau scolaire --'
-  end
-
-  def tr_school_prefix
-    'activerecord.attributes.internship_offer.internship_type'
-  end
-
-  def options_for_internship_type
-    [
-      [I18n.t("#{tr_school_prefix}.middle_school"), 'InternshipOffers::WeeklyFramed'],
-      [I18n.t("#{tr_school_prefix}.high_school"), 'InternshipOffers::FreeDate']
-    ]
-  end
-
-  def tr_school_type(internship_offer)
-    case internship_offer.class.name
-    when 'InternshipOffers::WeeklyFramed' then I18n.t("#{tr_school_prefix}.middle_school")
-    when 'InternshipOffers::FreeDate' then I18n.t("#{tr_school_prefix}.high_school")
-    else I18n.t("#{tr_school_prefix}.middle_school")
-    end
   end
 
   def select_weekly_start(internship_offer)
