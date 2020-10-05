@@ -4,9 +4,9 @@
       .col-1.col-sm-1.text-center
         a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbolinks="false"
           - if internship_application.submitted?
-            i.fas.fa-2x.just-red.fa-caret-down
+            i.fas.fa-2x.text-danger.fa-caret-down
           - else
-            i.fas.fa-2x.just-red.fa-caret-right
+            i.fas.fa-2x.text-danger.fa-caret-right
 
 
       .col-11

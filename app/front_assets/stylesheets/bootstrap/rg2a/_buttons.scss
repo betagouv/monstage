@@ -11,30 +11,3 @@ a.btn {
   font-weight: bold;
   border-radius: 1rem * 1.5;
 }
-.wide-btn.blue, .wide-btn.white {
-  display: inline-block;
-  text-decoration: none;
-  height: 35px;
-  font-weight: 700;
-  font-size: 0.7 rem;
-  border: 1px #DDD solid;
-  padding: 1.2rem 4rem;
-  vertical-align: middle;
-}
-.wide-btn.blue{
-  background-color: $blue;
-  color: $white;
-}
-.wide-btn.white{
-  background-color: $white;
-  color: $blue;
-}
-
-.btn-radius-left{
-  border-top-left-radius: 7px;
-  border-bottom-left-radius: 7px;
-}
-.btn-radius-right{
-  border-top-right-radius: 7px;
-  border-bottom-right-radius: 7px;
-}

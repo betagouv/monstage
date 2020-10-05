@@ -105,14 +105,14 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
 
-      find('.wide-btn', text: 'Dates de stage').click
+      click_link('Dates de stage')
       if week_1.id < week_2. id # normal case
         find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
       else # might happen with fixture random order creation
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
 
-      find('.wide-btn', text: 'Dates de candidature').click
+      click_link('Dates de candidature')
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
     end
 
