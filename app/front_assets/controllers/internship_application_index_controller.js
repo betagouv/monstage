@@ -1,12 +1,14 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
-import { toggleElement, hideElement, isVisible } from '../utils/dom';
+import { toggleElement, hideElement, showElement, isVisible } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
 
   initialize(){
-    this.toggle()
+    hideElement($(this.collapsibleTarget));
+    hideElement($(this.linkIconContainerTarget));
+    showElement($(this.linkTextShowMoreTarget));
   }
 
   toggle() {
