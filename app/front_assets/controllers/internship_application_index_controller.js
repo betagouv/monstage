@@ -1,12 +1,15 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
-import { toggleElement, hideElement, isVisible } from '../utils/dom';
+import { toggleElement, hideElement, showElement, isVisible } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
 
   initialize(){
-    this.toggle()
+    $(this.linkIconContainerTarget).html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
+    $(this.motivationTarget).addClass('text-truncate-max-height-50');
+    hideElement($(this.collapsibleTarget));
+    showElement($(this.linkTextShowMoreTarget));
   }
 
   toggle() {
