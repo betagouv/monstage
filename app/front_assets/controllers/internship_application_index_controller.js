@@ -6,8 +6,8 @@ export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
 
   initialize(){
+    $(this.linkIconContainerTarget).html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
     hideElement($(this.collapsibleTarget));
-    hideElement($(this.linkIconContainerTarget));
     showElement($(this.linkTextShowMoreTarget));
   }
 
