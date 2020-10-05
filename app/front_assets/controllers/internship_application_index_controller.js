@@ -7,6 +7,7 @@ export default class extends Controller {
 
   initialize(){
     $(this.linkIconContainerTarget).html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
+    $(this.motivationTarget).addClass('text-truncate-max-height-50');
     hideElement($(this.collapsibleTarget));
     showElement($(this.linkTextShowMoreTarget));
   }
