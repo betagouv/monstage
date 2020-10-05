@@ -1,8 +1,9 @@
-- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order,:keyword, :direction)
+- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order, :direction, :keyword)
 
 ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - is_active = params[:filter].blank?
-  li.nav-item= link_to dashboard_internship_offers_path(forwarded_params), class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+  li.nav-item= link_to dashboard_internship_offers_path(forwarded_params),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
         = "En cours"
         - if is_active
@@ -16,15 +17,12 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
           = " (#{internship_offers.total_count})"
 
   - is_active = params[:filter] == 'past'
-  li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)), class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+  li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
-        = "Passées"
+        => "Passées"
         - if is_active
           = " (#{internship_offers.total_count})"
 
-  li.nav-item.col.p-0.pb-sm-3.pr-sm-0.actions.d-flex.d-sm-block.d-xs-stick.text-right
-    = link_to new_dashboard_internship_offer_path, class: 'ml-auto rounded-xs-0 btn btn-primary', id: 'test-create-offer'
-      = "Déposer une offre "
-      i.fas.fa-plus
 
 
