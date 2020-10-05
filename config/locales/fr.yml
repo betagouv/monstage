@@ -98,7 +98,7 @@ fr:
 
       organisation: &organisation_fields
         employer_name: Employeur
-        employer_description_rich_text: Description de l'employeur
+        employer_description: Description de l'employeur
         employer_website: Site web de l'employeur
         is_public: Secteur public
         group: Groupe ou institution
@@ -109,7 +109,7 @@ fr:
 
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
-        description_rich_text: Description
+        description: Description
         sector: Secteur
         school_type: Niveau scolaire
         max_candidates: Nbr. max de candidats
@@ -190,7 +190,7 @@ fr:
           attributes: &organisation_errors
             employer_name:
               blank: "Veuillez saisir le nom de l'employeur"
-            employer_description_rich_text:
+            employer_description:
               too_long: La description doit faire au maximum 250 caractères
             coordinates:
               blank: "Veuillez saisir et sélectionner une adresse avec l'outil de complétion automatique"
@@ -211,7 +211,7 @@ fr:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
               blank: "Le stage doit être soit collectif, soit individuel"
-            description_rich_text:
+            description:
               blank: "Veuillez saisir une description pour l'offre de stage"
               too_long: La description doit faire au maximum 500 caractères
             sector:

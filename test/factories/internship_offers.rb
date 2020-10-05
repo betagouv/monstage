@@ -31,13 +31,13 @@ FactoryBot.define do
       weeks { [Week.first] }
       employer { create(:employer) }
       school_track { :troisieme_generale }
-      description_rich_text { 'Lorem ipsum dolor' }
+      description { 'Lorem ipsum dolor' }
     end
 
     trait :free_date_internship_offer do
       employer { create(:employer) }
       school_track { :bac_pro }
-      description_rich_text { 'Lorem ipsum dolor' }
+      description { 'Lorem ipsum dolor' }
     end
 
     trait :discarded do
