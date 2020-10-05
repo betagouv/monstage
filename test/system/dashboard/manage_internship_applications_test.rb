@@ -114,6 +114,10 @@ module Dashboard
 
       click_link('Dates de candidature')
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+
+      click_link(internship_offer.title)
+      find "#test-backlink.text-danger" , count: 1
+
     end
 
     test 'show free_date_internship_applications internship offers' do
