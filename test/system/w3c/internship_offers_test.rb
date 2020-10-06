@@ -26,12 +26,5 @@ module W3c
         end
       end
     end
-
-    test 'new_internship_offer_path' do
-      sign_in(create(:employer))
-      run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
-        visit new_dashboard_internship_offer_path
-      end
-    end
   end
 end

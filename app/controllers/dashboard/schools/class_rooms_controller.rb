@@ -7,6 +7,7 @@ module Dashboard
 
       def index
         authorize! :index, ClassRoom
+        navbar_badges
       end
 
       def show

@@ -10,5 +10,13 @@ module NestedSchool
     def set_school
       @school = School.find(params.require(:school_id))
     end
+
+    def navbar_badges
+      @applications = InternshipApplication.joins(:student)
+                                            .includes({student: [:class_room]}, :internship_offer)
+                                            .approved
+                                            .where(student: @school.students)
+      @students_without_class_room = @school.students.where(class_room_id: nil)
+    end
   end
 end

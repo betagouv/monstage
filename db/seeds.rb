@@ -56,6 +56,14 @@ def populate_schools
   # end
 end
 
+def populate_class_rooms
+  school = School.first
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
+  ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
+end
+
 def with_class_name_for_defaults(object)
   object.first_name = "user"
   object.last_name = object.class.name
@@ -89,7 +97,21 @@ def populate_users
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
+end
+
+def populate_students
+  class_room = ClassRoom.first
+  school = class_room.school
+  with_class_name_for_defaults(Users::Student.new(email: 'student1@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student2@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student3@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student4@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student11@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student12@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student13@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student14@ms3e.fr', password: 'review', school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
 end
 
 def populate_internship_offers
@@ -160,10 +182,12 @@ end
 if Rails.env == 'review' || Rails.env.development?
   populate_week_reference
   populate_schools
+  populate_class_rooms
   School.update_all(updated_at: Time.now)
   populate_operators
   populate_users
   populate_sectors
   populate_groups
   populate_internship_offers
+  populate_students
 end

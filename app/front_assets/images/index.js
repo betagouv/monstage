@@ -6,6 +6,9 @@ import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
 import './onboarding/student.svg';
 
+import './internship_offers_new/fast_time.svg';
+import './internship_offers_new/paper.svg';
+
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 

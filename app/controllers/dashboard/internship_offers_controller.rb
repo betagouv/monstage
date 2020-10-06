@@ -15,11 +15,12 @@ module Dashboard
       # @all_states_counters = all_states_counters
     end
 
+    # duplicate submit
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: on_create_success_message })
+                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -71,15 +72,13 @@ module Dashboard
       end
     end
 
+    # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = if params[:duplicate_id].present?
-                            current_user.internship_offers
-                                        .find(params[:duplicate_id])
-                                        .duplicate
-                          else
-                            InternshipOffer.new
-                          end
+      @internship_offer = current_user.internship_offers
+                                      .find(params[:duplicate_id])
+                                      .duplicate
+
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -94,12 +93,6 @@ module Dashboard
       convention_signed_applications_count
       total_applications_count
     ].freeze
-
-    def on_create_success_message
-      params.dig(:internship_offer, :duplicating) ?
-      'Votre offre de stage a été renouvelée pour cette année scolaire.' :
-      'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.'
-    end
 
     def valid_order_column?
       VALID_ORDER_COLUMNS.include?(params[:order])
