@@ -36,3 +36,15 @@
 .badge-line{
   line-height: $line-height-base * 1.2;
 }
+.red-notification-badge{
+  background-color:$red;
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-weight: bolder;
+  font-size: smaller;
+}
+.no-border{
+  border : 0
+}

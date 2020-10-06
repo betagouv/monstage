@@ -14,10 +14,10 @@ class InternshipApplicationAasmMessageBuilder
            to: :internship_application
 
   MAP_TARGET_TO_BUTTON_COLOR = {
-    approve!: 'danger',
-    cancel_by_employer!: 'outline-danger',
-    cancel_by_student!: 'outline-danger',
-    reject!: 'outline-danger'
+    approve!: 'primary',
+    cancel_by_employer!: 'outline-danger no-border',
+    cancel_by_student!: 'outline-danger no-border',
+    reject!: 'outline-danger no-border'
   }.freeze
 
   def target_action_color
