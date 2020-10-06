@@ -82,6 +82,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
           .col-6.text-left style="display: flex;align-items: center"
             = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id]) do
               i.fa.fa-arrow-left
+              = " Précédent"
           .col-6.text-right
             = button_tag :submit, class: 'btn btn-primary' do
               | Suivant
