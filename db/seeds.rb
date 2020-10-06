@@ -58,10 +58,10 @@ end
 
 def populate_class_rooms
   school = School.first
-  ClassRoom.create(name: 'troisieme_generale', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: 'troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
-  ClassRoom.create(name: 'troisieme_segpa', school_track: :troisieme_segpa, school: school)
-  ClassRoom.create(name: 'bac_pro', school_track: :bac_pro, school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
+  ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
 end
 
 def with_class_name_for_defaults(object)
@@ -97,6 +97,7 @@ def populate_users
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
