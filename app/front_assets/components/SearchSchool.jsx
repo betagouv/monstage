@@ -105,6 +105,10 @@ export default function SearchSchool({
     setSearchSchoolsSuggestions([]);
   };
 
+  const inputChange = (event) => {
+    setCity(event.target.value);
+  }
+
   const renderAutocompleteInput = () => {
     return (
       <Downshift
@@ -127,18 +131,16 @@ export default function SearchSchool({
           <div className="form-group custom-label-container">
             <div className="input-group">
               <input
-                required={required}
                 {...getInputProps({
-                  onChange: (e) => {
-                    setCity(event.target.value);
-                  },
+                  onChange: inputChange,
                   value: currentCityString(),
                   className: `form-control ${classes || ''} ${
                     autocompleteNoResult ? '' : 'rounded-0'
                   }`,
-                  name: `${resourceName}[school][city]`,
                   id: `${resourceName}_school_city`,
                   placeholder: 'Adresse',
+                  name: `${resourceName}[school][city]`,
+                  required: required,
                 })}
               />
               <label
