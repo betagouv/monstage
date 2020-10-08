@@ -9,9 +9,16 @@ module Users
 
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
-        sign_in(fetch_user_by_phone)
-        redirect_to root_path
-        return
+        user = fetch_user_by_phone
+        if user.confirmed?
+          sign_in(user)
+          redirect_to root_path
+          return
+        else
+          user.send_sms_token
+          redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+          return
+        end
       end
       super
     end
