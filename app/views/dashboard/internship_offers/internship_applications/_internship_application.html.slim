@@ -1,6 +1,6 @@
 .row.my-3 data-controller="internship-application-index" data-test-id="internship-application-#{internship_application.id}"
   .col.bg-light.pb-3
-    .row.no-gutters.internship_application.bg-light.my-3.py-3 
+    .row.no-gutters.internship_application.bg-light.my-3.py-3
       .col-1.col-sm-1.text-center
         a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-target="internship-application-index.linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbolinks="false"
           - if internship_application.submitted?
@@ -46,7 +46,7 @@
           | Tout afficher +
 
     .row.no-gutters.ml-4.mt-2
-      .col-10 class="#{!internship_application.submitted? ? 'd-none' : ''}"
+      .col-10
         .row.collapsible data-target="internship-application-index.collapsible"
           .col-md-6.col-sm-12.mb-3
             h3.h6
@@ -71,8 +71,6 @@
           - if internship_application.submitted?
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
-
-          - if internship_application.submitted?
             = render "dashboard/internship_offers/internship_applications/actions/reject",
                       internship_application: internship_application
 
@@ -80,13 +78,10 @@
             = render "dashboard/internship_offers/internship_applications/actions/approve",
                       internship_application: internship_application
 
-          - if internship_application.approved?
-            = render "dashboard/internship_offers/internship_applications/actions/cancel",
-                      internship_application: internship_application
     .row.no-gutters.mx-4
       .col-1.d-sm-none
 
-      .col-sm-11.col-md-5
+      .col-sm-11.col-md-3
         - if internship_application.approved? || internship_application.convention_signed?
           div.d-flex.align-items-center
             .d-inline-flex.mr-1.text-success
@@ -95,7 +90,7 @@
               = "Candidature acceptée"
               br
               = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
-        
+
         - if internship_application.approved? && !internship_application.convention_signed?
           div.d-flex.align-items-center.text-warning.mt-3
             .d-inline-flex-mr-1
@@ -131,3 +126,12 @@
               = "Candidature expirée"
               br
               = "Le #{localize(internship_application.expired_at, format: :human_mm_dd_hh)}"
+      .col-sm-11.col-md-4.ml-3
+        - if internship_application.approved?
+          = render "dashboard/internship_offers/internship_applications/actions/cancel",
+                    internship_application: internship_application
+        - if internship_application.canceled_by_employer?
+          p.text-center.font-weight-bolder Candidature annulée par l'employeur (nous)
+        - if internship_application.canceled_by_student?
+          p.text-center.font-weight-bolder Candidature annulée par l'élève
+
