@@ -90,6 +90,12 @@ class InternshipApplication < ApplicationRecord
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
   scope :default_order, ->{ order(updated_at: :desc) }
 
+  # add an additional delay when sending email using richtext
+  # sometimes email was sent before action_texts_rich_text was persisted
+  def deliver_later_with_additional_delay
+    yield.deliver_later(wait: 1.second)
+  end
+
   aasm do
     state :drafted, initial: true
     state :submitted,
@@ -120,8 +126,9 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
                            if student.email.present?
-                             StudentMailer.internship_application_approved_email(internship_application: self)
-                                          .deliver_later
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_approved_email(internship_application: self)
+                              end
                            end
                            student.school.main_teachers.map do |main_teacher|
                              MainTeacherMailer.internship_application_approved_email(internship_application: self,
@@ -137,8 +144,9 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
                            if student.email.present?
-                             StudentMailer.internship_application_rejected_email(internship_application: self)
-                                          .deliver_later
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_rejected_email(internship_application: self)
+                             end
                            end
                          }
     end
@@ -149,8 +157,9 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
                            if student.email.present?
-                             StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
-                                          .deliver_later
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
+                              end
                            end
                          }
     end
@@ -160,9 +169,11 @@ class InternshipApplication < ApplicationRecord
                   to: :canceled_by_student,
                   after: proc { |*_args|
                            update!("canceled_at": Time.now.utc)
-                           EmployerMailer.internship_application_canceled_by_student_email(
-                             internship_application: self
-                           ).deliver_later
+                           deliver_later_with_additional_delay do
+                             EmployerMailer.internship_application_canceled_by_student_email(
+                               internship_application: self
+                             )
+                           end
                          }
     end
 
