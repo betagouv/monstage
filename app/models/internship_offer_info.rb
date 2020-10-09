@@ -4,9 +4,7 @@ class InternshipOfferInfo < ApplicationRecord
   include StepperProxy::InternshipOfferInfo
 
   # for ACL
-  belongs_to :employer,
-             class_name: 'User',
-             optional: true
+  belongs_to :employer, class_name: 'User'
 
   # Relation
   belongs_to :internship_offer, optional: true
