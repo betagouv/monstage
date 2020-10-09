@@ -9,11 +9,11 @@ module Users
              source: :internship_offer,
              class_name: 'InternshipOffer'
 
-    has_many :internship_applications, through: :kept_internship_offers # ,
+    has_many :internship_applications, through: :kept_internship_offers
 
     has_many :organisations
     has_many :tutors
-    has_many :internship_offers_infos
+    has_many :internship_offer_infos
 
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
