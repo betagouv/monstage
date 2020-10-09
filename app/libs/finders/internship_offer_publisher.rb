@@ -17,13 +17,30 @@ module Finders
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
       query = query.merge(query.limited_to_department(user: user)) if user.department_name.present?
+
       query
     end
 
     def employer_query
       common_filter do
-        user.internship_offers.kept
+        query = user.internship_offers.kept
+
+        if school_year_param.present?
+          query = query.merge(
+            InternshipOffers::WeeklyFramed.specific_school_year(
+              school_year: school_year_param
+            )
+          )
+        end
+
+        query
       end
+    end
+
+    def school_year_param
+      return nil unless params.key?(:school_year)
+
+      params[:school_year].to_i
     end
   end
 end

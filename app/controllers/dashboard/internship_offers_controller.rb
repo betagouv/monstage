@@ -11,8 +11,6 @@ module Dashboard
       @internship_offers   = finder.all
       @internship_offers   = @internship_offers.merge(filter_scope)
       @internship_offers   = @internship_offers.order(order_column => order_direction)
-
-      # @all_states_counters = all_states_counters
     end
 
     def create
@@ -121,7 +119,8 @@ module Dashboard
           :longitude,
           :radius,
           :school_type,
-          :keyword
+          :keyword,
+          :school_year
         ),
         user: current_user_or_visitor
       )
@@ -154,7 +153,7 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, :school_track, coordinates: {}, week_ids: [])
+                    :school_type, :school_track, :school_year, coordinates: {}, week_ids: [])
     end
   end
 end

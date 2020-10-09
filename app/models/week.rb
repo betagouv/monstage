@@ -43,6 +43,14 @@ class Week < ApplicationRecord
                       to: school_year.end_of_period)
   }
 
+  scope :weeks_of_school_year, lambda { |school_year:|
+    first_week_of_september = Date.new(school_year, 9, 1).cweek
+    last_day_of_may_week    = Date.new(school_year + 1, 5, 31).cweek
+
+    where('number >= ?', first_week_of_september).where( year: school_year)
+     .or(where('number <= ?',last_day_of_may_week).where( year: school_year + 1))
+  }
+
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
   def self.current
