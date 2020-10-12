@@ -5,7 +5,7 @@
       span.font-weight-bolder.mr-2 Années scolaires
       - request.query_parameters.each do |key,value|
         = hidden_field_tag key, value unless key.in? ['school_year', 'commit']
-      - years = (2019..SchoolYear::Current.new.beginning_of_period.year).to_a
+      - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
       - options = years.map { |year| [ "#{year} - #{((year+1).to_s)[2, 3]}", year] }
       = select_tag :school_year,
                     options_for_select(options, params[:school_year]),

@@ -6,7 +6,7 @@ module Finders
     def mapping_user_type
       {
         Users::Operator.name => :operator_query,
-        Users::Employer.name => :employer_query,
+        Users::Employer.name => :employer_query
       }
     end
 

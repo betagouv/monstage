@@ -11,7 +11,7 @@ export default class extends Controller {
     visitURLWithParam('school_year', this.schoolYearFieldTarget.value)
   }
 
-  connect() {
+  initialize() {
     hideElement($(this.schoolYearSubmitTarget))
   }
 }
