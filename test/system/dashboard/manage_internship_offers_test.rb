@@ -155,25 +155,4 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     select('2020 - 21')
     assert page.has_css?('p.internship-item-title.mb-0', count: 0)
   end
-
-  test 'fails gracefuly' do
-    sector = create(:sector)
-    employer = create(:employer)
-    group = create(:group, name: 'hello', is_public: true)
-    sign_in(employer)
-    available_weeks = [Week.find_by(number: 10, year: 2019)]
-    travel_to(Date.new(2019, 3, 1)) do
-      visit employer.custom_dashboard_path
-      find('#test-create-offer').click
-      fill_in_form(
-        sector: sector,
-        group: group,
-        weeks: available_weeks,
-        school_track: :troisieme_generale
-      )
-      fill_in 'internship_offer_title', with: 'a' * 501
-      click_on "Enregistrer et publier l'offre"
-      find('#error_explanation')
-    end
-  end
 end
