@@ -34,20 +34,26 @@ $line-height: 4px;
     font-size: 13px;
     position: relative;
     z-index: 2;
+    margin: 0 auto;
 
     width: $nav-link-rounded-radius * 2;
     height: $nav-link-rounded-radius * 2;
     border-radius: $nav-link-rounded-radius;
     border: 4px solid $nav-tabs-border-color;
     background-color: white;
+    // border-color: 
     > svg{
       margin: 0 auto; // center svg horizontaly
+    }
+    > .number{
+      margin: 0 auto;
+      font-size: 17px;
     }
   }
 
   &.nav-link-icon-with-label-success {
-    $nav-link-background-success: rgb(81,157,81);
-    $nav-link-border-success: rgb(163,210,163);
+    $nav-link-background-success: $green_lime;
+    $nav-link-border-success: #fff;
     color: white;
     small{
       color: $nav-link-background-success;

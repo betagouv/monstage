@@ -2,7 +2,7 @@
   .col-6
     h3.h3 Mes offres de stages
   .col-6.text-right
-    = link_to new_dashboard_internship_offer_path,
+    = link_to new_dashboard_stepper_organisation_path,
               class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
               id: 'test-create-offer'
       i.fas.fa-plus
@@ -38,3 +38,7 @@
   .row
     .col-12
       h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
+      p.d-sm-block.d-none
+        = link_to new_dashboard_stepper_organisation_path, class: 'btn btn-primary' do
+          = "Déposer une offre "
+          i.fas.fa-plus

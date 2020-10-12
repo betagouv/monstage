@@ -99,35 +99,47 @@ fr:
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
 
-      internship_offer:
-        id: Identifiant unique de l'offre
+      organisation: &organisation_fields
+        employer_name: Employeur
+        employer_description: Description de l'employeur
+        employer_website: Site web de l'employeur
+        is_public: Secteur public
+        group: Groupe ou institution
+        street: Adresse du lieu de stage
+        zipcode: Code postal
+        city: Ville
+        coordinates: Coordonnées GPS
+
+      internship_offer_info: &internship_offer_info_fields
         title: Intitulé
         description: Description
-        zipcode: Code postal
-        employer_name: Employeur
-        employer_email: Email de l'employeur
-        employer_phone: Téléphone de l'employeur
-        group: Groupe ou institution
-        is_public: Secteur public
-        human_is_public: Public/Privé
         sector: Secteur
         school_type: Niveau scolaire
         max_candidates: Nbr. max de candidats
-        human_max_candidates: Stage individuel/collectif
+        sector_id: Secteurs professionnels
+        internship_type:
+          middle_school: 'Collège'
+          high_school: 'Lycée'
+
+      tutor: &tutor_fields
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+
+      internship_offer:
+        <<: *organisation_fields
+        <<: *internship_offer_info_fields
+        <<: *tutor_fields
+
+        id: Identifiant unique de l'offre
+        human_is_public: Public/Privé
+        human_max_candidates: Stage individuel/collectif
         employer: Employeur
-        employer_website: Site web de l'employeur
-        employer_description: Description de l'employeur
         internship_offer_weeks_count: Nombre de semaines
         created_at: "Crée le"
-        street: Adresse du lieu de stage
-        city: Ville
         department: Département
         academy: Académie
         discarded_at: Supprimée le
-        coordinates: Coordonnées GPS
         view_count: Nombre de vues
         published_at: Publiée le
         weeks:
@@ -136,7 +148,6 @@ fr:
         weeks_count: Nbr. de semaines proposées
         first_monday: Premier lundi de stage
         last_monday: Dernier lundi de stage
-        sector_id: Secteurs professionnels
         supplied_applications: Nbr. de candidatures par stages
         submitted_application_count: Nbr. de candidatures soumises
         rejected_application_count: Nbr. de candidatures refusées
@@ -157,16 +168,6 @@ fr:
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         permalink: Association partenaire
-        sector_name: 'Secteur professionnel'
-        group_name: 'Groupe ou institution de tutelle'
-        full_tutor: 'Tuteur'
-        full_employer: 'Employeur'
-        full_address: "Adresse de l'offre"
-        full_school: "Réservée à l'établissement"
-        full_weeks: Semaines
-        internship_type:
-          middle_school: 'Collège'
-          high_school: 'Lycée'
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
@@ -188,14 +189,27 @@ fr:
       messages:
         bad_email: "just ain't right"
       models:
-        internship_offer:
-          attributes:
-            title:
-              blank: "Veuillez saisir le titre de l'offre de stage"
+        organisation:
+          attributes: &organisation_errors
             employer_name:
               blank: "Veuillez saisir le nom de l'employeur"
+            employer_description:
+              too_long: La description doit faire au maximum 250 caractères
             coordinates:
               blank: "Veuillez saisir et sélectionner une adresse avec l'outil de complétion automatique"
+            zipcode:
+              blank: "Veuillez renseigner le code postal de l'employeur"
+            street:
+              blank: "Veuillez renseigner la rue ou compléments d'adresse de l'offre de stage"
+            city:
+              blank: "Veuillez renseigner la ville l'employeur"
+            public:
+              inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
+
+        internship_offer_info:
+          attributes: &internship_offer_info_errors
+            title:
+              blank: "Veuillez saisir le titre de l'offre de stage"
             max_candidates:
               not_a_number: "Veuillez saisir un nombre de candidats par stage"
             is_public:
@@ -203,28 +217,30 @@ fr:
             description:
               blank: "Veuillez saisir une description pour l'offre de stage"
               too_long: La description doit faire au maximum 500 caractères
-            zipcode:
-              blank: "Veuillez renseigner le code postal de l'employeur"
-            street:
-              blank: "Veuillez renseigner la rue ou compléments d'adresse de l'offre de stage"
-            city:
-              blank: "Veuillez renseigner la ville l'employeur"
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
             school_type:
               required: "Veuillez choisir le niveau scolaire correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
-            employer:
-              required: Veuillez choisir un compte responsable de l'offre
+
+        tutor:
+          attributes: &tutor_errors
             tutor_name:
               blank: "Veuillez saisir un tuteur pour l'offre de stage"
             tutor_phone:
               blank: "Veuillez saisir le numéro de téléphone du tuteur de l'offre de stage"
             tutor_email:
               blank: "Veuillez saisir l'adresse électronique du tuteur de l'offre de stage"
-            public:
-              inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
+
+        internship_offer:
+          attributes:
+            <<: *organisation_errors
+            <<: *internship_offer_info_errors
+            <<: *tutor_errors
+
+            employer:
+              required: Veuillez choisir un compte responsable de l'offre
 
         internship_offers/api:
           attributes:
@@ -304,6 +320,10 @@ fr:
             student:
               taken: 'Vous ne pouvez pas postuler deux fois à la même offre'
   admin:
+    table_headers:
+      last_created: 'last_created'
+    toggle_navigation: 'toggle_navigation'
+
     misc:
       root_navigation:
         "Tableaux de suivis"
@@ -316,13 +336,15 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
-
+  dashboard:
+    internship_offer:
+      created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
   views:
     pagination:
       last: Dernière page
       first: Première page
       next: Page suivante
-      prev: Page précédente
+      previous: Page précédente
 
   enum:
     roles:

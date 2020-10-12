@@ -2,8 +2,8 @@
 
 require 'test_helper'
 
-module Dashboard
-  class InternshipOffersControllerTest < ActionDispatch::IntegrationTest
+module Dashboard::InternshipOffers
+  class IndexTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
     def assert_presence_of(internship_offer:)

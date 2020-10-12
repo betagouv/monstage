@@ -84,9 +84,17 @@ $sortLinkOffset: 15px;
   background-size: cover;
 }
 
-
 @include media-breakpoint-up(xs) {
   .internship-item-badge{
     line-height: 1.5;
   }
 }
+
+.legend {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+} 

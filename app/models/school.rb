@@ -25,6 +25,7 @@ class School < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
+  has_many :internship_applications, through: :internship_offers
 
   validates :city, :name, presence: true
 

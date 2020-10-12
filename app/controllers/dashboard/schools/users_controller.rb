@@ -7,6 +7,7 @@ module Dashboard
 
       def index
         authorize! :manage_school_users, @school
+        navbar_badges
       end
 
       def destroy

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module InternshipOffers
+module Dashboard::InternshipOffers
   class DestroyTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 

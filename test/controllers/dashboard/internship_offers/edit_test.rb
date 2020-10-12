@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module InternshipOffers
+module Dashboard::InternshipOffers
   class EditTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -70,7 +70,7 @@ module InternshipOffers
 
       assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
       assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
-      assert_select 'a.btn-back[href=?]', internship_offer_path(internship_offer)
+      assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end
 end

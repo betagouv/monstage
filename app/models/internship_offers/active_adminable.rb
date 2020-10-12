@@ -58,8 +58,6 @@ module InternshipOffers
           field :convention_signed_applications_count
           field :group
           field :employer_name
-          field :employer_email
-          field :employer_phone
           field :tutor_name
           field :tutor_phone
           field :tutor_email
