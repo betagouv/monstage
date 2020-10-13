@@ -23,24 +23,8 @@ module Finders
 
     def employer_query
       common_filter do
-        query = user.internship_offers.kept
-
-        if school_year_param.present?
-          query = query.merge(
-            InternshipOffers::WeeklyFramed.specific_school_year(
-              school_year: school_year_param
-            )
-          )
-        end
-
-        query
+        user.internship_offers.kept
       end
-    end
-
-    def school_year_param
-      return nil unless params.key?(:school_year)
-
-      params[:school_year].to_i
     end
   end
 end
