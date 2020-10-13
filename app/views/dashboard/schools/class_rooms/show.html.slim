@@ -24,16 +24,16 @@
         table.table.table-hover.table-rg2a.table-sticky-thead
           thead
             tr.d-flex.tr-white
-              th.col-3
-                small Élève
-              th.col-2
-                small Confirmé
-              th.col-2
-                small Cordée de réussite / Parcours d'excellence
-              th.col-2
-                small Nombre de candidatures
-              th.col-1.text-center
-                small Réponses
+              th.col-3.align-self-end
+                small.font-weight-bold Élève
+              th.col-2.align-self-end
+                small.font-weight-bold Confirmé
+              th.col-2.align-self-end
+                small.font-weight-bold Cordée de réussite / Parcours d'excellence
+              th.col-2.align-self-end
+                small.font-weight-bold Nombre de candidatures
+              th.col-1.text-center.align-self-end
+                small.font-weight-bold Réponses
               th.col-2
           tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.includes([:school, :internship_applications]).order(:last_name, :first_name), locals: {}
 
