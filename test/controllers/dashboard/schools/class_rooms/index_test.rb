@@ -140,6 +140,23 @@ module Dashboard
           end
         end
       end
+
+      test 'GET show as SchoolManagement works and only show not archived students' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        student_in_class_room = create(:student, school: school, class_room: class_room)
+        student_anonymized = create(:student, school: school, class_room: class_room, anonymized: true)
+        student_not_in_class_room_not_anonymized = create(:student, school: school)
+        student_not_in_class_room_not_anonymized.update(class_room_id: nil)
+
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_class_rooms_path(school)
+        assert_response :success
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_in_class_room.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_anonymized.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_not_in_class_room_not_anonymized.id}\"]", count: 1
+      end
     end
   end
 end
