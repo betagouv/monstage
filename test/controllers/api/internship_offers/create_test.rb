@@ -62,9 +62,6 @@ module Api
       assert_equal ['Missing permalink'],
                    json_error['permalink'],
                    'bad permalink message'
-      assert_equal ['Missing description'],
-                   json_error['description'],
-                   'bad description message'
       assert_equal ['Missing sector'],
                    json_error['sector'],
                    'bad sector message'

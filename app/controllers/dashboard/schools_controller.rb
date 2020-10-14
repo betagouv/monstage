@@ -17,6 +17,7 @@ module Dashboard
 
     def edit
       authorize! :edit, School
+      navbar_badges
       @available_weeks = Week.selectable_on_school_year
     end
 
@@ -74,6 +75,13 @@ end
 
     def school_manager_internship_weeks_params
       params.require(:school).permit(week_ids: [])
+    end
+
+    def navbar_badges
+      @applications = InternshipApplication.joins(:student)
+                                            .includes({student: [:class_room]}, :internship_offer)
+                                            .approved
+                                            .where(student: @school.students)
     end
   end
 end

@@ -56,6 +56,14 @@ def populate_schools
   # end
 end
 
+def populate_class_rooms
+  school = School.first
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
+  ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
+  ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
+end
+
 def with_class_name_for_defaults(object)
   object.first_name = "user"
   object.last_name = object.class.name
@@ -88,8 +96,22 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedin', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
+end
+
+def populate_students
+  class_room = ClassRoom.first
+  school = class_room.school
+  with_class_name_for_defaults(Users::Student.new(email: 'student1@ms3e.fr', password: 'review', first_name: 'Jean', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student2@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student3@ms3e.fr', password: 'review', first_name: 'Michel', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student11@ms3e.fr', password: 'review',first_name: 'Martin', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student12@ms3e.fr', password: 'review',first_name: 'Alexandre', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student13@ms3e.fr', password: 'review',first_name: 'Fred', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student14@ms3e.fr', password: 'review',first_name: 'Karim', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
 end
 
 def populate_internship_offers
@@ -119,6 +141,7 @@ def populate_internship_offers
     group: Group.is_private.first,
     is_public: false,
     title: "Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
+    description: "Découvrez les machines mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services informatiques",
     description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement de toutes leurs technologies informatique depuis nos locaux et comment ils arrivent, tous les jours, à gérer en équipe, des bases de données, de la virtualisation, des applications etc.",
     employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
     tutor_name: 'Martin Fourcade',
@@ -160,10 +183,12 @@ end
 if Rails.env == 'review' || Rails.env.development?
   populate_week_reference
   populate_schools
+  populate_class_rooms
   School.update_all(updated_at: Time.now)
   populate_operators
   populate_users
   populate_sectors
   populate_groups
   populate_internship_offers
+  populate_students
 end

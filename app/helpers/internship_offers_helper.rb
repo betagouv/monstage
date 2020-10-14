@@ -2,14 +2,16 @@
 
 # used in internships#index
 module InternshipOffersHelper
-  def duplicating?
-    params[:duplicate_id].present?
-  end
-
   def preselect_all_weeks?(object)
     is_new_record = object.new_record?
-    is_preselectable_entity = object.is_a?(InternshipOffers::WeeklyFramed) || object.is_a?(InternshipOffer)
-    is_new_record && is_preselectable_entity
+    is_preselectable_entity = [
+      InternshipOfferInfo,
+      InternshipOfferInfos::WeeklyFramed,
+      InternshipOffer,
+      InternshipOffers::WeeklyFramed
+    ]
+
+    is_new_record && is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end
 
   def internship_offer_application_path(object)
@@ -30,9 +32,9 @@ module InternshipOffersHelper
         group.id,
         {
           'data-target' => if group.is_public?
-                             'internship-form.groupNamePublic'
+                             'organisation-form.groupNamePublic'
                            else
-                             'internship-form.groupNamePrivate'
+                             'organisation-form.groupNamePrivate'
                            end
         }
       ]
@@ -67,18 +69,19 @@ module InternshipOffersHelper
     internship_offer_path(default_params.merge(forwardable_params))
   end
 
-  def internship_offer_type_options_for_default
-    '-- Veuillez sélectionner un niveau scolaire --'
+  def select_weekly_start(internship_offer)
+    internship_offer.daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:first) || '9:00'
   end
 
-  def tr_school_prefix
-    'activerecord.attributes.internship_offer.internship_type'
+  def select_weekly_end(internship_offer)
+    internship_offer.daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:last) || '17:00'
   end
 
-  def options_for_internship_type
-    [
-      [I18n.t("#{tr_school_prefix}.middle_school"), 'InternshipOffers::WeeklyFramed'],
-      [I18n.t("#{tr_school_prefix}.high_school"), 'InternshipOffers::FreeDate']
-    ]
+  def select_daily_start(internship_offer, day)
+    internship_offer.daily_hours.present? ? internship_offer.daily_hours[day].first : '9:00'
+  end
+
+  def select_daily_end(internship_offer, day)
+    internship_offer.daily_hours.present? ? internship_offer.daily_hours[day].last : '17:00'
   end
 end

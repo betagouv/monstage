@@ -2,16 +2,16 @@
 
 require 'test_helper'
 
-module InternshipOffers
+module Dashboard::InternshipOffers
   class CreateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    test 'POST #create as visitor redirects to internship_offers' do
+    test 'POST #create (duplicate)  as visitor redirects to internship_offers' do
       post dashboard_internship_offers_path(params: {})
       assert_redirected_to user_session_path
     end
 
-    test 'POST #create/InternshipOffers::WeeklyFramed as employer creates the post' do
+    test 'POST #create (duplicate) /InternshipOffers::WeeklyFramed as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
@@ -41,7 +41,7 @@ module InternshipOffers
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
-    test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
+    test 'POST #create (duplicate) /InternshipOffers::FreeDate as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
       internship_offer = build(:weekly_internship_offer, employer: employer)
@@ -67,27 +67,6 @@ module InternshipOffers
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
-    test 'POST #create/InternshipOffers::FreeDate duplicate' do
-      school = create(:school)
-      employer = create(:employer)
-      internship_offer = build(:weekly_internship_offer, employer: employer)
-      sign_in(internship_offer.employer)
-      params = internship_offer
-               .attributes
-               .merge('type' => InternshipOffers::FreeDate.name,
-                      'duplicating' => true,
-                      'coordinates' => { latitude: 1, longitude: 1 },
-                      'description_rich_text' => '<div>description</div>',
-                      'employer_description_rich_text' => '<div>hop+employer_description</div>',
-                      'employer_id' => internship_offer.employer_id,
-                      'employer_type' => 'Users::Employer')
-
-      assert_difference('InternshipOffer.count', 1) do
-        post(dashboard_internship_offers_path, params: { internship_offer: params })
-      end
-      follow_redirect!
-      assert_select('#alert-text', text:'Votre offre de stage a été renouvelée pour cette année scolaire.')
-    end
 
     test 'POST #create as employer with missing params' do
       sign_in(create(:employer))
@@ -95,7 +74,7 @@ module InternshipOffers
       assert_response :bad_request
     end
 
-    test 'POST #create as employer with invalid data, prefill form' do
+     test 'POST #create as employer with invalid data, prefill form' do
       sign_in(create(:employer))
       post(dashboard_internship_offers_path, params: {
              internship_offer: {

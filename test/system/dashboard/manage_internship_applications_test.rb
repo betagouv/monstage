@@ -48,6 +48,8 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]", count: 1
+      find('a.btn-link', text: 'Tout afficher +', exact_text: true)
+      find('.d-block.btn-link').click
       click_on 'Accepter'
       assert_changes -> { weekly_internship_application.reload.approved? },
                      from: false,
@@ -101,25 +103,61 @@ module Dashboard
       visit dashboard_internship_offer_internship_applications_path(internship_offer.id)
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
-      within(".bg-light.row") do
-        find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
-      end
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
 
-      click_on('dates de stage')
+      click_link('Dates de stage')
       if week_1.id < week_2. id # normal case
-        within(".bg-light.row") do
-          find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
-        end
+        find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
       else # might happen with fixture random order creation
-        within(".bg-light.row") do
-          find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
-        end
-      end
-
-      click_on('par date de candidature')
-      within(".bg-light.row") do
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
+
+      click_link('Dates de candidature')
+      find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
+
+      click_link(internship_offer.title)
+      find('p.h3', text: internship_offer.title, exact_text: true)
+    end
+
+    test 'weekly_internship_applications show student details anyway' do
+      student_1 = create(:student)
+      week_1_ar = Week.where(year: Time.now.year)
+                      .order(number: :asc)
+                      .limit(1)
+                      .to_a
+
+      internship_offer = create(
+        :weekly_internship_offer,
+        weeks: week_1_ar,
+        employer: @employer,
+        max_candidates: 1
+      )
+
+      internship_offer_week_1 = create(
+        :internship_offer_week,
+        week: week_1_ar.first,
+        internship_offer: internship_offer
+      )
+
+      application_for_week_1 = create(
+        :weekly_internship_application,
+        aasm_state: :submitted,
+        submitted_at: 3.days.ago,
+        internship_offer_week: internship_offer_week_1,
+        student: student_1
+      )
+
+      sign_in(@employer)
+
+      visit dashboard_internship_offer_internship_applications_path(internship_offer.id)
+      find "div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]", count: 1
+
+      find("div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]  button", text: 'Accepter').click
+      click_button('Confirmer')
+      click_link('Tout afficher +')
+      find('.student-name > strong', text: "#{student_1.first_name} #{student_1.last_name}")
+      find('.student-email > strong', text: student_1.email)
+
     end
 
     test 'show free_date_internship_applications internship offers' do
@@ -130,6 +168,7 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(free_date_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]", count: 1
+      find('.d-block.btn-link').click
       click_on 'Refuser'
       assert_changes -> { free_date_internship_application.reload.rejected? },
                      from: false,

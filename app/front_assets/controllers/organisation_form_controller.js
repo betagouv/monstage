@@ -4,19 +4,11 @@ import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = [
-    'maxCandidatesGroup',
-    'maxCandidatesInput',
-    'selectSchoolBlock',
     'groupBlock',
-    'type',
     'groupLabel',
     'groupNamePublic',
     'groupNamePrivate',
     'selectGroupName',
-    'operatorsBlock',
-    'operator',
-    'selectType',
-    'weeksContainer'
   ];
 
   onChooseType(event) {
@@ -46,15 +38,12 @@ export default class extends Controller {
     }
   }
 
-  // show/hide group internship custom controls
-  toggleInternshipType(event) {
-    if (event.target.value === 'true') {
-      hideElement($(this.maxCandidatesGroupTarget));
-      this.maxCandidatesInputTarget.value = undefined;
-    } else {
-      showElement($(this.maxCandidatesGroupTarget));
-      this.maxCandidatesInputTarget.value = 1;
+  validateForm(event) {
+    const latitudeInput = document.getElementById('internship_offer_coordinates_latitude');
+    if (!latitudeInput.validity.valid) {
+      document.getElementById('js-internship_offer_autocomplete').focus();
     }
+    return event;
   }
 
   handleClickIsPublic(event) {
@@ -67,7 +56,7 @@ export default class extends Controller {
       `);
       $(this.selectGroupNameTarget).prop('required', true);
     } else {
-      $(this.groupLabelTarget).text('Groupe (facultatif)');
+      $(this.groupLabelTarget).text('Groupe (optionnel)');
       $(this.selectGroupNameTarget).prop('required', false);
     }
     this.toggleGroupNames(value === 'true');
@@ -91,16 +80,7 @@ export default class extends Controller {
     }
   }
 
-  validateForm(event) {
-    const latitudeInput = document.getElementById('internship_offer_coordinates_latitude');
-    if (!latitudeInput.validity.valid) {
-      document.getElementById('js-internship_offer_autocomplete').focus();
-    }
-    return event;
-  }
-
   connect() {
-    this.induceType(this.selectTypeTarget.value)
     this.element.addEventListener('submit', this.validateForm, false);
   }
 

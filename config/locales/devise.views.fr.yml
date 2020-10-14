@@ -1,4 +1,7 @@
 fr:
+  admin:
+    misc:
+      reset_filters: Filtres remis à zero
   activerecord:
     attributes:
       user:

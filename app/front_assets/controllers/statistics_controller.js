@@ -1,5 +1,5 @@
 import { Controller } from 'stimulus';
-import { changeURLFromEvent } from '../utils/url';
+import { changeURLFromEvent} from '../utils/urls';
 
 export default class extends Controller {
   filterByDepartment(event) {

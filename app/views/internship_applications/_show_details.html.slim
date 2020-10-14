@@ -18,4 +18,6 @@
     .reboot-trix-content= internship_application.student.resume_languages.to_s
 
 h3.h5.gray-999.mb-1.mt-2 Mon identité
-= render partial: "users/resume_details", locals: {student: internship_application.student}
+.row
+  .col-6.col-xs-12.text-break
+    = render partial: "users/resume_details", locals: {student: internship_application.student}

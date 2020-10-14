@@ -1,0 +1,11 @@
+.hidden-links {
+  a {
+    display: none
+  }
+}
+
+.table-hover tbody tr:hover > .hidden-links {
+  a {
+    display: inline
+  }
+}
