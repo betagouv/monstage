@@ -11,8 +11,6 @@ module Dashboard
       @internship_offers   = finder.all
       @internship_offers   = @internship_offers.merge(filter_scope)
       @internship_offers   = @internship_offers.order(order_column => order_direction)
-
-      # @all_states_counters = all_states_counters
     end
 
     # duplicate submit
@@ -114,7 +112,8 @@ module Dashboard
           :longitude,
           :radius,
           :school_type,
-          :keyword
+          :keyword,
+          :school_year
         ),
         user: current_user_or_visitor
       )
