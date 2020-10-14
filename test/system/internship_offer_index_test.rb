@@ -119,7 +119,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_absence_of(internship_offer: troisieme_generale_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
 
-    # uncheck selection
+    # uncheck selection make both search active == "Toutes"
     find('label[for="search-by-bac-pro"]').click
     assert_presence_of(internship_offer: troisieme_generale_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)

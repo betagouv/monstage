@@ -58,12 +58,19 @@ module Finders
       params[:radius]
     end
 
+    def school_track_params
+      return nil unless params.key?(:school_track)
+
+      params[:school_track]
+    end
+
     def common_filter
       query = yield
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
       query = middle_school_query(query) if school_type_param == 'middle_school'
       query = high_school_query(query) if school_type_param == 'high_school'
+      query = school_track_query(query) if school_track_params
       query
     end
 
@@ -81,6 +88,10 @@ module Finders
 
     def high_school_query(query)
       query.merge(InternshipOffer.free_date)
+    end
+
+    def school_track_query(query)
+      query.merge(InternshipOffer.school_track(school_track: school_track_params))
     end
 
   end
