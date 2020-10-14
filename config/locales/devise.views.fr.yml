@@ -53,7 +53,7 @@ fr:
         action: Confirmer mon courriel
         greeting: Bienvenue %{recipient} !
         instruction: 'Vous pouvez confirmer votre courriel grâce au lien ci-dessous :'
-        subject: Action requise – Activez votre compte
+        subject: Plus qu'une étape pour activer votre compte
       email_changed:
         greeting: Bonjour %{recipient} !
         message: Nous vous contactons pour vous notifier que votre adresse de courriel a été changée en %{email}.
@@ -68,7 +68,7 @@ fr:
         instruction: 'Mot de passe oublié ?'
         instruction_2: Si vous n'avez pas émis cette demande, merci d'ignorer ce courriel.
         instruction_3: Votre mot de passe ne changera pas tant que vous n'aurez pas cliqué sur ce lien et renseigné un nouveau mot de passe.
-        subject: Action requise – Changer votre mot de passe
+        subject: Changez votre mot de passe
       unlock_instructions:
         action: Débloquer mon compte
         greeting: Bonjour %{recipient} !
