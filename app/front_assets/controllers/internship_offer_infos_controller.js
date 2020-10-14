@@ -22,7 +22,7 @@ export default class extends Controller {
 
   induceType(value){
     const baseType = this.data.get('baseType');
-    const inducedType = (value == 'bac_pro') ? `${baseType}s::FreeDate` : `${baseType}s::WeeklyFramed`;
+    const inducedType = (value == 'troisieme_generale') ? `${baseType}s::WeeklyFramed` : `${baseType}s::FreeDate`;
     $(this.typeTarget).attr('value', inducedType)
     this.chooseType(inducedType);
   }
