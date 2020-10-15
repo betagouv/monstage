@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class MainTeacherMailerTest < ActionMailer::TestCase
+  include EmailSpamEuristicsAssertions
+
   test 'internship_application_approved_email' do
     internship_application = create(:weekly_internship_application)
     student = internship_application.student
@@ -15,6 +17,6 @@ class MainTeacherMailerTest < ActionMailer::TestCase
     )
 
     assert_includes email.to, main_teacher.email
-    assert_equal "Action requise - La candidature de #{Presenters::User.new(student).full_name} a été acceptée, convention de stage à gérer", email.subject
+    refute_email_spammyness(email)
   end
 end

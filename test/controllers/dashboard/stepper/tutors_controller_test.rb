@@ -157,6 +157,9 @@ module Dashboard::Stepper
       assert_equal(created_tutor.id,
                    created_internship_offer.tutor_id,
                    'tutor_id not copied')
+      assert_equal(internship_offer_info.school_track,
+                   created_internship_offer.school_track,
+                   'school_track not copied')
 
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
@@ -165,10 +168,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       school = create(:school)
-      weeks = [weeks(:week_2019_1)]
-      internship_offer_info = create(:weekly_internship_offer_info,
-                                      school: school,
-                                      type: InternshipOfferInfos::FreeDate.name)
+      internship_offer_info = create(:free_date_internship_offer_info)
       organisation = create(:organisation, employer: employer)
 
       assert_difference('InternshipOffer.count', 1) do
@@ -185,7 +185,10 @@ module Dashboard::Stepper
       created_internship_offer = InternshipOffer.last
       assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
-      assert_equal school, created_internship_offer.school
+      assert_equal nil, created_internship_offer.school
+      assert_equal(internship_offer_info.school_track,
+                   created_internship_offer.school_track,
+                   'school_track not copied')
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 

@@ -1,5 +1,5 @@
 p style=head_styles
-  | Candidature refusée.
+  = "Candidature au stage \"#{@internship_application.internship_offer.title}\" refusée..."
 
 = @internship_application.rejected_message.to_s
 

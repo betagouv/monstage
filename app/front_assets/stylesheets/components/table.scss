@@ -1,7 +1,6 @@
 .table-caption-top{
   caption { caption-side: top };
 }
-
 @include media-breakpoint-up(sm) {
   .hoverable-row-with-btn{
     .btn-hoverable{

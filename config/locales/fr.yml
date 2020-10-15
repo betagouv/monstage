@@ -1,4 +1,7 @@
 fr:
+  admin:
+    table_headers:
+      last_created: 'Dernier créé'
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"

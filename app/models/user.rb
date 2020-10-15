@@ -108,7 +108,7 @@ class User < ApplicationRecord
   end
 
   def formal_name
-    "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
+    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
   def anonymize(send_email: true)

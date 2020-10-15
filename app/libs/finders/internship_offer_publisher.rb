@@ -6,7 +6,7 @@ module Finders
     def mapping_user_type
       {
         Users::Operator.name => :operator_query,
-        Users::Employer.name => :employer_query,
+        Users::Employer.name => :employer_query
       }
     end
 
@@ -17,6 +17,7 @@ module Finders
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
       query = query.merge(query.limited_to_department(user: user)) if user.department_name.present?
+
       query
     end
 
