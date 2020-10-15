@@ -1,5 +1,5 @@
 p style=head_styles
-  | Candidature annulée...
+  = "Candidature au stage \"#{@internship_application.internship_offer.title}\" annulée..."
 
 = @internship_application.canceled_by_employer_message.to_s
 
