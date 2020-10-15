@@ -2,16 +2,13 @@
 
 module Users
   class Student < User
-    belongs_to :school
+    belongs_to :school, optional: true
     belongs_to :missing_school_weeks, optional: true,
                                       foreign_key: 'missing_school_weeks_id',
                                       class_name: 'School',
                                       counter_cache: :missing_school_weeks_count
 
     belongs_to :class_room, optional: true
-    validates :birth_date,
-              :gender,
-              presence: true
 
     has_many :internship_applications, dependent: :destroy,
                                        foreign_key: 'user_id' do
@@ -23,6 +20,12 @@ module Users
     has_rich_text :resume_educational_background
     has_rich_text :resume_other
     has_rich_text :resume_languages
+
+    validates :birth_date,
+              :gender,
+              presence: true
+
+    validate :validate_school_presence_at_creation
 
     attr_reader :handicap_present
 
@@ -92,6 +95,12 @@ module Users
       resume_other.try(:delete)
       resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
+    end
+
+    def validate_school_presence_at_creation
+      if new_record? && school.blank?
+        errors.add(:school, :blank)
+      end
     end
   end
 end

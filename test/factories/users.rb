@@ -22,7 +22,7 @@ FactoryBot.define do
       gender { 'm' }
       birth_date { 14.years.ago }
 
-      school { create(:school) }
+      school
       trait :male do
         gender { 'm' }
       end
@@ -73,7 +73,7 @@ FactoryBot.define do
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
       type { 'Users::Operator' }
-      operator { create(:operator) }
+      operator
       api_token { SecureRandom.uuid }
     end
   end
