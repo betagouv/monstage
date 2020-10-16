@@ -7,7 +7,6 @@ export default class extends Controller {
     'type',
     'selectType',
     'weeksContainer',
-
     'maxCandidatesGroup',
     'maxCandidatesInput',
   ];

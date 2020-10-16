@@ -14,9 +14,20 @@ export const visitURLWithParam = (param, paramValue) => {
   }
   searchParams.delete('page');
 
+  turboVisitsWithSearchParams(searchParams)
+}
+
+export const turboVisitsWithSearchParams = (searchParams) =>{
   Turbolinks.visit(
     `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`,
   );
+}
+
+export const clearParamAndVisits = (fn, param_name )=> {
+  fn(null);
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.delete(param_name)
+  turboVisitsWithSearchParams(searchParams)
 }
 
 export const getParamValueFromUrl = (param) => {

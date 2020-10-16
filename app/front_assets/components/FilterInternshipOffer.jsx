@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Turbolinks from 'turbolinks';
+import { changeURLFromEvent, clearParamAndVisits } from '../utils/urls';
 
 function FilterInternshipOffer() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -8,9 +8,7 @@ function FilterInternshipOffer() {
   // clear selected radio
   const clearRadioOnDoubleClick = (event) => {
     if (schoolTrack !== null && event.target.value === schoolTrack) {
-      setSchoolTrack(null);
-      searchParams.delete('school_track');
-      Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
+      clearParamAndVisits(setSchoolTrack,'school_track')
       event.preventDefault();
     }
     return event;
@@ -19,12 +17,7 @@ function FilterInternshipOffer() {
   // switch radio
   const filterOffers = (event) => {
    setSchoolTrack(event.target.value)
-   if (event.target.value) {
-      searchParams.set('school_track', event.target.value);
-    } else {
-      searchParams.delete('school_track');
-    }
-    Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
+   changeURLFromEvent(event,'school_track')
   }
 
   return (
