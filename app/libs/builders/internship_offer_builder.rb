@@ -38,8 +38,8 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
+      instance = instance.becomes(params[:type].constantize) if params[:type] && params[:type] != instance.type
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
-      instance = instance.becomes(instance.type.constantize) if instance.attribute_changed?("type")
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
