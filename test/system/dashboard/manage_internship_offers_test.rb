@@ -47,28 +47,30 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
     internship_offer = create(:bac_pro_internship_offer, employer: employer)
+    internship_offer_id = internship_offer.id
     sign_in(employer)
 
     visit edit_dashboard_internship_offer_path(internship_offer)
 
-    select '3e générale'
-    execute_script("document.getElementById('all_year_long').checked = true")
+    select '3e générale', from: 'Filière cible'
+    execute_script(
+      "document.querySelector('div[data-target=\"select-weeks.checkboxesContainer\"]').children.forEach(elem => elem.children[0].checked = true)"
+    )
     click_on "Modifier l'offre"
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::WeeklyFramed'
     wait_form_submitted
 
     visit edit_dashboard_internship_offer_path(internship_offer)
 
-    select 'Bac pro'
+    select 'Bac pro', from: 'Filière cible'
     fill_in 'internship_offer_title', with: 'editok'
     find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
-    execute_script("document.getElementById('all_year_long').checked = true")
-    execute_script("document.getElementById('all_year_long').classList.remove('d-none')")
-    execute_script("document.querySelector('div[data-target=\"internship-offer-infos.weeksContainer\"]').classList.add('d-none')")
-    save_and_open_page
-
     click_on "Modifier l'offre"
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::FreeDate'
     wait_form_submitted
-    assert_equal 'editok', internship_offer.reload.title
+    assert_equal 'editok', internship_offer.title
   end
 
   test 'can discard internship_offer' do
