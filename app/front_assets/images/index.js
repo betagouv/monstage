@@ -25,8 +25,6 @@ import './homepage/benefices/icon-offrir-un-stage.png';
 import './homepage/benefices/icon-trouver-un-stage.png';
 
 
-import './homepage/partenaires/Logo-face.jpg';
-import './homepage/partenaires/Logo-degunsanstage.jpg';
 import './homepage/partenaires/Logo-jobirl.jpg';
 import './homepage/partenaires/Logo-le-reseau.jpg';
 import './homepage/partenaires/Logo-les-entreprises-pour-la-cite.jpg';
@@ -34,8 +32,8 @@ import './homepage/partenaires/Logo-myfuture.jpg';
 import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
-import './homepage/partenaires/Logo-jndj.jpg';
-import './homepage/partenaires/Logo-united-way.jpg';
+import './homepage/partenaires/Logo-moidans10ans.png';
+import './homepage/partenaires/Logo-telemaque.jpg';
 
 import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
 import './homepage/sponsors/Logo-anct.jpg';
