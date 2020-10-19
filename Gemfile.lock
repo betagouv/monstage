@@ -307,7 +307,6 @@ GEM
     rubocop-ast (0.7.1)
       parser (>= 2.7.1.5)
     ruby-progressbar (1.10.1)
-    ruby_http_client (3.5.1)
     rubyzip (2.3.0)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -321,8 +320,6 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (2.3.0)
-    sendgrid-ruby (6.3.5)
-      ruby_http_client (~> 3.4)
     sentry-raven (3.1.1)
       faraday (>= 1.0)
     sidekiq (6.1.2)
@@ -431,7 +428,6 @@ DEPENDENCIES
   rest-client
   rubocop
   selenium-webdriver
-  sendgrid-ruby
   sentry-raven
   sidekiq
   slim-rails
