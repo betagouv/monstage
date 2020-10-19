@@ -11,6 +11,7 @@ module Reporting
                     :department,
                     :academy,
                     :group,
+                    :school_track,
                     :dimension)
     end
 

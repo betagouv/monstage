@@ -112,7 +112,7 @@ module Dashboard
           :longitude,
           :radius,
           :school_track,
-          :school_type, #TODO
+          :school_type,
           :keyword,
           :school_year
         ),

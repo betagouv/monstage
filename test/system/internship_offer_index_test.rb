@@ -110,12 +110,19 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: bac_pro_internship_offer)
 
     # filter
-    # find('label[for="search-by-troisieme-generale"]').click
-    # assert_presence_of(internship_offer: troisieme_generale_internship_offer)
-    # assert_absence_of(internship_offer: bac_pro_internship_offer)
-    
-    # TODO expected new tests from next merge
+    find('label[for="search-by-troisieme-generale"]').click
+    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: bac_pro_internship_offer)
 
+    # filtered by middle-school
+    find('label[for="search-by-bac-pro"]').click
+    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: bac_pro_internship_offer)
+
+    # uncheck selection make both search active == "Toutes"
+    find('label[for="search-by-bac-pro"]').click
+    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: bac_pro_internship_offer)
   end
 
   test 'search filters as student are not available' do

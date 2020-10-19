@@ -24,7 +24,7 @@ FactoryBot.define do
       employer { create(:user_operator) }
       school_track { :troisieme_generale }
       permalink { 'https://google.fr' }
-      description { 'Lorem ipsum dolor' }
+      description { 'Lorem ipsum dolor api' }
       sequence(:remote_id) { |n| n }
     end
 
@@ -32,39 +32,38 @@ FactoryBot.define do
       weeks { [Week.first] }
       school_track { :troisieme_generale }
       employer { create(:employer) }
+      description { 'Lorem ipsum dolor weekly_internship_offer' }
     end
 
     trait :troisieme_generale_internship_offer do
       weeks { [Week.first] }
       school_track { :troisieme_generale }
       employer { create(:employer) }
+      description { 'Lorem ipsum dolor troisieme_generale_internship_offer' }
     end
 
     trait :free_date_internship_offer do
       employer { create(:employer ) }
       school_track { :bac_pro}
+      description { 'Lorem ipsum dolor free_date_internship_offer' }
     end
 
     trait :troisieme_segpa_internship_offer do
       employer { create(:employer ) }
-      school_track { :troisieme_segpa}
+      school_track { :troisieme_segpa }
+      description { 'Lorem ipsum dolor troisieme_segpa_internship_offer' }
     end
 
     trait :troisieme_prepa_metier_internship_offer do
       employer { create(:employer ) }
-      school_track { :troisieme_prepa_metier_}
+      school_track { :troisieme_prepa_metier }
+      description { 'Lorem ipsum dolor troisieme_prepa_metier_internship_offer' }
     end
 
     trait :bac_pro_internship_offer do
       employer { create(:employer ) }
       school_track { :bac_pro}
-      description { 'Lorem ipsum dolor' }
-    end
-
-    trait :free_date_internship_offer do
-      employer { create(:employer) }
-      school_track { :bac_pro }
-      description { 'Lorem ipsum dolor' }
+      description { 'Lorem ipsum dolor bac_pro_internship_offer' }
     end
 
     trait :discarded do

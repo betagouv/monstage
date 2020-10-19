@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Turbolinks from 'turbolinks';
+import { changeURLFromEvent, clearParamAndVisits } from '../utils/urls';
 
 function FilterInternshipOffer() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -8,9 +8,8 @@ function FilterInternshipOffer() {
   // clear selected radio
   const clearRadioOnDoubleClick = (event) => {
     if (schoolTrack !== null && event.target.value === schoolTrack) {
-      setSchoolTrack(null);
-      searchParams.delete('school_track');
-      Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
+      setSchoolTrack(null)
+      clearParamAndVisits('school_track')
       event.preventDefault();
     }
     return event;
@@ -19,17 +18,12 @@ function FilterInternshipOffer() {
   // switch radio
   const filterOffers = (event) => {
    setSchoolTrack(event.target.value)
-   if (event.target.value) {
-      searchParams.set('school_track', event.target.value);
-    } else {
-      searchParams.delete('school_track');
-    }
-    Turbolinks.visit(`${window.location.pathname}?${searchParams.toString()}`);
+   changeURLFromEvent(event,'school_track')
   }
 
   return (
     <div className="form-group form-inline justify-content-center justify-content-sm-start justify-content-md-center p-0 m-0 custom-radio-boxes">
-      <span className="font-weight-normal mr-1">Filtrer par : </span>
+      <span className="font-weight-normal justify-content-sm-center mr-1">Filtrer par : </span>
       <div className='custom-radio-box-control custom-radio-box-control-prepend '>
         <input
           type="radio"

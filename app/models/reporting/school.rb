@@ -27,6 +27,7 @@ module Reporting
 
     has_many :school_internship_weeks
     has_many :weeks, through: :school_internship_weeks
+    has_many :class_rooms
 
     has_many :internship_applications, through: :students do
       def approved
@@ -48,6 +49,11 @@ module Reporting
     # maybe useless
     scope :in_the_future, lambda {
       more_recent_than(week: ::Week.current)
+    }
+
+    scope :with_school_track, lambda { |school_track|
+      joins(:class_rooms)
+        .where('class_rooms.school_track = ?', school_track)
     }
 
     paginates_per PAGE_SIZE
