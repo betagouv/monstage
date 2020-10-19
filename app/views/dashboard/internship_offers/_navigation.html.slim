@@ -51,23 +51,14 @@
             small.d-block
               | Imprimer
 
-        - if can?(:create, InternshipOffer)
-          a.nav-link.px-1.px-sm-2.text-center href=new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param)
-            i.fas.fa-copy
-            - if SchoolYear::Current.new.between_june_to_august?
-              small.d-block.test-renew-button
-                | Renouveler
-            - else
-              small.d-block.test-duplicate-button
-                | Dupliquer
 
-          a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_internship_offer_path
+          a.nav-link.pl-1.pr-0.pr-sm-0.pl-sm-2.text-center href=new_dashboard_stepper_organisation_path
             i.fas.fa-plus
             small.d-none.d-sm-block
               | Déposer une offre
             small.d-block.d-sm-none
               | Ajouter
+
 .row.mt-3
   .col-12
     = render "internship_offers/breadcrumb", internship_offer: @internship_offer
-

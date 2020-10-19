@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module InternshipOffers
+module Dashboard::InternshipOffers
   class EditTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
@@ -48,6 +48,16 @@ module InternshipOffers
       end
     end
 
+    test 'GET #edit keep type/school track aligned' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:free_date_internship_offer, employer: employer)
+
+      get edit_dashboard_internship_offer_path(internship_offer.to_param)
+      assert_response :success
+      assert_select '#internship_offer_school_track option[selected][value=bac_pro]'
+    end
+
     test 'GET #edit with default fields' do
       employer = create(:employer)
       sign_in(employer)
@@ -70,7 +80,7 @@ module InternshipOffers
 
       assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
       assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
-      assert_select 'a.btn-back[href=?]', internship_offer_path(internship_offer)
+      assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end
 end

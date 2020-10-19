@@ -27,11 +27,11 @@ module W3c
       end
     end
 
-    test 'new_dashboard_internship_offer_path' do
-      employer = create(:employer)
-      sign_in(employer)
+    test 'new_dashboard_internship_offer_path(duplicate_id)' do
+      stage_dev = create(:weekly_internship_offer)
+      sign_in(stage_dev.employer)
       run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do
-        visit new_dashboard_internship_offer_path
+        visit new_dashboard_internship_offer_path(duplicate_id: stage_dev.id)
       end
     end
 
@@ -95,17 +95,6 @@ module W3c
       sign_in(teacher)
       run_request_and_cache_response(report_as: 'school_manager dashboard_school_class_room_path') do
         visit dashboard_school_class_room_path(school, class_room)
-      end
-    end
-
-    test 'teacher dashboard_school_students_path' do
-      school = create(:school)
-      school_manager = create(:school_manager, school: school)
-      teacher = create(:teacher, school: school_manager.school)
-      student = create(:student, school: school)
-      sign_in(teacher)
-      run_request_and_cache_response(report_as: 'school_manager dashboard_school_students_path') do
-        visit dashboard_school_students_path(school)
       end
     end
   end

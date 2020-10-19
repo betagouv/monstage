@@ -1,9 +1,16 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
-import { toggleElement, hideElement, isVisible } from '../utils/dom';
+import { toggleElement, hideElement, showElement, isVisible } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['collapsible', 'linkIconContainer', 'motivation', 'linkTextShowMore'];
+
+  initialize(){
+    $(this.linkIconContainerTarget).html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
+    $(this.motivationTarget).addClass('text-truncate-max-height-50');
+    hideElement($(this.collapsibleTarget));
+    showElement($(this.linkTextShowMoreTarget));
+  }
 
   toggle() {
     const $collapsibleTarget = $(this.collapsibleTarget);
@@ -13,9 +20,9 @@ export default class extends Controller {
     toggleElement($linkTextShowMore);
     $(this.motivationTarget).toggleClass('text-truncate-max-height-50');
     if (isVisible($collapsibleTarget)) {
-      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-down"></i>`);
+      $linkIconContainer.html(`<i class="fas fa-2x fa-caret-down text-danger"></i>`);
     } else {
-      $linkIconContainer.html(`<i class="fas fa-2x fa-chevron-right"></i>`);
+      $linkIconContainer.html(`<i class="fas fa-2x fa-caret-right text-danger"></i>`);
     }
   }
 }

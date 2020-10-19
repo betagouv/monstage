@@ -10,6 +10,12 @@ module InternshipOffers
         "non"
       end
 
+      def supplied_applications
+        InternshipApplication.where(internship_offer_id: id)
+                             .where(aasm_state: ['approved', 'convention_signed'])
+                             .count
+      end
+
       rails_admin do
         configure :created_at, :datetime do
           date_format 'BUGGY'
@@ -52,8 +58,6 @@ module InternshipOffers
           field :convention_signed_applications_count
           field :group
           field :employer_name
-          field :employer_email
-          field :employer_phone
           field :tutor_name
           field :tutor_phone
           field :tutor_email
@@ -61,6 +65,8 @@ module InternshipOffers
           field :zipcode
           field :departement
           field :city
+          field :sector_name
+          field :supplied_applications
           field :visible
         end
       end

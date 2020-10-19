@@ -79,7 +79,7 @@ module Dashboard
           assert_response :success
 
           # new link
-          assert_select 'a.text-danger[href=?]',
+          assert_select 'a.btn-primary[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
@@ -139,6 +139,23 @@ module Dashboard
                           text: stats.total_student_with_zero_internship.to_s
           end
         end
+      end
+
+      test 'GET show as SchoolManagement works and only show not archived students' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        student_in_class_room = create(:student, school: school, class_room: class_room)
+        student_anonymized = create(:student, school: school, class_room: class_room, anonymized: true)
+        student_not_in_class_room_not_anonymized = create(:student, school: school)
+        student_not_in_class_room_not_anonymized.update(class_room_id: nil)
+
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_class_rooms_path(school)
+        assert_response :success
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_in_class_room.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_anonymized.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_not_in_class_room_not_anonymized.id}\"]", count: 1
       end
     end
   end

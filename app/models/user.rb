@@ -108,7 +108,7 @@ class User < ApplicationRecord
   end
 
   def formal_name
-    "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
+    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
   def anonymize(send_email: true)
@@ -205,6 +205,22 @@ class User < ApplicationRecord
     class_room.nil?
   end
 
+  def send_reconfirmation_instructions
+    @reconfirmation_required = false
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
+    if add_email_to_phone_account?
+      devise_mailer.add_email_instructions(self)
+                   .deliver_later
+    else
+      unless @skip_confirmation_notification
+        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
+                     .deliver_later
+      end
+    end
+  end
+
   private
 
 
@@ -213,10 +229,13 @@ class User < ApplicationRecord
     self.phone = phone.delete(' ') unless phone.nil?
   end
 
+  def add_email_to_phone_account?
+    phone.present? && confirmed? && email.blank?
+  end
+
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, 'Un email ou un téléphone mobile est nécessaire.')
-      errors.add(:phone, 'Un email ou un téléphone mobile est nécessaire.')
+      errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
     end
   end
 

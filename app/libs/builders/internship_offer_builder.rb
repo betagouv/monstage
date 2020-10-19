@@ -3,6 +3,25 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder
+
+    # called by dashboard/stepper/tutor#create during creating with steps
+    def create_from_stepper(tutor:, organisation:, internship_offer_info:)
+      yield callback if block_given?
+      authorize :create, model
+      internship_offer = model.new(
+        {}.merge(preprocess_organisation_to_params(organisation))
+          .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
+          .merge(preprocess_tutor_to_params(tutor))
+          .merge(employer_id: user.id, employer_type: 'User')
+          .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
+      )
+      internship_offer.save!
+      callback.on_success.try(:call, internship_offer)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    end
+
+    # called by internship_offers#create (duplicate), api/internship_offers#create
     def create(params:)
       yield callback if block_given?
       authorize :create, model
@@ -19,7 +38,9 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.update!(preprocess_api_params(params, fallback_weeks: false))
+      instance.attributes = preprocess_api_params(params, fallback_weeks: false)
+      instance = instance.becomes(instance.type.constantize) if instance.attribute_changed?("type")
+      instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -56,6 +77,44 @@ module Builders
                            .sanitize
     end
 
+    def preprocess_organisation_to_params(organisation)
+      {
+        employer_name: organisation.employer_name,
+        employer_website: organisation.employer_website,
+        coordinates: organisation.coordinates,
+        street: organisation.street,
+        zipcode: organisation.zipcode,
+        city: organisation.city,
+        employer_description_rich_text: organisation.employer_description,
+        is_public: organisation.is_public,
+        group_id: organisation.group_id,
+      }
+    end
+
+    def preprocess_internship_offer_info_to_params(internship_offer_info)
+      params = {
+        title: internship_offer_info.title,
+        description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
+        max_candidates: internship_offer_info.max_candidates,
+        school_id: internship_offer_info.school_id,
+        weekly_hours: internship_offer_info.weekly_hours,
+        daily_hours: internship_offer_info.daily_hours,
+        sector_id: internship_offer_info.sector_id,
+        school_track: internship_offer_info.school_track,
+        type: internship_offer_info.type.gsub('Info', ''),
+      }
+      params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?
+      params
+    end
+
+    def preprocess_tutor_to_params(tutor)
+      {
+        tutor_name: tutor.tutor_name,
+        tutor_email: tutor.tutor_email,
+        tutor_phone: tutor.tutor_phone
+      }
+    end
+
     def from_api?
       context == :api
     end
@@ -78,4 +137,5 @@ module Builders
       raise CanCan::AccessDenied
     end
   end
+
 end

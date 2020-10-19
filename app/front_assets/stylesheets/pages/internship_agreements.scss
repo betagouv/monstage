@@ -1,0 +1,27 @@
+.internship-agreement{
+  .title{
+    padding: 10px 20px;
+    font-size: 120;
+    color: $blue;
+  }
+  .bloc{
+    padding: 10px;
+  }
+}
+.internship-agreement-to-sign{
+  .actions .text-action {
+    white-space:nowrap;
+    display: inline;
+    transition: all 1s ease-out;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform:translate(0);
+  }
+  .actions:hover .text-action {
+    position: relative;
+    visibility: visible;
+    transform:translate(9999px);
+    opacity: 1;
+  }
+}

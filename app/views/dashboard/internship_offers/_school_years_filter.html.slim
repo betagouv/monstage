@@ -1,0 +1,16 @@
+- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :filter, :school_year, :order, :direction)
+.col-12.row.mr-auto
+  form action="#{request.path}"
+    .col-sm-12.align-items-center data-controller='select-years'
+      span.font-weight-bolder.mr-2 Années scolaires
+      - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
+      - options = years.map { |year| [ "#{year} - #{((year+1).to_s)[2, 3]}", year] }
+      = select_tag :school_year,
+                    options_for_select(options, params[:school_year]),
+                    include_blank: 'Toutes',
+                    class: 'school_years',
+                    'data-action': "change->select-years#handleChange",
+                    'data-target': "select-years.schoolYearField"
+      = submit_tag 'Filtrer par années',
+                   'data-target': "select-years.schoolYearSubmit",
+                   class: 'ml-2 submit-school-years btn btn-sm btn-outline-primary'

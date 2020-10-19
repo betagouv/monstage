@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :internship_offer do
     sequence(:title) { |n| "Stage de 3è - #{n}" }
-    description { 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eros orci, iaculis ut suscipit non, imperdiet non libero. Proin tristique metus purus, nec porttitor quam iaculis sed. Aenean mattis a urna in vehicula. Morbi leo massa, maximus eu consectetur a, convallis nec purus. Praesent ut erat elit. In eleifend dictum est eget molestie. Donec varius rhoncus neque, sed porttitor tortor aliquet at. Ut imperdiet nulla nisi, eget ultrices libero semper eu.' }
     max_candidates { 1 }
     blocked_weeks_count { 0 }
     sector { create(:sector) }
@@ -13,6 +12,7 @@ FactoryBot.define do
     is_public { true }
     group { create(:group, is_public: true) }
     employer_description { 'on envoie du parpaing' }
+    description { 'On aime notre métier et on le partage !'}
     street { '1 rue du poulet' }
     zipcode { '75001' }
     city { 'Paris' }
@@ -20,9 +20,12 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
 
     trait :api_internship_offer do
-      permalink { 'https://google.fr' }
-      sequence(:remote_id) { |n| n }
+      weeks { [Week.first] }
       employer { create(:user_operator) }
+      school_track { :troisieme_generale }
+      permalink { 'https://google.fr' }
+      description { 'Lorem ipsum dolor' }
+      sequence(:remote_id) { |n| n }
     end
 
     trait :weekly_internship_offer do
@@ -55,6 +58,13 @@ FactoryBot.define do
     trait :bac_pro_internship_offer do
       employer { create(:employer ) }
       school_track { :bac_pro}
+      description { 'Lorem ipsum dolor' }
+    end
+
+    trait :free_date_internship_offer do
+      employer { create(:employer) }
+      school_track { :bac_pro }
+      description { 'Lorem ipsum dolor' }
     end
 
     trait :discarded do

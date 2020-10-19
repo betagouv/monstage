@@ -31,12 +31,33 @@ module InternshipOffers
         by_weeks(weeks: weeks)
       }
 
+      scope :specific_school_year, lambda { |school_year:|
+        week_ids = Week.weeks_of_school_year(school_year: school_year).pluck(:id)
+
+        joins(:internship_offer_weeks)
+        .where('internship_offer_weeks.week_id in (?)', week_ids)
+      }
+
       def weekly?
         true
       end
 
       def free_date?
         false
+      end
+
+      def weeks_count
+        internship_offer_weeks.count
+      end
+
+      def first_monday
+        I18n.l internship_offer_weeks.first.week.week_date,
+               format: Week::WEEK_DATE_FORMAT
+      end
+
+      def last_monday
+        I18n.l internship_offer_weeks.last.week.week_date,
+               format: Week::WEEK_DATE_FORMAT
       end
 
       def has_spots_left?

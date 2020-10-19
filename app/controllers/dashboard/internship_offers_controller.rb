@@ -8,16 +8,17 @@ module Dashboard
     def index
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
 
-      @internship_offers = finder.all
-      @internship_offers = @internship_offers.merge(filter_scope)
-      @internship_offers = @internship_offers.order(order_column => order_direction)
+      @internship_offers   = finder.all
+      @internship_offers   = @internship_offers.merge(filter_scope)
+      @internship_offers   = @internship_offers.order(order_column => order_direction)
     end
 
+    # duplicate submit
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
+                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -69,15 +70,13 @@ module Dashboard
       end
     end
 
+    # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = if params[:duplicate_id].present?
-                            current_user.internship_offers
-                                        .find(params[:duplicate_id])
-                                        .duplicate
-                          else
-                            InternshipOffer.new
-                          end
+      @internship_offer = current_user.internship_offers
+                                      .find(params[:duplicate_id])
+                                      .duplicate
+
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -86,11 +85,11 @@ module Dashboard
     VALID_ORDER_COLUMNS = %w[
       title
       view_count
-      total_applications_count
-      submitted_applications_count
       rejected_applications_count
       approved_applications_count
+      submitted_applications_count
       convention_signed_applications_count
+      total_applications_count
     ].freeze
 
     def valid_order_column?
@@ -99,20 +98,23 @@ module Dashboard
 
     def filter_scope
       case params[:filter]
-      when 'unpublished' then InternshipOffer.where(published_at: nil)
-      when 'past' then InternshipOffer.in_the_past
+      when 'unpublished'                 then InternshipOffer.unpublished
+      when 'past'                        then InternshipOffer.in_the_past
       else InternshipOffer.published.in_the_future
       end
     end
 
     def finder
-      @finder ||= Finders::ListableInternshipOffer.new(
+      @finder ||= Finders::InternshipOfferPublisher.new(
         params: params.permit(
           :page,
           :latitude,
           :longitude,
           :radius,
-          :school_track
+          :school_track,
+          :school_type, #TODO
+          :keyword,
+          :school_year
         ),
         user: current_user_or_visitor
       )

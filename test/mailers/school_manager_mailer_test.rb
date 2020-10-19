@@ -3,6 +3,8 @@
 require 'test_helper'
 
 class SchoolManagerMailerTest < ActionMailer::TestCase
+  include EmailSpamEuristicsAssertions
+
   test 'new_member' do
     main_teacher = build(:main_teacher)
     school_manager = create(:school, :with_school_manager).school_manager
@@ -10,6 +12,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
                                            school_manager: school_manager)
     assert_includes email.to, school_manager.email
     assert_equal "Nouveau Professeur principal: #{main_teacher.first_name} #{main_teacher.last_name}", email.subject
+    refute_email_spammyness(email)
   end
 
   test 'missing_school_weeks' do
@@ -17,6 +20,6 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
 
     email = SchoolManagerMailer.missing_school_weeks(school_manager: school.school_manager)
     assert_includes email.to, school.school_manager.email
-    assert_equal 'Action requise – Renseignez les semaines de stage de votre établissement', email.subject
+    refute_email_spammyness(email)
   end
 end
