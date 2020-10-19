@@ -2,6 +2,6 @@
 
 class UserMailer < ApplicationMailer
   def anonymize_user(recipient_email:)
-    mail(to: recipient_email, subject: 'Votre compte a bien été supprimé')
+    mail(to: recipient_email, subject: 'Confirmation - suppression de votre compte')
   end
 end

@@ -2,8 +2,9 @@
 
 module SchoolYear
   class Base
+    YEAR_START          = 2019
     MONTH_OF_YEAR_SHIFT = 5
-    DAY_OF_YEAR_SHIFT = 31
+    DAY_OF_YEAR_SHIFT   = 31
 
     def between_june_to_august?
       june_to_august.member?(current_month)

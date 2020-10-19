@@ -78,6 +78,10 @@ class InternshipOffer < ApplicationRecord
     all # TODO : specs for FreeDate required
   }
 
+  scope :school_track, lambda { |school_track:|
+    where(school_track: school_track)
+  }
+
   scope :unpublished, -> { where(published_at: nil) }
   scope :published, -> { where.not(published_at: nil) }
 
@@ -189,7 +193,6 @@ class InternshipOffer < ApplicationRecord
                                                        else
                                                          employer_description
                                                        end)
-
     internship_offer
   end
 

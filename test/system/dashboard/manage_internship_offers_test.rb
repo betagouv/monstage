@@ -44,23 +44,34 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
-  # test 'can edit school_track of an internship offer back and forth' do
-  #   employer = create(:employer)
-  #   internship_offer = create(:free_date_internship_offer, employer: employer)
-  #   sign_in(employer)
+  test 'can edit school_track of an internship offer back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:bac_pro_internship_offer, employer: employer)
+    internship_offer_id = internship_offer.id
+    sign_in(employer)
 
-  #   visit edit_dashboard_internship_offer_path(internship_offer)
-  #   select '3e générale'
-  #   click_on "Enregistrer et publier l'offre"
+    visit edit_dashboard_internship_offer_path(internship_offer)
 
-  #   visit edit_dashboard_internship_offer_path(internship_offer)
-  #   select 'Bac pro'
-  #   fill_in 'internship_offer_title', with: 'editok'
-  #   find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
-  #   click_on "Enregistrer et publier l'offre"
-  #   wait_form_submitted
-  #   assert_equal 'editok', internship_offer.reload.title
-  # end
+    select '3e générale', from: 'Filière cible'
+    execute_script(
+      "document.querySelector('div[data-target=\"select-weeks.checkboxesContainer\"]').children.forEach(elem => elem.children[0].checked = true)"
+    )
+    click_on "Modifier l'offre"
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::WeeklyFramed'
+    wait_form_submitted
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+
+    select 'Bac pro', from: 'Filière cible'
+    fill_in 'internship_offer_title', with: 'editok'
+    find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
+    click_on "Modifier l'offre"
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::FreeDate'
+    wait_form_submitted
+    assert_equal 'editok', internship_offer.title
+  end
 
   test 'can discard internship_offer' do
     employer = create(:employer)
@@ -101,5 +112,58 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                         delta = 10
       end
     end
+  end
+
+  test 'Employer can filter internship_offers from dashboard filters' do
+    employer = create(:employer)
+
+    week_1 = Week.find_by(year: 2019, number: 50) #2019-20
+    week_2 = Week.find_by(year: 2020, number: 2)  #2019-20
+    week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
+
+    # 2019-20
+    create( :weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019-20')
+
+    # 2020-21
+    create( :weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020-21')
+
+    # wrong employer
+    create( :weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
+
+    # free
+    create( :free_date_internship_offer, employer: employer, title: 'free')
+
+    # 2019-20 unpublished
+    io = create( :weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019-20 unpublished')
+    io.update_column(:published_at, nil)
+    io.reload
+
+    sign_in(employer)
+    visit dashboard_internship_offers_path
+
+    refute page.has_css?('.school_year')
+
+    click_link('Passées')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+    assert_text('2019-20')
+    assert_text('2019-20 unpublished')
+
+    select('2019 - 20')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+    assert_text('2019-20')
+    assert_text('2019-20 unpublished')
+
+    select('2020 - 21')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+
+    click_link('Dépubliées')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+    assert_text('2019-20 unpublished')
+
+    select('2019 - 20')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+    assert_text('2019-20 unpublished')
+    select('2020 - 21')
+    assert page.has_css?('p.internship-item-title.mb-0', count: 0)
   end
 end

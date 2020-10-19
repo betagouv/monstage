@@ -24,7 +24,6 @@ module Finders
       @listable_query_builder = Finders::ListableInternshipOffer.new(finder: self)
     end
 
-
     def nearby_query_part(query, coordinates)
       query.nearby(latitude: coordinates.latitude,
                    longitude: coordinates.longitude,
@@ -32,7 +31,6 @@ module Finders
            .with_distance_from(latitude: coordinates.latitude,
                                longitude: coordinates.longitude)
     end
-
 
     def school_type_param
       return nil unless params.key?(:school_type)
@@ -58,13 +56,33 @@ module Finders
       params[:radius]
     end
 
+    def school_track_params
+      return nil unless params.key?(:school_track)
+
+      params[:school_track]
+    end
+    
+    def school_year_param
+      return nil unless params.key?(:school_year)
+
+      params[:school_year].to_i
+    end
+
     def common_filter
       query = yield
+
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
       query = middle_school_query(query) if school_type_param == 'middle_school'
       query = high_school_query(query) if school_type_param == 'high_school'
+      query = school_track_query(query) if school_track_params
+      query = school_year_query(query) if school_year_param
+
       query
+    end
+
+    def school_year_query(query)
+      query.merge(InternshipOffers::WeeklyFramed.specific_school_year(school_year: school_year_param))
     end
 
     def keyword_query(query)
@@ -83,5 +101,8 @@ module Finders
       query.merge(InternshipOffer.free_date)
     end
 
+    def school_track_query(query)
+      query.merge(InternshipOffer.school_track(school_track: school_track_params))
+    end
   end
 end

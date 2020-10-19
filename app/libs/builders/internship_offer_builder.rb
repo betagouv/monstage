@@ -38,7 +38,9 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.update!(preprocess_api_params(params, fallback_weeks: false))
+      instance = instance.becomes(params[:type].constantize) if params[:type] && params[:type] != instance.type
+      instance.attributes = preprocess_api_params(params, fallback_weeks: false)
+      instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
@@ -98,6 +100,7 @@ module Builders
         weekly_hours: internship_offer_info.weekly_hours,
         daily_hours: internship_offer_info.daily_hours,
         sector_id: internship_offer_info.sector_id,
+        school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
       }
       params[:week_ids] = internship_offer_info.week_ids if internship_offer_info.weekly?

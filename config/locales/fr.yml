@@ -1,4 +1,7 @@
 fr:
+  admin:
+    table_headers:
+      last_created: 'Dernier créé'
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
@@ -112,6 +115,7 @@ fr:
         description: Description
         sector: Secteur
         school_type: Niveau scolaire
+        school_track: Filière
         max_candidates: Nbr. max de candidats
         sector_id: Secteurs professionnels
         internship_type:
@@ -218,6 +222,8 @@ fr:
               required: "Veuillez choisir un secteur pour l'offre de stage"
             school_type:
               required: "Veuillez choisir le niveau scolaire correspondant à l'offre de stage"
+            school_track:
+              required: "Veuillez choisir la filière correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
 
@@ -258,8 +264,8 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
-            school_type:
-              blank: "Missing school_type"
+            school_track:
+              blank: "Missing school_track"
             weeks:
               blank: "Missing weeks"
             remote_id:

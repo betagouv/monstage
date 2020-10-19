@@ -1,4 +1,4 @@
-- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :filter)
+- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :filter, :school_year)
 - sort_params = forwarded_params.to_h.merge(order: order, direction: direction)
 
 = link_to dashboard_internship_offers_path(sort_params),
