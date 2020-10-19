@@ -118,7 +118,7 @@ module Services
             { Name: "monstage_id", Value: user.id },
             { Name: "type", Value: user.type },
             { Name: "environment", Value: Rails.env },
-            { Name: "confirmed_at", Value: user.created_at.utc.to_i }
+            { Name: "confirmed_at", Value: user.confirmed_at.utc.to_i }
           ]
         }
         request.body = data.to_json
