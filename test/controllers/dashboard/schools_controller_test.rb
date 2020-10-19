@@ -31,6 +31,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_response :success
+      assert_select 'title', 'Semaines de stage | Monstage'
       assert_select 'form[action=?]', dashboard_school_path(@school)
       available_weeks = Week.selectable_on_school_year
       asserted_input_count = 0
@@ -49,7 +50,7 @@ module Dashboard
       get edit_dashboard_school_path(@school.to_param)
 
       assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-      assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
+      assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
     end
 
     test 'GET edit as God works' do

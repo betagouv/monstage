@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Turbolinks from 'turbolinks';
 
-import CityInput from './inputs/CityInput';
-import KeywordInput from './inputs/KeywordInput';
-import SchoolTypeInput from './inputs/SchoolTypeInput';
-
 import findBootstrapEnvironment from '../utils/responsive';
 
-function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
+import CityInput from './search_internship_offer/CityInput';
+import KeywordInput from './search_internship_offer/KeywordInput';
+
+function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   const isMobile = findBootstrapEnvironment() == 'xs';
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
-  const initialKeyword      = searchParams.get('keyword') || "";
-  const initialLatitude     = searchParams.get('latitude');
-  const initialLongitude    = searchParams.get('longitude');
-  const initialSchoolType   = searchParams.get('school_type');
+  const initialKeyword = searchParams.get('keyword') || '';
+  const initialLatitude = searchParams.get('latitude');
+  const initialLongitude = searchParams.get('longitude');
+
   const [showSearch, setShowSearch] = useState(!isMobile);
 
   // used by keyword input
@@ -28,19 +27,9 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
 
   // used by both
   const [focus, setFocus] = useState(null);
-    // Checkbox initialization
-  const initSchoolType = (searchParams.get('school_type') === null) ? 'both' : initialSchoolType;
 
-  const [schoolType, setSchoolType] = useState(initSchoolType);
 
-  const filterOffers = event => {
-
-    if(schoolType =='both'){
-      searchParams.delete('school_type');
-    } else {
-      searchParams.set('school_type', schoolType)
-    }
-
+  const filterOffers = (event) => {
     if (city) {
       searchParams.set('city', city);
       searchParams.set('latitude', latitude);
@@ -73,81 +62,34 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
   const dirtyTrackSearch = () => {
     const keywordChanged = initialKeyword != keyword;
     const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
-    const schoolTypeChanged = initialSchoolType != schoolType
 
-    setShowSearch(keywordChanged || coordinatesChanged || schoolTypeChanged)
-  }
+    setShowSearch(keywordChanged || coordinatesChanged);
+  };
 
-  if(isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword, schoolType]);
-  }
-
-  const toggleMiddleSchool = () => {
-    switch (schoolType) {
-      case 'both':
-        setSchoolType('high_school');
-        break;
-      case 'high_school':
-        setSchoolType('both');
-        break;
-      case 'middle_school':
-        setSchoolType('none');
-        break;
-      case 'none':
-        setSchoolType('middle_school');
-        break;
-      default:
-        console.log('SNO toggleMiddleSchool');
-    }
-  }
-
-  const toggleHighSchool = () => {
-    switch (schoolType) {
-      case 'both':
-        setSchoolType('middle_school');
-        break;
-      case 'high_school':
-        setSchoolType('none');
-        break;
-      case 'middle_school':
-        setSchoolType('both');
-        break;
-      case 'none':
-        setSchoolType('high_school');
-        break;
-      default:
-        console.log('SNO toggleHighSchool');
-    }
+  if (isMobile) {
+    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
   }
 
   return (
     <form data-turbolink={false} onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
-        <KeywordInput
-          keyword={keyword}
-          setKeyword={setKeyword}
-          focus={focus}
-          setFocus={setFocus}
-        />
+        <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
           city={city}
           longitude={longitude}
           latitude={latitude}
-
           setCity={setCity}
           setLongitude={setLongitude}
           setLatitude={setLatitude}
-
           radius={radius}
           setRadius={setRadius}
-
           focus={focus}
           setFocus={setFocus}
         />
         {showSearch && (
-          <div className={`input-group-prepend d-flex d-xs-stick p-0`}>
+          <div className="input-group-prepend d-flex d-xs-stick p-0">
             <button
-              id='test-submit-search'
+              id="test-submit-search"
               type="submit"
               className="input-group-search-button
                          btn
@@ -159,19 +101,10 @@ function SearchInternshipOffer({ url, className, schoolTypeVisibility=true}) {
                          rounded-xs-0"
             >
               <i className="fas fa-search" />
-              &nbsp; Rechercher
+              &nbsp; {(searchWordVisible) ? "Rechercher" : ""}
             </button>
           </div>
-          )}
-      </div>
-      <br/>
-      <div>
-        <SchoolTypeInput
-          schoolType={schoolType}
-          toggleMiddleSchool={toggleMiddleSchool}
-          toggleHighSchool={toggleHighSchool}
-          schoolTypeVisibility={schoolTypeVisibility}
-        />
+        )}
       </div>
     </form>
   );

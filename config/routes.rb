@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
+  authenticate :user, lambda { |u| u.is_a?(Users::God) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount ActionCable.server => '/cable'
@@ -44,15 +47,24 @@ Rails.application.routes.draw do
   namespace :dashboard, path: 'dashboard' do
     resources :schools, only: %i[index edit update] do
       resources :users, only: %i[destroy update index], module: 'schools'
-      resources :students, only: %i[index update], module: 'schools'
+      resources :internship_agreements, only: %i[index update], module: 'schools'
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
+      put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
     end
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
     end
+
+    namespace :stepper do
+      resources :organisations, only: %i[create new edit update]
+      resources :internship_offer_infos, only: %i[create new edit update]
+      resources :tutors, only: %i[create new]
+    end
+
+    resources :internship_agreements
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
@@ -75,9 +87,11 @@ Rails.application.routes.draw do
   get '/partenaires', to: 'pages#partenaires'
   get '/mentions-legales', to: 'pages#mentions_legales'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
+  get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/contact', to: 'pages#contact'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/operators', to: 'pages#operators'
+  get '/javascript-required', to: 'pages#javascript_required'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

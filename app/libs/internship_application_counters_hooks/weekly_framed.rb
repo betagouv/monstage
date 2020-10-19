@@ -24,6 +24,7 @@ module InternshipApplicationCountersHooks
     end
 
     private
+
     attr_reader :internship_application
 
     def initialize(internship_application:)

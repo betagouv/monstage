@@ -9,9 +9,7 @@ module Dashboard
       authorize! :index, School
       query = School
       query = query.all if params[:visible].blank? || params[:kind].blank?
-      if params[:visible].present?
-        query = query.where(visible: parsed_visible_param)
-      end
+      query = query.where(visible: parsed_visible_param) if params[:visible].present?
       query = query.where(kind: parsed_kind_param) if params[:kind].present?
       query = query.order(zipcode: :desc)
       @schools = query.entries
@@ -19,6 +17,7 @@ module Dashboard
 
     def edit
       authorize! :edit, School
+      navbar_badges
       @available_weeks = Week.selectable_on_school_year
     end
 
@@ -47,9 +46,11 @@ module Dashboard
     end
 
     def internship_weeks_params
-      current_user.is_a?(Users::God) ?
-        god_internship_weeks_params :
+      if current_user.is_a?(Users::God)
+        god_internship_weeks_params
+      else
         school_manager_internship_weeks_params
+end
     end
 
     def parsed_visible_param
@@ -74,6 +75,13 @@ module Dashboard
 
     def school_manager_internship_weeks_params
       params.require(:school).permit(week_ids: [])
+    end
+
+    def navbar_badges
+      @applications = InternshipApplication.joins(:student)
+                                            .includes({student: [:class_room]}, :internship_offer)
+                                            .approved
+                                            .where(student: @school.students)
     end
   end
 end

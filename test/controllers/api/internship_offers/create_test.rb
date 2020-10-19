@@ -62,9 +62,6 @@ module Api
       assert_equal ['Missing permalink'],
                    json_error['permalink'],
                    'bad permalink message'
-      assert_equal ['Missing description'],
-                   json_error['description'],
-                   'bad description message'
       assert_equal ['Missing sector'],
                    json_error['sector'],
                    'bad sector message'
@@ -188,7 +185,7 @@ module Api
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
                 remote_id: 'remote_id',
-                permalink: 'http://google.fr/permalink',
+                permalink: 'http://google.fr/permalink'
               }
             }
           )

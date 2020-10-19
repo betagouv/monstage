@@ -17,21 +17,22 @@ module Reporting
       create(:weekly_internship_application, :submitted, internship_offer: @internship_offer_agri_2)
     end
 
-    test "GET #index not logged fails" do
+    test 'GET #index not logged fails' do
       get reporting_internship_offers_path
       assert_response 302
     end
 
-    test "GET #index as GOD success" do
+    test 'GET #index as GOD success and has a page title' do
       god = create(:god)
       sign_in(god)
       create(:weekly_internship_offer)
       get reporting_internship_offers_path
       assert_response :success
+      assert_select 'title', "Statistiques des offres | Monstage"
     end
 
-    test "GET #index as statistician success " \
-         "when department params match his departement_name" do
+    test 'GET #index as statistician success ' \
+         'when department params match his departement_name' do
       statistician = create(:statistician)
       department_name = statistician.department_name
       create(:weekly_internship_offer, department: department_name)
@@ -41,8 +42,8 @@ module Reporting
       assert_response :success
     end
 
-    test "GET #index.xlsx as statistician success " \
-         "when department params match his departement_name" do
+    test 'GET #index.xlsx as statistician success ' \
+         'when department params match his departement_name' do
       god = create(:god)
       create(:weekly_internship_offer)
       create(:api_internship_offer)
@@ -55,9 +56,8 @@ module Reporting
       end
     end
 
-
-    test "GET #index as statistician fails " \
-         "when department params does not match his department_name" do
+    test 'GET #index as statistician fails ' \
+         'when department params does not match his department_name' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_internship_offers_path(department: 'Ain')

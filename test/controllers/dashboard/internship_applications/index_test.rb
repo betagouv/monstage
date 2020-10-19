@@ -48,7 +48,10 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'h2', "Candidature de #{internship_application.student.name} reçue le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
+      assert_select 'title', 'Mes candidatures | Monstage'
+      assert_select 'h2', "Candidature de"
+      assert_select 'h2', "#{internship_application.student.name}"
+      assert_select '.font-weight-bold.pr-3', "le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
       assert_select '.student-name', student.name
       assert_select '.school-name', school.name
       assert_select '.school-city', school.city
@@ -58,6 +61,22 @@ module InternshipApplications
       assert_select '.reboot-trix-content', student.resume_educational_background.to_plain_text
       assert_select '.reboot-trix-content', student.resume_other.to_plain_text
       assert_select '.reboot-trix-content', student.resume_languages.to_plain_text
+    end
+
+    test 'GET #index (sentry#1887730132) succeed with weekly_internship_application when logged in as employer, and student is archived' do
+      school = create(:school, city: 'Paris', name: 'Mon établissement')
+      student = create(:student, school: school,
+                                 phone: '+330665656565',
+                                 email: 'student@edu.school',
+                                 birth_date: 14.years.ago,
+                                 resume_educational_background: 'resume_educational_background',
+                                 resume_other: 'resume_other',
+                                 resume_languages: 'resume_languages')
+      internship_application = create(:weekly_internship_application, :submitted, student: student)
+      student.archive
+      sign_in(internship_application.internship_offer.employer)
+      get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      assert_response :success
     end
 
     test 'GET #index succeed with free_date_internship_application when logged in as employer, shows default fields' do
@@ -74,7 +93,9 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'h2', "Candidature de #{internship_application.student.name} reçue le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
+      assert_select 'h2', "Candidature de"
+      assert_select 'h2', internship_application.student.name
+      assert_select '.font-weight-bold.pr-3', "le #{I18n.localize(internship_application.created_at, format: '%d %B')}"
       assert_select '.student-name', student.name
       assert_select '.school-name', school.name
       assert_select '.school-city', school.city
@@ -120,8 +141,8 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'i.fas.fa-2x.fa-chevron-down', 1
-      assert_select 'i.fas.fa-2x.fa-chevron-right', 0
+      assert_select 'i.fas.fa-2x.fa-caret-down', 1
+      assert_select 'i.fas.fa-2x.fa-caret-right', 0
       assert_select '.collapsible', 1
       assert_select '.collapsible.d-none', 0
       assert_select "[data-test-id=internship-application-#{internship_application.id}]", count: 1
@@ -137,10 +158,9 @@ module InternshipApplications
       get dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
       assert_response :success
 
-      assert_select 'i.fas.fa-2x.fa-chevron-down', 0
-      assert_select 'i.fas.fa-2x.fa-chevron-right', 1
+      assert_select 'i.fas.fa-2x.fa-caret-down', 0
+      assert_select 'i.fas.fa-2x.fa-caret-right', 1
       assert_select '.collapsible', 1
-      assert_select '.collapsible.d-none', 1
       assert_has_link_count_to_transition(internship_application, :approve!, 0)
       assert_has_link_count_to_transition(internship_application, :reject!, 0)
       assert_has_link_count_to_transition(internship_application, :cancel_by_employer!, 1)

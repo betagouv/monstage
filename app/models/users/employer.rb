@@ -9,9 +9,11 @@ module Users
              source: :internship_offer,
              class_name: 'InternshipOffer'
 
-    has_many :internship_applications, through: :kept_internship_offers#,
-                                       # source: :employer#,
-                                       #source_type: "InternshipApplication"
+    has_many :internship_applications, through: :kept_internship_offers
+
+    has_many :organisations
+    has_many :tutors
+    has_many :internship_offer_infos
 
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
@@ -25,7 +27,7 @@ module Users
       'Mon compte'
     end
 
-    def anonymize
+    def anonymize(send_email: true)
       super
 
       internship_offers.map(&:anonymize)

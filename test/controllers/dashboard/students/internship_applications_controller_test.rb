@@ -28,6 +28,7 @@ module Dashboard
         sign_in(school_manager)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
+        assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
         assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
@@ -78,9 +79,8 @@ module Dashboard
                     convention_signed
                     canceled_by_employer
                     canceled_by_student]
-        internship_applications = states.inject({}) do |accu, state|
+        internship_applications = states.each_with_object({}) do |state, accu|
           accu[state] = create(:weekly_internship_application, state, student: student)
-          accu
         end
 
         sign_in(student)
@@ -129,12 +129,12 @@ module Dashboard
         student = create(:student)
         sign_in(student)
         internship_application = create(:weekly_internship_application, {
-          student: student,
-          aasm_state: :convention_signed,
-          convention_signed_at: 1.days.ago,
-          approved_at: 1.days.ago,
-          submitted_at: 2.days.ago
-        })
+                                          student: student,
+                                          aasm_state: :convention_signed,
+                                          convention_signed_at: 1.days.ago,
+                                          approved_at: 1.days.ago,
+                                          submitted_at: 2.days.ago
+                                        })
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)

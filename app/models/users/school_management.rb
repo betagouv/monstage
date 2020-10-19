@@ -52,6 +52,7 @@ module Users
     end
 
     private
+
     # validators
     def only_join_managed_school
       unless school.try(:school_manager).try(:present?)

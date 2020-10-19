@@ -48,7 +48,7 @@ module InternshipApplications
       initial_motivation = 'pizza biere'
       new_motivation = 'le travail dequipe'
       internship_application = create(:weekly_internship_application, :drafted, internship_offer: internship_offer,
-                                                                         motivation: initial_motivation)
+                                                                                motivation: initial_motivation)
       sign_in(internship_application.student)
       assert_changes -> { internship_application.reload.motivation.to_plain_text },
                      from: initial_motivation,

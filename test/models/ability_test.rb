@@ -25,7 +25,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
     assert(ability.cannot?(:manage, InternshipOffer.new),
-                           'students should not be able to con manage internships')
+           'students should not be able to con manage internships')
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
     assert(ability.can?(:choose_school, student),
@@ -75,6 +75,9 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
+    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:free_date_internship_offer))
+    refute ability.can?(:apply, create(:api_internship_offer))
   end
 
   test 'SchoolManager' do

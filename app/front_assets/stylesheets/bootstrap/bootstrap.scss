@@ -44,9 +44,11 @@
 // @import "~bootstrap/scss/carousel";
 // @import "~bootstrap/scss/spinners";
 @import "~bootstrap/scss/utilities";
-// @import "~bootstrap/scss/print";
+
 
 // override & custom
 @import "./rg2a/buttons";
 @import "./rg2a/navs";
 @import "./rg2a/links";
+
+@import "./fix";

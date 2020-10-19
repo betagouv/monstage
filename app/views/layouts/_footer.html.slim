@@ -1,11 +1,11 @@
-.row.footer-content
+.row.footer-content.pt-5
   .col-12.col-md-4
-    p.pt-3.mt-1
+    p.mt-1.print-footer
       | Un service fourni par la DINUM et incubé par beta.gouv.fr
-      = image_tag asset_pack_path('media/images/logo-beta-gouv-fr.png'), alt: "Logo beta gouv", class: 'img-fluid mt-3'
+      = image_tag asset_pack_path('media/images/logo-beta-gouv-fr.png'), alt: "Logo beta gouv", class: 'img-fluid mt-3 d-print-none'
 
   .col-12.col-md-8
-    .row.no-gutter.pt-3.font-weight-bold-sm
+    .row.no-gutter.font-weight-bold-sm.d-print-none
       .col-6
         ul.nav.flex-column
           li.nav-item= link_to "Qui sommes-nous&nbsp;?".html_safe, "https://beta.gouv.fr/startups/monstage.html", class: 'nav-link px-0 py-1', title: "Qui sommes-nous ? (nouvelle fenêtre)", target: '_blank', rel: "external noopener noreferrer"
@@ -14,29 +14,31 @@
 
           li.nav-item= link_to "Conditions d'utilisation", conditions_d_utilisation_path, class: 'nav-link px-0 py-1'
 
+          li.nav-item= link_to "Politique de confidentialité", politique_de_confidentialite_path, class: 'nav-link px-0 py-1'
+
           li.nav-item= link_to "Accessibilité", accessibilite_path, class: 'nav-link px-0 py-1'
 
       .col-6
         ul.nav.flex-column
           li.nav-item= link_to "Centre d'aide", helpdesk_url, class: 'nav-link px-0 py-1', target: '_blank', rel: "external noopener noreferrer", title: "Consulter notre centre d'aide"
 
-          li.nav-item= link_to "Contacter le support", contact_path, class: 'nav-link px-0 py-1', title: "Contacter le support de la plateforme monstagedetroisieme.fr"
+          li.nav-item= link_to "Nous contacter", contact_path, class: 'nav-link px-0 py-1', title: "Contacter le support de la plateforme monstagedetroisieme.fr"
 
           li.nav-item
-            = link_to "#{root_url}/documents_utiles/Manuel-Utilisation-Plateforme.pdf", title: "Accéder au manuel d'utilisation", class: 'nav-link px-0 py-1' do
-               = "Manuel d'Utilisation (PDF – 109KB)"
+            = link_to "#{root_url}/documents_utiles/Manuel-Utilisation-Plateforme.pdf", title: "Accéder au guide d'utilisation", class: 'nav-link px-0 py-1' do
+               = "Guide d'utilisation (PDF – 109KB)"
 
-.row.footer-content
+.row.footer-content.d-print-none
   .col-12
     = link_to "#top", class: 'float-right', data: {turbolinks: false} do
       .fa-2x.fas.fa-arrow-circle-up
       span.d-none Retour en haut de page
 
 
-.row
+.row.d-print-none
   .col-12 data-target="footer.placeholder" data-action="resize@window->footer#resize"
 
-.bg-light-blue.d-none.fixed-footer data-target="footer.fixedContent"
+.bg-light-blue.d-none.fixed-footer.d-print-none data-target="footer.fixedContent"
   - if show_restricted_to_anct?
     .container
 

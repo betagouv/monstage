@@ -24,12 +24,17 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
+    delegate :middle_school?, to: :class_room, allow_nil: true
+    delegate :high_school?, to: :class_room, allow_nil: true
+    delegate :school_track, to: :class_room, allow_nil: true
+
     attr_reader :handicap_present
 
     def internship_applications_type
       return nil unless class_room.present?
       return InternshipApplications::FreeDate.name if class_room.bac_pro?
       return InternshipApplications::WeeklyFramed.name unless class_room.bac_pro?
+
       nil
     end
 
@@ -55,6 +60,10 @@ module Users
       "#{super}, in school: #{school&.zipcode}"
     end
 
+    def after_sign_in_path
+      url_helpers.internship_offers_path
+    end
+
     def custom_dashboard_path
       url_helpers.dashboard_students_internship_applications_path(self)
     end
@@ -76,14 +85,16 @@ module Users
         .map(&:expire!)
     end
 
-    def anonymize
-      super
+    def anonymize(send_email: true)
+      super(send_email: send_email)
 
-      update_columns(birth_date: nil, gender: nil, class_room_id: nil,
+      update_columns(birth_date: nil,
+                     gender: nil,
+                     class_room_id: nil,
                      handicap: nil)
-      self.resume_educational_background.try(:delete)
-      self.resume_other.try(:delete)
-      self.resume_languages.try(:delete)
+      resume_educational_background.try(:delete)
+      resume_other.try(:delete)
+      resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
     end
   end

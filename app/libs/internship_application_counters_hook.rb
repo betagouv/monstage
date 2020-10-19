@@ -1,6 +1,5 @@
 # base class for hooks on internship_applications (compute various counters for dashboard/reporting
 class InternshipApplicationCountersHook
-
   def internship_offer_counters_attributes
     {
       total_applications_count: total_applications_count,
@@ -83,6 +82,7 @@ class InternshipApplicationCountersHook
   end
 
   private
+
   attr_reader :internship_application
 
   def initialize(internship_application:)

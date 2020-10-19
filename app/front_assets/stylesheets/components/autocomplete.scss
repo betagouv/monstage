@@ -2,6 +2,7 @@
 .search-in-place{
   position: absolute;
   top: 100%;
+  left: 0;
   z-index: 2;
   ul{
     list-style-type: none;
@@ -187,5 +188,5 @@ $handleWidth: 60px;
 // prepend innput with bigger icon
 .input-group-text-bigger{
   font-size: 1.2rem;
-  color:$primary;
+  color:rgb(207,207,207);
 }

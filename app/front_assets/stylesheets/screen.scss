@@ -1,0 +1,49 @@
+@import "./variables";
+@import "./bootstrap/bootstrap";
+@import "./bootstrap/nav_item";
+
+@import './layout/header';
+@import './layout/footer';
+@import './layout/onboarding';
+
+@import './rg2a';
+@import './environment';
+
+@import './effects/scroll';
+
+
+@import './components/autocomplete';
+@import './components/backgrounds';
+@import './components/badges';
+@import './components/borders';
+@import './components/fa';
+@import './components/form';
+@import './components/help';
+@import './components/label';
+@import './components/listview';
+@import './components/modal';
+@import './components/opacity';
+@import './components/p';
+@import './components/pagination';
+@import './components/pre';
+@import './components/progress';
+@import './components/richtext';
+@import './components/sticky_alert';
+@import './components/sticky_buttons';
+@import './components/sticky_table_head';
+@import './components/table';
+@import './components/text';
+@import './components/titles';
+
+@import './pages/account';
+@import './pages/devise';
+@import './pages/home';
+@import './pages/internship_applications';
+@import './pages/internship_offers';
+@import './pages/internship_agreements';
+@import './pages/dashboard';
+@import './pages/statistiques';
+
+
+@import 'trix';
+

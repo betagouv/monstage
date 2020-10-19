@@ -1,4 +1,5 @@
 // imported from http://design.tetue.net/public-style-guide/
+$enable-print-style: false;
 
 // Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
 $gray-600: #767676; // text muted color
@@ -9,10 +10,12 @@ $gray-900: #3F3256;    // body text color
 // $primary:
 $blue:    #10008F;
 $blue_light: rgb(247,248,252);
+$blue_sky: rgb(46,134,255);
 $blue_dark: rgb(47,94,167);
 $red:     #dc3545;
 $yellow:  #feb620;
 $green:   #28a745;
+$green_lime: rgb(18,199,123);
 $custom_cyan:    rgb(90,202,198);
 
 // liens soulignés

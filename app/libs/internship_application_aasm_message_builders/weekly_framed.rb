@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module InternshipApplicationAasmMessageBuilders
   class WeeklyFramed < InternshipApplicationAasmMessageBuilder
     # for html formatted default message
@@ -6,6 +7,7 @@ module InternshipApplicationAasmMessageBuilders
              :internship_offer,
              :week,
              to: :internship_application
+
     private
 
     def on_approved_message

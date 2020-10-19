@@ -23,6 +23,10 @@ $sortLinkOffset: 15px;
   position: absolute;
   top: 50%;
   margin-top: -11px;
+  font-size: larger;
+  .currently-sorting{
+    color: $blue !important;
+  }
 
   .sort-link{
     position: absolute;
@@ -32,6 +36,7 @@ $sortLinkOffset: 15px;
   }
   .sort-link.active{
     opacity: 1;
+
   }
   .sort-link-up{
     top: 0;
@@ -53,47 +58,20 @@ $sortLinkOffset: 15px;
   word-wrap: break-word;
 }
 
-
 // navigation arrows on internship_offers#index
 .list-item{
   text-align: center;
   width: 100%;
   text-decoration: none;
 }
- .fa,
- .list-item .svg-inline--fa{
-  color: $blue
- }
+
 .list-item-label{
-  font-size: .5rem;
-  color: $blue
+  font-size: .8rem;
 }
-@include media-breakpoint-up(xs) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 1rem;
-  }
+.list-item .fa,
+.list-item .svg-inline--fa{
+  font-size: 2rem;
 }
-
-@include media-breakpoint-up(sm) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 2rem;
-  }
-}
-@include media-breakpoint-up(md) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 3rem;
-  }
-}
-@include media-breakpoint-up(lg) {
-  .list-item .fa,
-  .list-item .svg-inline--fa{
-    font-size: 4rem;
-  }
-}
-
 
 .container-downshift{position: relative;}
 
@@ -105,3 +83,18 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+@include media-breakpoint-up(xs) {
+  .internship-item-badge{
+    line-height: 1.5;
+  }
+}
+
+.legend {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+} 

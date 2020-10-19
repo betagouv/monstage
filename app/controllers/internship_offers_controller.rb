@@ -4,7 +4,7 @@ class InternshipOffersController < ApplicationController
   before_action :authenticate_user!, only: %i[create edit update destroy]
   before_action :flash_message_when_missing_school_weeks, only: :index
 
-  with_options only: :show do
+  with_options only: [:show] do
     before_action :set_internship_offer,
                   :check_internship_offer_is_not_discarded_or_redirect,
                   :check_internship_offer_is_published_or_redirect
@@ -62,22 +62,20 @@ class InternshipOffersController < ApplicationController
   end
 
   def finder
-    @finder ||= Finders::ListableInternshipOffer.new(
+    @finder ||= Finders::InternshipOfferConsumer.new(
       params: params.permit(
         :page,
         :latitude,
         :longitude,
         :radius,
         :keyword,
-        :school_type
+        :school_track
       ),
       user: current_user_or_visitor
     )
   end
 
   def increment_internship_offer_view_count
-    if current_user.is_a?(Users::Student)
-      @internship_offer.increment!(:view_count)
-    end
+    @internship_offer.increment!(:view_count) if current_user.is_a?(Users::Student)
   end
 end

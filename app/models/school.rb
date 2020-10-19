@@ -13,25 +13,25 @@ class School < ApplicationRecord
   has_many :school_managements, dependent: :nullify,
                                 class_name: 'Users::SchoolManagement'
   has_many :main_teachers, -> { where(role: :main_teacher) },
-                                class_name: 'Users::SchoolManagement'
+           class_name: 'Users::SchoolManagement'
   has_many :teachers, -> { where(role: :teacher) },
-                                class_name: 'Users::SchoolManagement'
+           class_name: 'Users::SchoolManagement'
   has_many :others, -> { where(role: :other) },
-                                class_name: 'Users::SchoolManagement'
+           class_name: 'Users::SchoolManagement'
   has_one :school_manager, -> { where(role: :school_manager) },
-                                class_name: 'Users::SchoolManagement'
+          class_name: 'Users::SchoolManagement'
 
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
+  has_many :internship_applications, through: :internship_offers
 
   validates :city, :name, presence: true
 
   validates :zipcode, zipcode: { country_code: :fr }
 
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze
-
 
   scope :with_manager, lambda {
                          left_joins(:school_manager)

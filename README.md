@@ -31,8 +31,8 @@ Things you may want to cover:
 * Postgres as RDBMS
 * Postgres with Postgis for geoqueries
 * Postgres for FTS
-* Postgres with Delayed job for Async jobs
 * Postgres(notify) with ActionCable for wss://
+* Redis & Sidekiq for Async jobs
 
 ## frontend
 
@@ -103,7 +103,7 @@ foreman start -f Procfile.dev
 ### system / e2e, runs within a browswer
 
 * run in background: `rails test:system`
-* run with browser `CHROME=1 rails test:system`
+* run with browser `BROWSER=firefox|chrome rails test:system`
 
 
 ### w3c (using vnu.jar)

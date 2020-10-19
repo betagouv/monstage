@@ -27,7 +27,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                      from: nil,
                      to: Time.now.utc do
         mock_mail_to_student = MiniTest::Mock.new
-        mock_mail_to_student.expect(:deliver_later, true)
+        mock_mail_to_student.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
           internship_application.save
           internship_application.approve!
@@ -38,15 +38,15 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved does not send approved email to student w/o email' do
-    internship_application = create(:weekly_internship_application, :submitted)
-    internship_application.student.update!(email: nil, phone: '+330611223344')
+    student = create(:student, phone: '+330611223944', email: nil )
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
 
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,
                      to: Time.now.utc do
         mock_mail_to_student = MiniTest::Mock.new
-        mock_mail_to_student.expect(:deliver_later, true)
+        mock_mail_to_student.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
           internship_application.save
           internship_application.approve!
@@ -67,7 +67,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     mock_mail_to_main_teacher.expect(:deliver_later, true)
 
     MainTeacherMailer.stub(:internship_application_approved_email,
-                       mock_mail_to_main_teacher) do
+                           mock_mail_to_main_teacher) do
       internship_application.save
       internship_application.approve!
     end
@@ -81,7 +81,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                      from: nil,
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
+        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_rejected_email, mock_mail do
           internship_application.reject!
         end
@@ -91,15 +91,14 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to rejected does not send email to student w/o email' do
-    internship_application = create(:weekly_internship_application, :submitted)
-    internship_application = create(:weekly_internship_application, :submitted)
-    internship_application.student.update!(email: nil, phone: '+330611223344')
+    student = create(:student, phone: '+330611223944', email: nil )
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
     freeze_time do
       assert_changes -> { internship_application.reload.rejected_at },
                      from: nil,
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
+        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_rejected_email, mock_mail do
           internship_application.reject!
         end
@@ -115,7 +114,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                      from: nil,
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
+        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_approved_email, mock_mail do
           internship_application.approve!
         end
@@ -125,14 +124,14 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from rejected to approved does not send email to student w/o email' do
-    internship_application = create(:weekly_internship_application, :rejected)
-    internship_application.student.update!(email: nil, phone: '+330611223344')
+    student = create(:student, phone: '+330611223944', email: nil )
+    internship_application = create(:weekly_internship_application, :rejected, student: student)
     freeze_time do
       assert_changes -> { internship_application.reload.approved_at },
                      from: nil,
                      to: Time.now.utc do
         mock_mail = MiniTest::Mock.new
-        mock_mail.expect(:deliver_later, true)
+        mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
         StudentMailer.stub :internship_application_approved_email, mock_mail do
           internship_application.approve!
         end
@@ -152,10 +151,10 @@ class InternshipApplicationTest < ActiveSupport::TestCase
                        from: nil,
                        to: Time.now.utc do
           mock_mail = MiniTest::Mock.new
-          mock_mail.expect(:deliver_later, true)
+          mock_mail.expect(:deliver_later, true, [{wait: 1.second}])
           StudentMailer.stub :internship_application_canceled_by_employer_email,
-                              mock_mail do
-                              internship_application.cancel_by_employer!
+                             mock_mail do
+            internship_application.cancel_by_employer!
           end
           mock_mail.verify
         end

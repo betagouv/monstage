@@ -2,7 +2,6 @@
 
 module Services
   class SyncEmailDelivery
-
     SENDGRID_CUSTOM_FIELD_IDS = {
       role: 'e2_T',
       monstage_id: 'e3_T',
@@ -87,9 +86,9 @@ module Services
     end
 
     def response_ok?(response:)
-     return false if response.nil?
+      return false if response.nil?
 
-     response.status_code.to_i.between?(200, 299)
+      response.status_code.to_i.between?(200, 299)
     end
 
     def request_with_error_handling(email:, action:)

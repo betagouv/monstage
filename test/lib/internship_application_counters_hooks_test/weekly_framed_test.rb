@@ -8,7 +8,7 @@ module InternshipApplicationCountersHooks
       @internship_offer_week = build(:internship_offer_week, week: @week)
       @internship_offer = build(:weekly_internship_offer, internship_offer_weeks: [@internship_offer_week])
       @internship_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week,
-                                                               internship_offer: @internship_offer)
+                                                                      internship_offer: @internship_offer)
     end
 
     #
@@ -151,7 +151,7 @@ module InternshipApplicationCountersHooks
       end
 
       second_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
-                                                          student: create(:student, gender: 'f'))
+                                                                 student: create(:student, gender: 'f'))
       second_application.aasm_state = :submitted
 
       assert_changes -> { second_application.internship_offer.total_female_applications_count },

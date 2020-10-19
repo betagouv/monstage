@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  TITLE_MAX_CHAR_COUNT = 150
-  DESCRIPTION_MAX_CHAR_COUNT = 500
-  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_PER_GROUP = 200
+  TITLE_MAX_CHAR_COUNT = 150
+  DESCRIPTION_MAX_CHAR_COUNT= 500
 
   # queries
   include Listable
   include FindableWeek
-  include Nearbyable
   include Zipcodable
+
+  include StepperProxy::InternshipOfferInfo
+  include StepperProxy::Organisation
+  include StepperProxy::Tutor
 
   # utils
   include Discard::Model
@@ -64,7 +67,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :in_the_future, lambda {
-    where("last_date > :now", now: Time.now)
+    where('last_date > :now', now: Time.now)
   }
 
   scope :ignore_max_candidates_reached, lambda {
@@ -75,39 +78,34 @@ class InternshipOffer < ApplicationRecord
     all # TODO : specs for FreeDate required
   }
 
+  scope :school_track, lambda { |school_track:|
+    where(school_track: school_track)
+  }
+
+  scope :unpublished, -> { where(published_at: nil) }
+  scope :published, -> { where.not(published_at: nil) }
+
   scope :weekly_framed, lambda {
-    where(type: InternshipOffers::WeeklyFramed.name)
+    where(type: [InternshipOffers::WeeklyFramed.name,
+                 InternshipOffers::Api.name])
   }
 
   scope :free_date, lambda {
     where(type: InternshipOffers::FreeDate.name)
   }
 
-  validates :title,
-            :employer_name,
-            :city,
-            presence: true
-
-  validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT }
-
-  validates :description, presence: true,
-                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
-
-  validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
-
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true
-  belongs_to :sector
-  belongs_to :school, optional: true # reserved to school
-  belongs_to :group, optional: true
 
-  has_rich_text :description_rich_text
+  has_one :organisation
+  has_one :tutor
+  has_one :internship_offer_info
+
   has_rich_text :employer_description_rich_text
 
-  before_validation :replicate_rich_text_to_raw_fields
+  after_initialize :init
 
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
@@ -119,16 +117,20 @@ class InternshipOffer < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+  delegate :name, to: :sector, prefix: true
+
+  def departement
+    Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
   def published?
     published_at.present?
   end
 
   def unpublished?
     !published?
-  end
-
-  def is_individual?
-    max_candidates == 1
   end
 
   def from_api?
@@ -143,12 +145,8 @@ class InternshipOffer < ApplicationRecord
     true
   end
 
-  def weekly?
-    false
-  end
-
-  def free_date?
-    false
+  def init
+    self.max_candidates ||= 1
   end
 
   def total_female_applications_count
@@ -179,38 +177,27 @@ class InternshipOffer < ApplicationRecord
     white_list = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
-                    is_public group school_id coordinates first_date last_date]
+                    is_public group school_id coordinates first_date last_date
+                    school_track
+                    internship_offer_info_id organisation_id tutor_id
+                    weekly_hours daily_hours]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
-    internship_offer.description_rich_text = (description_rich_text.present? ?
-                                              description_rich_text.to_s :
-                                              description)
-    internship_offer.employer_description_rich_text = (employer_description_rich_text.present? ?
-                                                       employer_description_rich_text.to_s :
-                                                       employer_description)
-
+    internship_offer.description_rich_text = (if description_rich_text.present?
+                                                description_rich_text.to_s
+                                              else
+                                                description
+                                              end)
+    internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
+                                                         employer_description_rich_text.to_s
+                                                       else
+                                                         employer_description
+                                                       end)
     internship_offer
   end
 
   def class_prefix_for_multiple_checkboxes
     'internship_offer'
-  end
-
-  # @note some possible confusion, miss-understanding here
-  #   1. Rich text was added after API
-  #   2. API already exposed a "description" attributes (not rich text) [in/out]
-  #     trying to upgrade description attribute was flacky
-  #     because API returned description as an ActionText record.
-  #   3. To avoid any circumvention (in/out) of the description
-  #     we add a new description_rich_text element which is rendered when possiblee
-  #   4. Bonus -> description will be used for description_tsv as template to extract keywords
-  def replicate_rich_text_to_raw_fields
-    if description_rich_text.to_s.present?
-      self.description = description_rich_text.to_plain_text
-    end
-    if employer_description_rich_text.to_s.present?
-      self.employer_description = employer_description_rich_text.to_plain_text
-    end
   end
 
   def preset_published_at_to_now
@@ -232,9 +219,4 @@ class InternshipOffer < ApplicationRecord
       SyncInternshipOfferKeywordsJob.perform_later
     end
   end
-
-  def init
-    self.max_candidates ||= 1
-  end
-
 end

@@ -12,7 +12,9 @@ gem 'puma'
 # db
 gem 'pg'
 gem 'activerecord-postgis-adapter' # pg extension for geo queries
-gem 'pg_search'                    # pg search for autocomplete
+
+# don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
+gem 'pg_search', '2.3.2'                    # pg search for autocomplete
 
 # front end
 gem 'uglifier'
@@ -23,8 +25,8 @@ gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
+gem 'sidekiq'
+gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
 gem 'rails_admin'
@@ -82,7 +84,6 @@ group :test do
   gem 'minitest-reporters'
   gem 'minitest-retry'
   gem 'selenium-webdriver'
-  gem 'cuprite'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'webdrivers'
   gem 'rails-controller-testing'

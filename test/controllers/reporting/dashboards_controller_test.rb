@@ -11,11 +11,12 @@ module Reporting
       assert_response 302
     end
 
-    test 'GET #index as GOD success' do
+    test 'GET #index as GOD success and has a page title' do
       god = create(:god)
       sign_in(god)
       get reporting_dashboards_path
       assert_response :success
+      assert_select 'title', "Statistiques - Tableau de bord | Monstage"
     end
 
     test 'GET #index as statistician success ' \

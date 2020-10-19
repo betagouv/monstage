@@ -50,6 +50,7 @@ RailsAdmin.config do |config|
                               User
                               InternshipOfferKeyword
                               InternshipOffers::WeeklyFramed
+                              InternshipOffers::FreeDate
                               InternshipOffers::Api
                               Users::Student
                               Users::SchoolManagement
@@ -60,7 +61,7 @@ RailsAdmin.config do |config|
 
   config.navigation_static_links = {
     "Stats" => "/reporting/dashboards",
-    "Delayed Job" => "/admin/delayed_job",
+    "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com"
   }
 end

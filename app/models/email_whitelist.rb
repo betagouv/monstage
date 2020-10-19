@@ -28,6 +28,7 @@ class EmailWhitelist < ApplicationRecord
   private
 
   def discard_user
+    return if user.blank?
     user.discard!
   end
 

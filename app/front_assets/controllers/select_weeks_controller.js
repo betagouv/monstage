@@ -15,9 +15,23 @@ export default class extends Controller {
 
   // toggle all weeks options
   handleToggleWeeks(event) {
+    if($('#all_year_long').is(":checked")){
+      $(".custom-control-checkbox-list").addClass('d-none')
+      $(".custom-control-checkbox-list").hide()
+    } else {
+      $(".custom-control-checkbox-list").hide()
+      $(".custom-control-checkbox-list").removeClass('d-none')
+      $(".custom-control-checkbox-list").slideDown()
+    }
+
     $(this.weekCheckboxesTargets).each((i, el) => {
       $(el).prop('checked', $(event.target).prop('checked'));
     });
+    if(event.target.checked){
+       hideElement($(this.checkboxesContainerTarget));
+    } else{
+      showElement($(this.checkboxesContainerTarget));
+    }
   }
 
   // on week checked

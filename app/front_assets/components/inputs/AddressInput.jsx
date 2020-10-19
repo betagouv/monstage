@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
+import { fetch } from 'whatwg-fetch';
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
@@ -64,14 +65,15 @@ export default function AddressInput({
 
   return (
     <div>
-      <div className="form-group"  id="test-input-full-address">
-
+      <div className="form-group" id="test-input-full-address">
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}
             selectedItem={fullAddress}
-            itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
+            itemToString={(item) => {
+              item && item.properties ? item.properties.label : '';
+            }}
           >
             {({
               getLabelProps,
@@ -84,11 +86,12 @@ export default function AddressInput({
             }) => (
               <div>
                 <label
-                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
-
-
+                  {...getLabelProps({
+                    className: 'label',
+                    htmlFor: `${resourceName}_autocomplete`,
+                  })}
                 >
-                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
+                  Adresse du lieu où se déroule le stage
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
@@ -118,7 +121,7 @@ export default function AddressInput({
                     >
                       {isOpen
                         ? searchResults.map((item, index) => (
-                              <li
+                            <li
                               {...getItemProps({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
@@ -161,7 +164,7 @@ export default function AddressInput({
         />
       </div>
       <div className="form-row">
-        <div className="col-sm-6">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_street`}>
               Rue ou compléments d'adresse
@@ -182,26 +185,7 @@ export default function AddressInput({
             />
           </div>
         </div>
-        <div className="col-sm-2">
-          <div className="form-group">
-            <label htmlFor={`${resourceName}_zipcode`}>
-              Code postal
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
-            </label>
-            <input
-              className="form-control"
-              required="required"
-              value={zipcode}
-              type="text"
-              name={`${resourceName}[zipcode]`}
-              id={`${resourceName}_zipcode`}
-              readOnly
-            />
-          </div>
-        </div>
-        <div className="col-sm-4">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_city`}>
               Ville
@@ -217,6 +201,25 @@ export default function AddressInput({
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
+            />
+          </div>
+        </div>
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_zipcode`}>
+              Code postal
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <input
+              className="form-control"
+              required="required"
+              value={zipcode}
+              type="text"
+              name={`${resourceName}[zipcode]`}
+              id={`${resourceName}_zipcode`}
+              readOnly
             />
           </div>
         </div>

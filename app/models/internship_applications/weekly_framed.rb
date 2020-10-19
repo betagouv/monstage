@@ -1,7 +1,6 @@
 module InternshipApplications
   # wraps weekly logic
   class WeeklyFramed < InternshipApplication
-
     belongs_to :internship_offer_week
 
     has_one :week, through: :internship_offer_week
@@ -21,21 +20,18 @@ module InternshipApplications
     def approvable?
       return false unless internship_offer_week.present?
       return false unless internship_offer.has_spots_left?
+
       true
     end
 
     def internship_offer_has_spots_left?
       return unless internship_offer_week.present?
 
-      unless internship_offer.has_spots_left?
-        errors.add(:internship_offer, :has_no_spots_left)
-      end
+      errors.add(:internship_offer, :has_no_spots_left) unless internship_offer.has_spots_left?
     end
 
     def internship_offer_week_has_spots_left?
-      unless internship_offer_week.try(:has_spots_left?)
-        errors.add(:internship_offer_week, :has_no_spots_left)
-      end
+      errors.add(:internship_offer_week, :has_no_spots_left) unless internship_offer_week.try(:has_spots_left?)
     end
 
     def at_most_one_application_per_student?
@@ -51,4 +47,3 @@ module InternshipApplications
     end
   end
 end
-
