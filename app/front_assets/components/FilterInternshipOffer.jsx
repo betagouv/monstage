@@ -8,7 +8,8 @@ function FilterInternshipOffer() {
   // clear selected radio
   const clearRadioOnDoubleClick = (event) => {
     if (schoolTrack !== null && event.target.value === schoolTrack) {
-      clearParamAndVisits(setSchoolTrack,'school_track')
+      setSchoolTrack(null)
+      clearParamAndVisits('school_track')
       event.preventDefault();
     }
     return event;

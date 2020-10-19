@@ -23,8 +23,7 @@ export const turboVisitsWithSearchParams = (searchParams) =>{
   );
 }
 
-export const clearParamAndVisits = (fn, param_name )=> {
-  fn(null);
+export const clearParamAndVisits = (param_name )=> {
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete(param_name)
   turboVisitsWithSearchParams(searchParams)
