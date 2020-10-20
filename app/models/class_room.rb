@@ -20,21 +20,17 @@ class ClassRoom < ApplicationRecord
     end
   end
 
-  def middle_school?
-    [troisieme_segpa?, troisieme_generale?, troisieme_prepa_metier?].any?
+  def fit_to_weekly?
+    try(:troisieme_generale?)
   end
 
-  def high_school?
-    bac_pro?
-  end
-
-  def professional_school_track?
-    [troisieme_segpa?, troisieme_prepa_metier?, bac_pro?].any?
+  def fit_to_free_date?
+    !fit_to_weekly?
   end
 
   def applicable?(internship_offer)
-    return true if internship_offer.free_date? && high_school?
-    return true if internship_offer.weekly? && middle_school?
+    return true if internship_offer.free_date? && fit_to_free_date?
+    return true if internship_offer.weekly? && fit_to_weekly?
 
     false
   end
@@ -42,4 +38,6 @@ class ClassRoom < ApplicationRecord
   def to_s
     name
   end
+
+
 end

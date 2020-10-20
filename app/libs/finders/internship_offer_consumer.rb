@@ -20,7 +20,8 @@ module Finders
     def school_members_query
       query = InternshipOffer.all
 
-      if user.try(:middle_school?) && school_type_param != 'high_school'
+      # WeeklyFramed offers are dedicated to :troisieme_generale and API
+      if user.is_a?(Users::Student) && user.try(:class_room).try(:fit_to_weekly?)
         unless user.missing_school_weeks?
           query = query.merge(
             InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
@@ -30,7 +31,7 @@ module Finders
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
 
-      elsif user.try(:high_school) && school_type_param != 'middle_school'
+      elsif user.is_a?(Users::Student) && user.try(:class_room).try(:fit_to_free_date?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
 
