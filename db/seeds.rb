@@ -96,7 +96,7 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedin', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
@@ -119,7 +119,7 @@ def populate_students
 end
 
 def populate_internship_offers
-  # 3eme_generale: public
+  # 3eme_generale: public sector
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     weeks: Week.selectable_on_school_year,
@@ -182,6 +182,26 @@ def populate_internship_offers
     employer_name: 'bilbotron',
     school_track: :bac_pro
   )
+  # Bac_pro
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Scierie Descloux - maitrise des machines outils',
+    description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
+    employer_description_rich_text: "La scierie Descloux attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :bac_pro
+  )
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
@@ -228,6 +248,30 @@ MULTI_LINE
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
     school_track: :troisieme_prepa_metier
+  )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des principes fondamentaux du métier.
+- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de trader en ligne',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :troisieme_segpa
   )
 end
 
