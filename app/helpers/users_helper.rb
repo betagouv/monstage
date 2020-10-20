@@ -7,7 +7,6 @@ module UsersHelper
       'Logo-le-reseau.jpg' => 'http://www.lereseau.asso.fr',
       'Logo-moidans10ans.png' => 'https://moidans10ans.fr/',
       'Logo-les-entreprises-pour-la-cite.jpg' => 'http://www.reseau-lepc.fr',
-      'Logo-myfuture.jpg' => 'https://www.myfutu.re',
       'Logo-tous-en-stage.jpg' => 'https://tousenstage.com',
       'Logo-un-stage-et-apres.jpg' => 'https://www.unstageetapres.fr',
       'Logo-viens-voir-mon-taf.jpg' => 'https://www.viensvoirmontaf.fr',

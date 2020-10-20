@@ -28,7 +28,6 @@ import './homepage/benefices/icon-trouver-un-stage.png';
 import './homepage/partenaires/Logo-jobirl.jpg';
 import './homepage/partenaires/Logo-le-reseau.jpg';
 import './homepage/partenaires/Logo-les-entreprises-pour-la-cite.jpg';
-import './homepage/partenaires/Logo-myfuture.jpg';
 import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
