@@ -20,6 +20,12 @@ module W3c
     end
 
     test 'edit_dashboard_internship_offer_path' do
+      stub_request(:get, /api-adresse.data.gouv.fr/)
+        .to_return(status: 200, body: File.read(Rails.root.join(*%w[test
+                                                                  fixtures
+                                                                  files
+                                                                  api-address-1-rue-du-poulet-paris.json])))
+
       stage_dev = create(:weekly_internship_offer)
       sign_in(stage_dev.employer)
       run_request_and_cache_response(report_as: 'edit_dashboard_internship_offer_path') do
@@ -28,6 +34,12 @@ module W3c
     end
 
     test 'new_dashboard_internship_offer_path(duplicate_id)' do
+      stub_request(:get, /api-adresse.data.gouv.fr/)
+        .to_return(status: 200, body: File.read(Rails.root.join(*%w[test
+                                                                  fixtures
+                                                                  files
+                                                                  api-address-1-rue-du-poulet-paris.json])))
+
       stage_dev = create(:weekly_internship_offer)
       sign_in(stage_dev.employer)
       run_request_and_cache_response(report_as: 'new_dashboard_internship_offer_path') do

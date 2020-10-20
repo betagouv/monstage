@@ -33,6 +33,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'can edit internship offer' do
+    stub_request(:get, /api-adresse.data.gouv.fr/)
+      .to_return(status: 200, body: File.read(Rails.root.join(*%w[test
+                                                                  fixtures
+                                                                  files
+                                                                  api-address-1-rue-du-poulet-paris.json])))
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
