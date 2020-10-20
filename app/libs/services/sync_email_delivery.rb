@@ -32,33 +32,38 @@ module Services
     # public API
     def create_contact(user:)
       response = send_create_contact(user:user)
-      return JSON.parse(response.body) if [201, 401].include?(response.code.to_i)
+      return JSON.parse(response.body) if status?([201, 401], response)
+
       raise "fail create_contact: code[#{response.code}], #{response.body}"
     end
 
     def destroy_contact(email:)
       mailjet_user_id = read_contact(email: email).dig("Data", 0, "ID")
       response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
-      return true if [200].include?(response.code.to_i)
+      return true if status?(200, response)
+
       raise "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
     def read_contact(email:)
       response = send_read_contact(email: email)
-      return JSON.parse(response.body) if [200].include?(response.code.to_i)
+      return JSON.parse(response.body) if status?(200, response)
+
       raise "fail read_contact: code[#{response.code}], #{response.body}"
     end
 
     def index_contact_metadata
       response = send_index_contact_metadata
-      return JSON.parse(response.body) if [200].include?(response.code.to_i)
+      return JSON.parse(response.body) if status?(200, response)
+
       raise "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
     def update_contact_metadata(user:)
       response = send_update_contact_metadata(user: user)
-      return JSON.parse(response.body) if [200].include?(response.code.to_i)
-      raise "fail read_contact: code[#{response.code}], #{response.body}"
+      return JSON.parse(response.body) if status?(200, response)
+
+      raise "fail update_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
     private
@@ -124,6 +129,13 @@ module Services
         request.body = data.to_json
         http.request(request)
       end
+    end
+
+    # expected: Int|Array[Int],
+    # response: HttpResponse
+    def status?(expected, response)
+      actual = response.code.to_i
+      Array(expected).include?(actual)
     end
 
     #
