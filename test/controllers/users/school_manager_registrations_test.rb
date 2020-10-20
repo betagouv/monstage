@@ -15,7 +15,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
   test 'POST create School Manager responds with success' do
     school = create(:school)
     assert_difference('Users::SchoolManagement.school_manager.count', 1) do
-      post user_registration_path(params: { user: { email: 'chefetb@ac-edu.fr',
+      post user_registration_path(params: { user: { email: 'chefetb@ac-paris.fr',
                                                     password: 'okokok',
                                                     password_confirmation: 'okokok',
                                                     school_id: school.id,
@@ -24,7 +24,7 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     type: 'Users::SchoolManagement',
                                                     accept_terms: '1',
                                                     role: :school_manager } })
-      assert_redirected_to users_registrations_standby_path(email: 'chefetb@ac-edu.fr')
+      assert_redirected_to users_registrations_standby_path(email: 'chefetb@ac-paris.fr')
     end
   end
 end

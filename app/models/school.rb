@@ -27,7 +27,7 @@ class School < ApplicationRecord
   has_many :internship_offers, dependent: :nullify
   has_many :internship_applications, through: :internship_offers
 
-  validates :city, :name, presence: true
+  validates :city, :name, :code_uai, presence: true
 
   validates :zipcode, zipcode: { country_code: :fr }
 
@@ -65,6 +65,10 @@ class School < ApplicationRecord
 
   def class_prefix_for_multiple_checkboxes
     'school'
+  end
+
+  def email_domain_name
+    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
 
   rails_admin do
