@@ -40,10 +40,11 @@ FactoryBot.define do
     end
 
     factory :school_manager, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { Users::SchoolManagement.roles[:school_manager] }
 
-      sequence(:email) { |n| "jean#{n}-claude@ac-dus.fr" }
+      sequence(:email) { |n| "jean#{n}-claude@#{school.email_domain_name}" }
     end
 
     factory :main_teacher, class: 'Users::SchoolManagement', parent: :user do
