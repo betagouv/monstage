@@ -57,9 +57,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       "document.querySelector('div[data-target=\"select-weeks.checkboxesContainer\"]').children.forEach(elem => elem.children[0].checked = true)"
     )
     click_on "Modifier l'offre"
+    wait_form_submitted
     internship_offer = InternshipOffer.find internship_offer_id
     assert internship_offer.type == 'InternshipOffers::WeeklyFramed'
-    wait_form_submitted
 
     visit edit_dashboard_internship_offer_path(internship_offer)
 
@@ -67,9 +67,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     fill_in 'internship_offer_title', with: 'editok'
     find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
     click_on "Modifier l'offre"
+    wait_form_submitted
     internship_offer = InternshipOffer.find internship_offer_id
     assert internship_offer.type == 'InternshipOffers::FreeDate'
-    wait_form_submitted
     assert_equal 'editok', internship_offer.title
   end
 

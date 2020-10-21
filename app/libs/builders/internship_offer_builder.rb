@@ -38,7 +38,7 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance = instance.becomes(params[:type].constantize) if params[:type] && params[:type] != instance.type
+      instance = instance.becomes(params[:type].constantize) if type_will_change?(params: params, instance: instance)
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance.save!
       callback.on_success.try(:call, instance)
@@ -117,6 +117,10 @@ module Builders
 
     def from_api?
       context == :api
+    end
+
+    def type_will_change?(params: , instance: )
+      params[:type] && params[:type] != instance.type
     end
 
     def model
