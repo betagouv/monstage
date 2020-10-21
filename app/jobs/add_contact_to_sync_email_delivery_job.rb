@@ -6,6 +6,8 @@ class AddContactToSyncEmailDeliveryJob < ActiveJob::Base
   discard_on ActiveJob::DeserializationError
 
   def perform(user:)
-    Services::SyncEmailDelivery.new.add_contact(user: user)
+    sync_delivery_service = Services::SyncEmailDelivery.new
+    sync_delivery_service.create_contact(user: user)
+    sync_delivery_service.send_update_contact_metadata(user: user)
   end
 end

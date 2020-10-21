@@ -136,10 +136,15 @@
 
     .row.align-items-center.pb-5
       .d-none.d-sm-flex.col-6
-        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'), class: 'img-fluid', alt: 'Illustration documents utiles'
+        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'),
+                    class: 'img-fluid',
+                    alt: 'Illustration documents utiles'
       .col-12.col-sm-6.align-middle-items
         p Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
-        p= link_to "Documents utiles", documents_utiles_path, class: "btn btn-outline-danger", title: 'Consulter les documents utiles'
+        p= link_to "Documents utiles",
+                   documents_utiles_path,
+                   class: "btn btn-outline-danger",
+                   title: 'Consulter les documents utiles'
 
 .bg-white.d-none.d-md-block
   .container
@@ -148,16 +153,21 @@
         h3.h3.py-5.text-center Un projet porté par
         .row
           .col-12
-            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"), alt: "Logo anct", class: 'img-fluid'
+            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"),
+                         alt: "Logo anct",
+                         class: 'img-fluid'
         .row
           .col-12
-            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"), alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale", class: 'img-fluid'
+            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"),
+                         alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                         class: 'img-fluid'
 
       .col-6
         h3.h3.py-5.text-center Nos partenaires
 
         .col-12.text-center
           - partners_map_of_logo_url.each do |partner_logo, partner_url|
-            = render partial: "partner_link", locals: {partner_url: partner_url, partner_logo: partner_logo}
+            = render partial: "partner_link",
+                     locals: { partner_url: partner_url, partner_logo: partner_logo }
 
 
