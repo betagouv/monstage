@@ -12,7 +12,6 @@ FactoryBot.define do
     is_public { true }
     group { create(:group, is_public: true) }
     employer_description { 'on envoie du parpaing' }
-    description { 'On aime notre métier et on le partage !'}
     street { '1 rue du poulet' }
     zipcode { '75001' }
     city { 'Paris' }

@@ -51,7 +51,6 @@ module Finders
     end
 
     def school_track_params
-      return @user.school_track if @user.try(:school_track)
       return nil unless params.key?(:school_track)
 
       params[:school_track]

@@ -28,7 +28,6 @@ module InternshipOffers
                     text: internship_offer.tutor_email
     end
 
-
     #
     # Student
     #

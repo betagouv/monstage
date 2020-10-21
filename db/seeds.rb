@@ -108,14 +108,14 @@ def populate_students
   class_room_4 = ClassRoom.fourth
   school = class_room_1.school
 
-  with_class_name_for_defaults(Users::Student.new(email: 'student1@ms3e.fr', password: 'review', first_name: 'Abdelaziz', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student2@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student3@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student11@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student12@ms3e.fr', password: 'review',first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student13@ms3e.fr', password: 'review',first_name: 'Fred', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student14@ms3e.fr', password: 'review',first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_g_1@ms3e.fr', password: 'review', first_name: 'Abdelaziz', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_g_2@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_p_m_3@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_p_m_4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_11@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_12@ms3e.fr', password: 'review',first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_13@ms3e.fr', password: 'review',first_name: 'Fred', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_14@ms3e.fr', password: 'review',first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
 end
 
 def populate_internship_offers
