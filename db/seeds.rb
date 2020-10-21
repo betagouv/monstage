@@ -96,7 +96,7 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedin', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', first_name: 'Nestor', last_name: 'Benzedin', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
@@ -180,6 +180,20 @@ MULTI_LINE
   )
 end
 
+def populate_student_application
+  InternshipApplication.create!(
+    type: InternshipApplications::FreeDate.name,
+    internship_offer_week_id: InternshipOfferWeek.last,
+    user_id: Users::Student.last.id,
+    internship_offer_id: InternshipOffers::FreeDate.first.id,
+    internship_offer_type: InternshipOffer.name,
+    motivation: "Je suis passionné par la découverte de ce stage",
+    submitted_at: 2.days.ago,
+    aasm_state: 'approved'
+  )
+end
+
+
 if Rails.env == 'review' || Rails.env.development?
   populate_week_reference
   populate_schools
@@ -191,4 +205,5 @@ if Rails.env == 'review' || Rails.env.development?
   populate_groups
   populate_internship_offers
   populate_students
+  populate_student_application
 end
