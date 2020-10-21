@@ -1,0 +1,105 @@
+fieldset.mt-4 data-controller='internship-agreement-form'
+  .row.mt-3
+    .col-8
+      .form-group
+        = form.label :student_school do
+          = "Etablissement scolaire du stagiaire"
+          = form.rg2a_required_content_tag
+        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school
+
+      .form-group
+        = form.label :school_representative_full_name do
+          = "Nom du représentant de l’établissement scolaire du stagiaire"
+          = form.rg2a_required_content_tag
+        = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
+      
+      .form-group
+        = form.label :student_full_name do
+          = "Nom du stagiaire"
+          = form.rg2a_required_content_tag
+        = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name
+      
+      .form-group
+        = form.label :student_class_room do
+          = "Classe du stagiaire"
+          = form.rg2a_required_content_tag
+        = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room
+      
+      .form-group
+        = form.label :main_teacher_full_name do
+          = "Professeur principal"
+          = form.rg2a_required_content_tag
+        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name
+      
+      .form-group
+        = form.label :organisation_representative_full_name do
+          = "Nom du représentant de l’entreprise"
+          = form.rg2a_required_content_tag
+        = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, value: resource.organisation_representative_full_name
+
+      .form-group
+        = form.label :activity_scope do
+          = "Objectifs assignés à la séquence d’observation en milieu professionnel"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true, value: resource.activity_scope
+
+      .form-group
+        = form.label :activity_preparation do
+          = "Modalités de la préparation"
+          = form.rg2a_required_content_tag
+        = form.text_field :activity_preparation, class: 'form-control', required: true, value: resource.activity_preparation
+      
+      .form-group
+        = form.label :activity_schedule do
+          = "Activités prévues"
+          = form.rg2a_required_content_tag
+        = form.text_field :activity_schedule, class: 'form-control', required: true, value: resource.activity_schedule
+      
+      .form-group
+        = form.label :activity_learnings do
+          = "Compétences visées"
+          = form.rg2a_required_content_tag
+        = form.text_field :activity_learnings, class: 'form-control', required: true, value: resource.activity_learnings
+      
+      .form-group
+        = form.label :activity_rating do
+          = "Modalités d’évaluation"
+          = form.rg2a_required_content_tag
+        = form.text_field :activity_learnings, class: 'form-control', required: true, value: resource.activity_learnings
+      
+      .form-group
+        = form.label :housing do
+          = "Conditions d'hébergement"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :housing, class: 'form-control', value: resource.housing
+      
+      .form-group
+        = form.label :insurance do
+          = "Assurance"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :insurance, class: 'form-control', value: resource.insurance
+      
+      .form-group
+        = form.label :transportation do
+          = "Transport"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :transportation, class: 'form-control', value: resource.transportation
+      
+      .form-group
+        = form.label :food do
+          = "Conditions de restauration"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :food, class: 'form-control', value: resource.food
+      
+      .form-group
+        = form.label :terms do
+          = "Conditions d'utilisation"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :terms, class: 'form-control', required: true,  rows: 10
+
+      .mt-3
+        = button_tag :submit, class: 'btn btn-primary' do
+          i.fas.fa-pen
+          |  Signer&nbsp;
+
+

@@ -459,7 +459,26 @@ CREATE TABLE public.internship_agreements (
     aasm_state character varying,
     internship_application_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    organisation_representative_full_name character varying,
+    school_representative_full_name character varying,
+    student_full_name character varying,
+    student_class_room character varying,
+    student_school character varying,
+    tutor_full_name character varying,
+    main_teacher_full_name character varying,
+    doc_date date,
+    activity_scope character varying,
+    activity_preparation character varying,
+    activity_schedule character varying,
+    activity_learnings text,
+    activity_rating text,
+    schedule text,
+    housing text,
+    insurance text,
+    transportation text,
+    food text,
+    terms text
 );
 
 
@@ -2171,6 +2190,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200928145102'),
 ('20200928150637'),
 ('20200929081733'),
-('20200930155341');
+('20200930155341'),
+('20201021131419');
 
 
