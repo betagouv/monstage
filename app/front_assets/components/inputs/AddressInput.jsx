@@ -32,7 +32,9 @@ export default function AddressInput({
   };
 
   const searchCityByAddress = () => {
-    const endpoint = new URL('https://api-adresse.data.gouv.fr/search');
+    const endpoint = new URL(
+      `${document.location.protocol}//${document.location.host}/api_address_proxy/search`
+    );
     const searchParams = new URLSearchParams();
 
     searchParams.append('q', fullAddress);

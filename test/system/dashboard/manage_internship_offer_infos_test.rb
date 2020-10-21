@@ -55,7 +55,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     end
   end
 
-  test 'fails gracefuly' do
+  test 'create internship offer info fails gracefuly' do
     sectors = [create(:sector), create(:sector)]
     employer = create(:employer)
     organisation = create(:organisation, employer: employer)
