@@ -9,6 +9,7 @@ module Api
         on.success(&method(:render_created))
         on.failure(&method(:render_validation_error))
         on.duplicate(&method(:render_duplicate))
+        on.argument_error(&method(:render_argument_error))
       end
     end
 
@@ -17,6 +18,7 @@ module Api
                                       params: update_internship_offer_params) do |on|
         on.success(&method(:render_ok))
         on.failure(&method(:render_validation_error))
+        on.argument_error(&method(:render_argument_error))
       end
     end
 

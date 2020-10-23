@@ -33,6 +33,8 @@ module Builders
       else
         callback.on_failure.try(:call, e.record)
       end
+    rescue ArgumentError => e
+      callback.on_argument_error.try(:call, e)
     end
 
     def update(instance:, params:)
@@ -44,6 +46,8 @@ module Builders
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
       callback.on_failure.try(:call, e.record)
+    rescue ArgumentError => e
+      callback.on_argument_error.try(:call, e)
     end
 
     def discard(instance:)

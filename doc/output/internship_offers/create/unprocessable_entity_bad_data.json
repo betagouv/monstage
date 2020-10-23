@@ -1,0 +1,4 @@
+{
+  "code": "BAD_ARGUMENT",
+  "error": "bad week format: 2020-Wsem9-23, expecting ISO 8601 format"
+}
