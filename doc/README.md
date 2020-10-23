@@ -159,7 +159,7 @@ Sur chaque requête, on pourra avoir les erreurs suivantes :
 - 400, Bad Request : Paramètres de requête mal renseignés. Exemple : Secteur non indiqué dans la création d'une offres
 - 401, Unauthorized : Token invalide
 - 403, Forbidden : Pas le droit d'effectuer cette requête. Exemple : Modification d'une offre qui ne vous appartient pas
-- 422, Unprocessable Entity. Payload incorrect, impossible de traiter la requête
+- 422, Unprocessable Entity. Payload incorrect (impossible de traiter la requête car le format ne correspond pas). Ou la donnée n'est pas valide
 
 - 500, Internal Server Error : Service indisponible
 
