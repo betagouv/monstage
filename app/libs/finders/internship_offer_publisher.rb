@@ -23,8 +23,18 @@ module Finders
 
     def employer_query
       common_filter do
-        user.internship_offers.kept
+        params[:filter] == 'approved' ? approved_filter : user.internship_offers.kept
       end
+    end
+
+    def approved_filter
+      offers_at       = InternshipOffer.arel_table
+      applications_at = InternshipApplication.arel_table
+
+      InternshipOffer.kept
+                     .joins(:internship_applications)
+                     .where(offers_at[:employer_id].eq(user.id))
+                     .where(applications_at[:aasm_state].eq('approved'))
     end
   end
 end
