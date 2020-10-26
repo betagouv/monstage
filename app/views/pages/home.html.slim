@@ -8,12 +8,33 @@
           | Postulez à vos
           br
           | offres de stages préférés.
-        = react_component("SearchInternshipOffer",
+      .col-12
+        nav
+          #nav-tab.nav.nav-tabs role="tablist"
+            a#nav-presential-tab.nav-link.active aria-controls="nav-presential" aria-selected="true" data-toggle="tab" href="#nav-presential" role="tab"
+              | Stage en présentiel
+            a#nav-remote-tab.nav-link aria-controls="nav-remote" aria-selected="false" data-toggle="tab" href="#nav-remote" role="tab"
+              | Offres en distanciel
+      .col-12
+        #nav-tabContent.tab-content
+          #nav-presential.tab-pane.fade.show.active aria-labelledby="nav-presential-tab" role="tabpanel"
+            = react_component("SearchInternshipOffer",
                               { url: internship_offers_path,
                                 className: 'd-block d-sm-flex not-focusable-search-bar' ,
                                 schoolTypeVisibility: false},
                               { class: 'col-12' }) do
-              .input-loading-skeleton
+                .input-loading-skeleton
+
+          #nav-remote.tab-pane.fade aria-labelledby="nav-remote-tab" role="tabpanel"
+            = react_component("SearchInternshipOfferRemote",
+                              { url: internship_offer_remotes_path,
+                                className: 'd-block d-sm-flex not-focusable-search-bar'},
+                              { class: 'col-12' }) do
+                .input-loading-skeleton
+
+
+
+
     .row.d-none.d-sm-flex.pt-3.pt-sm-5
       .col-12.pt-5
         p.scroller.text-center
