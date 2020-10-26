@@ -113,7 +113,8 @@ module Dashboard
           :radius,
           :school_type,
           :keyword,
-          :school_year
+          :school_year,
+          :filter
         ),
         user: current_user_or_visitor
       )

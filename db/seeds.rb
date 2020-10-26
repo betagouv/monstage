@@ -65,8 +65,8 @@ def populate_class_rooms
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name = "user"
-  object.last_name = object.class.name
+  object.first_name ||= "user"
+  object.last_name ||= object.class.name
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object
@@ -96,32 +96,37 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr', password: 'review', first_name: 'Nestor', last_name: 'Benzedin', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
 end
 
 def populate_students
-  class_room = ClassRoom.first
-  school = class_room.school
-  with_class_name_for_defaults(Users::Student.new(email: 'student1@ms3e.fr', password: 'review', first_name: 'Jean', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student2@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student3@ms3e.fr', password: 'review', first_name: 'Michel', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student11@ms3e.fr', password: 'review',first_name: 'Martin', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student12@ms3e.fr', password: 'review',first_name: 'Alexandre', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student13@ms3e.fr', password: 'review',first_name: 'Fred', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student14@ms3e.fr', password: 'review',first_name: 'Karim', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room)).save!
+  class_room_1 = ClassRoom.first
+  class_room_2 = ClassRoom.second
+  class_room_3 = ClassRoom.third
+  class_room_4 = ClassRoom.fourth
+  school = class_room_1.school
+
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_g_1@ms3e.fr', password: 'review', first_name: 'Abdelaziz', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_g_2@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_p_m_3@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_p_m_4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_11@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_12@ms3e.fr', password: 'review',first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_13@ms3e.fr', password: 'review',first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_14@ms3e.fr', password: 'review',first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
 end
 
 def populate_internship_offers
+  # 3eme_generale: public sector
   InternshipOffers::WeeklyFramed.create!(
     employer: Users::Employer.first,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Stage assistant.e ressources humaines - Du temps pour moi',
+    title: 'Stage assistant.e ressources humaines - Service des recrutements',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
     employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
     employer_website: 'http://www.dtpm.fr/',
@@ -133,7 +138,71 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
+    school_track: :troisieme_generale
   )
+
+  # 3eme_generale-2019:
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.weeks_of_school_year(school_year: SchoolYear::Base::YEAR_START),
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Stage editeur - A la recherche du temps passé par les collaborateurs',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion des projets internes touchant à la gestion des contrats.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637677756',
+    street: '129 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :troisieme_generale
+  )
+  # Bac_pro
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Boucherie Sanzos - gestion des approvisionnements frontaliers',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion de la logistique routière et ferrée des approvisionnements de viande en provenance d\'Europe et d\'Argentine.',
+    employer_description_rich_text: "La Boucherie Sanzos doit sa réputation à la qualité de sa viande reconnue et convoitée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :bac_pro
+  )
+  # Bac_pro
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Scierie Descloux - maitrise des machines outils',
+    description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
+    employer_description_rich_text: "La scierie Descloux attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :bac_pro
+  )
+  # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
     weeks: Week.selectable_on_school_year,
@@ -155,6 +224,7 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
   )
+  # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
 - Présentation de la recette interrégionale (service de perception).
@@ -177,7 +247,78 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
+    school_track: :troisieme_prepa_metier
   )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des principes fondamentaux du métier.
+- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de trader en ligne',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :troisieme_segpa
+  )
+end
+
+def populate_internship_weeks
+  manager = Users::SchoolManagement.find_by(role: 'school_manager')
+  school = manager.school
+  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_applications
+  bac_pro_studs = Users::Student.joins(:class_room)
+                                .where('class_rooms.school_track = ?', :bac_pro)
+                                .to_a
+                                .shuffle
+                                .first(2)
+  trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .to_a
+                                   .shuffle
+                                   .first(2)
+  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+
+  bac_pro_studs.each do |bac_pro_stud|
+    FactoryBot.create(
+      :free_date_internship_application,
+      :submitted,
+      internship_offer: ios_bac_pro.first,
+      student: bac_pro_stud
+    )
+  end
+  ios_troisieme_generale.each do |io_trois_gene|
+    FactoryBot.create(
+      :weekly_internship_application,
+      :submitted,
+      internship_offer: io_trois_gene,
+      student: trois_gene_studs.first
+    )
+  end
+  if trois_gene_studs&.second
+    FactoryBot.create(
+      :weekly_internship_application,
+      :approved,
+      internship_offer: ios_troisieme_generale.first,
+      student: trois_gene_studs.second
+    )
+  end
 end
 
 def populate_student_application
@@ -206,4 +347,6 @@ if Rails.env == 'review' || Rails.env.development?
   populate_internship_offers
   populate_students
   populate_student_application
+  populate_internship_weeks
+  populate_applications
 end
