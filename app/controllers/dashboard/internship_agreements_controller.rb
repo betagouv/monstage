@@ -2,6 +2,12 @@ module Dashboard
   # WIP, not yet implemented, will host agreement signing
   class InternshipAgreementsController < ApplicationController
 
+    def index
+      authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
+
+      @internship_agreements = InternshipAgreement.all
+    end
+
     def new
       authorize! :new, InternshipAgreement
       @internship_agreement = internship_agreement_builder.new_from_application(
