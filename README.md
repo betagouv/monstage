@@ -103,31 +103,36 @@ our test suite contains
   * w3c (using previously created html files)
   * a11y (using previously created html files)
 
-### about units test
+you can also run all kinds of test in one run `./infra/test/suite.sh`
 
-run with ```rails test```
+### about/run units test
 
-### about system / e2e tests, runs within a broswer
+run with ```rails test``` (JS is not executed, so quick tests)
 
-by default we run our tests with a chrome_headless.
+### about/run system/e2e tests
 
-* run in background (chrome_headless): `rails test:system`
-* run in foreground, with visual feedback from your selecteed browser `BROWSER=firefox|chrome|safari rails test:system`
+by default we run our tests with a chrome_headless (JS is executed, kinda slow tests).
 
-### about w3c tests (using vnu.jar)
+* run in background (chrome_headless) : `rails test:system`
+* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test:system`
 
-those depennds on the system / e2e (which goes throught browser with js execution). run w3c tests via ```./infra/test/w3c.sh```
+### about/run w3c tests (using vnu.jar)
+
+those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c.sh```
 
 ### a11y tests (using pa11y-ci)
 
-those depennds on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
+those tests depends on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-our CI run all 4 kinds of test. it's run by CircleCI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
-you can also run all kinds of test in one run `./infra/test/suite.sh`
+**Important notes :**
 
+* we use a custom postgres docker image for our synonym dictionnary
+ 
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
@@ -135,6 +140,8 @@ our review apps are hosted by heroku, we also try to maintain a cross functionna
 review apps are accessible following this pattern ```https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/```
 
 requirements: install heroku cli `https://devcenter.heroku.com/articles/heroku-cli`
+
+**Important notes :**
 
 * deployed automatically via github/heroku for each pull requests.
 * see your PR on github for the review app link
