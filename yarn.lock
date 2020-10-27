@@ -7113,10 +7113,9 @@ react-is@^16.13.1, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-phone-input-2@^2.13.5:
-  version "2.13.8"
-  resolved "https://registry.yarnpkg.com/react-phone-input-2/-/react-phone-input-2-2.13.8.tgz#83448abca741325f84460f85911921b3b1a6ecd0"
-  integrity sha512-tcxleYfXOxPURai1nLHjH0vZXMEM7K/h6wC4fJQ/lF0Ppq0RnChhasyIzsZok7BEnA8PVv67aRfQ0mKHN3a2+g==
+react-phone-input-2@mfo/react-phone-input-2:
+  version "2.13.9"
+  resolved "https://codeload.github.com/mfo/react-phone-input-2/tar.gz/e9645318d498afadcfff3049210626b35212d02c"
   dependencies:
     classnames "^2.2.6"
     lodash.debounce "^4.0.8"
