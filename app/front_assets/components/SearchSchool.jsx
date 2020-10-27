@@ -159,6 +159,7 @@ export default function SearchSchool({
                       autocompleteNoResult ? '' : 'rounded-0'
                     }`}
                     onClick={onResetSearch}
+                    aria-label="Réinitialiser la recherche"
                   >
                     <i className="fas fa-times" />
                   </button>
@@ -168,6 +169,7 @@ export default function SearchSchool({
                     type="button"
                     className="btn btn-outline-secondary btn-clear-city"
                     onClick={onResetSearch}
+                    aria-label="Réinitialiser la recherche"
                   >
                     <i className="fas fa-spinner fa-spin" />
                   </button>

@@ -97,7 +97,9 @@ export default function AddressInput({
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
-                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                  <a className="btn-absolute btn btn-link py-0"
+                     aria-label="Afficher l'aide"
+                     onClick={toggleHelpVisible}>
                     <i className="fas fa-question-circle" />
                   </a>
                 </label>

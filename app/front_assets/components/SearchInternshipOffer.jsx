@@ -99,6 +99,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
                          float-sm-none
                          px-3
                          rounded-xs-0"
+              { ...(searchWordVisible ? {} : {'aria-label': "Rechercher"})  }
             >
               <i className="fas fa-search" />
               &nbsp; {(searchWordVisible) ? "Rechercher" : ""}
