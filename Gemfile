@@ -37,9 +37,6 @@ gem 'newrelic_rpm'
 gem 'sentry-raven'
 gem 'ovh-rest'
 
-# email operator tool
-gem 'sendgrid-ruby'
-
 # acl
 gem 'cancancan'
 gem 'devise'

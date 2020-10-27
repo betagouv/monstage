@@ -65,7 +65,7 @@ Things you may want to cover:
 
 * Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
 * Bug monitoring solution: [sentry](https://sentry.io/)
-* Mail: [sendgrid](https://sendgrid.com)
+* Mail: [mailjet](https://mailjet.com)
 * uptime/downtime:
 
 # Build: test, dev

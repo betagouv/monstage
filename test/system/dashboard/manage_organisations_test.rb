@@ -44,7 +44,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   #   assert_equal 'New name', organisation.reload.title
   # end
 
-  test 'fails gracefuly' do
+  test 'create organisation fails gracefuly' do
     sector = create(:sector)
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)

@@ -77,6 +77,8 @@ Rails.application.routes.draw do
     get 'internship_offers', to: 'internship_offers#index'
   end
 
+  get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search
+
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 

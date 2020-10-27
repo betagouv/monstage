@@ -17,6 +17,7 @@ module NestedSchool
                                             .approved
                                             .where(student: @school.students)
       @students_without_class_room = @school.students.where(class_room_id: nil)
+                                                     .where(anonymized: false)
     end
   end
 end

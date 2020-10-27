@@ -58,8 +58,6 @@ jobs: # a collection of steps
       - run:
           name: Yarn Install
           command:  |
-            npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-            npm config set "//npm.fontawesome.com/:_authToken" $FA_TOKEN
             yarn install --cache-folder ~/.cache/yarn
 
       - save_cache:

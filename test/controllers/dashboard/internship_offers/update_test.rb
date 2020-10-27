@@ -62,5 +62,19 @@ module Dashboard::InternshipOffers
               params: { internship_offer: { school_id: nil } })
       end
     end
+
+
+    test 'PATCH #update bac_pro to 3e general should break if no weeks' do
+      internship_offer = create(:free_date_internship_offer)
+      published_at = 2.days.ago.utc
+      sign_in(internship_offer.employer)
+      patch(dashboard_internship_offer_path(internship_offer.to_param), params:
+        {
+          internship_offer: { school_track: :troisieme_generale,
+                              type: InternshipOffers::WeeklyFramed.name }
+        }
+      )
+      assert_response :bad_request
+    end
   end
 end

@@ -24,7 +24,7 @@ namespace :users do
                 user.role,
                 user.first_name,
                 user.last_name,
-                user.confirmed_at.utc.iso8601,
+                user.confirmed_at.utc.to_i,
                 'production']
       end
     end

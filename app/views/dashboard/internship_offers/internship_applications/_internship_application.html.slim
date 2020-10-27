@@ -7,8 +7,6 @@
             i.fas.fa-2x.text-danger.fa-caret-down
           - else
             i.fas.fa-2x.text-danger.fa-caret-right
-
-
       .col-11
         .row
           .col-sm-8.col-xs-12
@@ -22,9 +20,9 @@
               br
             .font-weight-bold.text-right.pr-3
               = " le #{localize(internship_application.created_at, format: "%d %B")}"
-    .row.no-gutters.ml-4.mt-2
-      .col-10
-        - if internship_application.respond_to?(:week)
+    - if internship_application.respond_to?(:week)
+      .row.no-gutters.ml-4.mt-2
+        .col-10
           i.fas.fa-calendar-alt.mr-2
           = "Pour la semaine "
           strong= "#{internship_application.week.short_select_text_method}"
@@ -46,27 +44,32 @@
           | Tout afficher +
 
     .row.no-gutters.ml-4.mt-2
-      .col-10
-        .row.collapsible data-target="internship-application-index.collapsible"
-          .col-md-6.col-sm-12.mb-3
+      .col-10.collapsible data-target="internship-application-index.collapsible"
+        .row
+          .col-12.mb-3
             h3.h6
               i.fa-fw.fas.fa-user
               | Informations sur l'élève
             = render partial: "users/resume_details", locals: {student: internship_application.student}
-          .col-md-6.col-sm-12.border-left
+        .row
+          .col-md-6.col-sm-12
             h3.h6 Parcours Scolaire
             .reboot-trix-content= internship_application.student.resume_educational_background.to_s
-            h3.h6.mt-3  Activités extra scolaires
-            .reboot-trix-content= internship_application.student.resume_other.to_s
             - if internship_application.student.resume_languages.present?
               h3.h6.mt-3  Langues
               .reboot-trix-content= internship_application.student.resume_languages.to_s
+
+          .col-md-6.col-sm-12
+            h3.h6 Activités extra scolaires
+            .reboot-trix-content= internship_application.student.resume_other.to_s
 
         - if internship_application.student.handicap?
           h3.h6.mt-3
             i.fas.fa-wheelchair
             Besoin d'accompagnement
           .reboot-trix-content.student-handicap= internship_application.student.handicap.to_s
+    .row.no-gutters.ml-4
+      .col-10
         .d-flex.flex-row.mt-4
           - if internship_application.submitted?
             = render "dashboard/internship_offers/internship_applications/actions/approve",

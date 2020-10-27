@@ -14,7 +14,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.3.1",
     "core-js": "^3.4.1",
-    "downshift": "^5.0.6",
+    "downshift": "6.0.6",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
     "popper.js": "^1.15.0",
@@ -29,7 +29,7 @@
     "trix": "^1.2.0",
     "turbolinks": "^5.2.0",
     "url-search-params-polyfill": "^8.0.0",
-    "use-debounce": "^3.4.1",
+    "use-debounce": "5",
     "whatwg-fetch": "^3.2.0"
   },
   "devDependencies": {
