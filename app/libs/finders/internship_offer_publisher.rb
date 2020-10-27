@@ -10,6 +10,15 @@ module Finders
       }
     end
 
+    def all_states_counter
+      {
+        active: proposed_offers,
+        unpublished: proposed_offers.unpublished,
+        in_the_past: proposed_offers.in_the_past,
+        approved: approved_filter
+      }.transform_values(&:count)
+    end
+
     private
 
     def operator_query
@@ -23,7 +32,7 @@ module Finders
 
     def employer_query
       common_filter do
-        params[:filter] == 'approved' ? approved_filter : user.internship_offers.kept
+        params[:filter] == 'approved' ? approved_filter : proposed_offers
       end
     end
 
@@ -35,6 +44,10 @@ module Finders
                      .joins(:internship_applications)
                      .where(offers_at[:employer_id].eq(user.id))
                      .where(applications_at[:aasm_state].eq('approved'))
+    end
+
+    def proposed_offers
+      user.internship_offers.kept
     end
   end
 end

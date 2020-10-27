@@ -5,14 +5,14 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   li.nav-item= link_to dashboard_internship_offers_path(forwarded_params),
                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
-        = "En cours"
+        = "En cours "
         - if is_active
           = " (#{internship_offers.total_count})"
 
   - is_active = params[:filter] == 'unpublished'
   li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)), class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
-        = "Dépubliées"
+        = "Dépubliées "
         - if is_active
           = " (#{internship_offers.total_count})"
 
@@ -20,14 +20,15 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)),
                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
-        => "Passées"
+        = "Passées "
         - if is_active
           = " (#{internship_offers.total_count})"
   - is_active = params[:filter] == 'approved'
+  - approved_count = all_states_counter[:approved] || 0
   - if ENV.fetch('CONVENTION_ENABLED', false)
     li.nav-item= link_to dashboard_internship_offers_path({filter: 'approved'}.merge(forwarded_params)),
                          class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          => "Convention à signer"
-          - if is_active
-            = " (#{internship_offers.total_count})"
+      div.my-auto
+        = "Conventions à signer "
+        - if approved_count.positive?
+          span.red-notification-badge=> "#{approved_count}" 
