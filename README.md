@@ -110,6 +110,10 @@ foreman start -f Procfile.dev
 
 ```./infra/test/w3c.sh```
 
+### a11y (using pa11y-ci)
+
+```./infra/test/a11y_suite.sh```
+
 # Run: ci, review, staging, production
 
 CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
