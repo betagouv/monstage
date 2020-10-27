@@ -114,9 +114,16 @@ foreman start -f Procfile.dev
 
 ```./infra/test/a11y_suite.sh```
 
-# Run: ci, review, staging, production
+## CI
 
 CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+
+The CI run 4 kinds of tests :
+
+* units
+* systems (saving html files)
+* w3c (using previously created html files)
+* a11y (using previously created html files)
 
 ## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
 
