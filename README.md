@@ -4,7 +4,7 @@
 # Setup
 Things you may want to cover:
 
-* Ruby version: 2.7.1
+* Ruby version: 2.7.2
 * Database postgresql 12
  - Initialize with : `initdb /usr/local/var/postgres -E utf8`
  - Create local db : `createdb monstage`
@@ -84,48 +84,55 @@ Things you may want to cover:
 **start project**
 
 ```
-bundle
-yarn
+bundle install
+yarn install
 foreman start -f Procfile.dev
 ```
 
 ### tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-* mail should be opened automatically
+* mail should be opened automatically by letter opener
 
 ## test
 
-### units test
+our test suite contains
 
-```rails test```
+* unit tests, we try to everything undercontrol with many tests (maybe>75% test coverage)
+* systems, testing feature in e2e mode. those test keeps html version for later processing
+  * w3c (using previously created html files)
+  * a11y (using previously created html files)
 
-### system / e2e, runs within a browswer
+### about units test
 
-* run in background: `rails test:system`
-* run with browser `BROWSER=firefox|chrome rails test:system`
+run with ```rails test```
 
+### about system / e2e tests, runs within a broswer
 
-### w3c (using vnu.jar)
+by default we run our tests with a chrome_headless.
 
-```./infra/test/w3c.sh```
+* run in background (chrome_headless): `rails test:system`
+* run in foreground, with visual feedback from your selecteed browser `BROWSER=firefox|chrome|safari rails test:system`
 
-### a11y (using pa11y-ci)
+### about w3c tests (using vnu.jar)
 
-```./infra/test/a11y_suite.sh```
+those depennds on the system / e2e (which goes throught browser with js execution). run w3c tests via ```./infra/test/w3c.sh```
 
-## CI
+### a11y tests (using pa11y-ci)
 
-CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+those depennds on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
 
-The CI run 4 kinds of tests :
+### CI, full suite (unit, system, w3c, a11y)
 
-* units
-* systems (saving html files)
-* w3c (using previously created html files)
-* a11y (using previously created html files)
+our CI run all 4 kinds of test. it's run by CircleCI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
 
-## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
+you can also run all kinds of test in one run `./infra/test/suite.sh`
+
+### User testing with review apps
+
+our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
+
+review apps are accessible following this pattern ```https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/```
 
 requirements: install heroku cli `https://devcenter.heroku.com/articles/heroku-cli`
 
