@@ -7115,7 +7115,7 @@ react-is@^16.13.1, react-is@^16.8.1:
 
 react-phone-input-2@mfo/react-phone-input-2:
   version "2.13.9"
-  resolved "https://codeload.github.com/mfo/react-phone-input-2/tar.gz/e9645318d498afadcfff3049210626b35212d02c"
+  resolved "https://codeload.github.com/mfo/react-phone-input-2/tar.gz/c7c24229c7a5b2601b8bf2864912c849e9fb495d"
   dependencies:
     classnames "^2.2.6"
     lodash.debounce "^4.0.8"
