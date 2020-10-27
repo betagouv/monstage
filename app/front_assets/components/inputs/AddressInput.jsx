@@ -97,7 +97,10 @@ export default function AddressInput({
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
-                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                  <a className="btn-absolute btn btn-link py-0"
+                     href="#help-multi-location"
+                     aria-label="Afficher l'aide"
+                     onClick={toggleHelpVisible}>
                     <i className="fas fa-question-circle" />
                   </a>
                 </label>
@@ -147,7 +150,7 @@ export default function AddressInput({
             )}
           </Downshift>
         </div>
-        <div className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
+        <div id="help-multi-location" className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
           Si vous proposez le même stage dans un autre établissement, déposez une offre par
           établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux),
           indiquez l'adresse où l'élève devra se rendre au premier jour

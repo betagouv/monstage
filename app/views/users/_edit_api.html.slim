@@ -11,3 +11,5 @@ h1.h2.mb-3 Mes identifiants d'API
     = f.text_field :api_token, class: 'form-control col-lg-6',
       required: true,  readonly: true
 
+  .form-group
+    = f.submit "Mettre à jour", disabled: true
