@@ -9,6 +9,7 @@ class InternshipApplication < ApplicationRecord
 
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
+  has_one :internship_agreement
 
   validates :motivation,
             presence: true,

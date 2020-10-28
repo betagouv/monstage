@@ -4,14 +4,14 @@
            approved_applications_count: "Candidatures<br />acceptées",
            submitted_applications_count: "Réponses<br />à&nbsp;donner",
            total_applications_count: "Candidatures",
-           conventions_to_be_signed_count: "Conventions<br />à&nbsp;signer",
          }
 
 table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers.mb-0
-
-  thead= render partial: "dashboard/internship_offers/table_header",
-                locals: {cols: cols}
-
-  tbody= render partial: "employer_internship_offer",
-                collection: @internship_offers,
-                locals: {cols: cols}
+  - if params[:filter] == 'approved'
+    tbody= render template: "dashboard/internship_agreements/index"
+  - else
+    thead= render partial: "dashboard/internship_offers/table_header",
+                  locals: {cols: cols}
+    tbody= render partial: "employer_internship_offer",
+                  collection: @internship_offers,
+                  locals: {cols: cols}

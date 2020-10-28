@@ -34,18 +34,3 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
         span.pl-2.pt-1
           = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable d-inline-block' do
             i.fa.fa-eye
-
-  td.align-middle data-head="#{cols[:conventions_to_be_signed_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    .d-flex.justify-content-start
-      span.fa-fw.badge
-
-      - if employer_internship_offer.approved_applications_count.positive?
-        strong
-          span.red-notification-badge = employer_internship_offer.approved_applications_count
-        span.pl-2.pt-1
-          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable d-inline-block' do
-            i.fa.fa-pen
-      -else
-        strong = employer_internship_offer.approved_applications_count
-
-

@@ -5,7 +5,10 @@ module Dashboard
     def index
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
 
-      @internship_agreements = InternshipAgreement.all
+      @internship_agreements = InternshipAgreement.by_user_and_offers(
+        user: current_user,
+        offers: InternshipOffer.all
+      )
     end
 
     def new
