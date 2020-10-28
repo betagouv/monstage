@@ -28,6 +28,9 @@ function RadiusInput({ radius,
         onFocus={(event) => {
           setFocus(COMPONENT_FOCUS_LABEL);
         }}
+        onBlur={(event) => {
+          setFocus(null);
+        }}
         step={5000}
       />
       <div className="slider-legend small">
