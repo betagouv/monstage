@@ -29,11 +29,11 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         = form.select :sector_id, options_from_collection_for_select(Sector.all.order(:name), :id, :name, resource.sector_id), { prompt: sectors_options_for_default }, class: "form-control"
 
       .form-group data-controller='maxlength-input' data-maxlength-input-limit=InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT
-        .label data-rich-text-label-for='internship_offer_info_description_rich_text' data-controller="rich-text-label"
+        #label_internship_offer_info_description_rich_text.label data-rich-text-label-for='internship_offer_info_description_rich_text' data-controller="rich-text-label"
           = "Activité prévues"
           = form.rg2a_required_content_tag
 
-        = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }
+        = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }, aria: {labelledby: 'label_internship_offer_info_description_rich_text'}
         small.form-text data-target="maxlength-input.trixElementCharCount"
 
       .form-group
