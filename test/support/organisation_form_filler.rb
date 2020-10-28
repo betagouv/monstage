@@ -4,7 +4,7 @@ module OrganisationFormFiller
     find('label', text: 'Public').click
     select group.name, from: 'organisation_group_id' if group
 
-    find('#internship_offer_autocomplete').fill_in(with: 'Paris, 13eme')
+    find('input[placeholder="Adresse"]').fill_in(with: 'Paris, 13eme')
     find('#test-input-full-address ul li:first-child').click
     fill_in "Rue ou compléments d'adresse", with: "La rue qui existe pas dans l'API / OSM"
 

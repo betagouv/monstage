@@ -112,7 +112,7 @@ export default function AddressInput({
                       value: fullAddress,
                       className: 'form-control',
                       name: `${resourceName}_autocomplete`,
-                      id: 'internship_offer_autocomplete',
+                      id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
                     })}
                   />
