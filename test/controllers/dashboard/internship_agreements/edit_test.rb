@@ -6,7 +6,7 @@ module Dashboard::InternshipOffers
   class EditTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
 
-    test 'GET #edit as visitor redirects to user_session_path' do
+    test 'GET #internship_agreements/edit as visitor redirects to user_session_path' do
       get edit_dashboard_internship_agreement_path(create(:internship_agreement).to_param)
       assert_redirected_to root_path
     end

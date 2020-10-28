@@ -1,4 +1,5 @@
 class InternshipAgreement < ApplicationRecord
+  # include AASM
   belongs_to :internship_application
 
   validates :student_school,

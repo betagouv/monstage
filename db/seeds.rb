@@ -292,18 +292,18 @@ def populate_applications
                                    .to_a
                                    .shuffle
                                    .first(2)
-  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+  troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
   bac_pro_studs.each do |bac_pro_stud|
     FactoryBot.create(
       :free_date_internship_application,
       :submitted,
-      internship_offer: ios_bac_pro.first,
+      internship_offer: bac_pro_offers.first,
       student: bac_pro_stud
     )
   end
-  ios_troisieme_generale.each do |io_trois_gene|
+  troisieme_generale_offers.each do |io_trois_gene|
     FactoryBot.create(
       :weekly_internship_application,
       :submitted,
@@ -315,7 +315,7 @@ def populate_applications
     FactoryBot.create(
       :weekly_internship_application,
       :approved,
-      internship_offer: ios_troisieme_generale.first,
+      internship_offer: troisieme_generale_offers.first,
       student: trois_gene_studs.second
     )
   end
@@ -335,6 +335,14 @@ def populate_student_application
 end
 
 
+def populate_aggreements
+  application = InternshipApplication.find_by(aasm_state: 'approved')
+  FactoryBot.create(
+    :internship_agreement,
+    internship_application: application
+  )
+end
+
 if Rails.env == 'review' || Rails.env.development?
   populate_week_reference
   populate_schools
@@ -349,4 +357,5 @@ if Rails.env == 'review' || Rails.env.development?
   populate_student_application
   populate_internship_weeks
   populate_applications
+  populate_aggreements
 end
