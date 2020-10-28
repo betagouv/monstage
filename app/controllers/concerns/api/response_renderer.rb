@@ -39,6 +39,12 @@ module Api
                      status: :conflict)
       end
 
+      def render_argument_error(error)
+        render_error(code: "BAD_ARGUMENT",
+                     error: error.to_s,
+                     status: :unprocessable_entity)
+      end
+
       #
       # success renderers
       #

@@ -8,6 +8,9 @@ require 'rails/test_help'
 require 'capybara-screenshot/minitest'
 require 'support/api_test_helpers'
 require 'support/email_spam_euristics_assertions'
+require 'support/organisation_form_filler'
+require 'support/internship_offer_info_form_filler'
+require 'support/tutor_form_filler'
 require 'minitest/retry'
 require 'webmock/minitest'
 
@@ -26,7 +29,8 @@ WebMock.disable_net_connect!(
     /127\.0\.0\.1/,
     /github.com/,
     /github-production-release-asset*/,
-    /chromedriver\.storage\.googleapis\.com/
+    /chromedriver\.storage\.googleapis\.com/,
+    /api-adresse.data.gouv.fr/
   ]
 )
 

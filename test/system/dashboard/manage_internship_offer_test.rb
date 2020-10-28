@@ -4,32 +4,9 @@ require 'application_system_test_case'
 
 class ManageInternshipOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+
   def wait_form_submitted
     find('.alert-sticky')
-  end
-
-  def fill_in_form
-    fill_in 'Nom du tuteur/trice', with: 'Brice Durand'
-    fill_in 'Adresse électronique / Email', with: 'le@brice.durand'
-    fill_in 'Numéro de téléphone', with: '0639693969'
-  end
-
-  test 'can create InternshipOffer' do
-    employer = create(:employer)
-    sign_in(employer)
-    organisation = create(:organisation, employer: employer)
-    internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
-    assert_difference 'InternshipOffer.count' do
-      travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
-                                               internship_offer_info_id: internship_offer_info.id)
-        fill_in_form
-        click_on "Publier l'offre !"
-        wait_form_submitted
-      end
-    end
-    assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'User', InternshipOffer.first.employer_type
   end
 
   test 'can edit internship offer' do
@@ -111,19 +88,19 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
 
     # 2019-20
-    create( :weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019-20')
+    create(:weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019/2020')
 
     # 2020-21
-    create( :weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020-21')
+    create(:weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020/2021')
 
     # wrong employer
-    create( :weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
+    create(:weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
 
     # free
-    create( :free_date_internship_offer, employer: employer, title: 'free')
+    create(:free_date_internship_offer, employer: employer, title: 'free')
 
     # 2019-20 unpublished
-    io = create( :weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019-20 unpublished')
+    io = create(:weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019/2020 unpublished')
     io.update_column(:published_at, nil)
     io.reload
 
@@ -134,25 +111,25 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     click_link('Passées')
     assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-    assert_text('2019-20')
-    assert_text('2019-20 unpublished')
+    assert_text('2019/2020')
+    assert_text('2019/2020 unpublished')
 
-    select('2019 - 20')
+    select('2019/2020')
     assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-    assert_text('2019-20')
-    assert_text('2019-20 unpublished')
+    assert_text('2019/2020')
+    assert_text('2019/2020 unpublished')
 
-    select('2020 - 21')
+    select('2020/2021')
     assert page.has_css?('p.internship-item-title.mb-0', count: 0)
 
     click_link('Dépubliées')
     assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-    assert_text('2019-20 unpublished')
+    assert_text('2019/2020 unpublished')
 
-    select('2019 - 20')
+    select('2019/2020')
     assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-    assert_text('2019-20 unpublished')
-    select('2020 - 21')
+    assert_text('2019/2020 unpublished')
+    select('2020/2021')
     assert page.has_css?('p.internship-item-title.mb-0', count: 0)
   end
 end
