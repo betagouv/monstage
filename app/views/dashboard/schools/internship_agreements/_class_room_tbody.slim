@@ -18,7 +18,7 @@
             td.col-sm-3 style="width: 300px" data-head="Action"
               .actions.d-flex.d-sm-block.text-right
                 - if ENV['CONVENTION_ENABLED']
-                  = link_to new_dashboard_internship_agreement_path, class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
+                  = link_to new_dashboard_internship_agreement_path(internship_application_id: application.id), class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
                     i.fa.fa-pen
                     span.text-action
                       |  Signer la convention

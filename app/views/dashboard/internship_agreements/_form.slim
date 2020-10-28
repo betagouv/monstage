@@ -1,4 +1,5 @@
 fieldset.mt-4 data-controller='internship-agreement-form'
+  = form.hidden_field :internship_application_id, value: resource.internship_application_id || params[:internship_application_id]
   .row.mt-3
     .col-8
       .form-group
@@ -36,6 +37,24 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = "Nom du représentant de l’entreprise"
           = form.rg2a_required_content_tag
         = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, value: resource.organisation_representative_full_name
+      
+      .form-group
+        = form.label :tutor_full_name do
+          = "Nom du tuteur"
+          = form.rg2a_required_content_tag
+        = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name
+      
+      .form-group
+        = form.label :start_date do
+          = "Date de début du stage"
+          = form.rg2a_required_content_tag
+        = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+      
+      .form-group
+        = form.label :end_date do
+          = "Date de fin du stage"
+          = form.rg2a_required_content_tag
+        = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
 
       .form-group
         = form.label :activity_scope do

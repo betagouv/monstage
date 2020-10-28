@@ -10,7 +10,6 @@ class InternshipAgreement < ApplicationRecord
             :tutor_full_name,
             :start_date,
             :end_date,
-            :doc_date,
             presence: true
   
   has_rich_text :activity_scope_rich_text          

@@ -3,21 +3,21 @@ module Dashboard
   class InternshipAgreementsController < ApplicationController
 
     def new
+      authorize! :create, InternshipAgreement
       @internship_agreement = internship_agreement_builder.create_from_application(
         InternshipApplication.find(params[:internship_application_id])
       )
-      @internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::TERMS}</div>"
     end
 
     
     def create
       authorize! :create, InternshipAgreement
-      internship_agreement = InternshipAgreement.new(internship_agreement_params)
+      internship_agreement = InternshipAgreement.new(internship_agreement_params.merge({doc_date: Date.today}))
       if internship_agreement.save
-        redirect_to dashboard_internship_agreement_path(@internship_agreement),
+        redirect_to dashboard_internship_agreement_path(internship_agreement),
                       flash: { success: 'La convention a été créée.' }
       else
-        @internship_offer = failed_internship_offer || InternshipAgreement.new(
+        @internship_offer = internship_agreement || InternshipAgreement.new(
           internship_application_id: params[:internship_application_id]
         )
         render :new, status: :bad_request
@@ -38,7 +38,7 @@ module Dashboard
     def internship_agreement_params
       params.require(:internship_agreement)
             .permit(
-              :internship_offer_id,
+              :internship_application_id,
               :student_school,
               :school_representative_full_name,
               :student_full_name,

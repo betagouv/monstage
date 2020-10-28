@@ -5,11 +5,12 @@ module Builders
   class InternshipAgreementBuilder
 
     def create_from_application(internship_application)
-      authorize :create, InternshipAgreement
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
       )
+      internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::TERMS}</div>"
+      internship_agreement
     end
    
     private
