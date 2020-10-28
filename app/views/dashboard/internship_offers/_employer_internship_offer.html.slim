@@ -32,5 +32,7 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
         strong = employer_internship_offer.total_applications_count
       - if employer_internship_offer.total_applications_count.positive?
         span.pl-2.pt-1
-          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable d-inline-block' do
+          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable d-inline-block', aria: { label: "Voir l'offre" } do
             i.fa.fa-eye
+
+

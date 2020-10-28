@@ -22,7 +22,7 @@
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
-      <%= f.text_field :type, hidden: true %>
+      <%= f.hidden_field :type %>
 
       <% if can?(:choose_school, resource) %>
         <%= react_component(
@@ -72,44 +72,37 @@
           <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
         </div>
 
-        <div class="form-group form-check form-check-inline">
-          <div class='row'>
-            <div class='col-4 col-xs-4'>
-              <div class="label">
-                Sexe
-                <%= f.rg2a_required_content_tag %>
-              </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "f",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-girl",
-                                  required: true  %>
-                <%= f.label :gender, "Féminin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-girl" %>
-              </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "m",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-boy"  %>
-                <%= f.label :gender, "Masculin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-boy" %>
-              </div>
-            </div>
+        <fieldset class="form-group form-check form-check-inline">
+          <legend class="label float-left">
+            Sexe
+            <%= f.rg2a_required_content_tag %>
+          </legend>
+
+          <div class="custom-control custom-radio custom-control-inline">
+            <%= f.radio_button :gender,
+                              "f",
+                              class: 'custom-control-input',
+                              id: "select-gender-girl",
+                              required: true  %>
+            <%= f.label :gender, "Féminin",
+                                class: 'custom-control-label',
+                                for: "select-gender-girl" %>
           </div>
-        </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <%= f.radio_button :gender,
+                              "m",
+                              class: 'custom-control-input',
+                              id: "select-gender-boy"  %>
+            <%= f.label :gender, "Masculin",
+                                class: 'custom-control-label',
+                                for: "select-gender-boy" %>
+          </div>
+        </fieldset>
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
         <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource, phone: 'SMS' do %>
-          <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
+          <small class="small form-text text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
         <% end %>
       <% else %>
         <div class="form-group custom-label-container">

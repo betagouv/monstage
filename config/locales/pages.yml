@@ -1,5 +1,19 @@
 fr:
   dashboard:
+    stepper:
+      organisations:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur l'entreprise"
+        edit:
+          page_title: "Déposer une offre de stage : Modifier les informations de l'entreprise"
+      internship_offer_infos:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur l'offre"
+        edit:
+          page_title: "Déposer une offre de stage : Modifier les informations de l'offre"
+      tutors:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur le tuteur"
     internship_offers:
       create:
         page_title: "Mes offres"
@@ -50,6 +64,8 @@ fr:
     show:
       page_title: "Offre de stage '%{name}'"
   pages:
+    politique_de_confidentialite:
+      page_title: "Politique de confidentialite"
     accessibilite:
       page_title: "Accessibilité"
     conditions_d_utilisation:

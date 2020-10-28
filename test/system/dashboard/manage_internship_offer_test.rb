@@ -4,32 +4,9 @@ require 'application_system_test_case'
 
 class ManageInternshipOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+
   def wait_form_submitted
     find('.alert-sticky')
-  end
-
-  def fill_in_form
-    fill_in 'Nom du tuteur/trice', with: 'Brice Durand'
-    fill_in 'Adresse électronique / Email', with: 'le@brice.durand'
-    fill_in 'Numéro de téléphone', with: '0639693969'
-  end
-
-  test 'can create InternshipOffer' do
-    employer = create(:employer)
-    sign_in(employer)
-    organisation = create(:organisation, employer: employer)
-    internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
-    assert_difference 'InternshipOffer.count' do
-      travel_to(Date.new(2019, 3, 1)) do
-        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
-                                               internship_offer_info_id: internship_offer_info.id)
-        fill_in_form
-        click_on "Publier l'offre !"
-        wait_form_submitted
-      end
-    end
-    assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'User', InternshipOffer.first.employer_type
   end
 
   test 'can edit internship offer' do

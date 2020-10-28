@@ -79,6 +79,7 @@ function CityInput({
       }) => (
         <div
           id="test-input-location-container"
+          title="Resulltat de recherche"
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
@@ -103,6 +104,7 @@ function CityInput({
               name: 'city',
               id: 'input-search-by-city',
               placeholder: 'Lieu',
+              "aria-label": "Autour de",
               onFocus: (event) => {
                 setFocus(COMPONENT_FOCUS_LABEL);
                 openMenu(event);
@@ -114,11 +116,12 @@ function CityInput({
             <ul
               {...getMenuProps({
                 className: 'p-0 m-0',
+                "aria-labelledby": 'input-search-by-city',
               })}
             >
-              {isOpen && (
+              {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
                 <li>
-                  <RadiusInput radius={radius} setRadius={setRadius} />
+                  <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
                 </li>
               )}
               {isOpen

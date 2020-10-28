@@ -89,9 +89,8 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.weeks.size,
                    created_internship_offer.internship_offer_weeks_count,
                    'weeks not copied')
-      assert_equal(internship_offer_info.school_id,
-                   created_internship_offer.school_id,
-                   'school_id not copied')
+      assert_nil(created_internship_offer.school_id,
+                 'school_id not copied')
       assert_equal(internship_offer_info.sector_id,
                    created_internship_offer.sector_id,
                    'sector_id not copied')
@@ -185,7 +184,7 @@ module Dashboard::Stepper
       created_internship_offer = InternshipOffer.last
       assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
-      assert_equal nil, created_internship_offer.school
+      assert_nil created_internship_offer.school
       assert_equal(internship_offer_info.school_track,
                    created_internship_offer.school_track,
                    'school_track not copied')
