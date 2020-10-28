@@ -70,7 +70,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
               htmlFor="input-search-by-keyword"
             >
               <i className="fas fa-suitcase fa-fw" />
-              <strong className="d-none">Mot clé</strong>
+              <strong className="d-none">Rechercher par Profession</strong>
             </label>
           </div>
           <input
@@ -81,6 +81,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
               id: 'input-search-by-keyword',
               name: 'keyword',
               placeholder: 'Profession',
+              "aria-label": "Rechercher par Profession",
               onFocus: () => {
                 setFocus(COMPONENT_FOCUS_LABEL);
               },
@@ -90,6 +91,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
             <ul
               {...getMenuProps({
                 className: 'p-0 m-0',
+                "aria-labelledby": 'input-search-by-keyword',
               })}
             >
               {isOpen
