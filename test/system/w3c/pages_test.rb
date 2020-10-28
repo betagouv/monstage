@@ -16,6 +16,7 @@ module W3c
         partenaires_path
         mentions_legales_path
         conditions_d_utilisation_path
+        politique_de_confidentialite_path
         contact_path
         accessibilite_path
         documents_utiles_path

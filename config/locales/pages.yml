@@ -64,6 +64,8 @@ fr:
     show:
       page_title: "Offre de stage '%{name}'"
   pages:
+    politique_de_confidentialite:
+      page_title: "Politique de confidentialite"
     accessibilite:
       page_title: "Accessibilité"
     conditions_d_utilisation:
