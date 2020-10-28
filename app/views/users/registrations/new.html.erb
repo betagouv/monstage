@@ -72,39 +72,41 @@
           <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
         </div>
 
-        <div class="form-group form-check form-check-inline">
-          <div class='row'>
-            <div class='col-4 col-xs-4'>
-              <div class="label">
-                Sexe
-                <%= f.rg2a_required_content_tag %>
+        <fieldset>
+          <div class="form-group form-check form-check-inline">
+            <div class='row'>
+              <div class='col-4 col-xs-4'>
+                <legend class="label">
+                  Sexe
+                  <%= f.rg2a_required_content_tag %>
+                </legend>
               </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "f",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-girl",
-                                  required: true  %>
-                <%= f.label :gender, "Féminin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-girl" %>
+              <div class='col-4'>
+                <div class="custom-control custom-radio">
+                  <%= f.radio_button :gender,
+                                    "f",
+                                    class: 'custom-control-input',
+                                    id: "select-gender-girl",
+                                    required: true  %>
+                  <%= f.label :gender, "Féminin",
+                                      class: 'custom-control-label',
+                                      for: "select-gender-girl" %>
+                </div>
               </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "m",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-boy"  %>
-                <%= f.label :gender, "Masculin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-boy" %>
+              <div class='col-4'>
+                <div class="custom-control custom-radio">
+                  <%= f.radio_button :gender,
+                                    "m",
+                                    class: 'custom-control-input',
+                                    id: "select-gender-boy"  %>
+                  <%= f.label :gender, "Masculin",
+                                      class: 'custom-control-label',
+                                      for: "select-gender-boy" %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </fieldset>
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
