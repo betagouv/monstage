@@ -71,7 +71,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   }
 
   return (
-    <form data-turbolink={false} onSubmit={filterOffers}>
+    <form onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
         <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
