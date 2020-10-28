@@ -54,8 +54,10 @@
           .col-12
             h3.h6
               i.fa-fw.fa.fa-info-circle
-              span.ml-1= "L'entreprise: #{internship_offer.employer_name}"
-            .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+              span.ml-1= "Dans quelle entreprise ?"
+            h4.h6= internship_offer.employer_name
+            - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
+              .reboot-trix-content= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
             - if internship_offer.employer_website.present?
               p
                 = link_to internship_offer.employer_website,
