@@ -358,3 +358,5 @@ fr:
       troisieme_prepa_metier: '3e prépa métier'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
+  date:
+    day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

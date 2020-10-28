@@ -8,15 +8,9 @@ class InternshipAgreement < ApplicationRecord
             :main_teacher_full_name,
             :organisation_representative_full_name,
             :tutor_full_name,
-            :activity_scope,
-            :activity_preparation,
-            :activity_schedule,
-            :activity_learnings,
-            :activity_rating,
             :start_date,
             :end_date,
             :doc_date,
-            :schedule,
             presence: true
   
   has_rich_text :activity_scope_rich_text          

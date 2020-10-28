@@ -41,61 +41,61 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :activity_scope do
           = "Objectifs assignés à la séquence d’observation en milieu professionnel"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true, value: resource.activity_scope
+        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true
 
       .form-group
         = form.label :activity_preparation do
           = "Modalités de la préparation"
           = form.rg2a_required_content_tag
-        = form.text_field :activity_preparation, class: 'form-control', required: true, value: resource.activity_preparation
+        = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true
       
       .form-group
         = form.label :activity_schedule do
-          = "Activités prévues"
+          = "Planning des activités prévues"
           = form.rg2a_required_content_tag
-        = form.text_field :activity_schedule, class: 'form-control', required: true, value: resource.activity_schedule
+        = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true
       
       .form-group
         = form.label :activity_learnings do
           = "Compétences visées"
           = form.rg2a_required_content_tag
-        = form.text_field :activity_learnings, class: 'form-control', required: true, value: resource.activity_learnings
+        = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true
       
       .form-group
         = form.label :activity_rating do
           = "Modalités d’évaluation"
           = form.rg2a_required_content_tag
-        = form.text_field :activity_learnings, class: 'form-control', required: true, value: resource.activity_learnings
+        = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true
       
       .form-group
         = form.label :housing do
           = "Conditions d'hébergement"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :housing, class: 'form-control', value: resource.housing
+        = form.rich_text_area :housing_rich_text, class: 'form-control'
       
       .form-group
         = form.label :insurance do
           = "Assurance"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :insurance, class: 'form-control', value: resource.insurance
+        = form.rich_text_area :insurance_rich_text, class: 'form-control'
       
       .form-group
         = form.label :transportation do
           = "Transport"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :transportation, class: 'form-control', value: resource.transportation
+        = form.rich_text_area :transportation_rich_text, class: 'form-control'
       
       .form-group
         = form.label :food do
           = "Conditions de restauration"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :food, class: 'form-control', value: resource.food
+        = form.rich_text_area :food_rich_text, class: 'form-control'
       
       .form-group
         = form.label :terms do
           = "Conditions d'utilisation"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :terms, class: 'form-control', required: true,  rows: 10
+        = form.rich_text_area :terms_rich_text, class: 'form-control'
 
       .mt-3
         = button_tag :submit, class: 'btn btn-primary' do

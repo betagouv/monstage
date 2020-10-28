@@ -467,18 +467,7 @@ CREATE TABLE public.internship_agreements (
     student_school character varying,
     tutor_full_name character varying,
     main_teacher_full_name character varying,
-    doc_date date,
-    activity_scope character varying,
-    activity_preparation character varying,
-    activity_schedule character varying,
-    activity_learnings text,
-    activity_rating text,
-    schedule text,
-    housing text,
-    insurance text,
-    transportation text,
-    food text,
-    terms text
+    doc_date date
 );
 
 
