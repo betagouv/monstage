@@ -1,15 +1,3 @@
 - application = internship_agreement.internship_application
-tr class="d-flex student-application-#{application.id} internship-agreement-to-sign"
-  td.col-sm-3.pl-3 data-head="#{application.student.name}"= application.student.name
-  td.col-sm-6 data-head="#{application.internship_offer.title}"
-    = link_to '#', data: { toggle: 'modal', target: "#sign-internship-application-#{application.id}", turbolinks: false } do
-      = application.internship_offer.title
-  td.col-sm-3 style="width: 300px" data-head="Action"
-    .actions.d-flex.d-sm-block.text-right
-      - if ENV['CONVENTION_ENABLED']
-        = link_to '#', class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
-          i.fa.fa-pen
-          span.text-action
-            |  Signer la convention
-
-= render "dashboard/internship_offers/internship_applications/show_modal", application: application
+= render partial: 'internship_agreements/internship_agreement_line',
+         locals: { application: application}
