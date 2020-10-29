@@ -23,7 +23,7 @@ module InternshipOffers
       assert_select 'title', "Offre de stage '#{internship_offer.title}' | Monstage"
       assert_select 'form[id=?]', 'new_internship_application', count: 0
       assert_select 'strong.tutor_name', text: internship_offer.tutor_name
-      assert_select 'span.tutor_phone', text: internship_offer.tutor_phone
+      assert_select 'ul li.tutor_phone', text: "Portable : #{internship_offer.tutor_phone}"
       assert_select "a.tutor_email[href=\"mailto:#{internship_offer.tutor_email}\"]",
                     text: internship_offer.tutor_email
     end

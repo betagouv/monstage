@@ -42,13 +42,11 @@
 
               ul.list-unstyled.pl-4
                 li
-                  strong.tutor_name= internship_offer.tutor_name
-
-                li.mt-1 = "Portable: #{internship_offer.tutor_phone}"
-
+                  strong.tutor_name = internship_offer.tutor_name
+                li.mt-1.tutor_phone = "Portable : #{internship_offer.tutor_phone}"
                 li.mt-1 = mail_to internship_offer.tutor_email,
-                                 internship_offer.tutor_email,
-                                 class: 'tutor_email'
+                                  internship_offer.tutor_email,
+                                  class: 'tutor_email'
     .row.mt-2
       .col-12
         .row
