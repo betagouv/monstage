@@ -116,7 +116,7 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
 
       click_link(internship_offer.title)
-      find('p.h3', text: internship_offer.title, exact_text: true)
+      find('div.h3', text: internship_offer.title, exact_text: true)
     end
 
     test 'weekly_internship_applications show student details anyway' do
