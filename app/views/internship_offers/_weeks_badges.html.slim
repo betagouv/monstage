@@ -1,0 +1,7 @@
+- if internship_offer.weekly?
+  - internship_offer.weeks.each do |week|
+    = next if week.week_date < SchoolYear::Current.new.beginning_of_period
+    span.badge.badge-pill.badge-secondary.mr-2.mt-2
+      = "#{l week.week_date} \u2192 #{l (week.week_date + 4.days)}"
+- else
+  'Ce stage ne comporte pas d'indication de semaines de stages
