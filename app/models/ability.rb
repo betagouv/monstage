@@ -55,7 +55,11 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     can :change, :class_room unless user.school_manager?
-    can :create, InternshipAgreement, {internship_application: { user: { school: { id: user.school_id } } }} 
+    #can :create, InternshipAgreement, {internship_application: { user: { school: { id: user.school_id } } }} 
+    can [:create, :update], InternshipAgreement do |agreement|
+      agreeement.internship_application_id == 123
+    end
+    can :new, InternshipAgreement, internship_application_id: user.id
 
     can_manage_school(user: user) do
       can %i[edit update], School

@@ -3,12 +3,11 @@ module Dashboard
   class InternshipAgreementsController < ApplicationController
 
     def new
-      authorize! :create, InternshipAgreement
-      @internship_agreement = internship_agreement_builder.create_from_application(
+      authorize! :new, InternshipAgreement
+      @internship_agreement = internship_agreement_builder.new_from_application(
         InternshipApplication.find(params[:internship_application_id])
       )
     end
-
     
     def create
       authorize! :create, InternshipAgreement
@@ -27,6 +26,26 @@ module Dashboard
         internship_application_id: params[:internship_application_id]
       )
       render :new, status: :bad_request
+    end
+
+    def edit
+      authorize! :update, InternshipAgreement
+      @internship_agreement = InternshipAgreement.find(params[:id])
+    end
+
+    def update
+      authorize! :update, InternshipAgreement
+      internship_agreement = InternshipAgreement.find(params[:id])
+      if internship_agreement.update(internship_agreement_params)
+        redirect_to dashboard_internship_agreement_path(internship_agreement),
+                      flash: { success: 'La convention a été signée.' }
+      else
+        @internship_offer = internship_agreement || InternshipAgreement.find(params[:id])
+        render :edit, status: :bad_request
+      end
+    rescue ActionController::ParameterMissing
+      @internship_offer = InternshipAgreement.find(params[:id])
+      render :edit, status: :bad_request
     end
 
     def show

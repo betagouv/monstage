@@ -4,7 +4,7 @@ module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipAgreementBuilder
 
-    def create_from_application(internship_application)
+    def new_from_application(internship_application)
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
