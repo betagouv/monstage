@@ -25,7 +25,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
           = " (#{internship_offers.total_count})"
   - is_active = params[:filter] == 'approved'
   - approved_count = all_states_counter[:approved] || 0
-  - if ENV.fetch('CONVENTION_ENABLED', false)
+  - if ENV['CONVENTION_ENABLED']
     li.nav-item= link_to dashboard_internship_offers_path({filter: 'approved'}.merge(forwarded_params)),
                          class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
