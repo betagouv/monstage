@@ -230,13 +230,13 @@ module Dashboard::InternshipOffers
       internship_offer_2 = create(:weekly_internship_offer, view_count: 1, employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
-      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
+      assert_select 'a.align-middle.text-warning.text-decoration-none[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 1
+      assert_select 'a.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 0
       assert_select 'table tbody tr:first .internship-item-title', text: internship_offer_1.title
       assert_select 'table tbody tr:last .internship-item-title', text: internship_offer_2.title
       get dashboard_internship_offers_path(order: :view_count, direction: :asc)
-      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
-      assert_select 'a.sort-link.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
+      assert_select 'a.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :desc), count: 1
+      assert_select 'a.currently-sorting[href=?]', dashboard_internship_offers_path(order: :view_count, direction: :asc), count: 0
       assert_select 'table tbody tr:last .internship-item-title', text: internship_offer_1.title
       assert_select 'table tbody tr:first .internship-item-title', text: internship_offer_2.title
     end
@@ -328,7 +328,7 @@ module Dashboard::InternshipOffers
 
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.sort-link[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+      assert_select "a.align-middle.text-warning.text-decoration-none[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
                     1,
                     'ordonencer links should contain geo filters'
     end
