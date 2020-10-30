@@ -1,32 +1,32 @@
 - student_presenter = Presenters::Student.new(student)
 .row.mt-2
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     | Elève
-  .col-md-8.col-xs-12.student-name
+  .col-md-10.col-xs-12.student-name
     strong = student_presenter.name
 .row
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     | Âge
-  .col-md-8.col-xs-12.student-age
+  .col-md-10.col-xs-12.student-age
     strong= "#{student_presenter.age}"
 .row
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     | Email
-  .col-md-8.col-xs-12.student-email
+  .col-md-10.col-xs-12.student-email
     strong= "#{student_presenter.email || 'Non communiqué'}"
 .row
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     | Téléphone
-  .col-md-8.col-xs-12.student-phone
+  .col-md-10.col-xs-12.student-phone
     strong= "#{student_presenter.phone || 'Non communiqué'}"
 .row.mt-3
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     |Etablissement
-  .col-md-8.col-xs-12.school-name
+  .col-md-10.col-xs-12.school-name
     strong = student_presenter.school_name
 .row
-  .col-md-4.col-xs-12
+  .col-md-2.col-xs-12
     |Ville
-  .col-md-8.col-xs-12.school-city
+  .col-md-10.col-xs-12.school-city
     strong = student_presenter.school_city
 

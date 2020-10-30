@@ -114,13 +114,9 @@ fr:
         title: Intitulé
         description: Description
         sector: Secteur
-        school_type: Niveau scolaire
         school_track: Filière
         max_candidates: Nbr. max de candidats
         sector_id: Secteurs professionnels
-        internship_type:
-          middle_school: 'Collège'
-          high_school: 'Lycée'
 
       tutor: &tutor_fields
         tutor_name: Nom du tuteur
@@ -220,8 +216,6 @@ fr:
               too_long: La description doit faire au maximum 500 caractères
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
-            school_type:
-              required: "Veuillez choisir le niveau scolaire correspondant à l'offre de stage"
             school_track:
               required: "Veuillez choisir la filière correspondant à l'offre de stage"
             weeks:

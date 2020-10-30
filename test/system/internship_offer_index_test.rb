@@ -95,7 +95,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'search filters as teacher : middle_school and high_school checkBoxes' do
+  test 'as teacher, search filters are complete and do filter by school_track' do
     school                              = create(:school)
     school_manager                      = create(:school_manager, school: school)
     teacher                             = create(:main_teacher, school: school)
@@ -125,18 +125,33 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: bac_pro_internship_offer)
   end
 
-  test 'search filters as student are not available' do
+  test 'as student, search filters are not available and ' \
+       'offers are linked to student\'s class_room\'s school track' do
     school = create(:school)
-    student = create(:student, school: school)
-    weekly_internship_offer = create(:weekly_internship_offer)
-    free_date_internship_offer = create(:free_date_internship_offer)
+    class_room = ClassRoom.create(
+      name: '3e B – troisieme_prepa_metier',
+      school_track: :troisieme_prepa_metier,
+      school: school
+    )
+    student = create(:student, school: school, class_room: class_room)
+    troisieme_prepa_metier_internship_offer = create(:troisieme_prepa_metier_internship_offer)
+    troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
+    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
+    bac_pro_internship_offer = create(:bac_pro_internship_offer)
     sign_in(student)
 
     visit internship_offers_path
 
-    assert_selector '#label[for="search-by-middle-school"]',
-                    count: 0
-    assert_selector '#label[for="search-by-high-school"]',
-                    count: 0
+    assert_selector '#label[for="search-by-troisieme-generale"]', count: 0
+    assert_selector '#label[for="search-by-troisieme-segpa"]', count: 0
+    assert_selector '#label[for="search-by-troisieme-prepa-metier"]', count: 0
+    assert_selector '#label[for="search-by-troisieme-bac-pro"]', count: 0
+
+    
+    assert_presence_of(internship_offer: troisieme_prepa_metier_internship_offer)
+
+    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
+    assert_absence_of(internship_offer: bac_pro_internship_offer)
   end
 end
