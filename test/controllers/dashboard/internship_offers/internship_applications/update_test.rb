@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-module InternshipApplications
+module InternshipOffers::InternshipApplications
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
     include ActionMailer::TestHelper
