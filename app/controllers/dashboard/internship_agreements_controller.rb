@@ -3,9 +3,7 @@ module Dashboard
   class InternshipAgreementsController < ApplicationController
 
     def index
-      byebug
-      authorize! :lists_internship_agreements,
-                 Acl::InternshipOfferDashboard.new(user: current_user)
+      authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
       user_application_ids = current_user.internship_applications
                                          .approved
                                          .pluck(:id)
