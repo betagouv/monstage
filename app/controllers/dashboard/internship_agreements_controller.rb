@@ -4,11 +4,8 @@ module Dashboard
 
     def index
       authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
-
-      @internship_agreements = InternshipAgreement.by_user_and_offers(
-        user: current_user,
-        offers: InternshipOffer.all
-      )
+      user_application_ids = user.internship_applications.approved.pluck(:id)
+      @internship_agreements = InternshipAgreement.where(application_id: user_application_ids)
     end
 
     def new

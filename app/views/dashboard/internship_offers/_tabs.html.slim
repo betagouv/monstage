@@ -10,7 +10,8 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
           = " (#{internship_offers.total_count})"
 
   - is_active = params[:filter] == 'unpublished'
-  li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)), class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+  li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
         = "Dépubliées "
         - if is_active

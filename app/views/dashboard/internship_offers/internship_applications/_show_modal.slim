@@ -4,7 +4,7 @@ div.modal id="sign-internship-application-#{application.id}" tabindex="-1" role=
     .modal-content.p-3
       .modal-header
         h2.h2.modal-title= application.internship_offer.title
-        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+        button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
       .modal-body
         p = render "internship_offers/show_details",
