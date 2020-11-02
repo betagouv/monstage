@@ -1,3 +1,4 @@
+- badge_counter = SchoolTabFinders.new(school: @school)
 .row.mb-2
   .d-flex style="align-items: baseline"
     h1.h3= @school.name
@@ -11,8 +12,8 @@
     li.nav-item
       = link_to dashboard_school_class_rooms_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}" do
         | Classes &nbsp;
-        - if defined?(students_badge) && !students_badge.nil? && students_badge.try(:size) > 0
-          span.badge-pill.badge-danger.small= students_badge.count
+        - if badge_counter.student_without_class_room_count.size.positive?
+          span.badge-pill.badge-danger.small= badge_counter.student_without_class_room_count
 
     - if can? :manage_school_users, @school
       li.nav-item
@@ -26,5 +27,5 @@
       li.nav-item
         = link_to dashboard_school_internship_agreements_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_agreements_path(school)) ? 'active' : ''}" do
           ' Conventions à signer &nbsp;
-          - if defined?(applications_badge) && !applications_badge.nil? && applications_badge.try(:size) > 0
-            span.badge-pill.badge-danger.small= applications_badge.size
+          - if badge_counter.application_count.positive?
+            span.badge-pill.badge-danger.small= badge_counter.application_count
