@@ -64,7 +64,8 @@ Rails.application.routes.draw do
       resources :tutors, only: %i[create new]
     end
 
-    resources :internship_agreements
+    resources :internship_agreements, only: [:new]
+    resources :internship_applications, only: [:index]
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
