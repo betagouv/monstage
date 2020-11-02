@@ -12,5 +12,6 @@ tr class="d-flex student-application-#{internship_application.id} internship-agr
           span.text-action
             |  Signer la convention
 
-tr= render "dashboard/internship_offers/internship_applications/show_modal",
-         application: internship_application
+tr
+  td colspan=3
+    = render "dashboard/internship_offers/internship_applications/show_modal", application: internship_application
