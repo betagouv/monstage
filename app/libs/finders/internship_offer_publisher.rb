@@ -10,15 +10,6 @@ module Finders
       }
     end
 
-    def all_states_counter
-      {
-        active: proposed_offers,
-        unpublished: proposed_offers.unpublished,
-        in_the_past: proposed_offers.in_the_past,
-        approved: approved_filter
-      }.transform_values(&:count)
-    end
-
     private
 
     def operator_query

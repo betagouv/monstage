@@ -1,0 +1,16 @@
+.row.mb-4
+  .col-12
+    h1.h3 Conventions à signer
+
+.row= render partial: "dashboard/internship_offers/tabs",
+             locals: { internship_offers: @internship_offers }
+
+table.table.table-hover.table-sticky-thead role="presentation"
+  thead
+    tr.d-flex.tr-white
+      th.col-3 Elève
+      th.col-6 Candidature acceptée
+      th.col-3
+  tbody
+    - @internship_applications.each do |internship_application|
+      = render partial: 'dashboard/internship_applications/internship_application', locals: { internship_application: internship_application }
