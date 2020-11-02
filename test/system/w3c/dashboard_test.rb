@@ -97,5 +97,12 @@ module W3c
         visit dashboard_school_class_room_path(school, class_room)
       end
     end
+
+    test 'employer dashboard_internship_agreements_path' do
+      sign_in(create(:employer))
+      run_request_and_cache_response(report_as: 'employer_dashboard_internship_agreements_path') do
+        visit dashboard_internship_agreements_path
+      end
+    end
   end
 end
