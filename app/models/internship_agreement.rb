@@ -10,21 +10,12 @@ class InternshipAgreement < ApplicationRecord
   # validates :skills, presence: true
   # validates :evaluation, presence: true
 
-  scope :by_user_and_offers, lambda { |user:, offers: InternshipOffer.all|
-    offers_at       = InternshipOffer.arel_table
-    applications_at = InternshipApplication.arel_table
-
-    application_ids = offers.kept
-                            .includes(:internship_applications)
-                            .where(offers_at[:employer_id].eq(user.id))
-                            .group(applications_at[:id])
-                            .pluck(applications_at[:id])
-                            .uniq
-
+  scope :by_user, lambda { |user:|
+    user_application_ids = user.internship_applications
+                               .approved
+                               .pluck(:id)
     InternshipAgreement.joins(:internship_application)
-                       .where(applications_at[:id].in(application_ids))
-                       .where(applications_at[:canceled_at].eq(nil))
-                       .where.not(applications_at[:approved_at].eq(nil))
+                       .where('internship_applications.id = ?', user_application_ids)
   }
 
   # aasm do

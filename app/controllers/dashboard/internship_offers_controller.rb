@@ -12,10 +12,7 @@ module Dashboard
       @internship_offers  = @internship_offers.merge(filter_scope)
       @internship_offers  = @internship_offers.order(order_column => order_direction)
 
-      @internship_agreements = InternshipAgreement.by_user_and_offers(
-        user: current_user,
-        offers: @internship_offers
-      )
+      @internship_agreements = InternshipAgreement.by_user(user: current_user)
 
       @all_states_counter = @finder.all_states_counter
     end
