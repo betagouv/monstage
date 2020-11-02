@@ -18,7 +18,10 @@
       .col-12.pt-5
         p.scroller.text-center
           = link_to "#des-solutions-pour-vous-tout-de-suite", data: {turbolink: false} do
-            = image_tag asset_pack_path('media/images/homepage/scroll_down.svg'), alt: "Illustration scroller pour continuer", height: 55, width: 55
+            = image_tag asset_pack_path('media/images/homepage/scroll_down.svg'),
+                        alt: "Illustration scroller pour continuer",
+                        height: 55,
+                        width: 55
 
 
 
@@ -31,49 +34,66 @@
         h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center Des solutions pour vous accompagner avant, pendant, et après votre stage
 
     .row.pb-5.flex-md-reverse-column
-      .col-12.col-md-6
-        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5 role="tablist"
+      .col-12.col-md-6.align-self-center
+        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
 
-          = link_to "#pill-jobirl", class: 'p-3 nav-link active', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-jobirl", selected: true  }  do
+          = link_to "#pill-jobirl",
+                    class: 'p-3 nav-link active my-2',
+                    data: {toggle: "pill"},
+                    role: 'tab',
+                    aria: {controls:"pill-jobirl", selected: true  }  do
             i.fas.fa-fw.fa-comments
             | &nbsp;
-            span.d-none.d-md-inline JobIRL, 65 000 professionnels à votre écoute
+            h6.h6.d-none.d-md-inline JobIRL, 65 000 professionnels à votre écoute
 
-          = link_to "#pill-devoirs", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-devoirs", selected: false  }  do
+          = link_to "#pill-devoirs",
+                    class: 'p-3 nav-link my-2',
+                    data: {toggle: "pill"},
+                    role: 'tab',
+                    aria: {controls:"pill-devoirs", selected: false  }  do
             i.fas.fa-fw.fa-mouse-pointer
             | &nbsp;
-            span.d-none.d-md-inline Mon avenir en grand, pour développer votre potentiel !
+            h6.h6.d-none.d-md-inline Mon avenir en grand, pour développer votre potentiel !
 
-          = link_to "#pill-tv", class: 'p-3 nav-link', data: {toggle: "pill"}, role: 'tab', aria: {controls:"pill-tv", selected: false  }  do
+          = link_to "#pill-tv",
+                    class: 'p-3 nav-link my-2',
+                    data: {toggle: "pill"}, role: 'tab',
+                    aria: {controls:"pill-tv", selected: false  }  do
             i.fas.fa-fw.fa-desktop
             | &nbsp;
-            span.d-none.d-md-inline Nation apprenante, vos cours à la télé !
+            h6.h6.d-none.d-md-inline Nation apprenante, vos cours à la télé !
 
 
       .col-12.col-md-6
-        .tab-content
+        .tab-content.partners-height
           #pill-jobirl.tab-pane.fade.active.show role="tabpanel"
             .card
 
-              = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'), class: "card-img-top", alt: 'Illustration JobIRL'
+              = image_tag asset_pack_path('media/images/homepage/alternatives/jobirl-tutorat.jpg'),
+                          class: "card-img-top",
+                          alt: 'Illustration JobIRL'
               .card-body
                 p Vous n’avez pas pu faire votre stage d’observation ?
                 p Il n’est pas trop tard pour découvrir le métier qui vous intéresse et en apprendre plus sur le monde de l’entreprise !
                 p 65 000 professionnels de tous secteurs sont là pour répondre à vos questions sur leurs métiers, leurs tâches au quotidien, leurs parcours également.
                 p Envoyez-leur directement un message sur www.jobirl.com.
 
-                p.mb-0= link_to "https://www.jobirl.com/", class: 'text-danger font-weight-bold' do
+                p.mb-0= link_to "https://www.jobirl.com/",
+                                class: 'text-danger font-weight-bold' do
                   | Connectez-vous
                   | &nbsp;
                   i.fas.fa-chevron-right
 
           #pill-devoirs.tab-pane role="tabpanel"
             .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'), class: "card-img-top", alt: 'Illustration Télémaque'
+              = image_tag asset_pack_path('media/images/homepage/alternatives/telemaque.jpg'),
+                          class: "card-img-top",
+                          alt: 'Illustration Télémaque'
               .card-body
                 p Le meilleur du web regroupé dans un outil pour vous orienter et développer votre potentiel !
                 p 400 outils pédagogiques - vidéos, quiz, sites internet - pour muscler votre culture G, découvrir des métiers et trouver des conseils, mais également plein d’astuces pour rester motivés !
-                p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.htm", class: 'text-danger font-weight-bold' do
+                p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.htm",
+                                class: 'text-danger font-weight-bold' do
                   | Connectez-vous
                   | &nbsp;
                   i.fas.fa-chevron-right
@@ -81,12 +101,15 @@
 
           #pill-tv.tab-pane role="tabpanel"
             .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/nation-apprenante.jpg'), class: "card-img-top", alt: 'Illustration Nation apprenante'
+              = image_tag asset_pack_path('media/images/homepage/alternatives/nation-apprenante.jpg'),
+                          class: "card-img-top",
+                          alt: 'Illustration Nation apprenante'
 
               .card-body
                 p France Télévisions, Radio France, Arte et le ministère de l’Éducation nationale se mobilisent pour mettre à la disposition des élèves, de leurs familles, et des enseignants, des programmes de qualité en lien avec les programmes scolaires.
                 p Les émissions diffusées à l’antenne seront ainsi identifiables par le visuel "Nation apprenante".
-                p.mb-0= link_to "https://www.education.gouv.fr/operation-nation-apprenante-303174", class: 'text-danger font-weight-bold' do
+                p.mb-0= link_to "https://www.education.gouv.fr/operation-nation-apprenante-303174",
+                                class: 'text-danger font-weight-bold' do
                   | Connectez-vous
                   | &nbsp;
                   i.fas.fa-chevron-right
@@ -100,8 +123,11 @@
 
     .row.pb-5
       .col-sm-12.col-md-5
-        p.text-left.d-none.class_selector
-          span.d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Logo mon stage de troisieme", height: 100, class: ''
+        p.text-left.class_selector
+          span.d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                                      alt: "Logo mon stage de troisieme",
+                                      height: 100,
+                                      class: ''
         h3.h3 Le monde professionnel s’ouvre à l’école
         p Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec votre orientation et votre projet personnel.
 
@@ -110,19 +136,28 @@
       .col-sm-12.col-md-5.offset-md-2
         div
           h4.h4.mb-3.align-bottom.d-inline-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'), alt: "Illustration offrir un stage", height: 28, class: 'mr-3 d-none d-md-inline'
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'),
+                        alt: "Illustration offrir un stage",
+                        height: 28,
+                        class: 'mr-3 d-none d-md-inline'
             | Offrir un stage
           p Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
 
         div.mt-3.mt-md-5
           h4.h4.mb-3.align-bottom.d-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'), alt: "Illustration trouver un stage", height: 28, class: 'mr-3 d-none d-md-inline'
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'),
+                        alt: "Illustration trouver un stage",
+                        height: 28,
+                        class: 'mr-3 d-none d-md-inline'
             | Trouver un stage
           p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et postulez à vos offres préférées.
 
         div.mt-3.mt-md-5
           h4.h4.mb-3.align-bottom.d-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'), alt: "Illustration accompagner les élèves", height: 28, class: 'mr-3 d-none d-md-inline'
+            = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'),
+                        alt: "Illustration accompagner les élèves",
+                        height: 28,
+                        class: 'mr-3 d-none d-md-inline'
 
             | Accompagner les élèves
           p.mb-0 Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
