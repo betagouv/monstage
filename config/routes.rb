@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   namespace :dashboard, path: 'dashboard' do
     resources :schools, only: %i[index edit update] do
       resources :users, only: %i[destroy update index], module: 'schools'
-      resources :internship_agreements, only: %i[index update], module: 'schools'
+      resources :internship_applications, only: %i[index], module: 'schools'
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
