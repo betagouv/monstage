@@ -25,7 +25,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
         = "Passées "
         - if is_active
           = " (#{internship_offers.total_count})"
-  - if ENV['CONVENTION_ENABLED']
+  - if ENV['CONVENTION_ENABLED'] && can?(:manage, InternshipAgreement)
     - is_active = current_page?(dashboard_internship_applications_path)
 
     li.nav-item= link_to dashboard_internship_applications_path,

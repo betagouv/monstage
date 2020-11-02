@@ -84,6 +84,7 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     # internship_offer mgmt
+    can :manage, InternshipAgreement
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
