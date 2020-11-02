@@ -27,6 +27,9 @@ fr:
       new:
         page_title: "Déposer une offre de stage"
     schools:
+      internship_applications:
+        index:
+          page_title: "Conventions à signer"
       class_rooms:
         edit:
           page_title: "Mise à jour de la classe : %{name}"
@@ -55,6 +58,9 @@ fr:
           page_title: "Mes candidatures"
         show:
           page_title: "Candidature '%{name}'"
+    internship_applications:
+      index:
+        page_title: "Conventions à signer"
   internship_applications:
     show:
       page_title: "Ma candidature"
