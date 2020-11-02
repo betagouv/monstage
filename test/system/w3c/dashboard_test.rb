@@ -27,6 +27,7 @@ module W3c
       end
     end
 
+
     test 'new_dashboard_internship_offer_path(duplicate_id)' do
       stage_dev = create(:weekly_internship_offer)
       sign_in(stage_dev.employer)
@@ -52,6 +53,26 @@ module W3c
           sign_in(user)
           visit user.custom_dashboard_path
         end
+      end
+    end
+
+    test 'employer dashboard_internship_applications_path' do
+      internship_application = create(:weekly_internship_application, :approved)
+      sign_in(internship_application.internship_offer.employer)
+      run_request_and_cache_response(report_as: 'dashboard_internship_applications_path') do
+        visit dashboard_internship_applications_path
+      end
+    end
+
+    test 'school_manager dashboard_school_internship_applications_path' do
+      school = create(:school)
+      school_manager = create(:school_manager, school: school)
+      class_room = create(:class_room, school: school)
+      student = create(:student, class_room: class_room)
+      internship_application = create(:weekly_internship_application, :approved, student: student)
+      sign_in(school_manager)
+      run_request_and_cache_response(report_as: 'dashboard_school_internship_applications_path') do
+        visit dashboard_school_internship_applications_path(school)
       end
     end
 

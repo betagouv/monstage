@@ -19,8 +19,18 @@
           span.ml-1 De quel type de stage s'agit-il ?
         = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
 
+  .col-12
+    .row
+      .col-12
+        h3.h6
+          i.fa-fw.fas.fa-calendar-alt
+          span.ml-1 Quand ce stage est-il proposé ?
+    .row
+      .col-12
+          = render partial: "internship_offers/weeks_badges", locals: {internship_offer: internship_offer}
+
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
-      .row
+      .row.mt-3
         .col-12
           .row
             .col-12
@@ -30,25 +40,14 @@
 
               p Le tuteur ou la tutrice est la personne référente sur ce stage. Le tuteur ou la tutrice de stage demeure la personne référente à contacter en cas d'urgence. À ce titre, ses coordonnées seront transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire."
 
-              div
-                .d-flex.my-2
-                  .circle-font
-                    i.fas.fa-user.fa-fw
-                  .ml-2
-                    strong.tutor_name= internship_offer.tutor_name
-
-                .d-flex.my-2
-                  .circle-font
-                    i.fas.fa-phone.fa-fw
-                  .ml-2
-                    = "Portable: "
-                    span.tutor_phone= internship_offer.tutor_phone
-
-                .d-flex.my-2
-                  .circle-font
-                    i.far.fa-envelope.fa-fw
-                  .ml-2= mail_to internship_offer.tutor_email, internship_offer.tutor_email, class: 'tutor_email'
-    .row
+              ul.list-unstyled.pl-4
+                li
+                  strong.tutor_name = internship_offer.tutor_name
+                li.mt-1.tutor_phone = "Portable : #{internship_offer.tutor_phone}"
+                li.mt-1 = mail_to internship_offer.tutor_email,
+                                  internship_offer.tutor_email,
+                                  class: 'tutor_email'
+    .row.mt-2
       .col-12
         .row
           .col-12

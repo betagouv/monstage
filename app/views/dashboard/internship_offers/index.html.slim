@@ -11,17 +11,11 @@
 
 .fake-table
   .row= render partial: "dashboard/internship_offers/tabs",
-               locals: { internship_offers: @internship_offers, all_states_counters: @all_states_counters }
+               locals: { internship_offers: @internship_offers, all_states_counter: @all_states_counter }
   .tab-content
     .tab-pane.show.active
-      .row.bc-light.br-1.bl-1.bb-1
-        = react_component("SearchInternshipOffer",
-                          { url: dashboard_internship_offers_path, className: 'flex-row focusable-search-bar', searchWordVisible: false },
-                          { class: 'col-12 py-3' }) do
-          .input-loading-skeleton
-
-      .row.bc-light.br-1.bl-1.bb-1
-        .col-12.px-0= render partial: 'dashboard/internship_offers/table'
+      = render partial: 'dashboard/internship_offers/offers_and_aggreements_content',
+               locals: {params: params}
 
   - if @internship_offers.total_pages > @internship_offers.current_page
     .row.d-flex.d-sm-none

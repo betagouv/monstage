@@ -2,6 +2,7 @@ module Dashboard
   # WIP, not yet implemented, will host agreement signing
   class InternshipAgreementsController < ApplicationController
 
+
     def new
       @internship_agreement = InternshipAgreement.new(internship_application_id: params[:internship_application_id])
     end

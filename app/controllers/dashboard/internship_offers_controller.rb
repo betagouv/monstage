@@ -6,11 +6,11 @@ module Dashboard
     helper_method :order_direction
 
     def index
-      authorize! :index, Acl::InternshipOfferDashboard.new(user: current_user)
-
-      @internship_offers   = finder.all
-      @internship_offers   = @internship_offers.merge(filter_scope)
-      @internship_offers   = @internship_offers.order(order_column => order_direction)
+      authorize! :index,
+                 Acl::InternshipOfferDashboard.new(user: current_user)
+      @internship_offers  = finder.all
+      @internship_offers  = @internship_offers.merge(filter_scope)
+      @internship_offers  = @internship_offers.order(order_column => order_direction)
     end
 
     # duplicate submit
@@ -113,7 +113,8 @@ module Dashboard
           :radius,
           :school_type,
           :keyword,
-          :school_year
+          :school_year,
+          :filter
         ),
         user: current_user_or_visitor
       )

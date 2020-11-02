@@ -5,8 +5,10 @@ class School < ApplicationRecord
   include Zipcodable
 
   has_many :users, foreign_type: 'type'
+
   has_many :students, dependent: :nullify,
                       class_name: 'Users::Student'
+
   has_many :students_with_missing_school_week, dependent: :nullify,
                                                class_name: 'Users::Student'
 
@@ -25,7 +27,7 @@ class School < ApplicationRecord
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
-  has_many :internship_applications, through: :internship_offers
+  has_many :internship_applications, through: :students
 
   validates :city, :name, presence: true
 

@@ -81,55 +81,67 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   end
 
   test 'Employer can filter internship_offers from dashboard filters' do
-    employer = create(:employer)
+    travel_to(Date.new(2020, 10, 10)) do
+      employer = create(:employer)
 
-    week_1 = Week.find_by(year: 2019, number: 50) #2019-20
-    week_2 = Week.find_by(year: 2020, number: 2)  #2019-20
-    week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
+      week_1 = Week.find_by(year: 2019, number: 50) #2019-20
+      week_2 = Week.find_by(year: 2020, number: 2)  #2019-20
+      week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
 
-    # 2019-20
-    create(:weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019/2020')
+      # 2019-20
+      create(:weekly_internship_offer, weeks: [week_1, week_2], employer: employer, title: '2019/2020')
 
-    # 2020-21
-    create(:weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020/2021')
+      # 2020-21
+      target_offer = create(:weekly_internship_offer, weeks: [week_3], employer: employer, title: '2020/2021')
 
-    # wrong employer
-    create(:weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
+      # wrong employer
+      create(:weekly_internship_offer, weeks: [week_2], title: 'wrong employer')
 
-    # free
-    create(:free_date_internship_offer, employer: employer, title: 'free')
+      # free
+      create(:free_date_internship_offer, employer: employer, title: 'free')
 
-    # 2019-20 unpublished
-    io = create(:weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019/2020 unpublished')
-    io.update_column(:published_at, nil)
-    io.reload
+      # 2019-20 unpublished
+      io = create(:weekly_internship_offer, employer: employer, weeks: [week_1, week_2], title: '2019/2020 unpublished')
+      io.update_column(:published_at, nil)
+      io.reload
 
-    sign_in(employer)
-    visit dashboard_internship_offers_path
+      # 2020-21
+      create(:weekly_internship_application, :approved, internship_offer: target_offer)
 
-    refute page.has_css?('.school_year')
+      sign_in(employer)
+      visit dashboard_internship_offers_path
 
-    click_link('Passées')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-    assert_text('2019/2020')
-    assert_text('2019/2020 unpublished')
+      refute page.has_css?('.school_year')
 
-    select('2019/2020')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-    assert_text('2019/2020')
-    assert_text('2019/2020 unpublished')
+      click_link('Passées')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+      assert_text('2019/2020')
+      assert_text('2019/2020 unpublished')
 
-    select('2020/2021')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      select('2019/2020')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+      assert_text('2019/2020')
+      assert_text('2019/2020 unpublished')
 
-    click_link('Dépubliées')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-    assert_text('2019/2020 unpublished')
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
 
-    select('2019/2020')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-    assert_text('2019/2020 unpublished')
-    select('2020/2021')
-    assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      click_link('Dépubliées')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+
+      select('2019/2020')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      if ENV['CONVENTION_ENABLED']
+        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
+        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+        click_link('Conventions à signer')
+        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      end
+    end
   end
+
 end
