@@ -7,11 +7,8 @@
          }
 
 table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers.mb-0
-  - if params[:filter] == 'approved'
-    tbody= render template: "internship_agreements/index"
-  - else
-    thead= render partial: "dashboard/internship_offers/table_header",
-                  locals: {cols: cols}
-    tbody= render partial: "employer_internship_offer",
-                  collection: @internship_offers,
-                  locals: {cols: cols}
+  thead= render partial: "dashboard/internship_offers/table_header",
+                locals: {cols: cols}
+  tbody= render partial: "employer_internship_offer",
+                collection: @internship_offers,
+                locals: {cols: cols}

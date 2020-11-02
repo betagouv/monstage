@@ -1,5 +1,5 @@
 tr class="d-flex student-application-#{application.id} internship-agreement-to-sign"
-  td.col-sm-3.pl-3 data-head="#{application.student.name}"= application.student.name
+  td.col-sm-3 data-head="#{application.student.name}"= application.student.name
   td.col-sm-6 data-head="#{application.internship_offer.title}"
     = link_to '#', data: { toggle: 'modal', target: "#sign-internship-application-#{application.id}", turbolinks: false } do
       = application.internship_offer.title
