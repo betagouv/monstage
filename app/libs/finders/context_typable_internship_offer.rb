@@ -32,12 +32,6 @@ module Finders
                                longitude: coordinates.longitude)
     end
 
-    def school_type_param
-      return nil unless params.key?(:school_type)
-
-      params[:school_type]
-    end
-
     def keyword_params
       return nil unless params.key?(:keyword)
 
@@ -61,7 +55,7 @@ module Finders
 
       params[:school_track]
     end
-    
+
     def school_year_param
       return nil unless params.key?(:school_year)
 
@@ -73,11 +67,8 @@ module Finders
 
       query = keyword_query(query) if keyword_params
       query = nearby_query(query) if coordinate_params
-      query = middle_school_query(query) if school_type_param == 'middle_school'
-      query = high_school_query(query) if school_type_param == 'high_school'
       query = school_track_query(query) if school_track_params
       query = school_year_query(query) if school_year_param
-
       query
     end
 
@@ -91,14 +82,6 @@ module Finders
 
     def nearby_query(query)
       query.merge(nearby_query_part(query, coordinate_params))
-    end
-
-    def middle_school_query(query)
-      query.merge(InternshipOffer.weekly_framed)
-    end
-
-    def high_school_query(query)
-      query.merge(InternshipOffer.free_date)
     end
 
     def school_track_query(query)

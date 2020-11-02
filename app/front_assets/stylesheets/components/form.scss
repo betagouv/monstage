@@ -110,6 +110,35 @@
 	}
 }
 
+@include media-breakpoint-down(md){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .25rem 1rem;
+      }
+    }
+  }
+}
+@include media-breakpoint-down(sm){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .17rem 0.5rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(xs){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .1rem 0.25rem;
+      }
+      font-size: 0.85rem;
+    }
+  }
+}
 .toggle-radio {
 	margin: 0 0 1.5rem;
 	box-sizing: border-box;
