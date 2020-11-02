@@ -7,8 +7,7 @@ module Dashboard
 
       def index
         authorize! :manage_school_internship_agreements, @school
-        navbar_badges
-        @applications_by_class_room = @applications.group_by { |application| Presenters::ClassRoom.or_null(application.student.class_room) }
+        @applications_by_class_room = @school.internship_applications.approved.group_by { |application| Presenters::ClassRoom.or_null(application.student.class_room) }
       end
 
       def update

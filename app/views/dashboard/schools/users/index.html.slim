@@ -1,5 +1,5 @@
 - content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
-= render partial: 'dashboard/navbar', locals: { school: @school, applications_badge: @applications }
+= render partial: 'dashboard/navbar', locals: { school: @school }
 
 - if @school.has_staff?
   .row
