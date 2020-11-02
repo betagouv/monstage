@@ -25,7 +25,7 @@
 
     - if ENV['CONVENTION_ENABLED'] && can?(:manage_school_students, @school)
       li.nav-item
-        = link_to dashboard_school_internship_agreements_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_agreements_path(school)) ? 'active' : ''}" do
+        = link_to dashboard_school_internship_applications_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_applications_path(school)) ? 'active' : ''}" do
           ' Conventions à signer &nbsp;
           - if badge_counter.application_count.positive?
             span.badge-pill.badge-danger.small= badge_counter.application_count
