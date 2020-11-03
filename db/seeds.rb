@@ -114,7 +114,7 @@ def populate_students
   with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_p_m_4@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_11@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'stud_3e_segpa_12@ms3e.fr', password: 'review',first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_13@ms3e.fr', password: 'review',first_name: 'Fred', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_13@ms3e.fr', password: 'review',first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'stud_bac_pro_14@ms3e.fr', password: 'review',first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
 end
 
@@ -292,6 +292,84 @@ def populate_applications
                                    .to_a
                                    .shuffle
                                    .first(2)
+  troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+
+  bac_pro_studs.each do |bac_pro_stud|
+    FactoryBot.create(
+      :free_date_internship_application,
+      :submitted,
+      internship_offer: bac_pro_offers.first,
+      student: bac_pro_stud
+    )
+  end
+  troisieme_generale_offers.each do |io_trois_gene|
+    FactoryBot.create(
+      :weekly_internship_application,
+      :submitted,
+      internship_offer: io_trois_gene,
+      student: trois_gene_studs.first
+    )
+  end
+  if trois_gene_studs&.second
+    FactoryBot.create(
+      :weekly_internship_application,
+      :approved,
+      internship_offer: troisieme_generale_offers.first,
+      student: trois_gene_studs.second
+    )
+  end
+end
+
+def populate_aggreements
+  application = InternshipApplication.find_by(aasm_state: 'approved')
+  FactoryBot.create(
+    :internship_agreement,
+    internship_application: application
+  )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des principes fondamentaux du métier.
+- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de trader en ligne',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :troisieme_segpa
+  )
+end
+
+def populate_internship_weeks
+  manager = Users::SchoolManagement.find_by(role: 'school_manager')
+  school = manager.school
+  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_applications
+  bac_pro_studs = Users::Student.joins(:class_room)
+                                .where('class_rooms.school_track = ?', :bac_pro)
+                                .to_a
+                                .shuffle
+                                .first(2)
+  trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .to_a
+                                   .shuffle
+                                   .first(2)
   ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
@@ -334,4 +412,5 @@ if Rails.env == 'review' || Rails.env.development?
   populate_students
   populate_internship_weeks
   populate_applications
+  populate_aggreements
 end

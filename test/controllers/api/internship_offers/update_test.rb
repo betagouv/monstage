@@ -21,7 +21,7 @@ module Api
     end
 
     test 'PATCH #update as operator fails with invalid payload respond with :unprocessable_entity' do
-      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity) do
+      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity_bad_payload) do
         patch api_internship_offer_path(
           id: @internship_offer.remote_id,
           params: {
@@ -86,6 +86,26 @@ module Api
       assert_equal ['Description too long, allowed up 500 chars'],
                    json_error['description'],
                    'bad description error '
+    end
+
+    test 'PATCH #update as operator fails with invalid week format' do
+      faulty_week =  '2020-Wsem9-23'
+      faulty_weeks = ['2020-W8', faulty_week]
+
+      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity_bad_data) do
+        patch api_internship_offer_path(
+          id: @internship_offer.remote_id,
+          params: {
+            token: "Bearer #{@operator.api_token}",
+            internship_offer: {
+              weeks: faulty_weeks,
+            }
+          }
+        )
+      end
+      assert_response :unprocessable_entity
+      assert_equal 'BAD_ARGUMENT', json_code
+      assert_equal "bad week format: #{faulty_week}, expecting ISO 8601 format", json_error
     end
 
     test 'PATCH #update as operator works to internship_offers' do

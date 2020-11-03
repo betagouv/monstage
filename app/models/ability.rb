@@ -58,13 +58,10 @@ class Ability
 
     can_manage_school(user: user) do
       can %i[edit update], School
-      can [:manage_school_users], School do |school|
-        school.id == user.school_id
-      end
-      can [:manage_school_students], School do |school|
-        school.id == user.school_id
-      end
-      can [:manage_school_internship_agreements], School do |school|
+      can %i[edit update], School
+      can %i[manage_school_users
+             manage_school_students
+             manage_school_internship_agreements], School do |school|
         school.id == user.school_id
       end
       can [:delete], User do |managed_user_from_school|
@@ -83,6 +80,7 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     # internship_offer mgmt
+    can :manage, InternshipAgreement
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper

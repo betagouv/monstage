@@ -69,9 +69,11 @@ module ApplicationHelper
       content_for :page_title
     else
       default = 'Monstage'
-      dyn_page_name = t("#{controller_path.tr('/', '.')}.#{action_name}.page_title",
+      i18n_key = "#{controller_path.tr('/', '.')}.#{action_name}.page_title"
+      dyn_page_name = t(i18n_key,
         default: default
       )
+
       "#{dyn_page_name} | #{default}" unless dyn_page_name == default
     end
   end

@@ -17,6 +17,8 @@ module Users
       end
     end
 
+    scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
+
     has_rich_text :resume_educational_background
     has_rich_text :resume_other
     has_rich_text :resume_languages

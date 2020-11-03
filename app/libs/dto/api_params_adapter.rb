@@ -32,6 +32,8 @@ module Dto
         Array(params.delete(:weeks)).map do |week_str|
           year, number = week_str.split('-W')
           base_query = Week.where(year: year, number: number)
+          raise ArgumentError, "bad week format: #{week_str}, expecting ISO 8601 format" if base_query.blank?
+
           concatenated_query = concatenated_query.nil? ? base_query : concatenated_query.or(base_query)
         end
         params[:weeks] = concatenated_query.all

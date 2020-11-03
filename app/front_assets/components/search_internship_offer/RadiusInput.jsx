@@ -2,12 +2,15 @@ import React from 'react';
 import DistanceIcon from '../icons/DistanceIcon';
 
 import { MAX_RADIUS, MIN_RADIUS, radiusPercentage } from '../../utils/geo';
+const COMPONENT_FOCUS_LABEL = 'location';
 
-function RadiusInput({ radius, setRadius }) {
+function RadiusInput({ radius,
+                       setRadius,  // used by container
+                       focus,
+                       setFocus, }) {
   const onRadiusChange = (event) => {
     setRadius(parseInt(event.target.value, 10));
   };
-
   return (
     <div className="p-3">
       <label className="font-weight-bold" htmlFor="radius">
@@ -22,6 +25,12 @@ function RadiusInput({ radius, setRadius }) {
         className="form-control-range form-control px-0"
         value={radius}
         onChange={onRadiusChange}
+        onFocus={(event) => {
+          setFocus(COMPONENT_FOCUS_LABEL);
+        }}
+        onBlur={(event) => {
+          setFocus(null);
+        }}
         step={5000}
       />
       <div className="slider-legend small">

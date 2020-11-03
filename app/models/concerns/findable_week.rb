@@ -13,7 +13,6 @@ module FindableWeek
                           year: week.year, number: week.number)
     }
 
-    # maybe useless
     scope :in_the_past, lambda {
       where('last_date < ?', Date.today)
     }

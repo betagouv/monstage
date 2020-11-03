@@ -8,7 +8,7 @@
 
 .row.align-items-center#internship-application-closeform
   .col-12.col-sm-8
-    p.h3
+    div.h3 role="heading" aria-level="1"
       = internship_offer.title
     p.badge-line
       span class="py-1 px-2 #{internship_offer.school_track}"= tr_school_track(internship_offer.school_track)

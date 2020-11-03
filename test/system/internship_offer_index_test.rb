@@ -44,7 +44,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: not_searched_internship_offer)
 
     # start searching
-    fill_in('Mot clé', with: searched_keyword[0..5])
+    fill_in('Rechercher par Profession', with: searched_keyword[0..5])
     find('#test-input-keyword-container .listview-item').click
     assert_equal searched_keyword,
                  find('#test-input-keyword-container #input-search-by-keyword').value,
@@ -56,7 +56,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_absence_of(internship_offer: not_searched_internship_offer)
 
     # reset search and submit
-    fill_in('Mot clé', with: '')
+    fill_in('Rechercher par Profession', with: '')
 
     # submit search and check result had been filtered
     find('button#test-submit-search').click

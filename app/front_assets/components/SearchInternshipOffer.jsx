@@ -71,7 +71,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   }
 
   return (
-    <form data-turbolink={false} onSubmit={filterOffers}>
+    <form onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
         <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
@@ -99,6 +99,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
                          float-sm-none
                          px-3
                          rounded-xs-0"
+              { ...(searchWordVisible ? {} : {'aria-label': "Rechercher"})  }
             >
               <i className="fas fa-search" />
               &nbsp; {(searchWordVisible) ? "Rechercher" : ""}

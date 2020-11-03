@@ -7,10 +7,8 @@
          }
 
 table.table.table-rg2a.table-sticky-thead.table-dashboard-internship-offers.mb-0
-
   thead= render partial: "dashboard/internship_offers/table_header",
                 locals: {cols: cols}
-
   tbody= render partial: "employer_internship_offer",
                 collection: @internship_offers,
                 locals: {cols: cols}

@@ -25,11 +25,9 @@ module Finders
 
     def school_management_query
       query = common_filter do
-        InternshipOffer.all
-                       .kept
-                       .in_the_future
-                       .published
-                       .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+        kept_offers_query.in_the_future
+                         .published
+                         .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
       end
       query
     end
@@ -55,23 +53,23 @@ module Finders
     end
 
     def statistician_query
-      query = common_filter do
-        InternshipOffer.kept
-      end
+      query = common_filter { kept_offers_query }
       query = query.merge(query.limited_to_department(user: user)) if user.department_name
       query
     end
 
     def visitor_query
       common_filter do
-        InternshipOffer.kept.in_the_future.published
+        kept_offers_query.in_the_future.published
       end
     end
 
     def god_query
-      common_filter do
-        InternshipOffer.kept
-      end
+      common_filter { kept_offers_query }
+    end
+
+    def kept_offers_query
+      InternshipOffer.kept
     end
   end
 end

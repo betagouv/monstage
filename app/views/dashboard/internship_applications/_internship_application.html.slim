@@ -1,0 +1,17 @@
+tr class="d-flex student-application-#{internship_application.id} internship-agreement-to-sign"
+  td.col-sm-3 data-head="#{internship_application.student.name}"= internship_application.student.name
+  td.col-sm-6 data-head="#{internship_application.internship_offer.title}"
+    = link_to '#', data: { toggle: 'modal', target: "#sign-internship-application-#{internship_application.id}", turbolinks: false } do
+      = internship_application.internship_offer.title
+  td.col-sm-3 style="width: 300px" data-head="Action"
+    .actions.d-flex.d-sm-block.text-right
+      - if ENV['CONVENTION_ENABLED']
+        = link_to new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
+                  class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
+          i.fa.fa-pen
+          span.text-action
+            |  Signer la convention
+
+tr
+  td colspan=3
+    = render "dashboard/internship_offers/internship_applications/show_modal", application: internship_application

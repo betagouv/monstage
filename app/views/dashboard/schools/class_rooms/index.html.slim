@@ -1,7 +1,8 @@
 - content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
-= render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true, applications_badge: @applications, students_badge: @students_without_class_room }
 
-- if @students_without_class_room.present?
+= render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
+
+- if @school.students.without_class_room.present?
   div data-controller='students'
     = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
       .row.mt-3
@@ -24,7 +25,7 @@
                   small Elève
                 th.col-4
             tbody class="class-room"
-              - @students_without_class_room.each do |student|
+              - @school.students.without_class_room.each do |student|
                 tr class="d-flex" data-test="student-not-in-class-room-#{student.id}"
                   td.col-8.d-flex.align-items-center data-head="#{student.name}"= student.name
                   td.col-4 data-head="Action"

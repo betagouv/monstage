@@ -64,7 +64,7 @@ module W3c
     test 'edit_(:api)' do
       operator = create(:user_operator)
       sign_in(operator)
-      run_request_and_cache_response(report_as: 'users_choose_profile') do
+      run_request_and_cache_response(report_as: 'edit_api') do
         visit account_path(section: :api)
       end
     end
@@ -73,7 +73,7 @@ module W3c
       school = create(:school, :with_school_manager)
       teacher = create(:teacher, school: school)
       sign_in(teacher)
-      run_request_and_cache_response(report_as: 'users_choose_profile') do
+      run_request_and_cache_response(report_as: 'edit_identiy') do
         visit account_path(section: :identity)
       end
     end
@@ -81,14 +81,14 @@ module W3c
     test 'edit_(:resume)' do
       student = create(:student)
       sign_in(student)
-      run_request_and_cache_response(report_as: 'users_choose_profile') do
+      run_request_and_cache_response(report_as: 'edit_resume') do
         visit account_path(section: :resume)
       end
     end
     test 'edit_(:school)' do
       school_manager = create(:school_manager)
       sign_in(school_manager)
-      run_request_and_cache_response(report_as: 'users_choose_profile') do
+      run_request_and_cache_response(report_as: 'edit_school') do
         visit account_path(section: :school)
       end
     end
