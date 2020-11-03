@@ -9,6 +9,7 @@ module Builders
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
       )
+      internship_agreement.internship_application = internship_application
       internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::TERMS}</div>"
       internship_agreement
     end

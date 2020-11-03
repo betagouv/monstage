@@ -10,8 +10,8 @@ module Dashboard
     end
     
     def create
-      authorize! :create, InternshipAgreement
       internship_agreement = InternshipAgreement.new(internship_agreement_params.merge({doc_date: Date.today}))
+      authorize! :create, internship_agreement
       if internship_agreement.save
         redirect_to dashboard_internship_agreement_path(internship_agreement),
                       flash: { success: 'La convention a été créée.' }
@@ -29,13 +29,13 @@ module Dashboard
     end
 
     def edit
-      authorize! :update, InternshipAgreement
       @internship_agreement = InternshipAgreement.find(params[:id])
+      authorize! :update, @internship_agreement
     end
 
     def update
-      authorize! :update, InternshipAgreement
       internship_agreement = InternshipAgreement.find(params[:id])
+      authorize! :update, internship_agreement
       if internship_agreement.update(internship_agreement_params)
         redirect_to dashboard_internship_agreement_path(internship_agreement),
                       flash: { success: 'La convention a été signée.' }

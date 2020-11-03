@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :internship_agreement do
-    internship_application { create(:internship_application) }
+    internship_application { create(:weekly_internship_application) }
     student_school { internship_application.student.school.name }
     school_representative_full_name { internship_application.student.school.name }
     student_full_name { 'Jean-Claude Dus' }

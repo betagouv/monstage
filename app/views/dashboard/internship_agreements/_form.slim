@@ -46,49 +46,58 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.rich_text_area :terms_rich_text, class: 'form-control'
 
     .col-12
-      .form-group
-        = form.label :student_school do
-          = "Etablissement scolaire du stagiaire"
-          = form.rg2a_required_content_tag
-        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school
-
-
+      h5 TITRE II - DISPOSITIONS PARTICULIÈRES
+    .col-12
+      h6 A - Annexe pédagogique
+    .col-12
       .form-group
         = form.label :student_full_name do
-          = "Nom du stagiaire"
+          = "Nom de l’élève ou des élèves concerné(s)"
           = form.rg2a_required_content_tag
         = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name
 
       .form-group
         = form.label :student_class_room do
-          = "Classe du stagiaire"
+          = "Classe"
           = form.rg2a_required_content_tag
         = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room
 
       .form-group
-        = form.label :main_teacher_full_name do
-          = "Professeur principal"
+        = form.label :student_school do
+          = "Établissement d’origine "
           = form.rg2a_required_content_tag
-        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name
-
+        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school
 
       .form-group
         = form.label :tutor_full_name do
-          = "Nom du tuteur"
+          = "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur"
           = form.rg2a_required_content_tag
         = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name
 
+
+      .form-group
+        = form.label :main_teacher_full_name do
+          = "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel"
+          = form.rg2a_required_content_tag
+        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name
+
       .form-group
         = form.label :start_date do
-          = "Date de début du stage"
+          = "Dates de la séquence d’observation en milieu professionnel du"
           = form.rg2a_required_content_tag
         = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
 
       .form-group
         = form.label :end_date do
-          = "Date de fin du stage"
+          = "Au"
           = form.rg2a_required_content_tag
         = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+
+      .form-group
+        = form.label :activity_schedule do
+          = "HORAIRES journaliers de l’élève"
+          = form.rg2a_required_content_tag
+        = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true
 
       .form-group
         = form.label :activity_scope do
@@ -98,15 +107,9 @@ fieldset.mt-4 data-controller='internship-agreement-form'
 
       .form-group
         = form.label :activity_preparation do
-          = "Modalités de la préparation"
+          = "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus"
           = form.rg2a_required_content_tag
         = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true
-
-      .form-group
-        = form.label :activity_schedule do
-          = "Planning des activités prévues"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true
 
       .form-group
         = form.label :activity_learnings do
@@ -116,21 +119,22 @@ fieldset.mt-4 data-controller='internship-agreement-form'
 
       .form-group
         = form.label :activity_rating do
-          = "Modalités d’évaluation"
+          = "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
           = form.rg2a_required_content_tag
         = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true
-
+      .col-12
+        h6 B - Annexe financière
       .form-group
         = form.label :housing do
-          = "Conditions d'hébergement"
+          = "Hébergement"
           = form.rg2a_required_content_tag
         = form.rich_text_area :housing_rich_text, class: 'form-control'
 
       .form-group
-        = form.label :insurance do
-          = "Assurance"
+        = form.label :food do
+          = "Restauration"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :insurance_rich_text, class: 'form-control'
+        = form.rich_text_area :food_rich_text, class: 'form-control'
 
       .form-group
         = form.label :transportation do
@@ -139,11 +143,12 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.rich_text_area :transportation_rich_text, class: 'form-control'
 
       .form-group
-        = form.label :food do
-          = "Conditions de restauration"
+        = form.label :insurance do
+          = "Assurance"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :food_rich_text, class: 'form-control'
-
+        = form.rich_text_area :insurance_rich_text, class: 'form-control'
+      
+      p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
 
       .mt-3
         = button_tag :submit, class: 'btn btn-primary' do
