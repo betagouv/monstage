@@ -64,6 +64,7 @@ Rails.application.routes.draw do
       resources :tutors, only: %i[create new]
     end
 
+
     resources :internship_agreements, only: [:new, :create, :edit, :update]
     resources :internship_applications, only: [:index]
 

@@ -23,6 +23,7 @@ Minitest::Retry.use!(
     PG::InternalError # sometimes postgis ref system is not yet ready
   ]
 )
+Minitest::Reporters.use!
 
 WebMock.disable_net_connect!(
   allow: [
