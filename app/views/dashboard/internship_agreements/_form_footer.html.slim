@@ -1,0 +1,42 @@
+.bg-light.p-4
+  .row
+    .col-xs-12.mb-3
+      div class="form-check"
+        input.form-check-input [type="checkbox"
+                                value=""
+                                id="whole_validation_confirm"
+                                data-target='internship-agreement-form.confirmationCheck'
+                                data-action='click->internship-agreement-form#mustBeChecked']
+        label.form-check-label.ml-3 for="whole_validation_confirm"
+          |
+            En signant la convention de stage, vous validez les informations que
+            vous avez renseignées au préalable ainsi que celles renseignées par
+            l’élève et l’entreprise en charge du stage de celui-ci.
+  .row
+    .col-xs-12.mb-3
+      div.form-check
+        input.form-check-input [type="checkbox"
+                                value=""
+                                id="cguss_confirm"
+                                data-target='internship-agreement-form.confirmationCheck'
+                                data-action='click->internship-agreement-form#mustBeChecked'
+                                ]
+        label.form-check-label.ml-3 for="cguss_confirm"
+          |En cochant cette case, vous reconnaissez avoir lu et accepté les&nbsp;
+          = link_to "Conditions Générales d’Utilisation de monstagedetroisieme.fr",
+                    '/conditions-d-utilisation'
+          |, ainsi que les&nbsp;
+          => link_to "Conditions Spécifiques d’Utilisation du Service de Signature de monstagedetroisieme.fr",
+                    '/conditions-d-utilisation-service-signature'
+
+  .row.py-5.no-gutters.mx-0.sticky-bottom
+    .col-sm-5.col-xs-12.d-flex.justify-content-center.flex-column.text-left.pl-3
+      = button_tag :submit,
+                   class: 'btn btn-primary',
+                   data: { target: 'internship-agreement-form.agreementValidationButton', disable_with:'Finir la convention pour la signer'} do
+
+        i.fas.fa-pen
+        |&nbsp;Signer la convention
+
+    .col-sm-7.col-xs-12.d-flex.justify-content-center.flex-column.text-right.pr-3.mt-2
+      = link_to 'Enregistrer et quitter', '#', class: 'h6'

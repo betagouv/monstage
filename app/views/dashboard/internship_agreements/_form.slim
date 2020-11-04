@@ -1,4 +1,4 @@
-fieldset.mt-4 data-controller='internship-agreement-form'
+fieldset.mt-4
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
   .row.mt-3
     .col-12
@@ -34,7 +34,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = form.rg2a_required_content_tag
 
         = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
-        small.text-muteden en qualité de chef d’établissement
+        small.text-muted en qualité de chef d’établissement
 
 
       .h5 il a été convenu ce qui suit :
@@ -147,12 +147,9 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = "Assurance"
           = form.rg2a_required_content_tag
         = form.rich_text_area :insurance_rich_text, class: 'form-control'
-      
-      p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
 
-      .mt-3
-        = button_tag :submit, class: 'btn btn-primary' do
-          i.fas.fa-pen
-          |  Signer&nbsp;
+      / p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+
+  = render partial: 'dashboard/internship_agreements/form_footer'
 
 
