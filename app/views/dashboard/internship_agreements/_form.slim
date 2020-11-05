@@ -10,7 +10,6 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         i.fa.fa-eye-slash
   .row.mt-3
     .col-8
-      .h4 Annexe 2
       .h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
     .col-4
       .tool-note
@@ -35,29 +34,30 @@ fieldset.mt-4 data-controller='internship-agreement-form'
       .h5 entre
       p d’une part
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: (can? :see_intro, resource)
   .row.mt-3
     .col-8 
       .form-group
         = form.label :organisation_representative_full_name do
           = "L’entreprise ou l’organisme d’accueil, représentée par "
           = form.rg2a_required_content_tag
-        = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, disabled: (can? :sign, resource),value: resource.organisation_representative_full_name
-        small.text-muted en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil
+        div class=((can? :change_organisation_representative_full_name, resource) ? 'valid-form-field' : '')  
+          = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, disabled: !(can? :change_organisation_representative_full_name, resource), value: resource.organisation_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
+          small.text-muted en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil
       p d’autre part,
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Votre nom et prénom'
+      = render 'employer_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_organisation_representative_full_name, resource)
   .row.mt-3
     .col-8 
       .form-group
         = form.label :school_representative_full_name do
           = "Nom du représentant de l’établissement"
           = form.rg2a_required_content_tag
-        div class=((can? :sign, resource) ? 'valid-form-field' : '')
-          = form.text_field :school_representative_full_name, class: 'form-control', required: true, disabled: !(can? :sign, resource), value: resource.school_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
+        div class=((can? :change_school_representative_full_name, resource) ? 'valid-form-field' : '')
+          = form.text_field :school_representative_full_name, class: 'form-control', required: true, disabled: !(can? :change_school_representative_full_name, resource), value: resource.school_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
           small.text-muteden en qualité de chef d’établissement
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom'
+      = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_school_representative_full_name, resource)
   .row.mt-3
     .col-8 
       .h5 il a été convenu ce qui suit :
@@ -67,9 +67,9 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
           = form.rg2a_required_content_tag
         div style='position: relative'
-          = form.rich_text_area :terms_rich_text, class: 'form-control editable-form-field', disabled: (can? :sign, resource)
+          = form.rich_text_area :terms_rich_text, class: 'form-control editable-form-field'
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: 'Les articles sont modifiables selon vos spécificités locales.'
+      = render 'school_management_toolnote', resource: resource, content: 'Les articles sont modifiables selon vos spécificités locales.', active: (can? :change_terms, resource)
   .row.mt-3
     .col-12
       h5 TITRE II - DISPOSITIONS PARTICULIÈRES
@@ -81,109 +81,120 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :student_full_name do
           = "Nom de l’élève ou des élèves concerné(s)"
           = form.rg2a_required_content_tag
-        = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name, disabled: !(can? :sign, resource)
+        div class=((can? :change_student_full_name, resource) ? 'valid-form-field' : '')  
+          = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name, disabled: !(can? :change_student_full_name, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Nom et prénom de l'élève"
+      = render 'school_management_toolnote', resource: resource, content: "Nom et prénom de l'élève", active: (can? :change_student_full_name, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :student_class_room do
           = "Classe"
           = form.rg2a_required_content_tag
-        = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room, disabled: !(can? :sign, resource)
+        div class=((can? :change_student_class_room, resource) ? 'valid-form-field' : '')  
+          = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room, disabled: !(can? :change_student_class_room, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Classe de l'élève"
+      = render 'school_management_toolnote', resource: resource, content: "Classe de l'élève", active: (can? :change_student_class_room, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :student_school do
           = "Établissement d’origine "
           = form.rg2a_required_content_tag
-        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school, disabled: !(can? :sign, resource)
+        div class=((can? :change_student_school, resource) ? 'valid-form-field' : '')
+          = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school, disabled: !(can? :change_student_school, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: 'Nom de votre établissement'
+      = render 'school_management_toolnote', resource: resource, content: 'Nom de votre établissement', active: (can? :change_student_school, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :tutor_full_name do
           = "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur"
           = form.rg2a_required_content_tag
-        = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name, disabled: (can? :sign, resource)
+        div class=((can? :change_tutor_full_name, resource) ? 'valid-form-field' : '')
+          = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name, disabled: !(can? :change_tutor_full_name, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Nom et prénom du tuteur'
+      = render 'employer_toolnote', resource: resource, content: 'Nom et prénom du tuteur', active: (can? :change_tutor_full_name, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :main_teacher_full_name do
           = "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel"
           = form.rg2a_required_content_tag
-        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name, disabled: !(can? :sign, resource)
+        div class=((can? :change_main_teacher_full_name, resource) ? 'valid-form-field' : '')
+          = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name, disabled: !(can? :change_main_teacher_full_name, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: 'Nom et prénom des enseignants'
+      = render 'school_management_toolnote', resource: resource, content: 'Nom et prénom des enseignants', active: (can? :change_main_teacher_full_name, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :start_date do
           = "Dates de la séquence d’observation en milieu professionnel du"
           = form.rg2a_required_content_tag
-        = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_start_date, resource) ? 'valid-form-field' : '')
+          = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: !(can? :change_start_date, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Date de début du stage'
+      = render 'employer_toolnote', resource: resource, content: 'Date de début du stage', active: (can? :change_start_date, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :end_date do
           = "Au"
           = form.rg2a_required_content_tag
-        = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_end_date, resource) ? 'valid-form-field' : '')
+          = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: !(can? :change_end_date, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Date de fin du stage'
+      = render 'employer_toolnote', resource: resource, content: 'Date de fin du stage', active: (can? :change_end_date, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_schedule do
           = "HORAIRES journaliers de l’élève"
           = form.rg2a_required_content_tag
-        .required-form-field
-          = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_activity_schedule, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true, disabled: !(can? :change_activity_schedule, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Horaires du stage'
+      = render 'employer_toolnote', resource: resource, content: 'Horaires du stage', active: (can? :change_activity_schedule, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_scope do
           = "Objectifs assignés à la séquence d’observation en milieu professionnel"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_activity_scope, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true, disabled: !(can? :change_activity_scope, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Objectif du stage'
+      = render 'employer_toolnote', resource: resource, content: 'Objectif du stage', active: (can? :change_activity_scope, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_preparation do
           = "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_activity_preparation, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true, disabled: !(can? :activity_preparation, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: "Echanges prévus avec l'établissement"
+      = render 'employer_toolnote', resource: resource, content: "Echanges prévus avec l'établissement", active: (can? :change_activity_preparation, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_learnings do
           = "Compétences visées"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+        div class=((can? :change_activity_learnings, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true, disabled: !(can? :activity_learnings, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: "Compétences attendues de l'élève par l'entreprise"
+      = render 'employer_toolnote', resource: resource, content: "Compétences attendues de l'élève par l'entreprise", active: (can? :change_activity_learnings, resource)
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_rating do
           = "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true, disabled: !(can? :sign, resource)
+        div class=((can? :change_activity_rating, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true, disabled: !(can? :activity_rating, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Critères de notation de l'élève"
+      = render 'school_management_toolnote', resource: resource, content: "Critères de notation de l'élève", active: (can? :change_activity_rating, resource)
   .row.mt-3
     .col-12
       h6 B - Annexe financière
@@ -193,9 +204,10 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :financial_conditions do
           = "Hébergement, Restauration, Transport, Assurance"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :financial_conditions_rich_text, class: 'form-control', disabled: (can? :sign, resource)
+        div class=((can? :change_financial_conditions, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :financial_conditions_rich_text, class: 'form-control', disabled: !(can? :change_financial_conditions, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
-      = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.'
+      = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.', active: (can? :change_financial_conditions, resource)
   .row.mt-3
     .col-8    
       p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
