@@ -6,11 +6,11 @@ div data-controller="daily-hours"
   #weekly-planning[class="mt-3 #{'d-none' if form.object.new_daily_hours.present?}"]
     .row
       .col-5
-        = select_tag :"#{form.object_name}[weekly_hours][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_weekly_start(form.object)), { :include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" } }
+        = select_tag :"#{form.object_name}[weekly_hours][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_weekly_start(form.object)), { :include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_start" }
       .col-1 style="display: flex;align-items: center;justify-content: center;"
         | à
       .col-5
-        = select_tag :"#{form.object_name}[weekly_hours][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_weekly_end(form.object)), { :include_blank => '--',class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" } }
+        = select_tag :"#{form.object_name}[weekly_hours][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_weekly_end(form.object)), { :include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
 
   #daily-planning[class="mt-3 #{'d-none' unless form.object.new_daily_hours.present?}"]
     - %w(lundi mardi mercredi jeudi vendredi samedi).each_with_index do |weekday, i|
@@ -19,9 +19,9 @@ div data-controller="daily-hours"
           .label= weekday.capitalize
       .row
         .col-5
-          = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_daily_start(form.object, i)), {:include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" } }
+          = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_daily_start(form.object, i)), {:include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_start" }
         .col-1 style="display: flex;align-items: center;justify-content: center;"
           | à
         .col-5
-          = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_daily_end(form.object, i)), {:include_blank => '--', class: "form-control", aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" } }
+          = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]", options_for_select((6..22).map{|h| "#{h}:00"}, selected: select_daily_end(form.object, i)), {:include_blank => '--', class: "form-control", aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_end" }
 
