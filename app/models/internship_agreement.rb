@@ -17,10 +17,7 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :activity_preparation_rich_text
   has_rich_text :activity_learnings_rich_text
   has_rich_text :activity_rating_rich_text
-  has_rich_text :housing_rich_text
-  has_rich_text :insurance_rich_text
-  has_rich_text :transportation_rich_text
-  has_rich_text :food_rich_text
+  has_rich_text :financial_conditions_rich_text
   has_rich_text :terms_rich_text
 
   TERMS = %Q(

@@ -35,40 +35,29 @@ fieldset.mt-4 data-controller='internship-agreement-form'
       .h5 entre
       p d’une part
     .col-4
-      .tool-note.active
-        .title Note au Chef d'Etablissement :
-        .content
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      = render 'school_management_toolnote', resource: resource, content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
   .row.mt-3
     .col-8
       .form-group
         = form.label :organisation_representative_full_name do
           = "L’entreprise ou l’organisme d’accueil, représentée par "
           = form.rg2a_required_content_tag
-        = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, value: resource.organisation_representative_full_name
+        = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, disabled: (can? :sign, resource),value: resource.organisation_representative_full_name
         small.text-muted en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil
       p d’autre part,
     .col-4
-      .tool-note.inactive
-        .title Note à l'entreprise
-        .content
-          | Votre nom et prénom
-
+      = render 'employer_toolnote', resource: resource, content: 'Votre nom et prénom'
   .row.mt-3
     .col-8
       .form-group
         = form.label :school_representative_full_name do
           = "Nom du représentant de l’établissement"
           = form.rg2a_required_content_tag
-        .valid-form-field
-          = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
+        div class=((can? :sign, resource) ? 'valid-form-field' : '')
+          = form.text_field :school_representative_full_name, class: 'form-control', required: true, disabled: !(can? :sign, resource), value: resource.school_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
           small.text-muteden en qualité de chef d’établissement
     .col-4
-      .tool-note.active
-        .title Note au Chef d'Etablissement :
-        .content
-          | Votre nom et prénom
-
+      = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom'
   .row.mt-3
     .col-8
       .h5 il a été convenu ce qui suit :
@@ -78,13 +67,9 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
           = form.rg2a_required_content_tag
         div style='position: relative'
-          = form.rich_text_area :terms_rich_text, class: 'form-control editable-form-field'
+          = form.rich_text_area :terms_rich_text, class: 'form-control editable-form-field', disabled: (can? :sign, resource)
     .col-4
-      .tool-note
-        .title Note au Chef d'Etablissement :
-        .content
-          | Les articles sont modifiables selon vos spécificités locales.
-
+      = render 'school_management_toolnote', resource: resource, content: 'Les articles sont modifiables selon vos spécificités locales.'
   .row.mt-3
     .col-12
       h5 TITRE II - DISPOSITIONS PARTICULIÈRES
@@ -96,117 +81,120 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :student_full_name do
           = "Nom de l’élève ou des élèves concerné(s)"
           = form.rg2a_required_content_tag
-        = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name
+        = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name, disabled: !(can? :sign, resource)
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: "Nom et prénom de l'élève"
   .row.mt-3
     .col-8
       .form-group
         = form.label :student_class_room do
           = "Classe"
           = form.rg2a_required_content_tag
-        = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room
+        = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room, disabled: !(can? :sign, resource)
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: "Classe de l'élève"
   .row.mt-3
     .col-8
       .form-group
         = form.label :student_school do
           = "Établissement d’origine "
           = form.rg2a_required_content_tag
-        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school
+        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school, disabled: !(can? :sign, resource)
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: 'Nom de votre établissement'
   .row.mt-3
     .col-8
       .form-group
         = form.label :tutor_full_name do
           = "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur"
           = form.rg2a_required_content_tag
-        = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name
+        = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Nom et prénom du tuteur'
   .row.mt-3
     .col-8
       .form-group
         = form.label :main_teacher_full_name do
           = "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel"
           = form.rg2a_required_content_tag
-        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name
+        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name, disabled: !(can? :sign, resource)
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: 'Nom et prénom des enseignants'
   .row.mt-3
     .col-8
       .form-group
         = form.label :start_date do
           = "Dates de la séquence d’observation en milieu professionnel du"
           = form.rg2a_required_content_tag
-        = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+        = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Date de début du stage'
   .row.mt-3
     .col-8
       .form-group
         = form.label :end_date do
           = "Au"
           = form.rg2a_required_content_tag
-        = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+        = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Date de fin du stage'
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_schedule do
           = "HORAIRES journaliers de l’élève"
           = form.rg2a_required_content_tag
-
         .required-form-field= render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
-
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Horaires du stage'
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_scope do
           = "Objectifs assignés à la séquence d’observation en milieu professionnel"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true
+        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Objectif du stage'
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_preparation do
           = "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true
+        = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: "Echanges prévus avec l'établissement"
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_learnings do
           = "Compétences visées"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true
+        = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true, disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: "Compétences attendues de l'élève par l'entreprise"
   .row.mt-3
     .col-8
       .form-group
         = form.label :activity_rating do
           = "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true
+        = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true, disabled: !(can? :sign, resource)
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: "Critères de notation de l'élève"
   .row.mt-3
     .col-12
       h6 B - Annexe financière
   .row.mt-3
     .col-8
       .form-group
-        = form.label :housing do
-          = "Hébergement"
+        = form.label :financial_conditions do
+          = "Hébergement, Restauration, Transport, Assurance"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :housing_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      .form-group
-        = form.label :food do
-          = "Restauration"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :food_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      .form-group
-        = form.label :transportation do
-          = "Transport"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :transportation_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      .form-group
-        = form.label :insurance do
-          = "Assurance"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :insurance_rich_text, class: 'form-control'
+        = form.rich_text_area :financial_conditions_rich_text, class: 'form-control', disabled: (can? :sign, resource)
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.'
   .row.mt-3
     .col-8
       p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
