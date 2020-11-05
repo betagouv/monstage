@@ -9,7 +9,7 @@ module Dashboard
         InternshipApplication.find(params[:internship_application_id])
       )
     end
-    
+
     def create
       internship_agreement = InternshipAgreement.new(internship_agreement_params.merge({doc_date: Date.today}))
       authorize! :create, internship_agreement
@@ -74,10 +74,7 @@ module Dashboard
               :activity_preparation_rich_text,
               :activity_learnings_rich_text,
               :activity_rating_rich_text,
-              :housing_rich_text,
-              :insurance_rich_text,
-              :transportation_rich_text,
-              :food_rich_text,
+              :financial_conditions,
               :terms_rich_text,
               weekly_hours:[],
               new_daily_hours:[]
