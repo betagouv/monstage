@@ -97,7 +97,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :activity_schedule do
           = "HORAIRES journaliers de l’élève"
           = form.rg2a_required_content_tag
-        h1 TODO
+        = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
 
       .form-group
         = form.label :activity_scope do
