@@ -72,14 +72,16 @@ module Dashboard
               :schedule_rich_text,
               :activity_scope_rich_text,
               :activity_preparation_rich_text,
-              :activity_schedule_rich_text,      
               :activity_learnings_rich_text,
               :activity_rating_rich_text,
               :housing_rich_text,
               :insurance_rich_text,
               :transportation_rich_text,
               :food_rich_text,
-              :terms_rich_text)
+              :terms_rich_text,
+              weekly_hours:[],
+              new_daily_hours:[]
+              )
     end
 
     def internship_agreement_builder

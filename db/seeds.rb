@@ -321,18 +321,6 @@ def populate_applications
   end
 end
 
-def populate_student_application
-  InternshipApplication.create!(
-    type: InternshipApplications::FreeDate.name,
-    internship_offer_week_id: InternshipOfferWeek.last,
-    user_id: Users::Student.last.id,
-    internship_offer_id: InternshipOffers::FreeDate.first.id,
-    internship_offer_type: InternshipOffer.name,
-    motivation: "Je suis passionné par la découverte de ce stage",
-    submitted_at: 2.days.ago,
-    aasm_state: 'approved'
-  )
-end
 
 
 def populate_aggreements
@@ -354,7 +342,6 @@ if Rails.env == 'review' || Rails.env.development?
   populate_groups
   populate_internship_offers
   populate_students
-  populate_student_application
   populate_internship_weeks
   populate_applications
   populate_aggreements
