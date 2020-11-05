@@ -8,7 +8,7 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
     city { 'Paris' }
     zipcode { '75015' }
-
+    code_uai { '0440311Z' }
     trait :at_paris do
       city { 'Paris' }
       name { 'Parisian school' }
