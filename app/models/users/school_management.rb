@@ -20,6 +20,7 @@ module Users
     has_many :main_teachers, through: :school
 
     validate :only_join_managed_school, on: :create, unless: :school_manager?
+    validate :official_email_address, if: :school_manager?
 
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?
@@ -59,6 +60,13 @@ module Users
         errors[:base] << "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux."
       end
     end
+
+    def official_email_address
+      unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
+        errors[:email] << "L'adresse email utilisée doit être officielle. ex: xxx@ac-MON_ACADEMIE.fr"
+      end
+    end
+
 
     # notify
     def notifiable?

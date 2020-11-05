@@ -10,7 +10,8 @@ module Users
     test 'creation fails (school_manager requires an .ac ending mail' do
       school_manager = Users::SchoolManagement.new(
         role: :school_manager,
-        email: 'chef@etablissement.com'
+        email: 'chef@etablissement.com',
+        school: build(:school)
       )
 
       assert school_manager.invalid?
@@ -29,14 +30,15 @@ module Users
     end
 
     test 'creation succeed' do
+      school = build(:school)
       school_manager = Users::SchoolManagement.new(
         role: :school_manager,
-        email: 'chef@ac-etablissement.com',
+        email: "jean-pierre@#{school.email_domain_name}",
         password: 'tototo',
         password_confirmation: 'tototo',
         first_name: 'Chef',
         last_name: 'Etablissement',
-        school: build(:school),
+        school: school,
         accept_terms: true
       )
       assert school_manager.valid?

@@ -27,7 +27,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # create school_manager
     assert_difference('Users::SchoolManagement.school_manager.count', 1) do
-      fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-mail.com'
+      fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-paris.fr'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'

@@ -35,6 +35,39 @@ class Academy
     'Académie de La Réunion' => %w[974]
   }.freeze
 
+  MAP_EMAIL_DOMAIN = {
+    'Académie de Clermont-Ferrand' => 'ac-clermont.fr',
+    'Académie de Grenoble' => 'ac-genoble.fr',
+    'Académie de Lyon' => 'ac-lyon.fr',
+    'Académie de Besançon' => 'ac-besancon.fr',
+    'Académie de Dijon' => 'ac-dijon.fr',
+    'Académie de Rennes' => 'ac-rennes.fr',
+    "Académie d'OrléansTours" => 'ac-orleans-tours.fr',
+    'Académie de Corse' => 'ac-corse.fr',
+    'Académie de Nancy-Metz' => 'ac-nancy-metz.fr',
+    'Académie de Reims' => 'ac-reims.fr',
+    'Académie de Strasbourg' => 'ac-strasbourg.fr',
+    'Académie de la Guadeloupe' => 'ac-guadeloupe.fr',
+    'Académie de la Guyane' => 'ac-guyane.fr',
+    "Académie d'Amiens" => 'ac-amiens.fr',
+    'Académie de Lille' => 'ac-lille.fr',
+    'Académie de Créteil' => 'ac-creteil.fr',
+    'Académie de Paris' => 'ac-paris.fr',
+    'Académie de Versailles' => 'ac-versailles.fr',
+    'Académie de Martinique' => 'ac-martinique.fr',
+    'Académie de Caen' => 'ac-caen.fr',
+    'Académie de Rouen' => 'ac-rouen.fr',
+    'Académie de Bordeaux' => 'ac-bordeaux.fr',
+    'Académie de Limoges' => 'ac-limoges.fr',
+    'Académie de Poitiers' => 'ac-poitiers.fr',
+    'Académie de Montpellier' => 'ac-montpellier.fr',
+    'Académie de Toulouse' => 'ac-toulouse.fr',
+    'Académie de Nantes' => 'ac-nantes.fr',
+    "Académie d'Aix-Marseille" => 'ac-aix-marseille.fr',
+    'Académie de Nice' => 'ac-nice.fr',
+    'Académie de La Réunion' => 'ac-reunion.fr'
+  }.freeze
+
   def self.to_select(only: nil)
     MAP.keys.sort
   end
@@ -51,5 +84,9 @@ class Academy
         return academy_name if departement_numbers.include?(zipcode[0..1])
       end
     end
+  end
+
+  def self.get_email_domain(academy)
+    MAP_EMAIL_DOMAIN.fetch(academy)
   end
 end
