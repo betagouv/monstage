@@ -53,9 +53,6 @@ module Dashboard
       @internship_agreement = InternshipAgreement.find(params[:id])
     end
 
-    def save_and_quit
-    end
-
     private
 
     def internship_agreement_params

@@ -196,5 +196,6 @@ fieldset.mt-4
         = form.rich_text_area :financial_conditions_rich_text, class: 'form-control', disabled: (can? :sign, resource)
     .col-4
       = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.'
-  = render partial: 'dashboard/internship_agreements/form_footer'
+  = render partial: 'dashboard/internship_agreements/form_footer',
+           locals: {form: form}
   
