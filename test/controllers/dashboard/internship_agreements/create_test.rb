@@ -33,7 +33,7 @@ module Dashboard::InternshipAgreements
                 'end_date'                              => internship_agreement.end_date,
                 'activity_scope_rich_text'              => '<div>Activité Scope</div>',
                 'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
-                'activity_schedule_rich_text'           => '<div>Activité Schedule</div>',
+                'weekly_hours' => ['9h', '12h'],
                 'activity_learnings_rich_text'          => '<div>Apprentissages</div>',
                 'activity_rating_rich_text'             => '<div>Notations</div>',
                 'housing_rich_text'                     => '<div>Hébergement</div>',
@@ -41,8 +41,8 @@ module Dashboard::InternshipAgreements
                 'transportation_rich_text'              => '<div>Transport</div>',
                 'food_rich_text'                        => '<div>Restauration</div>',
                 'terms_rich_text'                       => '<div>Article 1</div>'
-              )   
-                    
+              )
+
 
       assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
@@ -77,7 +77,7 @@ module Dashboard::InternshipAgreements
                 'end_date'                              => internship_agreement.end_date,
                 'activity_scope_rich_text'              => '<div>Activité Scope</div>',
                 'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
-                'activity_schedule_rich_text'           => '<div>Activité Schedule</div>',
+                'weekly_hours' => ['9h', '12h'],
                 'activity_learnings_rich_text'          => '<div>Apprentissages</div>',
                 'activity_rating_rich_text'             => '<div>Notations</div>',
                 'housing_rich_text'                     => '<div>Hébergement</div>',
@@ -85,8 +85,8 @@ module Dashboard::InternshipAgreements
                 'transportation_rich_text'              => '<div>Transport</div>',
                 'food_rich_text'                        => '<div>Restauration</div>',
                 'terms_rich_text'                       => '<div>Article 1</div>'
-              )   
-                    
+              )
+
       assert_difference('InternshipAgreement.count', 0) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end

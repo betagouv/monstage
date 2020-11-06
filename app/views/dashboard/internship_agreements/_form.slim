@@ -3,7 +3,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
   .row
     .col-4.offset-md-8.text-center
       = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
-        | Afficher les notes 
+        | Afficher les notes
         i.fa.fa-eye
       = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
         | Masquer les notes
@@ -36,7 +36,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     .col-4
       = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: (can? :see_intro, resource)
   .row.mt-3
-    .col-8 
+    .col-8
       .form-group
         = form.label :organisation_representative_full_name do
           = "L’entreprise ou l’organisme d’accueil, représentée par "
@@ -48,7 +48,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     .col-4
       = render 'employer_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_organisation_representative_full_name, resource)
   .row.mt-3
-    .col-8 
+    .col-8
       .form-group
         = form.label :school_representative_full_name do
           = "Nom du représentant de l’établissement"
@@ -59,7 +59,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     .col-4
       = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_school_representative_full_name, resource)
   .row.mt-3
-    .col-8 
+    .col-8
       .h5 il a été convenu ce qui suit :
 
       .form-group
@@ -151,8 +151,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :activity_schedule do
           = "HORAIRES journaliers de l’élève"
           = form.rg2a_required_content_tag
-        div class=((can? :change_activity_schedule, resource) ? 'valid-form-field' : '')
-          = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true, disabled: !(can? :change_activity_schedule, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
+        .required-form-field= render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
     .col-4
       = render 'employer_toolnote', resource: resource, content: 'Horaires du stage', active: (can? :change_activity_schedule, resource)
   .row.mt-3
@@ -199,7 +198,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     .col-12
       h6 B - Annexe financière
   .row.mt-3
-    .col-8      
+    .col-8
       .form-group
         = form.label :financial_conditions do
           = "Hébergement, Restauration, Transport, Assurance"
@@ -209,10 +208,10 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     .col-4
       = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.', active: (can? :change_financial_conditions, resource)
   .row.mt-3
-    .col-8    
+    .col-8
       p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
   .row.mt-3
-    .col-8      
+    .col-8
       = button_tag :submit, class: 'btn btn-primary' do
         i.fas.fa-pen
         |  Signer&nbsp;

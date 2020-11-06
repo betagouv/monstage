@@ -102,7 +102,7 @@ module Builders
         max_candidates: internship_offer_info.max_candidates,
         school_id: internship_offer_info.school_id,
         weekly_hours: internship_offer_info.weekly_hours,
-        daily_hours: internship_offer_info.daily_hours,
+        new_daily_hours: internship_offer_info.new_daily_hours,
         sector_id: internship_offer_info.sector_id,
         school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
