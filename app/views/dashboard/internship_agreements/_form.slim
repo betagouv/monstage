@@ -53,15 +53,9 @@ fieldset.mt-4
         = form.label :school_representative_full_name do
           = "Nom du représentant de l’établissement"
           = form.rg2a_required_content_tag
-<<<<<<< HEAD
         .valid-form-field
           = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
           small.text-muted en qualité de chef d’établissement
-=======
-        div class=((can? :change_school_representative_full_name, resource) ? 'valid-form-field' : '')
-          = form.text_field :school_representative_full_name, class: 'form-control', required: true, disabled: !(can? :change_school_representative_full_name, resource), value: resource.school_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
-          small.text-muteden en qualité de chef d’établissement
->>>>>>> sign_convention
     .col-4
       = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_school_representative_full_name, resource)
   .row.mt-3

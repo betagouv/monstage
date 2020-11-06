@@ -20,6 +20,22 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :financial_conditions_rich_text
   has_rich_text :terms_rich_text
 
+
+  validates_inclusion_of :school_manager_accept_terms,
+                         in: ['1', true],
+                         message: :school_manager_accept_terms,
+                         if: :check_school_manager_accept_terms?
+  attr_accessor :switch_school_manager_accept_terms
+
+  validates_inclusion_of :employer_accept_terms,
+                         in: ['1', true],
+                         message: :employer_accept_terms,
+                         if: :check_employer_accept_terms?
+
+  attr_accessor :switch_employer_accept_terms
+
+  validate :at_least_one_switch_to_accept_params_is_present
+
   TERMS = %Q(
     <div>Article 1 - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
@@ -47,4 +63,22 @@ class InternshipAgreement < ApplicationRecord
     <div>Article 9 - La présente convention est signée pour la durée d’une séquence d’observation en milieu professionnel.
     <div>
   )
+
+  def at_least_one_switch_to_accept_params_is_present
+    return true if [school_manager_accept_terms, employer_accept_terms].any?
+
+    if [check_school_manager_accept_terms?, check_employer_accept_terms?].none?
+      errors.add(:school_manager_accept_terms, :school_manager_accept_terms)
+      errors.add(:employer_accept_terms, :employer_accept_terms)
+    end
+  end
+
+  def check_school_manager_accept_terms?
+    switch_school_manager_accept_terms == true
+  end
+
+  def check_employer_accept_terms?
+    switch_employer_accept_terms == true
+  end
+
 end

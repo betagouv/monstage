@@ -5,8 +5,7 @@ module Dashboard
     before_action :authenticate_user!
 
     def index
-      authorize! :index, InternshipApplication
-      authorize! :manage, InternshipAgreement
+      authorize! :create, InternshipAgreement
       @internship_applications = current_user.internship_applications
                                              .approved
     end

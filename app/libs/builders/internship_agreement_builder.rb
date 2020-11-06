@@ -17,7 +17,10 @@ module Builders
 
     def create(params:)
       yield callback if block_given?
-      internship_agreement = InternshipAgreement.new(params)
+      internship_agreement = InternshipAgreement.new(
+        {}.merge(preprocess_terms)
+          .merge(params)
+      )
       authorize :create, internship_agreement
       internship_agreement.save!
       callback.on_success.try(:call, internship_agreement)
@@ -28,7 +31,8 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.attributes = params
+      instance.attributes = {}.merge(preprocess_terms)
+                              .merge(params)
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e
@@ -43,6 +47,12 @@ module Builders
       @user = user
       @ability = Ability.new(user)
       @callback = Callback.new
+    end
+
+    def preprocess_terms
+      return { switch_school_manager_accept_terms: true } if user.is_a?(Users::SchoolManagement)
+      return { switch_employer_accept_terms: true } if user.is_a?(Users::Employer)
+      raise 'whoop'
     end
 
     def preprocess_internship_offer_params(internship_offer)

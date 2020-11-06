@@ -16,14 +16,14 @@ module Dashboard
                       flash: { success: 'La convention a été créée.' }
         end
         on.failure do |failed_internship_agreement|
-          @internship_offer = failed_internship_agreement || InternshipAgreement.new(
+          @internship_agreement = failed_internship_agreement || InternshipAgreement.new(
             internship_application_id: params[:internship_application_id]
           )
           render :new, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
-      @internship_offer = InternshipAgreement.new(
+      @internship_agreement = InternshipAgreement.new(
         internship_application_id: params[:internship_application_id]
       )
       render :new, status: :bad_request
@@ -47,7 +47,7 @@ module Dashboard
         end
       end
     rescue ActionController::ParameterMissing
-      @internship_offer = InternshipAgreement.find(params[:id])
+      @internship_agreement = InternshipAgreement.find(params[:id])
       @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request
     end
@@ -80,6 +80,8 @@ module Dashboard
               :activity_rating_rich_text,
               :financial_conditions,
               :terms_rich_text,
+              :school_manager_accept_terms,
+              :employer_accept_terms,
               weekly_hours:[],
               new_daily_hours:[]
               )

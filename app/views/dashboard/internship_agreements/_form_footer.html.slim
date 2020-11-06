@@ -1,24 +1,24 @@
 .bg-light.p-4
   .row
     .col-xs-12.mb-3
-      div class="form-check"
-        input.form-check-input type="checkbox" value="" id="accept_general_terms"
-        label.form-check-label.ml-3 for="accept_general_terms"
-          |
-            En signant la convention de stage, vous validez les informations que
-            vous avez renseignées au préalable ainsi que celles renseignées par
-            l’élève et l’entreprise en charge du stage de celui-ci.
-  .row
-    .col-xs-12.mb-3
-      div.form-check
-        input.form-check-input type="checkbox" value="" id="accept_service_terms"
-        label.form-check-label.ml-3 for="accept_service_terms"
-          |En cochant cette case, vous reconnaissez avoir lu et accepté les&nbsp;
-          = link_to "Conditions Générales d’Utilisation de monstagedetroisieme.fr",
-                     conditions_d_utilisation_path
-          |, ainsi que les&nbsp;
-          => link_to "Conditions Spécifiques d’Utilisation du Service de Signature de monstagedetroisieme.fr",
-                     conditions_d_utilisation_service_signature_path
+      .form-group.label
+        = form.rg2a_required_content_tag
+        .custom-control.custom-checkbox
+          = form.check_box current_user_agreement_terms(current_user), class: 'custom-control-input'
+          = form.label current_user_agreement_terms(current_user), class: 'custom-control-label' do
+            | En signant la convention de stage, vous validez les informations que vous avez renseignées au préalable ainsi que celles renseignées par l’élève et l’entreprise en charge du stage de celui-ci.
+
+            br
+            br
+
+            | Vous reconnaissez avoir lu et accepté les&nbsp;
+
+            = link_to "Conditions Générales d’Utilisation de monstagedetroisieme.fr",
+                      conditions_d_utilisation_path
+            | ainsi que les&nbsp;
+
+            = link_to "Conditions Spécifiques d’Utilisation du Service de Signature de monstagedetroisieme.fr",
+              conditions_d_utilisation_service_signature_path
 
   .row.py-5.no-gutters.mx-0.sticky-bottom
     .col-sm-5.col-xs-12.d-flex.justify-content-center.flex-column.text-left.pl-3
