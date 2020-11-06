@@ -1,6 +1,5 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
 
