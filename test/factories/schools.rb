@@ -31,18 +31,21 @@ FactoryBot.define do
     factory :school_with_troisieme_segpa_class_room do
       after(:create) do |school|
         create(:class_room, school: school, school_track: 'troisieme_segpa')
+        create(:school_manager, school: school)
       end
     end
 
     factory :school_with_troisieme_generale_class_room do
       after(:create) do |school|
         create(:class_room, school: school, school_track: 'troisieme_generale')
+        create(:school_manager, school: school)
       end
     end
 
     factory :school_with_bac_pro_class_room do
       after(:create) do |school|
         create(:class_room, school: school, school_track: 'bac_pro')
+        create(:school_manager, school: school)
       end
     end
   end
