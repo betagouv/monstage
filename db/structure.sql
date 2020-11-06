@@ -468,6 +468,8 @@ CREATE TABLE public.internship_agreements (
     tutor_full_name character varying,
     main_teacher_full_name character varying,
     doc_date date,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb
@@ -2187,6 +2189,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200930155341'),
 ('20201021131419'),
 ('20201104123113'),
-('20201105143719');
+('20201105143719'),
+('20201106143850');
 
 

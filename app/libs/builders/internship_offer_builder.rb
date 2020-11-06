@@ -2,7 +2,7 @@
 
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
-  class InternshipOfferBuilder
+  class InternshipOfferBuilder < BuilderBase
 
     # called by dashboard/stepper/tutor#create during creating with steps
     def create_from_stepper(tutor:, organisation:, internship_offer_info:)
@@ -133,12 +133,6 @@ module Builders
       Array(internship_offer.errors.details[:remote_id])
         .map { |error| error[:error] }
         .include?(:taken)
-    end
-
-    def authorize(*vargs)
-      return nil if ability.can?(*vargs)
-
-      raise CanCan::AccessDenied
     end
   end
 

@@ -4,26 +4,26 @@ module Dashboard
 
 
     def new
-      authorize! :new, InternshipAgreement
       @internship_agreement = internship_agreement_builder.new_from_application(
         InternshipApplication.find(params[:internship_application_id])
       )
     end
 
     def create
-      internship_agreement = InternshipAgreement.new(internship_agreement_params.merge({doc_date: Date.today}))
-      authorize! :create, internship_agreement
-      if internship_agreement.save
-        redirect_to dashboard_internship_agreement_path(internship_agreement),
+      internship_agreement_builder.create(params: internship_agreement_params) do |on|
+        on.success do |created_internship_agreement|
+          redirect_to dashboard_internship_agreement_path(created_internship_agreement),
                       flash: { success: 'La convention a été créée.' }
-      else
-        @internship_offer = internship_agreement || InternshipAgreement.new(
-          internship_application_id: params[:internship_application_id]
-        )
-        render :new, status: :bad_request
+        end
+        on.failure do |failed_internship_agreement|
+          @internship_agreement = failed_internship_agreement || InternshipAgreement.new(
+            internship_application_id: params[:internship_application_id]
+          )
+          render :new, status: :bad_request
+        end
       end
     rescue ActionController::ParameterMissing
-      @internship_offer = InternshipAgreement.new(
+      @internship_agreement = InternshipAgreement.new(
         internship_application_id: params[:internship_application_id]
       )
       render :new, status: :bad_request
@@ -35,17 +35,20 @@ module Dashboard
     end
 
     def update
-      internship_agreement = InternshipAgreement.find(params[:id])
-      authorize! :update, internship_agreement
-      if internship_agreement.update(internship_agreement_params)
-        redirect_to dashboard_internship_agreement_path(internship_agreement),
+      internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
+                                          params: internship_agreement_params) do |on|
+        on.success do |updated_internship_agreement|
+          redirect_to dashboard_internship_agreement_path(updated_internship_agreement),
                       flash: { success: 'La convention a été signée.' }
-      else
-        @internship_offer = internship_agreement || InternshipAgreement.find(params[:id])
-        render :edit, status: :bad_request
+        end
+        on.failure do |failed_internship_agreement|
+          @internship_agreement = failed_internship_agreement || InternshipAgreement.find(params[:id])
+          render :edit, status: :bad_request
+        end
       end
     rescue ActionController::ParameterMissing
-      @internship_offer = InternshipAgreement.find(params[:id])
+      @internship_agreement = InternshipAgreement.find(params[:id])
+      @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request
     end
 
@@ -72,10 +75,13 @@ module Dashboard
               :schedule_rich_text,
               :activity_scope_rich_text,
               :activity_preparation_rich_text,
+              :financial_conditions_rich_text,
               :activity_learnings_rich_text,
               :activity_rating_rich_text,
               :financial_conditions,
               :terms_rich_text,
+              :school_manager_accept_terms,
+              :employer_accept_terms,
               weekly_hours:[],
               new_daily_hours:[]
               )

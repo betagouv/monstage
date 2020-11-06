@@ -1,4 +1,4 @@
-fieldset.mt-4 data-controller='internship-agreement-form'
+fieldset.mt-4
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
   .row
     .col-4.offset-md-8.text-center
@@ -41,7 +41,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :organisation_representative_full_name do
           = "L’entreprise ou l’organisme d’accueil, représentée par "
           = form.rg2a_required_content_tag
-        div class=((can? :change_organisation_representative_full_name, resource) ? 'valid-form-field' : '')  
+        div class=((can? :change_organisation_representative_full_name, resource) ? 'valid-form-field' : '')
           = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, disabled: !(can? :change_organisation_representative_full_name, resource), value: resource.organisation_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
           small.text-muted en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil
       p d’autre part,
@@ -53,9 +53,9 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :school_representative_full_name do
           = "Nom du représentant de l’établissement"
           = form.rg2a_required_content_tag
-        div class=((can? :change_school_representative_full_name, resource) ? 'valid-form-field' : '')
-          = form.text_field :school_representative_full_name, class: 'form-control', required: true, disabled: !(can? :change_school_representative_full_name, resource), value: resource.school_representative_full_name, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
-          small.text-muteden en qualité de chef d’établissement
+        .valid-form-field
+          = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
+          small.text-muted en qualité de chef d’établissement
     .col-4
       = render 'school_management_toolnote', resource: resource, content: 'Votre nom et prénom', active: (can? :change_school_representative_full_name, resource)
   .row.mt-3
@@ -81,7 +81,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :student_full_name do
           = "Nom de l’élève ou des élèves concerné(s)"
           = form.rg2a_required_content_tag
-        div class=((can? :change_student_full_name, resource) ? 'valid-form-field' : '')  
+        div class=((can? :change_student_full_name, resource) ? 'valid-form-field' : '')
           = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name, disabled: !(can? :change_student_full_name, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
       = render 'school_management_toolnote', resource: resource, content: "Nom et prénom de l'élève", active: (can? :change_student_full_name, resource)
@@ -91,7 +91,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         = form.label :student_class_room do
           = "Classe"
           = form.rg2a_required_content_tag
-        div class=((can? :change_student_class_room, resource) ? 'valid-form-field' : '')  
+        div class=((can? :change_student_class_room, resource) ? 'valid-form-field' : '')
           = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room, disabled: !(can? :change_student_class_room, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
     .col-4
       = render 'school_management_toolnote', resource: resource, content: "Classe de l'élève", active: (can? :change_student_class_room, resource)
@@ -210,10 +210,6 @@ fieldset.mt-4 data-controller='internship-agreement-form'
   .row.mt-3
     .col-8
       p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
-  .row.mt-3
-    .col-8
-      = button_tag :submit, class: 'btn btn-primary' do
-        i.fas.fa-pen
-        |  Signer&nbsp;
-
+  .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
+           locals: {form: form}
 

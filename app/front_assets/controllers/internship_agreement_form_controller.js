@@ -1,9 +1,8 @@
-import $ from 'jquery';
 import { Controller } from 'stimulus';
-import { showElement, hideElement } from '../utils/dom';
+import $ from 'jquery';
 
 export default class extends Controller {
-  static targets = ['displayButton', 'hideButton'];
+  static targets = [ 'displayButton', 'hideButton' ];
 
   toggleToolnote() {
     $('.tool-note').toggleClass('d-none');

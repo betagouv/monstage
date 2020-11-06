@@ -2,9 +2,10 @@
 
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
-  class InternshipAgreementBuilder
+  class InternshipAgreementBuilder < BuilderBase
 
     def new_from_application(internship_application)
+      authorize :new, InternshipAgreement
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
@@ -13,14 +14,45 @@ module Builders
       internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::TERMS}</div>"
       internship_agreement
     end
-   
+
+    def create(params:)
+      yield callback if block_given?
+      internship_agreement = InternshipAgreement.new(
+        {}.merge(preprocess_terms)
+          .merge(params)
+      )
+      authorize :create, internship_agreement
+      internship_agreement.save!
+      callback.on_success.try(:call, internship_agreement)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    end
+
+    def update(instance:, params:)
+      yield callback if block_given?
+      authorize :update, instance
+      instance.attributes = {}.merge(preprocess_terms)
+                              .merge(params)
+      instance.save!
+      callback.on_success.try(:call, instance)
+    rescue ActiveRecord::RecordInvalid => e
+      callback.on_failure.try(:call, e.record)
+    end
+
     private
 
-    attr_reader :user, :ability
+    attr_reader :user, :ability, :callback
 
     def initialize(user:)
       @user = user
       @ability = Ability.new(user)
+      @callback = Callback.new
+    end
+
+    def preprocess_terms
+      return { switch_school_manager_accept_terms: true } if user.is_a?(Users::SchoolManagement)
+      return { switch_employer_accept_terms: true } if user.is_a?(Users::Employer)
+      raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
     def preprocess_internship_offer_params(internship_offer)
@@ -44,10 +76,5 @@ module Builders
       }
     end
 
-    def authorize(*vargs)
-      return nil if ability.can?(*vargs)
-
-      raise CanCan::AccessDenied
-    end
   end
 end
