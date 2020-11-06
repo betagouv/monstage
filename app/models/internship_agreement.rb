@@ -15,7 +15,6 @@ class InternshipAgreement < ApplicationRecord
 
   has_rich_text :activity_scope_rich_text
   has_rich_text :activity_preparation_rich_text
-  has_rich_text :activity_schedule_rich_text
   has_rich_text :activity_learnings_rich_text
   has_rich_text :activity_rating_rich_text
   has_rich_text :financial_conditions_rich_text

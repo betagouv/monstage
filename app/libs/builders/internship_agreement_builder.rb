@@ -51,7 +51,8 @@ module Builders
         tutor_full_name: internship_offer.tutor_name,
         activity_scope_rich_text: internship_offer.title,
         activity_preparation_rich_text: internship_offer.description_rich_text.body,
-        activity_schedule_rich_text: preprocess_schedule(internship_offer),
+        new_daily_hours: internship_offer.new_daily_hours,
+        weekly_hours: internship_offer.weekly_hours,
       }
     end
 
@@ -65,13 +66,5 @@ module Builders
       }
     end
 
-    def preprocess_schedule(internship_offer)
-      if internship_offer.daily_hours.present?
-        internship_offer.daily_hours.map.with_index { |day, i| "<div>#{I18n.t('date.day_names')[i+1].capitalize} : #{day[0]} - #{day[1]}</div>" }.join("</br>")
-      end
-      if internship_offer.weekly_hours.present?
-        "<div>Du lundi au vendredi : #{internship_offer.weekly_hours[0]} - #{internship_offer.weekly_hours[1]}</div>"
-      end
-    end
   end
 end
