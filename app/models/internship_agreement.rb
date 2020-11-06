@@ -1,3 +1,13 @@
+# Agreements can be created/modified by two kind of user
+# - employer, allowed to manage following fields: TODO
+# - school_manager, allowed to manage following fields: TODO
+#
+# to switch/branch validation, we use an home made mechanism
+# which requires either one of those fields:
+# - enforce_employer_validation : forcing employer validations
+# - enforce_school_manager_validations : forcing school_manager validations
+#
+# only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
   # include AASM
   belongs_to :internship_application
