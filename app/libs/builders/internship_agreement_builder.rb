@@ -52,7 +52,7 @@ module Builders
     def preprocess_terms
       return { switch_school_manager_accept_terms: true } if user.is_a?(Users::SchoolManagement)
       return { switch_employer_accept_terms: true } if user.is_a?(Users::Employer)
-      raise 'whoop'
+      raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
     def preprocess_internship_offer_params(internship_offer)
