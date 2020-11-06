@@ -9,9 +9,9 @@
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
-  # include AASM
   belongs_to :internship_application
 
+  # todo flip based on current switch/branch
   validates :student_school,
             :school_representative_full_name,
             :student_full_name,
