@@ -11,7 +11,7 @@ module Builders
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
       )
       internship_agreement.internship_application = internship_application
-      internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::TERMS}</div>"
+      internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_LEGAL_TERMS}</div>"
       internship_agreement
     end
 
@@ -50,8 +50,8 @@ module Builders
     end
 
     def preprocess_terms
-      return { switch_school_manager_accept_terms: true } if user.is_a?(Users::SchoolManagement)
-      return { switch_employer_accept_terms: true } if user.is_a?(Users::Employer)
+      return { enforce_school_manager_validations: true } if user.is_a?(Users::SchoolManagement)
+      return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 

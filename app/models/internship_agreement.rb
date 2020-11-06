@@ -24,19 +24,19 @@ class InternshipAgreement < ApplicationRecord
   validates_inclusion_of :school_manager_accept_terms,
                          in: ['1', true],
                          message: :school_manager_accept_terms,
-                         if: :check_school_manager_accept_terms?
-  attr_accessor :switch_school_manager_accept_terms
+                         if: :enforce_school_manager_validations?
+  attr_accessor :enforce_school_manager_validations
 
   validates_inclusion_of :employer_accept_terms,
                          in: ['1', true],
                          message: :employer_accept_terms,
-                         if: :check_employer_accept_terms?
+                         if: :enforce_employer_validation?
 
-  attr_accessor :switch_employer_accept_terms
+  attr_accessor :enforce_employer_validations
 
-  validate :at_least_one_switch_to_accept_params_is_present
+  validate :at_least_one_validated_terms
 
-  TERMS = %Q(
+  CONVENTION_LEGAL_TERMS = %Q(
     <div>Article 1 - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
     <div>Article 2 - Les objectifs et les modalités de la séquence d’observation sont consignés dans l’annexe pédagogique.
@@ -64,21 +64,20 @@ class InternshipAgreement < ApplicationRecord
     <div>
   )
 
-  def at_least_one_switch_to_accept_params_is_present
+  def at_least_one_validated_terms
     return true if [school_manager_accept_terms, employer_accept_terms].any?
 
-    if [check_school_manager_accept_terms?, check_employer_accept_terms?].none?
+    if [enforce_school_manager_validations?, enforce_employer_validation?].none?
       errors.add(:school_manager_accept_terms, :school_manager_accept_terms)
       errors.add(:employer_accept_terms, :employer_accept_terms)
     end
   end
 
-  def check_school_manager_accept_terms?
-    switch_school_manager_accept_terms == true
+  def enforce_school_manager_validations?
+    enforce_school_manager_validations == true
   end
 
-  def check_employer_accept_terms?
-    switch_employer_accept_terms == true
+  def enforce_employer_validation?
+    enforce_employer_validations == true
   end
-
 end
