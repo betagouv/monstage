@@ -55,7 +55,19 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     can :change, :class_room unless user.school_manager?
-    can [:create, :update, :sign], InternshipAgreement do |agreement|
+    can %i[create
+           update
+           see_intro
+           change_school_representative_full_name
+           change_terms
+           change_student_full_name
+           change_student_class_room
+           change_student_school
+           change_main_teacher_full_name
+           change_activity_rating
+
+            
+          ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
     can :new, InternshipAgreement, internship_application_id: user.id
@@ -84,7 +96,17 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     # internship_offer mgmt
-    can :manage, InternshipAgreement
+    can %i[create
+           change_organisation_representative_full_name
+           change_tutor_full_name
+           change_start_date
+           change_end_date
+           change_activity_schedule
+           change_activity_scope
+           change_activity_preparation
+           change_activity_learnings
+           change_financial_conditions
+          ], InternshipAgreement
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
