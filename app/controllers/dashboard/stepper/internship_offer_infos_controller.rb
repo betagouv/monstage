@@ -70,6 +70,7 @@ module Dashboard::Stepper
               :weekly_start,
               :weekly_end,
               :daily_hours,
+              :school_track,
               week_ids: []
               )
     end
