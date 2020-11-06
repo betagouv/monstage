@@ -1,13 +1,19 @@
-fieldset.mt-4
+= render "layouts/form_errors", resource: resource
+
+.row.mt-4.align-items-center
+  .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
+  .col-4
+  .col-4.text-center
+    = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
+      | Afficher les notes
+      i.fa.fa-eye
+    = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
+      | Masquer les notes
+      i.fa.fa-eye-slash
+
+fieldset
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
-  .row
-    .col-4.offset-md-8.text-center
-      = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
-        | Afficher les notes
-        i.fa.fa-eye
-      = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
-        | Masquer les notes
-        i.fa.fa-eye-slash
+
   .row.mt-3
     .col-8
       .h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
