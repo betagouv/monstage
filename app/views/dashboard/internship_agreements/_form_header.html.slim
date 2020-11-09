@@ -1,0 +1,12 @@
+.row.mx-0.shadow-sm.pb-4
+  .col-md-auto.col-sm-12
+    = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                alt: "Mon stage de 3e",
+                height: 70
+  .col-md-9.col-sm-12
+    h1.h2 Votre convention de stage
+    .d-inline-flex
+      .span.pr-1
+        |Stage concerné:
+      h6.h6 = link_to internship_application.internship_offer.title,
+                      dashboard_internship_applications_path(internship_application)

@@ -1,16 +1,21 @@
-fieldset.mt-4 data-controller='internship-agreement-form'
+= render "layouts/form_errors", resource: resource
+
+.row.mt-4.align-items-center
+  .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
+  .col-4
+  .col-4.text-center
+    = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
+      | Afficher les notes
+      i.fa.fa-eye
+    = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
+      | Masquer les notes
+      i.fa.fa-eye-slash
+
+fieldset
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
-  .row
-    .col-4.offset-md-8.text-center
-      = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
-        | Afficher les notes
-        i.fa.fa-eye
-      = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
-        | Masquer les notes
-        i.fa.fa-eye-slash
+
   .row.mt-3
     .col-8
-      .h4 Annexe 2
       .h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
     .col-4
       .tool-note
@@ -35,10 +40,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
       .h5 entre
       p d’une part
     .col-4
-      .tool-note.active
-        .title Note au Chef d'Etablissement :
-        .content
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: (can? :see_intro, resource)
   .row.mt-3
     - label = "L’entreprise ou l’organisme d’accueil, représentée par "
     - title = "Note à l'entreprise"
@@ -62,6 +64,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
     - content = "Les articles sont modifiables selon vos spécificités locales."
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: 'terms', form: form, title: title, content: content, label: label, class_label:'h3' }
+
   .row.mt-3
     .col-12
       h5 TITRE II - DISPOSITIONS PARTICULIÈRES
@@ -120,46 +123,23 @@ fieldset.mt-4 data-controller='internship-agreement-form'
               "en milieu professionnel :"
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: 'activity_rating', form: form, label: label, title: "", content: "" }
+
   .row.mt-3
     .col-12
       h6 B - Annexe financière
   .row.mt-3
     .col-8
       .form-group
-        = form.label :housing do
-          = "Hébergement"
+        = form.label :financial_conditions do
+          = "Hébergement, Restauration, Transport, Assurance"
           = form.rg2a_required_content_tag
-        = form.rich_text_area :housing_rich_text, class: 'form-control'
+        div class=((can? :change_financial_conditions, resource) ? 'valid-form-field' : '')
+          = form.rich_text_area :financial_conditions_rich_text, class: 'form-control', disabled: !(can? :change_financial_conditions, resource), data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
+    .col-4
+      = render 'employer_toolnote', resource: resource, content: 'Toutes les modalités pratiques du stage.', active: (can? :change_financial_conditions, resource)
   .row.mt-3
     .col-8
-      .form-group
-        = form.label :food do
-          = "Restauration"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :food_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      .form-group
-        = form.label :transportation do
-          = "Transport"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :transportation_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      .form-group
-        = form.label :insurance do
-          = "Assurance"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :insurance_rich_text, class: 'form-control'
-  .row.mt-3
-    .col-8
-      p
-        = "Fait à #{resource.internship_application.student.school.city.capitalize}," \
-          " le #{(Date.current).strftime('%d/%m/%Y')}."
-  .row.mt-3
-    .col-8
-      = button_tag :submit, class: 'btn btn-primary' do
-        i.fas.fa-pen
-        |  Signer&nbsp;
-
+      p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+  .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
+           locals: {form: form}
 

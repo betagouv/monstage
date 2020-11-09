@@ -176,7 +176,7 @@ class InternshipOffer < ApplicationRecord
                     is_public group school_id coordinates first_date last_date
                     school_track
                     internship_offer_info_id organisation_id tutor_id
-                    weekly_hours daily_hours]
+                    weekly_hours new_daily_hours]
 
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
     internship_offer.description_rich_text = (if description_rich_text.present?

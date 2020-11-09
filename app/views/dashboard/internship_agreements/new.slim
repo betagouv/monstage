@@ -1,8 +1,11 @@
+= render partial: 'dashboard/internship_agreements/form_header',
+         locals: { internship_application: @internship_agreement.internship_application }
+
 .row.mx-5
   .col-12
-    h1.h2.mb-3 Signer la convention de stage
 
-    = form_for @internship_agreement, url: dashboard_internship_agreements_path(@internship_agreement) do |form|
-      = form.rg2a_explain_required_asterisk
-      = render "layouts/form_errors", resource: @internship_agreement
+    = form_for @internship_agreement,
+               url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+               class: 'form-offset-header',
+               html: {'data-controller': 'internship-agreement-form'} do |form|
       = render "form", form: form, resource: @internship_agreement

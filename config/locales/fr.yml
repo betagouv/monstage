@@ -5,7 +5,8 @@ fr:
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
-
+      school_manager_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
+      employer_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       not_saved:
         one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"
@@ -189,6 +190,10 @@ fr:
       messages:
         bad_email: "just ain't right"
       models:
+        internship_agreement:
+          attributes:
+            school_manager_accept_terms: "conditions d'utilisation de la signature"
+            employer_accept_terms: "conditions d'utilisation de la signature"
         organisation:
           attributes: &organisation_errors
             employer_name:

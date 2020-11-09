@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'csv'
 
 # school only exists a paris/bdx
@@ -325,11 +324,14 @@ def populate_aggreements
   application = InternshipApplication.find_by(aasm_state: 'approved')
   FactoryBot.create(
     :internship_agreement,
-    internship_application: application
+    internship_application: application,
+    employer_accept_terms: true
   )
 end
 
 if Rails.env == 'review' || Rails.env.development?
+  require 'factory_bot_rails'
+
   populate_week_reference
   populate_schools
   populate_class_rooms

@@ -468,7 +468,12 @@ CREATE TABLE public.internship_agreements (
     student_school character varying,
     tutor_full_name character varying,
     main_teacher_full_name character varying,
-    doc_date date
+    doc_date date,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
+    weekly_hours text[] DEFAULT '{}'::text[],
+    daily_hours text[] DEFAULT '{}'::text[],
+    new_daily_hours jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -588,7 +593,8 @@ CREATE TABLE public.internship_offer_infos (
     daily_hours text[] DEFAULT '{}'::text[],
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    new_daily_hours jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -733,7 +739,8 @@ CREATE TABLE public.internship_offers (
     organisation_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
-    tutor_id bigint
+    tutor_id bigint,
+    new_daily_hours jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2181,6 +2188,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200928150637'),
 ('20200929081733'),
 ('20200930155341'),
-('20201021131419');
+('20201021131419'),
+('20201104123113'),
+('20201105143719'),
+('20201106143850');
 
 

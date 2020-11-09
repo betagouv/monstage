@@ -1,7 +1,17 @@
+# Agreements can be created/modified by two kind of user
+# - employer, allowed to manage following fields: TODO
+# - school_manager, allowed to manage following fields: TODO
+#
+# to switch/branch validation, we use an home made mechanism
+# which requires either one of those fields:
+# - enforce_employer_validation : forcing employer validations
+# - enforce_school_manager_validations : forcing school_manager validations
+#
+# only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
-  # include AASM
   belongs_to :internship_application
 
+  # todo flip based on current switch/branch
   validates :student_school,
             :school_representative_full_name,
             :student_full_name,
@@ -15,16 +25,28 @@ class InternshipAgreement < ApplicationRecord
 
   has_rich_text :activity_scope_rich_text
   has_rich_text :activity_preparation_rich_text
-  has_rich_text :activity_schedule_rich_text
   has_rich_text :activity_learnings_rich_text
   has_rich_text :activity_rating_rich_text
-  has_rich_text :housing_rich_text
-  has_rich_text :insurance_rich_text
-  has_rich_text :transportation_rich_text
-  has_rich_text :food_rich_text
+  has_rich_text :financial_conditions_rich_text
   has_rich_text :terms_rich_text
 
-  TERMS = %Q(
+
+  validates_inclusion_of :school_manager_accept_terms,
+                         in: ['1', true],
+                         message: :school_manager_accept_terms,
+                         if: :enforce_school_manager_validations?
+  attr_accessor :enforce_school_manager_validations
+
+  validates_inclusion_of :employer_accept_terms,
+                         in: ['1', true],
+                         message: :employer_accept_terms,
+                         if: :enforce_employer_validation?
+
+  attr_accessor :enforce_employer_validations
+
+  validate :at_least_one_validated_terms
+
+  CONVENTION_LEGAL_TERMS = %Q(
     <div>Article 1 - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
     <div>Article 2 - Les objectifs et les modalités de la séquence d’observation sont consignés dans l’annexe pédagogique.
@@ -51,4 +73,21 @@ class InternshipAgreement < ApplicationRecord
     <div>Article 9 - La présente convention est signée pour la durée d’une séquence d’observation en milieu professionnel.
     <div>
   )
+
+  def at_least_one_validated_terms
+    return true if [school_manager_accept_terms, employer_accept_terms].any?
+
+    if [enforce_school_manager_validations?, enforce_employer_validation?].none?
+      errors.add(:school_manager_accept_terms, :school_manager_accept_terms)
+      errors.add(:employer_accept_terms, :employer_accept_terms)
+    end
+  end
+
+  def enforce_school_manager_validations?
+    enforce_school_manager_validations == true
+  end
+
+  def enforce_employer_validation?
+    enforce_employer_validations == true
+  end
 end
