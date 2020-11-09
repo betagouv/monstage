@@ -320,8 +320,6 @@ def populate_applications
   end
 end
 
-
-
 def populate_aggreements
   application = InternshipApplication.find_by(aasm_state: 'approved')
   FactoryBot.create(

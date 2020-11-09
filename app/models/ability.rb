@@ -91,11 +91,35 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
+    # These belong to the 'paragraphs' of the agreement form
+    can %i[
+      edit_school_representative_full_name
+      edit_terms
+      edit_student_class_room
+      edit_student_school
+      edit_main_teacher_full_name
+      edit_activity_rating
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
+    # cannot %i[
+    #   edit_organisation_representative_full_name
+    #   edit_tutor_full_name
+    #   edit_start_date
+    #   edit_end_date
+    #   edit_activity_schedule
+    #   edit_activity_scope
+    #   edit_activity_preparation
+    #   edit_activity_learnings
+    #   edit_financial_conditions
+    #   edit_student_full_name
+    # ], InternshipAgreement
   end
 
   def employer_abilities(user:)
     can :show, :account
     # internship_offer mgmt
+
     can %i[create
            change_organisation_representative_full_name
            change_tutor_full_name
@@ -107,6 +131,7 @@ class Ability
            change_activity_learnings
            change_financial_conditions
           ], InternshipAgreement
+
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
@@ -118,6 +143,30 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+    # These belong to the 'paragraphs' of the agreement form
+    can %i[
+      edit_organisation_representative_full_name
+      edit_tutor_full_name
+      edit_start_date
+      edit_end_date
+      edit_activity_schedule
+      edit_activity_scope
+      edit_activity_preparation
+      edit_activity_learnings
+      edit_financial_conditions
+    ], InternshipAgreement,
+       internship_application: {
+         internship_offer: { employer_id: user.id }
+       }
+    cannot %i[
+      edit_school_representative_full_name
+      edit_terms
+      edit_student_full_name
+      edit_student_class_room
+      edit_student_school
+      edit_main_teacher_full_name
+      edit_activity_rating
+    ], InternshipAgreement
   end
 
   def operator_abilities(user:)
