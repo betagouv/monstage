@@ -87,12 +87,12 @@ group :test do
   gem 'capybara-screenshot'
 end
 
-group :test, :development do
-  gem 'factory_bot_rails'
-end
-
 group :review do
   gem 'rest-client' # used by mailtrap for review apps
+end
+
+group :test, :development, :review do
+  gem 'factory_bot_rails'
 end
 
 
