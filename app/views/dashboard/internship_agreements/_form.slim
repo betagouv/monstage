@@ -3,7 +3,7 @@ fieldset.mt-4 data-controller='internship-agreement-form'
   .row
     .col-4.offset-md-8.text-center
       = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
-        | Afficher les notes 
+        | Afficher les notes
         i.fa.fa-eye
       = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
         | Masquer les notes
@@ -40,146 +40,91 @@ fieldset.mt-4 data-controller='internship-agreement-form'
         .content
           | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
   .row.mt-3
-    .col-8 
-      .form-group
-        = form.label :organisation_representative_full_name do
-          = "L’entreprise ou l’organisme d’accueil, représentée par "
-          = form.rg2a_required_content_tag
-        = form.text_field :organisation_representative_full_name, class: 'form-control', required: true, value: resource.organisation_representative_full_name
-        small.text-muted en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil
-      p d’autre part,
-    .col-4
-      .tool-note.inactive
-        .title Note à l'entreprise
-        .content
-          | Votre nom et prénom
+    - label = "L’entreprise ou l’organisme d’accueil, représentée par "
+    - title = "Note à l'entreprise"
+    - content = "Votre nom et prénom"
+    - hint = "en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'organisation_representative_full_name', form: form, label: label, hint: hint,title: title, content: content, value: resource.organisation_representative_full_name}
+  .row.mt-3
+    - label = "Nom du représentant de l’établissement"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Votre nom et prénom"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'school_representative_full_name', form: form, label: label, title: title, content: content,value: resource.school_representative_full_name}
 
   .row.mt-3
-    .col-8 
-      .form-group
-        = form.label :school_representative_full_name do
-          = "Nom du représentant de l’établissement"
-          = form.rg2a_required_content_tag
-        .valid-form-field
-          = form.text_field :school_representative_full_name, class: 'form-control', required: true, value: resource.school_representative_full_name
-          small.text-muteden en qualité de chef d’établissement
-    .col-4
-      .tool-note.active
-        .title Note au Chef d'Etablissement :
-        .content
-          | Votre nom et prénom
-
-  .row.mt-3
-    .col-8 
+    .col-8
       .h5 il a été convenu ce qui suit :
-
-      .form-group
-        = form.label :terms, class: 'h3' do
-          = "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
-          = form.rg2a_required_content_tag
-        div style='position: relative'
-          = form.rich_text_area :terms_rich_text, class: 'form-control editable-form-field'
-    .col-4
-      .tool-note
-        .title Note au Chef d'Etablissement :
-        .content
-          | Les articles sont modifiables selon vos spécificités locales.
-  
+  .row.mt-3
+    - label = "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Les articles sont modifiables selon vos spécificités locales."
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'terms', form: form, title: title, content: content, label: label, class_label:'h3' }
   .row.mt-3
     .col-12
       h5 TITRE II - DISPOSITIONS PARTICULIÈRES
     .col-12
       h6 A - Annexe pédagogique
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :student_full_name do
-          = "Nom de l’élève ou des élèves concerné(s)"
-          = form.rg2a_required_content_tag
-        = form.text_field :student_full_name, class: 'form-control', required: true, value: resource.student_full_name
+    - label = "Nom de l’élève ou des élèves concerné(s)"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'student_full_name', form: form, label: label, value: resource.student_full_name}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :student_class_room do
-          = "Classe"
-          = form.rg2a_required_content_tag
-        = form.text_field :student_class_room, class: 'form-control', required: true, value: resource.student_class_room
+    - label = "Classe"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'student_class_room', form: form, label: label, value: resource.student_class_room}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :student_school do
-          = "Établissement d’origine "
-          = form.rg2a_required_content_tag
-        = form.text_field :student_school, class: 'form-control', required: true, value: resource.student_school
+    - label = "Établissement d’origine "
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'student_school', form: form, label: label, value: resource.student_school}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :tutor_full_name do
-          = "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur"
-          = form.rg2a_required_content_tag
-        = form.text_field :tutor_full_name, class: 'form-control', required: true, value: resource.tutor_full_name
+    - label = "Nom et qualité du responsable de l’accueil " \
+              "en milieu professionnel du tuteur"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'tutor_full_name', form: form, label: label, value: resource.tutor_full_name}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :main_teacher_full_name do
-          = "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel"
-          = form.rg2a_required_content_tag
-        = form.text_field :main_teacher_full_name, class: 'form-control', required: true, value: resource.main_teacher_full_name
+    - label = "Nom du ou (des) enseignant(s) chargé(s) de suivre le " \
+              "déroulement de séquence d’observation en milieu professionnel"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'main_teacher_full_name', form: form, label: label, value: resource.main_teacher_full_name}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :start_date do
-          = "Dates de la séquence d’observation en milieu professionnel du"
-          = form.rg2a_required_content_tag
-        = form.date_field :start_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+    - label = "Dates de la séquence d’observation en milieu professionnel du"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'start_date', form: form, label: label, value: Time.now.strftime('%d/%m/%Y')}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :end_date do
-          = "Au"
-          = form.rg2a_required_content_tag
-        = form.date_field :end_date, value: Time.now.strftime('%d/%m/%Y'), class: 'form-control', required: true
+    - label = "Au"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: 'end_date', form: form, label: label, value: Time.now.strftime('%d/%m/%Y')}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :activity_schedule do
-          = "HORAIRES journaliers de l’élève"
-          = form.rg2a_required_content_tag
-        .required-form-field
-          = form.rich_text_area :activity_schedule_rich_text, class: 'form-control', required: true
+    - label = "HORAIRES journaliers de l’élève"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'activity_schedule', form: form, label: label, title: "", content: ""}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :activity_scope do
-          = "Objectifs assignés à la séquence d’observation en milieu professionnel"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_scope_rich_text, class: 'form-control', required: true
+    - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'activity_scope', form: form, label: label, title: "", content: ""}
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :activity_preparation do
-          = "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_preparation_rich_text, class: 'form-control', required: true
+    - label = "Modalités de la concertation qui sera assurée pour organiser la " \
+              "préparation, contrôler le déroulement de la période en vue " \
+              "d’une véritable complémentarité des enseignements reçus"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'activity_preparation', form: form, label: label, title: "", content: "" }
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :activity_learnings do
-          = "Compétences visées"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_learnings_rich_text, class: 'form-control', required: true
+    - label = "Compétences visées"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'activity_learnings', form: form, label: label, title: "", content: "" }
   .row.mt-3
-    .col-8
-      .form-group
-        = form.label :activity_rating do
-          = "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
-          = form.rg2a_required_content_tag
-        = form.rich_text_area :activity_rating_rich_text, class: 'form-control', required: true
+    - label = "Modalités d’évaluation de la séquence d’observation " \
+              "en milieu professionnel :"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: 'activity_rating', form: form, label: label, title: "", content: "" }
   .row.mt-3
     .col-12
       h6 B - Annexe financière
   .row.mt-3
-    .col-8      
+    .col-8
       .form-group
         = form.label :housing do
           = "Hébergement"
@@ -207,10 +152,12 @@ fieldset.mt-4 data-controller='internship-agreement-form'
           = form.rg2a_required_content_tag
         = form.rich_text_area :insurance_rich_text, class: 'form-control'
   .row.mt-3
-    .col-8    
-      p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+    .col-8
+      p
+        = "Fait à #{resource.internship_application.student.school.city.capitalize}," \
+          " le #{(Date.current).strftime('%d/%m/%Y')}."
   .row.mt-3
-    .col-8      
+    .col-8
       = button_tag :submit, class: 'btn btn-primary' do
         i.fas.fa-pen
         |  Signer&nbsp;
