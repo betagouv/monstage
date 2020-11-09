@@ -66,7 +66,10 @@ class Ability
            change_student_school
            change_main_teacher_full_name
            change_activity_rating
-          ], InternshipAgreement
+          ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
+
 
     can_manage_school(user: user) do
       can %i[edit update], School
