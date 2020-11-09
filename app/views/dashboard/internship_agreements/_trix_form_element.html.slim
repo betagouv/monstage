@@ -1,21 +1,24 @@
 .col-8
   - edit_enable = can?("edit_#{field}".to_sym, form.object)
   - class_label = class_label || ''
+
   .form-group [data-controller='rich-text-label'
-                data-rich-text-label-for="internship_agreement_#{field}_rich_text"
-                data-rich-text-label-enable="#{edit_enable.to_s}"]
-    = form.label "#{field}".to_sym do
-      div class="#{class_label}" = label
-      = form.rg2a_required_content_tag
+                data-rich-text-label-for="internship_agreement_#{field}"
+                data-rich-text-label-enable="#{edit_enable}"]
+
+
+    - if defined?(text_label)
+      = form.label field do
+        div class="#{class_label}"
+          = text_label
+          = form.rg2a_required_content_tag
+
     - if edit_enable
-      div id="#{field}_rich_text" class="required-form-field"
-        = form.rich_text_area "#{field}_rich_text".to_sym,
-                              class: 'form-control',
-                              required: true
+      div id="#{field}" class="required-form-field"
+        = form.rich_text_area field, class: 'form-control', required: true
     - else
-      div id="#{field}_rich_text" class="text-muted mt-2"
-        = form.rich_text_area "#{field}_rich_text".to_sym,
-                              class: 'form-control editable-form-field'
+      div id="#{field}" class="text-muted mt-2"
+        = form.rich_text_area field, class: 'form-control editable-form-field'
 - if title.present? && content.present?
   .col-4
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"

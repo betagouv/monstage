@@ -9,6 +9,7 @@ module Builders
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
+          .merge(preprocess_internship_application_paramns(internship_application))
       )
       internship_agreement.internship_application = internship_application
       internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_LEGAL_TERMS}</div>"
@@ -53,6 +54,12 @@ module Builders
       return { enforce_school_manager_validations: true } if user.is_a?(Users::SchoolManagement)
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
       raise ArgumentError, "#{user.type} can not create agreement yet"
+    end
+
+    def preprocess_internship_application_paramns(internship_application)
+      {
+        date_range: internship_application.week.short_select_text_method
+      }
     end
 
     def preprocess_internship_offer_params(internship_offer)

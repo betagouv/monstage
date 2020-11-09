@@ -1,21 +1,17 @@
 - edit_enable = can?("edit_#{field}".to_sym, form.object)
+
 - hint = hint || ''
 - title = title || ''
 - content = content || ''
 .col-8
   .form-group.mb-0
-    = form.label "#{field}.to_sym" do
-      .mb-2= label
+    = form.label field do
+      .mb-2= text_label
       = form.rg2a_required_content_tag
-    - if edit_enable
-      = form.text_field "#{field}.to_sym",
-                        class: 'form-control',
-                        required: true,
-                        value: "#{value}"
-    - else
-      .text-muted.mt-2.p-3.border
-        = form.object.try(field.to_sym)
-    small.text-muted.pl-3 = hint
+    = form.text_field field, class: 'form-control', required: true, disabled: !edit_enable
+    - if hint.present?
+      small.text-muted= hint
+
 .col-4
   - if title.present? && content.present?
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
