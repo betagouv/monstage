@@ -326,7 +326,8 @@ def populate_aggreements
   application = InternshipApplication.find_by(aasm_state: 'approved')
   FactoryBot.create(
     :internship_agreement,
-    internship_application: application
+    internship_application: application,
+    employer_accept_terms: true
   )
 end
 
