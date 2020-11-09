@@ -93,6 +93,7 @@ fieldset
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: 'main_teacher_full_name', form: form, label: label, value: resource.main_teacher_full_name}
   .row.mt-3
+
     - label = "Dates de la séquence d’observation en milieu professionnel du"
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: 'start_date', form: form, label: label, value: Time.now.strftime('%d/%m/%Y')}
@@ -101,9 +102,13 @@ fieldset
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: 'end_date', form: form, label: label, value: Time.now.strftime('%d/%m/%Y')}
   .row.mt-3
-    - label = "HORAIRES journaliers de l’élève"
-    = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: 'activity_schedule', form: form, label: label, title: "", content: ""}
+    / - label = "HORAIRES journaliers de l’élève"
+    .form-group
+      .label
+         = "HORAIRES journaliers de l’élève"
+         = form.rg2a_required_content_tag
+      = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
+
   .row.mt-3
     - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
     = render partial: 'dashboard/internship_agreements/trix_form_element',
