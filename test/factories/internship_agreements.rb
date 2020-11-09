@@ -8,7 +8,6 @@ FactoryBot.define do
     main_teacher_full_name { 'Paul Lefevbre' }
     organisation_representative_full_name { 'DGSE' }
     tutor_full_name { 'Julie Mentor' }
-    start_date { 10.days.from_now }
-    end_date { 17.days.from_now }
+    date_range { "du 10/10/2020 au 15/10/2020" }
   end
 end
