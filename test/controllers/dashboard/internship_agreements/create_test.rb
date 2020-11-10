@@ -18,17 +18,13 @@ module Dashboard::InternshipAgreements
         'main_teacher_full_name'                => internship_agreement.main_teacher_full_name,
         'organisation_representative_full_name' => internship_agreement.organisation_representative_full_name,
         'tutor_full_name'                       => internship_agreement.tutor_full_name,
-        'start_date'                            => internship_agreement.start_date,
-        'end_date'                              => internship_agreement.end_date,
+        'date_range'                            => "du 10/10/2020 au 15/10/2020",
         'activity_scope_rich_text'              => '<div>Activité Scope</div>',
         'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
-        'weekly_hours' => ['9h', '12h'],
+        'weekly_hours'                          => ['9h', '12h'],
         'activity_learnings_rich_text'          => '<div>Apprentissages</div>',
         'activity_rating_rich_text'             => '<div>Notations</div>',
-        'housing_rich_text'                     => '<div>Hébergement</div>',
-        'insurance_rich_text'                   => '<div>Assurance</div>',
-        'transportation_rich_text'              => '<div>Transport</div>',
-        'food_rich_text'                        => '<div>Restauration</div>',
+        'financial_conditions_rich_text'        => '<div>Hébergement, Assurance, Transport, Restauration</div>',
         'terms_rich_text'                       => '<div>Article 1</div>'
       }
 
@@ -51,6 +47,27 @@ module Dashboard::InternshipAgreements
       assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
+    end
+
+    test 'POST #create as School Manager fail when missing params' do
+      school = create(:school, :with_school_manager)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
+      class_room = create(:class_room, school: school)
+      internship_application.student.update(class_room_id: class_room.id, school_id: school.id)
+      sign_in(school.school_manager)
+
+      params = make_internship_agreement_params(internship_application).except(
+        'student_full_name',
+        'organisation_representative_full_name'
+       )
+      assert_no_difference('InternshipAgreement.count') do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+      assert_select 'li label[for=internshipagreement_student_full_name]',
+                    text: "Veuillez saisir le nom de l'élève"
+      assert_select 'li label[for=internshipagreement_organisation_representative_full_name]',
+                    text: "Veuillez saisir le nom du représentant de l'entreprise"              
     end
 
     test 'POST #create as School Manager fail when school_manager_accept_terms missing' do

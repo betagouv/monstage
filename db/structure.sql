@@ -454,8 +454,7 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 CREATE TABLE public.internship_agreements (
     id bigint NOT NULL,
-    start_date timestamp without time zone,
-    end_date timestamp without time zone,
+    date_range character varying NOT NULL,
     aasm_state character varying,
     internship_application_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
@@ -2190,6 +2189,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201021131419'),
 ('20201104123113'),
 ('20201105143719'),
-('20201106143850');
+('20201106143850'),
+('20201109145559');
 
 
