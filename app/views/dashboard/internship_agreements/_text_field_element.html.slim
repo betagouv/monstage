@@ -4,17 +4,17 @@
 - content = content || ''
 .col-8
   .form-group.mb-0
-    = form.label "#{field}.to_sym" do
+    = form.label "#{field}" do
       .mb-2= label
       = form.rg2a_required_content_tag
     - if edit_enable
-      = form.text_field "#{field}.to_sym",
+      = form.text_field "#{field}",
                         class: 'form-control',
                         required: true,
                         value: "#{value}"
     - else
-      .text-muted.mt-2.p-3.border
-        = form.object.try(field.to_sym)
+      .mt-2
+        input.form-control disabled=true type='text' value="#{value}" id="internship_agreement_#{field}"
     small.text-muted.pl-3 = hint
 .col-4
   - if title.present? && content.present?
