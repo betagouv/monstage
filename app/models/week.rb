@@ -4,7 +4,9 @@
 class Week < ApplicationRecord
   include FormatableWeek
   has_many :internship_offer_weeks, dependent: :destroy,
-                                    foreign_key: :internship_offer_id
+                                    foreign_key: :week_id
+  has_many :internship_applications, through: :internship_offer_weeks
+
   has_many :internship_offers, through: :internship_offer_weeks
 
   has_many :internship_offer_info_weeks, dependent: :destroy, 
