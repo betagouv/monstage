@@ -15,10 +15,10 @@
 
     - if edit_enable
       div id="#{field}" class="required-form-field"
-        = form.rich_text_area field, class: 'form-control', required: true
+        = form.rich_text_area field, class: 'form-control editable-form-field', required: true, data: { 'action': 'input->internship-agreement-form#checkRequiredTrixField' }
     - else
       div id="#{field}" class="text-muted mt-2"
-        = form.rich_text_area field, class: 'form-control editable-form-field'
+        = form.rich_text_area field, class: 'form-control '
 - if title.present? && content.present?
   .col-4
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"

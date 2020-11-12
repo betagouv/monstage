@@ -8,7 +8,10 @@
     = form.label field do
       .mb-2= text_label
       = form.rg2a_required_content_tag
-    = form.text_field field, class: 'form-control', required: true, disabled: !edit_enable
+    - if edit_enable
+      = form.text_field field, class: 'form-control', required: true, data: { 'action': 'input->internship-agreement-form#checkRequiredField' }
+    - else
+      = form.text_field field, class: 'form-control', required: true, disabled: true
     - if hint.present?
       small.text-muted= hint
 
