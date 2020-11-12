@@ -73,6 +73,16 @@ class InternshipAgreement < ApplicationRecord
     <div>
   )
 
+  CONVENTION_FINANCIAL_TERMS = %Q(
+    <div><strong>1 – HÉBERGEMENT</strong> Ajouter les conditions d'hébergement si besoin.</div>
+    <div><br/></div>
+    <div><strong>2 – RESTAURATION</strong> Ajouter les conditions de restauration si besoin.</div>
+    <div><br/></div>
+    <div><strong>3 – TRANSPORT</strong> Ajouter les conditions de transport si besoin.</div>
+    <div><br/></div>
+    <div><strong>4 – ASSURANCE</strong> Ajouter les conditions d'assurance si besoin.</div>
+  )
+
   def at_least_one_validated_terms
     return true if [school_manager_accept_terms, employer_accept_terms].any?
 
