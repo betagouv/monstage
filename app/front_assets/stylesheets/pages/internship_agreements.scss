@@ -111,3 +111,12 @@
   top: 35px;
   left: -55px;
 }
+
+.trix-header-vanisher {
+  trix-toolbar{
+    display: none;
+  }
+  trix-editor:read-only{
+    background-color: $secondary;
+  }
+}

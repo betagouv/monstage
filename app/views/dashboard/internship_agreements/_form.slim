@@ -103,9 +103,8 @@ fieldset
               "déroulement de séquence d’observation en milieu professionnel :"
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: :main_teacher_full_name, form: form, text_label: label}
-
   .row.mt-3
-    - label = "Dates de la séquence d’observation en milieu professionnel du"
+    - label = "Dates de la séquence d’observation en milieu professionnel du"
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: :date_range, form: form, text_label: label }
 
