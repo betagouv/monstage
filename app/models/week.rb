@@ -71,7 +71,7 @@ class Week < ApplicationRecord
     end
   end
 
-  # check if a weeks has internship application
+  # used to check if a week has any ongoing internship_application (so we avoid unlinking an offer/school and create orphan data)
   def has_applications?(root:)
     if root.is_a?(InternshipOffer)
       internship_applications.where(internship_offer_weeks: { week_id: self.id, internship_offer_id: root.id })
