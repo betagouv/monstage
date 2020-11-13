@@ -70,4 +70,22 @@ class Week < ApplicationRecord
       field :year
     end
   end
+
+  # check if a weeks has internship application
+  def has_applications?(root:)
+    if root.is_a?(InternshipOffer)
+      internship_applications.where(internship_offer_weeks: { week_id: self.id, internship_offer_id: root.id })
+                             .count
+                             .positive?
+    elsif root.is_a?(School)
+      internship_applications.where(student: root.students)
+                             .count
+                             .positive?
+    elsif root.is_a?(InternshipOfferInfo)
+      return false
+    else
+
+      raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
+    end
+  end
 end

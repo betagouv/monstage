@@ -25,7 +25,7 @@ module Dashboard::Stepper
         available_weeks = Week.selectable_from_now_until_end_of_school_year
         asserted_input_count = 0
         available_weeks.each do |week|
-          assert_select "input[id=internship_offer_info_week_ids_#{week.id}]"
+          assert_select "input[id=internship_offer_info_week_ids_#{week.id}]_checkbox"
           asserted_input_count += 1
         end
         assert asserted_input_count.positive?
