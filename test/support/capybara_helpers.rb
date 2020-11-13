@@ -28,4 +28,8 @@ module CapybaraHelpers
     tested_word = should_be_editable ? test_word : ''
     find_trix_editor(id).assert_text(tested_word)
   end
+
+  def select_editable?(id, should_be_selectable)
+    find("select[id='#{id}']")['disabled'] == should_be_selectable
+  end
 end

@@ -5,10 +5,7 @@ module Dashboard
     include Devise::Test::IntegrationHelpers
     include CapybaraHelpers
 
-
-
     test 'as Employer, I can edit my own fields only' do
-      # t1 = Time.now
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
       school = create(:school, :with_school_manager)
@@ -21,10 +18,7 @@ module Dashboard
                                       )
       sign_in(employer)
 
-      # Pages workflow
-      visit dashboard_internship_offers_path
-      find("div.my-auto span.red-notification-badge").click
-      find('a.btn.btn-primary.btn-sm.ml-2.text-nowrap').click
+      visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
       find('h1.h2', text: 'Votre convention de stage')
       find('h6.h6.test-header a', text: internship_offer.title)
 
@@ -60,8 +54,8 @@ module Dashboard
       within '.schedules' do
         assert_text('Lundi')
         assert_text('Samedi')
-        select('--', from: 'internship_agreement_new_daily_hours_samedi_start')
-        select('--', from: 'internship_agreement_new_daily_hours_samedi_end')
+        select_editable?('internship_agreement_new_daily_hours_samedi_start', true)
+        select_editable?('internship_agreement_new_daily_hours_samedi_end', true)
       end
 
       # Trix fields tests
@@ -113,16 +107,11 @@ module Dashboard
       field_edit_is_not_allowed?(label: "Dates de la séquence d’observation en milieu professionnel du",
                                  id: 'internship_agreement_date_range')
       #Schedule fields tests
-      assert execute_script("return document.getElementById('same_daily_planning').checked")
       execute_script("document.getElementById('same_daily_planning').checked = false")
-      refute execute_script("return document.getElementById('same_daily_planning').checked")
       execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
-
       within '.schedules' do
-        assert_text('Lundi')
-        assert_text('Samedi')
-        select('--', from: 'internship_agreement_new_daily_hours_samedi_start')
-        select('--', from: 'internship_agreement_new_daily_hours_samedi_end')
+        select_editable?('internship_agreement_weekly_hours_start', false)
+        select_editable?('internship_agreement_weekly_hours_end', false)
       end
 
       # Trix fields tests

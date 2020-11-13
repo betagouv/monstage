@@ -136,6 +136,7 @@ class Ability
       edit_activity_preparation
       edit_activity_learnings
       edit_financial_conditions
+      edit_weekly_hours
     ], InternshipAgreement,
        internship_application: {
          internship_offer: { employer_id: user.id }
