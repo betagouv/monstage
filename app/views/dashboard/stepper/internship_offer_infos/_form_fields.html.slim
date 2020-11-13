@@ -73,7 +73,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
           small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
         = form.number_field :max_candidates, value: resource.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !resource.is_fully_editable?, data: { target: "internship-offer-infos.maxCandidatesInput" }
 
-      div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, disabled: !resource.is_fully_editable?, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
+      div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, select_all: true, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 
       = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { internship_offer: resource }
 
