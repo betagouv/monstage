@@ -3,7 +3,40 @@ require 'application_system_test_case'
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
-    include CapybaraHelpers
+
+    def field_edit_is_allowed?(label:, id: nil)
+      test_word = 'test word'
+      if label.present?
+        id.present? ? fill_in(label, id: id, with: test_word) : fill_in(label, with: test_word)
+        assert find_field(label).value == test_word
+      end
+      true
+    end
+
+    def field_edit_is_not_allowed?(label: nil, id: nil)
+      assert find("input##{id}")['disabled'] == 'true' if id.present?
+      assert find_field(label, disabled: true) if label.present?
+      true
+    end
+
+    def fill_in_trix_editor(id, with:)
+      find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
+    end
+
+    def find_trix_editor(id)
+      find(:xpath, "//*[@id='#{id}']")
+    end
+
+    def trix_editor_editable?(id, should_be_editable)
+      test_word = 'test_word'
+      fill_in_trix_editor id, with: test_word
+      tested_word = should_be_editable ? test_word : ''
+      find_trix_editor(id).assert_text(tested_word)
+    end
+
+    def select_editable?(id, should_be_selectable)
+      find("select[id='#{id}']")['disabled'] == should_be_selectable
+    end
 
     test 'as Employer, I can edit my own fields only' do
       employer = create(:employer)
@@ -75,9 +108,7 @@ module Dashboard
     end
 
     test 'as School Manager, I can edit my own fields only' do
-      # t1 = Time.now
-      employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:weekly_internship_offer)
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
