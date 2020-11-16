@@ -65,8 +65,8 @@ class School < ApplicationRecord
     name
   end
 
-  def class_prefix_for_multiple_checkboxes
-    'school'
+  def email_domain_name
+    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
 
   def email_domain_name
