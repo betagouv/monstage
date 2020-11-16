@@ -5,6 +5,18 @@ import { attach, detach, EVENT_LIST } from '../utils/events';
 import { endpoints } from '../utils/api';
 import { fetch } from 'whatwg-fetch';
 
+// @schools [School, School, School]
+// return {weekId: [school, ...]}
+const mapNumberOfSchoolHavingWeek = (schools) => {
+  const weeksSchoolsHash = {}
+
+  $(schools).each((i, school) => {
+    $(school.weeks).each((i,week)=>{
+      weeksSchoolsHash[week.id] = (weeksSchoolsHash[week.id]||[]).concat([school])
+    })
+  });
+  return weeksSchoolsHash
+}
 export default class extends Controller {
   static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend'];
 
@@ -40,17 +52,10 @@ export default class extends Controller {
       .then(this.onApiSchoolsNearbySuccess);
   }
 
-  // schools [School, School, School]
   showSchoolDensityPerWeek(schools) {
-    const weeksSchoolsHash = {}
+    const weeksSchoolsHash = mapNumberOfSchoolHavingWeek(schools);
 
-    $(schools).each((i, school) => {
-      $(school.weeks).each((i,week)=>{
-        weeksSchoolsHash[week.id] = (weeksSchoolsHash[week.id]||[]).concat([school])
-      })
-    });
-
-    $(this.inputWeekLegendTargets).each( (i, el) =>{
+    $(this.inputWeekLegendTargets).each( (i, el) => {
       const weekId = parseInt(el.getAttribute('data-week-id'), 10);
       const schoolCountOnWeek = (weeksSchoolsHash[weekId] || []).length
 
