@@ -87,7 +87,7 @@ group :test do
   gem 'capybara-screenshot'
 end
 
-group :test, :development do
+group :test, :development, :review do
   gem 'factory_bot_rails'
 end
 
