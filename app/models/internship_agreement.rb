@@ -30,6 +30,12 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :terms_rich_text
 
 
+  validates_inclusion_of :main_teacher_accept_terms,
+                         in: ['1', true],
+                         message: :main_teacher_accept_terms,
+                         if: :enforce_main_teacher_validations?
+  attr_accessor :enforce_main_teacher_validations
+
   validates_inclusion_of :school_manager_accept_terms,
                          in: ['1', true],
                          message: :school_manager_accept_terms,
@@ -84,12 +90,20 @@ class InternshipAgreement < ApplicationRecord
   )
 
   def at_least_one_validated_terms
-    return true if [school_manager_accept_terms, employer_accept_terms].any?
+    return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
 
-    if [enforce_school_manager_validations?, enforce_employer_validation?].none?
+    if [enforce_employer_validation?,
+        enforce_main_teacher_validations?,
+        enforce_school_manager_validations?
+       ].none?
+      errors.add(:main_teacher_accept_terms, :main_teacher_accept_terms)
       errors.add(:school_manager_accept_terms, :school_manager_accept_terms)
       errors.add(:employer_accept_terms, :employer_accept_terms)
     end
+  end
+
+  def enforce_main_teacher_validations?
+    enforce_main_teacher_validations == true
   end
 
   def enforce_school_manager_validations?
