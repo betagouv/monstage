@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
+import { endpoints } from '../../utils/api'
 import { broadcast, newCoordinatesChanged } from '../../utils/events'
 
 // see: https://geo.api.gouv.fr/adresse
@@ -33,16 +34,7 @@ export default function AddressInput({
   };
 
   const searchCityByAddress = () => {
-    const endpoint = new URL(
-      `${document.location.protocol}//${document.location.host}/api_address_proxy/search`
-    );
-    const searchParams = new URLSearchParams();
-
-    searchParams.append('q', fullAddress);
-    searchParams.append('limit', 10);
-    endpoint.search = searchParams.toString();
-
-    fetch(endpoint)
+    fetch(endpoints.apiSearchAddress({fullAddress}))
       .then((response) => response.json())
       .then((json) => setSearchResults(json.features));
   };
@@ -67,7 +59,6 @@ export default function AddressInput({
   }, [fullAddressDebounced]);
 
   useEffect(() => {
-    console.log('lat/lon changed', latitude,longitude);
     broadcast(newCoordinatesChanged({ latitude:latitude, longitude:longitude }));
   }, [latitude, longitude])
   return (

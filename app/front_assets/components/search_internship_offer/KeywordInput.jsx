@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import focusedInput from './FocusedInput';
+import { endpoints } from '../../utils/api'
 import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
@@ -20,15 +21,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
   };
 
   const searchKeyword = () => {
-    const endpoint = new URL(
-      `${document.location.protocol}//${document.location.host}/internship_offer_keywords/search`,
-    );
-    const searchParams = new URLSearchParams();
-
-    searchParams.append('keyword', keyword);
-    endpoint.search = searchParams.toString();
-
-    fetch(endpoint, { method: 'POST' })
+    fetch(endpoints.apiInternshipOfferKeywordsSearch({keyword}), { method: 'POST' })
       .then((response) => response.json())
       .then(setSearchResults);
   };
