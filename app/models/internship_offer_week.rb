@@ -2,8 +2,8 @@
 
 class InternshipOfferWeek < ApplicationRecord
   include Weekable
+
   belongs_to :internship_offer, counter_cache: true
-  # inverse_of: :internship_offer_weeks
 
   has_many :internship_applications, dependent: :destroy
 

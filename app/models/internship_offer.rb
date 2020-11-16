@@ -196,10 +196,6 @@ class InternshipOffer < ApplicationRecord
     internship_offer
   end
 
-  def class_prefix_for_multiple_checkboxes
-    'internship_offer'
-  end
-
   def preset_published_at_to_now
     self.published_at = Time.now
   end

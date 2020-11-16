@@ -296,27 +296,33 @@ def populate_applications
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
   bac_pro_studs.each do |bac_pro_stud|
-    FactoryBot.create(
-      :free_date_internship_application,
-      :submitted,
+    InternshipApplications::FreeDate.create!(
+      aasm_state: :submitted,
+      submitted_at: 10.days.ago,
       internship_offer: bac_pro_offers.first,
+      motivation: 'Au taquet',
       student: bac_pro_stud
     )
   end
   troisieme_generale_offers.each do |io_trois_gene|
-    FactoryBot.create(
-      :weekly_internship_application,
-      :submitted,
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :submitted,
+      submitted_at: 10.days.ago,
+      student: trois_gene_studs.first,
+      motivation: 'Au taquet',
       internship_offer: io_trois_gene,
-      student: trois_gene_studs.first
+      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
   if trois_gene_studs&.second
-    FactoryBot.create(
-      :weekly_internship_application,
-      :approved,
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.second,
+      motivation: 'Au taquet',
       internship_offer: troisieme_generale_offers.first,
-      student: trois_gene_studs.second
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
   end
 end
