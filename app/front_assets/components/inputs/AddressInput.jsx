@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
+import { broadcast, newCoordinatesChanged } from '../../utils/events'
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
@@ -65,6 +66,10 @@ export default function AddressInput({
     }
   }, [fullAddressDebounced]);
 
+  useEffect(() => {
+    console.log('lat/lon changed', latitude,longitude);
+    broadcast(newCoordinatesChanged({ latitude:latitude, longitude:longitude }));
+  }, [latitude, longitude])
   return (
     <div>
       <div className="form-group" id="test-input-full-address">

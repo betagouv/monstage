@@ -22,9 +22,6 @@ module Api
       post search_api_schools_path, params: { query: 'Paris' }
       parisian_schools_key = json_response.keys.first
       first_parisian_school = json_response[parisian_schools_key].first
-
-      # assert_hash_contains(JSON.parse(parisian_school.to_json).except("pg_search_highlight"),
-      #                      first_parisian_school.except("pg_search_highlight"))
     end
 
     test 'POST#nearby with lat/lng/radius' do

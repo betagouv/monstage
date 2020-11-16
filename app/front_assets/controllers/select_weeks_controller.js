@@ -1,16 +1,61 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
 import { showElement, hideElement } from '../utils/dom';
+import { attach, detach, EVENT_LIST } from '../utils/events';
+import { endpoints } from '../utils/api';
+import { fetch } from 'whatwg-fetch';
 
 export default class extends Controller {
-  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint'];
+  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend'];
 
   connect() {
     if (this.getForm() === null) {
       return;
     }
 
-    $(this.getForm()).on('submit', this.handleSubmit.bind(this));
+    this.onCoordinatesChangedRef = this.fetchSchoolsNearby.bind(this)
+    this.onSubmitRef = this.handleSubmit.bind(this);
+    this.onApiSchoolsNearbySuccess = this.showSchoolDensityPerWeek.bind(this);
+
+    this.attachEventListeners()
+  }
+
+  disconnect() {
+    this.detachEventListeners();
+  }
+
+  attachEventListeners() {
+    attach(EVENT_LIST.COORDINATES_CHANGED, this.onCoordinatesChangedRef);
+    $(this.getForm()).on('submit', this.onSubmitRef);
+  }
+
+  detachEventListeners() {
+    detach(EVENT_LIST.COORDINATES_CHANGED, this.onCoordinatesChangedRef);
+    $(this.getForm()).off('submit',this.onSubmitRef);
+  }
+
+  fetchSchoolsNearby(event) {
+    fetch(endpoints.apiSchoolsNearby(event.detail), { method: 'POST' })
+      .then((response) => response.json())
+      .then(this.onApiSchoolsNearbySuccess);
+  }
+
+  // schools [School, School, School]
+  showSchoolDensityPerWeek(schools) {
+    const weeksSchoolsHash = {}
+
+    $(schools).each((i, school) => {
+      $(school.weeks).each((i,week)=>{
+        weeksSchoolsHash[week.id] = (weeksSchoolsHash[week.id]||[]).concat([school])
+      })
+    });
+
+    $(this.inputWeekLegendTargets).each( (i, el) =>{
+      const weekId = parseInt(el.getAttribute('data-week-id'), 10);
+      const schoolCountOnWeek = (weeksSchoolsHash[weekId] || []).length
+
+      el.innerText = `${schoolCountOnWeek.toString()} etbs`;
+    })
   }
 
   // toggle all weeks options

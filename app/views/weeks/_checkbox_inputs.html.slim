@@ -17,7 +17,7 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
 
     div class="custom-control-checkbox-list #{preselect_all ? 'd-none' : ''}" data-target="select-weeks.checkboxesContainer"
       - current_weeks.map do |week|
-        .custom-control.custom-checkbox
+        .custom-control.custom-checkbox data-id="#{week.id}" data-year="#{week.year}" data-number="#{week.number}"
           - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
           - has_applications = week.has_applications?(root: form.object)
           - # keep reference of checkbox id for easier labelling
@@ -32,5 +32,8 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
 
           = form.label :"week_id", for: checkbox_id, class: 'custom-control-label' do
             = week.select_text_method
+
+          div data-target='select-weeks.inputWeekLegend' data-week-id=week.id
+            | ?
 
     small.form-text.text-danger.d-none data-target="select-weeks.hint" Veuillez saisir au moins une semaine de stage
