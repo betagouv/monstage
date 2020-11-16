@@ -6,6 +6,8 @@ module Api
     include PgSearch::Model
 
     has_many :class_rooms, dependent: :destroy
+    has_many :school_internship_weeks, dependent: :destroy
+    has_many :weeks, through: :school_internship_weeks
 
     pg_search_scope :search_by_name_and_city,
                     against: {
@@ -33,9 +35,9 @@ module Api
     def as_json(options = {})
       super(options.merge(only: %i[id name department zipcode],
                           methods: %i[class_rooms] +
-                                   %i[name city] +
-                                   %i[pg_search_highlight_city
-                                      pg_search_highlight_name]))
+                                   %i[name city]) do |key,default,options|
+                                    default+options
+                                   end)
     end
 
     # private
