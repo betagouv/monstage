@@ -5,6 +5,7 @@ fr:
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
+      main_teacher_accpet_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       school_manager_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       employer_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       not_saved:

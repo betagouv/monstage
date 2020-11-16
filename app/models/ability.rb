@@ -56,20 +56,38 @@ class Ability
 
     can :change, :class_room unless user.school_manager?
 
-    can %i[create
+    if user.role == 'school_manager'
+      can %i[create
            update
            see_intro
            change_school_representative_full_name
            change_terms_rich_text
            change_student_full_name
-           change_student_class_room
            change_student_school
-           change_main_teacher_full_name
-           change_activity_rating
+           edit_terms_rich_text
+           edit_school_representative_full_name
+           edit_student_school
+           edit_financial_conditions_rich_text
           ], InternshipAgreement do |agreement|
-      agreement.internship_application.student.school_id == user.school_id
+        agreement.internship_application.student.school_id == user.school_id
+      end
     end
 
+    if user.role == 'main_teacher'
+      can %i[create
+           update
+           see_intro
+           change_main_teacher_full_name
+           change_activity_rating
+           change_student_class_room
+           edit_student_class_room
+           edit_main_teacher_full_name
+           edit_activity_rating_rich_text
+           edit_activity_preparation_rich_text
+          ], InternshipAgreement do |agreement|
+        agreement.internship_application.student.school_id == user.school_id
+      end
+    end
 
     can_manage_school(user: user) do
       can %i[edit update], School
@@ -90,18 +108,6 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
-
-    can %i[
-      edit_terms_rich_text
-      edit_school_representative_full_name
-      edit_student_class_room
-      edit_student_school
-      edit_main_teacher_full_name
-      edit_activity_rating_rich_text
-      edit_financial_conditions_rich_text
-    ], InternshipAgreement do |agreement|
-      agreement.internship_application.student.school_id == user.school_id
-    end
   end
 
   def employer_abilities(user:)
@@ -111,7 +117,6 @@ class Ability
            edit_tutor_full_name
            edit_date_range
            edit_activity_scope_rich_text
-           edit_activity_preparation_rich_text
            edit_activity_learnings_rich_text
           ], InternshipAgreement
 
@@ -133,7 +138,6 @@ class Ability
       edit_date_range
       edit_activity_schedule
       edit_activity_scope
-      edit_activity_preparation
       edit_activity_learnings
       edit_financial_conditions
       edit_weekly_hours
@@ -157,7 +161,6 @@ class Ability
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
-
 
     can %i[index update], InternshipApplication
     can :show, :api_token
