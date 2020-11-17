@@ -5,18 +5,17 @@
 
 // keep list of event formatted here
 export const EVENT_LIST = {
-  COORDINATES_CHANGED: 'coordinates-changed'
-}
+  COORDINATES_CHANGED: 'coordinates-changed',
+};
 
 // keep event builder here
-export const newCoordinatesChanged = ({latitude, longitude}) => {
+export const newCoordinatesChanged = ({ latitude, longitude }) => {
   return new CustomEvent(EVENT_LIST.COORDINATES_CHANGED, {
-    detail: { latitude: latitude,
-              longitude: longitude }
+    detail: { latitude, longitude },
   });
-}
+};
 
 // use default DOM event model
-export const attach = (eventName, handler) => document.addEventListener(eventName, handler)
-export const detach = (eventName, handler) => document.removeEventListener(eventName, handler)
-export const broadcast = (event) => document.dispatchEvent(event)
+export const attach = (eventName, handler) => document.addEventListener(eventName, handler);
+export const detach = (eventName, handler) => document.removeEventListener(eventName, handler);
+export const broadcast = (event) => document.dispatchEvent(event);

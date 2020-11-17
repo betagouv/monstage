@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
-import focusedInput from './FocusedInput';
-import { endpoints } from '../../utils/api'
 import { fetch } from 'whatwg-fetch';
+import focusedInput from './FocusedInput';
+import { endpoints } from '../../utils/api';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
@@ -21,7 +21,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
   };
 
   const searchKeyword = () => {
-    fetch(endpoints.apiInternshipOfferKeywordsSearch({keyword}), { method: 'POST' })
+    fetch(endpoints.apiInternshipOfferKeywordsSearch({ keyword }), { method: 'POST' })
       .then((response) => response.json())
       .then(setSearchResults);
   };
@@ -74,7 +74,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
               id: 'input-search-by-keyword',
               name: 'keyword',
               placeholder: 'Profession',
-              "aria-label": "Rechercher par Profession",
+              'aria-label': 'Rechercher par Profession',
               onFocus: () => {
                 setFocus(COMPONENT_FOCUS_LABEL);
               },
@@ -84,7 +84,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
             <ul
               {...getMenuProps({
                 className: 'p-0 m-0',
-                "aria-labelledby": 'input-search-by-keyword',
+                'aria-labelledby': 'input-search-by-keyword',
               })}
             >
               {isOpen

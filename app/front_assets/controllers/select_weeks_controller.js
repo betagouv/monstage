@@ -1,22 +1,22 @@
 import $ from 'jquery';
 import { Controller } from 'stimulus';
+import { fetch } from 'whatwg-fetch';
 import { showElement, hideElement } from '../utils/dom';
 import { attach, detach, EVENT_LIST } from '../utils/events';
 import { endpoints } from '../utils/api';
-import { fetch } from 'whatwg-fetch';
 
 // @schools [School, School, School]
 // return {weekId: [school, ...]}
 const mapNumberOfSchoolHavingWeek = (schools) => {
-  const weeksSchoolsHash = {}
+  const weeksSchoolsHash = {};
 
-  $(schools).each((i, school) => {
-    $(school.weeks).each((i,week)=>{
-      weeksSchoolsHash[week.id] = (weeksSchoolsHash[week.id]||[]).concat([school])
-    })
+  $(schools).each((ischool, school) => {
+    $(school.weeks).each((iweek, week) => {
+      weeksSchoolsHash[week.id] = (weeksSchoolsHash[week.id] || []).concat([school]);
+    });
   });
-  return weeksSchoolsHash
-}
+  return weeksSchoolsHash;
+};
 export default class extends Controller {
   static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend'];
 
@@ -25,11 +25,11 @@ export default class extends Controller {
       return;
     }
 
-    this.onCoordinatesChangedRef = this.fetchSchoolsNearby.bind(this)
+    this.onCoordinatesChangedRef = this.fetchSchoolsNearby.bind(this);
     this.onSubmitRef = this.handleSubmit.bind(this);
     this.onApiSchoolsNearbySuccess = this.showSchoolDensityPerWeek.bind(this);
 
-    this.attachEventListeners()
+    this.attachEventListeners();
   }
 
   disconnect() {
@@ -43,7 +43,7 @@ export default class extends Controller {
 
   detachEventListeners() {
     detach(EVENT_LIST.COORDINATES_CHANGED, this.onCoordinatesChangedRef);
-    $(this.getForm()).off('submit',this.onSubmitRef);
+    $(this.getForm()).off('submit', this.onSubmitRef);
   }
 
   fetchSchoolsNearby(event) {
@@ -55,31 +55,31 @@ export default class extends Controller {
   showSchoolDensityPerWeek(schools) {
     const weeksSchoolsHash = mapNumberOfSchoolHavingWeek(schools);
 
-    $(this.inputWeekLegendTargets).each( (i, el) => {
+    $(this.inputWeekLegendTargets).each((i, el) => {
       const weekId = parseInt(el.getAttribute('data-week-id'), 10);
-      const schoolCountOnWeek = (weeksSchoolsHash[weekId] || []).length
+      const schoolCountOnWeek = (weeksSchoolsHash[weekId] || []).length;
 
       el.innerText = `${schoolCountOnWeek.toString()} etbs`;
-    })
+    });
   }
 
   // toggle all weeks options
   handleToggleWeeks(event) {
-    if($('#all_year_long').is(":checked")){
-      $(".custom-control-checkbox-list").addClass('d-none')
-      $(".custom-control-checkbox-list").hide()
+    if ($('#all_year_long').is(':checked')) {
+      $('.custom-control-checkbox-list').addClass('d-none');
+      $('.custom-control-checkbox-list').hide();
     } else {
-      $(".custom-control-checkbox-list").hide()
-      $(".custom-control-checkbox-list").removeClass('d-none')
-      $(".custom-control-checkbox-list").slideDown()
+      $('.custom-control-checkbox-list').hide();
+      $('.custom-control-checkbox-list').removeClass('d-none');
+      $('.custom-control-checkbox-list').slideDown();
     }
 
     $(this.weekCheckboxesTargets).each((i, el) => {
       $(el).prop('checked', $(event.target).prop('checked'));
     });
-    if(event.target.checked){
-       hideElement($(this.checkboxesContainerTarget));
-    } else{
+    if (event.target.checked) {
+      hideElement($(this.checkboxesContainerTarget));
+    } else {
       showElement($(this.checkboxesContainerTarget));
     }
   }
