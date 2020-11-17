@@ -115,7 +115,7 @@ fieldset
              locals: { field: :main_teacher_full_name, form: form, text_label: label, content: content, title: title}
 
   .row.mt-3
-    - label = "Dates de la séquence d’observation en milieu professionnel du"
+    - label = "Dates de la séquence d’observation en milieu professionnel du"
     - title = "Note à l'entreprise"
     - content = "Date de début et fin du stage"
     = render partial: 'dashboard/internship_agreements/text_field_element',
@@ -123,7 +123,7 @@ fieldset
 
   .row.mt-3
     .col-8
-      .form-group
+      .form-group.schedules
         .label
            = "HORAIRES journaliers de l’élève"
            = form.rg2a_required_content_tag
@@ -140,7 +140,9 @@ fieldset
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content}
   .row.mt-3
-    - label = "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus"
+    - label = "Modalités de la concertation qui sera assurée pour organiser " \
+              "la préparation, contrôler le déroulement de la période en vue " \
+              "d’une véritable complémentarité des enseignements reçus"
     - title = "Note à l'entreprise"
     - content = "Objet pédagogique"
 
@@ -164,7 +166,8 @@ fieldset
     .col-12
       h3.h6 B - Annexe financière
   .row.mt-3
-    - label = "Conditions liés au financement du stage de l'élève par l'établissement"
+    - label = "Conditions liés au financement du stage de " \
+              "l'élève par l'établissement"
     - title = "Note au Chef d'Etablissement :"
     - content = "Toutes les modalités pratiques du stage."
     = render partial: 'dashboard/internship_agreements/trix_form_element',

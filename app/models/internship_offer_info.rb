@@ -20,8 +20,4 @@ class InternshipOfferInfo < ApplicationRecord
   def is_fully_editable?
     true
   end
-
-  def class_prefix_for_multiple_checkboxes
-    'internship_offer_info'
-  end
 end

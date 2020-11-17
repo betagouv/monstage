@@ -133,13 +133,13 @@ class Ability
     can %i[
       edit_organisation_representative_full_name
       edit_tutor_full_name
-      edit_start_date
-      edit_end_date
+      edit_date_range
       edit_activity_schedule
       edit_activity_scope
       edit_activity_preparation
       edit_activity_learnings
       edit_financial_conditions
+      edit_weekly_hours
     ], InternshipAgreement,
        internship_application: {
          internship_offer: { employer_id: user.id }

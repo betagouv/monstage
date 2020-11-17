@@ -4,7 +4,9 @@
 class Week < ApplicationRecord
   include FormatableWeek
   has_many :internship_offer_weeks, dependent: :destroy,
-                                    foreign_key: :internship_offer_id
+                                    foreign_key: :week_id
+  has_many :internship_applications, through: :internship_offer_weeks
+
   has_many :internship_offers, through: :internship_offer_weeks
 
   has_many :internship_offer_info_weeks, dependent: :destroy, 
@@ -66,6 +68,24 @@ class Week < ApplicationRecord
     export do
       field :number
       field :year
+    end
+  end
+
+  # used to check if a week has any ongoing internship_application (so we avoid unlinking an offer/school and create orphan data)
+  def has_applications?(root:)
+    if root.is_a?(InternshipOffer)
+      internship_applications.where(internship_offer_weeks: { week_id: self.id, internship_offer_id: root.id })
+                             .count
+                             .positive?
+    elsif root.is_a?(School)
+      internship_applications.where(student: root.students)
+                             .count
+                             .positive?
+    elsif root.is_a?(InternshipOfferInfo)
+      return false
+    else
+
+      raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
     end
   end
 end
