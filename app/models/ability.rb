@@ -12,8 +12,12 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
-      when 'Users::SchoolManagement' then school_management_abilities(user: user)
+      when 'Users::SchoolManagement' then
+        common_school_management_abilities(user: user)
+        school_manager_abilities(user: user) if user.role == 'school_manager'
+        main_teacher_abilities(user: user)   if user.role == 'main_teacher'
       end
+
       shared_signed_in_user_abilities(user: user)
     else
       visitor_abilities
@@ -47,7 +51,7 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
   end
 
-  def school_management_abilities(user:)
+  def common_school_management_abilities(user:)
     can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
@@ -55,39 +59,6 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
 
     can :change, :class_room unless user.school_manager?
-
-    if user.role == 'school_manager'
-      can %i[create
-           update
-           see_intro
-           change_school_representative_full_name
-           change_terms_rich_text
-           change_student_full_name
-           change_student_school
-           edit_terms_rich_text
-           edit_school_representative_full_name
-           edit_student_school
-           edit_financial_conditions_rich_text
-          ], InternshipAgreement do |agreement|
-        agreement.internship_application.student.school_id == user.school_id
-      end
-    end
-
-    if user.role == 'main_teacher'
-      can %i[create
-           update
-           see_intro
-           change_main_teacher_full_name
-           change_activity_rating
-           change_student_class_room
-           edit_student_class_room
-           edit_main_teacher_full_name
-           edit_activity_rating_rich_text
-           edit_activity_preparation_rich_text
-          ], InternshipAgreement do |agreement|
-        agreement.internship_application.student.school_id == user.school_id
-      end
-    end
 
     can_manage_school(user: user) do
       can %i[edit update], School
@@ -108,6 +79,42 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
+  end
+
+  def school_manager_abilities(user:)
+    can %i[create
+          update
+          see_intro
+          change_school_representative_full_name
+          change_terms_rich_text
+          change_student_full_name
+          change_student_school
+          edit_terms_rich_text
+          edit_school_representative_full_name
+          edit_student_school
+          edit_financial_conditions_rich_text
+        ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
+  end
+
+  def main_teacher_abilities(user:)
+    if user.role == 'main_teacher'
+      can %i[create
+           update
+           see_intro
+           change_main_teacher_full_name
+           change_activity_rating
+           change_student_class_room
+           edit_student_class_room
+           edit_main_teacher_full_name
+           edit_activity_rating_rich_text
+           edit_activity_preparation_rich_text
+          ], InternshipAgreement do |agreement|
+        agreement.internship_application.student.school_id == user.school_id &&
+          agreement.internship_application.student.class_room_id == user.class_room_id
+      end
+    end
   end
 
   def employer_abilities(user:)

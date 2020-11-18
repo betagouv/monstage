@@ -87,11 +87,14 @@ def populate_groups
 end
 
 def populate_users
+  troisieme_generale_class_room = ClassRoom.find_by(school_track: :troisieme_generale)
+  troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: 'school_manager@ac-paris.fr', password: 'review', school: School.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
