@@ -57,6 +57,7 @@ end
 
 def populate_class_rooms
   school = School.first
+  school_manager = FactoryBot.create(:school_manager, school: school)
   ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
   ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
@@ -95,9 +96,10 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{School.first.email_domain_name}", password: 'review', school: School.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
-  email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
+
+  EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
+
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
