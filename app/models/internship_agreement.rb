@@ -98,7 +98,7 @@ class InternshipAgreement < ApplicationRecord
   def at_least_one_validated_terms
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
 
-    if [enforce_employer_validation?,
+    if [enforce_employer_validations?,
         enforce_main_teacher_validations?,
         enforce_school_manager_validations?
        ].none?
@@ -111,6 +111,14 @@ class InternshipAgreement < ApplicationRecord
   def enforce_main_teacher_validations?
     enforce_main_teacher_validations == true
   end
+
+  def enforce_school_manager_validations?
+    enforce_school_manager_validations == true
+  end
+
+  def enforce_employer_validations?
+    enforce_employer_validations == true
+  end
   
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
@@ -121,13 +129,5 @@ class InternshipAgreement < ApplicationRecord
 
   def valid_trix_school_manager_fields
     errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage") if activity_rating_rich_text.blank?
-  end
-
-  def enforce_school_manager_validations?
-    enforce_school_manager_validations == true
-  end
-
-  def enforce_employer_validations?
-    enforce_employer_validations == true
   end
 end
