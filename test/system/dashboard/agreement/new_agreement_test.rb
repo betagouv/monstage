@@ -253,8 +253,8 @@ module Dashboard
         school           = create(:school, :with_school_manager)
         class_room       = create(:class_room, school: school)
         class_room_2     = create(:class_room, school: school)
-        main_teacher          = create(:main_teacher, school: school, class_room: class_room)
-        main_teacher_2        = create(:main_teacher, school: school, class_room: class_room_2)
+        main_teacher     = create(:main_teacher, school: school, class_room: class_room)
+        main_teacher_2   = create(:main_teacher, school: school, class_room: class_room_2)
         student          = create(:student, school: school, class_room: class_room)
         ability          = Ability.new(main_teacher_2)
         internship_application = create(:weekly_internship_application,

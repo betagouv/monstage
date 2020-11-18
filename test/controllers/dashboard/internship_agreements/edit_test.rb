@@ -11,6 +11,19 @@ module Dashboard::InternshipOffers
       assert_redirected_to root_path
     end
 
+    test 'GET #internship_agreements/edit as mere teacher redirects to user_session_path' do
+      school = create(:school, :with_school_manager)
+      internship_offer = create(:weekly_internship_offer, is_public: true, max_candidates: 2)
+      internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
+      class_room = create(:class_room, school: school)
+      teacher = create(:teacher, school: school, class_room: class_room)
+      internship_agreement = create(:internship_agreement, internship_application: internship_application, employer_accept_terms: true)
+      sign_in(teacher)
+
+      get edit_dashboard_internship_agreement_path(internship_agreement.id)
+      assert_redirected_to root_path
+    end
+
     test 'GET #edit as School Management not owning application student school redirects to user_session_path' do
       school = create(:school, :with_school_manager)
       another_school = create(:school, :with_school_manager)
