@@ -37,7 +37,7 @@ fieldset
         | Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
 
     .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: true
+      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: current_user.school_manager? ? true : false
 
   .row.mt-3
     .col-8
