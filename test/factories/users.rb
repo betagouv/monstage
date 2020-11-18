@@ -22,7 +22,7 @@ FactoryBot.define do
       gender { 'm' }
       birth_date { 14.years.ago }
 
-      school
+      school { create(:school, :with_school_manager) }
       trait :male do
         gender { 'm' }
       end

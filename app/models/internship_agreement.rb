@@ -11,17 +11,6 @@
 class InternshipAgreement < ApplicationRecord
   belongs_to :internship_application
 
-  # todo flip based on current switch/branch
-  validates :student_school,
-            :school_representative_full_name,
-            :student_full_name,
-            :student_class_room,
-            :main_teacher_full_name,
-            :organisation_representative_full_name,
-            :tutor_full_name,
-            :date_range,
-            presence: true
-
   has_rich_text :activity_scope_rich_text
   has_rich_text :activity_preparation_rich_text
   has_rich_text :activity_learnings_rich_text
@@ -34,20 +23,37 @@ class InternshipAgreement < ApplicationRecord
                          in: ['1', true],
                          message: :main_teacher_accept_terms,
                          if: :enforce_main_teacher_validations?
-  attr_accessor :enforce_main_teacher_validations
 
   validates_inclusion_of :school_manager_accept_terms,
-                         in: ['1', true],
-                         message: :school_manager_accept_terms,
-                         if: :enforce_school_manager_validations?
+                          in: ['1', true],
+                          message: :school_manager_accept_terms,
+                          if: :enforce_school_manager_validations?
   attr_accessor :enforce_school_manager_validations
-
-  validates_inclusion_of :employer_accept_terms,
-                         in: ['1', true],
-                         message: :employer_accept_terms,
-                         if: :enforce_employer_validation?
-
   attr_accessor :enforce_employer_validations
+  attr_accessor :enforce_main_teacher_validations
+
+  # todo flip based on current switch/branch
+  with_options if: :enforce_school_manager_validations? do
+    validates :student_school, presence: true
+    validates :school_representative_full_name, presence: true
+    validates :student_full_name, presence: true
+    validates :student_class_room, presence: true
+    validates :main_teacher_full_name, presence: true
+    validates_inclusion_of :school_manager_accept_terms,
+                         in: ['1', true],
+                         message: :school_manager_accept_terms
+    validate :valid_trix_school_manager_fields
+  end
+
+  with_options if: :enforce_employer_validations? do
+    validates :organisation_representative_full_name, presence: true
+    validates :tutor_full_name, presence: true
+    validates :date_range, presence: true
+    validates_inclusion_of :employer_accept_terms,
+                         in: ['1', true],
+                         message: :employer_accept_terms
+    validate :valid_trix_employer_fields
+  end
 
   validate :at_least_one_validated_terms
 
@@ -105,12 +111,23 @@ class InternshipAgreement < ApplicationRecord
   def enforce_main_teacher_validations?
     enforce_main_teacher_validations == true
   end
+  
+  def valid_trix_employer_fields
+    errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
+    errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation") if activity_preparation_rich_text.blank?
+    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
+    errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées") if activity_learnings_rich_text.blank?
+  end
+
+  def valid_trix_school_manager_fields
+    errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage") if activity_rating_rich_text.blank?
+  end
 
   def enforce_school_manager_validations?
     enforce_school_manager_validations == true
   end
 
-  def enforce_employer_validation?
+  def enforce_employer_validations?
     enforce_employer_validations == true
   end
 end

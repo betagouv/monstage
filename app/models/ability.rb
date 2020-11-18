@@ -120,12 +120,15 @@ class Ability
   def employer_abilities(user:)
     can :show, :account
     can %i[create
+           update
            edit_organisation_representative_full_name
            edit_tutor_full_name
            edit_date_range
            edit_activity_scope_rich_text
            edit_activity_learnings_rich_text
-          ], InternshipAgreement
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.employer == user
+    end
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id

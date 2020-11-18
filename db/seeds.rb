@@ -92,9 +92,10 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: 'school_manager@ac-paris.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{School.first.email_domain_name}", password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
   email_whitelist = EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
@@ -298,27 +299,33 @@ def populate_applications
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
   bac_pro_studs.each do |bac_pro_stud|
-    FactoryBot.create(
-      :free_date_internship_application,
-      :submitted,
+    InternshipApplications::FreeDate.create!(
+      aasm_state: :submitted,
+      submitted_at: 10.days.ago,
       internship_offer: bac_pro_offers.first,
+      motivation: 'Au taquet',
       student: bac_pro_stud
     )
   end
   troisieme_generale_offers.each do |io_trois_gene|
-    FactoryBot.create(
-      :weekly_internship_application,
-      :submitted,
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :submitted,
+      submitted_at: 10.days.ago,
+      student: trois_gene_studs.first,
+      motivation: 'Au taquet',
       internship_offer: io_trois_gene,
-      student: trois_gene_studs.first
+      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
   if trois_gene_studs&.second
-    FactoryBot.create(
-      :weekly_internship_application,
-      :approved,
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.second,
+      motivation: 'Au taquet',
       internship_offer: troisieme_generale_offers.first,
-      student: trois_gene_studs.second
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
   end
 end
