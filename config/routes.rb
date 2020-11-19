@@ -65,7 +65,7 @@ Rails.application.routes.draw do
     end
 
 
-    resources :internship_agreements,   only: %i[new create edit update]
+    resources :internship_agreements,   except: %i[index]
     resources :internship_applications, only: %i[index]
 
     namespace :students, path: '/:student_id/' do
