@@ -64,7 +64,7 @@ module Dashboard::InternshipAgreements
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
       assert_select 'li label[for=internshipagreement_student_full_name]',
-                    text: "Veuillez saisir le nom de l'élève"            
+                    text: "Veuillez saisir le nom de l'élève"
     end
 
     test 'POST #create as School Manager fail when school_manager_accept_terms missing' do
@@ -116,6 +116,117 @@ module Dashboard::InternshipAgreements
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
     end
+    #
+    # as Main Teacher
+    #
+    test 'POST #create as Main Teacher' do
+      school           = create(:school, :with_school_manager)
+      class_room       = create(:class_room, school: school)
+      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
+      student          = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: internship_offer,
+        student: student
+      )
+      sign_in main_teacher
+
+      params = make_internship_agreement_params(internship_application).merge(
+        'main_teacher_accept_terms' => true
+      )
+      assert_difference('InternshipAgreement.count', 1) do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+    end
+
+    test 'POST #create as Main Teacher fail when missing params' do
+      school           = create(:school, :with_school_manager)
+      class_room       = create(:class_room, school: school)
+      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
+      student          = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: internship_offer,
+        student: student
+      )
+      sign_in main_teacher
+      params = make_internship_agreement_params(internship_application).except(
+        'main_teacher_full_name'
+       )
+      assert_no_difference('InternshipAgreement.count') do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+      assert_select 'li label[for=internshipagreement_main_teacher_full_name]',
+                    text: "Veuillez saisir la classe de l'élève"
+    end
+
+    test 'POST #create as Main Teacher fail when school_manager_accept_terms missing' do
+      school           = create(:school, :with_school_manager)
+      class_room       = create(:class_room, school: school)
+      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
+      student          = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: internship_offer,
+        student: student
+      )
+      sign_in main_teacher
+
+      params = make_internship_agreement_params(internship_application).except('main_teacher_accept_terms')
+      assert_no_difference('InternshipAgreement.count') do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+    end
+
+    test 'POST #create as Main Teacher fail when trix fields missing' do
+      school           = create(:school, :with_school_manager)
+      class_room       = create(:class_room, school: school)
+      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
+      student          = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: internship_offer,
+        student: student
+      )
+      sign_in main_teacher
+
+      params = make_internship_agreement_params(internship_application).except('activity_preparation_rich_text')
+      assert_no_difference('InternshipAgreement.count') do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+      assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
+                    text: "Veuillez compléter les modalités de concertation"
+    end
+
+    test 'POST #create as Main Teacher when student is from anonther class room' do
+      school           = create(:school, :with_school_manager)
+      class_room       = create(:class_room, school: school)
+      other_class_room = create(:class_room, school: school)
+      main_teacher     = create(:main_teacher, school: school, class_room: other_class_room)
+      student          = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:weekly_internship_offer)
+      internship_application = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: internship_offer,
+        student: student
+      )
+      sign_in main_teacher
+
+      params = make_internship_agreement_params(internship_application)
+
+      assert_difference('InternshipAgreement.count', 0) do
+        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
+      end
+    end
 
     #
     # as Employer
@@ -129,13 +240,13 @@ module Dashboard::InternshipAgreements
       ).except(
         'school_representative_full_name',
        )
-      
+
       assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
     end
 
-    test 'POST #create as Employer fail when employer_accept_terms missing' do
+    test 'POST #create as Employer fails when employer_accept_terms missing' do
       internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
 
@@ -145,7 +256,7 @@ module Dashboard::InternshipAgreements
       end
     end
 
-    test 'POST #create as Employer fail when missing organisation_representative_full_name' do
+    test 'POST #create as Employer fails when missing organisation_representative_full_name' do
       internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
 
@@ -156,10 +267,10 @@ module Dashboard::InternshipAgreements
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
       assert_select 'li label[for=internshipagreement_organisation_representative_full_name]',
-        text: "Veuillez saisir le nom du représentant de l'entreprise" 
+        text: "Veuillez saisir le nom du représentant de l'entreprise"
     end
 
-    test 'POST #create as Employer fail when missing trix employer field' do
+    test 'POST #create as Employer fails when missing trix employer field' do
       internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
 
@@ -175,13 +286,13 @@ module Dashboard::InternshipAgreements
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
       assert_select 'li label[for=internshipagreement_activity_scope_rich_text]',
-                    text: "Veuillez compléter les objectifs du stage" 
-      assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
-                    text: "Veuillez compléter les modalités de concertation" 
+                    text: "Veuillez compléter les objectifs du stage"
+      # assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
+      #               text: "Veuillez compléter les modalités de concertation"
       assert_select 'li label[for=internshipagreement_financial_conditions_rich_text]',
-                    text: "Veuillez compléter les conditions liés au financement du stage" 
+                    text: "Veuillez compléter les conditions liés au financement du stage"
       assert_select 'li label[for=internshipagreement_activity_learnings_rich_text]',
-                    text: "Veuillez compléter les compétences visées" 
+                    text: "Veuillez compléter les compétences visées"
     end
   end
 end

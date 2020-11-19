@@ -14,8 +14,8 @@ class Ability
       when 'Users::Statistician' then statistician_abilities
       when 'Users::SchoolManagement' then
         common_school_management_abilities(user: user)
-        school_manager_abilities(user: user) if user.role == 'school_manager'
-        main_teacher_abilities(user: user)   if user.role == 'main_teacher'
+        school_manager_abilities(user: user) if user.school_manager?
+        main_teacher_abilities(user: user)   if user.main_teacher?
       end
 
       shared_signed_in_user_abilities(user: user)
