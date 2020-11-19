@@ -44,8 +44,12 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Employer' do
-    employer = create(:employer)
-    ability = Ability.new(employer)
+    employer               = create(:employer)
+    internship_offer       = create(:weekly_internship_offer, employer: employer)
+    internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+    internship_agreement   = create(:internship_agreement, internship_application: internship_application)
+    ability                = Ability.new(employer)
+
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
     assert(ability.cannot?(:update, InternshipOffer.new),
@@ -58,6 +62,25 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to discard internships offer that belongs to him')
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
            'employers should be able to index InternshipOfferDashboard')
+    %i[
+    edit_organisation_representative_full_name
+    edit_tutor_full_name
+    edit_date_range
+    edit_activity_schedule
+    edit_activity_scope
+    edit_activity_learnings
+    edit_financial_conditions
+    edit_weekly_hours
+    create
+    update
+    edit_organisation_representative_full_name
+    edit_tutor_full_name
+    edit_date_range
+    edit_activity_scope_rich_text
+    edit_activity_learnings_rich_text
+    ].each do |meth|
+      assert(ability.can?(meth, internship_agreement))
+    end
   end
 
   test 'God' do
@@ -82,43 +105,99 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'SchoolManager' do
     student = create(:student)
+    school = student.school
     another_school = create(:school)
-    school_manager = create(:school_manager, school: student.school)
+    school_manager = create(:school_manager, school: school)
     internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(school_manager)
-    assert(ability.cannot?(:show, School),
-           'school_manager should be able show school')
-    assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:destroy, internship_application))
+
+
+    assert(ability.can?(:choose_class_room, User))
+    assert(ability.can?(:choose_role, User))
+    assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:dashboard_index, student))
-    assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
-    assert(ability.can?(:see_tutor, InternshipOffer))
-    assert(ability.can?(:manage_school_users, school_manager.school))
-    assert(ability.cannot?(:manage_school_users, another_school))
-    assert(ability.can?(:manage_school_students, school_manager.school))
-    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:delete, student))
+
+    assert(ability.can?(:manage, ClassRoom))
     assert(ability.cannot?(:change, :class_room))
+
+    assert(ability.can?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.can?(:submit_internship_application, internship_application))
+    assert(ability.can?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    assert(ability.can?(:manage_school_users, school))
+    assert(ability.can?(:manage_school_students, school))
+    assert(ability.can?(:manage_school_internship_agreements, school))
+
+    assert(ability.cannot?(%i[show edit update], School),
+           'school_manager should be able manage school')
+    assert(ability.cannot?(:manage_school_users, another_school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+
+    assert(ability.can?(:create, InternshipAgreement))
+    %i[create
+       update
+       see_intro
+       change_school_representative_full_name
+       change_terms_rich_text
+       change_student_full_name
+       change_student_school
+       edit_terms_rich_text
+       edit_school_representative_full_name
+       edit_student_school
+       edit_financial_conditions_rich_text].each do |meth|
+      assert(ability.can?(meth, internship_agreement))
+    end
   end
 
   test 'MainTeacher' do
-    student = create(:student)
-    school_manager = create(:school_manager, school: student.school)
-    main_teacher = create(:main_teacher, school: student.school)
+    student                = create(:student)
+    school                 = student.school
+    another_school         = create(:school)
+    school_manager         = create(:school_manager, school: school)
+    class_room             = create(:class_room, school: school)
+    main_teacher           = create(:main_teacher, school: school, class_room: class_room)
     internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement   = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(main_teacher)
-    assert(ability.can?(:show, :account),
-           'students should be able to access their account')
-    assert(ability.can?(:choose_school, main_teacher),
-           'student should be able to choose_school')
+
+
     assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
+    assert(ability.can?(:choose_role, User))
+    assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:show, :account),
+           'students should be able to access their account')
+
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:see_tutor, InternshipOffer))
-    assert(ability.can?(:manage_school_students, main_teacher.school))
-    assert(ability.cannot?(:manage_school_students, build(:school)))
-    assert(ability.can?(:update, internship_application))
     assert(ability.can?(:change, :class_room))
+
+    assert(ability.can?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.can?(:submit_internship_application, internship_application))
+    assert(ability.can?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    assert(ability.can?(:manage_school_users, school))
+    assert(ability.can?(:manage_school_students, school))
+    assert(ability.can?(:choose_school, main_teacher),
+          'student should be able to choose_school')
+    assert(ability.can?(:manage_school_internship_agreements, school))
+
+    assert(ability.cannot?(:manage_school_students, build(:school)))
+    assert(ability.cannot?(%i[show edit update], School),
+          'school_manager should be able manage school')
+    assert(ability.cannot?(:manage_school_users, another_school))
+    assert(ability.cannot?(:manage_school_students, another_school))
   end
 
   test 'Teacher' do

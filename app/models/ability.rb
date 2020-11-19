@@ -62,14 +62,10 @@ class Ability
 
     can_manage_school(user: user) do
       can %i[edit update], School
-      can %i[edit update], School
       can %i[manage_school_users
              manage_school_students
              manage_school_internship_agreements], School do |school|
         school.id == user.school_id
-      end
-      can [:delete], User do |managed_user_from_school|
-        managed_user_from_school.school_id == user.school_id && user.school_manager?
       end
     end
     can %i[submit_internship_application validate_convention], InternshipApplication do |internship_application|
@@ -82,6 +78,11 @@ class Ability
   end
 
   def school_manager_abilities(user:)
+    can_manage_school(user: user) do
+      can [:delete], User do |managed_user_from_school|
+        managed_user_from_school.school_id == user.school_id
+      end
+    end
     can %i[create
           update
           see_intro
@@ -119,17 +120,6 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
-    can %i[create
-           update
-           edit_organisation_representative_full_name
-           edit_tutor_full_name
-           edit_date_range
-           edit_activity_scope_rich_text
-           edit_activity_learnings_rich_text
-    ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
-    end
-
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
@@ -155,6 +145,16 @@ class Ability
        internship_application: {
          internship_offer: { employer_id: user.id }
        }
+    can %i[create
+      update
+      edit_organisation_representative_full_name
+      edit_tutor_full_name
+      edit_date_range
+      edit_activity_scope_rich_text
+      edit_activity_learnings_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.employer == user
+    end
   end
 
   def operator_abilities(user:)

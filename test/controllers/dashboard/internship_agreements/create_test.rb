@@ -287,8 +287,6 @@ module Dashboard::InternshipAgreements
       end
       assert_select 'li label[for=internshipagreement_activity_scope_rich_text]',
                     text: "Veuillez compléter les objectifs du stage"
-      # assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
-      #               text: "Veuillez compléter les modalités de concertation"
       assert_select 'li label[for=internshipagreement_financial_conditions_rich_text]',
                     text: "Veuillez compléter les conditions liés au financement du stage"
       assert_select 'li label[for=internshipagreement_activity_learnings_rich_text]',
