@@ -1,11 +1,13 @@
 # Agreements can be created/modified by two kind of user
 # - employer, allowed to manage following fields: TODO
 # - school_manager, allowed to manage following fields: TODO
+# - main_teacher, allowed to manage following fields: TODO
 #
 # to switch/branch validation, we use an home made mechanism
 # which requires either one of those fields:
 # - enforce_employer_validation : forcing employer validations
 # - enforce_school_manager_validations : forcing school_manager validations
+# - enforce_main_teacher_validations : forcing main_teacher validations
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
@@ -20,32 +22,40 @@ class InternshipAgreement < ApplicationRecord
 
   attr_accessor :enforce_school_manager_validations
   attr_accessor :enforce_employer_validations
+  attr_accessor :enforce_main_teacher_validations
 
   # todo flip based on current switch/branch
+  with_options if: :enforce_main_teacher_validations? do
+    validates :student_class_room, presence: true
+    validates :main_teacher_full_name, presence: true
+    validates_inclusion_of :main_teacher_accept_terms,
+                         in: ['1', true],
+                         message: :main_teacher_accept_terms
+    validate :valid_trix_main_teacher_fields
+  end
+
   with_options if: :enforce_school_manager_validations? do
     validates :student_school, presence: true
     validates :school_representative_full_name, presence: true
     validates :student_full_name, presence: true
-    validates :student_class_room, presence: true
-    validates :main_teacher_full_name, presence: true
     validates_inclusion_of :school_manager_accept_terms,
                          in: ['1', true],
                          message: :school_manager_accept_terms
     validate :valid_trix_school_manager_fields
   end
 
-  with_options if: :enforce_employer_validations? do  
+  with_options if: :enforce_employer_validations? do
     validates :organisation_representative_full_name, presence: true
     validates :tutor_full_name, presence: true
     validates :date_range, presence: true
     validates_inclusion_of :employer_accept_terms,
                          in: ['1', true],
                          message: :employer_accept_terms
-    validate :valid_trix_employer_fields                        
+    validate :valid_trix_employer_fields
   end
 
   validate :at_least_one_validated_terms
-  
+
   CONVENTION_LEGAL_TERMS = %Q(
     <div><strong>Article 1</strong> - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
@@ -85,23 +95,24 @@ class InternshipAgreement < ApplicationRecord
   )
 
   def at_least_one_validated_terms
-    return true if [school_manager_accept_terms, employer_accept_terms].any?
+    return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
 
-    if [enforce_school_manager_validations?, enforce_employer_validations?].none?
-      errors.add(:school_manager_accept_terms, :school_manager_accept_terms)
-      errors.add(:employer_accept_terms, :employer_accept_terms)
+    if [enforce_employer_validations?,
+        enforce_main_teacher_validations?,
+        enforce_school_manager_validations?
+       ].none?
+      %i[
+        main_teacher_accept_terms
+        school_manager_accept_terms
+        employer_accept_terms
+      ].each do |term|
+        errors.add(term, term)
+      end
     end
   end
 
-  def valid_trix_employer_fields
-    errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
-    errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation") if activity_preparation_rich_text.blank?
-    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
-    errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées") if activity_learnings_rich_text.blank?
-  end
-
-  def valid_trix_school_manager_fields
-    errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage") if activity_rating_rich_text.blank?
+  def enforce_main_teacher_validations?
+    enforce_main_teacher_validations == true
   end
 
   def enforce_school_manager_validations?
@@ -110,5 +121,19 @@ class InternshipAgreement < ApplicationRecord
 
   def enforce_employer_validations?
     enforce_employer_validations == true
+  end
+
+  def valid_trix_employer_fields
+    errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
+    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
+    errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées") if activity_learnings_rich_text.blank?
+  end
+
+  def valid_trix_school_manager_fields
+    errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage") if activity_rating_rich_text.blank?
+  end
+
+  def valid_trix_main_teacher_fields
+    errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation") if activity_preparation_rich_text.blank?
   end
 end

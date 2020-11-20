@@ -82,6 +82,10 @@ class InternshipApplication < ApplicationRecord
     .includes(:student, :internship_offer)
   }
 
+  scope :through_teacher, ->(teacher:) {
+    joins(student: :class_room).where('users.class_room_id = ?', teacher.class_room_id)
+  }
+
   #
   # Other stuffs
   #
