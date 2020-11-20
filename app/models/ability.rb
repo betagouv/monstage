@@ -102,21 +102,19 @@ class Ability
   end
 
   def main_teacher_abilities(user:)
-    if user.role == 'main_teacher'
-      can %i[
-        create
-        update
-        see_intro
-        edit_student_class_room
-        edit_main_teacher_full_name
-        edit_activity_rating_rich_text
-        edit_activity_preparation_rich_text
-          ], InternshipAgreement do |agreement|
-        is_student_in_school = agreement.internship_application.student.school_id == user.school_id
-        is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
+    can %i[
+      create
+      update
+      see_intro
+      edit_student_class_room
+      edit_main_teacher_full_name
+      edit_activity_rating_rich_text
+      edit_activity_preparation_rich_text
+        ], InternshipAgreement do |agreement|
+      is_student_in_school = agreement.internship_application.student.school_id == user.school_id
+      is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
 
-        is_student_in_school && is_student_in_class_room
-      end
+      is_student_in_school && is_student_in_class_room
     end
   end
 
