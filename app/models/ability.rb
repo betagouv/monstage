@@ -62,7 +62,7 @@ class Ability
            change_school_representative_full_name
            change_terms_rich_text
            change_student_full_name
-           edit_student_full_name
+           change_student_full_name
            change_student_class_room
            change_student_school
            change_main_teacher_full_name
