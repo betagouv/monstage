@@ -1,4 +1,4 @@
-- disabled = !can?(:edit_weekly_hours, form.object)
+- disabled = defined?(disabled) ? disabled : !can?(:edit_weekly_hours, form.object)
 div data-controller="daily-hours"
   .custom-control.custom-checkbox.mb-1
     - if disabled
