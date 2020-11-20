@@ -60,6 +60,13 @@ class Ability
 
     can :change, :class_room unless user.school_manager?
 
+    can %i[create
+           update
+           see_intro
+          ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
+
     can_manage_school(user: user) do
       can %i[edit update], School
       can %i[manage_school_users
@@ -83,17 +90,14 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
-    can %i[create
-          update
-          see_intro
-          change_school_representative_full_name
-          change_terms_rich_text
-          change_student_full_name
-          change_student_school
-          edit_terms_rich_text
-          edit_school_representative_full_name
-          edit_student_school
-          edit_financial_conditions_rich_text
+    can %i[change_school_representative_full_name
+           change_terms_rich_text
+           change_student_full_name
+           change_student_school
+           edit_terms_rich_text
+           edit_school_representative_full_name
+           edit_student_school
+           edit_financial_conditions_rich_text
         ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
@@ -101,16 +105,13 @@ class Ability
 
   def main_teacher_abilities(user:)
     if user.role == 'main_teacher'
-      can %i[create
-           update
-           see_intro
-           change_main_teacher_full_name
-           change_activity_rating
-           change_student_class_room
-           edit_student_class_room
-           edit_main_teacher_full_name
-           edit_activity_rating_rich_text
-           edit_activity_preparation_rich_text
+      can %i[change_main_teacher_full_name
+             change_activity_rating
+             change_student_class_room
+             edit_student_class_room
+             edit_main_teacher_full_name
+             edit_activity_rating_rich_text
+             edit_activity_preparation_rich_text
           ], InternshipAgreement do |agreement|
         agreement.internship_application.student.school_id == user.school_id &&
           agreement.internship_application.student.class_room_id == user.class_room_id
