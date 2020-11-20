@@ -125,7 +125,7 @@ module Dashboard
                                  id: 'internship_agreement_organisation_representative_full_name')
       field_edit_is_allowed?(label: 'L’établissement d’enseignement scolaire, représenté par',
                              id: 'internship_agreement_school_representative_full_name')
-      field_edit_is_not_allowed?(label: 'Nom de l’élève ou des élèves concerné(s)',
+      field_edit_is_allowed?(label: 'Nom de l’élève ou des élèves concerné(s)',
                              id: 'internship_agreement_student_full_name')
       field_edit_is_allowed?(label: 'Classe',
                              id: 'internship_agreement_student_class_room')
