@@ -20,16 +20,6 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :financial_conditions_rich_text
   has_rich_text :terms_rich_text
 
-
-  validates_inclusion_of :main_teacher_accept_terms,
-                         in: ['1', true],
-                         message: :main_teacher_accept_terms,
-                         if: :enforce_main_teacher_validations?
-
-  validates_inclusion_of :school_manager_accept_terms,
-                          in: ['1', true],
-                          message: :school_manager_accept_terms,
-                          if: :enforce_school_manager_validations?
   attr_accessor :enforce_school_manager_validations
   attr_accessor :enforce_employer_validations
   attr_accessor :enforce_main_teacher_validations
