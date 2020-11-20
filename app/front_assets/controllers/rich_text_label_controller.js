@@ -16,12 +16,13 @@ export default class extends Controller {
   }
 
   connect(){
-    this.element.addEventListener('click', this.focusTrixInput.bind(this))
+    this.refOnClick = this.focusTrixInput.bind(this);
+    this.element.addEventListener('click', this.refOnClick)
   }
   initialize(){
    this.enableTrixInput(this.data.get('enable'))
   }
   disconnect(){
-    this.element.removeEventListener('click', this.focusTrixInput.bind(this))
+    this.element.removeEventListener('click', this.refOnClick)
   }
 }
