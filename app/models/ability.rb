@@ -60,13 +60,6 @@ class Ability
 
     can :change, :class_room unless user.school_manager?
 
-    can %i[create
-           update
-           see_intro
-          ], InternshipAgreement do |agreement|
-      agreement.internship_application.student.school_id == user.school_id
-    end
-
     can_manage_school(user: user) do
       can %i[edit update], School
       can %i[manage_school_users
@@ -90,31 +83,39 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
-    can %i[change_school_representative_full_name
-           change_terms_rich_text
-           change_student_full_name
-           change_student_school
-           edit_terms_rich_text
-           edit_school_representative_full_name
-           edit_student_school
-           edit_financial_conditions_rich_text
-        ], InternshipAgreement do |agreement|
+
+    can %i[
+      create
+      update
+      see_intro
+      edit_student_full_name
+      edit_school_representative_full_name
+      edit_student_class_room
+      edit_student_school
+      edit_main_teacher_full_name
+      edit_terms_rich_text
+      edit_activity_rating_rich_text
+      edit_financial_conditions_rich_text
+    ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
   end
 
   def main_teacher_abilities(user:)
     if user.role == 'main_teacher'
-      can %i[change_main_teacher_full_name
-             change_activity_rating
-             change_student_class_room
-             edit_student_class_room
-             edit_main_teacher_full_name
-             edit_activity_rating_rich_text
-             edit_activity_preparation_rich_text
+      can %i[
+        create
+        update
+        see_intro
+        edit_student_class_room
+        edit_main_teacher_full_name
+        edit_activity_rating_rich_text
+        edit_activity_preparation_rich_text
           ], InternshipAgreement do |agreement|
-        agreement.internship_application.student.school_id == user.school_id &&
-          agreement.internship_application.student.class_room_id == user.class_room_id
+        is_student_in_school = agreement.internship_application.student.school_id == user.school_id
+        is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
+
+        is_student_in_school && is_student_in_class_room
       end
     end
   end
@@ -132,26 +133,16 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    # These belong to the 'paragraphs' of the agreement form
+
     can %i[
-      edit_organisation_representative_full_name
-      edit_tutor_full_name
-      edit_date_range
-      edit_activity_schedule
-      edit_activity_scope
-      edit_activity_learnings
-      edit_financial_conditions
-      edit_weekly_hours
-    ], InternshipAgreement,
-       internship_application: {
-         internship_offer: { employer_id: user.id }
-       }
-    can %i[create
+      create
       update
       edit_organisation_representative_full_name
       edit_tutor_full_name
       edit_date_range
+      edit_weekly_hours
       edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.employer == user

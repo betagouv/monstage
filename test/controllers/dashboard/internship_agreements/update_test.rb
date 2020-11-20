@@ -5,12 +5,13 @@ require 'test_helper'
 module Dashboard::InternshipAgreements
   class UpdateTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
-    
-    # As Visitor 
-    test 'PATCH #update as visitor redirects to root path' do
+
+    # As Visitor
+    test 'PATCH #update as visitor redirects to new_user_session_path' do
       internship_agreement = create(:internship_agreement, employer_accept_terms: true)
-      patch dashboard_internship_agreement_path(internship_agreement.id)
-      assert_redirected_to root_path
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
+      assert_redirected_to new_user_session_path
     end
 
     # As Main Teacher
@@ -23,7 +24,8 @@ module Dashboard::InternshipAgreements
       internship_application = create(:weekly_internship_application, :approved, user_id: student.id)
       internship_agreement   = create(:internship_agreement, employer_accept_terms: true, internship_application: internship_application)
       sign_in main_teacher
-      patch dashboard_internship_agreement_path(internship_agreement.id)
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: {internship_agreement: {student_class_room: 'a'}}
       assert_redirected_to root_path
     end
 
@@ -73,11 +75,12 @@ module Dashboard::InternshipAgreements
     end
 
     # As Employer
-    test 'PATCH #update as employer not owning internship_offer redirects to user_session_path' do
+    test 'PATCH #update as employer not owning internship_offer redirects to root path' do
       internship_offer = create(:weekly_internship_offer)
       internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:employer))
-      patch dashboard_internship_agreement_path(internship_agreement.id)
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
       assert_redirected_to root_path
     end
 
@@ -106,7 +109,8 @@ module Dashboard::InternshipAgreements
       internship_offer = create(:weekly_internship_offer)
       internship_agreement = create(:internship_agreement, employer_accept_terms: true)
       sign_in(create(:school_manager))
-      patch dashboard_internship_agreement_path(internship_agreement.id)
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: { internship_agreement: {school_representative_full_name: 'poupinet'} }
       assert_redirected_to root_path
     end
 

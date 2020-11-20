@@ -63,23 +63,16 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
            'employers should be able to index InternshipOfferDashboard')
     %i[
-    edit_organisation_representative_full_name
-    edit_tutor_full_name
-    edit_date_range
-    edit_activity_schedule
-    edit_activity_scope
-    edit_activity_learnings
-    edit_financial_conditions
-    edit_weekly_hours
     create
     update
+    edit_weekly_hours
     edit_organisation_representative_full_name
     edit_tutor_full_name
     edit_date_range
     edit_activity_scope_rich_text
     edit_activity_learnings_rich_text
     ].each do |meth|
-      assert(ability.can?(meth, internship_agreement))
+      assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
     end
   end
 
@@ -144,10 +137,10 @@ class AbilityTest < ActiveSupport::TestCase
     %i[create
        update
        see_intro
-       change_school_representative_full_name
-       change_terms_rich_text
-       change_student_full_name
-       change_student_school
+       edit_school_representative_full_name
+       edit_terms_rich_text
+       edit_student_full_name
+       edit_student_school
        edit_terms_rich_text
        edit_school_representative_full_name
        edit_student_school

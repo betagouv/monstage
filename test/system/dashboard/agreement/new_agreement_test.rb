@@ -3,8 +3,8 @@ require 'application_system_test_case'
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
-    if ENV['CONVENTION_ENABLED']
 
+    if ENV['CONVENTION_ENABLED']
       def field_edit_is_allowed?(label:, id: nil)
         test_word = 'test word'
         if label.present?
@@ -130,21 +130,22 @@ module Dashboard
                                   id: 'internship_agreement_organisation_representative_full_name')
         field_edit_is_allowed?(label: 'L’établissement d’enseignement scolaire, représenté par',
                               id: 'internship_agreement_school_representative_full_name')
-        field_edit_is_not_allowed?(label: 'Nom de l’élève ou des élèves concerné(s)',
+        field_edit_is_allowed?(label: 'Nom de l’élève ou des élèves concerné(s)',
                               id: 'internship_agreement_student_full_name')
-        field_edit_is_not_allowed?(label: 'Classe',
+        field_edit_is_allowed?(label: 'Classe',
                               id: 'internship_agreement_student_class_room')
         field_edit_is_allowed?(label: 'Établissement d’origine',
                               id: 'internship_agreement_student_school')
         field_edit_is_not_allowed?(label: "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur",
                                   id: 'internship_agreement_tutor_full_name')
-        field_edit_is_not_allowed?(label: "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel",
+        field_edit_is_allowed?(label: "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel",
                               id: 'internship_agreement_main_teacher_full_name')
         field_edit_is_not_allowed?(label: "Dates de la séquence d’observation en milieu professionnel du",
                                   id: 'internship_agreement_date_range')
         #Schedule fields tests
         execute_script("document.getElementById('same_daily_planning').checked = false")
         execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
+
         within '.schedules' do
           select_editable?('internship_agreement_weekly_hours_start', false)
           select_editable?('internship_agreement_weekly_hours_end', false)
@@ -226,6 +227,7 @@ module Dashboard
           assert_trix_editor_editable(trix_field_id)
         end
       end
+
 
       test 'mere teachers cannot reach Convention à signer' do
         internship_offer = create(:weekly_internship_offer)
