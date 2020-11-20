@@ -32,7 +32,7 @@ module Builders
 
     def update(instance:, params:)
       yield callback if block_given?
-       authorize! :update, instance
+      authorize :update, instance
       instance.attributes = {}.merge(preprocess_terms)
                               .merge(params)
       instance.save!
