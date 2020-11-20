@@ -56,6 +56,8 @@ class Ability
 
     can :change, :class_room unless user.school_manager?
 
+
+
     can_manage_school(user: user) do
       can %i[edit update], School
       can %i[edit update], School
@@ -75,12 +77,29 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
+
+
+
+    can %i[
+      create
+      update
+      see_intro
+      edit_student_full_name
+      edit_school_representative_full_name
+      edit_student_class_room
+      edit_student_school
+      edit_main_teacher_full_name
+      edit_terms_rich_text
+      edit_activity_rating_rich_text
+      edit_financial_conditions_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
   end
 
   def employer_abilities(user:)
     can :show, :account
-    # internship_offer mgmt
-    can :manage, InternshipAgreement
+
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
@@ -92,6 +111,19 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+
+    can %i[
+      create
+      update
+      edit_organisation_representative_full_name
+      edit_tutor_full_name
+      edit_date_range
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.employer == user
+    end
   end
 
   def operator_abilities(user:)

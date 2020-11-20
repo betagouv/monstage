@@ -69,6 +69,10 @@ class School < ApplicationRecord
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
 
+  def email_domain_name
+    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
+  end
+
   rails_admin do
     list do
       field :id

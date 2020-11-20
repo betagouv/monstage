@@ -1,0 +1,181 @@
+= render "layouts/form_errors", resource: resource
+
+.row.mt-4.align-items-center
+  .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
+  .col-4
+  .col-4.text-center
+    = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
+      | Afficher les notes
+      i.fa.fa-eye
+    = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
+      | Masquer les notes
+      i.fa.fa-eye-slash
+
+fieldset
+  = form.hidden_field :internship_application_id, value: resource.internship_application_id
+
+  .row.mt-3
+    .col-8
+      h2.h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
+    .col-4
+      .tool-note
+        .title Note à tous :
+        .content
+          | Convention de stage
+
+  .row.mt-3
+    .col-8
+      p
+        | Vu le code du travail, et notamment son article L.211-1 ;
+        br
+        | Vu le code de l’éducation, et notamment ses articles L.313-1, L.331-4, L.331-5, L.332-3, L. 335-2, L.411-3, L. 421-7, L. 911-4 ;
+        br
+        | Vu le code civil, et notamment son article 1384 ;
+        br
+        | Vu le décret n° 2003-812 du 26 août 2003 relatif aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
+        br
+        | Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
+
+    .col-4
+      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: true
+
+  .row.mt-3
+    .col-8
+      p
+        strong entre
+
+  .row.mt-3
+    - label = "L’entreprise ou l’organisme d’accueil, représentée par "
+    - title = "Note à l'entreprise"
+    - content = "Nom et prénom du dirigeant de l'entreprise"
+    - hint = "en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :organisation_representative_full_name, form: form, text_label: label, hint: hint,title: title, content: content}
+  .row.mt-3
+    - label = "L’établissement d’enseignement scolaire, représenté par"
+    - hint = "en qualité de chef d’établissement"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Nom et prénom du chef d'etablissement"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :school_representative_full_name, form: form, text_label: label, hint: hint, title: title, content: content}
+
+  .row.mt-3
+    .col-8
+      p
+       strong il a été convenu ce qui suit :
+
+  .row.mt-3
+    .col-12
+      h2.h4
+        | TITRE PREMIER : DISPOSITIONS GÉNÉRALES
+
+  .row.mt-3
+    - label = "Articles"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Les articles sont modifiables selon vos spécificités locales."
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :terms_rich_text, form: form, title: title, content: content, text_label: label }
+
+  .row.mt-3
+    .col-12
+      h2.h4 TITRE II - DISPOSITIONS PARTICULIÈRES
+    .col-12
+      h3.h5 A - Annexe pédagogique
+  .row.mt-3
+    - label = "Nom de l’élève ou des élèves concerné(s) :"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Nom(s) et prénom(s) de(s) l'élève(s) effectuant le stage."
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :student_full_name, form: form, text_label: label, content: content, title: title}
+  .row.mt-3
+    - label = "Classe :"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Classe(s) des élèves effectuant le stage."
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :student_class_room, form: form, text_label: label, content: content, title: title}
+  .row.mt-3
+    - label = "Établissement d’origine :"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Adresse de l'etablissement d'origine de(e) élève(s)"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :student_school, form: form, text_label: label, content: content, title: title}
+  .row.mt-3
+    - label = "Nom et qualité du responsable de l’accueil " \
+              "en milieu professionnel du tuteur :"
+    - title = "Note à l'entreprise"
+    - content = "Nom, prénom et role du tuteur"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :tutor_full_name, form: form, text_label: label, content: content, title: title}
+  .row.mt-3
+    - label = "Nom du ou (des) enseignant(s) chargé(s) de suivre le " \
+              "déroulement de séquence d’observation en milieu professionnel :"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Nom, prénom du profésseur principal"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :main_teacher_full_name, form: form, text_label: label, content: content, title: title}
+
+  .row.mt-3
+    - label = "Dates de la séquence d’observation en milieu professionnel du"
+    - title = "Note à l'entreprise"
+    - content = "Date de début et fin du stage"
+    = render partial: 'dashboard/internship_agreements/text_field_element',
+             locals: { field: :date_range, form: form, text_label: label, content: content, title: title }
+
+  .row.mt-3
+    .col-8
+      .form-group.schedules
+        .label
+           = "HORAIRES journaliers de l’élève"
+           = form.rg2a_required_content_tag
+        = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
+    .col-4
+      div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
+        .title = "Note à l'entreprise"
+        .content = "Horaires de l'élèves"
+
+  .row.mt-3
+    - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
+    - title = "Note à l'entreprise"
+    - content = "Objectifs du stage"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content}
+  .row.mt-3
+    - label = "Modalités de la concertation qui sera assurée pour organiser " \
+              "la préparation, contrôler le déroulement de la période en vue " \
+              "d’une véritable complémentarité des enseignements reçus"
+    - title = "Note à l'entreprise"
+    - content = "Objet pédagogique"
+
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
+  .row.mt-3
+    - label = "Compétences visées"
+    - title = "Note à l'entreprise"
+    - ccontent = "Apprentissages en entreprise"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
+  .row.mt-3
+    - label = "Modalités d’évaluation de la séquence d’observation " \
+              "en milieu professionnel :"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Critères d'évalutions"
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :activity_rating_rich_text, form: form, text_label: label, title: title, content: content }
+
+  .row.mt-3
+    .col-12
+      h3.h6 B - Annexe financière
+  .row.mt-3
+    - label = "Conditions liés au financement du stage de " \
+              "l'élève par l'établissement"
+    - title = "Note au Chef d'Etablissement :"
+    - content = "Toutes les modalités pratiques du stage."
+    = render partial: 'dashboard/internship_agreements/trix_form_element',
+             locals: { field: :financial_conditions_rich_text, form: form, text_label: label, title: title, content: content }
+
+  .row.mt-3
+    .col-8
+      p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+  .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
+           locals: {form: form}
+

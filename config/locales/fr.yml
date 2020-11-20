@@ -5,7 +5,8 @@ fr:
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
-
+      school_manager_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
+      employer_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       not_saved:
         one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"
@@ -189,6 +190,28 @@ fr:
       messages:
         bad_email: "just ain't right"
       models:
+        internship_agreement:
+          attributes:
+            school_manager_accept_terms: "conditions d'utilisation de la signature"
+            employer_accept_terms: "conditions d'utilisation de la signature"
+            student_full_name:
+              blank: "Veuillez saisir le nom de l'élève"
+            organisation_representative_full_name:
+              blank: "Veuillez saisir le nom du représentant de l'entreprise"
+            tutor_full_name:
+              blank: "Veuillez saisir le nom du tuteur"
+            tutor_full_name:
+              blank: "Veuillez saisir le nom du tuteur"
+            date_range:
+              blank: "Veuillez saisir les date du stage"
+            student_school:
+              blank: "Veuillez saisir l'établissement de l'élève"
+            school_representative_full_name:
+              blank: "Veuillez saisir le nom du représentant de l'établissement scolaire"
+            student_class_room:
+              blank: "Veuillez saisir la classe de l'élève"
+            main_teacher_full_name:
+              blank: "Veuillez saisir la classe de l'élève"
         organisation:
           attributes: &organisation_errors
             employer_name:
@@ -358,3 +381,5 @@ fr:
       troisieme_prepa_metier: '3e prépa métier'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
+  date:
+    day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
