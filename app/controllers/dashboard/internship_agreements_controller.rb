@@ -35,7 +35,6 @@ module Dashboard
     end
 
     def update
-      @internship_agreement = InternshipAgreement.find(params[:id])
       internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
