@@ -8,7 +8,7 @@ module Dashboard::InternshipOffers
 
     test 'GET #internship_agreements/edit as visitor redirects to user_session_path' do
       get edit_dashboard_internship_agreement_path(create(:internship_agreement, employer_accept_terms: true).to_param)
-      assert_redirected_to root_path
+      assert_redirected_to new_user_session_path
     end
 
     test 'GET #edit as School Management not owning application student school redirects to user_session_path' do

@@ -56,20 +56,6 @@ class Ability
 
     can :change, :class_room unless user.school_manager?
 
-    can %i[create
-           update
-           see_intro
-           change_school_representative_full_name
-           change_terms_rich_text
-           change_student_full_name
-           change_student_full_name
-           change_student_class_room
-           change_student_school
-           change_main_teacher_full_name
-           change_activity_rating
-          ], InternshipAgreement do |agreement|
-      agreement.internship_application.student.school_id == user.school_id
-    end
 
 
     can_manage_school(user: user) do
@@ -92,12 +78,18 @@ class Ability
     end
     can %i[see_tutor], InternshipOffer
 
+
+
     can %i[
-      edit_terms_rich_text
+      create
+      update
+      see_intro
+      edit_student_full_name
       edit_school_representative_full_name
       edit_student_class_room
       edit_student_school
       edit_main_teacher_full_name
+      edit_terms_rich_text
       edit_activity_rating_rich_text
       edit_financial_conditions_rich_text
     ], InternshipAgreement do |agreement|
@@ -107,17 +99,6 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
-    can %i[create
-           update
-           edit_organisation_representative_full_name
-           edit_tutor_full_name
-           edit_date_range
-           edit_activity_scope_rich_text
-           edit_activity_preparation_rich_text
-           edit_activity_learnings_rich_text
-    ], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.employer == user
-    end
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
@@ -130,21 +111,19 @@ class Ability
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    # These belong to the 'paragraphs' of the agreement form
+
     can %i[
+      create
+      update
       edit_organisation_representative_full_name
       edit_tutor_full_name
       edit_date_range
-      edit_activity_schedule
-      edit_activity_scope
-      edit_activity_preparation
-      edit_activity_learnings
-      edit_financial_conditions
-      edit_weekly_hours
-    ], InternshipAgreement,
-       internship_application: {
-         internship_offer: { employer_id: user.id }
-       }
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.employer == user
+    end
   end
 
   def operator_abilities(user:)
