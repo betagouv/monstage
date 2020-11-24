@@ -31,3 +31,7 @@
           ' Conventions à signer &nbsp;
           - if badge_counter.approved_application_count.positive?
             span.badge-pill.badge-danger.small= badge_counter.approved_application_count
+    - if can? :create_remote_internship_request, school
+      li.nav-item
+        = link_to new_dashboard_school_support_ticket_path(school: school), class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school)) ? 'active' : ''}" do
+          | Stages à distance

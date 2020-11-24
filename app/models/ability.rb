@@ -83,7 +83,7 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
-
+    can %i[create_remote_internship_request], School
     can %i[
       create
       update
