@@ -17,7 +17,7 @@ class SupportTicket
 
   def one_mode_minimum
     if (webinar.to_i + face_to_face.to_i).zero?
-      error_message = "L'un des deux modes ou les deux modes doivent être activés"
+      error_message = "L'un des deux modes 'Webinaire' ou 'En présentiel' doivent être sélectionnés"
       errors.add(:webinar, error_message)
     end
   end

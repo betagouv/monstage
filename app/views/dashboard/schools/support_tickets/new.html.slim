@@ -6,10 +6,9 @@ ul
 h2.h2.mt-4 Contactez-nous pour entrer en contact avec nos associations partenaires qui coordonnent l'effort
 p
   |Nous reviendrons vers vous dans les plus brefs délais avec une mise en contact auprès d'une association partenaire qui vous accompagnera dans la mise en place de stage(s) à distance
-/ #remote-internship-form data-controller='remote-internship' data-first-name="#{@school.school_manager.first_name}" data-last-name="#{@school.school_manager.last_name}"
-= form_with({ model: @support_ticket,
-              url: dashboard_school_support_tickets_path(@school),
-              html: { method: 'post'} }) do |f|
+= form_for(@support_ticket,
+           url: dashboard_school_support_tickets_path(@school),
+           html: { method: 'post'} ) do |f|
   = f.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @support_ticket, resource_name: :support_ticket
 
@@ -33,7 +32,8 @@ p
                     disabled: true
   h6.h6 Nos offres de stages à distance
   p.text-muted
-    | Veuillez choisir au moins un format
+    small
+      | Veuillez choisir au moins un format
   .form-check.mt-3
     = f.check_box :webinar, class:'form-check-input'
     = f.label :webinar, class: 'form-check-label pl-2 pt-1' do
@@ -46,15 +46,14 @@ p
     = f.rg2a_required_content_tag
     = f.label :message do
       = "Message"
-    - placeholder = "Je suis intéressé :\n\n" \
-                    "- nombre d'élèves\n" \
-                    "- nombre de classes\n" \
-                    "- date(s)"
     = f.text_area :message,
                   class: "form-control col-12",
                   required: true,
-                  placeholder: placeholder,
-                  rows: 7
+                  rows: 7,
+                  placeholder: "Je suis intéressé :\n\n" \
+                    "- nombre d'élèves\n" \
+                    "- nombre de classes\n" \
+                    "- date(s)"
   = submit_tag "Je souhaite me faire accompagner par une association",
                 class: 'btn btn-primary lg'
 
