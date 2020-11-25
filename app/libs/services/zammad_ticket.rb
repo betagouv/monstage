@@ -8,7 +8,9 @@ module Services
     ZAMMAD_HOST = Credentials.enc(:zammad, :url, prefix_env: false)
     TOKEN       = Credentials.enc(:zammad, :http_token, prefix_env: false)
     ENDPOINTS   = {
-      tickets: { create: '/api/v1/tickets' },
+      tickets: {
+        create: '/api/v1/tickets'
+      },
       users: {
         search: '/api/v1/users/search?query=%s',
         create: '/api/v1/users'
@@ -18,7 +20,6 @@ module Services
     # public API
     def create_ticket(params:)
       response = post_ticket(params: params)
-      # response.body : {"error":"No lookup value found for 'customer': \"jean1-claude@ac-paris.fr\"","error_human":"No lookup value found for 'customer': \"jean1-claude@ac-paris.fr\""}
       return JSON.parse(response.body) if status?([200, 201], response)
 
       raise SystemCallError, "fail to create ticket: code[#{response.code}], #{response.body}"
@@ -75,15 +76,15 @@ module Services
       subject = "#{subject} | présentiel" if params['face_to_face'].to_i == 1
       {
         "title": subject,
-        "group": "Users",
+        "group": 'Users',
         "customer": params['email'],
         "article": {
           "subject": subject,
           "body": params['message'],
-          "type": "note",
+          "type": 'note',
           "internal": false
         },
-        "note": "some note",
+        "note": 'some note',
       }
     end
 
@@ -107,8 +108,10 @@ module Services
     #
     def with_http_connection(&block)
       uri = URI(ZAMMAD_HOST)
-      Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-        yield(http)
+      Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |https|
+        yield(https)
+      ensure
+        https.finish if https.try(:active?)
       end
     end
 

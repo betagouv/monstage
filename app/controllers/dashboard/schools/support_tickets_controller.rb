@@ -39,7 +39,7 @@ module Dashboard
         existing_customer = zammad_service.lookup_user(params: params)
         zammad_service.create_user(params: params) if existing_customer.empty?
         ticket = zammad_service.create_ticket(params: params)
-        {success: true, ticket: ticket}
+        {success: true}
       end
 
       def support_ticket_params
