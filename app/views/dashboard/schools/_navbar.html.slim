@@ -11,8 +11,12 @@
 
 .row
   ul.nav.nav-tabs.test-dashboard-nav.mb-2
+    - if can? :create_remote_internship_request, school
+      li.nav-item
+        = link_to new_dashboard_school_support_ticket_path(school: school, school_id: school.id), class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school, school_id: school.id)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}" do
+          | Stages à distance
     li.nav-item
-      = link_to dashboard_school_class_rooms_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}" do
+      = link_to dashboard_school_class_rooms_path(school), class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
         | Classes &nbsp;
         - if badge_counter.student_without_class_room_count.size.positive?
           span.badge-pill.badge-danger.small= badge_counter.student_without_class_room_count
@@ -31,7 +35,4 @@
           ' Conventions à signer &nbsp;
           - if badge_counter.approved_application_count.positive?
             span.badge-pill.badge-danger.small= badge_counter.approved_application_count
-    - if can? :create_remote_internship_request, school
-      li.nav-item
-        = link_to new_dashboard_school_support_ticket_path(school: school), class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school)) ? 'active' : ''}" do
-          | Stages à distance
+
