@@ -33,8 +33,11 @@ module Users
 
     def custom_dashboard_path
       return url_helpers.edit_dashboard_school_path(school) if school.present? && school.weeks.size.zero?
-      return url_helpers.dashboard_school_class_room_path(school, class_room) if school.present? && class_room.present?
-      return url_helpers.dashboard_school_class_rooms_path(school) if school.present?
+      # Temporarily set default to remote internships form page
+      return url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id) if school.present? && class_room.present?
+      return url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id) if school.present?
+      # return url_helpers.dashboard_school_class_room_path(school, class_room) if school.present? && class_room.present?
+      # return url_helpers.dashboard_school_class_rooms_path(school) if school.present?
 
       url_helpers.account_path
     end
