@@ -22,21 +22,21 @@ module Services
       response = post_ticket(params: params)
       return JSON.parse(response.body) if status?([200, 201], response)
 
-      raise SystemCallError, "fail to create ticket: code[#{response.code}], #{response.body}"
+      raise StandardError, "fail to create ticket: code[#{response.code}], #{response.body}"
     end
 
     def create_user(params:)
       response = post_user(params: params)
       return JSON.parse(response.body) if status?([200, 201], response)
 
-      raise SystemCallError, "fail to create user: code[#{response.code}], #{response.body}"
+      raise StandardError, "fail to create user: code[#{response.code}], #{response.body}"
     end
 
     def lookup_user(params:)
       response = search_user(params: params)
       return JSON.parse(response.body) if status?([200, 201], response)
 
-      raise SystemCallError, "fail to search user: code[#{response.code}], #{response.body}"
+      raise StandardError, "fail to search user: code[#{response.code}], #{response.body}"
     end
 
     private

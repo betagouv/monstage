@@ -14,7 +14,7 @@
     - if can? :create_remote_internship_request, school
       li.nav-item
         = link_to new_dashboard_school_support_ticket_path(school: school, school_id: school.id),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school, school_id: school.id)) || defined?(@class_room) && current_page?(dashboard_school_class_room_path(school, @class_room)) ? 'active' : ''}" do
+                  class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school, school_id: school.id))  ? 'active' : ''}" do
           | Stages à distance
     li.nav-item
       = link_to dashboard_school_class_rooms_path(school),

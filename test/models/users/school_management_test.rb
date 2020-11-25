@@ -60,24 +60,18 @@ module Users
                    @url_helpers.edit_dashboard_school_path(school_manager.school))
     end
 
-    # Following test is temporary, hence the comments
-    # test 'school_manager.after_sign_in_path with school and weeks redirects to dashboard_school_path' do
     test 'school_manager.after_sign_in_path with school and weeks redirects to new_dashboard_school_support_ticket_path' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2019)])
       school_manager = create(:school_manager, school: school)
-      # redirect_to = @url_helpers.dashboard_school_class_rooms_path(school_manager.school)
       redirect_to = @url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
     
-    # Following test is temporary, hence the comments
-    # test 'teacher.after_sign_in_path with school redirects to dashboard_school_class_room_path when class_room exists' do
     test 'teacher.after_sign_in_path with school redirects to new_dashboard_school_support_ticket_path when class_room exists' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
       class_room = create(:class_room, school: school)
       school_manager = create(:school_manager, school: school, class_room: class_room)
       redirect_to = @url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id)
-      # redirect_to = @url_helpers.dashboard_school_class_room_path(school, class_room)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
 
