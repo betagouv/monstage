@@ -8,12 +8,13 @@ module Dashboard::Stepper
     # render step 3
     def new
       authorize! :create, InternshipOffer
-      @tutor = Tutor.new
+      @tutor = Users::Tutor.new
     end
 
     # render step 3
     def create
-      @tutor = Tutor.new(tutor_params)
+      @tutor = Users::Tutor.new(tutor_params)
+      @tutor.skip_password_validation = true
       @tutor.save!
       internship_offer_builder.create_from_stepper(builder_params) do |on|
         on.success do |created_internship_offer|
@@ -42,8 +43,11 @@ module Dashboard::Stepper
 
     def tutor_params
       params.require(:tutor)
-            .permit(:tutor_name, :tutor_phone, :tutor_email)
-            .merge(employer_id: current_user.id)
+            .permit(:first_name, :last_name, :phone, :email)
+            .merge(
+              organisation_id: params[:organisation_id],
+              accept_terms: true
+            )
     end
 
     def internship_offer_builder
