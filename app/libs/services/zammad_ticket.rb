@@ -18,69 +18,77 @@ module Services
     }
 
     # public API
-    def create_ticket(params:)
-      response = post_ticket(params: params)
+    def create_ticket
+      response = post_ticket
       return JSON.parse(response.body) if status?([200, 201], response)
 
       raise StandardError, "fail to create ticket: code[#{response.code}], #{response.body}"
     end
 
-    def create_user(params:)
-      response = post_user(params: params)
+    def create_user
+      response = post_user
       return JSON.parse(response.body) if status?([200, 201], response)
 
       raise StandardError, "fail to create user: code[#{response.code}], #{response.body}"
     end
 
-    def lookup_user(params:)
-      response = search_user(params: params)
+    def lookup_user
+      response = search_user
       return JSON.parse(response.body) if status?([200, 201], response)
 
       raise StandardError, "fail to search user: code[#{response.code}], #{response.body}"
     end
 
     private
+
+    attr_reader :params
+
+    def initialize(params:)
+      @params = params
+      @user ||= User.find(params[:user_id])
+    end
+
     #
     # endpoint requests
     #
-    def search_user(params:)
+    def search_user
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
-        query = ENDPOINTS.dig(:users, :search) % params[:email]
+        query = ENDPOINTS.dig(:users, :search) % @user.email
         request = Net::HTTP::Get.new(query, headers)
         http.request(request)
       end
     end
 
-    def post_user(params:)
+    def post_user
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Post.new(ENDPOINTS.dig(:users, :create), headers)
-        request.body = user_payload(params: params).to_json
+        request.body = user_payload.to_json
         http.request(request)
       end
     end
 
-    def post_ticket(params:)
+    def post_ticket
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Post.new(ENDPOINTS.dig(:tickets, :create), headers)
-        request.body = ticket_payload(params: params).to_json
+        request.body = ticket_payload.to_json
         http.request(request)
       end
     end
 
-    def ticket_payload(params:)
+    def ticket_payload
       subject = 'Demande de stage à distance'
-      subject = "#{subject} | webinar" if params['webinar'].to_i == 1
-      subject = "#{subject} | présentiel" if params['face_to_face'].to_i == 1
+      subject = "#{subject} | webinar" if @params[:webinar].to_i == 1
+      subject = "#{subject} | présentiel" if @params[:face_to_face].to_i == 1
       {
         "title": subject,
         "group": 'Users',
-        "customer": params['email'],
+        "customer": @user.email,
         "article": {
           "subject": subject,
-          "body": params['message'],
+          "body": @params[:message],
           "type": 'note',
           "internal": false
         },
@@ -88,11 +96,11 @@ module Services
       }
     end
 
-    def user_payload(params:)
+    def user_payload
       {
-        "firstname": params[:first_name],
-        "lastname":  params[:last_name],
-        "email": params[:email]
+        "firstname": @user.first_name,
+        "lastname": @user.last_name,
+        "email": @user.email
       }
     end
 

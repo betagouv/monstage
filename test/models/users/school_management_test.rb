@@ -57,7 +57,7 @@ module Users
     test 'school_managemennt.after_sign_in_path with school but no weeks redirects to account_path' do
       school_manager = create(:school_manager, school: create(:school, weeks: []))
       assert_equal(school_manager.after_sign_in_path,
-                   @url_helpers.edit_dashboard_school_path(school_manager.school))
+                   @url_helpers.new_dashboard_school_support_ticket_path(school: school_manager.school, school_id: school_manager.school.id))
     end
 
     test 'school_manager.after_sign_in_path with school and weeks redirects to new_dashboard_school_support_ticket_path' do

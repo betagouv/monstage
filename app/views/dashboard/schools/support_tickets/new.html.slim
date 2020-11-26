@@ -12,7 +12,6 @@ p
   = f.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @support_ticket, resource_name: :support_ticket
 
-  = f.hidden_field :email, value: @school.school_manager.email
   = f.hidden_field :subject, value:'[Demande de stage à distance]'
   = f.hidden_field :school_id, value: @school.id
   .form-group.mt-3

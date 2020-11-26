@@ -1,16 +1,14 @@
 class SupportTicket
   include ActiveModel::Model
 
-  attr_accessor :first_name,
-                :last_name,
-                :email,
+  attr_accessor :user_id,
                 :message,
                 :webinar,
                 :face_to_face,
                 :subject,
                 :school_id
 
-  validates :message, presence: true
+  validates :message, :user_id, presence: true
   validate :one_mode_minimum
 
   private

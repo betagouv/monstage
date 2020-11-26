@@ -11,17 +11,14 @@ module Dashboard
       def create
         authorize! :create_remote_internship_request, @school
         @support_ticket = SupportTicket.new(support_ticket_params)
+        @support_ticket.assign_attributes(user_id: current_user.id)
         if @support_ticket.valid?
-          ticket_creation_result = create_ticket(params: support_ticket_params)
-          if ticket_creation_result[:success]
-            success_message = 'Votre message a bien été envoyé et une association ' \
-                              'prendra contact avec vous prochainement'
-            redirect_to(dashboard_school_class_rooms_path(@school),
+          job_params = @support_ticket.as_json.symbolize_keys
+          CreateSupportTicketJob.perform_later(params: job_params)
+          success_message = 'Votre message a bien été envoyé et une association ' \
+                            'prendra contact avec vous prochainement'
+          redirect_to(dashboard_school_class_rooms_path(@school),
                         flash: { success: success_message })
-          else
-            flash.now[:error] = "Votre message n'a pas pu être envoyé"
-            render :new
-          end
         else
           flash.now[:error] = "Votre message est incomplet : #{@support_ticket.errors.full_messages}"
           render :new
@@ -36,20 +33,9 @@ module Dashboard
 
       private
 
-      def create_ticket(params:)
-        zammad_service = Services::ZammadTicket.new
-        existing_customer = zammad_service.lookup_user(params: params)
-        zammad_service.create_user(params: params) if existing_customer.empty?
-        zammad_service.create_ticket(params: params)
-        { success: true }
-      end
-
       def support_ticket_params
         params.require(:support_ticket)
               .permit(
-                :first_name,
-                :last_name,
-                :email,
                 :message,
                 :webinar,
                 :face_to_face,

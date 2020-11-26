@@ -47,7 +47,7 @@ module Dashboard
                       'missing link to manage school users'
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 2 },
+                      { count: 1 },
                       'missing link to manage school weeks'
       end
 
