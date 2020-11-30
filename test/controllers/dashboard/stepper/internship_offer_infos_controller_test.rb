@@ -51,19 +51,15 @@ module Dashboard::Stepper
               type: 'InternshipOfferInfos::WeeklyFramed',
               description_rich_text: '<div><b>Activités de découverte</b></div>',
               'week_ids' => weeks.map(&:id),
+              new_daily_hours: {
+                "lundi" => ['07:00', '12:00'],
+                "mardi" => ['08:00', '13:00'],
+                "mercredi" => ['09:00', '14:00'],
+                "jeudi" => ['10:00', '15:00'],
+                "vendredi" => ['11:00', '16:00'],
+                "samedi" => ['--', '--']
+              }
             },
-            daily_start_0: '10:00',
-            daily_end_0: '13:00',
-            daily_start_1: '9:00',
-            daily_end_1: '17:00',
-            daily_start_2: '9:00',
-            daily_end_2: '17:00',
-            daily_start_3: '9:00',
-            daily_end_3: '17:00',
-            daily_start_4: '9:00',
-            daily_end_4: '17:00',
-            daily_start_5: '',
-            daily_end_5: ''
           })
       end
       created_internship_offer_info = InternshipOfferInfo.last
@@ -71,7 +67,12 @@ module Dashboard::Stepper
       assert_equal sector.id, created_internship_offer_info.sector_id
       assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
       assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
-      assert_equal [["10:00", "13:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ["9:00", "17:00"], ['', '']], created_internship_offer_info.daily_hours
+      assert_equal ['07:00', '12:00'], created_internship_offer_info.new_daily_hours["lundi"]
+      assert_equal ['08:00', '13:00'], created_internship_offer_info.new_daily_hours["mardi"]
+      assert_equal ['09:00', '14:00'], created_internship_offer_info.new_daily_hours["mercredi"]
+      assert_equal ['10:00', '15:00'], created_internship_offer_info.new_daily_hours["jeudi"]
+      assert_equal ['11:00', '16:00'], created_internship_offer_info.new_daily_hours["vendredi"]
+      assert_equal ['--', '--'], created_internship_offer_info.new_daily_hours["samedi"]
       assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
       assert_redirected_to new_dashboard_stepper_tutor_path(
         organisation_id: organisation.id,
@@ -95,7 +96,8 @@ module Dashboard::Stepper
             description_rich_text: '<div><b>Activités de découverte</b></div>',
             'week_ids' => weeks.map(&:id),
             organisation_id: 1,
-            max_candidates: 3
+            max_candidates: 3,
+            weekly_hours: ['10h', '12h']
           }
         })
         assert_response :bad_request

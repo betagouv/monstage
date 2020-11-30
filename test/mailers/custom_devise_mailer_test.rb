@@ -35,8 +35,4 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     assert email.html_part.body.include?('nous venons de recevoir une demande de changement')
     refute_email_spammyness(email)
   end
-
-  test '.add_email_instructions' do
-    skip('not reproductible due to devise wiring')
-  end
 end

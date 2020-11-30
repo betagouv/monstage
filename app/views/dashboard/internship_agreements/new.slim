@@ -1,4 +1,11 @@
-.row.mx-5
-  h1.h2.mb-3 Créer la convention de stage
+= render partial: 'dashboard/internship_agreements/form_header',
+         locals: { internship_application: @internship_agreement.internship_application }
 
-  = render "form"
+.row.mx-5
+  .col-12
+
+    = form_for @internship_agreement,
+               url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+               class: 'form-offset-header',
+               html: {'data-controller': 'internship-agreement-form'} do |form|
+      = render "form", form: form, resource: @internship_agreement

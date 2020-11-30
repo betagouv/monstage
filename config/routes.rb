@@ -59,13 +59,14 @@ Rails.application.routes.draw do
     end
 
     namespace :stepper do
-      resources :organisations, only: %i[create new edit update]
+      resources :organisations,          only: %i[create new edit update]
       resources :internship_offer_infos, only: %i[create new edit update]
-      resources :tutors, only: %i[create new]
+      resources :tutors,                 only: %i[create new]
     end
 
-    resources :internship_agreements, only: [:new]
-    resources :internship_applications, only: [:index]
+
+    resources :internship_agreements,   except: %i[index]
+    resources :internship_applications, only: %i[index]
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]
@@ -83,18 +84,19 @@ Rails.application.routes.draw do
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
-  get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
+  get '/accessibilite', to: 'pages#accessibilite'
+  get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
+  get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'
+  get '/contact', to: 'pages#contact'
   get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
   get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'
   get '/documents-utiles', to: 'pages#documents_utiles'
-  get '/partenaires', to: 'pages#partenaires'
-  get '/mentions-legales', to: 'pages#mentions_legales'
-  get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
-  get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
-  get '/contact', to: 'pages#contact'
-  get '/accessibilite', to: 'pages#accessibilite'
-  get '/operators', to: 'pages#operators'
   get '/javascript-required', to: 'pages#javascript_required'
+  get '/mentions-legales', to: 'pages#mentions_legales'
+  get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
+  get '/operators', to: 'pages#operators'
+  get '/partenaires', to: 'pages#partenaires'
+  get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

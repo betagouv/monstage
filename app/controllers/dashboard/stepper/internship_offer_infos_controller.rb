@@ -18,7 +18,6 @@ module Dashboard::Stepper
       authorize! :create, InternshipOfferInfo
       @internship_offer_info = InternshipOfferInfo.new(
         {}.merge(internship_offer_info_params)
-          .merge(prepare_daily_hours(params))
           .merge(employer_id: current_user.id)
       )
       @internship_offer_info.save!
@@ -43,7 +42,7 @@ module Dashboard::Stepper
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
       authorize! :update, @internship_offer_info
 
-      if @internship_offer_info.update(internship_offer_info_params.merge!(prepare_daily_hours(params)))
+      if @internship_offer_info.update(internship_offer_info_params)
         redirect_to  new_dashboard_stepper_tutor_path(
           organisation_id: params[:organisation_id],
           internship_offer_info_id: @internship_offer_info.id,
@@ -67,21 +66,11 @@ module Dashboard::Stepper
               :employer_id,
               :description_rich_text,
               :max_candidates,
-              :weekly_start,
-              :weekly_end,
-              :daily_hours,
               :school_track,
+              weekly_hours: [],
+              new_daily_hours: {},
               week_ids: []
               )
-    end
-
-    def prepare_daily_hours(params)
-      if params[:weekly_start].present? && params[:weekly_end].present?
-        { weekly_hours: [params[:weekly_start], params[:weekly_end]] }
-      else
-        daily_planning_hours = (0..5).map { |i| [params["daily_start_#{i}".to_sym], params["daily_end_#{i}".to_sym]] }
-        { daily_hours: daily_planning_hours }
-      end
     end
   end
 end
