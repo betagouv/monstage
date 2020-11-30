@@ -1,47 +1,52 @@
 = render partial: 'dashboard/schools/navbar', locals: {school: @school, render_ux_guidelines: true}
-h2.h2.mt-4 Les formats de stages à distance existant
-ul
-  li
-    |Le webinaire est ce format où un professionnel présente son activité en ligne ...
-h2.h2.mt-4 Contactez-nous pour entrer en contact avec nos associations partenaires qui coordonnent l'effort
-p
-  |Nous reviendrons vers vous dans les plus brefs délais avec une mise en contact auprès d'une association partenaire qui vous accompagnera dans la mise en place de stage(s) à distance
+
+.row
+  .col-sm-12.col-md-8.my-3
+
+    .h6.text-body.pt-2 Contactez-nous afin de vous mettre en lien avec nos associations partenaires et proposer des stages à distance à vos élèves.
+
 = form_for(@support_ticket,
            url: dashboard_school_support_tickets_path(@school),
            html: { method: 'post'} ) do |f|
-  = f.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @support_ticket, resource_name: :support_ticket
 
   = f.hidden_field :subject, value:'[Demande de stage à distance]'
   = f.hidden_field :school_id, value: @school.id
-  .form-group.mt-3
-    = f.label :first_name do
-      = "Prénom"
-    = f.text_field :first_name,
-                    class: "form-control col-12",
-                    value: @school.school_manager.first_name,
-                    disabled: true
-  .form-group
-    = f.label :last_name do
-      = "Nom du chef d'établissement"
 
-    = f.text_field :last_name,
-                    class: "form-control col-12",
-                    value: @school.school_manager.last_name,
-                    disabled: true
-  h6.h6 Nos offres de stages à distance
-  p.text-muted
-    small
-      | Veuillez choisir au moins un format
-  .form-check.mt-3
-    = f.check_box :webinar, class:'form-check-input'
-    = f.label :webinar, class: 'form-check-label pl-2 pt-1' do
-      = "Webinaire"
-  .form-check.mt-3
-    = f.check_box :face_to_face, class:'form-check-input'
-    = f.label :face_to_face, class: 'form-check-label pl-2 pt-1' do
-      = "En presentiel"
-  .form-group.mt-4
+  h6.h6 Nos offres de stages
+  p Sélectionnez le(s) type(s) de stages qui vous intéressent.
+
+  .row
+    .col-md-3.col-sm-6.col-xs-12
+      .h6.my-3.remote-internship-mode data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+        = f.label :webinar, class: 'form-check-label pl-2 pt-1 m-2' do
+          = image_tag asset_pack_path('media/images/pages/remote_internships/webinar.svg'),
+                    alt: "Webinar",
+                    height: 120
+          br
+          .row.mt-2
+            .col-9.pt-1.pb-4 Webinaire
+            .col-3 = f.check_box :webinar,
+                                  class: 'form-check-input text-right',
+                                  'data-target': 'checkbox-svg-icon.option',
+                                  'data-action': 'checkbox-svg-icon#onCheck'
+    .col-md-3.col-sm-6.col-xs-12
+      .h6.my-3.remote-internship-mode data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+        = f.label :face_to_face, class: 'form-check-label pl-2 pt-1 m-2' do
+          = image_tag asset_pack_path('media/images/pages/remote_internships/face_to_face.svg'),
+                    alt: "Stage en présentiel",
+                    height: 120
+          br
+          .row.mt-2
+            .col-9.pt-1 Présentation en présentiel
+            .col-3 = f.check_box :face_to_face,
+                                  class: 'form-check-input text-right',
+                                  'data-target': 'checkbox-svg-icon.option',
+                                  'data-action': 'checkbox-svg-icon#onCheck'
+
+  h6.h6.pt-4 Informations complémentaires
+  .form-group
+    = f.rg2a_explain_required_asterisk
     = f.rg2a_required_content_tag
     = f.label :message do
       = "Message"

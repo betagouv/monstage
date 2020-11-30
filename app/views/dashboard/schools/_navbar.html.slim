@@ -1,9 +1,12 @@
 - badge_counter = SchoolTabFinder.new(school: school) if current_user.school_manager?
 - badge_counter = MainTeacherTabFinder.new(main_teacher: current_user) if current_user.main_teacher?
 - badge_counter = NullTabFinder.new if badge_counter.nil?
+
+- if can? :create_remote_internship_request, school
+    = render partial: 'dashboard/schools/remote_internship_block', locals: { school: school }
 .row.mb-2
   .d-flex style="align-items: baseline"
-    h1.h3= school.name
+    h1.h3.mx-3= school.name
     a.ml-2.text-danger href="#{account_path(section: 'school')}" Modifier
 
   -if defined?(render_ux_guidelines)
@@ -11,11 +14,6 @@
 
 .row
   ul.nav.nav-tabs.test-dashboard-nav.mb-2
-    - if can? :create_remote_internship_request, school
-      li.nav-item
-        = link_to new_dashboard_school_support_ticket_path(school: school, school_id: school.id),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school, school_id: school.id))  ? 'active' : ''}" do
-          | Stages à distance
     li.nav-item
       = link_to dashboard_school_class_rooms_path(school),
                 class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
@@ -40,4 +38,9 @@
           ' Conventions à signer &nbsp;
           - if badge_counter.approved_application_count.positive?
             span.badge-pill.badge-danger.small= badge_counter.approved_application_count
+    - if can? :create_remote_internship_request, school
+      li.nav-item
+        = link_to new_dashboard_school_support_ticket_path(school: school, school_id: school.id),
+                  class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_school_support_ticket_path(school: school, school_id: school.id))  ? 'active' : ''}" do
+          | Stages à distance
 
