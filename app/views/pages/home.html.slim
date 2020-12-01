@@ -1,31 +1,41 @@
 
-.bg-transparent
+.bg-cover-image-homepage-covid
   .container
     .row
       .col-12
 
-        h2#des-solutions-pour-vous-tout-de-suite.h2.py-3.py-sm-5.mb-0.text-center
-          | #RestezPrudents
+        h1#des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
+          = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
+                        alt: "Dispositif Covid-19",
+                        width: 240,
+                        class: 'mb-3'
           br
-          | Le monde du travail s’offre à vous à distance !
+          | #RestezPrudents,
+          br
+          | le monde du travail s’offre à vous à distance !
 
-    .row.pb-5.flex-md-reverse-column
+.bg-transparent
+  .container
+    .row
+      .col-12
+        h2.py-5.text-center Pensez au stage à distance avec nos associations partenaires
+    .row.pb-5.mb-3.flex-md-reverse-column
       .col-12.col-md-6.align-self-center
         .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
 
-          = link_to "#pill-jobirl-mon-stage-de-3e-autrement",
-                    class: 'p-3 nav-link my-2 active ',
-                    data: {toggle: "pill"},
-                    role: 'tab',
-                    aria: {controls:"pill-jobirl-mon-stage-de-3e-autrement", selected: true  }  do
-              h6.h6.d-none.d-md-inline JobIrl : Mon stage de 3ème autrement
-
           = link_to "#pill-semaine-de-découverte-virtuelle",
-                    class: 'p-3 nav-link my-2',
+                    class: 'p-3 nav-link my-2 active',
                     data: {toggle: "pill"},
                     role: 'tab',
                     aria: {controls:"pill-semaine-de-découverte-virtuelle", selected: false}  do
             h6.h6.d-none.d-md-inline Inscrivez-vous aux semaines de découverte virtuelle !
+
+          = link_to "#pill-jobirl-mon-stage-de-3e-autrement",
+                    class: 'p-3 nav-link my-2 ',
+                    data: {toggle: "pill"},
+                    role: 'tab',
+                    aria: {controls:"pill-jobirl-mon-stage-de-3e-autrement", selected: true  }  do
+              h6.h6.d-none.d-md-inline JobIrl : Mon stage de 3ème autrement
 
           = link_to "#pill-conferences-metiers",
                     class: 'p-3 nav-link my-2',
@@ -43,26 +53,9 @@
 
       .col-12.col-md-6
         .tab-content.partners-height
-          #pill-jobirl-mon-stage-de-3e-autrement.tab-pane.fade.active.show role="tabpanel"
-            .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/job-irl.png'),
-                          class: "card-img-top",
-                          alt: 'Illustration JobIRL'
-              .card-body
-                p
-                  | Partenaire du dispositif Mon stage de troisième, JobIRL a développé trois dispositifs pour les élèves qui n’ont pas pu trouver de stages et les équipes pédagogiques qui les accompagnent :
-                  strong= " la semaine de stage digital, le groupe d’entraide, et la boîte à outils."
 
-                p JobIRL co-anime des ateliers à distance axés sur la découverte du monde professionnel, de l’entreprise et des live métiers. Les élèves peuvent participer à ces sessions à partir de leurs salles de classe, accompagnés d’un référent pédagogique.
-
-                p.mb-0= link_to "https://www.jobirl.com/blog/stage-de-3eme-autrement-une-aide-concrete-pour-palier-a-la-crise-du-sanitaire/",
-                                class: 'text-danger font-weight-bold' do
-                  | Découvrir le dispositif
-                  | &nbsp;
-                  i.fas.fa-chevron-right
-
-          #pill-semaine-de-découverte-virtuelle.tab-pane role="tabpanel"
-            .card
+          #pill-semaine-de-découverte-virtuelle.tab-pane.fade.active.show role="tabpanel"
+            .card.fade.active.show
 
               = image_tag asset_pack_path('media/images/homepage/alternatives/moi-dans-10-ans.png'),
                           class: "card-img-top",
@@ -81,6 +74,26 @@
                   | &nbsp;
                   i.fas.fa-chevron-right
 
+
+
+
+          #pill-jobirl-mon-stage-de-3e-autrement.tab-pane role="tabpanel"
+            .card
+              = image_tag asset_pack_path('media/images/homepage/alternatives/job-irl.png'),
+                          class: "card-img-top",
+                          alt: 'Illustration JobIRL'
+              .card-body
+                p
+                  | Partenaire du dispositif Mon stage de troisième, JobIRL a développé trois dispositifs pour les élèves qui n’ont pas pu trouver de stages et les équipes pédagogiques qui les accompagnent :
+                  strong= " la semaine de stage digital, le groupe d’entraide, et la boîte à outils."
+
+                p JobIRL co-anime des ateliers à distance axés sur la découverte du monde professionnel, de l’entreprise et des live métiers. Les élèves peuvent participer à ces sessions à partir de leurs salles de classe, accompagnés d’un référent pédagogique.
+
+                p.mb-0= link_to "https://www.jobirl.com/blog/stage-de-3eme-autrement-une-aide-concrete-pour-palier-a-la-crise-du-sanitaire/",
+                                class: 'text-danger font-weight-bold' do
+                  | Découvrir le dispositif
+                  | &nbsp;
+                  i.fas.fa-chevron-right
 
 
           #pill-conferences-metiers.tab-pane role="tabpanel"
@@ -139,15 +152,8 @@
                                 schoolTypeVisibility: false},
                               { class: 'col-12' }) do
               .input-loading-skeleton
-    .row.d-none.d-sm-flex.pt-3.pt-sm-5
-      .col-12.pt-5
-        p.scroller.text-center
-          = link_to "#des-solutions-pour-vous-tout-de-suite", data: {turbolink: false} do
-            = image_tag asset_pack_path('media/images/homepage/scroll_down.svg'),
-                        alt: "Illustration scroller pour continuer",
-                        height: 55,
-                        width: 55
 
+    .row.py-3.py-sm-5
 
 
 
