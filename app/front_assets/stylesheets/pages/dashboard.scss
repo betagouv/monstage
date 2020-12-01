@@ -12,10 +12,8 @@
   height:13rem;
 }
 
-.remote-internship-mode:active, .remote-internship-mode:hover, .remote-internship-mode.active{
+.remote-internship-mode:hover,.remote-internship-mode.active {
   border: 3px $blue solid;
-  // background: rgb(183, 183, 255);
-  filter: brightness(0.6) sepia(10) hue-rotate(160deg) saturate(2);
 }
 
 .hidden-links {
@@ -29,4 +27,3 @@
     display: inline
   }
 }
-// div.col-md-3:nth-child(1) > div:nth-child(1) > label:nth-child(1) > img:nth-child(1)

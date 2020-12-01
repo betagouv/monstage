@@ -5,7 +5,8 @@ module Dashboard
       before_action :find_school
 
       def new
-        @support_ticket = SupportTicket.new
+        @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
+        @support_ticket ||= SupportTicket.new
       end
 
       def create
@@ -21,12 +22,12 @@ module Dashboard
                         flash: { success: success_message })
         else
           flash.now[:error] = "Votre message est incomplet : #{@support_ticket.errors.full_messages}"
+          @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
           render :new
         end
       rescue StandardError => e
-        error_message = "Une erreur s'est produite et votre message n'a pas pu être envoyé !"
         Rails.logger.error "Zammad error in support_tickets controller : #{e}"
-
+        error_message = "Une erreur s'est produite et votre message n'a pas pu être envoyé !"
         redirect_to(dashboard_school_class_rooms_path(@school),
                     flash: { alert: error_message })
       end
@@ -39,8 +40,12 @@ module Dashboard
                 :message,
                 :webinar,
                 :face_to_face,
+                :digital_week,
                 :subject,
-                :school_id
+                :school_id,
+                :students_quantity,
+                :class_rooms_quantity,
+                week_ids: []
               )
       end
 

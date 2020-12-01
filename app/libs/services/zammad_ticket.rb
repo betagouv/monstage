@@ -3,6 +3,7 @@
 module Services
   # https://docs.zammad.org/en/latest/api/ticket.html
   class ZammadTicket
+    # include FormatableWeek
     require 'net/https'
 
     ZAMMAD_HOST = Credentials.enc(:zammad, :url, prefix_env: false)
@@ -19,27 +20,24 @@ module Services
 
     # public API
     def create_ticket
-      response = post_ticket
-      return JSON.parse(response.body) if status?([200, 201], response)
-
-      raise StandardError, "fail to create ticket: code[#{response.code}], #{response.body}"
+      handle_response(response: post_ticket, action: 'create ticket')
     end
 
     def create_user
-      response = post_user
-      return JSON.parse(response.body) if status?([200, 201], response)
-
-      raise StandardError, "fail to create user: code[#{response.code}], #{response.body}"
+      handle_response(response: post_user, action: 'create user')
     end
 
     def lookup_user
-      response = search_user
-      return JSON.parse(response.body) if status?([200, 201], response)
-
-      raise StandardError, "fail to search user: code[#{response.code}], #{response.body}"
+      handle_response(response: search_user, action: 'find user')
     end
 
     private
+
+    def handle_response(response:, action:)
+      return JSON.parse(response.body) if status?([200, 201], response)
+
+      raise StandardError, "fail to #{action}: code[#{response.code}], #{response.body}"
+    end
 
     attr_reader :params
 
@@ -51,11 +49,12 @@ module Services
     #
     # endpoint requests
     #
-    def search_user
+
+    def post_ticket
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
-        query = ENDPOINTS.dig(:users, :search) % @user.email
-        request = Net::HTTP::Get.new(query, headers)
+        request = Net::HTTP::Post.new(ENDPOINTS.dig(:tickets, :create), headers)
+        request.body = ticket_payload.to_json
         http.request(request)
       end
     end
@@ -69,11 +68,11 @@ module Services
       end
     end
 
-    def post_ticket
+    def search_user
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
-        request = Net::HTTP::Post.new(ENDPOINTS.dig(:tickets, :create), headers)
-        request.body = ticket_payload.to_json
+        query = ENDPOINTS.dig(:users, :search) % @user.email
+        request = Net::HTTP::Get.new(query, headers)
         http.request(request)
       end
     end
@@ -82,18 +81,32 @@ module Services
       subject = 'Demande de stage à distance'
       subject = "#{subject} | webinar" if @params[:webinar].to_i == 1
       subject = "#{subject} | présentiel" if @params[:face_to_face].to_i == 1
+      subject = "#{subject} | semaine de stage digitale" if @params[:digital_week].to_i == 1
+
+      message = "nombre de classes visées : #{@params[:class_rooms_quantity]}\n" \
+                "nombre d'élèves visés: #{@params[:students_quantity]}\n" \
+                "dates visées :\n #{human_week_desc @params[:week_ids]}\n" \
+                "-------------------------------------\n" \
+                "MESSAGE : \n#{@params[:message]}"
       {
         "title": subject,
         "group": 'Users',
         "customer": @user.email,
         "article": {
           "subject": subject,
-          "body": @params[:message],
+          "body": message,
           "type": 'note',
           "internal": false
         },
-        "note": 'some note',
+        "note": 'Stages à distance'
       }
+    end
+
+    def human_week_desc(weeks)
+      weeks.map do |week_id|
+        week = Week.find week_id
+        "#{week.beginning_of_week} - #{week.end_of_week}"
+      end.join "\n"
     end
 
     def user_payload
