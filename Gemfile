@@ -15,6 +15,8 @@ gem 'activerecord-postgis-adapter' # pg extension for geo queries
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
+gem 'prawn'
+gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'

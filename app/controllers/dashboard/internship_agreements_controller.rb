@@ -54,6 +54,12 @@ module Dashboard
 
     def show
       @internship_agreement = InternshipAgreement.find(params[:id])
+      respond_to do |format|
+        format.html
+        format.pdf do
+          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_#{@internship_agreement.id}.pdf", type: 'application/pdf',disposition: 'inline')
+        end
+      end
     end
 
     private
