@@ -7,4 +7,5 @@ fieldset
       .form-group
         = select_tag :school_year,
                       options_for_select(options, params[:school_year]),
+                      include_blank: 'Toutes',
                       data: { action: 'statistics#filterBySchoolYear' }

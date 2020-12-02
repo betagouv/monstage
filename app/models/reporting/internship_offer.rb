@@ -47,10 +47,11 @@ module Reporting
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
-      where('first_date >= :date_begin',
-            date_begin: school_year.beginning_of_period)
-        .where('last_date <= :date_end',
-               date_end: school_year.end_of_period)
+      where("daterange(first_date, last_date) && daterange ?",
+            sprintf("[%s,%s)", # so create a range >= at opening, < at ending
+                    school_year.beginning_of_period.strftime('%Y-%m-%d'), # use current year beginning for range opening
+                    school_year.next_year.beginning_of_period.strftime('%Y-%m-%d'))) # use next year beginning for range ending
+
     }
 
     scope :by_department, lambda { |department:|
