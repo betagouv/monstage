@@ -15,8 +15,10 @@
   }
 }
 
+//disabled checkbox input
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
   background-color: #585858;
+  border: #585858;
 }
 .custom-radio-boxes{
   .custom-radio-box-control{
