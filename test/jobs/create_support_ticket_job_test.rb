@@ -11,7 +11,10 @@ class CreateSupportTicketJobTest < ActiveJob::TestCase
         subject: '[Demande de stage à distance]',
         user_id: @user.id,
         webinar: 1,
-        message: 'Je voudrais des stages à distance'
+        message: 'Je voudrais des stages à distance',
+        week_ids: [Week.first.id],
+        class_rooms_quantity: 1,
+        students_quantity: 10
     }
     @headers = {
       'Accept'=>'*/*',
@@ -20,13 +23,11 @@ class CreateSupportTicketJobTest < ActiveJob::TestCase
       'Content-Type'=>'application/json',
       'User-Agent'=>'Ruby'
     }
-
-    stub_request(
-      :post, "https://monstage.zammad.com/api/v1/tickets"
-    ).with(
-      body: "{\"title\":\"Demande de stage à distance | webinar\",\"group\":\"Users\",\"customer\":\"#{@user.email}\",\"article\":{\"subject\":\"Demande de stage à distance | webinar\",\"body\":\"Je voudrais des stages à distance\",\"type\":\"note\",\"internal\":false},\"note\":\"some note\"}",
-      headers: @headers
-    ).to_return(status: 200, body: "{}", headers: {})
+    stub_request(:post, "https://monstage.zammad.com/api/v1/tickets").
+          with(
+            body: "{\"title\":\"Demande de stage à distance | webinar\",\"group\":\"Users\",\"customer\":\"#{@user.email}\",\"article\":{\"subject\":\"Demande de stage à distance | webinar\",\"body\":\"nombre de classes visées : 1\\nnombre d'élèves visés: 10\\ndates visées :\\n 10 octobre - 16 octobre\\n-------------------------------------\\nMESSAGE : \\nJe voudrais des stages à distance\",\"type\":\"note\",\"internal\":false},\"note\":\"Stages à distance\"}",
+            headers: @headers
+          ).to_return(status: 200, body: "{}", headers: {})
   end
 
   test 'POST support ticket with an existing customer' do

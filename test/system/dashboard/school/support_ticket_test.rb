@@ -12,7 +12,8 @@ module Dashboard
       within('header') do
         find("a.nav-link", text: school_manager.dashboard_name).click
       end
-      find('h2.h2', text: "Contactez-nous pour entrer en contact avec nos associations partenaires qui coordonnent l'effort")
+      click_link('Contactez-nous !')
+      find('.h4.text-body', text: "Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.")
     end
 
     test 'as Main Teacher, my default page do not shxo support ticket with remote internship fields informations' do
@@ -24,7 +25,7 @@ module Dashboard
       within('header') do
         find("a.nav-link", text: main_teacher.dashboard_name).click
       end
-      refute page.has_content?("Contactez-nous pour entrer en contact avec nos associations partenaires qui coordonnent l'effort")
+      refute page.has_content?("Contactez-nous !")
     end
   end
 end

@@ -57,24 +57,23 @@ module Users
     test 'school_managemennt.after_sign_in_path with school but no weeks redirects to account_path' do
       school_manager = create(:school_manager, school: create(:school, weeks: []))
       assert_equal(school_manager.after_sign_in_path,
-                   @url_helpers.new_dashboard_school_support_ticket_path(school: school_manager.school, school_id: school_manager.school.id))
+                   @url_helpers.edit_dashboard_school_path(school_manager.school))
     end
 
-    test 'school_manager.after_sign_in_path with school and weeks redirects to new_dashboard_school_support_ticket_path' do
+    test 'school_manager.after_sign_in_path with school and weeks redirects to dashboard_school_path' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2019)])
       school_manager = create(:school_manager, school: school)
-      redirect_to = @url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id)
+      redirect_to = @url_helpers.dashboard_school_class_rooms_path(school_manager.school)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
     
-    test 'teacher.after_sign_in_path with school redirects to new_dashboard_school_support_ticket_path when class_room exists' do
+    test 'teacher.after_sign_in_path with school redirects to dashboard_school_class_room_path when class_room exists' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
       class_room = create(:class_room, school: school)
       school_manager = create(:school_manager, school: school, class_room: class_room)
-      redirect_to = @url_helpers.new_dashboard_school_support_ticket_path(school: school, school_id: school.id)
+      redirect_to = @url_helpers.dashboard_school_class_room_path(school, class_room)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
-
     test 'change school notify new school_manager' do
       school_1 = create(:school)
       school_2 = create(:school)

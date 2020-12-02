@@ -47,8 +47,8 @@ module Dashboard
                       'missing link to manage school users'
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 1 },
-                      'missing link to manage school weeks'
+                      { count: 2 },
+                      'missing or extra link to manage school weeks'
       end
 
       test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
