@@ -12,6 +12,7 @@ RailsAdmin.config do |config|
     warden.authenticate! scope: :user
   end
   config.current_user_method(&:current_user)
+  config.main_app_name = ["Mon stage de 3e"]
 
   ## == CancanCan ==
   config.authorize_with :cancancan
