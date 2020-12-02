@@ -47,9 +47,9 @@ module Reporting
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
-      where('created_at > :date_begin',
+      where('first_date >= :date_begin',
             date_begin: school_year.beginning_of_period)
-        .where('created_at <= :date_end',
+        .where('last_date <= :date_end',
                date_end: school_year.end_of_period)
     }
 
@@ -77,17 +77,6 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
-    }
-
-    scope :total_for_year, lambda {
-      select(*aggregate_functions_to_sql_select)
-        .during_year(
-          year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
-                then Date.today.year - 1
-                else Date.today.year
-                end
-        )
-        .group(:is_public)
     }
   end
 end

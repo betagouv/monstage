@@ -53,7 +53,7 @@ module Finders
 
     def base_query
       base_query = Reporting::InternshipOffer.all
-      base_query = base_query.during_year(school_year: SchoolYear::Floating.new_by_year(year: year_param_or_current))
+      base_query = base_query.during_year(school_year: school_year) if school_year_param?
       base_query = base_query.by_department(department: params[:department]) if department_param?
       base_query = base_query.by_group(group: params[:group]) if group_param?
       base_query = base_query.by_academy(academy: params[:academy]) if academy_param?
@@ -62,9 +62,12 @@ module Finders
       base_query
     end
 
-    def year_param_or_current
-      params.fetch(:school_year) { SchoolYear::Current.new.beginning_of_period.year }
-            .to_i
+    def school_year
+      SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
+    end
+
+    def school_year_param?
+      params.key?(:school_year)
     end
 
     def public_param?
