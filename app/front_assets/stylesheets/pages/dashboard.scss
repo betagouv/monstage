@@ -12,8 +12,15 @@
   height:13rem;
 }
 
+.remote-internship-mode img {
+    -webkit-filter: saturate(0);
+    filter: saturate(0)
+}
 .remote-internship-mode:hover,.remote-internship-mode.active {
   border: 3px $blue solid;
+  img {
+    filter:  saturate(1.1)
+  }
 }
 
 .hidden-links {
