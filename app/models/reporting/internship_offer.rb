@@ -44,24 +44,13 @@ module Reporting
       end
     end
 
-    scope :during_current_year, lambda {
-      during_year(year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
-                        then Date.today.year - 1
-                        else Date.today.year
-                        end)
-    }
-
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
-    scope :during_year, lambda { |year:|
+    scope :during_year, lambda { |school_year:|
       where('created_at > :date_begin',
-            date_begin: Date.new(year,
-                                 SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
-                                 SchoolYear::Base::DAY_OF_YEAR_SHIFT))
+            date_begin: school_year.beginning_of_period)
         .where('created_at <= :date_end',
-               date_end: Date.new(year + 1,
-                                  SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
-                                  SchoolYear::Base::DAY_OF_YEAR_SHIFT))
+               date_end: school_year.end_of_period)
     }
 
     scope :by_department, lambda { |department:|

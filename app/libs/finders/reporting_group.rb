@@ -2,6 +2,7 @@
 
 module Finders
   class ReportingGroup
+    # TODO add support for year
     def groups_not_involved(is_public:)
       Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
            .where(is_public: is_public)

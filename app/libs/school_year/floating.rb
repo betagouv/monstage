@@ -28,6 +28,10 @@ module SchoolYear
       end
     end
 
+    def self.new_by_year(year:)
+      new(date: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))
+    end
+
     private
 
     def initialize(date:)

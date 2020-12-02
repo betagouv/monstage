@@ -14,9 +14,10 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
     travel_to(Date.new(2019, 5, 15)) do
       create(:weekly_internship_offer)
 
-      assert_equal 1, Reporting::InternshipOffer.during_current_year.count
-      assert_equal 1, Reporting::InternshipOffer.during_year(year: 2018).count
-      assert_equal 0, Reporting::InternshipOffer.during_year(year: 2019).count
+      assert_equal 1, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2018))
+                                                .count
+      assert_equal 0, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2019))
+                                                .count
     end
   end
 
