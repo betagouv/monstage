@@ -9,10 +9,7 @@ export default class extends Controller {
   }
 
   onCheck(e){
-    const is_checked = e.target.checked;
     e.preventDefault();
-    const classList  = this.borderTarget.classList;
-    (is_checked) ? classList.add('active') : classList.remove('active');
-    return true;
+    this.borderTarget.classList.toggle('active')
   }
 }
