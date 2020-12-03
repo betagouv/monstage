@@ -30,7 +30,7 @@
                     aria: {controls:"pill-semaine-de-découverte-virtuelle", selected: false}  do
             i.fas.fa-fw.fa-comments
             | &nbsp;
-            h6.h6.d-none.d-md-inline Inscrivez-vous aux semaines de découverte virtuelle !
+            h6.h6.d-none.d-md-inline Participez aux conférences virtuelles
 
           = link_to "#pill-jobirl-mon-stage-de-3e-autrement",
                     class: 'p-3 nav-link my-2 ',
@@ -47,7 +47,7 @@
                     aria: {controls:"pill-conferences-metiers", selected: false  }  do
             i.fas.fa-fw.fa-mouse-pointer
             | &nbsp;
-            h6.h6.d-none.d-md-inline Inscrivez-vous, les conférences métiers ont déjà commencé !
+            h6.h6.d-none.d-md-inline Participez aux conférences métiers en live
 
           = link_to "#pill-mag",
                     class: 'p-3 nav-link my-2',
@@ -55,7 +55,7 @@
                     aria: {controls:"pill-mag", selected: false  }  do
             i.fas.fa-fw.fa-check-circle
             | &nbsp;
-            h6.h6.d-none.d-md-inline MAG, la plateforme digitale dédiée à l’orientation
+            h6.h6.d-none.d-md-inline La plateforme digitale dédiée à l'orientation
 
 
 
@@ -73,12 +73,12 @@
 
                 p
                   strong Participez aux semaines de découverte entièrement digitalisées en décembre et février prochains :
-                  | les sessions sont ouvertes aux collégiens de toute la France, 10 000 places vous sont offertes !
+                  = " les sessions sont ouvertes aux collégiens de toute la France, 10 000 places vous sont offertes !"
 
 
                 p.mb-0= link_to "https://www.stagedecouverte.fr/live",
                                 class: 'text-danger font-weight-bold' do
-                  | Découvrez le dispositif
+                  | Découvrir le dispositif
                   | &nbsp;
                   i.fas.fa-chevron-right
 
@@ -111,7 +111,8 @@
                           alt: 'Illustration connférences metiers'
 
               .card-body
-                p ViensVoirMonTaf lance un programme de conférences métiers en live, animées par leurs équipes, et destinées aux élèves de troisième qui s’interrogent sur leur orientation.
+                p
+                  strong ViensVoirMonTaf lance un programme de conférences métiers en live, animées par leurs équipes, et destinées aux élèves de troisième qui s’interrogent sur leur orientation.
 
                 p L’objectif est de présenter, tout au long de l’année scolaire, différents secteurs d’activité à travers des interventions de professionnels et d’offrir aux élèves les clés nécessaires dans leurs choix d’orientation.
 
@@ -135,7 +136,10 @@
 
                 p Découvrez la plateforme Mon Avenir en Grand, le dispositif de l’Institut Télémaque qui offre une pluralité d’outils pédagogiques qui permettent aux établissements et aux élèves de découvrir le monde professionnel par le digital.
 
-                p MAG permet de répondre aux élèves de troisième à travers de nombreux contenus, et notamment des webinaires métiers  « Meet my job » co-animés par l’Institut Télémaque et un professionnel spécialisé.
+                p
+                  | MAG permet de développer le potentiel des élèves de troisième à travers de nombreux contenus, et notamment des webinaires métiers&nbsp;
+                  | «&nbsp;Meet&nbsp;my&nbsp;job&nbsp;»
+                  | &nbsp; co-animés par l’Institut Télémaque et un professionnel spécialisé.
 
                 p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.html",
                                 class: 'text-danger font-weight-bold' do
