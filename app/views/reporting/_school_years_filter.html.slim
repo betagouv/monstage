@@ -1,0 +1,12 @@
+fieldset
+  legend.h6 Années scolaires
+  - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
+  - options = years.map { |year| [ "#{year}/#{year+1}", year] }
+  .row
+    .col-4
+      .form-group
+        = select_tag :school_year,
+                      options_for_select(options, params[:school_year]),
+                      include_blank: 'Toutes',
+                      data: { action: 'statistics#filterBySchoolYear' },
+                      class: 'form-control'
