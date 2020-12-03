@@ -30,7 +30,7 @@ class UsersController < ApplicationController
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
-    message += " Un email a été envoyé à l'ancienne adresse. Veuillez cliquer sur le lien contenu dans l'email pour confirmer votre nouvelle Adresse électronique (e-mail)." if current_user.unconfirmed_email
+    message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). Veuillez cliquer sur le lien contenu dans le courriel pour confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
     message
   end
 

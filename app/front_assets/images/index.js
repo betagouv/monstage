@@ -12,13 +12,15 @@ import './internship_offers_new/paper.svg';
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
 
+import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';
 
-import './homepage/alternatives/telemaque.jpg';
-import './homepage/alternatives/jobirl-tutorat.jpg';
-import './homepage/alternatives/nation-apprenante.jpg';
+import './homepage/alternatives/job-irl.png';
+import './homepage/alternatives/mag.png';
+import './homepage/alternatives/moi-dans-10-ans.png';
+import './homepage/alternatives/viens-voir-mon-taff.png';
 
 import './homepage/benefices/icon-accompagner-les-eleves.png';
 import './homepage/benefices/icon-offrir-un-stage.png';
