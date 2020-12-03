@@ -1,6 +1,6 @@
 = render partial: 'dashboard/schools/navbar', locals: {school: @school, render_ux_guidelines: true}
 
-.h4.text-body.pt-2 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
+.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
 
 = form_for(@support_ticket,
            url: dashboard_school_support_tickets_path(@school),
@@ -12,10 +12,10 @@
 
   h6.h6.mt-4 Nos offres de stages
   p Sélectionnez le(s) type(s) de stages qui vous intéressent.
-
-  .row
-    .col-md-3.col-sm-6.col-xs-12
-      .h6.my-3.remote-internship-mode data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+    
+  div.clearfix
+    div.float-left
+      .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
         = f.label :digital_week, class: 'form-check-label pl-2 pt-1 m-2' do
           = image_tag asset_pack_path('media/images/pages/remote_internships/digital_week_2x.png'),
                       class: 'remote-illustration',
@@ -28,8 +28,7 @@
                                   class: 'form-check-input text-right',
                                   'data-target': 'checkbox-svg-icon.option',
                                   'data-action': 'checkbox-svg-icon#onCheck'
-    .col-md-3.col-sm-6.col-xs-12
-      .h6.my-3.remote-internship-mode data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+      .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
         = f.label :webinar, class: 'form-check-label pl-2 pt-1 m-2' do
           = image_tag asset_pack_path('media/images/pages/remote_internships/webinar_2x.png'),
                       class: 'remote-illustration',
@@ -41,13 +40,11 @@
               |Webinaire
               br
               |Live métier
-
             .col-2 = f.check_box :webinar,
                                   class: 'form-check-input text-right',
                                   'data-target': 'checkbox-svg-icon.option',
                                   'data-action': 'checkbox-svg-icon#onCheck'
-    .col-md-3.col-sm-6.col-xs-12
-      .h6.my-3.remote-internship-mode data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+      .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
         = f.label :face_to_face, class: 'form-check-label pl-2 pt-1 m-2' do
           = image_tag asset_pack_path('media/images/pages/remote_internships/face_to_face_2x.png'),
                       class: 'remote-illustration',
@@ -89,32 +86,34 @@
   h6.h6.pt-4 Informations complémentaires
   .form-group
     = f.rg2a_explain_required_asterisk
-  p
-    .row
-      .col-sm-12.col-md-6
+    .row.no-gutters
+      .col-sm-12.col-md-8.col-lg-5.no-gutters
         = render partial: "weeks/checkbox_inputs",
-                 locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités" }
-  p
-    = f.label :message do
+                locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités" }
+    = f.label :class_rooms_quantity do
       = f.rg2a_required_content_tag
       = "Vos élèves"
-    br
+      br
     = f.select :class_rooms_quantity,
-               options_for_select((1..10).to_a.map { |a| ["#{a} classes", a] }),
-                { prompt: 'Indiquez le nombre de classes concernées' },
-               class: "form-control col-sm-12 col-md-6",
-               placeholder: 'Indiquez le nombre de classes concernées'
-    p.mb-2
+              options_for_select([['1 classe', 1]]+(2..10).to_a.map { |a| ["#{a} classes", a] }),
+                { prompt: 'Nombre de classes' },
+              class: "form-control col-sm-12 col-md-8 col-lg-5 no-gutters",
+              placeholder: 'Indiquez le nombre de classes concernées'
+  p.mb-2
     = f.text_field :students_quantity,
-                   placeholder: 'Nombre d\'élèves prévus',
-                   class: "form-control col-sm-12 col-md-6"
-  p.mt-5
-    = f.label :message do
-      = "Besoins spécifiques"
-    = f.text_area :message,
-                  class: "form-control col-12",
-                  rows: 7,
-                  placeholder: "Votre message ici ..."
+                  placeholder: 'Nombre d\'élèves',
+                  class: "form-control col-sm-12 col-md-8 col-lg-5 no-gutters"
+  .row.no-gutters.mt-4
+    .col-sm-12.col-md-10.col-lg-7.no-gutters
+      .form-group
+        = f.label :message do
+          = "Besoins spécifiques"
+        = f.text_area :message,
+                      class: "form-control mt-2",
+                      rows: 7,
+                      cols: 80,
+                      placeholder: "Votre message ici ..."
   = submit_tag "Envoyer la demande",
-                class: 'btn btn-primary lg px-4'
+                class: 'btn btn-primary lg px-4 my-4'
+  p style="margin-bottom: 100px"
 

@@ -1,25 +1,26 @@
 .bg-cover-image-remote-internship{
-  background-image: url('../images/pages/remote_internships/remote-header.png');
+  background-image: linear-gradient(to right, rgba(73, 73, 255, 0.0),rgba(73, 73, 255, 0.25), rgba(73, 73, 255, 0.0)), url('../images/pages/remote_internships/remote-header.png');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  }
+}
 
 .remote-internship-mode{
   border: 3px $secondary solid;
   border-radius: 1rem;
   width: 13rem;
   height:13rem;
+  float: left;
 }
 
 .remote-internship-mode img {
-    -webkit-filter: saturate(0);
-    filter: saturate(0)
+    -webkit-filter: hue-rotate(30deg) grayscale(33%) contrast(150%);
+    filter: hue-rotate(30deg) grayscale(33%) contrast(150%);
 }
 .remote-internship-mode:hover,.remote-internship-mode.active {
   border: 3px $blue solid;
   img {
-    filter:  saturate(1.1)
+    filter:  saturate(1)
   }
 }
 
