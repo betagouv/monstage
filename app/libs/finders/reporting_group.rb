@@ -13,6 +13,7 @@ module Finders
     private
 
     attr_reader :params
+
     def initialize(params:)
       @params = params
     end
@@ -25,7 +26,9 @@ module Finders
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
       conditions = conditions.and(internship_offers[:department]).eq(params[:department]) if department_param?
-      conditions = conditions.and(Reporting::InternshipOffer.during_year_predicate(school_year: school_year)) if school_year_param?
+      if school_year_param?
+        conditions = conditions.and(Reporting::InternshipOffer.during_year_predicate(school_year: school_year))
+      end
 
       groups.join(internship_offers, Arel::Nodes::OuterJoin)
             .on(conditions)
@@ -36,15 +39,12 @@ module Finders
       params.key?(:department)
     end
 
-
     def school_year_param?
       params.key?(:school_year)
     end
 
-
     def school_year
       SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
     end
-
   end
 end
