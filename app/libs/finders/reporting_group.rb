@@ -2,7 +2,6 @@
 
 module Finders
   class ReportingGroup
-    # TODO add support for year
     def groups_not_involved(is_public:)
       Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
            .where(is_public: is_public)
@@ -24,15 +23,28 @@ module Finders
 
       conditions = internship_offers[:group_id].eq(groups[:id])
       conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
-      conditions = conditions.and(internship_offers[:department]).eq(department_param) if department_param
+      conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
+      conditions = conditions.and(internship_offers[:department]).eq(params[:department]) if department_param?
+      conditions = conditions.and(Reporting::InternshipOffer.during_year_predicate(school_year: school_year)) if school_year_param?
 
       groups.join(internship_offers, Arel::Nodes::OuterJoin)
             .on(conditions)
             .join_sources
     end
 
-    def department_param
-      params[:department]
+    def department_param?
+      params.key?(:department)
     end
+
+
+    def school_year_param?
+      params.key?(:school_year)
+    end
+
+
+    def school_year
+      SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
+    end
+
   end
 end

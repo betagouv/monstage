@@ -44,14 +44,20 @@ module Reporting
       end
     end
 
+    def self.during_year_predicate(school_year:)
+      left =  InternshipOffer.arel_table[:daterange]
+      right = Arel::Nodes::SqlLiteral.new(
+        sprintf("daterange '[%s,%s)'", # see: https://www.postgresql.org/docs/13/rangetypes.html#RANGETYPES-IO
+                school_year.beginning_of_period.strftime('%Y-%m-%d'), # use current year beginning for range opening
+                school_year.next_year.beginning_of_period.strftime('%Y-%m-%d')) # use next year beginning for range ending
+      )
+      Arel::Nodes::InfixOperation.new('&&', left, right)
+    end
+
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
-      where("daterange(first_date, last_date) && daterange ?",
-            sprintf("[%s,%s)", # so create a range >= at opening, < at ending
-                    school_year.beginning_of_period.strftime('%Y-%m-%d'), # use current year beginning for range opening
-                    school_year.next_year.beginning_of_period.strftime('%Y-%m-%d'))) # use next year beginning for range ending
-
+      where(Reporting::InternshipOffer.during_year_predicate(school_year: school_year))
     }
 
     scope :by_department, lambda { |department:|

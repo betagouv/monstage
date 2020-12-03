@@ -58,7 +58,6 @@ module Finders
       base_query = base_query.by_group(group: params[:group]) if group_param?
       base_query = base_query.by_academy(academy: params[:academy]) if academy_param?
       base_query = base_query.where(is_public: params[:is_public]) if public_param?
-      base_query = base_query.where(is_public: params[:is_public]) if public_param?
       base_query
     end
 
