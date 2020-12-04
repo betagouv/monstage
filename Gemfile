@@ -21,7 +21,7 @@ gem 'uglifier'
 gem 'slim-rails'
 gem 'turbolinks'
 gem 'webpacker'
-gem 'react-rails'
+# gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
@@ -97,3 +97,5 @@ end
 
 
 
+
+gem "react_on_rails", "= 12.0"
