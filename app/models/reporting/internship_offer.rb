@@ -44,24 +44,20 @@ module Reporting
       end
     end
 
-    scope :during_current_year, lambda {
-      during_year(year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
-                        then Date.today.year - 1
-                        else Date.today.year
-                        end)
-    }
+    def self.during_year_predicate(school_year:)
+      left =  InternshipOffer.arel_table[:daterange]
+      right = Arel::Nodes::SqlLiteral.new(
+        sprintf("daterange '[%s,%s)'", # see: https://www.postgresql.org/docs/13/rangetypes.html#RANGETYPES-IO
+                school_year.beginning_of_period.strftime('%Y-%m-%d'), # use current year beginning for range opening
+                school_year.next_year.beginning_of_period.strftime('%Y-%m-%d')) # use next year beginning for range ending
+      )
+      Arel::Nodes::InfixOperation.new('&&', left, right)
+    end
 
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
-    scope :during_year, lambda { |year:|
-      where('created_at > :date_begin',
-            date_begin: Date.new(year,
-                                 SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
-                                 SchoolYear::Base::DAY_OF_YEAR_SHIFT))
-        .where('created_at <= :date_end',
-               date_end: Date.new(year + 1,
-                                  SchoolYear::Base::MONTH_OF_YEAR_SHIFT,
-                                  SchoolYear::Base::DAY_OF_YEAR_SHIFT))
+    scope :during_year, lambda { |school_year:|
+      where(Reporting::InternshipOffer.during_year_predicate(school_year: school_year))
     }
 
     scope :by_department, lambda { |department:|
@@ -92,17 +88,6 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
-    }
-
-    scope :total_for_year, lambda {
-      select(*aggregate_functions_to_sql_select)
-        .during_year(
-          year: if Date.today.month <= SchoolYear::Base::MONTH_OF_YEAR_SHIFT
-                then Date.today.year - 1
-                else Date.today.year
-                end
-        )
-        .group(:is_public)
     }
   end
 end

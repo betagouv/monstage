@@ -2,12 +2,13 @@
 
 module UserAdmin
   extend ActiveSupport::Concern
-  DEFAULTS_FIELDS = %i[id email first_name last_name confirmed_at].freeze
+  BASE_FIELDS = %i[id email first_name last_name].freeze
+  DEFAULTS_FIELDS = (BASE_FIELDS + %i[confirmed_at]).freeze
 
   included do
     rails_admin do
       list do
-        fields(*DEFAULTS_FIELDS)
+        fields(*BASE_FIELDS)
         field :school do
           pretty_value do
             object = bindings[:object]
@@ -18,6 +19,16 @@ module UserAdmin
             end
           end
         end
+        field :class_room do
+          pretty_value do
+            object = bindings[:object]
+            if object.respond_to?(:class_room) && object.class_room.is_a?(ClassRoom)
+              class_room = bindings[:object].class_room
+              bindings[:view].content_tag(:div, class_room.name)
+            end
+          end
+        end
+        field :confirmed_at
       end
 
       edit do

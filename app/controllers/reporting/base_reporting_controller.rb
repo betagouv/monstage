@@ -12,7 +12,8 @@ module Reporting
                     :academy,
                     :group,
                     :school_track,
-                    :dimension)
+                    :dimension,
+                    :school_year)
     end
 
     def export_filename(base_name)

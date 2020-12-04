@@ -9,13 +9,13 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
   end
 
   test 'scopes that select offers depending on years' do
-    travel_to(Date.new(2019, 5, 15)) do
-      create(:weekly_internship_offer)
+    offer_2018 = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2019, number: 1)])
+    offer_2020 = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2021, number: 1)])
 
-      assert_equal 1, Reporting::InternshipOffer.during_current_year.count
-      assert_equal 1, Reporting::InternshipOffer.during_year(year: 2018).count
-      assert_equal 0, Reporting::InternshipOffer.during_year(year: 2019).count
-    end
+    assert_equal 1, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2018))
+                                              .count
+    assert_equal 0, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2019))
+                                              .count
   end
 
   test '.dimension_by_sector group by sector_name' do

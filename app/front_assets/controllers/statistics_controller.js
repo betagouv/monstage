@@ -17,9 +17,14 @@ export default class extends Controller {
   filterBySchoolTrack(event) {
     changeURLFromEvent(event, 'school_track');
   }
+  
+  filterBySchoolYear(event) {
+    changeURLFromEvent(event, 'school_year');
+  }
 
   useDimension(event) {
     changeURLFromEvent(event, 'dimension');
   }
+
 }
 

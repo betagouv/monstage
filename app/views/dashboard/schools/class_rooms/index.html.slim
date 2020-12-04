@@ -27,9 +27,19 @@
             tbody class="class-room"
               - @school.students.without_class_room.each do |student|
                 tr class="d-flex" data-test="student-not-in-class-room-#{student.id}"
-                  td.col-8.d-flex.align-items-center data-head="#{student.name}"= student.name
+                  td.col-7.d-flex.align-items-center data-head="#{student.name}"= student.name
                   td.col-4 data-head="Action"
-                    = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Choisissez une classe' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
+                    = select_tag "student_#{student.id}",
+                                  options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                                  prompt: 'Choisissez une classe' ,
+                                  class: "form-control",
+                                  data: { action: 'change->students#selectStudentClassRoom' }
+                  td.col-1 data-head="Suppression d-none"
+                    = link_to dashboard_school_user_path(id: student.id),
+                                method: :delete,
+                                class: 'trash-user',
+                                data: {confirm: 'Cette action va supprimer un élève de votre établissement, confirmez-vous ?'} do
+                      i.fas.fa-trash.fa-2x.mt-2
 
 - @school.class_rooms.includes([:students]).order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
   .row.mt-5

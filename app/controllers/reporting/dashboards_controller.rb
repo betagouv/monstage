@@ -45,15 +45,15 @@ module Reporting
     end
 
     def school_finder
-      @school_finder ||= Finders::ReportingSchool.new(params: params.permit(:department, :school_track))
+      @school_finder ||= Finders::ReportingSchool.new(params: reporting_cross_view_params)
     end
 
     def internship_offers_finder
-      @internship_offers_finder ||= Finders::ReportingInternshipOffer.new(params: params.permit(:department, :school_track))
+      @internship_offers_finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)
     end
 
     def group_finder
-      @group_finder ||= Finders::ReportingGroup.new(params: params.permit(:department, :school_track))
+      @group_finder ||= Finders::ReportingGroup.new(params: reporting_cross_view_params)
     end
   end
 end

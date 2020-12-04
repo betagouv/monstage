@@ -60,6 +60,7 @@ module Reporting
 
     def students
       users.select { |user| user.is_a?(Users::Student) }
+           .reject(&:anonymized)
     end
 
     def total_student_count
@@ -91,8 +92,11 @@ module Reporting
            .size
     end
 
-    def total_approved_internship_applications_count
-      internship_applications.approved.size
+    def total_approved_internship_applications_count(school_year:)
+      query = internship_applications.approved
+      query = query.where("internship_applications.created_at >= ?", SchoolYear::Floating.new_by_year(year: school_year.to_i).beginning_of_period) if school_year
+      query = query.where("internship_applications.created_at <= ?", SchoolYear::Floating.new_by_year(year: school_year.to_i).end_of_period) if school_year
+      query.size
     end
   end
 end

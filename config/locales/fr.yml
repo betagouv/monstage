@@ -28,8 +28,8 @@ fr:
         one: Secteur
         other: Secteurs
       user:
-        one: Personnel pédagogique
-        other: Personnels pédagogiques
+        one: Utilisateur
+        other: Utilisateurs
       users/student:
         one: Élève
         other: Élèves
@@ -48,6 +48,9 @@ fr:
       users/operator:
         one: Opérateur
         other: Opérateurs
+      users/school_management:
+        one: Personnel pédagogique
+        other: Personnels pédagogiques
       users/god:
         one: Administrateur
         other: Administrateurs
@@ -60,6 +63,9 @@ fr:
       school:
         one: Etablissement
         other: Etablissements
+      internship_agreement:
+        one: Convention
+        other: Conventions  
       internship_offers/weekly_framed:
         one: Offre 3eme générale
         other: Offres 3eme générale
