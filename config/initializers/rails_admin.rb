@@ -1,6 +1,12 @@
+# postgis type
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
+# daterange type
+class RailsAdmin::Config::Fields::Types::Daterange < RailsAdmin::Config::Fields::Base
+  RailsAdmin::Config::Fields::Types::register(self)
+end
+
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
 
@@ -12,6 +18,7 @@ RailsAdmin.config do |config|
     warden.authenticate! scope: :user
   end
   config.current_user_method(&:current_user)
+  config.main_app_name = ["Mon stage de 3e"]
 
   ## == CancanCan ==
   config.authorize_with :cancancan

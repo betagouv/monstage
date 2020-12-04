@@ -5,7 +5,9 @@ fr:
   errors:
     messages:
       accept_terms: "Veuillez accepter les conditions d'utilisation"
-
+      main_teacher_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
+      school_manager_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
+      employer_accept_terms: "Veuillez accepter les conditions d'utilisation de la signature"
       not_saved:
         one: "Une erreur à corriger :"
         other: "%{count} erreurs à corriger :"
@@ -26,8 +28,8 @@ fr:
         one: Secteur
         other: Secteurs
       user:
-        one: Personnel pédagogique
-        other: Personnels pédagogiques
+        one: Utilisateur
+        other: Utilisateurs
       users/student:
         one: Élève
         other: Élèves
@@ -46,6 +48,9 @@ fr:
       users/operator:
         one: Opérateur
         other: Opérateurs
+      users/school_management:
+        one: Personnel pédagogique
+        other: Personnels pédagogiques
       users/god:
         one: Administrateur
         other: Administrateurs
@@ -58,6 +63,9 @@ fr:
       school:
         one: Etablissement
         other: Etablissements
+      internship_agreement:
+        one: Convention
+        other: Conventions  
       internship_offers/weekly_framed:
         one: Offre 3eme générale
         other: Offres 3eme générale
@@ -189,6 +197,28 @@ fr:
       messages:
         bad_email: "just ain't right"
       models:
+        internship_agreement:
+          attributes:
+            school_manager_accept_terms: "conditions d'utilisation de la signature"
+            employer_accept_terms: "conditions d'utilisation de la signature"
+            student_full_name:
+              blank: "Veuillez saisir le nom de l'élève"
+            organisation_representative_full_name:
+              blank: "Veuillez saisir le nom du représentant de l'entreprise"
+            tutor_full_name:
+              blank: "Veuillez saisir le nom du tuteur"
+            tutor_full_name:
+              blank: "Veuillez saisir le nom du tuteur"
+            date_range:
+              blank: "Veuillez saisir les date du stage"
+            student_school:
+              blank: "Veuillez saisir l'établissement de l'élève"
+            school_representative_full_name:
+              blank: "Veuillez saisir le nom du représentant de l'établissement scolaire"
+            student_class_room:
+              blank: "Veuillez saisir la classe de l'élève"
+            main_teacher_full_name:
+              blank: "Veuillez saisir la classe de l'élève"
         organisation:
           attributes: &organisation_errors
             employer_name:
@@ -358,3 +388,5 @@ fr:
       troisieme_prepa_metier: '3e prépa métier'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
+  date:
+    day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
