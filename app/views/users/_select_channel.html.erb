@@ -50,8 +50,8 @@
       <span>Numéro de mobile</span>
       <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
     <% end %>
-    <%= react_component("inputs/CountryPhoneSelect",
-      {
+    <%= react_component("CountryPhoneSelect",
+      props: {
         name: 'user[phone]',
         value: resource.phone
       })

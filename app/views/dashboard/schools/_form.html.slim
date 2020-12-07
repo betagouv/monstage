@@ -21,7 +21,7 @@
     fieldset
       legend= "Localisation"
 
-      = react_component("inputs/AddressInput", { resourceName: :school,
+      = react_component("AddressInput", props: { resourceName: :school,
                                 currentStreet: @school.street,
                                 currentCity: @school.city,
                                 currentZipcode: @school.zipcode,

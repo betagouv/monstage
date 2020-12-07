@@ -3,6 +3,7 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
+    before_action :disable_turbolink_caching, only: %i[new edit]
     helper_method :order_direction
 
     def index
@@ -15,6 +16,7 @@ module Dashboard
 
     # duplicate submit
     def create
+
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer),
@@ -33,6 +35,7 @@ module Dashboard
     end
 
     def edit
+      disable_turbolink_caching
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
       @available_weeks = Week.selectable_on_school_year

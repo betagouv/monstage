@@ -40,12 +40,11 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         div.label
           = "Type de stage"
           = form.rg2a_required_content_tag
-        = react_component("ReservedSchoolInput",
-                      label:"Ville ou nom de l'établissement auquel le stage est reservé",
-                      required: false,
-                      resourceName: :internship_offer_info,
-                      selectClassRoom: false,
-                      existingSchool: resource.school.as_json)
+        = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
+                                                          required: false,
+                                                          resourceName: :internship_offer_info,
+                                                          selectClassRoom: false,
+                                                          existingSchool: resource.school.as_json})
         .toggle-radio.mb-1
           = radio_button_tag :internship_type,
                               true,

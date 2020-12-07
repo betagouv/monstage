@@ -24,7 +24,7 @@ fieldset.mt-4 data-controller='organisation-form'
         = form.label :group_id, "Groupe ou Institution de tutelle", data: {target: 'organisation-form.groupLabel'}
         = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {target: 'organisation-form.selectGroupName'}
 
-      = react_component("inputs/AddressInput", { resourceName: form.object_name,
+      = react_component("AddressInput", props: { resourceName: form.object_name,
                               currentStreet: resource.street,
                               currentCity: resource.city,
                               currentZipcode: resource.zipcode,
