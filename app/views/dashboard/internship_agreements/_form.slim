@@ -20,7 +20,7 @@ fieldset
     .col-4
       .tool-note
         .title Note à tous :
-        .content
+        span
           | Convention de stage
 
   .row.mt-3
@@ -131,7 +131,7 @@ fieldset
     .col-4
       div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
         .title = "Note destinée à l'entreprise"
-        .content = "Horaires de l'élèves"
+        span = "Horaires de l'élèves"
 
   .row.mt-3
     - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
