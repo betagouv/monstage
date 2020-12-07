@@ -59,7 +59,23 @@ export default class extends Controller {
       const weekId = parseInt(el.getAttribute('data-week-id'), 10);
       const schoolCountOnWeek = (weeksSchoolsHash[weekId] || []).length;
 
-      el.innerText = `${schoolCountOnWeek.toString()} etbs`;
+      el.innerText = `${schoolCountOnWeek.toString()} etablissement`;
+      el.classList.add(function(threshold){
+        switch (threshold) {
+          case 0:
+            return 'bg-dark-70';
+          case 1:
+            return 'bg-success-20';
+          case 2:
+            return 'bg-success-30';
+          case 4:
+            return 'bg-success-40';
+          default:
+            return 'bg-success';
+        }
+      }(schoolCountOnWeek))
+      el.classList.remove('d-none');
+
     });
   }
 

@@ -3,17 +3,41 @@
   box-shadow: 0px 1px 3px rgba(0,0,0,.2);
 }
 
+
 .custom-control-checkbox-list{
   height: 180px;
   overflow: scroll;
-  background-color: $input-bg;
+
   border: 1px solid $input-border-color;
-  border-radius: $input-border-radius;
+  border-top-left-radius: $input-border-radius;
+  border-top-right-radius: $input-border-radius;
   padding: ($input-btn-padding-x/2) $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
 }
+.custom-control-checkbox-legend{
+  border-left: 1px solid $input-border-color;
+  border-right: 1px solid $input-border-color;
+  border-bottom: 1px solid $input-border-color;
+  border-bottom-left-radius: $input-border-radius;
+  border-bottom-right-radius: $input-border-radius;
+  padding: ($input-btn-padding-x/2) $input-btn-padding-y;
+  background-color: $input-bg;
+}
+
+.badge-week-density{
+  right: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  text-indent: -9999px;
+}
+
+.badge-legend{
+  height: 1.5rem;
+  background: transparent linear-gradient(90deg, #EBEDF0 0%, #E1EBEA 9%, #B2E3CF 20%, #7FD5B0 42%, #12C77B 68%, #0C6C44 100%) 0% 0% no-repeat padding-box;
+}
+
 
 //disabled checkbox input
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
@@ -118,22 +142,22 @@
 }
 
 .toggle-radio {
-	margin: 0 0 1.5rem; 
+	margin: 0 0 1.5rem;
 	box-sizing: border-box;
 	font-size: 0;
-	display: flex; 
+	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
 	input {
-		width: 0; 
-		height: 0; 
-		position: absolute; 
+		width: 0;
+		height: 0;
+		position: absolute;
 		left: -9999px;
 		opacity: 0;
 	}
 	input + label {
-		margin: 0; 
+		margin: 0;
 		padding: .75rem 2rem;
 		box-sizing: border-box;
 		position: relative;
@@ -145,16 +169,16 @@
 		font-weight: 600;
 		text-align: center;
 		box-shadow: 0 0 0 rgba(255,255,255,0);
-		transition: 	border-color .15s ease-out, 
-					color .25s ease-out, 
+		transition: 	border-color .15s ease-out,
+					color .25s ease-out,
 					background-color .15s ease-out,
 					box-shadow .15s ease-out;
-		
-		flex: 0 0 50%; 
-		display: flex; 
-		justify-content: center; 
+
+		flex: 0 0 50%;
+		display: flex;
+		justify-content: center;
 		align-items: center;
-		
+
 		&:first-of-type {border-radius: 6px 0 0 6px;}
 		&:last-of-type {border-radius: 0 6px 6px 0; border-left: none;}
 	}
