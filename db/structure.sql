@@ -728,8 +728,8 @@ CREATE TABLE public.internship_offers (
     total_male_approved_applications_count integer DEFAULT 0,
     total_custom_track_approved_applications_count integer DEFAULT 0,
     group_id bigint,
-    first_date date,
-    last_date date,
+    first_date date NOT NULL,
+    last_date date NOT NULL,
     type character varying,
     search_tsv tsvector,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
@@ -739,7 +739,8 @@ CREATE TABLE public.internship_offers (
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
 );
 
 
@@ -1558,6 +1559,13 @@ CREATE INDEX index_internship_offers_on_coordinates ON public.internship_offers 
 
 
 --
+-- Name: index_internship_offers_on_daterange; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_offers_on_daterange ON public.internship_offers USING gist (daterange);
+
+
+--
 -- Name: index_internship_offers_on_department; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2192,6 +2200,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201105143719'),
 ('20201106143850'),
 ('20201109145559'),
-('20201116085327');
+('20201116085327'),
+('20201203153154');
 
 

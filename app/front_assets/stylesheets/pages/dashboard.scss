@@ -35,3 +35,11 @@
     display: inline
   }
 }
+
+tr a.trash-user{
+  display: none;
+}
+
+tr:hover a.trash-user{
+    display: inline;
+}
