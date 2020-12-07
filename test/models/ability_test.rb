@@ -127,7 +127,8 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_users, school))
     assert(ability.can?(:manage_school_students, school))
     assert(ability.can?(:manage_school_internship_agreements, school))
-
+    assert(ability.can?(:create_remote_internship_request, school))
+    
     assert(ability.cannot?(%i[show edit update], School),
            'school_manager should be able manage school')
     assert(ability.cannot?(:manage_school_users, another_school))
@@ -185,6 +186,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:choose_school, main_teacher),
           'student should be able to choose_school')
     assert(ability.can?(:manage_school_internship_agreements, school))
+    assert(ability.cannot?(:create_remote_internship_request, school))
 
     assert(ability.cannot?(:manage_school_students, build(:school)))
     assert(ability.cannot?(%i[show edit update], School),
