@@ -13,7 +13,7 @@ class UserUpdateTest < ApplicationSystemTestCase
     fill_in('user[email]', with: "baboo@free.fr")
     click_on 'Enregistrer'
     success_message = find('#alert-text').text
-    assert success_message == 'Compte mis à jour avec succès. Veuillez confirmer votre nouvelle Adresse électronique (e-mail).'
+    assert success_message == "Compte mis à jour avec succès. Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). Veuillez cliquer sur le lien contenu dans le courriel pour confirmer votre nouvelle adresse électronique (e-mail)."
   end
 
   test 'student can update his phone number' do
