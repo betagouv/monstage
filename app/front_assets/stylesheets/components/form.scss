@@ -28,6 +28,7 @@
 
 .badge-week-density{
   right: 0;
+  top: 0;
   height: 1.5rem;
   width: 1.5rem;
   text-indent: -9999px;
@@ -38,7 +39,9 @@
   background: transparent linear-gradient(90deg, #EBEDF0 0%, #E1EBEA 9%, #B2E3CF 20%, #7FD5B0 42%, #12C77B 68%, #0C6C44 100%) 0% 0% no-repeat padding-box;
 }
 
-
+.custom-checkbox{
+  min-height: 1.5rem;
+}
 //disabled checkbox input
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
   background-color: #585858;

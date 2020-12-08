@@ -18,7 +18,7 @@ const mapNumberOfSchoolHavingWeek = (schools) => {
   return weeksSchoolsHash;
 };
 export default class extends Controller {
-  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend'];
+  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend', 'legendContainer'];
 
   connect() {
     if (this.getForm() === null) {
@@ -83,11 +83,8 @@ export default class extends Controller {
   handleToggleWeeks(event) {
     if ($('#all_year_long').is(':checked')) {
       $('.custom-control-checkbox-list').addClass('d-none');
-      $('.custom-control-checkbox-list').hide();
     } else {
-      $('.custom-control-checkbox-list').hide();
       $('.custom-control-checkbox-list').removeClass('d-none');
-      $('.custom-control-checkbox-list').slideDown();
     }
 
     $(this.weekCheckboxesTargets).each((i, el) => {
