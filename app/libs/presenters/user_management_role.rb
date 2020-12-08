@@ -1,6 +1,8 @@
 module Presenters
-  class UserManagemetRole
+  class UserManagementRole
     def role
+      return 'Elève' if user.is_a?(Users::Student)
+
       case user.role.to_sym
       when :school_manager
         "Chef d'établissement"

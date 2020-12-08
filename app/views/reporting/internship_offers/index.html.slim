@@ -14,6 +14,8 @@
         = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label' do
           = "Groupe ou institution de tutelle"
 
+    .mt-4= render partial: 'reporting/school_years_filter'
+
   .row.mt-3
     .col-12
       table.table.table-statistics.table-sticky-thead
