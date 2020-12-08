@@ -1,13 +1,18 @@
 module Users
   class Tutor < User
     attr_accessor :skip_password_validation
-    include StepperProxy::Tutor
+    
+    validates :first_name,
+              :last_name,
+              :email,
+              :phone,
+              presence: true
 
     # for ACL
     belongs_to :organisation
 
     # linked via stepper
-    # belongs_to :internship_offer, optional: true
+    has_many :internship_offer
 
     def from_api?
       false
@@ -16,6 +21,10 @@ module Users
     def password_required?
       return false if skip_password_validation
       super
+    end
+
+    def name
+      "#{first_name} #{last_name}"
     end
   end
 end

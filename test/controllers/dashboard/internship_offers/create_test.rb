@@ -14,8 +14,9 @@ module Dashboard::InternshipOffers
     test 'POST #create (duplicate) /InternshipOffers::WeeklyFramed as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
+      tutor = create(:tutor)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = build(:weekly_internship_offer, employer: employer, tutor: tutor)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -26,6 +27,7 @@ module Dashboard::InternshipOffers
                       'description_rich_text' => '<div>description</div>',
                       'employer_description_rich_text' => '<div>hop+employer_description</div>',
                       'employer_id' => internship_offer.employer_id,
+                      'tutor_id' => internship_offer.tutor_id,
                       'employer_type' => 'Users::Employer')
 
       assert_difference('InternshipOffer.count', 1) do
@@ -44,7 +46,7 @@ module Dashboard::InternshipOffers
     test 'POST #create (duplicate) /InternshipOffers::FreeDate as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -54,6 +56,7 @@ module Dashboard::InternshipOffers
                       'description_rich_text' => '<div>description</div>',
                       'employer_description_rich_text' => '<div>hop+employer_description</div>',
                       'employer_id' => internship_offer.employer_id,
+                      'tutor_id' => internship_offer.tutor_id,
                       'employer_type' => 'Users::Employer')
 
       assert_difference('InternshipOffer.count', 1) do

@@ -78,11 +78,11 @@ module Dashboard::InternshipOffers
 
     test 'GET #edit with default fields' do
       employer = create(:employer)
+      tutor = create(:tutor, first_name: 'fourtin', last_name: 'mourcade', email: 'fourtin@mour.cade')
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, is_public: true,
                                                           max_candidates: 1,
-                                                          tutor_name: 'fourtin mourcade',
-                                                          tutor_email: 'fourtin@mour.cade',
+                                                          tutor: tutor,
                                                           employer: employer)
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
@@ -96,8 +96,9 @@ module Dashboard::InternshipOffers
       assert_select '#internship_type_true[checked]', count: 1
       assert_select '#internship_type_false[checked]', count: 0
 
-      assert_select '#internship_offer_tutor_name[value="fourtin mourcade"]'
-      assert_select '#internship_offer_tutor_email[value="fourtin@mour.cade"]'
+      assert_select '#internship_offer_first_name[value="fourtin"]'
+      assert_select '#internship_offer_last_name[value="mourcade"]'
+      assert_select '#internship_offer_email[value="fourtin@mour.cade"]'
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end

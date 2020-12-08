@@ -27,7 +27,7 @@ module Dashboard::Stepper
       end
     rescue ActiveRecord::RecordInvalid,
            ActionController::ParameterMissing => e
-      @tutor ||= Tutor.new
+      @tutor ||= Users::Tutor.new
       render :new, status: :bad_request
     end
 

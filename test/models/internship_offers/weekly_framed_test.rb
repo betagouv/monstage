@@ -26,9 +26,7 @@ module InternshipsOffers
       assert internship_offer.invalid?
       assert_not_empty internship_offer.errors[:title]
       assert_not_empty internship_offer.errors[:sector]
-      assert_not_empty internship_offer.errors[:tutor_name]
-      assert_not_empty internship_offer.errors[:tutor_phone]
-      assert_not_empty internship_offer.errors[:tutor_email]
+      assert_not_empty internship_offer.errors[:tutor_id]
       assert_not_empty internship_offer.errors[:is_public]
       assert_not_empty internship_offer.errors[:zipcode]
       assert_not_empty internship_offer.errors[:city]
@@ -71,7 +69,7 @@ module InternshipsOffers
         internship_offer.save
 
         assert_equal 1, InternshipOffers::WeeklyFramed.in_the_future.count
-      end
+      end 
     end
 
     test '.reverse_academy_by_zipcode works on create and save' do
@@ -85,6 +83,7 @@ module InternshipsOffers
 
     test '.reverse_department_by_zipcode works on create and save' do
       internship_offer = build(:weekly_internship_offer, zipcode: '62000', department: 'Arras')
+      # byebug
       assert_changes -> { internship_offer.department },
                      from: 'Arras',
                      to: 'Pas-de-Calais' do

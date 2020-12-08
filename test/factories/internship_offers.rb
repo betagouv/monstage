@@ -17,6 +17,8 @@ FactoryBot.define do
     city { 'Paris' }
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
+    tutor { create(:tutor) }
+    employer { create(:employer) }
 
     trait :api_internship_offer do
       weeks { [Week.first] }

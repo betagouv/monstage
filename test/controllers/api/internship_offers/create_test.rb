@@ -108,6 +108,7 @@ module Api
       zipcode = '75002'
       city = 'Paris'
       sector_uuid = sector.uuid
+      tutor = create(:tutor)
       week_params = [
         "#{week_instances.first.year}-W#{week_instances.first.number}",
         "#{week_instances.last.year}-W#{week_instances.last.number}"
@@ -133,7 +134,8 @@ module Api
                 weeks: week_params,
                 remote_id: remote_id,
                 permalink: permalink,
-                max_candidates: 2
+                max_candidates: 2,
+                tutor_id: tutor.id
               }
             }
           )
@@ -185,7 +187,8 @@ module Api
                 city: 'Coye la forêt',
                 sector_uuid: sector.uuid,
                 remote_id: 'remote_id',
-                permalink: 'http://google.fr/permalink'
+                permalink: 'http://google.fr/permalink',
+                tutor_id: create(:tutor).id
               }
             }
           )

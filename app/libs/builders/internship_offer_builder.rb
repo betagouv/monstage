@@ -113,9 +113,7 @@ module Builders
 
     def preprocess_tutor_to_params(tutor)
       {
-        tutor_name: tutor.tutor_name,
-        tutor_email: tutor.tutor_email,
-        tutor_phone: tutor.tutor_phone
+        tutor_id: tutor.id
       }
     end
 

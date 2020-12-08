@@ -143,7 +143,7 @@ module Dashboard
     def internship_offer_params
       params.require(:internship_offer)
             .permit(:title, :description_rich_text, :sector_id, :max_candidates,
-                    :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
+                    :tutor_name, :tutor_phone, :tutor_email, :tutor_id, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,

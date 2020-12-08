@@ -16,7 +16,7 @@ module Dashboard::Stepper
                                              internship_offer_info_id: internship_offer_info.id)
 
         assert_response :success
-        assert_select 'input[name="tutor[tutor_name]"]'
+        assert_select 'input[name="tutor[first_name]"]'
       end
     end
 
@@ -64,20 +64,20 @@ module Dashboard::Stepper
       organisation = create(:organisation, employer: employer)
 
       assert_difference('InternshipOffer.count', 1) do
-        assert_difference('Tutor.count', 1) do
+        assert_difference('Users::Tutor.count', 1) do
           post(
             dashboard_stepper_tutors_path(organisation_id: organisation.id,
                                           internship_offer_info_id: internship_offer_info.id),
             params: {
               tutor: {
-                tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+                first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330623456789'
               }
             }
           )
         end
       end
       created_internship_offer = InternshipOffer.last
-      created_tutor = Tutor.last
+      created_tutor = Users::Tutor.last
 
       # recopy internship_offer_info
       assert_equal(internship_offer_info.title,
@@ -119,9 +119,10 @@ module Dashboard::Stepper
       assert_equal organisation.group_id, created_internship_offer.group_id
 
       # recopy tutor
-      assert_equal created_tutor.tutor_name, created_internship_offer.tutor_name
-      assert_equal created_tutor.tutor_phone, created_internship_offer.tutor_phone
-      assert_equal created_tutor.tutor_email, created_internship_offer.tutor_email
+      assert_equal created_tutor.first_name, created_internship_offer.tutor.first_name
+      assert_equal created_tutor.last_name, created_internship_offer.tutor.last_name
+      assert_equal created_tutor.phone, created_internship_offer.tutor.phone
+      assert_equal created_tutor.email, created_internship_offer.tutor.email
 
       # other feature, with real default
       assert_nil(created_internship_offer.discarded_at,
@@ -176,7 +177,7 @@ module Dashboard::Stepper
                                         internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
-              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+              first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330611223344'
             }
           }
         )
@@ -204,7 +205,7 @@ module Dashboard::Stepper
                                         internship_offer_info_id: internship_offer_info.id),
           params: {
             tutor: {
-              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+              first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330611223344'
             }
           }
         )

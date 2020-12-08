@@ -22,7 +22,7 @@
 
   hr
   // Tutor
-  = render 'dashboard/stepper/tutors/form_fields', { resource: @internship_offer, form: form, submit_button: false, warning_bloc: false }
+  = render 'dashboard/stepper/tutors/form_fields', { resource: @internship_offer.tutor || Users::Tutor.new, form: form, submit_button: false, warning_bloc: false }
 
   .actions
     .row

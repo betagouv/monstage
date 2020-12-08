@@ -96,7 +96,8 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, polymorphic: true
 
   has_one :organisation
-  has_one :tutor
+  belongs_to :tutor, class_name: 'Users::Tutor', optional: true
+  accepts_nested_attributes_for :tutor
   has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text
@@ -113,9 +114,12 @@ class InternshipOffer < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  validates :tutor_id, presence: true, unless: :from_api?
+
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true
   delegate :name, to: :sector, prefix: true
+  delegate :name, :first_name, :last_name, :email, :phone, to: :tutor, prefix: true
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
@@ -171,7 +175,7 @@ class InternshipOffer < ApplicationRecord
 
   def duplicate
     white_list = %w[type title sector_id max_candidates
-                    tutor_name tutor_phone tutor_email employer_website
+                    tutor_name tutor_phone tutor_email tutor_id employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
                     school_track
@@ -189,7 +193,6 @@ class InternshipOffer < ApplicationRecord
                                                        else
                                                          employer_description
                                                        end)
-
     internship_offer
   end
 

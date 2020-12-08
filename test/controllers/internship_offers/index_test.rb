@@ -219,6 +219,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     max_candidates = 1
     internship_weeks = [Week.first, Week.last]
     school = create(:school, weeks: [internship_weeks[1]])
+    employer = create(:employer)
     blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                             week: internship_weeks[0])
     not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,

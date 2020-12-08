@@ -738,8 +738,8 @@ CREATE TABLE public.internship_offers (
     organisation_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
-    tutor_id bigint,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    tutor_id bigint
 );
 
 
@@ -953,11 +953,14 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 CREATE TABLE public.tutors (
     id bigint NOT NULL,
     tutor_name character varying NOT NULL,
-    tutor_email character varying NOT NULL,
-    tutor_phone character varying NOT NULL,
+    email character varying NOT NULL,
+    phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint,
+    first_name character varying,
+    last_name character varying,
+    organisation_id bigint
 );
 
 
@@ -1692,6 +1695,13 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_tutors_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tutors_on_organisation_id ON public.tutors USING btree (organisation_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1816,6 +1826,14 @@ CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools F
 
 ALTER TABLE ONLY public.school_internship_weeks
     ADD CONSTRAINT fk_rails_07f908dbef FOREIGN KEY (week_id) REFERENCES public.weeks(id);
+
+
+--
+-- Name: internship_offers fk_rails_18cd8769f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_18cd8769f1 FOREIGN KEY (tutor_id) REFERENCES public.users(id);
 
 
 --
@@ -2201,6 +2219,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
-('20201125102052');
+('20201125102052'),
+('20201201140201'),
+('20201202082705');
 
 
