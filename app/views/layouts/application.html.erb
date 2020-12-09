@@ -9,7 +9,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
-    <% if turbolink_cache_disabled? %>
+    <% if turbolink_disabled_to_force_page_refresh? %>
       <meta name="turbolinks-visit-control" content="reload">
     <% end %>
     <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
