@@ -77,10 +77,5 @@ FactoryBot.define do
       operator
       api_token { SecureRandom.uuid }
     end
-
-    factory :tutor, class: 'Users::Tutor', parent: :user do
-      organisation
-      type { 'Users::Tutor' }
-    end
   end
 end

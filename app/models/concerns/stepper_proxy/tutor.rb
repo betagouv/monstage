@@ -4,10 +4,9 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
-      validates :first_name,
-                :last_name,
-                :phone,
-                :email,
+      validates :tutor_name,
+                :tutor_phone,
+                :tutor_email,
                 presence: true,
                 unless: :from_api?
     end

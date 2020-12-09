@@ -467,11 +467,11 @@ CREATE TABLE public.internship_agreements (
     tutor_full_name character varying,
     main_teacher_full_name character varying,
     doc_date date,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    school_manager_accept_terms boolean DEFAULT false,
-    employer_accept_terms boolean DEFAULT false,
     main_teacher_accept_terms boolean DEFAULT false
 );
 
@@ -1025,8 +1025,7 @@ CREATE TABLE public.users (
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL,
-    organisation_id bigint
+    anonymized boolean DEFAULT false NOT NULL
 );
 
 
@@ -1732,13 +1731,6 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 --
 
 CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
-
-
---
--- Name: index_users_on_organisation_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_organisation_id ON public.users USING btree (organisation_id);
 
 
 --
