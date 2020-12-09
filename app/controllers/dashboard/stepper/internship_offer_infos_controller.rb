@@ -27,6 +27,7 @@ module Dashboard::Stepper
                     internship_offer_info_id: @internship_offer_info.id
       ))
     rescue ActiveRecord::RecordInvalid
+      @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       render :new, status: :bad_request
     end
@@ -50,6 +51,7 @@ module Dashboard::Stepper
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
+        @organisation = Organisation.find(params[:organisation_id])
         @available_weeks = Week.selectable_from_now_until_end_of_school_year
         render :new, status: :bad_request
       end

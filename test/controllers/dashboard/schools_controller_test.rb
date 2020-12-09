@@ -43,7 +43,12 @@ module Dashboard
       assert_response :success
       assert_select 'title', 'Semaines de stage | Monstage'
       assert_select 'form[action=?]', dashboard_school_path(school)
-
+      assert_select('label[for="all_year_long"]',
+                    {count: 0},
+                    'rendering select all weeks for school manager does not makes sense for school management')
+      assert_select('div[data-test="select-week-legend"]',
+                    {count: 0},
+                    'rendering legend on select-weeks does not makes sense for school management')
       available_weeks.each do |week|
         if week.id == internship_application.internship_offer_week.week.id
           assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",

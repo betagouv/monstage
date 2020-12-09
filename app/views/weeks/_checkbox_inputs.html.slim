@@ -6,7 +6,7 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
       = label
       = form.rg2a_required_content_tag
 
-    - if defined?(select_all)
+    - if render_employer_components
       - allow_select_all = !form.object.is_fully_editable?
       .custom-control.custom-checkbox.mb-1
         = check_box_tag 'all_year_long', false, preselect_all, { class: 'custom-control-input', disabled: allow_select_all, data: {action: "change->select-weeks#handleToggleWeeks"}}
@@ -14,6 +14,7 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
           | Toute l'année scolaire
           - school_year = SchoolYear::Current.new
           = " #{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
+
     div data-target="select-weeks.checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
       div class="custom-control-checkbox-list"
         - current_weeks.map do |week|
@@ -36,14 +37,15 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
             div.position-absolute.badge-week-density.rounded.d-none data-target='select-weeks.inputWeekLegend' data-week-id=week.id
               | ?
 
-      .custom-control-checkbox-legend data-target="select-weeks.legendContainer"
-        .row.align-items-center
-          .col-6
-            p.mb-0.font-weight-bold Les établissements autour de vous ont tendance à choisir ces dates
-          .col-6
-            .row
-              .col-4 Faible
-              .col-4.badge-legend.rounded
-              .col-4 Forte
+      - if render_employer_components
+        .custom-control-checkbox-legend data-target="select-weeks.legendContainer" data-test='select-week-legend'
+          .row.align-items-center
+            .col-6
+              p.mb-0.font-weight-bold Les établissements autour de vous ont tendance à choisir ces dates
+            .col-6
+              .row
+                .col-4 Faible
+                .col-4.badge-legend.rounded
+                .col-4 Forte
 
     small.form-text.text-danger.d-none data-target="select-weeks.hint" Veuillez saisir au moins une semaine de stage
