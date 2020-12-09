@@ -1,21 +1,6 @@
 # frozen_string_literal: true
 require 'csv'
 
-ActiveSupport::Notifications.subscribe /seed/ do |event|
-  event.name      # => "process_action.action_controller"
-  event.duration  # => 10 (in milliseconds)
-
-  puts "#{event.name} done! #{event.duration}"
-end
-
-def call_method_with_metrics_tracking(methods)
-  methods.each do |method_name|
-    ActiveSupport::Notifications.instrument "seed.#{method_name}", this: :data do
-      send(method_name)
-    end
-  end
-end
-
 def populate_week_reference
   first_year = 2019
   last_year = Time.now.year + 1
@@ -27,7 +12,6 @@ def populate_week_reference
     first_week.upto(last_week) do |week| # number of the week
       if week == last_week
         Date.commercial(year, week, 1)
-        puts "Special year #{year}, this one have 53 weeks"
       end
 
       Week.create!(year: year, number: week)
@@ -357,6 +341,19 @@ def populate_aggreements
     internship_application: application,
     employer_accept_terms: true
   )
+end
+
+
+ActiveSupport::Notifications.subscribe /seed/ do |event|
+  puts "#{event.name} done! #{event.duration}"
+end
+
+def call_method_with_metrics_tracking(methods)
+  methods.each do |method_name|
+    ActiveSupport::Notifications.instrument "seed.#{method_name}" do
+      send(method_name)
+    end
+  end
 end
 
 if Rails.env == 'review' || Rails.env.development?
