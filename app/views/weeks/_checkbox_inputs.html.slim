@@ -14,8 +14,8 @@ div data-controller="select-weeks" data-target='internship-offer-infos.weeksCont
           | Toute l'année scolaire
           - school_year = SchoolYear::Current.new
           = " #{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
-    div data-target="select-weeks.checkboxesContainer"
-      div class="custom-control-checkbox-list #{preselect_all ? 'd-none' : ''}"
+    div data-target="select-weeks.checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
+      div class="custom-control-checkbox-list"
         - current_weeks.map do |week|
           .custom-control.custom-checkbox.position-relative.pr-3.my-2
             - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)

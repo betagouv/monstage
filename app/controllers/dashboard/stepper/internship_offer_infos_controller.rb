@@ -10,6 +10,7 @@ module Dashboard::Stepper
       authorize! :create, InternshipOfferInfo
 
       @internship_offer_info = InternshipOfferInfo.new
+      @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -33,6 +34,7 @@ module Dashboard::Stepper
     # render back to step 2
     def edit
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
+      @organisation = Organisation.find(params[:organisation_id])
       authorize! :edit, @internship_offer_info
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
