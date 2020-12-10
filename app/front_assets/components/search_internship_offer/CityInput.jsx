@@ -91,7 +91,7 @@ function CityInput({
               className="input-group-text input-group-text-bigger input-group-separator"
               htmlFor="input-search-by-city"
             >
-              <i className="fas fa-map-marker-alt fa-fw" />
+              <i className="fas fa-map-marker-alt fa-fw"  aria-hidden='true' />
               <strong className="d-none">Autour de</strong>
             </label>
           </div>

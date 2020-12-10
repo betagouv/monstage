@@ -72,8 +72,13 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
 
   return (
     <form onSubmit={filterOffers}>
-      <div className={`row search-bar ${className}`}>
-        <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
+      <div className={`row search-bar ${className}`} role="search">
+        <KeywordInput
+          keyword={keyword}
+          setKeyword={setKeyword}
+          focus={focus}
+          setFocus={setFocus}
+        />
         <CityInput
           city={city}
           longitude={longitude}

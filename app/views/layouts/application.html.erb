@@ -17,6 +17,7 @@
   <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
     <div class="content" data-controller='rg2a'>
+      <a href="#main-content" class="visible-hidden">Aller au contenu</a>
       <header role="banner" class="custom-navbar <%= homepage? || statistics? ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
@@ -30,11 +31,11 @@
       </header>
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
-        <div role="main"><%= yield %></div>
+        <div role="main" id="main-content"><%= yield %></div>
       <% else %>
         <div class="container">
           <%= render 'layouts/flash' %>
-          <div role="main"><%= yield %></div>
+          <div role="main" id="main-content"><%= yield %></div>
         </div>
       <% end %>
     </div>

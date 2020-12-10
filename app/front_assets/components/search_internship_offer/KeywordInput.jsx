@@ -69,7 +69,7 @@ function KeywordInput({ keyword, setKeyword, focus, setFocus }) {
               className="input-group-text input-group-search-left-border input-group-text-bigger"
               htmlFor="input-search-by-keyword"
             >
-              <i className="fas fa-suitcase fa-fw" />
+              <i className="fas fa-suitcase fa-fw" aria-hidden='true' />
               <strong className="d-none">Rechercher par Profession</strong>
             </label>
           </div>
