@@ -3,17 +3,12 @@ fieldset.mt-4
   .row.mt-3
     .col-6
       .form-group
-        = form.label :first_name do
-          = 'Prénom du tuteur/trice'
-          = form.rg2a_required_content_tag
-        = form.text_field :first_name, class: 'form-control', required: true, value: resource.first_name || current_user.first_name
-      .form-group
-        = form.label :last_name do
+        = form.label :tutor_name do
           = 'Nom du tuteur/trice'
           = form.rg2a_required_content_tag
-        = form.text_field :last_name, class: 'form-control', required: true, value: resource.last_name || current_user.last_name
+        = form.text_field :tutor_name, class: 'form-control', required: true, value: resource.tutor_name || current_user.name
       .form-group
-        = form.label :email do
+        = form.label :tutor_email do
           = 'Adresse électronique / Email'
           = form.rg2a_required_content_tag
         = form.email_field :email, class: 'form-control', required: true, value: resource.email || current_user.email
