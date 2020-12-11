@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :internship_offers, only: %i[create update destroy]
     resources :schools, only: [] do
       collection do
+        post :nearby
         post :search
       end
     end

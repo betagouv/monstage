@@ -30,7 +30,7 @@
         .form-group
           = form.label :phone, for: 'phone-input' do
             = 'Numéro de mobile'
-          = react_component("inputs/CountryPhoneSelect", { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
+          = react_component("CountryPhoneSelect", props: { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
       .col-12.col-md-6
         .form-group
           = form.label :email do

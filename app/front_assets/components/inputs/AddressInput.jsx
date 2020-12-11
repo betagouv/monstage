@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
+import { endpoints } from '../../utils/api';
+import { broadcast, newCoordinatesChanged } from '../../utils/events';
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
@@ -32,16 +34,7 @@ export default function AddressInput({
   };
 
   const searchCityByAddress = () => {
-    const endpoint = new URL(
-      `${document.location.protocol}//${document.location.host}/api_address_proxy/search`
-    );
-    const searchParams = new URLSearchParams();
-
-    searchParams.append('q', fullAddress);
-    searchParams.append('limit', 10);
-    endpoint.search = searchParams.toString();
-
-    fetch(endpoint)
+    fetch(endpoints.apiSearchAddress({ fullAddress }))
       .then((response) => response.json())
       .then((json) => setSearchResults(json.features));
   };
@@ -65,6 +58,9 @@ export default function AddressInput({
     }
   }, [fullAddressDebounced]);
 
+  useEffect(() => {
+    broadcast(newCoordinatesChanged({ latitude, longitude }));
+  }, [latitude, longitude]);
   return (
     <div>
       <div className="form-group" id="test-input-full-address">
@@ -97,10 +93,12 @@ export default function AddressInput({
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
-                  <a className="btn-absolute btn btn-link py-0"
-                     href="#help-multi-location"
-                     aria-label="Afficher l'aide"
-                     onClick={toggleHelpVisible}>
+                  <a
+                    className="btn-absolute btn btn-link py-0"
+                    href="#help-multi-location"
+                    aria-label="Afficher l'aide"
+                    onClick={toggleHelpVisible}
+                  >
                     <i className="fas fa-question-circle" />
                   </a>
                 </label>
@@ -150,7 +148,10 @@ export default function AddressInput({
             )}
           </Downshift>
         </div>
-        <div id="help-multi-location" className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
+        <div
+          id="help-multi-location"
+          className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}
+        >
           Si vous proposez le même stage dans un autre établissement, déposez une offre par
           établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux),
           indiquez l'adresse où l'élève devra se rendre au premier jour
