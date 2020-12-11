@@ -4,7 +4,7 @@ require 'test_helper'
 
 module Dashboard
   module InternshipOffers
-    class InternshipApplicationsTest < ActionDispatch::IntegrationTest
+    class SupportTicketsControllerTest < ActionDispatch::IntegrationTest
       include Devise::Test::IntegrationHelpers
 
       setup do
