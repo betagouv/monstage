@@ -18,7 +18,7 @@ fieldset.mt-4
           = form.rg2a_required_content_tag
         = form.email_field :email, class: 'form-control', required: true, value: resource.email || current_user.email
       .form-group 
-        = form.label :phone
+        = form.label :phone, for: 'phone-input' do
           span Numéro de mobile
           = form.rg2a_required_content_tag
           small.form-text.text-muted Pour faciliter la prise de contact, indiquez le numéro de mobile
