@@ -1,7 +1,7 @@
 fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-infos-base-type="#{resource.class.to_s.split("s::").first}"
   legend.my-4 Offre de stage
   .row.mt-3
-    .col-6
+    .col-12.col-md-6
       .form-group
         = form.label :school_track do
           = "Filière cible"
@@ -88,7 +88,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
               | Suivant
               i.fas.fa-arrow-right
     - if warning_bloc
-      .col-6
+      .d-none.d-md-flex.col-md-6
         .sticky-top= render partial: 'dashboard/stepper/warning_block'
 
 

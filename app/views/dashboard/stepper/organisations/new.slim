@@ -3,6 +3,8 @@
     .row
       h1.h2.mb-3 Déposer une offre de stage
 
+.row
+  .col-12
     = form_for @organisation, url: dashboard_stepper_organisations_path(@organisation) do |form|
       = render "dashboard/stepper/steps"
       = form.rg2a_explain_required_asterisk
