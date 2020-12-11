@@ -33,7 +33,7 @@ ReactOnRails.register({
   ReservedSchoolInput,
   FilterInternshipOffer,
   SearchSchool,
-  DistanceIcon: DistanceIcon,
+  DistanceIcon,
   CountryPhoneSelect,
   AddressInput,
 });
