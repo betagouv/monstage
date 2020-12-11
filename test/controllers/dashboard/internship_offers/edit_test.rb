@@ -11,6 +11,8 @@ module Dashboard::InternshipOffers
       assert_redirected_to user_session_path
     end
 
+
+
     test 'GET #edit as employer not owning internship_offer redirects to user_session_path' do
       sign_in(create(:employer))
       get edit_dashboard_internship_offer_path(create(:weekly_internship_offer).to_param)
@@ -28,6 +30,14 @@ module Dashboard::InternshipOffers
         assert_select 'label', text: week.select_text_method
       end
       assert_response :success
+    end
+
+    test 'GET #edit is not turbolinkable' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer)
+      get edit_dashboard_internship_offer_path(internship_offer.to_param)
+      assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
     end
 
     test 'GET #edit with disabled fields if applications exist' do

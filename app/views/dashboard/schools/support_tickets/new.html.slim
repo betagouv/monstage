@@ -12,7 +12,7 @@
 
   h6.h6.mt-4 Nos offres de stages
   p Sélectionnez le(s) type(s) de stages qui vous intéressent.
-    
+
   div.clearfix
     div.float-left
       .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
@@ -89,7 +89,7 @@
     .row.no-gutters
       .col-sm-12.col-md-8.col-lg-5.no-gutters
         = render partial: "weeks/checkbox_inputs",
-                locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités" }
+                locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false  }
     = f.label :class_rooms_quantity do
       = f.rg2a_required_content_tag
       = "Vos élèves"

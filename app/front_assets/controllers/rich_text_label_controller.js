@@ -20,7 +20,9 @@ export default class extends Controller {
     this.element.addEventListener('click', this.refOnClick)
   }
   initialize(){
-   this.enableTrixInput(this.data.get('enable'))
+    if (this.data.get('enable') !== null) {
+      this.enableTrixInput()
+    }
   }
   disconnect(){
     this.element.removeEventListener('click', this.refOnClick)

@@ -22,8 +22,8 @@ gem 'prawn-styled-text'
 gem 'uglifier'
 gem 'slim-rails'
 gem 'turbolinks'
+gem "react_on_rails"
 gem 'webpacker'
-gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
@@ -96,6 +96,4 @@ end
 group :test, :development, :review do
   gem 'factory_bot_rails'
 end
-
-
 

@@ -1,20 +1,9 @@
 # frozen_string_literal: true
 require 'csv'
 
-# school only exists a paris/bdx
-class Coordinates
-  def self.paris
-    { latitude: 48.866667, longitude: 2.333333 }
-  end
-
-  def self.bordeaux
-    { latitude: 44.837789, longitude: -0.57918 }
-  end
-end
-
 def populate_week_reference
   first_year = 2019
-  last_year = 2050
+  last_year = Time.now.year + 1
 
   first_week = 1
   last_week = 53 # A 53 week exisits! https://fr.wikipedia.org/wiki/Semaine_53
@@ -23,7 +12,6 @@ def populate_week_reference
     first_week.upto(last_week) do |week| # number of the week
       if week == last_week
         Date.commercial(year, week, 1)
-        puts "Special year #{year}, this one have 53 weeks"
       end
 
       Week.create!(year: year, number: week)
@@ -35,29 +23,30 @@ def populate_week_reference
   end
 end
 
+def geo_point_factory_array(coordinates_as_array)
+  type = { geo_type: 'point' }
+  factory = RGeo::ActiveRecord::SpatialFactoryStore.instance
+                                                   .factory(type)
+  factory.point(*coordinates_as_array)
+end
+
 def populate_schools
-  # ActiveRecord::Base.transaction do
-    CSV.foreach(Rails.root.join('db/data_imports/college-rep-plus.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
-      next if i.zero?
-      school = School.find_or_create_by!(
-        code_uai: row['Code UAI'],
-        name: row['ETABLISSEMENT'],
-        city: row['Commune'],
-        department: row['Département'],
-        zipcode: '75015',
-        coordinates: geo_point_factory(
-            **([1,2].shuffle.first == 1 ?
-               Coordinates.paris :
-               Coordinates.bordeaux)
-        )
-      )
-    end
-  # end
+  CSV.foreach(Rails.root.join('db/data_imports/seed-schools.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
+    next if i.zero?
+    school = School.find_or_create_by!(
+      code_uai: row['Code UAI'],
+      name: row['ETABLISSEMENT'],
+      city: row['Commune'],
+      department: row['Département'],
+      zipcode: row['zipcode'],
+      coordinates: geo_point_factory_array(JSON.parse(row['coordinates'])['coordinates'])
+    )
+  end
 end
 
 def populate_class_rooms
-  school = School.first
-  school_manager = FactoryBot.create(:school_manager, school: school)
+  school = find_default_school_during_test
+
   ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
   ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
@@ -93,17 +82,17 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: School.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: School.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{School.first.email_domain_name}", password: 'review', school: School.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
   EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
 
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: School.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: School.first, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: School.first)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 end
 
 def populate_students
@@ -280,10 +269,23 @@ MULTI_LINE
   )
 end
 
-def populate_internship_weeks
-  manager = Users::SchoolManagement.find_by(role: 'school_manager')
-  school = manager.school
-  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+def find_default_school_during_test
+  School.find_by_code_uai("0781896M") # school at mantes lajolie, school name : Pasteur.
+end
+
+# used for application
+def populate_school_weeks
+  school = find_default_school_during_test
+  # used for application
+  school.weeks = Week.selectable_on_school_year.limit(5)
+  school.save!
+
+  # used to test matching between internship_offers.weeks and existing school_weeks
+  other_schools = School.nearby(latitude: 48.866667, longitude: 2.333333, radius: 60_000).limit(4)
+                        .where.not(id: school.id)
+  other_schools.each.with_index do |another_school, i|
+    another_school.update!(weeks: Week.selectable_on_school_year.limit(i+1))
+  end
 end
 
 def populate_applications
@@ -341,20 +343,34 @@ def populate_aggreements
   )
 end
 
+
+ActiveSupport::Notifications.subscribe /seed/ do |event|
+  puts "#{event.name} done! #{event.duration}"
+end
+
+def call_method_with_metrics_tracking(methods)
+  methods.each do |method_name|
+    ActiveSupport::Notifications.instrument "seed.#{method_name}" do
+      send(method_name)
+    end
+  end
+end
+
 if Rails.env == 'review' || Rails.env.development?
   require 'factory_bot_rails'
-
-  populate_week_reference
-  populate_schools
-  populate_class_rooms
+  call_method_with_metrics_tracking([
+    :populate_week_reference,
+    :populate_schools,
+    :populate_class_rooms,
+    :populate_operators,
+    :populate_users,
+    :populate_sectors,
+    :populate_groups,
+    :populate_internship_offers,
+    :populate_students,
+    :populate_school_weeks,
+    :populate_applications,
+    :populate_aggreements
+  ])
   School.update_all(updated_at: Time.now)
-  populate_operators
-  populate_users
-  populate_sectors
-  populate_groups
-  populate_internship_offers
-  populate_students
-  populate_internship_weeks
-  populate_applications
-  populate_aggreements
 end

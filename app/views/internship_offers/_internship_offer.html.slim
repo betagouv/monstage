@@ -21,7 +21,7 @@ tr.hoverable-row-with-btn
 
             - if internship_offer.respond_to?(:relative_distance)
               .icon-container.d-inline-block.ml-3
-                = react_component("icons/DistanceIcon", radius: internship_offer.relative_distance)
+                = react_component("DistanceIcon", props: { radius: internship_offer.relative_distance})
 
         .d-none.d-sm-block.col-sm-3.text-right.align-self-center
           - if can?(:apply, internship_offer) || !user_signed_in? || internship_offer.from_api?
