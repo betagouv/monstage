@@ -6,16 +6,16 @@ module Dashboard
 
       def new
         @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
-        @support_ticket ||= SupportTicket.new
+        @support_ticket ||= SupportTickets::SchoolManager.new
       end
 
       def create
         authorize! :create_remote_internship_request, @school
-        @support_ticket = SupportTicket.new(support_ticket_params)
+        @support_ticket = SupportTickets::SchoolManager.new(support_ticket_params)
         @support_ticket.assign_attributes(user_id: current_user.id)
         if @support_ticket.valid?
           job_params = @support_ticket.as_json.symbolize_keys
-          CreateSupportTicketJob.perform_later(params: job_params)
+          SupportTicketJobs::SchoolManager.perform_later(params: job_params)
           success_message = 'Votre message a bien été envoyé et une association ' \
                             'prendra contact avec vous prochainement'
           redirect_to(dashboard_school_class_rooms_path(@school),
@@ -35,7 +35,7 @@ module Dashboard
       private
 
       def support_ticket_params
-        params.require(:support_ticket)
+        params.require(:support_tickets_school_manager)
               .permit(
                 :message,
                 :webinar,

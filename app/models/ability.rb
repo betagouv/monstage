@@ -120,7 +120,7 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
-    can %i[create see_tutor], InternshipOffer
+    can %i[create see_tutor create_remote_internship_request], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
     can %i[create], InternshipOfferInfo

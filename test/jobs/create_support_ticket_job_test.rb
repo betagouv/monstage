@@ -30,15 +30,15 @@ class CreateSupportTicketJobTest < ActiveJob::TestCase
           ).to_return(status: 200, body: "{}", headers: {})
   end
 
-  test 'POST support ticket with an existing customer' do
+  test 'SchoolManager POST support ticket with an existing customer' do
     request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
     stub_request(:get, request_url).with( headers: @headers )
                                    .to_return(status: 200, body: "[\"someone\"]", headers: {})
 
-    CreateSupportTicketJob.new(params: @params).perform_now
+    SupportTicketJobs::SchoolManager.new(params: @params).perform_now
   end
 
-  test 'POST support ticket without an existing customer' do
+  test 'SchoolManager POST support ticket without an existing customer' do
     request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
     stub_request(:get, request_url).with( headers: @headers )
                                    .to_return(status: 200, body: "[]", headers: {})
@@ -50,6 +50,6 @@ class CreateSupportTicketJobTest < ActiveJob::TestCase
       headers: @headers
     ).to_return(status: 200, body: returned_value, headers: {})
 
-    CreateSupportTicketJob.new(params: @params).perform_now
+    SupportTicketJobs::SchoolManager.new(params: @params).perform_now
   end
 end

@@ -24,7 +24,7 @@ class ZammadTicketTest < ActiveSupport::TestCase
       message: 'Test Message',
       user_id: @school.school_manager.id
     }
-    service = Services::ZammadTicket.new(params: params)
+    service = Services::ZammadTickets::SchoolManager.new(params: params)
     stub_request(
       :post, "https://monstage.zammad.com/api/v1/tickets"
       ).with(
