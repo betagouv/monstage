@@ -12,6 +12,7 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
+      when 'Users::Tutor' then tutor_abilities(user: user)
       when 'Users::SchoolManagement' then
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
@@ -127,7 +128,7 @@ class Ability
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
-    can %i[create], Tutor
+    can %i[create], Users::Tutor
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
@@ -160,7 +161,7 @@ class Ability
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
-    can %i[create], Tutor
+    can %i[create], Users::Tutor
 
     can %i[index update], InternshipApplication
     can :show, :api_token
@@ -171,6 +172,10 @@ class Ability
     end
   end
 
+  def tutor_abilities(user:)
+    can %i[index update], InternshipApplication 
+  end
+  
   def statistician_abilities
     can :view, :department_name
     can %i[read], InternshipOffer

@@ -1028,7 +1028,8 @@ CREATE TABLE public.users (
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL
+    anonymized boolean DEFAULT false NOT NULL,
+    organisation_id bigint
 );
 
 
@@ -1744,6 +1745,13 @@ CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree 
 
 
 --
+-- Name: index_users_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_organisation_id ON public.users USING btree (organisation_id);
+
+
+--
 -- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2222,6 +2230,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201125102052'),
 ('20201201140201'),
 ('20201202082705'),
-('20201203153154');
+('20201203153154'),
+('20201211094310');
 
 

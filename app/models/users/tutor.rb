@@ -2,11 +2,13 @@ module Users
   class Tutor < User
     attr_accessor :skip_password_validation
     
+    # Validations
     validates :first_name,
-              :last_name,
-              :email,
-              :phone,
-              presence: true
+                :last_name,
+                :phone,
+                :email,
+                presence: true,
+                unless: :from_api?
 
     # for ACL
     belongs_to :organisation
