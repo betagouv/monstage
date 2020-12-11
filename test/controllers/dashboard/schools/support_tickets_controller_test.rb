@@ -10,7 +10,7 @@ module Dashboard
       setup do
         @school = create(:school, :with_school_manager)
         @params = {
-          support_ticket: {
+          support_tickets_school_manager: {
             subject: '[Demande de stage à distance]',
             user_id: @school.school_manager.id,
             webinar: 1,
@@ -23,38 +23,38 @@ module Dashboard
       end
 
       def submit_fails_and_renders_new(params)
-        refute SupportTicket.new(params[:support_ticket]).valid?
+        refute SupportTickets::SchoolManager.new(params[:support_tickets_school_manager]).valid?
         post dashboard_school_support_tickets_path(@school, params: params)
         assert_match /input type=\"submit\" name=\"commit\" value=\"Envoyer la demande\"/, response.body
       end
 
       test 'POST support ticket redirects to after_login_path when parameters are compliant' do
-        assert SupportTicket.new(@params[:support_ticket]).valid?
-        assert_enqueued_with(job: CreateSupportTicketJob) do
+        assert SupportTickets::SchoolManager.new(@params[:support_tickets_school_manager]).valid?
+        assert_enqueued_with(job: SupportTicketJobs::SchoolManager) do
           post dashboard_school_support_tickets_path(@school, params: @params)
         end
         assert_redirected_to dashboard_school_class_rooms_path(@school)
       end
 
       test 'POST support ticket redirects to new if mode parameters are not compliant' do
-        @params[:support_ticket][:webinar] = 0
-        @params[:support_ticket][:face_to_face] = 0
-        @params[:support_ticket][:digital_week] = 0
+        @params[:support_tickets_school_manager][:webinar] = 0
+        @params[:support_tickets_school_manager][:face_to_face] = 0
+        @params[:support_tickets_school_manager][:digital_week] = 0
         submit_fails_and_renders_new(@params)
       end
 
       test 'POST support ticket redirects to new if parameter week_ids is not compliant' do
-        @params[:support_ticket][:week_ids] = []
+        @params[:support_tickets_school_manager][:week_ids] = []
         submit_fails_and_renders_new(@params)
       end
 
       test 'POST support ticket redirects to new if students_quantity parameter is not compliant' do
-        @params[:support_ticket][:students_quantity] = 'string'
+        @params[:support_tickets_school_manager][:students_quantity] = 'string'
         submit_fails_and_renders_new(@params)
       end
 
       test 'POST support ticket redirects to new if class_rooms_quantity parameters is not compliant' do
-        @params[:support_ticket][:class_rooms_quantity] = ''
+        @params[:support_tickets_school_manager][:class_rooms_quantity] = ''
         submit_fails_and_renders_new(@params)
       end
     end
