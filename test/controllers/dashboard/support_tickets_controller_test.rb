@@ -14,7 +14,6 @@ module Dashboard
         post(dashboard_support_tickets_path,
              params: {
                support_ticket: {
-                subject: '[Demande de stage à distance]',
                 webinar: 1,
                 class_rooms_quantity: 2,
                 students_quantity: 20,
@@ -32,7 +31,6 @@ module Dashboard
         post(dashboard_support_tickets_path,
              params: {
               support_ticket: {
-                subject: '[Demande de stage à distance]',
                 webinar: 0,
                 face_to_face: 0,
                 digital_week: 0,
@@ -51,7 +49,6 @@ module Dashboard
         post(dashboard_support_tickets_path,
              params: {
               support_ticket: {
-                subject: '[Proposition de stage à distance]',
                 webinar: 1,
                 speechers_quantity: 2,
                 business_lines_quantity: 1,
@@ -69,7 +66,6 @@ module Dashboard
         post(dashboard_support_tickets_path,
              params: {
               support_ticket: {
-                subject: '[Proposition de stage à distance]',
                 webinar: 1,
                 speechers_quantity: 'bad speechers_quantity',
                 business_lines_quantity: 'bad business_lines_quantity',

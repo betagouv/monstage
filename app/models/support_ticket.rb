@@ -5,7 +5,6 @@ class SupportTicket
                 :message,
                 :webinar,
                 :face_to_face,
-                :subject,
                 :digital_week,
                 :week_ids
 
