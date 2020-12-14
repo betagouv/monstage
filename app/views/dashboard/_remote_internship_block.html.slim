@@ -8,6 +8,6 @@
           | Contactez nos associations partenaires qui vous accompagneront dans la mise en place de stages à distance.
       .col-sm-12.col-md-5.align-self-center
         .text-right.mr-4
-          = link_to new_dashboard_support_ticket_path(school_id: school.id),
+          = link_to new_dashboard_support_ticket_path,
                     class: "nav-link text-white px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'd-none' : ''}" do
             .btn.btn-primary Contactez-nous !

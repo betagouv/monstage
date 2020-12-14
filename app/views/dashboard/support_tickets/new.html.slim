@@ -1,15 +1,17 @@
-- scope = SupportTickets::SchoolManager
-- scope = SupportTickets::Employer if @school.nil?
-- if @school.nil?
-  h1 School est null !!
-h1.h3.mb-4.pl-2 Stage à distance
-= render partial: 'dashboard/support_tickets/which_tabs',
-         locals: { school: @school}
+- if current_user.is_a?(Users::Employer)
+  = render partial: 'dashboard/internship_offers/tabs'
+  h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
+  p
+    |
+      Nos associations partenaires vous proposent des solutions de stage
+      à distance, et peuvent vous accompagner dans leur mise en place.
+- if current_user.is_a?(Users::SchoolManagement)
+  = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}
+  h1.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
 
-= form_for(@support_ticket,
-           url: dashboard_support_tickets_path,
-           scope: scope,
-           html: { method: 'post'} ) do |f|
+= form_with({model: @support_ticket,
+             url: dashboard_support_tickets_path,
+             scope: :support_ticket}) do |f|
   = render "layouts/form_errors",
             resource: @support_ticket,
             resource_name: :support_ticket
@@ -23,8 +25,13 @@ h1.h3.mb-4.pl-2 Stage à distance
       .col-sm-12.col-md-8.col-lg-5
         = render partial: "weeks/checkbox_inputs",
                  locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false }
-        = render partial: 'dashboard/support_tickets/role_specific_fields',
-                 locals: {f: f, school: @school}
+        - if current_user.is_a?(Users::Employer)
+          = render partial: 'dashboard/support_tickets/employer_specific_fields',
+                   locals: {f: f}
+        - if current_user.is_a?(Users::SchoolManagement) && @school
+          = render partial: 'dashboard/support_tickets/school_manager_specific_fields',
+                   locals: {f: f, school: @school}
+
   .row.no-gutters.mt-4
     .col-sm-12.col-md-10.col-lg-7
       .form-group
@@ -35,7 +42,6 @@ h1.h3.mb-4.pl-2 Stage à distance
                       rows: 7,
                       cols: 80,
                       placeholder: "Votre message ici ..."
-  = submit_tag "Envoyer la demande",
-                class: 'btn btn-primary lg px-4 my-4'
+  = f.submit "Envoyer la demande", class: 'btn btn-primary lg px-4 my-4'
   p style="margin-bottom: 100px"
 

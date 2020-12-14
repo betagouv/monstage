@@ -1,10 +1,10 @@
 - badge_counter = SchoolTabFinder.new(school: school) if current_user.school_manager?
 - badge_counter = MainTeacherTabFinder.new(main_teacher: current_user) if current_user.main_teacher?
 - badge_counter = NullTabFinder.new if badge_counter.nil?
-- school = @school
 
 - if can? :create_remote_internship_request, SupportTicket
-    = render partial: 'dashboard/schools/remote_internship_block', locals: { school: school }
+    = render partial: 'dashboard/remote_internship_block'
+
 .row.mb-2
   .d-flex style="align-items: baseline"
     h1.h3.mx-3= school.name
@@ -41,7 +41,7 @@
             span.badge-pill.badge-danger.small= badge_counter.approved_application_count
     - if can? :create_remote_internship_request, SupportTicket
       li.nav-item
-        = link_to new_dashboard_support_ticket_path(school_id: school.id),
+        = link_to new_dashboard_support_ticket_path,
                   class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
           | Stages à distances
 

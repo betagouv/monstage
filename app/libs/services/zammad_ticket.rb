@@ -31,8 +31,8 @@ module Services
       handle_response(response: search_user, action: 'find user')
     end
 
-    def human_week_desc(weeks)
-      weeks.map do |week_id|
+    def human_week_desc
+      @params[:week_ids].map do |week_id|
         week = Week.find week_id
         "#{week.beginning_of_week} - #{week.end_of_week}"
       end.join "\n"
@@ -136,6 +136,17 @@ module Services
 
     def default_headers
       {"Authorization" => "Bearer #{TOKEN}"}
+    end
+
+    def message
+      file_path = *%w[app views dashboard support_tickets ]
+      file_path = file_path + [template_file_name]
+      renderer = ERB.new(File.read(Rails.root.join(*file_path)))
+      renderer.result(get_bindings)
+    end
+
+    def get_bindings
+      binding
     end
   end
 end

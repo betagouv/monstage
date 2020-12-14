@@ -1,8 +1,0 @@
-- if current_user.is_a?(Users::Employer)
-  = render partial: 'dashboard/support_tickets/employer_specific_fields',
-           locals: {f: f}
-- if current_user.is_a?(Users::SchoolManagement) && @school
-  = render partial: 'dashboard/support_tickets/school_manager_specific_fields',
-           locals: {f: f, school: @school}
-
-
