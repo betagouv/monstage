@@ -32,11 +32,9 @@ module Dashboard
               :webinar,
               :face_to_face,
               :digital_week,
-              :subject,
               :speechers_quantity,
               :business_lines_quantity,
               :paqte,
-              :school_id,
               :students_quantity,
               :class_rooms_quantity,
               week_ids: []
