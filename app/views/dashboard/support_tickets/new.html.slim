@@ -11,7 +11,7 @@
 
 = form_with({model: @support_ticket,
              url: dashboard_support_tickets_path,
-             scope: :support_ticket}) do |f|
+             scope: :support_ticket, local: true}) do |f|
   = render "layouts/form_errors",
             resource: @support_ticket,
             resource_name: :support_ticket
@@ -25,10 +25,11 @@
       .col-sm-12.col-md-8.col-lg-5
         = render partial: "weeks/checkbox_inputs",
                  locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false }
+
         - if current_user.is_a?(Users::Employer)
           = render partial: 'dashboard/support_tickets/employer_specific_fields',
                    locals: {f: f}
-        - if current_user.is_a?(Users::SchoolManagement) && @school
+        - if current_user.is_a?(Users::SchoolManagement)
           = render partial: 'dashboard/support_tickets/school_manager_specific_fields',
                    locals: {f: f, school: @school}
 

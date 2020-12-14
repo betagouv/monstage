@@ -13,7 +13,7 @@ module SupportTickets
     validates :business_lines_quantity,
               numericality: {
                 only_integer: true,
-                message: "'Il manque à cette demande le nombre de métiers abordés"
+                message: "Il manque à cette demande le nombre de métiers abordés"
               }
     def send_to_support
       SupportTicketJobs::Employer
