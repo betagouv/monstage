@@ -18,7 +18,16 @@ const mapNumberOfSchoolHavingWeek = (schools) => {
   return weeksSchoolsHash;
 };
 export default class extends Controller {
-  static targets = ['checkboxesContainer', 'weekCheckboxes', 'hint', 'inputWeekLegend', 'legendContainer'];
+  static targets = [
+    'checkboxesContainer',
+    'weekCheckboxes',
+    'hint',
+    'inputWeekLegend',
+    'legendContainer'
+  ];
+  static values = {
+    skipValidation: Boolean
+  }
 
   connect() {
     if (this.getForm() === null) {
@@ -109,7 +118,7 @@ export default class extends Controller {
   }
 
   handleSubmit(event) {
-    if (this.data.get('skip')) {
+    if (this.skipValidationValue) {
       return event;
     }
     if (!this.hasAtLeastOneCheckbox()) {
@@ -147,6 +156,11 @@ export default class extends Controller {
 
     showElement($hint);
     $checkboxesContainer.addClass('is-invalid');
+    try {
+      $checkboxesContainer.get(0).scrollIntoView()
+    } catch(e) {
+      // not supported
+    }
   }
 
   onAtLeastOneWeekSelected() {

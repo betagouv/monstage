@@ -16,6 +16,10 @@ export default class extends Controller {
                     'passwordConfirmationHint',
                     'passwordConfirmationInput'];
 
+  static values = {
+    channel: String,
+  };
+
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
     $(this.labelTarget).text(
@@ -42,7 +46,6 @@ export default class extends Controller {
   }
 
   connect() {
-    const _that = this;
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
@@ -79,8 +82,8 @@ export default class extends Controller {
       },
     });
 
-    setTimeout(function () {
-      _that.checkChannel();
+    setTimeout( () => {
+      this.checkChannel();
     }, 100);
   }
 
@@ -129,7 +132,7 @@ export default class extends Controller {
   }
 
   checkChannel() {
-    switch (this.data.get('channel')) {
+    switch (this.channelValue) {
       case 'email':
         this.checkEmail();
         break;

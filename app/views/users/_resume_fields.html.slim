@@ -2,7 +2,7 @@
   fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
     legend.h3 Mon Parcours
     .form-group
-      .label data-rich-text-label-for="user_resume_educational_background" data-controller="rich-text-label"
+      .label data-rich-text-label-enable-value=true data-rich-text-label-for-value="user_resume_educational_background" data-controller="rich-text-label"
         = 'Parcours Scolaire'
         small.form-text.text-muted Classes suivies jusqu'à maintenant
       = form.rich_text_area :resume_educational_background, class: 'form-control col-12', disabled: disabled,  rows: 5
@@ -12,13 +12,13 @@
     .row
       .col-12.col-md-6
         .form-group
-          .label data-rich-text-label-for="user_resume_other" data-controller="rich-text-label"
+          .label data-rich-text-label-enable-value=true data-rich-text-label-for-value="user_resume_other" data-controller="rich-text-label"
             = 'Activités extra scolaires'
             small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
           = form.rich_text_area :resume_other, class: 'form-control col-12', disabled: disabled, rows: 3
       .col-12.col-md-6
         .form-group
-          .label data-rich-text-label-for="user_resume_languages" data-controller="rich-text-label"
+          .label data-rich-text-label-enable-value=true data-rich-text-label-for-value="user_resume_languages" data-controller="rich-text-label"
             = 'Langues vivantes'
             small.form-text.text-muted Langues étudiées et/ou parlées
           = form.rich_text_area :resume_languages, class: 'form-control col-12', disabled: disabled, rows: 3
