@@ -78,12 +78,12 @@ class Ability
   end
 
   def school_manager_abilities(user:)
+    can :create_remote_internship_request, SupportTicket
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id
       end
     end
-    can %i[create_remote_internship_request], School
     can %i[
       create
       update
@@ -120,7 +120,10 @@ class Ability
 
   def employer_abilities(user:)
     can :show, :account
-    can %i[create see_tutor create_remote_internship_request], InternshipOffer
+
+    can :create_remote_internship_request, SupportTicket
+
+    can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     # internship_offer stepper
     can %i[create], InternshipOfferInfo

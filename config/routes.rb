@@ -56,7 +56,6 @@ Rails.application.routes.draw do
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
-      resources :support_tickets, only: %i[new create], module: 'schools'
       put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
     end
 

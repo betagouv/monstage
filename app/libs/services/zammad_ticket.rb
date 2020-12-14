@@ -84,6 +84,29 @@ module Services
       end
     end
 
+    def ticket_payload
+      {
+        "title": subject,
+        "group": 'Users',
+        "customer": @user.email,
+        "article": {
+          "subject": subject,
+          "body": message,
+          "type": 'note',
+          "internal": false
+        },
+        "note": 'Stages à distance'
+      }
+    end
+
+    def subject
+      subject = internship_leading_sentence
+      subject = "#{subject} | webinaire" if @params[:webinar].to_i == 1
+      subject = "#{subject} | présentiel" if @params[:face_to_face].to_i == 1
+      subject = "#{subject} | semaine de stage digitale" if @params[:digital_week].to_i == 1
+      subject
+    end
+
     def user_payload
       {
         "firstname": @user.first_name,

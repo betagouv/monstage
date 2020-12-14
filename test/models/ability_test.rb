@@ -62,7 +62,7 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to discard internships offer that belongs to him')
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
            'employers should be able to index InternshipOfferDashboard')
-    assert(ability.can?(:create_remote_internship_request, InternshipOffer),
+    assert(ability.can?(:create_remote_internship_request, SupportTicket),
            'employers should be able to ask how ask for remote internships support')
     %i[
     create
@@ -129,7 +129,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:manage_school_users, school))
     assert(ability.can?(:manage_school_students, school))
     assert(ability.can?(:manage_school_internship_agreements, school))
-    assert(ability.can?(:create_remote_internship_request, school))
+    assert(ability.can?(:create_remote_internship_request, SupportTicket))
     
     assert(ability.cannot?(%i[show edit update], School),
            'school_manager should be able manage school')
@@ -233,7 +233,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: operator)),
            'Operator should be able to index InternshipOfferDashboard')
 
-    refute(ability.can?(:create_remote_internship_request, InternshipOffer),
+    refute(ability.can?(:create_remote_internship_request, SupportTicket),
           'operators are not supposed to fill forms for remote internships support')
   end
 end

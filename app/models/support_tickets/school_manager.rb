@@ -13,5 +13,9 @@ module SupportTickets
                 only_integer: true,
                 message: "le nombre d'étudiants devrait être chiffré"
               }
+    def send_to_support
+      SupportTicketJobs::SchoolManager
+        .perform_later(params: self.as_json.symbolize_keys)
+    end
   end
 end

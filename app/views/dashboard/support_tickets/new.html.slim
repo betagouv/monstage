@@ -1,15 +1,15 @@
-= render partial: 'dashboard/internship_offers/tabs'
-
-h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
-p
-  |
-    Nos associations partenaires vous proposent des solutions de stage
-     à distance, et peuvent vous accompagner dans leur mise en place.
+- scope = SupportTickets::SchoolManager
+- scope = SupportTickets::Employer if @school.nil?
+- if @school.nil?
+  h1 School est null !!
+h1.h3.mb-4.pl-2 Stage à distance
+= render partial: 'dashboard/support_tickets/which_tabs',
+         locals: { school: @school}
 
 = form_for(@support_ticket,
            url: dashboard_support_tickets_path,
+           scope: scope,
            html: { method: 'post'} ) do |f|
-  = f.hidden_field :subject, value:'[Proposition de stage à distance]'
   = render "layouts/form_errors",
             resource: @support_ticket,
             resource_name: :support_ticket
@@ -22,31 +22,14 @@ p
     .row.no-gutters
       .col-sm-12.col-md-8.col-lg-5
         = render partial: "weeks/checkbox_inputs",
-                locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités" }
-    = f.label :speechers_quantity do
-      = f.rg2a_required_content_tag
-      = "Vos intervenants et métiers"
-      br
-    = f.select :speechers_quantity,
-              options_for_select((1..15).to_a.map { |a| ["#{a} #{'intervenant'.pluralize(a)}", a] }),
-                { prompt: 'Nombre de vos intervenants' },
-              class: "form-control col-sm-12 col-md-8 col-lg-5 no-gutters"
-    p.my-2
-      = f.select :business_lines_quantity,
-                options_for_select((1..8).to_a.map { |a| ["#{a} #{'métier'.pluralize(a)}", a] }),
-                  { prompt: 'Nombre de métiers abordés' },
-                class: "form-control col-sm-12 col-md-8 col-lg-5 no-gutters"
-  .row.no-gutters.mt-4
-    .col-12
-      .form-group.mx-2
-          = f.check_box :paqte, class: 'pt-1'
-          = f.label :paqte, class: 'form-check-label pl-2' do
-            |Votre entreprise fait partie du PaQte
+                 locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false }
+        = render partial: 'dashboard/support_tickets/role_specific_fields',
+                 locals: {f: f, school: @school}
   .row.no-gutters.mt-4
     .col-sm-12.col-md-10.col-lg-7
       .form-group
         = f.label :message do
-          = "Besoins spécifiques"
+          |Besoins spécifiques
         = f.text_area :message,
                       class: "form-control mt-2",
                       rows: 7,
