@@ -23,33 +23,46 @@ class CreateSupportTicketJobTest < ActiveJob::TestCase
       'Content-Type'=>'application/json',
       'User-Agent'=>'Ruby'
     }
-    stub_request(:post, "https://monstage.zammad.com/api/v1/tickets").
-          with(
-            body: "{\"title\":\"Demande de stage à distance | webinar\",\"group\":\"Users\",\"customer\":\"#{@user.email}\",\"article\":{\"subject\":\"Demande de stage à distance | webinar\",\"body\":\"nombre de classes visées : 1\\nnombre d'élèves visés: 10\\ndates visées :\\n 10 octobre - 16 octobre\\n-------------------------------------\\nMESSAGE : \\nJe voudrais des stages à distance\",\"type\":\"note\",\"internal\":false},\"note\":\"Stages à distance\"}",
-            headers: @headers
-          ).to_return(status: 200, body: "{}", headers: {})
-  end
-
-  test 'SchoolManager POST support ticket with an existing customer' do
-    request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
-    stub_request(:get, request_url).with( headers: @headers )
-                                   .to_return(status: 200, body: "[\"someone\"]", headers: {})
-
-    SupportTicketJobs::SchoolManager.new(params: @params).perform_now
   end
 
   test 'SchoolManager POST support ticket without an existing customer' do
+    ticket = Services::ZammadTickets::SchoolManager.new(params: @params)
     request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
     stub_request(:get, request_url).with( headers: @headers )
                                    .to_return(status: 200, body: "[]", headers: {})
+    stub_request(:post, "https://monstage.zammad.com/api/v1/users")
+      .with(body: ticket.send(:user_payload).as_json, headers: @headers)
+      .to_return(status: 200, body: "{}", headers: {})
 
-    body = "{\"firstname\":\"#{@user.first_name}\",\"lastname\":\"#{@user.last_name}\",\"email\":\"#{@user.email}\"}"
-    returned_value =  "{\"id\":123,\"firstname\":\"#{@user.first_name}\",\"lastname\":\"#{@user.last_name}\"}"
-    stub_request(:post, "https://monstage.zammad.com/api/v1/users").with(
-      body: body,
-      headers: @headers
-    ).to_return(status: 200, body: returned_value, headers: {})
+    stub_request(:post, "https://monstage.zammad.com/api/v1/tickets")
+      .with(body: ticket.send(:ticket_payload).as_json, headers: @headers)
+      .to_return(status: 200, body: "{}", headers: {})
+    SupportTicketJobs::SchoolManager.new(params: @params).perform_now
+  end
+
+  test 'SchoolManager POST support ticket with an existing customer' do
+    ticket = Services::ZammadTickets::SchoolManager.new(params: @params)
+    request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
+    stub_request(:get, request_url).with( headers: @headers )
+                                   .to_return(status: 200, body: "[\"someone\"]", headers: {})
+    stub_request(:post, "https://monstage.zammad.com/api/v1/tickets")
+      .with(body: ticket.send(:ticket_payload).as_json, headers: @headers)
+      .to_return(status: 200, body: "{}", headers: {})
 
     SupportTicketJobs::SchoolManager.new(params: @params).perform_now
   end
+
+  test 'Employer POST support ticket with an existing customer' do
+    ticket = Services::ZammadTickets::Employer.new(params: @params)
+    request_url = "https://monstage.zammad.com/api/v1/users/search?query=#{@user.email}"
+    stub_request(:get, request_url).with( headers: @headers)
+                                   .to_return(status: 200, body: "[\"someone\"]", headers: {})
+
+    stub_request(:post, "https://monstage.zammad.com/api/v1/tickets")
+      .with(body: ticket.send(:ticket_payload).as_json, headers: @headers)
+      .to_return(status: 200, body: "{}", headers: {})
+
+    SupportTicketJobs::Employer.new(params: @params).perform_now
+  end
+
 end

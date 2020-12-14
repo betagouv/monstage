@@ -19,7 +19,7 @@ module Dashboard
       else
         flash.now[:error] = "Votre message est incomplet : #{@support_ticket.errors.full_messages}"
         @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
-        render :new
+        render :new, status: :bad_request
       end
     rescue StandardError => e
       Rails.logger.error "Zammad error in support_tickets controller : #{e}"
