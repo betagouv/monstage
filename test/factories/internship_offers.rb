@@ -21,7 +21,7 @@ FactoryBot.define do
     employer { create(:employer) }
 
     trait :api_internship_offer do
-      weeks { [Week.first] }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:user_operator) }
       school_track { :troisieme_generale }
       permalink { 'https://google.fr' }
@@ -30,7 +30,7 @@ FactoryBot.define do
     end
 
     trait :weekly_internship_offer do
-      weeks { [Week.first] }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:employer) }
       school_track { :troisieme_generale }
       description { 'Lorem ipsum dolor' }
