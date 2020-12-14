@@ -22,6 +22,10 @@ export default class extends Controller {
     'linkIconContainer',
   ];
 
+  static values = {
+    state: String,
+  };
+
   stopEventPropagation(event) {
     if (event) {
       event.preventDefault();
@@ -94,7 +98,7 @@ export default class extends Controller {
   }
 
   initWithDataState() {
-    switch (this.data.get('state')) {
+    switch (this.stateValue) {
       case 'submitted':
       case 'rejected':
         this.enableInternshipApplicationDetail();

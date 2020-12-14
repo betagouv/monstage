@@ -7,5 +7,5 @@
 
   = render 'form_fields', { form: form, resource: @internship_offer_info, submit_button: true, warning_bloc: true}
 
-div data-controller='broadcast-coordinates-changed' data-broadcast-coordinates-changed-latitude=@organisation.coordinates.lat data-broadcast-coordinates-changed-longitude=@organisation.coordinates.lon
+div data-controller='broadcast-coordinates-changed' data-broadcast-coordinates-changed-latitude-value=@organisation.coordinates.lat data-broadcast-coordinates-changed-longitude-value=@organisation.coordinates.lon
   p coordinates
