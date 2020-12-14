@@ -21,10 +21,6 @@ module Dashboard
         @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
         render :new, status: :bad_request
       end
-    rescue StandardError => e
-      Rails.logger.error "Zammad error in support_tickets controller : #{e}"
-      error_message = "Une erreur s'est produite et votre message n'a pas pu être envoyé !"
-      redirect_to(current_user.custom_dashboard_path, flash: { alert: error_message })
     end
 
     private
