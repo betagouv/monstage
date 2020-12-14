@@ -119,7 +119,6 @@ module W3c
       end
     end
 
-    if ENV['CONVENTION_ENABLED']
       test 'school_manager new_dashboard_agreement_path' do
         internship_offer = create(:weekly_internship_offer)
         school = create(:school, :with_school_manager)
@@ -168,6 +167,5 @@ module W3c
           visit edit_dashboard_internship_agreement_path(id: internship_agreement.id)
         end
       end
-    end
   end
 end
