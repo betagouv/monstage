@@ -4,19 +4,17 @@ module Dashboard
 
     def new
       @available_weeks ||= Week.selectable_from_now_until_end_of_school_year
-      @support_ticket ||= SupportTickets::Employer.new
+      @support_ticket ||= current_user.new_support_ticket
     end
 
     def create
-      authorize! :create_remote_internship_request, InternshipOffer
-      @support_ticket = SupportTickets::Employer.new(support_ticket_params)
-      @support_ticket.assign_attributes(user_id: current_user.id)
+      authorize! :create_remote_internship_request, SupportTicket
+      @support_ticket = current_user.new_support_ticket params: support_ticket_params
       if @support_ticket.valid?
-        job_params = @support_ticket.as_json.symbolize_keys
-        SupportTicketJobs::Employer.perform_later(params: job_params)
+        @support_ticket.send_to_support
         success_message = 'Votre message a bien été envoyé et une association ' \
                           'prendra contact avec vous prochainement'
-        redirect_to(dashboard_internship_offers_path,
+        redirect_to(current_user.custom_dashboard_path,
                       flash: { success: success_message })
       else
         flash.now[:error] = "Votre message est incomplet : #{@support_ticket.errors.full_messages}"
@@ -26,13 +24,13 @@ module Dashboard
     rescue StandardError => e
       Rails.logger.error "Zammad error in support_tickets controller : #{e}"
       error_message = "Une erreur s'est produite et votre message n'a pas pu être envoyé !"
-      redirect_to(dashboard_internship_offers_path, flash: { alert: error_message })
+      redirect_to(current_user.custom_dashboard_path, flash: { alert: error_message })
     end
 
     private
 
     def support_ticket_params
-      params.require(:support_tickets_employer)
+      params.require(:support_ticket)
             .permit(
               :message,
               :webinar,
@@ -42,6 +40,9 @@ module Dashboard
               :speechers_quantity,
               :business_lines_quantity,
               :paqte,
+              :school_id,
+              :students_quantity,
+              :class_rooms_quantity,
               week_ids: []
             )
     end

@@ -44,7 +44,7 @@ module Dashboard
         submit_fails_and_renders_new(@params)
       end
 
-      test 'POST support ticket redirects to new if parameter week_ids is not compliant' do
+      test 'POST support ticket redirects to new if week_ids parameter is not compliant' do
         @params[:support_tickets_employer][:week_ids] = []
         submit_fails_and_renders_new(@params)
       end

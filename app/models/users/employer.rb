@@ -27,6 +27,10 @@ module Users
       'Mon compte'
     end
 
+    def new_support_ticket(params: {})
+      SupportTickets::Employer.new(params.merge(user_id: self.id))
+    end
+
     def anonymize(send_email: true)
       super
 

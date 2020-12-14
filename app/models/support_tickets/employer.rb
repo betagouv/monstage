@@ -15,5 +15,9 @@ module SupportTickets
                 only_integer: true,
                 message: "'Il manque à cette demande le nombre de métiers abordés"
               }
+    def send_to_support
+      SupportTicketJobs::Employer
+        .perform_later(params: self.as_json.symbolize_keys)
+    end
   end
 end
