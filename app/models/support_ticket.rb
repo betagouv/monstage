@@ -2,25 +2,12 @@ class SupportTicket
   include ActiveModel::Model
 
   attr_accessor :user_id,
-                :school_id,
                 :message,
                 :webinar,
                 :face_to_face,
-                :subject,
                 :digital_week,
-                :students_quantity,
-                :class_rooms_quantity,
                 :week_ids
 
-  validates :class_rooms_quantity,
-            presence: {
-              message: 'Il manque à cette demande le nombre d\'étudiants concernés'
-            }
-  validates :students_quantity,
-            numericality: {
-              only_integer: true,
-              message: "le nombre d'étudiants devrait être chiffré"
-            }
   validate :one_mode_minimum
   validate :one_week_at_least
 

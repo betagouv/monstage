@@ -52,6 +52,10 @@ module Users
       return 'Mon établissement' if school.present?
     end
 
+    def new_support_ticket(params: {})
+      SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
+    end
+
     private
 
     # validators

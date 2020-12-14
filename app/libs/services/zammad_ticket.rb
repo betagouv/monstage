@@ -31,7 +31,14 @@ module Services
       handle_response(response: search_user, action: 'find user')
     end
 
-    private
+    def human_week_desc
+      @params[:week_ids].map do |week_id|
+        week = Week.find week_id
+        "#{week.beginning_of_week} - #{week.end_of_week}"
+      end.join "\n"
+    end
+
+    protected
 
     def handle_response(response:, action:)
       return JSON.parse(response.body) if status?([200, 201], response)
@@ -78,16 +85,6 @@ module Services
     end
 
     def ticket_payload
-      subject = 'Demande de stage à distance'
-      subject = "#{subject} | webinar" if @params[:webinar].to_i == 1
-      subject = "#{subject} | présentiel" if @params[:face_to_face].to_i == 1
-      subject = "#{subject} | semaine de stage digitale" if @params[:digital_week].to_i == 1
-
-      message = "nombre de classes visées : #{@params[:class_rooms_quantity]}\n" \
-                "nombre d'élèves visés: #{@params[:students_quantity]}\n" \
-                "dates visées :\n #{human_week_desc @params[:week_ids]}\n" \
-                "-------------------------------------\n" \
-                "MESSAGE : \n#{@params[:message]}"
       {
         "title": subject,
         "group": 'Users',
@@ -102,11 +99,12 @@ module Services
       }
     end
 
-    def human_week_desc(weeks)
-      weeks.map do |week_id|
-        week = Week.find week_id
-        "#{week.beginning_of_week} - #{week.end_of_week}"
-      end.join "\n"
+    def subject
+      subject = internship_leading_sentence
+      subject = "#{subject} | webinaire" if @params[:webinar].to_i == 1
+      subject = "#{subject} | présentiel" if @params[:face_to_face].to_i == 1
+      subject = "#{subject} | semaine de stage digitale" if @params[:digital_week].to_i == 1
+      subject
     end
 
     def user_payload
@@ -138,6 +136,17 @@ module Services
 
     def default_headers
       {"Authorization" => "Bearer #{TOKEN}"}
+    end
+
+    def message
+      file_path = *%w[app views dashboard support_tickets ]
+      file_path = file_path + [template_file_name]
+      renderer = ERB.new(File.read(Rails.root.join(*file_path)))
+      renderer.result(get_bindings)
+    end
+
+    def get_bindings
+      binding
     end
   end
 end
