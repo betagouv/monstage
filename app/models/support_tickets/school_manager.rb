@@ -11,7 +11,7 @@ module SupportTickets
     validates :students_quantity,
               numericality: {
                 only_integer: true,
-                message: "le nombre d'étudiants devrait être chiffré"
+                message: "Le nombre d'étudiants devrait être chiffré"
               }
     def send_to_support
       SupportTicketJobs::SchoolManager
