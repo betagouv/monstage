@@ -37,7 +37,7 @@ module Triggered
                        from: nil,
                        to: Time.now.utc do
           InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-          assert_enqueued_emails 1
+          assert_enqueued_emails 2
         end
       end
       assert_nil internship_application.expired_at
@@ -58,7 +58,7 @@ module Triggered
                        from: false,
                        to: true do
           InternshipApplicationsReminderJob.perform_now(@internship_offer.employer)
-          assert_enqueued_emails 1 # one for employer
+          assert_enqueued_emails 2 # one for employer one for tutor
         end
         internship_application.reload
         assert_equal Time.now.utc, internship_application.expired_at, 'expired_at not updated'

@@ -109,6 +109,7 @@ class InternshipOffer < ApplicationRecord
 
   before_create :preset_published_at_to_now
   after_commit :sync_internship_offer_keywords
+  after_create :notify_tutor
 
   scope :published, -> { where.not(published_at: nil) }
 
@@ -214,5 +215,9 @@ class InternshipOffer < ApplicationRecord
         previous_employer_description != new_employer_description].any?
       SyncInternshipOfferKeywordsJob.perform_later
     end
+  end
+
+  def notify_tutor
+    TutorMailer.new_tutor(tutor_id, id).deliver_later
   end
 end

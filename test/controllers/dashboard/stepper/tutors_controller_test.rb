@@ -164,24 +164,52 @@ module Dashboard::Stepper
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
 
+    test 'POST #create/InternshipOffers::WeeklyFramed as employer with same tutor email does not create tutor' do
+      employer = create(:employer)
+      sign_in(employer)
+      internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
+      organisation = create(:organisation, employer: employer)
+
+      assert_difference('InternshipOffer.count', 1) do
+        assert_difference('Users::Tutor.count', 0) do
+          post(
+            dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                          internship_offer_info_id: internship_offer_info.id),
+            params: {
+              tutor: {
+                first_name: 'mfo', last_name: 'Dupont', email: employer.email, phone: '+330623456789'
+              }
+            }
+          )
+        end
+      end
+    end
+      
+
     test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
       employer = create(:employer)
       sign_in(employer)
       school = create(:school)
       internship_offer_info = create(:free_date_internship_offer_info)
       organisation = create(:organisation, employer: employer)
-
-      assert_difference('InternshipOffer.count', 1) do
-        post(
-          dashboard_stepper_tutors_path(organisation_id: organisation.id,
-                                        internship_offer_info_id: internship_offer_info.id),
-          params: {
-            tutor: {
-              first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330611223344'
+      mock_mail = MiniTest::Mock.new
+      mock_mail.expect(:deliver_later, true)
+      
+      TutorMailer.stub :new_tutor, mock_mail do
+        assert_difference('InternshipOffer.count', 1) do
+          post(
+            dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                          internship_offer_info_id: internship_offer_info.id),
+            params: {
+              tutor: {
+                first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330611223344'
+              }
             }
-          }
-        )
+          )
+        end
       end
+
+      mock_mail.verify
       created_internship_offer = InternshipOffer.last
       assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer

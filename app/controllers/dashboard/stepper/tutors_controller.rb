@@ -13,9 +13,13 @@ module Dashboard::Stepper
 
     # render step 3
     def create
-      @tutor = Users::Tutor.new(tutor_params)
-      @tutor.skip_password_validation = true
-      @tutor.save!
+      @tutor = User.find_by_email(tutor_params['email'])
+      unless @tutor
+        # New Tutor
+        @tutor = Users::Tutor.new(tutor_params)
+        @tutor.skip_password_validation = true
+        @tutor.save!
+      end
       internship_offer_builder.create_from_stepper(builder_params) do |on|
         on.success do |created_internship_offer|
           redirect_to(internship_offer_path(created_internship_offer),
