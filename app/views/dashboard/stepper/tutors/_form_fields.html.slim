@@ -22,8 +22,7 @@ fieldset.mt-4
           span Numéro de mobile
           = form.rg2a_required_content_tag
           small.form-text.text-muted Pour faciliter la prise de contact, indiquez le numéro de mobile
-        = react_component("inputs/CountryPhoneSelect", { name: 'tutor[phone]', value: resource.phone })
-
+        = react_component("CountryPhoneSelect", props: { name: 'tutor[phone]', value: resource.phone }) 
       - if submit_button
         .actions
           .row.mt-5
