@@ -7,7 +7,7 @@ export default class extends Controller {
     enable: Boolean,
   };
   forElement(){
-    return document.getElementById(this.forvalue);
+    return document.getElementById(this.forValue);
   }
   focusTrixInput(event) {
     this.forElement().focus();

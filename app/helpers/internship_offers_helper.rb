@@ -31,11 +31,11 @@ module InternshipOffersHelper
         group.name,
         group.id,
         {
-          'data-target' => if group.is_public?
-                             'organisation-form.groupNamePublic'
-                           else
-                             'organisation-form.groupNamePrivate'
-                           end
+          'data-organisation-form-target' => if group.is_public?
+                                              'groupNamePublic'
+                                             else
+                                               'groupNamePrivate'
+                                             end
         }
       ]
     end

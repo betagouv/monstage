@@ -30,7 +30,7 @@ class CountryPhoneSelect extends React.Component {
         inputProps={{
           name: this.props.name,
           id: 'phone-input',
-          'data-target': 'signup.phoneInput',
+          'data-signup-target': 'phoneInput',
         }}
       />
     );

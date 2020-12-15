@@ -10,8 +10,8 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         = form.select :school_track,
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
                       { include_blank: '-- Veuillez choisir une filière --' },
-                      { class: "form-control", required: true,  data: {action: "change->internship-offer-infos#onInduceType", target: 'internship-offer-infos.selectType'} }
-        = form.hidden_field :type, data: {target: "internship-offer-infos.type"}
+                      { class: "form-control", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
+        = form.hidden_field :type, data: {:"internship-offer-infos-target" => "type"}
 
       .form-group
         = form.label :title do
@@ -33,8 +33,8 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
           = "Activité prévues"
           = form.rg2a_required_content_tag
 
-        = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { target: 'maxlength-input.trixElement' }, aria: {labelledby: 'label_internship_offer_info_description_rich_text'}
-        small.form-text data-target="maxlength-input.trixElementCharCount"
+        = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_internship_offer_info_description_rich_text'}
+        small.form-text data-maxlength-input-target="trixElementCharCount"
 
       .form-group
         div.label
@@ -65,12 +65,12 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
             ' (un seul élève par stage)
           .col-6.text-center.small
             ' (un groupe de plusieurs élèves)
-      div class="form-group form-group-select-max-candidates #{resource.is_individual? ? 'd-none' : ''}" data-target='internship-offer-infos.maxCandidatesGroup'
+      div class="form-group form-group-select-max-candidates #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='maxCandidatesGroup'
         = form.label :max_candidates do
           = 'Nombre de stagiaires maximum par groupe'
           = form.rg2a_required_content_tag
           small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
-        = form.number_field :max_candidates, value: resource.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !resource.is_fully_editable?, data: { target: "internship-offer-infos.maxCandidatesInput" }
+        = form.number_field :max_candidates, value: resource.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !resource.is_fully_editable?, data: { :"internship-offer-infos-target" => "maxCandidatesInput" }
 
       div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, render_employer_components: true, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 
