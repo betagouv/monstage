@@ -153,7 +153,6 @@ export default class extends Controller {
   }
 
   displayField(fieldToClean, fieldToHide, fieldToDisplay) {
-    console.log('display field')
     $(fieldToClean).val('')
     $(fieldToHide).hide()
     $(fieldToHide).addClass('d-none')
