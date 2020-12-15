@@ -152,8 +152,9 @@ export default class extends Controller {
     this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
   }
 
-  displayField(fielfToClean, fieldToHide, fieldToDisplay) {
-    $(fielfToClean).val('')
+  displayField(fieldToClean, fieldToHide, fieldToDisplay) {
+    console.log('display field')
+    $(fieldToClean).val('')
     $(fieldToHide).hide()
     $(fieldToHide).addClass('d-none')
     $(fieldToDisplay).hide()
