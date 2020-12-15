@@ -67,17 +67,13 @@
 
       <% if can?(:choose_gender_and_birthday, resource) %>
         <div class="form-group custom-label-container" data-controller="a11y-date-input">
-          <%= f.text_field :birth_date,
-                           value: resource.try(:birth_date).try(:strftime,'%d/%m/%Y'),
-                           class: 'form-control',
-                           required: true,
-                           placeholder: 'jj/mm/aaaa',
-                           data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+
+          <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: 'jj/mm/aaaa', data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' } %>
           <%= f.label :birth_date do %>
             Date de naissance
             <%= f.rg2a_required_content_tag %>
           <% end %>
-          <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
+          <small class="form-text text-danger d-none" data-a11y-date-input-target="errorContainer"></small>
         </div>
 
         <fieldset class="form-group form-check form-check-inline">
@@ -118,14 +114,9 @@
         <% end %>
       <% else %>
         <div class="form-group custom-label-container">
-          <%= f.email_field :email,
-                            class: 'form-control',
-                            value: resource.email.blank? ? params[:email] : resource.email,
-                            required: true,
-                            placeholder: "ex: nom@exemple.fr",
-                            data: {action: 'change->signup#onBlurEmailInput', 'signup-target': 'emailInput'} %>
+          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'} %>
           <%= f.label :email do %>
-              <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+              <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
           <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
@@ -134,22 +125,22 @@
       <% end %>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPassword', target: 'signup.passwordInput'} %>
+        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPassword', :"signup-target" => 'passwordInput'} %>
         <%= f.label :password do %>
           Créer un mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <small class="text-muted" data-target="signup.passwordHint"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+        <small class="text-muted" data-signup-target="passwordHint"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
       </div>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPasswordConfirmation', target: 'signup.passwordConfirmationInput'} %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPasswordConfirmation', :"signup-target" => 'passwordConfirmationInput'} %>
         <%= f.label :password_confirmation do %>
           Ressaisir le mot de passe
           <%= f.rg2a_required_content_tag %>
 
         <% end %>
-        <small class="text-muted" data-target="signup.passwordConfirmationHint"></small>
+        <small class="text-muted" data-signup-target="passwordConfirmationHint"></small>
       </div>
 
       <% if can?(:choose_operator, :sign_up) %>
@@ -174,7 +165,7 @@
           </div>
         </div>
 
-        <div class="form-group custom-label-container <%= resource.handicap_present ? '' : 'd-none' %>" data-target="signup.handicapGroup">
+        <div class="form-group custom-label-container <%= resource.handicap_present ? '' : 'd-none' %>" data-signup-target="handicapGroup">
           <%= f.text_area :handicap, class: 'form-control' %>
           <%= f.label :handicap do %>
             Indiquez ce dont vous avez besoin

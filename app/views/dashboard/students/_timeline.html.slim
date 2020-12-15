@@ -3,20 +3,20 @@ ul.nav.align-items-center.no-gutters.my-3.nav-link-icons-timeline
     = link_to "#tab-internship-offer-detail",
               data: {action: "click->dashboard-students-internship-application#enableInternshipOfferDetail",
               turbolinks: "false",
-              target: 'dashboard-students-internship-application.linkInternshipOfferDetail'},
+              :"dashboard-students-internship-application-target" => 'linkInternshipOfferDetail'},
               class: "nav-link nav-link-icon-with-label trailing-nav-link-icon #{timeline_step_1_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
       span.d-inline-flex.align-items-center.nav-link-icon
         i.fas.fa-2x.fa-pen
       br
       small= "Annonce"
   li.col-4.nav-item
-    = link_to "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail", turbolinks: "false", target: 'dashboard-students-internship-application.linkInternshipApplicationDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_2_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
+    = link_to "#tab-internship-application-detail", data: {action: "click->dashboard-students-internship-application#enableInternshipApplicationDetail", turbolinks: "false", :"dashboard-students-internship-application-target" => 'linkInternshipApplicationDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_2_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
       span.d-inline-flex.align-items-center.nav-link-icon
         i.far.fa-2x.fa-flag
       br
       small= "Candidature envoyée"
   li.col-4.nav-item
-    = link_to "#tab-convention-detail", data: {action: "click->dashboard-students-internship-application#enableConventionDetail", turbolinks: "false", target: 'dashboard-students-internship-application.linkConventionDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_3_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
+    = link_to "#tab-convention-detail", data: {action: "click->dashboard-students-internship-application#enableConventionDetail", turbolinks: "false", :"dashboard-students-internship-application-target" => 'linkConventionDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_3_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
       span.d-inline-flex.align-items-center.nav-link-icon
         i.far.fa-2x.fa-flag
       br

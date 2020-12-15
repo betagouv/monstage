@@ -9,7 +9,7 @@
                     include_blank: 'Toutes',
                     class: 'school_years',
                     'data-action': "change->select-years#handleChange",
-                    'data-target': "select-years.schoolYearField"
+                    'data-select-years-target': "schoolYearField"
       = submit_tag 'Filtrer par années',
-                   'data-target': "select-years.schoolYearSubmit",
+                   'data-select-years-target': "schoolYearSubmit",
                    class: 'ml-2 submit-school-years btn btn-sm btn-outline-primary'
