@@ -18,6 +18,7 @@ module Dashboard::Stepper
         # New Tutor
         @tutor = Users::Tutor.new(tutor_params)
         @tutor.skip_password_validation = true
+        @tutor.skip_confirmation!
         @tutor.save!
       end
       internship_offer_builder.create_from_stepper(builder_params) do |on|

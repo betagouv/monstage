@@ -156,7 +156,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return unless phone.present?
+    return if phone.blank? || self.is_a?(Users::Tutor)
 
     create_phone_token
     SendSmsJob.perform_later(self)

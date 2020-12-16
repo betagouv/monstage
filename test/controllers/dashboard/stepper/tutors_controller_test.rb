@@ -63,17 +63,19 @@ module Dashboard::Stepper
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
       organisation = create(:organisation, employer: employer)
 
-      assert_difference('InternshipOffer.count', 1) do
-        assert_difference('Users::Tutor.count', 1) do
-          post(
-            dashboard_stepper_tutors_path(organisation_id: organisation.id,
-                                          internship_offer_info_id: internship_offer_info.id),
-            params: {
-              tutor: {
-                first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330623456789'
+      assert_enqueued_jobs 0, only: SendSmsJob do
+        assert_difference('InternshipOffer.count', 1) do
+          assert_difference('Users::Tutor.count', 1) do
+            post(
+              dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                            internship_offer_info_id: internship_offer_info.id),
+              params: {
+                tutor: {
+                  first_name: 'mfo', last_name: 'Dupont', email: 'mf@oo.com', phone: '+330623456789'
+                }
               }
-            }
-          )
+            )
+          end
         end
       end
       created_internship_offer = InternshipOffer.last
@@ -123,6 +125,8 @@ module Dashboard::Stepper
       assert_equal created_tutor.last_name, created_internship_offer.tutor.last_name
       assert_equal created_tutor.phone, created_internship_offer.tutor.phone
       assert_equal created_tutor.email, created_internship_offer.tutor.email
+      assert_not_nil created_tutor.confirmed_at, 'shoud be confirmed'
+      assert_nil created_tutor.phone_token, 'phone shoud be confirmed'
 
       # other feature, with real default
       assert_nil(created_internship_offer.discarded_at,
