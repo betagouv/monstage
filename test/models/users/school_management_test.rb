@@ -11,7 +11,7 @@ module Users
       school_manager = Users::SchoolManagement.new(
         role: :school_manager,
         email: 'chef@etablissement.com',
-        school: build(:school)
+        school: create(:school)
       )
 
       assert school_manager.invalid?
@@ -66,7 +66,7 @@ module Users
       redirect_to = @url_helpers.dashboard_school_class_rooms_path(school_manager.school)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
-    
+
     test 'teacher.after_sign_in_path with school redirects to dashboard_school_class_room_path when class_room exists' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2020)])
       class_room = create(:class_room, school: school)

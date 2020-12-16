@@ -28,7 +28,7 @@ class AddContactToSyncEmailDeliveryJobTest < ActiveJob::TestCase
             }).
           to_return(status: 201, body: {"Count"=>1, "Data"=>[{"CreatedAt"=>"2020-12-16T14:23:06Z", "DeliveredCount"=>0, "Email"=>"employer@ms3e.fr", "ExclusionFromCampaignsUpdatedAt"=>"", "ID"=>1417876632, "IsExcludedFromCampaigns"=>false, "IsOptInPending"=>false, "IsSpamComplaining"=>false, "LastActivityAt"=>"", "LastUpdateAt"=>"", "Name"=>"User Users::employer", "UnsubscribedAt"=>"", "UnsubscribedBy"=>""}], "Total"=>1}.to_json, headers: {})
 
-    stub_request(:put, "https://api.mailjet.com/v3/REST/contactdata/jean1-claude@dus.fr").
+    stub_request(:put, "https://api.mailjet.com/v3/REST/contactdata/#{user.email}").
           with(
             body: api.send(:make_update_contact_payload, user: user).to_json,
             headers: {
