@@ -75,7 +75,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
 
       = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
                                                   required: false,
-                                                  resourceName: resource.object_name,
+                                                  resourceName: form.object_name,
                                                   selectClassRoom: false,
                                                   existingSchool: resource.school.as_json})
 
