@@ -18,7 +18,9 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         fill_in_internship_offer_info_form(school_track: :troisieme_generale,
                                            sector: sector,
                                            weeks: available_weeks)
-
+        page.assert_no_selector('span.number', text: '1')
+        find('span.number', text: '2')
+        find('span.number', text: '3')
         click_on "Suivant"
         find('label', text: 'Nom du tuteur/trice')
       end
