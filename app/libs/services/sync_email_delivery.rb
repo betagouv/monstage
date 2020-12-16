@@ -45,11 +45,17 @@ module Services
       raise "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
-    def read_contact(email:)
+    def send_read_contact(email:)
       response = send_read_contact(email: email)
       return JSON.parse(response.body) if status?(200, response)
 
       raise "fail read_contact: code[#{response.code}], #{response.body}"
+    end
+
+    def contact_exists?(email:)
+      response = send_read_contact(email: email)
+      return false unless status?(200, response)
+      return true if JSON.parse(response.body).dig('Count')
     end
 
     def index_contact_metadata
