@@ -2,7 +2,7 @@ h6.h6.mt-4 Nos offres de stages
 p Sélectionnez le(s) type(s) de stages qui vous intéressent.
 div.clearfix
   div.float-left
-    .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
       = f.label :digital_week, class: 'form-check-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/digital_week_2x.png'),
                     class: 'remote-illustration',
@@ -13,9 +13,9 @@ div.clearfix
           .col-10.pt-1 Semaine de stage digital
           .col-2 = f.check_box :digital_week,
                                 class: 'form-check-input text-right',
-                                'data-target': 'checkbox-svg-icon.option',
+                                'data-checkbox-svg-icon-target': 'option',
                                 'data-action': 'checkbox-svg-icon#onCheck'
-    .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
       = f.label :webinar, class: 'form-check-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/webinar_2x.png'),
                     class: 'remote-illustration',
@@ -29,9 +29,9 @@ div.clearfix
             |Live métier
           .col-2 = f.check_box :webinar,
                                 class: 'form-check-input text-right',
-                                'data-target': 'checkbox-svg-icon.option',
+                                'data-checkbox-svg-icon-target': 'option',
                                 'data-action': 'checkbox-svg-icon#onCheck'
-    .h6.my-3.remote-internship-mode.mx-2 data-target='checkbox-svg-icon.border' data-controller='checkbox-svg-icon'
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
       = f.label :face_to_face, class: 'form-check-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/face_to_face_2x.png'),
                     class: 'remote-illustration',
@@ -42,7 +42,7 @@ div.clearfix
           .col-10.pt-1 Un professionnel en établissement
           .col-2 = f.check_box :face_to_face,
                                 class: 'form-check-input text-right',
-                                'data-target': 'checkbox-svg-icon.option',
+                                'data-checkbox-svg-icon-target': 'option',
                                 'data-action': 'checkbox-svg-icon#onCheck'
 
 .h6.text-body.pt-2 Semaine de stage digital
