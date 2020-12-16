@@ -54,7 +54,10 @@
       </div>
       <% if can?(:choose_role, resource) %>
       <div class="form-group custom-label-container">
-        <%= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --' }, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
+        <%= f.select :role,
+                      options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
+                      { prompt: '-- Veuillez choisir une fonction --' },
+                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
         <%= f.label :role do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
@@ -64,7 +67,12 @@
 
       <% if can?(:choose_gender_and_birthday, resource) %>
         <div class="form-group custom-label-container" data-controller="a11y-date-input">
-          <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: 'jj/mm/aaaa', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+          <%= f.text_field :birth_date,
+                           value: resource.try(:birth_date).try(:strftime,'%d/%m/%Y'),
+                           class: 'form-control',
+                           required: true,
+                           placeholder: 'jj/mm/aaaa',
+                           data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
           <%= f.label :birth_date do %>
             Date de naissance
             <%= f.rg2a_required_content_tag %>
@@ -80,39 +88,48 @@
 
           <div class="custom-control custom-radio custom-control-inline">
             <%= f.radio_button :gender,
-                              "f",
-                              class: 'custom-control-input',
-                              id: "select-gender-girl",
-                              required: true  %>
+                               "f",
+                               class: 'custom-control-input',
+                               id: "select-gender-girl",
+                               required: true  %>
             <%= f.label :gender, "Féminin",
                                 class: 'custom-control-label',
                                 for: "select-gender-girl" %>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
             <%= f.radio_button :gender,
-                              "m",
-                              class: 'custom-control-input',
-                              id: "select-gender-boy"  %>
+                               "m",
+                               class: 'custom-control-input',
+                               id: "select-gender-boy"  %>
             <%= f.label :gender, "Masculin",
-                                class: 'custom-control-label',
-                                for: "select-gender-boy" %>
+                                 class: 'custom-control-label',
+                                 for: "select-gender-boy" %>
           </div>
         </fieldset>
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource, phone: 'SMS' do %>
+        <%= render 'users/select_channel',
+                   label: 'Comment vous contacter ?',
+                   form: f,
+                   resource: resource,
+                   phone: 'SMS' do %>
           <small class="small form-text text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
         <% end %>
       <% else %>
         <div class="form-group custom-label-container">
-          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+          <%= f.email_field :email,
+                            class: 'form-control',
+                            value: resource.email.blank? ? params[:email] : resource.email,
+                            required: true,
+                            placeholder: "ex: nom@exemple.fr",
+                            data: {action: 'change->signup#onBlurEmailInput', 'signup-target': 'emailInput'} %>
           <%= f.label :email do %>
               <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
           <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
-          <small class="d-none" data-target="signup.emailHint"></small>
+          <small class="d-none" data-signup-target="emailHint"></small>
         </div>
       <% end %>
 
