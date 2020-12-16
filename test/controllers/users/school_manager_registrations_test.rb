@@ -27,4 +27,19 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
       assert_redirected_to users_registrations_standby_path(email: 'chefetb@ac-paris.fr')
     end
   end
+
+  test 'sentry#2078916905 ; create school manager without school does not raise error' do
+    school = create(:school)
+    assert_difference('Users::SchoolManagement.school_manager.count', 0) do
+      post user_registration_path(params: { user: { accept_terms: 1,
+                                                    email: 'chr-jean.lef@ac-orleans-tours.fr',
+                                                    first_name: 'Chr',
+                                                    last_name: 'LEF',
+                                                    password: '[Filtered]',
+                                                    password_confirmation: '[Filtered]',
+                                                    role: :school_manager,
+                                                    type: 'Users::SchoolManagement' }})
+      assert_response :success
+    end
+  end
 end
