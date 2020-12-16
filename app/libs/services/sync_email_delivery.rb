@@ -121,7 +121,14 @@ module Services
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Put.new(ENDPOINTS.dig(:contact, :metadata, :update) % user.email, headers)
-        data = {
+
+        request.body = make_update_contact_payload(user: user).to_json
+        http.request(request)
+      end
+    end
+
+    def make_update_contact_payload(user:)
+      {
           Data: [
             { Name: "firstname", Value: user.first_name },
             { Name: "name", Value: user.last_name },
@@ -132,11 +139,7 @@ module Services
             { Name: "confirmed_at", Value: user.confirmed_at.utc.to_i }
           ]
         }
-        request.body = data.to_json
-        http.request(request)
-      end
     end
-
     # expected: Int|Array[Int],
     # response: HttpResponse
     def status?(expected, response)

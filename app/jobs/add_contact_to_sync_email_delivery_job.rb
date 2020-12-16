@@ -4,6 +4,7 @@ class AddContactToSyncEmailDeliveryJob < ActiveJob::Base
   queue_as :default
 
   discard_on ActiveJob::DeserializationError
+  retry_on Errno::ECONNREFUSED
 
   def perform(user:)
     sync_delivery_service = Services::SyncEmailDelivery.new
