@@ -123,6 +123,9 @@ module Services
       end
     end
 
+    #
+    # payload maker
+    #
     def make_create_contact_payload(user:)
       {
         IsExcludedFromCampaigns: false,
