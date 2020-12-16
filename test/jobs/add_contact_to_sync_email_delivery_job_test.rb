@@ -18,7 +18,7 @@ class AddContactToSyncEmailDeliveryJobTest < ActiveJob::TestCase
 
     stub_request(:post, "https://api.mailjet.com/v3/REST/contact").
           with(
-            body: "{\"IsExcludedFromCampaigns\":false,\"name\":\"Jean claude Dus\",\"email\":\"jean1-claude@dus.fr\"}",
+            body: api.send(:make_create_contact_payload, user: user).to_json,
             headers: {
             'Accept'=>'*/*',
             'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',

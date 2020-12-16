@@ -82,12 +82,8 @@ module Services
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Post.new(ENDPOINTS.dig(:contact, :create), headers)
-        data = {
-          IsExcludedFromCampaigns: false,
-          name: user.name,
-          email: user.email
-        }
-        request.body = data.to_json
+
+        request.body = make_create_contact_payload(user: user).to_json
         http.request(request)
       end
     end
@@ -125,6 +121,14 @@ module Services
         request.body = make_update_contact_payload(user: user).to_json
         http.request(request)
       end
+    end
+
+    def make_create_contact_payload(user:)
+      {
+        IsExcludedFromCampaigns: false,
+        name: user.name,
+        email: user.email
+      }
     end
 
     def make_update_contact_payload(user:)
