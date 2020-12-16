@@ -22,7 +22,7 @@ fieldset.mt-4 data-controller='organisation-form'
 
       div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
         = form.label :group_id, "Groupe ou Institution de tutelle", data: {:"organisation-form-target" => 'groupLabel'}
-        = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => '.selectGroupName'}
+        = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => 'selectGroupName'}
 
       = react_component("AddressInput", props: { resourceName: form.object_name,
                               currentStreet: resource.street,
@@ -34,7 +34,7 @@ fieldset.mt-4 data-controller='organisation-form'
       .form-group data-controller='maxlength-input' data-maxlength-input-limit-value=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
         #label_organisation_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
           | Description de l'entreprise (optionnel)
-        = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => '.trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}
+        = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}
         small.form-text data-maxlength-input-target="trixElementCharCount"
 
       .form-group
