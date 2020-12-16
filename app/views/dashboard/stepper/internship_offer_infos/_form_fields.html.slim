@@ -40,31 +40,33 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         div.label
           = "Type de stage"
           = form.rg2a_required_content_tag
-        = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
-                                                          required: false,
-                                                          resourceName: :internship_offer_info,
-                                                          selectClassRoom: false,
-                                                          existingSchool: resource.school.as_json})
-        .toggle-radio.mb-1
+
+        .toggle-radio.mb-2
           = radio_button_tag :internship_type,
                               true,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
                               data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
-          = label_tag :internship_type_true, 'Individuel'
+          = label_tag :internship_type_true, class: 'd-flex flex-column' do
+              | Individuel
+              .small
+                |un seul élève par stage
           = radio_button_tag :internship_type,
                               false,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
                               data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
-          = label_tag :internship_type_false, 'collectif', class: ''
-        .row.mt-0
-          .col-6.text-center.small
-            ' (un seul élève par stage)
-          .col-6.text-center.small
-            ' (un groupe de plusieurs élèves)
+          = label_tag :internship_type_false, class: 'd-flex flex-column' do
+              | Collectif
+              .small
+                |un groupe de plusieurs élèves
+        = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
+                                                  required: false,
+                                                  resourceName: :internship_offer_info,
+                                                  selectClassRoom: false,
+                                                  existingSchool: resource.school.as_json})
       div class="form-group form-group-select-max-candidates #{resource.is_individual? ? 'd-none' : ''}" data-target='internship-offer-infos.maxCandidatesGroup'
         = form.label :max_candidates do
           = 'Nombre de stagiaires maximum par groupe'
@@ -84,7 +86,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
               = " Précédent"
           .col-6.text-right
             = button_tag :submit, class: 'btn btn-primary' do
-              | Suivant
+              = 'Suivant '
               i.fas.fa-arrow-right
     - if warning_bloc
       .d-none.d-md-flex.col-md-6
