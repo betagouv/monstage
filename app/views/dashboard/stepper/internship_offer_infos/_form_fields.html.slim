@@ -41,7 +41,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
           = "Type de stage"
           = form.rg2a_required_content_tag
 
-        .toggle-radio.mb-2
+        .toggle-radio.mb-3
           = radio_button_tag :internship_type,
                               true,
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
@@ -50,7 +50,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
                               data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
               | Individuel
-              .small
+              span.small
                 |un seul élève par stage
           = radio_button_tag :internship_type,
                               false,
@@ -60,7 +60,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
                               data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
           = label_tag :internship_type_false, class: 'd-flex flex-column' do
               | Collectif
-              .small
+              span.small
                 |un groupe de plusieurs élèves
         = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
                                                   required: false,
