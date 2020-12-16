@@ -254,7 +254,7 @@
       .col-6
         h3.h3.py-5.text-center Nos partenaires
 
-        .col-12.text-center
+        .col-12.text-center.pt-4
           - partners_map_of_logo_url.each do |partner_logo, partner_url|
             = render partial: "partner_link",
                      locals: { partner_url: partner_url, partner_logo: partner_logo }
