@@ -8,17 +8,18 @@
 
   <div class='row' >
     <div class='col-6 d-table form-group'>
-      <%= form.label :channel, "Email",
-                            class: 'channel-radio-label d-table-cell align-middle',
-                            for: "select-channel-email" do %>
+      <%= form.label :channel,
+                     "Email",
+                     class: 'channel-radio-label d-table-cell align-middle',
+                     for: "select-channel-email" do %>
 
         <i class="fa fa-fw fa-4x far fa-envelope"></i>
         <br />
         <%= form.radio_button :channel,
-                        "email",
-                        id: 'select-channel-email',
-                        'data-action' => "change->signup#checkEmail" %>
-        Email
+                              "email",
+                              id: 'select-channel-email',
+                              'data-action' => "change->signup#checkEmail" %>
+          Email
       <% end %>
     </div>
     <div class='col-6 d-table form-group'>
@@ -42,8 +43,18 @@
       <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
       <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
     <% end %>
+<<<<<<< HEAD
     <%= form.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, placeholder: "ex: nom@exemple.fr", autofocus: params[:email].blank? ? true : false, data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'} %>
     <small class="d-none" data-signup-target="emailHint"></small>
+=======
+    <%= form.email_field :email,
+                         class: 'form-control',
+                         value: resource.email.blank? ? params[:email] : resource.email,
+                         placeholder: "ex: nom@exemple.fr",
+                         autofocus: params[:email].blank? ? true : false,
+                         data: {action: 'change->signup#onBlurEmailInput', 'signup-target': 'emailInput'} %>
+    <small class="d-none" data-target="signup.emailHint"></small>
+>>>>>>> master
   </div>
   <div data-signup-target="phoneBloc" class="form-group phone d-none">
     <%= form.label :phone, 'data-action' => "click->signup#focusPhone", for: 'phone-input' do %>
