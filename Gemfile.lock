@@ -1,3 +1,12 @@
+GIT
+  remote: git@github.com:tagliala/activerecord-postgis-adapter.git
+  revision: e0cc30a83bfe19e43654f1be5b5ba8e20f193ef2
+  branch: feature/rails-6.1-compatibility
+  specs:
+    activerecord-postgis-adapter (6.0.1)
+      activerecord (~> 6.1)
+      rgeo-activerecord (>= 6.2.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -56,9 +65,6 @@ GEM
     activerecord-explain-analyze (0.1.0)
       activerecord (>= 4)
       pg
-    activerecord-postgis-adapter (6.0.1)
-      activerecord (~> 6.0)
-      rgeo-activerecord (~> 6.0)
     activestorage (6.1.0)
       actionpack (= 6.1.0)
       activejob (= 6.1.0)
@@ -397,7 +403,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   activerecord-explain-analyze
-  activerecord-postgis-adapter
+  activerecord-postgis-adapter!
   bootsnap
   bullet
   byebug
