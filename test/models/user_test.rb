@@ -7,12 +7,12 @@ class UserTest < ActiveSupport::TestCase
   test 'creation requires accept terms' do
     user = Users::SchoolManagement.new
     user.valid?
-    assert user.errors.keys.include?(:accept_terms)
+    assert user.errors.include?(:accept_terms)
     assert_equal user.errors.messages[:accept_terms][0],
                  "Veuillez accepter les conditions d'utilisation"
     user = Users::SchoolManagement.new(accept_terms: '1')
     user.valid?
-    refute user.errors.keys.include?(:accept_terms)
+    refute user.errors.include?(:accept_terms)
   end
 
   test 'anonymize student' do
