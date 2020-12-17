@@ -86,7 +86,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
       - if submit_button
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"
-            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id]) do
+            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]) do
               i.fa.fa-arrow-left
               = " Précédent"
           .col-6.text-right
