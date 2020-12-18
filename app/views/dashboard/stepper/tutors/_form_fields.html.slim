@@ -7,24 +7,34 @@ fieldset.mt-4
         = form.label :tutor_name do
           = 'Nom du tuteur/trice'
           = form.rg2a_required_content_tag
-        = form.text_field :tutor_name, class: 'form-control', required: true, value: resource.tutor_name || current_user.name
+        = form.text_field :tutor_name,
+                           class: 'form-control',
+                           required: true,
+                           value: resource.tutor_name || current_user.name
       .form-group
         = form.label :tutor_email do
           = 'Adresse électronique / Email'
           = form.rg2a_required_content_tag
-        = form.email_field :tutor_email, class: 'form-control', required: true, value: resource.tutor_email || current_user.email
+        = form.email_field :tutor_email,
+                           class: 'form-control',
+                           required: true,
+                           value: resource.tutor_email || current_user.email
       .form-group
         = form.label :tutor_phone do
           = "Numéro de téléphone"
           = form.rg2a_required_content_tag
-          small.form-text.text-muted Pour faciliter la prise de contact, indiquez le numéro de mobile
-        = form.phone_field :tutor_phone, class: 'form-control', required: true
+          small.form-text.text-muted
+            |Pour faciliter la prise de contact, indiquez le numéro de mobile
+        = form.phone_field :tutor_phone,
+                           class: 'form-control',
+                           required: true
 
       - if submit_button
         .actions
           .row.mt-5
             .col-6.text-left style="display: flex;align-items: center"
-              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre' do
+              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+                        title: 'Revenir à la modification de l\'offre' do
                 i.fa.fa-arrow-left
                 = " Précédent"
             .col-6.text-right

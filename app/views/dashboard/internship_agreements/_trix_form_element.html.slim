@@ -1,7 +1,7 @@
-.col-8
-  - edit_enable = can?("edit_#{field}".to_sym, form.object)
-  - class_label = class_label || ''
+- edit_enable = can?("edit_#{field}".to_sym, form.object)
+- class_label = class_label || ''
 
+.col-8
   .form-group [data-controller='rich-text-label'
                 data-rich-text-label-for-value="internship_agreement_#{field}"
                 data-rich-text-label-enable-value="#{edit_enable}"]
