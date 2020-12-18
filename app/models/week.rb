@@ -81,7 +81,7 @@ class Week < ApplicationRecord
       internship_applications.where(student: root.students)
                              .count
                              .positive?
-    elsif root.is_a?(InternshipOfferInfo)
+    elsif root.is_a?(InternshipOfferInfo) || root.is_a?(SupportTicket)
       return false
     else
 

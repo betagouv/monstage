@@ -11,6 +11,9 @@ import './internship_offers_new/paper.svg';
 
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';
+import './pages/remote_internships/webinar_2x.png';
+import './pages/remote_internships/face_to_face_2x.png';
+import './pages/remote_internships/digital_week_2x.png';
 
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';

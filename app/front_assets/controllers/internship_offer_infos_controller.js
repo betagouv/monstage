@@ -10,6 +10,9 @@ export default class extends Controller {
     'maxCandidatesGroup',
     'maxCandidatesInput',
   ];
+  static values = {
+    baseType: String
+  }
 
   onChooseType(event) {
     this.chooseType(event.target.value)
@@ -27,21 +30,20 @@ export default class extends Controller {
   }
 
   chooseType(value) {
-    const baseType = this.data.get('baseType');
     switch (value) {
-      case `${baseType}s::WeeklyFramed`:
+      case `${this.baseTypeValue}s::WeeklyFramed`:
         showElement($(this.weeksContainerTarget))
-        $(this.weeksContainerTarget).attr('data-select-weeks-skip', true)
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', false)
         break;
-      case `${baseType}s::FreeDate`:
+      case `${this.baseTypeValue}s::FreeDate`:
         hideElement($(this.weeksContainerTarget));
-        $(this.weeksContainerTarget).attr('data-select-weeks-skip', false)
+        $(this.weeksContainerTarget).attr('data-select-weeks-skip-validation-value', true)
         break;
     }
   }
 
-  // show/hide group internship custom controls
-  toggleInternshipType(event) {
+  // show/hide group (maxCandidates>1) internship custom controls
+  toggleInternshipMaxCandidates(event) {
     if (event.target.value === 'true') {
       hideElement($(this.maxCandidatesGroupTarget));
       this.maxCandidatesInputTarget.value = undefined;

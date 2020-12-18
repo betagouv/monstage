@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Instrumentation::Sentry
+  include TurbolinkHelpers
 
   default_form_builder Rg2aFormBuilder
 

@@ -3,18 +3,45 @@
   box-shadow: 0px 1px 3px rgba(0,0,0,.2);
 }
 
+
 .custom-control-checkbox-list{
   height: 180px;
   overflow: scroll;
-  background-color: $input-bg;
+
   border: 1px solid $input-border-color;
-  border-radius: $input-border-radius;
+  border-top-left-radius: $input-border-radius;
+  border-top-right-radius: $input-border-radius;
   padding: ($input-btn-padding-x/2) $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);
   }
 }
+.custom-control-checkbox-legend{
+  border-left: 1px solid $input-border-color;
+  border-right: 1px solid $input-border-color;
+  border-bottom: 1px solid $input-border-color;
+  border-bottom-left-radius: $input-border-radius;
+  border-bottom-right-radius: $input-border-radius;
+  padding: ($input-btn-padding-x/2) $input-btn-padding-y;
+  background-color: $input-bg;
+}
 
+.badge-week-density{
+  right: 0;
+  top: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  text-indent: -9999px;
+}
+
+.badge-legend{
+  height: 1.5rem;
+  background: transparent linear-gradient(90deg, #EBEDF0 0%, #E1EBEA 9%, #B2E3CF 20%, #7FD5B0 42%, #12C77B 68%, #0C6C44 100%) 0% 0% no-repeat padding-box;
+}
+
+.custom-checkbox{
+  min-height: 1.5rem;
+}
 //disabled checkbox input
 .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
   background-color: #585858;
@@ -195,7 +222,6 @@
 		z-index: 1;
 	}
 }
-
 
 @include media-breakpoint-down(md){
   .custom-radio-boxes{

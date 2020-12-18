@@ -5,7 +5,6 @@ module Nearbyable
   extend ActiveSupport::Concern
 
   included do
-
     # rails admin fuck
     def autocomplete; end
 

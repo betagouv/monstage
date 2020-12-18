@@ -3,15 +3,15 @@
 # used in internships#index
 module InternshipOffersHelper
   def preselect_all_weeks?(object)
-    is_new_record = object.new_record?
+    return false unless object.try(:new_record?)
+
     is_preselectable_entity = [
       InternshipOfferInfo,
       InternshipOfferInfos::WeeklyFramed,
       InternshipOffer,
       InternshipOffers::WeeklyFramed
     ]
-
-    is_new_record && is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
+    is_preselectable_entity.any?{ |klass| object.is_a?(klass) }
   end
 
   def internship_offer_application_path(object)
@@ -31,11 +31,11 @@ module InternshipOffersHelper
         group.name,
         group.id,
         {
-          'data-target' => if group.is_public?
-                             'organisation-form.groupNamePublic'
-                           else
-                             'organisation-form.groupNamePrivate'
-                           end
+          'data-organisation-form-target' => if group.is_public?
+                                              'groupNamePublic'
+                                             else
+                                               'groupNamePrivate'
+                                             end
         }
       ]
     end

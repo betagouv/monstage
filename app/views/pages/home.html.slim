@@ -157,11 +157,10 @@
           | Et après le confinement ?
           br
           | Des offres de stages vous attendent déjà !
-        = react_component("SearchInternshipOffer",
-                              { url: internship_offers_path,
+        .col-12= react_component("SearchInternshipOffer",
+                              props: { url: internship_offers_path,
                                 className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                schoolTypeVisibility: false},
-                              { class: 'col-12' }) do
+                                schoolTypeVisibility: false }) do
               .input-loading-skeleton
 
     .row.py-3.py-sm-5
@@ -254,7 +253,7 @@
       .col-6
         h3.h3.py-5.text-center Nos partenaires
 
-        .col-12.text-center
+        .col-12.text-center.pt-4
           - partners_map_of_logo_url.each do |partner_logo, partner_url|
             = render partial: "partner_link",
                      locals: { partner_url: partner_url, partner_logo: partner_logo }

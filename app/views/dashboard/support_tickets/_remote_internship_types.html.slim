@@ -1,0 +1,72 @@
+h6.h6.mt-4 Nos offres de stages
+p Sélectionnez le(s) type(s) de stages qui vous intéressent.
+div.clearfix
+  div.float-left
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
+      = f.label :digital_week, class: 'form-check-label pl-2 pt-1 m-2' do
+        = image_tag asset_pack_path('media/images/pages/remote_internships/digital_week_2x.png'),
+                    class: 'remote-illustration',
+                    alt: "Semaine de stage digital",
+                    width: 170
+        br
+        .row.mt-4
+          .col-10.pt-1 Semaine de stage digital
+          .col-2 = f.check_box :digital_week,
+                                class: 'form-check-input text-right',
+                                'data-checkbox-svg-icon-target': 'option',
+                                'data-action': 'checkbox-svg-icon#onCheck'
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
+      = f.label :webinar, class: 'form-check-label pl-2 pt-1 m-2' do
+        = image_tag asset_pack_path('media/images/pages/remote_internships/webinar_2x.png'),
+                    class: 'remote-illustration',
+                    alt: "Webinar",
+                    height: 120
+        br
+        .row.mt-2
+          .col-10.pt-1.pb-4
+            |Webinaire
+            br
+            |Live métier
+          .col-2 = f.check_box :webinar,
+                                class: 'form-check-input text-right',
+                                'data-checkbox-svg-icon-target': 'option',
+                                'data-action': 'checkbox-svg-icon#onCheck'
+    .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
+      = f.label :face_to_face, class: 'form-check-label pl-2 pt-1 m-2' do
+        = image_tag asset_pack_path('media/images/pages/remote_internships/face_to_face_2x.png'),
+                    class: 'remote-illustration',
+                    alt: "Webinar",
+                    height: 120
+        br
+        .row.mt-2
+          .col-10.pt-1 Un professionnel en établissement
+          .col-2 = f.check_box :face_to_face,
+                                class: 'form-check-input text-right',
+                                'data-checkbox-svg-icon-target': 'option',
+                                'data-action': 'checkbox-svg-icon#onCheck'
+
+.h6.text-body.pt-2 Semaine de stage digital
+p
+  |
+    Il s'agit d'une semaine durant laquelle plusieurs formats peuvent être
+    proposés, avec notamment l'intervention de professionnels,
+  br
+  |
+    de plusieurs entreprises, de sessions de questions/réponses, de visites virtuelles,
+    et d'exercices de restitution par les élèves en fin de programme.
+.h6.text-body.pt-2 Webinaire
+p
+  |Intervention d'un ou de plusieurs pressionnels, autour d'un thème spécifique, en visio.
+  br
+  |
+    Ce dispositif permet un échange entre les élèves et des professionnels de
+    façon directe ou via un tchat.
+.h6.text-body.pt-2 Live métier
+p
+  |
+    Conférences métier durant lesquelles un ou plusieurs professionnels
+    communiqueront sur leurs métiers, leurs parcours, leurs motivations.
+  br
+  |
+    Ce dispositif permet un échange entre les élèves et les
+    professionnels de façon directe ou via un tchat.

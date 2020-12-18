@@ -4,12 +4,14 @@ module Dashboard::Stepper
   # Step 2 of internship offer creation: fill in offer details/info
   class InternshipOfferInfosController < ApplicationController
     before_action :authenticate_user!
+    before_action :disable_turbolink_caching_to_force_page_refresh, only: %i[new edit]
 
     # render step 2
     def new
       authorize! :create, InternshipOfferInfo
 
       @internship_offer_info = InternshipOfferInfo.new
+      @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
 
@@ -26,6 +28,7 @@ module Dashboard::Stepper
                     internship_offer_info_id: @internship_offer_info.id
       ))
     rescue ActiveRecord::RecordInvalid
+      @organisation = Organisation.find(params[:organisation_id])
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       render :new, status: :bad_request
     end
@@ -33,6 +36,7 @@ module Dashboard::Stepper
     # render back to step 2
     def edit
       @internship_offer_info = InternshipOfferInfo.find(params[:id])
+      @organisation = Organisation.find(params[:organisation_id])
       authorize! :edit, @internship_offer_info
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -48,6 +52,7 @@ module Dashboard::Stepper
           internship_offer_info_id: @internship_offer_info.id,
         )
       else
+        @organisation = Organisation.find(params[:organisation_id])
         @available_weeks = Week.selectable_from_now_until_end_of_school_year
         render :new, status: :bad_request
       end

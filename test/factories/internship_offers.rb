@@ -19,7 +19,7 @@ FactoryBot.define do
     coordinates { Coordinates.paris }
 
     trait :api_internship_offer do
-      weeks { [Week.first] }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:user_operator) }
       school_track { :troisieme_generale }
       permalink { 'https://google.fr' }
@@ -28,8 +28,8 @@ FactoryBot.define do
     end
 
     trait :weekly_internship_offer do
-      weeks { [Week.first] }
       school_track { :troisieme_generale }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:employer) }
       description { 'Lorem ipsum dolor weekly_internship_offer' }
     end

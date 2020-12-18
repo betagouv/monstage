@@ -19,3 +19,17 @@
     background-color: $gray-200;
   }
 }
+
+@for $i from 1 through 9 {
+  .bg-success-#{$i}0 {
+    background-color: lighten($success, $i * 10%);
+  }
+}
+
+
+@for $i from 1 through 9 {
+  .bg-dark-#{$i}0 {
+    background-color: lighten($dark, $i * 10%);
+  }
+}
+

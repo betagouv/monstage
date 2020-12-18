@@ -18,10 +18,29 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
         fill_in_internship_offer_info_form(school_track: :troisieme_generale,
                                            sector: sector,
                                            weeks: available_weeks)
-
+        page.assert_no_selector('span.number', text: '1')
+        find('span.number', text: '2')
+        find('span.number', text: '3')
         click_on "Suivant"
         find('label', text: 'Nom du tuteur/trice')
       end
+    end
+  end
+
+  test 'employer can see which week is choosen by nearby schools in stepper' do
+    employer = create(:employer)
+    organisation = create(:organisation, employer: employer)
+    week_with_school = Week.find_by(number: 10, year: 2019)
+    week_without_school = Week.find_by(number: 11, year: 2019)
+    create(:school, weeks: [week_with_school])
+
+    sign_in(employer)
+
+    travel_to(Date.new(2019, 3, 1)) do
+      visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
+      find('label[for="all_year_long"]').click
+      find(".bg-success-20[data-week-id='#{week_with_school.id}']",count: 1)
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']",count: 1)
     end
   end
 

@@ -19,6 +19,9 @@ class ManageTutorsTest < ApplicationSystemTestCase
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                                internship_offer_info_id: internship_offer_info.id)
+        page.assert_no_selector('span.number', text: '1')
+        page.assert_no_selector('span.number', text: '2')
+        find('span.number', text: '3')
         fill_in_tutor_form
         click_on "Publier l'offre !"
         wait_form_submitted
