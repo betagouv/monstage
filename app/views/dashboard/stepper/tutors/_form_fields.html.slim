@@ -1,5 +1,5 @@
 fieldset.mt-4
-  legend.my-4 Informations Complémentaires
+  legend.my-4 Informations complémentaires
   .row.mt-3
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
@@ -24,7 +24,8 @@ fieldset.mt-4
         .actions
           .row.mt-5
             .col-6.text-left style="display: flex;align-items: center"
-              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre' do
+              = link_to edit_dashboard_stepper_internship_offer_info_path( id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+                        title: 'Revenir à la modification de l\'offre' do
                 i.fa.fa-arrow-left
                 = " Précédent"
             .col-6.text-right
