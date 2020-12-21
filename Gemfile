@@ -11,10 +11,7 @@ gem 'puma'
 
 # db
 gem 'pg'
-# wait for : https://github.com/rgeo/activerecord-postgis-adapter/pull/324
-gem 'activerecord-postgis-adapter',
-    git: 'git@github.com:tagliala/activerecord-postgis-adapter.git',
-    branch: 'feature/rails-6.1-compatibility' # pg extension for geo queries
+gem 'activerecord-postgis-adapter'
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
