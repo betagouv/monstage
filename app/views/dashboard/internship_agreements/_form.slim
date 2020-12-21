@@ -139,20 +139,22 @@ fieldset
     - content = "Objectifs du stage"
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content}
-  .row.mt-3
-    - label = "Modalités de la concertation qui sera assurée pour organiser " \
-              "la préparation, contrôler le déroulement de la période en vue " \
-              "d’une véritable complémentarité des enseignements reçus"
-    - title = "Note destinée au professeur principal :"
-    - content = "Objet pédagogique"
-    = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
-  .row.mt-3
-    - label = "Compétences visées"
-    - title = "Note destinée à l'entreprise"
-    - ccontent = "Apprentissages en entreprise"
-    = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
+  - if school_track != 'troisieme_generale'
+    .row.mt-3
+      - label = "Modalités de la concertation qui sera assurée pour organiser " \
+                "la préparation, contrôler le déroulement de la période en vue " \
+                "d’une véritable complémentarité des enseignements reçus"
+      - title = "Note destinée au professeur principal :"
+      - content = "Objet pédagogique"
+      = render partial: 'dashboard/internship_agreements/trix_form_element',
+               locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
+
+    .row.mt-3
+      - label = "Compétences visées"
+      - title = "Note destinée à l'entreprise"
+      - ccontent = "Apprentissages en entreprise"
+      = render partial: 'dashboard/internship_agreements/trix_form_element',
+               locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
   .row.mt-3
     - label = "Modalités d’évaluation de la séquence d’observation " \
               "en milieu professionnel :"

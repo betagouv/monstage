@@ -45,6 +45,7 @@ module Dashboard
 
       test 'as Employer, I can edit my own fields only' do
         employer = create(:employer)
+        # School_track is 'troisieme_générale'
         internship_offer = create(:weekly_internship_offer, employer: employer)
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
@@ -96,15 +97,13 @@ module Dashboard
           select_editable?('internship_agreement_new_daily_hours_samedi_end', true)
         end
 
+        # School_track 'troisieme generale' hides some fields
+        assert_no_selector('label', text: 'Compétences visées')
+        assert_no_selector('label', text: 'Modalités de la concertation')
+
         # Trix fields tests
         %w[
-          internship_agreement_activity_learnings_rich_text
-        ].each do |trix_field_id|
-          assert_trix_editor_editable(trix_field_id)
-        end
-        %w[
           internship_agreement_activity_scope_rich_text
-          internship_agreement_activity_preparation_rich_text
           internship_agreement_activity_rating_rich_text
           internship_agreement_financial_conditions_rich_text
         ].each do |trix_field_id|
@@ -154,8 +153,6 @@ module Dashboard
         # Trix fields tests
         %w[
           internship_agreement_activity_scope_rich_text
-          internship_agreement_activity_preparation_rich_text
-          internship_agreement_activity_learnings_rich_text
           internship_agreement_activity_rating_rich_text
         ].each do |trix_field_id|
           refute_trix_editor_editable(trix_field_id)
@@ -216,13 +213,11 @@ module Dashboard
         %w[
           internship_agreement_activity_scope_rich_text
           internship_agreement_financial_conditions_rich_text
-          internship_agreement_activity_learnings_rich_text
         ].each do |trix_field_id|
           refute_trix_editor_editable(trix_field_id)
         end
         %w[
           internship_agreement_activity_rating_rich_text
-          internship_agreement_activity_preparation_rich_text
         ].each do |trix_field_id|
           assert_trix_editor_editable(trix_field_id)
         end
