@@ -52,7 +52,7 @@ module Dashboard
       render :edit, status: :bad_request
     end
 
-    def show
+    def show # TODO : test 
       @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
