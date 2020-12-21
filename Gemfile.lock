@@ -1,3 +1,12 @@
+GIT
+  remote: git@github.com:rgeo/activerecord-postgis-adapter.git
+  revision: 8e899321ccdf8d796da82dad26ba6f3bd00d3ffd
+  branch: ar61
+  specs:
+    activerecord-postgis-adapter (6.0.1)
+      activerecord (~> 6.1)
+      rgeo-activerecord (~> 7.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -56,9 +65,6 @@ GEM
     activerecord-explain-analyze (0.1.0)
       activerecord (>= 4)
       pg
-    activerecord-postgis-adapter (6.0.1)
-      activerecord (~> 6.0)
-      rgeo-activerecord (~> 6.0)
     activestorage (6.1.0)
       actionpack (= 6.1.0)
       activejob (= 6.1.0)
@@ -294,7 +300,7 @@ GEM
       netrc (~> 0.8)
     rexml (3.2.4)
     rgeo (2.2.0)
-    rgeo-activerecord (6.2.2)
+    rgeo-activerecord (7.0.0)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
     rubocop (1.6.1)
@@ -353,7 +359,7 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    tzinfo (2.0.3)
+    tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -397,7 +403,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   activerecord-explain-analyze
-  activerecord-postgis-adapter
+  activerecord-postgis-adapter!
   bootsnap
   bullet
   byebug
