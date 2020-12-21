@@ -9,6 +9,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('.alert-sticky')
   end
 
+  def fill_in_trix_editor(id, with:)
+    find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
+  end
+
   test 'can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
@@ -26,13 +30,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer = create(:bac_pro_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
     sign_in(employer)
-
     visit edit_dashboard_internship_offer_path(internship_offer)
-
     select '3e générale', from: 'Filière cible'
-    execute_script(
-      "document.querySelector('div[data-target=\"select-weeks.checkboxesContainer\"]').children.forEach(elem => elem.children[0].checked = true)"
-    )
+    find("label[for='all_year_long']").click
+    fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
     click_on "Modifier l'offre"
     wait_form_submitted
     internship_offer = InternshipOffer.find internship_offer_id
@@ -62,8 +63,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     travel_to(Date.new(2019, 3, 1)) do
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find(".bg-success-20[data-week-id='#{week_with_school.id}']",count: 1)
-      find(".bg-dark-70[data-week-id='#{week_without_school.id}']",count: 1)
+      find(".bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
     end
   end
 
