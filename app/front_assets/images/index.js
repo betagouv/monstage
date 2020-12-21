@@ -44,6 +44,7 @@ import './homepage/sponsors/Logo-anct.jpg';
 
 import './documents_utiles/CarnetStagePro_USEA_WEB-2.jpg';
 import './documents_utiles/RienNeSertDeCourirPageBD.jpg';
+import './documents_utiles/MS3_Programme-a-remplir.jpg';
 import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
