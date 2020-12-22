@@ -49,8 +49,8 @@ import './documents_utiles/USEA-Carnet-Stage-Education.jpg';
 import './documents_utiles/USEA-Cherchez-la-chercheuse.jpg';
 import './documents_utiles/versLinfini.jpg';
 
-import './modes-d-emploi/MS3_Guide-d-utilisation-global-2020.png';
-import './modes-d-emploi/MS3_Mode-d-emploi-eleves.png';
-import './modes-d-emploi/MS3_Mode-d-emploi-entreprises.png';
-import './modes-d-emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
+import './modes_d_emploi/MS3_Guide-d-utilisation-global-2020.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-eleves.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
 
