@@ -45,11 +45,17 @@ module Services
       raise "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
-    def read_contact(email:)
+    def send_read_contact(email:)
       response = send_read_contact(email: email)
       return JSON.parse(response.body) if status?(200, response)
 
       raise "fail read_contact: code[#{response.code}], #{response.body}"
+    end
+
+    def contact_exists?(email:)
+      response = send_read_contact(email: email)
+      return false unless status?(200, response)
+      return true if JSON.parse(response.body).dig('Count')
     end
 
     def index_contact_metadata
@@ -76,12 +82,8 @@ module Services
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Post.new(ENDPOINTS.dig(:contact, :create), headers)
-        data = {
-          IsExcludedFromCampaigns: false,
-          name: user.name,
-          email: user.email
-        }
-        request.body = data.to_json
+
+        request.body = make_create_contact_payload(user: user).to_json
         http.request(request)
       end
     end
@@ -115,7 +117,25 @@ module Services
       with_http_connection do |http|
         headers = default_headers.merge({'Content-Type' => 'application/json'})
         request = Net::HTTP::Put.new(ENDPOINTS.dig(:contact, :metadata, :update) % user.email, headers)
-        data = {
+
+        request.body = make_update_contact_payload(user: user).to_json
+        http.request(request)
+      end
+    end
+
+    #
+    # payload maker
+    #
+    def make_create_contact_payload(user:)
+      {
+        IsExcludedFromCampaigns: false,
+        name: user.name,
+        email: user.email
+      }
+    end
+
+    def make_update_contact_payload(user:)
+      {
           Data: [
             { Name: "firstname", Value: user.first_name },
             { Name: "name", Value: user.last_name },
@@ -126,11 +146,7 @@ module Services
             { Name: "confirmed_at", Value: user.confirmed_at.utc.to_i }
           ]
         }
-        request.body = data.to_json
-        http.request(request)
-      end
     end
-
     # expected: Int|Array[Int],
     # response: HttpResponse
     def status?(expected, response)

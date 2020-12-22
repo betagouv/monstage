@@ -18,10 +18,11 @@ h1.h2.mb-3 Mon identité
       required: true
   .form-group
     = f.label :email do
-      span data-target="signup.label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
+      span data-signup-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
       = f.rg2a_required_content_tag
-    = f.text_field :email, {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
-    small.d-none data-target="signup.emailHint"
+    = f.text_field :email,
+                   {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+    small.d-none data-signup-target="emailHint"
 
   - if can?(:change, :department_name) || can?(:view, :department_name)
     .form-group

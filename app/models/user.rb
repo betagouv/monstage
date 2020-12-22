@@ -53,9 +53,8 @@ class User < ApplicationRecord
 
   def channel
     return :phone if phone.present?
-    return :email if email.present?
 
-    nil
+    :email
   end
 
   def missing_school_weeks?

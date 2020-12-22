@@ -236,7 +236,7 @@ export default function SearchSchool({
                             >
                               <span
                                 dangerouslySetInnerHTML={{
-                                  __html: currentSchool.pg_search_highlight_name,
+                                  __html: currentSchool.pg_search_highlight_name || currentSchool.name,
                                 }}
                               />
                               <br />

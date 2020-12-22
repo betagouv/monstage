@@ -39,19 +39,23 @@ Rails.application.routes.draw do
     resources :internship_offers, only: %i[create update destroy]
     resources :schools, only: [] do
       collection do
+        post :nearby
         post :search
       end
     end
   end
 
   namespace :dashboard, path: 'dashboard' do
+    resources :support_tickets, only: %i[new create]
+    resources :internship_agreements,   except: %i[index]
+    resources :internship_applications, only: %i[index]
+
     resources :schools, only: %i[index edit update] do
       resources :users, only: %i[destroy update index], module: 'schools'
       resources :internship_applications, only: %i[index], module: 'schools'
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
-      resources :support_tickets, only: %i[new create], module: 'schools'
       put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
     end
 
@@ -64,10 +68,6 @@ Rails.application.routes.draw do
       resources :internship_offer_infos, only: %i[create new edit update]
       resources :tutors,                 only: %i[create new]
     end
-
-
-    resources :internship_agreements,   except: %i[index]
-    resources :internship_applications, only: %i[index]
 
     namespace :students, path: '/:student_id/' do
       resources :internship_applications, only: %i[index show]

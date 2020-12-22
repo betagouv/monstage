@@ -15,13 +15,15 @@ gem 'activerecord-postgis-adapter' # pg extension for geo queries
 
 # don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
 gem 'pg_search', '2.3.2'                    # pg search for autocomplete
+gem 'prawn'
+gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
 gem 'slim-rails'
 gem 'turbolinks'
+gem "react_on_rails"
 gem 'webpacker'
-gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
@@ -94,6 +96,4 @@ end
 group :test, :development, :review do
   gem 'factory_bot_rails'
 end
-
-
 

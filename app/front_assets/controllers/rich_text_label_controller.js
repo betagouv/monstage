@@ -2,26 +2,31 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
   static targets = ['label'];
+  static values = {
+    for: String,
+    enable: Boolean,
+  };
 
   forElement(){
-    return document.getElementById(this.data.get('for'))
+    return document.getElementById(this.forValue);
   }
   focusTrixInput(event) {
     this.forElement().focus();
 
     return event;
   }
-  enableTrixInput(bool){
-    this.forElement().contentEditable = bool
-  }
 
   connect(){
     this.refOnClick = this.focusTrixInput.bind(this);
     this.element.addEventListener('click', this.refOnClick)
   }
+
   initialize(){
-   this.enableTrixInput(this.data.get('enable'))
+    if (this.enableValue !== null) {
+      this.forElement().contentEditable = this.enableValue;
+    }
   }
+
   disconnect(){
     this.element.removeEventListener('click', this.refOnClick)
   }

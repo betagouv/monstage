@@ -12,13 +12,12 @@ module Users
               :role,
               presence: true
 
-    validates :email, format: /\A[^@\s]+@ac-[^@\s]+\z/, if: :school_manager?
-
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
     has_many :students, through: :class_room
     has_many :main_teachers, through: :school
 
+    validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
     validate :official_email_address, if: :school_manager?
 
@@ -52,6 +51,10 @@ module Users
       return 'Mon établissement' if school.present?
     end
 
+    def new_support_ticket(params: {})
+      SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
+    end
+
     private
 
     # validators
@@ -62,11 +65,11 @@ module Users
     end
 
     def official_email_address
+      return if school_id.blank?
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
         errors[:email] << "L'adresse email utilisée doit être officielle. ex: xxx@ac-MON_ACADEMIE.fr"
       end
     end
-
 
     # notify
     def notifiable?

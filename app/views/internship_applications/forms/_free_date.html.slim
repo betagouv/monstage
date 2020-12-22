@@ -1,4 +1,4 @@
-#internship-application-form data-target="internship-application-form.containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
+#internship-application-form data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   .bg-light-blue
     .col-12
       - if !@internship_application.new_record? && !@internship_application.drafted?
@@ -30,7 +30,7 @@
             legend.h3 Ma Candidature
 
             div class="form-group #{disabled ? 'opacity-05' : ''}"
-              .label.required data-controller="rich-text-label" data-rich-text-label-for="internship_application_motivation"
+              .label.required data-controller="rich-text-label" data-rich-text-label-enable-value=!disabled  data-rich-text-label-for-value="internship_application_motivation"
                 = "Pourquoi ce stage me motive"
                 small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
                 = f.rg2a_required_content_tag

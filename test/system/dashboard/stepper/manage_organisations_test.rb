@@ -7,7 +7,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   include OrganisationFormFiller
 
   test 'can create Organisation' do
-    schools = [create(:school), create(:school)]
+    2.times { create(:school) }
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
     sign_in(employer)
@@ -16,6 +16,9 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
         fill_in_organisation_form(is_public: true, group: group)
+        find('span.number', text: '1')
+        find('span.number', text: '2')
+        find('span.number', text: '3')
         click_on "Suivant"
       end
     end

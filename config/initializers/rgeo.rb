@@ -15,3 +15,4 @@ def geo_point_factory(latitude:, longitude:)
                                                    .factory(type)
   factory.point(longitude, latitude)
 end
+
