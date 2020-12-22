@@ -3,7 +3,7 @@
     ul.nav.navbar.px-0
       - if @internship_offer.published_at.present?
         li.d-flex-inline.align-items-center.text-success.br-1.bc-light.pr-3
-          span.d-inline= "Annonce publiée en ligne"
+          span.d-inline= "Annonce publiée"
           br
           span.d-inline.internship_offer-published_at= "depuis le #{l(@internship_offer.published_at, format: :human_mm_dd)}"
       - else
