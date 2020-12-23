@@ -2,7 +2,11 @@
   .col.bg-light.pb-3
     .row.no-gutters.internship_application.bg-light.my-3.py-3
       .col-1.col-sm-1.text-center
-        a.d-block.btn-link href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkIconContainer" title="Afficher le détail de la candidature de #{internship_application.student.name}" data-turbolinks="false"
+        a.d-block.btn-link [href="#internship-application-#{internship_application.id}"
+                            data-action="click->internship-application-index#toggle"
+                            data-internship-application-index-target="linkIconContainer"
+                            title="Afficher le détail de la candidature de #{internship_application.student.name}"
+                            data-turbolinks="false"]
           - if internship_application.submitted?
             i.fas.fa-2x.text-danger.fa-caret-down
           - else
