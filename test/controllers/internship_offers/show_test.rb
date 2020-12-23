@@ -469,15 +469,24 @@ module InternshipOffers
                       'missing discard modal for employer'
     end
 
-    test 'GET #show as employer before may or after september show duplicate/renew button' do
-      internship_offer = create(:weekly_internship_offer)
-      current_school_year = SchoolYear::Current.new
+    test "GET #show as employer have duplicate/renew button for last year's internship offer" do
+      internship_offer = create(:weekly_internship_offer, created_at: 1.year.ago)
 
       sign_in(internship_offer.employer)
 
       get internship_offer_path(internship_offer)
       assert_response :success
       assert_select '.test-renew-button', count: 1
+    end
+
+    test 'GET #show as employer does not show renew button when internship_offer has been created durent current_year' do
+      internship_offer = create(:weekly_internship_offer, created_at: SchoolYear::Current.new.beginning_of_period + 1.day)
+
+      sign_in(internship_offer.employer)
+
+      get internship_offer_path(internship_offer)
+      assert_response :success
+      assert_select '.test-renew-button', count: 0
     end
 
     test 'sentry#1813654266, god can see api internship offer' do

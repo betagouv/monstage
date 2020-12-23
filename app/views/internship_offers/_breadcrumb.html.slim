@@ -16,7 +16,7 @@
 
 
   .col-12.col-sm-4.text-right.relative
-    - if can?(:create, InternshipOffer)
+    - if can?(:create, InternshipOffer) && @internship_offer.created_at < SchoolYear::Current.new.beginning_of_period
       div
         .actions.d-flex.d-sm-block.d-xs-stick.text-center
           p.mb-1.d-none.d-md-block.text-muted.small= "Souhaitez-vous renouveller cette offre pour la nouvelle année scolaire ?"
