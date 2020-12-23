@@ -16,7 +16,7 @@
           br
           = "Mode d'emploi - #{user_segmeent}"
           br
-          = File.size(Rails.root.join("public", "modes_d_emploi", "#{file_name}-compressed.pdf")) / 1_000_000
+          = (File.size(Rails.root.join("public", "modes_d_emploi", "#{file_name}-compressed.pdf")) / 1_024_000.0).ceil(1)
           | Mb
           br
           | MonStageDe3eme
