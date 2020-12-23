@@ -8,6 +8,7 @@
           th.col-3 Elève
           th.col-6 Candidature acceptée
           th.col-3
+            .sr-only Actions
       tbody class="class-room-#{class_room[:id]}"
         - applications.each do |application|
           = render "dashboard/internship_offers/internship_applications/show_modal", application:application
