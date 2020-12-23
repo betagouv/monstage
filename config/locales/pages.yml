@@ -61,6 +61,9 @@ fr:
     internship_applications:
       index:
         page_title: "Conventions à signer"
+    support_tickets:
+      new:
+        page_title: 'Stages à distance'
   internship_applications:
     show:
       page_title: "Ma candidature"
