@@ -20,14 +20,8 @@ h1.h2.mb-3 Mon identité
     = f.label :email do
       span data-signup-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
       = f.rg2a_required_content_tag
-<<<<<<< HEAD
-    = f.text_field :email,
-                   {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', 'signup-target': 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
-    small.d-none data-target="signup.emailHint"
-=======
     = f.text_field :email, {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
     small.d-none data-signup-target="emailHint"
->>>>>>> clean(stimulus): now switch to 2.0 data-{controller}-target pattern
 
   - if can?(:change, :department_name) || can?(:view, :department_name)
     .form-group
