@@ -4,7 +4,7 @@
   = button_tag type: "button",
               data: { toggle: 'modal', target: "##{modal_id}" },
               class: "btn btn-#{aasm_notifier.target_action_color} mx-1 px-5" do
-    i class="fas #{fa_icon}"
+    i class="fas #{fa_icon}" role="img"
     = " "
     = modal_opener_label
 
@@ -27,6 +27,5 @@
           = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
 
         .modal-footer.actions
-
           = f.submit class: 'btn btn-primary', value: "Confirmer"
           button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler
