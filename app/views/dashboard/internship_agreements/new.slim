@@ -4,10 +4,10 @@
 .row.mx-5
   .col-12
 
-    = form_for @internship_agreement,
-               url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
-               class: 'form-offset-header',
-               html: {'data-controller': 'internship-agreement-form'} do |form|
+    = form_with model: @internship_agreement,
+                url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+                class: 'form-offset-header',
+                html: {'data-controller': 'internship-agreement-form'} do |form|
       = render "form",
                form: form,
                resource: @internship_agreement,
