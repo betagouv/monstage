@@ -1,6 +1,10 @@
 h1.h2.mb-3 Mon établissement
-
-= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+/ = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+= form_with model: current_user,
+            scope: :user,
+            url: account_path,
+            local: true,
+            method: :patch do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
@@ -22,3 +26,4 @@ h1.h2.mb-3 Mon établissement
 
   .actions.d-flex.d-sm-block
     = f.submit 'Enregistrer', class: 'btn btn-primary'
+    
