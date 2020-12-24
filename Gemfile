@@ -25,6 +25,7 @@ gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
+gem "view_component", require: "view_component/engine"
 
 # background jobs
 gem 'sidekiq'
