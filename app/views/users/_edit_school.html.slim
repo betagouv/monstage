@@ -1,5 +1,4 @@
 h1.h2.mb-3 Mon établissement
-/ = form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
 = form_with model: current_user,
             scope: :user,
             url: account_path,
