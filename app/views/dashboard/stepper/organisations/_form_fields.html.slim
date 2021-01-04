@@ -10,16 +10,15 @@ fieldset.mt-4 data-controller='organisation-form'
 
         = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété', required: true
       .form-group
-        .label
-          | Secteur
-          = form.rg2a_required_content_tag
         .row
           .col-8
-            .toggle-radio
-              = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
-              = form.label :is_public_true, 'Public', class: ''
-              = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
-              = form.label :is_public_false, 'Privé', class: ''
+            - radio_params = { form: form,
+                               group_label: 'Secteur',
+                               labels: ['Public', 'Privé'],
+                               radio_field: :is_public,
+                               checked: nil,
+                               handle_click: 'change->organisation-form#handleClickIsPublic'}
+            = render(RadioButton::LargeBinaryModel::Component.new(radio_params))
 
       div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
         = form.label :group_id, "Groupe ou Institution de tutelle", data: {:"organisation-form-target" => 'groupLabel'}

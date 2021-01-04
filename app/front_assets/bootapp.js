@@ -19,6 +19,27 @@ application.load(definitionsFromContext(context))
 // Support component names relative to this directory:
 const componentRequireContext = require.context("components", true);
 
+// from https://github.com/hotwired/stimulus/issues/347
+// load definitions from app/javascript/controllers
+const controllerContext = require.context("controllers", true, /_controller\.js$/)
+let controllerDefinitions = definitionsFromContext(controllerContext)
+
+// load definitions from app/components/*
+const componentContext = require.context("components", true, /.*controller\.js$/)
+function getComponentControllerDefinitions(context) {
+  return context.keys().map(key => {
+    const identifier = key
+      .replace("controller.js", "")
+      .replace(/[\W_]/g, "-")
+      .replace(/^-+/,"")
+      .replace(/-+$/, "");
+    return { identifier, controllerConstructor: context(key).default }
+  })
+}
+let componentControllerDefinitions = getComponentControllerDefinitions(componentContext);
+
+application.load([...controllerDefinitions, ...componentControllerDefinitions])
+
 import SearchInternshipOffer from "components/SearchInternshipOffer";
 import ReservedSchoolInput from "components/ReservedSchoolInput";
 import FilterInternshipOffer from "components/FilterInternshipOffer";
