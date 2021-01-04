@@ -107,11 +107,12 @@ module Dashboard::Stepper
             max_candidates: 3,
             weekly_hours: ['10h', '12h']
           }
-        })
-        assert_response :bad_request
-        assert_select '#internship_offer_info_max_candidates[value="3"]'
-        assert_select '#internship_type_true[checked]', count: 0
-        assert_select '#internship_type_false[checked]', count: 1
+        }
+      )
+      assert_response :bad_request
+      assert_select '#internship_offer_info_max_candidates[value="3"]'
+      assert_select '#internship_type_true[checked]', count: 0
+      assert_select '#internship_type_false[checked]', count: 1
     end
 
 
