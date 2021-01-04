@@ -38,6 +38,10 @@ module Dashboard
       render :edit, status: :unprocessable_entity
     end
 
+    def show
+      authorize! :edit, School
+    end
+
     private
 
     def set_school
@@ -68,12 +72,13 @@ module Dashboard
                                      :street,
                                      :name,
                                      :visible,
+                                     :agreement_conditions_rich_text,
                                      coordinates: {},
                                      week_ids: [])
     end
 
     def school_manager_internship_weeks_params
-      params.require(:school).permit(week_ids: [])
+      params.require(:school).permit(:agreement_conditions_rich_text, week_ids: [])
     end
   end
 end
