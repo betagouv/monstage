@@ -1,10 +1,32 @@
 .row
   .col-12
-    h1 Documents utiles
+    h1.h2 Documents utiles
     p Les stages de troisème sont l'occasion de découvrir le monde du travail et de s'interroger sur son projet d'orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions
 
 .row
-  .col-12.col-sm-6.text-center
+  .col-12.py-5
+    h2.h3 Modes d'emploi
+
+.row
+  - {"Stage à distance" => "MS3_Guide-stage-a-distance-2020", "Global" => "MS3_Guide-d-utilisation-global-2020", "Eleve" => "MS3_Mode-d-emploi-eleves", "Entrepries" => "MS3_Mode-d-emploi-entreprises", "Équipe pédagogique" => "MS3_Mode-d-emploi-membres-pedagogique"}.each do |user_segmeent, file_name|
+    .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+      = link_to "#{root_url}/modes_d_emploi/#{file_name}-compressed.pdf", title: "Accéder au mode d'emploi #{user_segmeent}"  do
+        = image_tag asset_pack_path("media/images/modes_d_emploi/#{file_name}.png"), alt: "Couverture du mode d'emploi #{user_segmeent}", size: '200x283', class: 'img-thumbnail'
+        p
+          br
+          = "Mode d'emploi - #{user_segmeent}"
+          br
+          = (File.size(Rails.root.join("public", "modes_d_emploi", "#{file_name}-compressed.pdf")) / 1_024_000.0).ceil(1)
+          | Mb
+          br
+          | MonStageDe3eme
+
+
+.row
+  .col-12.py-5
+    h2.h3 Autres documents
+.row
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
     = link_to "#{root_url}/documents_utiles/USEA-Carnet-Stage-Education.pdf", title: 'Accéder à Carnet Stage Education'  do
       = image_tag asset_pack_path("media/images/documents_utiles/USEA-Carnet-Stage-Education.jpg"), alt: 'Couverture de Carnet Stage Education', size: '200x283', class: 'img-thumbnail'
       p
@@ -17,7 +39,7 @@
     p
       | Aidez l’élève à réfléchir aux enjeux de l’orientation et à trouver le stage qui lui correspond, pour qu'il tire un maximum d’enseignements de sa séquence d’observation.
 
-  .col-12.col-sm-6.text-center
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
     = link_to "#{root_url}/documents_utiles/USEA-Cherchez-la-chercheuse.pdf", title: 'Accéder à Cherchez la chercheuse'  do
       = image_tag asset_pack_path("media/images/documents_utiles/USEA-Cherchez-la-chercheuse.jpg"), alt: 'Couverture de Cherchez la chercheuse', size: '200x283', class: 'img-thumbnail'
       p
@@ -30,7 +52,7 @@
     p
       | A partir de l'exemple de Marie Curie, donnez à l’élève des raisons de croire en son potentiel. Montrez-lui à quel point la persévérance et le sérieux sont de formidables atouts.
 
-  .col-12.col-sm-6.text-center
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
     = link_to "#{root_url}/documents_utiles/RienNeSertDeCourirPageBD.pdf", title: 'Accéder à Rien Ne Sert De Courir'  do
       = image_tag asset_pack_path("media/images/documents_utiles/RienNeSertDeCourirPageBD.jpg"), alt: 'Couverture de Rien Ne Sert De Courir', size: '200x283', class: 'img-thumbnail'
       p
@@ -43,7 +65,7 @@
     p
       | Ceci n’est pas un exercice ! Dans le cadre de la recherche de stage, ce carnet de missions aidera l’élève à élargir son horizon en mobilisant les ressources à sa disposition à l'établissement et dans son quartier.
 
-  .col-12.col-sm-6.text-center
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
     = link_to "#{root_url}/documents_utiles/CarnetStagePro_USEA_WEB-2.pdf", title: 'Accéder à Carnet Stage Pro'  do
       = image_tag asset_pack_path("media/images/documents_utiles/CarnetStagePro_USEA_WEB-2.jpg"), alt: 'Couverture de Carnet Stage Pro', size: '200x284', class: 'img-thumbnail'
       p
@@ -56,7 +78,7 @@
     p
       | Vous êtes un professionnel et vous vous posez des questions sur le stage d'observation ? Ce livret vous aidera à organiser un stage passionnant pour un collégien au sein de votre structure.
 
-  .col-12.col-sm-6.text-center
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
     = link_to "#{root_url}/documents_utiles/versLinfini.pdf", title: "Accéder à Vers l'infini et au-delà"  do
       = image_tag asset_pack_path("media/images/documents_utiles/versLinfini.jpg"), alt: "Couverture de Vers l'infini et au-delà", size: '200x284', class: 'img-thumbnail'
       p
@@ -68,3 +90,16 @@
         | USEA
     p
       | Grâce à des missions adaptées et des conseils pratiques, ce carnet aidera les élèves à chercher leur stage d'observation au-delà de leur quartier ou de leur ville.
+
+  .col-12.col-sm-6.col-md-4.col-lg-3.text-center
+    = link_to "#{root_url}/documents_utiles/MS3_Programme-a-remplir.pdf", title: "Accéder au programme à remplir"  do
+      = image_tag asset_pack_path("media/images/documents_utiles/MS3_Programme-a-remplir.jpg"), alt: "Couverture de programme à remplir", size: '200x284', class: 'img-thumbnail'
+      p
+        br
+        | Programme d'une semaine de stage à remplir
+        br
+        | PDF - 142Kb
+        br
+        | MonStageDe3eme
+    p
+      | Document à destination des entreprises / administrations publiques.

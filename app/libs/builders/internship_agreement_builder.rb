@@ -77,7 +77,7 @@ module Builders
 
     def preprocess_student_to_params(student)
       {
-        student_school: student.school,
+        student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
         school_representative_full_name: student.school.school_manager.name,
         student_full_name: student.name,
         student_class_room: student.class_room.try(:name),
