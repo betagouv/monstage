@@ -157,12 +157,12 @@ fieldset
 
   .row.mt-3
     .col-12
-      h3.h6 B - Annexe financière
+      h3.h6 B - Annexe complémentaire
   .row.mt-3
     - label = "Conditions liés au financement du stage de " \
               "l'élève par l'établissement"
     - title = "Note destinée au chef d'établissement :"
-    - content = "Toutes les modalités pratiques du stage."
+    - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :financial_conditions_rich_text, form: form, text_label: label, title: title, content: content }
 

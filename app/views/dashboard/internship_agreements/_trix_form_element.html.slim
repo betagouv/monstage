@@ -27,4 +27,4 @@
   .col-4
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title
-      span = content
+      span = content.html_safe
