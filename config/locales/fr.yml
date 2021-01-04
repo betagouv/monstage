@@ -65,7 +65,7 @@ fr:
         other: Etablissements
       internship_agreement:
         one: Convention
-        other: Conventions  
+        other: Conventions
       internship_offers/weekly_framed:
         one: Offre 3eme générale
         other: Offres 3eme générale
@@ -129,15 +129,11 @@ fr:
           middle_school: 'Collège'
           high_school: 'Lycée'
 
-      tutor: &tutor_fields
-        tutor_name: Nom du tuteur
-        tutor_phone: Téléphone du tuteur
-        tutor_email: Email du tuteur
 
       internship_offer:
         <<: *organisation_fields
         <<: *internship_offer_info_fields
-        <<: *tutor_fields
+
 
         id: Identifiant unique de l'offre
         human_is_public: Public/Privé
@@ -205,10 +201,6 @@ fr:
               blank: "Veuillez saisir le nom de l'élève"
             organisation_representative_full_name:
               blank: "Veuillez saisir le nom du représentant de l'entreprise"
-            tutor_full_name:
-              blank: "Veuillez saisir le nom du tuteur"
-            tutor_full_name:
-              blank: "Veuillez saisir le nom du tuteur"
             date_range:
               blank: "Veuillez saisir les date du stage"
             student_school:
@@ -254,23 +246,16 @@ fr:
             weeks:
               blank: Veuillez saisir des semaines de stage
 
-        tutor:
-          attributes: &tutor_errors
-            tutor_name:
-              blank: "Veuillez saisir un tuteur pour l'offre de stage"
-            tutor_phone:
-              blank: "Veuillez saisir le numéro de téléphone du tuteur de l'offre de stage"
-            tutor_email:
-              blank: "Veuillez saisir l'adresse électronique du tuteur de l'offre de stage"
 
         internship_offer:
           attributes:
             <<: *organisation_errors
             <<: *internship_offer_info_errors
-            <<: *tutor_errors
 
             employer:
               required: Veuillez choisir un compte responsable de l'offre
+            tutor:
+              blank: Veuillez renseigner toutes les informations pour le tuteur de stage
 
         internship_offers/api:
           attributes:
@@ -336,6 +321,14 @@ fr:
           attributes:
             operator:
               blank: Veuillez saisir un opérateur
+        users/tutor:
+          attributes:
+            first_name:
+              blank: Veuillez saisir un prénom pour le tuteur
+            last_name:
+              blank: Veuillez saisir un nom de famille pour le tuteur
+            phone:
+              blank: "Veuillez saisir un numéro de téléphone pour le tuteur"
 
         internship_application:
           attributes:

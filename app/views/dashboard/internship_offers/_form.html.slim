@@ -4,7 +4,6 @@
 
   // used when
   = form.hidden_field :employer_id, value: current_user.id
-  = form.hidden_field :employer_type, value: "User"
 
   // used when posted from stepper
   = form.hidden_field :organisation_id, value: @internship_offer.organisation_id
@@ -22,7 +21,8 @@
 
   hr
   // Tutor
-  = render 'dashboard/stepper/tutors/form_fields', { resource: @internship_offer.tutor || Users::Tutor.new, form: form, submit_button: false, warning_bloc: false }
+  = form.fields_for :tutor do |tutor_form|
+    = render 'dashboard/stepper/tutors/form_fields', { form: tutor_form, submit_button: false, warning_bloc: false }
 
   .actions
     .row

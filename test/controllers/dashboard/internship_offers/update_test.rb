@@ -40,7 +40,6 @@ module Dashboard::InternshipOffers
                    internship_offer.reload.title,
                    'can\'t update internship_offer title')
       assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
-
     end
 
     test 'PATCH #update as employer owning internship_offer can publish/unpublish offer' do
@@ -53,6 +52,49 @@ module Dashboard::InternshipOffers
         patch(dashboard_internship_offer_path(internship_offer.to_param),
               params: { internship_offer: { published_at: published_at } })
       end
+    end
+
+    test 'PATCH #update as employer owning internship_offer can change tutor reusing an existing tutor' do
+      new_tutor = create(:tutor)
+      internship_offer = create(:weekly_internship_offer)
+      old_tutor_email = internship_offer.tutor.email
+      new_tutor_email = new_tutor.email
+      sign_in(internship_offer.employer)
+
+      assert_no_changes -> { User.count } do
+        assert_changes -> { internship_offer.reload.tutor.email },
+                       from: old_tutor_email,
+                       to: new_tutor_email do
+          patch(dashboard_internship_offer_path(internship_offer.to_param),
+                params: {
+                  internship_offer: {
+                    tutor_attributes: {
+                      email: new_tutor.email
+                    }
+                  }
+                })
+        end
+      end
+    end
+
+
+    test 'PATCH #update as employer owning internship_offer can change tutor to create a new one' do
+      new_tutor_email = 'alkdjal@asldkads.com'
+      internship_offer = create(:weekly_internship_offer)
+      sign_in(internship_offer.employer)
+      assert_no_changes -> { User.count } do
+        patch(dashboard_internship_offer_path(internship_offer.to_param),
+              params: {
+                internship_offer: {
+                  tutor_attributes: {
+                    email: new_tutor_email
+                  }
+                }
+              })
+      end
+      assert_select("#internship_offer_tutor_attributes_email[value=\"#{new_tutor_email}\"]",
+                    { count: 1 },
+                    'tutor fields should be visible for edition and with previously selected info')
     end
 
     test 'PATCH #update as employer is able to remove school' do

@@ -93,14 +93,15 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
-  belongs_to :employer, polymorphic: true
-
   has_one :organisation
-  belongs_to :tutor, class_name: 'Users::Tutor', optional: true
-  accepts_nested_attributes_for :tutor
   has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text
+
+  belongs_to :employer, class_name: 'User'
+
+  belongs_to :tutor, class_name: 'User', optional: true, autosave: true
+  accepts_nested_attributes_for :tutor
 
   after_initialize :init
 
@@ -115,7 +116,7 @@ class InternshipOffer < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
-  validates :tutor_id, presence: true, unless: :from_api?
+  validates :tutor, presence: true, unless: :from_api?
 
   delegate :email, to: :employer, prefix: true, allow_nil: true
   delegate :phone, to: :employer, prefix: true, allow_nil: true

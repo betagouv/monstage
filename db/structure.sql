@@ -713,7 +713,6 @@ CREATE TABLE public.internship_offers (
     total_applications_count integer DEFAULT 0 NOT NULL,
     convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     approved_applications_count integer DEFAULT 0 NOT NULL,
-    employer_type character varying,
     department character varying DEFAULT ''::character varying NOT NULL,
     academy character varying DEFAULT ''::character varying NOT NULL,
     total_male_applications_count integer DEFAULT 0 NOT NULL,
@@ -2231,6 +2230,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201201140201'),
 ('20201202082705'),
 ('20201203153154'),
-('20201211094310');
+('20201211094310'),
+('20201224153839');
 
 

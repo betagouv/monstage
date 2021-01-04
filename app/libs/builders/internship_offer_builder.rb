@@ -3,17 +3,17 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder < BuilderBase
-
     # called by dashboard/stepper/tutor#create during creating with steps
-    def create_from_stepper(tutor:, organisation:, internship_offer_info:)
+    def create_from_stepper(tutor_params:, organisation:, internship_offer_info:)
       yield callback if block_given?
       authorize :create, model
       internship_offer = model.new(
-        {}.merge(preprocess_organisation_to_params(organisation))
-          .merge(preprocess_internship_offer_info_to_params(internship_offer_info))
-          .merge(preprocess_tutor_to_params(tutor))
-          .merge(employer_id: user.id, employer_type: 'User')
-          .merge(tutor_id: tutor.id, organisation_id: organisation.id, internship_offer_info_id: internship_offer_info.id)
+        {}.merge(replicate_organisation_to_params(organisation))
+          .merge(replicate_internship_offer_info_to_params(internship_offer_info))
+          .merge(preprocess_tutor_to_params(tutor_params))
+          .merge(employer_id: user.id,
+                 organisation_id: organisation.id,
+                 internship_offer_info_id: internship_offer_info.id)
       )
       internship_offer.save!
       callback.on_success.try(:call, internship_offer)
@@ -25,7 +25,8 @@ module Builders
     def create(params:)
       yield callback if block_given?
       authorize :create, model
-      internship_offer = model.create!(preprocess_api_params(params, fallback_weeks: true))
+      internship_offer = model.create!(preprocess_params(params: params,
+                                                         fallback_weeks: true))
       callback.on_success.try(:call, internship_offer)
     rescue ActiveRecord::RecordInvalid => e
       if duplicate?(e.record)
@@ -40,7 +41,8 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance.attributes = preprocess_api_params(params, fallback_weeks: false)
+      instance.attributes = preprocess_params(params: params,
+                                              fallback_weeks: false)
       instance = instance.becomes(instance.type.constantize) if instance.attribute_changed?("type")
       instance.save!
       callback.on_success.try(:call, instance)
@@ -70,6 +72,12 @@ module Builders
       @callback = InternshipOfferCallback.new
     end
 
+    # TODO: wire same logic for Organisation.legal_representative
+    def preprocess_params(params:, fallback_weeks:)
+      {}.merge(preprocess_api_params(params.except(:tutor_attributes), fallback_weeks: fallback_weeks))
+        .merge(preprocess_tutor_to_params(params.fetch(:tutor_attributes) { {} }))
+    end
+
     def preprocess_api_params(params, fallback_weeks:)
       return params unless from_api?
 
@@ -81,7 +89,7 @@ module Builders
                            .sanitize
     end
 
-    def preprocess_organisation_to_params(organisation)
+    def replicate_organisation_to_params(organisation)
       {
         employer_name: organisation.employer_name,
         employer_website: organisation.employer_website,
@@ -95,7 +103,7 @@ module Builders
       }
     end
 
-    def preprocess_internship_offer_info_to_params(internship_offer_info)
+    def replicate_internship_offer_info_to_params(internship_offer_info)
       params = {
         title: internship_offer_info.title,
         description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
@@ -111,9 +119,18 @@ module Builders
       params
     end
 
-    def preprocess_tutor_to_params(tutor)
+    # TODO: wire same logic for Organisation.legal_representative
+    def preprocess_tutor_to_params(tutor_params)
+      return {} if tutor_params.empty?
+      return {} if from_api?
+      tutor = User.find_by_email(tutor_params['email'])
+      tutor ||= Users::Tutor.new(accept_terms: true,
+                                 skip_password_validation: true,
+                                 confirmed_at: Time.now.utc)
+      tutor.attributes = tutor_params
+      tutor.save
       {
-        tutor_id: tutor.id
+        tutor: tutor,
       }
     end
 

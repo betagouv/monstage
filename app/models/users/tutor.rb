@@ -1,7 +1,7 @@
 module Users
-  class Tutor < Employer
+  class Tutor < User
     attr_accessor :skip_password_validation
-    
+
     # Validations
     validates :first_name,
               :last_name,
@@ -9,9 +9,6 @@ module Users
               :email,
               presence: true,
               unless: :from_api?
-
-    # for ACL
-    belongs_to :organisation
 
     # linked via stepper
     has_many :internship_offer

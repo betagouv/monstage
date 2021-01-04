@@ -4,26 +4,26 @@ fieldset.mt-4
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       .form-group
+        = form.label :email do
+          = 'Adresse électronique / Email'
+          = form.rg2a_required_content_tag
+        = form.email_field :email, class: 'form-control', required: true
+      .form-group
         = form.label :first_name do
           = 'Prénom du tuteur/trice'
           = form.rg2a_required_content_tag
-        = form.text_field :first_name, class: 'form-control', required: true, value: resource.first_name || current_user.first_name
+        = form.text_field :first_name, class: 'form-control', required: true, disabled: !form.object.new_record?
       .form-group
         = form.label :last_name do
           = 'Nom du tuteur/trice'
           = form.rg2a_required_content_tag
-        = form.text_field :last_name, class: 'form-control', required: true, value: resource.last_name || current_user.last_name
+        = form.text_field :last_name, class: 'form-control', required: true, disabled: !form.object.new_record?
       .form-group
-        = form.label :email do
-          = 'Adresse électronique / Email'
-          = form.rg2a_required_content_tag
-        = form.email_field :email, class: 'form-control', required: true, value: resource.email || current_user.email
-      .form-group 
         = form.label :phone, for: 'phone-input' do
           span Numéro de mobile
           = form.rg2a_required_content_tag
           small.form-text.text-muted Pour faciliter la prise de contact, indiquez le numéro de mobile
-        = react_component("CountryPhoneSelect", props: { name: 'tutor[phone]', value: resource.phone }) 
+        = react_component("CountryPhoneSelect", props: { name: "#{form.object_name}[phone]", value: form.object.phone, disabled: !form.object.new_record? })
       - if submit_button
         .actions
           .row.mt-5

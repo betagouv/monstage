@@ -79,7 +79,6 @@ FactoryBot.define do
     end
 
     factory :tutor, class: 'Users::Tutor', parent: :user do
-      organisation
       type { 'Users::Tutor' }
       phone { "+330600#{ '%06d' % rand(1..100000) }" }
     end

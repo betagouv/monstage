@@ -64,7 +64,6 @@ module Dashboard::Stepper
       params.require(:internship_offer_info)
             .permit(
               :title,
-              :employer_type,
               :type,
               :sector_id,
               :school_id,

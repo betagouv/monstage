@@ -106,9 +106,24 @@ module Dashboard::InternshipOffers
       assert_select '#internship_type_true[checked]', count: 1
       assert_select '#internship_type_false[checked]', count: 0
 
-      assert_select '#internship_offer_first_name[value="fourtin"]'
-      assert_select '#internship_offer_last_name[value="mourcade"]'
-      assert_select '#internship_offer_email[value="fourtin@mour.cade"]'
+      assert_select('#internship_offer_tutor_attributes_first_name[value="fourtin"]',
+                    { count: 1 },
+                    'invalid default value for tutor first_name')
+      assert_select('#internship_offer_tutor_attributes_first_name[disabled="disabled"]',
+                    { count: 1 },
+                    'tutor first_name should be disabled')
+      assert_select('#internship_offer_tutor_attributes_last_name[value="mourcade"]',
+                    { count: 1 },
+                    'invalid default value for tutor last_name')
+      assert_select('#internship_offer_tutor_attributes_last_name[disabled="disabled"]',
+                    { count: 1 },
+                    'tutor first_name should be disabled')
+      assert_select('#internship_offer_tutor_attributes_email[value="fourtin@mour.cade"]',
+                    { count: 1 },
+                    'invalid default value for tutor email')
+      assert_select('#internship_offer_tutor_attributes_email[disabled]',
+                    { count: 0 },
+                    'tutor email should be editable')
       assert_select 'a.btn-back[href=?]', dashboard_internship_offers_path
     end
   end

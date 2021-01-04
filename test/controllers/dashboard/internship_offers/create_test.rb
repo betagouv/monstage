@@ -27,8 +27,7 @@ module Dashboard::InternshipOffers
                       'description_rich_text' => '<div>description</div>',
                       'employer_description_rich_text' => '<div>hop+employer_description</div>',
                       'employer_id' => internship_offer.employer_id,
-                      'tutor_id' => internship_offer.tutor_id,
-                      'employer_type' => 'Users::Employer')
+                      'tutor_attributes' => internship_offer.tutor.attributes)
 
       assert_difference('InternshipOffer.count', 1) do
         post(dashboard_internship_offers_path, params: { internship_offer: params })
@@ -56,8 +55,7 @@ module Dashboard::InternshipOffers
                       'description_rich_text' => '<div>description</div>',
                       'employer_description_rich_text' => '<div>hop+employer_description</div>',
                       'employer_id' => internship_offer.employer_id,
-                      'tutor_id' => internship_offer.tutor_id,
-                      'employer_type' => 'Users::Employer')
+                      'tutor_attributes' => internship_offer.tutor.attributes)
 
       assert_difference('InternshipOffer.count', 1) do
         post(dashboard_internship_offers_path, params: { internship_offer: params })

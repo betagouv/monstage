@@ -27,7 +27,7 @@ module Dashboard
           render :new, status: :bad_request
         end
       end
-    rescue ActionController::ParameterMissing
+    rescue ActionController::ParameterMissing => e
       @internship_offer = InternshipOffer.new
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
       render :new, status: :bad_request
@@ -143,13 +143,46 @@ module Dashboard
 
     def internship_offer_params
       params.require(:internship_offer)
-            .permit(:title, :description_rich_text, :sector_id, :max_candidates,
-                    :tutor_name, :tutor_phone, :tutor_email, :tutor_id, :employer_website, :employer_name,
-                    :street, :zipcode, :city, :department, :region, :academy,
-                    :is_public, :group_id, :published_at, :type,
-                    :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_type, :school_track, coordinates: {}, week_ids: [],
-                    new_daily_hours: {}, weekly_hours:[])
+            .permit(:type,
+
+                    :title,
+                    :description_rich_text,
+                    :max_candidates,
+                    :employer_website,
+                    :employer_name,
+                    :employer_description_rich_text,
+                    :is_public,
+                    :published_at,
+
+                    :street,
+                    :zipcode,
+                    :city,
+                    :department,
+                    :region,
+                    :academy,
+
+                    :sector_id,
+                    :group_id,
+
+                    :employer_id,
+
+                    :school_id,
+                    :school_type,
+                    :school_track,
+
+                    :tutor_id,
+
+                    coordinates: {},
+                    week_ids: [],
+                    new_daily_hours: {},
+                    weekly_hours:[],
+
+                    tutor_attributes: [
+                      :first_name,
+                      :last_name,
+                      :phone,
+                      :email
+                    ])
     end
   end
 end

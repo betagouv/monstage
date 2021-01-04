@@ -28,6 +28,5 @@ class ManageTutorsTest < ApplicationSystemTestCase
       end
     end
     assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'User', InternshipOffer.first.employer_type
   end
 end

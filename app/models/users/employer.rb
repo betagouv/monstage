@@ -2,7 +2,7 @@
 
 module Users
   class Employer < User
-    has_many :internship_offers, as: :employer,
+    has_many :internship_offers, foreign_key: :employer_id,
                                  dependent: :destroy
 
     has_many :kept_internship_offers, -> { merge(InternshipOffer.kept) },
@@ -12,7 +12,7 @@ module Users
     has_many :internship_applications, through: :kept_internship_offers
 
     has_many :organisations
-    has_many :tutors
+
     has_many :internship_offer_infos
 
     def custom_dashboard_path

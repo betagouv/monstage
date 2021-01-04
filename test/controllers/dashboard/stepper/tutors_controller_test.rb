@@ -140,9 +140,6 @@ module Dashboard::Stepper
       assert_equal(employer.id,
                    created_internship_offer.employer_id,
                    'expected default of connected user.id on employer_id')
-      assert_equal('User',
-                   created_internship_offer.employer_type,
-                   'expected default of "User" on employer_type')
       assert_equal("Académie de Paris",
                    created_internship_offer.academy,
                    'academy looked missed')
@@ -213,7 +210,7 @@ module Dashboard::Stepper
         end
       end
     end
-      
+
 
     test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
       employer = create(:employer)
@@ -223,7 +220,7 @@ module Dashboard::Stepper
       organisation = create(:organisation, employer: employer)
       mock_mail = MiniTest::Mock.new
       mock_mail.expect(:deliver_later, true)
-      
+
       TutorMailer.stub :new_tutor, mock_mail do
         assert_difference('InternshipOffer.count', 1) do
           post(

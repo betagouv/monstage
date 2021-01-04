@@ -5,7 +5,7 @@ module Users
     belongs_to :operator, foreign_key: :operator_id,
                           class_name: '::Operator'
 
-    has_many :internship_offers, as: :employer,
+    has_many :internship_offers, foreign_key: :employer_id,
                                  dependent: :destroy
 
     has_many :internship_applications, through: :internship_offers

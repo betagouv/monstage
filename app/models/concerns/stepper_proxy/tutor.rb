@@ -4,7 +4,7 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
-      # validates :tutor, presence: true, unless: :from_api?
+      validates :tutor, presence: true, unless: :from_api?
     end
   end
 end
