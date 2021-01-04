@@ -134,11 +134,12 @@ module Dashboard::InternshipOffers
       internship_offer_published = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished.update_column(:published_at, nil)
+      two_weeks_ago = 2.weeks.ago
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
+        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
+                           year: two_weeks_ago.year)
                     .first]
       )
       sign_in(employer)
@@ -160,13 +161,15 @@ module Dashboard::InternshipOffers
       internship_offer_published = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished.update_column(:published_at, nil)
+            two_weeks_ago = 2.weeks.ago
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
+        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
+                           year: two_weeks_ago.year)
                     .first]
       )
+
       sign_in(employer)
       get dashboard_internship_offers_path(filter: :unpublished)
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
@@ -185,13 +188,15 @@ module Dashboard::InternshipOffers
       internship_offer_published = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished.update_column(:published_at, nil)
+      two_weeks_ago = 2.weeks.ago
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
+        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
+                           year: two_weeks_ago.year)
                     .first]
       )
+
       sign_in(employer)
       get dashboard_internship_offers_path(filter: :past)
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
