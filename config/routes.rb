@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     resources :internship_agreements,   except: %i[index]
     resources :internship_applications, only: %i[index]
 
-    resources :schools, only: %i[index edit update] do
+    resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
       resources :internship_applications, only: %i[index], module: 'schools'
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do

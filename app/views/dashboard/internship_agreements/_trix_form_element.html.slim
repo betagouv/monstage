@@ -1,7 +1,7 @@
-.col-8
-  - edit_enable = can?("edit_#{field}".to_sym, form.object)
-  - class_label = class_label || ''
+- edit_enable = can?("edit_#{field}".to_sym, form.object)
+- class_label = class_label || ''
 
+.col-8
   .form-group [data-controller='rich-text-label'
                 data-rich-text-label-for-value="internship_agreement_#{field}"
                 data-rich-text-label-enable-value="#{edit_enable}"]
@@ -9,18 +9,22 @@
 
     - if defined?(text_label)
       = form.label field do
-        div class="#{class_label}"
+        span class="#{class_label}"
           = text_label
           = form.rg2a_required_content_tag
 
     - if edit_enable
       div id="#{field}" class="required-form-field"
-        = form.rich_text_area field, class: 'form-control editable-form-field', required: true, data: { 'action': 'input->internship-agreement-form#checkRequiredTrixField' }
+        = form.rich_text_area field,
+                              class: 'form-control editable-form-field',
+                              required: true,
+                              data: { 'action': 'input->internship-agreement-form#checkRequiredTrixField' }
     - else
       div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
-        = form.rich_text_area field, class: 'form-control editable-form-field'
+        = form.rich_text_area field,
+                              class: 'form-control editable-form-field'
 - if title.present? && content.present?
   .col-4
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title
-      .content = content
+      span = content.html_safe
