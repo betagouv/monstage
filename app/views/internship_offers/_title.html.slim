@@ -1,6 +1,7 @@
-.row.align-items-center.no-gutters
-  .col-12
-    = react_component("FilterInternshipOffer")
+- unless current_user.is_a?(Users::Student)
+  .row.align-items-center.no-gutters
+    .col-12
+        = react_component("FilterInternshipOffer")
 .row.align-items-center.no-gutters.pt-4
   .col-12.col-md-4.order-3.order-md-1.mb-3.mb-sm-3.text-center.text-sm-left
     p.h2.mb-0#internship-offers-count

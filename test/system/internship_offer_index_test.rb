@@ -139,15 +139,14 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     bac_pro_internship_offer = create(:bac_pro_internship_offer)
     sign_in(student)
-
     visit internship_offers_path
 
-    assert_selector '#label[for="search-by-troisieme-generale"]', count: 0
-    assert_selector '#label[for="search-by-troisieme-segpa"]', count: 0
-    assert_selector '#label[for="search-by-troisieme-prepa-metier"]', count: 0
-    assert_selector '#label[for="search-by-troisieme-bac-pro"]', count: 0
+    assert page.has_no_content? "Filtrer par"
+    assert page.has_no_content? "3e générale"
+    assert page.has_no_content? "3e SEGPA"
+    assert page.has_no_content? "Bac Pro"
 
-    
+    assert page.has_content? "3e prépa métier", count: 1
     assert_presence_of(internship_offer: troisieme_prepa_metier_internship_offer)
 
     assert_absence_of(internship_offer: troisieme_generale_internship_offer)
