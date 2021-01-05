@@ -137,9 +137,7 @@ module Dashboard::InternshipOffers
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
-                    .first]
+        weeks: [Week.find_by(number: Date.today.weeks_ago(2).cweek, year: Date.today.weeks_ago(2).year)]
       )
       sign_in(employer)
 
@@ -163,9 +161,7 @@ module Dashboard::InternshipOffers
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
-                    .first]
+        weeks: [Week.find_by(number: Date.today.weeks_ago(2).cweek, year: Date.today.weeks_ago(2).year)]
       )
       sign_in(employer)
       get dashboard_internship_offers_path(filter: :unpublished)
@@ -188,9 +184,7 @@ module Dashboard::InternshipOffers
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: Date.today.cweek - 2,
-                           year: Date.today.year)
-                    .first]
+        weeks: [Week.find_by(number: Date.today.weeks_ago(2).cweek, year: Date.today.weeks_ago(2).year)]
       )
       sign_in(employer)
       get dashboard_internship_offers_path(filter: :past)

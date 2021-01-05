@@ -3,16 +3,18 @@
   = form.rg2a_required_content_tag if required
 .row
   .col-12
-    .toggle-radio
+    .toggle-radio data-controller="radio-button--large-binary-model--component"
       - (0..1).to_a.each do |index|
-        = radio_button form_object,
-                       radio_field,
-                       index.even?,
-                       checked: index.even? ? checked? : !checked?,
-                       required: required,
-                       disabled: disabled,
-                       data: { action: handle_click }
-
+        - args = [
+          form_object,
+          radio_field,
+          index.even?,
+          checked: index.even? ? checked? : !checked?,
+          required: required,
+          disabled: disabled
+        ]
+        - args[3].merge!({data: { action: handle_click }}) unless handle_click.blank?
+        = radio_button *args
         - if secondary_labels[index].blank?
           = form.label radio_label(index), main_labels[index]
         - else

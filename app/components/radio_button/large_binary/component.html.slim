@@ -5,16 +5,12 @@
   .col-12
     .toggle-radio
       - (0..1).to_a.each do |index|
-        = radio_button_tag radio_field,
-                           index.even?,
-                           checked?(index),
-                           required: required,
-                           disabled: disabled,
-                           data: { action: handle_click }
-
+        - args = [radio_field, index.even?, checked?(index), {required: required, disabled: disabled}]
+        - args[3].merge!({data: { action: handle_click }}) unless handle_click.blank?
+        = radio_button_tag *args
         - if secondary_labels[index].blank?
           = form.label symbolic_label_tag(index),
-                       main_labels[index]
+                      main_labels[index]
         - else
           = label_tag symbolic_label_tag(index),
                       class: 'd-flex flex-column' do
