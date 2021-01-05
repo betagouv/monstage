@@ -3,7 +3,6 @@
 module RadioButton
   module LargeBinaryModel
     class Component < RadioButton::Common
-
       def form_object
         form.object.class.name.split('s::').first.underscore.to_sym
       end
