@@ -183,7 +183,7 @@ GEM
     mime-types-data (3.2020.1104)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.0)
     minitest (5.14.2)
     minitest-reporters (1.4.2)
       ansi
@@ -198,8 +198,9 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (6.13.1)
     nio4r (2.5.4)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.0)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     oga (2.15)
       ast
       ruby-ll (~> 2.1)
@@ -222,6 +223,7 @@ GEM
     public_suffix (4.0.6)
     puma (5.0.4)
       nio4r (~> 2.0)
+    racc (1.5.2)
     rack (2.2.3)
     rack-pjax (1.1.0)
       nokogiri (~> 1.5)

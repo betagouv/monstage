@@ -13,7 +13,7 @@ module Builders
       )
       internship_agreement.internship_application = internship_application
       internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_LEGAL_TERMS}</div>"
-      internship_agreement.financial_conditions_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
+      internship_agreement.financial_conditions_rich_text.body = internship_application.student.school.agreement_conditions_rich_text.body || "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
       internship_agreement
     end
 
@@ -77,7 +77,7 @@ module Builders
 
     def preprocess_student_to_params(student)
       {
-        student_school: student.school,
+        student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
         school_representative_full_name: student.school.school_manager.name,
         student_full_name: student.name,
         student_class_room: student.class_room.try(:name),

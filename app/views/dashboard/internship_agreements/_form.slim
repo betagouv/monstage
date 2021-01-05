@@ -12,16 +12,8 @@
       i.fa.fa-eye-slash
 
 fieldset
+  legend.h4.w-75 Convention relative à l’organisation de séquence d’observation en milieu professionnel
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
-
-  .row.mt-3
-    .col-8
-      h2.h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
-    .col-4
-      .tool-note
-        .title Note à tous :
-        .content
-          | Convention de stage
 
   .row.mt-3
     .col-8
@@ -131,7 +123,7 @@ fieldset
     .col-4
       div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
         .title = "Note destinée à l'entreprise"
-        .content = "Horaires de l'élèves"
+        span = "Horaires de l'élèves"
 
   .row.mt-3
     - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
@@ -165,12 +157,12 @@ fieldset
 
   .row.mt-3
     .col-12
-      h3.h6 B - Annexe financière
+      h3.h6 B - Annexe complémentaire
   .row.mt-3
     - label = "Conditions liés au financement du stage de " \
               "l'élève par l'établissement"
     - title = "Note destinée au chef d'établissement :"
-    - content = "Toutes les modalités pratiques du stage."
+    - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :financial_conditions_rich_text, form: form, text_label: label, title: title, content: content }
 
