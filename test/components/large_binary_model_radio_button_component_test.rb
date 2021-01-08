@@ -8,13 +8,7 @@ class LargeBinaryModelRadioButtonComponentTest < ViewComponent::TestCase
     form = Minitest::Mock.new
     form.expect(:rg2a_required_content_tag, 'test_form_tag')
 
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-
+    6.times { |_| form.expect :object, new_internship_offer }
     radio_hash = {
       form: form,
       group_label: 'Type de stage',
@@ -38,12 +32,7 @@ class LargeBinaryModelRadioButtonComponentTest < ViewComponent::TestCase
     form = Minitest::Mock.new
     form.expect(:rg2a_required_content_tag, 'test_form_tag')
 
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
-    form.expect :object, new_internship_offer
+    6.times { |_| form.expect :object, new_internship_offer }
     form.expect :label, 'rtest', [Symbol, String]
     form.expect :label, 'rtest', [Symbol, String]
 

@@ -28,8 +28,7 @@ class LargeBinaryRadioButtonComponentTest < ViewComponent::TestCase
   test 'component_renders_a_single_line_radio_button' do
     form = Minitest::Mock.new
     form.expect(:rg2a_required_content_tag, 'test_form_tag')
-    form.expect :label, 'rtest', [Symbol, String]
-    form.expect :label, 'rtest', [Symbol, String]
+    2.times { |_| form.expect :label, 'rtest', [Symbol, String] }
 
     radio_hash = {
       form: form,
