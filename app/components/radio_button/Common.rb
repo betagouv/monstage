@@ -34,6 +34,10 @@ module RadioButton
       extract_labels
     end
 
+    def symbolic_radio_label(index)
+      "#{radio_field}_#{index.even?}".to_sym
+    end
+
     def extract_labels
       @labels.each do |label|
         composition = label.split(LABEL_SEPARATOR)
@@ -41,10 +45,6 @@ module RadioButton
         sec_label = composition.count > 1 ? composition.second.strip : ''
         @secondary_labels << sec_label
       end
-    end
-
-    def symbolic_label_tag(index)
-      "#{radio_field}_#{index.even?}".to_sym
     end
   end
 end
