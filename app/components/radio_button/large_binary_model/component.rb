@@ -3,7 +3,7 @@
 module RadioButton
   module LargeBinaryModel
     class Component < RadioButton::Common
-      def form_object
+      def form_object_sym
         form.object.class.name.split('s::').first.underscore.to_sym
       end
 
@@ -12,7 +12,7 @@ module RadioButton
       end
 
       def symbolic_label_tag(index)
-        "#{form_object}_#{radio_field}_#{index.even?}".to_sym
+        "#{form_object_sym}_#{radio_field}_#{index.even?}".to_sym
       end
 
       def radio_label(index)
