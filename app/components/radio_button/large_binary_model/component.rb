@@ -14,10 +14,6 @@ module RadioButton
       def symbolic_label_tag(index)
         "#{form_object_sym}_#{radio_field}_#{index.even?}".to_sym
       end
-
-      def radio_label(index)
-        "#{radio_field}_#{index.even?}".to_sym
-      end
     end
   end
 end

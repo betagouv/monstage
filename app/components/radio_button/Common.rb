@@ -42,5 +42,9 @@ module RadioButton
         @secondary_labels << sec_label
       end
     end
+
+    def symbolic_label_tag(index)
+      "#{radio_field}_#{index.even?}".to_sym
+    end
   end
 end

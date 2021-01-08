@@ -19,10 +19,6 @@ module RadioButton
       def checked?(index)
         index.even? ? checked : !checked
       end
-
-      def symbolic_label_tag(index)
-        "#{radio_field}_#{index.even?}".to_sym
-      end
     end
   end
 end

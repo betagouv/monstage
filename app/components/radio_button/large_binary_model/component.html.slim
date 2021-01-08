@@ -9,7 +9,7 @@
         - args[3].merge!({data: { action: handle_click }}) unless handle_click.blank?
         = radio_button *args
         - if secondary_labels[index].blank?
-          = form.label radio_label(index), main_labels[index]
+          = form.label symbolic_label_tag(index), main_labels[index]
         - else
           = label_tag symbolic_label_tag(index),
                       class: 'd-flex flex-column' do
