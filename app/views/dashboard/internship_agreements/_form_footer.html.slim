@@ -25,6 +25,9 @@
       = form.button :submit, class: 'btn btn-primary' do
         i.fas.fa-pen
         |&nbsp;Signer la convention
+      = form.button :submit, class: 'btn' do
+        i.fas.fa-print
+        |&nbsp;Imprimer la convention
 
-    .col-sm-7.col-xs-12.d-flex.justify-content-center.flex-column.text-right.pr-3.mt-2
+    .col-sm-7.col-xs-12.d-flex.justify-content-start.flex-column.text-right.pr-3.mt-3
       = link_to 'Enregistrer et quitter', '#', class: 'h6'
