@@ -65,12 +65,11 @@
     }
 
     label{
-      padding: .5rem 2rem;
-
+      padding: .5rem 1rem;
     }
 
     .custom-radio-box-control-input{
-      position: absolute;
+      position: fixed;
       visibility: hidden;
     }
     .custom-radio-box-control-input:checked + label{
