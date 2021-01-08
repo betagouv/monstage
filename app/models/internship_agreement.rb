@@ -60,7 +60,7 @@ class InternshipAgreement < ApplicationRecord
     <div><strong>Article 1</strong> - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
     <div><strong>Article 2</strong> - Les objectifs et les modalités de la séquence d’observation sont consignés dans l’annexe pédagogique.
-    Les modalités de prise en charge des frais afférents à cette séquence ainsi que les modalités d’assurances sont définies dans l’annexe financière.
+    Les modalités de prise en charge des frais afférents à cette séquence ainsi que les modalités d’assurances sont définies dans l’annexe complémentaire.
     </div>
     <div><strong>Article 3</strong> - L’organisation de la séquence d’observation est déterminée d’un commun accord entre le chef d’entreprise ou le responsable de l’organisme d’accueil et le chef d’établissement.
     </div>

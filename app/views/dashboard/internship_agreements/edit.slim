@@ -1,3 +1,4 @@
+- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
 = render partial: 'dashboard/internship_agreements/form_header',
          locals: { internship_application: @internship_agreement.internship_application }
 
