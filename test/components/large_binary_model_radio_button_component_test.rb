@@ -1,7 +1,7 @@
 require "test_helper"
 require "view_component/test_case"
 
-class LargeModelBinaryRadioButtonComponentTest < ViewComponent::TestCase
+class LargeBinaryModelRadioButtonComponentTest < ViewComponent::TestCase
 
   test 'component renders a multiline radio button with default values' do
     new_internship_offer = InternshipOffers::WeeklyFramed.new()
@@ -38,6 +38,8 @@ class LargeModelBinaryRadioButtonComponentTest < ViewComponent::TestCase
     form = Minitest::Mock.new
     form.expect(:rg2a_required_content_tag, 'test_form_tag')
 
+    form.expect :object, new_internship_offer
+    form.expect :object, new_internship_offer
     form.expect :object, new_internship_offer
     form.expect :object, new_internship_offer
     form.expect :object, new_internship_offer
