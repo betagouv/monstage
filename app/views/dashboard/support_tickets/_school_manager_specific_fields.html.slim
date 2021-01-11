@@ -4,9 +4,9 @@
   br
 = f.select :class_rooms_quantity,
            options_for_select((1..10).to_a.map { |a| ["#{a} #{'classe'.pluralize(a)}", a] }),
-           { prompt: 'Nombre de classes' , class: "form-control col-12 mb-3" }
+           { prompt: 'Nombre de classes' } , class: "form-control col-12 mb-3"
 p.mb-2
   = f.text_field :students_quantity,
-                  {prompt: 'Nombre d\'élèves',
+                  {prompt: 'Nombre d\'élèves'},
                   class: "form-control col-12",
-                  'aria-label': 'Nombre d\'élèves'}
+                  'aria-label': 'Nombre d\'élèves'
