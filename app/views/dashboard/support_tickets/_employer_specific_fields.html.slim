@@ -8,9 +8,10 @@
           class: "form-control col-12"
 p.my-2
   = f.select :business_lines_quantity,
-            options_for_select((1..8).to_a.map { |a| ["#{a} #{'métier'.pluralize(a)}", a] }),
-              { prompt: 'Nombre de métiers abordés' },
-            class: "form-control col-12"
+             options_for_select((1..8).to_a.map { |a| ["#{a} #{'métier'.pluralize(a)}", a] }),
+             { prompt: 'Nombre de métiers abordés' },
+             class: "form-control col-12",
+             'aria-label': "Métiers abordés"
 p.mt-3
   .form-group.mx-2
     = f.check_box :paqte, class: 'pt-1'
