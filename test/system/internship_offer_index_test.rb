@@ -142,7 +142,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     visit internship_offers_path
 
     assert page.has_no_content? "Filtrer par"
-    assert page.has_no_content? "3e générale"
+    assert page.has_no_selector?('span.troisieme_generale')
     assert page.has_no_content? "3e SEGPA"
     assert page.has_no_content? "Bac Pro"
 

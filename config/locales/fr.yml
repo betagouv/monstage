@@ -381,8 +381,7 @@ fr:
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3e générale'
-      troisieme_prepa_metier: '3e prépa métier'
+      troisieme_generale: '3e'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
   date:
