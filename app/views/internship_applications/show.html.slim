@@ -1,4 +1,4 @@
-wh1.h2.mb-3 Je postule
+h1.h2.mb-3 Je postule
 
 .row.bg-dark-light.bt-1.bc-light
   .col-12
@@ -24,4 +24,7 @@ wh1.h2.mb-3 Je postule
 .actions.d-flex.d-sm-block.d-xs-stick
   = link_to "Modifier", internship_offer_path(@internship_offer), class: 'btn btn-outline-primary'
   span.mx-1
-  = link_to "Envoyer", internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"), method: :patch, class: 'btn btn-danger'
+  = link_to "Envoyer",
+            internship_offer_internship_application_path(@internship_application.internship_offer, @internship_application, transition: "submit!"),
+            method: :patch,
+            class: 'btn btn-danger'
