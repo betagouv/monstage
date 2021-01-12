@@ -58,15 +58,15 @@ function FilterInternshipOffer() {
         <input
           type="radio"
           name="school_track"
-          checked={schoolTrack === 'troisieme_prepa_metier'}
-          value="troisieme_prepa_metier"
+          checked={schoolTrack === 'troisieme_prepa_metiers'}
+          value="troisieme_prepa_metiers"
           onClick={(event) => clearRadioOnDoubleClick(event)}
           onChange={(event) => filterOffers(event)}
           className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-prepa-metier"
+          id="search-by-troisieme-prepa-metiers"
         />
-        <label className="label mb-0" htmlFor="search-by-troisieme-prepa-metier">
-          3e prépa métier
+        <label className="label mb-0" htmlFor="search-by-troisieme-prepa-metiers">
+          3e prépa métiers
         </label>
       </div>
       <div className="custom-radio-box-control  custom-radio-box-control-append">

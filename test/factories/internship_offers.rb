@@ -53,10 +53,10 @@ FactoryBot.define do
       description { 'Lorem ipsum dolor troisieme_segpa_internship_offer' }
     end
 
-    trait :troisieme_prepa_metier_internship_offer do
+    trait :troisieme_prepa_metiers_internship_offer do
       employer { create(:employer ) }
-      school_track { :troisieme_prepa_metier }
-      description { 'Lorem ipsum dolor troisieme_prepa_metier_internship_offer' }
+      school_track { :troisieme_prepa_metiers }
+      description { 'Lorem ipsum dolor troisieme_prepa_metiers_internship_offer' }
     end
 
     trait :bac_pro_internship_offer do
@@ -87,9 +87,9 @@ FactoryBot.define do
     factory :troisieme_segpa_internship_offer, traits: [:troisieme_segpa_internship_offer],
                                                class: 'InternshipOffers::FreeDate',
                                                parent: :internship_offer
-    factory :troisieme_prepa_metier_internship_offer, traits: [:troisieme_prepa_metier_internship_offer],
-                                                      class: 'InternshipOffers::FreeDate',
-                                                      parent: :internship_offer
+    factory :troisieme_prepa_metiers_internship_offer, traits: [:troisieme_prepa_metiers_internship_offer],
+                                                       class: 'InternshipOffers::FreeDate',
+                                                       parent: :internship_offer
     factory :bac_pro_internship_offer, traits: [:bac_pro_internship_offer],
                                        class: 'InternshipOffers::FreeDate',
                                        parent: :internship_offer

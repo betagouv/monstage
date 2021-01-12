@@ -220,10 +220,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                            .count
   end
 
-  test 'student in troisieme_prepa_metier can draft, submit, and cancel(by_student) internship_applications' do
+  test 'student in troisieme_prepa_metiers can draft, submit, and cancel(by_student) internship_applications' do
     school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_prepa_metier, school: school))
-    internship_offer = create(:troisieme_prepa_metier_internship_offer)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_prepa_metiers, school: school))
+    internship_offer = create(:troisieme_prepa_metiers_internship_offer)
     sign_in(student)
     visit internship_offer_path(internship_offer)
 

@@ -129,12 +129,12 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
        'offers are linked to student\'s class_room\'s school track' do
     school = create(:school)
     class_room = ClassRoom.create(
-      name: '3e B – troisieme_prepa_metier',
-      school_track: :troisieme_prepa_metier,
+      name: '3e B – troisieme_prepa_metiers',
+      school_track: :troisieme_prepa_metiers,
       school: school
     )
     student = create(:student, school: school, class_room: class_room)
-    troisieme_prepa_metier_internship_offer = create(:troisieme_prepa_metier_internship_offer)
+    troisieme_prepa_metiers_internship_offer = create(:troisieme_prepa_metiers_internship_offer)
     troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     bac_pro_internship_offer = create(:bac_pro_internship_offer)
@@ -142,12 +142,13 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     visit internship_offers_path
 
     assert page.has_no_content? "Filtrer par"
+    find('span.troisieme_prepa_metiers', text: '3e prépa métiers')
     assert page.has_no_selector?('span.troisieme_generale')
     assert page.has_no_content? "3e SEGPA"
     assert page.has_no_content? "Bac Pro"
 
     assert page.has_content? "3e prépa métier", count: 1
-    assert_presence_of(internship_offer: troisieme_prepa_metier_internship_offer)
+    assert_presence_of(internship_offer: troisieme_prepa_metiers_internship_offer)
 
     assert_absence_of(internship_offer: troisieme_generale_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
