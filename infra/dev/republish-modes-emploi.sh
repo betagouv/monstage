@@ -17,26 +17,26 @@ gs -sDEVICE=pdfwrite \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/MS3_Guide-d-utilisation-global-2020-compressed.pdf "modes-emplois/MS3_Guide-d'utilisation-global-2020.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf "modes-emplois/MS3_Guide-d'utilisation-global-2020.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-eleves-compressed.pdf "modes-emplois/MS3_Mode-d'emploi-eleves.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-eleves.pdf "modes-emplois/MS3_Mode-d'emploi-eleves.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-entreprises-compressed.pdf "modes-emplois/MS3_Mode-d'emploi-entreprises.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-entreprises.pdf "modes-emplois/MS3_Mode-d'emploi-entreprises.pdf"
 
 gs -sDEVICE=pdfwrite \
    -dCompatibilityLevel=1.4 \
    -dPDFSETTINGS=/ebook \
    -dNOPAUSE \
    -dBATCH \
-   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique-compressed.pdf "modes-emplois/MS3_Mode-d'emploi-membres-pedagogique.pdf"
+   -sOutputFile=public/modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.pdf "modes-emplois/MS3_Mode-d'emploi-membres-pedagogique.pdf"
 
