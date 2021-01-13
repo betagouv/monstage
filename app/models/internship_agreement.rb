@@ -128,14 +128,21 @@ class InternshipAgreement < ApplicationRecord
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
     errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
-    errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées") if activity_learnings_rich_text.blank?
+    if !troisieme_generale? && activity_learnings_rich_text.blank?
+      errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
+    end
   end
 
   def valid_trix_school_manager_fields
-    errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage") if activity_rating_rich_text.blank?
+    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
+    if !troisieme_generale? && activity_rating_rich_text.blank?
+      errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
+    end
   end
 
   def valid_trix_main_teacher_fields
-    errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation") if activity_preparation_rich_text.blank?
+    if !troisieme_generale? && activity_preparation_rich_text.blank?
+      errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation")
+    end
   end
 end

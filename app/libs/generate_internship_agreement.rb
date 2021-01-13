@@ -71,29 +71,47 @@ class GenerateInternshipAgreement < Prawn::Document
 
   def form
     label_form "Nom de l’élève :"
-    field_form @internship_agreement.student_full_name 
+    field_form @internship_agreement.student_full_name
+
     label_form "Classe :"
-    field_form @internship_agreement.student_class_room 
+    field_form @internship_agreement.student_class_room
+
     label_form "Etablissemenet d'origine :"
-    field_form @internship_agreement.student_school 
+    field_form @internship_agreement.student_school
+
     label_form "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur :"
-    field_form @internship_agreement.tutor_full_name 
+    field_form @internship_agreement.tutor_full_name
+
     label_form "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel : "
-    field_form @internship_agreement.main_teacher_full_name 
+    field_form @internship_agreement.main_teacher_full_name
+
     label_form "Dates de la séquence d’observation en milieu professionnel :"
-    field_form @internship_agreement.date_range 
-    label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
-    field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
-    label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
-    field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true 
+    field_form @internship_agreement.date_range
+
+    unless @internship_agreement.troisieme_generale?
+      label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
+      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    end
+
+    unless @internship_agreement.troisieme_generale?
+      label_form "Modalités de la concertation qui sera assurée pour organiser la préparation, contrôler le déroulement de la période en vue d’une véritable complémentarité des enseignements reçus :"
+      field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
+    end
+
     label_form "HORAIRES journaliers de l’élève :"
-    field_form @internship_agreement.internship_application.internship_offer.weekly_hours.join('-') 
+    field_form @internship_agreement.internship_application.internship_offer.weekly_hours.join('-')
+
     label_form "Activités prévues :"
     field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true
-    label_form "Compétences visées :"
-    field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+
+    unless @internship_agreement.troisieme_generale?
+      label_form "Compétences visées :"
+      field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
+    end
+
     label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
     field_form @internship_agreement.activity_rating_rich_text.body.html_safe, html: true
+
     @pdf.move_down 20
   end
 
