@@ -105,7 +105,7 @@ foreman start -f Procfile.dev
 
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
-- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase) (modifié)
+- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
 
 ## test
 
