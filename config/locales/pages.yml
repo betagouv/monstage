@@ -61,6 +61,11 @@ fr:
     internship_applications:
       index:
         page_title: "Conventions à signer"
+    internship_agreements:
+      new:
+        page_title: 'Nouvelle convention de stage'
+      edit:
+        page_title: "Edition de la convention de stage pour %{name}"
   internship_applications:
     show:
       page_title: "Ma candidature"

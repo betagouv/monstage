@@ -7,7 +7,7 @@ class ManageOrganisationsTest < ApplicationSystemTestCase
   include OrganisationFormFiller
 
   test 'can create Organisation' do
-    2.times { create(:school)}
+    2.times { create(:school) }
     employer = create(:employer)
     group = create(:group, name: 'hello', is_public: true)
     sign_in(employer)

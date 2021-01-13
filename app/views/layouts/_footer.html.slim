@@ -25,8 +25,8 @@
           li.nav-item= link_to "Nous contacter", contact_path, class: 'nav-link px-0 py-1', title: "Contacter le support de la plateforme monstagedetroisieme.fr"
 
           li.nav-item
-            = link_to "#{root_url}/documents_utiles/Manuel-Utilisation-Plateforme.pdf", title: "Accéder au guide d'utilisation", class: 'nav-link px-0 py-1' do
-               = "Guide d'utilisation (PDF – 109KB)"
+            = link_to "#{root_url}/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf", title: "Accéder au guide d'utilisation", class: 'nav-link px-0 py-1' do
+               = "Guide d'utilisation (PDF – 2.7MB)"
 
 .row.footer-content.d-print-none
   .col-12
@@ -36,9 +36,9 @@
 
 
 .row.d-print-none
-  .col-12 data-target="footer.placeholder" data-action="resize@window->footer#resize"
+  .col-12 data-footer-target="placeholder" data-action="resize@window->footer#resize"
 
-.bg-light-blue.d-none.fixed-footer.d-print-none data-target="footer.fixedContent"
+.bg-light-blue.d-none.fixed-footer.d-print-none data-footer-target="fixedContent"
   - if show_restricted_to_anct?
     .container
 

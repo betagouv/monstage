@@ -4,24 +4,16 @@
   .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
   .col-4
   .col-4.text-center
-    = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", target: 'internship-agreement-form.displayButton', turbolinks: "false" } do
+    = link_to '#', class:'d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
       | Afficher les notes
       i.fa.fa-eye
-    = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  target: 'internship-agreement-form.hideButton', turbolinks: "false" } do
+    = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  :"internship-agreement-form-target" => 'hideButton', turbolinks: "false" } do
       | Masquer les notes
       i.fa.fa-eye-slash
 
 fieldset
+  legend.h4.w-75 Convention relative à l’organisation de séquence d’observation en milieu professionnel
   = form.hidden_field :internship_application_id, value: resource.internship_application_id
-
-  .row.mt-3
-    .col-8
-      h2.h4 Convention relative à l’organisation de séquence d’observation en milieu professionnel
-    .col-4
-      .tool-note
-        .title Note à tous :
-        .content
-          | Convention de stage
 
   .row.mt-3
     .col-8
@@ -131,7 +123,7 @@ fieldset
     .col-4
       div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
         .title = "Note destinée à l'entreprise"
-        .content = "Horaires de l'élèves"
+        span = "Horaires de l'élèves"
 
   .row.mt-3
     - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
@@ -139,20 +131,22 @@ fieldset
     - content = "Objectifs du stage"
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content}
-  .row.mt-3
-    - label = "Modalités de la concertation qui sera assurée pour organiser " \
-              "la préparation, contrôler le déroulement de la période en vue " \
-              "d’une véritable complémentarité des enseignements reçus"
-    - title = "Note destinée au professeur principal :"
-    - content = "Objet pédagogique"
-    = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
-  .row.mt-3
-    - label = "Compétences visées"
-    - title = "Note destinée à l'entreprise"
-    - ccontent = "Apprentissages en entreprise"
-    = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
+  - if school_track != 'troisieme_generale'
+    .row.mt-3
+      - label = "Modalités de la concertation qui sera assurée pour organiser " \
+                "la préparation, contrôler le déroulement de la période en vue " \
+                "d’une véritable complémentarité des enseignements reçus"
+      - title = "Note destinée au professeur principal :"
+      - content = "Objet pédagogique"
+      = render partial: 'dashboard/internship_agreements/trix_form_element',
+               locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
+
+    .row.mt-3
+      - label = "Compétences visées"
+      - title = "Note destinée à l'entreprise"
+      - ccontent = "Apprentissages en entreprise"
+      = render partial: 'dashboard/internship_agreements/trix_form_element',
+               locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
   .row.mt-3
     - label = "Modalités d’évaluation de la séquence d’observation " \
               "en milieu professionnel :"
@@ -163,12 +157,12 @@ fieldset
 
   .row.mt-3
     .col-12
-      h3.h6 B - Annexe financière
+      h3.h6 B - Annexe complémentaire
   .row.mt-3
     - label = "Conditions liés au financement du stage de " \
               "l'élève par l'établissement"
     - title = "Note destinée au chef d'établissement :"
-    - content = "Toutes les modalités pratiques du stage."
+    - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :financial_conditions_rich_text, form: form, text_label: label, title: title, content: content }
 

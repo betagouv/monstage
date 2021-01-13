@@ -14,6 +14,8 @@ class School < ApplicationRecord
   has_many :internship_offers, dependent: :nullify
   has_many :internship_applications, through: :students
 
+  has_rich_text :agreement_conditions_rich_text
+
   validates :city, :name, :code_uai, presence: true
 
   validates :zipcode, zipcode: { country_code: :fr }

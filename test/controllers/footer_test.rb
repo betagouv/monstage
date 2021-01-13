@@ -14,7 +14,7 @@ class FooterTest < ActionDispatch::IntegrationTest
     assert_select('a[href=?]', accessibilite_path)
     assert_select(
       'a[href=?]',
-      "#{root_url}/documents_utiles/Manuel-Utilisation-Plateforme.pdf"
+      "#{root_url}/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf"
     )
   end
 end
