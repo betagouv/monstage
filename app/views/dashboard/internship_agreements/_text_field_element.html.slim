@@ -18,6 +18,8 @@
                         class: 'form-control',
                         required: true,
                         disabled: true
+      = form.hidden_field field, class: 'form-control'
+
     - if hint.present?
       small.text-muted= hint
 

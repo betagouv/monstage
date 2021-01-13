@@ -334,16 +334,6 @@ def populate_applications
   end
 end
 
-def populate_aggreements
-  application = InternshipApplication.find_by(aasm_state: 'approved')
-  FactoryBot.create(
-    :internship_agreement,
-    internship_application: application,
-    employer_accept_terms: true
-  )
-end
-
-
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
 end
@@ -369,8 +359,7 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_internship_offers,
     :populate_students,
     :populate_school_weeks,
-    :populate_applications,
-    :populate_aggreements
+    :populate_applications
   ])
   School.update_all(updated_at: Time.now)
 end
