@@ -11,6 +11,8 @@
 #
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
+  include SchoolTrackable
+
   belongs_to :internship_application
 
   has_rich_text :activity_scope_rich_text

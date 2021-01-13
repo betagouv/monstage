@@ -7,7 +7,7 @@ module Dashboard::InternshipAgreements
     include Devise::Test::IntegrationHelpers
 
     def make_internship_agreement_params(internship_application)
-      internship_agreement = build(:internship_agreement, internship_application: internship_application)
+      internship_agreement = build(:troisieme_generale_internship_agreement, internship_application: internship_application)
 
       {
         'internship_application_id'             => internship_application.id,
@@ -18,6 +18,7 @@ module Dashboard::InternshipAgreements
         'main_teacher_full_name'                => internship_agreement.main_teacher_full_name,
         'organisation_representative_full_name' => internship_agreement.organisation_representative_full_name,
         'tutor_full_name'                       => internship_agreement.tutor_full_name,
+        'school_track'                          => internship_agreement.school_track,
         'date_range'                            => "du 10/10/2020 au 15/10/2020",
         'activity_scope_rich_text'              => '<div>Activité Scope</div>',
         'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
