@@ -79,7 +79,7 @@ Things you may want to cover:
 
 
 
-## dev
+## Dev
 
 **start project**
 
@@ -89,10 +89,23 @@ yarn install
 foreman start -f Procfile.dev
 ```
 
-### tooling: linting, etc...
+### Tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
 * mail should be opened automatically by letter opener
+
+### Etapes de travail jusqu'au merge dans master
+
+- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (mabranche) $ ```git commit``` # coder sa feature et commiter
+- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
+- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
+- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+
+Références:
+- https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
+- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
 
 ## test
 
