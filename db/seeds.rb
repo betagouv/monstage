@@ -54,8 +54,8 @@ def populate_class_rooms
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name ||= "user"
-  object.last_name ||= object.class.name
+  object.first_name ||= "Utilisateur"
+  object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object
@@ -82,10 +82,10 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :school_manager, email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :main_teacher, class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :main_teacher, class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :other, email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
   EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
 
@@ -131,7 +131,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Beta.gouv.fr',
     school_track: :troisieme_generale
   )
 
@@ -153,7 +153,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Octo Technology',
     school_track: :troisieme_generale
   )
   # Bac_pro
@@ -173,7 +173,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Agence Zero',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -193,7 +193,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'BFM',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -216,7 +216,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'SNCF',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -240,7 +240,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'RATP',
     school_track: :troisieme_prepa_metier
   )
   # 3eme segpa multi-line
@@ -264,7 +264,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Vinci',
     school_track: :troisieme_segpa
   )
 end
