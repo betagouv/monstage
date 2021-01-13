@@ -22,7 +22,6 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
   - [Modification d'une offre](#ref-modify-internship-offer)
   - [Suppression d'une offre](#ref-destroy-internship-offer)
 - [Premiers pas et exemples](#premiers-pas-et-exemples)
-- [Bonnes pratiques de développement](#bonnes-pratiques-de-développement)
 
 
 # Environnements
@@ -321,16 +320,3 @@ MONSTAGEDETROISIEME_TOKEN=foobarbaz
 ## Suppression d'une offre
 * exemple d'appel à l'api : ```./requests/internship_offers/destroy.sh```
 * exemple de reponse, cf: ./output/internship_offers/destroy/*
-
-# Bonnes pratiques de développement
-## Etapes de travail jusqu'au merge dans master
-
-- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
-- (mabranche) $ ```git commit``` # coder sa feature et commiter
-- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
-- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
-- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
-- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
-
-https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
-https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase) (modifié)
