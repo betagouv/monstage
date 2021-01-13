@@ -182,27 +182,7 @@ module Dashboard::InternshipAgreements
       end
     end
 
-    test 'POST #create as Main Teacher fail when trix fields missing' do
-      school           = create(:school, :with_school_manager)
-      class_room       = create(:class_room, school: school)
-      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
-      student          = create(:student, school: school, class_room: class_room)
-      internship_offer = create(:weekly_internship_offer)
-      internship_application = create(
-        :weekly_internship_application,
-        :approved,
-        internship_offer: internship_offer,
-        student: student
-      )
-      sign_in main_teacher
 
-      params = make_internship_agreement_params(internship_application).except('activity_preparation_rich_text')
-      assert_no_difference('InternshipAgreement.count') do
-        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
-      end
-      assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
-                    text: "Veuillez compléter les modalités de concertation"
-    end
 
     test 'POST #create as Main Teacher when student is from anonther class room' do
       school           = create(:school, :with_school_manager)
