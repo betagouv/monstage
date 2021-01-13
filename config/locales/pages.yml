@@ -66,6 +66,9 @@ fr:
         page_title: 'Nouvelle convention de stage'
       edit:
         page_title: "Edition de la convention de stage pour %{name}"
+    support_tickets:
+      new:
+        page_title: "Demande de stage à distance"
   internship_applications:
     show:
       page_title: "Ma candidature"
