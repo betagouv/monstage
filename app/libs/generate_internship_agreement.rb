@@ -39,14 +39,14 @@ class GenerateInternshipAgreement < Prawn::Document
   def intro
     @pdf.font_size 10
     @pdf.text "Vu le code du travail, et notamment son article L.211-1 ;"
-    @pdf.text "Vu le code de l’éducation, et notamment ses articles L.313-1, L.331-4, L.331-5, L.332-3, L. 335-2,"
-    @pdf.text "L.411-3, L. 421-7, L. 911-4 ;"
-    @pdf.text "Vu le code civil, et notamment son article 1384 ;"
+    @pdf.text "Vu le code de l’éducation, et notamment ses articles L.313-1, L.331-4, L.331-5, L.332-3, L. 335-2, L.411-3, L. 421-7, L. 911-4 ;"
+    @pdf.text "Vu le code civil, et notamment ses articles 1356, 1367 et 1384 ;"
+    @pdf.text "Vu le code des relations entre le public et l’administration, notamment ses articles L. 112-9 et L. 212-2 ;"
     @pdf.text "Vu le décret n° 2003-812 du 26 août 2003 relatif aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;"
     @pdf.text "Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;"
     @pdf.move_down 20
   end
-  
+
   def parties
     subtitle "ENTRE"
     @pdf.text "L’entreprise ou l’organisme d’accueil, #{@internship_agreement.internship_application.internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
@@ -55,17 +55,22 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement d’autre part,"
     @pdf.move_down 20
   end
-  
+
   def terms
     subtitle "il a été convenu ce qui suit :"
     subtitle "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
     html_formating @internship_agreement.terms_rich_text.body.to_s
     @pdf.move_down 20
   end
-  
+
   def part_two
     subtitle "TITRE II - DISPOSITIONS PARTICULIÈRES"
-    subtitle "A - Annexe pédagogique"
+    subtitle "A - Convention de preuve"
+    subtitle "Article 10 -"
+    subtitle "Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier."
+    subtitle "Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée."
+    @pdf.move_down 10
+    subtitle "B - Annexe pédagogique"
     @pdf.move_down 10
   end
 

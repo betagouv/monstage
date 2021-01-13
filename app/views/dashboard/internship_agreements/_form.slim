@@ -17,20 +17,19 @@ fieldset
   = form.hidden_field :school_track, value: resource.school_track
 
   .row.mt-3
-    .col-8
+    .col-12
       p
         | Vu le code du travail, et notamment son article L.211-1 ;
         br
         | Vu le code de l’éducation, et notamment ses articles L.313-1, L.331-4, L.331-5, L.332-3, L. 335-2, L.411-3, L. 421-7, L. 911-4 ;
         br
-        | Vu le code civil, et notamment son article 1384 ;
+        | Vu le code civil, et notamment ses articles 1356, 1367 et 1384 ;
+        br
+        | Vu le code des relations entre le public et l’administration, notamment ses articles L. 112-9 et L. 212-2 ;
         br
         | Vu le décret n° 2003-812 du 26 août 2003 relatif aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
         br
         | Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
-
-    .col-4
-      = render 'school_management_toolnote', resource: resource, content: "Issue de la convention type du Ministère de l'Education Nationale", active: current_user.school_manager?
 
   .row.mt-3
     .col-8
@@ -72,8 +71,18 @@ fieldset
   .row.mt-3
     .col-12
       h2.h4 TITRE II - DISPOSITIONS PARTICULIÈRES
+  .row.mt-3
     .col-12
-      h3.h5 A - Annexe pédagogique
+      h3.h5 A - Convention de preuve
+    .col-12
+      h4.h6 Article 10 -
+      ul
+        li Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier.
+        li  Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée.
+
+  .row.mt-3
+    .col-12
+      h3.h5 B - Annexe pédagogique
   .row.mt-3
     - label = "Nom de l’élève ou des élèves concerné(s) :"
     - title = "Note destinée au chef d'établissement :"

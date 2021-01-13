@@ -58,6 +58,7 @@ class InternshipAgreement < ApplicationRecord
 
   validate :at_least_one_validated_terms
 
+
   CONVENTION_LEGAL_TERMS = %Q(
     <div><strong>Article 1</strong> - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
     </div>
