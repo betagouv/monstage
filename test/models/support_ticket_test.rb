@@ -7,9 +7,9 @@ class SupportTicketTest < ActiveSupport::TestCase
                                                students_quantity: 'string',
                                                week_ids: [])
     refute ticket.valid?
-    assert ticket.errors.keys.include?(:week_ids)
-    assert ticket.errors.keys.include?(:class_rooms_quantity)
-    assert ticket.errors.keys.include?(:students_quantity)
+    assert ticket.errors.include?(:week_ids)
+    assert ticket.errors.include?(:class_rooms_quantity)
+    assert ticket.errors.include?(:students_quantity)
   end
 
   test 'Employer validates its custom params' do
@@ -18,8 +18,8 @@ class SupportTicketTest < ActiveSupport::TestCase
                                           business_lines_quantity: 'string',
                                           week_ids: [])
     refute ticket.valid?
-    assert ticket.errors.keys.include?(:week_ids)
-    assert ticket.errors.keys.include?(:speechers_quantity)
-    assert ticket.errors.keys.include?(:business_lines_quantity)
+    assert ticket.errors.include?(:week_ids)
+    assert ticket.errors.include?(:speechers_quantity)
+    assert ticket.errors.include?(:business_lines_quantity)
   end
 end
