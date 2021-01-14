@@ -43,7 +43,7 @@ module Users
     end
 
     def switch_back
-      cookie_name = Credentials.enc(:cookie_switch_back, prefix_env: false)
+      cookie_name = Rails.application.credentials.dig(:cookie_switch_back)
       switch_back = cookies.signed[cookie_name]
 
       return if switch_back.nil?
