@@ -9,5 +9,6 @@ module Api
     include Api::ResponseRenderer
     include Api::ErrorHandler
     include Instrumentation::Sentry
+    include Api::DidYouMeanFormatter
   end
 end

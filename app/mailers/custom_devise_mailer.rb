@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class CustomDeviseMailer < Devise::Mailer
-  default from: proc { ApplicationMailer.formatted_email }
+  require_relative '../libs/email_utils'
+  default from: proc { EmailUtils.formatted_email }
 
   include Layoutable
   include Devise::Controllers::UrlHelpers

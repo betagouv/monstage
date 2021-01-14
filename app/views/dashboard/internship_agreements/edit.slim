@@ -7,7 +7,9 @@
   .col-12
     h1.h2.mb-3 Signer la convention de stage
 
-    = form_for @internship_agreement, url: dashboard_internship_agreement_path(@internship_agreement) do |form|
+    = form_with model: @internship_agreement,
+                url: edit_dashboard_internship_agreement_path(@internship_agreement),
+                local: true do |form|
       = render "form",
                 form: form,
                 resource: @internship_agreement,

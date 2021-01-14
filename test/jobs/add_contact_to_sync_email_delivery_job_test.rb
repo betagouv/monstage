@@ -6,7 +6,7 @@ class AddContactToSyncEmailDeliveryJobTest < ActiveJob::TestCase
   test 'without existing user' do
     user = create(:employer)
     api = Services::SyncEmailDelivery.new
-    auth = ActionController::HttpAuthentication::Basic.encode_credentials(Credentials.enc(:mailjet, :apikey_public, prefix_env: false), Credentials.enc(:mailjet, :apikey_private, prefix_env: false))
+    auth = ActionController::HttpAuthentication::Basic.encode_credentials(Rails.application.credentials.dig(:mailjet, :apikey_public), Rails.application.credentials.dig(:mailjet, :apikey_private))
     data = [
       {
         "CreatedAt"=>"2020-12-16T14:23:06Z",

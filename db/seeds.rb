@@ -90,7 +90,7 @@ def populate_users
   EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
 
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Nestor', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 end
@@ -102,7 +102,7 @@ def populate_students
   class_room_4 = ClassRoom.fourth
   school = class_room_1.school
 
-  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Abdelaziz', last_name: 'Michau', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
@@ -162,9 +162,9 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Boucherie Sanzos - gestion des approvisionnements frontaliers',
+    title: 'Boucherie Chottin - gestion des approvisionnements frontaliers',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion de la logistique routière et ferrée des approvisionnements de viande en provenance d\'Europe et d\'Argentine.',
-    employer_description_rich_text: "La Boucherie Sanzos doit sa réputation à la qualité de sa viande reconnue et convoitée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
+    employer_description_rich_text: "La Boucherie Chottin doit sa réputation à la qualité de sa viande reconnue et appréciée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
@@ -182,9 +182,9 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Scierie Descloux - maitrise des machines outils',
+    title: 'Scierie Rabier - maitrise des machines outils',
     description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
-    employer_description_rich_text: "La scierie Descloux attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
+    employer_description_rich_text: "La scierie Rabier attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
@@ -277,7 +277,7 @@ end
 def populate_school_weeks
   school = find_default_school_during_test
   # used for application
-  school.weeks = Week.selectable_on_school_year.limit(5)
+  school.weeks = Week.selectable_on_school_year.limit(5) + Week.from_date_for_current_year(from: Date.today).limit(1)
   school.save!
 
   # used to test matching between internship_offers.weeks and existing school_weeks
