@@ -7,7 +7,7 @@ class CreateEmailWhitelists < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    Credentials.enc(:statisticians, prefix_env: false).inject({}) do |accu, (zipcode, emails)|
+    Rails.application.credentials.dig(:statisticians).inject({}) do |accu, (zipcode, emails)|
       emails.map do |email|
         EmailWhitelist.create!(email: email, zipcode: zipcode)
       end
