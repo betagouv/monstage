@@ -10,7 +10,7 @@ class UserMailerTest < ActionMailer::TestCase
     email = UserMailer.anonymize_user(recipient_email: recipient_email)
     email.deliver_now
     assert_emails 1
-    assert_equal [ApplicationMailer.from], email.from
+    assert_equal [EmailUtils.from], email.from
     assert_equal [recipient_email], email.to
     refute_email_spammyness(email)
   end

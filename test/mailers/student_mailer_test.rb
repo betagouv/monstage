@@ -23,7 +23,7 @@ class StudentMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
 
-    assert_equal ApplicationMailer.from, email.from.first
+    assert_equal EmailUtils.from, email.from.first
     assert_equal [internship_application.student.email], email.to
     refute_email_spammyness(email)
   end
@@ -38,7 +38,7 @@ class StudentMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
 
-    assert_equal ApplicationMailer.from, email.from.first
+    assert_equal EmailUtils.from, email.from.first
     assert_equal [internship_application.student.email], email.to
     refute_email_spammyness(email)
   end

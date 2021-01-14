@@ -14,8 +14,8 @@ module InternshipApplications
                                                           ])
       internship_application = build(:weekly_internship_application, internship_offer_week: internship_offer_week_1)
       internship_application.save
-      assert internship_application.errors.keys.include?(:internship_offer_week)
-      assert_equal :has_no_spots_left, internship_application.errors.details[:internship_offer_week].first[:error]
+      assert internship_application.errors.include?(:internship_offer_week)
+      assert_equal 1, internship_application.errors.where(:internship_offer_week, :has_no_spots_left).size
     end
 
     test ':internship_offer, :has_no_spots_left' do
@@ -35,8 +35,8 @@ module InternshipApplications
       internship_application = build(:weekly_internship_application, internship_offer: internship_offer_week_3.internship_offer,
                                                                      internship_offer_week: internship_offer_week_3)
       internship_application.save
-      assert internship_application.errors.keys.include?(:internship_offer)
-      assert_equal :has_no_spots_left, internship_application.errors.details[:internship_offer].first[:error]
+      assert internship_application.errors.include?(:internship_offer)
+      assert_equal 1, internship_application.errors.where(:internship_offer_week, :has_no_spots_left).size
     end
 
     test 'is not applicable twice on same week by same student' do

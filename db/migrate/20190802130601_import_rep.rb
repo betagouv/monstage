@@ -48,7 +48,7 @@ class ImportRep < ActiveRecord::Migration[5.2]
   def geocode_searches_with_caching
     cache = load_cache
     Geocoder.configure(lookup: :google,
-                       api_key: Credentials.enc(:google_api_key, prefix_env: false),
+                       api_key: Rails.application.credentials.dig(:google_api_key),
                        cache: cache)
     yield
   ensure
