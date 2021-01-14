@@ -6,7 +6,7 @@
     _paq.push(['setCustomVariable',
       '1',
       'UserType',
-      "<%= user_presenter.role_name %>",
+      "<%= user_presenter.role_name rescue "unknown" %>",
       'visit'
     ])
 
