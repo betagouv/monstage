@@ -52,7 +52,7 @@
   margin-left: -17px;
   float: left;
   z-index: 10;
-} 
+}
 
 .tool-note.active {
   border: 2px solid $green;
@@ -119,5 +119,18 @@
   }
   trix-editor:read-only{
     background-color: $secondary;
+  }
+}
+.dot {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+
+  &.dot-success{
+    background-color: $success;
+  }
+  &.dot-warning{
+    background-color: $warning;
   }
 }
