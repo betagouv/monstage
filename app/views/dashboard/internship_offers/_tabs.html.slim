@@ -1,5 +1,5 @@
 - forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order, :direction, :keyword)
-- badge_counter = EmployerTabFinder.new(user: current_user)
+- badge_counter = Finders::TabEmployer.new(user: current_user)
 
 - if can? :create_remote_internship_request, SupportTicket
   = render partial: 'dashboard/remote_internship_block'
@@ -35,8 +35,8 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
                          class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
         = "Conventions de stage "
-        - if badge_counter.approved_application_count.positive?
-          span.red-notification-badge=> "#{badge_counter.approved_application_count}"
+        - if badge_counter.pending_agreements_count.positive?
+          span.red-notification-badge=> "#{badge_counter.pending_agreements_count}"
   - if can? :create_remote_internship_request, SupportTicket
     - is_active = current_page?(new_dashboard_support_ticket_path)
 

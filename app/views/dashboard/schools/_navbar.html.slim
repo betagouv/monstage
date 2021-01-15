@@ -1,6 +1,6 @@
-- badge_counter = SchoolTabFinder.new(school: school) if current_user.school_manager?
-- badge_counter = MainTeacherTabFinder.new(main_teacher: current_user) if current_user.main_teacher?
-- badge_counter = NullTabFinder.new if badge_counter.nil?
+- badge_counter = Finders::TabSchoolManager.new(school: school) if current_user.school_manager?
+- badge_counter = Finders::TabMainTeacher.new(main_teacher: current_user) if current_user.main_teacher?
+- badge_counter = Finders::TabNull.new if badge_counter.nil?
 
 - if can? :create_remote_internship_request, SupportTicket
     = render partial: 'dashboard/remote_internship_block'
@@ -37,8 +37,8 @@
         = link_to dashboard_school_internship_applications_path(school),
                   class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_applications_path(school)) ? 'active' : ''}" do
           | Conventions de stages &nbsp;
-          - if badge_counter.approved_application_count.positive?
-            span.badge-pill.badge-danger.small= badge_counter.approved_application_count
+          - if badge_counter.pending_agreements_count.positive?
+            span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
     - if can? :create_remote_internship_request, SupportTicket
       li.nav-item
         = link_to new_dashboard_support_ticket_path,
