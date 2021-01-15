@@ -180,7 +180,7 @@ module Dashboard
         within('header') do
           find("a.nav-link", text: main_teacher.dashboard_name).click
         end
-        click_link('Conventions à signer')
+        click_link('Conventions de stage')
         find('.actions a.btn.btn-primary').click
         # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
@@ -241,7 +241,7 @@ module Dashboard
         find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: teacher.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.cannot?(:create, InternshipAgreement)
-        refute page.has_content?('Conventions à signer')
+        refute page.has_content?('Conventions de stage')
       end
 
       #since they do not care about the same students
@@ -264,8 +264,8 @@ module Dashboard
         find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: main_teacher_2.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.can?(:create, InternshipAgreement)
-        assert page.has_content?('Conventions à signer')
-        click_link('Conventions à signer')
+        assert page.has_content?('Conventions de stage')
+        click_link('Conventions de stage')
         refute page.has_content?(student.first_name)
       end
     end

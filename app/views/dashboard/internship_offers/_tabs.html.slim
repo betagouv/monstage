@@ -34,7 +34,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
     li.nav-item= link_to dashboard_internship_applications_path,
                          class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
-        = "Conventions à signer "
+        = "Conventions de stage "
         - if badge_counter.approved_application_count.positive?
           span.red-notification-badge=> "#{badge_counter.approved_application_count}"
   - if can? :create_remote_internship_request, SupportTicket
