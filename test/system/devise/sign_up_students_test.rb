@@ -3,13 +3,6 @@
 require 'application_system_test_case'
 
 class SignUpStudentsTest < ApplicationSystemTestCase
-  # unfortunatelly on CI tests fails
-  def safe_submit
-    click_on "Je m'inscris"
-  rescue Selenium::WebDriver::Error::ElementClickInterceptedError
-    execute_script("document.getElementById('new_user').submit()")
-  end
-
   test 'navigation & interaction works until student creation' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')
@@ -94,8 +87,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '#{existing_phone}';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      execute_script("document.getElementById('user_accept_terms').checked = true")
-      safe_submit
+      find('label[for="user_accept_terms"]').click
+      click_on "Je m'inscris"
     end
 
     # ensure failure reset form as expected
@@ -108,7 +101,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       execute_script("document.getElementById('phone-input').value = '+330637607756';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      safe_submit
+      click_on "Je m'inscris"
     end
   end
 end
