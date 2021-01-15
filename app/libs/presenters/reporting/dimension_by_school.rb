@@ -8,7 +8,7 @@ module Presenters
                  human_kind].freeze
       METHODS = %i[total_student_count
                    total_main_teacher_count
-                   total_approved_internship_applications_count
+                   current_total_approved_internship_applications_count
                    human_school_manager
                    full_address
                    full_weeks].freeze
@@ -18,6 +18,10 @@ module Presenters
       end
 
       delegate(*metrics, to: :instance)
+
+      def current_total_approved_internship_applications_count
+        instance.total_approved_internship_applications_count(school_year: params[:school_year])
+      end
 
       def self.dimension_name
         'Etablissement'
@@ -45,9 +49,10 @@ module Presenters
 
       private
 
-      attr_reader :instance
-      def initialize(instance)
+      attr_reader :instance, :params
+      def initialize(instance, params)
         @instance = instance
+        @params = params
       end
     end
   end
