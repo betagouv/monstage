@@ -68,7 +68,6 @@ export default function AddressInput({
 
   return (
     <div>
-      <div>{queryString}</div>
       <div className="form-group" id="test-input-full-address">
         <div className="container-downshift">
           <Downshift
@@ -127,7 +126,7 @@ export default function AddressInput({
                         className: 'p-0 m-0',
                       })}
                     >
-                      {isOpen && queryString === fullAddress
+                      { isOpen && queryString === fullAddress
                         ? searchResults.map((item, index) => (
                             <li
                               {...getItemProps({
