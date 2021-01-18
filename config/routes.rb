@@ -47,7 +47,7 @@ Rails.application.routes.draw do
 
   namespace :dashboard, path: 'dashboard' do
     resources :support_tickets, only: %i[new create]
-    resources :internship_agreements,   except: %i[index]
+    resources :internship_agreements,  except: %i[index destroy]
     resources :internship_applications, only: %i[index]
 
     resources :schools, only: %i[index edit update show] do

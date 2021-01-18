@@ -5,28 +5,7 @@ tr class="d-flex student-application-#{internship_application.id} internship-agr
       = internship_application.internship_offer.title
   td.col-sm-3 style="width: 300px" data-head="Action"
     .actions.d-flex.d-sm-block.text-right
-      - if internship_application.internship_agreement.try(:signed_by, current_user)
-        .row
-          .col-8.text-center
-            - internship_application.internship_agreement.signatures_required.map do |signature_type_expected|
-              div class="dot my-1 #{internship_application.internship_agreement.send(signature_type_expected) ? 'dot-success' : 'dot-warning'}"
-                span.d-none= "#{signature_type_expected}"
-            div= "#{internship_application.internship_agreement.signed_count} personne sur #{internship_application.internship_agreement.signatures_count_required}"
-
-          .col-4
-            - if internship_application.internship_agreement.ready_to_print?
-              = link_to dashboard_internship_agreement_path(internship_application.internship_agreement, format: :pdf), class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
-                i.fa.fa-print
-            - else
-              span.btn.btn-light.btnn-sm.mll-2.text-nowrap
-                i.fa.fa-print
-      - else
-        = link_to internship_application.internship_agreement ? edit_dashboard_internship_agreement_path(internship_application.internship_agreement) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
-                  class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
-          i.fa.fa-pen
-          span.text-action
-            | &nbsp;
-            | Editer la convention
+      = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user))
 
 tr
   td colspan=3

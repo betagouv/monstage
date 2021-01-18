@@ -380,6 +380,8 @@ GEM
     uniform_notifier (1.13.0)
     validates_zipcode (0.3.3)
       activemodel (>= 4.2.0)
+    view_component (2.23.2)
+      activesupport (>= 5.0.0, < 7.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.1.0)
@@ -457,6 +459,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier
   validates_zipcode
+  view_component
   web-console
   webdrivers
   webmock

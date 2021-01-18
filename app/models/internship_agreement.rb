@@ -147,33 +147,4 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
-  def ready_to_print?
-    signed_count == signatures_count_required
-  end
-
-  def signed_by(user)
-    return school_manager_accept_terms? if user.school_manager?
-    return main_teacher_accept_terms? if user.main_teacher?
-    return employer_accept_terms? if user.is_a?(Users::Employer)
-    raise  ArgumentError, "#{user.type} does not support accept terms yet "
-  end
-
-  def signed_count
-    signatures_required.map{ |attr_name| self.send(attr_name) }
-                       .select{|value| value == true}
-                       .size
-  end
-
-  def signatures_count_required
-    signatures_required.size
-  end
-
-  def signatures_required
-    signatures = [
-      :employer_accept_terms,
-      :school_manager_accept_terms
-    ]
-    signatures = signatures.concat(:main_teacher_accept_terms, :tutor_accept_terms) unless troisieme_generale?
-    signatures
-  end
 end
