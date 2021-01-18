@@ -104,6 +104,7 @@ def populate_students
 
   with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'benoit@ms3e.fr', password: 'review', first_name: 'Benoit', last_name: 'Lafond', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
@@ -298,7 +299,7 @@ def populate_applications
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
-                                   .first(2)
+                                   .first(4)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
@@ -331,7 +332,46 @@ def populate_applications
       internship_offer: troisieme_generale_offers.first,
       internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.third,
+      motivation: 'Au taquet',
+      internship_offer: troisieme_generale_offers.first,
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+    )
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.fourth,
+      motivation: 'Au taquet',
+      internship_offer: troisieme_generale_offers.first,
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+    )
   end
+end
+def populate_agreements
+  troisieme_generale_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
+
+  agreement_1 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[0].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[0])
+  agreement_1.school_manager_accept_terms = true
+  agreement_1.employer_accept_terms = false
+  agreement_1.save!
+
+  agreement_2 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[1].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[1])
+  agreement_2.school_manager_accept_terms = false
+  agreement_2.employer_accept_terms = true
+  agreement_2.save!
+
+  agreement_3 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[2].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[2])
+  agreement_3.school_manager_accept_terms = true
+  agreement_3.employer_accept_terms = true
+  agreement_3.save!
 end
 
 ActiveSupport::Notifications.subscribe /seed/ do |event|
@@ -359,7 +399,8 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_internship_offers,
     :populate_students,
     :populate_school_weeks,
-    :populate_applications
+    :populate_applications,
+    :populate_agreements
   ])
   School.update_all(updated_at: Time.now)
 end

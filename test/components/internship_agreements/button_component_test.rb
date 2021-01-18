@@ -2,6 +2,10 @@ require 'test_helper'
 
 module InternshipAgreements
   class ButtonComponentTest < ViewComponent::TestCase
+    delegate :application, to: Rails
+    delegate :routes, to: :application
+    delegate :url_helpers, to: :routes
+
     test "when internship_agreement does not exists, render create link" do
       employer = create(:employer)
       internship_application = create(:weekly_internship_application)
