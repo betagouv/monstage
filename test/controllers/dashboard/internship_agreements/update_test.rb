@@ -47,32 +47,13 @@ module Dashboard::InternshipAgreements
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_internship_agreement_path(internship_agreement),
+      assert_redirected_to(dashboard_school_internship_applications_path(school),
                            'redirection should point to updated agreement')
       assert_equal(new_main_teacher_full_name,
                   internship_agreement.reload.main_teacher_full_name,
                   'can\'t update internship_agreement main_teacher_full_name full name')
     end
 
-    test 'PATCH #update as main teacher owning internship_offer updates internship_agreement' do
-      internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
-      new_main_teacher_full_name = 'John Doe'
-      params = {
-        'internship_agreement' => {
-          main_teacher_full_name: new_main_teacher_full_name
-        }
-      }
-      sign_in(internship_application.internship_offer.employer)
-
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
-
-      assert_redirected_to(dashboard_internship_agreement_path(internship_agreement),
-                           'redirection should point to updated agreement')
-      assert_equal(new_main_teacher_full_name,
-                  internship_agreement.reload.main_teacher_full_name,
-                  'can\'t update internship_agreement organisation representative full name')
-    end
 
     # As Employer
     test 'PATCH #update as employer not owning internship_offer redirects to root path' do
@@ -97,7 +78,7 @@ module Dashboard::InternshipAgreements
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_internship_agreement_path(internship_agreement),
+      assert_redirected_to(dashboard_internship_applications_path,
                            'redirection should point to updated agreement')
       assert_equal(new_organisation_representative_full_name,
                   internship_agreement.reload.organisation_representative_full_name,
@@ -127,7 +108,7 @@ module Dashboard::InternshipAgreements
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_internship_agreement_path(internship_agreement),
+      assert_redirected_to(dashboard_school_internship_applications_path(internship_application.student.school),
                            'redirection should point to updated agreement')
       assert_equal(new_school_representative_full_name,
                    internship_agreement.reload.school_representative_full_name,

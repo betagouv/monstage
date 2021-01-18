@@ -12,7 +12,7 @@ module Dashboard
     def create
       internship_agreement_builder.create(params: internship_agreement_params) do |on|
         on.success do |created_internship_agreement|
-          redirect_to dashboard_internship_agreement_path(created_internship_agreement),
+          redirect_to current_user.custom_agreements_path,
                       flash: { success: 'La convention a été créée.' }
         end
         on.failure do |failed_internship_agreement|
@@ -38,7 +38,7 @@ module Dashboard
       internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
-          redirect_to dashboard_internship_agreement_path(updated_internship_agreement),
+          redirect_to current_user.custom_agreements_path,
                       flash: { success: 'La convention a été signée.' }
         end
         on.failure do |failed_internship_agreement|
@@ -52,7 +52,7 @@ module Dashboard
       render :edit, status: :bad_request
     end
 
-    def show # TODO : test 
+    def show # TODO : test
       @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
