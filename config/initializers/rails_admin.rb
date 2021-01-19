@@ -1,4 +1,6 @@
 # postgis type
+require "nested_form/engine"
+require "nested_form/builder_mixin"
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
