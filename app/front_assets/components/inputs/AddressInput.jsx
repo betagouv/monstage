@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+// import { throttle, debounce } from "throttle-debounce";
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
 import { endpoints } from '../../utils/api';
@@ -23,6 +24,7 @@ export default function AddressInput({
   const [latitude, setLatitude] = useState(currentLatitude || 0);
   const [longitude, setLongitude] = useState(currentLongitude || 0);
   const [searchResults, setSearchResults] = useState([]);
+  const [queryString, setQueryString] = useState('');
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
   const inputChange = (event) => {
@@ -32,11 +34,13 @@ export default function AddressInput({
   const toggleHelpVisible = () => {
     setHelpVisible(!helpVisible);
   };
-
   const searchCityByAddress = () => {
     fetch(endpoints.apiSearchAddress({ fullAddress }))
       .then((response) => response.json())
-      .then((json) => setSearchResults(json.features));
+      .then((json) => {
+        setSearchResults(json.features)
+        setQueryString(json.query)
+      });
   };
 
   const setFullAddressComponents = (item) => {
@@ -54,13 +58,14 @@ export default function AddressInput({
 
   useEffect(() => {
     if (fullAddressDebounced && fullAddressDebounced.length > 2) {
-      searchCityByAddress(fullAddressDebounced);
+      searchCityByAddress()
     }
   }, [fullAddressDebounced]);
 
   useEffect(() => {
     broadcast(newCoordinatesChanged({ latitude, longitude }));
   }, [latitude, longitude]);
+
   return (
     <div>
       <div className="form-group" id="test-input-full-address">
@@ -80,7 +85,6 @@ export default function AddressInput({
               getMenuProps,
               isOpen,
               highlightedIndex,
-              selectedItem,
             }) => (
               <div>
                 <label
@@ -122,7 +126,7 @@ export default function AddressInput({
                         className: 'p-0 m-0',
                       })}
                     >
-                      {isOpen
+                      { isOpen && queryString === fullAddress
                         ? searchResults.map((item, index) => (
                             <li
                               {...getItemProps({
@@ -133,7 +137,7 @@ export default function AddressInput({
                                 index,
                                 item,
                                 style: {
-                                  fontWeight: selectedItem === item ? 'bold' : 'normal',
+                                  fontWeight: highlightedIndex === index? 'bold' : 'normal',
                                 },
                               })}
                             >
