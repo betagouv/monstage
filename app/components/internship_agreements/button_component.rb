@@ -12,14 +12,6 @@ module InternshipAgreements
       signed_count == signatures_count_required
     end
 
-    def confirmed_by_current_user?
-      return false unless internship_agreement
-      return school_manager_accept_terms? if current_user.school_manager?
-      return main_teacher_accept_terms? if current_user.main_teacher?
-      return employer_accept_terms? if current_user.is_a?(Users::Employer)
-      raise  ArgumentError, "#{current_user.type} does not support accept terms yet "
-    end
-
     def signed_count
       required_signatures.map { |attr_name| self.send("#{attr_name}") }
                          .select { |value| value == true}

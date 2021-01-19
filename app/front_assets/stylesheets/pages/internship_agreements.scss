@@ -122,10 +122,11 @@
   }
 }
 .dot {
+  $dotSize: 13px;
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
+  width: $dotSize;
+  height: $dotSize;
+  border-radius: $dotSize;
 
   &.dot-success{
     background-color: $success;

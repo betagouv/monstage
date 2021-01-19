@@ -126,6 +126,14 @@ class InternshipAgreement < ApplicationRecord
     enforce_employer_validations == true
   end
 
+  def confirmed_by?(current_user:)
+    return school_manager_accept_terms? if current_user.school_manager?
+    return main_teacher_accept_terms? if current_user.main_teacher?
+    return employer_accept_terms? if current_user.is_a?(Users::Employer)
+    raise  ArgumentError, "#{current_user.type} does not support accept terms yet "
+  end
+
+
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
     errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?

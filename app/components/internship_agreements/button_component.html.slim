@@ -1,10 +1,10 @@
-- if confirmed_by_current_user?
+- if internship_agreement.try(:confirmed_by?, current_user: current_user)
   .row
-    .col-8.text-center data-test="internship-agreement-progress-#{internship_agreement.id}"
+    .col-8.text-center.align-self-center data-test="internship-agreement-progress-#{internship_agreement.id}"
       - required_signatures.map do |signature_type_expected|
-        div class="dot my-1 #{internship_agreement.send(signature_type_expected) ? 'dot-success' : 'dot-warning'}"
+        div class="dot mx-1 #{internship_agreement.send(signature_type_expected) ? 'dot-success' : 'dot-warning'}"
           span.d-none= "#{signature_type_expected}"
-      div= "#{signed_count} personne sur #{signatures_count_required}"
+      p.mb-0.small= "#{signed_count} #{'personne'.pluralize( signed_count)} sur #{signatures_count_required}"
 
     .col-4
       - if ready_to_print?
