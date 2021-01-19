@@ -20,6 +20,11 @@ export default class extends Controller {
     channel: String,
   };
 
+  initialize() {
+    // set default per specification
+    this.show(this.emailBlocTarget)
+  }
+
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
     $(this.labelTarget).text(
@@ -50,7 +55,7 @@ export default class extends Controller {
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
-
+    
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
     this.channelParams = { channel: 'MailValidationChannel', uid: Math.random().toString(36) };
     this.wssClient = ActionCable.createConsumer('/cable');
@@ -153,12 +158,23 @@ export default class extends Controller {
   }
 
   displayField(fieldToClean, fieldToHide, fieldToDisplay) {
-    $(fieldToClean).val('')
-    $(fieldToHide).hide()
-    $(fieldToHide).addClass('d-none')
-    $(fieldToDisplay).hide()
-    $(fieldToDisplay).removeClass('d-none')
-    $(fieldToDisplay).slideDown()
+    this.clean(fieldToClean);
+    this.hide(fieldToHide)
+    this.show(fieldToDisplay);
+  }
+  clean(fieldToClean){
+    $(fieldToClean).val('');
+  }
+
+  hide(fieldToHide){
+    $(fieldToHide).hide();
+    $(fieldToHide).addClass('d-none');
+  }
+
+  show(fieldToDisplay){
+    $(fieldToDisplay).hide();
+    $(fieldToDisplay).removeClass('d-none');
+    $(fieldToDisplay).slideDown();
   }
 
   focusPhone() {

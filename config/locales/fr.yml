@@ -104,6 +104,7 @@ fr:
         total_main_teacher_count: Nbr. de PP
         human_school_manager: Chef d'établissement inscrit
         total_approved_internship_applications_count: Nbr. de candidatures acceptées
+        current_approved_internship_applications_count: Nbr. de candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
 
