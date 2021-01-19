@@ -95,32 +95,63 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'search filters as student : middle_school and high_school checkBoxes' do
-    school = create(:school)
-    student = create(:student, school: school)
-    weekly_internship_offer = create(:weekly_internship_offer)
-    free_date_internship_offer = create(:free_date_internship_offer)
-    sign_in(student)
+  test 'as teacher, search filters are complete and do filter by school_track' do
+    school                              = create(:school)
+    school_manager                      = create(:school_manager, school: school)
+    teacher                             = create(:main_teacher, school: school)
+    troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
+    bac_pro_internship_offer            = create(:bac_pro_internship_offer)
+    sign_in(teacher)
 
     visit internship_offers_path
 
     # all offers presents
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: free_date_internship_offer)
+    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: bac_pro_internship_offer)
 
     # filter
-    find('label[for="search-by-middle-school"]').click
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_absence_of(internship_offer: free_date_internship_offer)
+    find('label[for="search-by-troisieme-generale"]').click
+    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: bac_pro_internship_offer)
 
     # filtered by middle-school
-    find('label[for="search-by-high-school"]').click
-    assert_absence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: free_date_internship_offer)
+    find('label[for="search-by-bac-pro"]').click
+    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: bac_pro_internship_offer)
 
-    # uncheck selection
-    find('label[for="search-by-high-school"]').click
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: free_date_internship_offer)
+    # uncheck selection make both search active == "Toutes"
+    find('label[for="search-by-bac-pro"]').click
+    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: bac_pro_internship_offer)
+  end
+
+  test 'as student, search filters are not available and ' \
+       'offers are linked to student\'s class_room\'s school track' do
+    school = create(:school)
+    class_room = ClassRoom.create(
+      name: '3e B – troisieme_prepa_metiers',
+      school_track: :troisieme_prepa_metiers,
+      school: school
+    )
+    student = create(:student, school: school, class_room: class_room)
+    troisieme_prepa_metiers_internship_offer = create(:troisieme_prepa_metiers_internship_offer)
+    troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
+    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
+    bac_pro_internship_offer = create(:bac_pro_internship_offer)
+    sign_in(student)
+    visit internship_offers_path
+
+    assert page.has_no_content? "Filtrer par"
+    find('span.troisieme_prepa_metiers', text: '3e prépa métiers')
+    assert page.has_no_selector?('span.troisieme_generale')
+    assert page.has_no_content? "3e SEGPA"
+    assert page.has_no_content? "Bac Pro"
+
+    assert page.has_content? "3e prépa métier", count: 1
+    assert_presence_of(internship_offer: troisieme_prepa_metiers_internship_offer)
+
+    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
+    assert_absence_of(internship_offer: bac_pro_internship_offer)
   end
 end

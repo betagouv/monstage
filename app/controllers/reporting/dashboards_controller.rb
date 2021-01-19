@@ -39,6 +39,8 @@ module Reporting
     end
 
     def total_schools_ratio
+      return 0 if school_finder.total.zero?
+
       (total_schools_with_manager.to_f * 100 / school_finder.total).round(2)
     end
 

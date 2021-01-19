@@ -47,8 +47,8 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
+  ClassRoom.create(name: '3e A – troisieme', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metiers', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
 end
@@ -241,7 +241,7 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'bilbotron',
-    school_track: :troisieme_prepa_metier
+    school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
   multiline_description = <<-MULTI_LINE
@@ -341,6 +341,76 @@ def populate_aggreements
     internship_application: application,
     employer_accept_terms: true
   )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des principes fondamentaux du métier.
+- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de trader en ligne',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'bilbotron',
+    school_track: :troisieme_segpa
+  )
+end
+
+def populate_internship_weeks
+  manager = Users::SchoolManagement.find_by(role: 'school_manager')
+  school = manager.school
+  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_applications
+  bac_pro_studs = Users::Student.joins(:class_room)
+                                .where('class_rooms.school_track = ?', :bac_pro)
+                                .to_a
+                                .shuffle
+                                .first(2)
+  trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .to_a
+                                   .shuffle
+                                   .first(2)
+  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+
+  bac_pro_studs.each do |bac_pro_stud|
+    FactoryBot.create(
+      :free_date_internship_application,
+      :submitted,
+      internship_offer: ios_bac_pro.first,
+      student: bac_pro_stud
+    )
+  end
+  ios_troisieme_generale.each do |io_trois_gene|
+    FactoryBot.create(
+      :weekly_internship_application,
+      :submitted,
+      internship_offer: io_trois_gene,
+      student: trois_gene_studs.first
+    )
+  end
+  if trois_gene_studs&.second
+    FactoryBot.create(
+      :weekly_internship_application,
+      :approved,
+      internship_offer: ios_troisieme_generale.first,
+      student: trois_gene_studs.second
+    )
+  end
 end
 
 

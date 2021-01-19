@@ -27,6 +27,24 @@ FactoryBot.define do
     trait :with_school_manager do
       school_manager { build(:school_manager) }
     end
+
+    factory :school_with_troisieme_segpa_class_room do
+      after(:create) do |school|
+        create(:class_room, school: school, school_track: 'troisieme_segpa')
+      end
+    end
+
+    factory :school_with_troisieme_generale_class_room do
+      after(:create) do |school|
+        create(:class_room, school: school, school_track: 'troisieme_generale')
+      end
+    end
+
+    factory :school_with_bac_pro_class_room do
+      after(:create) do |school|
+        create(:class_room, school: school, school_track: 'bac_pro')
+      end
+    end
   end
 
   factory :api_school, class: Api::School do

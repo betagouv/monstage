@@ -100,7 +100,6 @@ module InternshipApplications
                                               type: InternshipApplications::FreeDate.name,
                                               motivation: 'Je suis trop motivé wesh',
                                               user_id: student.id }
-
       assert_no_difference('InternshipApplication.count') do
         post(internship_offer_internship_applications_path(internship_offer),
              params: { internship_application: valid_internship_application_params.except(:motivation) })

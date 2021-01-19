@@ -4,9 +4,7 @@ require 'test_helper'
 
 class ReportingInternshipOfferTest < ActiveSupport::TestCase
   test 'views can be queried' do
-    create(:weekly_internship_offer)
-    create(:weekly_internship_offer)
-    create(:weekly_internship_offer)
+    3.times { create(:weekly_internship_offer) }
     assert_equal 3, Reporting::InternshipOffer.count
   end
 
@@ -23,8 +21,7 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
   test '.dimension_by_sector group by sector_name' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
-    create(:weekly_internship_offer, sector: sector_a)
-    create(:weekly_internship_offer, sector: sector_a)
+    2.times { create(:weekly_internship_offer, sector: sector_a )}
     create(:weekly_internship_offer, sector: sector_b)
 
     results = Reporting::InternshipOffer.dimension_by_sector

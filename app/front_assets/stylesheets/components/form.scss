@@ -48,7 +48,6 @@
   border: #585858;
 }
 .custom-radio-boxes{
-
   .custom-radio-box-control{
     border: 1px solid $input-border-color;
 
@@ -66,12 +65,11 @@
     }
 
     label{
-      padding: .5rem 2rem;
-
+      padding: .5rem 1rem;
     }
 
     .custom-radio-box-control-input{
-      position: absolute;
+      position: fixed;
       visibility: hidden;
     }
     .custom-radio-box-control-input:checked + label{
@@ -150,9 +148,39 @@
 		border-color: $blue;
 		z-index: 1;
 	}
-
 	input:focus+label {
 		border: 2px white solid;
 		outline: 2px $blue solid;
 	}
 }
+
+@include media-breakpoint-down(md){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .25rem 1rem;
+      }
+    }
+  }
+}
+@include media-breakpoint-down(sm){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .17rem 0.5rem;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(xs){
+  .custom-radio-boxes{
+    .custom-radio-box-control{
+      label{
+        padding: .1rem 0.25rem;
+      }
+      font-size: 0.85rem;
+    }
+  }
+}
+

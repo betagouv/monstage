@@ -47,7 +47,7 @@ module InternshipOffersHelper
 
   def forwardable_params
     params.permit(
-      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_type
+      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_track
     )
   end
 
