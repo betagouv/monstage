@@ -232,7 +232,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.zipcode** *(string)*
 * **internship_offer.city** *(string)*
 * **internship_offer.sector_uuid** *(integer)*
-* **internship_offer.school_track** *(string)* 'troisieme_generale'|'troisieme_segpa'|'troisieme_prepa_metier'|'bac_pro'
+* **internship_offer.school_track** *(string)* 'troisieme_generale'|'troisieme_segpa'|'troisieme_prepa_metiers'|'bac_pro'
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
 * **max_candidates** *(integer)*

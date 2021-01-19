@@ -15,8 +15,8 @@ FactoryBot.define do
     school_track { 'troisieme_segpa' }
   end
 
-  trait :troisieme_prepa_metier do
-    school_track { 'troisieme_prepa_metier' }
+  trait :troisieme_prepa_metiers do
+    school_track { 'troisieme_prepa_metiers' }
   end
 
   trait :bac_pro do

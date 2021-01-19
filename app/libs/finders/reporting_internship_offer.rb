@@ -55,6 +55,7 @@ module Finders
       base_query = Reporting::InternshipOffer.all
       base_query = base_query.during_year(school_year: school_year) if school_year_param?
       base_query = base_query.by_department(department: params[:department]) if department_param?
+      base_query = base_query.by_school_track(school_track: school_track) if school_track
       base_query = base_query.by_group(group: params[:group]) if group_param?
       base_query = base_query.by_academy(academy: params[:academy]) if academy_param?
       base_query = base_query.where(is_public: params[:is_public]) if public_param?
@@ -83,6 +84,10 @@ module Finders
 
     def academy_param?
       params.key?(:academy)
+    end
+
+    def school_track
+      params[:school_track]
     end
   end
 end

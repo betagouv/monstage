@@ -7,7 +7,6 @@ export default class extends Controller {
     'type',
     'selectType',
     'weeksContainer',
-
     'maxCandidatesGroup',
     'maxCandidatesInput',
   ];
@@ -24,7 +23,7 @@ export default class extends Controller {
   }
 
   induceType(value){
-    const inducedType = `${this.baseTypeValue}s::${(value == 'bac_pro') ? 'FreeDate' : 'WeeklyFramed'}`;
+    const inducedType = (value == 'troisieme_generale') ? `${this.baseTypeValue}s::WeeklyFramed` : `${this.baseTypeValue}s::FreeDate`;
     $(this.typeTarget).attr('value', inducedType)
     this.chooseType(inducedType);
   }
