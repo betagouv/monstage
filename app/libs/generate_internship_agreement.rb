@@ -114,8 +114,10 @@ class GenerateInternshipAgreement < Prawn::Document
       field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
     end
 
-    label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
-    field_form @internship_agreement.activity_rating_rich_text.body.html_safe, html: true
+    if @internship_agreement.activity_rating_rich_text
+      label_form "Modalités d’évaluation de la séquence d’observation en milieu professionnel :"
+      field_form @internship_agreement.activity_rating_rich_text.body.html_safe, html: true
+    end
 
     @pdf.move_down 20
   end
