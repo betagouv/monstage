@@ -34,7 +34,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
 
     total_report_css = 'tfoot .test-total-report'
 
-    select '3e'
+    select '3ème'
     page.assert_selector(total_report_css, text: '3')
 
     select '3e SEGPA'
