@@ -11,7 +11,7 @@
         = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf), class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
           i.fa.fa-print
       - else
-        span.btn.btn-light.btnn-sm.mll-2.text-nowrap
+        span.btn.btn-light.btn-sm.ml-2.text-nowrap
           i.fa.fa-print
 - else
   = link_to internship_agreement ? edit_dashboard_internship_agreement_path(internship_agreement) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
