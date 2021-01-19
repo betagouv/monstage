@@ -38,10 +38,9 @@
 .row.d-print-none
   .col-12 data-footer-target="placeholder" data-action="resize@window->footer#resize"
 
-- if show_restricted_to_anct?
-  .bg-light-blue.d-none.fixed-footer.d-print-none data-footer-target="fixedContent"
+.bg-light-blue.d-none.fixed-footer.d-print-none data-footer-target="fixedContent"
+  - if show_restricted_to_anct?
     .container
-
       .row.align-items-top.no-gutters.py-3
         .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
         .col-md-8.col-12.text-center.text-sm-center
