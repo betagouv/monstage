@@ -1,0 +1,9 @@
+- if Rails.env.development?
+  .h6.d-none.d-md-inline
+    .badge.badge-warning
+      = "Visiteur" if current_user.nil?
+      = current_user.class.name.split('::')&.second
+      - unless current_user.try(:role).nil?
+        => " | #{current_user.role}"
+      - unless current_user.try(:school_track).nil?
+        => " | #{current_user.school_track}"
