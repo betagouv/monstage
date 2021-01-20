@@ -14,5 +14,7 @@
         => "Cliquez sur le bouton ci-dessous pour prévenir votre chef d'établissement que vous ne pouvez pas postuler"
         strong chef d'établissement
         | .
-      p.my-0= link_to account_path(user: {missing_school_weeks_id: current_user.school_id}), class: "btn btn-outline-primary", method: :patch do
+      p.my-0= link_to account_path(user: {missing_school_weeks_id: current_user.school_id}),
+                      class: "btn btn-outline-primary",
+                      method: :patch do
         | Je souhaite une semaine de stage
