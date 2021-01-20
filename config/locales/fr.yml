@@ -65,7 +65,7 @@ fr:
         other: Etablissements
       internship_agreement:
         one: Convention
-        other: Conventions  
+        other: Conventions
       internship_offers/weekly_framed:
         one: Offre 3eme générale
         other: Offres 3eme générale
@@ -382,7 +382,7 @@ fr:
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3e'
+      troisieme_generale: '3ème'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
