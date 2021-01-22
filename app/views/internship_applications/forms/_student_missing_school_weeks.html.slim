@@ -8,7 +8,7 @@
             | Vous ne pouvez ni voir de stage,
                             ni postuler à aucun stage, car votre chef d'établissement n'a pas renseigné les semaines de stage de l'établissement
             br
-- if current_user && current_user.missing_school_weeks? && current_user.missing_school_weeks_id.nil?
+- if current_user && current_user.missing_school_weeks? && current_user.missing_weeks_school_id.nil?
   .row.my-3.student-form-missing-school-weeks
     .col-12
       p
