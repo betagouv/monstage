@@ -7,7 +7,7 @@
       à distance, et peuvent vous accompagner dans leur mise en place.
 - if current_user.is_a?(Users::SchoolManagement)
   = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}
-  h1.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
+  h2.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
 
 = form_with({model: @support_ticket,
              url: dashboard_support_tickets_path,
@@ -18,7 +18,7 @@
   = render partial: 'dashboard/support_tickets/remote_internship_types',
            locals: { f: f }
 
-  h6.h6.pt-4 Informations complémentaires
+  h3.h6.pt-4 Informations complémentaires
   .form-group
     = f.rg2a_explain_required_asterisk
     .row.no-gutters
