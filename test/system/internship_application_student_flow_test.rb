@@ -41,7 +41,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find "input[name='#{disabled_selector}'][disabled]", visible: true
     end
 
-    assert_changes -> { student.reload.missing_school_weeks_id },
+    assert_changes -> { student.reload.missing_weeks_school_id },
                    from: nil,
                    to: student.school_id do
       click_on 'Je souhaite une semaine de stage'
