@@ -86,8 +86,8 @@ module InternshipOffers
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
       assert_select('a[href=?]',
-                    account_path(user: { missing_school_weeks_id: student.school.id }))
-      student.update(missing_school_weeks_id: school.id)
+                    account_path(user: {missing_weeks_school_id: student.school.id}))
+      student.update(missing_weeks_school_id: school.id)
       get internship_offer_path(create(:weekly_internship_offer))
 
       assert_response :success

@@ -36,7 +36,7 @@ function FilterInternshipOffer() {
           id="search-by-troisieme-generale"
         />
         <label className="label mb-0" htmlFor="search-by-troisieme-generale">
-          3e
+          3ème
         </label>
       </div>
       <div className='custom-radio-box-control custom-radio-box-control'>
