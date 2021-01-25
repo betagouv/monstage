@@ -13,7 +13,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
   end
 
   test 'ensure presence fields when school_manager and not 3e' do
-    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metier,
+    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metiers,
                                                    enforce_school_manager_validations: true)
     internship_agreement.valid?
 
@@ -22,7 +22,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
   end
 
   test 'ensure presence of fields when employer and not 3e' do
-    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metier,
+    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metiers,
                                                    enforce_employer_validations: true)
     internship_agreement.valid?
 
@@ -32,7 +32,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
   end
 
   test 'ensure presence of fields when main_teacher and not 3e' do
-    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metier,
+    internship_agreement = InternshipAgreement.new(school_track: :troisieme_prepa_metiers,
                                                    enforce_main_teacher_validations: true)
     internship_agreement.valid?
 
