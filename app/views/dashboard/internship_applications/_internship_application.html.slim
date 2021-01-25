@@ -1,4 +1,4 @@
-tr class="d-flex student-application-#{internship_application.id} internship-agreement-to-sign #{internship_application.try(:internship_agreement).try(:confirmed_by?, current_user: current_user) ? '' : 'bg-light-blue'}"
+tr class="d-flex student-application-#{internship_application.id} internship-agreement-to-sign #{internship_application.try(:internship_agreement).try(:confirmed_by?, user: current_user) ? '' : 'bg-light-blue'}"
   td.py-3.d-flex.align-items-center.col-sm-3 data-head="#{internship_application.student.name}"
     .align-self-center= internship_application.student.name
   td.py-3.d-flex.align-items-center.col-sm-6 data-head="#{internship_application.internship_offer.title}"

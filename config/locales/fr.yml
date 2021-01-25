@@ -379,6 +379,7 @@ fr:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
+      employer: "Offreur"
       other: "Autre fonction"
 
     school_tracks:

@@ -1,4 +1,4 @@
-- if internship_agreement.try(:confirmed_by?, current_user: current_user)
+- if internship_agreement.try(:confirmed_by?, user: current_user)
   .row
     .col-8.text-center.align-self-center data-test="internship-agreement-progress-#{internship_agreement.id}"
       = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user))

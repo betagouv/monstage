@@ -1,6 +1,5 @@
 - required_signatures.map do |signature_type_expected|
-  div class="dot mx-1 #{internship_agreement.send(signature_type_expected) ? 'dot-success' : 'dot-warning'}"
+  div class="dot mx-1 #{internship_agreement.send(signature_type_expected) ? 'dot-success' : 'dot-warning'}" data-toggle="tooltip" data-placement="top" title=I18n.t("enum.roles.#{curret_role(role_attribute_name: signature_type_expected)}") data-controller='tooltip'
     i.fas.fa-circle
-    span.d-none= "#{signature_type_expected}"
 p.mb-0.small.text-muted= "#{signed_count} #{'personne'.pluralize( signed_count)} sur #{signatures_count_required}"
 

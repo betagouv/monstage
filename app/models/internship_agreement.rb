@@ -126,11 +126,11 @@ class InternshipAgreement < ApplicationRecord
     enforce_employer_validations == true
   end
 
-  def confirmed_by?(current_user:)
-    return school_manager_accept_terms? if current_user.school_manager?
-    return main_teacher_accept_terms? if current_user.main_teacher?
-    return employer_accept_terms? if current_user.is_a?(Users::Employer)
-    raise  ArgumentError, "#{current_user.type} does not support accept terms yet "
+  def confirmed_by?(user:)
+    return school_manager_accept_terms? if user.school_manager?
+    return main_teacher_accept_terms? if user.main_teacher?
+    return employer_accept_terms? if user.is_a?(Users::Employer)
+    raise  ArgumentError, "#{user.type} does not support accept terms yet "
   end
 
 

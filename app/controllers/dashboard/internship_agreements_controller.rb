@@ -39,7 +39,7 @@ module Dashboard
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
           redirect_to current_user.custom_agreements_path,
-                      flash: { success: 'La convention a été signée.' }
+                      flash: { success: 'La convention a été enregistrée.' }
         end
         on.failure do |failed_internship_agreement|
           @internship_agreement = failed_internship_agreement || InternshipAgreement.find(params[:id])
