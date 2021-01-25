@@ -48,7 +48,7 @@ def populate_class_rooms
   school = find_default_school_during_test
 
   ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metier, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
 end
@@ -242,7 +242,7 @@ MULTI_LINE
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'RATP',
-    school_track: :troisieme_prepa_metier
+    school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
   multiline_description = <<-MULTI_LINE

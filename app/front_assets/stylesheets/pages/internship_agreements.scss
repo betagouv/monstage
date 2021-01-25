@@ -122,16 +122,11 @@
   }
 }
 .dot {
-  $dotSize: 13px;
   display: inline-block;
-  width: $dotSize;
-  height: $dotSize;
-  border-radius: $dotSize;
-
   &.dot-success{
-    background-color: $success;
+    color: $success;
   }
   &.dot-warning{
-    background-color: $warning;
+    color: $warning;
   }
 }
