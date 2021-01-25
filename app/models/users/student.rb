@@ -4,7 +4,7 @@ module Users
   class Student < User
     belongs_to :school, optional: true
     belongs_to :missing_school_weeks, optional: true,
-                                      foreign_key: 'missing_school_weeks_id',
+                                      foreign_key: 'missing_weeks_school_id',
                                       class_name: 'School',
                                       counter_cache: :missing_school_weeks_count
 
@@ -23,6 +23,7 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
+    delegate :school_track, to: :class_room, allow_nil: true
     validates :birth_date,
               :gender,
               presence: true
@@ -33,10 +34,8 @@ module Users
 
     def internship_applications_type
       return nil unless class_room.present?
-      return InternshipApplications::FreeDate.name if class_room.bac_pro?
-      return InternshipApplications::WeeklyFramed.name unless class_room.bac_pro?
-
-      nil
+      return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
+      return InternshipApplications::FreeDate.name
     end
 
     def has_zero_internship_application?

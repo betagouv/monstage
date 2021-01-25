@@ -15,7 +15,7 @@ module Dashboard::InternshipOffers
       school = create(:school)
       employer = create(:employer)
       weeks = [weeks(:week_2019_1)]
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = build(:bac_pro_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -44,7 +44,7 @@ module Dashboard::InternshipOffers
     test 'POST #create (duplicate) /InternshipOffers::FreeDate as employer creates the post' do
       school = create(:school)
       employer = create(:employer)
-      internship_offer = build(:weekly_internship_offer, employer: employer)
+      internship_offer = build(:free_date_internship_offer, employer: employer)
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -63,6 +63,7 @@ module Dashboard::InternshipOffers
       assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
       assert_equal employer, created_internship_offer.employer
       assert_equal school, created_internship_offer.school
+      assert_equal 'bac_pro', created_internship_offer.school_track
       assert_equal params['max_candidates'], created_internship_offer.max_candidates
       assert_redirected_to internship_offer_path(created_internship_offer)
     end
