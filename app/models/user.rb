@@ -127,6 +127,8 @@ class User < ApplicationRecord
 
     discard!
 
+    return unless email_for_job
+
     AnonymizeUserJob.perform_later(email: email_for_job) if send_email
     RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
   end
@@ -181,12 +183,16 @@ class User < ApplicationRecord
   # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
-    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
+    previous_email = email_previous_change.try(:first)
 
-    return if email_previous_change.try(:first).nil?
+    return if email.nil?
+    return if previous_email == email
+
+    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
+    return if previous_email.nil?
 
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
-      email: email_previous_change.first
+      email: previous_email
     )
   end
 
@@ -229,7 +235,7 @@ class User < ApplicationRecord
   end
 
   def add_email_to_phone_account?
-    phone.present? && confirmed? && email.blank?
+    phone.present? && confirmed? && !email.blank?
   end
 
   def email_or_phone
