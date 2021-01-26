@@ -56,7 +56,7 @@ class ConfirmationFlowTest < ApplicationSystemTestCase
     find('#error_explanation label', text:'Veuillez saisir un email ou un numéro de téléphone')
   end
 
-  test 'register confirmation confirmed with phone number while subscribed with email' do
+  test 'register confirmation confirmed with phone number formerly subscribed with email will fail' do
     phone = '+330637607756'
     user  = create(:student, email: 'test@test.fr',
                              phone: nil,
