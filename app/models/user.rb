@@ -235,7 +235,7 @@ class User < ApplicationRecord
   end
 
   def add_email_to_phone_account?
-    phone.present? && confirmed? && !email.blank?
+    phone.present? && confirmed? && email.blank? && unconfirmed_email.present?
   end
 
   def email_or_phone
