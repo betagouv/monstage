@@ -1,5 +1,4 @@
-
-.bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{@prismic['homepage.image'].url})"
+.bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{PrismicFinder.homepage()['homepage.image'].url})"
   .container
     .row
       .col-12
@@ -8,18 +7,18 @@
                         alt: "Dispositif Covid-19",
                         width: 240,
                         class: 'mb-3'
-          = @prismic['homepage.title'].as_html(nil).html_safe
+          = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
 
 .bg-transparent
   .container
     .row
       .col-12
-        h2.py-5.text-center= @prismic['homepage.slider_title'].as_text
+        h2.py-5.text-center= PrismicFinder.homepage()['homepage.slider_title'].as_text
     .row.pb-5.mb-3.flex-md-reverse-column
       .col-12.col-md-6.align-self-center
         .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
 
-          - @prismic['homepage.news'].each_with_index do |news, index|
+          - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
             = link_to "#news#{index}",
                       class: "p-3 nav-link my-2 #{'active' if index == 0}",
                       data: {toggle: "pill"}, role: 'tab',
@@ -31,7 +30,7 @@
       .col-12.col-md-6
         .tab-content.partners-height
 
-          - @prismic['homepage.news'].each_with_index do |news, index|
+          - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
             .tab-pane role="tabpanel" id="news#{index}" class="#{'active' if index == 0}"
               .card
                 = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt
