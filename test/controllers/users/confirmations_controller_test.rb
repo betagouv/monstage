@@ -28,6 +28,16 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to users_registrations_phone_standby_path(phone: student.phone)
   end
 
+  test 'CREATE#user_confirmation by phone with wrong phone number' do
+    wrong_phone_number ='+3360000000'
+    student = create(:student, phone: '+330637607756',
+                               email: nil,
+                               confirmed_at: nil)
+    post user_confirmation_path(user: { channel: :phone, phone: wrong_phone_number })
+    assert_template "layouts/_flash"
+    assert_template "devise/confirmations/new"
+  end
+
   test 'CREATE#user_confirmation by email' do
     student = create(:student, phone: nil,
                                email: 'fourcade.m@gmail.com',

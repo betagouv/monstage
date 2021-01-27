@@ -4,10 +4,14 @@ module Users
   class ConfirmationsController < Devise::ConfirmationsController
     include Phonable
     def create
-      if by_phone? && fetch_user_by_phone
+      super and return unless by_phone?
+
+      if fetch_user_by_phone
         SendSmsJob.perform_later(fetch_user_by_phone)
         redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
         return
+      else
+        flash.alert = 'Ce numéro de téléphone est introuvable'
       end
       super
     end

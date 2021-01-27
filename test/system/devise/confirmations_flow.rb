@@ -42,7 +42,7 @@ class ConfirmationFlowTest < ApplicationSystemTestCase
     end
   end
 
-  test 'register confirmation done with wrong phone number' do
+  test 'register confirmation done with wrong phone number fails' do
     phone       = '+330637607756'
     wrong_phone = '+330637607750'
     user = create(:student, email: nil,
@@ -53,10 +53,11 @@ class ConfirmationFlowTest < ApplicationSystemTestCase
     find('label', text: 'SMS').click
     execute_script("document.getElementById('phone-input').value = '#{wrong_phone}';")
     click_on 'Renvoyer'
-    find('#error_explanation label', text:'Veuillez saisir un email ou un numéro de téléphone')
+    find '#error_explanation label',
+         text:'Veuillez saisir un email ou un numéro de téléphone'
   end
 
-  test 'register confirmation confirmed with phone number formerly subscribed with email will fail' do
+  test 'register confirmation formerly subscribed with email and confirmed with phone number fails' do
     phone = '+330637607756'
     user  = create(:student, email: 'test@test.fr',
                              phone: nil,
