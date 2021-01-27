@@ -21,7 +21,7 @@ module Services
       end
     end
 
-    test 'destroy_contact should raise an error' do
+    test 'destroy_contact should raise an error when contact does not exist' do
       sync = Services::SyncEmailDelivery.new
       wrong_return_code = 401
       expected_id       = 'user_id'
