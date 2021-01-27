@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Services
   class SyncEmailDeliveryTest < ActiveSupport::TestCase
-    test 'destroy_contact should destroy contact' do
+    test 'destroy_contact should destroy contact when contact exists' do
       sync = Services::SyncEmailDelivery.new
       expected_id = 'user_id'
 
