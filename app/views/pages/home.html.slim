@@ -2,12 +2,13 @@
   .container
     .row
       .col-12
-        h1#des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
+        #des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
           = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
                         alt: "Dispositif Covid-19",
                         width: 240,
                         class: 'mb-3'
-          = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
+              
+          h1.text-white= PrismicFinder.homepage()['homepage.title'].as_text
 
 .bg-transparent
   .container
@@ -33,7 +34,7 @@
           - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
             .tab-pane role="tabpanel" id="news#{index}" class="#{'active' if index == 0}"
               .card
-                = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt
+                = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
 
                 .card-body
                   = news.get('news_description').as_html(nil).html_safe

@@ -48,10 +48,12 @@
         </div>
       </div>
     </footer>
-    <% unless Rails.env.production? %>
+    <% if Rails.env.development? %>
       <script>
         console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
       </script>
+    <% end %>
+    <% if Rails.env.review? %>
       <script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=monstage"></script>
     <% end %>
     <%= render partial: "layouts/analytics" %>
