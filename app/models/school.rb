@@ -34,8 +34,8 @@ class School < ApplicationRecord
       .having('count(school_internship_weeks.school_id) = 0')
   }
 
-  scope :missing_school_week_count_gt, lambda { |thresold|
-    where('missing_school_weeks_count > ?', thresold)
+  scope :missing_school_week_count_gt, lambda { |threshold|
+    where('missing_school_weeks_count > ?', threshold)
   }
 
   def select_text_method
