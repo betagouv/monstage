@@ -58,11 +58,11 @@ class User < ApplicationRecord
     return false unless respond_to?(:school)
     return true if school.try(:weeks).try(:size).try(:zero?)
 
-    # rejecting stale_weeks from last year
-    Week.selectable_on_school_year.joins(:school_internship_weeks)
-                                  .where('school_internship_weeks.school_id': school.id)
-                                  .count
-                                  .zero?
+    Week.selectable_on_school_year # rejecting stale_weeks from last year
+        .joins(:school_internship_weeks)
+        .where('school_internship_weeks.school_id': school.id)
+        .count
+        .zero?
   end
 
   def missing_school?
