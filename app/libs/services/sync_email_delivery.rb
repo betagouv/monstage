@@ -38,7 +38,7 @@ module Services
     end
 
     def destroy_contact(email:)
-      mailjet_user_id = read_contact(email: email).dig("Data", 0, "ID")
+      mailjet_user_id = send_read_contact(email: email).dig("Data", 0, "ID")
       response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
       return true if status?(200, response)
 
