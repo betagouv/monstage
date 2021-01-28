@@ -105,7 +105,7 @@ module Dashboard
         %w[
           internship_agreement_activity_scope_rich_text
           internship_agreement_activity_rating_rich_text
-          internship_agreement_financial_conditions_rich_text
+          internship_agreement_financial_terms_rich_text
         ].each do |trix_field_id|
           refute_trix_editor_editable(trix_field_id)
         end
@@ -158,7 +158,7 @@ module Dashboard
           refute_trix_editor_editable(trix_field_id)
         end
         %w[
-          internship_agreement_financial_conditions_rich_text
+          internship_agreement_financial_terms_rich_text
         ].each do |trix_field_id|
           assert_trix_editor_editable(trix_field_id)
         end
@@ -212,7 +212,7 @@ module Dashboard
         # Trix fields tests
         %w[
           internship_agreement_activity_scope_rich_text
-          internship_agreement_financial_conditions_rich_text
+          internship_agreement_financial_terms_rich_text
         ].each do |trix_field_id|
           refute_trix_editor_editable(trix_field_id)
         end

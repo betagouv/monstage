@@ -147,7 +147,7 @@ class AbilityTest < ActiveSupport::TestCase
        edit_terms_rich_text
        edit_school_representative_full_name
        edit_student_school
-       edit_financial_conditions_rich_text].each do |meth|
+       edit_financial_terms_rich_text].each do |meth|
       assert(ability.can?(meth, internship_agreement))
     end
   end

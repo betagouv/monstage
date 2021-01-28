@@ -52,7 +52,11 @@ Rails.application.routes.draw do
 
     resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
+
+
       resources :internship_applications, only: %i[index], module: 'schools'
+      resources :internship_agreement_presets, only: %i[update],  module: 'schools'
+
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end

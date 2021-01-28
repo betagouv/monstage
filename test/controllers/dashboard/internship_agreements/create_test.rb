@@ -23,7 +23,7 @@ module Dashboard::InternshipAgreements
         'activity_scope_rich_text'              => '<div>Activité Scope</div>',
         'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
         'weekly_hours'                          => ['9h', '12h'],
-        'financial_conditions_rich_text'        => '<div>Hébergement, Assurance, Transport, Restauration</div>',
+        'financial_terms_rich_text'        => '<div>Hébergement, Assurance, Transport, Restauration</div>',
         'terms_rich_text'                       => '<div>Article 1</div>'
       }
     end
@@ -87,11 +87,11 @@ module Dashboard::InternshipAgreements
       internship_application.student.update(class_room_id: class_room.id, school_id: school.id)
       sign_in(school.school_manager)
 
-      params = make_internship_agreement_params(internship_application).except('financial_conditions_rich_text')
+      params = make_internship_agreement_params(internship_application).except('financial_terms_rich_text')
       assert_no_difference('InternshipAgreement.count') do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
-      assert_select 'li label[for=internshipagreement_financial_conditions_rich_text]',
+      assert_select 'li label[for=internshipagreement_financial_terms_rich_text]',
       text: "Veuillez compléter les conditions liés au financement du stage"
     end
 
@@ -257,14 +257,14 @@ module Dashboard::InternshipAgreements
       ).except(
         'activity_scope_rich_text',
         'activity_preparation_rich_text',
-        'financial_conditions_rich_text',
+        'financial_terms_rich_text',
       )
       assert_no_difference('InternshipAgreement.count') do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
       assert_select 'li label[for=internshipagreement_activity_scope_rich_text]',
                     text: "Veuillez compléter les objectifs du stage"
-      assert_select 'li label[for=internshipagreement_financial_conditions_rich_text]',
+      assert_select 'li label[for=internshipagreement_financial_terms_rich_text]',
                     text: "Veuillez compléter les conditions liés au financement du stage"
     end
   end

@@ -12,8 +12,8 @@ module Builders
           .merge(preprocess_internship_application_paramns(internship_application))
       )
       internship_agreement.internship_application = internship_application
-      internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_LEGAL_TERMS}</div>"
-      internship_agreement.financial_conditions_rich_text.body = internship_application.student.school.agreement_conditions_rich_text.body || "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
+      internship_agreement.legal_terms_rich_text.body = internship_application.student.school.internship_agreement_preset.legal_terms_rich_text.body
+      internship_agreement.financial_terms_rich_text.body = internship_application.student.school.internship_agreement_preset.financial_terms_rich_text.body || "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
       internship_agreement
     end
 

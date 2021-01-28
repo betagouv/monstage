@@ -18,7 +18,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
     internship_agreement.valid?
 
     assert internship_agreement.errors.include?(:activity_rating_rich_text)
-    assert internship_agreement.errors.include?(:financial_conditions_rich_text)
+    assert internship_agreement.errors.include?(:financial_terms_rich_text)
   end
 
   test 'ensure presence of fields when employer and not 3e' do
@@ -28,7 +28,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
 
     assert internship_agreement.errors.include?(:activity_learnings_rich_text)
     assert internship_agreement.errors.include?(:activity_scope_rich_text)
-    assert internship_agreement.errors.include?(:financial_conditions_rich_text)
+    assert internship_agreement.errors.include?(:financial_terms_rich_text)
   end
 
   test 'ensure presence of fields when main_teacher and not 3e' do

@@ -10,6 +10,10 @@ class SchoolTest < ActiveSupport::TestCase
     assert_not_empty school.errors[:zipcode]
   end
 
+  test 'nested objects on creation' do
+    assert create(:school).internship_agreement_presets.present?
+  end
+
   test 'Users associations' do
     school = create(:school)
 

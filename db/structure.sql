@@ -453,6 +453,38 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreement_presets (
+    id bigint NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    school_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreement_presets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.internship_agreement_presets.id;
+
+
+--
 -- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1128,6 +1160,13 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets ALTER COLUMN id SET DEFAULT nextval('public.internship_agreement_presets_id_seq'::regclass);
+
+
+--
 -- Name: internship_agreements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1286,6 +1325,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_agreement_presets internship_agreement_presets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets
+    ADD CONSTRAINT internship_agreement_presets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1456,6 +1503,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreement_presets_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internship_agreement_presets USING btree (school_id);
 
 
 --
@@ -2207,7 +2261,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201109145559'),
 ('20201116085327'),
 ('20201203153154'),
-('20210113140604'),
 ('20210112164129'),
+('20210113140604'),
 ('20210121171025'),
-('20210121172155');
+('20210121172155'),
+('20210128162938');
+
+

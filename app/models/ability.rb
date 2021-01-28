@@ -95,7 +95,7 @@ class Ability
       edit_main_teacher_full_name
       edit_terms_rich_text
       edit_activity_rating_rich_text
-      edit_financial_conditions_rich_text
+      edit_financial_terms_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end

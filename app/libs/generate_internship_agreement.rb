@@ -59,7 +59,7 @@ class GenerateInternshipAgreement < Prawn::Document
   def terms
     subtitle "il a été convenu ce qui suit :"
     subtitle "TITRE PREMIER : DISPOSITIONS GÉNÉRALES"
-    html_formating @internship_agreement.terms_rich_text.body.to_s
+    html_formating @internship_agreement.legal_terms_rich_text.body.to_s
     @pdf.move_down 20
   end
 
