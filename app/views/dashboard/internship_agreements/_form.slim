@@ -50,6 +50,13 @@ fieldset
     - content = "Nom et prénom du chef d'etablissement"
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: :school_representative_full_name, form: form, text_label: label, hint: hint, title: title, content: content}
+  .row.mt-3
+    - label = "Le chef d'etablissement a été nommée apte a signé les conventions par le conseil d'administration de l'établissement en date du :"
+    - hint = "en qualité de chef d’établissement"
+    - title = "Note destinée au chef d'établissement :"
+    - content = "Date du conseil d'administration"
+    = render partial: 'dashboard/internship_agreements/date_field_element',
+             locals: { field: :school_delegation_to_sign_delivered_at, form: form, text_label: label, hint: hint, title: title, content: content}
 
   .row.mt-3
     .col-8

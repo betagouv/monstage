@@ -13,6 +13,7 @@ module Dashboard::InternshipAgreements
         'internship_application_id'             => internship_application.id,
         'student_school'                        => internship_agreement.student_school,
         'school_representative_full_name'       => internship_agreement.school_representative_full_name,
+        'school_delegation_to_sign_delivered_at' => 10.days.ago.to_date,
         'student_full_name'                     => internship_agreement.student_full_name,
         'student_class_room'                    => internship_agreement.student_class_room,
         'main_teacher_full_name'                => internship_agreement.main_teacher_full_name,
@@ -45,6 +46,9 @@ module Dashboard::InternshipAgreements
       assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
+      internship_agreement = InternshipAgreement.first
+      assert_equal internship_application.student.class_room.school_track, internship_agreement.school_track
+      assert_equal 10.days.ago.to_date, internship_agreement.school_delegation_to_sign_delivered_at
     end
 
     test 'POST #create as School Manager fail when missing params' do
