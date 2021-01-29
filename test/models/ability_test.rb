@@ -141,10 +141,10 @@ class AbilityTest < ActiveSupport::TestCase
        update
        see_intro
        edit_school_representative_full_name
-       edit_terms_rich_text
+       edit_legal_terms_rich_text
        edit_student_full_name
        edit_student_school
-       edit_terms_rich_text
+       edit_legal_terms_rich_text
        edit_school_representative_full_name
        edit_student_school
        edit_financial_terms_rich_text].each do |meth|

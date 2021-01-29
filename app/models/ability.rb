@@ -93,7 +93,7 @@ class Ability
       edit_student_class_room
       edit_student_school
       edit_main_teacher_full_name
-      edit_terms_rich_text
+      edit_legal_terms_rich_text
       edit_activity_rating_rich_text
       edit_financial_terms_rich_text
     ], InternshipAgreement do |agreement|
