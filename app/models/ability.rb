@@ -88,13 +88,14 @@ class Ability
       create
       update
       see_intro
-      edit_student_full_name
       edit_school_representative_full_name
-      edit_student_class_room
+      edit_school_delegation_to_sign_delivered_at
       edit_student_school
+      edit_student_full_name
+      edit_student_class_room
       edit_main_teacher_full_name
-      edit_legal_terms_rich_text
       edit_activity_rating_rich_text
+      edit_legal_terms_rich_text
       edit_financial_terms_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id

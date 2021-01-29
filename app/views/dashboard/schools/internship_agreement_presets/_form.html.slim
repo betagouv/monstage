@@ -5,21 +5,9 @@
       .col.text-danger
         | Avant de pouvoir signer les conventions de stages, vous devez indiquer et valider la date d’autorisation de signatures par le conseil d’administration de votre établissement.
       .col-12.col-sm-4.pt-3.pt-sm-0
-        .input-group.custom-label-container data-controller="a11y-date-input"
-          = f.text_field :school_delegation_to_sign_delivered_at,
-                         value: internship_agreement_preset.try(:school_delegation_to_sign_delivered_at).try(:strftime,'%d/%m/%Y'),
-                         class: 'form-control',
-                         required: true,
-                         placeholder: 'jj/mm/aaaa',
-                         data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' }
-          = f.label :school_delegation_to_sign_delivered_at do
-            | Date de délégation
-            = f.rg2a_required_content_tag
+        = render layout: "inputs/date_input", locals: { form: f, container_class_name: "input-group", attribute_name: :school_delegation_to_sign_delivered_at, attribute_label: 'Date de délégation' } do
           .input-group-append
             = f.button class: 'bg-primary text-white b-none rounded-circle-right-input' do
               .fa.fa-check
               br
               small Valider
-
-          small.form-text.text-danger.d-none data-a11y-date-input-target="errorContainer"
-

@@ -10,10 +10,9 @@ module Builders
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
           .merge(preprocess_internship_application_paramns(internship_application))
+          .merge(preprocess_internship_agreement_preset(internship_application))
       )
       internship_agreement.internship_application = internship_application
-      internship_agreement.legal_terms_rich_text.body = internship_application.student.school.internship_agreement_preset.legal_terms_rich_text.body
-      internship_agreement.financial_terms_rich_text.body = internship_application.student.school.internship_agreement_preset.financial_terms_rich_text.body || "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
       internship_agreement
     end
 
@@ -61,6 +60,16 @@ module Builders
     def preprocess_internship_application_paramns(internship_application)
       {
         date_range: internship_application.week.short_select_text_method
+      }
+    end
+
+    def preprocess_internship_agreement_preset(internship_application)
+      internship_agreement_preset = internship_application.student.school.internship_agreement_preset
+
+      {
+        school_delegation_to_sign_delivered_at: internship_agreement_preset.school_delegation_to_sign_delivered_at,
+        legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
+        financial_terms_rich_text: internship_agreement_preset.financial_terms_rich_text.body
       }
     end
 
