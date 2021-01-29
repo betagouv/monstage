@@ -21,7 +21,14 @@ module Dashboard
 
         assert_response :success
         assert_select ".student-application-#{application.id}"
-        # assert_select "input[name=internship_agreement_presets_terms_rich_text]"
+        assert_select 'form[data-test-id="internship_agreement_preset_form"]',
+                      count: 1
+
+        school.internship_agreement_preset.update!(school_delegation_to_sign_delivered_at: 2.days.ago)
+        get dashboard_school_internship_applications_path(school)
+
+        assert_select 'form[data-test-id="internship_agreement_preset_form"]',
+                      count: 0
       end
     end
   end
