@@ -18,7 +18,7 @@
                         class: 'form-control',
                         required: true,
                         disabled: true
-      = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_hidden"
+      = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_#{field}_hidden"
 
     - if hint.present?
       small.text-muted= hint
