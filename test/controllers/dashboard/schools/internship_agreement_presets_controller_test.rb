@@ -10,7 +10,7 @@ module Dashboard
       #
       # update by group
       #
-      test 'PATCH as SchoolManagement update preset' do
+      test 'PATCH as SchoolManager update preset' do
         school = create(:school, :with_school_manager)
         sign_in(school.school_manager)
         date = 2.years.ago.to_date

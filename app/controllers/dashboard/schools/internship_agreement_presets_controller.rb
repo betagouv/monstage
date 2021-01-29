@@ -8,9 +8,7 @@ module Dashboard
       def update
         authorize! :update, School
         @internship_offer_preset = @school.internship_agreement_preset
-        byebug
         @internship_offer_preset.update!(internship_agreement_preset_params)
-        byebug
         redirect_to(dashboard_school_internship_applications_path,
                     flash: { success: 'Etablissement mis à jour avec succès' })
       rescue ActiveRecord::RecordInvalid

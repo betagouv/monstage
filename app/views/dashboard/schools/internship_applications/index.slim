@@ -1,6 +1,6 @@
 = render partial: 'dashboard/schools/navbar', locals: { school: @school }
 
 - unless @school.internship_agreement_preset.filled?
-  = form_with(model: @school.internship_agreement_preset, url: dashboard_school_internship_offer_preset_path(@school, @school.internship_agreement_preset))
+  = form_with(model: @school.internship_agreement_preset, url: dashboard_school_internship_agreement_preset_path(@school, @school.internship_agreement_preset))
 - @applications_by_class_room.each do |class_room, applications|
   = render partial: 'class_room_tbody', locals: { class_room: class_room, applications: applications }

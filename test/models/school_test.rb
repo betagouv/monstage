@@ -11,7 +11,7 @@ class SchoolTest < ActiveSupport::TestCase
   end
 
   test 'nested objects on creation' do
-    assert create(:school).internship_agreement_presets.present?
+    assert create(:school).internship_agreement_preset.present?
   end
 
   test 'Users associations' do
