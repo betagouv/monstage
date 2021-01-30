@@ -70,7 +70,7 @@ class SchoolTest < ActiveSupport::TestCase
     assert school.has_staff?
   end
 
-  test 'counts school weeks of this current_year only' do
+  test 'scope without_weeks_on_current_year counts school weeks of this current_year only' do
     travel_to(Date.new(2021, 3, 1)) do
       weeks_1   = Week.from_date_to_date(from: Date.today, to: Date.today + 7.days)
 

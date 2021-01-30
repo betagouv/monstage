@@ -28,12 +28,6 @@ class School < ApplicationRecord
                            .having('count(users.id) > 0')
                        }
 
-  scope :without_weeks, lambda {
-    left_joins(:weeks)
-      .group('schools.id')
-      .having('count(school_internship_weeks.school_id) = 0')
-  }
-
   scope :without_weeks_on_current_year, lambda {
     all.where.not(
       id: self.joins(:weeks)
@@ -41,7 +35,6 @@ class School < ApplicationRecord
               .pluck(:id)
     )
   }
-
 
   scope :missing_school_week_count_gt, lambda { |threshold|
     where('missing_school_weeks_count > ?', threshold)
