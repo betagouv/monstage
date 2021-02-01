@@ -9,8 +9,8 @@ class Week < ApplicationRecord
 
   has_many :internship_offers, through: :internship_offer_weeks
 
-  has_many :internship_offer_info_weeks, dependent: :destroy, 
-                                         foreign_key: :internship_offer_info_id # ,
+  has_many :internship_offer_info_weeks, dependent: :destroy,
+                                         foreign_key: :internship_offer_info_id
   has_many :internship_offer_infos, through: :internship_offer_info_weeks
 
   has_many :school_internship_weeks, dependent: :destroy
@@ -54,7 +54,7 @@ class Week < ApplicationRecord
     last_day_of_may_week    = Date.new(school_year + 1, 5, 31).cweek
 
     where('number >= ?', first_week_of_september).where( year: school_year)
-     .or(where('number <= ?',last_day_of_may_week).where( year: school_year + 1))
+     .or(where('number <= ?', last_day_of_may_week).where( year: school_year + 1))
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'

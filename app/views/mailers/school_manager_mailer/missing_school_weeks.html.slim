@@ -11,5 +11,5 @@ p style=p_styles
 p style=p_styles
   = "A l'heure actuelle, "
   strong style="color: #dc3545"= "#{@school.missing_school_weeks_count} élève(s) "
-  = "n'ont pas pu postuler. Vous pouvez en ajouter depuis votre espace en cliquant sur ce lien : "
+  = "n'ont pas pu postuler. Vous pouvez ajouter des semaines de stage depuis votre espace en cliquant sur ce lien : "
 = render(partial: "mailers/call_to_action", locals: {href: edit_dashboard_school_url(@school), label:'Ajouter des semaines de stage'})
