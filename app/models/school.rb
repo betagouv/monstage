@@ -37,7 +37,8 @@ class School < ApplicationRecord
     where('missing_school_weeks_count > ?', thresold)
   }
 
-  after_create :create_internship_agreement_preset!
+  after_create :create_internship_agreement_preset!,
+               if: lambda { |s| s.internship_agreement_preset.blank? }
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end

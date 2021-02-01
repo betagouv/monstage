@@ -56,6 +56,68 @@ module W3c
       end
     end
 
+    test 'index as school manager without presets' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, :troisieme_generale, school: school)
+      student = create(:student, school: school, class_room: class_room)
+
+      internship_application = create(:weekly_internship_application,
+                                      :approved,
+                                      student: student)
+      sign_in(school.school_manager)
+      run_request_and_cache_response(report_as: 'school_manager_dashboard_school_internship_applications_path_without_presets') do
+        visit dashboard_school_internship_applications_path(school)
+      end
+    end
+
+    test 'index as school manager with presets' do
+      school = create(:school, :with_agreement_presets, :with_school_manager)
+      class_room = create(:class_room, :troisieme_generale, school: school)
+      student = create(:student, school: school, class_room: class_room)
+
+      internship_application = create(:weekly_internship_application,
+                                      :approved,
+                                      student: student)
+      sign_in(school.school_manager)
+
+      run_request_and_cache_response(report_as: 'school_manager_dashboard_school_internship_applications_path_with_presets') do
+        visit dashboard_school_internship_applications_path(school)
+      end
+    end
+
+
+    test 'index as school_manager see progress' do
+      school = create(:school, :with_agreement_presets, :with_school_manager)
+      class_room = create(:class_room, :troisieme_generale, school: school)
+
+      internship_application_1 = create(:weekly_internship_application,
+                                               :approved,
+                                                student: create(:student, school: school, class_room: class_room))
+      internship_application_2 = create(:weekly_internship_application,
+                                               :approved,
+                                                student: create(:student, school: school, class_room: class_room))
+      internship_application_3 = create(:weekly_internship_application,
+                                               :approved,
+                                                student: create(:student, school: school, class_room: class_room))
+      internship_application_4 = create(:weekly_internship_application,
+                                               :approved,
+                                                student: create(:student, school: school, class_room: class_room))
+
+      create(:internship_agreement, internship_application: internship_application_2,
+                                    employer_accept_terms: true,
+                                    school_manager_accept_terms: false)
+      create(:internship_agreement, internship_application: internship_application_3,
+                                    employer_accept_terms: false,
+                                    school_manager_accept_terms: true)
+      create(:internship_agreement, internship_application: internship_application_4,
+                                    employer_accept_terms: true,
+                                    school_manager_accept_terms: true)
+      sign_in(school.school_manager)
+      run_request_and_cache_response(report_as: 'school_manager_dashboard_school_internship_applications_path_with_steps') do
+        visit dashboard_school_internship_applications_path(school)
+      end
+    end
+
     test 'employer dashboard_internship_applications_path' do
       internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
@@ -64,17 +126,6 @@ module W3c
       end
     end
 
-    test 'school_manager dashboard_school_internship_applications_path' do
-      school = create(:school)
-      school_manager = create(:school_manager, school: school)
-      class_room = create(:class_room, school: school)
-      student = create(:student, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :approved, student: student)
-      sign_in(school_manager)
-      run_request_and_cache_response(report_as: 'dashboard_school_internship_applications_path') do
-        visit dashboard_school_internship_applications_path(school)
-      end
-    end
 
     test 'school_manager dashboard_school_users_path' do
       school = create(:school)
