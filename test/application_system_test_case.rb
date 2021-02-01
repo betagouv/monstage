@@ -12,4 +12,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
                                                                   files
                                                                   api-address-paris-13.json])))
   end
+
+
 end

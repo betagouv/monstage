@@ -108,7 +108,6 @@ module Dashboard
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
-      screenshot_full_page('agreement_form_as_employer.png')
     end
 
     test 'as School Manager, I can edit my own fields only' do
@@ -162,7 +161,6 @@ module Dashboard
       ].each do |trix_field_id|
         assert_trix_editor_editable(trix_field_id)
       end
-      screenshot_full_page('agreement_form_as_school_manager.png')
     end
 
     test 'as Main Teacher, I can edit my own fields only' do
@@ -222,7 +220,6 @@ module Dashboard
       ].each do |trix_field_id|
         assert_trix_editor_editable(trix_field_id)
       end
-      screenshot_full_page('agreement_form_as_main_teacher.png')
     end
 
 
