@@ -8,7 +8,9 @@
                         width: 240,
                         class: 'mb-3'
               
-          h1.text-white= PrismicFinder.homepage()['homepage.title'].as_text
+          h1.text-white
+            - cache PrismicFinder do
+              = PrismicFinder.homepage()['homepage.title'].as_text
 
 .bg-transparent
   .container
