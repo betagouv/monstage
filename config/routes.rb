@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
+  get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'
   get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
   get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'

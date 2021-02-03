@@ -7,6 +7,9 @@ nav.navbar.navbar-light.py-0
           = current_user.class.name.split('::')&.second
           - unless current_user.try(:school_track).nil?
             => " | #{current_user.try(:school_track)}"
+  - if current_user.is_a?(Users::God)
+    .nav-item.h6.d-none.d-md-inline.px-1
+      = link_to "Reset cache", reset_cache_path(), class: "btn btn-outline-danger btn-sm"
 
   ul.nav.nav-banner.float-xs-none.float-sm-right.d-print-none
     - if user_signed_in?

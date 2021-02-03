@@ -202,6 +202,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
+    can :reset_cache, User
   end
 
   private
