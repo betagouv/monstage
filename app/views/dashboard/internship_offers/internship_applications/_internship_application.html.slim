@@ -102,7 +102,7 @@
               = "En attente de convention"
           div.mt-2
             .d-inline-flex
-              - if ENV['CONVENTION_ENABLED']
+              - if can?(:create, InternshipAgreement)
                 = link_to 'Créer la convention en ligne', '#', class: 'btn btn-outline-danger'
 
         - if internship_application.rejected?
