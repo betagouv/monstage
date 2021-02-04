@@ -1,13 +1,14 @@
 - if internship_agreement.try(:confirmed_by?, user: current_user)
-  .row
-    .col-8.text-center.align-self-center data-test="internship-agreement-progress-#{internship_agreement.id}"
-      = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user))
-
-    .col-4
-      - if ready_to_print?
+  .row data-test="internship-agreement-progress-#{internship_agreement.id}"
+    - if ready_to_print?
+      .col-12.text-center.align-self-center
         = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf), class: 'btn btn-primary btn-sm ml-2 text-nowrap' do
           i.fa.fa-print
-      - else
+          span.text-action= " Imprimer la convention"
+    - else
+      .col-8.text-center.align-self-center
+        = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user))
+      .col-4.text-center.align-self-center
         span.btn.btn-light.btn-sm.ml-2.text-nowrap
           i.fa.fa-print
 - else
