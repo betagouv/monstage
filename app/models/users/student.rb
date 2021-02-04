@@ -85,6 +85,13 @@ module Users
         .map(&:expire!)
     end
 
+    def main_teacher
+      return nil if try(:class_room).nil?
+
+      Users::SchoolManagement.find_by(class_room_id: class_room.id,
+                                      role: 'main_teacher')
+    end
+
     def anonymize(send_email: true)
       super(send_email: send_email)
 

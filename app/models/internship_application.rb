@@ -135,9 +135,9 @@ class InternshipApplication < ApplicationRecord
                                 StudentMailer.internship_application_approved_email(internship_application: self)
                               end
                            end
-                           student.school.main_teachers.map do |main_teacher|
+                           unless student.main_teacher.nil?
                              MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                                     main_teacher: main_teacher)
+                                                                                     main_teacher: student.main_teacher)
                                               .deliver_later
                            end
                          }
