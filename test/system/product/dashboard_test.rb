@@ -2,11 +2,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class DashboardTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
-
     test 'dashboard_internship_offers_path' do
       employer = create(:employer)
       internship_offer = create(:weekly_internship_offer, employer: employer)
