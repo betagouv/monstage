@@ -10,7 +10,7 @@ FactoryBot.define do
     tutor_full_name { 'Julie Mentor' }
     date_range { "du 10/10/2020 au 15/10/2020" }
     activity_scope_rich_text { '<div>Accueil clients</div>'}
-    financial_terms_rich_text { '<div>Ticket resto</div>'}
+    complementary_terms_rich_text { '<div>Ticket resto</div>'}
     activity_preparation_rich_text { '<div>Appel téléphonique</div>'}
     school_manager_accept_terms { true }
 

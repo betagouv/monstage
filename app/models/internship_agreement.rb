@@ -20,9 +20,9 @@ class InternshipAgreement < ApplicationRecord
   has_rich_text :activity_learnings_rich_text
   has_rich_text :activity_rating_rich_text
 
-  # beware, financial_terms_rich_text/lega_terms_rich_text are recopy from school.internship_agreement_presets.*
+  # beware, complementary_terms_rich_text/lega_terms_rich_text are recopy from school.internship_agreement_presets.*
   #         it must stay a recopy and not a direct link (must live separatery)
-  has_rich_text :financial_terms_rich_text
+  has_rich_text :complementary_terms_rich_text
   has_rich_text :legal_terms_rich_text
 
   attr_accessor :enforce_school_manager_validations
@@ -103,14 +103,14 @@ class InternshipAgreement < ApplicationRecord
 
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
-    errors.add(:financial_terms_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_terms_rich_text.blank?
+    errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
     if !troisieme_generale? && activity_learnings_rich_text.blank?
       errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
     end
   end
 
   def valid_trix_school_manager_fields
-    errors.add(:financial_terms_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_terms_rich_text.blank?
+    errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
     if !troisieme_generale? && activity_rating_rich_text.blank?
       errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
     end

@@ -96,7 +96,7 @@ class Ability
       edit_main_teacher_full_name
       edit_activity_rating_rich_text
       edit_legal_terms_rich_text
-      edit_financial_terms_rich_text
+      edit_complementary_terms_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
@@ -146,6 +146,7 @@ class Ability
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.employer == user
     end

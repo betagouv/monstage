@@ -21,7 +21,7 @@ module Dashboard
 
       def internship_agreement_preset_params
         params.require(:internship_agreement_preset)
-              .permit(:legal_terms, :financial_terms, :school_delegation_to_sign_delivered_at)
+              .permit(:legal_terms, :complementary_terms_rich_text, :school_delegation_to_sign_delivered_at)
       end
 
     end

@@ -66,11 +66,13 @@ module Builders
     def preprocess_internship_agreement_preset(internship_application)
       internship_agreement_preset = internship_application.student.school.internship_agreement_preset
 
-      {
+      params = {
         school_delegation_to_sign_delivered_at: internship_agreement_preset.school_delegation_to_sign_delivered_at,
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
-        financial_terms_rich_text: internship_agreement_preset.financial_terms_rich_text.body
+        complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
       }
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.troisieme_generale?
+      params
     end
 
     def preprocess_internship_offer_params(internship_offer)

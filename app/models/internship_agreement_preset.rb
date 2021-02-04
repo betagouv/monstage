@@ -4,7 +4,8 @@ class InternshipAgreementPreset < ApplicationRecord
   belongs_to :school
 
   has_rich_text :legal_terms_rich_text
-  has_rich_text :financial_terms_rich_text
+  has_rich_text :complementary_terms_rich_text
+  has_rich_text :troisieme_generale_activity_rating_rich_text
 
   LEGAL_TERMS = %Q(
     <div><strong>Article 1</strong> - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
@@ -34,7 +35,7 @@ class InternshipAgreementPreset < ApplicationRecord
     <div>
   )
 
-  FINANCIAL_TERMS = %Q(
+  COMPLEMENTARY_TERMS = %Q(
     <div><strong>1 – HÉBERGEMENT</strong> Ajouter les conditions d'hébergement si besoin.</div>
     <div><br/></div>
     <div><strong>2 – RESTAURATION</strong> Ajouter les conditions de restauration si besoin.</div>
@@ -42,6 +43,14 @@ class InternshipAgreementPreset < ApplicationRecord
     <div><strong>3 – TRANSPORT</strong> Ajouter les conditions de transport si besoin.</div>
     <div><br/></div>
     <div><strong>4 – ASSURANCE</strong> Ajouter les conditions d'assurance si besoin.</div>
+    <div><br/></div>
+    <div><strong>5 – SANITAIRE</strong> Ajouter les conditions sanitaire si besoin.</div>
+    <div><br/></div>
+    <div><strong>4 – SECURITÉ</strong> Ajouter les conditions liées à la sécurité.</div>
+  )
+
+  TROISIEME_GENERALE_ACTIVITY_RATING_RICH_TEXT = %Q(
+    <div>Capacité d'écoute, capacité à retenir les informations...</div>
   )
 
   def filled?
@@ -51,6 +60,7 @@ class InternshipAgreementPreset < ApplicationRecord
   private
   def assign_default
     legal_terms_rich_text.body = LEGAL_TERMS
-    financial_terms_rich_text.body = FINANCIAL_TERMS
+    complementary_terms_rich_text.body = COMPLEMENTARY_TERMS
+    troisieme_generale_activity_rating_rich_text.body = TROISIEME_GENERALE_ACTIVITY_RATING_RICH_TEXT
   end
 end

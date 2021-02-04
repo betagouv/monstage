@@ -181,7 +181,7 @@ fieldset
     - title = "Note destinée au chef d'établissement :"
     - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
     = render partial: 'dashboard/internship_agreements/trix_form_element',
-             locals: { field: :financial_terms_rich_text, form: form, text_label: label, title: title, content: content }
+             locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content }
 
   .row.mt-3
     .col-8

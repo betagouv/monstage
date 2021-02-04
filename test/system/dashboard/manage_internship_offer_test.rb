@@ -164,12 +164,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_text('2019/2020 unpublished')
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-      if ENV['CONVENTION_ENABLED']
-        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions de stage')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-        click_link('Conventions de stage')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      end
+      page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      click_link('Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
     end
   end
 

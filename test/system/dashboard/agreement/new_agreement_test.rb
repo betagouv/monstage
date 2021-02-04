@@ -104,7 +104,7 @@ module Dashboard
       %w[
         internship_agreement_activity_scope_rich_text
         internship_agreement_activity_rating_rich_text
-        internship_agreement_financial_terms_rich_text
+        internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
@@ -157,7 +157,7 @@ module Dashboard
         refute_trix_editor_editable(trix_field_id)
       end
       %w[
-        internship_agreement_financial_terms_rich_text
+        internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         assert_trix_editor_editable(trix_field_id)
       end
@@ -165,7 +165,7 @@ module Dashboard
 
     test 'as Main Teacher, I can edit my own fields only' do
       internship_offer = create(:weekly_internship_offer)
-      school           = create(:school, :with_school_manager)
+      school           = create(:school, :with_school_manager, :with_agreement_presets)
       class_room       = create(:class_room, school: school)
       main_teacher     = create(:main_teacher, school: school, class_room_id: class_room.id)
       student          = create(:student, school: school, class_room: class_room)
@@ -211,7 +211,7 @@ module Dashboard
       # Trix fields tests
       %w[
         internship_agreement_activity_scope_rich_text
-        internship_agreement_financial_terms_rich_text
+        internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
