@@ -3,7 +3,7 @@
 require 'application_system_test_case'
 
 class AutocompleteSchoolTest < ApplicationSystemTestCase
-  include Devise::Test::IntegrationHelpers
+
   setup do
     @default_school_name = 'Pasteur'
     @default_school_city = 'Mantes-la-Jolie'

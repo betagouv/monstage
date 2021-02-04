@@ -2,7 +2,7 @@ require 'application_system_test_case'
 
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
-    include Devise::Test::IntegrationHelpers
+
 
     def field_edit_is_allowed?(label:, id: nil)
       test_word = 'test word'
@@ -14,9 +14,15 @@ module Dashboard
     end
 
     def field_edit_is_not_allowed?(label: nil, id: nil)
-      assert find("input##{id}")['disabled'] == 'true' if id.present?
-      assert find_field(label, disabled: true) if label.present?
-      true
+      if id.present?
+        assert find("input##{id}")['disabled'] == 'true',
+               "fail to find disabled input for #{id}"
+      end
+      if label.present?
+        assert find_field(label, disabled: true),
+               "fail to find label for #{label}"
+
+      end
     end
 
     def fill_in_trix_editor(id, with:)
