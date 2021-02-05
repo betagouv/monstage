@@ -3,7 +3,24 @@
 require 'test_helper'
 
 module Finders
-  class TabSchoolTest < ActiveSupport::TestCase
+  class TabMainTeacherTest < ActiveSupport::TestCase
+    test 'pending_agreements_count only count 3e generale applications' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, :troisieme_segpa, school: school)
+      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      student_1 = create(:student, school: school, class_room: class_room)
+      student_2 = create(:student, school: school, class_room: class_room)
+
+      draft_internship_application = create(:free_date_internship_application,
+                                               :approved,
+                                               student: student_1)
+      approved_internship_application = create(:weekly_internship_application,
+                                               :approved,
+                                               student: student_2)
+      tab_main_teacher = TabMainTeacher.new(main_teacher: main_teacher)
+      assert_equal 1, tab_main_teacher.pending_agreements_count
+    end
+
     test 'pending_agreements_count include approved and exclude draft applications' do
       school = create(:school, :with_school_manager)
       class_room = create(:class_room, school: school)

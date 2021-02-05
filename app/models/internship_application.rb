@@ -92,6 +92,8 @@ class InternshipApplication < ApplicationRecord
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
+
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
   scope :default_order, ->{ order(updated_at: :desc) }
 

@@ -6,6 +6,7 @@ module Finders
       # internship_agreement approved with internship_agreement without terms_accepted
       @pending_internship_agreement_count ||= school.internship_applications
                                                     .approved
+                                                    .troisieme_generale
                                                     .joins(:internship_agreement)
                                                     .where(internship_agreement: {school_manager_accept_terms: false})
                                                     .count
@@ -13,6 +14,7 @@ module Finders
       # internship_applications approved without internship_agreement
       @to_be_created_internnship_agreement ||= school.internship_applications
                                                      .approved
+                                                     .troisieme_generale
                                                      .left_outer_joins(:internship_agreement)
                                                      .where(internship_agreement: {internship_application_id: nil})
                                                      .count

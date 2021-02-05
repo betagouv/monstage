@@ -13,13 +13,17 @@ module Dashboard
 
       def applications_for_school_managers
         @applications_by_class_room ||= group_by_class_room do
-          @school.internship_applications.approved
+          @school.internship_applications
+                 .approved
+                 .troisieme_generale
         end
       end
 
       def applications_for_main_teachers
         @applications_by_class_room ||= group_by_class_room do
-          InternshipApplication.approved.through_teacher(teacher: current_user)
+          InternshipApplication.approved
+                               .troisieme_generale
+                               .through_teacher(teacher: current_user)
         end
       end
 
