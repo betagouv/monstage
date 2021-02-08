@@ -30,12 +30,13 @@ module Dashboard::InternshipAgreements
     end
 
     test 'GET #edit as Main teacher owning application student application is successful' do
-      school                 = create(:school, :with_school_manager)
-      class_room             = create(:class_room, school: school)
-      student                = create(:student, school: school, class_room: class_room)
-      main_teacher           = create(:main_teacher, school: school, class_room: class_room)
-      internship_application = create(:internship_application_with_agreement, user_id: student.id)
-      internship_agreement   = internship_application.internship_agreement
+      school = create(:school, :with_school_manager)
+      student = create(:student, :troisieme_segpa, school: school)
+      main_teacher = create(:main_teacher, school: school, class_room: student.class_room)
+      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
+
       new_main_teacher_full_name = 'Odile Dus'
       params = {
         'internship_agreement' => {
@@ -66,14 +67,13 @@ module Dashboard::InternshipAgreements
     end
 
     test 'PATCH #update as employer owning internship_offer updates internship_agreement' do
-      # internship_application = create(:weekly_internship_application, :approved)
-      # internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
-      school                 = create(:school, :with_school_manager)
-      class_room             = create(:class_room, school: school)
-      student                = create(:student, school: school, class_room: class_room)
-      main_teacher           = create(:main_teacher, school: school, class_room: class_room)
-      internship_application = create(:internship_application_with_agreement, user_id: student.id)
-      internship_agreement   = internship_application.internship_agreement
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school: school, class_room: class_room)
+      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
       new_organisation_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
@@ -104,18 +104,20 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement' do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
+      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    school_manager_accept_terms: true,
+                                    internship_application: internship_application)
+      school_manager = internship_application.student.school.school_manager
       new_school_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
           school_representative_full_name: new_school_representative_full_name
         }
       }
-      sign_in(internship_application.student.school.school_manager)
-
+      sign_in(school_manager)
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_school_internship_applications_path(internship_application.student.school),
+      assert_redirected_to(school_manager.custom_agreements_path,
                            'redirection should point to updated agreement')
       assert_equal(new_school_representative_full_name,
                    internship_agreement.reload.school_representative_full_name,

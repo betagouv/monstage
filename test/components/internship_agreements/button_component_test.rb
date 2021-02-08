@@ -46,7 +46,8 @@ module InternshipAgreements
                                       :approved,
                                       internship_offer: internship_offer,
                                       user_id: student.id)
-      internship_agreement = create(:internship_agreement, internship_application: internship_application)
+      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
       render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_agreement.internship_application,
                                         current_user: employer))
 

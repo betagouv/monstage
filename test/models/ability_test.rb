@@ -47,7 +47,8 @@ class AbilityTest < ActiveSupport::TestCase
     employer               = create(:employer)
     internship_offer       = create(:weekly_internship_offer, employer: employer)
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
-    internship_agreement   = create(:troisieme_generale_internship_agreement, internship_application: internship_application)
+    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
     ability                = Ability.new(employer)
 
     assert(ability.can?(:create, InternshipOffer.new),
@@ -97,6 +98,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:apply, create(:weekly_internship_offer))
     refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
+    assert ability.can?(:new, InternshipAgreement)
   end
 
   test 'SchoolManager' do
@@ -105,7 +107,8 @@ class AbilityTest < ActiveSupport::TestCase
     another_school = create(:school)
     school_manager = create(:school_manager, school: school)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement = create(:troisieme_generale_internship_agreement, internship_application: internship_application)
+    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                  internship_application: internship_application)
     ability = Ability.new(school_manager)
 
 
@@ -161,7 +164,8 @@ class AbilityTest < ActiveSupport::TestCase
     class_room             = create(:class_room, school: school)
     main_teacher           = create(:main_teacher, school: school, class_room: class_room)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement   = create(:troisieme_generale_internship_agreement, internship_application: internship_application)
+    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
     ability = Ability.new(main_teacher)
 
 

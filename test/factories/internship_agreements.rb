@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :internship_agreement do
     internship_application { create(:weekly_internship_application) }
+
     student_school { internship_application.student.school.name }
     school_representative_full_name { internship_application.student.school.name }
     student_full_name { 'Jean-Claude Dus' }
@@ -12,7 +13,6 @@ FactoryBot.define do
     activity_scope_rich_text { '<div>Accueil clients</div>'}
     complementary_terms_rich_text { '<div>Ticket resto</div>'}
     activity_preparation_rich_text { '<div>Appel téléphonique</div>'}
-    school_manager_accept_terms { true }
 
     trait :troisieme_generale_internship_agreement do
       school_track { 'troisieme_generale' }
@@ -36,6 +36,10 @@ FactoryBot.define do
       school_track { 'bac_pro' }
       activity_rating_rich_text { '<div>Rapport de stage</div>'}
       activity_learnings_rich_text { '<div>Communication orale</div>'}
+    end
+
+    trait :created_by_system do
+      skip_validations_for_system { true }
     end
 
     factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],

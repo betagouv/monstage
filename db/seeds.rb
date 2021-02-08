@@ -386,6 +386,12 @@ def call_method_with_metrics_tracking(methods)
   end
 end
 
+def prevent_sidekiq_to_run_job_after_seed_loaded
+  Sidekiq.redis do |redis_con|
+    redis_con.flushall
+  end
+end
+
 if Rails.env == 'review' || Rails.env.development?
   require 'factory_bot_rails'
   call_method_with_metrics_tracking([
@@ -403,4 +409,5 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_agreements
   ])
   School.update_all(updated_at: Time.now)
+  prevent_sidekiq_to_run_job_after_seed_loaded
 end

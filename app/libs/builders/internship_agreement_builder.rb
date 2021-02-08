@@ -43,11 +43,9 @@ module Builders
     private
 
     attr_reader :user, :ability, :callback
-    # attr_reader :skip_terms_validations
 
     def initialize(user:, skip_terms_validation: false)
       @user = user
-      # @skip_terms_validation = skip_terms_validation
       @ability = Ability.new(user)
       @callback = Callback.new
     end
@@ -57,6 +55,7 @@ module Builders
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
+      return { skip_validations_for_system: true } if user.is_a?(Users::God)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 

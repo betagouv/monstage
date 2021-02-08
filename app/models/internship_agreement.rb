@@ -28,7 +28,7 @@ class InternshipAgreement < ApplicationRecord
   attr_accessor :enforce_school_manager_validations
   attr_accessor :enforce_employer_validations
   attr_accessor :enforce_main_teacher_validations
-  # attr_accessor :skip_terms_validations
+  attr_accessor :skip_validations_for_system
 
   # todo flip based on current switch/branch
   with_options if: :enforce_main_teacher_validations? do
@@ -67,6 +67,7 @@ class InternshipAgreement < ApplicationRecord
 
 
   def at_least_one_validated_terms
+    return true if skip_validations_for_system
     return true if [school_manager_accept_terms, employer_accept_terms, main_teacher_accept_terms].any?
 
     if [enforce_employer_validations?,

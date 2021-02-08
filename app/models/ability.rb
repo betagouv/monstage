@@ -40,7 +40,7 @@ class Ability
     can %i[submit_internship_application update], InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
-    
+
     can %i[create], InternshipAgreement
 
     can %i[show
@@ -77,7 +77,7 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
-    
+
   end
 
   def school_manager_abilities(user:)
@@ -208,7 +208,7 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[create], InternshipAgreement
+    can %i[new], InternshipAgreement
   end
 
   private
