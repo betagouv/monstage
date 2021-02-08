@@ -32,40 +32,38 @@ class InternshipAgreement < ApplicationRecord
 
   # todo flip based on current switch/branch
   with_options if: :enforce_main_teacher_validations? do
-    validates :student_class_room, presence: true, on: :update
-    validates :main_teacher_full_name, presence: true, on: :update
+    validates :student_class_room, presence: true
+    validates :main_teacher_full_name, presence: true
     validates_inclusion_of :main_teacher_accept_terms,
                            in: ['1', true],
                            message: :main_teacher_accept_terms,
                            on: :update
-    validate :valid_trix_main_teacher_fields, on: :update
+    validate :valid_trix_main_teacher_fields
   end
 
   with_options if: :enforce_school_manager_validations? do
-    validates :student_school, presence: true, on: :update
-    validates :school_representative_full_name, presence: true, on: :update
-    validates :student_full_name, presence: true, on: :update
+    validates :student_school, presence: true
+    validates :school_representative_full_name, presence: true
+    validates :student_full_name, presence: true
     validates_inclusion_of :school_manager_accept_terms,
                            in: ['1', true],
                            message: :school_manager_accept_terms,
                            on: :update
-    validate :valid_trix_school_manager_fields, on: :update
+    validate :valid_trix_school_manager_fields
   end
 
   with_options if: :enforce_employer_validations? do
-    validates :organisation_representative_full_name, presence: true, on: :update
-    validates :tutor_full_name, presence: true, on: :update
-    validates :date_range, presence: true, on: :update
+    validates :organisation_representative_full_name, presence: true
+    validates :tutor_full_name, presence: true
+    validates :date_range, presence: true
     validates_inclusion_of :employer_accept_terms,
                            in: ['1', true],
                            message: :employer_accept_terms,
                            on: :update
-    validate :valid_trix_employer_fields, on: :update
+    validate :valid_trix_employer_fields
   end
 
-  validate :at_least_one_validated_terms,
-           on: :update #,
-          #  unless: :skip_terms_validations?
+  validate :at_least_one_validated_terms
 
 
   def at_least_one_validated_terms
