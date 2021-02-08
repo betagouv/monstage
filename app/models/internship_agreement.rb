@@ -36,8 +36,7 @@ class InternshipAgreement < ApplicationRecord
     validates :main_teacher_full_name, presence: true
     validates_inclusion_of :main_teacher_accept_terms,
                            in: ['1', true],
-                           message: :main_teacher_accept_terms,
-                           on: :update
+                           message: :main_teacher_accept_terms
     validate :valid_trix_main_teacher_fields
   end
 
