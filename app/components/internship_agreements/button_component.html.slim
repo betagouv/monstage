@@ -1,4 +1,11 @@
-- if internship_agreement.try(:confirmed_by?, user: current_user)
+- if !internship_application.student.troisieme_generale?
+  div.d-flex.align-items-center.text-warning.mt-3
+    .d-inline-flex-mr-1
+      i.fas.fa-hourglass-start.fa-2x.fa-fw
+    .d-inline-flex
+      = "Convention à gérer hors plateforme"
+
+- elsif internship_agreement.try(:confirmed_by?, user: current_user)
   .row data-test="internship-agreement-progress-#{internship_agreement.id}"
     - if ready_to_print?
       .col-12.text-center.align-self-center
