@@ -93,10 +93,6 @@ class InternshipAgreement < ApplicationRecord
     enforce_employer_validations == true
   end
 
-  # def skip_terms_validations?
-  #   true
-  # end
-
   def confirmed_by?(user:)
     return school_manager_accept_terms? if user.school_manager?
     return main_teacher_accept_terms? if user.main_teacher?
