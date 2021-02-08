@@ -17,7 +17,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
                                                    enforce_school_manager_validations: true)
     internship_agreement.valid?
 
-    assert internship_agreement.errors.include?(:activity_rating_rich_text) # bang
+    assert internship_agreement.errors.include?(:activity_rating_rich_text)
     assert internship_agreement.errors.include?(:complementary_terms_rich_text)
   end
 
@@ -26,7 +26,7 @@ class InternshipAgreementTest < ActiveSupport::TestCase
                                                    enforce_employer_validations: true)
     internship_agreement.valid?
 
-    assert internship_agreement.errors.include?(:activity_learnings_rich_text) # bang
+    assert internship_agreement.errors.include?(:activity_learnings_rich_text)
     assert internship_agreement.errors.include?(:activity_scope_rich_text)
     assert internship_agreement.errors.include?(:complementary_terms_rich_text)
   end
@@ -36,6 +36,6 @@ class InternshipAgreementTest < ActiveSupport::TestCase
                                                    enforce_main_teacher_validations: true)
     internship_agreement.valid?
 
-    assert internship_agreement.errors.include?(:activity_preparation_rich_text) # bang
+    assert internship_agreement.errors.include?(:activity_preparation_rich_text)
   end
 end

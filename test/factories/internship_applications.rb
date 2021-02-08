@@ -61,17 +61,6 @@ FactoryBot.define do
       end
     end
 
-    factory :internship_application_with_agreement, traits: [:weekly, :approved],
-                                                    parent: :internship_application,
-                                                    class: 'InternshipApplications::WeeklyFramed' do
-      student { create(:student_with_class_room_3e) }
-      after(:create) do |ia|
-          Builders::InternshipAgreementBuilder.new(user: ia.internship_offer.employer)
-                                              .new_from_application(ia)
-                                              .save!
-      end
-    end
-
     trait :free_date do
       internship_offer { create(:free_date_internship_offer) }
     end
