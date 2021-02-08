@@ -202,7 +202,7 @@ module Product
 
     test 'school_manager edit_dashboard_agreement_path' do
       internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system)
-      sign_in(internship_agreement.internship_application.student.school.school_manager)
+      sign_in(internship_agreement.internship_application.student.school_manager)
       run_request_and_cache_response(report_as: 'school_manager edit_dashboard_ageement_path') do
         visit edit_dashboard_internship_agreement_path(id: internship_agreement.id)
       end

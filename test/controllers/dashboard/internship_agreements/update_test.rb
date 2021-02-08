@@ -107,7 +107,7 @@ module Dashboard::InternshipAgreements
       internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
-      school_manager = internship_application.student.school.school_manager
+      school_manager = internship_application.student.school_manager
       new_school_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
