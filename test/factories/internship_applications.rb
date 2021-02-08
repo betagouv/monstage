@@ -76,6 +76,7 @@ FactoryBot.define do
       internship_offer { create(:free_date_internship_offer) }
     end
 
+
     factory :weekly_internship_application, traits: [:weekly],
                                             parent: :internship_application,
                                             class: 'InternshipApplications::WeeklyFramed'

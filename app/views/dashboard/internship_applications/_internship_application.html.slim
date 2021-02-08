@@ -2,7 +2,7 @@ tr class="d-flex student-application-#{internship_application.id} internship-agr
   td.py-3.d-flex.align-items-center.col-sm-3 data-head="#{internship_application.student.name}"
     .align-self-center= internship_application.student.name
   td.py-3.d-flex.align-items-center.col-sm-6 data-head="#{internship_application.internship_offer.title}"
-    = link_to '#', data: { toggle: 'modal', target: "#sign-internship-application-#{internship_application.id}", turbolinks: false } do
+    = link_to '#', data: { toggle: 'modal', target: "##{show_application_modal_id(internship_application)}", turbolinks: false } do
       = internship_application.internship_offer.title
   td.py-3.col-sm-3 style="width: 300px" data-head="Action"
     .actions.d-flex.d-sm-block.text-right

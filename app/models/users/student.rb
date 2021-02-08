@@ -23,7 +23,13 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
-    delegate :school_track, to: :class_room, allow_nil: true
+    delegate :school_track,
+             :troisieme_generale?,
+             :troisieme_prepa_metiers?,
+             :troisieme_segpa?,
+             :bac_pro?,
+             to: :class_room,
+             allow_nil: true
     validates :birth_date,
               :gender,
               presence: true

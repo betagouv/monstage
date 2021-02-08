@@ -94,16 +94,12 @@
               br
               = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
 
-        - if internship_application.approved? && !internship_application.convention_signed?
-          div.d-flex.align-items-center.text-warning.mt-3
-            .d-inline-flex-mr-1
-              i.fas.fa-hourglass-start.fa-2x.fa-fw
+        - if internship_application.approved? && !internship_application.convention_signed? && can?(:create, InternshipAgreement)
+          div.d-flex.align-items-center.mt-2
+            .d-inline-flex.mr-1.text-success
+              i.far.fa-circle.fa-2x.fa-fw
             .d-inline-flex
-              = "En attente de convention"
-          div.mt-2
-            .d-inline-flex
-              - if can?(:create, InternshipAgreement)
-                = link_to 'Créer la convention en ligne', '#', class: 'btn btn-outline-danger'
+              = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user))
 
         - if internship_application.rejected?
           div.d-flex.align-items-center
