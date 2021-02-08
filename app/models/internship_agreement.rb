@@ -56,8 +56,7 @@ class InternshipAgreement < ApplicationRecord
     validates :date_range, presence: true
     validates_inclusion_of :employer_accept_terms,
                            in: ['1', true],
-                           message: :employer_accept_terms,
-                           on: :update
+                           message: :employer_accept_terms
     validate :valid_trix_employer_fields
   end
 
