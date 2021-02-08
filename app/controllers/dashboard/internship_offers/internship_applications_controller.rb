@@ -21,7 +21,6 @@ module Dashboard
         @internship_application = @internship_offer.internship_applications.find(params[:id])
         authorize! :update, @internship_application, InternshipApplication
         if valid_transition?
-          create_internship_agreement_when_approve(params: params)
           @internship_application.send(params[:transition])
           @internship_application.update!(optional_internship_application_params)
           redirect_back fallback_location: current_user.custom_dashboard_path,
@@ -33,15 +32,6 @@ module Dashboard
       rescue AASM::InvalidTransition => e
         redirect_back fallback_location: current_user.custom_dashboard_path,
                       flash: { warning: 'Cette candidature a déjà été traitée' }
-      end
-
-      def create_internship_agreement_when_approve(params:)
-        return if @internship_application.internship_agreement.present?
-        return unless params[:transition] == 'approve!'
-
-        Builders::InternshipAgreementBuilder.new(user: current_user)
-                                            .new_from_application(@internship_application)
-                                            .save!
       end
 
       private
