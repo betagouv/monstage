@@ -57,11 +57,15 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to main_teacher' do
-    internship_application = create(:weekly_internship_application, :submitted)
-    student = internship_application.student
-    create(:school_manager, school: student.school)
-    create(:main_teacher, class_room: student.class_room,
-                          school: student.school)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      user_id: student.id
+    )
+    create(:main_teacher, class_room: class_room, school: school)
 
     mock_mail_to_main_teacher = MiniTest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)

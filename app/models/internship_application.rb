@@ -132,13 +132,17 @@ class InternshipApplication < ApplicationRecord
                            update!("approved_at": Time.now.utc)
                            if student.email.present?
                               deliver_later_with_additional_delay do
-                                StudentMailer.internship_application_approved_email(internship_application: self)
+                                StudentMailer.internship_application_approved_email(
+                                  internship_application: self
+                                )
                               end
                            end
                            unless student.main_teacher.nil?
-                             MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                                     main_teacher: student.main_teacher)
-                                              .deliver_later
+                             MainTeacherMailer.internship_application_approved_email(
+                               internship_application: self,
+                               internship_agreement: internship_agreement,
+                               main_teacher: student.main_teacher
+                             ).deliver_later
                            end
                          }
     end

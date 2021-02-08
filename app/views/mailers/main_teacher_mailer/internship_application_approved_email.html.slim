@@ -9,6 +9,10 @@ p style=p_styles
   = " a été acceptée."
 
 p style=p_styles
-  = "Pour avancer sur la convention, retrouvez les contacts de l'entreprise dans votre espace."
-
-= render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Remplir la convention de stage"})
+  = "La prochaine étape est administrative"
+= render partial: "mailers/call_to_action",
+         locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application),
+                  label: "Remplir la convention de stage"}
+/ = render partial: "mailers/call_to_action",
+/          locals: {href: edit_dashboard_internship_agreements_url(@internship_application.internship_agreement),
+/                   label: "Remplir la convention de stage"}

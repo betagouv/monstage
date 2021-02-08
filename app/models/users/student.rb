@@ -88,8 +88,9 @@ module Users
     def main_teacher
       return nil if try(:class_room).nil?
 
-      Users::SchoolManagement.find_by(class_room_id: class_room.id,
-                                      role: 'main_teacher')
+      class_room.school_managements
+                &.main_teachers
+                &.first
     end
 
     def anonymize(send_email: true)

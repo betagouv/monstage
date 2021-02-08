@@ -29,13 +29,13 @@ module Dashboard::InternshipAgreements
       assert_redirected_to root_path
     end
 
-    test 'GET #edit as Main teacher owning application student is successful' do
+    test 'GET #edit as Main teacher owning application student application is successful' do
       school                 = create(:school, :with_school_manager)
       class_room             = create(:class_room, school: school)
       student                = create(:student, school: school, class_room: class_room)
       main_teacher           = create(:main_teacher, school: school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :approved, user_id: student.id)
-      internship_agreement   = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
+      internship_application = create(:internship_application_with_agreement, user_id: student.id)
+      internship_agreement   = internship_application.internship_agreement
       new_main_teacher_full_name = 'Odile Dus'
       params = {
         'internship_agreement' => {
@@ -66,11 +66,18 @@ module Dashboard::InternshipAgreements
     end
 
     test 'PATCH #update as employer owning internship_offer updates internship_agreement' do
-      internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
+      # internship_application = create(:weekly_internship_application, :approved)
+      # internship_agreement = create(:troisieme_generale_internship_agreement, employer_accept_terms: true, internship_application: internship_application)
+      school                 = create(:school, :with_school_manager)
+      class_room             = create(:class_room, school: school)
+      student                = create(:student, school: school, class_room: class_room)
+      main_teacher           = create(:main_teacher, school: school, class_room: class_room)
+      internship_application = create(:internship_application_with_agreement, user_id: student.id)
+      internship_agreement   = internship_application.internship_agreement
       new_organisation_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
+          employer_accept_terms: true,
           organisation_representative_full_name: new_organisation_representative_full_name
         }
       }

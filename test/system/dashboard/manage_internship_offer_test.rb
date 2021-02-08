@@ -13,7 +13,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
   end
 
-  test 'can edit internship offer' do
+  test 'employer can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
@@ -25,7 +25,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
-  test 'can edit school_track of an internship offer back and forth' do
+  test 'employer can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
     internship_offer = create(:bac_pro_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id

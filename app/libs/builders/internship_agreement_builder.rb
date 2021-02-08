@@ -9,7 +9,7 @@ module Builders
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
-          .merge(preprocess_internship_application_paramns(internship_application))
+          .merge(preprocess_internship_application_params(internship_application))
           .merge(preprocess_internship_agreement_preset(internship_application))
       )
       internship_agreement.internship_application = internship_application
@@ -43,21 +43,24 @@ module Builders
     private
 
     attr_reader :user, :ability, :callback
+    # attr_reader :skip_terms_validations
 
-    def initialize(user:)
+    def initialize(user:, skip_terms_validation: false)
       @user = user
+      # @skip_terms_validation = skip_terms_validation
       @ability = Ability.new(user)
       @callback = Callback.new
     end
 
     def preprocess_terms
+      # return { skip_terms_validations: true } if user.nil?
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
-    def preprocess_internship_application_paramns(internship_application)
+    def preprocess_internship_application_params(internship_application)
       {
         date_range: internship_application.week.short_select_text_method
       }

@@ -29,6 +29,9 @@ FactoryBot.define do
       trait :female do
         gender { 'f' }
       end
+      factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
+        class_room { create(:class_room, school: school, school_track: 'troisieme_generale') }
+      end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do

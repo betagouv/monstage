@@ -40,6 +40,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
                    from: @default_school.id,
                    to: @next_school.id do
       find_field('Nom (ou ville) de mon établissement').native.clear
+      byebug
       find_field('Nom (ou ville) de mon établissement').fill_in(with: @next_school_city[0..3], fill_options: { clear: :backspace })
       all('.autocomplete-school-results .list-group-item-action').first.click
       assert_equal find_field('Nom (ou ville) de mon établissement').value,

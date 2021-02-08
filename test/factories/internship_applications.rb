@@ -25,6 +25,7 @@ FactoryBot.define do
       submitted_at { 3.days.ago }
       approved_at { 2.days.ago }
     end
+
     trait :rejected do
       aasm_state { :rejected }
       submitted_at { 3.days.ago }
@@ -57,6 +58,17 @@ FactoryBot.define do
         if ia.internship_offer_week.blank?
           ia.internship_offer_week = create(:internship_offer_week, internship_offer: ia.internship_offer)
         end
+      end
+    end
+
+    factory :internship_application_with_agreement, traits: [:weekly, :approved],
+                                                    parent: :internship_application,
+                                                    class: 'InternshipApplications::WeeklyFramed' do
+      student { create(:student_with_class_room_3e) }
+      after(:create) do |ia|
+          Builders::InternshipAgreementBuilder.new(user: ia.internship_offer.employer)
+                                              .new_from_application(ia)
+                                              .save!
       end
     end
 
