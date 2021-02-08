@@ -46,8 +46,7 @@ class InternshipAgreement < ApplicationRecord
     validates :student_full_name, presence: true
     validates_inclusion_of :school_manager_accept_terms,
                            in: ['1', true],
-                           message: :school_manager_accept_terms,
-                           on: :update
+                           message: :school_manager_accept_terms
     validate :valid_trix_school_manager_fields
   end
 
