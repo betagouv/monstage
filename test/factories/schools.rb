@@ -28,6 +28,18 @@ FactoryBot.define do
       school_manager { build(:school_manager) }
     end
 
+    trait :with_weeks do
+      weeks { Week.selectable_on_school_year[0..1] }
+    end
+
+    trait :with_troisieme_generale do
+      class_rooms { [build(:class_room, :troisieme_generale)] }
+    end
+
+    trait :with_troisieme_segpa do
+      class_rooms { [build(:class_room, :troisieme_segpa)] }
+    end
+
     trait :with_agreement_presets do
       internship_agreement_preset { build(:internship_agreement_preset,
                                            school_delegation_to_sign_delivered_at: 2.years.ago)}

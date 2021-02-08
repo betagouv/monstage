@@ -2,7 +2,7 @@
   div.d-flex.align-items-center.text-warning.mt-3
     .d-inline-flex-mr-1
       i.fas.fa-hourglass-start.fa-2x.fa-fw
-    .d-inline-flex
+    .d-inline-flex data-test='no-yet-supported'
       = "Convention à gérer hors plateforme"
 
 - elsif internship_agreement.try(:confirmed_by?, user: current_user)
