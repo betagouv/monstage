@@ -2,10 +2,13 @@ class InternshipAgreementPreset < ApplicationRecord
   before_create :assign_default
 
   belongs_to :school
+  has_many :internship_agreements, through: :school
 
   has_rich_text :legal_terms_rich_text
   has_rich_text :complementary_terms_rich_text
   has_rich_text :troisieme_generale_activity_rating_rich_text
+
+  before_save :replicate_school_delegation_to_sign_delivered_at_to_internship_agreements
 
   LEGAL_TERMS = %Q(
     <div><strong>Article 1</strong> - La présente convention a pour objet la mise en œuvre d’une séquence d’observation en milieu professionnel, au bénéfice de l’élève de l’établissement d’enseignement (ou des élèves) désigné(s) en annexe.
@@ -58,6 +61,15 @@ class InternshipAgreementPreset < ApplicationRecord
   end
 
   private
+  def replicate_school_delegation_to_sign_delivered_at_to_internship_agreements
+    attr_changed = school_delegation_to_sign_delivered_at_changed?
+    attr_was_nil = school_delegation_to_sign_delivered_at_was == nil
+    if attr_was_nil && attr_changed
+      internship_agreements.where(school_delegation_to_sign_delivered_at: nil)
+                           .update_all(school_delegation_to_sign_delivered_at: school_delegation_to_sign_delivered_at)
+    end
+  end
+
   def assign_default
     legal_terms_rich_text.body = LEGAL_TERMS
     complementary_terms_rich_text.body = COMPLEMENTARY_TERMS

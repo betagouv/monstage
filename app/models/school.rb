@@ -13,6 +13,7 @@ class School < ApplicationRecord
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
   has_many :internship_applications, through: :students
+  has_many :internship_agreements, through: :internship_applications
   has_one :internship_agreement_preset
 
   validates :city, :name, :code_uai, presence: true
