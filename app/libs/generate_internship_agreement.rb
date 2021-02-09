@@ -123,7 +123,7 @@ class GenerateInternshipAgreement < Prawn::Document
   end
 
   def signatures
-    @pdf.text "Fait en 2 exemplaires à #{@internship_agreement.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+    @pdf.text "Fait en trois exemplaires à #{@internship_agreement.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
   end
 
   def page_number
