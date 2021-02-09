@@ -52,7 +52,7 @@ class GenerateInternshipAgreement < Prawn::Document
     @pdf.text "L’entreprise ou l’organisme d’accueil, #{@internship_agreement.internship_application.internship_offer.employer_name} représentée par #{@internship_agreement.organisation_representative_full_name}, en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil d’une part,"
     @pdf.move_down 10
     subtitle "ET"
-    @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommée apte a signé les conventions par le conseil d'administration de l'établissement en date du #{@internship_agreement.school_delegation_to_sign_delivered_at.strftime("%d/%m/%Y")} d’autre part, "
+    @pdf.text "L’établissement d’enseignement scolaire, #{@internship_agreement.student_school} représenté par #{@internship_agreement.school_representative_full_name}, en qualité de chef d’établissement, a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du #{@internship_agreement.school_delegation_to_sign_delivered_at.strftime("%d/%m/%Y")} d’autre part, "
     @pdf.move_down 20
   end
 
