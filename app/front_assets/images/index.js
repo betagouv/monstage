@@ -37,7 +37,7 @@ import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
 import './homepage/partenaires/Logo-moidans10ans.png';
-import './homepage/partenaires/Logo-telemaque.jpg';
+import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
 import './homepage/sponsors/Logo-anct.jpg';

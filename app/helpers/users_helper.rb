@@ -10,7 +10,7 @@ module UsersHelper
       'Logo-tous-en-stage.jpg' => 'https://tousenstage.com',
       'Logo-un-stage-et-apres.jpg' => 'https://www.unstageetapres.fr',
       'Logo-viens-voir-mon-taf.jpg' => 'https://www.viensvoirmontaf.fr',
-      'Logo-telemaque.jpg' => 'https://www.institut-telemaque.org/',
+      'Logo-telemaque.png' => 'https://www.institut-telemaque.org/',
     }.sort.to_h
   end
 
