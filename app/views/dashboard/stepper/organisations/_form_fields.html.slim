@@ -6,7 +6,7 @@ fieldset.mt-4 data-controller='organisation-form'
       .form-group
         = form.label :employer_siren do
           = "Numéro SIREN de l’entreprise proposant l’offre"
-        = form.text_field :employer_siren, class: 'form-control', placeholder: '123 456 789', data: { action: 'input->organisation-form#checkSiren' }
+        = form.text_field :employer_siren, class: 'form-control', placeholder: '123 456 789', data: { action: 'input->organisation-form#checkSiren', 'organisation-form-token-value': Rails.application.credentials.api_sirene[:token] }
         .invalid-feedback data-organisation-form-target="invalidFeedback"
           ' Le code SIREN ne semble pas valide.
         .valid-feedback data-organisation-form-target="validFeedback"

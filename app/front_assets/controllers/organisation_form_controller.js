@@ -14,6 +14,8 @@ export default class extends Controller {
     'selectGroupName',
   ];
 
+  static values = { token: String };
+
   onChooseType(event) {
     this.chooseType(event.target.value)
   }
@@ -86,8 +88,7 @@ export default class extends Controller {
   checkSiren(event) {
     this.hideFeedbackMessages();
     const siren = event.target.value.replace(/\s/g, '');
-    const sirenToken = `${Rails.application.credentials.api_sirene.token}`;
-    //const sirenToken = 'xxx';
+    const sirenToken = this.tokenValue;
     if (siren.length === 9) {
       const Params = {
         headers: {
