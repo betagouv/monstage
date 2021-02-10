@@ -132,7 +132,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
                            notify_student if student.email.present?
-                           notify_school_management unless student.main_teacher.nil?
+                           notify_school_management if student.main_teacher.present?
                            create_agreement
                          }
     end
