@@ -19,7 +19,11 @@ module InternshipOffers::InternshipApplications
               params: { transition: :approve! })
         assert_redirected_to internship_application.internship_offer.employer.after_sign_in_path
       end
-      assert InternshipApplication.last.approved?
+      follow_redirect!
+      validation_text = 'Candidature mise à jour avec succès. ' \
+                        'Vous pouvez renseigner la convention dès maintenant.'
+      assert_select('#alert-text', text: validation_text)
+      assert_equal true, InternshipApplication.last.approved?
     end
 
     test 'PATCH #update with approve! and a custom message transition sends email' do
@@ -129,6 +133,9 @@ module InternshipOffers::InternshipApplications
 
       assert_equal 'OK', internship_application.canceled_by_student_message.try(:to_plain_text)
       assert internship_application.canceled_by_student?
+
+      follow_redirect!
+      assert_select('#alert-text', text: 'Candidature mise à jour avec succès.')
     end
 
     test 'PATCH #update with lol! fails gracefully' do
