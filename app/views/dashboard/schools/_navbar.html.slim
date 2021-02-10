@@ -45,10 +45,10 @@
                   class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
           | Stages à distance
 
-    - if can?(:edit, School)
+    - if can?(:edit, school.internship_agreement_preset)
       li.nav-item
-        = link_to dashboard_school_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_path(school))  ? 'active' : ''}" do
+        = link_to edit_dashboard_school_internship_agreement_preset_path(school, school.internship_agreement_preset),
+                  class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_internship_agreement_preset_path(school, school.internship_agreement_preset))  ? 'active' : ''}" do
           | Gérer mon établissement
 
 

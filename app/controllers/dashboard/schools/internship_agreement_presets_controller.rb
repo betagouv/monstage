@@ -5,8 +5,13 @@ module Dashboard
     class InternshipAgreementPresetsController < ApplicationController
       include NestedSchool
 
+      def edit
+        authorize! :update, @school.internship_agreement_preset
+        render :edit
+      end
+
       def update
-        authorize! :update, School
+        authorize! :update, @school.internship_agreement_preset
         @internship_offer_preset = @school.internship_agreement_preset
         @internship_offer_preset.update!(internship_agreement_preset_params)
         redirect_to(dashboard_school_internship_applications_path,
@@ -21,9 +26,11 @@ module Dashboard
 
       def internship_agreement_preset_params
         params.require(:internship_agreement_preset)
-              .permit(:legal_terms, :complementary_terms_rich_text, :school_delegation_to_sign_delivered_at)
+              .permit(:legal_terms,
+                      :complementary_terms_rich_text,
+                      :troisieme_generale_activity_rating_rich_text,
+                      :school_delegation_to_sign_delivered_at)
       end
-
     end
   end
 end

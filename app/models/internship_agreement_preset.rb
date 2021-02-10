@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# agreements have some presets,
 class InternshipAgreementPreset < ApplicationRecord
   before_create :assign_default
 

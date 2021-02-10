@@ -55,7 +55,7 @@ Rails.application.routes.draw do
 
 
       resources :internship_applications, only: %i[index], module: 'schools'
-      resources :internship_agreement_presets, only: %i[update],  module: 'schools'
+      resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
 
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'

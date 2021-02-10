@@ -178,8 +178,12 @@ fieldset
   .row.mt-3
     - label = "Conditions liés au financement du stage de " \
               "l'élève par l'établissement"
-    - title = "Note destinée au chef d'établissement :"
-    - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
+    - title = "Note destinée au chef d'établissement et à l'entreprise"
+    - if current_user.school_manager?
+      - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset)}."
+    - else
+      - content = "Toutes les modalités pratiques du stage."
+
     = render partial: 'dashboard/internship_agreements/trix_form_element',
              locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content }
 

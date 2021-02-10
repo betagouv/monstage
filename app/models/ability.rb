@@ -104,6 +104,9 @@ class Ability
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
+    can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
+      internship_agreement_preset.school_id == user.school_id
+    end
   end
 
   def main_teacher_abilities(user:)

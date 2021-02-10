@@ -27,6 +27,9 @@ fr:
       new:
         page_title: "Déposer une offre de stage"
     schools:
+      internship_agreement_presets:
+        edit:
+          page_title: "Modifier les informations relative aux convetions"
       internship_applications:
         index:
           page_title: "Conventions de stage"

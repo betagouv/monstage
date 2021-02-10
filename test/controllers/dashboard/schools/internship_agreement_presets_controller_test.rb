@@ -25,6 +25,17 @@ module Dashboard
         school.internship_agreement_preset.reload
         assert_equal date, school.internship_agreement_preset.school_delegation_to_sign_delivered_at
       end
+
+      #
+      # update by group
+      #
+      test 'GET edit as SchoolManager access full form' do
+        school = create(:school, :with_school_manager, :with_agreement_presets)
+        sign_in(school.school_manager)
+
+        get edit_dashboard_school_internship_agreement_preset_path(school_id: school, id: school.internship_agreement_preset)
+        assert_response :success
+      end
     end
   end
 end
