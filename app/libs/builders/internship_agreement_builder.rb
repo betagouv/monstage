@@ -51,7 +51,6 @@ module Builders
     end
 
     def preprocess_terms
-      # return { skip_terms_validations: true } if user.nil?
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
