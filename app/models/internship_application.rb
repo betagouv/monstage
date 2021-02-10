@@ -133,7 +133,7 @@ class InternshipApplication < ApplicationRecord
                            update!("approved_at": Time.now.utc)
                            notify_student if student.email.present?
                            notify_school_management unless student.main_teacher.nil?
-                           self.create_agreement
+                           create_agreement
                          }
     end
 
