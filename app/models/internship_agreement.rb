@@ -123,11 +123,6 @@ class InternshipAgreement < ApplicationRecord
     enforce_employer_validations == true
   end
 
-  def editor?(user)
-    user.role.in? ['main_teacher', 'school_manager'] ||
-    user.is_a?(Users::Employer)
-  end
-
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
     errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
