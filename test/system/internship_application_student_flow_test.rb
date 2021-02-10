@@ -60,11 +60,15 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
-    visit '/'
-    click_on 'Candidatures'
-    internship_applications.each do |_aasm_state, internship_application|
-      click_on internship_application.internship_offer.title
+
+    mock_prismic = Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
+    PrismicFinder.stub(:homepage, mock_prismic) do
+      visit '/'
       click_on 'Candidatures'
+      internship_applications.each do |_aasm_state, internship_application|
+        click_on internship_application.internship_offer.title
+        click_on 'Candidatures'
+      end
     end
   end
 

@@ -1,261 +1,161 @@
+= cache PrismicFinder do
+  .bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{PrismicFinder.homepage()['homepage.image'].url})"
+    .container
+      .row
+        .col-12
+          #des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
+            = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
+                          alt: "Dispositif Covid-19",
+                          width: 240,
+                          class: 'mb-3'
+                
+            .h1.text-white      
+              = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
 
-.bg-cover-image-homepage-covid
-  .container
-    .row
-      .col-12
-        h1#des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
-          = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
-                        alt: "Dispositif Covid-19",
-                        width: 240,
-                        class: 'mb-3'
-          br
-          | #RestezPrudents,
-          br
-          | le monde du travail s’offre à vous à distance !
+  .bg-transparent
+    .container
+      .row
+        .col-12
+          h2.py-5.text-center
+            
+            = PrismicFinder.homepage()['homepage.slider_title'].as_text
+      .row.pb-5.mb-3.flex-md-reverse-column
+        .col-12.col-md-6.align-self-center
+          .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
 
-.bg-transparent
-  .container
-    .row
-      .col-12
-        h2.py-5.text-center Pensez au stage à distance avec nos associations partenaires
-    .row.pb-5.mb-3.flex-md-reverse-column
-      .col-12.col-md-6.align-self-center
-        .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
+            
+            - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
+              = link_to "#news#{index}",
+                        class: "p-3 nav-link my-2 #{'active' if index == 0}",
+                        data: {toggle: "pill"}, role: 'tab',
+                        aria: {controls:"news#{index}", selected: index == 0  }  do
+                i.fas.fa-fw class="fa-#{news.get('news_icone').as_text}"
+                | &nbsp;
+                h6.h6.d-none.d-md-inline= news.get('news_title').as_text
 
-          = link_to "#pill-semaine-de-découverte-virtuelle",
-                    class: 'p-3 nav-link my-2 active',
-                    data: {toggle: "pill"},
-                    role: 'tab',
-                    aria: {controls:"pill-semaine-de-découverte-virtuelle", selected: false}  do
-            i.fas.fa-fw.fa-comments
-            | &nbsp;
-            h6.h6.d-none.d-md-inline Participez aux conférences virtuelles
+        .col-12.col-md-6
+          .tab-content.partners-height
+            
+            - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
+              .tab-pane role="tabpanel" id="news#{index}" class="#{'active' if index == 0}"
+                .card
+                  = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
+                  .card-body
+                    = news.get('news_description').as_html(nil).html_safe
+                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold' do
+                      = news.get('news_link_text').as_text
+                      | &nbsp;
+                      i.fas.fa-chevron-right
 
-          = link_to "#pill-jobirl-mon-stage-de-3e-autrement",
-                    class: 'p-3 nav-link my-2 ',
-                    data: {toggle: "pill"},
-                    role: 'tab',
-                    aria: {controls:"pill-jobirl-mon-stage-de-3e-autrement", selected: true  }  do
-            i.fas.fa-fw.fa-desktop
-            | &nbsp;
-            h6.h6.d-none.d-md-inline JobIrl : Mon stage de 3ème autrement
+  .bg-cover-image-homepage
+    .container
+      .row.py-3.py-sm-5
 
-          = link_to "#pill-conferences-metiers",
-                    class: 'p-3 nav-link my-2',
-                    data: {toggle: "pill"}, role: 'tab',
-                    aria: {controls:"pill-conferences-metiers", selected: false  }  do
-            i.fas.fa-fw.fa-mouse-pointer
-            | &nbsp;
-            h6.h6.d-none.d-md-inline Participez aux conférences métiers en live
+      .row.no-gutters.py-5
+        .col-12
+          h1.text-white.text-center.mb-3
+            | Et après le confinement ?
+            br
+            | Des offres de stages vous attendent déjà !
+          .col-12= react_component("SearchInternshipOffer",
+                                props: { url: internship_offers_path,
+                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
+                                  schoolTypeVisibility: false }) do
+                .input-loading-skeleton
 
-          = link_to "#pill-mag",
-                    class: 'p-3 nav-link my-2',
-                    data: {toggle: "pill"}, role: 'tab',
-                    aria: {controls:"pill-mag", selected: false  }  do
-            i.fas.fa-fw.fa-check-circle
-            | &nbsp;
-            h6.h6.d-none.d-md-inline La plateforme digitale dédiée à l'orientation
-
-
-
-      .col-12.col-md-6
-        .tab-content.partners-height
-
-          #pill-semaine-de-découverte-virtuelle.tab-pane.fade.active.show role="tabpanel"
-            .card.fade.active.show
-
-              = image_tag asset_pack_path('media/images/homepage/alternatives/moi-dans-10-ans.png'),
-                          class: "card-img-top",
-                          alt: 'Illustration moi dans 10 ans'
-              .card-body
-                p Le dispositif stagedecouverte.fr animé par Myfuture et Moi dans 10 ans, et soutenu par l’ANCT et le ministère de l'Éducation nationale, propose une alternative au stage de troisième en mettant en place des semaines de découverte inédites 100% en ligne.
-
-                p
-                  strong Participez aux semaines de découverte entièrement digitalisées en décembre et février prochains :
-                  = " les sessions sont ouvertes aux collégiens de toute la France, 10 000 places vous sont offertes !"
-
-
-                p.mb-0= link_to "https://www.stagedecouverte.fr/live",
-                                class: 'text-danger font-weight-bold' do
-                  | Découvrir le dispositif
-                  | &nbsp;
-                  i.fas.fa-chevron-right
+      .row.py-3.py-sm-5
 
 
 
+  .bg-light-blue
+    .container
+      .row
+        .col-12
+          h3.h2.py-3.py-sm-5.mb-0.text-center À propos de monstagedetroisieme.fr
 
-          #pill-jobirl-mon-stage-de-3e-autrement.tab-pane role="tabpanel"
-            .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/job-irl.png'),
-                          class: "card-img-top",
-                          alt: 'Illustration JobIRL'
-              .card-body
-                p
-                  | Partenaire du dispositif Mon stage de troisième, JobIRL a développé trois dispositifs pour les élèves qui n’ont pas pu trouver de stages et les équipes pédagogiques qui les accompagnent :
-                  strong= " la semaine de stage digital, le groupe d’entraide, et la boîte à outils."
+      .row.pb-5
+        .col-sm-12.col-md-5
+          p.text-left.class_selector
+            span.d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                                        alt: "Logo mon stage de troisieme",
+                                        height: 100,
+                                        class: ''
+          h3.h3 Le monde professionnel s’ouvre à l’école
+          p Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec votre orientation et votre projet personnel.
 
-                p JobIRL co-anime des ateliers à distance axés sur la découverte du monde professionnel, de l’entreprise et des live métiers. Les élèves peuvent participer à ces sessions à partir de leurs salles de classe, accompagnés d’un référent pédagogique.
+          p Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou découvrir de nouveaux secteurs ou activités.
 
-                p.mb-0= link_to "https://www.jobirl.com/blog/stage-de-3eme-autrement-une-aide-concrete-pour-palier-a-la-crise-du-sanitaire/",
-                                class: 'text-danger font-weight-bold' do
-                  | Découvrir le dispositif
-                  | &nbsp;
-                  i.fas.fa-chevron-right
+        .col-sm-12.col-md-5.offset-md-2
+          div
+            h4.h4.mb-3.align-bottom.d-inline-flex
+              = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'),
+                          alt: "Illustration offrir un stage",
+                          height: 28,
+                          class: 'mr-3 d-none d-md-inline'
+              | Offrir un stage
+            p Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
 
+          div.mt-3.mt-md-5
+            h4.h4.mb-3.align-bottom.d-flex
+              = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'),
+                          alt: "Illustration trouver un stage",
+                          height: 28,
+                          class: 'mr-3 d-none d-md-inline'
+              | Trouver un stage
+            p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et postulez à vos offres préférées.
 
-          #pill-conferences-metiers.tab-pane role="tabpanel"
-            .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/viens-voir-mon-taff.png'),
-                          class: "card-img-top",
-                          alt: 'Illustration connférences metiers'
+          div.mt-3.mt-md-5
+            h4.h4.mb-3.align-bottom.d-flex
+              = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'),
+                          alt: "Illustration accompagner les élèves",
+                          height: 28,
+                          class: 'mr-3 d-none d-md-inline'
 
-              .card-body
-                p
-                  strong ViensVoirMonTaf lance un programme de conférences métiers en live, animées par leurs équipes, et destinées aux élèves de troisième qui s’interrogent sur leur orientation.
-
-                p L’objectif est de présenter, tout au long de l’année scolaire, différents secteurs d’activité à travers des interventions de professionnels et d’offrir aux élèves les clés nécessaires dans leurs choix d’orientation.
-
-                p Entre bonnes pratiques en milieu professionnel et ce que les professionnels préfèrent dans leur métier, ils vous disent tout !
-
-                p.mb-0= link_to "https://app.viensvoirmontaf.fr/auth/inscription/",
-                                class: 'text-danger font-weight-bold' do
-                  | Découvrir le dispositif
-                  | &nbsp;
-                  i.fas.fa-chevron-right
-
-
-          #pill-mag.tab-pane role="tabpanel"
-            .card
-              = image_tag asset_pack_path('media/images/homepage/alternatives/mag.png'),
-                          class: "card-img-top",
-                          alt: 'Illustration connférences metiers'
-
-              .card-body
-                p Mon avenir en grand - Institut télémaque
-
-                p Découvrez la plateforme Mon Avenir en Grand, le dispositif de l’Institut Télémaque qui offre une pluralité d’outils pédagogiques qui permettent aux établissements et aux élèves de découvrir le monde professionnel par le digital.
-
-                p
-                  | MAG permet de développer le potentiel des élèves de troisième à travers de nombreux contenus, et notamment des webinaires métiers&nbsp;
-                  | «&nbsp;Meet&nbsp;my&nbsp;job&nbsp;»
-                  | &nbsp; co-animés par l’Institut Télémaque et un professionnel spécialisé.
-
-                p.mb-0= link_to "https://www.monavenirengrand.com/extranet/public/accueil.html",
-                                class: 'text-danger font-weight-bold' do
-                  | Découvrir le dispositif
-                  | &nbsp;
-                  i.fas.fa-chevron-right
-
-
-.bg-cover-image-homepage
-  .container
-    .row.py-3.py-sm-5
-
-    .row.no-gutters.py-5
-      .col-12
-        h1.text-white.text-center.mb-3
-          | Et après le confinement ?
-          br
-          | Des offres de stages vous attendent déjà !
-        .col-12= react_component("SearchInternshipOffer",
-                              props: { url: internship_offers_path,
-                                className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                schoolTypeVisibility: false }) do
-              .input-loading-skeleton
-
-    .row.py-3.py-sm-5
+              | Accompagner les élèves
+            p.mb-0 Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
 
 
 
-.bg-light-blue
-  .container
-    .row
-      .col-12
-        h3.h2.py-3.py-sm-5.mb-0.text-center À propos de monstagedetroisieme.fr
+  .bg-white
+    .container
+      .row
+        .col-12
+          h4.h2.py-3.py-sm-5.mb-0.text-center Documents utiles
 
-    .row.pb-5
-      .col-sm-12.col-md-5
-        p.text-left.class_selector
-          span.d-md-inline= image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
-                                      alt: "Logo mon stage de troisieme",
-                                      height: 100,
-                                      class: ''
-        h3.h3 Le monde professionnel s’ouvre à l’école
-        p Cette plateforme, par la diversité de ses offres, va vous permettre de réaliser une expérience enrichissante en lien avec votre orientation et votre projet personnel.
+      .row.align-items-center.pb-5
+        .d-none.d-sm-flex.col-6
+          = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'),
+                      class: 'img-fluid',
+                      alt: 'Illustration documents utiles'
+        .col-12.col-sm-6.align-middle-items
+          p Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
+          p= link_to "Documents utiles",
+                    documents_utiles_path,
+                    class: "btn btn-outline-danger",
+                    title: 'Consulter les documents utiles'
 
-        p Vous allez pouvoir observer des milieux professionnels peut-être encore inconnus ou découvrir de nouveaux secteurs ou activités.
+  .bg-white.d-none.d-md-block
+    .container
+      .row.pb-5
+        .col-6
+          h3.h3.py-5.text-center Un projet porté par
+          .row
+            .col-12
+              p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"),
+                          alt: "Logo anct",
+                          class: 'img-fluid'
+          .row
+            .col-12
+              p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"),
+                          alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                          class: 'img-fluid'
 
-      .col-sm-12.col-md-5.offset-md-2
-        div
-          h4.h4.mb-3.align-bottom.d-inline-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-offrir-un-stage.png'),
-                        alt: "Illustration offrir un stage",
-                        height: 28,
-                        class: 'mr-3 d-none d-md-inline'
-            | Offrir un stage
-          p Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
+        .col-6
+          h3.h3.py-5.text-center Nos partenaires
 
-        div.mt-3.mt-md-5
-          h4.h4.mb-3.align-bottom.d-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-trouver-un-stage.png'),
-                        alt: "Illustration trouver un stage",
-                        height: 28,
-                        class: 'mr-3 d-none d-md-inline'
-            | Trouver un stage
-          p À l’invitation  de votre professeur principal, accédez à de nombreuses offres de stages et postulez à vos offres préférées.
-
-        div.mt-3.mt-md-5
-          h4.h4.mb-3.align-bottom.d-flex
-            = image_tag asset_pack_path('media/images/homepage/benefices/icon-accompagner-les-eleves.png'),
-                        alt: "Illustration accompagner les élèves",
-                        height: 28,
-                        class: 'mr-3 d-none d-md-inline'
-
-            | Accompagner les élèves
-          p.mb-0 Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
-
-
-
-.bg-white
-  .container
-    .row
-      .col-12
-        h4.h2.py-3.py-sm-5.mb-0.text-center Documents utiles
-
-    .row.align-items-center.pb-5
-      .d-none.d-sm-flex.col-6
-        = image_tag asset_pack_path('media/images/homepage/illustration-documents-utiles.svg'),
-                    class: 'img-fluid',
-                    alt: 'Illustration documents utiles'
-      .col-12.col-sm-6.align-middle-items
-        p Les stages de troisième sont l’occasion de découvrir le monde du travail et de s’interroger sur son projet d’orientation. Les élèves et les professeurs trouveront ici des documents leur permettant de favoriser la mobilité des élèves et de préparer le stage dans les meilleures conditions.
-        p= link_to "Documents utiles",
-                   documents_utiles_path,
-                   class: "btn btn-outline-danger",
-                   title: 'Consulter les documents utiles'
-
-.bg-white.d-none.d-md-block
-  .container
-    .row.pb-5
-      .col-6
-        h3.h3.py-5.text-center Un projet porté par
-        .row
-          .col-12
-            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"),
-                         alt: "Logo anct",
-                         class: 'img-fluid'
-        .row
-          .col-12
-            p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"),
-                         alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                         class: 'img-fluid'
-
-      .col-6
-        h3.h3.py-5.text-center Nos partenaires
-
-        .col-12.text-center.pt-4
-          - partners_map_of_logo_url.each do |partner_logo, partner_url|
-            = render partial: "partner_link",
-                     locals: { partner_url: partner_url, partner_logo: partner_logo }
+          .col-12.text-center.pt-4
+            - partners_map_of_logo_url.each do |partner_logo, partner_url|
+              = render partial: "partner_link",
+                      locals: { partner_url: partner_url, partner_logo: partner_logo }
 
 
