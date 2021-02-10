@@ -3,6 +3,10 @@
 class SendSmsJob < ApplicationJob
   queue_as :default
 
+  discard_on ActiveJob::DeserializationError
+  retry_on RESTError, wait: 5.seconds, attempts: 4
+  retry_on Net::OpenTimeout, Timeout::Error, wait: 5.seconds, attempts: 4
+
   def perform(user)
     client = OVH::REST.new(
       Rails.application.credentials.ovh[:application_key],
