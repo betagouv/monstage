@@ -988,6 +988,11 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.32"
 
+"@popperjs/core@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.6.0.tgz#f022195afdfc942e088ee2101285a1d31c7d727f"
+  integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
+
 "@rails/actiontext@^6.0.3-3":
   version "6.0.3-4"
   resolved "https://registry.yarnpkg.com/@rails/actiontext/-/actiontext-6.0.3-4.tgz#007ca2780b9b9de66234c2d251f8d72d37679338"

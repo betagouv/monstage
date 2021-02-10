@@ -2,11 +2,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class UsersTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
-
     test 'register as Employer' do
       run_request_and_cache_response(report_as: 'new_user_registration_path_Employer') do
         visit new_user_registration_path(as: 'Employer')

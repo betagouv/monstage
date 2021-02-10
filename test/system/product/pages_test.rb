@@ -2,11 +2,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class HomeValidationTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
-
     test 'static pages' do
       %i[
         root_path

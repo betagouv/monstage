@@ -55,6 +55,10 @@ module Users
       SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
     end
 
+    def custom_agreements_path
+      url_helpers.dashboard_school_internship_applications_path(school)
+    end
+
     private
 
     # validators

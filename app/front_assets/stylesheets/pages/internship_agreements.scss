@@ -8,24 +8,27 @@
     padding: 10px;
   }
 }
-.internship-agreement-to-sign{
-  .actions .text-action {
-    white-space:nowrap;
-    display: inline;
-    transition: all 1s ease-out;
+
+.container-application-with-agreements{
+  position: relative;
+  .container-application-with-agreements-overlay{
     position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    transform:translate(0);
-  }
-  .actions:hover .text-action {
-    position: relative;
-    visibility: visible;
-    transform:translate(9999px);
-    opacity: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,.8);
+    z-index: 2;
   }
 }
 
+.shaddow-container{
+  overflow: hidden;
+  padding-bottom: 2em;
+  .shadow-element{
+    box-shadow: 5px 0px 10px rgba(0,0,0,.1);
+  }
+}
 .tool-note {
   position: 'relative';
   border: 2px solid $blue;
@@ -52,7 +55,7 @@
   margin-left: -17px;
   float: left;
   z-index: 10;
-} 
+}
 
 .tool-note.active {
   border: 2px solid $green;
@@ -70,6 +73,7 @@
 
 }
 .tool-note.inactive {
+  display: none;
   border: 2px solid #9F98AA;
   color: #9F98AA;
   .title {
@@ -118,5 +122,14 @@
   }
   trix-editor:read-only{
     background-color: $secondary;
+  }
+}
+.dot {
+  display: inline-block;
+  &.dot-success{
+    color: $success;
+  }
+  &.dot-warning{
+    color: $warning;
   }
 }

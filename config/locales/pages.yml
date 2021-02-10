@@ -29,7 +29,7 @@ fr:
     schools:
       internship_applications:
         index:
-          page_title: "Conventions à signer"
+          page_title: "Conventions de stage"
       class_rooms:
         edit:
           page_title: "Mise à jour de la classe : %{name}"
@@ -60,7 +60,7 @@ fr:
           page_title: "Candidature '%{name}'"
     internship_applications:
       index:
-        page_title: "Conventions à signer"
+        page_title: "Conventions de stage"
     internship_agreements:
       new:
         page_title: 'Nouvelle convention de stage'

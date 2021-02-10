@@ -21,6 +21,7 @@ import {
   faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faCircle as faCircleSolid,
   faComments,
   faDownload,
   faDesktop,
@@ -70,7 +71,7 @@ import {
 // get list with ./infra/dev/find-font-awesome-icons.sh
 // grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import {
-  faCircle,
+  faCircle as faCircleRegular,
   faEnvelope,
   faFlag,
   faHandshake,
@@ -100,7 +101,8 @@ library.add(
   faChevronDown,
   faChevronLeft,
   faChevronRight,
-  faCircle,
+  faCircleRegular,
+  faCircleSolid,
   faComments,
   faDownload,
   faDesktop,

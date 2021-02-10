@@ -2,11 +2,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class InternshipOffersTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
-
     test 'internship_offers_path' do
       %i[employer
          student

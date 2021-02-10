@@ -27,11 +27,26 @@ module Html5Validator
     ext = '.html'
     assert_equal 1, page.all('.content').size
 
+
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
       assert page_title_ok?(page.body)
     end
+    screenshot_full_page("#{report_as.parameterize}.png")
+  end
+
+  def screenshot_full_page(screenshot_path)
+    return if ENV['CI']
+    initial_size = page.driver.browser.manage.window.size
+    width = initial_size.width
+    height = page.evaluate_script('document.body.scrollHeight')
+
+    page.driver.browser.manage.window.resize_to(initial_size.width, height)
+
+    page.save_screenshot(Rails.root.join(*['tmp', 'functional_screenshots', screenshot_path]))
+
+    page.driver.browser.manage.window.resize_to(initial_size.width, initial_size.height)
   end
 
   def page_title_ok?(data)

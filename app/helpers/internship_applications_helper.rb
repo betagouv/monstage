@@ -42,4 +42,11 @@ module InternshipApplicationsHelper
                           .resume_languages
                           .present?
   end
+
+  def sign_application_modal_id(internship_application)
+    "sign-internship-application-#{internship_application.id}-#{internship_application.user_id}"
+  end
+  def show_application_modal_id(internship_application)
+    "show-internship-application-#{internship_application.id}-#{internship_application.user_id}"
+  end
 end

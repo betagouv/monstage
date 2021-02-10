@@ -8,6 +8,8 @@ module Dashboard
       authorize! :create, InternshipAgreement
       @internship_applications = current_user.internship_applications
                                              .approved
+                                             .troisieme_generale
+
     end
   end
 end
