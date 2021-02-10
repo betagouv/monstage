@@ -40,6 +40,7 @@ gem 'rails_admin-i18n'
 gem 'newrelic_rpm'
 gem 'sentry-raven'
 gem 'ovh-rest'
+gem 'prismic.io', require: 'prismic'
 
 # acl
 gem 'cancancan'

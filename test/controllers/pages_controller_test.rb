@@ -4,10 +4,16 @@ require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
   test 'home' do
-    get root_path
-    assert_response :success
-    assert_template 'pages/home'
-    assert_select 'title', "Accueil | Monstage"
+    # write a mock : File.open(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump'), 'wb') { |fd| fd.write Marshal.dump(rs) }
+    # read a mock : Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
+    # mock with mock : PrismicFinder.stub(:homepage, mock_prismic)
+    mock_prismic = Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
+    PrismicFinder.stub(:homepage, mock_prismic) do
+      get root_path
+      assert_response :success
+      assert_template 'pages/home'
+      assert_select 'title', "Accueil | Monstage"
+    end
   end
 
   test '10_commandements_d_une_bonne_offre' do

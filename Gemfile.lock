@@ -146,6 +146,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     hashdiff (1.0.1)
+    hashery (2.1.2)
     htmlentities (4.3.4)
     http-accept (1.7.0)
     http-cookie (1.0.3)
@@ -227,6 +228,8 @@ GEM
     prawn-styled-text (0.1.4)
       oga (~> 2)
       prawn (~> 2)
+    prismic.io (1.8.0)
+      hashery (~> 2.1.1)
     public_suffix (4.0.6)
     puma (5.1.1)
       nio4r (~> 2.0)
@@ -443,6 +446,7 @@ DEPENDENCIES
   pg_search (= 2.3.2)
   prawn
   prawn-styled-text
+  prismic.io
   puma
   rails
   rails-controller-testing
