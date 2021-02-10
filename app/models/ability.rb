@@ -41,7 +41,6 @@ class Ability
       internship_application.student.id == user.id
     end
 
-    can %i[create], InternshipAgreement
 
     can %i[show
            update

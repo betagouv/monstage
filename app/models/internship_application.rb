@@ -131,24 +131,9 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
-                           # TODO: extract
-                           if student.email.present?
-                              deliver_later_with_additional_delay do
-                                StudentMailer.internship_application_approved_email(
-                                  internship_application: self
-                                )
-                              end
-                           end
-                           # TODO: extract
-                           unless student.main_teacher.nil?
-                             MainTeacherMailer.internship_application_approved_email(
-                               internship_application: self,
-                               internship_agreement: internship_agreement,
-                               main_teacher: student.main_teacher
-                             ).deliver_later
-                           end
-
-                           self.create_agreement
+                           notify_student 
+                           notify_school_management 
+                           create_agreement
                          }
     end
 
@@ -200,6 +185,24 @@ class InternshipApplication < ApplicationRecord
         end
       }
     end
+  end
+
+  def notify_student
+    return unless student.email.present?
+    deliver_later_with_additional_delay do
+      StudentMailer.internship_application_approved_email(
+        internship_application: self
+      )
+    end
+  end
+
+  def notify_school_management
+    return unless student.main_teacher.present?    
+    MainTeacherMailer.internship_application_approved_email(
+      internship_application: self,
+      internship_agreement: internship_agreement,
+      main_teacher: student.main_teacher
+    ).deliver_later
   end
 
   def create_agreement

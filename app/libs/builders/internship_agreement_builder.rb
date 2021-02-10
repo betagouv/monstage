@@ -44,14 +44,13 @@ module Builders
 
     attr_reader :user, :ability, :callback
 
-    def initialize(user:, skip_terms_validation: false)
+    def initialize(user:)
       @user = user
       @ability = Ability.new(user)
       @callback = Callback.new
     end
 
     def preprocess_terms
-      # return { skip_terms_validations: true } if user.nil?
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
@@ -92,7 +91,7 @@ module Builders
       {
         student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
         school_track: student.school_track,
-        school_representative_full_name: student.school.school_manager.name,
+        school_representative_full_name: student.school_manager.name,
         student_full_name: student.name,
         student_class_room: student.class_room.try(:name),
         main_teacher_full_name: student.class_room.school_managements.main_teachers.first.try(:name)

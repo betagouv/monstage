@@ -36,8 +36,7 @@ class InternshipAgreement < ApplicationRecord
     validates :main_teacher_full_name, presence: true
     validates_inclusion_of :main_teacher_accept_terms,
                            in: ['1', true],
-                           message: :main_teacher_accept_terms,
-                           on: :update
+                           message: :main_teacher_accept_terms
     validate :valid_trix_main_teacher_fields
   end
 
@@ -47,8 +46,7 @@ class InternshipAgreement < ApplicationRecord
     validates :student_full_name, presence: true
     validates_inclusion_of :school_manager_accept_terms,
                            in: ['1', true],
-                           message: :school_manager_accept_terms,
-                           on: :update
+                           message: :school_manager_accept_terms
     validate :valid_trix_school_manager_fields
   end
 
@@ -58,8 +56,7 @@ class InternshipAgreement < ApplicationRecord
     validates :date_range, presence: true
     validates_inclusion_of :employer_accept_terms,
                            in: ['1', true],
-                           message: :employer_accept_terms,
-                           on: :update
+                           message: :employer_accept_terms
     validate :valid_trix_employer_fields
   end
 
@@ -95,10 +92,6 @@ class InternshipAgreement < ApplicationRecord
   def enforce_employer_validations?
     enforce_employer_validations == true
   end
-
-  # def skip_terms_validations?
-  #   true
-  # end
 
   def confirmed_by?(user:)
     return school_manager_accept_terms? if user.school_manager?

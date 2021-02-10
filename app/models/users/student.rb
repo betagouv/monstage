@@ -30,6 +30,9 @@ module Users
              :bac_pro?,
              to: :class_room,
              allow_nil: true
+    delegate :school_manager,
+             to: :school
+
     validates :birth_date,
               :gender,
               presence: true
