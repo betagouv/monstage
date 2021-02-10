@@ -36,5 +36,5 @@
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
-            small.form-text.text-muted L'employeur pourra vous recontacter par courrier électronique (celui de votre compte monstagedetroisieme.fr)
+            small.form-text.text-muted Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled

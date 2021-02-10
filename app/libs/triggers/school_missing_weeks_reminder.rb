@@ -4,7 +4,7 @@ module Triggers
   # safe re-entrant code to send notifications
   class SchoolMissingWeeksReminder
     def enqueue_all
-      School.without_weeks
+      School.without_weeks_on_current_year
             .with_manager
             .missing_school_week_count_gt(0)
             .find_each

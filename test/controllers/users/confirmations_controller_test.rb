@@ -18,6 +18,17 @@ class ConfirmationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'title', "Confirmation | Monstage"
   end
 
+  test 'CREATE#user_confirmation by phone with wrong phone' do
+    student = create(:student, phone: '+330600110011',
+                               email: nil,
+                               confirmed_at: nil)
+    assert_enqueued_jobs 0, only: SendSmsJob do
+      post user_confirmation_path(user: { channel: :phone, phone: '+330699999999' })
+    end
+    assert_template :new
+    assert_select 'label', 'Votre numéro de téléphone est inconnu'
+  end
+
   test 'CREATE#user_confirmation by phone' do
     student = create(:student, phone: '+330637607756',
                                email: nil,

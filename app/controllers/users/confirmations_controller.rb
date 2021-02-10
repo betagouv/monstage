@@ -4,9 +4,16 @@ module Users
   class ConfirmationsController < Devise::ConfirmationsController
     include Phonable
     def create
-      if by_phone? && fetch_user_by_phone
-        SendSmsJob.perform_later(fetch_user_by_phone)
-        redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
+      if by_phone?
+        if fetch_user_by_phone
+          SendSmsJob.perform_later(fetch_user_by_phone)
+          redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
+        else
+          self.resource = resource_class.new
+          self.resource.phone = safe_phone_param
+          self.resource.errors.add(:phone, 'Votre numéro de téléphone est inconnu')
+          render 'devise/confirmations/new'
+        end
         return
       end
       super
