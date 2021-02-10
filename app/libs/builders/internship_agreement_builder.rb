@@ -44,7 +44,7 @@ module Builders
 
     attr_reader :user, :ability, :callback
 
-    def initialize(user:, skip_terms_validation: false)
+    def initialize(user:)
       @user = user
       @ability = Ability.new(user)
       @callback = Callback.new
