@@ -19,7 +19,6 @@ class InternshipApplication < ApplicationRecord
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
-  delegate :editor?, to: :internship_agreement, prefix: true
 
   after_save :update_all_counters
 

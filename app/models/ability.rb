@@ -96,6 +96,7 @@ class Ability
       edit_terms_rich_text
       edit_activity_rating_rich_text
       edit_financial_conditions_rich_text
+      edit
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end
@@ -110,6 +111,7 @@ class Ability
       edit_main_teacher_full_name
       edit_activity_rating_rich_text
       edit_activity_preparation_rich_text
+      edit
         ], InternshipAgreement do |agreement|
       is_student_in_school = agreement.internship_application.student.school_id == user.school_id
       is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
@@ -145,6 +147,7 @@ class Ability
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
+      edit
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.employer == user
     end

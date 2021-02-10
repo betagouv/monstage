@@ -65,11 +65,10 @@ module Dashboard
       end
 
       def extra_message
-        #TODO test
-        extra_message_text = 'Vous pouvez renseigner la convention dès maintenant'
+        extra_message_text = 'Vous pouvez renseigner la convention dès maintenant.'
         extra_message_condition = @internship_application.approved? &&
                                   @internship_application.student.school_track == 'troisieme_generale' &&
-                                  @internship_application.internship_agreement_editor?(current_user)
+                                  can?(:edit, @internship_application.internship_agreement)
         extra_message_condition ? extra_message_text : ''
       end
 
