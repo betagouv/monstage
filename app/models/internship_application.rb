@@ -131,8 +131,8 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
-                           notify_student if student.email.present?
-                           notify_school_management if student.main_teacher.present?
+                           notify_student 
+                           notify_school_management 
                            create_agreement
                          }
     end
@@ -188,6 +188,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def notify_student
+    return unless student.email.present?
     deliver_later_with_additional_delay do
       StudentMailer.internship_application_approved_email(
         internship_application: self
@@ -196,6 +197,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def notify_school_management
+    return unless student.main_teacher.present?    
     MainTeacherMailer.internship_application_approved_email(
       internship_application: self,
       internship_agreement: internship_agreement,
