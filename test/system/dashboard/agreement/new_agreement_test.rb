@@ -63,8 +63,7 @@ module Dashboard
       sign_in(employer)
 
       visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
-      find('h1.h2', text: 'Votre convention de stage')
-      find('h6.h6.test-header a', text: internship_offer.title)
+      find('.test-header a', text: internship_offer.title)
 
       #Tool notes
       page.has_css?('.col-4 .tool-note')
