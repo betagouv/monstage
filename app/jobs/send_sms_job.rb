@@ -6,6 +6,7 @@ class SendSmsJob < ApplicationJob
   discard_on ActiveJob::DeserializationError
   retry_on RESTError, wait: 5.seconds, attempts: 4
   retry_on Net::OpenTimeout, Timeout::Error, wait: 5.seconds, attempts: 4
+  # resolves https://sentry.io/organizations/brice-durand/issues/2169771890/?project=1393439&query=is%3Aunresolved
 
   def perform(user)
     client = OVH::REST.new(
