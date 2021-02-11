@@ -1,11 +1,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class InternshipOfferStepperTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
-
     test 'employer_new_dashboard_support_ticket_path' do
       employer = create(:employer)
       school_manager = create(:school_manager, school: create(:school))

@@ -13,7 +13,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
   end
 
-  test 'can edit internship offer' do
+  test 'employer can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
@@ -25,7 +25,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
-  test 'can edit school_track of an internship offer back and forth' do
+  test 'employer can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
     internship_offer = create(:bac_pro_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
@@ -164,12 +164,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_text('2019/2020 unpublished')
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-      if ENV['CONVENTION_ENABLED']
-        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-        click_link('Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      end
+      page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      click_link('Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
     end
   end
 

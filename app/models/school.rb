@@ -13,8 +13,8 @@ class School < ApplicationRecord
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
   has_many :internship_applications, through: :students
-
-  has_rich_text :agreement_conditions_rich_text
+  has_many :internship_agreements, through: :internship_applications
+  has_one :internship_agreement_preset
 
   validates :city, :name, :code_uai, presence: true
 
@@ -40,6 +40,8 @@ class School < ApplicationRecord
     where('missing_school_weeks_count > ?', threshold)
   }
 
+  after_create :create_internship_agreement_preset!,
+               if: lambda { |s| s.internship_agreement_preset.blank? }
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end

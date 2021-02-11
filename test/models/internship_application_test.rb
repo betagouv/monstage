@@ -57,11 +57,15 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to main_teacher' do
-    internship_application = create(:weekly_internship_application, :submitted)
-    student = internship_application.student
-    create(:school_manager, school: student.school)
-    create(:main_teacher, class_room: student.class_room,
-                          school: student.school)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      user_id: student.id
+    )
+    create(:main_teacher, class_room: class_room, school: school)
 
     mock_mail_to_main_teacher = MiniTest::Mock.new
     mock_mail_to_main_teacher.expect(:deliver_later, true)
@@ -73,6 +77,62 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
     mock_mail_to_main_teacher.verify
   end
+
+  test 'transition from submited to approved create internship_agreemennt for student in troisieme_generale.class_room' do
+    internship_offer = create(:weekly_internship_offer)
+    school = create(:school, :with_school_manager, weeks: internship_offer.weeks)
+    class_room = create(:class_room, :troisieme_generale, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:weekly_internship_application, :submitted, student: student)
+
+    assert_changes -> { InternshipAgreement.count },
+                   'Expected to have created agreement',
+                   from: 0,
+                   to: 1 do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
+  test 'transition from submited to approved does not create internship_agreemennt for student in troisieme_prepa_metiers.class_room' do
+    internship_offer = create(:free_date_internship_offer)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, :troisieme_prepa_metiers, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:free_date_internship_application, :submitted, student: student)
+
+    assert_no_changes -> { InternshipAgreement.count } do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
+  test 'transition from submited to approved does not create internship_agreemennt for student in troisieme_segpa.class_room' do
+    internship_offer = create(:free_date_internship_offer)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, :troisieme_segpa, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:free_date_internship_application, :submitted, student: student)
+
+    assert_no_changes -> { InternshipAgreement.count } do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
+  test 'transition from submited to approved does not create internship_agreemennt for student in bac_pro.class_room' do
+    internship_offer = create(:free_date_internship_offer)
+    school = create(:school, :with_school_manager)
+    class_room = create(:class_room, :bac_pro, school: school)
+    student = create(:student, class_room: class_room)
+    internship_application = create(:free_date_internship_application, :submitted, student: student)
+
+    assert_no_changes -> { InternshipAgreement.count } do
+      internship_application.save
+      internship_application.approve!
+    end
+  end
+
 
   test 'transition from submited to rejected send rejected email to student' do
     internship_application = create(:weekly_internship_application, :submitted)

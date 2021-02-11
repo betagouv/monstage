@@ -24,6 +24,19 @@ module Users
       assert_equal [student], school.students_with_missing_school_week
     end
 
+    test '#main_teacher' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, class_room: class_room, school: school)
+      assert_nil student.main_teacher
+
+      create(:teacher,  class_room: class_room, school: school)
+      assert_nil student.main_teacher
+
+      main_teacher = create(:main_teacher,  class_room: class_room, school: school)
+      assert_equal main_teacher.id, student.main_teacher.id
+     end
+
     test 'validate wrong mobile phone format' do
       user = build(:student, phone: '+330111223344')
       refute user.valid?
