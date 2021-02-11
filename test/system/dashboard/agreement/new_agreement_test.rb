@@ -63,8 +63,7 @@ module Dashboard
       sign_in(employer)
 
       visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
-      find('h1.h2', text: 'Votre convention de stage')
-      find('h6.h6.test-header a', text: internship_offer.title)
+      find('.test-header a', text: internship_offer.title)
 
       #Tool notes
       page.has_css?('.col-4 .tool-note')
@@ -181,10 +180,7 @@ module Dashboard
                                       internship_offer: internship_offer
                                       )
       sign_in(main_teacher)
-      visit root_path
-      within('header') do
-        find("a.nav-link", text: main_teacher.dashboard_name).click
-      end
+      visit main_teacher.custom_dashboard_path
       click_link('Conventions de stage')
       find('.actions a.btn.btn-primary').click
       # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
@@ -242,8 +238,7 @@ module Dashboard
                                       internship_offer: internship_offer
                                       )
       sign_in(teacher)
-      visit root_path
-      find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: teacher.dashboard_name).click
+      visit teacher.custom_dashboard_path
       assert page.has_content?('Semaines')
       assert ability.cannot?(:create, InternshipAgreement)
       refute page.has_content?('Conventions de stage')
@@ -265,7 +260,7 @@ module Dashboard
                                       internship_offer: internship_offer
                                       )
       sign_in(main_teacher_2)
-      visit root_path
+      visit main_teacher_2.custom_dashboard_path
       find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: main_teacher_2.dashboard_name).click
       assert page.has_content?('Semaines')
       assert ability.can?(:create, InternshipAgreement)

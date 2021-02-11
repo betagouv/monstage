@@ -66,7 +66,7 @@ class GenerateInternshipAgreement < Prawn::Document
   def part_two
     subtitle "TITRE II - DISPOSITIONS PARTICULIÈRES"
     subtitle "A - Convention de preuve"
-    field_form "Article 10 -"
+    subtitle "Article 10 -"
     field_form "Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier."
     field_form "Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée."
     @pdf.move_down 10
