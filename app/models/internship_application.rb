@@ -21,7 +21,6 @@ class InternshipApplication < ApplicationRecord
   delegate :name, to: :student, prefix: true
 
   after_save :update_all_counters
-
   accepts_nested_attributes_for :student, update_only: true
 
   has_rich_text :approved_message
@@ -92,6 +91,8 @@ class InternshipApplication < ApplicationRecord
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
+
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
   scope :default_order, ->{ order(updated_at: :desc) }
 
@@ -130,16 +131,9 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
-                           if student.email.present?
-                              deliver_later_with_additional_delay do
-                                StudentMailer.internship_application_approved_email(internship_application: self)
-                              end
-                           end
-                           student.school.main_teachers.map do |main_teacher|
-                             MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                                     main_teacher: main_teacher)
-                                              .deliver_later
-                           end
+                           notify_student 
+                           notify_school_management 
+                           create_agreement
                          }
     end
 
@@ -191,6 +185,33 @@ class InternshipApplication < ApplicationRecord
         end
       }
     end
+  end
+
+  def notify_student
+    return unless student.email.present?
+    deliver_later_with_additional_delay do
+      StudentMailer.internship_application_approved_email(
+        internship_application: self
+      )
+    end
+  end
+
+  def notify_school_management
+    return unless student.main_teacher.present?    
+    MainTeacherMailer.internship_application_approved_email(
+      internship_application: self,
+      internship_agreement: internship_agreement,
+      main_teacher: student.main_teacher
+    ).deliver_later
+  end
+
+  def create_agreement
+    return unless student.troisieme_generale?
+
+    agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
+                                                    .new_from_application(self)
+    agreement.skip_validations_for_system = true
+    agreement.save!
   end
 
   def internship_application_counter_hook

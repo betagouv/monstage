@@ -47,15 +47,15 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: '3e B – troisieme_prepa_metiers', school_track: :troisieme_prepa_metiers, school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name ||= "user"
-  object.last_name ||= object.class.name
+  object.first_name ||= "Utilisateur"
+  object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object
@@ -82,10 +82,10 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :school_manager, email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :main_teacher, class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :main_teacher, class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(Users::SchoolManagement.new(role: :other, email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
   EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
 
@@ -104,6 +104,7 @@ def populate_students
 
   with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'benoit@ms3e.fr', password: 'review', first_name: 'Benoit', last_name: 'Lafond', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
@@ -131,7 +132,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Beta.gouv.fr',
     school_track: :troisieme_generale
   )
 
@@ -153,7 +154,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Octo Technology',
     school_track: :troisieme_generale
   )
   # Bac_pro
@@ -173,7 +174,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Agence Zero',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -193,7 +194,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'BFM',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -216,7 +217,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'SNCF',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -240,7 +241,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'RATP',
     school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
@@ -264,7 +265,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Vinci',
     school_track: :troisieme_segpa
   )
 end
@@ -298,7 +299,7 @@ def populate_applications
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
-                                   .first(2)
+                                   .first(4)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
@@ -331,88 +332,47 @@ def populate_applications
       internship_offer: troisieme_generale_offers.first,
       internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
-  end
-end
-
-def populate_aggreements
-  application = InternshipApplication.find_by(aasm_state: 'approved')
-  FactoryBot.create(
-    :internship_agreement,
-    internship_application: application,
-    employer_accept_terms: true
-  )
-  # 3eme segpa multi-line
-  multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
-- Présentation des principes fondamentaux du métier.
-- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
-MULTI_LINE
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Découverte du travail de trader en ligne',
-    description_rich_text: multiline_description,
-    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
-    school_track: :troisieme_segpa
-  )
-end
-
-def populate_internship_weeks
-  manager = Users::SchoolManagement.find_by(role: 'school_manager')
-  school = manager.school
-  school.week_ids = Week.selectable_on_school_year.pluck(:id)
-end
-
-def populate_applications
-  bac_pro_studs = Users::Student.joins(:class_room)
-                                .where('class_rooms.school_track = ?', :bac_pro)
-                                .to_a
-                                .shuffle
-                                .first(2)
-  trois_gene_studs = Users::Student.joins(:class_room)
-                                   .where('class_rooms.school_track = ?', :troisieme_generale)
-                                   .to_a
-                                   .shuffle
-                                   .first(2)
-  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
-
-  bac_pro_studs.each do |bac_pro_stud|
-    FactoryBot.create(
-      :free_date_internship_application,
-      :submitted,
-      internship_offer: ios_bac_pro.first,
-      student: bac_pro_stud
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.third,
+      motivation: 'Au taquet',
+      internship_offer: troisieme_generale_offers.first,
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
-  end
-  ios_troisieme_generale.each do |io_trois_gene|
-    FactoryBot.create(
-      :weekly_internship_application,
-      :submitted,
-      internship_offer: io_trois_gene,
-      student: trois_gene_studs.first
-    )
-  end
-  if trois_gene_studs&.second
-    FactoryBot.create(
-      :weekly_internship_application,
-      :approved,
-      internship_offer: ios_troisieme_generale.first,
-      student: trois_gene_studs.second
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :approved,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.fourth,
+      motivation: 'Au taquet',
+      internship_offer: troisieme_generale_offers.first,
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
   end
 end
+def populate_agreements
+  troisieme_generale_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
 
+  agreement_1 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[0].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[0])
+  agreement_1.school_manager_accept_terms = true
+  agreement_1.employer_accept_terms = false
+  agreement_1.save!
+
+  agreement_2 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[1].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[1])
+  agreement_2.school_manager_accept_terms = false
+  agreement_2.employer_accept_terms = true
+  agreement_2.save!
+
+  agreement_3 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[2].internship_offer.employer)
+                                                    .new_from_application(troisieme_generale_offers[2])
+  agreement_3.school_manager_accept_terms = true
+  agreement_3.employer_accept_terms = true
+  agreement_3.save!
+end
 
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
@@ -423,6 +383,12 @@ def call_method_with_metrics_tracking(methods)
     ActiveSupport::Notifications.instrument "seed.#{method_name}" do
       send(method_name)
     end
+  end
+end
+
+def prevent_sidekiq_to_run_job_after_seed_loaded
+  Sidekiq.redis do |redis_con|
+    redis_con.flushall
   end
 end
 
@@ -440,7 +406,8 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_students,
     :populate_school_weeks,
     :populate_applications,
-    :populate_aggreements
+    :populate_agreements
   ])
   School.update_all(updated_at: Time.now)
+  prevent_sidekiq_to_run_job_after_seed_loaded
 end

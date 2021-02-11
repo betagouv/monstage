@@ -2,10 +2,8 @@
 
 require 'application_system_test_case'
 
-module W3c
+module Product
   class InternshipOfferStepperTest < ApplicationSystemTestCase
-    include Html5Validator
-    include Devise::Test::IntegrationHelpers
     include OrganisationFormFiller
     include InternshipOfferInfoFormFiller
     include TutorFormFiller

@@ -8,6 +8,7 @@
     = form.label field do
       span.mb-2= text_label
       = form.rg2a_required_content_tag
+
     - if edit_enable
       = form.text_field field,
                         class: 'form-control',
@@ -18,6 +19,8 @@
                         class: 'form-control',
                         required: true,
                         disabled: true
+      = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_#{field}_hidden"
+
     - if hint.present?
       small.text-muted= hint
 

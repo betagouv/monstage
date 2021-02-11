@@ -19,6 +19,11 @@ module Presenters
       user.formal_name.to_s
     end
 
+    def civil_name
+      name = user.last_name.downcase.capitalize
+      user.gender == "m" ? "Monsieur #{name}}" : "Madame #{name}}"
+    end
+
     def role_name
       UserManagementRole.new(user: user).role
     end

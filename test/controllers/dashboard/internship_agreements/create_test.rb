@@ -7,27 +7,26 @@ module Dashboard::InternshipAgreements
     include Devise::Test::IntegrationHelpers
 
     def make_internship_agreement_params(internship_application)
-      internship_agreement = build(:internship_agreement, internship_application: internship_application)
+      internship_agreement = build(:troisieme_generale_internship_agreement, internship_application: internship_application)
 
       {
         'internship_application_id'             => internship_application.id,
         'student_school'                        => internship_agreement.student_school,
         'school_representative_full_name'       => internship_agreement.school_representative_full_name,
+        'school_delegation_to_sign_delivered_at' => 10.days.ago.to_date,
         'student_full_name'                     => internship_agreement.student_full_name,
         'student_class_room'                    => internship_agreement.student_class_room,
         'main_teacher_full_name'                => internship_agreement.main_teacher_full_name,
         'organisation_representative_full_name' => internship_agreement.organisation_representative_full_name,
         'tutor_full_name'                       => internship_agreement.tutor_full_name,
+        'school_track'                          => internship_agreement.school_track,
         'date_range'                            => "du 10/10/2020 au 15/10/2020",
         'activity_scope_rich_text'              => '<div>Activité Scope</div>',
         'activity_preparation_rich_text'        => '<div>Activité Préparation</div>',
         'weekly_hours'                          => ['9h', '12h'],
-        'activity_learnings_rich_text'          => '<div>Apprentissages</div>',
-        'activity_rating_rich_text'             => '<div>Notations</div>',
-        'financial_conditions_rich_text'        => '<div>Hébergement, Assurance, Transport, Restauration</div>',
+        'complementary_terms_rich_text'        => '<div>Hébergement, Assurance, Transport, Restauration</div>',
         'terms_rich_text'                       => '<div>Article 1</div>'
       }
-
     end
 
     #
@@ -47,6 +46,9 @@ module Dashboard::InternshipAgreements
       assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
+      internship_agreement = InternshipAgreement.first
+      assert_equal internship_application.student.class_room.school_track, internship_agreement.school_track
+      assert_equal 10.days.ago.to_date, internship_agreement.school_delegation_to_sign_delivered_at
     end
 
     test 'POST #create as School Manager fail when missing params' do
@@ -89,12 +91,12 @@ module Dashboard::InternshipAgreements
       internship_application.student.update(class_room_id: class_room.id, school_id: school.id)
       sign_in(school.school_manager)
 
-      params = make_internship_agreement_params(internship_application).except('activity_rating_rich_text')
+      params = make_internship_agreement_params(internship_application).except('complementary_terms_rich_text')
       assert_no_difference('InternshipAgreement.count') do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
-      assert_select 'li label[for=internshipagreement_activity_rating_rich_text]',
-      text: "Veuillez compléter les modalités d’évaluation du stage"
+      assert_select 'li label[for=internshipagreement_complementary_terms_rich_text]',
+      text: "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)..."
     end
 
     test 'POST #create as School Manager when student is from anonther school' do
@@ -107,7 +109,7 @@ module Dashboard::InternshipAgreements
       internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       class_room = create(:class_room, school: another_school)
       internship_application.student.update(class_room_id: class_room.id, school_id: another_school.id)
-      internship_agreement = build(:internship_agreement, internship_application: internship_application)
+      internship_agreement = build(:troisieme_generale_internship_agreement, internship_application: internship_application)
       sign_in(school.school_manager)
 
       params = make_internship_agreement_params(internship_application)
@@ -184,27 +186,7 @@ module Dashboard::InternshipAgreements
       end
     end
 
-    test 'POST #create as Main Teacher fail when trix fields missing' do
-      school           = create(:school, :with_school_manager)
-      class_room       = create(:class_room, school: school)
-      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
-      student          = create(:student, school: school, class_room: class_room)
-      internship_offer = create(:weekly_internship_offer)
-      internship_application = create(
-        :weekly_internship_application,
-        :approved,
-        internship_offer: internship_offer,
-        student: student
-      )
-      sign_in main_teacher
 
-      params = make_internship_agreement_params(internship_application).except('activity_preparation_rich_text')
-      assert_no_difference('InternshipAgreement.count') do
-        post(dashboard_internship_agreements_path, params: { internship_agreement: params })
-      end
-      assert_select 'li label[for=internshipagreement_activity_preparation_rich_text]',
-                    text: "Veuillez compléter les modalités de concertation"
-    end
 
     test 'POST #create as Main Teacher when student is from anonther class room' do
       school           = create(:school, :with_school_manager)
@@ -279,18 +261,15 @@ module Dashboard::InternshipAgreements
       ).except(
         'activity_scope_rich_text',
         'activity_preparation_rich_text',
-        'activity_learnings_rich_text',
-        'financial_conditions_rich_text',
+        'complementary_terms_rich_text',
       )
       assert_no_difference('InternshipAgreement.count') do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
       assert_select 'li label[for=internshipagreement_activity_scope_rich_text]',
                     text: "Veuillez compléter les objectifs du stage"
-      assert_select 'li label[for=internshipagreement_financial_conditions_rich_text]',
-                    text: "Veuillez compléter les conditions liés au financement du stage"
-      assert_select 'li label[for=internshipagreement_activity_learnings_rich_text]',
-                    text: "Veuillez compléter les compétences visées"
+      assert_select 'li label[for=internshipagreement_complementary_terms_rich_text]',
+                    text: "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)..."
     end
   end
 end
