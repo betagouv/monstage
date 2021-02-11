@@ -3,12 +3,11 @@ thead
     th
       .row.mx-0.pt-3.pb-4.align-items-center
         .col-md-8.col-sm-12
-          div.h2 aria-level="1" Votre convention de stage
+          div.h2 role="heading" aria-level="1" Votre convention de stage
           .d-inline-flex
             .span.pr-1
               |Stage concerné:
-            h6.h6.test-header = link_to internship_application.internship_offer.title,
-                                        dashboard_internship_applications_path(internship_application)
+            .h6.test-header role="heading" aria-level="6" = link_to internship_application.internship_offer.title, dashboard_internship_applications_path(internship_application)
         .col-md-4.text-center.h6.text-grey
           =render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user))
           p.mt-3.mb-0.font-weight-normal

@@ -10,7 +10,6 @@ class MainTeacherMailer < ApplicationMailer
       to = @student.school_manager.email
       subject = "Convention de stage à renseigner: #{@student_presenter.civil_name}"
       cc = @student.main_teacher.email
-      byebug if cc.nil?
       @url = edit_dashboard_internship_agreement_url(@internship_application.internship_agreement)
       @message = "La convention dématérialisée peut être renseignée dès maintenant par le chef d'établissement ou le professeur principal"
     else
