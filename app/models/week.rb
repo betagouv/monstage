@@ -88,4 +88,14 @@ class Week < ApplicationRecord
       raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
     end
   end
+
+  def consecutive_to?(other_week)
+    (self.year == other_week.year && self.number == other_week.number + 1) ||
+    (self.year == other_week.year + 1 && self.number == 1 && other_week.number == last_week_of_civil_year(year: other_week.year).number)
+  end
+
+  def last_week_of_civil_year(year: )
+     Week.by_year(year: year).order(number: :asc).last
+  end
+
 end

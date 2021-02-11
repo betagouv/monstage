@@ -1,7 +1,10 @@
 - if internship_offer.weekly?
-  - internship_offer.weeks.each do |week|
-    = next if week.week_date < SchoolYear::Current.new.beginning_of_period
+  - weeks = internship_offer.weeks.selectable_on_school_year.uniq
+  - Presenters::WeekList.new(weeks: weeks).split_weeks_in_trunks.each do |presenter_week_list|
     span.badge.badge-pill.badge-secondary.mr-2.mt-2
-      = "#{l week.week_date} \u2192 #{l (week.week_date + 4.days)}"
+      - if current_user.is_a?(Users::Student)
+        = presenter_week_list.student_week_list(current_user).to_range_as_str
+      - else
+        = presenter_week_list.to_range_as_str
 - else
   'Ce stage ne comporte pas d'indication de semaines de stages

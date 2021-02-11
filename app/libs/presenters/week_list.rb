@@ -33,6 +33,19 @@ module Presenters
            .join("\n")
     end
 
+    def split_weeks_in_trunks
+      weeks_trunk_container = []
+      week_list = weeks.dup.to_a
+      while week_list.present?
+        week_list, weeks_trunk_container = next_joined_weeks_trunk(week_list, weeks_trunk_container)
+      end
+      weeks_trunk_container
+    end
+
+    def student_week_list(student)
+      self.class.new(weeks: weeks & student.school.weeks)
+    end
+
     protected
 
     def render_first_week_only
@@ -65,6 +78,15 @@ module Presenters
     def initialize(weeks:)
       @weeks = weeks
       @first_week, @last_week = weeks.minmax_by(&:id)
+    end
+
+    def next_joined_weeks_trunk(week_list, container)
+      joined_weeks = [week_list.slice!(0)]
+      while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
+        joined_weeks << week_list.slice!(0)
+      end
+      container << self.class.new(weeks: joined_weeks)
+      [week_list, container]
     end
   end
 end
