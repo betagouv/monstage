@@ -1,10 +1,12 @@
 - if internship_offer.weekly?
   - weeks = internship_offer.weeks.selectable_on_school_year.uniq
-  - Presenters::WeekList.new(weeks: weeks).split_weeks_in_trunks.each do |presenter_week_list|
-    span.badge.badge-pill.badge-secondary.mr-2.mt-2
-      - if current_user.is_a?(Users::Student)
-        = presenter_week_list.student_week_list(current_user).to_range_as_str
-      - else
-        = presenter_week_list.to_range_as_str
+  - presenter = Presenters::WeekList.new(weeks: weeks)
+  - presenter = presenter.student_compatible_week_list(current_user) if current_user.is_a?(Users::Student)
+  - if presenter.empty? && current_user.is_a?(Users::Student)
+    |Ce stage ne propose plus de dates compatibles avec celles que votre établissement a ouvertes
+  -else
+    - presenter.split_weeks_in_trunks.each do |presenter_week_list|
+      span.badge.badge-pill.badge-secondary.mr-2.mt-2
+          = presenter_week_list.to_range_as_str
 - else
-  'Ce stage ne comporte pas d'indication de semaines de stages
+  |Ce stage ne comporte pas d'indication de semaines de stages

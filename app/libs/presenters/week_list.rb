@@ -46,6 +46,10 @@ module Presenters
       self.class.new(weeks: weeks & student.school.weeks)
     end
 
+    def empty?
+      weeks.empty?
+    end
+
     protected
 
     def render_first_week_only
