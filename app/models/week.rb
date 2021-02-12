@@ -90,12 +90,6 @@ class Week < ApplicationRecord
   end
 
   def consecutive_to?(other_week)
-    (self.year == other_week.year && self.number == other_week.number + 1) ||
-    (self.year == other_week.year + 1 && self.number == 1 && other_week.number == last_week_of_civil_year(year: other_week.year).number)
+    self.id.to_i == other_week.id.to_i + 1
   end
-
-  def last_week_of_civil_year(year: )
-     Week.by_year(year: year).order(number: :asc).last
-  end
-
 end
