@@ -42,7 +42,7 @@ module Presenters
       weeks_trunk_container
     end
 
-    def student_week_list(student)
+    def student_compatible_week_list(student)
       self.class.new(weeks: weeks & student.school.weeks)
     end
 

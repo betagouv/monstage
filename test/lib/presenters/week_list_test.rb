@@ -20,14 +20,14 @@ module Presenters
       assert_equal wl_2.to_s, wl.split_weeks_in_trunks.second.to_s
     end
 
-    test '#student_week_list' do
+    test '#student_compatible_week_list' do
       first_weeks_trunck = Week.where(year: 2019).order(number: :asc).first(3)
       school = create(:school, weeks: [first_weeks_trunck.second])
       student = create(:student, school: school)
       wl_ref = Presenters::WeekList.new(weeks: [first_weeks_trunck.second])
       wl = Presenters::WeekList.new(weeks: first_weeks_trunck)
 
-      assert_equal wl_ref.to_s, wl.student_week_list(student).to_s
+      assert_equal wl_ref.to_s, wl.student_compatible_week_list(student).to_s
     end
   end
 end
