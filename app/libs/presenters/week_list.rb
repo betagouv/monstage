@@ -21,8 +21,8 @@ module Presenters
         ''
       when 1
         render_first_week_only(&block)
-      when 2..5
-        render_five_first_weeks(&block)
+      when 2
+        render_two_first_weeks(&block)
       else
         render_by_collapsing_date_from_first_to_last_week(&block)
       end
@@ -62,7 +62,7 @@ module Presenters
       ].join(' ')
     end
 
-    def render_five_first_weeks
+    def render_two_first_weeks
       [
         "Disponible sur #{weeks.size} semaines :",
         weeks.map { |week| yield(is_first: false, is_last: false, week: week) }
