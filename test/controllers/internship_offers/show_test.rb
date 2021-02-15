@@ -162,6 +162,80 @@ module InternshipOffers
       end
     end
 
+    test 'GET #show display weeks that are opened to internships by SchoolManagement' do
+
+    end
+
+    test 'GET #show for student displays cumulated weeks' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: coupled_weeks)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+      end
+    end
+
+    test 'GET #show for student displays cumulated weeks in two parts' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_2 = Week.from_date_to_date(
+        from: current_time.end_of_period - 8.weeks,
+        to: current_time.end_of_period - 6.weeks
+      )
+      weeks = coupled_weeks + coupled_weeks_2
+      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: weeks)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 12/04/2021 au 18/04/2021, du 19/04/2021 au 25/04/2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+      end
+    end
+
+    test 'GET #show for student displays school\'s available weeks only' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+      end
+    end
+
+    test 'GET #show for employer displays school\'s available weeks only' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
+        sign_in(internship_offer_week.employer)
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 39 semaines : 07/09/2020  → 06/06/2021'
+      end
+    end
+
     test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer = create(:weekly_internship_offer, weeks: weeks)
