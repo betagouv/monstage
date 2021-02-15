@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { changeURLFromEvent, clearParamAndVisits } from '../utils/urls';
+import { useMediaQuery } from 'react-responsive';
 
 function FilterInternshipOffer() {
   const searchParams = new URLSearchParams(window.location.search);
@@ -20,71 +21,49 @@ function FilterInternshipOffer() {
    setSchoolTrack(event.target.value)
    changeURLFromEvent(event,'school_track')
   }
-
-  return (
-    <div className="form-group form-inline justify-content-center justify-content-sm-start justify-content-md-center p-0 m-0 custom-radio-boxes">
+  const isPortrait = useMediaQuery({ orientation: 'portrait' })
+  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const buttonLabels = [
+    { value: 'troisieme_generale', id: 'search-by-troisieme-generale', label: '3ème' },
+    { value: 'troisieme_segpa', id: 'search-by-troisieme-segpa', label: '3e SEGPA' },
+    { value: 'troisieme_prepa_metiers', id: 'search-by-troisieme-prepa-metiers', label: '3e prépa métiers' },
+    { value: 'bac_pro', id: 'search-by-bac-pro', label: 'Bac Pro' },
+  ];
+  const largeScreenDisplay =
+    (<div className="form-group form-inline justify-content-center justify-content-sm-start justify-content-md-center p-0 m-0 custom-radio-boxes">
       <span className="font-weight-normal justify-content-sm-center mr-1">Filtrer par : </span>
-      <div className='custom-radio-box-control custom-radio-box-control-prepend '>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_generale'}
-          value="troisieme_generale"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-generale"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-generale">
-          3ème
-        </label>
-      </div>
-      <div className='custom-radio-box-control custom-radio-box-control'>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_segpa'}
-          value="troisieme_segpa"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-segpa"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-segpa">
-          3e SEGPA
-        </label>
-      </div>
-      <div className='custom-radio-box-control custom-radio-box-control'>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_prepa_metiers'}
-          value="troisieme_prepa_metiers"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-prepa-metiers"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-prepa-metiers">
-          3e prépa métiers
-        </label>
-      </div>
-      <div className="custom-radio-box-control  custom-radio-box-control-append">
-        <input
-          type="radio"
-          name="school_track"
-          value="bac_pro"
-          checked={schoolTrack === 'bac_pro'}
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-bac-pro"
-        />
-        <label className="label mb-0" htmlFor="search-by-bac-pro">
-          Bac Pro
-        </label>
-      </div>
+      {buttonLabels.map(
+        function (buttonLabel, index) {
+          let extraClass = (index == 0) ? "custom-radio-box-control-prepend" : ""
+          extraClass = (index == (buttonLabels.length - 1)) ? "custom-radio-box-control-append" : extraClass
+          return (
+            <div className={`custom-radio-box-control d-none d-md-block ${extraClass}`}>
+              <input
+                type="radio"
+                name="school_track"
+                checked={schoolTrack === buttonLabel.value}
+                value={buttonLabel.value}
+                onClick={(event) => clearRadioOnDoubleClick(event)}
+                onChange={(event) => filterOffers(event)}
+                className="custom-radio-box-control-input col-sm-12"
+                id={buttonLabel.id}
+              />
+              <label className="label mb-0" htmlFor={buttonLabel.id}>
+                {buttonLabel.label}
+              </label>
+            </div>
+          )
+        })
+      }
     </div>
-  );
+    );
+  const smallScreenDisplay = (
+    <div>
+      <p>
+        There is the alternate radio component {isPortrait}
+      </p>
+    </div>
+  )
+  return (isPortrait && isMobile) ? smallScreenDisplay : largeScreenDisplay
 }
 export default FilterInternshipOffer;
