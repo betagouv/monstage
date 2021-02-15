@@ -34,12 +34,15 @@ module Presenters
     end
 
     def split_weeks_in_trunks
-      weeks_trunk_container = []
-      week_list = weeks.dup.to_a
+      week_list, container = [weeks.dup.to_a, []]
       while week_list.present?
-        week_list, weeks_trunk_container = next_joined_weeks_trunk(week_list, weeks_trunk_container)
+        joined_weeks = [week_list.slice!(0)]
+        while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
+          joined_weeks << week_list.slice!(0)
+        end
+        container << self.class.new(weeks: joined_weeks)
       end
-      weeks_trunk_container
+      container
     end
 
     def student_compatible_week_list(student)
@@ -84,13 +87,5 @@ module Presenters
       @first_week, @last_week = weeks.minmax_by(&:id)
     end
 
-    def next_joined_weeks_trunk(week_list, container)
-      joined_weeks = [week_list.slice!(0)]
-      while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
-        joined_weeks << week_list.slice!(0)
-      end
-      container << self.class.new(weeks: joined_weeks)
-      [week_list, container]
-    end
   end
 end
