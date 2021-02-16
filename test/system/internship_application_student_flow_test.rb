@@ -4,6 +4,7 @@ require 'application_system_test_case'
 
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include ApiTestHelpers
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
@@ -61,8 +62,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     }
     sign_in(student)
 
-    mock_prismic = Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
-    PrismicFinder.stub(:homepage, mock_prismic) do
+    prismic_root_path_stubbing do
       visit '/'
       click_on 'Candidatures'
       internship_applications.each do |_aasm_state, internship_application|

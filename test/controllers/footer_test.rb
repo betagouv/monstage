@@ -3,9 +3,9 @@
 require 'test_helper'
 
 class FooterTest < ActionDispatch::IntegrationTest
+  include ApiTestHelpers
   test 'presence of footer links within valid rg2a footer' do
-    mock_prismic = Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
-    PrismicFinder.stub(:homepage, mock_prismic) do
+    prismic_root_path_stubbing do
       get root_path
 
       assert_select('a[href=?]',
