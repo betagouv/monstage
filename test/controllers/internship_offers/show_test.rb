@@ -193,7 +193,6 @@ module InternshipOffers
         to: current_time.end_of_period - 6.weeks
       )
       weeks = coupled_weeks + coupled_weeks_2
-      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
       travel_to(current_time.beginning_of_period) do
         school = create(:school, weeks: weeks)
         internship_offer_week = create(:weekly_internship_offer, weeks: weeks)
@@ -210,7 +209,6 @@ module InternshipOffers
         from: current_time.end_of_period - 4.weeks,
         to: current_time.end_of_period - 2.weeks
       )
-      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
       travel_to(current_time.beginning_of_period) do
         school = create(:school, weeks: coupled_weeks)
         internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
@@ -226,9 +224,8 @@ module InternshipOffers
         from: current_time.end_of_period - 4.weeks,
         to: current_time.end_of_period - 2.weeks
       )
-      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
       travel_to(current_time.beginning_of_period) do
-        school = create(:school, weeks: coupled_weeks)
+        create(:school, weeks: coupled_weeks)
         internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
         sign_in(internship_offer_week.employer)
         get internship_offer_path(internship_offer_week)
