@@ -42,8 +42,13 @@ class School < ApplicationRecord
 
   after_create :create_internship_agreement_preset!,
                if: lambda { |s| s.internship_agreement_preset.blank? }
+
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
+  end
+
+  def agreement_address
+    "Collège #{name} - #{city}, #{zipcode}"
   end
 
   def has_staff?

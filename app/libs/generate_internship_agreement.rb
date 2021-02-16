@@ -24,10 +24,7 @@ class GenerateInternshipAgreement < Prawn::Document
     y_position = @pdf.cursor
     @pdf.image "#{Rails.root}/public/assets/logo.png", at: [0, y_position], width: 50
     @pdf.move_down 5
-    @pdf.text "Convention n°#{@internship_agreement.id}", :size => 7, :align => :right, :style => :italic
     @pdf.move_down 30
-    @pdf.stroke_color '10008F'
-    @pdf.stroke_horizontal_rule
   end
 
   def title
@@ -143,7 +140,12 @@ class GenerateInternshipAgreement < Prawn::Document
       @pdf.stroke do
         @pdf.horizontal_line 0, 540, at: @pdf.bounds.bottom - 25
       end
-      @pdf.text_box 'Agence Nationale de la Cohésion des Territoires - 20, Avenue de Ségur - 75007 Paris', align: :center, :at => [@pdf.bounds.left, @pdf.bounds.bottom - 35], :height => 20, :width => @pdf.bounds.width, color: 'cccccc'
+      @pdf.text_box(@internship_agreement.internship_application.student.school.agreement_address,
+                    align: :center,
+                    :at => [@pdf.bounds.left, @pdf.bounds.bottom - 35],
+                    :height => 20,
+                    :width => @pdf.bounds.width,
+                    color: 'cccccc')
     end
   end
 
