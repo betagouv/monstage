@@ -4,16 +4,13 @@
 
 - if @school.students.without_class_room.present?
   div data-controller='students'
-    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
-      .row.mt-3
-        .col-8.text-primary.font-weight-bold
-          .row.pt-2
-            .col1.lead
-              i.fa.fa-exclamation-triangle
-            .col-11
-              small.font-weight-bold
-              | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
-        .col-4.text-right
+    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
+      .row.align-items-center
+        .col-auto.text-primary
+          i.fas.fa-2x.fa-exclamation-triangle
+        .col.text-primary
+          | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
+        .col-12.col-sm-4.pt-3.pt-sm-0
           = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
 
       .row
