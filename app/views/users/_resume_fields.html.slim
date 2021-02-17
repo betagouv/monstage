@@ -37,4 +37,4 @@
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
             small.form-text.text-muted Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
-          = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+          = form.email_field :email, class: 'form-control col-lg-12', required: !current_user.phone , readonly: phone_mail_disabled, disabled: phone_mail_disabled
