@@ -178,7 +178,7 @@ module InternshipOffers
         internship_offer_week = create(:weekly_internship_offer, weeks: coupled_weeks)
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
         get internship_offer_path(internship_offer_week)
-        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
       end
     end
 
@@ -198,8 +198,8 @@ module InternshipOffers
         internship_offer_week = create(:weekly_internship_offer, weeks: weeks)
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
         get internship_offer_path(internship_offer_week)
-        assert_select "span", text: 'Disponible sur 2 semaines : du 12/04/2021 au 18/04/2021, du 19/04/2021 au 25/04/2021'
-        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 12 avril 2021 au 18 avril 2021, du 19 avril 2021 au 25 avril 2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
       end
     end
 
@@ -214,7 +214,7 @@ module InternshipOffers
         internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
         get internship_offer_path(internship_offer_week)
-        assert_select "span", text: 'Disponible sur 2 semaines : du 10/05/2021 au 16/05/2021, du 17/05/2021 au 23/05/2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
       end
     end
 
@@ -229,7 +229,7 @@ module InternshipOffers
         internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
         sign_in(internship_offer_week.employer)
         get internship_offer_path(internship_offer_week)
-        assert_select "span", text: 'Disponible sur 39 semaines : 07/09/2020  → 06/06/2021'
+        assert_select "span", text: 'Disponible du  7 septembre 2020 au  6 juin 2021'
       end
     end
 
