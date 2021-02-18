@@ -29,7 +29,7 @@ nav.navbar.navbar-light.py-0
 
     - else
       li.nav-item.d-none.d-sm-block
-        = link_to 'Créer mon compte', new_user_registration_path, class: "btn btn-primary mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}", id: 'signup-header'
+        = link_to 'Créer mon compte', new_user_registration_path(as: 'Student'), class: "btn btn-primary mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}", id: 'signup-header'
       li.nav-item.d-none.d-sm-block
         = link_to 'Me connecter', new_user_session_path, class: "btn btn-outline-primary ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
 
