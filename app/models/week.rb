@@ -88,4 +88,8 @@ class Week < ApplicationRecord
       raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
     end
   end
+
+  def consecutive_to?(other_week)
+    self.id.to_i == other_week.id.to_i + 1
+  end
 end
