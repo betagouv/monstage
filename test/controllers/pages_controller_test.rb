@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
-  include ApiTestHelpers
+  include ThirdPartyTestHelpers
 
   test 'home' do
     # write a mock : File.open(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump'), 'wb') { |fd| fd.write Marshal.dump(rs) }

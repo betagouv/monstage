@@ -6,7 +6,7 @@ module W3c
   class HomeValidationTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
-    include ApiTestHelpers
+    include ThirdPartyTestHelpers
 
     test 'static pages' do
       prismic_root_path_stubbing do

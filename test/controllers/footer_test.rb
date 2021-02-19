@@ -3,7 +3,8 @@
 require 'test_helper'
 
 class FooterTest < ActionDispatch::IntegrationTest
-  include ApiTestHelpers
+  include ThirdPartyTestHelpers
+
   test 'presence of footer links within valid rg2a footer' do
     prismic_root_path_stubbing do
       get root_path
