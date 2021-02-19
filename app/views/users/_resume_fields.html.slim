@@ -29,12 +29,21 @@
     .row
       .col-12.col-md-6
         .form-group
-          = form.label :phone, for: 'phone-input' do
+          = form.label :phone, for: 'phone-input', class: '' do
             = 'Numéro de mobile'
           = react_component("CountryPhoneSelect", props: { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
       .col-12.col-md-6
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
-            small.form-text.text-muted Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
-          = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+          - if current_user.unconfirmed_email.nil?
+            = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+            small.form-text.text-muted.mb-1
+              |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
+          - else
+            = form.email_field :unconfirmed_email, class: 'form-control col-lg-12', readonly: true, disabled: true
+            small.form-text.mb-1
+              |Cet email n'est pas encore confirmé : veuillez consulter vos emails
+            = link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe,
+                      new_user_confirmation_path(current_user, email: current_user.unconfirmed_email),
+                      class: "small"
