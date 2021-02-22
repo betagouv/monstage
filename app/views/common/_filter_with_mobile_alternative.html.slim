@@ -6,13 +6,12 @@
   data-controller='filtering'
   data-filtering-field-value="#{field}"
   ]
-  .col-12
-    .form-group.row
-      .col-8.offset-2.custom-label-container
-        = select_tag tag,
-                     options_for_select(presenter.mobile_tag_filter_options, matching_param),
-                     class: 'custom-select',
-                     id: "filtering-#{field}",
-                     'data-action':'filtering#handleChange',
-                     'data-target':'filtering.filter'
-        label = presenter.filter_options[:component_label]
+  .col-8.offset-2.form-group.text-center.center-text.custom-label-container
+    = select_tag field,
+                  options_for_select(presenter.mobile_tag_filter_options, matching_param),
+                  class: 'custom-select',
+                  id: "filtering_#{field}",
+                  'data-action':'filtering#handleChange',
+                  'data-target':'filtering.filter'
+    label for="#{"filtering_#{field}"}"
+      = presenter.filter_options[:component_label]
