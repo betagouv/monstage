@@ -1,16 +1,18 @@
-.row.align-items-center.no-gutters.d-none.d-md-block 
+.row.align-items-center.no-gutters.d-none.d-sm-block
   .col-12
     = react_component large_screen_react_component,
                       props: { filterOptions: presenter.filter_options }
-.row.align-items-center.no-gutters.d-block.d-md-none data-controller='filtering' data-filtering-field-value="#{field}"
+.row.align-items-center.no-gutters.d-block.d-sm-none [
+  data-controller='filtering'
+  data-filtering-field-value="#{field}"
+  ]
   .col-12
     .form-group.row
-      label.col-sm-4.col-form-label.text-right for="filtering-#{field}"
-        = presenter.filter_options[:component_label]
-      .col-sm-6
+      .col-8.offset-2.custom-label-container
         = select_tag tag,
                      options_for_select(presenter.mobile_tag_filter_options, matching_param),
-                     class: 'form-control',
+                     class: 'custom-select',
                      id: "filtering-#{field}",
                      'data-action':'filtering#handleChange',
                      'data-target':'filtering.filter'
+        label = presenter.filter_options[:component_label]
