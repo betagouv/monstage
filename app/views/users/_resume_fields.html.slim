@@ -36,8 +36,9 @@
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
+
           - if current_user.unconfirmed_email.nil?
-            = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+            = form.email_field :email, class: 'form-control col-lg-12', required: !current_user.phone , readonly: phone_mail_disabled, disabled: phone_mail_disabled
             small.form-text.text-muted.mb-1
               |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           - else
@@ -47,3 +48,4 @@
             = link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe,
                       new_user_confirmation_path(current_user, email: current_user.unconfirmed_email),
                       class: "small"
+
