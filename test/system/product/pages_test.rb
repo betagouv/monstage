@@ -4,9 +4,10 @@ require 'application_system_test_case'
 
 module Product
   class HomeValidationTest < ApplicationSystemTestCase
+    include ThirdPartyTestHelpers
+
     test 'static pages' do
-      mock_prismic = Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
-      PrismicFinder.stub(:homepage, mock_prismic) do
+      prismic_root_path_stubbing do
         %i[
           root_path
           les_10_commandements_d_une_bonne_offre_path

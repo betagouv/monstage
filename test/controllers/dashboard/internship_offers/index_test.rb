@@ -145,6 +145,7 @@ module Dashboard::InternshipOffers
       sign_in(employer)
 
       get dashboard_internship_offers_path
+
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
                     { count: 1 },
                     'should not have found published offer')
