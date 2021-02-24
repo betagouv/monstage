@@ -9,3 +9,23 @@ h1.h2.my-3 Les informations de mon établissement
       = f.rich_text_area :agreement_conditions_rich_text, class: 'form-control'
     .actions.d-flex.d-sm-block
       = f.submit 'Enregistrer', class: 'btn btn-primary'
+
+h2.h2.my-3 Personnels
+- if @school.has_staff?
+  .row
+    .col-12
+      small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
+
+  .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers + @school.teachers + @school.others
+
+- else
+  .row
+    .col-12
+      .alert.alert-info.alert-outlined.mb-2
+        .row.align-items-center.no-gutters
+          .col-1.col-sm-auto.text-center.mr-2
+            i.fa.fa-info-circle.fa-2x
+          .col
+            p.mb-0
+              span.test-presence-of-ux-guideline-invitation
+                | Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.
