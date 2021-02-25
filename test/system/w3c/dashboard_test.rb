@@ -76,19 +76,6 @@ module W3c
       end
     end
 
-    test 'school_manager dashboard_school_users_path' do
-      school = create(:school)
-      school_manager = create(:school_manager, school: school)
-      create(:teacher, school: school)
-      create(:main_teacher, school: school)
-      create(:other, school: school)
-
-      sign_in(school_manager)
-      run_request_and_cache_response(report_as: 'school_manager dashboard_school_users_path') do
-        visit dashboard_school_users_path(school)
-      end
-    end
-
     test 'school_manager dashboard_school_class_rooms_path' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)

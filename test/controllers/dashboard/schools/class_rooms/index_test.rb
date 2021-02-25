@@ -42,10 +42,6 @@ module Dashboard
         get dashboard_school_class_rooms_path(school)
 
         assert_select 'a.nav-link[href=?]',
-                      dashboard_school_users_path(school),
-                      { count: 1 },
-                      'missing link to manage school users'
-        assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
                       { count: 2 },
                       'missing or extra link to manage school weeks'

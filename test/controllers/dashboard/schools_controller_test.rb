@@ -7,6 +7,51 @@ module Dashboard
     include Devise::Test::IntegrationHelpers
 
     #
+    # Show, SchoolManagement
+    #
+    test 'GET show not logged redirects to sign in' do
+      school = create(:school)
+      get dashboard_school_path(school.to_param)
+      assert_redirected_to user_session_path
+    end
+
+    test 'GET show as Student redirects to root path' do
+      school = create(:school)
+      sign_in(create(:student))
+      get dashboard_school_path(school.to_param)
+      assert_redirected_to root_path
+    end
+
+    test 'GET show as School Manager when no teacher' do
+      school = create(:school, :with_school_manager)
+      sign_in(school.school_manager)
+
+      get dashboard_school_path(school)
+      assert_response :success
+      assert_select '.test-presence-of-ux-guideline-invitation',
+                      text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site."
+    end
+
+    test 'GET show as School Manager with teachers' do
+      school = create(:school, :with_school_manager)
+      sign_in(school.school_manager)
+      school_employees = [
+        create(:main_teacher, school: school),
+        create(:teacher, school: school),
+        create(:other, school: school)
+      ]
+
+      get dashboard_school_path(school)
+      assert_response :success
+      school_employees.each do |school_employee|
+        assert_select 'a[href=?]', dashboard_school_user_path(school, school_employee)
+      end
+      assert_select '.test-presence-of-ux-guideline-invitation',
+                    text: "Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.",
+                    count: 0
+    end
+
+    #
     # Edit, SchoolManagement
     #
     test 'GET edit not logged redirects to sign in' do
