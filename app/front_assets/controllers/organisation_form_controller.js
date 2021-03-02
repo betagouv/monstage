@@ -4,17 +4,12 @@ import { showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = [
-    'organisationName',
-    'invalidFeedback',
-    'validFeedback',
     'groupBlock',
     'groupLabel',
     'groupNamePublic',
     'groupNamePrivate',
     'selectGroupName',
   ];
-
-  static values = { token: String };
 
   onChooseType(event) {
     this.chooseType(event.target.value)
@@ -83,53 +78,6 @@ export default class extends Controller {
       $(this.groupNamePublicTargets).hide();
       $(this.groupNamePrivateTargets).show();
     }
-  }
-
-  checkSiren(event) {
-    this.hideFeedbackMessages();
-    const siren = event.target.value.replace(/\s/g, '');
-    const sirenToken = this.tokenValue;
-    if (siren.length === 9) {
-      const Params = {
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${sirenToken}`,
-        },
-        method: "GET"
-      }
-      const SirenUrl = `https://api.insee.fr/entreprises/sirene/V3/siret?q=siren:${siren}`;
-      fetch(SirenUrl, Params)
-        .then(data=> {
-          if (data.status === 200) {
-            $(this.validFeedbackTarget).show();
-            return data.json();
-          } else {
-            this.invalidSiren();
-            return
-          }
-        })
-        .then(res=> {
-          $(this.organisationNameTarget).val(res.etablissements[0].uniteLegale.denominationUniteLegale);
-        })
-        .catch(error=> {
-          this.invalidSiren();
-        })
-    } else {
-      if (siren.length > 0) {
-        this.invalidSiren();
-      }
-    }
-    return
-  }
-
-  invalidSiren() {
-    $(this.invalidFeedbackTarget).show();
-    $(this.organisationNameTarget).val('');
-  }
-
-  hideFeedbackMessages() {
-    $(this.invalidFeedbackTarget).hide();
-    $(this.validFeedbackTarget).hide();
   }
 
   connect() {
