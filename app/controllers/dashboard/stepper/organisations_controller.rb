@@ -51,6 +51,7 @@ module Dashboard::Stepper
               :street,
               :zipcode,
               :city,
+              :siren,
               :employer_description_rich_text,
               :employer_website,
               :is_public,

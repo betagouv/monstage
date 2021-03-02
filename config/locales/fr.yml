@@ -118,6 +118,7 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
+        siren: Code Siren
 
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
@@ -174,6 +175,7 @@ fr:
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         permalink: Association partenaire
+        siren: Code Siren
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
