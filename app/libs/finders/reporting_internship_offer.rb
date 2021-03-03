@@ -67,7 +67,7 @@ module Finders
     end
 
     def school_year_param?
-      params.key?(:school_year)
+      params.key?(:school_year) && params[:school_year] != 'all'
     end
 
     def public_param?

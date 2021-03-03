@@ -6,6 +6,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
+      params[:school_year] = SchoolYear::Current.new.beginning_of_period.year unless params[:school_year]
       render locals: {
         # widget left, 0, showing school involvement
         total_schools_with_manager: total_schools_with_manager,

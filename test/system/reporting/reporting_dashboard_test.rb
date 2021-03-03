@@ -27,7 +27,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
                      group: @group2)
     }
     sign_in(@statistician)
-    visit reporting_dashboards_path(department: @department_name)
+    visit reporting_dashboards_path(department: @department_name, school_year: :all)
     @total_offers_css = 'span.ml-auto.h2.text-warning'
     page.assert_selector(@total_offers_css, text: '6')
     find_link('Offres').click
