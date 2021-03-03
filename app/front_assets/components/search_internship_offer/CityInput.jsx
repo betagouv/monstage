@@ -58,8 +58,8 @@ function CityInput({
     let zipcode = ""
     if (codes.length == undefined || codes.length === 0) { return zipcode; }
     if (codes.length >= 1) { zipcode = codes[0]; }
-    if (codes.length >= 2) { zipcode += ", " + codes[1]; }
-    if (codes.length > 2) { zipcode += ", ... " }
+    // if (codes.length >= 2) { zipcode += ", " + codes[1]; }
+    // if (codes.length > 2) { zipcode += ", ... " }
     return zipcode
   };
 
