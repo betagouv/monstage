@@ -103,8 +103,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         page.find("a[data-test-id=\"toggle-publish-#{internship_offer.id}\"]").click
         wait_form_submitted
         assert_in_delta Time.now.utc.to_i,
-                        internship_offer.reload.published_at.utc.to_i,
-                        delta = 10
+                        internship_offer.reload.published_at.utc.to_i
       end
     end
   end
