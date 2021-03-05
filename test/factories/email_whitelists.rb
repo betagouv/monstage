@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :email_whitelist do
-    email { "MyString" }
+    email { 'MyString' }
   end
 end

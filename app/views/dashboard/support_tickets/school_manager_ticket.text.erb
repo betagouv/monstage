@@ -1,0 +1,10 @@
+nombre d'intervenants proposés : <%= @params[:speechers_quantity] %>
+nombre de métiers abordés: <%= @params[:business_lines_quantity] %>
+-------------------------------------
+dates visées :
+<%= human_week_desc %>
+-------------------------------------
+Entreprise signataire du PaQte: <%= @params[:paqte].to_i == 1 ? 'oui' : 'non' %>
+=====================================
+MESSAGE :
+<%= @params[:message]%>

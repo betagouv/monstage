@@ -1,19 +1,65 @@
-= render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true }
+- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
 
+= render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
 
-.row
-  table.table.table-hover.table-rg2a.table-sticky-thead
-    - cols = ["Classe",
-        "Inscrits/Validés",
-        "Sans candidature",
-        "Sans stage"]
-    thead
-      tr.tr-white
-        - cols.map.with_index do |col, i|
-          th class="align-top #{i.zero? ? '' : 'text-center'}"
-            small= col
-    tbody= render partial: "class_rooms/class_room", collection: Array(@school.class_rooms.order(:name)), locals: { school: @school, cols: cols }
+- if @school.students.without_class_room.present?
+  div data-controller='students'
+    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
+      .row.mt-3
+        .col-8.text-danger.font-weight-bold
+          .row.pt-2
+            .col1.lead
+              i.fa.fa-exclamation-triangle
+            .col-11
+              small.font-weight-bold
+              | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
+        .col-4.text-right
+          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
 
-  - if can?(:create, ClassRoom)
-    .col-12
-      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'text-danger font-weight-bold'
+      .row
+        .col-12.px-0
+          table.table.table-hover.table-sticky-thead
+            thead
+              tr.d-flex.tr-white
+                th.col-8
+                  small Elève
+                th.col-4
+            tbody class="class-room"
+              - @school.students.without_class_room.each do |student|
+                tr class="d-flex" data-test="student-not-in-class-room-#{student.id}"
+                  td.col-7.d-flex.align-items-center data-head="#{student.name}"= student.name
+                  td.col-4 data-head="Action"
+                    = select_tag "student_#{student.id}",
+                                  options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                                  prompt: 'Choisissez une classe' ,
+                                  class: "form-control",
+                                  data: { action: 'change->students#selectStudentClassRoom' }
+                  td.col-1.text-sm-center data-head="Suppression d-none"
+                    = link_to dashboard_school_user_path(id: student.id),
+                              method: :delete,
+                              class: 'trash-user text-decoration-none',
+                              data: {confirm: 'Cette action va supprimer un élève de votre établissement, confirmez-vous ?'} do
+                      i.fas.fa-trash.fa-lg.mt-2
+                      br
+                      small Supprimer
+
+- @school.class_rooms.includes([:students]).order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
+  .row.mt-5
+    h5.mb-0= tr_school_track(school_track)
+  .row
+    table.table.table-hover.table-rg2a.table-sticky-thead
+      - cols = ["Classe",
+          "Compte actif",
+          "Sans candidature",
+          "Sans stage", ""]
+      thead
+        tr.tr-white
+          - cols.map.with_index do |col, i|
+            th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
+              small= col
+      tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
+
+- if can?(:create, ClassRoom)
+  .row
+    .col-12.my-3
+      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn-primary btn'

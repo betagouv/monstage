@@ -7,7 +7,7 @@ FactoryBot.define do
     sequence(:email) { |n| "jean#{n}-claude@dus.fr" }
     password { 'ooooyeahhhh' }
     confirmed_at { Time.now }
-    confirmation_sent_at { Time.now}
+    confirmation_sent_at { Time.now }
     accept_terms { true }
     phone_token { nil }
     phone_token_validity { nil }
@@ -22,7 +22,7 @@ FactoryBot.define do
       gender { 'm' }
       birth_date { 14.years.ago }
 
-      school { create(:school) }
+      school { create(:school, :with_school_manager) }
       trait :male do
         gender { 'm' }
       end
@@ -40,10 +40,11 @@ FactoryBot.define do
     end
 
     factory :school_manager, class: 'Users::SchoolManagement', parent: :user do
+      school
       type { 'Users::SchoolManagement' }
       role { Users::SchoolManagement.roles[:school_manager] }
 
-      sequence(:email) { |n| "jean#{n}-claude@ac-dus.fr" }
+      sequence(:email) { |n| "jean#{n}-claude@#{school.email_domain_name}" }
     end
 
     factory :main_teacher, class: 'Users::SchoolManagement', parent: :user do
@@ -62,7 +63,6 @@ FactoryBot.define do
     factory :other, class: 'Users::SchoolManagement', parent: :user do
       type { 'Users::SchoolManagement' }
       role { 'other' }
-
     end
 
     factory :statistician, class: 'Users::Statistician', parent: :user do
@@ -74,7 +74,7 @@ FactoryBot.define do
 
     factory :user_operator, class: 'Users::Operator', parent: :user do
       type { 'Users::Operator' }
-      operator { create(:operator) }
+      operator
       api_token { SecureRandom.uuid }
     end
   end

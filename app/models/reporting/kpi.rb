@@ -12,7 +12,7 @@ module Reporting
     def school_manager_funnel_goal
       @school_manager_funnel_goal ||= {
         total: School.count,
-        with_school_manager: School.joins(:users).where(users: { type: Users::SchoolManager.name }).count
+        with_school_manager: School.joins(:users).where(users: { type: Users::SchoolManagement.name }).count
       }
     end
 

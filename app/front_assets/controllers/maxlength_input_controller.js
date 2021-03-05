@@ -3,9 +3,11 @@ import { Controller } from 'stimulus';
 
 export default class extends Controller {
   static targets = ['trixElement', 'trixElementCharCount'];
-
+  static values = {
+    limit: Number
+  }
   connect() {
-    const limit = this.data.get('limit');
+    const limit = this.limitValue;
     const $trixElementCharCount = $(this.trixElementCharCountTarget);
 
     this.trixElementTarget.addEventListener('trix-change', event => {

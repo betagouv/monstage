@@ -8,13 +8,14 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'GET new as a SchoolManagement renders expected inputs' do
     get new_user_registration_path(as: 'SchoolManagement')
 
     assert_response :success
+    assert_select 'title', "Inscription | Monstage"
     assert_teacher_form_rendered
   end
 
@@ -28,6 +29,7 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Fourcade',
                                                     accept_terms: '1' } })
       assert_response 200
+      assert_select 'title', "Création de compte | Monstage"
       assert_teacher_form_rendered
     end
   end

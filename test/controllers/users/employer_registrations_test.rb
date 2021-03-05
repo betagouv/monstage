@@ -4,11 +4,12 @@ require 'test_helper'
 
 class EmployerRegistrationsTest < ActionDispatch::IntegrationTest
   def assert_employer_form_rendered
+    assert_select 'title', "Inscription | Monstage"
     assert_select 'input', value: 'Employer', hidden: 'hidden'
     assert_select 'label', /Adresse électronique/
     assert_select 'label', /Créer un mot de passe/
     assert_select 'label', /Ressaisir le mot de passe/
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'GET new as a Employer' do

@@ -28,16 +28,18 @@ module Presenters
         [].concat(ATTRS, METHODS)
       end
 
-      delegate *ATTRS, to: :instance
+      delegate(*ATTRS, to: :instance)
 
       def self.dimension_name
         "Titre de l'offre"
       end
 
       def human_max_candidates
-        instance.max_candidates == 1 ?
-          ' Stage individuel (un seul élève par stage)' :
+        if instance.max_candidates == 1
+          ' Stage individuel (un seul élève par stage)'
+        else
           " Stage collectif (par groupe de #{instance.max_candidates} élèves)"
+end
       end
 
       def human_is_public

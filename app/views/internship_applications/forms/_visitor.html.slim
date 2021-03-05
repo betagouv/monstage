@@ -1,10 +1,10 @@
-#internship-application-form data-target="internship-application-form.containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
+#internship-application-form data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   .bg-light-blue
     .col-12
       .row
         .col-12.h2.h4.p-3.bg-covid-19-notice.text-white
           span.h1-label.text-white Candidature
-          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white' do
+          = link_to "#internship-application-closeform", data: {action: "click->internship-application-form#hideForm", turbolinks: false}, class: 'float-right text-white', aria: { label: 'Ne pas candidater' } do
               i.fas.fa-times.fa-sm
   .row.align-items-center.container-connexion-required
     .onboarding-card.onboarding-card-sm.py-3
@@ -18,4 +18,4 @@
           = link_to 'Me connecter', new_user_session_path, class: "btn btn-outline-primary"
           br
           br
-          = link_to 'Pas encore de compte ? Inscrivez-vous', new_user_registration_path, class: "text-danger font-weight-bold"
+          = link_to 'Pas encore de compte ? Inscrivez-vous', new_user_registration_path(as: 'Student'), class: "text-danger font-weight-bold"

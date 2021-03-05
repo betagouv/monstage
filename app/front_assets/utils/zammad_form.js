@@ -296,7 +296,7 @@ $(function() {
       _this.log('debug', 'modalOpenTime', _this.modalOpenTime.getTime())
       _this.log('debug', 'diffTime', diff)
       if (diff < 1000*10) {
-        alert('Sorry, you look like an robot!')
+        alert("Désolé, mais votre comportement ressemble à celui d'un robot!")
         return
       }
     }

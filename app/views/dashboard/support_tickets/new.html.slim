@@ -1,0 +1,48 @@
+- if current_user.is_a?(Users::Employer)
+  = render partial: 'dashboard/internship_offers/tabs'
+  h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
+  p
+    |
+      Nos associations partenaires vous proposent des solutions de stage
+      à distance, et peuvent vous accompagner dans leur mise en place.
+- if current_user.is_a?(Users::SchoolManagement)
+  = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}
+  h2.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
+
+= form_with({model: @support_ticket,
+             url: dashboard_support_tickets_path,
+             scope: :support_ticket, local: true}) do |f|
+  = render "layouts/form_errors",
+            resource: @support_ticket,
+            resource_name: :support_ticket
+  = render partial: 'dashboard/support_tickets/remote_internship_types',
+           locals: { f: f }
+
+  h3.h6.pt-4 Informations complémentaires
+  .form-group
+    = f.rg2a_explain_required_asterisk
+    .row.no-gutters
+      .col-sm-12.col-md-8.col-lg-5
+        = render partial: "weeks/checkbox_inputs",
+                 locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false }
+
+        - if current_user.is_a?(Users::Employer)
+          = render partial: 'dashboard/support_tickets/employer_specific_fields',
+                   locals: {f: f}
+        - if current_user.is_a?(Users::SchoolManagement)
+          = render partial: 'dashboard/support_tickets/school_manager_specific_fields',
+                   locals: {f: f, school: @school}
+
+  .row.no-gutters.mt-4
+    .col-sm-12.col-md-10.col-lg-7
+      .form-group
+        = f.label :message do
+          |Besoins spécifiques
+        = f.text_area :message,
+                      class: "form-control mt-2",
+                      rows: 7,
+                      cols: 80,
+                      placeholder: "Votre message ici ..."
+  = f.submit "Envoyer la demande", class: 'btn btn-primary lg px-4 my-4'
+  p style="margin-bottom: 100px"
+

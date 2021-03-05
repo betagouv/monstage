@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  match '/admin/delayed_job' => DelayedJobWeb, :anchor => false, :via => %i[get post]
+  authenticate :user, lambda { |u| u.is_a?(Users::God) } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount ActionCable.server => '/cable'
@@ -36,22 +39,34 @@ Rails.application.routes.draw do
     resources :internship_offers, only: %i[create update destroy]
     resources :schools, only: [] do
       collection do
+        post :nearby
         post :search
       end
     end
   end
 
   namespace :dashboard, path: 'dashboard' do
-    resources :schools, only: %i[index edit update] do
+    resources :support_tickets, only: %i[new create]
+    resources :internship_agreements,   except: %i[index]
+    resources :internship_applications, only: %i[index]
+
+    resources :schools, only: %i[index edit update show] do
       resources :users, only: %i[destroy update index], module: 'schools'
-      resources :students, only: %i[index update], module: 'schools'
+      resources :internship_applications, only: %i[index], module: 'schools'
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
+      put '/update_students_by_group', to: 'schools/students#update_by_group', module: 'schools'
     end
 
     resources :internship_offers, except: %i[show] do
       resources :internship_applications, only: %i[update index], module: 'internship_offers'
+    end
+
+    namespace :stepper do
+      resources :organisations,          only: %i[create new edit update]
+      resources :internship_offer_infos, only: %i[create new edit update]
+      resources :tutors,                 only: %i[create new]
     end
 
     namespace :students, path: '/:student_id/' do
@@ -65,20 +80,25 @@ Rails.application.routes.draw do
     get 'internship_offers', to: 'internship_offers#index'
   end
 
+  get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search
+
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
 
-  get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
+  get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
+  get '/accessibilite', to: 'pages#accessibilite'
+  get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
+  get '/conditions-d-utilisation-service-signature', to: 'pages#conditions_utilisation_service_signature'
+  get '/contact', to: 'pages#contact'
   get '/exemple-offre-ideale-ministere', to: 'pages#exemple_offre_ideale_ministere'
   get '/exemple-offre-ideale-sport', to: 'pages#exemple_offre_ideale_sport'
   get '/documents-utiles', to: 'pages#documents_utiles'
-  get '/partenaires', to: 'pages#partenaires'
+  get '/javascript-required', to: 'pages#javascript_required'
   get '/mentions-legales', to: 'pages#mentions_legales'
-  get '/conditions-d-utilisation', to: 'pages#conditions_d_utilisation'
-  get '/contact', to: 'pages#contact'
-  get '/statistiques', to: 'pages#statistiques'
-  get '/accessibilite', to: 'pages#accessibilite'
+  get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
   get '/operators', to: 'pages#operators'
+  get '/partenaires', to: 'pages#partenaires'
+  get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

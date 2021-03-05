@@ -3,7 +3,7 @@ jobs: # a collection of steps
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/project
     docker: # run the steps with Docker
-      - image: circleci/ruby:2.7.1-node-browsers # ...with this image as the primary container; this is where all `steps` will run
+      - image: circleci/ruby:2.7.2-node-browsers # ...with this image as the primary container; this is where all `steps` will run
         environment: # environment variables for primary container
           BUNDLE_JOBS: 3
           BUNDLE_RETRY: 3
@@ -58,8 +58,6 @@ jobs: # a collection of steps
       - run:
           name: Yarn Install
           command:  |
-            npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-            npm config set "//npm.fontawesome.com/:_authToken" $FA_TOKEN
             yarn install --cache-folder ~/.cache/yarn
 
       - save_cache:
@@ -85,12 +83,23 @@ jobs: # a collection of steps
           command: PARALLEL_WORKERS=4 bundle exec rake test
 
       - run:
-          name: Run TestSystem
-          command: PARALLEL_WORKERS=1 bundle exec rake test:system
+          name: Run TestSystem with headless_chrome
+          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome bundle exec rake test:system
+
+      # - run:
+      #     name: Run TestSystem with chrome
+      #     command: PARALLEL_WORKERS=1 BROWSER=chrome bundle exec rake test:system
+
+      # - run:
+      #     name: Run TestSystem with firefox
+      #     command: PARALLEL_WORKERS=1 BROWSER=firefox bundle exec rake test:system
 
       - run:
           name: w3c validation
           command: java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
+      - run:
+          name: a11y validation
+          command: ~/project/node_modules/.bin/pa11y-ci $(find ~/project/tmp/w3c/*.html -name '*.html')
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/

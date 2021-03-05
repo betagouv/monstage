@@ -11,6 +11,7 @@ module Users
       school_manager = Users::SchoolManagement.new(
         role: :school_manager,
         email: 'chef@etablissement.com',
+        school: create(:school)
       )
 
       assert school_manager.invalid?
@@ -29,14 +30,15 @@ module Users
     end
 
     test 'creation succeed' do
+      school = build(:school)
       school_manager = Users::SchoolManagement.new(
         role: :school_manager,
-        email: 'chef@ac-etablissement.com',
+        email: "jean-pierre@#{school.email_domain_name}",
         password: 'tototo',
         password_confirmation: 'tototo',
         first_name: 'Chef',
         last_name: 'Etablissement',
-        school: build(:school),
+        school: school,
         accept_terms: true
       )
       assert school_manager.valid?
@@ -72,7 +74,6 @@ module Users
       redirect_to = @url_helpers.dashboard_school_class_room_path(school, class_room)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
-
     test 'change school notify new school_manager' do
       school_1 = create(:school)
       school_2 = create(:school)

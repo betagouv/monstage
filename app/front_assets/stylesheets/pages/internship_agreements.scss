@@ -1,0 +1,122 @@
+.internship-agreement{
+  .title{
+    padding: 10px 20px;
+    font-size: 120;
+    color: $blue;
+  }
+  .bloc{
+    padding: 10px;
+  }
+}
+.internship-agreement-to-sign{
+  .actions .text-action {
+    white-space:nowrap;
+    display: inline;
+    transition: all 1s ease-out;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform:translate(0);
+  }
+  .actions:hover .text-action {
+    position: relative;
+    visibility: visible;
+    transform:translate(9999px);
+    opacity: 1;
+  }
+}
+
+.tool-note {
+  position: 'relative';
+  border: 2px solid $blue;
+  margin-top: 20px;
+  padding: 15px 10px;
+  border-radius: 5px;
+  font-size: 80%;
+  .title {
+    font-weight: bold;
+    padding: 5px 0;
+    color: $blue;
+  }
+}
+
+.tool-note::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid $blue;
+  border-top: 2px solid $blue;
+  background-color: #fff;
+  transform: rotate(-45deg);
+  margin-top: 10px;
+  margin-left: -17px;
+  float: left;
+  z-index: 10;
+} 
+
+.tool-note.active {
+  border: 2px solid $green;
+  background-color: $green;
+  color: #fff;
+  .title {
+    color: #fff;
+  }
+}
+
+.tool-note.active::before {
+  border-top: 2px solid $green;
+  border-left: 2px solid $green;
+  background-color: $green;
+
+}
+.tool-note.inactive {
+  border: 2px solid #9F98AA;
+  color: #9F98AA;
+  .title {
+    color: #9F98AA;
+  }
+}
+
+.tool-note.inactive:before {
+  border-top: 2px solid #9F98AA;
+  border-left: 2px solid #9F98AA;
+}
+
+.valid-form-field::before {
+  content: '';
+  background: url("../images/green_check.svg") no-repeat top right;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 35px;
+  left: -55px;
+}
+
+.editable-form-field::before {
+  content: '';
+  background: url("../images/blue_edit.svg") no-repeat top right;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 35px;
+  left: -55px;
+}
+
+.required-form-field::before {
+  content: '';
+  background: url("../images/yellow_sign.svg") no-repeat top right;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 35px;
+  left: -55px;
+}
+
+.trix-header-vanisher {
+  trix-toolbar{
+    display: none;
+  }
+  trix-editor:read-only{
+    background-color: $secondary;
+  }
+}

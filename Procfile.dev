@@ -1,4 +1,4 @@
 web: bundle exec puma -C config/puma.rb -p 3000
 webpack: bundle exec bin/webpack-dev-server
-delayed_job: QUEUES=default,batches,mailers bundle exec rails jobs:work
+sidekiq: bundle exec sidekiq -c 2
 logs: tail -f log/development.log

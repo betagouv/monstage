@@ -2,25 +2,41 @@
 
 module Users
   class Student < User
-    belongs_to :school
+    belongs_to :school, optional: true
     belongs_to :missing_school_weeks, optional: true,
-                                      foreign_key: 'missing_school_weeks_id',
+                                      foreign_key: 'missing_weeks_school_id',
                                       class_name: 'School',
                                       counter_cache: :missing_school_weeks_count
 
     belongs_to :class_room, optional: true
-    validates :birth_date,
-              :gender,
-              presence: true
 
     has_many :internship_applications, dependent: :destroy,
-                                       foreign_key: 'user_id'
+                                       foreign_key: 'user_id' do
+      def weekly_framed
+        where(type: InternshipApplications::WeeklyFramed.name)
+      end
+    end
+
+    scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
     has_rich_text :resume_educational_background
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
+    delegate :school_track, to: :class_room, allow_nil: true
+    validates :birth_date,
+              :gender,
+              presence: true
+
+    validate :validate_school_presence_at_creation
+
     attr_reader :handicap_present
+
+    def internship_applications_type
+      return nil unless class_room.present?
+      return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
+      return InternshipApplications::FreeDate.name
+    end
 
     def has_zero_internship_application?
       internship_applications.all
@@ -44,6 +60,10 @@ module Users
       "#{super}, in school: #{school&.zipcode}"
     end
 
+    def after_sign_in_path
+      url_helpers.internship_offers_path
+    end
+
     def custom_dashboard_path
       url_helpers.dashboard_students_internship_applications_path(self)
     end
@@ -60,20 +80,28 @@ module Users
       internship_applications
         .where(aasm_state: %i[approved submitted drafted])
         .not_by_id(id: id)
-        .joins(:internship_offer_week)
-        .where("internship_offer_weeks.week_id = #{week.id}")
+        .weekly_framed
+        .select { |application| application.week.id == week.id }
         .map(&:expire!)
     end
 
-    def anonymize
-      super
+    def anonymize(send_email: true)
+      super(send_email: send_email)
 
-      update_columns(birth_date: nil, gender: nil, class_room_id: nil,
+      update_columns(birth_date: nil,
+                     gender: nil,
+                     class_room_id: nil,
                      handicap: nil)
-      self.resume_educational_background.try(:delete)
-      self.resume_other.try(:delete)
-      self.resume_languages.try(:delete)
+      resume_educational_background.try(:delete)
+      resume_other.try(:delete)
+      resume_languages.try(:delete)
       internship_applications.map(&:anonymize)
+    end
+
+    def validate_school_presence_at_creation
+      if new_record? && school.blank?
+        errors.add(:school, :blank)
+      end
     end
   end
 end

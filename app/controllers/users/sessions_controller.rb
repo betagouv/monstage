@@ -9,13 +9,19 @@ module Users
 
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
-          sign_in(fetch_user_by_phone)
+        user = fetch_user_by_phone
+        if user.confirmed?
+          sign_in(user)
           redirect_to root_path
           return
+        else
+          user.send_sms_token
+          redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
+          return
+        end
       end
       super
     end
-
 
     protected
 
@@ -37,7 +43,7 @@ module Users
     end
 
     def switch_back
-      cookie_name = Credentials.enc(:cookie_switch_back, prefix_env: false)
+      cookie_name = Rails.application.credentials.dig(:cookie_switch_back)
       switch_back = cookies.signed[cookie_name]
 
       return if switch_back.nil?

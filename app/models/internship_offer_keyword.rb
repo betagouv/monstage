@@ -32,7 +32,7 @@ class InternshipOfferKeyword < ApplicationRecord
   #   otherwise it keeps all words, with accents (for nice prompt/search)
   # - it's searchable with pg_trgm for typo tolearant search (we are speaking to Freshman)
   # - it's curated via ActiveAdmin [searchable]
-  scope :search, lambda {|term|
+  scope :search, lambda { |term|
     quoted_term = ActiveRecord::Base.connection.quote_string(term)
     where('word % :term', term: term)
       .where(searchable: true)
@@ -43,7 +43,7 @@ class InternshipOfferKeyword < ApplicationRecord
     where('word_nature is null')
       .where(searchable: true)
       .find_each(batch_size: 100) do |keyword|
-        qualify_single_word(keyword: keyword)
+      qualify_single_word(keyword: keyword)
     end
   end
 

@@ -7,13 +7,13 @@ module Admin
     test 'redirects to root path for all profile' do
       school = create(:school)
       school_manager = create(:school_manager, school: school)
-      roles = [ create(:employer),
-                create(:main_teacher, school: school),
-                create(:user_operator),
-                create(:other, school: school),
-                create(:statistician),
-                create(:student),
-                create(:teacher, school: school) ]
+      roles = [create(:employer),
+               create(:main_teacher, school: school),
+               create(:user_operator),
+               create(:other, school: school),
+               create(:statistician),
+               create(:student),
+               create(:teacher, school: school)]
       roles.each do |role|
         sign_in(role)
         get rails_admin_path

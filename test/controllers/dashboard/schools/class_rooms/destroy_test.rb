@@ -32,7 +32,7 @@ module Dashboard
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
         [
-          create(:student, school: school, class_room: class_room),
+          create(:student, school: school, class_room: class_room)
         ].each do |role|
           sign_in(role)
           delete dashboard_school_class_room_path(school.to_param, class_room.to_param)

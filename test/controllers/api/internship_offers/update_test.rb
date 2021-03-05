@@ -21,7 +21,7 @@ module Api
     end
 
     test 'PATCH #update as operator fails with invalid payload respond with :unprocessable_entity' do
-      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity) do
+      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity_bad_payload) do
         patch api_internship_offer_path(
           id: @internship_offer.remote_id,
           params: {
@@ -88,6 +88,26 @@ module Api
                    'bad description error '
     end
 
+    test 'PATCH #update as operator fails with invalid week format' do
+      faulty_week =  '2020-Wsem9-23'
+      faulty_weeks = ['2020-W8', faulty_week]
+
+      documents_as(endpoint: :'internship_offers/update', state: :unprocessable_entity_bad_data) do
+        patch api_internship_offer_path(
+          id: @internship_offer.remote_id,
+          params: {
+            token: "Bearer #{@operator.api_token}",
+            internship_offer: {
+              weeks: faulty_weeks,
+            }
+          }
+        )
+      end
+      assert_response :unprocessable_entity
+      assert_equal 'BAD_ARGUMENT', json_code
+      assert_equal "bad week format: #{faulty_week}, expecting ISO 8601 format", json_error
+    end
+
     test 'PATCH #update as operator works to internship_offers' do
       new_title = 'hellow'
       week_instances = [weeks(:week_2019_1), weeks(:week_2019_2)]
@@ -125,7 +145,7 @@ module Api
         params: {
           token: "Bearer #{@operator.api_token}",
           internship_offer: {
-            published_at: nil,
+            published_at: nil
           }
         }
       )
@@ -138,7 +158,7 @@ module Api
         params: {
           token: "Bearer #{@operator.api_token}",
           internship_offer: {
-            published_at: new_publication_date,
+            published_at: new_publication_date
           }
         }
       )
@@ -148,13 +168,13 @@ module Api
 
     test 'PATCH #update as operator does not change weeks with default' do
       travel_to(2.months.from_now) do
-        assert_no_changes -> {@internship_offer.reload.weeks.count } do
+        assert_no_changes -> { @internship_offer.reload.weeks.count } do
           patch api_internship_offer_path(
             id: @internship_offer.remote_id,
             params: {
               token: "Bearer #{@operator.api_token}",
               internship_offer: {
-                published_at: nil,
+                published_at: nil
               }
             }
           )

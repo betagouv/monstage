@@ -8,8 +8,8 @@ module Api
       #
       # base responders
       #
-      def render_success(object:, status:)
-        render json: object,
+      def render_success(object:, status:, json_options:{})
+        render json: object.to_json(json_options),
                status: status
       end
 
@@ -37,6 +37,12 @@ module Api
         render_error(code: "#{capitalize_class_name(discard_ar_object)}_ALREADY_DESTROYED",
                      error: "#{underscore_class_name(discard_ar_object)} already destroyed",
                      status: :conflict)
+      end
+
+      def render_argument_error(error)
+        render_error(code: "BAD_ARGUMENT",
+                     error: error.to_s,
+                     status: :unprocessable_entity)
       end
 
       #

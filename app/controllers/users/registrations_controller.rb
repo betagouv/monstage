@@ -22,17 +22,13 @@ module Users
     # end
     def confirmation_standby
       flash.delete(:notice)
-      if params[:email].present?
-        @confirmable_user = User.where(email: params[:email]).first
-      end
+      @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
       @confirmable_user ||= nil
     end
 
     def confirmation_phone_standby
       flash.delete(:notice)
-      if params[:phone].present?
-        @confirmable_user = User.where(phone: params[:phone]).first
-      end
+      @confirmable_user = User.where(phone: params[:phone]).first if params[:phone].present?
       @confirmable_user ||= nil
     end
 

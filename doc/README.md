@@ -23,6 +23,7 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
   - [Suppression d'une offre](#ref-destroy-internship-offer)
 - [Premiers pas et exemples](#premiers-pas-et-exemples)
 
+
 # Environnements
 L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit les ```baseURL``` suivantes
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
@@ -159,7 +160,7 @@ Sur chaque requête, on pourra avoir les erreurs suivantes :
 - 400, Bad Request : Paramètres de requête mal renseignés. Exemple : Secteur non indiqué dans la création d'une offres
 - 401, Unauthorized : Token invalide
 - 403, Forbidden : Pas le droit d'effectuer cette requête. Exemple : Modification d'une offre qui ne vous appartient pas
-- 422, Unprocessable Entity. Payload incorrect, impossible de traiter la requête
+- 422, Unprocessable Entity. Payload incorrect (impossible de traiter la requête car le format ne correspond pas). Ou la donnée n'est pas valide
 
 - 500, Internal Server Error : Service indisponible
 
@@ -200,7 +201,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
      -H "Accept: application/json" \
      -H "Content-type: application/json" \
      -X POST \
-     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name","employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6","coordinates":{"latitude":1.0,"longitude":1.0}}}' \
+     -d '{"internship_offer": {"title":"title","description":"description","employer_website":"http://google.fr","street":"Tour Effeil","zipcode":"75002","city":"Paris","employer_name":"employer_name", "weeks":["2021-W16","2021-W18"],"employer_description":"employer_description","remote_id":"test_2","permalink":"https://www.google.fr","sector_uuid": "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6", "school_track": "troisieme_generale", "coordinates":{"latitude":1.0,"longitude":1.0}}}' \
      -vvv \
      $ENV/api/internship_offers
 
@@ -231,6 +232,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.zipcode** *(string)*
 * **internship_offer.city** *(string)*
 * **internship_offer.sector_uuid** *(integer)*
+* **internship_offer.school_track** *(string)* 'troisieme_generale'|'troisieme_segpa'|'troisieme_prepa_metiers'|'bac_pro'
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
 * **max_candidates** *(integer)*

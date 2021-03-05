@@ -4,7 +4,7 @@
 # Setup
 Things you may want to cover:
 
-* Ruby version: 2.7.1
+* Ruby version: 2.7.2
 * Database postgresql 12
  - Initialize with : `initdb /usr/local/var/postgres -E utf8`
  - Create local db : `createdb monstage`
@@ -31,8 +31,8 @@ Things you may want to cover:
 * Postgres as RDBMS
 * Postgres with Postgis for geoqueries
 * Postgres for FTS
-* Postgres with Delayed job for Async jobs
 * Postgres(notify) with ActionCable for wss://
+* Redis & Sidekiq for Async jobs
 
 ## frontend
 
@@ -65,7 +65,7 @@ Things you may want to cover:
 
 * Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
 * Bug monitoring solution: [sentry](https://sentry.io/)
-* Mail: [sendgrid](https://sendgrid.com)
+* Mail: [mailjet](https://mailjet.com)
 * uptime/downtime:
 
 # Build: test, dev
@@ -79,44 +79,82 @@ Things you may want to cover:
 
 
 
-## dev
+## Dev
 
 **start project**
 
 ```
-bundle
-yarn
+bundle install
+yarn install
 foreman start -f Procfile.dev
 ```
 
-### tooling: linting, etc...
+### Tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
-* mail should be opened automatically
+* mail should be opened automatically by letter opener
+
+### Etapes de travail jusqu'au merge dans master
+
+- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (mabranche) $ ```git commit``` # coder sa feature et commiter
+- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
+- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
+- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+
+Références:
+- https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
+- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
 
 ## test
 
-### units test
+our test suite contains
 
-```rails test```
+* unit tests, we try to everything undercontrol with many tests (maybe>75% test coverage)
+* systems, testing feature in e2e mode. those test keeps html version for later processing
+  * w3c (using previously created html files)
+  * a11y (using previously created html files)
 
-### system / e2e, runs within a browswer
+you can also run all kinds of test in one run `./infra/test/suite.sh`
 
-* run in background: `rails test:system`
-* run with browser `CHROME=1 rails test:system`
+### about/run units test
 
+run with ```rails test``` (JS is not executed, so quick tests)
 
-### w3c (using vnu.jar)
+### about/run system/e2e tests
 
-```./infra/test/w3c.sh```
+by default we run our tests with a chrome_headless (JS is executed, kinda slow tests).
 
-# Run: ci, review, staging, production
+* run in background (chrome_headless) : `rails test:system`
+* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test:system`
 
-CI: [CircleCI](https://circleci.com/gh/betagouv/monstage)
+### about/run w3c tests (using vnu.jar)
 
-## review app : https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/
+those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c.sh```
+
+### a11y tests (using pa11y-ci)
+
+those tests depends on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
+
+### CI, full suite (unit, system, w3c, a11y)
+
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
+
+**Important notes :**
+
+* we use a custom postgres docker image for our synonym dictionnary
+ 
+### User testing with review apps
+
+our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
+
+review apps are accessible following this pattern ```https://monstage-{pr_name.parameterize}-{commit}.herokuapp.com/```
 
 requirements: install heroku cli `https://devcenter.heroku.com/articles/heroku-cli`
+
+**Important notes :**
 
 * deployed automatically via github/heroku for each pull requests.
 * see your PR on github for the review app link

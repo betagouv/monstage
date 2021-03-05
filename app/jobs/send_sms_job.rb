@@ -9,11 +9,11 @@ class SendSmsJob < ApplicationJob
       Rails.application.credentials.ovh[:application_secret],
       Rails.application.credentials.ovh[:consumer_key]
     )
-    response = client.post("/sms/#{Rails.application.credentials.ovh[:sms_application]}/jobs", 
-      { 
-        'sender': Rails.application.credentials.ovh[:sender],
-        'message': "Votre code de validation : #{user.phone_token}",
-        'receivers': [user.formatted_phone]
-      })
+    response = client.post("/sms/#{Rails.application.credentials.ovh[:sms_application]}/jobs",
+                           {
+                             'sender': Rails.application.credentials.ovh[:sender],
+                             'message': "Votre code de validation : #{user.phone_token}",
+                             'receivers': [user.formatted_phone]
+                           })
   end
 end

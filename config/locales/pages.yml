@@ -1,0 +1,142 @@
+fr:
+  dashboard:
+    stepper:
+      organisations:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur l'entreprise"
+        edit:
+          page_title: "Déposer une offre de stage : Modifier les informations de l'entreprise"
+      internship_offer_infos:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur l'offre"
+        edit:
+          page_title: "Déposer une offre de stage : Modifier les informations de l'offre"
+      tutors:
+        new:
+          page_title: "Déposer une offre de stage : Ajouter les informations sur le tuteur"
+    internship_offers:
+      create:
+        page_title: "Mes offres"
+      edit:
+        page_title: "Offre de stage '%{name}'"
+      index:
+        page_title: "Mes offres"
+      internship_applications:
+        index:
+          page_title: "Mes candidatures"
+      new:
+        page_title: "Déposer une offre de stage"
+    schools:
+      internship_applications:
+        index:
+          page_title: "Conventions à signer"
+      class_rooms:
+        edit:
+          page_title: "Mise à jour de la classe : %{name}"
+        index:
+          page_title: "Classes du %{name}"
+        new:
+          page_title: "Ajouter une nouvelle classe"
+        show:
+          page_title: "Éléves de la classe %{name}"
+        students:
+          show:
+            page_title: "Élèves de la classe"
+      edit:
+        page_title: Semaines de stage
+      students:
+        index:
+          page_title: "Élèves des classes du %{name}"
+      update:
+        page_title: "Mise à jour"
+      users:
+        index:
+          page_title: "Professeurs du %{name}"
+    students:
+      internship_applications:
+        index:
+          page_title: "Mes candidatures"
+        show:
+          page_title: "Candidature '%{name}'"
+    internship_applications:
+      index:
+        page_title: "Conventions à signer"
+    internship_agreements:
+      new:
+        page_title: 'Nouvelle convention de stage'
+      edit:
+        page_title: "Edition de la convention de stage pour %{name}"
+    support_tickets:
+      new:
+        page_title: "Demande de stage à distance"
+  internship_applications:
+    show:
+      page_title: "Ma candidature"
+  internship_offers:
+    index:
+      page_title: "Recherche de stages"
+    show:
+      page_title: "Offre de stage '%{name}'"
+  pages:
+    politique_de_confidentialite:
+      page_title: "Politique de confidentialite"
+    accessibilite:
+      page_title: "Accessibilité"
+    conditions_d_utilisation:
+      page_title: "Conditions d'utilisation"
+    contact:
+      page_title: "Contact"
+    documents_utiles:
+      page_title: "Documents utiles"
+    exemple_offre_ideale_ministere:
+      page_title: "Exemple d'offre idéale (ministère)"
+    exemple_offre_ideale_sport:
+      page_title: "Exemple d'offre idéale (sport)"
+    home:
+      page_title: "Accueil"
+    les_10_commandements_d_une_bonne_offre:
+      page_title: "Les 10 commandements pour une bonne offre"
+    mentions_legales:
+      page_title: 'Mentions légales'
+    operators:
+      page_title: 'Page opérateurs'
+    partenaires:
+      page_title: 'Pages partenaires'
+  reporting:
+    dashboards:
+      index:
+        page_title: "Statistiques - Tableau de bord"
+    internship_offers:
+      index:
+        page_title: "Statistiques des offres"
+    schools:
+      index:
+        page_title: "Statistiques sur les établissements"
+  users:
+    confirmations:
+      new:
+        page_title: "Confirmation"
+    edit:
+      page_title: "Mon compte"
+    passwords:
+      new:
+        page_title: 'Nouveau mot de passe'
+      update:
+        page_title: "Mise à jour du mot de passe"
+    registrations:
+      choose_profile:
+        page_title: "Création de compte"
+      confirmation_phone_standby:
+        page_title: "Inscription en attente de confirmation SMS"
+      confirmation_standby:
+        page_title: "Inscription en attente de confirmation"
+      create:
+        page_title: "Création de compte"
+      new:
+        page_title: "Inscription"
+    sessions:
+      new:
+        page_title: "Connexion"
+      update:
+        page_title: "Mise à jour"
+

@@ -28,6 +28,7 @@ module Dashboard
         sign_in(school_manager)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
+        assert_select 'title', 'Mes candidatures | Monstage'
         assert_select 'h1.h2.mb-3', text: student.name
         assert_select 'a[href=?]', dashboard_school_class_room_path(school, class_room)
         assert_select 'h2.h4', text: 'Aucun stage sélectionné'
@@ -38,7 +39,7 @@ module Dashboard
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         school_manager = create(:school_manager, school: school)
-        internship_application = create(:internship_application, :approved, student: student)
+        internship_application = create(:weekly_internship_application, :approved, student: student)
         sign_in(school_manager)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
@@ -50,7 +51,7 @@ module Dashboard
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         main_teacher = create(:main_teacher, school: school, class_room: class_room)
-        internship_application = create(:internship_application, :approved, student: student)
+        internship_application = create(:weekly_internship_application, :approved, student: student)
         sign_in(main_teacher)
         get dashboard_students_internship_applications_path(student)
         assert_response :success
@@ -78,9 +79,8 @@ module Dashboard
                     convention_signed
                     canceled_by_employer
                     canceled_by_student]
-        internship_applications = states.inject({}) do |accu, state|
-          accu[state] = create(:internship_application, state, student: student)
-          accu
+        internship_applications = states.each_with_object({}) do |state, accu|
+          accu[state] = create(:weekly_internship_application, state, student: student)
         end
 
         sign_in(student)
@@ -119,7 +119,7 @@ module Dashboard
 
       test 'GET internship_applications#show not connected responds with redireciton' do
         student = create(:student)
-        internship_application = create(:internship_application, student: student)
+        internship_application = create(:weekly_internship_application, student: student)
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
         assert_response :redirect
@@ -128,13 +128,13 @@ module Dashboard
       test 'GET internship_applications#show render navbar, timeline' do
         student = create(:student)
         sign_in(student)
-        internship_application = create(:internship_application, {
-          student: student,
-          aasm_state: :convention_signed,
-          convention_signed_at: 1.days.ago,
-          approved_at: 1.days.ago,
-          submitted_at: 2.days.ago
-        })
+        internship_application = create(:weekly_internship_application, {
+                                          student: student,
+                                          aasm_state: :convention_signed,
+                                          convention_signed_at: 1.days.ago,
+                                          approved_at: 1.days.ago,
+                                          submitted_at: 2.days.ago
+                                        })
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)
@@ -150,7 +150,7 @@ module Dashboard
       test 'GET internship_applications#show with drafted can be submitted' do
         student = create(:student)
         sign_in(student)
-        internship_application = create(:internship_application, student: student)
+        internship_application = create(:weekly_internship_application, student: student)
 
         get dashboard_students_internship_application_path(student,
                                                            internship_application)

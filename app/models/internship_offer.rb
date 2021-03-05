@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
 class InternshipOffer < ApplicationRecord
-  TITLE_MAX_CHAR_COUNT = 150
-  DESCRIPTION_MAX_CHAR_COUNT = 500
-  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   PAGE_SIZE = 30
+  EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_PER_GROUP = 200
+  TITLE_MAX_CHAR_COUNT = 150
+  DESCRIPTION_MAX_CHAR_COUNT= 500
 
   # queries
   include Listable
   include FindableWeek
-  include Nearbyable
   include Zipcodable
+
+  include StepperProxy::InternshipOfferInfo
+  include StepperProxy::Organisation
+  include StepperProxy::Tutor
 
   # utils
   include Discard::Model
@@ -55,20 +58,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :ignore_max_candidates_reached, lambda {
-    joins(:internship_offer_weeks)
-      .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
-  }
-
-  scope :ignore_max_internship_offer_weeks_reached, lambda {
-    where('internship_offer_weeks_count > blocked_weeks_count')
-  }
-
-  scope :ignore_already_applied, lambda { |user:|
-    where.not(id: joins(:internship_applications)
-                    .merge(InternshipApplication.where(user_id: user.id)))
-  }
-
   scope :submitted_by_operator, lambda { |user:|
     merge(user.operator.internship_offers)
   }
@@ -77,40 +66,47 @@ class InternshipOffer < ApplicationRecord
     where(school_id: [nil, school_id])
   }
 
-  scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
-    by_weeks(weeks: weeks)
+  scope :in_the_future, lambda {
+    where('last_date > :now', now: Time.now)
   }
 
-  validates :title,
-            :employer_name,
-            :city,
-            presence: true
+  scope :ignore_max_candidates_reached, lambda {
+    all # TODO : max_candidates specs for FreeDate required
+  }
 
-  validates :title, presence: true,
-                    length: { maximum: TITLE_MAX_CHAR_COUNT }
+  scope :ignore_max_internship_offer_weeks_reached, lambda {
+    all # TODO : specs for FreeDate required
+  }
 
-  validates :description, presence: true,
-                          length: { maximum: DESCRIPTION_MAX_CHAR_COUNT }
+  scope :school_track, lambda { |school_track:|
+    where(school_track: school_track)
+  }
 
-  validates :employer_description, length: { maximum: EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
-  validates :weeks, presence: true
+  scope :unpublished, -> { where(published_at: nil) }
+  scope :published, -> { where.not(published_at: nil) }
 
-  has_rich_text :description_rich_text
-  has_rich_text :employer_description_rich_text
+  scope :weekly_framed, lambda {
+    where(type: [InternshipOffers::WeeklyFramed.name,
+                 InternshipOffers::Api.name])
+  }
+
+  scope :free_date, lambda {
+    where(type: InternshipOffers::FreeDate.name)
+  }
+
+  has_many :internship_applications, as: :internship_offer,
+                                     foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true
-  belongs_to :sector
 
-  has_many :internship_offer_weeks, dependent: :destroy
-  has_many :weeks, through: :internship_offer_weeks
+  has_one :organisation
+  has_one :tutor
+  has_one :internship_offer_info
 
-  has_many :internship_applications, through: :internship_offer_weeks,
-                                     dependent: :destroy
+  has_rich_text :employer_description_rich_text
 
-  belongs_to :school, optional: true # reserved to school
-  belongs_to :group, optional: true
+  after_initialize :init
 
-  before_validation :replicate_rich_text_to_raw_fields
   before_save :sync_first_and_last_date,
               :reverse_academy_by_zipcode
 
@@ -121,16 +117,20 @@ class InternshipOffer < ApplicationRecord
 
   paginates_per PAGE_SIZE
 
+  delegate :email, to: :employer, prefix: true, allow_nil: true
+  delegate :phone, to: :employer, prefix: true, allow_nil: true
+  delegate :name, to: :sector, prefix: true
+
+  def departement
+    Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
   def published?
     published_at.present?
   end
 
   def unpublished?
     !published?
-  end
-
-  def is_individual?
-    max_candidates == 1
   end
 
   def from_api?
@@ -142,7 +142,11 @@ class InternshipOffer < ApplicationRecord
   end
 
   def is_fully_editable?
-    internship_applications.empty?
+    true
+  end
+
+  def init
+    self.max_candidates ||= 1
   end
 
   def total_female_applications_count
@@ -155,42 +159,41 @@ class InternshipOffer < ApplicationRecord
 
   def anonymize
     fields_to_reset = {
-      tutor_name: 'NA', tutor_phone: 'NA', tutor_email: 'NA', title: 'NA',
-      description: 'NA', employer_website: 'NA', street: 'NA',
-      employer_name: 'NA', employer_description: 'NA'
+      tutor_name: 'NA',
+      tutor_phone: 'NA',
+      tutor_email: 'NA',
+      title: 'NA',
+      description: 'NA',
+      employer_website: 'NA',
+      street: 'NA',
+      employer_name: 'NA',
+      employer_description: 'NA'
     }
     update(fields_to_reset)
     discard
   end
 
-  def class_prefix_for_multiple_checkboxes
-    'internship_offer'
-  end
+  def duplicate
+    white_list = %w[type title sector_id max_candidates
+                    tutor_name tutor_phone tutor_email employer_website
+                    employer_name street zipcode city department region academy
+                    is_public group school_id coordinates first_date last_date
+                    school_track
+                    internship_offer_info_id organisation_id tutor_id
+                    weekly_hours new_daily_hours]
 
-  #
-  # callbacks
-  #
-  def sync_first_and_last_date
-    first_week, last_week = weeks.minmax_by(&:id)
-    self.first_date = first_week.week_date.beginning_of_week
-    self.last_date = last_week.week_date.end_of_week
-  end
-
-  # @note some possible confusion, miss-understanding here
-  #   1. Rich text was added after API
-  #   2. API already exposed a "description" attributes (not rich text) [in/out]
-  #     trying to upgrade description attribute was flacky
-  #     because API returned description as an ActionText record.
-  #   3. To avoid any circumvention (in/out) of the description
-  #     we add a new description_rich_text element which is rendered when possiblee
-  #   4. Bonus -> description will be used for description_tsv as template to extract keywords
-  def replicate_rich_text_to_raw_fields
-    if description_rich_text.to_s.present?
-      self.description = description_rich_text.to_plain_text
-    end
-    if employer_description_rich_text.to_s.present?
-      self.employer_description = employer_description_rich_text.to_plain_text
-    end
+    internship_offer = InternshipOffer.new(attributes.slice(*white_list))
+    internship_offer.description_rich_text = (if description_rich_text.present?
+                                                description_rich_text.to_s
+                                              else
+                                                description
+                                              end)
+    internship_offer.employer_description_rich_text = (if employer_description_rich_text.present?
+                                                         employer_description_rich_text.to_s
+                                                       else
+                                                         employer_description
+                                                       end)
+    internship_offer
   end
 
   def preset_published_at_to_now

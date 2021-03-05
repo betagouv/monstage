@@ -28,13 +28,13 @@ class SchoolTest < ActiveSupport::TestCase
     assert_includes school.users, school_manager
   end
 
-   test 'destroy nullilfy internship_offers.shcool_id' do
+  test 'destroy nullilfy internship_offers.shcool_id' do
     school = create(:school)
-    internship_offer = create(:internship_offer, school: school)
+    internship_offer = create(:weekly_internship_offer, school: school)
 
     assert_changes -> { internship_offer.reload.school.blank? },
-                  from: false,
-                  to: true do
+                   from: false,
+                   to: true do
       school.destroy
     end
   end
@@ -68,5 +68,21 @@ class SchoolTest < ActiveSupport::TestCase
     other = create(:other, school: school)
     teacher = create(:teacher, school: school)
     assert school.has_staff?
+  end
+
+  test 'scope without_weeks_on_current_year counts school weeks of this current_year only' do
+    travel_to(Date.new(2021, 3, 1)) do
+      weeks_1   = Week.from_date_to_date(from: Date.today, to: Date.today + 7.days)
+
+      create(:school, :with_school_manager, weeks: weeks_1.to_a)
+      assert_equal 0, School.without_weeks_on_current_year.count
+      create(:school, :with_school_manager, weeks: [])
+      assert_equal 1, School.without_weeks_on_current_year.count
+
+      last_year = Date.today - 1.year
+      weeks_2 = Week.from_date_to_date(from: last_year, to: last_year + 7.days)
+      create(:school, :with_school_manager, weeks: weeks_2.to_a)
+      assert_equal 2, School.without_weeks_on_current_year.count
+    end
   end
 end

@@ -8,11 +8,13 @@ module Users
     has_many :internship_offers, as: :employer,
                                  dependent: :destroy
 
+    has_many :internship_applications, through: :internship_offers
+
     before_create :set_api_token
 
     rails_admin do
       list do
-        fields *UserAdmin::DEFAULTS_FIELDS
+        fields(*UserAdmin::DEFAULTS_FIELDS)
         field :operator
       end
     end

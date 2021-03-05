@@ -1,6 +1,14 @@
+# postgis type
+require "nested_form/engine"
+require "nested_form/builder_mixin"
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
+# daterange type
+class RailsAdmin::Config::Fields::Types::Daterange < RailsAdmin::Config::Fields::Base
+  RailsAdmin::Config::Fields::Types::register(self)
+end
+
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
 
@@ -12,6 +20,7 @@ RailsAdmin.config do |config|
     warden.authenticate! scope: :user
   end
   config.current_user_method(&:current_user)
+  config.main_app_name = ["Mon stage de 3e"]
 
   ## == CancanCan ==
   config.authorize_with :cancancan
@@ -49,7 +58,8 @@ RailsAdmin.config do |config|
                               Group
                               User
                               InternshipOfferKeyword
-                              InternshipOffers::Web
+                              InternshipOffers::WeeklyFramed
+                              InternshipOffers::FreeDate
                               InternshipOffers::Api
                               Users::Student
                               Users::SchoolManagement
@@ -60,7 +70,7 @@ RailsAdmin.config do |config|
 
   config.navigation_static_links = {
     "Stats" => "/reporting/dashboards",
-    "Delayed Job" => "/admin/delayed_job",
+    "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com"
   }
 end

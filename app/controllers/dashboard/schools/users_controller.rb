@@ -13,10 +13,10 @@ module Dashboard
         user = @school.users.find(params[:id])
         user_presenter = Presenters::User.new(user)
         authorize! :delete, user
-        user.update!(school_id: nil)
+        user.update!(school_id: nil, class_room_id: nil)
 
         redirect_to dashboard_school_users_path(@school),
-                    flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été supprimé de votre établissement" }
+                    flash: { success: "Le #{user_presenter.role_name} #{user_presenter.short_name} a bien été retiré de votre établissement" }
       rescue ActiveRecord::RecordInvalid
         redirect_to dashboard_school_users_path(@school),
                     flash: { success: "Une erreur est survenue, impossible de supprimé #{user_presenter.human_role} #{user_presenter.short_name} de votre établissement: #{e.record.full_messages}" }

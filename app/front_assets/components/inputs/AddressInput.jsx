@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
+// import { throttle, debounce } from "throttle-debounce";
 import Downshift from 'downshift';
+import { fetch } from 'whatwg-fetch';
+import { endpoints } from '../../utils/api';
+import { broadcast, newCoordinatesChanged } from '../../utils/events';
 
 // see: https://geo.api.gouv.fr/adresse
 export default function AddressInput({
@@ -20,6 +24,7 @@ export default function AddressInput({
   const [latitude, setLatitude] = useState(currentLatitude || 0);
   const [longitude, setLongitude] = useState(currentLongitude || 0);
   const [searchResults, setSearchResults] = useState([]);
+  const [queryString, setQueryString] = useState('');
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
   const inputChange = (event) => {
@@ -29,18 +34,13 @@ export default function AddressInput({
   const toggleHelpVisible = () => {
     setHelpVisible(!helpVisible);
   };
-
   const searchCityByAddress = () => {
-    const endpoint = new URL('https://api-adresse.data.gouv.fr/search');
-    const searchParams = new URLSearchParams();
-
-    searchParams.append('q', fullAddress);
-    searchParams.append('limit', 10);
-    endpoint.search = searchParams.toString();
-
-    fetch(endpoint)
+    fetch(endpoints.apiSearchAddress({ fullAddress }))
       .then((response) => response.json())
-      .then((json) => setSearchResults(json.features));
+      .then((json) => {
+        setSearchResults(json.features)
+        setQueryString(json.query)
+      });
   };
 
   const setFullAddressComponents = (item) => {
@@ -58,20 +58,25 @@ export default function AddressInput({
 
   useEffect(() => {
     if (fullAddressDebounced && fullAddressDebounced.length > 2) {
-      searchCityByAddress(fullAddressDebounced);
+      searchCityByAddress()
     }
   }, [fullAddressDebounced]);
 
+  useEffect(() => {
+    broadcast(newCoordinatesChanged({ latitude, longitude }));
+  }, [latitude, longitude]);
+
   return (
     <div>
-      <div className="form-group"  id="test-input-full-address">
-
+      <div className="form-group" id="test-input-full-address">
         <div className="container-downshift">
           <Downshift
             initialInputValue={fullAddress}
             onChange={setFullAddressComponents}
             selectedItem={fullAddress}
-            itemToString={(item) => { (item && item.properties) ? item.properties.label : ''} }
+            itemToString={(item) => {
+              item && item.properties ? item.properties.label : '';
+            }}
           >
             {({
               getLabelProps,
@@ -80,19 +85,24 @@ export default function AddressInput({
               getMenuProps,
               isOpen,
               highlightedIndex,
-              selectedItem,
             }) => (
               <div>
                 <label
-                  {...getLabelProps({className: "label", htmlFor:`${resourceName}_autocomplete`})}
-
-
+                  {...getLabelProps({
+                    className: 'label',
+                    htmlFor: `${resourceName}_autocomplete`,
+                  })}
                 >
-                  Ville du lieu où se déroule le stage (la plus proche si vous ne trouvez pas la votre)
+                  Adresse du lieu où se déroule le stage
                   <abbr title="(obligatoire)" aria-hidden="true">
                     *
                   </abbr>
-                  <a className="btn-absolute btn btn-link py-0" onClick={toggleHelpVisible}>
+                  <a
+                    className="btn-absolute btn btn-link py-0"
+                    href="#help-multi-location"
+                    aria-label="Afficher l'aide"
+                    onClick={toggleHelpVisible}
+                  >
                     <i className="fas fa-question-circle" />
                   </a>
                 </label>
@@ -104,7 +114,7 @@ export default function AddressInput({
                       value: fullAddress,
                       className: 'form-control',
                       name: `${resourceName}_autocomplete`,
-                      id: 'internship_offer_autocomplete',
+                      id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
                     })}
                   />
@@ -116,9 +126,9 @@ export default function AddressInput({
                         className: 'p-0 m-0',
                       })}
                     >
-                      {isOpen
+                      { isOpen && queryString === fullAddress
                         ? searchResults.map((item, index) => (
-                              <li
+                            <li
                               {...getItemProps({
                                 className: `py-2 px-3 listview-item ${
                                   highlightedIndex === index ? 'highlighted-listview-item' : ''
@@ -127,7 +137,7 @@ export default function AddressInput({
                                 index,
                                 item,
                                 style: {
-                                  fontWeight: selectedItem === item ? 'bold' : 'normal',
+                                  fontWeight: highlightedIndex === index? 'bold' : 'normal',
                                 },
                               })}
                             >
@@ -142,7 +152,10 @@ export default function AddressInput({
             )}
           </Downshift>
         </div>
-        <div className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}>
+        <div
+          id="help-multi-location"
+          className={`${helpVisible ? '' : 'd-none'} my-1 p-2 help-sign-content`}
+        >
           Si vous proposez le même stage dans un autre établissement, déposez une offre par
           établissement. Si le stage est itinérant (la semaine se déroule sur plusieurs lieux),
           indiquez l'adresse où l'élève devra se rendre au premier jour
@@ -161,7 +174,7 @@ export default function AddressInput({
         />
       </div>
       <div className="form-row">
-        <div className="col-sm-6">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_street`}>
               Rue ou compléments d'adresse
@@ -182,26 +195,7 @@ export default function AddressInput({
             />
           </div>
         </div>
-        <div className="col-sm-2">
-          <div className="form-group">
-            <label htmlFor={`${resourceName}_zipcode`}>
-              Code postal
-              <abbr title="(obligatoire)" aria-hidden="true">
-                *
-              </abbr>
-            </label>
-            <input
-              className="form-control"
-              required="required"
-              value={zipcode}
-              type="text"
-              name={`${resourceName}[zipcode]`}
-              id={`${resourceName}_zipcode`}
-              readOnly
-            />
-          </div>
-        </div>
-        <div className="col-sm-4">
+        <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_city`}>
               Ville
@@ -217,6 +211,25 @@ export default function AddressInput({
               readOnly
               name={`${resourceName}[city]`}
               id={`${resourceName}_city`}
+            />
+          </div>
+        </div>
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_zipcode`}>
+              Code postal
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
+            <input
+              className="form-control"
+              required="required"
+              value={zipcode}
+              type="text"
+              name={`${resourceName}[zipcode]`}
+              id={`${resourceName}_zipcode`}
+              readOnly
             />
           </div>
         </div>

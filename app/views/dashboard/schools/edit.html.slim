@@ -1,5 +1,5 @@
 - unless current_user.is_a?(Users::God)
-  = render partial: 'dashboard/navbar', locals: { school: @school, render_ux_guidelines: true }
+  = render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
 
 
 = render "form"

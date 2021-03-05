@@ -1,7 +1,7 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters', locals: {by_academy: true, by_typology: true, by_department: true}
+    = render partial: 'reporting/filters', locals: {by_academy: true, by_typology: true, by_department: true, by_school_track: true}
 
     fieldset
       legend.h6 Grouper par
@@ -13,6 +13,8 @@
         = radio_button_tag :dimension, 'group', dimension_is?('group', params[:dimension]), id: 'present-by-group', class: 'custom-control-input', value: 'group', data: { action: 'statistics#useDimension' }
         = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label' do
           = "Groupe ou institution de tutelle"
+
+    .mt-4= render partial: 'reporting/school_years_filter'
 
   .row.mt-3
     .col-12

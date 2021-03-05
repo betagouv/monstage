@@ -1,4 +1,4 @@
-<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel="<%= resource.channel %>">
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= resource.channel %>">
     <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0">
       <div class="col-12 align-self-end col-sm-6 h-100">
@@ -18,15 +18,19 @@
   </header>
   <div class="body">
 
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name, as: resource.type.demodulize)) do |f| %>
+    <%= form_with(model: resource,
+                  scope: resource_name,
+                  local: true,
+                  url: registration_path(resource_name, as: resource.type.demodulize),
+                  id: 'new_user') do |f| %>
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
-      <%= f.text_field :type, hidden: true %>
+      <%= f.hidden_field :type %>
 
       <% if can?(:choose_school, resource) %>
         <%= react_component(
-          "AutocompleteSchool",
+          "SearchSchool", props: {
           classes: 'col-12',
           label: "Nom (ou ville) de mon établissement",
           required: true,
@@ -34,7 +38,7 @@
           selectClassRoom: can?(:choose_class_room, resource),
           existingSchool: resource.school.as_json,
           existingClassRoom: resource.try(:class_room).try(:as_json),
-        ) %>
+        }) %>
       <% end %>
 
       <div class="form-group custom-label-container">
@@ -54,7 +58,10 @@
       </div>
       <% if can?(:choose_role, resource) %>
       <div class="form-group custom-label-container">
-        <%= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role), { prompt: '-- Veuillez choisir une fonction --' }, { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
+        <%= f.select :role,
+                      options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
+                      { prompt: '-- Veuillez choisir une fonction --' },
+                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
         <%= f.label :role do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
@@ -64,82 +71,89 @@
 
       <% if can?(:choose_gender_and_birthday, resource) %>
         <div class="form-group custom-label-container" data-controller="a11y-date-input">
-          <%= f.text_field :birth_date, value: resource.try(:birth_date).try(:strftime, '%d/%m/%Y'), class: 'form-control', required: true, placeholder: 'jj/mm/aaaa', data:{ action: 'blur->a11y-date-input#validate', target: 'a11y-date-input.input' } %>
+          <%= f.text_field :birth_date,
+                           value: resource.try(:birth_date).try(:strftime,'%d/%m/%Y'),
+                           class: 'form-control',
+                           required: true,
+                           placeholder: 'jj/mm/aaaa',
+                           data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' } %>
           <%= f.label :birth_date do %>
             Date de naissance
             <%= f.rg2a_required_content_tag %>
           <% end %>
-          <small class="form-text text-danger d-none" data-target="a11y-date-input.errorContainer"></small>
+          <small class="form-text text-danger d-none" data-a11y-date-input-target="errorContainer"></small>
         </div>
 
-        <div class="form-group form-check form-check-inline">
-          <div class='row'>
-            <div class='col-4 col-xs-4'>
-              <div class="label">
-                Sexe
-                <%= f.rg2a_required_content_tag %>
-              </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "f",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-girl",
-                                  required: true  %>
-                <%= f.label :gender, "Féminin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-girl" %>
-              </div>
-            </div>
-            <div class='col-4'>
-              <div class="custom-control custom-radio">
-                <%= f.radio_button :gender,
-                                  "m",
-                                  class: 'custom-control-input',
-                                  id: "select-gender-boy"  %>
-                <%= f.label :gender, "Masculin",
-                                    class: 'custom-control-label',
-                                    for: "select-gender-boy" %>
-              </div>
-            </div>
+        <fieldset class="form-group form-check form-check-inline">
+          <legend class="label float-left">
+            Sexe
+            <%= f.rg2a_required_content_tag %>
+          </legend>
+
+          <div class="custom-control custom-radio custom-control-inline">
+            <%= f.radio_button :gender,
+                               "f",
+                               class: 'custom-control-input',
+                               id: "select-gender-girl",
+                               required: true  %>
+            <%= f.label :gender, "Féminin",
+                                class: 'custom-control-label',
+                                for: "select-gender-girl" %>
           </div>
-        </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <%= f.radio_button :gender,
+                               "m",
+                               class: 'custom-control-input',
+                               id: "select-gender-boy"  %>
+            <%= f.label :gender, "Masculin",
+                                 class: 'custom-control-label',
+                                 for: "select-gender-boy" %>
+          </div>
+        </fieldset>
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <%= render 'users/select_channel', label: 'Comment vous contacter ?', form: f, resource: resource, phone: 'SMS' do %>
-          <small class="text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
+        <%= render 'users/select_channel',
+                   label: 'Comment vous contacter ?',
+                   form: f,
+                   resource: resource,
+                   phone: 'SMS' do %>
+          <small class="small form-text text-muted">Réponse à un stage, réinitialiser votre mot de passe, contact par un employeur…</small>
         <% end %>
       <% else %>
         <div class="form-group custom-label-container">
-          <%= f.email_field :email, class: 'form-control', value: resource.email.blank? ? params[:email] : resource.email, required: true, placeholder: "ex: nom@exemple.fr", data: {action: 'change->signup#onBlurEmailInput', target: 'signup.emailInput'} %>
+          <%= f.email_field :email,
+                            class: 'form-control',
+                            value: resource.email.blank? ? params[:email] : resource.email,
+                            required: true,
+                            placeholder: "ex: nom@exemple.fr",
+                            data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'} %>
           <%= f.label :email do %>
-              <span data-target="signup.label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
+              <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
           <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
-          <small class="d-none" data-target="signup.emailHint"></small>
+          <small class="d-none" data-signup-target="emailHint"></small>
         </div>
       <% end %>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPassword', target: 'signup.passwordInput'} %>
+        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPassword', :"signup-target" => 'passwordInput'} %>
         <%= f.label :password do %>
           Créer un mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <small class="text-muted" data-target="signup.passwordHint"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
+        <small class="text-muted" data-signup-target="passwordHint"><%= I18n.t('devise.shared.minimum_password_length', count: @minimum_password_length) %></small>
       </div>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPasswordConfirmation', target: 'signup.passwordConfirmationInput'} %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', required: true, data: {action: 'change->signup#checkPasswordConfirmation', :"signup-target" => 'passwordConfirmationInput'} %>
         <%= f.label :password_confirmation do %>
           Ressaisir le mot de passe
           <%= f.rg2a_required_content_tag %>
 
         <% end %>
-        <small class="text-muted" data-target="signup.passwordConfirmationHint"></small>
+        <small class="text-muted" data-signup-target="passwordConfirmationHint"></small>
       </div>
 
       <% if can?(:choose_operator, :sign_up) %>
@@ -164,7 +178,7 @@
           </div>
         </div>
 
-        <div class="form-group custom-label-container <%= resource.handicap_present ? '' : 'd-none' %>" data-target="signup.handicapGroup">
+        <div class="form-group custom-label-container <%= resource.handicap_present ? '' : 'd-none' %>" data-signup-target="handicapGroup">
           <%= f.text_area :handicap, class: 'form-control' %>
           <%= f.label :handicap do %>
             Indiquez ce dont vous avez besoin
@@ -178,14 +192,14 @@
         <div class="custom-control custom-checkbox">
           <%= f.check_box :accept_terms, class: 'custom-control-input' %>
           <%= f.label :accept_terms, class: 'custom-control-label' do %>
-            <span id="test-accept-terms">J'accepte les</span>
-            <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer"  %>
+            J'accepte les
           <% end %>
+          <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'font-weight-normal'  %>
         </div>
       </div>
 
       <div class="actions d-flex d-sm-block text-center">
-        <%= f.submit "Je m'inscris", class: 'btn btn-primary' %>
+        <%= f.submit "Je m'inscris", class: 'btn btn-primary', id: 'test-create-user' %>
       </div>
     <% end %>
   </div>

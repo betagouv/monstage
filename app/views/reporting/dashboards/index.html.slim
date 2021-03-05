@@ -1,6 +1,8 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
-  div.bg-stats-filter.rounded.p-3[data-controller='statistics']= render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true}
+  div.bg-stats-filter.rounded.p-3[data-controller='statistics']
+    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false}
+    = render partial: 'reporting/school_years_filter'
 
   .row.mt-3
     .col-lg-6.col-12
@@ -64,7 +66,7 @@
                 td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
                 td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
                 td.align-middle= school_with_weeks_and_internship.total_student_count
-                td.align-middle= school_with_weeks_and_internship.internship_applications.approved.size
+                td.align-middle= school_with_weeks_and_internship.total_approved_internship_applications_count(school_year: params[:school_year])
                 td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
 
 

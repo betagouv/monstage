@@ -1,12 +1,11 @@
-div data-controller="internship-application-form"
-  .row.no-gutters data-controller='list-navigation' data-list-navigation-next-url=listable_internship_offer_path(@next_internship_offer) data-list-navigation-previous-url=listable_internship_offer_path(@previous_internship_offer)
+- content_for(:page_title, "#{t(".page_title", name: @internship_offer.title)} | Monstage")
+- content_for(:canonical_url, internship_offer_url(@internship_offer))
 
-    .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
-      - if @previous_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous' do
-          i.fa-icon.fas.fa-arrow-circle-left
-          span.mt-3.d-block.list-item-label.small Offre Précédente
-    .col-12.col-sm-10
+div data-controller="internship-application-form"
+
+  .row.no-gutters data-controller='list-navigation' data-list-navigation-next-url-value=listable_internship_offer_path(@next_internship_offer) data-list-navigation-previous-url-value=listable_internship_offer_path(@previous_internship_offer)
+
+    .col-12.col-sm-10.order-2
       table.table.table-sticky-thead
         thead
           tr.tr-white
@@ -19,22 +18,37 @@ div data-controller="internship-application-form"
           tr
             td= render "internship_offers/show_details", internship_offer: @internship_offer
 
-    .d-none.d-sm-flex.col-sm-1.align-items-center.text-right
+    .d-none.d-sm-flex.col-sm-1.align-items-center.text-left.order-1
+      - if @previous_internship_offer && support_listable?(current_user)
+        = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous text-danger' do
+          i.fa-icon.fas.fa-chevron-left
+          span.mt-3.d-block.list-item-label.small
+            | Offre
+            br
+            | Précédente
+    .d-none.d-sm-flex.col-sm-1.align-items-center.text-right.order-3
       - if @next_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@next_internship_offer), class: 'list-item list-item-next' do
-          i.fa-icon.fas.fa-arrow-circle-right
-          span.mt-3.d-block.list-item-label.small Offre Suivante
+        = link_to listable_internship_offer_path(@next_internship_offer), class: 'list-item list-item-next text-danger' do
+          i.fa-icon.fas.fa-chevron-right
+          span.mt-3.d-block.list-item-label.small
+            | Offre
+            br
+            | Suivante
 
   .row.no-gutters
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     .col-12.col-sm-10
       - if user_signed_in?
-        - if @internship_offer.from_api?
-          - # used to avoidcrash on @internship_offer_has_spots_left?
-        - elsif can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-          - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
-          - disabled = applicable_weeks.size.zero?
-          = render "internship_applications/forms/student", disabled: disabled, applicable_weeks: applicable_weeks
+        - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
+          - if @internship_offer.weekly?
+            - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
+            - disabled = applicable_weeks.size.zero?
+            = render "internship_applications/forms/weekly", disabled: disabled, applicable_weeks: applicable_weeks
+          - if @internship_offer.free_date?
+            = render "internship_applications/forms/free_date", disabled: false
       - else
           = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
+
+- if can?(:discard, InternshipOffer)
+  = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer

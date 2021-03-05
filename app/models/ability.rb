@@ -12,8 +12,12 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
-      when 'Users::SchoolManagement' then school_management_abilities(user: user)
+      when 'Users::SchoolManagement' then
+        common_school_management_abilities(user: user)
+        school_manager_abilities(user: user) if user.school_manager?
+        main_teacher_abilities(user: user)   if user.main_teacher?
       end
+
       shared_signed_in_user_abilities(user: user)
     else
       visitor_abilities
@@ -30,7 +34,8 @@ class Ability
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
       !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
-        !internship_offer.from_api?
+        !internship_offer.from_api? &&
+        user.try(:class_room).try(:applicable?, internship_offer)
     end
     can %i[submit_internship_application update], InternshipApplication do |internship_application|
       internship_application.student.id == user.id
@@ -46,7 +51,7 @@ class Ability
     can_read_dashboard_students_internship_applications(user: user)
   end
 
-  def school_management_abilities(user:)
+  def common_school_management_abilities(user:)
     can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
@@ -57,14 +62,10 @@ class Ability
 
     can_manage_school(user: user) do
       can %i[edit update], School
-      can [:manage_school_users], School do |school|
+      can %i[manage_school_users
+             manage_school_students
+             manage_school_internship_agreements], School do |school|
         school.id == user.school_id
-      end
-      can [:manage_school_students], School do |school|
-        school.id == user.school_id
-      end
-      can [:delete], User do |managed_user_from_school|
-        managed_user_from_school.school_id == user.school_id && user.school_manager?
       end
     end
     can %i[submit_internship_application validate_convention], InternshipApplication do |internship_application|
@@ -76,12 +77,77 @@ class Ability
     can %i[see_tutor], InternshipOffer
   end
 
+  def school_manager_abilities(user:)
+    can :create_remote_internship_request, SupportTicket
+    can_manage_school(user: user) do
+      can [:delete], User do |managed_user_from_school|
+        managed_user_from_school.school_id == user.school_id
+      end
+    end
+    can %i[
+      create
+      update
+      see_intro
+      edit_student_full_name
+      edit_school_representative_full_name
+      edit_student_class_room
+      edit_student_school
+      edit_main_teacher_full_name
+      edit_terms_rich_text
+      edit_activity_rating_rich_text
+      edit_financial_conditions_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.student.school_id == user.school_id
+    end
+  end
+
+  def main_teacher_abilities(user:)
+    can %i[
+      create
+      update
+      see_intro
+      edit_student_class_room
+      edit_main_teacher_full_name
+      edit_activity_rating_rich_text
+      edit_activity_preparation_rich_text
+        ], InternshipAgreement do |agreement|
+      is_student_in_school = agreement.internship_application.student.school_id == user.school_id
+      is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
+
+      is_student_in_school && is_student_in_class_room
+    end
+  end
+
   def employer_abilities(user:)
     can :show, :account
+
+    can :create_remote_internship_request, SupportTicket
+
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    # internship_offer stepper
+    can %i[create], InternshipOfferInfo
+    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[create], Organisation
+    can %i[update edit], Organisation, employer_id: user.id
+    can %i[create], Tutor
+
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+
+    can %i[
+      create
+      update
+      edit_organisation_representative_full_name
+      edit_tutor_full_name
+      edit_date_range
+      edit_weekly_hours
+      edit_activity_scope_rich_text
+      edit_activity_preparation_rich_text
+      edit_activity_learnings_rich_text
+    ], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.employer == user
+    end
   end
 
   def operator_abilities(user:)
@@ -92,6 +158,13 @@ class Ability
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
+    # internship_offer stepper
+    can %i[create], InternshipOfferInfo
+    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[create], Organisation
+    can %i[update edit], Organisation, employer_id: user.id
+    can %i[create], Tutor
+
     can %i[index update], InternshipApplication
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
@@ -122,13 +195,14 @@ class Ability
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin
-    can :manage, InternshipOffers::Api
+    can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi # grant access to the dashboard
     can %i[index], Acl::Reporting do |_acl|
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
+    can :reset_cache, User
   end
 
   private
@@ -145,9 +219,8 @@ class Ability
   end
 
   def student_managed_by?(student:, user:)
-    student.school_id == user.school_id && (
+    student.school_id == user.school_id &&
       user.is_a?(Users::SchoolManagement)
-    )
   end
 
   def shared_signed_in_user_abilities(user:)

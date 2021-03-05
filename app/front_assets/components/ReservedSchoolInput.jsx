@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AutocompleteSchool from './AutocompleteSchool';
+import SearchSchool from './SearchSchool';
 import SchoolPropType from '../prop_types/school';
 
 class ReservedSchoolInput extends React.Component {
@@ -24,7 +24,7 @@ class ReservedSchoolInput extends React.Component {
     checked: null,
   };
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({ checked: event.target.checked });
   };
 
@@ -44,13 +44,13 @@ class ReservedSchoolInput extends React.Component {
               checked={checkedOrHasExistingSchool}
               onChange={this.handleChange}
             />
-            <span className="ml-1">Ce stage est reservé à un établissement uniquement ?</span>
+            <span className="ml-1 font-weight-normal">Ce stage est reservé à un établissement uniquement ?</span>
             <small className="form-text text-muted">
               Les stages reservés ne seront proposés qu'aux élèves de l'établissement selectionné
             </small>
           </label>
         </div>
-        {checkedOrHasExistingSchool && <AutocompleteSchool {...this.props} />}
+        {checkedOrHasExistingSchool && <SearchSchool {...this.props} />}
         {!checkedOrHasExistingSchool && (
           <input type="hidden" value="" name={`${resourceName}[school_id]`} />
         )}

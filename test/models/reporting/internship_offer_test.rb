@@ -4,28 +4,25 @@ require 'test_helper'
 
 class ReportingInternshipOfferTest < ActiveSupport::TestCase
   test 'views can be queried' do
-    create(:internship_offer)
-    create(:internship_offer)
-    create(:internship_offer)
+    3.times { create(:weekly_internship_offer) }
     assert_equal 3, Reporting::InternshipOffer.count
   end
 
   test 'scopes that select offers depending on years' do
-    travel_to(Date.new(2019, 5, 15)) do
-      create(:internship_offer)
+    offer_2018 = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2019, number: 1)])
+    offer_2020 = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2021, number: 1)])
 
-      assert_equal 1, Reporting::InternshipOffer.during_current_year.count
-      assert_equal 1, Reporting::InternshipOffer.during_year(year: 2018).count
-      assert_equal 0, Reporting::InternshipOffer.during_year(year: 2019).count
-    end
+    assert_equal 1, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2018))
+                                              .count
+    assert_equal 0, Reporting::InternshipOffer.during_year(school_year: SchoolYear::Floating.new_by_year(year: 2019))
+                                              .count
   end
 
   test '.dimension_by_sector group by sector_name' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
-    create(:internship_offer, sector: sector_a)
-    create(:internship_offer, sector: sector_a)
-    create(:internship_offer, sector: sector_b)
+    2.times { create(:weekly_internship_offer, sector: sector_a )}
+    create(:weekly_internship_offer, sector: sector_b)
 
     results = Reporting::InternshipOffer.dimension_by_sector
     first_sectored_report = results[0]
@@ -38,9 +35,9 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
   test '.dimension_by_sector sum max_candidates' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
-    create(:internship_offer, weeks: [Week.first], sector: sector_a, max_candidates: 3)
-    create(:internship_offer, weeks: [Week.first, Week.last], sector: sector_a, max_candidates: 1)
-    create(:internship_offer, weeks: [Week.first, Week.last], sector: sector_b, max_candidates: 10)
+    create(:weekly_internship_offer, weeks: [Week.first], sector: sector_a, max_candidates: 3)
+    create(:weekly_internship_offer, weeks: [Week.first, Week.last], sector: sector_a, max_candidates: 1)
+    create(:weekly_internship_offer, weeks: [Week.first, Week.last], sector: sector_b, max_candidates: 10)
 
     results = Reporting::InternshipOffer.dimension_by_sector
     first_sectored_report = results[0]

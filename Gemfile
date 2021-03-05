@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.1'
+ruby '2.7.2'
 
 # fwk/server
 gem 'rails'
@@ -11,20 +11,26 @@ gem 'puma'
 
 # db
 gem 'pg'
-gem 'activerecord-postgis-adapter' # pg extension for geo queries
-gem 'pg_search'                    # pg search for autocomplete
+# pg extension for geo queries
+# wait for : https://github.com/rgeo/activerecord-postgis-adapter/tree/ar61 to be merge into master
+gem 'activerecord-postgis-adapter'
+
+# don't bump until fixed, https://github.com/Casecommons/pg_search/issues/446
+gem 'pg_search', '2.3.2'                    # pg search for autocomplete
+gem 'prawn'
+gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
 gem 'slim-rails'
 gem 'turbolinks'
+gem "react_on_rails"
 gem 'webpacker'
-gem 'react-rails'
 gem 'caxlsx_rails'
 
 # background jobs
-gem 'delayed_job_active_record'
-gem 'delayed_job_web'
+gem 'sidekiq'
+gem 'redis-namespace' # plug redis queues on same instance for prod/staging
 
 # admin
 gem 'rails_admin'
@@ -34,9 +40,7 @@ gem 'rails_admin-i18n'
 gem 'newrelic_rpm'
 gem 'sentry-raven'
 gem 'ovh-rest'
-
-# email operator tool
-gem 'sendgrid-ruby'
+gem 'prismic.io', require: 'prismic'
 
 # acl
 gem 'cancancan'
@@ -88,13 +92,11 @@ group :test do
   gem 'capybara-screenshot'
 end
 
-group :test, :development do
-  gem 'factory_bot_rails'
-end
-
 group :review do
   gem 'rest-client' # used by mailtrap for review apps
 end
 
-
+group :test, :development, :review do
+  gem 'factory_bot_rails'
+end
 

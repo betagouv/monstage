@@ -12,15 +12,20 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Student' do
-    student = create(:student)
+    internship_offer = create(:weekly_internship_offer)
+    school = create(:school, weeks: [internship_offer.weeks.first])
+    student = create(:student, class_room: create(:class_room, :troisieme_generale, school: school))
     ability = Ability.new(student)
-    internship_application = create(:internship_application, student: student)
+    internship_application = create(:weekly_internship_application,
+                                    student: student,
+                                    internship_offer: internship_offer,
+                                    internship_offer_week: internship_offer.internship_offer_weeks.first)
     assert(ability.can?(:read, InternshipOffer.new),
            'students should be able to consult internship offers')
-    assert(ability.can?(:apply, InternshipOffer.new),
+    assert(ability.can?(:apply, internship_offer),
            'students should be able to apply for internship offers')
     assert(ability.cannot?(:manage, InternshipOffer.new),
-                           'students should not be able to con manage internships')
+           'students should not be able to con manage internships')
     assert(ability.can?(:show, :account),
            'students should be able to access their account')
     assert(ability.can?(:choose_school, student),
@@ -33,14 +38,18 @@ class AbilityTest < ActiveSupport::TestCase
            'student should be able to choose handicap')
     assert(ability.can?(:dashboard_index, student))
     assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:internship_application)))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
     assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
            'employers should be able to index InternshipOfferDashboard')
   end
 
   test 'Employer' do
-    employer = create(:employer)
-    ability = Ability.new(employer)
+    employer               = create(:employer)
+    internship_offer       = create(:weekly_internship_offer, employer: employer)
+    internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
+    internship_agreement   = create(:internship_agreement, internship_application: internship_application)
+    ability                = Ability.new(employer)
+
     assert(ability.can?(:create, InternshipOffer.new),
            'employers should be able to create internships')
     assert(ability.cannot?(:update, InternshipOffer.new),
@@ -53,6 +62,20 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to discard internships offer that belongs to him')
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: employer)),
            'employers should be able to index InternshipOfferDashboard')
+    assert(ability.can?(:create_remote_internship_request, SupportTicket),
+           'employers should be able to ask how ask for remote internships support')
+    %i[
+    create
+    update
+    edit_weekly_hours
+    edit_organisation_representative_full_name
+    edit_tutor_full_name
+    edit_date_range
+    edit_activity_scope_rich_text
+    edit_activity_learnings_rich_text
+    ].each do |meth|
+      assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
+    end
   end
 
   test 'God' do
@@ -70,47 +93,108 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     assert ability.can?(:index, Acl::Reporting.new(user: god, params: {}))
+    refute ability.can?(:apply, create(:weekly_internship_offer))
+    refute ability.can?(:apply, create(:free_date_internship_offer))
+    refute ability.can?(:apply, create(:api_internship_offer))
   end
 
   test 'SchoolManager' do
     student = create(:student)
+    school = student.school
     another_school = create(:school)
-    school_manager = create(:school_manager, school: student.school)
-    internship_application = create(:internship_application, student: student)
+    school_manager = create(:school_manager, school: school)
+    internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(school_manager)
-    assert(ability.cannot?(:show, School),
-           'school_manager should be able show school')
-    assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:destroy, internship_application))
+
+
+    assert(ability.can?(:choose_class_room, User))
+    assert(ability.can?(:choose_role, User))
+    assert(ability.can?(:choose_class_room, User))
     assert(ability.can?(:dashboard_index, student))
-    assert(ability.can?(:dashboard_show, internship_application))
-    assert(ability.cannot?(:dashboard_show, create(:internship_application)))
-    assert(ability.can?(:see_tutor, InternshipOffer))
-    assert(ability.can?(:manage_school_users, school_manager.school))
-    assert(ability.cannot?(:manage_school_users, another_school))
-    assert(ability.can?(:manage_school_students, school_manager.school))
-    assert(ability.cannot?(:manage_school_students, another_school))
+    assert(ability.can?(:delete, student))
+
+    assert(ability.can?(:manage, ClassRoom))
     assert(ability.cannot?(:change, :class_room))
+
+    assert(ability.can?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.can?(:submit_internship_application, internship_application))
+    assert(ability.can?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    assert(ability.can?(:manage_school_users, school))
+    assert(ability.can?(:manage_school_students, school))
+    assert(ability.can?(:manage_school_internship_agreements, school))
+    assert(ability.can?(:create_remote_internship_request, SupportTicket))
+    
+    assert(ability.cannot?(%i[show edit update], School),
+           'school_manager should be able manage school')
+    assert(ability.cannot?(:manage_school_users, another_school))
+    assert(ability.cannot?(:manage_school_students, another_school))
+
+    assert(ability.can?(:create, InternshipAgreement))
+    %i[create
+       update
+       see_intro
+       edit_school_representative_full_name
+       edit_terms_rich_text
+       edit_student_full_name
+       edit_student_school
+       edit_terms_rich_text
+       edit_school_representative_full_name
+       edit_student_school
+       edit_financial_conditions_rich_text].each do |meth|
+      assert(ability.can?(meth, internship_agreement))
+    end
   end
 
   test 'MainTeacher' do
-    student = create(:student)
-    school_manager = create(:school_manager, school: student.school)
-    main_teacher = create(:main_teacher, school: student.school)
-    internship_application = create(:internship_application, student: student)
+    student                = create(:student)
+    school                 = student.school
+    another_school         = create(:school)
+    school_manager         = create(:school_manager, school: school)
+    class_room             = create(:class_room, school: school)
+    main_teacher           = create(:main_teacher, school: school, class_room: class_room)
+    internship_application = create(:weekly_internship_application, student: student)
+    internship_agreement   = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(main_teacher)
-    assert(ability.can?(:show, :account),
-           'students should be able to access their account')
-    assert(ability.can?(:choose_school, main_teacher),
-           'student should be able to choose_school')
+
+
     assert(ability.can?(:choose_class_room, main_teacher),
            'student should be able to choose_class_room')
+    assert(ability.can?(:choose_role, User))
+    assert(ability.can?(:dashboard_index, student))
+    assert(ability.can?(:show, :account),
+           'students should be able to access their account')
+
     assert(ability.can?(:manage, ClassRoom))
-    assert(ability.can?(:see_tutor, InternshipOffer))
-    assert(ability.can?(:manage_school_students, main_teacher.school))
-    assert(ability.cannot?(:manage_school_students, build(:school)))
-    assert(ability.can?(:update, internship_application))
     assert(ability.can?(:change, :class_room))
+
+    assert(ability.can?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:dashboard_show, internship_application))
+    assert(ability.can?(:submit_internship_application, internship_application))
+    assert(ability.can?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    assert(ability.can?(:manage_school_users, school))
+    assert(ability.can?(:manage_school_students, school))
+    assert(ability.can?(:choose_school, main_teacher),
+          'student should be able to choose_school')
+    assert(ability.can?(:manage_school_internship_agreements, school))
+    assert(ability.cannot?(:create_remote_internship_request, school))
+
+    assert(ability.cannot?(:manage_school_students, build(:school)))
+    assert(ability.cannot?(%i[show edit update], School),
+          'school_manager should be able manage school')
+    assert(ability.cannot?(:manage_school_users, another_school))
+    assert(ability.cannot?(:manage_school_students, another_school))
   end
 
   test 'Teacher' do
@@ -148,5 +232,8 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:index, Acl::Reporting.new(user: operator, params: {})))
     assert(ability.can?(:index, Acl::InternshipOfferDashboard.new(user: operator)),
            'Operator should be able to index InternshipOfferDashboard')
+
+    refute(ability.can?(:create_remote_internship_request, SupportTicket),
+          'operators are not supposed to fill forms for remote internships support')
   end
 end

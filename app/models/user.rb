@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable, :trackable
-  
+
   include DelayedDeviseEmailSender
 
   before_validation :clean_phone
@@ -24,16 +24,19 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name,
             presence: true
-  validates :phone, uniqueness: { allow_blank: true }, format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/,
-    message: 'Veuillez modifier le numéro de téléphone mobile' }, allow_blank: true
+  validates :phone, uniqueness: { allow_blank: true },
+                    format: { with: /\A\+\d{2,3}0(6|7)\d{8}\z/, message: 'Veuillez modifier le numéro de téléphone mobile' },
+                    allow_blank: true
 
   validates :email, uniqueness: { allow_blank: true },
-    format: { with: Devise.email_regexp }, allow_blank: true
+                    format: { with: Devise.email_regexp },
+                    allow_blank: true
 
   validates_inclusion_of :accept_terms, in: ['1', true],
                                         message: :accept_terms,
                                         on: :create
   validate :email_or_phone
+  validate :keep_email_existence, on: :update
 
   delegate :application, to: Rails
   delegate :routes, to: :application
@@ -47,17 +50,24 @@ class User < ApplicationRecord
 
   def channel
     return :phone if phone.present?
-    return :email if email.present?
-    nil
+
+    :email
   end
 
   def missing_school_weeks?
     return false unless respond_to?(:school)
+    return true if school.try(:weeks).try(:size).try(:zero?)
 
-    try(:school)
-      .try(:weeks)
-      .try(:size)
-      .try(:zero?)
+    Week.selectable_on_school_year # rejecting stale_weeks from last year
+        .joins(:school_internship_weeks)
+        .where('school_internship_weeks.school_id': school.id)
+        .count
+        .zero?
+  end
+
+  def missing_school?
+    return true if respond_to?(:school) && school.blank?
+    false
   end
 
   def to_s
@@ -99,10 +109,10 @@ class User < ApplicationRecord
   end
 
   def formal_name
-    "#{gender_text} #{first_name.try(:upcase)} #{last_name.try(:upcase)}"
+    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
-  def anonymize
+  def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
 
@@ -112,14 +122,19 @@ class User < ApplicationRecord
       last_name: 'NA',
       phone: nil,
       current_sign_in_ip: nil,
-      last_sign_in_ip: nil
+      last_sign_in_ip: nil,
+      anonymized: true
     }
     update_columns(fields_to_reset)
 
     discard!
 
-    AnonymizeUserJob.perform_later(email: email_for_job)
+    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
     RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+  end
+
+  def archive
+    anonymize(send_email: false)
   end
 
   def destroy
@@ -129,8 +144,8 @@ class User < ApplicationRecord
   def reset_password_by_phone
     if phone_password_reset_count < MAX_DAILY_PHONE_RESET || last_phone_password_reset < 1.day.ago
       send_sms_token
-      self.update(phone_password_reset_count: phone_password_reset_count + 1,
-                  last_phone_password_reset: Time.now)
+      update(phone_password_reset_count: phone_password_reset_count + 1,
+             last_phone_password_reset: Time.now)
     end
   end
 
@@ -140,13 +155,14 @@ class User < ApplicationRecord
 
   def send_sms_token
     return unless phone.present?
+
     create_phone_token
     SendSmsJob.perform_later(self)
   end
 
   def create_phone_token
-    self.update(phone_token: sprintf('%04d',rand(10000)),
-    phone_token_validity: 1.hour.from_now)
+    update(phone_token: format('%04d', rand(10_000)),
+           phone_token_validity: 1.hour.from_now)
   end
 
   def phone_confirmable?
@@ -154,12 +170,12 @@ class User < ApplicationRecord
   end
 
   def confirm_by_phone!
-    self.update(phone_token: nil, 
-                phone_token_validity: nil, 
-                confirmed_at: Time.now,
-                phone_password_reset_count: 0)
+    update(phone_token: nil,
+           phone_token_validity: nil,
+           confirmed_at: Time.now,
+           phone_password_reset_count: 0)
   end
-  
+
   def check_phone_token?(token)
     phone_confirmable? && phone_token == token
   end
@@ -170,6 +186,7 @@ class User < ApplicationRecord
     AddContactToSyncEmailDeliveryJob.perform_later(user: self)
 
     return if email_previous_change.try(:first).nil?
+
     RemoveContactFromSyncEmailDeliveryJob.perform_later(
       email: email_previous_change.first
     )
@@ -185,16 +202,50 @@ class User < ApplicationRecord
     false
   end
 
+  def has_no_class_room?
+    class_room.nil?
+  end
+
+  def send_reconfirmation_instructions
+    @reconfirmation_required = false
+    unless @raw_confirmation_token
+      generate_confirmation_token!
+    end
+    if add_email_to_phone_account?
+      devise_mailer.add_email_instructions(self)
+                   .deliver_later
+    else
+      unless @skip_confirmation_notification
+        devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
+                     .deliver_later
+      end
+    end
+  end
+
   private
 
+
   def clean_phone
+    self.phone = nil if phone == '+33'
     self.phone = phone.delete(' ') unless phone.nil?
+  end
+
+  def add_email_to_phone_account?
+    phone.present? && confirmed? && email.blank?
   end
 
   def email_or_phone
     if email.blank? && phone.blank?
-      errors.add(:email, "Un email ou un téléphone mobile est nécessaire.") 
-      errors.add(:phone, "Un email ou un téléphone mobile est nécessaire.")
+      errors.add(:email, 'Un email ou un numéro de mobile sont nécessaires.')
+    end
+  end
+
+  def keep_email_existence
+    if email_was.present? && email.blank?
+      errors.add(
+        :email,
+        'Il faut conserver un email valide pour assurer la continuité du service'
+      )
     end
   end
 end

@@ -3,8 +3,14 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
 
-  def edits
+  def edit
     authorize! :update, current_user
+    redirect_to = account_path(section: :school)
+    if force_select_school? && can_redirect?(redirect_to)
+      redirect_to(redirect_to,
+                  flash: { danger: "Veuillez rejoindre un etablissement" })
+      return
+    end
   end
 
   def update
@@ -20,19 +26,17 @@ class UsersController < ApplicationController
   private
 
   def current_flash_message
-    message = if params.dig(:user, :missing_school_weeks_id).present?
+    message = if params.dig(:user, :missing_weeks_school_id).present?
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
-    if current_user.unconfirmed_email
-      message += ' Veuillez confirmer votre nouvelle Adresse électronique (e-mail).'
-    end
+    message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). Veuillez cliquer sur le lien contenu dans le courriel pour confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
     message
   end
 
   def user_params
     params.require(:user).permit(:school_id,
-                                 :missing_school_weeks_id,
+                                 :missing_weeks_school_id,
                                  :first_name,
                                  :last_name,
                                  :email,
@@ -47,5 +51,13 @@ class UsersController < ApplicationController
 
   def current_section
     params[:section] || current_user.default_account_section
+  end
+
+  def force_select_school?
+    current_user.missing_school? && current_section.to_s != "school"
+  end
+
+  def can_redirect?(path)
+    request.path != path
   end
 end

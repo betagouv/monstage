@@ -10,13 +10,13 @@ module Api
     end
 
     def assert_not_unauthorized
-      assert_not_equal "401", response.code.to_s, 'in any case response should not be 404'
-      assert_equal "404", response.code.to_s, 'expect not found on destroy with unkown remote di'
+      assert_not_equal '401', response.code.to_s, 'in any case response should not be 404'
+      assert_equal '404', response.code.to_s, 'expect not found on destroy with unkown remote di'
     end
 
     test 'works with token param' do
       delete api_internship_offer_path(
-        id: "anything",
+        id: 'anything',
         params: {
           token: "Bearer #{@operator.api_token}"
         }
@@ -25,9 +25,9 @@ module Api
     end
 
     test 'works with Authorization header' do
-      delete(api_internship_offer_path(id: "anything"),
+      delete(api_internship_offer_path(id: 'anything'),
              headers: {
-               "Authorization" => "Bearer #{@operator.api_token}"
+               'Authorization' => "Bearer #{@operator.api_token}"
              })
       assert_not_unauthorized
     end

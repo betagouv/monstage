@@ -78,10 +78,14 @@ class InternshipApplicationsController < ApplicationController
   def create_internship_application_params
     params.require(:internship_application)
           .permit(
-            :motivation,
-            :internship_offer_week_id,
+            :type,
             :user_id,
+            :internship_offer_week_id,
+            :internship_offer_id,
+            :internship_offer_type,
+            :motivation,
             student_attributes: %i[
+              email
               phone
               resume_educational_background
               resume_other

@@ -5,25 +5,17 @@ class InternshipApplication < ApplicationRecord
   include AASM
   PAGE_SIZE = 10
 
-  belongs_to :internship_offer_week
+  belongs_to :internship_offer, polymorphic: true
+
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
-
-  has_one :internship_offer, through: :internship_offer_week
-  has_one :week, through: :internship_offer_week
+  has_one :internship_agreement
 
   validates :motivation,
             presence: true,
             if: :new_format?
 
-  validates :internship_offer_week,
-            presence: true,
-            unless: :application_via_school_manager?
   validates :student, uniqueness: { scope: :internship_offer_week_id }
-
-  before_validation :internship_offer_has_spots_left?, on: :create
-  before_validation :internship_offer_week_has_spots_left?, on: :create
-  before_validation :at_most_one_application_per_student?, on: :create
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
@@ -75,48 +67,38 @@ class InternshipApplication < ApplicationRecord
       .order('orderable_aasm_state')
   }
 
+  scope :no_date_index, lambda {
+    where.not(aasm_state: [:drafted])
+    .includes(
+      :student,
+      :internship_offer
+    ).default_order
+  }
+
+  scope :with_date_index, ->(internship_offer:){
+    joins(internship_offer_week: :internship_offer)
+    .where('internship_offers.id = ?', internship_offer.id)
+    .where.not('internship_applications.aasm_state = ?', 'drafted')
+    .includes(:student, :internship_offer)
+  }
+
+  scope :through_teacher, ->(teacher:) {
+    joins(student: :class_room).where('users.class_room_id = ?', teacher.class_room_id)
+  }
+
   #
   # Other stuffs
   #
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
+  scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
+  scope :default_order, ->{ order(updated_at: :desc) }
 
-  def student_is_male?
-    student.gender == 'm'
-  end
-
-  def student_is_custom_track?
-    student.custom_track?
-  end
-
-  def internship_offer_has_spots_left?
-    return unless internship_offer_week.present?
-
-    unless internship_offer.has_spots_left?
-      errors.add(:internship_offer, :has_no_spots_left)
-    end
-  end
-
-  def internship_offer_week_has_spots_left?
-    unless internship_offer_week.try(:has_spots_left?)
-      errors.add(:internship_offer_week, :has_no_spots_left)
-    end
-  end
-
-  def at_most_one_application_per_student?
-    return unless internship_offer_week.present?
-
-    if internship_offer.internship_applications.where(user_id: user_id).count > 0
-      errors.add(:user_id, :duplicate)
-    end
-  end
-
-  def internship_application_counter_hook
-    InternshipApplicationCountersHook.new(internship_application: self)
-  end
-
-  def application_via_school_manager?
-    internship_offer&.school
+  # add an additional delay when sending email using richtext
+  # sometimes email was sent before action_texts_rich_text was persisted
+  def deliver_later_with_additional_delay
+    yield.deliver_later(wait: 1.second)
   end
 
   aasm do
@@ -130,7 +112,7 @@ class InternshipApplication < ApplicationRecord
           :convention_signed
 
     event :submit do
-      transitions from: :drafted, to: :submitted, after: proc {|*_args|
+      transitions from: :drafted, to: :submitted, after: proc { |*_args|
         update!("submitted_at": Time.now.utc)
         EmployerMailer.internship_application_submitted_email(internship_application: self)
                       .deliver_later
@@ -146,56 +128,103 @@ class InternshipApplication < ApplicationRecord
     event :approve do
       transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
-                  after: proc {|*_args|
-      update!("approved_at": Time.now.utc)
-      StudentMailer.internship_application_approved_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-      student.school.main_teachers.map do |main_teacher|
-        MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                main_teacher: main_teacher)
-                         .deliver_later
-      end
-    }
+                  after: proc { |*_args|
+                           update!("approved_at": Time.now.utc)
+                           if student.email.present?
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_approved_email(internship_application: self)
+                              end
+                           end
+                           student.school.main_teachers.map do |main_teacher|
+                             MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                                                     main_teacher: main_teacher)
+                                              .deliver_later
+                           end
+                         }
     end
 
     event :reject do
       transitions from: :submitted,
                   to: :rejected,
-                  after: proc {|*_args|
-      update!("rejected_at": Time.now.utc)
-      StudentMailer.internship_application_rejected_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-    }
+                  after: proc { |*_args|
+                           update!("rejected_at": Time.now.utc)
+                           if student.email.present?
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_rejected_email(internship_application: self)
+                             end
+                           end
+                         }
     end
 
     event :cancel_by_employer do
       transitions from: %i[drafted submitted approved],
                   to: :canceled_by_employer,
-                  after: proc {|*_args|
-      update!("canceled_at": Time.now.utc)
-      StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
-                    .deliver_later if self.student.email.present?
-    }
+                  after: proc { |*_args|
+                           update!("canceled_at": Time.now.utc)
+                           if student.email.present?
+                              deliver_later_with_additional_delay do
+                                StudentMailer.internship_application_canceled_by_employer_email(internship_application: self)
+                              end
+                           end
+                         }
     end
 
     event :cancel_by_student do
       transitions from: %i[submitted approved],
                   to: :canceled_by_student,
-                  after: proc {|*_args|
-      update!("canceled_at": Time.now.utc)
-      EmployerMailer.internship_application_canceled_by_student_email(
-        internship_application: self
-      ).deliver_later
-    }
+                  after: proc { |*_args|
+                           update!("canceled_at": Time.now.utc)
+                           deliver_later_with_additional_delay do
+                             EmployerMailer.internship_application_canceled_by_student_email(
+                               internship_application: self
+                             )
+                           end
+                         }
     end
 
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        student.expire_application_on_week(week: internship_offer_week.week,
-                                           keep_internship_application_id: id)
+        if respond_to?(:internship_offer_week)
+          student.expire_application_on_week(week: internship_offer_week.week,
+                                             keep_internship_application_id: id)
+        end
       }
     end
+  end
+
+  def internship_application_counter_hook
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationCountersHooks::WeeklyFramed.new(internship_application: self)
+    when InternshipApplications::FreeDate
+      InternshipApplicationCountersHooks::FreeDate.new(internship_application: self)
+    else
+      raise 'can not process stats for this kind of internship_application'
+    end
+  end
+
+  def internship_application_aasm_message_builder(aasm_target:)
+    case self
+    when InternshipApplications::WeeklyFramed
+      InternshipApplicationAasmMessageBuilders::WeeklyFramed.new(internship_application: self, aasm_target: aasm_target)
+    when InternshipApplications::FreeDate
+      InternshipApplicationAasmMessageBuilders::FreeDate.new(internship_application: self, aasm_target: aasm_target)
+    else
+      raise 'can not build aasm message for this kind of internship_application'
+    end
+  end
+
+  def student_is_male?
+    student.gender == 'm'
+  end
+
+  def student_is_custom_track?
+    student.custom_track?
+  end
+
+  def application_via_school_manager?
+    internship_offer&.school
   end
 
   def anonymize
@@ -204,8 +233,8 @@ class InternshipApplication < ApplicationRecord
 
   def new_format?
     return true if new_record?
-    return false if created_at < Date.parse("01/09/2020")
+    return false if created_at < Date.parse('01/09/2020')
+
     true
   end
 end
-

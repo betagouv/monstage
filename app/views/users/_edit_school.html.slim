@@ -1,18 +1,20 @@
 h1.h2.mb-3 Mon établissement
-
-= form_for(current_user, as: :user, url: account_path, method: :patch) do |f|
+= form_with model: current_user,
+            scope: :user,
+            url: account_path,
+            local: true,
+            method: :patch do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
   - if current_user.respond_to?(:school)
-    = react_component("AutocompleteSchool",
-                      classes: 'col-12',
-                      label:"Nom (ou ville) de mon établissement",
-                      required: true,
-                      resourceName: :user,
-                      selectClassRoom: can?(:change, :class_room),
-                      existingSchool: @current_user.try(:school).try(:as_json),
-                      existingClassRoom: @current_user.try(:class_room))
+    = react_component("SearchSchool", props: { classes: 'col-12',
+                                               label:"Nom (ou ville) de mon établissement",
+                                               required: true,
+                                               resourceName: :user,
+                                               selectClassRoom: can?(:change, :class_room),
+                                               existingSchool: @current_user.try(:school).try(:as_json),
+                                               existingClassRoom: @current_user.try(:class_room)})
 
   - if can?(:choose_operator, :sign_up)
     .form-group
@@ -23,3 +25,4 @@ h1.h2.mb-3 Mon établissement
 
   .actions.d-flex.d-sm-block
     = f.submit 'Enregistrer', class: 'btn btn-primary'
+    

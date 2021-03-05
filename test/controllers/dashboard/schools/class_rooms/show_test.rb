@@ -46,10 +46,10 @@ module Dashboard
           if student.custom_track?
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-square", 1
             assert_select ".test-student-#{student.id} .is_custom_track .fas.fa-check", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false })
           else
             assert_select ".test-student-#{student.id} .is_custom_track .far.fa-square", 1
-            assert_select "a[href=?]", dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
+            assert_select 'a[href=?]', dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: true })
           end
 
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
@@ -57,7 +57,6 @@ module Dashboard
                         text: student_stats.applications_count.to_s
           assert_select ".test-student-#{student.id} span.applications_approved_count",
                         text: student_stats.applications_approved_count.to_s
-
         end
       end
 
@@ -74,6 +73,19 @@ module Dashboard
         assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 2
 
         assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
+      end
+
+      test 'GET class_rooms#show as SchoolManagement can remove student from school' do
+        school = create(:school, :with_school_manager)
+        class_room = create(:class_room, school: school)
+        main_teacher = create(:main_teacher, school: school, class_room: class_room)
+        student = create(:student, class_room: class_room, school: school, confirmed_at: 2.days.ago)
+        sign_in(main_teacher)
+
+        get dashboard_school_class_room_path(school, class_room)
+        assert_response :success
+        assert_select ".test-student-#{student.id} select option[value='']",
+                      text: 'Cet élève ne fait pas partie de mon établissement'
       end
     end
   end

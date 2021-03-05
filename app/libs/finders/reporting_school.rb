@@ -36,10 +36,11 @@ module Finders
 
     def base_query
       query = Reporting::School.all
+      query = query.with_school_track(params[:school_track])  if params[:school_track]
       query = query.where(visible: true)
-      if params[:department]
-        query = query.where(department: params[:department])
-      end
+      query = query.where(department: params[:department]) if params[:department]
+      query = query.joins(:class_rooms)
+                   .where('class_rooms.school_track = ?', params[:school_track]) if params[:school_track]
       query
     end
   end

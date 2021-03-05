@@ -18,8 +18,6 @@ module Dashboard
         assert_redirected_to root_path
       end
 
-
-
       #
       # Index, SchoolManagement
       #
@@ -46,11 +44,11 @@ module Dashboard
         assert_select 'a.nav-link[href=?]',
                       dashboard_school_users_path(school),
                       { count: 1 },
-                      "missing link to manage school users"
+                      'missing link to manage school users'
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
                       { count: 2 },
-                      "missing link to manage school weeks"
+                      'missing or extra link to manage school weeks'
       end
 
       test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do
@@ -61,7 +59,7 @@ module Dashboard
         get dashboard_school_class_rooms_path(school)
 
         assert_select '.alert.alert-info p', text: "Renseignez les classes pour permettre aux enseignants (et aux élèves) de s'inscrire."
-        assert_select '.alert.alert-info p', text: "Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates."
+        assert_select '.alert.alert-info p', text: 'Indiquez les semaines de stage afin que les offres proposées aux élèves correspondent à ces dates.'
       end
 
       test 'GET class_rooms#index contains key navigations links to manage school classroom' do
@@ -81,20 +79,20 @@ module Dashboard
           assert_response :success
 
           # new link
-          assert_select 'a.text-danger[href=?]',
+          assert_select 'a.btn-primary[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
 
           # destroy links
-          assert_select 'a.float-right[href=?]',
+          assert_select 'form[action=?]',
                         dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to destroy class_room for #{role}"
 
           assert_select 'a.float-right[href=?]',
                         dashboard_school_class_room_path(school, class_room_with_student),
-                        {count: 0}, # do not show destroy on classrooms with students,
+                        { count: 0 }, # do not show destroy on classrooms with students,
                         "link to destroy class_room with student present for #{role}"
 
           # edit links
@@ -141,6 +139,23 @@ module Dashboard
                           text: stats.total_student_with_zero_internship.to_s
           end
         end
+      end
+
+      test 'GET show as SchoolManagement works and only show not archived students' do
+        school = create(:school)
+        class_room = create(:class_room, school: school)
+        student_in_class_room = create(:student, school: school, class_room: class_room)
+        student_anonymized = create(:student, school: school, class_room: class_room, anonymized: true)
+        student_not_in_class_room_not_anonymized = create(:student, school: school)
+        student_not_in_class_room_not_anonymized.update(class_room_id: nil)
+
+        sign_in(create(:school_manager, school: school))
+
+        get dashboard_school_class_rooms_path(school)
+        assert_response :success
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_in_class_room.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_anonymized.id}\"]", count: 0
+        assert_select "tr[data-test=\"student-not-in-class-room-#{student_not_in_class_room_not_anonymized.id}\"]", count: 1
       end
     end
   end

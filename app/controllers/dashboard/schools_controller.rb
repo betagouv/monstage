@@ -9,9 +9,7 @@ module Dashboard
       authorize! :index, School
       query = School
       query = query.all if params[:visible].blank? || params[:kind].blank?
-      if params[:visible].present?
-        query = query.where(visible: parsed_visible_param)
-      end
+      query = query.where(visible: parsed_visible_param) if params[:visible].present?
       query = query.where(kind: parsed_kind_param) if params[:kind].present?
       query = query.order(zipcode: :desc)
       @schools = query.entries
@@ -40,6 +38,10 @@ module Dashboard
       render :edit, status: :unprocessable_entity
     end
 
+    def show
+      authorize! :edit, School
+    end
+
     private
 
     def set_school
@@ -47,9 +49,11 @@ module Dashboard
     end
 
     def internship_weeks_params
-      current_user.is_a?(Users::God) ?
-        god_internship_weeks_params :
+      if current_user.is_a?(Users::God)
+        god_internship_weeks_params
+      else
         school_manager_internship_weeks_params
+      end
     end
 
     def parsed_visible_param
@@ -68,12 +72,13 @@ module Dashboard
                                      :street,
                                      :name,
                                      :visible,
+                                     :agreement_conditions_rich_text,
                                      coordinates: {},
                                      week_ids: [])
     end
 
     def school_manager_internship_weeks_params
-      params.require(:school).permit(week_ids: [])
+      params.require(:school).permit(:agreement_conditions_rich_text, week_ids: [])
     end
   end
 end

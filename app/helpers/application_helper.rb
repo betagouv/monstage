@@ -6,6 +6,7 @@ module ApplicationHelper
     return false if user_signed_in?
     return false if current_page?(internship_offers_path)
     return false if params[:id] && current_page?(internship_offer_path(id: params[:id]))
+
     true
   end
 
@@ -61,5 +62,17 @@ module ApplicationHelper
 
   def current_action?(action_name)
     controller.action_name.to_s == action_name.to_s
+  end
+
+  def page_title
+    if content_for?(:page_title)
+      content_for :page_title
+    else
+      default = 'Monstage'
+      i18n_key = "#{controller_path.tr('/', '.')}.#{action_name}.page_title"
+      dyn_page_name = t(i18n_key, default: default)
+
+      "#{dyn_page_name} | #{default}" unless dyn_page_name == default
+    end
   end
 end

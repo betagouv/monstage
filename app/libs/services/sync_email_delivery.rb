@@ -1,102 +1,178 @@
 # frozen_string_literal: true
 
 module Services
+  # https://dev.mailjet.com/email/reference/overview/
   class SyncEmailDelivery
+    require 'net/https'
+    MAILJET_METADATA = [
+      {"Datatype"=>"str", "Name"=>"firstname", "NameSpace"=>"static"},
+      {"Datatype"=>"str", "Name"=>"name", "NameSpace"=>"static"},
+      {"Datatype"=>"str", "Name"=>"role", "NameSpace"=>"static"},
+      {"Datatype"=>"int", "Name"=>"monstage_id", "NameSpace"=>"static"},
+      {"Datatype"=>"str", "Name"=>"type", "NameSpace"=>"static"},
+      {"Datatype"=>"str", "Name"=>"environment", "NameSpace"=>"static"},
+      {"Datatype"=>"datetime", "Name"=>"confirmed_at", "NameSpace"=>"static"}
+    ].freeze
 
-    SENDGRID_CUSTOM_FIELD_IDS = {
-      role: 'e2_T',
-      monstage_id: 'e3_T',
-      type: 'e4_T',
-      environment: 'e5_T',
-      confirmed_at: 'e6_D'
-    }.freeze
+    MAILJET_HOST = 'https://api.mailjet.com'.freeze
 
-    def add_contact(user:)
-      return if fetch_sendgrid_email_id(email: user.email)
+    ENDPOINTS = {
+      contact: {
+        create: '/v3/REST/contact',
+        read: '/v3/REST/contact/%s', # %s -> internpolate monstage.user.email
+        destroy: '/v4/contacts/%d',  # %d -> internpolate mailjet.Contact.ID
 
-      payload = {
-        request_body: {
-          contacts: [user_data(user: user)]
+        metadata: {
+          index: '/v3/REST/contactmetadata',
+          update: '/v3/REST/contactdata/%s'  # %s -> internpolate monstage.user.email
         }
       }
-      request_with_error_handling(email: user.email, action: 'add') do
-        sendgrid_client.put(payload)
-      end
+    }
+
+    # public API
+    def create_contact(user:)
+      response = send_create_contact(user:user)
+      return JSON.parse(response.body) if status?([201, 401], response)
+
+      raise "fail create_contact: code[#{response.code}], #{response.body}"
     end
 
-    def delete_contact(email:)
-      sendgrid_user_email_id = fetch_sendgrid_email_id(email: email)
-      return unless sendgrid_user_email_id
+    def destroy_contact(email:)
+      mailjet_user_id = send_read_contact(email: email).dig("Data", 0, "ID")
+      response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
+      return true if status?(200, response)
 
-      payload = { query_params: { ids: sendgrid_user_email_id } }
-
-      request_with_error_handling(email: email, action: 'remove') do
-        sendgrid_client.delete(payload)
-      end
+      raise "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
-    def fetch_sendgrid_email_id(email:)
-      payload = { request_body: { query: "email = '#{email}'" } }
-      response = sendgrid_client.search.post(payload)
+    def send_read_contact(email:)
+      response = send_read_contact(email: email)
+      return JSON.parse(response.body) if status?(200, response)
 
-      if response_ok?(response: response)
-        fetch_result = parse_result(body: response.body)
-        fetch_result.empty? ? nil : fetch_result.first[:id]
-      else
-        Rails.logger.warn "Sendgrid api failed to fetch #{email}" \
-                          ' in Sendgrid database'
-      end
+      raise "fail read_contact: code[#{response.code}], #{response.body}"
+    end
+
+    def contact_exists?(email:)
+      response = send_read_contact(email: email)
+      return false unless status?(200, response)
+      return true if JSON.parse(response.body).dig('Count')
+    end
+
+    def index_contact_metadata
+      response = send_index_contact_metadata
+      return JSON.parse(response.body) if status?(200, response)
+
+      raise "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
+    end
+
+    def update_contact_metadata(user:)
+      response = send_update_contact_metadata(user: user)
+      return JSON.parse(response.body) if status?(200, response)
+
+      raise "fail update_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
     private
 
-    attr_reader :sendgrid_client
+    #
+    # endpoint requests
+    #
+    # see: https://dev.mailjet.com/email/reference/contacts/contact#v3_post_contact
+    def send_create_contact(user:)
+      with_http_connection do |http|
+        headers = default_headers.merge({'Content-Type' => 'application/json'})
+        request = Net::HTTP::Post.new(ENDPOINTS.dig(:contact, :create), headers)
 
-    def initialize
-      api_key = Rails.application.credentials[:sendgrid][:api_key]
-      @sendgrid_client = SendGrid::API.new(api_key: api_key)
-                                      .client
-                                      .marketing
-                                      .contacts
+        request.body = make_create_contact_payload(user: user).to_json
+        http.request(request)
+      end
     end
 
-    def user_data(user:)
+    # see: https://dev.mailjet.com/email/reference/contacts/contact#v3_send_read_contact_contact_ID
+    def send_read_contact(email:)
+      with_http_connection do |http|
+        request = Net::HTTP::Get.new(ENDPOINTS.dig(:contact, :read) % email, default_headers)
+        http.request(request)
+      end
+    end
+
+    # see: https://stackoverflow.com/questions/50170476/mailjet-delete-contact
+    def send_destroy_contact(mailjet_user_id:)
+      with_http_connection do |http|
+        request = Net::HTTP::Delete.new(ENDPOINTS.dig(:contact, :destroy) % mailjet_user_id, default_headers)
+        http.request(request)
+      end
+    end
+
+    # see: https://dev.mailjet.com/email/reference/contacts/contact-properties#v3_get_contactmetadata
+    def send_index_contact_metadata
+      with_http_connection do |http|
+        request = Net::HTTP::Get.new(ENDPOINTS.dig(:contact, :metadata, :index), default_headers)
+        http.request(request)
+      end
+    end
+
+    # see: https://dev.mailjet.com/email/reference/contacts/contact-properties#v3_put_contactdata_contact_ID
+    def send_update_contact_metadata(user:)
+      with_http_connection do |http|
+        headers = default_headers.merge({'Content-Type' => 'application/json'})
+        request = Net::HTTP::Put.new(ENDPOINTS.dig(:contact, :metadata, :update) % user.email, headers)
+
+        request.body = make_update_contact_payload(user: user).to_json
+        http.request(request)
+      end
+    end
+
+    #
+    # payload maker
+    #
+    def make_create_contact_payload(user:)
       {
-        "email": user.email,
-        "first_name": user.first_name,
-        "last_name": user.last_name,
-        "custom_fields": custom_fields(user: user)
+        IsExcludedFromCampaigns: false,
+        name: user.name,
+        email: user.email
       }
     end
 
-    def custom_fields(user:)
-      # Sendgrid do not allow nil(blank?) custom fields
-      custom_fields = {}
-      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:role]] = user&.role || 'N/A'
-      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:monstage_id]] = user.id.to_s
-      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:type]] = user.type
-      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:environment]] = Rails.env
-      custom_fields[SENDGRID_CUSTOM_FIELD_IDS[:confirmed_at]] = user.confirmed_at
-      custom_fields
+    def make_update_contact_payload(user:)
+      {
+          Data: [
+            { Name: "firstname", Value: user.first_name },
+            { Name: "name", Value: user.last_name },
+            { Name: "role", Value: user.role },
+            { Name: "monstage_id", Value: user.id },
+            { Name: "type", Value: user.type },
+            { Name: "environment", Value: Rails.env },
+            { Name: "confirmed_at", Value: user.confirmed_at.utc.to_i }
+          ]
+        }
+    end
+    # expected: Int|Array[Int],
+    # response: HttpResponse
+    def status?(expected, response)
+      actual = response.code.to_i
+      Array(expected).include?(actual)
     end
 
-    def parse_result(body:)
-      hash_response = JSON.parse body
-      result = hash_response['result']
-      result.is_a?(Array) ? result.map(&:symbolize_keys) : nil
+    #
+    # utils
+    #
+    def with_http_connection(&block)
+      uri = URI(MAILJET_HOST)
+      Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+        yield(http)
+      end
     end
 
-    def response_ok?(response:)
-     return false if response.nil?
+    # see: https://dev.mailjet.com/email/reference/overview/authentication/
+    def default_headers
+      user = Rails.application.credentials.dig(:mailjet, :apikey_public)
+      pass = Rails.application.credentials.dig(:mailjet, :apikey_private)
+      auth = ActionController::HttpAuthentication::Basic.encode_credentials(user, pass)
 
-     response.status_code.to_i.between?(200, 299)
-    end
-
-    def request_with_error_handling(email:, action:)
-      response = yield
-      return true if response_ok?(response: response)
-
-      raise  "Sendgrid api failed to #{action} #{email} to Sendgrid database"
+      {
+        'Authorization' => auth,
+      }
     end
   end
 end

@@ -3,7 +3,8 @@ p Le CV n'est pas obligatoire, mais c'est un plus. Il est envoyé à l'employeur
 
 p Le CV aide l'employeur à découvrir votre parcours, vos habiletés et compétences. Il lui permettra aussi de vous recontacter afin d'avancer sur votre candidature au sein de son entreprise.
 
-= form_for current_user, as: :user, url: account_path, method: :patch do |f|
-  = render partial: "users/resume_fields", locals: { form: f, disabled: false}
+= form_with model: current_user, scope: :user, url: account_path, local: true, method: :patch do |f|
+  = render "layouts/form_errors", resource: current_user, resource_name: :user
+  = render partial: "users/resume_fields", locals: { form: f, disabled: false, phone_mail_disabled: false}
 
   .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-primary'

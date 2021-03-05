@@ -12,6 +12,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'input', value: 'Student', hidden: 'hidden'
 
+    assert_select 'title', "Inscription | Monstage"
     assert_select 'label', /Prénom/
     assert_select 'label', /Nom/
     assert_select 'label', /Date de naissance/
@@ -21,7 +22,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_select 'label', /Ressaisir le mot de passe/
     assert_select 'div', /J'aurai besoin d'une aide adaptée pendant mon stage, en raison de mon handicap./
     assert_select 'label', /Indiquez ce dont vous avez besoin/
-    assert_select '#test-accept-terms', /J'accepte les/
+    assert_select 'label', /J'accepte les/
   end
 
   test 'POST Create Student without class fails' do
@@ -76,5 +77,30 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal 'm', created_student.gender
     assert_equal 'fourcade.m@gmail.com', created_student.email
     assert_equal 'cotorep', created_student.handicap
+  end
+
+  test 'sentry#1885447470, registration with no js/html5 fails gracefully' do
+    birth_date = 14.years.ago
+    assert_difference('Users::Student.count', 0) do
+      post user_registration_path(
+          params: {
+            user: {
+              accept_terms: 1,
+              birth_date: birth_date,
+              channel: 'phone',
+              email: '',
+              first_name: 'Jephthina' ,
+              gender: 'f',
+              handicap: nil,
+              handicap_present: 0,
+              last_name: "Théodore ",
+              password: "[Filtered]",
+              password_confirmation: "[Filtered]",
+              type: Users::Student.name
+            }
+          }
+        )
+        assert_response 200
+    end
   end
 end

@@ -1,0 +1,16 @@
+.row.mx-5
+  .col-12
+    .row
+      h1.h2.mb-3 Déposer une offre de stage
+
+.row
+  .col-12
+    = form_with model: @organisation,
+                url: dashboard_stepper_organisation_path(id: @organisation.id) do |form|
+      = render "dashboard/stepper/steps"
+      = form.rg2a_explain_required_asterisk
+      = render "layouts/form_errors",
+               resource: @organisation,
+               resource_name: :internship_offer
+      = render 'dashboard/stepper/organisations/form_fields',
+               { resource: @organisation, form: form, submit_button: true, warning_bloc: true }

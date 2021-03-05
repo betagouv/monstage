@@ -4,4 +4,9 @@ tr.tr-white
       .row.no-gutters
         .col-auto
           small.breakable-word= i18n.html_safe
-        .col.min-width-20= render partial: "dashboard/internship_offers/sort_links", locals: { order: sort_column, sort_by_i18n: i18n, direction: order_direction}
+        .col.min-width-20= render partial: "dashboard/internship_offers/sort_links",
+                                  locals: { order: sort_column, sort_by_i18n: i18n, direction: order_direction}
+- if params[:filter].in? ['past','unpublished']
+  tr.bg-secondary.border-less
+    td class="align-middle" colspan="#{cols.count}"
+      .row.no-gutters = render partial: "dashboard/internship_offers/school_years_filter"

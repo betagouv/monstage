@@ -3,35 +3,24 @@
 class School < ApplicationRecord
   include Nearbyable
   include Zipcodable
+  include SchoolUsersAssociations
 
-  has_many :users, foreign_type: 'type'
-  has_many :students, dependent: :nullify,
-                      class_name: 'Users::Student'
   has_many :students_with_missing_school_week, dependent: :nullify,
                                                class_name: 'Users::Student'
-
-  has_many :school_managements, dependent: :nullify,
-                                class_name: 'Users::SchoolManagement'
-  has_many :main_teachers, -> { where(role: :main_teacher) },
-                                class_name: 'Users::SchoolManagement'
-  has_many :teachers, -> { where(role: :teacher) },
-                                class_name: 'Users::SchoolManagement'
-  has_many :others, -> { where(role: :other) },
-                                class_name: 'Users::SchoolManagement'
-  has_one :school_manager, -> { where(role: :school_manager) },
-                                class_name: 'Users::SchoolManagement'
 
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
+  has_many :internship_applications, through: :students
 
-  validates :city, :name, presence: true
+  has_rich_text :agreement_conditions_rich_text
+
+  validates :city, :name, :code_uai, presence: true
 
   validates :zipcode, zipcode: { country_code: :fr }
 
   VALID_TYPE_PARAMS = %w[rep rep_plus qpv qpv_proche].freeze
-
 
   scope :with_manager, lambda {
                          left_joins(:school_manager)
@@ -39,14 +28,16 @@ class School < ApplicationRecord
                            .having('count(users.id) > 0')
                        }
 
-  scope :without_weeks, lambda {
-    left_joins(:weeks)
-      .group('schools.id')
-      .having('count(school_internship_weeks.school_id) = 0')
+  scope :without_weeks_on_current_year, lambda {
+    all.where.not(
+      id: self.joins(:weeks)
+              .merge(Week.selectable_on_school_year)
+              .pluck(:id)
+    )
   }
 
-  scope :missing_school_week_count_gt, lambda { |thresold|
-    where('missing_school_weeks_count > ?', thresold)
+  scope :missing_school_week_count_gt, lambda { |threshold|
+    where('missing_school_weeks_count > ?', threshold)
   }
 
   def select_text_method
@@ -63,8 +54,12 @@ class School < ApplicationRecord
     name
   end
 
-  def class_prefix_for_multiple_checkboxes
-    'school'
+  def email_domain_name
+    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
+  end
+
+  def email_domain_name
+    Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
 
   rails_admin do
