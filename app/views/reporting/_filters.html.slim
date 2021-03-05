@@ -33,7 +33,7 @@ fieldset
           .form-group
             = label_tag :school_track, "Filière", class: 'text-uppercase'
             = select_tag :school_track,
-                         grouped_options_for_select([['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}]], selected: params[:school_track]),
+                         grouped_options_for_select(Presenters::ClassRoom.school_tracks_options, selected: params[:school_track]),
                          class: 'form-control',
                          prompt: 'Toutes',
                          data: { action: 'statistics#filterBySchoolTrack' }
