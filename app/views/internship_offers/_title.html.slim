@@ -1,13 +1,14 @@
 - unless current_user.is_a?(Users::Student)
-  .row.align-items-center.no-gutters
-    .col-12
-        = react_component("FilterInternshipOffer")
+  = render partial: 'common/filter_with_mobile_alternative',
+           locals: { large_screen_react_component: 'FilterInternshipOffer',
+                     field: :school_track,
+                     presenter: Presenters::InternshipOffer.new,
+                     matching_param: params[:school_track] }
 .row.align-items-center.no-gutters.pt-4
-  .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center.text-sm-left
+  .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center
     p.h2.mb-0#internship-offers-count
       strong= "#{internship_offers.total_count}"
       = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
-
 
 
   ul.col-12.d-none.d-md-flex.order-3.col-md-6.mb-0.mb-sm-3.justify-content-end
