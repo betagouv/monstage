@@ -46,7 +46,8 @@ class UsersController < ApplicationController
                                  :resume_educational_background,
                                  :resume_other,
                                  :resume_languages,
-                                 :role)
+                                 :role,
+                                 banners: {})
   end
 
   def current_section

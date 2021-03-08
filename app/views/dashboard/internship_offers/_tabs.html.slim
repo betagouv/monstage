@@ -2,9 +2,9 @@
 - badge_counter = Finders::TabEmployer.new(user: current_user)
 
 - if can? :create_remote_internship_request, SupportTicket
-  = render partial: 'dashboard/remote_internship_block'
+  = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
 
-ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
+ul.nav.nav-tabs.test-dashboard-nav.bb-1.badge_counter-light.col-12.nav-xs-inline
   - is_active = controller_name == 'internship_offers' && params[:filter].blank?
   li.nav-item= link_to dashboard_internship_offers_path(forwarded_params),
                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do

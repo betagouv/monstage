@@ -1063,7 +1063,8 @@ CREATE TABLE public.users (
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL
+    anonymized boolean DEFAULT false NOT NULL,
+    banners jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2267,6 +2268,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210121171025'),
 ('20210121172155'),
 ('20210128162938'),
-('20210129121617');
+('20210129121617'),
+('20210224160904');
 
 
