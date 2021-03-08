@@ -23,14 +23,17 @@ module Users
     before_validation :assign_email_whitelist
 
     def custom_dashboard_path
-      url_helpers.reporting_dashboards_path(department: department_name)
+      url_helpers.reporting_dashboards_path(
+        department: department_name,
+        school_year: SchoolYear::Current.new.beginning_of_period.year
+      )
     end
 
     def custom_dashboard_paths
       [
         url_helpers.reporting_internship_offers_path,
         url_helpers.reporting_schools_path,
-        url_helpers.reporting_dashboards_path
+        custom_dashboard_path
       ]
     end
 
