@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr" >
+  <head>
+    <%= stylesheet_pack_tag 'application.css', 'data-turbolinks-track': 'reload', media: 'all' %>
+    <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
+  </head>
+  <body class="<%= env_class_name %> <%= body_class_name %>">
+    <ul class="nav nav-tabs">
+      <li class="nav-item"><a class="nav-link"><%= render partial: 'layouts/extra_for_devs' %></a></li>
+      <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+      <li class="nav-item"><a class="nav-link" href="/rails/view_components">Previews</a></li>
+    </ul>
+
+    <div role="main"><%= yield %></div>
+  </body>
+</html>
+
