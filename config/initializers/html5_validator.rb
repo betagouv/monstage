@@ -5,6 +5,7 @@ require 'fileutils'
 module Html5Validator
   W3C_RESPONSE_STORED_DIR = Rails.root.join('tmp', 'w3c')
   SCREENSHOT_STORED_DIR = Rails.root.join('tmp', 'functional_screenshots')
+
   def self.screenshot_files
     Dir["#{SCREENSHOT_STORED_DIR}/*"]
   end

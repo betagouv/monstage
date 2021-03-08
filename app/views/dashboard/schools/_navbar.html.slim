@@ -3,7 +3,7 @@
 - badge_counter = Finders::TabNull.new if badge_counter.nil?
 
 - if can? :create_remote_internship_request, SupportTicket
-    = render partial: 'dashboard/remote_internship_block'
+    = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
 
 .row.mb-2
   .d-flex style="align-items: baseline"
