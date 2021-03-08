@@ -6,7 +6,7 @@
   data-controller='filtering'
   data-filtering-field-value="#{field}"
   ]
-  .col-8.offset-2.form-group.text-center.center-text.custom-label-container
+  .col-12.col-sm-8.offset-sm-2.form-group.text-center.center-text.custom-label-container
     = select_tag field,
                   options_for_select(presenter.mobile_tag_filter_options, matching_param),
                   class: 'custom-select',
