@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { changeURLFromEvent, clearParamAndVisits } from '../utils/urls';
 
-function FilterInternshipOffer() {
+function FilterInternshipOffer({ filterOptions }) {
   const searchParams = new URLSearchParams(window.location.search);
   const [schoolTrack, setSchoolTrack] = useState(searchParams.get('school_track'));
 
@@ -17,73 +17,35 @@ function FilterInternshipOffer() {
 
   // switch radio
   const filterOffers = (event) => {
-   setSchoolTrack(event.target.value)
-   changeURLFromEvent(event,'school_track')
+    setSchoolTrack(event.target.value)
+    changeURLFromEvent(event,'school_track')
   }
-
   return (
-    <div className="form-group form-inline justify-content-center justify-content-sm-start justify-content-md-center p-0 m-0 custom-radio-boxes">
-      <span className="font-weight-normal justify-content-sm-center mr-1">Filtrer par : </span>
-      <div className='custom-radio-box-control custom-radio-box-control-prepend '>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_generale'}
-          value="troisieme_generale"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-generale"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-generale">
-          3ème
-        </label>
-      </div>
-      <div className='custom-radio-box-control custom-radio-box-control'>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_segpa'}
-          value="troisieme_segpa"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-segpa"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-segpa">
-          3e SEGPA
-        </label>
-      </div>
-      <div className='custom-radio-box-control custom-radio-box-control'>
-        <input
-          type="radio"
-          name="school_track"
-          checked={schoolTrack === 'troisieme_prepa_metiers'}
-          value="troisieme_prepa_metiers"
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-troisieme-prepa-metiers"
-        />
-        <label className="label mb-0" htmlFor="search-by-troisieme-prepa-metiers">
-          3e prépa métiers
-        </label>
-      </div>
-      <div className="custom-radio-box-control  custom-radio-box-control-append">
-        <input
-          type="radio"
-          name="school_track"
-          value="bac_pro"
-          checked={schoolTrack === 'bac_pro'}
-          onClick={(event) => clearRadioOnDoubleClick(event)}
-          onChange={(event) => filterOffers(event)}
-          className="custom-radio-box-control-input col-sm-12"
-          id="search-by-bac-pro"
-        />
-        <label className="label mb-0" htmlFor="search-by-bac-pro">
-          Bac Pro
-        </label>
-      </div>
+    <div className="form-group form-inline justify-content-center p-0 m-0 custom-radio-boxes">
+      <span className="font-weight-normal justify-content-sm-center mr-1">{filterOptions.component_label} : </span>
+      {filterOptions.options.map(
+        function (buttonLabel, index) {
+          let extraClass = (index == 0) ? "custom-radio-box-control-prepend" : ""
+          extraClass = (index == (filterOptions.options.length - 1)) ? "custom-radio-box-control-append" : extraClass
+          return (
+            <div className={`custom-radio-box-control d-none d-sm-block ${extraClass}`} key={index}>
+              <input
+                type="radio"
+                name="school_track"
+                checked={schoolTrack === buttonLabel.value}
+                value={buttonLabel.value}
+                onClick={(event) => clearRadioOnDoubleClick(event)}
+                onChange={(event) => filterOffers(event)}
+                className="custom-radio-box-control-input col-sm-12"
+                id={buttonLabel.id}
+              />
+              <label className="label mb-0" htmlFor={buttonLabel.id}>
+                {buttonLabel.label}
+              </label>
+            </div>
+          )
+        })
+      }
     </div>
   );
 }
