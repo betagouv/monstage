@@ -149,12 +149,6 @@ class InternshipOffer < ApplicationRecord
     self.max_candidates ||= 1
   end
 
-  def owned_by?(user)
-    return false if user.nil?
-    
-    user.id == employer.id
-  end
-
   def total_female_applications_count
     total_applications_count - total_male_applications_count
   end
