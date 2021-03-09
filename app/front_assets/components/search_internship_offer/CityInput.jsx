@@ -1,4 +1,3 @@
-CityInput.jsx
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
@@ -58,6 +57,7 @@ function CityInput({
     let zipcode = ""
     if (codes.length == undefined || codes.length === 0) { return zipcode; }
     if (codes.length >= 1) { zipcode = codes[0]; }
+    // TODO remove following comments after october 2021
     // if (codes.length >= 2) { zipcode += ", " + codes[1]; }
     // if (codes.length > 2) { zipcode += ", ... " }
     return zipcode
