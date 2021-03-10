@@ -77,7 +77,10 @@ Things you may want to cover:
 * [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
 * [api](https://github.com/betagouv/monstage/tree/master/doc)
 
+## Previews
 
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
 
 ## Dev
 
@@ -139,13 +142,13 @@ those tests depends on the system / e2e (which goes throught browser with js exe
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file.
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
 
 * we use a custom postgres docker image for our synonym dictionnary
- 
+
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
