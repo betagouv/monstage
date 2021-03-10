@@ -14,7 +14,7 @@
     = render partial: 'dashboard/schools/ux_classrooms_and_weeks_guidelines', locals: {school: school }
 
 .row
-  ul.nav.nav-tabs.test-dashboard-nav.mb-2
+  ul.nav.nav-tabs.test-dashboard-nav.mb-2.nav-xs-inline
     li.nav-item
       = link_to dashboard_school_class_rooms_path(school),
                 class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do

@@ -6,7 +6,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
 
   belongs_to :internship_offer, polymorphic: true
-
+  has_many :internship_agreements
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
   has_one :internship_agreement
@@ -131,8 +131,8 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                            update!("approved_at": Time.now.utc)
-                           notify_student 
-                           notify_school_management 
+                           notify_student
+                           notify_school_management
                            create_agreement
                          }
     end
@@ -197,7 +197,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def notify_school_management
-    return unless student.main_teacher.present?    
+    return unless student.main_teacher.present?
     MainTeacherMailer.internship_application_approved_email(
       internship_application: self,
       internship_agreement: internship_agreement,
