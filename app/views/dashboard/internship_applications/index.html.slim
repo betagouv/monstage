@@ -1,16 +1,18 @@
-.row.mb-4
-  .col-12
-    h1.h3 Conventions de stage
-
-.row= render partial: "dashboard/internship_offers/tabs",
+= render partial: "dashboard/internship_offers/tabs",
              locals: { internship_offers: @internship_offers }
 
-table.table.table-hover.table-sticky-thead
+.row
+  .col-12
+    h2.h3.mt-4.mb-0 Editer, imprimer et bientôt signer les conventions dématérialisées
+
+table.mt-4.table.table-hover.table-sticky-thead
   thead
-    tr.d-flex.tr-white
-      th.col-3 Elève
-      th.col-6 Offre de stage
-      th.col-3
+    tr.d-flex.tr-white.row
+      th.small.muted.col-2 Elève
+      th.small.muted.col-4 Offre de stage
+      th.small.muted.col-2 Organisme d'accueil
+      th.small.muted.col-2.text-center Complété par
+      th.small.muted.col-2
   tbody
     - @internship_applications.each do |internship_application|
       = render partial: 'dashboard/internship_applications/internship_application', locals: { internship_application: internship_application }

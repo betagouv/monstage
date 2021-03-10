@@ -1,13 +1,19 @@
-tr class="d-flex student-application-#{internship_application.id} internship-agreement-to-sign #{internship_application.try(:internship_agreement).try(:confirmed_by?, user: current_user) ? '' : 'bg-light-blue'}"
-  td.py-3.d-flex.align-items-center.col-sm-3 data-head="#{internship_application.student.name}"
+tr class="d-flex student-application-#{internship_application.id} internship-agreement-to-sign"
+  td.col-2.d-flex.align-items-center data-head="#{internship_application.student.name}"
     .align-self-center= internship_application.student.name
-  td.py-3.d-flex.align-items-center.col-sm-6 data-head="#{internship_application.internship_offer.title}"
+  td.col-4.d-flex.align-items-center data-head="#{internship_application.internship_offer.title}"
     = link_to '#', data: { toggle: 'modal', target: "##{show_application_modal_id(internship_application)}", turbolinks: false } do
-      = internship_application.internship_offer.title
-  td.py-3.col-sm-3 style="width: 300px" data-head="Action"
+      span= internship_application.internship_offer.title
+  td.col-2.d-flex.align-items-center data-head="Organisme d'accueil"
+    = internship_application.internship_offer.employer_name
+
+  td.col-2.d-flex.align-items-center.text-center data-head="Complété par"
+     .actions.d-flex.d-sm-block.mr-auto.ml-auto
+      = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_application.internship_agreement, current_user: current_user))
+  td.col-2 style="width: 300px" data-head="Action"
     .actions.d-flex.d-sm-block.text-right
       = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user))
 
 tr
-  td.p-0 colspan=3
+  td.col-12.p-0 colspan=5
     = render "dashboard/internship_offers/internship_applications/show_modal", application: internship_application

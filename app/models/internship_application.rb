@@ -6,7 +6,7 @@ class InternshipApplication < ApplicationRecord
   PAGE_SIZE = 10
 
   belongs_to :internship_offer, polymorphic: true
-  has_many :internship_agreements
+  # has_many :internship_agreements
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
   has_one :internship_agreement
