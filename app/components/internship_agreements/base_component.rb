@@ -4,7 +4,8 @@ module InternshipAgreements
              :school_manager_accept_terms?,
              :employer_accept_terms?,
              :troisieme_generale?,
-             to: :internship_agreement
+             to: :internship_agreement,
+             allow_nil: true
 
     def ready_to_print?
       signed_count == signatures_count_required
