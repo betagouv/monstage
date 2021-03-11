@@ -8,13 +8,15 @@ thead
             .span.pr-1
               |Stage concerné:
             .h6.test-header role="heading" aria-level="6" = link_to internship_application.internship_offer.title, dashboard_internship_applications_path(internship_application)
-        .col-auto.text-center.h6.text-grey
-          =render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user))
+        .col-auto.text-center.text-grey
+          p.small.text-muted.mb-2=" Complété par"
+          .h6=render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user, strong: true))
           p.mt-3.mb-0.font-weight-normal
-            = link_to '#', class: 'd-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
+            = button_tag class: 'btn btn-link p-0 font-weight-normal d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
               | Afficher les notes
+              = " "
               i.fa.fa-eye
-            = link_to '#', class:'text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  :"internship-agreement-form-target" => 'hideButton', turbolinks: "false" } do
+            = button_tag class:'btn btn-link p-0 font-weight-normal text-danger', data: { action: "click->internship-agreement-form#toggleToolnote",  :"internship-agreement-form-target" => 'hideButton', turbolinks: "false" } do
               | Masquer les notes
               = " "
               i.fa.fa-eye-slash
