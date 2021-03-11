@@ -134,3 +134,15 @@ $custom-grey: rgb(51,51,51);
     color: $warning;
   }
 }
+
+.offset-absolute{
+  width: 100%;
+  position: absolute;
+  margin-top: 3px;
+
+  .gradient-to-white{
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+
+  }
+}
