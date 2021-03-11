@@ -8,7 +8,7 @@ module InternshipAgreements
              allow_nil: true
 
     def ready_to_print?
-      signed_count == signatures_count_required
+      signed_count == required_signatures_count
     end
 
     def signed_count
@@ -17,7 +17,7 @@ module InternshipAgreements
                          .size
     end
 
-    def signatures_count_required
+    def required_signatures_count
       required_signatures.size
     end
 
