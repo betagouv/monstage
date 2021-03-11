@@ -112,16 +112,12 @@ class User < ApplicationRecord
     "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
-  def email_domain_name
-    self.email.split('@').last
-  end
-
   def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
 
     fields_to_reset = {
-      email: "#{SecureRandom.hex}@#{email_domain_name}" ,
+      email: SecureRandom.hex,
       first_name: 'NA',
       last_name: 'NA',
       phone: nil,

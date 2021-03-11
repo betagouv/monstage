@@ -1,6 +1,5 @@
 module Presenters
   class Student
-    # delegate :email_domain_name, to: :user
 
     def name
       return anonymized_message if student.anonymized?
@@ -23,7 +22,7 @@ module Presenters
     end
 
     def email
-      return student.email_domain_name if student.anonymized?
+      return anonymized_message if student.anonymized?
       student.email
     end
 
