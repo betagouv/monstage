@@ -12,7 +12,7 @@ class User < ApplicationRecord
   before_validation :clean_phone
   after_create :send_sms_token
 
-  # school_managernagements includes different roles
+  # school_managements includes different roles
   # 1. school_manager should register with ac-xxx.fr email
   # 2.3.4. can register
   enum role: {
