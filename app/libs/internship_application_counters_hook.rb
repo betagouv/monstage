@@ -78,8 +78,4 @@ class InternshipApplicationCountersHook
 
   end
 
-  def student_internship_applications
-    @student_internship_applications ||= internship_offer.internship_applications
-                                                         .joins(:student)
-  end
 end
