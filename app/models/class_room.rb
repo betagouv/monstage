@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
-  include Discard::Model
-
   enum school_track: {
     troisieme_generale: 'troisieme_generale',
     troisieme_prepa_metiers: 'troisieme_prepa_metiers',
@@ -41,11 +39,5 @@ class ClassRoom < ApplicationRecord
     name
   end
 
-  def self.anonymize!
-    kept.update(
-      discarded_at: Date.today,
-      name: 'classe archivée'
-    )
-  end
 
 end
