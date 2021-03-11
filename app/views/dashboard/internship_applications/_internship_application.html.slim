@@ -9,7 +9,7 @@ tr class="d-sm-flex student-application-#{internship_application.id} internship-
 
   td.rg2a-width-50.col-sm-2.d-sm-flex.align-items-center.text-center data-head="Complété par"
      .actions.d-flex.d-sm-block.mr-auto.ml-auto
-      = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_application.internship_agreement, current_user: current_user))
+      = render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_application.internship_agreement, current_user: current_user, custom_classes: "small"))
   td.rg2a-width-100.col-sm-2
     .actions.d-flex.d-sm-block.text-right
       = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user))

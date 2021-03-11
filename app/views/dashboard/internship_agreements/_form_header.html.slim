@@ -10,7 +10,7 @@ thead
             .h6.test-header role="heading" aria-level="6" = link_to internship_application.internship_offer.title, dashboard_internship_applications_path(internship_application)
         .col-auto.text-center.text-grey
           p.small.text-muted.mb-2=" Complété par"
-          .h6=render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user, strong: true))
+          .h6=render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user, custom_classes: ' small font-weight-bold text-dark'))
           p.mt-3.mb-0.font-weight-normal
             = button_tag class: 'btn btn-link p-0 font-weight-normal d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
               | Afficher les notes
