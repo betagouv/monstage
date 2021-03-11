@@ -9,18 +9,6 @@ module Presenters
       Null.instance
     end
 
-    def self.with_school_tracks(school)
-      school.class_rooms
-            .kept
-            .includes([:students])
-            .order(:name)
-            .group_by { |c| c.school_track }
-    end
-
-    def self.students_without_class_room(school)
-      school.students.without_class_room
-    end
-
     class Null
       include Singleton
       def id
