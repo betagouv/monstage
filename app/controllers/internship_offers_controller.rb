@@ -17,6 +17,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def show
+    check_internship_offer_is_published_or_redirect
     @previous_internship_offer = finder.next_from(from: @internship_offer)
     @next_internship_offer = finder.previous_from(from: @internship_offer)
 
