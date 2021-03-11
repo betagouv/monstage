@@ -364,7 +364,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    discarded_at timestamp without time zone
 );
 
 
@@ -1444,6 +1445,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_class_rooms_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_discarded_at ON public.class_rooms USING btree (discarded_at);
+
+
+--
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2208,6 +2216,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201203153154'),
 ('20210112164129'),
 ('20210121171025'),
-('20210121172155');
+('20210121172155'),
+('20210310173554');
 
 
