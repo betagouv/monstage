@@ -42,10 +42,11 @@ class ClassRoom < ApplicationRecord
   end
 
   def self.anonymize!
-    kept.update(
+    kept.update_columns(
       discarded_at: Date.today,
       name: 'classe archivée'
     )
   end
+  alias anonymize anonymize!
 
 end
