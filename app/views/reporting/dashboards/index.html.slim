@@ -50,24 +50,24 @@
       - # bottom, soon in internship
       .card.my-5
         .card-body
-          h3.h5.text-dark.mb-1.card-title Établissements inscrits (avec semaine de stage à venir)
+          h3.h5.text-dark.mb-1.card-title Établissements inscrits
 
         table.table.mb-0.table-statistics.table-sticky-thead
           thead
             tr.tr-white
               th Nom de l'établissement
-              th Nbr. de PP
-              th Nbr. d'élèves
-              th Nbr. de candidature acceptées
+              th PP
+              th Élèves
+              th Candidatures acceptées
               th Semaines de stage
           tbody
-            - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
-              tr id="test-school-with-manager-#{school_with_weeks_and_internship.id}"
-                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
-                td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
-                td.align-middle= school_with_weeks_and_internship.total_student_count
-                td.align-middle= school_with_weeks_and_internship.total_approved_internship_applications_count(school_year: params[:school_year])
-                td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
+            - schools_with_manager.each do |school_with_manager|
+              tr id="test-school-with-manager-#{school_with_manager.id}"
+                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_manager }
+                td.align-middle= school_with_manager.total_main_teacher_count
+                td.align-middle= school_with_manager.total_student_count
+                td.align-middle= school_with_manager.total_approved_internship_applications_count(school_year: params[:school_year])
+                td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_manager.weeks }
 
 
     .col-lg-6.col-12

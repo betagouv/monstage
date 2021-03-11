@@ -54,12 +54,11 @@ module InternshipOffers
       end
     end
 
-    validates :remote_id,
-              :permalink,
-              presence: true
+    validates :remote_id, presence: true
 
     validates :zipcode, zipcode: { country_code: :fr }
     validates :remote_id, uniqueness: { scope: :employer_id }
+    validates :permalink, presence: true, format: { without: /.*(test|staging).*/i, message: "Le lien ne doit pas renvoyer vers un environnement de test." }
 
     def init
       self.is_public ||= false

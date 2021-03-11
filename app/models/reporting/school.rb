@@ -27,6 +27,11 @@ module Reporting
         .count
     }
 
+    scope :with_school_manager, lambda {
+      left_joins(:school_manager)
+        .group('schools.id')
+    }
+
     scope :without_school_manager, lambda {
       left_joins(:school_manager)
         .group('schools.id')

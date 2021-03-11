@@ -20,11 +20,9 @@ module Finders
                 .order(:name)
     end
 
-    def fetch_with_weeks_and_internships
-      base_query.in_the_future
-                .select('schools.*')
-                .group('schools.id')
-                .preload(:weeks, :users)
+    def fetch_all_with_manager
+      base_query.with_school_manager
+                .order(:name)
     end
 
     private
