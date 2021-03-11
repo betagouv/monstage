@@ -5,14 +5,14 @@
   .col-12
     h2.h3.mt-4.mb-0 Editer, imprimer et bientôt signer les conventions dématérialisées
 
-table.mt-4.table.table-hover.table-sticky-thead
+table.mt-4.table.table-hover.table-sticky-thead.table-rg2a
   thead
     tr.d-flex.tr-white.row
-      th.small.muted.col-2 Elève
-      th.small.muted.col-4 Offre de stage
-      th.small.muted.col-2 Organisme d'accueil
-      th.small.muted.col-2.text-center Complété par
-      th.small.muted.col-2
+      th.small.muted.col-sm-2 Elève
+      th.small.muted.col-sm-4 Offre de stage
+      th.small.muted.col-sm-2 Organisme d'accueil
+      th.small.muted.col-sm-2.text-center Complété par
+      th.small.muted.col-sm-2
   tbody
     - @internship_applications.each do |internship_application|
       = render partial: 'dashboard/internship_applications/internship_application', locals: { internship_application: internship_application }

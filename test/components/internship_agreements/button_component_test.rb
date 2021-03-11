@@ -66,10 +66,12 @@ module InternshipAgreements
       internship_agreement = create(:internship_agreement, internship_application: internship_application,
                                                            employer_accept_terms: true,
                                                            school_manager_accept_terms: false)
-      render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_agreement.internship_application,
-                                        current_user: employer))
+      render_inline(InternshipAgreements::ButtonComponent.new(
+        internship_application: internship_agreement.internship_application,
+        current_user: employer
+      ))
 
-      assert_selector("[data-test=\"internship-agreement-progress-#{internship_agreement.id}\"]")
+      assert_selector("[data-test=\"inactive-internship-agreement-progress-#{internship_agreement.id}\"]")
     end
 
     test "when internship_agreement render print link when eveeryone has signed" do
@@ -84,8 +86,10 @@ module InternshipAgreements
       internship_agreement = create(:internship_agreement, internship_application: internship_application,
                                                            employer_accept_terms: true,
                                                            school_manager_accept_terms: true)
-      render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_agreement.internship_application,
-                                        current_user: employer))
+      render_inline(InternshipAgreements::ButtonComponent.new(
+        internship_application: internship_agreement.internship_application,
+        current_user: employer
+      ))
 
       assert_selector("a[href=\"#{url_helpers.dashboard_internship_agreement_path(internship_agreement,format: :pdf)}\"]")
     end

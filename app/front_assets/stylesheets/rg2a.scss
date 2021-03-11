@@ -50,12 +50,25 @@ abbr[title] {
       text-align: center;
       padding: 0.5rem 0.75rem;
     }
-    td.full-width{
+    td.rg2a-width-10{ width: 10%;}
+    td.rg2a-width-20{ width: 20%;}
+    td.rg2a-width-30{ width: 30%;}
+    td.rg2a-width-40{ width: 40%;}
+    td.rg2a-width-50{ width: 50%;}
+    td.rg2a-width-60{ width: 60%;}
+    td.rg2a-width-70{ width: 70%;}
+    td.rg2a-width-80{ width: 80%;}
+    td.rg2a-width-90{ width: 90%;}
+    td.rg2a-width-100{
       width: 100%;
+      display: block;
+      clear: both;
+      text-align: left;
       &:before{
         display: none;
       }
     }
+
     td:first-child:before{
       display: none;
     }

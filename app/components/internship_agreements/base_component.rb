@@ -26,7 +26,7 @@ module InternshipAgreements
         :employer_accept_terms?,
         :school_manager_accept_terms?
       ]
-      signatures = signatures.concat(:main_teacher_accept_terms?) unless troisieme_generale?
+      signatures = signatures.push(:main_teacher_accept_terms?) unless troisieme_generale?
       signatures
     end
 

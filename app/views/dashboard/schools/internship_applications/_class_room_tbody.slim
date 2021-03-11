@@ -4,14 +4,14 @@
 
 .row.internship-agreement-to-sign
   .col-12.px-0
-    table.table.table-hover.table-sticky-thead
+    table.table.table-hover.table-sticky-thead.table-rg2a
       thead
         tr.d-flex.tr-white
-          th.col-2.small.muted Elève
-          th.col-4.small.muted Offre de stage
-          th.col-2.small.muted Organisme d'accueil
-          th.col-2.small.muted.text-center Complété par
-          th.col-2.small.muted
+          th.col-sm-2.small.muted Elève
+          th.col-sm-4.small.muted Offre de stage
+          th.col-sm-2.small.muted Organisme d'accueil
+          th.col-sm-2.small.muted.text-center Complété par
+          th.col-sm-2.small.muted
       tbody class="class-room-#{class_room[:id]}"
         - applications.each do |application|
           = render partial: 'dashboard/internship_applications/internship_application',
