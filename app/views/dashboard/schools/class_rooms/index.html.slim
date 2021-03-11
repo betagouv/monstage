@@ -42,7 +42,8 @@
 
 - @school.class_rooms.includes([:students]).order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
   .row.mt-5
-    h5.mb-0= tr_school_track(school_track)
+    .col-12
+      h5.mb-0= tr_school_track(school_track)
   .row
     table.table.table-hover.table-rg2a.table-sticky-thead
       - cols = ["Classe",

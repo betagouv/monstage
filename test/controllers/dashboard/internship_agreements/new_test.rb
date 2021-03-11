@@ -19,7 +19,7 @@ module Dashboard::InternshipAgreements
 
       get new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
-      assert_select 'div[aria-level="1"]', "Votre convention de stage"
+      assert_select 'div[aria-level="1"]', "Édition de la convention de stage"
       assert_select "input[value=\"#{school.name} à #{school.city} (Code UAI: #{school.code_uai})\"]", count: 1
       assert_select "input[value=\"#{school.school_manager.name}\"]", count: 1
       assert_select "input[value=\"#{internship_application.student.name}\"]", count: 1
