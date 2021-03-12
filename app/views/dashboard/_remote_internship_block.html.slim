@@ -4,7 +4,7 @@
       .row
         .col-sm-12.col-md-7
           h1.h3.mt-2.p-3.text-white
-            = "Vous souhaitez proposer des stages à distance à #{current_user.is_a?(Users::SchoolManagement) ? "vos" : "des"} élèves ?"
+            = "Vous souhaitez proposer des stages à distance à #{user.is_a?(Users::SchoolManagement) ? "vos" : "des"} élèves ?"
           p.text-white.p-3
             | Contactez nos associations partenaires qui vous accompagneront dans la mise en place de stages à distance.
         .col-sm-12.col-md-5.align-self-center
