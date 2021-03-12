@@ -84,6 +84,8 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "monstage_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+  # config.action_mailer.preview_path  = "#{Rails.root}/whatever"
+  config.action_mailer.show_previews = true
 
   config.action_mailer.default_url_options = { host: HOST }
 
