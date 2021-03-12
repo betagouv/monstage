@@ -9,7 +9,7 @@ module Dashboard
       test_word = 'test word'
       if label.present?
         id.present? ? fill_in(label, id: id, with: test_word) : fill_in(label, with: test_word)
-        assert find_field(label).value == test_word
+        assert %r{#{test_word}} =~ find_field(label).value
       end
       true
     end
@@ -27,7 +27,9 @@ module Dashboard
     end
 
     def fill_in_trix_editor(id, with:)
-      find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
+      field = find(:xpath, "//trix-editor[@id='#{id}']")
+
+      with.split('').each { |c| field.native.send_keys(c) }
     end
 
     def find_trix_editor(id)
@@ -37,7 +39,7 @@ module Dashboard
     def assert_trix_editor_editable(id)
       tested_word = 'test_word'
       fill_in_trix_editor id, with: tested_word
-      assert find_trix_editor(id).assert_text(tested_word)
+      assert %r{#{tested_word}} =~ find_trix_editor(id).value
     end
 
     def refute_trix_editor_editable(id)
@@ -67,9 +69,9 @@ module Dashboard
 
       #Tool notes
       page.has_css?('.col-4 .tool-note')
-      find('a.text-danger', text: 'Masquer les notes').click
+      find('.btn.btn-link', text: 'Masquer les notes').click
       refute page.has_css?('.col-4 .tool-note')
-      find('a', text: 'Afficher les notes').click
+      find('.btn.btn-link', text: 'Afficher les notes').click
 
       #Fields edition tests
       field_edit_is_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
@@ -107,9 +109,12 @@ module Dashboard
 
       # Trix fields tests
       %w[
-        internship_agreement_activity_scope_rich_text
-        internship_agreement_activity_rating_rich_text
         internship_agreement_complementary_terms_rich_text
+      ].each do |trix_field_id|
+        assert_trix_editor_editable(trix_field_id)
+      end
+      %w[
+        internship_agreement_activity_rating_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
@@ -157,11 +162,11 @@ module Dashboard
       # Trix fields tests
       %w[
         internship_agreement_activity_scope_rich_text
-        internship_agreement_activity_rating_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
       %w[
+        internship_agreement_activity_rating_rich_text
         internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         assert_trix_editor_editable(trix_field_id)
@@ -180,10 +185,7 @@ module Dashboard
                                       internship_offer: internship_offer
                                       )
       sign_in(main_teacher)
-      visit main_teacher.custom_dashboard_path
-      click_link('Conventions de stage')
-      find('.actions a.btn.btn-primary').click
-      # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
+      visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
       #Fields edition tests
       field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
