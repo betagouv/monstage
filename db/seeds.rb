@@ -60,7 +60,7 @@ def create_a_discarded_class_room
   ClassRoom.create(name: '3e D – troisieme',
                    school_track: :troisieme_generale,
                    school: school)
-           .archive(archived_at: Date.today - 1.year)
+           .archive
 end
 
 def with_class_name_for_defaults(object)
