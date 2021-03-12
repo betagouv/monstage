@@ -41,8 +41,7 @@ module Dashboard
     end
 
     def refute_trix_editor_editable(id)
-      fill_in_trix_editor id, with: 'test_word'
-      assert find_trix_editor(id).assert_text('')
+      find("##{id}[contenteditable=false]")
     end
 
     def select_editable?(id, should_be_selectable)
