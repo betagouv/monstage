@@ -6,19 +6,23 @@ namespace :school_year_is_over do
   desc "School is over. Let's clean and prepare next year"
 
   task archive_class_rooms: :environment do |_task|
-    SchoolYear::Archiver.new.archive_class_rooms
+    archive_service.archive_class_rooms
     say_in_green 'all class rooms are now archived'
   end
 
   task archive_students: :environment do |_task|
-    SchoolYear::Archiver.new.archive_students
+    archive_service.archive_students
     say_in_green 'all students are archived. Email data base ' \
                  '(mailjet currently) updated with jobs'
   end
 
   task archive: :environment do |_task|
-    SchoolYear::Archiver.new.perform
+    archive_service.perform
     say_in_green 'all entities are now archived'
+  end
+
+  def archive_service
+    SchoolYear::Archiver.new
   end
 
   def say_in_green(str)
