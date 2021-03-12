@@ -511,6 +511,14 @@ module InternshipOffers
       assert_response :success
     end
 
+    test 'GET #show as Student when internship_offer is unpublished shall redirect to' do
+      internship_offer = create(:weekly_internship_offer)
+      internship_offer.update!(published_at: nil)
+      sign_in(create(:student))
+      get internship_offer_path(internship_offer)
+      assert_response :redirect
+    end
+
     test 'GET #show as Employer displays internship_applications link' do
       published_at = 2.weeks.ago
       internship_offer = create(:weekly_internship_offer, published_at: published_at)

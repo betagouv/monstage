@@ -15,7 +15,7 @@ module Reporting
         schools_without_manager: school_finder.fetch_all_without_manager,
 
         # widget left, 2, showing school soon in application
-        schools_with_weeks_and_internship: school_finder.fetch_with_weeks_and_internships,
+        schools_with_manager: school_finder.fetch_all_with_manager,
 
         # widget right, 0, counting internship_offers/applications
         total_internship_offers: internship_offers_finder.total,
