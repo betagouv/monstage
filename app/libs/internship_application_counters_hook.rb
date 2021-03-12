@@ -16,66 +16,81 @@ class InternshipApplicationCountersHook
   end
 
   def total_applications_count
-    student_internship_applications.reject(&:drafted?)
-                                   .count
+    internship_offer.internship_applications
+                    .reject(&:drafted?)
+                    .count
   end
 
   def total_male_applications_count
-    student_internship_applications.reject(&:drafted?)
-                                   .select(&:student_is_male?)
-                                   .count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .reject(&:drafted?)
+                    .select(&:student_is_male?)
+                    .count
   end
 
   def approved_applications_count
-    student_internship_applications.select(&:approved?)
-                                   .count
+    internship_offer.internship_applications
+                    .select(&:approved?)
+                    .count
   end
 
   def total_male_approved_applications_count
-    student_internship_applications.select(&:approved?)
-                                   .select(&:student_is_male?)
-                                   .count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:approved?)
+                    .select(&:student_is_male?)
+                    .count
   end
 
   def total_custom_track_approved_applications_count
-    student_internship_applications.select(&:approved?)
-                                   .select(&:student_is_custom_track?)
-                                   .count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:approved?)
+                    .select(&:student_is_custom_track?)
+                    .count
   end
 
   def rejected_applications_count
-    student_internship_applications.select(&:rejected?).count
+    internship_offer.internship_applications
+                    .select(&:rejected?)
+                    .count
   end
 
   def submitted_applications_count
-    student_internship_applications.select(&:submitted?).count
+    internship_offer.internship_applications
+                    .select(&:submitted?)
+                    .count
   end
 
   def convention_signed_applications_count
-    student_internship_applications.select(&:convention_signed?).count
+    internship_offer.internship_applications
+                    .select(&:convention_signed?)
+                    .count
   end
 
   def total_male_convention_signed_applications_count
-    student_internship_applications.select(&:convention_signed?)
-                                   .select(&:student_is_male?)
-                                   .count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:convention_signed?)
+                    .select(&:student_is_male?)
+                    .count
   end
 
   def total_custom_track_convention_signed_applications_count
-    student_internship_applications.select(&:convention_signed?)
-                                   .select(&:student_is_custom_track?)
-                                   .size
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:convention_signed?)
+                    .select(&:student_is_custom_track?)
+                    .size
   end
 
   private
 
-  attr_reader :internship_application, :student_internship_applications
+  attr_reader :internship_application
 
   def initialize(internship_application:)
     @internship_application = internship_application
     @internship_application.reload
-    @student_internship_applications = internship_offer.internship_applications.joins(:student)
-
   end
-
 end
