@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
-  include Discard::Model
 
   enum school_track: {
     troisieme_generale: 'troisieme_generale',
@@ -22,6 +21,8 @@ class ClassRoom < ApplicationRecord
     end
   end
 
+  scope :current, -> {where(archived_at: nil)}
+
   def fit_to_weekly?
     try(:troisieme_generale?)
   end
@@ -41,12 +42,11 @@ class ClassRoom < ApplicationRecord
     name
   end
 
-  def self.anonymize!
-    ClassRoom.kept.find_each do |class_room|
-      class_room.update_columns(
-        discarded_at: Date.today,
-        name: 'classe archivée'
-      )
-    end
+  def anonymize(archived_at: Date.today)
+    update_columns(
+      archived_at: archived_at,
+      name: 'classe archivée'
+    )
   end
+  alias archive anonymize
 end

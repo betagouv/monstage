@@ -365,7 +365,7 @@ CREATE TABLE public.class_rooms (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    discarded_at timestamp without time zone
+    archived_at date
 );
 
 
@@ -1445,10 +1445,10 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
--- Name: index_class_rooms_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+-- Name: index_class_rooms_on_archived_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_class_rooms_on_discarded_at ON public.class_rooms USING btree (discarded_at);
+CREATE INDEX index_class_rooms_on_archived_at ON public.class_rooms USING btree (archived_at);
 
 
 --

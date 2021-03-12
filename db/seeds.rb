@@ -57,11 +57,10 @@ end
 def create_a_discarded_class_room
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e D – troisieme', school_track: :troisieme_generale, school: school)
-           .discard
-  class_room = ClassRoom.discarded.first
-  class_room.discarded_at = Date.today - 1.year
-  class_room.save!
+  ClassRoom.create(name: '3e D – troisieme',
+                   school_track: :troisieme_generale,
+                   school: school)
+           .archive(archived_at: Date.today - 1.year)
 end
 
 def with_class_name_for_defaults(object)

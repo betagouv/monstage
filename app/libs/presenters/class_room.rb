@@ -11,7 +11,7 @@ module Presenters
 
     def self.with_school_tracks(school)
       school.class_rooms
-            .kept
+            .current
             .includes([:students])
             .order(:name)
             .group_by { |c| c.school_track }
