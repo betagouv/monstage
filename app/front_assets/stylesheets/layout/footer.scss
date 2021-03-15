@@ -14,14 +14,17 @@ body {
   border-top: 1px solid $gray-400;
   flex-shrink: 0;
   .footer-content{
-    color: rgb(241,241,241);
+    color: $gray-900;
+    // color: rgb(241,241,241);
     a{
       text-decoration: none;
-      color: rgb(241,241,241);
+      color: $gray-900;
+      // color: rgb(241,241,241);
     }
   }
-  background-color: rgba(51, 51, 51, 0.9);
-}
+  background-color: $gray-100;
+  // background-color: rgba(51, 51, 51, 0.9);
+  }
 
 @include media-breakpoint-down(xs) {
   .content {
