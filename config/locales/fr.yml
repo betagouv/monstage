@@ -166,14 +166,21 @@ fr:
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
         approved_applications_count: "Nbr. de candidatures acceptées"
-        submitted_applications_count: "Nbr. de candidatures en attentes"
-        rejected_applications_count: "Nbr. de candidatures rejectées"
+        submitted_applications_count: "Nbr. de candidatures en attente"
+        rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         permalink: Association partenaire
+        sector_name: Secteur
+        full_school: Établissement
+        full_weeks: Semaines
+        full_tutor: Tuteur
+        full_employer: Employeur
+        full_address: Adresse de l'employeur
+
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
