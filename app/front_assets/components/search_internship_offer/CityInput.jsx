@@ -53,6 +53,16 @@ function CityInput({
       .then(setSearchResults);
   };
 
+  const codePostauxSample = (codes) => {
+    let zipcode = ""
+    if (codes.length == undefined || codes.length === 0) { return zipcode; }
+    if (codes.length >= 1) { zipcode = codes[0]; }
+    // TODO remove following comments after october 2021
+    // if (codes.length >= 2) { zipcode += ", " + codes[1]; }
+    // if (codes.length > 2) { zipcode += ", ... " }
+    return zipcode
+  };
+
   useEffect(() => {
     if (cityDebounced && cityDebounced.length > 2) {
       searchCityByName(cityDebounced);
@@ -61,7 +71,7 @@ function CityInput({
 
   return (
     <Downshift
-      initialInputValue={city}
+      initialInputValue={city || ""}
       onChange={setLocation}
       selectedItem={city}
       itemToString={(item) => (item ? item.nom : '')}
@@ -126,24 +136,21 @@ function CityInput({
               )}
               {isOpen
                 ? searchResults.map((item, index) => (
-                    <li
-                      {...getItemProps({
-                        className: `py-2 px-3 listview-item ${
-                          highlightedIndex === index ? 'highlighted-listview-item' : ''
+                  <li
+                    {...getItemProps({
+                      className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
                         }`,
-                        key: item.code,
-                        index,
-                        item,
-                        style: {
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        },
-                      })}
-                    >
-                      {`${item.nom} (${
-                        item.codesPostaux.length == 1 ? item.codesPostaux[0] : item.code
-                      })`}
-                    </li>
-                  ))
+                      key: item.code,
+                      index,
+                      item,
+                      style: {
+                        fontWeight: selectedItem === item ? 'bold' : 'normal',
+                      },
+                    })}
+                  >
+                    {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+                  </li>
+                ))
                 : null}
             </ul>
           </div>
