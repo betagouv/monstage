@@ -50,7 +50,7 @@ export default function SirenInput({
 
 
   return (
-    <div className="form-group" id="test-input-full-address">
+    <div className="form-group" id="input-siren">
       <div className="container-downshift">
         <Downshift
           onChange={selection => {
