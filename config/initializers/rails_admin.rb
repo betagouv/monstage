@@ -1,8 +1,6 @@
 # postgis type
 require "nested_form/engine"
 require "nested_form/builder_mixin"
-require 'i18n'
-I18n.default_locale = :fr
 class RailsAdmin::Config::Fields::Types::Geography < RailsAdmin::Config::Fields::Types::Hidden
   RailsAdmin::Config::Fields::Types.register(self)
 end
