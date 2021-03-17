@@ -1,8 +1,10 @@
 module SchoolYear
   class Archiver
     def perform
-      archive_students &&
-      archive_class_rooms
+      ActiveRecord::Base.transaction do
+        archive_students
+        archive_class_rooms
+      end
     end
 
     def archive_students
