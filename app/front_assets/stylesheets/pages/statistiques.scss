@@ -46,3 +46,104 @@
     }
   }
 }
+// ******************
+// Main page statistiques / statistics
+// ******************
+
+.hero p {
+  font-size: 1.3rem;
+}
+
+.lead.hero {
+  line-height: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.progress-title-rep {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  color: #2DC77B;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+
+.progress {
+  height: 4rem;
+  text-align: left;
+
+  .progress-bar-left {
+    padding-left: 0.1rem;
+    font-size: 1.3rem;
+    line-height: 0.4rem;
+    text-align: right;
+  }
+
+  .progress-bar-right {
+    padding-right: 1rem;
+    font-size: 1rem;
+  }
+
+  .progress-bar-left.rep-subscribed {
+    background-color: #2DC77B;
+  }
+
+  .progress-bar-left.rep-plus-subscribed {
+    background-color: #2DC733;
+  }
+
+  .progress-bar-right.rep-total {
+    background-color: #D2F3E3;
+  }
+
+  .progress-bar-right.rep-plus-total {
+    background-color: #D8F3D3;
+  }
+
+  .special-achievement {
+    font-size: 1.7rem;
+  }
+
+  .box-to-center {
+    text-align: center;
+    display: block;
+    height: 2rem;
+    position: absolute;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  .box-to-center.left {
+    top: 55%;
+    left: 2rem;
+  }
+
+  .box-to-center.right {
+    top: 60%;
+    right: 2rem;
+  }
+}
+
+.little-title {
+  line-height: 1.6rem;
+}
+
+.max-academical {
+  font-size: 3rem;
+  color: $blue;
+}
+
+.table-results tbody tr {
+  line-height: 2.3rem;
+}
+
+.table-results tr.achieved {
+  background-color: $bg-light-blue;
+
+  td:last-of-type {
+    color: $blue;
+    font-weight: 800;
+  }
+}

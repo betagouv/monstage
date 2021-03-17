@@ -1,110 +1,120 @@
-h1.mb-5.text-center Statistiques
-h2.h4 Historique - vue générale
-.row
-  .col-xs-3.pl-3
-    .panel.bg-white.shadow.rounded-lg.p-3
-      h3.h6.pb-3.text-center Ancienneté du service
-      .d-flex.align-items-center
-        i.fa.fa-calendar-alt.fa-2x.text-primary
-        span.mx-auto.h5.text-dark > 2 ans
+.container
+  .row.text-dark
+    .col-md-5.col-sm-12.d-flex.align-items-center.justify-content-center
+      = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                  alt: "Mon stage de 3e",
+                  class: 'text-center',
+                  height: 131
+    .col-md-7.col-sm-12.text-dark
+      p.lead.hero
+        |Cette plateforme, par la diversité de ses offres, a permis depuis maintenant
+        span.h2 =" 2 ans "
+        | de réaliser des expériences enrichissantes en lien avec l'orientation et le projet personnel de
+        span.h2.px-1 16&nbsp;875 élèves de troisième !
+      p.lead.hero
+        |Après une 1ère année d'exercice comptant
+        span.h4.px-1 33&nbsp;000 offres de stage dont 8&nbsp;000 pourvues,
+        | voici l'évolution de la plateforme
+  .row.my-5
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
+                  alt: "bilan pour les établissements scolaires",
+                  height: 44
+      br
+      h1.h6.mb-0.pt-2 Cycle 2019/2020
+      h2.h4.text-dark Les établissements scolaires
+  .row
+    .col-md-5.col-sm-12
+      = render 'pages/statistics/platform_use_header'
+      = render partial: 'pages/statistics/rep',
+               locals: { achieved: 434, total: 729 }
+      = render partial: 'pages/statistics/rep_plus',
+               locals: { achieved: 278, total: 361 }
+    .col-md-6.offset-md-1.col-sm-12
+      = render partial: 'pages/statistics/academical',
+               locals: { achieved: 34, total: 56 }
+  .row.my-4
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
+                  alt: "bilan des stages",
+                  height: 44
+      br
+      h1.h6.pt-2.mb-0 Cycle 2019/2020
+      h2.h4.text-dark Les stages
+  .row
+    .col-md-6.col-sm-12
+      .row
+        .col-12.text-center
+          span.little-title
+            = image_tag asset_pack_path('media/images/pages/statistics/hand_left.svg'),
+                      alt: "Adhésion au programme",
+                      class: 'align-top',
+                      height: 19
+          span.h6.ml-2 Offres de stages
+      .row.mt-3
+        .col-12.table-results
+          table.table.table-borderless.table-caption-bottom
+            caption.px-1
+              |(*) Objectif fixé par la circulaire du Premier ministre du 31 juillet 2019
+            thead
+              tr
+                th scope="col"
+                th scope="col"
+                  |Secteur
+                  br
+                  |public
+                th scope="col"
+                  |Secteur
+                  br
+                  |privé
+                th scope="col"
+                  |Tous
+                  br
+                  |secteurs
+            tbody
+              tr
+                th scope="row"  Objectif&nbsp;*
+                td 15 000
+                td 15 000
+                td
+                  strong 30 000
+              tr.achieved
+                th scope="row"  Réalisé
+                td 7 339
+                td 22 970
+                td 30 309
 
+    .col-md-6.col-sm-12
+      .row
+        .col-12.text-center
+          span.little-title
+            = image_tag asset_pack_path('media/images/pages/statistics/hand_right.svg'),
+                      alt: "Adhésion au programme",
+                      class: 'align-top',
+                      height: 19
+          span.h6.ml-2 Offres de stages pourvues
+      .row.mt-3
+        .col-12.table-results
+          table.table.table-borderless.table-caption-bottom
+            caption.px-1 
+              |(*) Objectif fixé par la circulaire du Premier ministre du 31 juillet 2019
+            thead
+              tr
+                th scope="col"
+                th scope="col"  Stages en présentiel
+                th scope="col"  Stages à distance
+                th scope="col"  Total&nbsp;&nbsp;&nbsp;
+            tbody
+              tr
+                th scope="row"  Objectif&nbsp;*
+                td 16 000
+                td
+                td
+                  strong 16 000
+              tr.achieved
+                th scope="row"  Réalisé
+                td 14 724
+                td 4 527
+                td 19 251
 
-h2.h5.my-3.mt-5 Cycle partiel 2018 / 2019
-.panel.bg-white.shadow.rounded-lg
-  p.py-3.px-3
-    | La 1ère année d'exercice partielle connait les résultats suivants :
-    br
-    strong = " 33 000 offres de stage"
-    = " dont "
-    strong = "8 000 pourvues"
-h2.h5.mt-5 Cycle 2019 / 2020
-.row
-  .col-md-4.col-sm-6.col-xs-12
-    .pane.bg-white.shadow.rounded-lg.my-3.p-3
-      h3.h6 Adhésion des établissements
-      table.table.table-hover
-        thead
-          tr
-            th scope="col"
-              i.fa.fa-school.fa-2x.text-primary
-            th scope="col"  Eligibles
-            th scope="col"  Inscrits
-        tbody
-          tr
-            th scope="row"  REP
-            td 729
-            td 434
-          tr
-            th scope="row"  REP +
-            td 361
-            td 278
-  .col-md-8.col-sm-6.col-xs-12
-    .pane.bg-white.shadow.rounded-lg.my-3.p-3
-        h3.h6 Nombre d'établissements intégrés en demandes conjointes de préfectures de département et
-        ul
-          li.pb-3.d-flex.justify-content-between.px-3
-            div des directions académiques des services de l'Éducation nationale
-            div
-              strong 56
-
-          li.d-flex.justify-content-between.px-3
-            div des directions académiques des services de l'Éducation nationale inscrits
-            div
-              strong 34
-h3.h5.pl-3.mt-4 Les stages
-.row
-  .col-sm-6.col-xs-12
-    .pane.bg-white.shadow.rounded-lg.my-3.p-3
-      h4.h6 Offre de stages
-      table.table.table-hover.table-caption-bottom
-        caption
-          |(*) Objectif fixé par la circulaire du Premier ministre du 31 juillet 2019
-        thead
-          tr
-            th scope="col"
-              i.fa.fa-building.fa-2x.text-primary.my-auto
-            th scope="col"  Secteur public
-            th scope="col"  Secteur privé
-            th scope="col"  Tous secteurs
-        tbody
-          tr
-            th scope="row"  Objectif&nbsp;*
-            td 15 000
-            td 15 000
-            td
-              strong 30 000
-          tr
-            th scope="row"  Réalisé
-            td 7 339
-            td 22 970
-            td
-              strong 30 309
-
-  .col-sm-6.col-xs-12
-    .pane.bg-white.shadow.rounded-lg.my-3.p-3
-      h4.h6 Offres de stages pourvues
-      table.table.table-hover.table-caption-bottom
-        caption
-          |(*) Objectif fixé par la circulaire du Premier ministre du 31 juillet 2019
-        thead
-          tr
-            th scope="col"
-              i.fa.fa-user.fa-2x.text-primary.my-auto
-            th scope="col"  Stages en présentiel
-            th scope="col"  Stages à distance
-            th scope="col"  Total&nbsp;&nbsp;&nbsp;
-        tbody
-          tr
-            th scope="row"  Objectif&nbsp;*
-            td 16 000
-            td
-            td
-              strong 16 000
-          tr
-            th scope="row"  Réalisé
-            td 14 724
-            td 4 527
-            td
-              strong 19 251
-        
 

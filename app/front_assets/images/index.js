@@ -15,6 +15,12 @@ import './pages/remote_internships/webinar_2x.png';
 import './pages/remote_internships/face_to_face_2x.png';
 import './pages/remote_internships/digital_week_2x.png';
 
+import './pages/statistics/hand_left.svg';
+import './pages/statistics/hand_right.svg';
+import './pages/statistics/handshake.svg';
+import './pages/statistics/ok.svg';
+import './pages/statistics/school.svg';
+
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';

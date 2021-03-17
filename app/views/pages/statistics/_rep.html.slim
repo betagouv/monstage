@@ -1,0 +1,24 @@
+.row.mt-2
+  .col-1.progress-title-rep REP
+  .col-11
+    .progress
+      .progress-bar.progress-bar-left.rep-subscribed [
+        role="progressbar"
+        style="width: #{(achieved*100)/total}%"
+        aria-valuenow="#{achieved}"
+        aria-valuemin="0"
+        aria-valuemax="#{total}"]
+        .box-to-center.left
+          p.special-achievement
+            strong = achieved
+          p inscrits
+      .progress-bar.progress-bar-right.rep-total.text-dark [
+        style="width: #{(total-achieved)*100/total}%"
+        role="progressbar"
+        aria-valuenow="#{total}"
+        aria-valuemin="#{achieved}"
+        aria-valuemax="#{total}"]
+        .box-to-center.right
+          p
+            strong = total
+          p éligibles
