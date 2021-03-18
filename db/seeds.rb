@@ -280,7 +280,8 @@ MULTI_LINE
 end
 
 def find_default_school_during_test
-  School.find_by_code_uai("0781896M") # school at mantes lajolie, school name : Pasteur.
+  # School.find_by_code_uai("0781896M") # school at mantes lajolie, school name : Pasteur.
+  School.find_by_code_uai("0752694W") # school at Paris, school name : Camille Claudel.
 end
 
 # used for application
