@@ -24,9 +24,30 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
+      email_whitelist:
+        one: Email autorisé du référent
+        other: Email autorisés des référents
+      group:
+        one: Groupe
+        other: Groupes
+      internship_agreement:
+        one: Convention
+        other: Conventions
+      internship_offers/weekly_framed:
+        one: Offre 3eme générale
+        other: Offres 3eme générale
+      internship_offers/free_date:
+        one: Offre de la voie pro
+        other: Offres de la voie pro
+      internship_offers/api:
+        one: Offre API
+        other: Offres API
       sector:
         one: Secteur
         other: Secteurs
+      school:
+        one: Etablissement
+        other: Etablissements
       user:
         one: Utilisateur
         other: Utilisateurs
@@ -60,29 +81,16 @@ fr:
       users/statistician:
         one: Référent départemental
         other: Référents départementaux
-      school:
-        one: Etablissement
-        other: Etablissements
-      internship_agreement:
-        one: Convention
-        other: Conventions
-      internship_offers/weekly_framed:
-        one: Offre 3eme générale
-        other: Offres 3eme générale
-      internship_offers/free_date:
-        one: Offre de la voie pro
-        other: Offres de la voie pro
-      internship_offers/api:
-        one: Offre API
-        other: Offres API
-      email_whitelist:
-        one: Email autorisé du référent
-        other: Email autorisés des référents
       week:
         one: Semaine
         other: Semaines
 
     attributes:
+      group:
+        created_at: Crée le
+        is_public: Secteur public/privé
+        name: Nom du groupe
+        updated_at: Mis à jour le
       school:
         name: Nom
         kind: Type
@@ -166,14 +174,21 @@ fr:
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
         approved_applications_count: "Nbr. de candidatures acceptées"
-        submitted_applications_count: "Nbr. de candidatures en attentes"
-        rejected_applications_count: "Nbr. de candidatures rejectées"
+        submitted_applications_count: "Nbr. de candidatures en attente"
+        rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         permalink: Association partenaire
+        sector_name: Secteur
+        full_school: Établissement
+        full_weeks: Semaines
+        full_tutor: Tuteur
+        full_employer: Employeur
+        full_address: Adresse de l'employeur
+
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"

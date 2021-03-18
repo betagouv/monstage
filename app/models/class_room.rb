@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
+
   enum school_track: {
     troisieme_generale: 'troisieme_generale',
     troisieme_prepa_metiers: 'troisieme_prepa_metiers',
@@ -19,6 +20,8 @@ class ClassRoom < ApplicationRecord
       where(role: :main_teacher)
     end
   end
+
+  scope :current, -> {where(anonymized: false)}
 
   def fit_to_weekly?
     try(:troisieme_generale?)
@@ -39,5 +42,13 @@ class ClassRoom < ApplicationRecord
     name
   end
 
-
+  def anonymize
+    update_columns(
+      anonymized: true,
+      name: 'classe archivée'
+    )
+  end
+  alias archive anonymize
+  
+  def anonymized? ; anonymized; end
 end
