@@ -23,7 +23,7 @@
       br
       h1.h6.mb-0.pt-2 Cycle 2019/2020
       h2.h4.text-dark Les établissements scolaires
-  .row
+  .row.no-gutters
     .col-md-5.col-sm-12
       = render 'pages/statistics/platform_use_header'
       = render partial: 'pages/statistics/rep',
@@ -33,7 +33,7 @@
     .col-md-6.offset-md-1.col-sm-12
       = render partial: 'pages/statistics/academical',
                locals: { achieved: 34, total: 56 }
-  .row.my-4
+  .row.my-5
     .col-12.text-center
       = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
                   alt: "bilan des stages",
@@ -47,7 +47,7 @@
         .col-12.text-center
           span.little-title
             = image_tag asset_pack_path('media/images/pages/statistics/hand_left.svg'),
-                      alt: "Adhésion au programme",
+                      alt: "Offres de stage",
                       class: 'align-top',
                       height: 19
           span.h6.ml-2 Offres de stages
@@ -89,7 +89,7 @@
         .col-12.text-center
           span.little-title
             = image_tag asset_pack_path('media/images/pages/statistics/hand_right.svg'),
-                      alt: "Adhésion au programme",
+                      alt: "Offres de stages pourvues",
                       class: 'align-top',
                       height: 19
           span.h6.ml-2 Offres de stages pourvues
