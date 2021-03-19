@@ -1,6 +1,6 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
 h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
-  = "Postulez à des offres de stages."
+  = "Postulez à des offres de stage"
 
 
 .row
@@ -19,7 +19,7 @@ h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
         tr
           td
             .row
-              p.col-12[style='color: gray'] Aucune offre n'est disponible
+              p.col-12[style='color: gray'] Aucune offre n'est disponible.
       - else
         = render partial: "internship_offer", collection: @internship_offers
 .row.d-flex.d-md-none
