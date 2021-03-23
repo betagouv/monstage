@@ -745,7 +745,8 @@ CREATE TABLE public.internship_offers (
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying
 );
 
 
@@ -815,7 +816,8 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -2217,6 +2219,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210112164129'),
 ('20210121171025'),
 ('20210121172155'),
+('20210225164349'),
 ('20210310173554');
 
 

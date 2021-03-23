@@ -1,0 +1,9 @@
+h1= @blog_post['blog_post.main_title'].as_text
+.mb-4= @blog_post['blog_post.description'].as_text
+
+.row
+  .col-12 
+    = image_tag @blog_post['blog_post.image'].url, class: 'img-fluid'
+.row.mt-4 
+  .col-12
+    = @blog_post['blog_post.content'].as_html(nil).html_safe
