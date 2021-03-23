@@ -8,6 +8,11 @@ namespace :html5_validator do
     Html5Validator.flush_cached_responses
   end
 
+  task flush_pa11y_error_files: :environment do
+    puts 'run flush_pa11y_error_files'
+    Html5Validator.flush_pa11y_error_files
+  end
+
   desc 'run html5 validation on generated files from test'
   task run: :environment do
     puts 'run Html5Validator.run'

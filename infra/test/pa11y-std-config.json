@@ -1,0 +1,15 @@
+{
+  "defaults": {
+    "standard": "WCAG2A",
+    "runners": ["htmlcs", "axe"],
+    "timeout": 5000,
+    "viewport": {
+      "width": 320,
+      "height": 480,
+      "deviceScaleFactor": 2,
+      "isMobile": true
+    },
+    "threshold": 2,
+    "includeNotices": false
+  }
+}
