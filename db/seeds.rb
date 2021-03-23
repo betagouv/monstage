@@ -51,6 +51,16 @@ def populate_class_rooms
   ClassRoom.create(name: '3e B – troisieme_prepa_metiers', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
+  create_a_discarded_class_room
+end
+
+def create_a_discarded_class_room
+  school = find_default_school_during_test
+
+  ClassRoom.create(name: '3e D – troisieme',
+                   school_track: :troisieme_generale,
+                   school: school)
+           .archive
 end
 
 def with_class_name_for_defaults(object)
@@ -87,7 +97,7 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
-  EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 60)
+  EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 75)
 
   with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
@@ -270,7 +280,8 @@ MULTI_LINE
 end
 
 def find_default_school_during_test
-  School.find_by_code_uai("0781896M") # school at mantes lajolie, school name : Pasteur.
+  # School.find_by_code_uai("0781896M") # school at mantes lajolie, school name : Pasteur.
+  School.find_by_code_uai("0752694W") # school at Paris, school name : Camille Claudel.
 end
 
 # used for application

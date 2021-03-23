@@ -1,6 +1,6 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
-import './logo-beta-gouv-fr.png';
+import './beta-gouv-logo.png';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
