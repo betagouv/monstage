@@ -14,6 +14,6 @@ class PrismicFinder
   def self.blog_post(slug)
     Prismic
       .api(PRISMIC_URL, PRISMIC_TOKEN)
-      .query(Prismic::Predicates.at("document.type", "blog_post")).results[0]
+      .query(Prismic::Predicates.at("my.blog_post.uid", slug)).results[0]
   end
 end

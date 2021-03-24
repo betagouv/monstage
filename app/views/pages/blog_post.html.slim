@@ -1,9 +1,31 @@
 h1= @blog_post['blog_post.main_title'].as_text
+- @blog_post.tags.each do |tag|
+  span.badge.badge-primary.mx-2= tag
+    
 .mb-4= @blog_post['blog_post.description'].as_text
 
 .row
   .col-12 
     = image_tag @blog_post['blog_post.image'].url, class: 'img-fluid'
 .row.mt-4 
+  .col-12 
+    span.badge.badge-success
+      i.fa.fa-clock
+      = " #{(@blog_post['blog_post.content'].as_text.split(' ').count / 100 ).to_i} min"
+.row.mt-4 
   .col-12
     = @blog_post['blog_post.content'].as_html(nil).html_safe
+
+.row.mt-4 
+  .col-12
+    h3 Derniers articles
+
+.row.mt-4.blog
+  - PrismicFinder.blog()[0..2].each do |blog_post|
+    .col-12.col-md-4.d-flex.align-items-stretch
+      .card.mb-5
+        = image_tag blog_post['blog_post.image'].url, class: 'card-img-top'
+        .card-body
+          h5.card-titleCard= blog_post['blog_post.main_title'].as_text
+          p.card-text= blog_post['blog_post.description'].as_text
+          = link_to "en savoir plus", blog_post_path(blog_post.uid), class: "btn btn-primary"
