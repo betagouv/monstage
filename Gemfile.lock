@@ -124,6 +124,9 @@ GEM
       activerecord (>= 4.2, < 7)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    elastic-apm (3.15.0)
+      concurrent-ruby (~> 1.0)
+      http (>= 3.0)
     email_inquire (0.11.0)
       damerau-levenshtein (~> 1.2)
     erubi (1.10.0)
@@ -139,6 +142,9 @@ GEM
       ruby2_keywords
     faraday-net_http (1.0.1)
     ffi (1.14.2)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
     foreman (0.87.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -148,9 +154,17 @@ GEM
     hashdiff (1.0.1)
     hashery (2.1.2)
     htmlentities (4.3.4)
+    http (4.4.1)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.2)
+      http-parser (~> 1.2.0)
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    http-form_data (2.3.0)
+    http-parser (1.2.3)
+      ffi-compiler (>= 1.0, < 2.0)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jquery-rails (4.4.0)
@@ -204,7 +218,6 @@ GEM
     multipart-post (2.1.1)
     nested_form (0.3.2)
     netrc (0.11.0)
-    newrelic_rpm (6.15.0)
     nio4r (2.5.5)
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
@@ -430,6 +443,7 @@ DEPENDENCIES
   devise
   devise-i18n
   discard
+  elastic-apm
   email_inquire
   factory_bot_rails
   foreman
@@ -438,7 +452,6 @@ DEPENDENCIES
   listen
   minitest-reporters
   minitest-retry
-  newrelic_rpm
   ovh-rest
   pg
   pg_search (= 2.3.2)
