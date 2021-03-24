@@ -9,4 +9,10 @@ if [ $? -ne 0 ]; then
   exit 1;
 fi
 
+# ./infra/test/w3c.sh
+# if [ $? -ne 0 ]; then
+# 	echo "pa11y tests locally show errors. Please fix them before committing"
+#   exit 1;
+# fi
+
 exit 0
