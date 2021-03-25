@@ -2,15 +2,15 @@
 
 module Instrumentation
   # setup raven user context, see: https://docs.sentry.io/clients/ruby/integrations/#params-and-sessions
-  module Sentry
+  module ElasticApm
     extend ActiveSupport::Concern
 
     included do
-      before_action :set_raven_context, if: :current_user
+      before_action :set_elastic_apm_context, if: :current_user
 
-      def set_raven_context
-        Raven.user_context(id: current_user.id,
-                           type: current_user.type)
+      def set_elastic_apm_context
+        ElasticAPM.set_custom_context(id: current_user.id,
+                                      type: current_user.type)
       end
     end
   end
