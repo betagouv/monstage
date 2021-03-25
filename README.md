@@ -62,9 +62,7 @@ Things you may want to cover:
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-
-* Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
-* Bug monitoring solution: [sentry](https://sentry.io/)
+* Bug monitoring solution: [elastic stack](https://www.elastic.co/elastic-stack)
 * Mail: [mailjet](https://mailjet.com)
 * uptime/downtime:
 
@@ -139,13 +137,13 @@ those tests depends on the system / e2e (which goes throught browser with js exe
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file.
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
 
 * we use a custom postgres docker image for our synonym dictionnary
- 
+
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
