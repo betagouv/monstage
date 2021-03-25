@@ -37,7 +37,7 @@ gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 # instrumentation
-# gem 'newrelic_rpm'
+gem "lograge"
 gem 'elastic-apm'
 gem 'sentry-raven'
 gem 'ovh-rest'
