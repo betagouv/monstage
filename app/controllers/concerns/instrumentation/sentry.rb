@@ -9,8 +9,7 @@ module Instrumentation
       before_action :set_elastic_apm_context, if: :current_user
 
       def set_elastic_apm_context
-        ElasticAPM.set_custom_context(id: current_user.id,
-                                      type: current_user.type)
+        ElasticAPM.set_user(current_user)
       end
     end
   end
