@@ -1,10 +1,13 @@
-.col-md-6.col-sm-12
+.col-md-6.col-sm-12.mt-2
   .row.bg-light-blue.bg-rounded.py-3.mx-2 style="height: #{bg_height}"
-    .col-sm-5.col-xs-12.d-flex.align-items-center
-      = image_tag asset_pack_path("media/images/pages/statistics/#{image}"),
-                alt: "#{entreprise_name}",
-                height: "#{height}"
-    .col-sm-7.col-xs-12.d-flex.align-items-center
+    .col-5.d-flex.align-items-center
+      .img-container-hidden
+        = image_tag asset_pack_path("media/images/pages/statistics/#{image}"),
+                    alt: "#{entreprise_name}",
+                    'max-height': "#{height}",
+                    width: '100%'
+
+    .col-7.d-flex.align-items-center
       .ml-3
         = "#{entreprise_name}, qui a proposé "
         br
