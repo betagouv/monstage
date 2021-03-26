@@ -4,7 +4,7 @@
       = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
                   alt: "Mon stage de 3e",
                   class: 'text-center',
-                  height: 131
+                  height: 148
     .col-md-7.col-sm-12.text-dark
       p.lead.hero
         |Cette plateforme, par la diversité de ses offres, a permis depuis maintenant
@@ -25,7 +25,8 @@
       br
       h1.h6.mb-0.pt-2 Année scolaire 2019 / 2020
       h2.h4.text-dark.font-weight-bold Les établissements scolaires
-  .row.no-gutters
+  .row
+  .row.mt-3.no-gutters
     .col-md-5.col-sm-12
       = render 'pages/statistics/platform_use_header'
       = render partial: 'pages/statistics/all_rep',
@@ -76,7 +77,8 @@
       br
       h1.h6.mb-0.pt-2 Année scolaire 2020 / 2021, au 25 mars 2021
       h2.h4.text-dark Les établissements scolaires
-  .row.no-gutters
+  .row
+  .row.mt-3.no-gutters
     .col-md-5.col-sm-12
       = render 'pages/statistics/platform_use_header'
       = render partial: 'pages/statistics/all_rep',
