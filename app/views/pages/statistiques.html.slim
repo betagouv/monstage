@@ -67,6 +67,43 @@
                         total_achieved: "19 251" }
 
 
+  .row.mt-5.mb-3
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/reseau.png'),
+                  alt: "Le réseau",
+                  height: 47
+      br
+      h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
+      h2.h4.text-dark Le réseau
+  .row
+  .row.mt-3
+    .col-12.text-center
+      |Pour cette année scolaire, les deux entreprises
+      br
+      | signataires du PaQte les plus actives ont été :
+  .row.mt-4
+    = render partial: 'pages/statistics/best_partners',
+              locals: { entreprise_name: 'La Poste',
+                        image: 'la_poste.png',
+                        height: 73,
+                        bg_height: '110px',
+                        offers_proposed_count: 1340,
+                        accepted_offers_count: 354}
+    = render partial: 'pages/statistics/best_partners',
+              locals: { entreprise_name: 'Carrefour',
+                        image: 'carrefour.png',
+                        height: 78,
+                        bg_height: '110px',
+                        offers_proposed_count: 800,
+                        accepted_offers_count: 288}
+  .row.mb-5.mt-2
+    .col-12.text-center
+      p Ces chiffres décomptent des accueils de stagiaires en présentiel uniquement
+
+
+
+
+  / 2020 / 2021
   .hr.my-5
 
   .row.my-5
@@ -97,26 +134,19 @@
       h1.h6.pt-2.mb-0 Année scolaire 2020 / 2021, au 25 mars 2021
       h2.h4.text-dark Les stages
   .row
-  .row.mt-3
-    .col-md-6.col-sm-12
-      = render partial: 'pages/statistics/internship_offers',
-                locals: { caption: "",
-                          public_goal: "15 000",
-                          private_goal: "15 000",
-                          total_goal: "30 000",
-                          public_achieved: "7 339",
-                          private_achieved: "15 000",
-                          total_achieved: "30 000" }
+  .row.my-3
+    .col-12.d-flex.justify-content-center
+      .kpi-internship-global.bg-light-blue.bg-rounded
+        .row.p-3
+          .col-5.d-flex.justify-content-center.align-items-center
+            .max-academical.font-weight-bold  10 881
+          .col-7.d-flex.justify-content-center.align-items-center
+            |
+              C’est le nombre d’élèves ayant bénéficié
+              d’un stage à distance, en plus des stages en présence
+  .row.my-5
 
-    .col-md-6.col-sm-12
-      = render partial: 'pages/statistics/internship_applications',
-              locals: { caption: "",
-                        presence_goal: "15 000",
-                        remote_goal: "15 000",
-                        total_goal: "30 000",
-                        presence_achieved: "7 339",
-                        remote_achieved: "15 000",
-                        total_achieved: "30 000" }
+
 
 
 
