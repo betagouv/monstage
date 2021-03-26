@@ -1,10 +1,10 @@
-.row.mt-2
-  .col-1.progress-title-rep REP
+.row.mt-3
+  .col-1.progress-title-rep = title
   .col-11
     .progress
-      .progress-bar.progress-bar-left.rep-subscribed [
+      div [class="progress-bar progress-bar-left #{type}-subscribed"
         role="progressbar"
-        style="width: #{(achieved*100)/total}%"
+        style="width: #{((achieved*100)/total).to_f}%"
         aria-valuenow="#{achieved}"
         aria-valuemin="0"
         aria-valuemax="#{total}"]
@@ -12,11 +12,11 @@
           p.special-achievement
             strong = achieved
           p inscrits
-      .progress-bar.progress-bar-right.rep-total.text-dark [
-        style="width: #{(total-achieved)*100/total}%"
+      div [class="progress-bar-right #{type}-total text-dark"
         role="progressbar"
-        aria-valuenow="#{total}"
-        aria-valuemin="#{achieved}"
+        style="width: #{100 - (achieved*100/total).to_f}%"
+        aria-valuenow="100"
+        aria-valuemin="0"
         aria-valuemax="#{total}"]
         .box-to-center.right
           p
