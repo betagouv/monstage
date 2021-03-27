@@ -147,9 +147,11 @@
   width: 488px;
 }
 
-.img-container-hidden {
-  overflow: 'hidden';
-}
+.brand.statistics {
+  object-fit: scale-down;
+  width: 150px;
+  height: 73px;
+  }
 
 .table-results {
   background-color: $bg-light-blue;
