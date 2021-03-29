@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Instrumentation
-  # setup raven user context, see: https://docs.sentry.io/clients/ruby/integrations/#params-and-sessions
+  # setup elatic apm context, see: https://www.elastic.co/guide/en/apm/agent/ruby/current/introduction.html
   module ElasticApm
     extend ActiveSupport::Concern
 

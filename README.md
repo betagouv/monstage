@@ -25,6 +25,13 @@ Things you may want to cover:
 
 # Architecture
 
+We keep things simple and secure :
+
+* a simple monolith mostly based on rails
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
+
 ## backend
 
 * Rails defaults
@@ -45,6 +52,8 @@ Things you may want to cover:
 
 ## 3rd party services
 
+As a public french service, we try to keep most data hosted by french service provider with servers located in france (in hope to stay compliant with most regulations)
+
 ### Hosting
 * Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
@@ -62,9 +71,12 @@ Things you may want to cover:
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-* Bug monitoring solution: [elastic stack](https://www.elastic.co/elastic-stack)
+* Infra management with elatic stack
+ * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
+ * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
+ * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
 * Mail: [mailjet](https://mailjet.com)
-* uptime/downtime:
+
 
 # Build: test, dev
 
@@ -202,3 +214,6 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
+# disaster recovery plan
+
+in case of a disaster we do have a plan starting with : [monstage-backup-manager](https://github.com/betagouv/monstage-backup-manager/)
