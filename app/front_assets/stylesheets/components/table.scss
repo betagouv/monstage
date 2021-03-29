@@ -1,6 +1,13 @@
 .table-caption-top{
   caption { caption-side: top };
 }
+.table-caption-bottom {
+  caption {
+    caption-side: bottom;
+    text-align: left;
+    padding-left: 1em;
+  }
+}
 @include media-breakpoint-up(sm) {
   .hoverable-row-with-btn{
     .btn-hoverable{
