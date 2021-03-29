@@ -1,5 +1,5 @@
 .container
-  .row.text-dark.bg-light-blue.bg-rounded.py-5
+  .row.text-dark.bg-light-blue.bg-rounded.py-4
     .col-md-5.col-sm-12.d-flex.align-items-center.justify-content-center
       = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
                   alt: "Mon stage de 3e",
@@ -7,16 +7,34 @@
                   height: 148
     .col-md-7.col-sm-12.text-dark
       p.lead.hero
-        |Cette plateforme, par la diversité de ses offres, a permis depuis maintenant
-        span.h1 =" 2 ans "
-        br
-        | de réaliser des expériences enrichissantes en lien avec l'orientation et le projet personnel de
-        br
-        span.h2.px-1 16&nbsp;875 élèves de troisième !
+        |
+          Dans la continuité du discours « La France, une chance pour chacun »
+          du Président de la République le 23 mai 2018, la plateforme
+          www.monstagedetroisieme.fr pilotée par l'Agence nationale de
+          la cohésion des territoires a été mise en ligne dès
+          la rentrée 2018-2019.
       p.lead.hero
-        |Après une 1ère année d'exercice comptant
-        span.h5.px-1 33&nbsp;000 offres de stage dont 8&nbsp;000 pourvues,
-        | voici l'évolution de la plateforme
+        |
+          Elle permet aux élèves de troisième des établissements des réseaux
+          éducation prioritaire (REP et REP+) d’accéder à des offres de
+          stage de qualité en entreprises et dans les services publics.
+      
+      p.lead.hero 
+        | En
+        span.h3 =" 2 ans et 5 mois "
+        | d'existence, appuyée par 
+        br
+        span.h3 = " 8 associations* "
+        | partenaires au niveau national,
+        |&nbsp;plus de
+        br
+        span.h3.px-1 22&nbsp;000 élèves
+        | ont bénéficié de ce dispositif !
+  .row.my-1.text-muted.font-weight-light.font-italic
+    |
+      (*) Les 8 associations sont : JobIRL, Institut Télémaque, 
+      Le réseau, Les entreprises pour la cité, Moi dans 10 ans, 
+      Tous en stage, Un stage et après, et Viens voir mon taf
   .row.my-5
     .col-12.text-center
       = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
@@ -143,8 +161,3 @@
               C’est le nombre d’élèves ayant bénéficié
               d’un stage à distance, en plus des stages en présence
   .row.my-5
-
-
-
-
-
