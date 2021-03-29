@@ -27,8 +27,13 @@ class School < ApplicationRecord
                            .group('schools.id')
                            .having('count(users.id) > 0')
                        }
+  scope :without_manager, lambda {
+     left_joins(:school_manager)
+                           .group('schools.id')
+                           .having('count(users.id) = 0')
+  }
 
-  scope :without_weeks_on_current_year, lambda {
+    scope :without_weeks_on_current_year, lambda {
     all.where.not(
       id: self.joins(:weeks)
               .merge(Week.selectable_on_school_year)
@@ -84,6 +89,7 @@ class School < ApplicationRecord
       field :zipcode do
         visible false
       end
+      scopes [:all, :with_manager, :without_manager]
     end
 
     edit do
