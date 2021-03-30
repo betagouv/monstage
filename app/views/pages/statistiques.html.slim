@@ -8,7 +8,7 @@
     .col-md-7.col-sm-12.text-dark
       p.lead.hero
         |
-          Dans la continuité du discours « La France, une chance pour chacun »
+          Dans la continuité du discours «&nbsp;La France, une chance pour chacun&nbsp;»
           du Président de la République le 23 mai 2018, la plateforme
           www.monstagedetroisieme.fr pilotée par l'Agence nationale de
           la cohésion des territoires a été mise en ligne dès
@@ -28,7 +28,7 @@
         | partenaires au niveau national,
         |&nbsp;plus de
         br
-        span.h3.px-1 22&nbsp;000 élèves
+        span.h3.px-1 33&nbsp;000 élèves
         | ont bénéficié de ce dispositif !
   .row.my-1.text-muted.font-weight-light.font-italic
     |
@@ -85,36 +85,36 @@
                         total_achieved: "19 251" }
 
 
-  .row.mt-5.mb-3
-    .col-12.text-center
-      = image_tag asset_pack_path('media/images/pages/statistics/reseau.png'),
-                  alt: "Le réseau",
-                  height: 47
-      br
-      h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
-      h2.h4.text-dark Le réseau
-  .row
-  .row.mt-3
-    .col-12.text-center
-      |Pour cette année scolaire, les deux entreprises
-      br
-      | signataires du PaQte les plus actives ont été :
-  .row.mt-4
-    = render partial: 'pages/statistics/best_partners',
-              locals: { entreprise_name: 'La Poste',
-                        image: 'la_poste.png',
-                        bg_height: '110px',
-                        offers_proposed_count: 1340,
-                        accepted_offers_count: 354}
-    = render partial: 'pages/statistics/best_partners',
-              locals: { entreprise_name: 'Carrefour',
-                        image: 'carrefour.png',
-                        bg_height: '110px',
-                        offers_proposed_count: 800,
-                        accepted_offers_count: 288}
-  .row.mb-5.mt-2
-    .col-12.text-center
-      p Ces chiffres décomptent des accueils de stagiaires en présentiel uniquement
+  / .row.mt-5.mb-3
+  /   .col-12.text-center
+  /     = image_tag asset_pack_path('media/images/pages/statistics/reseau.png'),
+  /                 alt: "Le réseau",
+  /                 height: 47
+  /     br
+  /     h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
+  /     h2.h4.text-dark Le réseau
+  / .row
+  / .row.mt-3
+  /   .col-12.text-center
+  /     |Pour cette année scolaire, les deux entreprises
+  /     br
+  /     | signataires du PaQte les plus actives ont été :
+  / .row.mt-4
+  /   = render partial: 'pages/statistics/best_partners',
+  /             locals: { entreprise_name: 'La Poste',
+  /                       image: 'la_poste.png',
+  /                       bg_height: '110px',
+  /                       offers_proposed_count: 1340,
+  /                       accepted_offers_count: 354}
+  /   = render partial: 'pages/statistics/best_partners',
+  /             locals: { entreprise_name: 'Carrefour',
+  /                       image: 'carrefour.png',
+  /                       bg_height: '110px',
+  /                       offers_proposed_count: 800,
+  /                       accepted_offers_count: 288}
+  / .row.mb-5.mt-2
+  /   .col-12.text-center
+  /     p Ces chiffres décomptent des accueils de stagiaires en présentiel uniquement
 
 
   / 2020 / 2021
@@ -159,5 +159,5 @@
           .col-7.d-flex.justify-content-center.align-items-center
             |
               C’est le nombre d’élèves ayant bénéficié
-              d’un stage à distance, en plus des stages en présence
+              d’un stage à distance, compte tenu du contexte sanitaire
   .row.my-5
