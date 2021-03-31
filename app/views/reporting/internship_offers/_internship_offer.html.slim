@@ -4,11 +4,11 @@
 tr class="#{gray_background ? 'bg-light' : ''} #{font_weight_bold ? 'font-weight-bold' : ''} #{font_color_blue ? 'text-blue' : ''}"
   td.align-middle.bl-1.bc-light= internship_offer.dimension
   td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report= internship_offer.total_report_count
-  td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold= internship_offer.total_applications_count
-  td.align-middle= internship_offer.total_male_applications_count
-  td.align-middle= internship_offer.total_female_applications_count
-  td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold= internship_offer.approved_applications_count
-  td.align-middle= internship_offer.total_custom_track_approved_applications_count
-  td.align-middle= internship_offer.total_male_approved_applications_count
-  td.align-middle= internship_offer.total_female_approved_applications_count
+  td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-applications= internship_offer.total_applications_count
+  td.align-middle.test-total-male-applications= internship_offer.total_male_applications_count
+  td.align-middle.test-total-female-applications= internship_offer.total_female_applications_count
+  td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-approved-applications= internship_offer.approved_applications_count
+  td.align-middle.test-custom-track-approved-applications= internship_offer.total_custom_track_approved_applications_count
+  td.align-middle.test-male-approved-applications= internship_offer.total_male_approved_applications_count
+  td.align-middle.test-female-approved-applications= internship_offer.total_female_approved_applications_count
 

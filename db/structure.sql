@@ -364,7 +364,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    anonymized boolean DEFAULT false
 );
 
 
@@ -1494,6 +1495,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
+
+
+--
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2269,6 +2277,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210121172155'),
 ('20210128162938'),
 ('20210129121617'),
-('20210224160904');
+('20210224160904'),
+('20210310173554');
 
 

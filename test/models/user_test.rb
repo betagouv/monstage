@@ -28,6 +28,9 @@ class UserTest < ActiveSupport::TestCase
       student.anonymize
     end
 
+    assert_equal 'm', student.gender
+    assert_equal class_room.id, student.class_room_id
+
     assert_not_equal 'test@test.com', student.email
     assert_not_equal 'Toto', student.first_name
     assert_not_equal 'Tata', student.last_name
