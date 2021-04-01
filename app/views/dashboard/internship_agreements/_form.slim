@@ -74,7 +74,7 @@ fieldset
     .col-12
       h3.h5 A - Annexe pédagogique
   .row.mt-3
-    - label = "Nom de l’élève ou des élèves concerné(s) :"
+    - label = "Nom de l’élève ou des élèves concernés :"
     - title = "Note destinée au chef d'établissement :"
     - content = "Nom(s) et prénom(s) de(s) l'élève(s) effectuant le stage."
     = render partial: 'dashboard/internship_agreements/text_field_element',
@@ -99,7 +99,7 @@ fieldset
     = render partial: 'dashboard/internship_agreements/text_field_element',
              locals: { field: :tutor_full_name, form: form, text_label: label, content: content, title: title}
   .row.mt-3
-    - label = "Nom du ou (des) enseignant(s) chargé(s) de suivre le " \
+    - label = "Nom du ou des enseignants chargés de suivre le " \
               "déroulement de séquence d’observation en milieu professionnel :"
     - title = "Note destinée au professeur principal :"
     - content = "Nom, prénom du professeur principal"
@@ -107,7 +107,7 @@ fieldset
              locals: { field: :main_teacher_full_name, form: form, text_label: label, content: content, title: title}
 
   .row.mt-3
-    - label = "Dates de la séquence d’observation en milieu professionnel du"
+    - label = "Dates de la séquence d’observation en milieu professionnel :"
     - title = "Note destinée à l'entreprise"
     - content = "Date de début et fin du stage"
     = render partial: 'dashboard/internship_agreements/text_field_element',
@@ -159,7 +159,7 @@ fieldset
     .col-12
       h3.h6 B - Annexe complémentaire
   .row.mt-3
-    - label = "Conditions liés au financement du stage de " \
+    - label = "Conditions liées au financement du stage de " \
               "l'élève par l'établissement"
     - title = "Note destinée au chef d'établissement :"
     - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', dashboard_school_path(resource.internship_application.student.school)}."
