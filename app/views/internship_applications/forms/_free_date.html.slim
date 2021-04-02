@@ -17,7 +17,6 @@
         - is_creating =  @internship_application.try(:new_record?)
         = form_with({model: @internship_application, url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)), scope: :internship_application, html: {method: is_creating ? :post : :patch, id: 'new_internship_application'}}) do |f|
           = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_applications
-          = f.rg2a_explain_required_asterisk
 
           - if current_user.is_a?(Users::Student)
               = f.hidden_field :user_id
@@ -33,7 +32,6 @@
               .label.required data-controller="rich-text-label" data-rich-text-label-enable-value=!disabled  data-rich-text-label-for-value="internship_application_motivation"
                 = "Pourquoi ce stage me motive"
                 small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
-                = f.rg2a_required_content_tag
 
               = f.rich_text_area :motivation, class: "form-control col-12", required: true, disabled: disabled, rows: 5
 
