@@ -159,6 +159,7 @@ module Dashboard
         select_editable?('internship_agreement_weekly_hours_end', false)
       end
 
+
       # Trix fields tests
       %w[
         internship_agreement_activity_scope_rich_text

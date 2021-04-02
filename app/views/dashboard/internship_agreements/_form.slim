@@ -186,3 +186,4 @@ tbody
             p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
         .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
                  locals: {form: form}
+= render "layouts/form_errors", resource: resource
