@@ -8,7 +8,6 @@ ruby '2.7.2'
 # fwk/server
 gem 'rails'
 gem 'puma'
-
 # db
 gem 'pg'
 # pg extension for geo queries
@@ -23,6 +22,7 @@ gem 'prawn-styled-text'
 # front end
 gem 'uglifier'
 gem 'slim-rails'
+gem "view_component", require: "view_component/engine"
 gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'

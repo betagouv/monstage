@@ -1,0 +1,16 @@
+.col-md-6.col-sm-12.mt-2
+  .row.bg-light-blue.bg-rounded.py-3.mx-2 style="height: #{bg_height}"
+    .col-5.d-flex.align-items-center
+      = image_tag asset_pack_path("media/images/pages/statistics/#{image}"),
+                  alt: "#{entreprise_name}",
+                  class: 'brand statistics'
+
+    .col-7.d-flex.align-items-center
+      .ml-3
+        = "#{entreprise_name}, qui a proposé "
+        br
+        span.font-weight-bold
+          = "#{offers_proposed_count} offres dont #{accepted_offers_count} ont été pourvues"
+
+
+

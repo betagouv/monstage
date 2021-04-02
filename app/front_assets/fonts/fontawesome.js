@@ -1,6 +1,4 @@
 import { library, dom, config } from '@fortawesome/fontawesome-svg-core';
-// get list with ./infra/dev/find-font-awesome-icons.sh
-// grep -riE 'fas' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import {
   faAngleLeft,
   faArrowCircleLeft,
@@ -21,6 +19,7 @@ import {
   faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faCircle as faCircleSolid,
   faComments,
   faDownload,
   faDesktop,
@@ -67,10 +66,8 @@ import {
   faWalking
 } from '@fortawesome/free-solid-svg-icons';
 
-// get list with ./infra/dev/find-font-awesome-icons.sh
-// grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import {
-  faCircle,
+  faCircle as faCircleRegular,
   faEnvelope,
   faFlag,
   faHandshake,
@@ -100,7 +97,8 @@ library.add(
   faChevronDown,
   faChevronLeft,
   faChevronRight,
-  faCircle,
+  faCircleRegular,
+  faCircleSolid,
   faComments,
   faDownload,
   faDesktop,

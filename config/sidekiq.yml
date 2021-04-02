@@ -5,4 +5,5 @@ production:
   :concurrency: 5
 :queues:
   - mailers
+  - batches
   - default

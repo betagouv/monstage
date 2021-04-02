@@ -8,27 +8,35 @@
     padding: 10px;
   }
 }
-.internship-agreement-to-sign{
-  .actions .text-action {
-    white-space:nowrap;
-    display: inline;
-    transition: all 1s ease-out;
+
+
+.container-application-with-agreements{
+  position: relative;
+  .container-application-with-agreements-overlay{
     position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    transform:translate(0);
-  }
-  .actions:hover .text-action {
-    position: relative;
-    visibility: visible;
-    transform:translate(9999px);
-    opacity: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,.8);
+    z-index: 2;
   }
 }
 
+.shaddow-container{
+  overflow: hidden;
+  padding-bottom: 2em;
+  .shadow-element{
+    box-shadow: 5px 0px 10px rgba(0,0,0,.1);
+  }
+}
+
+$custom-grey: rgb(51,51,51);
+
 .tool-note {
   position: 'relative';
-  border: 2px solid $blue;
+  border: 2px solid $custom-grey;
+
   margin-top: 20px;
   padding: 15px 10px;
   border-radius: 5px;
@@ -44,19 +52,16 @@
   content: '';
   width: 10px;
   height: 10px;
-  border-left: 2px solid $blue;
-  border-top: 2px solid $blue;
   background-color: #fff;
   transform: rotate(-45deg);
   margin-top: 10px;
   margin-left: -17px;
   float: left;
   z-index: 10;
-} 
+}
 
 .tool-note.active {
-  border: 2px solid $green;
-  background-color: $green;
+  background-color: $custom-grey;
   color: #fff;
   .title {
     color: #fff;
@@ -64,13 +69,13 @@
 }
 
 .tool-note.active::before {
-  border-top: 2px solid $green;
-  border-left: 2px solid $green;
-  background-color: $green;
+  border-top: 2px solid $custom-grey;
+  border-left: 2px solid $custom-grey;
+  background-color: $custom-grey;
 
 }
 .tool-note.inactive {
-  border: 2px solid #9F98AA;
+  display: none;
   color: #9F98AA;
   .title {
     color: #9F98AA;
@@ -78,8 +83,8 @@
 }
 
 .tool-note.inactive:before {
-  border-top: 2px solid #9F98AA;
-  border-left: 2px solid #9F98AA;
+  // border-top: 2px solid #9F98AA;
+  // border-left: 2px solid #9F98AA;
 }
 
 .valid-form-field::before {
@@ -118,5 +123,26 @@
   }
   trix-editor:read-only{
     background-color: $secondary;
+  }
+}
+.dot {
+  display: inline-block;
+  &.dot-success{
+    color: $success;
+  }
+  &.dot-warning{
+    color: $warning;
+  }
+}
+
+.offset-absolute{
+  width: 100%;
+  position: absolute;
+  margin-top: 3px;
+
+  .gradient-to-white{
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+
   }
 }

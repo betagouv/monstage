@@ -1,0 +1,9 @@
+// see: https://stackoverflow.com/questions/19330611/fixed-footer-in-bootstrap
+
+.sticky-footer{
+    z-index: 10;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

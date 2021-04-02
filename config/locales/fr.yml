@@ -379,6 +379,12 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+    scopes:
+      _all: "Tous"
+      school:
+        with_manager: "Avec un chef d'etb"
+        without_manager: "Sans un chef d'etb"
+
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
@@ -394,6 +400,7 @@ fr:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
+      employer: "Offreur"
       other: "Autre fonction"
 
     school_tracks:
