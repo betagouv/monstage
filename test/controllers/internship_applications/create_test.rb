@@ -87,24 +87,5 @@ module InternshipApplications
       assert_equal 'resume_other', student.resume_other.to_plain_text
       assert_equal 'resume_languages', student.resume_languages.to_plain_text
     end
-
-    test 'POST #create internship application failed' do
-      internship_offer = create(:weekly_internship_offer)
-      school = create(:school, weeks: [internship_offer.weeks.first])
-      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-      sign_in(student)
-
-      valid_internship_application_params = { internship_offer_id: internship_offer.id,
-                                              internship_offer_type: InternshipOffer.name,
-                                              internship_offer_week_id: internship_offer.internship_offer_weeks.first.id,
-                                              type: InternshipApplications::FreeDate.name,
-                                              motivation: 'Je suis trop motivé wesh',
-                                              user_id: student.id }
-      assert_no_difference('InternshipApplication.count') do
-        post(internship_offer_internship_applications_path(internship_offer),
-             params: { internship_application: valid_internship_application_params.except(:motivation) })
-        assert_response :bad_request
-      end
-    end
   end
 end
