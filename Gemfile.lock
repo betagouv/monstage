@@ -136,6 +136,9 @@ GEM
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
+    feedjira (3.1.2)
+      loofah (>= 2.3.1)
+      sax-machine (>= 1.0)
     ffi (1.15.0)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
@@ -354,6 +357,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sax-machine (1.3.2)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
@@ -445,6 +449,7 @@ DEPENDENCIES
   elastic-apm
   email_inquire
   factory_bot_rails
+  feedjira
   foreman
   kaminari
   letter_opener

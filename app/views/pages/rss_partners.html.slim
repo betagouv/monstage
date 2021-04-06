@@ -1,0 +1,55 @@
+.container
+  .row.bg-light-blue.bg-rounded.py-5.no-gutters
+    .col-md-4.col-sm-12.d-flex.align-items-center.justify-content-center
+      = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                  alt: "Mon stage de 3e",
+                  class: 'text-center',
+                  height: 80
+    .col-md-8.col-sm-12.d-flex.align-items-center.justify-content-center
+      h1.text-center
+        |L'actualité de nos partenaires
+  .row.my-5.no-gutters
+    .col-12.text-center
+      - Services::RssPostList.new.ordered_by_publication_date[0..17].each do |post|
+        .post
+          - if post.fetch_article_img.blank?
+            .card.rss-style.p-2.border-rounded.my-4.narrow
+              .row.mb-1.p-2
+                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                  = link_to post.fetch_blog_url
+                    = image_tag asset_pack_path("media/images/homepage/partenaires/#{post.logo}"),
+                                alt: "Logo de #{post.partner.capitalize}",
+                                'object-fit': 'down-scale',
+                                width: 130,
+                                'max-height': 30
+                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                  h6.card-title.text-center = post.published_at.strftime('%d %B %Y')
+              .card-body
+                h5.card-title.mb-4
+                  = link_to post.title,
+                            post.fetch_original_article_url,
+                            class: 'text-decoration-none mb-3'
+                  img src="#{post.fetch_article_img}"
+                p.card-text.text-left = post.summary.html_safe
+          -else
+            .card.rss-style.p-2.border-rounded.my-4.large
+              .row.mb-1
+                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                  = link_to post.fetch_blog_url
+                    = image_tag asset_pack_path("media/images/homepage/partenaires/#{post.logo}"),
+                                alt: "Logo de #{post.partner.capitalize}",
+                                'object-fit': 'down-scale',
+                                width: 130,
+                                'max-height': 30
+                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                  h6.card-title.text-center = post.published_at.strftime('%d %B %Y')
+              .card-body
+                h5.card-title.mb-4
+                  = link_to post.title,
+                            post.fetch_original_article_url,
+                            class: 'text-decoration-none mb-3'
+                .row
+                  .col-md-6.col-sm12
+                    img src="#{post.fetch_article_img}" class="bg-rounded"
+                  .col-md-6.col-sm12
+                    p.card-text.text-left = post.summary.html_safe

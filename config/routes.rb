@@ -100,6 +100,7 @@ Rails.application.routes.draw do
   get '/partenaires', to: 'pages#partenaires'
   get '/politique-de-confidentialite', to: 'pages#politique_de_confidentialite'
   get '/statistiques', to: 'pages#statistiques'
+  get '/rss-partners', to: 'pages#rss_partners'
 
   # Redirects
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)

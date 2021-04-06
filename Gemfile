@@ -41,6 +41,7 @@ gem "lograge"
 gem 'elastic-apm'
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
+gem "feedjira"
 
 # acl
 gem 'cancancan'

@@ -1,0 +1,48 @@
+.post {
+  .card.rss-style {
+    margin-right: 1rem;
+    float: left;
+    font-size: 1rem;
+
+    card-img-top {
+      object-fit: scale-down;
+    }
+
+    p {
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+
+    p:nth-last-child(2),
+    p a:nth-last-child(1) {
+      display: none;
+
+    }
+  }
+
+  .card-body img {
+    width: 400px;
+  }
+
+  .border-rounded {
+    border-radius: 1rem;
+    border: 1px solid $bg2-grey;
+  }
+}
+
+.rss-style {
+  text-overflow: ellipsis;
+  margin-bottom: 1rem;
+}
+
+.rss-style.narrow {
+  width: 48.3%;
+  margin-right: 0;
+  margin-left: 0;
+
+  height: 30rem;
+}
+
+.rss-style.large {
+  width: 100%;
+}
