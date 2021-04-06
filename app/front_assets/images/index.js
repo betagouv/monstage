@@ -1,6 +1,7 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
-import './logo-beta-gouv-fr.png';
+import './beta-gouv-logo.png';
+import './danger_sign_blue.svg';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
@@ -14,6 +15,15 @@ import './pages/logo_cget_texte.png';
 import './pages/remote_internships/webinar_2x.png';
 import './pages/remote_internships/face_to_face_2x.png';
 import './pages/remote_internships/digital_week_2x.png';
+
+import './pages/statistics/hand_left.svg';
+import './pages/statistics/hand_right.svg';
+import './pages/statistics/handshake.svg';
+import './pages/statistics/ok.svg';
+import './pages/statistics/school.svg';
+import './pages/statistics/reseau.png';
+import './pages/statistics/la_poste.png';
+import './pages/statistics/carrefour.png';
 
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
@@ -37,7 +47,7 @@ import './homepage/partenaires/Logo-tous-en-stage.jpg';
 import './homepage/partenaires/Logo-un-stage-et-apres.jpg';
 import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
 import './homepage/partenaires/Logo-moidans10ans.png';
-import './homepage/partenaires/Logo-telemaque.jpg';
+import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
 import './homepage/sponsors/Logo-anct.jpg';

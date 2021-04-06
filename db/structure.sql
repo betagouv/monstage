@@ -20,6 +20,7 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
 --
@@ -33,6 +34,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -46,6 +48,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
 --
@@ -59,6 +62,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
@@ -67,7 +71,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 CREATE TYPE public.class_room_school_track AS ENUM (
     'troisieme_generale',
-    'troisieme_prepa_metier',
+    'troisieme_prepa_metiers',
     'troisieme_segpa',
     'bac_pro'
 );
@@ -360,7 +364,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    anonymized boolean DEFAULT false
 );
 
 
@@ -449,6 +454,38 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreement_presets (
+    id bigint NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    school_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreement_presets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.internship_agreement_presets.id;
+
+
+--
 -- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -472,7 +509,9 @@ CREATE TABLE public.internship_agreements (
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    main_teacher_accept_terms boolean DEFAULT false
+    main_teacher_accept_terms boolean DEFAULT false,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    school_delegation_to_sign_delivered_at date
 );
 
 
@@ -1021,7 +1060,7 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department_name character varying,
-    missing_school_weeks_id bigint,
+    missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
     phone_token_validity timestamp without time zone,
@@ -1029,6 +1068,7 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     organisation_id bigint
+    banners jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -1123,6 +1163,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets ALTER COLUMN id SET DEFAULT nextval('public.internship_agreement_presets_id_seq'::regclass);
 
 
 --
@@ -1287,6 +1334,14 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: internship_agreement_presets internship_agreement_presets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets
+    ADD CONSTRAINT internship_agreement_presets_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: internship_agreements internship_agreements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1443,6 +1498,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
+
+
+--
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1454,6 +1516,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreement_presets_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internship_agreement_presets USING btree (school_id);
 
 
 --
@@ -1737,10 +1806,10 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_missing_school_weeks_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
+CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree (missing_weeks_school_id);
 
 
 --
@@ -1928,7 +1997,7 @@ ALTER TABLE ONLY public.internship_offers
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_school_weeks_id) REFERENCES public.schools(id);
+    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_weeks_school_id) REFERENCES public.schools(id);
 
 
 --
@@ -2229,8 +2298,16 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201125102052'),
 ('20201201140201'),
 ('20201202082705'),
-('20201203153154'),
 ('20201211094310'),
 ('20201224153839');
+('20201203153154'),
+('20210112164129'),
+('20210113140604'),
+('20210121171025'),
+('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210310173554');
 
 

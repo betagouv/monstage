@@ -129,7 +129,7 @@ module Dashboard::InternshipOffers
       assert_select 'a.nav-link[href=?]', dashboard_internship_offers_path(forwarded_to_tabs_links)
     end
 
-    test 'GET #index without filter as Employer show published and unpublished, not in past' do
+    test 'GET #index filters as Employer show published, unpublished, in past when required' do
       employer = create(:employer)
       internship_offer_published = create(:weekly_internship_offer, employer: employer)
       internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
@@ -138,13 +138,14 @@ module Dashboard::InternshipOffers
       internship_offer_in_the_past = create(
         :weekly_internship_offer,
         employer: employer,
-        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
+        weeks: [Week.where(number: two_weeks_ago.to_date.cweek == 53 ? 1 : two_weeks_ago.to_date.cweek,
                            year: two_weeks_ago.year)
                     .first]
       )
       sign_in(employer)
 
       get dashboard_internship_offers_path
+
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
                     { count: 1 },
                     'should not have found published offer')
@@ -154,23 +155,7 @@ module Dashboard::InternshipOffers
       assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
                     { count: 0 },
                     'should not have found offer in the past')
-    end
 
-    test 'GET #index with filter=unpublished as Employer show unpublished offers only' do
-      employer = create(:employer)
-      internship_offer_published = create(:weekly_internship_offer, employer: employer)
-      internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
-      internship_offer_unpublished.update_column(:published_at, nil)
-            two_weeks_ago = 2.weeks.ago
-      internship_offer_in_the_past = create(
-        :weekly_internship_offer,
-        employer: employer,
-        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
-                           year: two_weeks_ago.year)
-                    .first]
-      )
-
-      sign_in(employer)
       get dashboard_internship_offers_path(filter: :unpublished)
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
                     { count: 0 },
@@ -181,23 +166,7 @@ module Dashboard::InternshipOffers
       assert_select(".test-internship-offer-#{internship_offer_in_the_past.id}",
                     { count: 0 },
                     'should not have found offer in the past')
-    end
 
-    test 'GET #index with filter=past as Employer show unpublished offers only' do
-      employer = create(:employer)
-      internship_offer_published = create(:weekly_internship_offer, employer: employer)
-      internship_offer_unpublished = create(:weekly_internship_offer, employer: employer)
-      internship_offer_unpublished.update_column(:published_at, nil)
-      two_weeks_ago = 2.weeks.ago
-      internship_offer_in_the_past = create(
-        :weekly_internship_offer,
-        employer: employer,
-        weeks: [Week.where(number: two_weeks_ago.to_date.cweek,
-                           year: two_weeks_ago.year)
-                    .first]
-      )
-
-      sign_in(employer)
       get dashboard_internship_offers_path(filter: :past)
       assert_select(".test-internship-offer-#{internship_offer_published.id}",
                     { count: 0 },

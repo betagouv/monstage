@@ -25,6 +25,13 @@ Things you may want to cover:
 
 # Architecture
 
+We keep things simple and secure :
+
+* a simple monolith mostly based on rails
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
+
 ## backend
 
 * Rails defaults
@@ -45,6 +52,8 @@ Things you may want to cover:
 
 ## 3rd party services
 
+As a public french service, we try to keep most data hosted by french service provider with servers located in france (in hope to stay compliant with most regulations)
+
 ### Hosting
 * Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
@@ -62,11 +71,12 @@ Things you may want to cover:
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-
-* Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
-* Bug monitoring solution: [sentry](https://sentry.io/)
+* Infra management with elatic stack
+ * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
+ * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
+ * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
 * Mail: [mailjet](https://mailjet.com)
-* uptime/downtime:
+
 
 # Build: test, dev
 
@@ -77,9 +87,12 @@ Things you may want to cover:
 * [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
 * [api](https://github.com/betagouv/monstage/tree/master/doc)
 
+## Previews
 
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
 
-## dev
+## Dev
 
 **start project**
 
@@ -89,10 +102,23 @@ yarn install
 foreman start -f Procfile.dev
 ```
 
-### tooling: linting, etc...
+### Tooling: linting, etc...
 
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
 * mail should be opened automatically by letter opener
+
+### Etapes de travail jusqu'au merge dans master
+
+- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (mabranche) $ ```git commit``` # coder sa feature et commiter
+- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
+- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
+- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+
+Références:
+- https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
+- https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
 
 ## test
 
@@ -126,13 +152,13 @@ those tests depends on the system / e2e (which goes throught browser with js exe
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file.
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
 
 * we use a custom postgres docker image for our synonym dictionnary
- 
+
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
@@ -191,3 +217,6 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
+# disaster recovery plan
+
+in case of a disaster we do have a plan starting with : [monstage-backup-manager](https://github.com/betagouv/monstage-backup-manager/)

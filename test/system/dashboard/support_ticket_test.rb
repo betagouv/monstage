@@ -10,23 +10,27 @@ class SupportTicketTest < ApplicationSystemTestCase
     sign_in(school_manager)
 
     visit school_manager.custom_dashboard_path
-    click_link('Contactez-nous !')
+    within('.bg-cover-image-remote-internship') do
+      click_link('Nous contacter')
+    end
     find('.h4.text-body', text: "Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.")
     click_on "Envoyer la demande"
 
     # js validation
+    fill_in("Nombre d'élèves", with: 20)
+    click_on "Envoyer la demande"
     find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
+
     all(".custom-control-checkbox-list label").first.click
     click_on "Envoyer la demande"
-
     find('label', text: "L'un des trois modes 'Semaine digitale', 'Webinaire' ou 'En présentiel' doivent être sélectionnés")
     find('label', text: "Il manque à cette demande le nombre d'étudiants concernés")
-    find('label', text: "Le nombre d'étudiants devrait être chiffré")
+
     assert_enqueued_with(job: SupportTicketJobs::SchoolManager) do
       all(".custom-control-checkbox-list label").first.click
       check 'support_ticket[webinar]'
       select "2 classes"
-      fill_in("support_ticket_students_quantity", with: 5)
+      fill_in("Nombre d'élèves", with: 5)
       click_on "Envoyer la demande"
     end
   end
@@ -36,7 +40,9 @@ class SupportTicketTest < ApplicationSystemTestCase
     sign_in(employer)
 
     visit employer.custom_dashboard_path
-    click_link('Contactez-nous !')
+    within('.bg-cover-image-remote-internship') do
+      click_link('Nous contacter')
+    end
     find('.h4.text-body', text: "Vous souhaitez participer à la mise en place de stages à distance ?")
 
     click_on "Envoyer la demande"

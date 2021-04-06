@@ -57,7 +57,7 @@ module Nearbyable
       [
         street,
         zipcode,
-        city
+        city.try(&:capitalize)
       ].compact.uniq.join(' ')
     end
 

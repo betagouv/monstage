@@ -9,9 +9,9 @@ module Dashboard
     def index
       authorize! :index,
                  Acl::InternshipOfferDashboard.new(user: current_user)
-      @internship_offers  = finder.all
-      @internship_offers  = @internship_offers.merge(filter_scope)
-      @internship_offers  = @internship_offers.order(order_column => order_direction)
+      @internship_offers = finder.all
+      @internship_offers = @internship_offers.merge(filter_scope)
+      @internship_offers = @internship_offers.order(order_column => order_direction)
     end
 
     # duplicate submit
@@ -112,7 +112,7 @@ module Dashboard
           :latitude,
           :longitude,
           :radius,
-          :school_type,
+          :school_track,
           :keyword,
           :school_year,
           :filter
@@ -154,35 +154,25 @@ module Dashboard
                     :is_public,
                     :published_at,
 
+                    :employer_id,
+                    :sector_id,
+                    :group_id,
+                    :tutor_id,
+                    :school_id,
+
+                    :school_track,
+
                     :street,
                     :zipcode,
                     :city,
                     :department,
                     :region,
                     :academy,
-
-                    :sector_id,
-                    :group_id,
-
-                    :employer_id,
-
-                    :school_id,
-                    :school_type,
-                    :school_track,
-
-                    :tutor_id,
-
                     coordinates: {},
+
                     week_ids: [],
                     new_daily_hours: {},
-                    weekly_hours:[],
-
-                    tutor_attributes: [
-                      :first_name,
-                      :last_name,
-                      :phone,
-                      :email
-                    ])
+                    weekly_hours:[])
     end
   end
 end

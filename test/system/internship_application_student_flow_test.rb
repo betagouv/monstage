@@ -4,6 +4,7 @@ require 'application_system_test_case'
 
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
@@ -41,7 +42,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find "input[name='#{disabled_selector}'][disabled]", visible: true
     end
 
-    assert_changes -> { student.reload.missing_school_weeks_id },
+    assert_changes -> { student.reload.missing_weeks_school_id },
                    from: nil,
                    to: student.school_id do
       click_on 'Je souhaite une semaine de stage'
@@ -60,11 +61,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
-    visit '/'
-    click_on 'Candidatures'
-    internship_applications.each do |_aasm_state, internship_application|
-      click_on internship_application.internship_offer.title
+
+    prismic_root_path_stubbing do
+      visit '/'
       click_on 'Candidatures'
+      internship_applications.each do |_aasm_state, internship_application|
+        click_on internship_application.internship_offer.title
+        click_on 'Candidatures'
+      end
     end
   end
 
@@ -126,6 +130,104 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student, school: school, class_room: create(:class_room, :bac_pro, school: school))
     internship_offer = create(:free_date_internship_offer)
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+
+    # show application form
+    page.find '#internship-application-closeform', visible: false
+    click_on 'Je postule'
+    page.find '#internship-application-closeform', visible: true
+
+    # fill in application form
+    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
+    assert_changes lambda {
+                     student.internship_applications
+                            .where(aasm_state: :drafted)
+                            .count
+                   },
+                   from: 0,
+                   to: 1 do
+      click_on 'Valider'
+      page.find('a.btn.btn-danger', text: 'Envoyer')
+    end
+
+    assert_changes lambda {
+                     student.internship_applications
+                            .where(aasm_state: :submitted)
+                            .count
+                   },
+                   from: 0,
+                   to: 1 do
+      click_on 'Envoyer'
+    end
+
+    assert page.has_content?('Candidature envoyée')
+    click_on 'Candidature envoyée le'
+    assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
+    click_on 'Afficher ma candidature'
+    click_on 'Annuler'
+    click_on 'Confirmer'
+    assert page.has_content?('Candidature annulée')
+    assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
+    assert_equal 1, student.internship_applications
+                           .where(aasm_state: :canceled_by_student)
+                           .count
+  end
+
+  test 'student in troisieme_segpa can draft, submit, and cancel(by_student) internship_applications' do
+    school = create(:school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_segpa, school: school))
+    internship_offer = create(:troisieme_segpa_internship_offer)
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+
+    # show application form
+    page.find '#internship-application-closeform', visible: false
+    click_on 'Je postule'
+    page.find '#internship-application-closeform', visible: true
+
+    # fill in application form
+    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
+    assert_changes lambda {
+                     student.internship_applications
+                            .where(aasm_state: :drafted)
+                            .count
+                   },
+                   from: 0,
+                   to: 1 do
+      click_on 'Valider'
+      page.find('a.btn.btn-danger', text: 'Envoyer')
+    end
+
+    assert_changes lambda {
+                     student.internship_applications
+                            .where(aasm_state: :submitted)
+                            .count
+                   },
+                   from: 0,
+                   to: 1 do
+      click_on 'Envoyer'
+    end
+
+    assert page.has_content?('Candidature envoyée')
+    click_on 'Candidature envoyée le'
+    assert page.has_selector?('.nav-link-icon-with-label-success', count: 2)
+    click_on 'Afficher ma candidature'
+    click_on 'Annuler'
+    click_on 'Confirmer'
+    assert page.has_content?('Candidature annulée')
+    assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
+    assert_equal 1, student.internship_applications
+                           .where(aasm_state: :canceled_by_student)
+                           .count
+  end
+
+  test 'student in troisieme_prepa_metiers can draft, submit, and cancel(by_student) internship_applications' do
+    school = create(:school)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_prepa_metiers, school: school))
+    internship_offer = create(:troisieme_prepa_metiers_internship_offer)
     sign_in(student)
     visit internship_offer_path(internship_offer)
 

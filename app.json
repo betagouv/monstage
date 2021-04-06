@@ -33,8 +33,7 @@
         "RAILS_ENV": "review",
         "RAKE_ENV": "review",
         "RAILS_MAX_THREADS": 6,
-        "WEB_CONCURRENCY": 1,
-        "CONVENTION_ENABLED": true
+        "WEB_CONCURRENCY": 1
       },
       "addons": [
         {
@@ -43,7 +42,6 @@
             "version": "12"
           }
         },
-        { "plan": "newrelic:wayne" },
         { "plan": "papertrail:choklad" },
         { "plan": "scheduler:standard" },
         { "plan": "mailtrap:unpaid" }

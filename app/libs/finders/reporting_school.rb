@@ -20,11 +20,9 @@ module Finders
                 .order(:name)
     end
 
-    def fetch_with_weeks_and_internships
-      base_query.in_the_future
-                .select('schools.*')
-                .group('schools.id')
-                .preload(:weeks, :users)
+    def fetch_all_with_manager
+      base_query.with_school_manager
+                .order(:name)
     end
 
     private
@@ -36,8 +34,11 @@ module Finders
 
     def base_query
       query = Reporting::School.all
+      query = query.with_school_track(params[:school_track])  if params[:school_track]
       query = query.where(visible: true)
       query = query.where(department: params[:department]) if params[:department]
+      query = query.joins(:class_rooms)
+                   .where('class_rooms.school_track = ?', params[:school_track]) if params[:school_track]
       query
     end
   end

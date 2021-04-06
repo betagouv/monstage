@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   private
 
   def current_flash_message
-    message = if params.dig(:user, :missing_school_weeks_id).present?
+    message = if params.dig(:user, :missing_weeks_school_id).present?
               then "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
               else 'Compte mis à jour avec succès.'
               end
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:school_id,
-                                 :missing_school_weeks_id,
+                                 :missing_weeks_school_id,
                                  :first_name,
                                  :last_name,
                                  :email,
@@ -46,7 +46,8 @@ class UsersController < ApplicationController
                                  :resume_educational_background,
                                  :resume_other,
                                  :resume_languages,
-                                 :role)
+                                 :role,
+                                 banners: {})
   end
 
   def current_section

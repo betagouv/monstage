@@ -23,6 +23,7 @@ Il s'agit d'une API REST qui permet les opérations suivantes :
   - [Suppression d'une offre](#ref-destroy-internship-offer)
 - [Premiers pas et exemples](#premiers-pas-et-exemples)
 
+
 # Environnements
 L'api est disponible sur ```/api``` sur les environnements de pré production et de production. Soit les ```baseURL``` suivantes
   * En pré production : https://v2-test.monstagedetroisieme.fr/api
@@ -231,7 +232,7 @@ curl -H "Authorization: Bearer $API_TOKEN" \
 * **internship_offer.zipcode** *(string)*
 * **internship_offer.city** *(string)*
 * **internship_offer.sector_uuid** *(integer)*
-* **internship_offer.school_track** *(string)* 'troisieme_generale'|'troisieme_segpa'|'troisieme_prepa_metier'|'bac_pro'
+* **internship_offer.school_track** *(string)* 'troisieme_generale'|'troisieme_segpa'|'troisieme_prepa_metiers'|'bac_pro'
 * **internship_offer.weeks** (array[datatype:week(year, week_number), datatype:week(year, week_number), ...], optional) : si ce champs n'est pas rempli, le stage sera automatiquement disponible toute l'année
 * **permalink** *(url)*
 * **max_candidates** *(integer)*

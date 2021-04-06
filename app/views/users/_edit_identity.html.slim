@@ -1,6 +1,10 @@
 h1.h2.mb-3 Mon identité
 
-= form_for(current_user, as: :user, url: account_path, method: :patch, data: {controller: "signup"}) do |f|
+= form_with model: current_user,
+            scope: :user,
+            url: account_path,
+            method: :patch,
+            data: {controller: "signup"} do |f|
   = f.rg2a_explain_required_asterisk
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
@@ -29,22 +33,30 @@ h1.h2.mb-3 Mon identité
       = f.label :department_name do
         = "Département d'intervention"
         small.form-text.text-muted Le département d'intervention permet limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
-      = f.select :department_name, [['Pas de département', nil]] + Department.to_select, {  }, { class: "form-control col-lg-6" }.merge(can?(:change, :department_name) ? {} : {disabled: true})
+      = f.select :department_name,
+                 [['Pas de département', nil]] + Department.to_select,
+                 {  },
+                 { class: "form-control col-lg-6" }.merge(can?(:change, :department_name) ? {} : {disabled: true})
 
   - if can?(:change, :class_room)
     .form-group
       = f.label :class_room_id do
         = 'Classe'
         = f.rg2a_required_content_tag
-      = f.select :class_room_id, options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id), { }, class: "form-control col-lg-6"
-
+      = f.select :class_room_id,
+                 options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
+                 { prompt: class_rooms_options_for_default },
+                 class: "form-control col-lg-6"
 
   - if can?(:choose_role, current_user)
     .form-group
       = f.label :role do
         = 'Fonction'
         = f.rg2a_required_content_tag
-      .d-block= f.select :role, options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role), { include_blank: false}, { class: 'custom-select col-lg-6', data: {action: 'change->signup#refreshEmailFieldLabel'} }
+      .d-block= f.select :role,
+                          options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
+                          { include_blank: false},
+                          { class: 'custom-select col-lg-6', data: {action: 'change->signup#refreshEmailFieldLabel'} }
 
 
   .actions.d-flex.d-sm-block

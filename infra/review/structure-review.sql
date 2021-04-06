@@ -67,7 +67,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
 CREATE TYPE public.class_room_school_track AS ENUM (
     'troisieme_generale',
-    'troisieme_prepa_metier',
+    'troisieme_prepa_metiers',
     'troisieme_segpa',
     'bac_pro'
 );
@@ -2227,11 +2227,16 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
+<<<<<<< HEAD
 ('20201125102052'),
 ('20201201140201'),
 ('20201202082705'),
 ('20201203153154'),
 ('20201211094310'),
 ('20201224153839');
+=======
+('20201203153154'),
+('20210112164129');
+>>>>>>> US/prepare-release-convention
 
 

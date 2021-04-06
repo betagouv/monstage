@@ -138,6 +138,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="user[email]"][readonly="readonly"]'
   end
 
+  test 'PATCH edit as employer, updates banners' do
+    employer = create(:employer, banners:{})
+    sign_in(employer)
+
+    assert_changes -> { employer.reload.banners.key?("background") } do
+      patch(account_path, params: { user: { banners: { background: true }}})
+      assert_response :found
+    end
+  end
+
   test 'PATCH edit as student, updates resume params' do
     student = create(:student)
     sign_in(student)
@@ -264,16 +274,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'PATCH edit as student can change missing_school_weeks_id' do
+  test 'PATCH edit as student can change missing_weeks_school_id' do
     school = create(:school)
     student = create(:student, school: school)
     sign_in(student)
 
-    patch(account_path, params: { user: { missing_school_weeks_id: school.id } })
+    patch(account_path, params: { user: { missing_weeks_school_id: school.id } })
 
     assert_redirected_to account_path
     student.reload
-    assert_equal student.school_id, student.missing_school_weeks_id
+    assert_equal student.school_id, student.missing_weeks_school_id
     follow_redirect!
     expected_custom_flash_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
     assert_select('#alert-text',

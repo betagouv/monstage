@@ -35,7 +35,7 @@ module Api
         post api_internship_offers_path(
           params: {
             token: "Bearer #{operator.api_token}",
-            internship_offer: { title: '' }
+            internship_offer: { title: '', permalink:  'http://staging.lesite.com' }
           }
         )
       end
@@ -59,12 +59,12 @@ module Api
       assert_equal ['Missing remote_id'],
                    json_error['remote_id'],
                    'bad remote_id message'
-      assert_equal ['Missing permalink'],
-                   json_error['permalink'],
-                   'bad permalink message'
       assert_equal ['Missing sector'],
                    json_error['sector'],
                    'bad sector message'
+      assert_equal ['Le lien ne doit pas renvoyer vers un environnement de test.'],
+                   json_error['permalink'],
+                   'bad permalink message'
     end
 
     test 'POST #create as operator post duplicate remote_id' do

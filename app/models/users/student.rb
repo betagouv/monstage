@@ -4,7 +4,7 @@ module Users
   class Student < User
     belongs_to :school, optional: true
     belongs_to :missing_school_weeks, optional: true,
-                                      foreign_key: 'missing_school_weeks_id',
+                                      foreign_key: 'missing_weeks_school_id',
                                       class_name: 'School',
                                       counter_cache: :missing_school_weeks_count
 
@@ -23,6 +23,16 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
+    delegate :school_track,
+             :troisieme_generale?,
+             :troisieme_prepa_metiers?,
+             :troisieme_segpa?,
+             :bac_pro?,
+             to: :class_room,
+             allow_nil: true
+    delegate :school_manager,
+             to: :school
+
     validates :birth_date,
               :gender,
               presence: true
@@ -33,10 +43,8 @@ module Users
 
     def internship_applications_type
       return nil unless class_room.present?
-      return InternshipApplications::FreeDate.name if class_room.bac_pro?
-      return InternshipApplications::WeeklyFramed.name unless class_room.bac_pro?
-
-      nil
+      return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
+      return InternshipApplications::FreeDate.name
     end
 
     def has_zero_internship_application?
@@ -86,12 +94,18 @@ module Users
         .map(&:expire!)
     end
 
+    def main_teacher
+      return nil if try(:class_room).nil?
+
+      class_room.school_managements
+                &.main_teachers
+                &.first
+    end
+
     def anonymize(send_email: true)
       super(send_email: send_email)
 
       update_columns(birth_date: nil,
-                     gender: nil,
-                     class_room_id: nil,
                      handicap: nil)
       resume_educational_background.try(:delete)
       resume_other.try(:delete)

@@ -17,6 +17,7 @@ class InternshipOffersController < ApplicationController
   end
 
   def show
+    check_internship_offer_is_published_or_redirect
     @previous_internship_offer = finder.next_from(from: @internship_offer)
     @next_internship_offer = finder.previous_from(from: @internship_offer)
 
@@ -41,7 +42,8 @@ class InternshipOffersController < ApplicationController
   def flash_message_when_missing_school_weeks
     return unless current_user_or_visitor.missing_school_weeks?
 
-    flash.now[:warning] = "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates."
+    flash.now[:warning] = "Attention, votre établissement n'a pas encore " \
+                          "renseigné ses dates de stage."
   end
 
   def check_internship_offer_is_not_discarded_or_redirect
@@ -69,7 +71,7 @@ class InternshipOffersController < ApplicationController
         :longitude,
         :radius,
         :keyword,
-        :school_type
+        :school_track
       ),
       user: current_user_or_visitor
     )

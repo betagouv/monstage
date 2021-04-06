@@ -53,6 +53,7 @@ module InternshipOffers
           field :title
           field :description
           field :group
+          field :school_track
           field :max_candidates
           field :total_applications_count
           field :convention_signed_applications_count
@@ -66,8 +67,11 @@ module InternshipOffers
           field :departement
           field :city
           field :sector_name
+          field :is_public
           field :supplied_applications
           field :visible
+          field :created_at
+          field :updated_at
         end
       end
     end

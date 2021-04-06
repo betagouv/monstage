@@ -1,0 +1,7 @@
+- if Rails.env.development?
+  .h6.d-none.d-md-inline
+    .badge.badge-warning
+      - user_presenter = Presenters::UserManagementRole.new(user: current_user)
+      = "#{user_presenter.role}[#{current_user.try(:id)}]"
+      - unless current_user.try(:school_track).nil?
+        => " | #{current_user.school_track}"

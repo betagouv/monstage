@@ -7,7 +7,7 @@
 
   thead {
     th{
-      z-index: 1;
+      z-index: 2;
       position: sticky;
       border-top: none;
       top:0
@@ -26,6 +26,11 @@
       box-shadow: 0 2px 0px rgba($blue,.5),;
       background-color: $white;
     }
+  }
+
+  tr.tr-white.row {
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .tr-blue{

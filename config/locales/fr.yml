@@ -24,9 +24,30 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
+      email_whitelist:
+        one: Email autorisé du référent
+        other: Email autorisés des référents
+      group:
+        one: Groupe
+        other: Groupes
+      internship_agreement:
+        one: Convention
+        other: Conventions
+      internship_offers/weekly_framed:
+        one: Offre 3eme générale
+        other: Offres 3eme générale
+      internship_offers/free_date:
+        one: Offre de la voie pro
+        other: Offres de la voie pro
+      internship_offers/api:
+        one: Offre API
+        other: Offres API
       sector:
         one: Secteur
         other: Secteurs
+      school:
+        one: Etablissement
+        other: Etablissements
       user:
         one: Utilisateur
         other: Utilisateurs
@@ -83,6 +104,11 @@ fr:
         other: Semaines
 
     attributes:
+      group:
+        created_at: Crée le
+        is_public: Secteur public/privé
+        name: Nom du groupe
+        updated_at: Mis à jour le
       school:
         name: Nom
         kind: Type
@@ -104,6 +130,7 @@ fr:
         total_main_teacher_count: Nbr. de PP
         human_school_manager: Chef d'établissement inscrit
         total_approved_internship_applications_count: Nbr. de candidatures acceptées
+        current_approved_internship_applications_count: Nbr. de candidatures acceptées
         full_address: "Adresse de l'établissement"
         full_weeks: Semaines
 
@@ -122,12 +149,9 @@ fr:
         title: Intitulé
         description: Description
         sector: Secteur
-        school_type: Niveau scolaire
+        school_track: Filière
         max_candidates: Nbr. max de candidats
         sector_id: Secteurs professionnels
-        internship_type:
-          middle_school: 'Collège'
-          high_school: 'Lycée'
 
 
       internship_offer:
@@ -164,14 +188,21 @@ fr:
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
         approved_applications_count: "Nbr. de candidatures acceptées"
-        submitted_applications_count: "Nbr. de candidatures en attentes"
-        rejected_applications_count: "Nbr. de candidatures rejectées"
+        submitted_applications_count: "Nbr. de candidatures en attente"
+        rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
         permalink: Association partenaire
+        sector_name: Secteur
+        full_school: Établissement
+        full_weeks: Semaines
+        full_tutor: Tuteur
+        full_employer: Employeur
+        full_address: Adresse de l'employeur
+
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
@@ -241,8 +272,8 @@ fr:
               too_long: La description doit faire au maximum 500 caractères
             sector:
               required: "Veuillez choisir un secteur pour l'offre de stage"
-            school_type:
-              required: "Veuillez choisir le niveau scolaire correspondant à l'offre de stage"
+            school_track:
+              required: "Veuillez choisir la filière correspondant à l'offre de stage"
             weeks:
               blank: Veuillez saisir des semaines de stage
 
@@ -276,8 +307,8 @@ fr:
               blank: "Missing city"
             sector:
               required: "Missing sector"
-            school_type:
-              blank: "Missing school_type"
+            school_track:
+              blank: "Missing school_track"
             weeks:
               blank: "Missing weeks"
             remote_id:
@@ -359,6 +390,12 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+    scopes:
+      _all: "Tous"
+      school:
+        with_manager: "Avec un chef d'etb"
+        without_manager: "Sans un chef d'etb"
+
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
@@ -374,11 +411,12 @@ fr:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
+      employer: "Offreur"
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3e générale'
-      troisieme_prepa_metier: '3e prépa métier'
+      troisieme_generale: '3ème'
+      troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
       bac_pro: 'Bac pro'
   date:

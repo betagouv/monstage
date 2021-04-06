@@ -9,7 +9,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('.alert-sticky')
   end
 
-  test 'can edit internship offer' do
+  def fill_in_trix_editor(id, with:)
+    find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
+  end
+
+  test 'employer can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
@@ -21,20 +25,46 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
+  test 'employer can edit school_track of an internship offer back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:bac_pro_internship_offer, employer: employer)
+    internship_offer_id = internship_offer.id
+    sign_in(employer)
+    visit edit_dashboard_internship_offer_path(internship_offer)
+    select '3ème', from: 'Filière cible'
+    find("label[for='all_year_long']").click
+    fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
+    click_on "Modifier l'offre"
+    wait_form_submitted
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::WeeklyFramed'
+
+    visit edit_dashboard_internship_offer_path(internship_offer)
+
+    select 'Bac pro', from: 'Filière cible'
+    fill_in 'internship_offer_title', with: 'editok'
+    find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
+    click_on "Modifier l'offre"
+    wait_form_submitted
+    internship_offer = InternshipOffer.find internship_offer_id
+    assert internship_offer.type == 'InternshipOffers::FreeDate'
+    assert_equal 'editok', internship_offer.title
+  end
+
   test 'employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
 
     week_with_school = Week.find_by(number: 10, year: 2019)
     week_without_school = Week.find_by(number: 11, year: 2019)
     create(:school, weeks: [week_with_school])
-    internship_offer = create(:weekly_internship_offer, employer: employer,weeks: [week_with_school])
+    internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
 
     sign_in(employer)
 
     travel_to(Date.new(2019, 3, 1)) do
       visit edit_dashboard_internship_offer_path(internship_offer)
-      find(".bg-success-20[data-week-id='#{week_with_school.id}']",count: 1)
-      find(".bg-dark-70[data-week-id='#{week_without_school.id}']",count: 1)
+      find(".bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
     end
   end
 
@@ -134,12 +164,10 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       assert_text('2019/2020 unpublished')
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
-      if ENV['CONVENTION_ENABLED']
-        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-        click_link('Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      end
+      page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      click_link('Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
     end
   end
 

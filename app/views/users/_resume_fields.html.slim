@@ -14,8 +14,8 @@
       .col-12.col-md-6
         .form-group
           .label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_other" data-controller="rich-text-label"
-            = 'Activités extra scolaires'
-            small.form-text.text-muted Sports, loisirs, engagement associatif, etc.
+            = 'Activités extra-scolaires'
+            small.form-text.text-muted Sports, loisirs, engagements associatifs, etc.
           = form.rich_text_area :resume_other, class: 'form-control col-12', disabled: disabled, rows: 3
       .col-12.col-md-6
         .form-group
@@ -29,12 +29,23 @@
     .row
       .col-12.col-md-6
         .form-group
-          = form.label :phone, for: 'phone-input' do
+          = form.label :phone, for: 'phone-input', class: '' do
             = 'Numéro de mobile'
           = react_component("CountryPhoneSelect", props: { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
       .col-12.col-md-6
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
-            small.form-text.text-muted L'employeur pourra vous recontacter par courrier électronique (celui de votre compte monstagedetroisieme.fr)
-          = form.email_field :email, class: 'form-control col-lg-12', required: true , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+
+          - if current_user.unconfirmed_email.nil?
+            = form.email_field :email, class: 'form-control col-lg-12', required: !current_user.phone , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+            small.form-text.text-muted.mb-1
+              |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
+          - else
+            = form.email_field :unconfirmed_email, class: 'form-control col-lg-12', readonly: true, disabled: true
+            small.form-text.mb-1
+              |Cet email n'est pas encore confirmé : veuillez consulter vos emails
+            = link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe,
+                      new_user_confirmation_path(current_user, email: current_user.unconfirmed_email),
+                      class: "small"
+

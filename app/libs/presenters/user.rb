@@ -19,6 +19,11 @@ module Presenters
       user.formal_name.to_s
     end
 
+    def civil_name
+      name = user.last_name.downcase.capitalize
+      user.gender == "m" ? "Monsieur #{name}}" : "Madame #{name}}"
+    end
+
     def role_name
       UserManagementRole.new(user: user).role
     end
@@ -34,8 +39,7 @@ module Presenters
         longitude: user.school.coordinates.lon,
         radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
       }
-      opts[:school_type] = :middle_school if user.try(:middle_school?)
-      opts[:school_type] = :high_school if user.try(:high_school?)
+      opts.merge!({school_track: user.try(:school_track)}) if user.try(:school_track)
       internship_offers_path(opts)
     end
 

@@ -28,7 +28,6 @@ module InternshipOffers
                     text: internship_offer.tutor_email
     end
 
-
     #
     # Student
     #
@@ -87,8 +86,8 @@ module InternshipOffers
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
       assert_select('a[href=?]',
-                    account_path(user: { missing_school_weeks_id: student.school.id }))
-      student.update(missing_school_weeks_id: school.id)
+                    account_path(user: {missing_weeks_school_id: student.school.id}))
+      student.update(missing_weeks_school_id: school.id)
       get internship_offer_path(create(:weekly_internship_offer))
 
       assert_response :success
@@ -160,6 +159,77 @@ module InternshipOffers
 
         assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
         assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
+      end
+    end
+
+    test 'GET #show display weeks that are opened to internships by SchoolManagement' do
+
+    end
+
+    test 'GET #show for student displays cumulated weeks' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_id = "#{coupled_weeks.first.id} - #{coupled_weeks.last.id}"
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: coupled_weeks)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
+      end
+    end
+
+    test 'GET #show for student displays cumulated weeks in two parts' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      coupled_weeks_2 = Week.from_date_to_date(
+        from: current_time.end_of_period - 8.weeks,
+        to: current_time.end_of_period - 6.weeks
+      )
+      weeks = coupled_weeks + coupled_weeks_2
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: weeks)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 12 avril 2021 au 18 avril 2021, du 19 avril 2021 au 25 avril 2021'
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
+      end
+    end
+
+    test 'GET #show for student displays school\'s available weeks only' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      travel_to(current_time.beginning_of_period) do
+        school = create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
+        sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible sur 2 semaines : du 10 mai 2021 au 16 mai 2021, du 17 mai 2021 au 23 mai 2021'
+      end
+    end
+
+    test 'GET #show for employer displays school\'s available weeks only' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      travel_to(current_time.beginning_of_period) do
+        create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
+        sign_in(internship_offer_week.employer)
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible du  7 septembre 2020 au  6 juin 2021'
       end
     end
 
@@ -439,6 +509,14 @@ module InternshipOffers
       sign_in(internship_offer.employer)
       get internship_offer_path(internship_offer)
       assert_response :success
+    end
+
+    test 'GET #show as Student when internship_offer is unpublished shall redirect to' do
+      internship_offer = create(:weekly_internship_offer)
+      internship_offer.update!(published_at: nil)
+      sign_in(create(:student))
+      get internship_offer_path(internship_offer)
+      assert_response :redirect
     end
 
     test 'GET #show as Employer displays internship_applications link' do

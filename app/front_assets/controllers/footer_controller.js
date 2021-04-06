@@ -16,7 +16,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.resize();
+    setTimeout(this.resize.bind(this), 0);
 
     if (!localStorage.getItem('fixedFooterShown')) {
       this.fixedContentTarget.classList.remove('d-none');

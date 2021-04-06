@@ -4,15 +4,13 @@
   br
 = f.select :speechers_quantity,
           options_for_select((1..15).to_a.map { |a| ["#{a} #{'intervenant'.pluralize(a)}", a] }),
-            { prompt: 'Nombre de vos intervenants' },
-          class: "form-control col-12"
+          { prompt: 'Nombre de vos intervenants' }, class: "form-control col-12"
 p.my-2
   = f.select :business_lines_quantity,
-            options_for_select((1..8).to_a.map { |a| ["#{a} #{'métier'.pluralize(a)}", a] }),
-              { prompt: 'Nombre de métiers abordés' },
-            class: "form-control col-12"
+             options_for_select((1..8).to_a.map { |a| ["#{a} #{'métier'.pluralize(a)}", a] }),
+             { prompt: 'Nombre de métiers abordés' }, class: "form-control col-12", 'aria-label': "Métiers abordés"
 p.mt-3
   .form-group.mx-2
     = f.check_box :paqte, class: 'pt-1'
     = f.label :paqte, class: 'form-check-label pl-2' do
-      |Votre entreprise fait partie du PaQte
+      |Votre entreprise est signataire du PaQte

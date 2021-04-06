@@ -55,19 +55,23 @@ module Users
       SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
     end
 
+    def custom_agreements_path
+      url_helpers.dashboard_school_internship_applications_path(school)
+    end
+
     private
 
     # validators
     def only_join_managed_school
       unless school.try(:school_manager).try(:present?)
-        errors[:base] << "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux."
+        errors.add(:base, "Le chef d'établissement ne s'est pas encore inscrit, il doit s'inscrire pour confirmer les professeurs principaux.")
       end
     end
 
     def official_email_address
       return if school_id.blank?
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
-        errors[:email] << "L'adresse email utilisée doit être officielle. ex: xxx@ac-MON_ACADEMIE.fr"
+        errors.add(:email, "L'adresse email utilisée doit être officielle. ex: xxx@ac-MON_ACADEMIE.fr")
       end
     end
 

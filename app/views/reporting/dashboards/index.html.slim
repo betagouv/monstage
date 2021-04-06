@@ -1,7 +1,7 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true}
+    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false}
     = render partial: 'reporting/school_years_filter'
 
   .row.mt-3
@@ -50,24 +50,24 @@
       - # bottom, soon in internship
       .card.my-5
         .card-body
-          h3.h5.text-dark.mb-1.card-title Établissements inscrits (avec semaine de stage à venir)
+          h3.h5.text-dark.mb-1.card-title Établissements inscrits
 
         table.table.mb-0.table-statistics.table-sticky-thead
           thead
             tr.tr-white
               th Nom de l'établissement
-              th Nbr. de PP
-              th Nbr. d'élèves
-              th Nbr. de candidature acceptées
+              th PP
+              th Élèves
+              th Candidatures acceptées
               th Semaines de stage
           tbody
-            - schools_with_weeks_and_internship.each do |school_with_weeks_and_internship|
-              tr id="test-school-with-manager-#{school_with_weeks_and_internship.id}"
-                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_weeks_and_internship }
-                td.align-middle= school_with_weeks_and_internship.total_main_teacher_count
-                td.align-middle= school_with_weeks_and_internship.total_student_count
-                td.align-middle= school_with_weeks_and_internship.total_approved_internship_applications_count(school_year: params[:school_year])
-                td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_weeks_and_internship.weeks }
+            - schools_with_manager.each do |school_with_manager|
+              tr id="test-school-with-manager-#{school_with_manager.id}"
+                td.align-middle= render partial: 'reporting/schools/table/td/name', locals: { school: school_with_manager }
+                td.align-middle= school_with_manager.total_main_teacher_count
+                td.align-middle= school_with_manager.total_student_count
+                td.align-middle= school_with_manager.total_approved_internship_applications_count(school_year: params[:school_year])
+                td.align-middle= render partial: 'reporting/schools/table/td/weeks', locals: { weeks: school_with_manager.weeks }
 
 
     .col-lg-6.col-12
@@ -91,13 +91,13 @@
             .d-flex.align-items-center.mb-4
               i.fa-fw.fas.fa-3x.fa-file-alt.text-warning
               span.ml-3 Offres proposées
-              span.ml-auto.h2.text-warning= total_internship_offers
+              span.ml-auto.h2.text-warning.pt-1= total_internship_offers
         .row
           .col-12
             .d-flex.align-items-center.mb-4
               i.fa-fw.far.fa-3x.fa-handshake.text-danger
               span.ml-3 Candidatures acceptées
-              span.ml-auto.h2.text-danger= total_approved_applications_count
+              span.ml-auto.h2.text-danger.pt-1= total_approved_applications_count
 
 
         - # middle, count publicy
@@ -106,14 +106,14 @@
             .d-flex.align-items-center.mb-4
               i.fa-fw.fas.fa-3x.fa-building.text-cyan
               span.ml-3 Secteur privé
-              span.ml-auto.h2.text-cyan= total_internship_offers_is_not_public
+              span.ml-auto.h2.text-cyan.pt-1= total_internship_offers_is_not_public
 
         .row
           .col-12
             .d-flex.align-items-center.mb-4
               i.fa-fw.fas.fa-3x.fa-university.text-blue-dark
               span.ml-3 Secteur public
-              span.ml-auto.h2.text-blue-dark= total_internship_offers_is_public
+              span.ml-auto.h2.text-blue-dark.pt-1= total_internship_offers_is_public
 
       .row.my-5
         .col-6

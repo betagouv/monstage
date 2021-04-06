@@ -3,11 +3,18 @@
 require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
+  include ThirdPartyTestHelpers
+
   test 'home' do
-    get root_path
-    assert_response :success
-    assert_template 'pages/home'
-    assert_select 'title', "Accueil | Monstage"
+    # write a mock : File.open(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump'), 'wb') { |fd| fd.write Marshal.dump(rs) }
+    # read a mock : Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
+    # mock with mock : PrismicFinder.stub(:homepage, mock_prismic)
+    prismic_root_path_stubbing do
+      get root_path
+      assert_response :success
+      assert_template 'pages/home'
+      assert_select 'title', "Accueil | Monstage"
+    end
   end
 
   test '10_commandements_d_une_bonne_offre' do
@@ -64,5 +71,11 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template 'pages/accessibilite'
     assert_select 'title', "Accessibilité | Monstage"
+  end
+
+  test 'GET pages#statistiques works' do
+    get statistiques_path
+    assert_response :success
+    assert_template 'pages/statistiques'
   end
 end

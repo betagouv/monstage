@@ -38,7 +38,7 @@ module Services
     end
 
     def destroy_contact(email:)
-      mailjet_user_id = read_contact(email: email).dig("Data", 0, "ID")
+      mailjet_user_id = send_read_contact(email: email).dig("Data", 0, "ID")
       response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
       return true if status?(200, response)
 
@@ -166,8 +166,8 @@ module Services
 
     # see: https://dev.mailjet.com/email/reference/overview/authentication/
     def default_headers
-      user = Credentials.enc(:mailjet, :apikey_public, prefix_env: false)
-      pass = Credentials.enc(:mailjet, :apikey_private, prefix_env: false)
+      user = Rails.application.credentials.dig(:mailjet, :apikey_public)
+      pass = Rails.application.credentials.dig(:mailjet, :apikey_private)
       auth = ActionController::HttpAuthentication::Basic.encode_credentials(user, pass)
 
       {

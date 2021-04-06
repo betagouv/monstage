@@ -3,11 +3,14 @@
   = "Vos élèves"
   br
 = f.select :class_rooms_quantity,
-          options_for_select((1..10).to_a.map { |a| ["#{a} #{'classe'.pluralize(a)}", a] }),
-            { prompt: 'Nombre de classes' },
-          class: "form-control col-12 mb-3",
-          placeholder: 'Indiquez le nombre de classes concernées'
-p.mb-2
+           options_for_select((1..10).to_a.map { |a| ["#{a} #{'classe'.pluralize(a)}", a] }),
+           { prompt: 'Nombre de classes' },
+           class: "form-control col-12 mb-3"
+.form-group.custom-label-container
   = f.text_field :students_quantity,
-                  placeholder: 'Nombre d\'élèves',
-                  class: "form-control col-12"
+                 class: "form-control col-12",
+                 required: true,
+                 'aria-label': "Nombre d'élèves"
+  = f.label :students_quantity
+    |Nombre d'élèves
+    = f.rg2a_required_content_tag

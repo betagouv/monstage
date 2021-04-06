@@ -52,6 +52,22 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET #index as student ignores internship_offers of another school_track than his' do
+    internship_offer_3em = create(:troisieme_generale_internship_offer, title: '3e')
+    internship_offer_bac = create(:bac_pro_internship_offer, title: 'bac')
+    school = create(:school, weeks: internship_offer_3em.weeks)
+    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+
+    sign_in(student)
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        get internship_offers_path
+        assert_presence_of(internship_offer: internship_offer_3em)
+        assert_absence_of(internship_offer: internship_offer_bac)
+      end
+    end
+  end
+
   test 'GET #index as statistician works' do
     statistician = create(:statistician)
     sign_in(statistician)
@@ -79,13 +95,30 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school)
     sign_in(student)
     get internship_offers_path
-    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
                                  count: 1
+  end
+
+  test 'GET #index as student when school.weeks are stale, shows warning' do
+    create(:weekly_internship_offer)
+    # 2019
+    school = create(:school, weeks: Week.weeks_of_school_year(school_year: 2019).to_a)
+    class_room = create(:class_room, school: school)
+    student = create(:student, school: school, class_room: class_room)
+    sign_in(student)
+    #2021
+    travel_to(Date.new(2021, 10, 1)) do
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        get internship_offers_path
+        assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
+                                     count: 1
+      end
+    end
   end
 
   test 'GET #index as visitor when school.weeks is empty, shows warning' do
     get internship_offers_path
-    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stages. Nous affichons des offres qui pourraient ne pas correspondre à vos dates.",
+    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
                                  count: 0
   end
 
@@ -137,7 +170,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index ignores internship_offers having ' \
+  test 'GET #index as student ignores internship_offers having ' \
        'as much internship_application as max_candidates number' do
     max_candidates = 1
     week = Week.first
@@ -158,7 +191,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index keeps internship_offers having ' \
+  test 'GET #index as student keeps internship_offers having ' \
        'as less than blocked_applications_count as max_candidates number' do
     max_candidates = 2
     internship_offer = create(:weekly_internship_offer,
@@ -176,7 +209,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index finds internship_offers available with one week that is not available' do
+  test 'GET #index as student finds internship_offers available with one week that is not available' do
     max_candidates = 1
     internship_weeks = [Week.first, Week.last]
     school = create(:school, weeks: internship_weeks)
@@ -194,9 +227,12 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index ignores internship_offers not blocked on different week that is not available' do
+  test 'GET #index as student ignores internship_offers not blocked on different week that is not available' do
     max_candidates = 1
-    internship_weeks = [Week.first, Week.last]
+    internship_weeks = [
+      Week.selectable_from_now_until_end_of_school_year.first,
+      Week.selectable_from_now_until_end_of_school_year.last
+    ]
     school = create(:school, weeks: [internship_weeks[0]])
     blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                             week: internship_weeks[0])
@@ -215,7 +251,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index finds internship_offers blocked on other weeks' do
+  test 'GET #index as student finds internship_offers blocked on other weeks' do
     max_candidates = 1
     internship_weeks = [Week.first, Week.last]
     school = create(:school, weeks: [internship_weeks[1]])
