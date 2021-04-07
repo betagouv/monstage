@@ -10,7 +10,7 @@ module Users
 
     has_many :internship_applications, through: :kept_internship_offers
 
-    has_many :organisations
+    has_many :organisations, through: :internship_offers
 
     has_many :internship_offer_infos
 

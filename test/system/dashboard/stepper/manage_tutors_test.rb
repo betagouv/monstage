@@ -28,7 +28,6 @@ class ManageTutorsTest < ApplicationSystemTestCase
       end
     end
     assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'User', InternshipOffer.first.employer_type
     assert_equal 'troisieme_generale', InternshipOffer.last.school_track
   end
 
@@ -47,7 +46,6 @@ class ManageTutorsTest < ApplicationSystemTestCase
       end
     end
     assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'User', InternshipOffer.first.employer_type
     assert_equal 'bac_pro', InternshipOffer.last.school_track
   end
 end

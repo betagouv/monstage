@@ -11,7 +11,8 @@ module Users
               unless: :from_api?
 
     # linked via stepper
-    has_many :internship_offer
+    has_many :internship_offers
+    has_many :organisations, through: :internship_offers
 
     def from_api?
       false

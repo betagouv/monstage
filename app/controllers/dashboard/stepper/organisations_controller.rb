@@ -57,7 +57,7 @@ module Dashboard::Stepper
               :group_id,
               :organisation_autocomplete,
               coordinates: {})
-            .merge(employer_id: current_user.id)
+-           .merge(employer_id: current_user.id)
     end
   end
 end

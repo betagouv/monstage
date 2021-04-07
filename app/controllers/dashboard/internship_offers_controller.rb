@@ -172,7 +172,8 @@ module Dashboard
 
                     week_ids: [],
                     new_daily_hours: {},
-                    weekly_hours:[])
+                    weekly_hours:[],
+                    tutor_attributes: {})
     end
   end
 end
