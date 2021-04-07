@@ -11,10 +11,6 @@ class InternshipApplication < ApplicationRecord
                        foreign_key: 'user_id'
   has_one :internship_agreement
 
-  validates :motivation,
-            presence: true,
-            if: :new_format?
-
   validates :student, uniqueness: { scope: :internship_offer_week_id }
 
   delegate :update_all_counters, to: :internship_application_counter_hook
