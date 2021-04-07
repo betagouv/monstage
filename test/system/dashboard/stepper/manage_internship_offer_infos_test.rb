@@ -9,7 +9,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
   test 'can create InternshipOfferInfos::WeeklyFramed' do
     sector = create(:sector)
     employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::WeeklyFramed.count' do
@@ -29,7 +29,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
 
   test 'employer can see which week is choosen by nearby schools in stepper' do
     employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     week_with_school = Week.find_by(number: 10, year: 2019)
     week_without_school = Week.find_by(number: 11, year: 2019)
     create(:school, weeks: [week_with_school])
@@ -47,7 +47,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
   test 'can create InternshipOfferInfos::FreeDate' do
     sector = create(:sector)
     employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     assert_difference 'InternshipOfferInfos::FreeDate.count' do
@@ -65,7 +65,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
   test 'create internship offer info fails gracefuly' do
     sector = create(:sector)
     employer = create(:employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     sign_in(employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     travel_to(Date.new(2019, 3, 1)) do

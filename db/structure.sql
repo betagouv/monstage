@@ -848,7 +848,7 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    creator_id bigint NOT NULL
 );
 
 
@@ -1067,7 +1067,6 @@ CREATE TABLE public.users (
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
-    organisation_id bigint,
     banners jsonb DEFAULT '{}'::jsonb
 );
 
@@ -1813,13 +1812,6 @@ CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree 
 
 
 --
--- Name: index_users_on_organisation_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_organisation_id ON public.users USING btree (organisation_id);
-
-
---
 -- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2069,7 +2061,7 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 --
 
 ALTER TABLE ONLY public.organisations
-    ADD CONSTRAINT fk_rails_f1474651e9 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+    ADD CONSTRAINT fk_rails_f1474651e9 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -2298,9 +2290,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201125102052'),
 ('20201201140201'),
 ('20201202082705'),
+('20201203153154'),
 ('20201211094310'),
 ('20201224153839'),
-('20201203153154'),
 ('20210112164129'),
 ('20210113140604'),
 ('20210121171025'),
@@ -2308,6 +2300,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210128162938'),
 ('20210129121617'),
 ('20210224160904'),
-('20210310173554');
+('20210310173554'),
+('20210407131810'),
+('20210407132925');
 
 

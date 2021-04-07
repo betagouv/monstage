@@ -10,7 +10,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       travel_to(Date.new(2019, 3, 1)) do
-        organisation = create(:organisation, employer: employer)
+        organisation = create(:organisation, creator_id: employer.id)
         internship_offer_info = create(:internship_offer_info)
         get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                              internship_offer_info_id: internship_offer_info.id)
@@ -23,7 +23,7 @@ module Dashboard::Stepper
     test 'GET #new as employer show default values' do
       employer = create(:employer)
       sign_in(employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       internship_offer_info = create(:internship_offer_info)
       get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                             internship_offer_info_id: internship_offer_info.id)
@@ -38,7 +38,7 @@ module Dashboard::Stepper
 
     test 'GET #new as visitor redirects to internship_offers' do
       employer = create(:employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       internship_offer_info = create(:internship_offer_info)
       get new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                             internship_offer_info_id: internship_offer_info.id)
@@ -48,7 +48,7 @@ module Dashboard::Stepper
     test 'POST #createas visitor redirects to internship_offers' do
       employer = create(:employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       post(
         dashboard_stepper_tutors_path(organisation_id: organisation.id,
                                        internship_offer_info_id: internship_offer_info.id),
@@ -61,7 +61,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
 
       assert_enqueued_jobs 0, only: SendSmsJob do
         assert_difference('InternshipOffer.count', 1) do
@@ -170,7 +170,7 @@ module Dashboard::Stepper
       another_employer = create(:employer)
       sign_in(employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
 
       assert_difference('InternshipOffer.count', 1) do
         assert_difference('Users::Tutor.count', 0) do
@@ -194,7 +194,7 @@ module Dashboard::Stepper
       employer = create(:employer)
       sign_in(employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
 
       assert_difference('InternshipOffer.count', 1) do
         assert_difference('Users::Tutor.count', 0) do
@@ -217,7 +217,7 @@ module Dashboard::Stepper
       sign_in(employer)
       school = create(:school)
       internship_offer_info = create(:free_date_internship_offer_info)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       mock_mail = MiniTest::Mock.new
       mock_mail.expect(:deliver_later, true)
 
@@ -250,7 +250,7 @@ module Dashboard::Stepper
       school = create(:school)
       employer = create(:employer)
       internship_offer_info = create(:weekly_internship_offer_info, employer: employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       internship_offer = build(:weekly_internship_offer, employer: employer)
       sign_in(employer)
       assert_difference('InternshipOffer.count', 1) do
@@ -271,7 +271,7 @@ module Dashboard::Stepper
     test 'POST #create as employer with missing params' do
       employer = create(:employer)
       sign_in(employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       internship_offer_info = create(:internship_offer_info)
       post(
         dashboard_stepper_tutors_path(organisation_id: organisation.id,

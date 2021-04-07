@@ -47,7 +47,7 @@ module Dashboard::Stepper
       assert_equal 'Paris', created_organisation.city
       assert_equal 'Activités de découverte', created_organisation.employer_description_rich_text.to_plain_text.to_s
       assert_equal 'www.website.com', created_organisation.employer_website
-      assert_equal employer.id, created_organisation.employer_id
+      assert_equal employer.id, created_organisation.creator_id
       assert_equal true, created_organisation.is_public
 
       assert_redirected_to new_dashboard_stepper_internship_offer_info_path(organisation_id: created_organisation.id)

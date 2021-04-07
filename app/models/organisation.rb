@@ -2,7 +2,7 @@ class Organisation < ApplicationRecord
   include StepperProxy::Organisation
 
   # for ACL
-  belongs_to :employer, class_name: 'User'
+  belongs_to :creator, class_name: 'User'
 
   has_many :employers, class_name: 'User', through: :internship_offers
   has_many :tutors, class_name: 'User', through: :internship_offers

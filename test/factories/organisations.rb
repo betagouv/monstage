@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organisation do
-    employer
+    association :creator, factory: :employer
     employer_name { "MyCorp" }
     employer_website { "https://website.com" }
     employer_description { "MyText" }

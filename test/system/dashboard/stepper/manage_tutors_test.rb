@@ -13,7 +13,7 @@ class ManageTutorsTest < ApplicationSystemTestCase
   test 'can create "3e generale" InternshipOffer' do
     employer = create(:employer)
     sign_in(employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
@@ -34,7 +34,7 @@ class ManageTutorsTest < ApplicationSystemTestCase
   test 'can create "3e segpa" InternshipOffer' do
     employer = create(:employer)
     sign_in(employer)
-    organisation = create(:organisation, employer: employer)
+    organisation = create(:organisation, creator_id: employer.id)
     internship_offer_info = create(:bac_pro_internship_offer_info, employer: employer)
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do

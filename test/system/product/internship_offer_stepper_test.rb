@@ -21,7 +21,7 @@ module Product
 
     test 'new_dashboard_stepper_internship_offer_info_path' do
       employer = create(:employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       sector = create(:sector)
       available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
       sign_in(employer)
@@ -39,7 +39,7 @@ module Product
     test 'new_dashboard_stepper_tutor_path' do
       employer = create(:employer)
       sign_in(employer)
-      organisation = create(:organisation, employer: employer)
+      organisation = create(:organisation, creator_id: employer.id)
       internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
 
       run_request_and_cache_response(report_as: 'new_dashboard_stepper_tutor_path') do

@@ -15,7 +15,7 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
     employer              = create(:employer)
     group                 = create(:group, name: 'hello', is_public: true)
     sector                = create(:sector)
-    # organisation          = create(:organisation, employer: employer)
+    # organisation          = create(:organisation, creator_id: employer.id)
     # internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
     available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
     travel_to(Date.new(2019, 3, 1)) do

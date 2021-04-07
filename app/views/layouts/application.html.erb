@@ -42,7 +42,7 @@
       <% end %>
     </div>
     <footer role="contentinfo" >
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
+      <div class="footer <%= onboarding_flow? ? 'bt-1 bt-light' : '' %> <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
         <div class="container">
           <%= render 'layouts/footer' %>
         </div>
