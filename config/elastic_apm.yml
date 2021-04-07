@@ -1,0 +1,2 @@
+server_url: <%= Rails.application.credentials.dig(:apm, :server_url) %>
+secret_token: <%= Rails.application.credentials.dig(:apm, :secret_token) %>

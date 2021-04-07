@@ -42,7 +42,6 @@
             "version": "12"
           }
         },
-        { "plan": "newrelic:wayne" },
         { "plan": "papertrail:choklad" },
         { "plan": "scheduler:standard" },
         { "plan": "mailtrap:unpaid" }

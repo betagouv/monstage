@@ -3,7 +3,7 @@
   h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
   p
     |
-      Nos associations partenaires vous proposent des solutions de stage
+      Nos associations partenaires vous proposent des solutions de stages
       à distance, et peuvent vous accompagner dans leur mise en place.
 - if current_user.is_a?(Users::SchoolManagement)
   = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}

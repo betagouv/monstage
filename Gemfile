@@ -37,8 +37,8 @@ gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 # instrumentation
-gem 'newrelic_rpm'
-gem 'sentry-raven'
+gem "lograge"
+gem 'elastic-apm'
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
 

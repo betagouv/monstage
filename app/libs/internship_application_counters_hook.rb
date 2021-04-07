@@ -44,7 +44,11 @@ class InternshipApplicationCountersHook
   end
 
   def total_custom_track_approved_applications_count
-    internship_offer.internship_applications.joins(:student).select(&:approved?).select(&:student_is_custom_track?).count
+    internship_offer.internship_applications
+                    .joins(:student)
+                    .select(&:approved?)
+                    .select(&:student_is_custom_track?)
+                    .count
   end
 
   def rejected_applications_count

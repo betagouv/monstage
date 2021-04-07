@@ -26,6 +26,9 @@ RailsAdmin.config do |config|
   config.authorize_with :cancancan
 
   config.parent_controller = 'AdminController'
+  config.model 'User' do
+    navigation_icon 'icon-user'
+  end
 
   ## == PaperTrail ==
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
@@ -61,6 +64,8 @@ RailsAdmin.config do |config|
                               InternshipOffers::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
+                              Organisation
+                              Tutor
                               Users::Student
                               Users::SchoolManagement
                               Users::Statistician
