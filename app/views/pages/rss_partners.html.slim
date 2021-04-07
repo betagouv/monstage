@@ -33,7 +33,7 @@
                 p.card-text.text-left = post.summary.html_safe
           -else
             .card.rss-style.p-2.border-rounded.my-4.large
-              .row.mb-1
+              .row.mb-1.p-2
                 .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
                   = link_to post.fetch_blog_url
                     = image_tag asset_pack_path("media/images/homepage/partenaires/#{post.logo}"),
