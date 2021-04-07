@@ -84,19 +84,17 @@ module Services
 
   class RssPostList
     PARTNERS = [
-      {  name: 'telemaque',
-         logo: 'Logo-telemaque-color.png',
-         rss_url: 'https://www.telemaque.org/feed/',
-         blog_url: 'https://www.telemaque.org/blog' },
       { name: 'jobirl',
         logo: 'Logo-jobirl-color.png',
-        rss_url: 'https://www.jobirl.com/blog/feed/',
-         blog_url: 'https://www.telemaque.org' }
+        rss_url: 'https://www.jobirl.com/blog/feed/'},
+      {  name: 'telemaque',
+         logo: 'Logo-telemaque-color.png',
+         rss_url: 'https://www.telemaque.org/feed/' },
     ]
 
     def fetch_news_list
       self.news_list = PARTNERS.inject([]) do |sum, partner|
-        PartnerPosts.new(partner: partner).get_news
+        sum += PartnerPosts.new(partner: partner).get_news
       end
     end
 
