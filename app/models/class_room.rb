@@ -41,6 +41,6 @@ class ClassRoom < ApplicationRecord
     )
   end
   alias archive anonymize
-  
+
   def anonymized? ; anonymized; end
 end
