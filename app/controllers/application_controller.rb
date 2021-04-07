@@ -26,3 +26,4 @@ class ApplicationController < ActionController::Base
     @user_presenter ||= Presenters::User.new(current_user_or_visitor)
   end
 end
+

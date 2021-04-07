@@ -105,4 +105,10 @@ Rails.application.routes.draw do
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
 
   root to: 'pages#home'
+
+  if Rails.env.production?
+    get '/404', to: 'errors#page_not_found'
+    get '/422', to: 'errors#unacceptable_request'
+    get '/500', to: 'errors#server_error'
+  end
 end
