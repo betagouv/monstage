@@ -274,50 +274,5 @@ module Dashboard
       click_link('Conventions de stage')
       refute page.has_content?(student.first_name)
     end
-
-
-    test 'mere teachers cannot reach Convention à signer' do
-      internship_offer = create(:weekly_internship_offer)
-      school           = create(:school, :with_school_manager)
-      class_room       = create(:class_room, school: school)
-      teacher          = create(:teacher, school: school, class_room: class_room)
-      student          = create(:student, school: school, class_room: class_room)
-      ability          = Ability.new(teacher)
-      internship_application = create(:weekly_internship_application,
-                                      :approved,
-                                      student: student,
-                                      internship_offer: internship_offer
-                                      )
-      sign_in(teacher)
-      visit teacher.custom_dashboard_path
-      assert page.has_content?('Semaines')
-      assert ability.cannot?(:create, InternshipAgreement)
-      refute page.has_content?('Conventions de stage')
-    end
-
-    #since they do not care about the same students
-    test 'main_teachers cannot see other\'s main_teachers agreements' do
-      internship_offer = create(:weekly_internship_offer)
-      school           = create(:school, :with_school_manager)
-      class_room       = create(:class_room, school: school)
-      class_room_2     = create(:class_room, school: school)
-      main_teacher     = create(:main_teacher, school: school, class_room: class_room)
-      main_teacher_2   = create(:main_teacher, school: school, class_room: class_room_2)
-      student          = create(:student, school: school, class_room: class_room)
-      ability          = Ability.new(main_teacher_2)
-      internship_application = create(:weekly_internship_application,
-                                      :approved,
-                                      student: student,
-                                      internship_offer: internship_offer
-                                      )
-      sign_in(main_teacher_2)
-      visit main_teacher_2.custom_dashboard_path
-      find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: main_teacher_2.dashboard_name).click
-      assert page.has_content?('Semaines')
-      assert ability.can?(:create, InternshipAgreement)
-      assert page.has_content?('Conventions de stage')
-      click_link('Conventions de stage')
-      refute page.has_content?(student.first_name)
-    end
   end
 end

@@ -40,6 +40,7 @@ class SupportTicketTest < ApplicationSystemTestCase
     sign_in(employer)
 
     visit employer.custom_dashboard_path
+
     within('.bg-cover-image-remote-internship') do
       click_link('Nous contacter')
     end
