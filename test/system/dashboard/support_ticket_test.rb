@@ -10,7 +10,9 @@ class SupportTicketTest < ApplicationSystemTestCase
     sign_in(school_manager)
 
     visit school_manager.custom_dashboard_path
-    click_link('Contactez-nous !')
+    within('.bg-cover-image-remote-internship') do
+      click_link('Nous contacter')
+    end
     find('.h4.text-body', text: "Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.")
     click_on "Envoyer la demande"
 
@@ -38,7 +40,10 @@ class SupportTicketTest < ApplicationSystemTestCase
     sign_in(employer)
 
     visit employer.custom_dashboard_path
-    click_link('Contactez-nous !')
+
+    within('.bg-cover-image-remote-internship') do
+      click_link('Nous contacter')
+    end
     find('.h4.text-body', text: "Vous souhaitez participer à la mise en place de stages à distance ?")
 
     click_on "Envoyer la demande"

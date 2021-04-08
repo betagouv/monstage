@@ -1,7 +1,9 @@
 = render partial: 'dashboard/schools/navbar', locals: { school: @school }
 .row
   .col-12
-    h2.h3.mt-4.mb-0.dark-grey Editer, imprimer et bientôt signer les conventions dématérialisées
+
+    h2.h3.mt-4.dark-grey.title-with-button-line
+      |Editer, imprimer et bientôt signer les conventions dématérialisées
 
 - unless @school.internship_agreement_preset.filled?
   = render partial: "dashboard/schools/internship_agreement_presets/short_form", locals: { school: @school, internship_agreement_preset: @school.internship_agreement_preset }
