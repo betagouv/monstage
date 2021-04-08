@@ -2,6 +2,7 @@ import './favicon.png';
 import './logo-mon-stage-3e.svg';
 import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
+import './notice_people.svg';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
