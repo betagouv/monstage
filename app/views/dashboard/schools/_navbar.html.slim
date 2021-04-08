@@ -3,11 +3,12 @@
 - badge_counter = Finders::TabNull.new if badge_counter.nil?
 
 - if can? :create_remote_internship_request, SupportTicket
-  = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
-.row
+    .row= render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
+
+.row.mb-2
   .col-12
     .d-flex style="align-items: baseline"
-      h1.h3.title-with-button-line.mr-3= school.name
+      h1.h3.mr-3= school.name
       a.ml-2.text-danger href="#{account_path(section: 'school')}" Modifier
 
     -if defined?(render_ux_guidelines)
@@ -45,12 +46,6 @@
           = link_to new_dashboard_support_ticket_path,
                     class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
             | Stages à distance
-
-      - if can?(:edit, school.internship_agreement_preset)
-        li.nav-item
-          = link_to edit_dashboard_school_internship_agreement_preset_path(school, school.internship_agreement_preset),
-                    class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_internship_agreement_preset_path(school, school.internship_agreement_preset))  ? 'active' : ''}" do
-            | Gérer mon établissement
 
 
 
