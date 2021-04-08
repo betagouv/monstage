@@ -394,13 +394,18 @@ fr:
       first: Première page
       next: Page suivante
       previous: Page précédente
+  agreement_roles:
+    employer: "Entreprise"
+    school_manager: "Chef d'établissement"
+    teacher: "Professeur"
+    main_teacher: "Professeur principal"
+    other: "Autre fonction"
 
   enum:
     roles:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
-      employer: "Offreur"
       other: "Autre fonction"
 
     school_tracks:
