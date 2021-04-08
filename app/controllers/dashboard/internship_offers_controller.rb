@@ -149,8 +149,8 @@ module Dashboard
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id, :employer_description_rich_text,
-                    :school_track, coordinates: {}, week_ids: [],
-                    new_daily_hours: {}, weekly_hours:[])
+                    :school_track, :weekly_lunch_break, coordinates: {}, week_ids: [],
+                    new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
     end
   end
 end

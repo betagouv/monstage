@@ -72,4 +72,10 @@ class PagesTest < ActionDispatch::IntegrationTest
     assert_template 'pages/accessibilite'
     assert_select 'title', "Accessibilité | Monstage"
   end
+
+  test 'GET pages#statistiques works' do
+    get statistiques_path
+    assert_response :success
+    assert_template 'pages/statistiques'
+  end
 end

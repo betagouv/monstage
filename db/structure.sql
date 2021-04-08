@@ -364,7 +364,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    anonymized boolean DEFAULT false
 );
 
 
@@ -510,7 +511,9 @@ CREATE TABLE public.internship_agreements (
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     main_teacher_accept_terms boolean DEFAULT false,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    school_delegation_to_sign_delivered_at date
+    school_delegation_to_sign_delivered_at date,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -631,7 +634,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -778,7 +783,10 @@ CREATE TABLE public.internship_offers (
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -848,7 +856,8 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -1491,6 +1500,13 @@ CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active
 --
 
 CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
 
 
 --
@@ -2269,6 +2285,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210121172155'),
 ('20210128162938'),
 ('20210129121617'),
-('20210224160904');
-
+('20210224160904'),
+('20210225164349'),
+('20210310173554'),
+('20210326100435');
 

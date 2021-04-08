@@ -13,6 +13,8 @@ class ClassRoom < ApplicationRecord
     end
   end
 
+  scope :current, -> {where(anonymized: false)}
+
   def fit_to_weekly?
     try(:troisieme_generale?)
   end
@@ -32,5 +34,13 @@ class ClassRoom < ApplicationRecord
     name
   end
 
+  def anonymize
+    update_columns(
+      anonymized: true,
+      name: 'classe archivée'
+    )
+  end
+  alias archive anonymize
 
+  def anonymized? ; anonymized; end
 end
