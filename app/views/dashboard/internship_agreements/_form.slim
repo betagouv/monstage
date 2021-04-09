@@ -7,12 +7,12 @@ tbody
         .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
 
       fieldset
-        legend.h4.w-75 Convention relative à l’organisation de séquence d’observation en milieu professionnel
+        legend.h4.col-7.px-0 Convention relative à l’organisation de séquence d’observation en milieu professionnel
         = form.hidden_field :internship_application_id, value: resource.internship_application_id
         = form.hidden_field :school_track, value: resource.school_track
 
         .row.mt-3
-          .col-8
+          .col-7
             p
               | Vu le code du travail, et notamment son article L.211-1 ;
               br
@@ -26,7 +26,7 @@ tbody
               br
               | Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
         .row.mt-3
-          .col-8
+          .col-7
             p
               strong ENTRE
 
@@ -53,7 +53,7 @@ tbody
                    locals: { field: :school_delegation_to_sign_delivered_at, form: form, text_label: label, hint: hint, title: title, content: content}
 
         .row.mt-3
-          .col-8
+          .col-7
             p
              strong il a été convenu ce qui suit :
 
@@ -70,19 +70,19 @@ tbody
                    locals: { field: :legal_terms_rich_text, form: form, title: title, content: content, text_label: label }
 
         .row.mt-3
-          .col-8
+          .col-7
             .h4 role="heading" aria-level="2" TITRE II - DISPOSITIONS PARTICULIÈRES
         .row.mt-3
-          .col-8
+          .col-7
             .h5 role="heading" aria-level="3" A - Convention de preuve
-          .col-8
+          .col-7
             .h6.font-weight-bold role="heading" aria-level="4" Article 10 -
             ul
               li Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier.
               li  Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée.
 
         .row.mt-3
-          .col-8
+          .col-7
             .h5 role="heading" aria-level="3" B - Annexe pédagogique
         .row.mt-3
           - label = "Nom de l’élève ou des élèves concerné(s) :"
@@ -125,13 +125,13 @@ tbody
                    locals: { field: :date_range, form: form, text_label: label, content: content, title: title }
 
         .row.mt-3
-          .col-8
+          .col-7
             .form-group.schedules
               .label
                  = "HORAIRES journaliers de l’élève"
                  = form.rg2a_required_content_tag
               = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
-          .col-4
+          .col-3.offset-2
             div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
               .title = "Note destinée à l'entreprise"
               span = "Horaires de l'élèves"
@@ -182,7 +182,7 @@ tbody
                    locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content }
 
         .row.mt-3
-          .col-8
+          .col-7
             p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
         .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
                  locals: {form: form}

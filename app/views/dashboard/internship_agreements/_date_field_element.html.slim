@@ -3,7 +3,7 @@
 - hint = hint || ''
 - title = title || ''
 - content = content || ''
-.col-8
+.col-7
   .form-group.mb-0 data-controller="a11y-date-input"
     = form.label field do
       span.mb-2= text_label
@@ -28,7 +28,7 @@
 
     small.form-text.text-danger.d-none data-a11y-date-input-target="errorContainer"
 
-.col-4
+.col-3.offset-2
   - if title.present? && content.present?
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title

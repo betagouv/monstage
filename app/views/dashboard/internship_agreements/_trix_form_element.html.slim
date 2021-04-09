@@ -1,7 +1,7 @@
 - edit_enable = can?("edit_#{field}".to_sym, form.object)
 - class_label = class_label || ''
 
-.col-8
+.col-7
   .form-group
 
     div [class="label #{class_label}"
@@ -24,7 +24,7 @@
         = form.rich_text_area field,
                               class: 'form-control editable-form-field'
 - if title.present? && content.present?
-  .col-4
+  .col-3.offset-2
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title
       span = content.html_safe
