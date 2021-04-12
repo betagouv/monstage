@@ -8,7 +8,7 @@ module InternshipAgreementsHelper
 
   def agreement_form?
     return false unless controller.controller_name == 'internship_agreements'
-    return false unless ['new', 'edit'].include?(controller.action_name)
+    return false unless ['new', 'edit', 'update'].include?(controller.action_name)
     return true
   end
 end

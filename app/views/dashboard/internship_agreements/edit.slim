@@ -2,7 +2,7 @@
 = form_with model: @internship_agreement,
                   url: dashboard_internship_agreement_path(@internship_agreement),
                   class: 'form-offset-header',
-                  html: {'data-controller': 'internship-agreement-form'} do |form|
+                  html: {'data-controller': 'internship-agreement-form'}, local: true do |form|
   table.table-sticky-thead
     = render partial: 'dashboard/internship_agreements/form_header',
          locals: { internship_application: @internship_agreement.internship_application,
