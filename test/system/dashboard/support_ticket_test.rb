@@ -44,7 +44,7 @@ class SupportTicketTest < ApplicationSystemTestCase
     within('.bg-cover-image-remote-internship') do
       click_link('Nous contacter')
     end
-    find('.h4.text-body', text: "Vous souhaitez participer à la mise en place de stages à distance ?")
+    find('.h4.text-body', text: "Faites votre demande et participez à l'élaboration d’un stage à distance.")
 
     click_on "Envoyer la demande"
 
