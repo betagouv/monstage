@@ -1,10 +1,12 @@
 tbody
   tr
     td
-      = render "layouts/form_errors", resource: resource
 
       .row.mt-4.align-items-center
         .col-4= form.rg2a_explain_required_asterisk(p_class_name: "mb-0")
+
+      .row
+        .col-8= render "layouts/form_errors", resource: resource
 
       fieldset
         legend.h4.col-7.px-0 Convention relative à l’organisation de séquence d’observation en milieu professionnel
@@ -174,7 +176,7 @@ tbody
                     "l'élève par l'établissement"
           - title = "Note destinée au chef d'établissement et à l'entreprise"
           - if current_user.school_manager?
-            - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset)}."
+            - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset), class: 'text-white'}."
           - else
             - content = "Toutes les modalités pratiques du stage."
 
@@ -184,5 +186,9 @@ tbody
         .row.mt-3
           .col-7
             p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
+
+        .row
+          .col-8= render "layouts/form_errors", resource: resource
+
         .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
                  locals: {form: form}

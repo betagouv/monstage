@@ -44,13 +44,13 @@ div data-controller="daily-hours"
           = select_tag :"#{form.object_name}[weekly_hours][]",
                         options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_weekly_end(form.object)),
                         { :include_blank => '--', class: "form-control", aria: { label: "Selectionner une heure de debut de stage pour tous les jours de la semaine" }, id: "#{form.object_name}_weekly_hours_end" }
-      .col-12.mt-2 
+      .col-12.mt-2
         .form-group
           = form.label :weekly_lunch_break do
             = "Pause déjeuner"
             small.form-text.text-muted
               | Indiquez les horaires et qui est responsable de l'élève.
-          
+
           = form.text_area :weekly_lunch_break, class: "form-control", placeholder: "12h -13h dans les locaux…"
 
   #daily-planning[class="mt-3 #{'d-none' unless form.object.new_daily_hours.present?}"]
@@ -79,12 +79,12 @@ div data-controller="daily-hours"
             = select_tag :"#{form.object_name}[new_daily_hours][#{weekday}][]",
                           options_for_select((13..19).map{|h| "#{h}:00"}, selected: select_daily_end(form.object, i)),
                           {:include_blank => '--', class: "form-control", aria: { label:"Selectionner une heure de debut de fin pour le #{weekday.capitalize}" }, id: "#{form.object_name}_new_daily_hours_#{weekday}_end"}
-      
-        .col-12.mt-2  
+
+        .col-12.mt-2
           .form-group
             = form.label :"daily_lunch_break[#{weekday}]" do
               = "Pause déjeuner"
               small.form-text.text-muted
                 | Indiquez les horaires et qui est responsable de l'élève.
-            
+
             = form.text_area :"daily_lunch_break[#{weekday}]", value: form.object.daily_lunch_break[weekday], class: "form-control", placeholder: "12h -13h dans les locaux…"
