@@ -1,5 +1,6 @@
 - forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order, :direction, :keyword)
-- badge_counter = Finders::TabEmployer.new(user: current_user)
+- badge_counter = Finders::TabEmployer.new(user: current_user) if current_user.is_a?(Users::Employer)
+- badge_counter = Finders::TabTutor.new(user: current_user) if current_user.is_a?(Users::Tutor)
 .row.no-gutters
   ul.nav.nav-tabs.test-dashboard-nav.badge_counter-light.nav-xs-inline.col-12
     - is_active = controller_name == 'internship_offers' && params[:filter].blank?
