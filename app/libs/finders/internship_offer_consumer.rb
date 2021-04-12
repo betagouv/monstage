@@ -5,9 +5,10 @@ module Finders
   class InternshipOfferConsumer < ContextTypableInternshipOffer
     def mapping_user_type
       {
+        Users::Visitor.name => :visitor_query,
         Users::Operator.name => :visitor_query,
         Users::Employer.name => :visitor_query,
-        Users::Visitor.name => :visitor_query,
+        Users::Tutor.name => :visitor_query,
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,

@@ -187,7 +187,20 @@ class Ability
   end
 
   def tutor_abilities(user:)
+    can %i[index read], Acl::InternshipOfferDashboard
+    can %i[update], Users::Tutor
     can %i[index update], InternshipApplication
+    can %i[see_tutor], InternshipOffer do |offer|
+      offer.tutor == user
+    end
+    can %i[
+      create
+      index
+      update
+      see_intro
+      edit_tutor_full_name], InternshipAgreement do |agreement|
+      agreement.internship_application.internship_offer.tutor == user
+    end
   end
 
   def statistician_abilities

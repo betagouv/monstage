@@ -241,4 +241,32 @@ class AbilityTest < ActiveSupport::TestCase
     refute(ability.can?(:create_remote_internship_request, SupportTicket),
           'operators are not supposed to fill forms for remote internships support')
   end
+
+  test 'Tutor' do
+    internship_application = create(:weekly_internship_application)
+    internship_offer = internship_application.internship_offer
+    tutor = internship_offer.tutor
+    internship_agreement = create(:troisieme_generale_internship_agreement,
+                                  :created_by_system,
+                                  internship_application: internship_application)
+    ability = Ability.new(tutor)
+
+    assert(ability.cannot?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:index, internship_application))
+    assert(ability.cannot?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    # TODO Confirm 'create' is the correct wording
+    assert(ability.can?(:create, InternshipAgreement))
+
+    %i[
+      update
+      see_intro
+    ].each do |meth|
+      assert(ability.can?(meth, internship_agreement))
+    end
+  end
 end

@@ -6,6 +6,8 @@ module Presenters
         'Elève'
       when Users::Employer
         'Offreur'
+      when Users::Tutor
+        'Tuteur'
       when Users::God
         'Dieu'
       when Users::Operator
