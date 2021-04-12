@@ -123,6 +123,7 @@ module Builders
     def preprocess_tutor_to_params(tutor_params)
       return {} if tutor_params.empty?
       return {} if from_api?
+      
       tutor = User.find_by_email(tutor_params['email'])
       tutor ||= Users::Tutor.new(accept_terms: true,
                                  skip_password_validation: true,

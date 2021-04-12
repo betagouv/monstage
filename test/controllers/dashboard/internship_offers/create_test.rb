@@ -76,7 +76,7 @@ module Dashboard::InternshipOffers
       assert_response :bad_request
     end
 
-     test 'POST #create as employer with invalid data, prefill form' do
+    test 'POST #create as employer with invalid data, prefill form' do
       sign_in(create(:employer))
       post(dashboard_internship_offers_path, params: {
              internship_offer: {
@@ -103,6 +103,12 @@ module Dashboard::InternshipOffers
       assert_select '#internship_type_true[checked]', count: 0
       assert_select '#internship_type_false[checked]', count: 1
       assert_select '.form-group-select-max-candidates.d-none', count: 0
+    end
+
+    test 'internship creation sends an email to the tutor' do
+      assert_emails 1 do
+        create(:troisieme_generale_internship_offer)
+      end
     end
   end
 end

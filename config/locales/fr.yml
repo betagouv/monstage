@@ -335,7 +335,7 @@ fr:
               blank: "Veuillez saisir un numéro de téléphone"
               taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
-              invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+              invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expiré'
         users/user_management:
           attributes:
             school_manager:

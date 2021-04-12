@@ -10,15 +10,15 @@ module Finders
                                                   .count
 
       # internship_applications approved without internship_agreement
-      @to_be_created_internnship_agreement ||= user.internship_applications
-                                                   .approved
-                                                   .troisieme_generale
-                                                   .left_outer_joins(:internship_agreement)
-                                                   .where(internship_agreement: {internship_application_id: nil})
-                                                   .count
+      @to_be_created_internship_agreement ||= user.internship_applications
+                                                  .approved
+                                                  .troisieme_generale
+                                                  .left_outer_joins(:internship_agreement)
+                                                  .where(internship_agreement: {internship_application_id: nil})
+                                                  .count
       [
         @pending_internship_agreement_count,
-        @to_be_created_internnship_agreement
+        @to_be_created_internship_agreement
       ].sum
     end
 
