@@ -90,7 +90,8 @@ module Dashboard
               :employer_accept_terms,
               :main_teacher_accept_terms,
               weekly_hours:[],
-              new_daily_hours:[]
+              new_daily_hours:{},
+              daily_lunch_break: {}
               )
     end
 
