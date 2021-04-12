@@ -176,7 +176,7 @@ tbody
                     "l'élève par l'établissement"
           - title = "Note destinée au chef d'établissement et à l'entreprise"
           - if current_user.school_manager?
-            - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset)}."
+            - content = "Toutes les modalités pratiques du stage. Vous avez la possibilité d'enregistrer un modèle pour tous vos élèves sur #{link_to 'votre page établissement', edit_dashboard_school_internship_agreement_preset_path(resource.internship_application.student.school, resource.internship_application.student.school.internship_agreement_preset), class: 'text-white'}."
           - else
             - content = "Toutes les modalités pratiques du stage."
 
