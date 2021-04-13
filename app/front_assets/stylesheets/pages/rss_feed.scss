@@ -46,3 +46,30 @@
 .rss-style.large {
   width: 100%;
 }
+.blue_color_square {
+  border-radius: 1rem;
+  border: none;
+  background-color: $blue;
+}
+
+.yellow_color_square {
+  border: none;
+  border-radius: 1rem;
+  background-color: #FDCE41;
+}
+
+.grey_color_square {
+  border: none;
+  border-radius: 1rem;
+  background-color: $blue_light;
+}
+
+.image_color_square {
+  border: none;
+  border-radius: 1rem;
+  background-image: url('../images/logo-mon-stage-3e.svg');
+  background-position: center;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 50%;
+}

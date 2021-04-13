@@ -10,19 +10,22 @@
         |L'actualité de nos partenaires
   .row.my-5.no-gutters
     .col-12.text-center
-      - Services::RssPostList.new.ordered_by_publication_date[0..17].each do |post|
+      - Services::RssPostList.new.ordered_by_publication_date[0..17].each_with_index do |post, index|
         .post
+          - colors = ['blue', 'yellow', 'grey','image']
           - if post.fetch_article_img.blank?
+            - if index.even?
+              div class="card rss-style p-2 my-4 narrow #{colors[index%4]}_color_square d-sm-none d-md-block"
             .card.rss-style.p-2.border-rounded.my-4.narrow
               .row.mb-1.p-2
-                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                .col-md-6.col-sm-12.d-flex.align-items-center.justify-content-center
                   = link_to post.fetch_blog_url
                     = image_tag asset_pack_path("media/images/homepage/partenaires/#{post.logo}"),
                                 alt: "Logo de #{post.partner.capitalize}",
                                 'object-fit': 'down-scale',
                                 width: 130,
                                 'max-height': 30
-                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                .col-md-6.col-sm-12.d-flex.align-items-center.justify-content-center
                   h6.card-title.text-center = post.published_at.strftime('%d %B %Y')
               .card-body
                 h5.card-title.mb-4
@@ -31,17 +34,19 @@
                             class: 'text-decoration-none mb-3'
                   img src="#{post.fetch_article_img}"
                 p.card-text.text-left = post.summary.html_safe
+            - if index.odd?
+              div class="card rss-style p-2 my-4 narrow #{colors[index%4]}_color_square d-sm-none d-md-block"
           -else
             .card.rss-style.p-2.border-rounded.my-4.large
               .row.mb-1.p-2
-                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                .col-md-6.col-sm-12.d-flex.align-items-center.justify-content-center
                   = link_to post.fetch_blog_url
                     = image_tag asset_pack_path("media/images/homepage/partenaires/#{post.logo}"),
                                 alt: "Logo de #{post.partner.capitalize}",
                                 'object-fit': 'down-scale',
                                 width: 130,
                                 'max-height': 30
-                .col-sm-6.col-xs-12.d-flex.align-items-center.justify-content-center
+                .col-md-6.col-sm-12.d-flex.align-items-center.justify-content-center
                   h6.card-title.text-center = post.published_at.strftime('%d %B %Y')
               .card-body
                 h5.card-title.mb-4
@@ -49,7 +54,7 @@
                             post.fetch_original_article_url,
                             class: 'text-decoration-none mb-3'
                 .row
-                  .col-md-6.col-sm12
+                  .col-md-6.col-sm-12
                     img src="#{post.fetch_article_img}" class="bg-rounded"
-                  .col-md-6.col-sm12
+                  .col-md-6.col-sm-12
                     p.card-text.text-left = post.summary.html_safe
