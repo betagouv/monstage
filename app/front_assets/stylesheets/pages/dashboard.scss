@@ -41,6 +41,10 @@
   }
 }
 
+.table th {
+  border: none !important;
+}
+
 tr a.trash-user{
   display: none;
 }
