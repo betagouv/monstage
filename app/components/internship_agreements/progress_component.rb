@@ -1,6 +1,6 @@
 module InternshipAgreements
   class ProgressComponent < BaseComponent
-   def curret_role(role_attribute_name:)
+    def current_role(role_attribute_name:)
       matches = role_attribute_name.to_s.match(/(?<role>.*)_accept_terms/)
       raise ArgumentError, "#{user.type} does not support accept terms yet " if matches[:role].empty?
 
