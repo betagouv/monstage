@@ -195,13 +195,15 @@ fr:
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
-        permalink: Association partenaire
+        permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
         full_school: Établissement
         full_weeks: Semaines
+        full_week: Semaine
         full_tutor: Tuteur
         full_employer: Employeur
         full_address: Adresse de l'employeur
+        group_name: Groupe ou institution
 
       user:
         accept_terms: "Conditions d'utilisation"
