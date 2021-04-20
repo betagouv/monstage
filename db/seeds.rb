@@ -370,7 +370,10 @@ def populate_applications
       student: bac_pro_stud
     )
   end
-
+  InternshipAgreementPreset.create!(
+    school: trois_segpa_stud.school,
+    school_delegation_to_sign_delivered_at: 7.years.ago
+  )
   InternshipApplications::FreeDate.create!(
     aasm_state: :approved,
     approved_at: 2.days.ago,

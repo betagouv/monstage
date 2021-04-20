@@ -133,7 +133,7 @@ tbody
               = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
           .col-4
             div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
-              .title = "Note destinée à l'entreprise"
+              .title = "Note destinée au tuteur de l'entreprise"
               span = "Horaires de l'élèves"
 
         .row.mt-3

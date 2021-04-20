@@ -30,6 +30,10 @@ module Users
       url_helpers.dashboard_internship_offers_path
     end
 
+    def custom_agreements_path
+      url_helpers.dashboard_internship_applications_path
+    end
+
     def dashboard_name
       'Mes stages'
     end

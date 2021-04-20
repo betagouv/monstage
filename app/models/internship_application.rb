@@ -15,6 +15,7 @@ class InternshipApplication < ApplicationRecord
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
+  delegate :weekly?, to: :internship_offer, prefix: true
 
   after_save :update_all_counters
   accepts_nested_attributes_for :student, update_only: true
@@ -88,8 +89,9 @@ class InternshipApplication < ApplicationRecord
   scope :not_by_id, ->(id:) { where.not(id: id) }
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
   singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
-
+  
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
+  singleton_class.send(:alias_method, :voie_pro, :free_date)
   scope :default_order, ->{ order(updated_at: :desc) }
 
   # add an additional delay when sending email using richtext

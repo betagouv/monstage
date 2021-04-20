@@ -190,7 +190,7 @@ class Ability
     can %i[index read], Acl::InternshipOfferDashboard
     can %i[update], Users::Tutor
     can %i[index update], InternshipApplication
-    can %i[see_tutor], InternshipOffer do |offer|
+    can %i[see_tutor read], InternshipOffer do |offer|
       offer.tutor == user
     end
     can %i[
@@ -198,9 +198,11 @@ class Ability
       index
       update
       see_intro
-      edit_tutor_full_name], InternshipAgreement do |agreement|
-      agreement.internship_application.internship_offer.tutor == user
-    end
+      edit_tutor_full_name
+      edit_daily_hours
+      edit_activity_learnings_rich_text], InternshipAgreement do |agreement|
+        agreement.internship_application.internship_offer.tutor == user
+      end
   end
 
   def statistician_abilities

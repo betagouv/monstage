@@ -411,6 +411,7 @@ fr:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
+      tutor: 'Tuteur'
       employer: "Offreur"
       other: "Autre fonction"
 
