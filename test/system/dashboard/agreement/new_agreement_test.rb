@@ -119,6 +119,58 @@ module Dashboard
       end
     end
 
+    test 'as Tutor, I can edit my own fields only' do
+      employer = create(:employer)
+      tutor = create(:tutor)
+      school = create(:school, :with_school_manager, :with_agreement_presets)
+      class_room = create(:class_room, :troisieme_segpa, school: school)
+      student = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:troisieme_segpa_internship_offer, employer: employer, tutor: tutor)
+      internship_application = create(:free_date_internship_application,
+                                      :approved,
+                                      student: student,
+                                      internship_offer: internship_offer)
+      sign_in(tutor)
+      visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
+
+      #Fields edition tests
+      field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
+                                 id: 'internship_agreement_organisation_representative_full_name')
+      field_edit_is_not_allowed?(label: 'L’établissement d’enseignement scolaire, représenté par',
+                                 id: 'internship_agreement_school_representative_full_name')
+      field_edit_is_not_allowed?(label: 'Nom de l’élève ou des élèves concerné(s)',
+                                 id: 'internship_agreement_student_full_name')
+      field_edit_is_not_allowed?(label: 'Classe',
+                                 id: 'internship_agreement_student_class_room')
+      field_edit_is_not_allowed?(label: 'Établissement d’origine',
+                                 id: 'internship_agreement_student_school')
+      field_edit_is_allowed?(label: "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur",
+                             id: 'internship_agreement_tutor_full_name')
+      field_edit_is_not_allowed?(label: "Dates de la séquence d’observation en milieu professionnel du",
+                                 id: 'internship_agreement_date_range')
+      #Schedule fields tests
+      execute_script("document.getElementById('same_daily_planning').checked = false")
+      execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
+      within '.schedules' do
+        select_editable?('internship_agreement_weekly_hours_start', true)
+        select_editable?('internship_agreement_weekly_hours_end', true)
+      end
+
+      # Trix fields tests
+      %w[
+        internship_agreement_activity_scope_rich_text
+        internship_agreement_complementary_terms_rich_text
+        internship_agreement_activity_rating_rich_text
+      ].each do |trix_field_id|
+        refute_trix_editor_editable(trix_field_id)
+      end
+      %w[
+        internship_agreement_activity_learnings_rich_text
+      ].each do |trix_field_id|
+        assert_trix_editor_editable(trix_field_id)
+      end
+    end
+
     test 'as School Manager, I can edit my own fields only' do
       internship_offer = create(:weekly_internship_offer)
       school = create(:school, :with_school_manager)
@@ -224,7 +276,6 @@ module Dashboard
         assert_trix_editor_editable(trix_field_id)
       end
     end
-
 
     test 'mere teachers cannot reach Convention à signer' do
       internship_offer = create(:weekly_internship_offer)
