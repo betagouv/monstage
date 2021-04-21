@@ -48,5 +48,18 @@ module Dashboard::InternshipOffers
       get edit_dashboard_internship_agreement_path(internship_agreement.id)
       assert_response :success
     end
+
+    test 'GET #edit as tutor renders success' do
+      school = create(:school, :with_school_manager)
+      tutor = create(:tutor)
+      internship_offer = create(:troisieme_segpa_internship_offer, tutor: tutor)
+      internship_application = create(:free_date_internship_application, :approved, internship_offer: internship_offer)
+      internship_application.student.update(school_id: school.id)
+      internship_agreement = create(:troisieme_generale_internship_agreement, internship_application: internship_application, school_manager_accept_terms: true)
+      sign_in(tutor)
+
+      get edit_dashboard_internship_agreement_path(internship_agreement.id)
+      assert_response :success
+    end
   end
 end

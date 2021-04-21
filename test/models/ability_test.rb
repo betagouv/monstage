@@ -109,7 +109,7 @@ class AbilityTest < ActiveSupport::TestCase
       edit_daily_hours
       edit_activity_learnings_rich_text
     ].each do |method|
-      assert(ability.can?(method, internship_agreement), "Tutor fails: #{meth}")
+      assert(ability.can?(method, internship_agreement), "Tutor fails: #{method}")
     end
   end
 

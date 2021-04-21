@@ -92,6 +92,52 @@ module Dashboard::InternshipAgreements
                   'can\'t update internship_agreement organisation representative full name')
     end
 
+    # As Tutor
+    test 'PATCH #update as tutor not tutor in the internship_offer redirects ' \
+         'to dashboard_internship_applications path' do
+      tutor = create(:tutor)
+      school = create(:school, :with_school_manager, :with_agreement_presets)
+      student = create(:student, school: school)
+      internship_offer = create(:troisieme_segpa_internship_offer)
+      internship_application = create(:free_date_internship_application,
+                                      :approved,
+                                      student: student,
+                                      internship_offer: internship_offer)
+      internship_agreement  = create(:troisieme_segpa_internship_agreement,
+                                      tutor_accept_terms: true,
+                                      internship_application: internship_application)
+      sign_in(tutor)
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: { internship_agreement: {tutor_full_name: 'Monsieur Ragnagna'} }
+      assert_redirected_to root_path
+    end
+
+    test 'PATCH #update as internship_agreement\'s TUTOR' do
+      employer = create(:employer)
+      tutor = create(:tutor)
+      school = create(:school, :with_school_manager, :with_agreement_presets)
+      class_room = create(:class_room, :troisieme_segpa, school: school)
+      student = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:troisieme_segpa_internship_offer, employer: employer, tutor: tutor)
+      internship_application = create(:free_date_internship_application,
+                                      :approved,
+                                      student: student,
+                                      internship_offer: internship_offer)
+      internship_agreement = create(:troisieme_segpa_internship_agreement,
+                                    tutor_accept_terms: true,
+                                    internship_application: internship_application)
+      sign_in(tutor)
+      new_tutor_full_name = 'M. Lune'
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: {internship_agreement: {tutor_full_name: new_tutor_full_name, tutor_accept_terms: true}}
+
+      assert_redirected_to(dashboard_internship_applications_path,
+                           'redirection should point to updated agreement')
+      assert_equal(new_tutor_full_name,
+                  internship_agreement.reload.tutor_full_name,
+                  'can\'t update internship_agreement organisation tutor full name')
+    end
+
     # As School Manager
     test 'PATCH #update as school manager not owning student redirects to user_session_path' do
       internship_offer = create(:weekly_internship_offer)

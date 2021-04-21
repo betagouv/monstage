@@ -215,5 +215,13 @@ module Product
         visit edit_dashboard_internship_agreement_path(id: internship_agreement.id)
       end
     end
+
+    test 'tutor edit_dashboard_agreement_path' do
+      internship_agreement = create(:troisieme_segpa_internship_agreement, :created_by_system)
+      sign_in(internship_agreement.internship_application.internship_offer.tutor)
+      run_request_and_cache_response(report_as: 'employer edit_dashboard_ageement_path') do
+        visit edit_dashboard_internship_agreement_path(id: internship_agreement.id)
+      end
+    end
   end
 end
