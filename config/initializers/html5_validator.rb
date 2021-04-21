@@ -36,13 +36,12 @@ module Html5Validator
     ext = '.html'
     assert_equal 1, page.all('.content').size
 
-
     File.open(W3C_RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
       assert page_title_ok?(page.body)
     end
-    screenshot_full_page("#{report_as.parameterize}.png")
+    screenshot_full_page("#{basename}.png")
   end
 
   def screenshot_full_page(screenshot_path)

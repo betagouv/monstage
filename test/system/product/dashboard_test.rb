@@ -88,17 +88,17 @@ module Product
       class_room = create(:class_room, :troisieme_generale, school: school)
 
       internship_application_1 = create(:weekly_internship_application,
-                                               :approved,
-                                                student: create(:student, school: school, class_room: class_room))
+                                        :approved,
+                                        student: create(:student, school: school, class_room: class_room))
       internship_application_2 = create(:weekly_internship_application,
-                                               :approved,
-                                                student: create(:student, school: school, class_room: class_room))
+                                        :approved,
+                                        student: create(:student, school: school, class_room: class_room))
       internship_application_3 = create(:weekly_internship_application,
-                                               :approved,
-                                                student: create(:student, school: school, class_room: class_room))
+                                        :approved,
+                                        student: create(:student, school: school, class_room: class_room))
       internship_application_4 = create(:weekly_internship_application,
-                                               :approved,
-                                                student: create(:student, school: school, class_room: class_room))
+                                        :approved,
+                                        student: create(:student, school: school, class_room: class_room))
 
       create(:internship_agreement, internship_application: internship_application_2,
                                     employer_accept_terms: true,
