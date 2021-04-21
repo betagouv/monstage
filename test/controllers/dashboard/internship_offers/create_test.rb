@@ -78,14 +78,16 @@ module Dashboard::InternshipOffers
 
     test 'POST #create as employer with invalid data, prefill form' do
       sign_in(create(:employer))
-      post(dashboard_internship_offers_path, params: {
+      post(dashboard_internship_offers_path,
+           params: {
              internship_offer: {
                title: 'hello',
                is_public: false,
                group: 'Accenture',
                max_candidates: 2
              }
-           })
+           }
+      )
       assert_select 'li label[for=internship_offer_coordinates]',
                     text: 'Veuillez saisir et sélectionner une adresse avec ' \
                           "l'outil de complétion automatique"

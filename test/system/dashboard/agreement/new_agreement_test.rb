@@ -2,7 +2,6 @@ require 'application_system_test_case'
 
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
-    include ThirdPartyTestHelpers
 
 
     def field_edit_is_allowed?(label:, id: nil)
