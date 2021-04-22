@@ -176,7 +176,6 @@ class Ability
       see_intro
       edit_tutor_full_name
       edit_daily_hours
-      edit_activity_learnings_rich_text
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.tutor == user
     end

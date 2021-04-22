@@ -159,15 +159,12 @@ module Dashboard
       # Trix fields tests
       %w[
         internship_agreement_activity_scope_rich_text
-        internship_agreement_complementary_terms_rich_text
         internship_agreement_activity_rating_rich_text
+        internship_agreement_activity_preparation_rich_text
+        internship_agreement_activity_learnings_rich_text
+        internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
-      end
-      %w[
-        internship_agreement_activity_learnings_rich_text
-      ].each do |trix_field_id|
-        assert_trix_editor_editable(trix_field_id)
       end
     end
 
