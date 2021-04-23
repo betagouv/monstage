@@ -6,22 +6,6 @@ module InternshipAgreements
     delegate :routes, to: :application
     delegate :url_helpers, to: :routes
 
-    test "when internship_agreement does not exists, and internship_application is not troisieme_generale, show  not yet ready" do
-      skip 'this test should now disappear'
-    #   employer = create(:employer)
-    #   school = create(:school, :with_school_manager, :with_weeks)
-    #   student = create(:student, :troisieme_segpa, school: school)
-    #   internship_offer = create(:free_date_internship_offer)
-    #   internship_application = create(:free_date_internship_application,
-    #                                   :approved,
-    #                                   internship_offer: internship_offer,
-    #                                   user_id: student.id)
-    #   render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_application,
-    #                                                           current_user: employer))
-
-    #   assert_selector("div[data-test='no-yet-supported']")
-    end
-
     test "when internship_agreement does not exists, render create link" do
       employer = create(:employer)
 

@@ -127,10 +127,10 @@ class InternshipAgreement < ApplicationRecord
       errors.add(:complementary_terms_rich_text,
                  "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...")
     end
-    # if !troisieme_generale? && activity_learnings_rich_text.blank?
-    #   errors.add(:activity_learnings_rich_text,
-    #              "Veuillez compléter les compétences visées")
-    # end
+    if !troisieme_generale? && activity_learnings_rich_text.blank?
+      errors.add(:activity_learnings_rich_text,
+                 "Veuillez compléter les compétences visées")
+    end
   end
 
   def valid_trix_tutor_fields

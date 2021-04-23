@@ -125,6 +125,14 @@ def populate_students
 end
 
 def populate_internship_offers
+  tutor7 = Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
+                               accept_terms: true,
+                               first_name: 'Mehdi',
+                               last_name: 'Hamadi',
+                               confirmed_at: 1.day.ago,
+                               email: 'tutor7@ms3e.fr',
+                               phone: '+330637007710')
 
   organisation = Organisation.create(creator: Users::Employer.first,
                                      employer_name: 'Betagouv',
@@ -306,14 +314,7 @@ MULTI_LINE
     title: 'Découverte du travail de trader en ligne',
     description_rich_text: multiline_description,
     employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
-    tutor: Users::Tutor.create(password: 'review',
-                               password_confirmation: 'review',
-                               accept_terms: true,
-                               first_name: 'Mehdi',
-                               last_name: 'Hamadi',
-                               confirmed_at: 1.day.ago,
-                               email: 'tutor7@ms3e.fr',
-                               phone: '+330637007710'),
+    tutor: tutor7,
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
