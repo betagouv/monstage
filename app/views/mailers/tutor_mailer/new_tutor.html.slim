@@ -1,9 +1,13 @@
 p style=head_styles
   | Félicitations !
 p style=p_styles
-  = "Vous avez été désigné tuteur pour le stage : #{@internship_offer.title}"
+  = "#{@internship_offer.employer.formal_name} vous a désigné comme tuteur pour le stage : #{@internship_offer.title}"
 p style=p_styles
-  | Il ne vous reste plus qu'à finaliser la création de votre compte avec un mot de passe
-  = render( partial: "mailers/call_to_action",
-            locals: {href: edit_user_password_url(reset_password_token: @token), 
-                     label:"Je crée mon mot de passe"})
+  - if @registered_tutor
+    | Vous pouvez consulter votre compte pour trouver les détails
+    = render( partial: "mailers/call_to_action",
+              locals: {href: @link_url, label:"J'accède à mon compte"})
+  - else
+    | Il ne vous reste plus qu'à finaliser la création de votre compte avec un mot de passe
+    = render( partial: "mailers/call_to_action",
+              locals: {href: @link_url, label:"Je crée mon mot de passe"})
