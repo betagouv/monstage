@@ -16,7 +16,7 @@ module Finders
       query = common_filter do
         InternshipOffer.kept.submitted_by_operator(user: user)
       end
-      query = query.merge(query.limited_to_department(user: user)) if user.department_name.present?
+      query = query.merge(query.limited_to_department(user: user)) if user.department.present?
 
       query
     end

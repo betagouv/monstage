@@ -53,7 +53,7 @@ module Finders
 
     def statistician_query
       god_query.tap do |query|
-        query.merge(query.limited_to_department(user: user)) if user.department_name
+        query.merge(query.limited_to_department(user: user)) if user.department
       end
     end
 

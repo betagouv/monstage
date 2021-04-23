@@ -3,7 +3,7 @@
 module Acl
   class Reporting
     def allowed?
-      user.department_name == params[:department]
+      user.department == params[:department]
     end
 
     private
