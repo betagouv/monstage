@@ -28,7 +28,11 @@ module Users
     def dashboard_name
       'Mes offres'
     end
-
+    
+    def operator?
+      true
+    end
+    
     private
 
     def set_api_token

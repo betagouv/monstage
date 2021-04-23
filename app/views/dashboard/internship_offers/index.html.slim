@@ -10,7 +10,7 @@
                 id: 'test-create-offer'
         i.fas.fa-plus
         span.px-3 Déposer une offre
-- if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
+- if current_user.employer? && current_user.internship_applications.submitted.count.positive?
 
 .fake-table
   .row= render partial: "dashboard/internship_offers/tabs",

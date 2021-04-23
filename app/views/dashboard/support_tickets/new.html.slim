@@ -1,4 +1,4 @@
-- if current_user.is_a?(Users::Employer)
+- if current_user.employer?
   - if can? :create_remote_internship_request, SupportTicket
     = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
   .row
@@ -36,7 +36,7 @@
                          label: "Disponibilités",
                          render_employer_components: false }
 
-        - if current_user.is_a?(Users::Employer)
+        - if current_user.employer?
           = render partial: 'dashboard/support_tickets/employer_specific_fields',
                    locals: {f: f}
         - if current_user.is_a?(Users::SchoolManagement)

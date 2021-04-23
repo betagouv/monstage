@@ -49,6 +49,10 @@ module Users
       save(validate: false)
       raw
     end
+
+    def tutor?
+      true
+    end
   end
 end
 

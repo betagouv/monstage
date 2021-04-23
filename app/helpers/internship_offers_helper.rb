@@ -52,7 +52,7 @@ module InternshipOffersHelper
   end
 
   def back_to_internship_offers_from_internship_offer_path(current_user)
-    if current_user.is_a?(Users::Employer) || current_user.is_a?(Users::Operator)
+    if current_user && (current_user.employer? || current_user.operator?)
       return dashboard_internship_offers_path
     end
 

@@ -34,6 +34,10 @@ module Users
       SupportTickets::Employer.new(params.merge(user_id: self.id))
     end
 
+    def employer?
+      true
+    end
+
     def anonymize(send_email: true)
       super
 
