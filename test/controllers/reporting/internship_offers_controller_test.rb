@@ -56,17 +56,17 @@ module Reporting
     test 'GET #index as statistician success ' \
          'when department params match his departement_name' do
       statistician = create(:statistician)
-      department_name = statistician.department_name # Oise
-      create(:weekly_internship_offer, department: department_name)
+      department = statistician.department # Oise
+      create(:weekly_internship_offer, department: department)
       sign_in(statistician)
 
-      get reporting_internship_offers_path(department: department_name)
+      get reporting_internship_offers_path(department: department)
       assert_response :success
       total_report = retrieve_html_value('test-total-report','test-total-applications', response)
       assert_equal 0, total_report.to_i
 
       Reporting::InternshipOffer.stub :by_department, Reporting::InternshipOffer.all do
-        get reporting_internship_offers_path(department: department_name)
+        get reporting_internship_offers_path(department: department)
         assert_response :success
         assert_equal 2, retrieve_html_value('test-total-report','test-total-applications', response)
         assert_equal 4, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
@@ -93,7 +93,7 @@ module Reporting
     end
 
     test 'GET #index as statistician fails ' \
-         'when department params does not match his department_name' do
+         'when department params does not match his department' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_internship_offers_path(department: 'Ain')
