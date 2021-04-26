@@ -1019,7 +1019,7 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
-    department_name character varying,
+    department character varying,
     missing_school_weeks_id bigint,
     role public.user_role,
     phone_token character varying,

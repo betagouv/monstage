@@ -41,7 +41,7 @@ class UsersController < ApplicationController
                                  :last_name,
                                  :email,
                                  :phone,
-                                 :department_name,
+                                 :department,
                                  :class_room_id,
                                  :resume_educational_background,
                                  :resume_other,
