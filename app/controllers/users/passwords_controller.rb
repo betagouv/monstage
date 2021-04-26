@@ -31,5 +31,20 @@ module Users
                     flash: { alert: 'Le téléphone mobile ou le code est invalide.' })
       end
     end
+
+    def invited_edit_password
+      @minimum_password_length = User.password_length.min
+      @user = User.fetch_user_by_reset_token(params[:reset_password_token])
+      sign_in @user
+      authorize! :invited_set_password, @user
+    end
+
+    def invited_update_password
+      authorize! :invited_set_password, current_user
+      current_user.update(password: params[:password])
+      redirect_to dashboard_internship_offers_path
+    rescue ActiveRecord::RecordInvalid
+      render :edit, status: :bad_request
+    end
   end
 end

@@ -48,6 +48,10 @@ class User < ApplicationRecord
     Users::Employer.where(email: 'drh@betagouv.fr').first
   end
 
+  def self.fetch_user_by_reset_token(token)
+    User.with_reset_password_token(token)
+  end
+
   def channel
     return :phone if phone.present?
 

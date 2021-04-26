@@ -22,6 +22,10 @@ fr:
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
     passwords:
       update: 'Mot de passe mis à jour.'
+      invited_edit_password:
+        choose_my_password: Choisissez votre mot de passe
+        new_password: Mot de passe
+        confirm_new_password: Confirmation de mot de passe
   activerecord:
     models:
       email_whitelist:
