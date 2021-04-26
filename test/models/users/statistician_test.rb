@@ -36,7 +36,7 @@ module Users
                                  zipcode: '59')
 
       statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
-      assert_equal 'Nord (département français)|Nord', statistician.department_name
+      assert_equal 'Nord', statistician.department
     end
 
     test 'destroy also destroy email_whitelist' do

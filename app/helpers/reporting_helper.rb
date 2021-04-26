@@ -5,7 +5,7 @@ module ReportingHelper
     opts = {}
     return opts unless user
 
-    opts[:department] = user.department_name if user.department_name.present?
+    opts[:department] = user.department if user.department.present?
     opts[:school_year] = params[:school_year] || SchoolYear::Current.new.beginning_of_period.year
     opts
   end
