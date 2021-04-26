@@ -14,25 +14,25 @@ FactoryBot.define do
     complementary_terms_rich_text { '<div>Ticket resto</div>'}
     activity_preparation_rich_text { '<div>Appel téléphonique</div>'}
 
-    trait :troisieme_generale_internship_agreement do
+    trait :troisieme_generale_internship_agreement_trait do
       school_track { 'troisieme_generale' }
       activity_rating_rich_text { '<div>Rapport de stage</div>'}
       activity_learnings_rich_text { '<div>Communication orale</div>'}
     end
 
-    trait :troisieme_prepa_metier_internship_agreement do
+    trait :troisieme_prepa_metier_internship_agreement_trait do
       school_track { 'troisieme_prepa_metier' }
       activity_rating_rich_text { '<div>Rapport de stage</div>'}
       activity_learnings_rich_text { '<div>Communication orale</div>'}
     end
 
-    trait :troisieme_segpa_internship_agreement do
+    trait :troisieme_segpa_internship_agreement_trait do
       school_track { 'troisieme_segpa' }
       activity_rating_rich_text { '<div>Rapport de stage</div>'}
       activity_learnings_rich_text { '<div>Communication orale</div>'}
     end
 
-    trait :bac_pro_internship_agreement do
+    trait :bac_pro_internship_agreement_trait do
       school_track { 'bac_pro' }
       activity_rating_rich_text { '<div>Rapport de stage</div>'}
       activity_learnings_rich_text { '<div>Communication orale</div>'}
@@ -42,13 +42,13 @@ FactoryBot.define do
       skip_validations_for_system { true }
     end
 
-    factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement],
+    factory :troisieme_generale_internship_agreement, traits: [:troisieme_generale_internship_agreement_trait],
                                                       parent: :internship_agreement
-    factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement],
+    factory :troisieme_prepa_metier_internship_agreement, traits: [:troisieme_prepa_metier_internship_agreement_trait],
                                                           parent: :internship_agreement
-    factory :troisieme_segpa_internship_agreement, traits: [:troisieme_segpa_internship_agreement],
+    factory :troisieme_segpa_internship_agreement, traits: [:troisieme_segpa_internship_agreement_trait],
                                                    parent: :internship_agreement
-    factory :bac_pro_internship_agreement, traits: [:bac_pro_internship_agreement],
+    factory :bac_pro_internship_agreement, traits: [:bac_pro_internship_agreement_trait],
                                            parent: :internship_agreement
   end
 end

@@ -17,7 +17,8 @@
             i.fa-fw.fas.fa-school
 
           span.ml-1 De quel type de stage s'agit-il ?
-        = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
+        = render partial: "internship_offers/show_kind",
+                 locals: {internship_offer: internship_offer}
 
   .col-12
     .row
@@ -27,7 +28,8 @@
           span.ml-1 Quand ce stage est-il proposé ?
     .row
       .col-12
-          = render partial: "internship_offers/weeks_badges", locals: {internship_offer: internship_offer}
+        = render partial: "internship_offers/weeks_badges",
+                 locals: {internship_offer: internship_offer}
 
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
       .row.mt-3
@@ -67,7 +69,7 @@
                           rel: "external noopener noreferrer"
 
           .col-12
-            h3.h6
+            h3.h6.mt-2
               i.fa-fw.fa.fa-map-marker-alt
               span.ml-1 Où se déroule ce stage ?
             p

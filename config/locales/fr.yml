@@ -195,13 +195,15 @@ fr:
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
-        permalink: Association partenaire
+        permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
         full_school: Établissement
         full_weeks: Semaines
+        full_week: Semaine
         full_tutor: Tuteur
         full_employer: Employeur
         full_address: Adresse de l'employeur
+        group_name: Groupe ou institution
 
       user:
         accept_terms: "Conditions d'utilisation"
@@ -335,7 +337,7 @@ fr:
               blank: "Veuillez saisir un numéro de téléphone"
               taken: "Un compte est déjà associé à ce numéro de téléphone"
             reset_password_token:
-              invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+              invalid: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expiré'
         users/user_management:
           attributes:
             school_manager:
@@ -411,6 +413,7 @@ fr:
       school_manager: "Chef d'établissement"
       teacher: "Professeur"
       main_teacher: "Professeur principal"
+      tutor: 'Tuteur'
       employer: "Offreur"
       other: "Autre fonction"
 

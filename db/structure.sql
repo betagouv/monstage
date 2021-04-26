@@ -511,7 +511,8 @@ CREATE TABLE public.internship_agreements (
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     main_teacher_accept_terms boolean DEFAULT false,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    school_delegation_to_sign_delivered_at date
+    school_delegation_to_sign_delivered_at date,
+    tutor_accept_terms boolean DEFAULT false
 );
 
 
@@ -2300,8 +2301,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210128162938'),
 ('20210129121617'),
 ('20210224160904'),
+('20210310173554'),
 ('20210407131810'),
 ('20210407132925'),
-('20210310173554');
+('20210414084512');
 
 

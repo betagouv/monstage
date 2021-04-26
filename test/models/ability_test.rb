@@ -80,6 +80,38 @@ class AbilityTest < ActiveSupport::TestCase
     end
   end
 
+  test 'Tutor' do
+    internship_application = create(:weekly_internship_application)
+    internship_offer = internship_application.internship_offer
+    tutor = internship_offer.tutor
+    internship_agreement = create(:troisieme_generale_internship_agreement,
+                                  :created_by_system,
+                                  internship_application: internship_application)
+    ability = Ability.new(tutor)
+
+    assert(ability.cannot?(:destroy, internship_application))
+    assert(ability.can?(:update, internship_application))
+    assert(ability.can?(:index, internship_application))
+    assert(ability.cannot?(:validate_convention, internship_application))
+    assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
+
+    assert(ability.can?(:see_tutor, InternshipOffer))
+
+    # TODO Confirm 'create' is the correct wording
+    assert(ability.can?(:create, InternshipAgreement))
+
+    %i[
+      create
+      index
+      update
+      see_intro
+      edit_tutor_full_name
+      edit_daily_hours
+    ].each do |method|
+      assert(ability.can?(method, internship_agreement), "Tutor fails: #{method}")
+    end
+  end
+
   test 'God' do
     god = build(:god)
     ability = Ability.new(god)
@@ -242,3 +274,4 @@ class AbilityTest < ActiveSupport::TestCase
           'operators are not supposed to fill forms for remote internships support')
   end
 end
+

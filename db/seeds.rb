@@ -106,24 +106,33 @@ def populate_users
 end
 
 def populate_students
-  class_room_1 = ClassRoom.first
-  class_room_2 = ClassRoom.second
-  class_room_3 = ClassRoom.third
-  class_room_4 = ClassRoom.fourth
-  school = class_room_1.school
+  class_room_troisieme_generale = ClassRoom.first
+  class_room_prepa_metier = ClassRoom.second
+  class_room_segpa = ClassRoom.third
+  class_room_bac_pro = ClassRoom.fourth
 
-  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'benoit@ms3e.fr', password: 'review', first_name: 'Benoit', last_name: 'Lafond', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  school = class_room_troisieme_generale.school
+
+  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Abdelaziz', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_troisieme_generale)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_troisieme_generale)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'nathan@ms3e.fr', password: 'review', first_name: 'Nathan', last_name: 'Lafond', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_troisieme_generale)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_prepa_metier)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'yanis@ms3e.fr', password: 'review', first_name: 'Yanis', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_prepa_metier)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'manon@ms3e.fr', password: 'review',first_name: 'Manon', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_segpa)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_segpa)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'ambre@ms3e.fr', password: 'review', first_name: 'Ambre', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_bac_pro)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_bac_pro)).save!
 end
 
 def populate_internship_offers
+  tutor7 = Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
+                               accept_terms: true,
+                               first_name: 'Mehdi',
+                               last_name: 'Hamadi',
+                               confirmed_at: 1.day.ago,
+                               email: 'tutor7@ms3e.fr',
+                               phone: '+330637007710')
 
   organisation = Organisation.create(creator: Users::Employer.first,
                                      employer_name: 'Betagouv',
@@ -144,8 +153,8 @@ def populate_internship_offers
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
     employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
     employer_website: 'http://www.dtpm.fr/',
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Martin',
                                last_name: 'Fourcade',
@@ -170,8 +179,8 @@ def populate_internship_offers
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion des projets internes touchant à la gestion des contrats.',
     employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
     employer_website: 'http://www.dtpm.fr/',
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Clément',
                                last_name: 'Duvet',
@@ -184,6 +193,7 @@ def populate_internship_offers
     employer_name: 'Octo Technology',
     school_track: :troisieme_generale
   )
+
   # Bac_pro
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
@@ -194,11 +204,11 @@ def populate_internship_offers
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion de la logistique routière et ferrée des approvisionnements de viande en provenance d\'Europe et d\'Argentine.',
     employer_description_rich_text: "La Boucherie Chottin doit sa réputation à la qualité de sa viande reconnue et appréciée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
     employer_website: 'http://www.dtpm.fr/',
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Gilles',
-                               last_name: 'Tourtte',
+                               last_name: 'Tourte',
                                email: 'tutor3@ms3e.fr',
                                phone: '+330637687759'),
     street: '128 rue brancion',
@@ -218,8 +228,8 @@ def populate_internship_offers
     description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
     employer_description_rich_text: "La scierie Rabier attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
     employer_website: 'http://www.dtpm.fr/',
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Etienne',
                                last_name: 'Bon',
@@ -243,8 +253,8 @@ def populate_internship_offers
     description: "Découvrez les machines mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services informatiques",
     description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement de toutes leurs technologies informatique depuis nos locaux et comment ils arrivent, tous les jours, à gérer en équipe, des bases de données, de la virtualisation, des applications etc.",
     employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Patrick',
                                last_name: 'Besson',
@@ -273,8 +283,8 @@ MULTI_LINE
     description_rich_text: multiline_description,
     employer_description_rich_text: 'La douane assure des missions fiscales et de lutte contre les trafics illicites et la criminalité organisée.',
     employer_website: "http://www.prefectures-regions.gouv.fr/hauts-de-france/Region-et-institutions/Organisation-administrative-de-la-region/Les-services-de-l-Etat-en-region/Direction-interregionale-des-douanes/Direction-interregionale-des-douanes",
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
+    tutor: Users::Tutor.create(password: 'review',
+                               password_confirmation: 'review',
                                accept_terms: true,
                                first_name: 'Claude',
                                last_name: 'Buisson',
@@ -293,6 +303,9 @@ MULTI_LINE
 - Présentation des principes fondamentaux du métier.
 - Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
+# Caution
+# Tutor7 is confirmed
+#
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
     sector: Sector.first,
@@ -301,13 +314,7 @@ MULTI_LINE
     title: 'Découverte du travail de trader en ligne',
     description_rich_text: multiline_description,
     employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
-    tutor: Users::Tutor.create(password: '123456789',
-                               password_confirmation: '123456789',
-                               accept_terms: true,
-                               first_name: 'Mehdi',
-                               last_name: 'Hamadi',
-                               email: 'tutor7@ms3e.fr',
-                               phone: '+330637007710'),
+    tutor: tutor7,
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
@@ -348,7 +355,11 @@ def populate_applications
                                    .to_a
                                    .shuffle
                                    .first(4)
+  trois_segpa_stud = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_segpa)
+                                   .first
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  troisieme_segpa_offers = InternshipOffers::FreeDate.where(school_track: :troisieme_segpa)
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
   bac_pro_studs.each do |bac_pro_stud|
@@ -360,16 +371,30 @@ def populate_applications
       student: bac_pro_stud
     )
   end
+  InternshipAgreementPreset.create!(
+    school: trois_segpa_stud.school,
+    school_delegation_to_sign_delivered_at: 7.years.ago
+  )
+  InternshipApplications::FreeDate.create!(
+    aasm_state: :approved,
+    approved_at: 2.days.ago,
+    submitted_at: 5.days.ago,
+    student: trois_segpa_stud,
+    motivation: 'Je veux réussir, j\'aimerais que tutor7@ms3e.fr soit mon tuteur',
+    internship_offer: troisieme_segpa_offers.first
+  )
+
   troisieme_generale_offers.each do |io_trois_gene|
     InternshipApplications::WeeklyFramed.create!(
       aasm_state: :submitted,
       submitted_at: 10.days.ago,
       student: trois_gene_studs.first,
-      motivation: 'Au taquet',
+      motivation: 'Très motivé',
       internship_offer: io_trois_gene,
       internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
+
   if trois_gene_studs&.second
     InternshipApplications::WeeklyFramed.create!(
       aasm_state: :approved,
@@ -400,6 +425,7 @@ def populate_applications
     )
   end
 end
+
 def populate_agreements
   troisieme_generale_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
 

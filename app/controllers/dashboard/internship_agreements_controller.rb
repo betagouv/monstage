@@ -89,6 +89,7 @@ module Dashboard
               :school_manager_accept_terms,
               :employer_accept_terms,
               :main_teacher_accept_terms,
+              :tutor_accept_terms,
               weekly_hours:[],
               new_daily_hours:[]
               )

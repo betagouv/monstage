@@ -133,7 +133,7 @@ tbody
               = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form }
           .col-4
             div class="tool-note #{can?(:edit_daily_hours, InternshipAgreement) ? 'active' : 'inactive'}"
-              .title = "Note destinée à l'entreprise"
+              .title = "Note destinée au tuteur de l'entreprise"
               span = "Horaires de l'élèves"
 
         .row.mt-3
@@ -155,7 +155,7 @@ tbody
           .row.mt-3
             - label = "Compétences visées"
             - title = "Note destinée à l'entreprise"
-            - ccontent = "Apprentissages en entreprise"
+            - content = "Apprentissages en entreprise"
             = render partial: 'dashboard/internship_agreements/trix_form_element',
                      locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
         .row.mt-3

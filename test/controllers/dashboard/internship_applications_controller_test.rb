@@ -17,7 +17,7 @@ module Dashboard
       get dashboard_internship_applications_path
       assert_response :success
       assert_select ".student-application-#{internship_application_troisieme_generale.id}", count: 1
-      assert_select ".student-application-#{internship_application_troisieme_segpa.id}", count: 0
+      assert_select ".student-application-#{internship_application_troisieme_segpa.id}", count: 1
     end
 
     test 'fails as operator' do

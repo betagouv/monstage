@@ -15,7 +15,7 @@ class PasswordsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#error_explanation'
     assert_select 'label[for=user_reset_password_token]',
                   count: 1,
-                  text: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expirée'
+                  text: 'Veuillez faire une nouvelle demande de changement de mot de passe, cette demande a expiré'
   end
 
   test 'POST create by email' do

@@ -1,10 +1,10 @@
 module Finders
-  class TabEmployer
+  class TabTutor
     def pending_agreements_count
       # internship_agreement approved with internship_agreement without terms_accepted
       @pending_internship_agreement_count ||= user.internship_applications
                                                   .approved
-                                                  .troisieme_generale
+                                                  .voie_pro
                                                   .joins(:internship_agreement)
                                                   .where(internship_agreement: {employer_accept_terms: false})
                                                   .count
@@ -12,7 +12,7 @@ module Finders
       # internship_applications approved without internship_agreement
       @to_be_created_internship_agreement ||= user.internship_applications
                                                   .approved
-                                                  .troisieme_generale
+                                                  .voie_pro
                                                   .left_outer_joins(:internship_agreement)
                                                   .where(internship_agreement: {internship_application_id: nil})
                                                   .count

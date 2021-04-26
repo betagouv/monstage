@@ -54,11 +54,15 @@ module Builders
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
+      return { enforce_tutor_validations: true } if user.is_a?(Users::Tutor)
       return { skip_validations_for_system: true } if user.is_a?(Users::God)
+
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
     def preprocess_internship_application_params(internship_application)
+      return {} unless internship_application.internship_offer_weekly?
+
       {
         date_range: internship_application.week.short_select_text_method
       }

@@ -116,7 +116,7 @@ export default function AddressInput({
                       name: `${resourceName}_autocomplete`,
                       id: `${resourceName}_autocomplete`,
                       placeholder: 'Adresse',
-                      autocomplete: "no",
+                      autocomplete: "off",
                     })}
                   />
                 </div>

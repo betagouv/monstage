@@ -6,7 +6,8 @@ module Finders
     def mapping_user_type
       {
         Users::Operator.name => :operator_query,
-        Users::Employer.name => :employer_query
+        Users::Employer.name => :employer_query,
+        Users::Tutor.name => :tutor_query
       }
     end
 
@@ -22,6 +23,12 @@ module Finders
     end
 
     def employer_query
+      common_filter do
+        params[:filter] == 'approved' ? approved_filter : proposed_offers
+      end
+    end
+
+    def tutor_query
       common_filter do
         params[:filter] == 'approved' ? approved_filter : proposed_offers
       end

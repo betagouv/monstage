@@ -12,7 +12,7 @@ module Finders
                                                     .count
 
       # internship_applications approved without internship_agreement
-      @to_be_created_internnship_agreement ||= InternshipApplication
+      @to_be_created_internship_agreement ||= InternshipApplication
                                                      .through_teacher(teacher: main_teacher)
                                                      .approved
                                                      .troisieme_generale
@@ -21,7 +21,7 @@ module Finders
                                                      .count
       [
         @pending_internship_agreement_count,
-        @to_be_created_internnship_agreement
+        @to_be_created_internship_agreement
       ].sum
     end
 

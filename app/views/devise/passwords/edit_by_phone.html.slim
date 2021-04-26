@@ -16,7 +16,7 @@
           = number_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
           = label_tag :phone_token, 'Code de confirmation'
         .form-group.custom-label-container
-          = password_field_tag :password, '', autofocus: true, autocomplete: "new-password", required: true, class: 'form-control'
+          = password_field_tag :password, '', autofocus: 'on', autocomplete: "new-password", required: true, class: 'form-control'
           = label_tag :password do
             ' Nouveau mot de passe
             - if @minimum_password_length
