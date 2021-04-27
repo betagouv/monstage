@@ -11,7 +11,6 @@ class InternshipApplication < ApplicationRecord
                        foreign_key: 'user_id'
   has_one :internship_agreement
 
-  validates :student, uniqueness: { scope: :internship_offer_week_id }
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
@@ -85,16 +84,24 @@ class InternshipApplication < ApplicationRecord
   #
   # Other stuffs
   #
+  scope :default_order, ->{ order(updated_at: :desc) }
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
+
   scope :weekly_framed, -> { where(type: InternshipApplications::WeeklyFramed.name) }
+  singleton_class.send(:alias_method, :troisieme_generale, :weekly_framed)
+
   scope :free_date, -> { where(type: InternshipApplications::FreeDate.name) }
-  scope :default_order, ->{ order(updated_at: :desc) }
+  singleton_class.send(:alias_method, :voie_pro, :free_date)
 
   # add an additional delay when sending email using richtext
   # sometimes email was sent before action_texts_rich_text was persisted
   def deliver_later_with_additional_delay
     yield.deliver_later(wait: 1.second)
+  end
+
+  def weekly_offer?
+    internship_offer.weekly?
   end
 
   aasm do
