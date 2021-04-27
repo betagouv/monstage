@@ -1,6 +1,6 @@
 tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn"
   td data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    = link_to internship_offer_path(employer_internship_offer),
+    = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
               class: '' do
       p.internship-item-title.mb-0= employer_internship_offer.title
