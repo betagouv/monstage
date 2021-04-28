@@ -86,7 +86,6 @@ class Ability
         managed_user_from_school.school_id == user.school_id
       end
     end
-    can %i[create], InternshipAgreement
     can %i[
       update
       see_intro
@@ -101,6 +100,7 @@ class Ability
       edit_legal_terms_rich_text
       edit_complementary_terms_rich_text
       edit
+      create
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
     end

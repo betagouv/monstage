@@ -34,9 +34,6 @@ class InternshipAgreement < ApplicationRecord
   with_options if: :enforce_main_teacher_validations? do
     validates :student_class_room, presence: true
     validates :main_teacher_full_name, presence: true
-    validates_inclusion_of :main_teacher_accept_terms,
-                           in: ['1', true],
-                           message: :main_teacher_accept_terms
     validate :valid_trix_main_teacher_fields
   end
 
@@ -44,9 +41,6 @@ class InternshipAgreement < ApplicationRecord
     validates :student_school, presence: true
     validates :school_representative_full_name, presence: true
     validates :student_full_name, presence: true
-    validates_inclusion_of :school_manager_accept_terms,
-                           in: ['1', true],
-                           message: :school_manager_accept_terms
     validate :valid_trix_school_manager_fields
   end
 
@@ -54,9 +48,6 @@ class InternshipAgreement < ApplicationRecord
     validates :organisation_representative_full_name, presence: true
     validates :tutor_full_name, presence: true
     validates :date_range, presence: true
-    validates_inclusion_of :employer_accept_terms,
-                           in: ['1', true],
-                           message: :employer_accept_terms
     validate :valid_trix_employer_fields
   end
 

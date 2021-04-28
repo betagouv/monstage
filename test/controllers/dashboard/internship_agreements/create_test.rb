@@ -69,7 +69,7 @@ module Dashboard::InternshipAgreements
                     text: "Veuillez saisir le nom de l'élève"
     end
 
-    test 'POST #create as School Manager fail when school_manager_accept_terms missing' do
+    test 'POST #create as School Manager succeeds when school_manager_accept_terms missing' do
       school = create(:school, :with_school_manager)
       internship_offer = create(:weekly_internship_offer)
       internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
@@ -78,7 +78,7 @@ module Dashboard::InternshipAgreements
       sign_in(school.school_manager)
 
       params = make_internship_agreement_params(internship_application).except('school_manager_accept_terms')
-      assert_no_difference('InternshipAgreement.count') do
+      assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
     end
@@ -166,7 +166,7 @@ module Dashboard::InternshipAgreements
                     text: "Veuillez saisir la classe de l'élève"
     end
 
-    test 'POST #create as Main Teacher fail when school_manager_accept_terms missing' do
+    test 'POST #create as Main Teacher succeeds when school_manager_accept_terms missing' do
       school           = create(:school, :with_school_manager)
       class_room       = create(:class_room, school: school)
       main_teacher     = create(:main_teacher, school: school, class_room: class_room)
@@ -181,7 +181,7 @@ module Dashboard::InternshipAgreements
       sign_in main_teacher
 
       params = make_internship_agreement_params(internship_application).except('main_teacher_accept_terms')
-      assert_no_difference('InternshipAgreement.count') do
+      assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
     end
@@ -228,12 +228,12 @@ module Dashboard::InternshipAgreements
       end
     end
 
-    test 'POST #create as Employer fails when employer_accept_terms missing' do
+    test 'POST #create as Employer succeeds when employer_accept_terms missing' do
       internship_application = create(:weekly_internship_application, :approved)
       sign_in(internship_application.internship_offer.employer)
 
       params = make_internship_agreement_params(internship_application).except('employer_accept_terms')
-      assert_no_difference('InternshipAgreement.count') do
+      assert_difference('InternshipAgreement.count', 1) do
         post(dashboard_internship_agreements_path, params: { internship_agreement: params })
       end
     end
