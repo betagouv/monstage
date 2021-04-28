@@ -88,16 +88,6 @@ $custom-grey: rgb(51,51,51);
 }
 
 $position-form-field-helper: 55px;
-// .valid-form-field::before,
-// .editable-form-field::before,
-// .required-form-field::before {
-//   content: '';
-//   width: 40px;
-//   height: 40px;
-//   position: absolute;
-//   top: 35px;
-//   right: -55px;
-// }
 .input-group-custom{
   position: relative;
 }
@@ -116,7 +106,6 @@ $position-form-field-helper: 55px;
 .valid-form-field {
   background: url("../images/green_check.svg") no-repeat top right;
 }
-
 .editable-form-field {
   background: url("../images/blue_edit.svg") no-repeat top right;
 }
@@ -125,10 +114,6 @@ $position-form-field-helper: 55px;
 }
 .required-form-field {
   background: url("../images/yellow_sign.svg") no-repeat top right;
-}
-.icon-filled-by-other{
-
-  color: rgb(255,165,0);
 }
 .trix-header-vanisher {
   trix-toolbar{
