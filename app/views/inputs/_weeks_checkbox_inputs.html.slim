@@ -2,9 +2,10 @@
 
 div data-controller="select-weeks" data-internship-offer-infos-target='weeksContainer' data-select-weeks-skip-validation-value="false"
   .form-group
-    div.label
-      = label
-      = form.rg2a_required_content_tag
+    - if label.present?
+      div.label
+        = label
+        = form.rg2a_required_content_tag
 
     - if render_employer_components
       - allow_select_all = !form.object.is_fully_editable?
