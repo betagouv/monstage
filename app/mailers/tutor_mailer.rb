@@ -9,7 +9,7 @@ class TutorMailer < ApplicationMailer
     @link_url = if @registered_tutor
       dashboard_internship_offers_url
     else
-      invited_edit_password_url(reset_password_token: token)
+      edit_invited_password_url(reset_password_token: token)
     end
 
     mail(to: tutor.email, subject: 'Vous avez été désigné tuteur de stage')

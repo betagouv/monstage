@@ -92,6 +92,33 @@ module Dashboard::InternshipAgreements
                   'can\'t update internship_agreement organisation representative full name')
     end
 
+    test 'PATCH #update as employer owning internship_offer fails updating ' \
+         'internship_agreement when accept terms go missing' do
+      school = create(:school, :with_school_manager)
+      class_room = create(:class_room, school: school)
+      student = create(:student, school: school, class_room: class_room)
+      main_teacher = create(:main_teacher, school: school, class_room: class_room)
+      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
+      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
+      new_organisation_representative_full_name = 'John Doe'
+      params = {
+        'internship_agreement' => {
+          employer_accept_terms: false,
+          organisation_representative_full_name: new_organisation_representative_full_name
+        }
+      }
+      sign_in(internship_application.internship_offer.employer)
+
+      patch dashboard_internship_agreement_path(internship_agreement.id, params)
+
+      assert_equal 400, response.status
+
+      refute_equal(new_organisation_representative_full_name,
+                  internship_agreement.reload.organisation_representative_full_name,
+                  'can\'t update internship_agreement organisation representative full name')
+    end
+
     # As Tutor
     test 'PATCH #update as tutor not tutor in the internship_offer redirects ' \
          'to dashboard_internship_applications path' do
@@ -112,7 +139,7 @@ module Dashboard::InternshipAgreements
       assert_redirected_to root_path
     end
 
-    test 'PATCH #update as internship_agreement\'s TUTOR' do
+    test 'PATCH #update as internship_agreement\'s tutor' do
       employer = create(:employer)
       tutor = create(:tutor)
       school = create(:school, :with_school_manager, :with_agreement_presets)
@@ -135,7 +162,36 @@ module Dashboard::InternshipAgreements
                            'redirection should point to updated agreement')
       assert_equal(new_tutor_full_name,
                   internship_agreement.reload.tutor_full_name,
-                  'can\'t update internship_agreement organisation tutor full name')
+                  'can\'t update internship_agreement tutor full name')
+    end
+
+    test 'PATCH #update as internship_agreement\'s tutor fails when accept_terms are not validated' do
+      employer = create(:employer)
+      tutor = create(:tutor)
+      school = create(:school, :with_school_manager, :with_agreement_presets)
+      class_room = create(:class_room, :troisieme_segpa, school: school)
+      student = create(:student, school: school, class_room: class_room)
+      internship_offer = create(:troisieme_segpa_internship_offer, employer: employer, tutor: tutor)
+      internship_application = create(:free_date_internship_application,
+                                      :approved,
+                                      student: student,
+                                      internship_offer: internship_offer)
+      internship_agreement = create(:troisieme_segpa_internship_agreement,
+                                    tutor_accept_terms: true,
+                                    internship_application: internship_application)
+      sign_in(tutor)
+      new_tutor_full_name = 'M. Lune'
+      # there comes the error
+      patch dashboard_internship_agreement_path(internship_agreement.id),
+            params: {internship_agreement: {tutor_full_name: new_tutor_full_name, tutor_accept_terms: false}}
+
+      assert_equal 400, response.status
+
+      internship_agreement = internship_agreement.reload
+
+      refute_equal(new_tutor_full_name,
+                   internship_agreement.tutor_full_name,
+                   'internship_agreement update should not have validated tutor full name, because tutor_accept_terms was set to false')
     end
 
     # As School Manager
@@ -150,7 +206,8 @@ module Dashboard::InternshipAgreements
 
     test 'PATCH #update as school manager owning students updates internship_agreement' do
       internship_application = create(:weekly_internship_application, :approved)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+      internship_agreement = create(:troisieme_generale_internship_agreement,
+                                    :created_by_system,
                                     school_manager_accept_terms: true,
                                     internship_application: internship_application)
       school_manager = internship_application.student.school_manager
