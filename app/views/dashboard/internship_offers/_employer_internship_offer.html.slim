@@ -18,13 +18,17 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
 
 
   td.align-middle data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    span class="fa-fw #{employer_internship_offer.submitted_applications_count.positive? ? 'red-notification-badge' : 'badge'}"
-      = employer_internship_offer.submitted_applications_count
-    - if employer_internship_offer.submitted_applications_count.positive?
-      = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable small' do
-        i.fa-fw.far.fa-envelope
-        = " "
-        | Répondre
+    - if current_user.tutor?
+      |-
+    - else
+      span class="fa-fw #{employer_internship_offer.submitted_applications_count.positive? ? 'red-notification-badge' : 'badge'}"
+        = employer_internship_offer.submitted_applications_count
+      - if employer_internship_offer.submitted_applications_count.positive?
+
+          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable small' do
+            i.fa-fw.far.fa-envelope
+            = " "
+            | Répondre
 
   td.align-middle data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     .d-flex.justify-content-start
