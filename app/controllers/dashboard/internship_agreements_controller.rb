@@ -22,7 +22,7 @@ module Dashboard
           render :new, status: :bad_request
         end
       end
-    rescue ActionController::ParameterMissing => e
+    rescue ActionController::ParameterMissing
       @internship_agreement = InternshipAgreement.new(
         internship_application_id: params[:internship_application_id]
       )
@@ -46,7 +46,7 @@ module Dashboard
           render :edit, status: :bad_request
         end
       end
-    rescue ActionController::ParameterMissing => e
+    rescue ActionController::ParameterMissing
       @internship_agreement = InternshipAgreement.find(params[:id])
       @available_weeks = Week.selectable_on_school_year
       render :edit, status: :bad_request

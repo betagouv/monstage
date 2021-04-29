@@ -50,9 +50,8 @@ module Users
       raw
     end
 
-    def tutor?
-      true
-    end
+    def tutor?; true end
+
   end
 end
 
