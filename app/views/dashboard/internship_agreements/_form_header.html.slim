@@ -15,7 +15,7 @@ thead
               p.small.text-muted.mb-2=" Complété par"
               .h6=render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user, custom_classes: ' small font-weight-bold text-dark'))
       .offset-absolute
-        .float-right.col-3.text-center.gradient-to-white
+        .float-right.col-3.text-center.gradient-to-white.mr-0.rounded-top
           p.mt-3.mb-0.font-weight-normal
             = content_tag :div, class: 'btn btn-link p-0 font-weight-normal d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
               | Afficher les notes

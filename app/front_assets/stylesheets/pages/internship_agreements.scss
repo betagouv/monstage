@@ -131,13 +131,33 @@ $position-form-field-helper: 55px;
 .offset-absolute{
   width: 100%;
   position: absolute;
-  margin-top: 3px;
-  margin-top: 3px;
+  margin-top: 13px;
   height: 0;
 
   .gradient-to-white{
     background: rgb(255,255,255);
     background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+    border-left: 2px solid $blue;
+    border-right: 2px solid $blue;
+    border-top: 2px solid $blue;
+    position: relative;
+    left: -2px;
+    box-shadow: 3px -10px white, -3px -10px white;
+  }
+}
 
+.internship-agreement {
+  .row {
+    margin: 0;
+  }
+  .offset-2 {
+    background-color: white;
+    border-left: 2px solid $blue;
+    border-right: 2px solid $blue;
+    
+  }
+  .end-form {
+    border-bottom: 2px solid $blue;
+    padding-top: 1rem;
   }
 }

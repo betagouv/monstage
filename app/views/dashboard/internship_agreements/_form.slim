@@ -1,4 +1,4 @@
-tbody
+tbody.internship-agreement
   tr
     td
 
@@ -9,11 +9,14 @@ tbody
         .col-8= render "layouts/form_errors", resource: resource
 
       fieldset
-        legend.h4.col-7.px-0 Convention relative à l’organisation de séquence d’observation en milieu professionnel
-        = form.hidden_field :internship_application_id, value: resource.internship_application_id
-        = form.hidden_field :school_track, value: resource.school_track
+        .row.mt-0
+          .col-7
+            h4.px-0 Convention relative à l’organisation de séquence d’observation en milieu professionnel
+            = form.hidden_field :internship_application_id, value: resource.internship_application_id
+            = form.hidden_field :school_track, value: resource.school_track
+          .col-3.offset-2.mt-3
 
-        .row.mt-3
+        .row
           .col-7
             p
               | Vu le code du travail, et notamment son article L.211-1 ;
@@ -27,26 +30,27 @@ tbody
               | Vu le décret n° 2003-812 du 26 août 2003 relatif aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
               br
               | Vu la circulaire n° 2003-134 du 8 septembre 2003 relative aux modalités d’accueil en milieu professionnel des élèves mineurs de moins de seize ans ;
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row
           .col-7
             p
               strong ENTRE
-
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           - label = "L’entreprise ou l’organisme d’accueil, représentée par "
           - title = "Note destinée à l'entreprise"
           - content = "Nom et prénom du dirigeant de l'entreprise"
           - hint = "en qualité de chef d’entreprise ou de responsable de l’organisme d’accueil"
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :organisation_representative_full_name, form: form, text_label: label, hint: hint,title: title, content: content}
-        .row.mt-3
+        .row.mt-0
           - label = "L’établissement d’enseignement scolaire, représenté par"
           - hint = "en qualité de chef d’établissement"
           - title = "Note destinée au chef d'établissement :"
           - content = "Nom et prénom du chef d'etablissement"
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :school_representative_full_name, form: form, text_label: label, hint: hint, title: title, content: content}
-        .row.mt-3
+        .row.mt-0
           - label = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du :"
           - hint = "en qualité de chef d’établissement"
           - title = "Note destinée au chef d'établissement :"
@@ -54,64 +58,67 @@ tbody
           = render partial: 'dashboard/internship_agreements/date_field_element',
                    locals: { field: :school_delegation_to_sign_delivered_at, form: form, text_label: label, hint: hint, title: title, content: content}
 
-        .row.mt-3
+        .row.mt-0
           .col-7
             p
              strong il a été convenu ce qui suit :
-
-        .row.mt-3
-          .col-12
+          .col-3.offset-2.pt-3
+        .row.mt-0
+          .col-7
             h2.h4
               | TITRE PREMIER : DISPOSITIONS GÉNÉRALES
-
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           - label = "Articles"
           - title = "Note destinée au chef d'établissement :"
           - content = "Les articles sont modifiables selon vos spécificités locales."
           = render partial: 'dashboard/internship_agreements/trix_form_element',
                    locals: { field: :legal_terms_rich_text, form: form, title: title, content: content, text_label: label }
-
-        .row.mt-3
+  
+        .row.mt-0
           .col-7
             .h4 role="heading" aria-level="2" TITRE II - DISPOSITIONS PARTICULIÈRES
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           .col-7
             .h5 role="heading" aria-level="3" A - Convention de preuve
+          .col-3.offset-2.pt-3
           .col-7
             .h6.font-weight-bold role="heading" aria-level="4" Article 10 -
             ul
               li Les Parties conviennent expressément que les documents électroniques échangés sont des écrits électroniques ayant la même valeur probante que des écrits papier.
               li  Les Parties conviennent expressément que tout document signé de manière dématérialisée depuis la plateforme monstagede3e constitue une preuve littérale au sens du Code civil. Elles reconnaissent que tout document signé de manière dématérialisée vaut preuve du contenu dudit document, de l’identité du signataire et de son consentement aux obligations et conséquences de faits et de droit qui découlent du document signé de manière dématérialisée.
-
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           .col-7
             .h5 role="heading" aria-level="3" B - Annexe pédagogique
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           - label = "Nom de l’élève ou des élèves concerné(s) :"
           - title = "Note destinée au chef d'établissement :"
           - content = "Nom(s) et prénom(s) de(s) l'élève(s) effectuant le stage."
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :student_full_name, form: form, text_label: label, content: content, title: title}
-        .row.mt-3
+        .row.mt-0
           - label = "Classe :"
           - title = "Note destinée au professeur principal :"
           - content = "Classe(s) des élèves effectuant le stage."
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :student_class_room, form: form, text_label: label, content: content, title: title}
-        .row.mt-3
+        .row.mt-0
           - label = "Établissement d’origine :"
           - title = "Note destinée au chef d'établissement :"
           - content = "Adresse de l'etablissement d'origine de(e) élève(s)"
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :student_school, form: form, text_label: label, content: content, title: title}
-        .row.mt-3
+        .row.mt-0
           - label = "Nom et qualité du responsable de l’accueil " \
                     "en milieu professionnel du tuteur :"
           - title = "Note destinée à l'entreprise"
           - content = "Nom, prénom et role du tuteur"
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :tutor_full_name, form: form, text_label: label, content: content, title: title}
-        .row.mt-3
+        .row.mt-0
           - label = "Nom du ou (des) enseignant(s) chargé(s) de suivre le " \
                     "déroulement de séquence d’observation en milieu professionnel :"
           - title = "Note destinée au professeur principal :"
@@ -119,14 +126,14 @@ tbody
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :main_teacher_full_name, form: form, text_label: label, content: content, title: title}
 
-        .row.mt-3
+        .row.mt-0
           - label = "Dates de la séquence d’observation en milieu professionnel du"
           - title = "Note destinée à l'entreprise"
           - content = "Date de début et fin du stage"
           = render partial: 'dashboard/internship_agreements/text_field_element',
                    locals: { field: :date_range, form: form, text_label: label, content: content, title: title }
 
-        .row.mt-3
+        .row.mt-0
           .col-7
             .form-group.schedules
               .label
@@ -138,14 +145,14 @@ tbody
               .title = "Note destinée à l'entreprise"
               span = "Horaires de l'élèves"
 
-        .row.mt-3
+        .row.mt-0
           - label = "Objectifs assignés à la séquence d’observation en milieu professionnel"
           - title = "Note destinée à l'entreprise"
           - content = "Objectifs du stage"
           = render partial: 'dashboard/internship_agreements/trix_form_element',
                    locals: { field: :activity_scope_rich_text, form: form, text_label: label, title: title, content: content}
         - if school_track != 'troisieme_generale'
-          .row.mt-3
+          .row.mt-0
             - label = "Modalités de la concertation qui sera assurée pour organiser " \
                       "la préparation, contrôler le déroulement de la période en vue " \
                       "d’une véritable complémentarité des enseignements reçus"
@@ -154,13 +161,13 @@ tbody
             = render partial: 'dashboard/internship_agreements/trix_form_element',
                      locals: { field: :activity_preparation_rich_text, form: form, text_label: label, title: title, content: content }
 
-          .row.mt-3
+          .row.mt-0
             - label = "Compétences visées"
             - title = "Note destinée à l'entreprise"
             - ccontent = "Apprentissages en entreprise"
             = render partial: 'dashboard/internship_agreements/trix_form_element',
                      locals: { field: :activity_learnings_rich_text, form: form, text_label: label, title: title, content: content }
-        .row.mt-3
+        .row.mt-0
           - label = "Modalités d’évaluation de la séquence d’observation " \
                     "en milieu professionnel :"
           - title = "Note destinée au professeur principal :"
@@ -168,10 +175,11 @@ tbody
           = render partial: 'dashboard/internship_agreements/trix_form_element',
                    locals: { field: :activity_rating_rich_text, form: form, text_label: label, title: title, content: content }
 
-        .row.mt-3
-          .col-12
+        .row.mt-0
+          .col-7
             .h6 role="heading" aria-level="3" B - Annexe complémentaire
-        .row.mt-3
+          .col-3.offset-2.pt-3
+        .row.mt-0
           - label = "Conditions liés au financement du stage de " \
                     "l'élève par l'établissement"
           - title = "Note destinée au chef d'établissement et à l'entreprise"
@@ -183,12 +191,12 @@ tbody
           = render partial: 'dashboard/internship_agreements/trix_form_element',
                    locals: { field: :complementary_terms_rich_text, form: form, text_label: label, title: title, content: content }
 
-        .row.mt-3
+        .row.mt-0
           .col-7
             p= "Fait à #{resource.internship_application.student.school.city.capitalize}, le #{(Date.current).strftime('%d/%m/%Y')}."
 
         .row
           .col-8= render "layouts/form_errors", resource: resource
 
-        .row.mt-3= render partial: 'dashboard/internship_agreements/form_footer',
+        .row.mt-0= render partial: 'dashboard/internship_agreements/form_footer',
                  locals: {form: form}
