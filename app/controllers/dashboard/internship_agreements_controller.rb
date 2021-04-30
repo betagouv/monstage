@@ -43,7 +43,7 @@ module Dashboard
         end
         on.failure do |failed_internship_agreement|
           @internship_agreement = failed_internship_agreement || InternshipAgreement.find(params[:id])
-          render :edit, status: :bad_request
+          render :edit
         end
       end
     rescue ActionController::ParameterMissing

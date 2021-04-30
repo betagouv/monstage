@@ -112,7 +112,9 @@ module Dashboard::InternshipAgreements
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_equal 400, response.status
+      assert_select '#error_explanation ul li',
+                    I18n.t('activerecord.errors.models.internship_agreement.attributes.employer_accept_terms.missing'),
+                    'employer accept terms alert is invisible'
 
       refute_equal(new_organisation_representative_full_name,
                   internship_agreement.reload.organisation_representative_full_name,
@@ -130,9 +132,9 @@ module Dashboard::InternshipAgreements
                                       :approved,
                                       student: student,
                                       internship_offer: internship_offer)
-      internship_agreement  = create(:troisieme_segpa_internship_agreement,
-                                      tutor_accept_terms: true,
-                                      internship_application: internship_application)
+      internship_agreement = create(:troisieme_segpa_internship_agreement,
+                                    tutor_accept_terms: true,
+                                    internship_application: internship_application)
       sign_in(tutor)
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: { internship_agreement: {tutor_full_name: 'Monsieur Ragnagna'} }
@@ -185,7 +187,6 @@ module Dashboard::InternshipAgreements
       patch dashboard_internship_agreement_path(internship_agreement.id),
             params: {internship_agreement: {tutor_full_name: new_tutor_full_name, tutor_accept_terms: false}}
 
-      assert_equal 400, response.status
 
       internship_agreement = internship_agreement.reload
 

@@ -233,11 +233,11 @@ fr:
       models:
         internship_agreement:
           attributes:
-            school_manager_accept_terms: "conditions d'utilisation de la signature"
+            school_manager_accept_terms: "Veuillez valider les conditions d'utilisation de la signature"
             employer_accept_terms:
-              missing: "conditions d'utilisation de la signature"
+              missing: "Veuillez valider les conditions d'utilisation de la signature"
             tutor_accept_terms:
-              missing: "coche d'enregistrement de la convention, au bas du formulaire"
+              missing: "Veuillez cocher la case d'enregistrement de la convention, au bas du formulaire"
             student_full_name:
               blank: "Veuillez saisir le nom de l'élève"
             organisation_representative_full_name:
