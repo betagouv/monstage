@@ -100,10 +100,6 @@ class InternshipApplication < ApplicationRecord
     yield.deliver_later(wait: 1.second)
   end
 
-  def weekly_offer?
-    internship_offer.weekly?
-  end
-
   aasm do
     state :drafted, initial: true
     state :submitted,
