@@ -20,6 +20,13 @@ fieldset
                           prompt: 'Tous',
                           class: 'form-control',
                           data: { action: 'statistics#filterByDepartment' }
+        .col-3
+          .form-group
+            = label_tag :subscribed_school, "Inscrits", class: 'text-uppercase'
+            = select_tag :subscribed_school,
+                          options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school] || @default_subscribed_school ),
+                          class: 'form-control',
+                          data: { action: 'statistics#filterBySubscribedSchool' }
       - if by_typology
         .col-3
           .form-group
