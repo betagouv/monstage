@@ -324,7 +324,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path, params: { latitude: 1, longitude: 1 }
-        assert_select('a[href=?]', internship_offer_path(id: internship_1, latitude: 1, longitude: 1))
+        assert_select('a[href=?]', internship_offer_path(id: internship_1, latitude: 1, longitude: 1, origin: 'search'))
       end
     end
   end
