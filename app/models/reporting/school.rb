@@ -37,6 +37,7 @@ module Reporting
         .group('schools.id')
         .having('count(users.id) = 0')
     }
+    scope :with_manager_simply, lambda { joins(:school_manager) }
     # maybe useless
     scope :in_the_future, lambda {
       more_recent_than(week: ::Week.current)
@@ -45,6 +46,17 @@ module Reporting
     scope :with_school_track, lambda { |school_track|
       joins(:class_rooms)
         .where('class_rooms.school_track = ?', school_track)
+    }
+
+    scope :by_subscribed_school, ->(subscribed_school:)  {
+      case subscribed_school.to_s
+      when 'true'
+        with_manager_simply
+      when 'false'
+        without_school_manager
+      else
+        all
+      end
     }
 
     paginates_per PAGE_SIZE

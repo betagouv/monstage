@@ -37,5 +37,23 @@ module Reporting
       get reporting_schools_path(department: 'Ain')
       assert_response 302
     end
+
+    test 'GET #index as god success and it filters by susbcribed school'  do
+      god = create(:god)
+      school_without_manager = create(:school, name: 'school 1')
+      school_with_manager    = create(:school, :with_school_manager,  name: 'school 2')
+      sign_in(god)
+      get reporting_schools_path
+      assert_select  'tr.test-school-count', count: 2
+
+      get reporting_schools_path(subscribed_school: 'all')
+      assert_select  'tr.test-school-count', count: 3
+
+      get reporting_schools_path(subscribed_school: 'false')
+      assert_select  'tr.test-school-count', count: 2
+
+      get reporting_schools_path(subscribed_school: 'true')
+      assert_select  'tr.test-school-count', count: 1
+    end
   end
 end
