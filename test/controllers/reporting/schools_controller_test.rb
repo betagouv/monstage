@@ -44,7 +44,7 @@ module Reporting
       school_with_manager    = create(:school, :with_school_manager,  name: 'school 2')
       sign_in(god)
       get reporting_schools_path
-      assert_select  'tr.test-school-count', count: 2
+      assert_select  'tr.test-school-count', count: 3
 
       get reporting_schools_path(subscribed_school: 'all')
       assert_select  'tr.test-school-count', count: 3
