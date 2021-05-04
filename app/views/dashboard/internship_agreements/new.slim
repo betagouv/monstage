@@ -7,6 +7,7 @@
     = form_with model: @internship_agreement,
                 url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
                 class: 'form-offset-header',
+                local: true,
                 html: {'data-controller': 'internship-agreement-form'} do |form|
       = render "form",
                form: form,
