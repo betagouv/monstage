@@ -164,7 +164,7 @@ class Ability
 
   def tutor_abilities(user:)
     can %i[index read], Acl::InternshipOfferDashboard
-    can %i[update invited_set_password], Users::Tutor
+    can %i[update], Users::Tutor
     can %i[index update], InternshipApplication
     can %i[see_tutor read], InternshipOffer do |offer|
       offer.tutor == user

@@ -89,8 +89,6 @@ class AbilityTest < ActiveSupport::TestCase
                                   internship_application: internship_application)
     ability = Ability.new(tutor)
 
-    assert(ability.can?(:invited_set_password, tutor))
-
     assert(ability.cannot?(:destroy, internship_application))
     assert(ability.can?(:update, internship_application))
     assert(ability.can?(:index, internship_application))

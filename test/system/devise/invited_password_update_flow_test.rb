@@ -4,7 +4,6 @@ require 'application_system_test_case'
 
 class InvitedPasswordUpdateFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  # include ThirdPartyTestHelpers
 
   test 'inexistant tutor invited by mail, updates her email' do
     tutor = create(:tutor)
@@ -21,9 +20,9 @@ class InvitedPasswordUpdateFlowTest < ApplicationSystemTestCase
     fill_in('Mot de passe', with: password)
     fill_in('Confirmation de mot de passe', with: password)
     click_on('Choisissez votre mot de passe')
-    assert_equal 'Mes offres de stage',
-                  find('.container h1.h3').text,
-                  'Bad redirection to  dashboard_internship_offers_path'
+    assert_equal 'Me connecter',
+                  find('.container h1.h2').text,
+                  'Bad redirection to dashboard_internship_offers_path through connexion screen'
   end
 
   test 'inexistant tutor invited by mail, updates her email with an invalid password' do
