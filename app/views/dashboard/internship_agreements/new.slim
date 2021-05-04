@@ -9,7 +9,12 @@
              locals: { internship_application: @internship_agreement.internship_application,
                        internship_agreement: form.object }
 
-    = render "form",
-         form: form,
-         resource: @internship_agreement,
-         school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'
+    = form_with model: @internship_agreement,
+                url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+                class: 'form-offset-header',
+                local: true,
+                html: {'data-controller': 'internship-agreement-form'} do |form|
+      = render "form",
+               form: form,
+               resource: @internship_agreement,
+               school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'
