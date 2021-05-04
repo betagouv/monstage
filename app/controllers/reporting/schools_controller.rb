@@ -6,7 +6,7 @@ module Reporting
     def index
       @default_subscribed_school = false
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
-      @schools = Finders::ReportingSchool.new(params: default_cross_view_params)
+      @schools = Finders::ReportingSchool.new(params: reporting_cross_view_params)
                                          .fetch_all
                                          .page(params[:page])
       respond_to do |format|
@@ -15,12 +15,6 @@ module Reporting
         end
         format.html
       end
-    end
-
-    def default_cross_view_params
-      return reporting_cross_view_params if reporting_cross_view_params[:subscribed_school].present?
-
-      reporting_cross_view_params.merge!(subscribed_school: false)
     end
 
     private
