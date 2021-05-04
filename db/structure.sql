@@ -839,6 +839,40 @@ ALTER SEQUENCE public.organisations_id_seq OWNED BY public.organisations.id;
 
 
 --
+-- Name: partners; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.partners (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    target_count integer DEFAULT 0,
+    logo character varying,
+    website character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: partners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.partners_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: partners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.partners_id_seq OWNED BY public.partners.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1191,6 +1225,13 @@ ALTER TABLE ONLY public.organisations ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: partners id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.partners ALTER COLUMN id SET DEFAULT nextval('public.partners_id_seq'::regclass);
+
+
+--
 -- Name: school_internship_weeks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1358,6 +1399,14 @@ ALTER TABLE ONLY public.operators
 
 ALTER TABLE ONLY public.organisations
     ADD CONSTRAINT organisations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners partners_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.partners
+    ADD CONSTRAINT partners_pkey PRIMARY KEY (id);
 
 
 --
@@ -2215,9 +2264,17 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201116085327'),
 ('20201203153154'),
 ('20210112164129'),
+('20210113140604'),
 ('20210121171025'),
 ('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210225164349'),
 ('20210310173554'),
-('20210422145040');
+('20210326100435'),
+('20210408113406'),
+('20210422145040'),
+('20210430083329');
 
 

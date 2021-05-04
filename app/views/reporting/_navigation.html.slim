@@ -18,9 +18,10 @@
       - else
         span.font-weight-bold Statistiques nationales
 .row
-  .col-12
+  .col-8
      h1.h2.py-3 Statistiques
-
+  .col-4.text-right
+    = link_to 'Imprimer les statistiques', '#', class: 'btn btn-primary'
 .row
   .col-12
     ul.nav.nav-tabs.mb-3
@@ -33,3 +34,7 @@
       li.nav-item= link_to "Établissements",
                            reporting_schools_path(default_reporting_url_options(current_user)),
                            class: "nav-link #{current_page?(reporting_schools_path) ? 'active' : ''}"
+      - if current_user.is_a?(Users::God)
+        li.nav-item= link_to "Associations",
+                            reporting_partners_path(),
+                            class: "nav-link #{current_page?(reporting_partners_path) ? 'active' : ''}"

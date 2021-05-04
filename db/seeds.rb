@@ -424,6 +424,17 @@ def populate_applications
   end
 end
 
+def populate_partners
+  Partner.create(name: "Un stage et après", website: "", target_count: 120)
+  Partner.create(name: "JobIRL", website: "", target_count: 32)
+  Partner.create(name: "Le Réseau", website: "", target_count: 710)
+  Partner.create(name: "Télémaque", website: "", target_count: 1200)
+  Partner.create(name: "MyFutur", website: "", target_count: 1200)
+  Partner.create(name: "Les entreprises pour la cité", website: "", target_count: 1200)
+  Partner.create(name: "Tous en stage", website: "", target_count: 1200)
+  Partner.create(name: "Viens voir mon taf", website: "", target_count: 1200)
+end
+
 
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
@@ -451,7 +462,8 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_students,
     :populate_school_weeks,
     :populate_applications,
-    :populate_aggreements
+    :populate_aggreements,
+    :populate_partners
   ])
   School.update_all(updated_at: Time.now)
 end

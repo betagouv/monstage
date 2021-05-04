@@ -1,0 +1,26 @@
+.container.mt-3
+  = render partial: 'reporting/navigation'    
+
+  .row.mt-3
+    .col-12
+      table.table.table-statistics.table-sticky-thead
+        thead
+          tr.tr-blue
+            th.bl-1.bc-light= Partner.model_name.human
+            th.bl-1.bc-light= Partner.human_attribute_name(:target_count)
+            th.bl-1.bc-light Stages Pourvus
+            th.bl-1.bc-light Dernière mise à jour
+            th.bl-1.bc-light
+
+        tbody= render partial: 'reporting/partners/partner', collection: @partners
+
+        tr class="font-weight-bold text-blue"
+          td.align-middle.bl-1.bc-light Total
+          td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @partners.sum(&:target_count)
+          td.align-middle.bl-1.bc-light -
+          td.align-middle.bl-1.bc-light -
+          td.align-middle.bl-1.bc-light
+
+  .row.mt-3.mb-3
+    .col-12.text-center
+      = link_to "Exporter", reporting_partners_path(format: :xlsx), class: 'btn btn-danger', data: {turbolinks: false}
