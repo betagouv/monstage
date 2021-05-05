@@ -15,6 +15,7 @@ module Reporting
     belongs_to :school, optional: true
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
+    has_many :internship_applications
 
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
