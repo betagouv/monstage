@@ -13,6 +13,7 @@ module Reporting
     belongs_to :school, optional: true
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
+    has_many :internship_applications
 
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
@@ -88,6 +89,12 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
+    }
+
+    scope :partition_by_month, lambda {
+      query = select("DATE_TRUNC('month',created_at) AS  created_at_to_month, sum(max_candidates) AS count")
+      query = query.group("DATE_TRUNC('month',created_at)")
+      query.order("created_at_to_month")
     }
   end
 end
