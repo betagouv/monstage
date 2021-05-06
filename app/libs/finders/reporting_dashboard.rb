@@ -6,8 +6,7 @@ module Finders
     def count_by_private_sector
       base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
                 .where(permalink: nil)
-                .joins(:group)
-                .where(group: { is_public: false })
+                .where(is_public: false)
                 .map(&:attributes)
                 .first
     end
@@ -15,8 +14,7 @@ module Finders
     def count_by_public_sector
       base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
                 .where(permalink: nil)
-                .joins(:group)
-                .where(group: { is_public: true })
+                .where(is_public: true)
                 .map(&:attributes)
                 .first
     end
@@ -47,7 +45,7 @@ module Finders
 
     def base_query
       query = Reporting::InternshipOffer.all
-      query = query.where(created_at: (school_year.beginning_of_period..school_year.end_of_period)) if school_year_param?
+      query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
 
       query
