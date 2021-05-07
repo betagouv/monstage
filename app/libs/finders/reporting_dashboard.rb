@@ -27,13 +27,20 @@ module Finders
                 .first
     end
 
-    # conditions = conditions.and(internship_offers[:is_public].eq(true))
+
+    # SELECT months.date AS date, count(internship_applications.id) AS COUNT FROM "months"
+    #   LEFT OUTER JOIN (
+    #     SELECT "internship_applications"."id", "internship_applications"."approved_at" FROM "internship_applications"
+    #       INNER JOIN "internship_offers" ON "internship_offers"."id" = "internship_applications"."internship_offer_id" AND "internship_offers"."department" = 'Seine-Saint-Denis'
+    #     ) as internship_applications
+    #     ON DATE_TRUNC('month', "internship_applications"."approved_at") = "months"."date"
+    # WHERE "months"."date" BETWEEN '2019-09-01' AND '2020-09-01'
+    # GROUP BY "months"."date" ORDER BY "months"."date" ASC
     def partition_internship_offer_created_at_by_month
       months = Month.arel_table
       internship_offers = InternshipOffer.arel_table
 
       conditions = date_trunc('month', internship_offers[:created_at]).eq(months[:date])
-      # conditions = Reporting::InternshipOffer.during_year_predicate(school_year: school_year)
       conditions = conditions.and(internship_offers[:department].eq(params[:department])) if department_param?
       join_sources = months.join(internship_offers, Arel::Nodes::OuterJoin).on(conditions).join_sources
 
@@ -51,20 +58,33 @@ module Finders
       )
     end
 
+    # SELECT "months"."date" AS date,
+    #    COUNT(bim."id") AS COUNT
+    # FROM "months"
+    # LEFT OUTER JOIN
+    #   (SELECT "internship_applications"."id",
+    #           "internship_applications"."approved_at"
+    #    FROM "internship_applications"
+    #    INNER JOIN "internship_offers" ON "internship_offers"."id" = "internship_applications"."internship_offer_id"
+    #    AND "internship_offers"."department" = 'Seine-Saint-Denis'
+    #    AND "internship_applications"."aasm_state" = 'approved') bim ON DATE_TRUNC('month', bim."approved_at") = "months"."date"
+    # WHERE "months"."date" BETWEEN '2020-09-01' AND '2021-09-01'
+    # GROUP BY "months"."date"
+    # ORDER BY "months"."date" ASC
     def partition_internship_application_approved_at_by_month
        months = Month.arel_table
        internship_applications = InternshipApplication.arel_table
-       subquery = subq.as("internship_applications")
+       subquery = subq.as("bim")
        month_conditions = date_trunc('month', subquery[:approved_at]).eq(months[:date])
 
        join_sources = months.join(subquery, Arel::Nodes::OuterJoin).on(month_conditions)
                             .join_sources
-       # "months.date AS date, count(internship_applications.id) AS COUNT"
        query = Month.select(months[:date].as("date"), subquery[:id].count.as('count'))
        query = query.where(date: school_year.range) if school_year_param?
        query = query.joins(join_sources)
        query = query.group(:date)
        query = query.order(:date)
+       Rails.logger.info query.to_sql
        query.map(&:attributes)
     end
 
@@ -72,11 +92,12 @@ module Finders
       internship_offers = InternshipOffer.arel_table
       internship_applications = InternshipApplication.arel_table
 
-      internship_offer_conditions = internship_offers[:id].eq(internship_applications[:internship_offer_id])
-      internship_offer_conditions = internship_offer_conditions.and(internship_offers[:department].eq(params[:department])) if department_param?
+      conditions = internship_offers[:id].eq(internship_applications[:internship_offer_id])
+      conditions = conditions.and(internship_offers[:department].eq(params[:department])) if department_param?
+      conditions = conditions.and(internship_applications[:aasm_state].eq(:approved))
       internship_applications.project(internship_applications[:id], internship_applications[:approved_at])
                              .join(internship_offers, Arel::Nodes::InnerJoin)
-                             .on(internship_offer_conditions)
+                             .on(conditions)
     end
 
     def school_year

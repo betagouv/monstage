@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+#Reporting::
 module Reporting
   # wrap reporting for internship offers
   class InternshipApplication < ApplicationRecord
