@@ -42,7 +42,7 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
-      partner:
+      operator:
         one: Association
         other: Associations
       sector:
@@ -130,7 +130,7 @@ fr:
         city: Ville
         coordinates: Coordonnées GPS
       
-      partner: &partner_fields
+      operator: &operator_fields
         name: Nom
         target_count: Objectif annuel
 

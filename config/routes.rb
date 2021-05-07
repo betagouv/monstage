@@ -78,8 +78,8 @@ Rails.application.routes.draw do
     get '/dashboards', to: 'dashboards#index'
     get '/schools', to: 'schools#index'
     get 'internship_offers', to: 'internship_offers#index'
-    get 'partners', to: 'partners#index'
-    put 'partners', to: 'partners#update'
+    get 'operators', to: 'operators#index'
+    put 'operators', to: 'operators#update'
   end
 
   get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search

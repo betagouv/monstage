@@ -72,8 +72,14 @@ def with_class_name_for_defaults(object)
 end
 
 def populate_operators
-  Operator.create!(name: 'MS3E-OPERATOR-1')
-  Operator.create!(name: 'MS3E-OPERATOR-2')
+  Operator.create(name: "Un stage et après", website: "", logo: 'Logo-jobirl.jpg', target_count: 120)
+  Operator.create(name: "JobIRL", website: "", logo: 'Logo-jobirl.jpg', target_count: 32)
+  Operator.create(name: "Le Réseau", website: "", logo: 'Logo-le-reseau.jpg', target_count: 710)
+  Operator.create(name: "Télémaque", website: "", logo: 'Logo-telemaque.png', target_count: 1200)
+  Operator.create(name: "MyFutur", website: "", logo: 'Logo-moidans10ans.png', target_count: 1200)
+  Operator.create(name: "Les entreprises pour la cité", website: "", logo: 'Logo-les-entreprises-pour-la-cite.jpg', target_count: 1200)
+  Operator.create(name: "Tous en stage", website: "", logo: 'Logo-tous-en-stage.jpg', target_count: 1200)
+  Operator.create(name: "Viens voir mon taf", website: "", logo: 'Logo-viens-voir-mon-taf.jpg', target_count: 1200)
 end
 
 def populate_sectors
@@ -424,18 +430,6 @@ def populate_applications
   end
 end
 
-def populate_partners
-  Partner.create(name: "Un stage et après", website: "", target_count: 120)
-  Partner.create(name: "JobIRL", website: "", target_count: 32)
-  Partner.create(name: "Le Réseau", website: "", target_count: 710)
-  Partner.create(name: "Télémaque", website: "", target_count: 1200)
-  Partner.create(name: "MyFutur", website: "", target_count: 1200)
-  Partner.create(name: "Les entreprises pour la cité", website: "", target_count: 1200)
-  Partner.create(name: "Tous en stage", website: "", target_count: 1200)
-  Partner.create(name: "Viens voir mon taf", website: "", target_count: 1200)
-end
-
-
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
 end
@@ -462,8 +456,7 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_students,
     :populate_school_weeks,
     :populate_applications,
-    :populate_aggreements,
-    :populate_partners
+    :populate_aggreements
   ])
   School.update_all(updated_at: Time.now)
 end

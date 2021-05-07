@@ -203,7 +203,7 @@ class Ability
     end
     can %i[index_and_filter], Reporting::InternshipOffer
     can :reset_cache, User
-    can :manage, Partner
+    can :manage, Operator
   end
 
   private

@@ -7,9 +7,9 @@ wb.add_worksheet(name: 'Associations') do |sheet|
   )
 
   # raws
-  @partners.each do |partner|
+  @operators.each do |operator|
     sheet.add_row(    
-      [partner.name, partner.target_count, partner.updated_at.strftime('%d-%m-%Y')]  
+      [operator.name, operator.target_count, operator.updated_at.strftime('%d-%m-%Y')]  
     )
   end
 end

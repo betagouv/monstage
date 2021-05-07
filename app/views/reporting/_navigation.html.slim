@@ -36,5 +36,5 @@
                            class: "nav-link #{current_page?(reporting_schools_path) ? 'active' : ''}"
       - if current_user.is_a?(Users::God)
         li.nav-item= link_to "Associations",
-                            reporting_partners_path(),
-                            class: "nav-link #{current_page?(reporting_partners_path) ? 'active' : ''}"
+                            reporting_operators_path(),
+                            class: "nav-link #{current_page?(reporting_operators_path) ? 'active' : ''}"

@@ -6,21 +6,21 @@
       table.table.table-statistics.table-sticky-thead
         thead
           tr.tr-blue
-            th.bl-1.bc-light= Partner.model_name.human
-            th.bl-1.bc-light= Partner.human_attribute_name(:target_count)
-            th.bl-1.bc-light Stages Pourvus
+            th.bl-1.bc-light= Operator.model_name.human
+            th.bl-1.bc-light= Operator.human_attribute_name(:target_count)
+            th.bl-1.bc-light Stages Publiés
             th.bl-1.bc-light Dernière mise à jour
             th.bl-1.bc-light
 
-        tbody= render partial: 'reporting/partners/partner', collection: @partners
+        tbody= render partial: 'reporting/operators/operator', collection: @operators
 
         tr class="font-weight-bold text-blue"
           td.align-middle.bl-1.bc-light Total
-          td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @partners.sum(&:target_count)
+          td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @operators.sum(&:target_count)
           td.align-middle.bl-1.bc-light -
           td.align-middle.bl-1.bc-light -
           td.align-middle.bl-1.bc-light
 
   .row.mt-3.mb-3
     .col-12.text-center
-      = link_to "Exporter", reporting_partners_path(format: :xlsx), class: 'btn btn-danger', data: {turbolinks: false}
+      = link_to "Exporter", reporting_operators_path(format: :xlsx), class: 'btn btn-danger', data: {turbolinks: false}

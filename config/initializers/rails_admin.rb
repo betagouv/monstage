@@ -64,8 +64,8 @@ RailsAdmin.config do |config|
                               InternshipOffers::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
+                              Operator
                               Organisation
-                              Partner
                               Tutor
                               Users::Student
                               Users::SchoolManagement
