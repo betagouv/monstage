@@ -769,6 +769,17 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
+-- Name: months; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.months (
+    date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: operators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2218,6 +2229,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210121171025'),
 ('20210121172155'),
 ('20210310173554'),
-('20210422145040');
+('20210422145040'),
+('20210506142429'),
+('20210506143015');
 
 

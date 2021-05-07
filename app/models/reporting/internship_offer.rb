@@ -55,6 +55,7 @@ module Reporting
       Arel::Nodes::InfixOperation.new('&&', left, right)
     end
 
+
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
@@ -89,12 +90,6 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
-    }
-
-    scope :partition_by_month, lambda {
-      query = select("DATE_TRUNC('month',created_at) AS  created_at_to_month, sum(max_candidates) AS count")
-      query = query.group("DATE_TRUNC('month',created_at)")
-      query.order("created_at_to_month")
     }
   end
 end

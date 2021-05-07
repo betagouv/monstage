@@ -74,7 +74,7 @@
           strong offres proposées
           = " sur la plateforme"
         .col-4.align-self-center.text-right.h2.mb-0.text-body
-          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment["total_count"]}
+          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
 
     .col-6.px-3
       .row
@@ -83,9 +83,11 @@
           strong candidatures acceptées
           = " sur la plateforme"
         .col-4.align-self-center.text-right.h2.mb-0.text-body
-          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment["approved_applications_count"] || 0}
+          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
 
   .row
     .col-12
-      div.py-5 data-controller="chart" data-chart-internship-offer-created-at-serie-value="#{partition_internship_offer_created_at_by_month.to_json}" data-chart-internship-application-accepted-at-serie-value="#{partition_internship_application_approved_at_by_month.to_json}"
+      div.py-5[data-controller="chart"
+               data-chart-internship-offer-created-at-serie-value="#{partition_internship_offer_created_at_by_month.to_json}"
+               data-chart-internship-application-accepted-at-serie-value="#{partition_internship_application_approved_at_by_month.to_json}" ]
         div data-chart-target='svg'
