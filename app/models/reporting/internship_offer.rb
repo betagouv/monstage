@@ -57,6 +57,7 @@ module Reporting
       Arel::Nodes::InfixOperation.new('&&', left, right)
     end
 
+
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|

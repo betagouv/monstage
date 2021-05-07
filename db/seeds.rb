@@ -23,6 +23,15 @@ def populate_week_reference
   end
 end
 
+def populate_month_reference
+  next_month = 3.years.ago.beginning_of_month
+  loop do
+    Month.create!(date: next_month)
+    next_month = next_month.next_month
+    break if next_month > 10.years.from_now
+  end
+end
+
 def geo_point_factory_array(coordinates_as_array)
   type = { geo_type: 'point' }
   factory = RGeo::ActiveRecord::SpatialFactoryStore.instance
@@ -445,6 +454,7 @@ end
 if Rails.env == 'review' || Rails.env.development?
   require 'factory_bot_rails'
   call_method_with_metrics_tracking([
+    :populate_month_reference,
     :populate_week_reference,
     :populate_schools,
     :populate_class_rooms,
