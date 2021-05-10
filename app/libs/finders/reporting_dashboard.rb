@@ -45,7 +45,16 @@ module Finders
       join_sources = months.join(internship_offers, Arel::Nodes::OuterJoin).on(conditions).join_sources
 
       query = Month.select("months.date AS date, sum(internship_offers.max_candidates) AS COUNT")
-      query = query.where(date: school_year.range) if school_year_param?
+      if school_year_param?
+        query = query.where(date: school_year.range)
+      else
+        range = (
+          SchoolYear::Floating.new(date: Date.new(2019, 9,1)).beginning_of_period
+          ..
+          SchoolYear::Current.new.end_of_period
+        )
+        query = query.where(date: range)
+      end
       query = query.joins(join_sources)
       query = query.group(:date)
       query = query.order(:date)
@@ -72,20 +81,30 @@ module Finders
     # GROUP BY "months"."date"
     # ORDER BY "months"."date" ASC
     def partition_internship_application_approved_at_by_month
-       months = Month.arel_table
-       internship_applications = InternshipApplication.arel_table
-       subquery = subq.as("bim")
-       month_conditions = date_trunc('month', subquery[:approved_at]).eq(months[:date])
+      months = Month.arel_table
+      internship_applications = InternshipApplication.arel_table
+      subquery = subq.as("bim")
+      month_conditions = date_trunc('month', subquery[:approved_at]).eq(months[:date])
 
-       join_sources = months.join(subquery, Arel::Nodes::OuterJoin).on(month_conditions)
+      join_sources = months.join(subquery, Arel::Nodes::OuterJoin).on(month_conditions)
                             .join_sources
-       query = Month.select(months[:date].as("date"), subquery[:id].count.as('count'))
-       query = query.where(date: school_year.range) if school_year_param?
-       query = query.joins(join_sources)
-       query = query.group(:date)
-       query = query.order(:date)
-       Rails.logger.info query.to_sql
-       query.map(&:attributes)
+      query = Month.select(months[:date].as("date"), subquery[:id].count.as('count'))
+      if school_year_param?
+        query = query.where(date: school_year.range)
+      else
+        range = (
+          SchoolYear::Floating.new(date: Date.new(2019, 9,1)).beginning_of_period
+          ..
+          SchoolYear::Current.new.end_of_period
+        )
+        query = query.where(date: range)
+      end
+
+      query = query.joins(join_sources)
+      query = query.group(:date)
+      query = query.order(:date)
+      Rails.logger.info query.to_sql
+      query.map(&:attributes)
     end
 
     def subq
