@@ -90,7 +90,7 @@ class GenerateInternshipAgreement < Prawn::Document
     label_form "Dates de la séquence d’observation en milieu professionnel :"
     field_form @internship_agreement.date_range
 
-    label_form "HorairesS journaliers de l’élève :"
+    label_form "Horaires journaliers de l’élève :"
     if !@internship_agreement.new_daily_hours.blank?
       %w(lundi mardi mercredi jeudi vendredi samedi).map do |day|
         hours = @internship_agreement.new_daily_hours[day]
