@@ -32,9 +32,9 @@ export default class extends Controller {
 
   drawCharts() {
     // set the dimensions and margins of the graph
-    var margin = { top: 0, right: 40, bottom: 20, left: 40 },
+    var margin = { top: 15, right: 80, bottom: 100, left: 80 },
       width = $(this.svgTarget).width() - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+      height = 500 - margin.top - margin.bottom;
 
     //reformat data for ease of use
     var internshipOfferCreatedAtData = serializeForGraph(
@@ -87,7 +87,6 @@ export default class extends Controller {
       .attr("y", 6)
       .attr("dy", "0.71em")
       .style("text-anchor", "end")
-      .text("Number of events");
 
     this.drawInternshipOfferCreatedAtChart(
       x,
@@ -108,6 +107,7 @@ export default class extends Controller {
       internshipApplicationAcceptedAtData,
       svg
     );
+    this.makeSvgFilter(svg);
   }
 
   drawInternshipOfferCreatedAtChart(x, y, internshipOfferCreatedAtData, svg) {
@@ -139,14 +139,13 @@ export default class extends Controller {
 
       g.style("display", null)
         .style("pointer-events", "none")
-        .style("font", "10px sans-serif");
+        // .style("font", "10px sans-serif");
 
       const path = g
         .selectAll("path")
         .data([null])
         .join("path")
         .attr("fill", "#333333");
-
       const text = g
         .selectAll("text")
         .data([null])
@@ -157,11 +156,11 @@ export default class extends Controller {
             .data((value + "").split(/\n/))
             .join("tspan")
             .attr("x", 0)
-            .attr("y", (d, i) => `${i * 1.1}em`)
+            .attr("y", (d, i) => `${i * 1.5}em`)
             .attr("fill", "#ffffff")
             .style("text-anchor", "middle")
-
             .style("font-weight", (_, i) => (i ? null : "bold"))
+            .style("font-size", "11px")
             .text((d) => d)
         );
 
@@ -198,8 +197,12 @@ export default class extends Controller {
         date: _,
         value: approvedValue,
       } = bisectInternshipApplicationAcceptedAtData(d3.pointer(event, this)[0]);
+
+      icon
+        .style("display", null)
+        .attr("transform", `translate(${x(date) - 12},${y(createdValue) - 12})`)
       tooltip
-        .attr("transform", `translate(${x(date)},${y(createdValue)})`)
+        .attr("transform", `translate(${x(date)},${y(createdValue) + 12})`)
         .call(
           callout,
           `${createdValue} offres proposées
@@ -208,10 +211,15 @@ au ${formatDate(date)}`
         );
     });
 
-    svg.on("touchend mouseleave", () => tooltip.call(callout, null));
+    svg.on("touchend mouseleave", () => {
+      tooltip.call(callout, null)
+      icon.style("display", "none")
+    });
 
     // create a tooltip
     const tooltip = svg.append("g");
+    const icon = this.drawIcon(svg);
+
   }
 
   drawInternshipApplicationAcceptedAtChart(
@@ -236,6 +244,19 @@ au ${formatDate(date)}`
       .style("fill", "url(#mygrad)");
   }
 
+  drawIcon(svg){
+    var icon = svg.append("g")
+    icon.style("display", "none")
+          .attr("transform","translate(15 15)")
+          .append("g")
+          .attr("style", "filter: url(#a)")
+          .attr("transform","matrix(1, 0, 0, 1, -15, -15)")
+            .append("path")
+            .attr("transform", "translate(2236.09 -2540.68)")
+            .attr("fill", "#ffffff")
+            .attr("d", "M-2209.085,2579.677a11.921,11.921,0,0,1-8.485-3.515,11.922,11.922,0,0,1-3.515-8.486,11.922,11.922,0,0,1,3.515-8.485,11.921,11.921,0,0,1,8.485-3.515,11.923,11.923,0,0,1,8.486,3.515,11.921,11.921,0,0,1,3.515,8.485,11.923,11.923,0,0,1-3.515,8.486A11.923,11.923,0,0,1-2209.085,2579.677Zm0-16a4,4,0,0,0-4,4,4,4,0,0,0,4,4,4.005,4.005,0,0,0,4-4A4,4,0,0,0-2209.085,2563.677Z")
+    return icon;
+  }
 
   makeGradient(svg) {
     var lg = svg
@@ -257,16 +278,32 @@ au ${formatDate(date)}`
       .style("stop-opacity", 1);
   }
 
+
+  makeSvgFilter(svg) {
+    var def = svg.selectAll("defs")
+    var filter = def.append("filter")
+    filter.attr('id', "a")
+    filter.attr('x', "0")
+    filter.attr('y', "0")
+    filter.attr('width', "54")
+    filter.attr('height', "54")
+    filter.attr('filterUnits', "userSpaceOnUse")
+    filter.append("feOffset").attr("input", "SourceAlpha")
+    filter.append("feGaussianBlur").attr("stdDeviation","5").attr("result", "b")
+    filter.append("feFlood").attr("flood-opacity","0.161")
+    filter.append("feComposite").attr("operator","in").attr("in2", "b")
+    filter.append("feComposite").attr("in", "SourceGraphic")
+  }
+
+
   connect() {
-    console.log(
-      "internshipOfferCreatedAtSerieValue",
+    console.table(
       this.internshipOfferCreatedAtSerieValue
     );
-    console.log(
-      "internshipApplicationAcceptedAtSerie",
+    console.table(
       this.internshipApplicationAcceptedAtSerieValue
     );
-    console.log("monthsList", this.monthsListValue);
     this.drawCharts();
   }
 }
+
