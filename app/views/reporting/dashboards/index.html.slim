@@ -1,7 +1,7 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false}
+    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false, by_subscribed_school: false}
     = render partial: 'reporting/school_years_filter'
 
   .row.mt-3
