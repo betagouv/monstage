@@ -3,7 +3,7 @@
 - hint = hint || ''
 - title = title || ''
 - content = content || ''
-.col-7
+.col-7.pt-3
   .form-group.mb-0
     = form.label field do
       span.mb-2= text_label
@@ -31,7 +31,7 @@
     - if hint.present?
       small.text-muted= hint
 
-.col-3.offset-2
+.col-3.offset-2.pt-3 
   - if title.present? && content.present?
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title

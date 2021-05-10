@@ -30,7 +30,7 @@
 
 
 - if title.present? && content.present?
-  .col-3.offset-2
+  .col-3.offset-2.pt-3 class="#{ 'end-form rounded-bottom pb-2' if field == :complementary_terms_rich_text}"
     div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
       .title = title
       span = content.html_safe
