@@ -12,10 +12,14 @@ module Users
     end
 
     def update
-      @user ||= User.find_by_reset_password_token(invited_params[:reset_password_token])
+      @user ||= User.find_by_reset_password_token!(invited_params[:reset_password_token])
       @user.update!(password: invited_params[:password])
       redirect_to dashboard_internship_offers_path
+    rescue ActiveRecord::RecordNotFound
+      flash[:error] = 'Le formulaire soumis contient des erreurs'
+      render 'devise/invited_passwords/edit'
     rescue ActiveRecord::RecordInvalid
+      flash[:error] = 'Le lien utilisé n\'est pas valide'
       render 'devise/invited_passwords/edit'
     end
 

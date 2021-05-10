@@ -67,7 +67,7 @@ class InternshipApplication < ApplicationRecord
     .includes(
       :student,
       :internship_offer
-    ).default_order
+    ).order(updated_at: :desc)
   }
 
   scope :with_date_index, ->(internship_offer:){
@@ -84,7 +84,6 @@ class InternshipApplication < ApplicationRecord
   #
   # Other stuffs
   #
-  scope :default_order, ->{ order(updated_at: :desc) }
   scope :for_user, ->(user:) { where(user_id: user.id) }
   scope :not_by_id, ->(id:) { where.not(id: id) }
 
