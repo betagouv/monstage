@@ -18,7 +18,7 @@ module Presenters
           instance.group.name
         else
           'Indépendant'
-end
+        end
       end
     end
   end

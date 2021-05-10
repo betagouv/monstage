@@ -6,9 +6,11 @@ module Reporting
     def readonly?
       true
     end
+
     self.inheritance_column = nil
 
     belongs_to :sector
+    # belongs_to :organisation
     belongs_to :group, optional: true
     belongs_to :school, optional: true
     has_many :internship_offer_weeks
@@ -74,6 +76,10 @@ module Reporting
 
     scope :dimension_offer, lambda {
       select('internship_offers.*')
+    }
+
+    scope :dimension_by_entreprise, lambda {
+      dimension_by_group
     }
 
     scope :dimension_by_sector, lambda {

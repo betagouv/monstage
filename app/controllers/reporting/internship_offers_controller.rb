@@ -18,13 +18,15 @@ module Reporting
       end
     end
 
+    def employers_offers
+      index
+    end
+
     private
 
     def dimension_is?(check, current)
-      current = 'sector' if current.nil?
-      return true if check == current
-
-      false
+      current ||= 'sector'
+      check == current
     end
 
     def current_offers
@@ -33,6 +35,8 @@ module Reporting
         finder.dimension_offer
       when 'group'
         finder.dimension_by_group
+      when 'entreprise'
+        finder.dimension_by_entreprise
       when 'sector'
         finder.dimension_by_sector
       else
@@ -46,6 +50,8 @@ module Reporting
         Presenters::Reporting::DimensionByOffer
       when 'group'
         Presenters::Reporting::DimensionByGroup
+      when 'entreprise'
+        Presenters::Reporting::DimensionByEntreprise
       when 'sector'
         Presenters::Reporting::DimensionBySector
       else

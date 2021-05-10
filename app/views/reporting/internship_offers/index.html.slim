@@ -1,7 +1,12 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters', locals: {by_academy: true, by_typology: true, by_department: true, by_school_track: true}
+    = render partial: 'reporting/filters',
+              locals: {by_academy: true,
+                        by_typology: true,
+                        by_detailed_typology: false,
+                        by_department: true,
+                        by_school_track: true}
 
     fieldset
       legend.h6 Grouper par
@@ -34,7 +39,7 @@
             th= InternshipOffer.human_attribute_name(:total_female_applications_count)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
             th
-              accr title="Cordée de la réussite, parcours d'éxcellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
+              accr title="Cordée de la réussite, parcours d'excellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
             th.border-right= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
 

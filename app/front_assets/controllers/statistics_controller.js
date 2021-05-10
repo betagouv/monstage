@@ -26,6 +26,10 @@ export default class extends Controller {
     changeURLFromEvent(event, 'subscribed_school');
   }
 
+  filterByDetailedTypology(event) {
+    changeURLFromEvent(event, 'detailed_typology');
+  }
+
   useDimension(event) {
     changeURLFromEvent(event, 'dimension');
   }
