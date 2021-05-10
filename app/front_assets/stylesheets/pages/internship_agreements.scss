@@ -142,9 +142,9 @@ $position-form-field-helper: 55px;
   .gradient-to-white{
     background: rgb(255,255,255);
     background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
-    border-left: 2px solid $blue;
-    border-right: 2px solid $blue;
-    border-top: 2px solid $blue;
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
+    border-top: 2px solid $light-grey;
     position: relative;
     left: -2px;
     box-shadow: 3px -10px white, -3px -10px white;
@@ -157,12 +157,12 @@ $position-form-field-helper: 55px;
   }
   .offset-2 {
     background-color: white;
-    border-left: 2px solid $blue;
-    border-right: 2px solid $blue;
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
     
   }
   .end-form {
-    border-bottom: 2px solid $blue;
+    border-bottom: 2px solid $light-grey;
     padding-top: 1rem;
   }
 }
