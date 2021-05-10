@@ -4,8 +4,8 @@ module Reporting
   class SchoolsController < BaseReportingController
     helper_method :presenter_for_dimension
     def index
+      @default_subscribed_school = false
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
-
       @schools = Finders::ReportingSchool.new(params: reporting_cross_view_params)
                                          .fetch_all
                                          .page(params[:page])
