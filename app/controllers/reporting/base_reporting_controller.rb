@@ -12,6 +12,7 @@ module Reporting
                     :academy,
                     :group,
                     :school_track,
+                    :subscribed_school,
                     :dimension,
                     :school_year)
     end
