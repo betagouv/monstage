@@ -28,8 +28,8 @@ class ReportingDashboardTest < ApplicationSystemTestCase
     }
     sign_in(@statistician)
     visit reporting_dashboards_path(department: @department)
-    @total_offers_css = 'span.ml-auto.h2.text-warning'
-    page.assert_selector(@total_offers_css, text: '6')
+
+    page.assert_selector("span[data-test-total=total-created-at]", text: '6')
     find_link('Offres').click
 
     total_report_css = 'tfoot .test-total-report'

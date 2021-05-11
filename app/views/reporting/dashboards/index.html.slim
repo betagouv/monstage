@@ -74,7 +74,7 @@
           strong offres proposées
           = " sur la plateforme"
         .col-4.align-self-center.text-right.h2.mb-0.text-body
-          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+          span data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
 
     .col-6.px-3
       .row
