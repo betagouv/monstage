@@ -10,6 +10,7 @@ function formatDate(date) {
   });
 }
 
+
 function serializeForGraph(data) {
   var result = [];
   var parseTime = d3.timeParse("%Y-%m-%d");
@@ -297,12 +298,6 @@ au ${formatDate(date)}`
 
 
   connect() {
-    console.table(
-      this.internshipOfferCreatedAtByMonthValue
-    );
-    console.table(
-      this.internshipApplicationAcceptedAtByMonthValue
-    );
     this.drawCharts();
   }
 }
