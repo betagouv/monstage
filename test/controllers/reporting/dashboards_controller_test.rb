@@ -23,6 +23,7 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician)
       zipcode = "#{statistician.department_zipcode}000"
+      sign_in(statistician)
       get reporting_dashboards_path(department: statistician.department)
       assert_response :success
     end
