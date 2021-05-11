@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# Finders::ReportingDashboard.new(year: 2020).partition_internship_offer_created_at_by_month
 module Finders
   class ReportingDashboard
 
@@ -36,7 +35,7 @@ module Finders
     #     ON DATE_TRUNC('month', "internship_applications"."approved_at") = "months"."date"
     # WHERE "months"."date" BETWEEN '2019-09-01' AND '2020-09-01'
     # GROUP BY "months"."date" ORDER BY "months"."date" ASC
-    def partition_internship_offer_created_at_by_month
+    def internship_offer_created_at_by_month
       months = Month.arel_table
       internship_offers = InternshipOffer.arel_table
 
@@ -61,12 +60,6 @@ module Finders
       query.map(&:attributes)
     end
 
-    def date_trunc(by, attribute)
-      Arel::Nodes::NamedFunction.new(
-        'DATE_TRUNC', [Arel.sql("'#{by}'"), attribute]
-      )
-    end
-
     # SELECT "months"."date" AS date,
     #    COUNT(bim."id") AS COUNT
     # FROM "months"
@@ -80,7 +73,7 @@ module Finders
     # WHERE "months"."date" BETWEEN '2020-09-01' AND '2021-09-01'
     # GROUP BY "months"."date"
     # ORDER BY "months"."date" ASC
-    def partition_internship_application_approved_at_by_month
+    def internship_application_approved_at_month
       months = Month.arel_table
       internship_applications = InternshipApplication.arel_table
       subquery = subq.as("bim")
@@ -146,6 +139,14 @@ module Finders
     def initialize(params:)
       @params = params
     end
+
+
+    def date_trunc(by, attribute)
+      Arel::Nodes::NamedFunction.new(
+        'DATE_TRUNC', [Arel.sql("'#{by}'"), attribute]
+      )
+    end
+
 
   end
 end

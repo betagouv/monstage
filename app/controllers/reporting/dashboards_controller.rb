@@ -11,8 +11,8 @@ module Reporting
         count_by_public_sector: dashboard_finder.count_by_public_sector,
         count_by_association: dashboard_finder.count_by_association,
         grand_total: [],
-        partition_internship_offer_created_at_by_month: dashboard_finder.partition_internship_offer_created_at_by_month,
-        partition_internship_application_approved_at_by_month: dashboard_finder.partition_internship_application_approved_at_by_month
+        internship_offer_created_at_by_month: dashboard_finder.internship_offer_created_at_by_month,
+        internship_application_approved_at_month: dashboard_finder.internship_application_approved_at_month
       }
     end
 
