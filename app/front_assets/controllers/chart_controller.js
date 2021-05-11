@@ -26,8 +26,8 @@ function serializeForGraph(data) {
 export default class extends Controller {
   static targets = ["svg"];
   static values = {
-    internshipOfferCreatedAtSerie: Array,
-    internshipApplicationAcceptedAtSerie: Array,
+    internshipOfferCreatedAtByMonth: Array,
+    internshipApplicationAcceptedAtByMonth: Array,
   };
 
   drawCharts() {
@@ -38,10 +38,10 @@ export default class extends Controller {
 
     //reformat data for ease of use
     var internshipOfferCreatedAtData = serializeForGraph(
-      this.internshipOfferCreatedAtSerieValue
+      this.internshipOfferCreatedAtByMonthValue
     );
     var internshipApplicationAcceptedAtData = serializeForGraph(
-      this.internshipApplicationAcceptedAtSerieValue
+      this.internshipApplicationAcceptedAtByMonthValue
     );
 
     // append the svg object to the body of the page
@@ -298,10 +298,10 @@ au ${formatDate(date)}`
 
   connect() {
     console.table(
-      this.internshipOfferCreatedAtSerieValue
+      this.internshipOfferCreatedAtByMonthValue
     );
     console.table(
-      this.internshipApplicationAcceptedAtSerieValue
+      this.internshipApplicationAcceptedAtByMonthValue
     );
     this.drawCharts();
   }
