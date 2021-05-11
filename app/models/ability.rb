@@ -184,7 +184,7 @@ class Ability
   def operator_abilities(user:)
     can :show, :account
     can :choose_operator, :sign_up
-    can :change, :department_name
+    can :change, :department
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
@@ -206,7 +206,7 @@ class Ability
   end
 
   def statistician_abilities
-    can :view, :department_name
+    can :view, :department
     can %i[read], InternshipOffer
 
     can %i[index], Acl::Reporting, &:allowed?

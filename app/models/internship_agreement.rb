@@ -57,7 +57,7 @@ class InternshipAgreement < ApplicationRecord
     validates :date_range, presence: true
     validates_inclusion_of :employer_accept_terms,
                            in: ['1', true],
-                           message: :employer_accept_terms
+                           message: :missing
     validate :valid_trix_employer_fields
   end
 
@@ -65,7 +65,7 @@ class InternshipAgreement < ApplicationRecord
     validates :tutor_full_name, presence: true
     validates_inclusion_of :tutor_accept_terms,
                            in: ['1', true],
-                           message: :tutor_accept_terms
+                           message: :missing
     validate :valid_trix_tutor_fields
   end
 
@@ -111,12 +111,11 @@ class InternshipAgreement < ApplicationRecord
   def confirmed_by?(user:)
     return school_manager_accept_terms? if user.school_manager?
     return main_teacher_accept_terms? if user.main_teacher?
-    return tutor_accept_terms? if user.is_a?(Users::Tutor)
-    return employer_accept_terms? if user.is_a?(Users::Employer)
+    return tutor_accept_terms? if user.tutor?
+    return employer_accept_terms? if user.employer?
 
     raise  ArgumentError, "#{user.type} does not support accept terms yet "
   end
-
 
   def valid_trix_employer_fields
     if activity_scope_rich_text.blank?
@@ -134,10 +133,6 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def valid_trix_tutor_fields
-    if !troisieme_generale? && activity_learnings_rich_text.blank?
-      errors.add(:activity_learnings_rich_text,
-                  "Veuillez compléter les compétences visées")
-    end
   end
 
   def valid_trix_school_manager_fields

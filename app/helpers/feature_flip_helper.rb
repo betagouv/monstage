@@ -3,8 +3,8 @@
 module FeatureFlipHelper
   def support_listable?(user)
     return true unless user
-    return false if user.is_a?(Users::Employer)
-    return false if user.is_a?(Users::Operator)
+    return false if user.employer?
+    return false if user.operator?
 
     true
   end

@@ -53,8 +53,8 @@ module Builders
     def preprocess_terms
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
-      return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
-      return { enforce_tutor_validations: true } if user.is_a?(Users::Tutor)
+      return { enforce_employer_validations: true } if user.employer?
+      return { enforce_tutor_validations: true } if user.tutor?
       return { skip_validations_for_system: true } if user.is_a?(Users::God)
 
       raise ArgumentError, "#{user.type} can not create agreement yet"

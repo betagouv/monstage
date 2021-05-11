@@ -8,7 +8,7 @@ module Users
 
       list do
         fields(*UserAdmin::DEFAULTS_FIELDS)
-        field :department_name
+        field :department
         field :department_zipcode
         field :sign_in_count
         field :last_sign_in_at
@@ -24,7 +24,7 @@ module Users
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
-        department: department_name,
+        department: department,
         school_year: SchoolYear::Current.new.beginning_of_period.year
       )
     end
@@ -41,7 +41,7 @@ module Users
       'Statistiques'
     end
 
-    def department_name
+    def department
       Department.lookup_by_zipcode(zipcode: department_zipcode)
     end
 

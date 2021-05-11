@@ -22,6 +22,11 @@ fr:
       unconfirmed: "Un message d’activation vous a été envoyé par courrier électronique. Veuillez suivre les instructions qu’il contient."
     passwords:
       update: 'Mot de passe mis à jour.'
+    invited_passwords:
+      edit:
+        choose_my_password: Choisissez votre mot de passe
+        new_password: Mot de passe
+        confirm_new_password: Confirmation de mot de passe
   activerecord:
     models:
       email_whitelist:
@@ -228,8 +233,11 @@ fr:
       models:
         internship_agreement:
           attributes:
-            school_manager_accept_terms: "conditions d'utilisation de la signature"
-            employer_accept_terms: "conditions d'utilisation de la signature"
+            school_manager_accept_terms: "Veuillez valider les conditions d'utilisation de la signature"
+            employer_accept_terms:
+              missing: "Veuillez valider les conditions d'utilisation de la signature"
+            tutor_accept_terms:
+              missing: "Veuillez cocher la case d'enregistrement de la convention, au bas du formulaire"
             student_full_name:
               blank: "Veuillez saisir le nom de l'élève"
             organisation_representative_full_name:

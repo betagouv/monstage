@@ -17,12 +17,14 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get 'users/choose_profile' => 'users/registrations#choose_profile'
+    get 'users/choose_profile', to: 'users/registrations#choose_profile'
     get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
     get '/users/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby'
+    get '/users/invited_password/edit', to: 'users/invited_passwords#edit', as: 'edit_invited_password'
     post '/users/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
     get '/users/password/edit_by_phone', to: 'users/passwords#edit_by_phone', as: 'phone_edit_password'
     put '/users/password/update_by_phone', to: 'users/passwords#update_by_phone', as: 'phone_update_password'
+    put '/users/invited_password/update', to: 'users/invited_passwords#update', as: 'update_invited_password'
   end
 
   resources :internship_offer_keywords, only: [] do

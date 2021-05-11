@@ -59,7 +59,7 @@ class Department
     '56' => 'Morbihan',
     '57' => 'Moselle',
     '58' => 'Nièvre',
-    '59' => 'Nord (département français)|Nord',
+    '59' => 'Nord',
     '60' => 'Oise',
     '61' => 'Orne',
     '62' => 'Pas-de-Calais',
@@ -107,7 +107,6 @@ class Department
     '206' => 'Haute-Corse',
     '201' => 'Corse-du-Sud',
     '200' => 'Corse-du-Sud'
-
   }.freeze
 
   def self.lookup_by_zipcode(zipcode:)

@@ -81,7 +81,7 @@ fr:
     passwords:
       edit:
         change_my_password: Changer mon mot de passe
-        change_your_password: Choisir votre mot de passe
+        change_your_password: Choisissez votre mot de passe
         confirm_new_password: Confirmez votre nouveau mot de passe
         new_password: Nouveau mot de passe
       new:

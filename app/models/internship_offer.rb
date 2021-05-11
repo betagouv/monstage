@@ -47,7 +47,7 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :limited_to_department, lambda { |user:|
-    where(department: user.department_name)
+    where(department: user.department)
   }
 
   scope :from_api, lambda {

@@ -11,13 +11,13 @@ nav.navbar.navbar-light.py-0
 
   ul.nav.nav-banner.float-xs-none.float-sm-right.d-print-none
     - if user_signed_in?
-      - if current_user.is_a?(Users::Employer)
+      - if current_user.employer?
         li.nav-item
           = link_to 'Accueil',
                     root_path,
                     class: "nav-link pl-1 pr-1 px-md-2 px-lg-3 py-4 #{current_page?(root_path) ? 'active' : ''}"
       - else
-        - if current_user.is_a?(Users::Operator)
+        - if current_user.operator?
           li.nav-item
             = link_to 'Statistiques',
                       reporting_internship_offers_path(default_reporting_url_options(current_user)),

@@ -3,12 +3,12 @@
 = form_with model: @internship_agreement,
               url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
               class: 'form-offset-header',
+              local: true,
               html: {'data-controller': 'internship-agreement-form'} do |form|
   table.table-sticky-thead
     = render partial: 'dashboard/internship_agreements/form_header',
              locals: { internship_application: @internship_agreement.internship_application,
                        internship_agreement: form.object }
-
     = render "form",
          form: form,
          resource: @internship_agreement,

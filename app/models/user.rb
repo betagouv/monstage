@@ -158,7 +158,7 @@ class User < ApplicationRecord
   end
 
   def send_sms_token
-    return if phone.blank? || self.is_a?(Users::Tutor)
+    return if phone.blank? || self.tutor?
 
     create_phone_token
     SendSmsJob.perform_later(self)
@@ -225,6 +225,10 @@ class User < ApplicationRecord
       end
     end
   end
+
+  def tutor? ; false end
+  def employer? ; false end
+  def operator? ; false end
 
   private
 

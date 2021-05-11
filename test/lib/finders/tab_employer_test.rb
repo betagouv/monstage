@@ -4,7 +4,7 @@ require 'test_helper'
 
 module Finders
   class TabEmployerTest < ActiveSupport::TestCase
-    test 'pending_agreements_count only count 3e generale applications' do
+    test 'pending_agreements_count do not only count 3e generale applications' do
       employer = create(:employer)
       internship_offer = create(:free_date_internship_offer,employer: employer)
 
@@ -15,7 +15,7 @@ module Finders
                                                :approved,
                                                internship_offer: internship_offer)
       employer_tab = TabEmployer.new(user: employer)
-      assert_equal 0, employer_tab.pending_agreements_count
+      assert_equal 1, employer_tab.pending_agreements_count
     end
 
     test 'pending_agreements_count include approved and exclude draft applications' do
