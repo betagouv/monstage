@@ -33,12 +33,11 @@ module Reporting
     }
 
     scope :without_school_manager, lambda {
-      left_joins(:school_manager)
-        .group('schools.id')
-        .having('count(users.id) = 0')
+      where.missing(:school_manager)
     }
+
     scope :with_manager_simply, lambda { joins(:school_manager) }
-    # maybe useless
+
     scope :in_the_future, lambda {
       more_recent_than(week: ::Week.current)
     }
