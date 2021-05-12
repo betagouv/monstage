@@ -43,11 +43,6 @@ module Finders
                 .includes(:sector)
     end
 
-    def dimension_by_entreprise
-      base_query.dimension_by_entreprise
-                .includes(:group)
-    end
-
     private
 
     attr_reader :params

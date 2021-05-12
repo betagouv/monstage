@@ -15,17 +15,14 @@ module Presenters
       end
 
       def dimension
-        group_name
+        instance.group.try(:name) || 'Indépendant'
       end
+      alias group_name dimension
 
       def human_category
         return 'Public' if instance&.group&.is_public
 
         instance.try(:group) ? 'PaQte' : 'Privé'
-      end
-
-      def group_name
-        instance.group.try(:name) || 'Indépendant'
       end
     end
   end
