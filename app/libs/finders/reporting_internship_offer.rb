@@ -64,19 +64,12 @@ module Finders
       query = query.by_group(group: params[:group]) if group_param?
       query = query.by_academy(academy: params[:academy]) if academy_param?
       query = query.where(is_public: params[:is_public]) if public_param?
-      query = query.where(is_public: typology_param) if typology_param?
+      query = query.by_detailed_typology(detailed_typology: params[:detailed_typology]) if detailed_typology_param?
       query
     end
 
     def school_year
       SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
-    end
-
-    def typology_param
-      return false if params[:typology_param] == 'paqte'
-      return false if params[:typology_param] == 'private'
-
-      true
     end
 
     def school_track?
@@ -91,8 +84,8 @@ module Finders
       params.key?(:is_public)
     end
 
-    def typology_param?
-      params.key?(:typology) && params[:typology].present?
+    def detailed_typology_param?
+      params.key?(:detailed_typology)
     end
 
     def department_param?

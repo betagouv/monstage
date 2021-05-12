@@ -47,16 +47,73 @@ module Reporting
       assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
       assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
 
+      assert_select ".test-employer-", text: 'Indépendant'
+      assert_select ".test-public-", text: 'Privé'
+      assert_select ".test-published-offers-", text: '20'
+
+      private_internship_offer_no_group
+
+      #private typology
+      get reporting_employers_internship_offers_path(
+        department: statistician.department,
+        dimension: 'entreprise',
+        detailed_typology: 'private'
+      )
+      assert_response :success
+      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
+      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
+      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
+
+
+      assert_select ".test-employer-#{public_internship_offer.group_id}", false
+      assert_select ".test-public-#{public_internship_offer.group_id}", false
+      assert_select ".test-published-offers-#{public_internship_offer.group_id}", false
+
+      assert_select ".test-employer-", text: 'Indépendant'
+      assert_select ".test-public-", text: 'Privé'
+      assert_select ".test-published-offers-", text: '20'
+
+      #public typology
+      get reporting_employers_internship_offers_path(
+        department: statistician.department,
+        dimension: 'entreprise',
+        detailed_typology: 'public'
+      )
+      assert_response :success
+      assert_select ".test-employer-#{public_internship_offer.group_id}", text: private_internship_offer.group.name
+      assert_select ".test-public-#{public_internship_offer.group_id}", text: 'Public'
+      assert_select ".test-published-offers-#{public_internship_offer.group_id}", text: '1'
+
+
+      assert_select ".test-employer-#{private_internship_offer.group_id}", false
+      assert_select ".test-public-#{private_internship_offer.group_id}", false
+      assert_select ".test-published-offers-#{private_internship_offer.group_id}", false
+
+      assert_select ".test-employer-", false
+      assert_select ".test-public-", false
+      assert_select ".test-published-offers-", false
+
+      #paqte typology
+      get reporting_employers_internship_offers_path(
+        department: statistician.department,
+        dimension: 'entreprise',
+        detailed_typology: 'paqte'
+      )
+      assert_response :success
+      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
+      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
+      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
+
+      assert_select ".test-employer-#{public_internship_offer.group_id}", false
+      assert_select ".test-public-#{public_internship_offer.group_id}", false
+      assert_select ".test-published-offers-#{public_internship_offer.group_id}", false
+
+      assert_select ".test-employer-", false
+      assert_select ".test-public-", false
+      assert_select ".test-published-offers-", false
+
     end
 
-    # test 'get index.xlsx as Statistician' \
-    #      'when department params match his departement_name' do
-    #   statistician = create(:statistician)
-    #   sign_in(statistician)
-    #   get reporting_schools_path(department: statistician.department,
-    #                              format: :xlsx)
-    #   assert_response :success
-    # end
 
     test 'GET #index as statistician fails ' \
          'when department params does not match his department' do

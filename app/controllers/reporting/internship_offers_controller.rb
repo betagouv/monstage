@@ -36,7 +36,7 @@ module Reporting
       when 'group'
         finder.dimension_by_group
       when 'entreprise'
-        finder.dimension_by_entreprise
+        finder.dimension_by_group
       when 'sector'
         finder.dimension_by_sector
       else
@@ -51,7 +51,7 @@ module Reporting
       when 'group'
         Presenters::Reporting::DimensionByGroup
       when 'entreprise'
-        Presenters::Reporting::DimensionByEntreprise
+        Presenters::Reporting::DimensionByGroup
       when 'sector'
         Presenters::Reporting::DimensionBySector
       else

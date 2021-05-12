@@ -8,17 +8,24 @@ module Presenters
         ::Reporting::InternshipOffer::AGGREGATE_FUNCTIONS.keys
       end
       delegate(*metrics, to: :instance)
+      delegate :group_id, to: :instance
 
       def self.dimension_name
         'Groupe ou Institution de tutelle'
       end
 
       def dimension
-        if instance.group.present?
-          instance.group.name
-        else
-          'Indépendant'
-        end
+        group_name
+      end
+
+      def human_category
+        return 'Public' if instance&.group&.is_public
+
+        instance.try(:group) ? 'PaQte' : 'Privé'
+      end
+
+      def group_name
+        instance.group.try(:name) || 'Indépendant'
       end
     end
   end

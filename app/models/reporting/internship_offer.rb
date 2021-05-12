@@ -78,10 +78,6 @@ module Reporting
       select('internship_offers.*')
     }
 
-    scope :dimension_by_entreprise, lambda {
-      dimension_by_group
-    }
-
     scope :dimension_by_sector, lambda {
       select('sector_id', *aggregate_functions_to_sql_select)
         .includes(:sector)
@@ -94,6 +90,19 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
+    }
+
+    scope :by_detailed_typology, lambda { |detailed_typology:|
+      case detailed_typology
+      when 'private'
+        where(is_public: false)
+      when 'paqte'
+        where(is_public: false).where.not(group_id: nil)
+      when 'public'
+        where(is_public: true)
+      else # all
+        all
+      end
     }
   end
 end
