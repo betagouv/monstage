@@ -85,7 +85,7 @@ module Reporting
       create(:api_internship_offer)
       sign_in(god)
 
-      %i[offers group sector].each do |dimension|
+      %i[offers group].each do |dimension|
         get(reporting_internship_offers_path(dimension: dimension,
                                              format: :xlsx))
         assert_response :success
