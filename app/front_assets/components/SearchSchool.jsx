@@ -17,6 +17,7 @@ export default function SearchSchool({
   selectClassRoom, // PropTypes.bool.isRequired
   existingSchool, // PropTypes.objectOf(SchoolPropType)
   existingClassRoom, // PropTypes.objectOf(PropTypes.object)
+  injectedOnChange,
 }) {
   const [currentRequest, setCurrentRequest] = useState(null);
   const [requestError, setRequestError] = useState(null);
@@ -80,6 +81,7 @@ export default function SearchSchool({
     setClassRoomsSuggestions(null);
     setAutocompleteNoResult(false);
     setCurrentRequest(null);
+    if (injectedOnChange) { injectedOnChange('') }
   };
 
   // search is done by city  or school
@@ -99,6 +101,7 @@ export default function SearchSchool({
       setSchoolsInCitySuggestions([selectedItem]);
       setSelectedSchool(selectedItem);
       setClassRoomsSuggestions(selectedItem.class_rooms);
+      if (injectedOnChange) { injectedOnChange(selectedItem.id) }
     }
 
     setAutocompleteCitySuggestions({});
@@ -294,6 +297,7 @@ export default function SearchSchool({
               resourceName={resourceName}
               existingSchool={existingSchool}
               classes={classes}
+              injectedOnChange={injectedOnChange}
             />
           }
           {selectClassRoom && (

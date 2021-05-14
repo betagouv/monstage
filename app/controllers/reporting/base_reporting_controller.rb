@@ -14,6 +14,7 @@ module Reporting
                     :school_track,
                     :subscribed_school,
                     :dimension,
+                    :school_id,
                     :school_year)
     end
 

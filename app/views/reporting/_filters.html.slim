@@ -28,6 +28,9 @@ fieldset
                           options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school]),
                           class: 'form-control',
                           data: { action: 'statistics#filterBySubscribedSchool' }
+        .col-3.extra-react-component
+          .form-group
+            = label_tag :reporting_searched_school, "Recherche", class: 'text-uppercase'
       - if by_typology
         .col-3
           .form-group
