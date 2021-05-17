@@ -17,15 +17,26 @@
           .row.h-100
             .col-auto.align-self-center
               = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-warning-custom')
-            .col.align-self-center Offres proposées
-            .col.align-self-center.text-right.h2.mb-0.text-warning-custom= count_by_private_sector["total_count"]
+            .col
+              .row.no-gutters
+                .col.align-self-center Offres proposées
+                .col.align-self-center.text-right.h2.mb-0.text-warning-custom= count_by_private_sector["total_count"]
+              .row.no-gutters.mt-3
+                .col.align-self-center Dont PaQte
+                .col.align-self-center.text-right.h3.mb-0.text-warning-custom= count_by_private_sector_pacte["total_count"]
         .col-6
           .row.h-100
             .col-auto.align-self-center
               = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-warning-custom')
-            .col.align-self-center Candidatures acceptées
-            .col.align-self-center.text-right.h2.mb-0.text-warning-custom
-              span.mr-3= count_by_private_sector["approved_applications_count"]
+            .col
+              .row.no-gutters
+                .col.align-self-center Candidatures acceptées
+                .col.align-self-center.text-right.h2.mb-0.text-warning-custom
+                  span.mr-3= count_by_private_sector["approved_applications_count"]
+              .row.no-gutters.mt-3
+                .col.align-self-center Dont PaQte
+                .col.align-self-center.text-right.h3.mb-0.text-warning-custom
+                  span.mr-3= count_by_private_sector_pacte["approved_applications_count"]
 
   .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
     .col-12.col-md-3.text-center

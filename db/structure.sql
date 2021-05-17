@@ -430,7 +430,8 @@ CREATE TABLE public.groups (
     is_public boolean,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_pacte boolean
 );
 
 
@@ -2231,6 +2232,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210310173554'),
 ('20210422145040'),
 ('20210506142429'),
-('20210506143015');
+('20210506143015'),
+('20210517145027');
 
 

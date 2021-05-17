@@ -7,6 +7,7 @@ module Reporting
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
       render locals: {
+        count_by_private_sector_pacte: dashboard_finder.count_by_private_sector_pacte,
         count_by_private_sector: dashboard_finder.count_by_private_sector,
         count_by_public_sector: dashboard_finder.count_by_public_sector,
         count_by_association: dashboard_finder.count_by_association,
