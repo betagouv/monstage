@@ -15,9 +15,9 @@ export default function SearchSchool({
   const [requestError, setRequestError] = useState(null);
 
   const [city, setCity] = useState('');
-  const [cityCurrentlyChosen, setCityCurrentlyChosen] = useState(getParamValueFromUrl('school_id') || false);
   const [autocompleteSchoolsSuggestions, setSearchSchoolsSuggestions] = useState([]);
   const [autocompleteNoResult, setAutocompleteNoResult] = useState(false);
+  const cityCurrentlyChosen = getParamValueFromUrl('school_id') || false;
 
   const currentCityString = () => {
     if (city === null || city === undefined) {
@@ -53,7 +53,6 @@ export default function SearchSchool({
 
   const onResetSearch = () => {
     setCity(null);
-    console.log(getParamValueFromUrl('school_id'));
     setSearchSchoolsSuggestions([]);
     setAutocompleteNoResult(false);
     setCurrentRequest(null);
