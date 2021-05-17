@@ -8,7 +8,6 @@ function RadioListSchoolInput({
   existingSchool,
   resourceName,
   classes,
-  injectedOnChange,
 }) {
   const isWaitingCitySelection =
     schoolsInCitySuggestions.length === 0 && !selectedSchool && !existingSchool;
@@ -67,7 +66,6 @@ function RadioListSchoolInput({
                 onChange={() => {
                   setSelectedSchool(school);
                   setClassRoomsSuggestions(school.class_rooms);
-                  if (injectedOnChange) { injectedOnChange(school.id) }
                 }}
                 required
                 className="custom-control-input"
