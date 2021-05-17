@@ -11,6 +11,15 @@ module Finders
               .first
     end
 
+    def count_by_private_sector_pacte
+      base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
+              .where(permalink: nil)
+              .joins(:group)
+              .where(group: {is_pacte: false})
+              .map(&:attributes)
+              .first
+    end
+
     def count_by_public_sector
       base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
                 .where(permalink: nil)
