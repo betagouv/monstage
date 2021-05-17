@@ -21,6 +21,7 @@ gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
+gem 'inline_svg'
 gem 'slim-rails'
 gem "view_component", require: "view_component/engine"
 gem 'turbolinks'
