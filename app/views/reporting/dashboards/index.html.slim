@@ -127,10 +127,10 @@
                   th Entreprise
                   th Nb. d'offres
               tbody.small
-                - private_groups_not_involved.each do |private_group_not_involved|
+                - private_groups_commitment.each do |private_group_commitment|
                   tr
-                    td= private_group_not_involved.name
-                    td= private_group_not_involved.group_internship_offers_count
+                    td= private_group_commitment.name
+                    td= private_group_commitment.group_internship_offers_count
 
         .col-6
           .card
@@ -143,7 +143,7 @@
                   th Institution
                   th Nb. d'offres
               tbody.small
-                - public_groups_not_involved.each do |public_group_not_involved|
+                - public_groups_commitment.each do |public_group_commitment|
                   tr
-                    td= public_group_not_involved.name
-                    td= public_group_not_involved.group_internship_offers_count
+                    td= public_group_commitment.name
+                    td= public_group_commitment.group_internship_offers_count

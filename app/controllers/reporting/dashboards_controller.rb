@@ -26,9 +26,9 @@ module Reporting
         total_internship_offers_is_not_public: internship_offers_finder.total_is_not_public,
 
         # widget right, 2, showing PaQte not involved
-        private_groups_not_involved: group_finder.groups_not_involved(is_public: false),
+        private_groups_commitment: group_finder.groups_commitment(is_public: false),
         # widget right, 2, showing public not involved
-        public_groups_not_involved: group_finder.groups_not_involved(is_public: true)
+        public_groups_commitment: group_finder.groups_commitment(is_public: true)
       }
     end
 

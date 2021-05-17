@@ -2,7 +2,7 @@
 
 module Finders
   class ReportingGroup
-    def groups_not_involved(is_public:)
+    def groups_commitment(is_public:)
       Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
            .where(is_public: is_public)
            .joins(join_sources(is_public: is_public))
