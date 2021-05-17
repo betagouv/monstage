@@ -35,8 +35,6 @@ module Reporting
         finder.dimension_offer
       when 'group'
         finder.dimension_by_group
-      when 'entreprise'
-        finder.dimension_by_group
       when 'sector'
         finder.dimension_by_sector
       else
@@ -49,8 +47,6 @@ module Reporting
       when 'offers'
         Presenters::Reporting::DimensionByOffer
       when 'group'
-        Presenters::Reporting::DimensionByGroup
-      when 'entreprise'
         Presenters::Reporting::DimensionByGroup
       when 'sector'
         Presenters::Reporting::DimensionBySector

@@ -15,7 +15,7 @@ module Reporting
       statistician = create(:statistician) # Oise is the department
       public_internship_offer = create(
         :troisieme_generale_internship_offer,
-        zipcode: 60580
+        zipcode: 60580 # this zipcode belongs to Oise
       )
       private_internship_offer = create(
         :troisieme_generale_internship_offer,
@@ -34,7 +34,7 @@ module Reporting
 
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'entreprise'
+        dimension: 'group'
       )
       assert_response :success
       assert_select 'title', "Statistiques par catégories d'entreprises | Monstage"
@@ -56,7 +56,7 @@ module Reporting
       #private typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'entreprise',
+        dimension: 'group',
         detailed_typology: 'private'
       )
       assert_response :success
@@ -76,7 +76,7 @@ module Reporting
       #public typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'entreprise',
+        dimension: 'group',
         detailed_typology: 'public'
       )
       assert_response :success
@@ -96,7 +96,7 @@ module Reporting
       #paqte typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'entreprise',
+        dimension: 'group',
         detailed_typology: 'paqte'
       )
       assert_response :success
@@ -147,7 +147,7 @@ module Reporting
 
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'entreprise'
+        dimension: 'group'
       )
       assert_response :success
       assert_select 'title', "Statistiques par catégories d'entreprises | Monstage"
