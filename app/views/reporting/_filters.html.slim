@@ -41,7 +41,7 @@ fieldset
           .form-group
             = label_tag :detailed_typology, "Public / Privé / PaQte", class: 'text-uppercase'
             = select_tag :detailed_typology,
-                         options_for_select([["Tous", ""], ["Secteur Public", "public"],["Secteur Privé", "private"],["Sign. PaQte", "paqte"]], selected: params[:detailed_typology]),
+                         options_for_select([["Tous", ""], ["Secteur Public", "public"],["Secteur Privé dont PaQte", "private"],["Sign. PaQte", "paqte"]], selected: params[:detailed_typology]),
                          class: 'form-control',
                          data: { action: 'statistics#filterByDetailedTypology' }
       - if by_school_track
