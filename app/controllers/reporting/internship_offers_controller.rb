@@ -19,13 +19,15 @@ module Reporting
       end
     end
 
+    def employers_offers
+      index
+    end
+
     private
 
     def dimension_is?(check, current)
-      current = 'sector' if current.nil?
-      return true if check == current
-
-      false
+      current ||= 'sector'
+      check == current
     end
 
     def current_offers
