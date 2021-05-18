@@ -4,7 +4,7 @@
     = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false}
     = render partial: 'reporting/school_years_filter'
 
-  .row.mt-3
+  .row.mt-5
     .col-12
       h2.text-body Stages sur la plateforme
 
@@ -78,23 +78,22 @@
 
 
   .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded.py-4
-    .col-6.px-3
+    .col-12.col-md-3.text-center
+      h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des offres proposées
+    .col-12.col-md-9
       .row
-        .col-8.align-self-center.h6.font-weight-normal.mb-0.text-body
-          = "Total des "
-          strong offres proposées
-          = " sur la plateforme"
-        .col-4.align-self-center.text-right.h2.mb-0.text-body
-          span data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+        .col-6.px-3.bl-1.br-1.bc-stats.h-100
+          .row
+            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-body
+              span.text-counter-stats data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
 
-    .col-6.px-3
-      .row
-        .col-8.align-self-center.h6.font-weight-normal.mb-0.text-body
-          = "Total des "
-          strong candidatures acceptées
-          = " sur la plateforme"
-        .col-4.align-self-center.text-right.h2.mb-0.text-body
-          span= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+        .col-6.px-3
+          .row
+            .col-8.align-self-center.h6.font-weight-normal.mb-0.text-body.text-counter-stats
+              = "Total des "
+              strong candidatures acceptées
+            .col-4.align-self-center.text-right.h2.mb-0.text-body
+              span.text-counter-stats.mr-3= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
 
   .row
     .col-12
