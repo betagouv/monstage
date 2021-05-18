@@ -19,6 +19,7 @@ import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
 import './pages/statistics/handshake.svg';
 import './pages/statistics/ok.svg';
+import './pages/statistics/green_check.svg';
 import './pages/statistics/school.svg';
 import './pages/statistics/reseau.png';
 import './pages/statistics/la_poste.png';
