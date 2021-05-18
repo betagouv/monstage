@@ -23,6 +23,15 @@ def populate_week_reference
   end
 end
 
+def populate_month_reference
+  next_month = 3.years.ago.beginning_of_month
+  loop do
+    Month.create!(date: next_month)
+    next_month = next_month.next_month
+    break if next_month > 10.years.from_now
+  end
+end
+
 def geo_point_factory_array(coordinates_as_array)
   type = { geo_type: 'point' }
   factory = RGeo::ActiveRecord::SpatialFactoryStore.instance
@@ -141,7 +150,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
 
@@ -163,7 +172,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
   # Bac_pro
@@ -183,7 +192,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Chottin',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -203,7 +212,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Rabier Ent.',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -226,7 +235,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'IBM',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -250,7 +259,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
@@ -274,7 +283,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
@@ -373,7 +382,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
@@ -440,6 +449,7 @@ end
 if Rails.env == 'review' || Rails.env.development?
   require 'factory_bot_rails'
   call_method_with_metrics_tracking([
+    :populate_month_reference,
     :populate_week_reference,
     :populate_schools,
     :populate_class_rooms,

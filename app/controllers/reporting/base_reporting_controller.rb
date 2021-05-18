@@ -15,6 +15,7 @@ module Reporting
                     :subscribed_school,
                     :dimension,
                     :school_id,
+                    :detailed_typology,
                     :school_year)
     end
 

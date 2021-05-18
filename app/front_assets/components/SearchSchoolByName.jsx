@@ -99,7 +99,7 @@ export default function SearchSchool({
                   className: `form-control ${classes || ''} ${autocompleteNoResult ? '' : 'rounded-0'
                     }`,
                   id: `${resourceName}_school_city`,
-                  placeholder: 'Adresse',
+                  placeholder: "Nom d'établissement",
                   name: `${resourceName}[school][city]`,
                   required: required,
                 })}
