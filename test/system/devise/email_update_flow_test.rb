@@ -28,7 +28,6 @@ class EmailUpdateFlowTest < ApplicationSystemTestCase
                   " votre nouvelle adresse électronique (e-mail)."
     end
     visit account_path
-    # byebug
     assert_equal alt_email, find('#user_unconfirmed_email').value
     assert_text(
       "Cet email n'est pas encore confirmé : veuillez consulter vos emails"

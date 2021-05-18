@@ -361,7 +361,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    anonymized boolean DEFAULT false
 );
 
 
@@ -1020,7 +1021,7 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
-    missing_school_weeks_id bigint,
+    missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
     phone_token_validity timestamp without time zone,
@@ -1441,6 +1442,13 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
+
+
+--
 -- Name: index_class_rooms_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1728,10 +1736,10 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_missing_school_weeks_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
+CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree (missing_weeks_school_id);
 
 
 --
@@ -1904,7 +1912,7 @@ ALTER TABLE ONLY public.internship_offers
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_school_weeks_id) REFERENCES public.schools(id);
+    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_weeks_school_id) REFERENCES public.schools(id);
 
 
 --
@@ -2205,17 +2213,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201116085327'),
 ('20201203153154'),
 ('20210112164129'),
-('20210113140604'),
-('20210121171025'),
 ('20210121172155'),
-('20210128162938'),
-('20210129121617'),
-('20210224160904'),
-('20210225164349'),
 ('20210310173554'),
-('20210326100435'),
 ('20210422145040'),
 ('20210506142429'),
-('20210506143015');
+('20210506143015'),
+('20210517145027');
 
 

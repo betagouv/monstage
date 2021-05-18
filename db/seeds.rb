@@ -150,7 +150,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
 
@@ -172,7 +172,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
   # Bac_pro
@@ -192,7 +192,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Chottin',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -212,7 +212,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Rabier Ent.',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -235,7 +235,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'IBM',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -259,7 +259,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
@@ -283,7 +283,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
@@ -382,7 +382,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'bilbotron',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
