@@ -142,7 +142,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Beta.gouv.fr',
+    employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
 
@@ -164,7 +164,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Octo Technology',
+    employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
   # Bac_pro
@@ -184,7 +184,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Agence Zero',
+    employer_name: 'Chottin',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -204,7 +204,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'BFM',
+    employer_name: 'Rabier Ent.',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -227,7 +227,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'SNCF',
+    employer_name: 'IBM',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -251,7 +251,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'RATP',
+    employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
@@ -275,7 +275,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Vinci',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
@@ -351,6 +351,44 @@ def populate_applications
       motivation: 'Au taquet',
       internship_offer: troisieme_generale_offers.first,
       internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+  end
+end
+
+
+def populate_internship_weeks
+  manager = Users::SchoolManagement.find_by(role: 'school_manager')
+  school = manager.school
+  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_applications
+  bac_pro_studs = Users::Student.joins(:class_room)
+                                .where('class_rooms.school_track = ?', :bac_pro)
+                                .to_a
+                                .shuffle
+                                .first(2)
+  trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .to_a
+                                   .shuffle
+                                   .first(2)
+  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+
+  bac_pro_studs.each do |bac_pro_stud|
+    FactoryBot.create(
+      :free_date_internship_application,
+      :submitted,
+      internship_offer: ios_bac_pro.first,
+      student: bac_pro_stud
+    )
+  end
+  ios_troisieme_generale.each do |io_trois_gene|
+    FactoryBot.create(
+      :weekly_internship_application,
+      :submitted,
+      internship_offer: io_trois_gene,
+      student: trois_gene_studs.first
     )
     InternshipApplications::WeeklyFramed.create!(
       aasm_state: :approved,
@@ -363,6 +401,7 @@ def populate_applications
     )
   end
 end
+
 def populate_agreements
   troisieme_generale_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
 

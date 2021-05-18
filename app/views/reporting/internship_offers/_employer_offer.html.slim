@@ -1,0 +1,7 @@
+- gray_background ||= false
+- font_weight_bold ||= false
+- font_color_blue ||= false
+tr class="#{gray_background ? 'bg-light' : ''} #{font_weight_bold ? 'font-weight-bold' : ''} #{font_color_blue ? 'text-blue' : ''}"
+  td class = "align-middle bl-1 bc-light test-employer-#{employer_offer.group_id}"= employer_offer.group_name
+  td class = "align-middle bl-1 bc-light test-public-#{employer_offer.group_id}"= employer_offer.human_category
+  td class = "align-middle bl-1 bc-light test-published-offers-#{employer_offer.group_id}"= employer_offer.total_report_count
