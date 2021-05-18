@@ -4,7 +4,7 @@ fieldset
   .row
     .col-4
       .form-group
-        = label_tag :academy, 'Année Scolaire', class: 'text-uppercase'
+        = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase'
 
         = select_tag :school_year,
                       options_for_select(options, params[:school_year]),
