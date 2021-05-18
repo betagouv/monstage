@@ -39,8 +39,11 @@
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
             th.border-right= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
 
-        tbody= render partial: 'reporting/internship_offers/internship_offer',
-                      collection: @offers.map(&presenter_for_dimension.method(:new))
+        tbody
+          = render partial: 'reporting/internship_offers/internship_no_offer',
+                   locals: {groups: @no_offers}
+          = render partial: 'reporting/internship_offers/internship_offer',
+                   collection: @offers.map(&presenter_for_dimension.method(:new))
 
         tfoot= render 'reporting/internship_offers/internship_offer',
                       internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),

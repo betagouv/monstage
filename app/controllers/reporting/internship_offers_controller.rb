@@ -8,6 +8,7 @@ module Reporting
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
       @offers = current_offers
+      @no_offers = no_current_offers
       respond_to do |format|
         format.xlsx do
           @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
@@ -38,6 +39,11 @@ module Reporting
       else
         finder.dimension_by_sector
       end
+    end
+
+    def no_current_offers
+      Finders::ReportingGroup.new(params: reporting_cross_view_params)
+                             .groups_with_no_commitment(is_public: params[:is_public])
     end
 
     def presenter_for_dimension
