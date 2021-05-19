@@ -22,6 +22,7 @@ gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
+gem 'inline_svg'
 gem 'slim-rails'
 gem 'turbolinks'
 gem "react_on_rails"
