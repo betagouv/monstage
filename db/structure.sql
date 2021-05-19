@@ -430,7 +430,8 @@ CREATE TABLE public.groups (
     is_public boolean,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_pacte boolean
 );
 
 
@@ -808,6 +809,17 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
+
+
+--
+-- Name: months; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.months (
+    date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -2297,6 +2309,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210326100435'),
 ('20210408113406'),
 ('20210422145040'),
-('20210430083329');
-
-
+('20210430083329'),
+('20210506142429'),
+('20210506143015'),
+('20210517145027');

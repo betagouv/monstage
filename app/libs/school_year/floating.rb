@@ -28,9 +28,6 @@ module SchoolYear
       end
     end
 
-    def next_year
-      SchoolYear::Floating.new_by_year(year: end_of_period.year)
-    end
 
     def self.new_by_year(year:)
       new(date: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))

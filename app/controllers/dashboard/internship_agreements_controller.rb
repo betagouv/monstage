@@ -43,16 +43,16 @@ module Dashboard
         end
         on.failure do |failed_internship_agreement|
           @internship_agreement = failed_internship_agreement || InternshipAgreement.find(params[:id])
-          render :edit, status: :bad_request
+          render :edit
         end
       end
     rescue ActionController::ParameterMissing => e
       @internship_agreement = InternshipAgreement.find(params[:id])
       @available_weeks = Week.selectable_on_school_year
-      render :edit, status: :bad_request
+      render :edit
     end
 
-    def show # TODO : test 
+    def show # TODO : test
       @internship_agreement = InternshipAgreement.find(params[:id])
       respond_to do |format|
         format.html
