@@ -5,7 +5,7 @@
     .col-8
       .form-group
         = render partial: "inputs/date_input", locals: { form: f, container_class_name: "input-group", attribute_name: :school_delegation_to_sign_delivered_at, attribute_label: 'Date de délégation' }
-        small.form-text.text-muted Date de décision du conseil d'administration de l'etablissement donnant le droit au chef d'etablissement de signer les conventions
+        small.form-text.text-muted Date de décision du conseil d'administration de l'établissement donnant le droit au chef d'établissement de signer les conventions
     .col-4
 
   .row 
@@ -45,10 +45,10 @@
     .col-4
       .tool-note.active
         .title Note destinée au chef d'établissement :
-        span Critères d'évaluations
+        span Critères d'évaluations.
     
   .row
     .col-12= f.button :submit, class: 'btn btn-primary' do
       i.fas.fa-check
-      |  Enregister les informations récurrentes
+      |  Enregister
 
