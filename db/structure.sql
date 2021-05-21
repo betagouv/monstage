@@ -1065,7 +1065,7 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
-    department_name character varying,
+    department character varying,
     missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
@@ -2288,6 +2288,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210224160904'),
 ('20210225164349'),
 ('20210310173554'),
-('20210326100435');
+('20210326100435'),
+('20210422145040');
 
 
