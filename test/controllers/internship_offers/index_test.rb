@@ -229,25 +229,27 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student ignores internship_offers not blocked on different week that is not available' do
     max_candidates = 1
-    internship_weeks = [
-      Week.selectable_from_now_until_end_of_school_year.first,
-      Week.selectable_from_now_until_end_of_school_year.last
-    ]
-    school = create(:school, weeks: [internship_weeks[0]])
-    blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                            week: internship_weeks[0])
-    not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-                                                                week: internship_weeks[1])
-    internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
-                                                        internship_offer_weeks: [blocked_internship_week,
-                                                                                 not_blocked_internship_week])
+    travel_to(Date.new(2019, 3, 1)) do
+      internship_weeks = [
+        Week.selectable_from_now_until_end_of_school_year.first,
+        Week.selectable_from_now_until_end_of_school_year.last
+      ]
+      school = create(:school, weeks: [internship_weeks[0]])
+      blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
+                                                              week: internship_weeks[0])
+      not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
+                                                                  week: internship_weeks[1])
+      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
+                                                          internship_offer_weeks: [blocked_internship_week,
+                                                                                   not_blocked_internship_week])
 
-    sign_in(create(:student, school: school,
-                             class_room: create(:class_room, :troisieme_generale, school: school)))
+      sign_in(create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school)))
 
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      get internship_offers_path
-      assert_absence_of(internship_offer: internship_offer)
+      InternshipOffer.stub :nearby, InternshipOffer.all do
+        get internship_offers_path
+        assert_absence_of(internship_offer: internship_offer)
+      end
     end
   end
 
