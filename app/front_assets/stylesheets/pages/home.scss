@@ -11,6 +11,10 @@
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
 }
+.nav-link.active {
+  color: $bg-less-light-blue;
+  font-weight: bolder;
+}
 @include media-breakpoint-up(sm) {
 
   .big-tagline{

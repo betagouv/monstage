@@ -23,4 +23,7 @@
           = render partial: 'reporting/schools/school', collection: @schools
 
   .row.mt-3
-    .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+    - if @schools.empty?
+      span.h4.ml-4.text-body Aucun établissement ne correspond aux critères de recherche
+    -else
+      .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})

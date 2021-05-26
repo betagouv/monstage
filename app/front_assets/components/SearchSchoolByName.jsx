@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import Downshift from 'downshift';
-import { visitURLWithParam, getParamValueFromUrl } from '../utils/urls'
+import { visitURLWithOneParam, getParamValueFromUrl, clearSearch } from '../utils/urls';
 
 const StartAutocompleteAtLength = 2;
 
@@ -16,7 +16,6 @@ export default function SearchSchool({
   const [requestError, setRequestError] = useState(null);
 
   const [city, setCity] = useState('');
-  const [schoolName, setSchoolName] = useState('');
   const [autocompleteSchoolsSuggestions, setSearchSchoolsSuggestions] = useState([]);
   const [autocompleteNoResult, setAutocompleteNoResult] = useState(false);
   const cityCurrentlyChosen = getParamValueFromUrl('school_id') || false;
@@ -58,14 +57,14 @@ export default function SearchSchool({
     setSearchSchoolsSuggestions([]);
     setAutocompleteNoResult(false);
     setCurrentRequest(null);
-    visitURLWithParam('school_id', '');
+    clearSearch();
   };
 
   // search is done by city only
   // see: https://github.com/downshift-js/downshift#onchange
   const onDownshiftChange = (selectedItem) => {
     setCity(selectedItem.city);
-    visitURLWithParam('school_id', selectedItem.id);
+    visitURLWithOneParam('school_id', selectedItem.id);
   };
 
   const inputChange = (event) => {
@@ -73,6 +72,7 @@ export default function SearchSchool({
   }
 
   const renderAutocompleteInput = () => {
+    let labelClassName = 'font-weight-light' + cityCurrentlyChosen ? 'chosen-name' : ''
     return (
       <Downshift
         initialInputValue={city}
@@ -91,20 +91,20 @@ export default function SearchSchool({
           highlightedIndex,
           selectedItem,
         }) => (
-          <div className="form-group custom-label-container">
-            <div className="input-group name-search ">
+          <div className="name-search form-group custom-label-container">
+            <div className="input-group">
               <input
                 {...getInputProps({
                   onChange: inputChange,
                   value: currentCityString(),
-                  className: `form-control  ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
+                  className: `smashed form-control form-control-lg ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
                   id: `${resourceName}_school_city`,
                   name: `${resourceName}[school][city]`,
                   required: required,
                 })}
               />
               <label
-                {...getLabelProps({ className: 'font-weight-light', htmlFor: `${resourceName}_school_city` })}
+                {...getLabelProps({ className: labelClassName, htmlFor: `${resourceName}_school_city` })}
               >
                 {cityCurrentlyChosen ? chosenSchoolName : label}
               </label>
@@ -112,7 +112,7 @@ export default function SearchSchool({
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-clear-city ${autocompleteNoResult ? '' : 'rounded-0'} ${cityCurrentlyChosen ? 'text-danger' : ''}`}
+                    className={`btn btn-clear-city  ${cityCurrentlyChosen ? 'text-danger' : 'text-primary'}`}
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >

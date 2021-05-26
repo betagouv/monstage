@@ -154,18 +154,33 @@
 		outline: 2px $blue solid;
 	}
 }
-.input-group.name-search {
+.name-search {
+  .input-group {
+    input {
+      background-color: $bg-light-blue;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border-right: 0px;
+      }
 
-  input,
-  .input-group-append button {
-    background-color: $bg-light-blue;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+      button.btn-clear-city {
+        background-color: $bg-light-blue;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+        border-left: 0px;
+        width: 3rem;
+      }
 
-    i {
-      color: $blue;
+      label.chosen-name {
+        background-color: $bg-less-light-blue;
+        padding: 0.2rem 0.6rem 0.2rem 0.6rem;
+        margin-left: 0.5rem;
+        border-radius: 4px;
+        color: $very-dark-blue;
+        font-weight: bolder;
     }
   }
+  margin-bottom: 0;
 }
 
 .form-group.smashed {
