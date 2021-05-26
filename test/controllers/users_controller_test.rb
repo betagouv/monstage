@@ -314,4 +314,32 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'input#user_email[required]'
   end
+
+  test 'GET #edit as Employer can change password' do
+    sign_in(create(:employer))
+    get account_path(section: 'password')
+
+    assert_response :success
+    assert_select 'input#user_password[required]'
+    assert_select 'input#user_password_confirmation[required]'
+  end
+
+  test 'PATCH password as Employer can change password' do
+    employer = create(:employer)
+    sign_in(employer)
+    user_params = {
+      current_password: employer.password,
+      password: 'passw0rd',
+      confirmation_password: 'passw0rd',
+    }
+    patch account_password_path, params: { user: user_params }
+
+    assert_redirected_to account_path(section: :password)
+    employer.reload
+    assert true, employer.valid_password?('passw0rd')
+    follow_redirect!
+    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+  end
+
+
 end

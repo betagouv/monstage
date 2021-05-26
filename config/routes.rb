@@ -85,6 +85,7 @@ Rails.application.routes.draw do
 
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
+  patch 'account_password', to: 'users#update_password'
 
   get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'
