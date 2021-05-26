@@ -20,11 +20,12 @@ fieldset
                           prompt: 'Tous',
                           class: 'form-control',
                           data: { action: 'statistics#filterByDepartment' }
+      - if by_subscribed_school
         .col-3
           .form-group
             = label_tag :subscribed_school, "Inscrits", class: 'text-uppercase'
             = select_tag :subscribed_school,
-                          options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school] || @default_subscribed_school ),
+                          options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school]),
                           class: 'form-control',
                           data: { action: 'statistics#filterBySubscribedSchool' }
       - if by_typology
@@ -35,6 +36,14 @@ fieldset
                          options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]),
                          class: 'form-control',
                          data: { action: 'statistics#filterByPublicy' }
+      - if by_detailed_typology
+        .col-3
+          .form-group
+            = label_tag :detailed_typology, "Public / Privé / PaQte", class: 'text-uppercase'
+            = select_tag :detailed_typology,
+                         options_for_select([["Tous", ""], ["Secteur Public", "public"],["Secteur Privé (dont Sign. PaQte)", "private"],["Sign. PaQte", "paqte"]], selected: params[:detailed_typology]),
+                         class: 'form-control',
+                         data: { action: 'statistics#filterByDetailedTypology' }
       - if by_school_track
         .col-3
           .form-group

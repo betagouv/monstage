@@ -6,13 +6,16 @@ module Reporting
     def readonly?
       true
     end
+
     self.inheritance_column = nil
 
     belongs_to :sector
+    # belongs_to :organisation
     belongs_to :group, optional: true
     belongs_to :school, optional: true
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
+    has_many :internship_applications
 
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
@@ -54,6 +57,7 @@ module Reporting
       Arel::Nodes::InfixOperation.new('&&', left, right)
     end
 
+
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
@@ -88,6 +92,19 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
+    }
+
+    scope :by_detailed_typology, lambda { |detailed_typology:|
+      case detailed_typology
+      when 'private'
+        where(is_public: false)
+      when 'paqte'
+        where(is_public: false).where.not(group_id: nil)
+      when 'public'
+        where(is_public: true)
+      else # all
+        all
+      end
     }
   end
 end

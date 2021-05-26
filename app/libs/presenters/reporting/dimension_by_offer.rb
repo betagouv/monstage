@@ -41,7 +41,7 @@ module Presenters
           ' Stage individuel (un seul élève par stage)'
         else
           " Stage collectif (par groupe de #{instance.max_candidates} élèves)"
-end
+        end
       end
 
       def human_is_public
