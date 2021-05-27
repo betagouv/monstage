@@ -12,6 +12,7 @@ module Reporting
         format.xlsx do
           @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
           response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
+          render dimension_is?('offers', params[:dimension]) ? :index_offers : :index_stats
         end
         format.html do
         end
