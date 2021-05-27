@@ -46,3 +46,17 @@ tr a.trash-user{
 tr:hover a.trash-user{
     display: inline;
 }
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  width: 275px;
+  height: 55px;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: $blue;
+  border: 0px;
+  border-radius: 3px;
+  pointer-events: none;
+}
