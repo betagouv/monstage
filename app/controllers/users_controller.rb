@@ -21,6 +21,19 @@ class UsersController < ApplicationController
     render :edit, status: :bad_request
   end
 
+  def update_password 
+    authorize! :update, current_user
+    if password_change_allowed?
+      current_user.update!(user_params)
+      sign_in :user, current_user, bypass: true
+      redirect_to  account_path(section: :password), flash: { success: current_flash_message }
+    else
+      redirect_to account_path(section: :password), flash: { warning: 'impossible de mettre à jour le mot de passe.' }
+    end
+  rescue ActiveRecord::RecordInvalid
+    render :edit, status: :bad_request
+  end
+
   helper_method :current_section
 
   private
@@ -46,6 +59,8 @@ class UsersController < ApplicationController
                                  :resume_educational_background,
                                  :resume_other,
                                  :resume_languages,
+                                 :password,
+                                 :password_confirmation,
                                  :role)
   end
 
@@ -59,5 +74,9 @@ class UsersController < ApplicationController
 
   def can_redirect?(path)
     request.path != path
+  end
+
+  def password_change_allowed?
+    current_user.valid_password?(params[:user][:current_password])
   end
 end

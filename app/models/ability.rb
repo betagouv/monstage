@@ -179,7 +179,7 @@ class Ability
     can %i[read], InternshipOffer
 
     can %i[index], Acl::Reporting, &:allowed?
-
+    
     can %i[index_and_filter], Reporting::InternshipOffer
   end
 
