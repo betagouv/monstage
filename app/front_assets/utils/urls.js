@@ -34,7 +34,7 @@ export const turboVisitsWithSearchParams = (searchParams) => {
 }
 
 export const clearParamAndVisits = (param_name )=> {
-  const searchParams = getSearchParams();
+  const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete(param_name)
   turboVisitsWithSearchParams(searchParams)
 }
@@ -49,22 +49,17 @@ export const getParamValueFromUrl = (param) => {
 
 // private
 
-const getSearchParams = () => {
-  return new URLSearchParams(window.location.search);
-}
-
 const clear = (list) => {
-  const searchParams = getSearchParams();
-  for (const param of list) {
-    searchParams.delete(param)
+  const searchParams = new URLSearchParams(window.location.search);
+  for (var i = 0; i < list.length; i++) {
+    searchParams.delete(list[i])
   }
   return searchParams;
 }
 
 const clearAllParams = () => {
-  const searchParams = getSearchParams();
-  for (const param of searchParams.keys()) {
-    searchParams.delete(param)
-  }
-  return searchParams;
+  const searchParams = new URLSearchParams(window.location.search);
+  let list = []
+  for (var key of searchParams.keys()) { list.push(key) }
+  return clear(list);
 }

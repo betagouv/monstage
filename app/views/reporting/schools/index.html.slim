@@ -1,6 +1,6 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
-  div.rounded.p-3[data-controller='statistics']
+  div.rounded[data-controller='statistics']
     = render partial: 'reporting/filters',
           locals: {by_academy: false,
                     by_typology: false,
@@ -9,7 +9,7 @@
                     by_school_track: false,
                     by_subscribed_school: true}
 
-  .row.mt-3
+  .row
     .col-12
       table.table.table-statistics.table-sticky-thead
         thead

@@ -98,8 +98,8 @@ export default function SearchSchool({
                   onChange: inputChange,
                   value: currentCityString(),
                   className: `smashed form-control form-control-lg ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
-                  id: `${resourceName}_school_city`,
-                  name: `${resourceName}[school][city]`,
+                  id: `${resourceName}_school_name`,
+                  name: `${resourceName}[school][name]`,
                   required: required,
                 })}
               />
