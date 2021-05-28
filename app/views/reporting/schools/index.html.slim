@@ -10,6 +10,10 @@
                     by_subscribed_school: true}
 
   .row.mt-3
+    .col-lg-8.col-12.mb-2
+      = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-danger ml-auto ', data: {turbolinks: false} do
+        |Exporter la liste des établissements
+  .row.mt-3
     .col-12
       table.table.table-statistics.table-sticky-thead
         thead
@@ -29,3 +33,4 @@
 
   .row.mt-3
     .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+
