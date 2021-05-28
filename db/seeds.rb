@@ -93,6 +93,9 @@ end
 def populate_groups
   Group.create!(name: 'PUBLIC GROUP', is_public: true)
   Group.create!(name: 'PRIVATE GROUP', is_public: false)
+  Group.create!(name: 'Carrefour', is_public: false)
+  Group.create!(name: 'Engie', is_public: false)
+  Group.create!(name: 'Ministère de la Justice', is_public: true)
 end
 
 def populate_users

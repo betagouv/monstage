@@ -1,0 +1,15 @@
+- gray_background ||= false
+- font_weight_bold ||= false
+- font_color_blue ||= false
+- groups.each do |group|
+  tr class="#{gray_background ? 'bg-light' : ''} #{font_weight_bold ? 'font-weight-bold' : ''} #{font_color_blue ? 'text-blue' : ''}"
+    td.align-middle.bl-1.bc-light= group.name
+    td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report-null 0
+    td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-applications-null 0
+    td.align-middle.test-total-male-applications-null 0
+    td.align-middle.test-total-female-applications-null 0
+    td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-approved-applications-null 0
+    td.align-middle.test-custom-track-approved-applications-null 0
+    td.align-middle.test-male-approved-applications-null 0
+    td.align-middle.test-female-approved-applications-null 0
+
