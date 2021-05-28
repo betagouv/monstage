@@ -25,7 +25,7 @@ FactoryBot.define do
     end
 
     trait :with_school_manager do
-      school_manager { create(:school_manager) }
+      school_manager { build(:school_manager) }
     end
 
     factory :school_with_troisieme_segpa_class_room do
