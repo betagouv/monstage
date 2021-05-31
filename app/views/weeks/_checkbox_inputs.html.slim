@@ -12,8 +12,8 @@ div data-controller="select-weeks" data-internship-offer-infos-target='weeksCont
         = check_box_tag 'all_year_long', false, preselect_all, { class: 'custom-control-input', disabled: allow_select_all, data: {action: "change->select-weeks#handleToggleWeeks"}}
         = label_tag 'all_year_long', class: 'custom-control-label' do
           | Toute l'année scolaire
-          - school_year = SchoolYear::Current.new
-          = " #{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
+
+          = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
 
     div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
       div class="custom-control-checkbox-list"

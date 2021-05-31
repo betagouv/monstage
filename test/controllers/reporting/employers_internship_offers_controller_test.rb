@@ -14,17 +14,17 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician) # Oise is the department
       public_internship_offer = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         zipcode: 60580 # this zipcode belongs to Oise
       )
       private_internship_offer = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         :with_private_employer_group,
         max_candidates: 10,
         zipcode: 60580
       )
       private_internship_offer_no_group = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,
@@ -127,17 +127,17 @@ module Reporting
          'it filters results by department' do
       statistician = create(:statistician) #Oise
       public_internship_offer = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         zipcode: 60580
       )
       private_internship_offer = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         :with_private_employer_group,
         max_candidates: 10,
         zipcode: 75001
       )
       private_internship_offer_no_group = create(
-        :troisieme_generale_internship_offer,
+        :weekly_internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,

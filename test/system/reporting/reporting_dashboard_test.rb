@@ -18,7 +18,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
 
   test 'Offers are filtered by school_track' do
     create(:troisieme_prepa_metiers_internship_offer, zipcode: 60_000)
-    3.times { create(:troisieme_generale_internship_offer,
+    3.times { create(:weekly_internship_offer,
                      zipcode: 60_000,
                      group: @group1)
     }
