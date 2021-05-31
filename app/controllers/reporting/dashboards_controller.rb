@@ -17,9 +17,6 @@ module Reporting
       }
     end
 
-    def import_data
-    end
-
     private
 
     def internship_offers_finder
