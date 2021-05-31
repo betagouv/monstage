@@ -27,7 +27,8 @@
       table.table.table-statistics.table-sticky-thead
         thead
           tr.tr-blue
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:sector_id)
+            th.bl-1.bc-light
+              = dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
             th.bl-1.bc-light colspan="3"= InternshipOffer.human_attribute_name(:total_applications_count)
             th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:approved_applications_count)
