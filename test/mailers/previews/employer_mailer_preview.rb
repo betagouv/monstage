@@ -1,4 +1,12 @@
 class EmployerMailerPreview < ActionMailer::Preview
+  def internship_application_submitted_email
+    internship_application = InternshipApplication.submitted.first
+
+    EmployerMailer.internship_application_submitted_email(
+      internship_application: internship_application
+    )
+  end
+
   def internship_applications_reminder_email
     employer = InternshipApplication.first
                                     .internship_offer
@@ -10,19 +18,15 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
-  def internship_application_submitted_email
-    internship_application = InternshipApplication.submitted.first
-
-    EmployerMailer.internship_application_submitted_email(internship_application: internship_application)
-  end
-
   def internship_application_canceled_by_student_email
-    internship_application = InternshipApplication.canceled_by_student.first
-    message_builder = MessageForAasmState.new(
-      internship_application: internship_application,
-      aasm_target: :cancel_by_student!
+    student          = FactoryBot.create(:student , email: "perfect_student-#{rand(1..1000)}@ms3e.fr")
+    employer         = FactoryBot.create(:employer, email: "perfect_employer-#{rand(1..1000)}@ms3e.fr")
+    internship_offer = FactoryBot.create(:weekly_internship_offer, employer: employer)
+    FactoryBot.create(:weekly_internship_application,:approved, student: student, internship_offer: internship_offer )
+    internship_application = InternshipApplication&.approved&.first
+    internship_application.canceled_by_student_message.body = "J'ai trouvé mieux ailleurs, sorry mate"
+    EmployerMailer.internship_application_canceled_by_student_email(
+      internship_application: internship_application
     )
-    message_builder.assigned_rich_text_attribute
-    EmployerMailer.internship_application_canceled_by_student_email(internship_application: internship_application)
   end
 end

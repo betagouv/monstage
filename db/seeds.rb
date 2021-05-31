@@ -355,6 +355,17 @@ def populate_applications
       internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
   end
+  if trois_gene_studs&.third
+    InternshipApplications::WeeklyFramed.create!(
+      aasm_state: :canceled_by_student,
+      submitted_at: 10.days.ago,
+      approved_at: 2.days.ago,
+      student: trois_gene_studs.third,
+      motivation: 'Au taquet',
+      internship_offer: troisieme_generale_offers.first,
+      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+    )
+  end
 end
 
 def populate_aggreements
@@ -406,7 +417,7 @@ def populate_applications
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
-                                   .first(2)
+                                   .first(3)
   ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
