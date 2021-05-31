@@ -80,6 +80,8 @@ Rails.application.routes.draw do
     get '/employers_internship_offers', to: 'internship_offers#employers_offers'
     get 'internship_offers', to: 'internship_offers#index'
     get '/import_data', to: 'dashboards#import_data'
+    get 'operators', to: 'operators#index'
+    put 'operators', to: 'operators#update'
   end
 
   get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search
