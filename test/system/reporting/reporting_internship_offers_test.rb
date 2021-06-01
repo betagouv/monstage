@@ -10,7 +10,7 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
     @sector_agri = create(:sector, name: 'Agriculture')
     @sector_wood = create(:sector, name: 'Filière bois')
     @internship_offer_agri_1 = create(
-      :troisieme_generale_internship_offer,
+      :weekly_internship_offer,
       zipcode: 60,
       sector: @sector_agri,
       max_candidates: 1,

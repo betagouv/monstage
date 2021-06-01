@@ -33,10 +33,10 @@
         tbody= render partial: 'reporting/internship_offers/employer_offer',
                       collection: @offers.map(&presenter_for_dimension.method(:new))
 
-        / tfoot= render 'reporting/internship_offers/internship_offer',
-        /               internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
-        /               font_weight_bold: true,
-        /               font_color_blue: true
+        tfoot= render 'reporting/internship_offers/internship_offer',
+                      internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
+                      font_weight_bold: true,
+                      font_color_blue: true
 
   / .row.mt-3.mb-3
   /   .col-12.text-center

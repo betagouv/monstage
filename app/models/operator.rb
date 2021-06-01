@@ -3,4 +3,23 @@
 class Operator < ApplicationRecord
   has_many :operators, class_name: 'Users::Operator'
   has_many :internship_offers, through: :operators
+
+  rails_admin do
+    list do
+      field :name
+      field :target_count
+    end
+    show do
+      field :name
+      field :target_count
+      field :logo
+      field :website
+    end
+    edit do
+      field :name
+      field :target_count
+      field :logo
+      field :website
+    end
+  end
 end

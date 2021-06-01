@@ -81,8 +81,14 @@ def with_class_name_for_defaults(object)
 end
 
 def populate_operators
-  Operator.create!(name: 'MS3E-OPERATOR-1')
-  Operator.create!(name: 'MS3E-OPERATOR-2')
+  Operator.create(name: "Un stage et après", website: "", logo: 'Logo-jobirl.jpg', target_count: 120)
+  Operator.create(name: "JobIRL", website: "", logo: 'Logo-jobirl.jpg', target_count: 32)
+  Operator.create(name: "Le Réseau", website: "", logo: 'Logo-le-reseau.jpg', target_count: 710)
+  Operator.create(name: "Télémaque", website: "", logo: 'Logo-telemaque.png', target_count: 1200)
+  Operator.create(name: "MyFutur", website: "", logo: 'Logo-moidans10ans.png', target_count: 1200)
+  Operator.create(name: "Les entreprises pour la cité", website: "", logo: 'Logo-les-entreprises-pour-la-cite.jpg', target_count: 1200)
+  Operator.create(name: "Tous en stage", website: "", logo: 'Logo-tous-en-stage.jpg', target_count: 1200)
+  Operator.create(name: "Viens voir mon taf", website: "", logo: 'Logo-viens-voir-mon-taf.jpg', target_count: 1200)
 end
 
 def populate_sectors
@@ -93,6 +99,9 @@ end
 def populate_groups
   Group.create!(name: 'PUBLIC GROUP', is_public: true)
   Group.create!(name: 'PRIVATE GROUP', is_public: false)
+  Group.create!(name: 'Carrefour', is_public: false)
+  Group.create!(name: 'Engie', is_public: false)
+  Group.create!(name: 'Ministère de la Justice', is_public: true)
 end
 
 def populate_users
@@ -432,7 +441,6 @@ def populate_applications
     )
   end
 end
-
 
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"

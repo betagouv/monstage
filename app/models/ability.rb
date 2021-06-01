@@ -169,7 +169,7 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index], Acl::Reporting do |_acl|
+    can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
   end
@@ -203,6 +203,7 @@ class Ability
     end
     can %i[index_and_filter], Reporting::InternshipOffer
     can :reset_cache, User
+    can :manage, Operator
   end
 
   private

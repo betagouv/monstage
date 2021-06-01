@@ -99,29 +99,29 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     school                              = create(:school)
     school_manager                      = create(:school_manager, school: school)
     teacher                             = create(:main_teacher, school: school)
-    troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
+    weekly_internship_offer = create(:weekly_internship_offer)
     bac_pro_internship_offer            = create(:bac_pro_internship_offer)
     sign_in(teacher)
 
     visit internship_offers_path
 
     # all offers presents
-    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
 
     # filter
     find('label[for="search-by-troisieme-generale"]').click
-    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: bac_pro_internship_offer)
 
     # filtered by middle-school
     find('label[for="search-by-bac-pro"]').click
-    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
 
     # uncheck selection make both search active == "Toutes"
     find('label[for="search-by-bac-pro"]').click
-    assert_presence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
   end
 
@@ -135,7 +135,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     )
     student = create(:student, school: school, class_room: class_room)
     troisieme_prepa_metiers_internship_offer = create(:troisieme_prepa_metiers_internship_offer)
-    troisieme_generale_internship_offer = create(:troisieme_generale_internship_offer)
+    weekly_internship_offer = create(:weekly_internship_offer)
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     bac_pro_internship_offer = create(:bac_pro_internship_offer)
     sign_in(student)
@@ -150,7 +150,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert page.has_content? "3e prépa métier", count: 1
     assert_presence_of(internship_offer: troisieme_prepa_metiers_internship_offer)
 
-    assert_absence_of(internship_offer: troisieme_generale_internship_offer)
+    assert_absence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
     assert_absence_of(internship_offer: bac_pro_internship_offer)
   end
