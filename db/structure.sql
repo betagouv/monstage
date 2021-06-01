@@ -455,6 +455,39 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreement_presets (
+    id bigint NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    school_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    weekly_hours text[] DEFAULT '{}'::text[]
+);
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreement_presets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.internship_agreement_presets.id;
+
+
+--
 -- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -478,7 +511,11 @@ CREATE TABLE public.internship_agreements (
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    main_teacher_accept_terms boolean DEFAULT false
+    main_teacher_accept_terms boolean DEFAULT false,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -599,7 +636,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -746,7 +785,10 @@ CREATE TABLE public.internship_offers (
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -786,7 +828,12 @@ CREATE TABLE public.months (
 
 CREATE TABLE public.operators (
     id bigint NOT NULL,
-    name character varying
+    name character varying,
+    target_count integer DEFAULT 0,
+    logo character varying,
+    website character varying,
+    created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL
 );
 
 
@@ -827,7 +874,8 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -1042,7 +1090,8 @@ CREATE TABLE public.users (
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL
+    anonymized boolean DEFAULT false NOT NULL,
+    banners jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -1137,6 +1186,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets ALTER COLUMN id SET DEFAULT nextval('public.internship_agreement_presets_id_seq'::regclass);
 
 
 --
@@ -1298,6 +1354,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_agreement_presets internship_agreement_presets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets
+    ADD CONSTRAINT internship_agreement_presets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1475,6 +1539,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreement_presets_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internship_agreement_presets USING btree (school_id);
 
 
 --
@@ -2227,12 +2298,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201116085327'),
 ('20201203153154'),
 ('20210112164129'),
+('20210113140604'),
 ('20210121171025'),
 ('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210225164349'),
 ('20210310173554'),
+('20210326100435'),
+('20210408113406'),
 ('20210422145040'),
+('20210430083329'),
 ('20210506142429'),
 ('20210506143015'),
 ('20210517145027');
-
-

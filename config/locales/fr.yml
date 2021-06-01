@@ -42,6 +42,9 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      operator:
+        one: Association
+        other: Associations
       sector:
         one: Secteur
         other: Secteurs
@@ -126,6 +129,10 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
+      
+      operator: &operator_fields
+        name: Nom
+        target_count: Objectif annuel
 
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
@@ -251,7 +258,9 @@ fr:
               blank: "Veuillez renseigner la ville l'employeur"
             public:
               inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
-
+        partner:
+          attributes: &partner_errors
+            target_count: Objectif annuel
         internship_offer_info:
           attributes: &internship_offer_info_errors
             title:
