@@ -343,6 +343,52 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 
 --
+-- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.air_table_records (
+    id bigint NOT NULL,
+    remote_id text,
+    is_public boolean,
+    nb_spot_available integer DEFAULT 0,
+    nb_spot_used integer DEFAULT 0,
+    nb_spot_male integer DEFAULT 0,
+    nb_spot_female integer DEFAULT 0,
+    department_name text,
+    school_track text,
+    internship_offer_type text,
+    comment text,
+    school_id bigint,
+    group_id bigint,
+    sector_id bigint,
+    week_id bigint,
+    operator_id bigint,
+    created_by text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.air_table_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -398,7 +444,9 @@ CREATE TABLE public.email_whitelists (
     zipcode character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint
+    user_id bigint,
+    type character varying DEFAULT 'EmailWhitelist::Statistician'::character varying NOT NULL,
+    group_id integer
 );
 
 
@@ -455,6 +503,39 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreement_presets (
+    id bigint NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    school_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    weekly_hours text[] DEFAULT '{}'::text[]
+);
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreement_presets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.internship_agreement_presets.id;
+
+
+--
 -- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -478,7 +559,12 @@ CREATE TABLE public.internship_agreements (
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    main_teacher_accept_terms boolean DEFAULT false
+    main_teacher_accept_terms boolean DEFAULT false,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text,
+    tutor_accept_terms boolean DEFAULT false
 );
 
 
@@ -599,7 +685,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -719,7 +807,6 @@ CREATE TABLE public.internship_offers (
     total_applications_count integer DEFAULT 0 NOT NULL,
     convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     approved_applications_count integer DEFAULT 0 NOT NULL,
-    employer_type character varying,
     department character varying DEFAULT ''::character varying NOT NULL,
     academy character varying DEFAULT ''::character varying NOT NULL,
     total_male_applications_count integer DEFAULT 0 NOT NULL,
@@ -744,9 +831,12 @@ CREATE TABLE public.internship_offers (
     organisation_id bigint,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
-    tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text,
+    tutor_id bigint
 );
 
 
@@ -786,7 +876,15 @@ CREATE TABLE public.months (
 
 CREATE TABLE public.operators (
     id bigint NOT NULL,
-    name character varying
+    name character varying,
+    target_count integer DEFAULT 0,
+    logo character varying,
+    website character varying,
+    created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
+    airtable_id character varying,
+    airtable_link character varying,
+    airtable_reporting_enabled boolean DEFAULT false
 );
 
 
@@ -827,7 +925,8 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    creator_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -971,11 +1070,14 @@ ALTER SEQUENCE public.sectors_id_seq OWNED BY public.sectors.id;
 CREATE TABLE public.tutors (
     id bigint NOT NULL,
     tutor_name character varying NOT NULL,
-    tutor_email character varying NOT NULL,
-    tutor_phone character varying NOT NULL,
+    email character varying NOT NULL,
+    phone character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint,
+    first_name character varying,
+    last_name character varying,
+    organisation_id bigint
 );
 
 
@@ -1042,7 +1144,9 @@ CREATE TABLE public.users (
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL
+    anonymized boolean DEFAULT false NOT NULL,
+    banners jsonb DEFAULT '{}'::jsonb,
+    ministry_id bigint
 );
 
 
@@ -1119,6 +1223,13 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
+
+
+--
 -- Name: class_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1137,6 +1248,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets ALTER COLUMN id SET DEFAULT nextval('public.internship_agreement_presets_id_seq'::regclass);
 
 
 --
@@ -1269,6 +1387,14 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 
 --
+-- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records
+    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1298,6 +1424,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_agreement_presets internship_agreement_presets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets
+    ADD CONSTRAINT internship_agreement_presets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1457,6 +1591,20 @@ CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_b
 
 
 --
+-- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
+
+
+--
+-- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
+
+
+--
 -- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1475,6 +1623,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreement_presets_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internship_agreement_presets USING btree (school_id);
 
 
 --
@@ -1723,6 +1878,13 @@ CREATE INDEX index_schools_on_coordinates ON public.schools USING gist (coordina
 
 
 --
+-- Name: index_tutors_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_tutors_on_organisation_id ON public.tutors USING btree (organisation_id);
+
+
+--
 -- Name: index_users_on_api_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1748,6 +1910,13 @@ CREATE INDEX index_users_on_discarded_at ON public.users USING btree (discarded_
 --
 
 CREATE INDEX index_users_on_email ON public.users USING btree (email);
+
+
+--
+-- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
 
 
 --
@@ -1843,6 +2012,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 
 --
+-- Name: internship_offers fk_rails_18cd8769f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_18cd8769f1 FOREIGN KEY (tutor_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_applications fk_rails_32ed157946; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1904,6 +2081,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offer_infos
     ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
 
 
 --
@@ -1999,7 +2184,7 @@ ALTER TABLE ONLY public.internship_offer_info_weeks
 --
 
 ALTER TABLE ONLY public.organisations
-    ADD CONSTRAINT fk_rails_f1474651e9 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+    ADD CONSTRAINT fk_rails_f1474651e9 FOREIGN KEY (creator_id) REFERENCES public.users(id);
 
 
 --
@@ -2225,14 +2410,35 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
+('20201201140201'),
+('20201202082705'),
 ('20201203153154'),
+('20201211094310'),
+('20201224153839'),
 ('20210112164129'),
+('20210113140604'),
 ('20210121171025'),
 ('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210225164349'),
 ('20210310173554'),
+('20210326100435'),
+('20210407131810'),
+('20210407132925'),
+('20210408113406'),
+('20210414084512'),
 ('20210422145040'),
+('20210430083329'),
 ('20210506142429'),
 ('20210506143015'),
-('20210517145027');
+('20210517145027'),
+('20210601154254'),
+('20210602142914'),
+('20210602171315'),
+('20210604095934'),
+('20210604144318'),
+('20210615113123');
 
 
