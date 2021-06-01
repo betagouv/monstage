@@ -1,0 +1,15 @@
+wb = xlsx_package.workbook
+
+wb.add_worksheet(name: 'Associations') do |sheet|
+  # headers
+  sheet.add_row(
+    ['Association', 'Objectif annuel', 'Date de mise à jour']
+  )
+
+  # raws
+  @operators.each do |operator|
+    sheet.add_row(    
+      [operator.name, operator.target_count, operator.updated_at.strftime('%d-%m-%Y')]  
+    )
+  end
+end
