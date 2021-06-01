@@ -1,14 +1,13 @@
-tr class="bg-light font-weight-bold text-blue"
-  = form_with model: operator, url: '/reporting/operators/', local: true, method: :put do |f|
-    = f.hidden_field :id, value: operator.id
-    td.align-middle.bl-1.bc-light
-      = image_tag asset_pack_path("media/images/homepage/partenaires/#{operator.logo}"),
-              alt: "#{operator.logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}",
-              height: 30 if operator.logo.present?
-      span.ml-2= operator.name
-    td.align-middle.bl-1.bc-light.text-blue.font-weight-bold
-      = f.number_field :target_count, value: operator.target_count, class: 'form-control', id: "target_count_#{operator.id}"
-    td.align-middle.bl-1.bc-light= operator.internship_offers.count
-    td.align-middle.bl-1.bc-light= operator.updated_at.strftime('%d-%m-%Y')
-    td.align-middle.bl-1.bc-light
-      = f.submit 'Mettre à jour', class: 'btn btn-primary btn-sm'
+= form_with model: operator, url: '/reporting/operators/', local: true, method: :put, html: {class: "bg-light font-weight-bold text-blue tr"} do |f|
+  = f.hidden_field :id, value: operator.id
+  .td.align-middle.bl-1.bc-light
+    = image_tag asset_pack_path("media/images/homepage/partenaires/#{operator.logo}"),
+            alt: "#{operator.logo.gsub(/-/, ' ').gsub(/\.(jpg|png)$/, '')}",
+            height: 30 if operator.logo.present?
+    span.ml-2= operator.name
+  .td.align-middle.bl-1.bc-light.text-blue.font-weight-bold
+    = f.number_field :target_count, value: operator.target_count, class: 'form-control', id: "target_count_#{operator.id}"
+  .td.align-middle.bl-1.bc-light= operator.internship_offers.count
+  .td.align-middle.bl-1.bc-light= operator.updated_at.strftime('%d-%m-%Y')
+  .td.align-middle.bl-1.bc-light
+    = f.submit 'Mettre à jour', class: 'btn btn-primary btn-sm'
