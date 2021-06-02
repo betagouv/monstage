@@ -72,7 +72,6 @@ export default function SearchSchool({
   }
 
   const renderAutocompleteInput = () => {
-    let labelClassName = 'font-weight-light' + cityCurrentlyChosen ? 'chosen-name' : ''
     return (
       <Downshift
         initialInputValue={city}
@@ -104,7 +103,7 @@ export default function SearchSchool({
                 })}
               />
               <label
-                {...getLabelProps({ className: labelClassName, htmlFor: `${resourceName}_school_city` })}
+                {...getLabelProps({ className: cityCurrentlyChosen ? 'chosen-name' : 'not-chosen-name', htmlFor: `${resourceName}_school_city` })}
               >
                 {cityCurrentlyChosen ? chosenSchoolName : label}
               </label>

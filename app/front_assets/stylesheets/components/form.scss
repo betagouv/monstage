@@ -153,6 +153,7 @@
 	}
 }
 .name-search {
+  margin-bottom: 0;
   .input-group {
     input {
       background-color: $bg-light-blue;
@@ -161,30 +162,32 @@
       border-right: 0px;
       }
 
-      button.btn-clear-city {
-        background-color: $bg-light-blue;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        border-left: 0px;
-        width: 3rem;
-      }
+    button.btn-clear-city {
+      background-color: $bg-light-blue;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-left: 0px;
+      width: 3rem;
+    }
 
-      label.chosen-name {
+    label.chosen-name {
         background-color: $bg-less-light-blue;
         padding: 0.2rem 0.6rem 0.2rem 0.6rem;
         margin-left: 0.5rem;
         border-radius: 4px;
         color: $very-dark-blue;
-        font-weight: bolder;
+      font-weight: 800;
+      }
+
+      label.not-chosen-name {
+        font-weight: 400;
     }
   }
-  margin-bottom: 0;
 }
 
 .form-group.smashed {
   margin-bottom: 1.0rem;
-  // background-color: red;
-  }
+}
 
 .row.smashed-margin-top {
   margin-top: 0;

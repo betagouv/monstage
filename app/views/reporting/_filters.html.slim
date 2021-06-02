@@ -6,11 +6,11 @@ fieldset
         .col-5
           .form-group.smashed
             = react_component("SearchSchoolByName", props: { classes: 'col-12',
-                                                      label: "Etablissement :",
+                                                      label: "Etablissement",
                                                       required: true,
                                                       chosenSchoolName: @schools&.first&.name || '',
                                                       resourceName: :user})
-            = label_tag :reporting_searched_school, "", class: 'font-weight-light'
+            = label_tag :reporting_searched_school, '', class: 'font-weight-light'
     .row
       - if by_academy
         .col-3
@@ -29,7 +29,7 @@ fieldset
                           prompt: 'Tous',
                           class: 'form-control custom-select',
                           data: { action: 'statistics#filterByDepartment' }
-            = label_tag :department, 'Département'
+            = label_tag :department, 'Département', class: 'font-weight-light'
       - if by_subscribed_school
         .col-3
           .form-group.smashed.custom-label-container
