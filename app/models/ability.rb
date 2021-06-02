@@ -12,6 +12,7 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities
+      when 'Users::MinistryStatistician' then ministry_statistician_abilities
       when 'Users::SchoolManagement' then
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
@@ -177,9 +178,15 @@ class Ability
   def statistician_abilities
     can :view, :department
     can %i[read], InternshipOffer
-
     can %i[index], Acl::Reporting, &:allowed?
-    
+    can %i[index_and_filter], Reporting::InternshipOffer
+  end
+
+  def ministry_statistician_abilities
+    can :view, :department
+    # can :read, :dashboard
+    can %i[read], InternshipOffer
+    can %i[index], Acl::Reporting, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
   end
 
