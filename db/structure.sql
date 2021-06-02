@@ -343,6 +343,48 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 
 --
+-- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.air_table_records (
+    id bigint NOT NULL,
+    school_name text,
+    organisation_name text,
+    department_name text,
+    sector_name text,
+    is_public boolean,
+    nb_spot_available integer,
+    nb_spot_used integer,
+    nb_spot_male integer,
+    nb_spot_female integer,
+    school_track text,
+    internship_offer_type text,
+    comment text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.air_table_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1168,6 +1210,13 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
+
+
+--
 -- Name: class_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1322,6 +1371,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.active_storage_blobs
     ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records
+    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -2312,4 +2369,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210430083329'),
 ('20210506142429'),
 ('20210506143015'),
-('20210517145027');
+('20210517145027'),
+('20210602142914');
+
+
