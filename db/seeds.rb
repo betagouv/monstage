@@ -97,11 +97,11 @@ def populate_sectors
 end
 
 def populate_groups
-  Group.create!(name: 'PUBLIC GROUP', is_public: true)
-  Group.create!(name: 'PRIVATE GROUP', is_public: false)
-  Group.create!(name: 'Carrefour', is_public: false)
-  Group.create!(name: 'Engie', is_public: false)
-  Group.create!(name: 'Ministère de la Justice', is_public: true)
+  Group.create!(name: 'PUBLIC GROUP', is_public: true, is_pacte: false)
+  Group.create!(name: 'PRIVATE GROUP', is_public: false, is_pacte: false)
+  Group.create!(name: 'Carrefour', is_public: false, is_pacte: true)
+  Group.create!(name: 'Engie', is_public: false, is_pacte: true)
+  Group.create!(name: 'Ministère de la Justice', is_public: true, is_pacte: false)
 end
 
 def populate_users
