@@ -17,7 +17,7 @@ module Users
     end
 
     test 'creation succeed' do
-      whitelisted_email = create(:email_whitelist,
+      whitelisted_email = create(:statistician_email_whitelist,
                                  email: 'white@list.email',
                                  zipcode: '60')
       statistician = Users::Statistician.new(email: whitelisted_email.email,
@@ -31,7 +31,7 @@ module Users
     end
 
     test 'departement_name' do
-      whitelisted_email = create(:email_whitelist,
+      whitelisted_email = create(:statistician_email_whitelist,
                                  email: 'fourcade.m@gmail.com',
                                  zipcode: '59')
 
@@ -40,12 +40,12 @@ module Users
     end
 
     test 'destroy also destroy email_whitelist' do
-      whitelisted_email = create(:email_whitelist,
+      whitelisted_email = create(:statistician_email_whitelist,
                                  email: 'fourcade.m@gmail.com',
                                  zipcode: '59')
 
       statistician = create(:statistician, email: whitelisted_email.email, email_whitelist: whitelisted_email)
-      assert_changes -> { EmailWhitelist.count }, -1 do
+      assert_changes -> { EmailWhitelists::Statistician.count }, -1 do
         statistician.destroy
       end
     end

@@ -198,7 +198,7 @@ class Ability
     can %i[read update destroy export], User
     can :switch_user, User
     can %i[read update export], InternshipOffer
-    can :manage, EmailWhitelist
+    can :manage, EmailWhitelists::Statistician
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin

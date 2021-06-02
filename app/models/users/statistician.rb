@@ -58,11 +58,11 @@ module Users
 
     # on create, make sure to assign existing email whitelist
     def assign_email_whitelist
-      self.email_whitelist = EmailWhitelist.where(email: email).first
+      self.email_whitelist = EmailWhitelists::Statistician.where(email: email).first
     end
 
     def email_in_list
-      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelist.exists?(email: email)
+      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelists::Statistician.exists?(email: email)
     end
   end
 end

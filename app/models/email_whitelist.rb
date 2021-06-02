@@ -33,7 +33,7 @@ class EmailWhitelist < ApplicationRecord
   end
 
   def notify_account_ready
-    EmailWhitelistMailer.notify_ready(recipient_email: email)
+    StatisticianEmailWhitelistMailer.notify_ready(recipient_email: email)
                         .deliver_later
   end
 end

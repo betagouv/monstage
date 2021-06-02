@@ -68,7 +68,7 @@ FactoryBot.define do
     factory :statistician, class: 'Users::Statistician', parent: :user do
       type { 'Users::Statistician' }
       before(:create) do |user|
-        create(:email_whitelist, email: user.email, zipcode: '60', user: user)
+        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
     end
 
