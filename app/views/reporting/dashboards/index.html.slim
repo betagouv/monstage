@@ -38,7 +38,7 @@
               .row.no-gutters
                 .col.align-self-center Candidatures acceptées
                 .col.align-self-center.text-right.h2.mb-0.text-warning-custom
-                  span.mr-3= count_by_private_sector["approved_applications_count"]
+                  span.mr-3= count_by_private_sector["approved_applications_count"] || "0"
               .row.no-gutters.mt-3
                 .col.align-self-center Dont PaQte
                 .col.align-self-center.text-right.h3.mb-0.text-warning-custom
