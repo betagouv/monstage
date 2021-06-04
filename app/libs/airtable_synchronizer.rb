@@ -13,22 +13,26 @@ class AirtableSynchronizer
   }
 
   def pull_all
-    AirTableRecord.destroy_all
-    table.all.map { |record| import_record(record) }
+    ActiveRecord::Base.transaction do
+      AirTableRecord.destroy_all
+      table.all.map do |record|
+        import_record(record)
+      end
+    end
   end
 
   def import_record(record)
-    airtable_record = AirTableRecord.new
+    mapped_attributes = {}
     MAPPING.map do |airtable_key, ar_key|
-      airtable_record.attributes[ar_key] = record.attributes[airtable_key]
+      mapped_attributes[ar_key] = record.attributes[airtable_key]
     end
-    airtable_record.save!
+    AirTableRecord.create!(mapped_attributes)
   end
 
   private
   attr_reader :client, :table
 
-  def initialize
+  def initialize()
     @client = Airtable::Client.new(Rails.application.credentials.dig(:air_table, :api_key))
     @table = client.table(Rails.application.credentials.dig(:air_table, :app_id),
                           Rails.application.credentials.dig(:air_table, :table))

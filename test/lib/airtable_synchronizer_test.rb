@@ -30,6 +30,18 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
     end
   end
 
+  test '.pull_all fails gracefully (does not destroy existing data when there is a failure) if needed' do
+    AirTableRecord.create!
+    airtable_record = Airtable::Record.new(@parsed_body["records"].first)
+    sync = AirtableSynchronizer.new
+    raises_exception = proc { |_| raise ArgumentError.new }
+    assert_no_changes -> { AirTableRecord.count } do
+      AirTableRecord.stub :create!, raises_exception do
+        assert_raise { sync.pull_all }
+      end
+    end
+  end
+
   test '.import_record map as expected' do
     airtable_record = Airtable::Record.new(@parsed_body["records"].first)
     assert_changes -> { AirTableRecord.count }, 1 do
