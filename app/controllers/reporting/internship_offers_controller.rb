@@ -21,7 +21,9 @@ module Reporting
     end
 
     def employers_offers
-      index
+      authorize! :index, Acl::Reporting.new(user: current_user, params: params)
+
+      @offers = current_offers
     end
 
     private
