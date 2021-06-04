@@ -398,7 +398,8 @@ CREATE TABLE public.email_whitelists (
     zipcode character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint
+    user_id bigint,
+    type character varying DEFAULT 'EmailWhitelist::Statistician'::character varying NOT NULL
 );
 
 
@@ -833,7 +834,9 @@ CREATE TABLE public.operators (
     logo character varying,
     website character varying,
     created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL
+    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
+    airtable_id character varying,
+    airtable_link character varying
 );
 
 
@@ -2312,4 +2315,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210430083329'),
 ('20210506142429'),
 ('20210506143015'),
-('20210517145027');
+('20210517145027'),
+('20210601154254'),
+('20210602171315');
+
+
