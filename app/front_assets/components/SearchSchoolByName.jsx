@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import $ from 'jquery';
 import Downshift from 'downshift';
 import { visitURLWithOneParam, getParamValueFromUrl, clearSearch } from '../utils/urls';
+import { endpoints } from '../utils/api';
 
 const StartAutocompleteAtLength = 2;
 
@@ -29,7 +30,7 @@ export default function SearchSchool({
 
   const emitRequest = (cityName) => {
     setCurrentRequest(
-      $.ajax({ type: 'POST', url: '/api/schools/search', data: { query: cityName } })
+      $.ajax({ type: 'POST', url: endpoints['apiSearchSchool'](), data: { query: cityName } })
         .done(fetchDone)
         .fail(fetchFail),
     );
