@@ -75,7 +75,7 @@ class ReportingSchoolTest < ApplicationSystemTestCase
     assert_equal "all", find('select#subscribed_school').value
     assert_equal "", find('select#department').value
     assert_equal "", find('input#user_school_name').value
-    fill_in "user_school_name",	with: "ois"
+    fill_in "user_school_name",	with: "oise "
     find(".listview-item").click
     # and using any filter resets the name search
     select('Non inscrits', from: 'subscribed_school')
