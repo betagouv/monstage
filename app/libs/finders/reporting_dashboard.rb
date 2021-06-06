@@ -75,6 +75,27 @@ module Finders
                 .first
     end
 
+    def platform_approved_applications_count
+      [
+        platform_count_by_private_sector,
+        platform_count_by_public_sector,
+        platform_count_by_association
+      ].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+    end
+
+    def platform_total_count
+      [
+        platform_count_by_private_sector,
+        platform_count_by_public_sector,
+        platform_count_by_association
+      ].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+    end
+
+    # overall
+    def overall_total
+      operator_total + platform_total_count
+    end
+
 
     # SELECT months.date AS date, count(internship_applications.id) AS COUNT FROM "months"
     #   LEFT OUTER JOIN (

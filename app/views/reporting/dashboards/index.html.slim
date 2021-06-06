@@ -85,20 +85,20 @@
   // platform sum
   .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des offres proposées sur la plateforme
+      h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.nowrap.ml-3 Total des offres proposées sur la plateforme
     .col-12.col-md-9
       .row.align-items-center
         .col-6.px-3.bc-stats
           .row.
-            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
-              span.text-counter-stats data-test-total="total-created-at"= [dashboard_finder.platform_count_by_private_sector, dashboard_finder.platform_count_by_public_sector, dashboard_finder.platform_count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats.text-counter-stats-size
+              span.text-counter-stats.text-counter-stats-size data-test-total="total-created-at"= dashboard_finder.platform_total_count
 
         .col-6.px-3
           .row.align-items-center
             .col.align-self-center
-              h3.m-0.d-inline-block.text-counter-stats.ml-3 Total des candidatures acceptées sur la plateforme
+              h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.ml-3 Total des candidatures acceptées sur la plateforme
             .col-auto.align-self-center.text-right.h2.mb-0.text-body
-              span.text-counter-stats.mr-3= [dashboard_finder.platform_count_by_private_sector, dashboard_finder.platform_count_by_public_sector, dashboard_finder.platform_count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+              span.text-counter-stats.text-counter-stats-size.mr-3= dashboard_finder.platform_approved_applications_count
 
   // chart
   .row
@@ -187,3 +187,13 @@
           .row.
             .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
               span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
+  .row.mt-3.align-items-center.no-gutters.rounded-lg.py-4.b-4.bc-blue-stats-total
+    .col-12.col-md-3
+      h3.m-0.d-inline-block.text-blue-stats-total.nowrap.ml-3
+        | Grand total des stages pourvus
+    .col-12.col-md-9
+      .row.align-items-center
+        .col-12.px-3.bc-stats
+          .row.
+            .offset-8.col-4.align-self-center.text-right.h2.mb-0
+              span.text-blue-stats-total.mr-3= dashboard_finder.overall_total || '0'
