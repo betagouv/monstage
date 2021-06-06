@@ -66,6 +66,6 @@ class AirTableRecordTest < ActiveSupport::TestCase
     create(:air_table_record, updated_at: 6.weeks.ago.utc)
     create(:air_table_record, updated_at: 4.weeks.ago.utc)
     create(:air_table_record, updated_at: last_updated_at.utc)
-    assert_equal last_updated_at.utc, AirTableRecord.last_modified_at.utc
+    assert_equal last_updated_at.utc.to_i, AirTableRecord.last_modified_at.utc.to_i
   end
 end
