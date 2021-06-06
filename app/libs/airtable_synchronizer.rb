@@ -23,6 +23,7 @@ class AirtableSynchronizer
     "last_modified" => "updated_at"
   }
 
+  # main job, with some safe stuffs
   def pull_all
     ActiveRecord::Base.transaction do
       AirTableRecord.destroy_all
@@ -32,6 +33,7 @@ class AirtableSynchronizer
     end
   end
 
+  # data integrity
   def import_record(record)
     attrs = {}
     MAPPING.map do |airtable_key, ar_key|
@@ -42,6 +44,7 @@ class AirtableSynchronizer
     AirTableRecord.create!(attrs)
   end
 
+  ### casting
   def cast_internship_offer_type(value)
     value
   end
