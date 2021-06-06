@@ -13,6 +13,11 @@ class AirtableSynchronizer
     "entreprise_d'accueil"=> :organisation_name,
     "secteur_d'activité"=> :sector_name,
     "départements"=> :department_name,
+
+    "sector_id"=>:sector_id,
+    "group_id"=>:group_id,
+    "school_id"=>:school_id,
+    "week_id"=>:week_id
   }
 
   def pull_all
@@ -29,6 +34,7 @@ class AirtableSynchronizer
     MAPPING.map do |airtable_key, ar_key|
       attrs[ar_key] = send("cast_#{ar_key}", record.attributes[airtable_key])
     end
+
     return if attrs.except(:is_public).values.all?(&:blank?)
     AirTableRecord.create!(attrs)
   end
@@ -83,8 +89,25 @@ class AirtableSynchronizer
   end
 
   def cast_department_name(value)
+    Department::MAP[value]
+  end
+
+  def cast_sector_id(value)
     value
   end
+
+  def cast_week_id(value)
+    value
+  end
+
+  def cast_group_id(value)
+    value
+  end
+
+  def cast_school_id(value)
+    value
+  end
+
 
   private
   attr_reader :client, :table
@@ -94,4 +117,5 @@ class AirtableSynchronizer
     @table = client.table(Rails.application.credentials.dig(:air_table, :app_id),
                           Rails.application.credentials.dig(:air_table, :table))
   end
+
 end

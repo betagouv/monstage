@@ -48,7 +48,11 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
     assert_changes -> { AirTableRecord.count }, 1 do
       AirtableSynchronizer.new.import_record(airtable_record)
     end
-    AirtableSynchronizer::MAPPING.map do |airtable_key, ar_key|
+
+    {"nb_d'élèves_féminins"=> :nb_spot_female,
+    "nb_places_dispo"=> :nb_spot_available,
+    "nb_d'élèves_en_stage"=> :nb_spot_used,
+    "nb_d'élèves_masculins"=> :nb_spot_male}.map do |airtable_key, ar_key|
       assert_equal 1, AirTableRecord.where("#{ar_key}" => airtable_record.attributes[airtable_key]).count
     end
   end
@@ -124,7 +128,28 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
 
   test 'cast_department_name(value)' do
     airtable_sync = AirtableSynchronizer.new
+    value = "60"
+    assert_equal "Oise", airtable_sync.cast_department_name(value)
+  end
+
+  test 'sector_id(value)' do
+    airtable_sync = AirtableSynchronizer.new
     value = "str"
-    assert_equal value, airtable_sync.cast_department_name(value)
+    assert_equal value, airtable_sync.cast_sector_id(value)
+  end
+  test 'week_id(value)' do
+    airtable_sync = AirtableSynchronizer.new
+    value = "str"
+    assert_equal value, airtable_sync.cast_week_id(value)
+  end
+  test 'group_id(value)' do
+    airtable_sync = AirtableSynchronizer.new
+    value = "str"
+    assert_equal value, airtable_sync.cast_group_id(value)
+  end
+  test 'school_id(value)' do
+    airtable_sync = AirtableSynchronizer.new
+    value = "str"
+    assert_equal value, airtable_sync.cast_school_id(value)
   end
 end

@@ -14,6 +14,11 @@ class CreateAirTableRecords < ActiveRecord::Migration[6.1]
       t.text :internship_offer_type
       t.text :comment
 
+      t.bigint :school_id
+      t.bigint :group_id
+      t.bigint :sector_id
+      t.bigint :week_id
+
       t.timestamps
     end
   end

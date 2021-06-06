@@ -360,6 +360,10 @@ CREATE TABLE public.air_table_records (
     school_track text,
     internship_offer_type text,
     comment text,
+    school_id bigint,
+    group_id bigint,
+    sector_id bigint,
+    week_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

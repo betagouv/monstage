@@ -1,99 +1,39 @@
 {
    "records":[
       {
-         "id":"rec5FkR12nMKncnh7",
+         "id":"recahzP8x85kKAmLo",
          "fields":{
-            "Privé / Public":"Privé",
-            "Nb d'élèves masculins":2,
-            "Nb places dispo":32,
+            "ID":1,
+            "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
+            "Filière":"3e",
+            "Entreprise d'accueil":"BNP Paribas",
             "Départements":"02",
-            "Filière":"3e",
             "Secteur d'activité":"Mécanique",
-            "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
-            "Nb d'élèves en stage":3,
-            "Type de stage":"Stage à distance",
-            "ID":1,
-            "Entreprise d'accueil":"BNP Paribas",
-            "Nb d'élèves féminins":1,
-            "Sync Source":"Grid view"
-         },
-         "createdTime":"2021-06-06T07:18:09.000Z"
-      },
-      {
-         "id":"recMTP7XC0jPLxZaS",
-         "fields":{
             "Privé / Public":"Privé",
-            "Filière":"3e Segpa",
-            "Semaine de stage":"Semaine 41 - du 5 octobre au 11 octobre",
-            "Etablissement des élèves":"Victor Hugo - Académie de Lille",
-            "ID":2,
-            "Entreprise d'accueil":"Engie",
-            "Sync Source":"Grid view"
-         },
-         "createdTime":"2021-06-06T07:18:09.000Z"
-      },
-
-      {
-         "id":"recIVJgWwUQY1ud0j",
-         "fields":{
-            "Privé / Public":"Privé",
-            "Nb d'élèves masculins":2,
             "Nb places dispo":32,
-            "Filière":"3e",
-            "Secteur d'activité":"Mécanique",
-            "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
             "Nb d'élèves en stage":3,
-            "Type de stage":"Stage à distance",
-            "ID":1,
-            "Entreprise d'accueil":"BNP Paribas",
             "Nb d'élèves féminins":1,
-            "Sync Source":"Grid view"
-         },
-         "createdTime":"2021-06-06T07:19:14.000Z"
-      },
-      {
-         "id":"recbKIaUdaXPTFWUS",
-         "fields":{
-            "Privé / Public":"Privé",
-            "Filière":"3e Segpa",
-            "Semaine de stage":"Semaine 41 - du 5 octobre au 11 octobre",
-            "Etablissement des élèves":"Victor Hugo - Académie de Lille",
-            "ID":2,
-            "Entreprise d'accueil":"Engie",
-            "Sync Source":"Grid view"
-         },
-         "createdTime":"2021-06-06T07:19:14.000Z"
-      },
-      {
-         "id":"reccvgGQYrvewfN9N",
-         "fields":{
-            "Privé / Public":"Privé",
             "Nb d'élèves masculins":2,
-            "Nb places dispo":32,
-            "Filière":"3e",
-            "Secteur d'activité":"Mécanique",
-            "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
-            "Nb d'élèves en stage":3,
             "Type de stage":"Stage à distance",
-            "ID":1,
-            "Entreprise d'accueil":"BNP Paribas",
-            "Nb d'élèves féminins":1,
-            "Sync Source":"Grid view"
+            "school_id":"522",
+            "group_id":"38",
+            "sector_id":"152"
          },
-         "createdTime":"2021-06-06T07:19:45.000Z"
+         "createdTime":"2021-06-06T09:33:09.000Z"
       },
       {
-         "id":"recbXQkUA7k7Wn0Gr",
+         "id":"recXKl0hGrWWmV7zs",
          "fields":{
-            "Privé / Public":"Privé",
+            "ID":2,
+            "Etablissement des élèves":"Victor Hugo - Académie de Lille",
             "Filière":"3e Segpa",
             "Semaine de stage":"Semaine 41 - du 5 octobre au 11 octobre",
-            "Etablissement des élèves":"Victor Hugo - Académie de Lille",
-            "ID":2,
             "Entreprise d'accueil":"Engie",
-            "Sync Source":"Grid view"
+            "Privé / Public":"Privé",
+            "school_id":"655",
+            "group_id":"54"
          },
-         "createdTime":"2021-06-06T07:19:45.000Z"
+         "createdTime":"2021-06-06T09:33:09.000Z"
       }
    ]
 }
