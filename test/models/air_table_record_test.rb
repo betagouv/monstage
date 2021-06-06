@@ -25,6 +25,23 @@ class AirTableRecordTest < ActiveSupport::TestCase
     assert_includes(result.map(&:attributes), {"total_count"=>20, "is_public"=>true, "id"=>nil})
   end
 
+  test '.by_pacte' do
+    create(:air_table_record,
+           nb_spot_used: 10,
+           group: true,
+           group: create(:group, name: "mfo",
+                                 is_pacte: true))
+    create(:air_table_record,
+           nb_spot_used: 10,
+           group: true,
+           group: create(:group, name: "fom",
+                                 is_pacte: false))
+
+
+    result = AirTableRecord.by_pacte
+    assert_includes(result.map(&:attributes), {"total_count"=>10, "id"=>nil})
+  end
+
   test '.during_year' do
     school_years = [
       SchoolYear::Floating.new(date: Date.new(2019, 9, 14)),

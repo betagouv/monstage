@@ -22,8 +22,11 @@ module Finders
     end
 
     def operator_count_by_private_sector_pacte
-      @operator_count_by_private_sector_pacte ||= operator_base_query.pacte
-                                                                     .count
+      @operator_count_by_private_sector_pacte ||= operator_base_query.by_pacte
+                                                                     .entries
+                                                                     .first
+                                                                     .attributes
+                                                                     .try(:[], "total_count")
     end
 
     def operator_last_modified_at
@@ -169,6 +172,7 @@ module Finders
       query = AirTableRecord.all
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
+      query = query.countable_in_grand_total
 
       query
     end
