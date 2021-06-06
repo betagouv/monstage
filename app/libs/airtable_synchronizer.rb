@@ -10,6 +10,7 @@ class AirtableSynchronizer
     "nb_d'élèves_masculins"=> :nb_spot_male,
     "entreprise_d'accueil"=> :organisation_name,
     "secteur_d'activité"=> :sector_name,
+    "départements"=> :department_name,
   }
 
   def pull_all
