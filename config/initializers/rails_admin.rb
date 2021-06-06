@@ -75,7 +75,7 @@ RailsAdmin.config do |config|
                               Users::God]
 
   config.navigation_static_links = {
-    "Stats" => "/reporting/dashboards",
+    "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com"
   }
