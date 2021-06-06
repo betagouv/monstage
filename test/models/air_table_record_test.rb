@@ -44,4 +44,11 @@ class AirTableRecordTest < ActiveSupport::TestCase
     assert_equal 1, AirTableRecord.during_year(school_year: school_years[2]).count
   end
 
+  test '.last_modified_at' do
+    last_updated_at = 2.weeks.ago
+    create(:air_table_record, updated_at: 6.weeks.ago)
+    create(:air_table_record, updated_at: 4.weeks.ago)
+    create(:air_table_record, updated_at: last_updated_at)
+    assert_equal last_updated_at, AirTableRecord.last_modified_at
+  end
 end
