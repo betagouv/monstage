@@ -6,17 +6,32 @@ class AirTableRecord < ApplicationRecord
   belongs_to :sector, optional: true
   belongs_to :week, optional: true
 
-  scope :by_year, lambda { |school_year:|
-    where(week_id: Week.selectable_for_school_year(school_year: school_year))
+  # AIRtable relationship
+  INTERNSHIP_OFFER_TYPE = {
+    onsite_internship_offer: "Stage",
+    remote_internship_offer: "Stage à distance",
+    hybrid_internship_offer: "Stage hybride",
+    conference: "Conférence métier",
+    workshow: "Atelier"
+  }.freeze
+
+  scope :last_modified_at, lambda {
+    maximum(:updated_at)
   }
 
-  scope :by_type, -> {
-    select("sum(nb_spot_used) as total_count, internship_offer_type")
-      .group(:internship_offer_type)
+  # where clauses
+  scope :during_year, lambda { |school_year:|
+    where(week_id: Week.selectable_for_school_year(school_year: school_year.next_year))
   }
 
   scope :by_department, lambda { |department:|
-    where(department: department)
+    where(department_name: department)
+  }
+
+  # aggregates
+  scope :by_type, -> {
+    select("sum(nb_spot_used) as total_count, internship_offer_type")
+      .group(:internship_offer_type)
   }
 
   scope :by_publicy, ->{
