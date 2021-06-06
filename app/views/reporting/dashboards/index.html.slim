@@ -114,10 +114,11 @@
       .row
         .col-8
           h2.text-body Stages pourvus hors plateforme
-        .col-4
-          h2.text-body.text-right.font-weight-light
-            = "au "
-            = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_yyyy)
+        - if dashboard_finder.operator_last_modified_at.present?
+          .col-4
+            h2.text-body.text-right.font-weight-light
+              = "au "
+              = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_yyyy)
 
   .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center

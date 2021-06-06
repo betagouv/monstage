@@ -225,7 +225,5 @@ module Finders
         'DATE_TRUNC', [Arel.sql("'#{by}'"), attribute]
       )
     end
-
-
   end
 end
