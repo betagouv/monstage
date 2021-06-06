@@ -1,1 +1,7 @@
-= Presenters::WeekList.new(weeks: weeks).to_range_as_str
+- splitted_str = Presenters::WeekList.new(weeks: weeks).split_range_string
+
+= splitted_str&.first
+strong
+  = splitted_str&.second&.sub(/\s*:\s*/,'')
+br
+.small.font-weight-bolder.text-black-50= splitted_str&.third
