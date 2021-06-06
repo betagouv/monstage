@@ -91,4 +91,13 @@ class Week < ApplicationRecord
       raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
     end
   end
+
+  def airtablize
+    require 'csv'
+    CSV.open("myfile.csv", "w") do |csv|
+    csv << ["Semaine", "ID MS3e", "year"]
+    weeks.map do |w|
+      csv << [w.select_text_method, w.id, "2020-2021"]
+    end
+  end
 end
