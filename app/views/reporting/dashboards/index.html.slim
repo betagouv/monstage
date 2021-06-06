@@ -138,7 +138,10 @@
             .col.align-self-center.text-right.h2.mb-0.text-purple-custom
               span.mr-3= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:remote_internship_offer]) || "0"
       .row
-        .col-12.bt-1.bc-light.pt-3.bl-1
+        .col-12
+          hr.separator.p-0.mt-0.mb-0.ml-0.mr-3
+      .row
+        .col-12.bc-light.pt-3.bl-1
           .row.h-100
             .offset-3.col-6.align-self-center.text-center
               = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-purple-custom mx-3')
