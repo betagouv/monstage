@@ -21,13 +21,9 @@ module Finders
                             .try(:[], "total_count")
     end
 
-    def platform_count_by_private_sector_pacte
-      platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
-              .where(permalink: nil)
-              .joins(:group)
-              .where(group: {is_pacte: false})
-              .map(&:attributes)
-              .first
+    def operator_count_by_private_sector_pacte
+      @operator_count_by_private_sector_pacte ||= operator_base_query.pacte
+                                                                     .count
     end
 
     def operator_last_modified_at

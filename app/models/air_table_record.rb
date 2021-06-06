@@ -28,6 +28,9 @@ class AirTableRecord < ApplicationRecord
     where(department_name: department)
   }
 
+  scope :pacte, lambda {
+    where(group_id: Group.is_pacte)
+  }
   # aggregates
   scope :by_type, -> {
     select("sum(nb_spot_used) as total_count, internship_offer_type")
