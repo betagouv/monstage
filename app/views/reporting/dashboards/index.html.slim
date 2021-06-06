@@ -14,7 +14,7 @@
     .col-12
       h2.text-body Stages sur la plateforme
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
+  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
       h3.m-0.d-inline-block.text-warning-custom Entreprises
     .col-12.col-md-9
@@ -44,7 +44,7 @@
                 .col.align-self-center.text-right.h3.mb-0.text-warning-custom
                   span.mr-3= count_by_private_sector_pacte["approved_applications_count"] || "0"
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
+  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
       h3.m-0.d-inline-block.text-blue-custom Administrations
     .col-12.col-md-9
@@ -63,7 +63,7 @@
             .col.align-self-center.text-right.h2.mb-0.text-blue-custom
               span.mr-3= count_by_public_sector["approved_applications_count"] || "0"
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
+  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
       h3.m-0.d-inline-block.text-red-custom Associations
     .col-12.col-md-9
@@ -83,7 +83,7 @@
               span.mr-3 -
 
 
-  .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded.py-4
+  .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
       h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des offres proposées sur la plateforme
     .col-12.col-md-9
@@ -106,3 +106,71 @@
                data-chart-internship-offer-created-at-by-month-value="#{internship_offer_created_at_by_month.to_json}"
                data-chart-internship-application-accepted-at-by-month-value="#{internship_application_approved_at_month.to_json}" ]
         div data-chart-target='svg'
+
+  .row.mt-5
+    .col-12
+      h2.text-body Stages pourvus hors plateforme
+
+
+  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+    .col-12.col-md-3.text-center
+      h3.m-0.d-inline-block.text-purple-custom Type de stage
+    .col-12.col-md-9
+      .row
+        .col-6.bl-1.bc-light
+          .row.h-100.pb-2
+            .col-auto.align-self-center
+              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-purple-custom')
+            .col.align-self-center Présentiel
+            .col.align-self-center.text-right.h2.mb-0.text-purple-custom= nil || "0"
+        .col-6.bl-1.bc-light
+          .row.h-100.pb-2
+            .col-auto.align-self-center
+              = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-purple-custom')
+            .col.align-self-center À distance
+            .col.align-self-center.text-right.h2.mb-0.text-purple-custom
+              span.mr-3= nil || "0"
+      .row
+        .col-12.bt-1.bc-light.pt-3.bl-1
+          .row.h-100
+            .offset-3.col-6.align-self-center.text-center
+              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-purple-custom mx-3')
+              | Hybride
+              span.h2.mb-0.mx-3.text-purple-custom= nil || "0"
+
+
+  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+    .col-12.col-md-3.text-center
+      h3.m-0.d-inline-block.text-cyan-custom Secteur
+    .col-12.col-md-9
+      .row
+        .col-6.bl-1.br-1.bc-light
+          .row.h-100
+            .col-auto.align-self-center
+              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-cyan-custom')
+            .col
+              .row.no-gutters
+                .col.align-self-center Secteur privé
+                .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= nil || "0"
+              .row.no-gutters.mt-3
+                .col.align-self-center Dont PaQte
+                .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= count_by_private_sector_pacte["total_count"] || "0"
+        .col-6
+          .row.h-100
+            .col-auto.align-self-center
+              = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-cyan-custom')
+            .col.align-self-center
+              .row.no-gutters
+                .col.align-self-center Secteur public
+                .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
+                  span.mr-3= count_by_private_sector["approved_applications_count"]
+
+  .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
+    .col-12.col-md-3.text-center
+      h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des stages pourvus hors plateforme
+    .col-12.col-md-9
+      .row.align-items-center
+        .col-12.px-3.bc-stats
+          .row.
+            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
+              span.text-counter-stats data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
