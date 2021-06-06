@@ -6,6 +6,7 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
   def setup
     @request_body = File.read(Rails.root.join(*%w[test fixtures files airtable-request.json]))
     @parsed_body = JSON.parse(@request_body)
+
     stub_request(:get, %r[https://api.airtable.com/*]).
           with(
             headers: {
@@ -32,7 +33,7 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
 
   test '.pull_all fails gracefully (does not destroy existing data when there is a failure) if needed' do
     AirTableRecord.create!
-    airtable_record = Airtable::Record.new(@parsed_body["records"].first)
+    airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
     sync = AirtableSynchronizer.new
     raises_exception = proc { |_| raise ArgumentError.new }
     assert_no_changes -> { AirTableRecord.count } do
@@ -43,12 +44,22 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
   end
 
   test '.import_record map as expected' do
-    airtable_record = Airtable::Record.new(@parsed_body["records"].first)
+    airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
     assert_changes -> { AirTableRecord.count }, 1 do
       AirtableSynchronizer.new.import_record(airtable_record)
     end
     AirtableSynchronizer::MAPPING.map do |airtable_key, ar_key|
       assert_equal 1, AirTableRecord.where("#{ar_key}" => airtable_record.attributes[airtable_key]).count
+    end
+  end
+
+  test '.import_record ignore empty records' do
+    request_body_with_empty_records = File.read(Rails.root.join(*%w[test fixtures files airtable-request-empty-records.json]))
+    request_body_with_empty_records = JSON.parse(request_body_with_empty_records)
+
+    airtable_record = Airtable::Record.new(request_body_with_empty_records["records"].first["fields"])
+    assert_no_changes -> { AirTableRecord.count }, 1 do
+      AirtableSynchronizer.new.import_record(airtable_record)
     end
   end
 end

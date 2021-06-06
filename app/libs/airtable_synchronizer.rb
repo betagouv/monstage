@@ -27,6 +27,7 @@ class AirtableSynchronizer
     MAPPING.map do |airtable_key, ar_key|
       mapped_attributes[ar_key] = record.attributes[airtable_key]
     end
+    return if mapped_attributes.values.all?(&:blank?)
     AirTableRecord.create!(mapped_attributes)
   end
 

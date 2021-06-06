@@ -1,1 +1,38 @@
-{"records":[{"id":"recQ7Fw6J5pZDquyv","fields":{"Type de stage":"Stage à distance","Privé / Public":"Privé","ID":1,"Nb d'élèves féminins":1,"Filière":"3e","Nb places dispo":32,"Etablissement des élèves":"Victor Hugo - Académie de Versailles","Nb d'élèves en stage":3,"Nb d'élèves masculins":2,"Entreprise d'accueil":"BNP Paribas","Secteur d'activité":"Mécanique"},"createdTime":"2021-06-02T11:49:34.000Z"},{"id":"recd5sdKg4G0dge1l","fields":{"Type de stage":"Stage","Privé / Public":"Privé","ID":2,"Nb d'élèves féminins":2,"Filière":"3e Segpa","Semaine de stage":"Semaine 41 - du 5 octobre au 11 octobre","Nb places dispo":10,"Etablissement des élèves":"Victor Hugo - Académie de Lille","Nb d'élèves en stage":3,"Nb d'élèves masculins":1,"Entreprise d'accueil":"Engie"},"createdTime":"2021-06-02T11:49:34.000Z"}]}
+{
+   "records" : [
+      {
+         "id" : "recQ7Fw6J5pZDquyv",
+         "fields" : {
+            "Entreprise d'accueil" : "BNP Paribas",
+            "Nb d'Ã©lÃ¨ves fÃ©minins" : 1,
+            "PrivÃ© / Public" : "PrivÃ©",
+            "Secteur d'activitÃ©" : "MÃ©canique",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Versailles",
+            "Nb d'Ã©lÃ¨ves masculins" : 2,
+            "ID" : 1,
+            "FiliÃ¨re" : "3e",
+            "Nb places dispo" : 32,
+            "Nb d'Ã©lÃ¨ves en stage" : 3,
+            "Type de stage" : "Stage Ã  distance"
+         },
+         "createdTime" : "2021-06-02T11:49:34.000Z"
+      },
+      {
+         "createdTime" : "2021-06-02T11:49:34.000Z",
+         "fields" : {
+            "Nb d'Ã©lÃ¨ves en stage" : 3,
+            "Type de stage" : "Stage",
+            "ID" : 2,
+            "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre",
+            "Nb places dispo" : 10,
+            "FiliÃ¨re" : "3e Segpa",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Lille",
+            "Nb d'Ã©lÃ¨ves masculins" : 1,
+            "Entreprise d'accueil" : "Engie",
+            "PrivÃ© / Public" : "PrivÃ©",
+            "Nb d'Ã©lÃ¨ves fÃ©minins" : 2
+         },
+         "id" : "recd5sdKg4G0dge1l"
+      }
+   ]
+}
