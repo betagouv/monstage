@@ -19,6 +19,7 @@ class AirTableRecord < ApplicationRecord
     maximum(:updated_at)
   }
 
+
   # where clauses
   scope :during_year, lambda { |school_year:|
     where(week_id: Week.selectable_for_school_year(school_year: school_year.next_year))
