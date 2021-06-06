@@ -348,6 +348,7 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 CREATE TABLE public.air_table_records (
     id bigint NOT NULL,
+    remote_id text,
     school_name text,
     organisation_name text,
     department_name text,
@@ -364,6 +365,7 @@ CREATE TABLE public.air_table_records (
     group_id bigint,
     sector_id bigint,
     week_id bigint,
+    created_by text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

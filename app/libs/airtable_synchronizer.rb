@@ -17,7 +17,10 @@ class AirtableSynchronizer
     "sector_id"=>:sector_id,
     "group_id"=>:group_id,
     "school_id"=>:school_id,
-    "week_id"=>:week_id
+    "week_id"=>:week_id,
+
+    "created_by" => "created_by",
+    "last_modified" => "updated_at"
   }
 
   def pull_all
@@ -108,6 +111,13 @@ class AirtableSynchronizer
     value
   end
 
+  def cast_created_by(value)
+    value
+  end
+
+  def cast_updated_at(value)
+    value
+  end
 
   private
   attr_reader :client, :table

@@ -1,7 +1,7 @@
 {
    "records":[
       {
-         "id":"recahzP8x85kKAmLo",
+         "id":"recKLrt3UK9JmVyuw",
          "fields":{
             "ID":1,
             "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
@@ -17,23 +17,70 @@
             "Type de stage":"Stage à distance",
             "school_id":"522",
             "group_id":"38",
-            "sector_id":"152"
+            "sector_id":"152",
+            "Created By":"Mon Stage",
+            "Last Modified":"2021-06-06T11:59:00.000Z",
+            "Sync Source":"Grid 2"
          },
-         "createdTime":"2021-06-06T09:33:09.000Z"
+         "createdTime":"2021-06-06T12:30:26.000Z"
       },
       {
-         "id":"recXKl0hGrWWmV7zs",
+         "id":"recw8eTwSMg2Sy1t3",
          "fields":{
             "ID":2,
             "Etablissement des élèves":"Victor Hugo - Académie de Lille",
             "Filière":"3e Segpa",
-            "Semaine de stage":"Semaine 41 - du 5 octobre au 11 octobre",
             "Entreprise d'accueil":"Engie",
             "Privé / Public":"Privé",
             "school_id":"655",
-            "group_id":"54"
+            "group_id":"54",
+            "Created By":"Mon Stage",
+            "Last Modified":"2021-06-06T11:59:00.000Z",
+            "Sync Source":"Grid 2"
          },
-         "createdTime":"2021-06-06T09:33:09.000Z"
+         "createdTime":"2021-06-06T12:30:26.000Z"
+      },
+      {
+         "id":"reculGxPGcXg1nvfW",
+         "fields":{
+            "ID":1,
+            "Created By":"Mon Stage",
+            "Last Modified":"2021-06-03T15:17:00.000Z",
+            "Etablissement des élèves":"Victor Hugo - Académie de Versailles",
+            "Filière":"3e",
+            "Entreprise d'accueil":"BNP Paribas",
+            "Départements":"02",
+            "Secteur d'activité":"Mécanique",
+            "Privé / Public":"Privé",
+            "Nb places dispo":32,
+            "Nb d'élèves en stage":3,
+            "Nb d'élèves féminins":1,
+            "Nb d'élèves masculins":2,
+            "Type de stage":"Stage à distance",
+            "school_id":"522",
+            "group_id":"38",
+            "sector_id":"152",
+            "Sync Source":"Grid 2"
+         },
+         "createdTime":"2021-06-06T12:32:32.000Z"
+      },
+      {
+         "id":"recmMqHb3CJ36bwuD",
+         "fields":{
+            "ID":2,
+            "Created By":"Mon Stage",
+            "Last Modified":"2021-06-06T11:57:00.000Z",
+            "Etablissement des élèves":"Victor Hugo - Académie de Lille",
+            "Filière":"3e Segpa",
+            "Semaine de stage":"Semaine 36 - du 31 août au 6 septembre",
+            "Entreprise d'accueil":"Engie",
+            "Privé / Public":"Privé",
+            "school_id":"655",
+            "group_id":"54",
+            "week_id":"88",
+            "Sync Source":"Grid 2"
+         },
+         "createdTime":"2021-06-06T12:32:32.000Z"
       }
    ]
 }

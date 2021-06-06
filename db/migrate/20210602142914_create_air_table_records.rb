@@ -1,6 +1,8 @@
 class CreateAirTableRecords < ActiveRecord::Migration[6.1]
   def change
     create_table :air_table_records do |t|
+      t.text :remote_id
+
       t.text :school_name
       t.text :organisation_name
       t.text :department_name
@@ -18,6 +20,8 @@ class CreateAirTableRecords < ActiveRecord::Migration[6.1]
       t.bigint :group_id
       t.bigint :sector_id
       t.bigint :week_id
+
+      t.text :created_by
 
       t.timestamps
     end
