@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AirtableSynchronizer
   MAPPING = {
     "type_de_stage"=> :internship_offer_type,
@@ -23,12 +25,65 @@ class AirtableSynchronizer
   end
 
   def import_record(record)
-    mapped_attributes = {}
+    attrs = {}
     MAPPING.map do |airtable_key, ar_key|
-      mapped_attributes[ar_key] = record.attributes[airtable_key]
+      attrs[ar_key] = send("cast_#{ar_key}", record.attributes[airtable_key])
     end
-    return if mapped_attributes.values.all?(&:blank?)
-    AirTableRecord.create!(mapped_attributes)
+    return if attrs.except(:is_public).values.all?(&:blank?)
+    AirTableRecord.create!(attrs)
+  end
+
+  def cast_internship_offer_type(value)
+    value
+  end
+
+  def cast_is_public(value)
+    value != "Privé"
+  end
+
+  def cast_nb_spot_female(value)
+    value
+  end
+
+  def cast_school_track(value)
+    case value
+    when "3e"
+      :troisieme_generale
+    when "3e Prépa métier"
+      :troisieme_prepa_metiers
+    when "3e Segpa"
+      :troisieme_segpa
+    else
+      value
+    end
+  end
+
+  def cast_nb_spot_available(value)
+    value
+  end
+
+  def cast_school_name(value)
+    value
+  end
+
+  def cast_nb_spot_used(value)
+    value
+  end
+
+  def cast_nb_spot_male(value)
+    value
+  end
+
+  def cast_organisation_name(value)
+    value
+  end
+
+  def cast_sector_name(value)
+    value
+  end
+
+  def cast_department_name(value)
+    value
   end
 
   private
