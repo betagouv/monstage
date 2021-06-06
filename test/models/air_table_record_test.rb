@@ -45,10 +45,10 @@ class AirTableRecordTest < ActiveSupport::TestCase
   end
 
   test '.last_modified_at' do
-    last_updated_at = 2.weeks.ago
-    create(:air_table_record, updated_at: 6.weeks.ago)
-    create(:air_table_record, updated_at: 4.weeks.ago)
-    create(:air_table_record, updated_at: last_updated_at)
-    assert_equal last_updated_at, AirTableRecord.last_modified_at
+    last_updated_at = 2.weeks.ago.utc
+    create(:air_table_record, updated_at: 6.weeks.ago.utc)
+    create(:air_table_record, updated_at: 4.weeks.ago.utc)
+    create(:air_table_record, updated_at: last_updated_at.utc)
+    assert_equal last_updated_at.utc, AirTableRecord.last_modified_at.utc
   end
 end
