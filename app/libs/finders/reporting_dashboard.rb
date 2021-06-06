@@ -93,7 +93,7 @@ module Finders
 
     # overall
     def overall_total
-      operator_total + platform_total_count
+      (operator_total || 0) + (platform_total_count || 0)
     end
 
 
