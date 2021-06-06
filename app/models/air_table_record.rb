@@ -11,7 +11,7 @@ class AirTableRecord < ApplicationRecord
   }
 
   scope :by_type, -> {
-    select("sum(nb_spot_used) as total, internship_offer_type")
+    select("sum(nb_spot_used) as total_count, internship_offer_type")
       .group(:internship_offer_type)
   }
 
@@ -20,8 +20,7 @@ class AirTableRecord < ApplicationRecord
   }
 
   scope :by_publicy, ->{
-    select("sum(nb_spot_used) as total, is_public")
+    select("sum(nb_spot_used) as total_count, is_public")
       .group(:is_public)
   }
-
 end

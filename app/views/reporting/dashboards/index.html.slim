@@ -9,7 +9,7 @@
                       by_school_track: false,
                       by_subscribed_school: false}
     = render partial: 'reporting/school_years_filter'
-
+  // platform stats
   .row.mt-5
     .col-12
       h2.text-body Stages sur la plateforme
@@ -26,10 +26,10 @@
             .col
               .row.no-gutters
                 .col.align-self-center Offres proposées
-                .col.align-self-center.text-right.h2.mb-0.text-warning-custom= count_by_private_sector["total_count"]
+                .col.align-self-center.text-right.h2.mb-0.text-warning-custom= dashboard_finder.count_by_private_sector["total_count"]
               .row.no-gutters.mt-3
                 .col.align-self-center Dont PaQte
-                .col.align-self-center.text-right.h3.mb-0.text-warning-custom= count_by_private_sector_pacte["total_count"] || "0"
+                .col.align-self-center.text-right.h3.mb-0.text-warning-custom= dashboard_finder.count_by_private_sector_pacte["total_count"] || "0"
         .col-6
           .row.h-100
             .col-auto.align-self-center
@@ -38,11 +38,11 @@
               .row.no-gutters
                 .col.align-self-center Candidatures acceptées
                 .col.align-self-center.text-right.h2.mb-0.text-warning-custom
-                  span.mr-3= count_by_private_sector["approved_applications_count"]
+                  span.mr-3= dashboard_finder.count_by_private_sector["approved_applications_count"]
               .row.no-gutters.mt-3
                 .col.align-self-center Dont PaQte
                 .col.align-self-center.text-right.h3.mb-0.text-warning-custom
-                  span.mr-3= count_by_private_sector_pacte["approved_applications_count"] || "0"
+                  span.mr-3= dashboard_finder.count_by_private_sector_pacte["approved_applications_count"] || "0"
 
   .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
@@ -54,14 +54,14 @@
             .col-auto.align-self-center
               = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-blue-custom')
             .col.align-self-center Offres proposées
-            .col.align-self-center.text-right.h2.mb-0.text-blue-custom= count_by_public_sector["total_count"] || "0"
+            .col.align-self-center.text-right.h2.mb-0.text-blue-custom= dashboard_finder.count_by_public_sector["total_count"] || "0"
         .col-6
           .row.h-100
             .col-auto.align-self-center
               = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-blue-custom')
             .col.align-self-center Candidatures acceptées
             .col.align-self-center.text-right.h2.mb-0.text-blue-custom
-              span.mr-3= count_by_public_sector["approved_applications_count"] || "0"
+              span.mr-3= dashboard_finder.count_by_public_sector["approved_applications_count"] || "0"
 
   .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
@@ -73,7 +73,7 @@
             .col-auto.align-self-center
               = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-red-custom')
             .col.align-self-center Offres proposées
-            .col.align-self-center.text-right.h2.mb-0.text-red-custom= count_by_association["total_count"]
+            .col.align-self-center.text-right.h2.mb-0.text-red-custom= dashboard_finder.count_by_association["total_count"]
         .col-6
           .row.h-100
             .col-auto.align-self-center
@@ -82,7 +82,7 @@
             .col.align-self-center.text-right.h2.mb-0.text-red-custom
               span.mr-3 -
 
-
+  // platform sum
   .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
       h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des offres proposées sur la plateforme
@@ -91,22 +91,24 @@
         .col-6.px-3.bc-stats
           .row.
             .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
-              span.text-counter-stats data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+              span.text-counter-stats data-test-total="total-created-at"= [dashboard_finder.count_by_private_sector, dashboard_finder.count_by_public_sector, dashboard_finder.count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
 
         .col-6.px-3
           .row.align-items-center
             .col.align-self-center
               h3.m-0.d-inline-block.text-counter-stats.ml-3 Total des candidatures acceptées sur la plateforme
             .col-auto.align-self-center.text-right.h2.mb-0.text-body
-              span.text-counter-stats.mr-3= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+              span.text-counter-stats.mr-3= [dashboard_finder.count_by_private_sector, dashboard_finder.count_by_public_sector, dashboard_finder.count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
 
+  // chart
   .row
     .col-12
       div.py-5[data-controller="chart"
-               data-chart-internship-offer-created-at-by-month-value="#{internship_offer_created_at_by_month.to_json}"
-               data-chart-internship-application-accepted-at-by-month-value="#{internship_application_approved_at_month.to_json}" ]
+               data-chart-internship-offer-created-at-by-month-value="#{dashboard_finder.internship_offer_created_at_by_month.to_json}"
+               data-chart-internship-application-accepted-at-by-month-value="#{dashboard_finder.internship_application_approved_at_month.to_json}" ]
         div data-chart-target='svg'
 
+  // operators stats
   .row.mt-5
     .col-12
       h2.text-body Stages pourvus hors plateforme
@@ -154,7 +156,7 @@
                 .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= nil || "0"
               .row.no-gutters.mt-3
                 .col.align-self-center Dont PaQte
-                .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= count_by_private_sector_pacte["total_count"] || "0"
+                .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= dashboard_finder.count_by_private_sector_pacte["total_count"] || "0"
         .col-6
           .row.h-100
             .col-auto.align-self-center
@@ -163,7 +165,7 @@
               .row.no-gutters
                 .col.align-self-center Secteur public
                 .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
-                  span.mr-3= count_by_private_sector["approved_applications_count"]
+                  span.mr-3= dashboard_finder.count_by_private_sector["approved_applications_count"]
 
   .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
@@ -173,4 +175,4 @@
         .col-12.px-3.bc-stats
           .row.
             .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
-              span.text-counter-stats data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+              span.text-counter-stats data-test-total="total-created-at"= [dashboard_finder.count_by_private_sector, dashboard_finder.count_by_public_sector, dashboard_finder.count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}

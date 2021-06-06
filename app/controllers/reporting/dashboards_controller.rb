@@ -6,15 +6,7 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
-      render locals: {
-        count_by_private_sector_pacte: dashboard_finder.count_by_private_sector_pacte,
-        count_by_private_sector: dashboard_finder.count_by_private_sector,
-        count_by_public_sector: dashboard_finder.count_by_public_sector,
-        count_by_association: dashboard_finder.count_by_association,
-        grand_total: [],
-        internship_offer_created_at_by_month: dashboard_finder.internship_offer_created_at_by_month,
-        internship_application_approved_at_month: dashboard_finder.internship_application_approved_at_month
-      }
+      render locals: { dashboard_finder: dashboard_finder }
     end
 
     def import_data

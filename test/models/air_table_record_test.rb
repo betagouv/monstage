@@ -10,8 +10,8 @@ class AirTableRecordTest < ActiveSupport::TestCase
 
     result = AirTableRecord.by_type
 
-    assert_includes(result.map(&:attributes), {"total"=>10, "internship_offer_type"=>"B", "id"=>nil})
-    assert_includes(result.map(&:attributes), {"total"=>20, "internship_offer_type"=>"A", "id"=>nil})
+    assert_includes(result.map(&:attributes), {"total_count"=>10, "internship_offer_type"=>"B", "id"=>nil})
+    assert_includes(result.map(&:attributes), {"total_count"=>20, "internship_offer_type"=>"A", "id"=>nil})
   end
 
   test 'by_publicy' do
@@ -21,8 +21,8 @@ class AirTableRecordTest < ActiveSupport::TestCase
 
     result = AirTableRecord.by_publicy
 
-    assert_includes(result.map(&:attributes), {"total"=>10, "is_public"=>false, "id"=>nil})
-    assert_includes(result.map(&:attributes), {"total"=>20, "is_public"=>true, "id"=>nil})
+    assert_includes(result.map(&:attributes), {"total_count"=>10, "is_public"=>false, "id"=>nil})
+    assert_includes(result.map(&:attributes), {"total_count"=>20, "is_public"=>true, "id"=>nil})
   end
 
   test 'by_year' do
