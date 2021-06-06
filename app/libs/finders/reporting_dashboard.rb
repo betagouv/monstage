@@ -29,9 +29,18 @@ module Finders
                                                                      .try(:[], "total_count")
     end
 
+    def operator_total
+      operator_base_query.total
+                         .entries
+                         .first
+                         .attributes
+                         .try(:[], "total_count")
+    end
+
     def operator_last_modified_at
       operator_base_query.last_modified_at
     end
+
 
     ### platform queries
     def platform_count_by_private_sector

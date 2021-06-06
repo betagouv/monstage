@@ -39,6 +39,9 @@ class AirTableRecord < ApplicationRecord
 
 
   # aggregates
+  scope :total, -> {
+    select("sum(nb_spot_used) as total_count")
+  }
   scope :by_type, -> {
     select("sum(nb_spot_used) as total_count, internship_offer_type")
       .group(:internship_offer_type)
