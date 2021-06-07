@@ -113,7 +113,9 @@
     .col-12
       .row
         .col-8
-          h2.text-body Stages pourvus hors plateforme
+          h2.text-body
+            | Stages pourvus hors plateforme
+            = link_to "Rafraichir", reporting_dashboards_refresh_path, method: :post, class: 'btn btn-success ml-4', data: {test_refresh: 1}
         - if dashboard_finder.operator_last_modified_at.present?
           .col-4
             h2.text-body.text-right.font-weight-light

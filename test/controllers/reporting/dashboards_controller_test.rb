@@ -25,6 +25,8 @@ module Reporting
       zipcode = "#{statistician.department_zipcode}000"
       sign_in(statistician)
       get reporting_dashboards_path(department: statistician.department)
+      assert_select "a[data-test-refresh=1][href=?]", reporting_dashboards_refresh_path
+      assert_select "a[data-test-refresh=1][data-method=post]"
       assert_response :success
     end
 
