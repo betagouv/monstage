@@ -9,6 +9,12 @@ module Reporting
       render locals: { dashboard_finder: dashboard_finder }
     end
 
+    def refresh
+      AirtableSynchronizer.new.pull_all
+      redirect_back fallback_location: current_user.custom_dashboard_path,
+                    flash: { success: 'Les statistiques sont rafraichie. Attention, airtable requiert 5min de delay de son coté' }
+    end
+
     def import_data
       @user = current_user
     end

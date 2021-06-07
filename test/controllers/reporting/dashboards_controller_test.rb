@@ -36,5 +36,17 @@ module Reporting
       assert_response 302
       assert_redirected_to root_path
     end
+
+    test 'POST #refresh as super admin' do
+      god = create(:god)
+      sign_in(god)
+      airtable_syncronizer_mock = Minitest::Mock.new
+      airtable_syncronizer_mock.expect(:pull_all, true)
+      AirtableSynchronizer.stub :new, airtable_syncronizer_mock do
+        post reporting_dashboards_refresh_path
+        assert_response 302
+      end
+      airtable_syncronizer_mock.verify
+    end
   end
 end
