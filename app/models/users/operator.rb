@@ -20,7 +20,7 @@ module Users
     end
 
     def custom_dashboard_path
-      url_helpers.reporting_dashboards_path
+      url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError
       url_helpers.account_path
     end
