@@ -7,6 +7,10 @@ module Users
       configure :created_at, :datetime
 
       list do
+        field :ministry_name do
+          label 'Entité publique'
+          pretty_value { bindings[:object].ministry.name }
+        end
         fields(*UserAdmin::DEFAULTS_FIELDS)
         field :sign_in_count
         field :last_sign_in_at
@@ -16,9 +20,24 @@ module Users
 
     validate :email_in_list
 
-    has_one :statistician_email_whitelist, foreign_key: :user_id, dependent: :destroy
-    validates :statistician_email_whitelist, presence: true
-    before_validation :assign_statistician_email_whitelist
+    belongs_to :ministry,
+               class_name: 'Group',
+               optional: true
+    validates_associated :ministry, if: :exists_and_is_public?
+
+    has_one :ministry_email_whitelist,
+            class_name: 'EmailWhitelists::Ministry',
+            foreign_key: :user_id,
+            dependent: :destroy
+    validates :ministry_email_whitelist, presence: true
+
+    before_validation :assign_ministry_email_whitelist
+
+    def exists_and_is_public?
+      return true if ministry_id.nil?
+
+      ministry.is_public
+    end
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
@@ -38,28 +57,22 @@ module Users
       'Statistiques par ministère'
     end
 
-    # def department
-    #   Department.lookup_by_zipcode(zipcode: department_zipcode)
-    # end
-
-    # def department_zipcode
-    #   statistician_email_whitelist.zipcode
-    # end
-
     def destroy
-      statistician_email_whitelist.delete
+      ministry_email_whitelist.delete
       super
     end
 
     private
 
     # on create, make sure to assign existing email whitelist
-    def assign_statistician_email_whitelist
-      self.statistician_email_whitelist = StatisticianEmailWhitelist.where(email: email).first
+    def assign_ministry_email_whitelist
+      self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
     end
 
     def email_in_list
-      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless StatisticianEmailWhitelist.exists?(email: email)
+      unless EmailWhitelists::Ministry.exists?(email: email)
+        errors.add(:email, 'Cette adresse électronique n\'est pas autorisée')
+      end
     end
   end
 end

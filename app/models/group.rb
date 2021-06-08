@@ -7,5 +7,11 @@ class Group < ApplicationRecord
     is_public.nil? ? all : where(is_public: is_public)
   }
   has_many :internship_offers
+  has_many :ministry_statisticians,
+            class_name: 'Users::MinistryStatistician',
+            foreign_key: 'ministry_id'
   has_many :organisations
+  has_many :ministries,
+            class_name: 'EmailWhitelists::Ministry',
+            inverse_of: :group
 end

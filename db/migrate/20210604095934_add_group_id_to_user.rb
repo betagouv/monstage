@@ -1,11 +1,6 @@
 class AddGroupIdToUser < ActiveRecord::Migration[6.1]
-  def up
-    add_column :users, :group_id, :integer
-    add_index :users, :group_id
-  end
-
-  def down
-    remove_index :users, :group_id
-    remove_column :users, :group_id
+  def change
+    add_reference :users, :ministry, null: true
+    add_foreign_key :users, :groups, column: :ministry_id
   end
 end

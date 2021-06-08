@@ -24,9 +24,12 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
-      email_whitelist:
-        one: Email autorisé du référent
-        other: Email autorisés des référents
+      email_whitelists/statistician:
+        one: Email autorisé du référent départemental
+        other: Emails autorisés des référents départementaux
+      email_whitelists/ministry:
+        one: Email autorisé du référent central
+        other: Emails autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -84,6 +87,9 @@ fr:
       users/statistician:
         one: Référent départemental
         other: Référents départementaux
+      users/ministry_statistician:
+        one: Référent central
+        other: Référents centraux
       week:
         one: Semaine
         other: Semaines
@@ -94,6 +100,7 @@ fr:
         is_public: Secteur public/privé
         name: Nom du groupe
         updated_at: Mis à jour le
+        name: Entité publique
       school:
         name: Nom
         kind: Type
@@ -129,7 +136,7 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
-      
+
       operator: &operator_fields
         name: Nom
         target_count: Objectif annuel
@@ -394,8 +401,8 @@ fr:
     scopes:
       _all: "Tous"
       school:
-        with_manager: "Avec un chef d'etb"
-        without_manager: "Sans un chef d'etb"
+        with_manager: "Avec chef d'établissement"
+        without_manager: "Sans chef d'établissement"
 
   dashboard:
     internship_offer:

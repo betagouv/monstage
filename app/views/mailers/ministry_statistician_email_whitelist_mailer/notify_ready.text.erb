@@ -1,10 +1,12 @@
 Madame, Monsieur,
 
-Vous avez été désigné, pour cette année scolaire, référent départemental pour l'opération "30 000 stages pour les élèves de troisième des quartiers prioritaires".
+Vous avez été désigné référent central, pour cette année scolaire, dans le cadre
+du suivi des activités de votre ministère ou de
+votre structure publique <%= @ministry_name %> sur un plan national.
 
-Vous pouvez dès à présent créer un compte mon stagedetroisieme.fr
+Vous pouvez dès à présent créer un compte monstagedetroisieme.fr
 
-<%= new_user_registration_url(as: 'Statistician', email: @recipient_email) %>
+<%= new_user_registration_url(as: "MinistryStatistician", email: @recipient_email) %>
 
 Cet accès est uniquement possible via l’adresse électronique (e-mail) à laquelle ce message vous a été adressé.
 

@@ -399,7 +399,8 @@ CREATE TABLE public.email_whitelists (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint,
-    type character varying DEFAULT 'EmailWhitelist::Statistician'::character varying NOT NULL
+    type character varying DEFAULT 'EmailWhitelist::Statistician'::character varying NOT NULL,
+    group_id integer
 );
 
 
@@ -1094,7 +1095,8 @@ CREATE TABLE public.users (
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
-    banners jsonb DEFAULT '{}'::jsonb
+    banners jsonb DEFAULT '{}'::jsonb,
+    ministry_id bigint
 );
 
 
@@ -1825,6 +1827,13 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
+
+
+--
 -- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1978,6 +1987,14 @@ ALTER TABLE ONLY public.school_internship_weeks
 
 ALTER TABLE ONLY public.internship_offer_infos
     ADD CONSTRAINT fk_rails_65006c3093 FOREIGN KEY (employer_id) REFERENCES public.users(id);
+
+
+--
+-- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
 
 
 --
@@ -2317,6 +2334,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210506143015'),
 ('20210517145027'),
 ('20210601154254'),
-('20210602171315');
+('20210602171315'),
+('20210604095934'),
+('20210604144318');
 
 

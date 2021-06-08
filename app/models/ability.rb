@@ -199,6 +199,7 @@ class Ability
     can :switch_user, User
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin
