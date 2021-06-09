@@ -2,7 +2,7 @@
 
 require 'application_system_test_case'
 
-class ReportingInternshipOffersTest < ApplicationSystemTestCase
+class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ThirdPartyTestHelpers
 

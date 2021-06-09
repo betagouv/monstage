@@ -95,26 +95,21 @@ module Reporting
     }
 
     scope :dimension_by_detailed_typology, lambda { |detailed_typology:|
-      case detailed_typology
-      when 'private'
-        # dimension_offer.left_joins(:group).where.not('groups.is_public = true')
-        select('group_id', *aggregate_functions_to_sql_select)
-          .left_joins(:group)
-          .where.not('groups.is_public = true')
-          .group(:group_id)
+      select('group_id', 'sum(max_candidates) as total_report_count')
+        .group(:group_id)
+        .order(:group_id)
+    }
 
-      when 'paqte'
-        select('group_id', *aggregate_functions_to_sql_select)
-          .joins(:group)
-          .where('groups.is_public = false')
-          .group(:group_id)
-      when 'public'
-        # dimension_offer.joins(:group).where('groups.is_public = true')
-        select('group_id', *aggregate_functions_to_sql_select)
-          .joins(:group)
-          .where('groups.is_public = true')
-          .group(:group_id)
-      else # all
+    scope :by_detailed_typology, lambda { |detailed_typology:|
+      case detailed_typology
+      when 'private_group'
+        opposite_query = Group.where(is_public: true)
+        where.not(group_id: opposite_query.ids).or(where(group_id: nil))
+      when 'paqte_group'
+        joins(:group).where(group: { is_pacte: true })
+      when 'public_group'
+        joins(:group).where(group: { is_public: true })
+      else
         all
       end
     }

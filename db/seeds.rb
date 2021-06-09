@@ -97,11 +97,11 @@ def populate_sectors
 end
 
 def populate_groups
-  Group.create!(name: 'PUBLIC GROUP', is_public: true)
-  Group.create!(name: 'PRIVATE GROUP', is_public: false)
-  Group.create!(name: 'Carrefour', is_public: false)
-  Group.create!(name: 'Engie', is_public: false)
-  Group.create!(name: 'Ministère de la Justice', is_public: true)
+  Group.create!(name: 'PUBLIC GROUP', is_public: true, is_pacte: false)
+  Group.create!(name: 'PRIVATE GROUP', is_public: false, is_pacte: false)
+  Group.create!(name: 'Carrefour', is_public: false, is_pacte: true)
+  Group.create!(name: 'Engie', is_public: false, is_pacte: true)
+  Group.create!(name: 'Ministère de la Justice', is_public: true, is_pacte: false)
 end
 
 def populate_users
@@ -146,7 +146,7 @@ def populate_internship_offers
     employer: Users::Employer.first,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
-    group: Group.is_private.first,
+    group: Group.is_pacte.first,
     is_public: false,
     title: 'Stage assistant.e ressources humaines - Service des recrutements',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
@@ -159,7 +159,29 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Du temps pour moi',
+    employer_name: Group.is_pacte.first.name,
+    school_track: :troisieme_generale
+  )
+
+    # 3eme generale public
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.second,
+    group: Group.is_public.last,
+    is_public: true,
+    title: "Observation du métier de chef de service - Ministère",
+    description: "Découvrez les réunions et comment se prennent les décisions au plus haut niveau mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services ",
+    description_rich_text: "Venez découvrir le métier de chef de service ! Vous observerez comment nos administrateurs garantissent aux usagers l'exercice de leur droits, tout en respectant leurs devoirs.",
+    employer_description_rich_text: "De multiples méthodes de travail et de prises de décisions seront observées",
+    tutor_name: 'Etienne Weil',
+    tutor_email: 'etienne@free.fr',
+    tutor_phone: '+33637697756',
+    street: '18 rue Damiens',
+    zipcode: '75012',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: Group.is_public.last.name,
     school_track: :troisieme_generale
   )
 
@@ -246,6 +268,7 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'IBM',
   )
+
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).

@@ -13,6 +13,7 @@ module Reporting
     test 'get index as Statistician' \
          'when department params match his departement_name' do
       statistician = create(:statistician) # Oise is the department
+      pacte_group = create(:group, is_pacte: true)
       public_internship_offer = create(
         :weekly_internship_offer, # public internship by default
         zipcode: 75012 # Paris
@@ -24,6 +25,7 @@ module Reporting
       private_internship_offer = create(
         :weekly_internship_offer,
         :with_private_employer_group,
+        group: pacte_group,
         max_candidates: 10,
         zipcode: 60580
       ) # 10 paqte(private) Oise
@@ -62,8 +64,7 @@ module Reporting
       #private typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'group',
-        detailed_typology: 'private'
+        dimension: 'private_group'
       )
       assert_response :success
 
@@ -82,8 +83,7 @@ module Reporting
       #public typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'group',
-        detailed_typology: 'public'
+        dimension: 'public_group'
       )
       assert_response :success
       assert_select ".test-employer-#{public_internship_offer.group_id}", text: private_internship_offer.group.name
@@ -102,8 +102,7 @@ module Reporting
       #paqte typology
       get reporting_employers_internship_offers_path(
         department: statistician.department,
-        dimension: 'group',
-        detailed_typology: 'paqte'
+        dimension: 'paqte_group'
       )
       assert_response :success
       assert_select ".test-employer-#{public_internship_offer.group_id}", false
