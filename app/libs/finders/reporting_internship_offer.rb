@@ -38,6 +38,11 @@ module Finders
                 .includes(:group)
     end
 
+    def dimension_by_detailed_typology
+      base_query.dimension_by_detailed_typology(detailed_typology: params[:dimension])
+                .includes(:group) # or try without this line
+    end
+
     def dimension_by_sector
       base_query.dimension_by_sector
                 .includes(:sector)

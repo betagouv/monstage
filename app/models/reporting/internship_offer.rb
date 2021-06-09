@@ -94,14 +94,26 @@ module Reporting
         .order(:group_id)
     }
 
-    scope :by_detailed_typology, lambda { |detailed_typology:|
+    scope :dimension_by_detailed_typology, lambda { |detailed_typology:|
       case detailed_typology
       when 'private'
-        where(is_public: false)
+        # dimension_offer.left_joins(:group).where.not('groups.is_public = true')
+        select('group_id', *aggregate_functions_to_sql_select)
+          .left_joins(:group)
+          .where.not('groups.is_public = true')
+          .group(:group_id)
+
       when 'paqte'
-        where(is_public: false).where.not(group_id: nil)
+        select('group_id', *aggregate_functions_to_sql_select)
+          .joins(:group)
+          .where('groups.is_public = false')
+          .group(:group_id)
       when 'public'
-        where(is_public: true)
+        # dimension_offer.joins(:group).where('groups.is_public = true')
+        select('group_id', *aggregate_functions_to_sql_select)
+          .joins(:group)
+          .where('groups.is_public = true')
+          .group(:group_id)
       else # all
         all
       end
