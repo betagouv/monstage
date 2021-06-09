@@ -14,23 +14,29 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician) # Oise is the department
       public_internship_offer = create(
-        :weekly_internship_offer,
-        zipcode: 60580 # this zipcode belongs to Oise
+        :weekly_internship_offer, # public internship by default
+        zipcode: 75012 # Paris
       )
+      public_internship_offer = create(
+        :weekly_internship_offer, # public internship by default
+        zipcode: 60580 # this zipcode belongs to Oise
+      ) # 1 public Oise
       private_internship_offer = create(
         :weekly_internship_offer,
         :with_private_employer_group,
         max_candidates: 10,
         zipcode: 60580
-      )
+      ) # 10 paqte(private) Oise
       private_internship_offer_no_group = create(
         :weekly_internship_offer,
         is_public: false,
         group: nil,
         max_candidates: 20,
         zipcode: 60580
-      )
+      ) # 20 private Oise
       sign_in(statistician)
+
+      # From now on, Oise only
 
       get reporting_employers_internship_offers_path(
         department: statistician.department,
@@ -51,7 +57,7 @@ module Reporting
       assert_select ".test-public-", text: 'Privé'
       assert_select ".test-published-offers-", text: '20'
 
-      private_internship_offer_no_group
+      # private_internship_offer_no_group
 
       #private typology
       get reporting_employers_internship_offers_path(
@@ -60,14 +66,14 @@ module Reporting
         detailed_typology: 'private'
       )
       assert_response :success
-      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
-      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
-      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
-
 
       assert_select ".test-employer-#{public_internship_offer.group_id}", false
       assert_select ".test-public-#{public_internship_offer.group_id}", false
       assert_select ".test-published-offers-#{public_internship_offer.group_id}", false
+
+      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
+      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
+      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
 
       assert_select ".test-employer-", text: 'Indépendant'
       assert_select ".test-public-", text: 'Privé'
@@ -100,13 +106,13 @@ module Reporting
         detailed_typology: 'paqte'
       )
       assert_response :success
-      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
-      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
-      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
-
       assert_select ".test-employer-#{public_internship_offer.group_id}", false
       assert_select ".test-public-#{public_internship_offer.group_id}", false
       assert_select ".test-published-offers-#{public_internship_offer.group_id}", false
+
+      assert_select ".test-employer-#{private_internship_offer.group_id}", text: private_internship_offer.group.name
+      assert_select ".test-public-#{private_internship_offer.group_id}", text: 'PaQte'
+      assert_select ".test-published-offers-#{private_internship_offer.group_id}", text: '10'
 
       assert_select ".test-employer-", false
       assert_select ".test-public-", false
