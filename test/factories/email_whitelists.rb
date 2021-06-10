@@ -1,9 +1,19 @@
 FactoryBot.define do
   factory :email_whitelist do
   end
+
   factory :statistician_email_whitelist,
           class: EmailWhitelists::Statistician,
           parent: :email_whitelist do
-    email { "departemental_statistician#{rand(1..10_000)}@ms3e.fr" }
+    email { "departemental_statistician_#{rand(1..10_000)}@ms3e.fr" }
+    zipcode { 75 }
+  end
+
+  factory :ministry_statistician_email_whitelist,
+          class: EmailWhitelists::Ministry,
+          parent: :email_whitelist do
+    # before(:create) do create(:group, name: "Ministère de l'Amour", is_public: true) end
+    email { "ministry_statistician_#{rand(1..10_000)}@ms3e.fr" }
+    group { create(:group, is_public: true)}
   end
 end

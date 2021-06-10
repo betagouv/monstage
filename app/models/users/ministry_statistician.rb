@@ -54,7 +54,7 @@ module Users
     end
 
     def dashboard_name
-      'Statistiques par ministère'
+      'Statistiques nationales'
     end
 
     def destroy
