@@ -160,7 +160,7 @@ module Dashboard::Stepper
                    created_internship_offer.school_track,
                    'school_track not copied')
 
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 
     test 'POST #create/InternshipOffers::FreeDate as employer creates the post' do
@@ -188,7 +188,7 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.school_track,
                    created_internship_offer.school_track,
                    'school_track not copied')
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 
     test 'POST #create/InternshipOffers::FreeDate as statistician creates the post' do
@@ -216,7 +216,7 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.school_track,
                    created_internship_offer.school_track,
                    'school_track not copied')
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 
     test 'POST #create/InternshipOffers::FreeDate duplicate' do
