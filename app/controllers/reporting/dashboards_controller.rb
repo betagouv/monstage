@@ -12,7 +12,7 @@ module Reporting
     def refresh
       AirtableSynchronizer.new.pull_all
       redirect_back fallback_location: current_user.custom_dashboard_path,
-                    flash: { success: 'Les statistiques sont rafraichie. Attention, airtable requiert 5min de delay de son coté' }
+                    flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
     end
 
     def import_data
