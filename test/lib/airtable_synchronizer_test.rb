@@ -67,63 +67,15 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'cast_internship_offer_type(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "same"
-    assert_equal value, airtable_sync.cast_internship_offer_type(value)
-  end
-
   test 'cast_is_public(value)' do
     airtable_sync = AirtableSynchronizer.new
     refute airtable_sync.cast_is_public ("Privé")
     assert airtable_sync.cast_is_public ("Public")
   end
 
-  test 'cast_nb_spot_female(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = 1
-    assert_equal value, airtable_sync.cast_nb_spot_female(value)
-  end
-
   test 'cast_school_track(value)' do
     airtable_sync = AirtableSynchronizer.new
     assert_equal :troisieme_generale, airtable_sync.cast_school_track("3e")
-  end
-
-  test 'cast_nb_spot_available(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = 1
-    assert_equal value, airtable_sync.cast_nb_spot_available(value)
-  end
-
-  test 'cast_school_name(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_school_name(value)
-  end
-
-  test 'cast_nb_spot_used(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = 1
-    assert_equal value, airtable_sync.cast_nb_spot_used(value)
-  end
-
-  test 'cast_nb_spot_male(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = 1
-    assert_equal value, airtable_sync.cast_nb_spot_male(value)
-  end
-
-  test 'cast_organisation_name(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_organisation_name(value)
-  end
-
-  test 'cast_sector_name(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_sector_name(value)
   end
 
   test 'cast_department_name(value)' do
@@ -132,24 +84,4 @@ class AirtableSynchronizerTest < ActiveSupport::TestCase
     assert_equal "Oise", airtable_sync.cast_department_name(value)
   end
 
-  test 'sector_id(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_sector_id(value)
-  end
-  test 'week_id(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_week_id(value)
-  end
-  test 'group_id(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_group_id(value)
-  end
-  test 'school_id(value)' do
-    airtable_sync = AirtableSynchronizer.new
-    value = "str"
-    assert_equal value, airtable_sync.cast_school_id(value)
-  end
 end
