@@ -2,7 +2,8 @@
 module Finders
   class ReportingDashboard
 
-    ### ooperator queries
+    ### ooperator queries, those data are collected via airtable, synced with AirtableSynchronizer,
+    ### then aggregated and summed here
     # expects bool
     def operator_count_by_private_sector(is_public:)
       @operator_count_by_private_sector ||= operator_base_query.by_publicy
@@ -42,7 +43,7 @@ module Finders
     end
 
 
-    ### platform queries
+    ### platform queries, data owned by ourself. this is our "analytics"
     def platform_count_by_private_sector
       platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
               .where(permalink: nil)
