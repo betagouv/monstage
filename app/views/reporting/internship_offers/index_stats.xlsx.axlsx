@@ -10,14 +10,16 @@ wb.add_worksheet(name: 'Offres') do |sheet|
   )
 
   # rows
-  @no_offers.each do |no_offer|
-    group_name = no_offer.name
-    sheet.add_row(
-      [].concat(
-        [group_name],
-        Presenters::Reporting::DimensionByGroup.metrics.map { |_metric| 0 },
+  if dimension_is?('group', params[:dimension])
+    @no_offers.each do |no_offer|
+      group_name = no_offer.name
+      sheet.add_row(
+        [].concat(
+          [group_name],
+          Presenters::Reporting::DimensionByGroup.metrics.map { |_metric| 0 },
+        )
       )
-    )
+    end
   end
 
   @offers.map do |offer|
