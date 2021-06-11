@@ -60,15 +60,15 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   // on mobile, only show button when needed
   // maybe disable it on desktop when no change can be applied?
   const dirtyTrackSearch = () => {
-    const keywordChanged = initialKeyword != keyword;
-    const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
+    if (isMobile) {
+      const keywordChanged = initialKeyword != keyword;
+      const coordinatesChanged = initialLatitude != latitude || initialLongitude != longitude;
 
-    setShowSearch(keywordChanged || coordinatesChanged);
+      setShowSearch(keywordChanged || coordinatesChanged);
+    }
   };
 
-  if (isMobile) {
-    useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
-  }
+  useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
 
   return (
     <form onSubmit={filterOffers}>
