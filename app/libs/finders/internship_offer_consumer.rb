@@ -11,6 +11,7 @@ module Finders
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,
+        Users::MinistryStatistician.name => :statistician_query,
         Users::God.name => :god_query
       }
     end
