@@ -5,7 +5,7 @@ require 'json'
 
 Rails.application.configure do
   HOST = ENV.fetch("HOST") {
-    "https://#{ENV.fetch('HEROKU_APP_NAME')}}.herokuapp.com"
+    "https://#{ENV.fetch('HEROKU_APP_NAME')}.herokuapp.com"
   }
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
