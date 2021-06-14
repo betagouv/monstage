@@ -100,7 +100,7 @@ fr:
         is_public: Secteur public/privé
         name: Nom du groupe
         updated_at: Mis à jour le
-        name: Entité publique
+        name: Administration centrale
       school:
         name: Nom
         kind: Type
