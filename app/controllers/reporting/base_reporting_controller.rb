@@ -12,7 +12,9 @@ module Reporting
                     :academy,
                     :group,
                     :school_track,
+                    :subscribed_school,
                     :dimension,
+                    :detailed_typology,
                     :school_year)
     end
 

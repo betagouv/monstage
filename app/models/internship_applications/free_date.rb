@@ -1,5 +1,7 @@
 module InternshipApplications
   class FreeDate < InternshipApplication
+    validates :student, uniqueness: { scope: :internship_offer_id }
+
     def approvable?
       true
     end

@@ -361,7 +361,8 @@ CREATE TABLE public.class_rooms (
     school_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    anonymized boolean DEFAULT false
 );
 
 
@@ -426,7 +427,8 @@ CREATE TABLE public.groups (
     is_public boolean,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_pacte boolean
 );
 
 
@@ -468,11 +470,11 @@ CREATE TABLE public.internship_agreements (
     tutor_full_name character varying,
     main_teacher_full_name character varying,
     doc_date date,
-    school_manager_accept_terms boolean DEFAULT false,
-    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     main_teacher_accept_terms boolean DEFAULT false
 );
 
@@ -765,6 +767,17 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
+-- Name: months; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.months (
+    date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: operators; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1019,14 +1032,15 @@ CREATE TABLE public.users (
     custom_track boolean DEFAULT false NOT NULL,
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
-    department_name character varying,
-    missing_school_weeks_id bigint,
+    department character varying,
+    missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
-    anonymized boolean DEFAULT false NOT NULL
+    anonymized boolean DEFAULT false NOT NULL,
+    organisation_id bigint
 );
 
 
@@ -1253,14 +1267,6 @@ ALTER TABLE ONLY public.active_storage_blobs
 
 
 --
--- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.ar_internal_metadata
-    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
 -- Name: class_rooms class_rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1438,6 +1444,13 @@ CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active
 --
 
 CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_class_rooms_on_anonymized ON public.class_rooms USING btree (anonymized);
 
 
 --
@@ -1728,10 +1741,17 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_missing_school_weeks_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_missing_school_weeks_id ON public.users USING btree (missing_school_weeks_id);
+CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree (missing_weeks_school_id);
+
+
+--
+-- Name: index_users_on_organisation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_organisation_id ON public.users USING btree (organisation_id);
 
 
 --
@@ -1836,14 +1856,6 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
--- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.internship_offers
-    ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
-
-
---
 -- Name: class_rooms fk_rails_49ae717ca2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1904,7 +1916,7 @@ ALTER TABLE ONLY public.internship_offers
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_school_weeks_id) REFERENCES public.schools(id);
+    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_weeks_school_id) REFERENCES public.schools(id);
 
 
 --
@@ -1953,14 +1965,6 @@ ALTER TABLE ONLY public.tutors
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
-
-
---
--- Name: users fk_rails_d23d91f0e6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
 
 
 --
@@ -2181,11 +2185,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
-('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
 ('20200918165533'),
-('20200923164419'),
 ('20200924093439'),
 ('20200928102905'),
 ('20200928122922'),
@@ -2202,7 +2204,21 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
+('20201125102052'),
 ('20201203153154'),
-('20210112164129');
+('20210112164129'),
+('20210113140604'),
+('20210121171025'),
+('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210225164349'),
+('20210310173554'),
+('20210326100435'),
+('20210422145040'),
+('20210506142429'),
+('20210506143015'),
+('20210517145027');
 
 

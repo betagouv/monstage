@@ -23,27 +23,13 @@ module Reporting
          'when department params match his departement_name' do
       statistician = create(:statistician)
       zipcode = "#{statistician.department_zipcode}000"
-      school_without_manager = create(
-        :school,
-        weeks: weeks,
-        zipcode: zipcode
-      )
-      school_with_manager = create(
-        :school,
-        :with_school_manager,
-        weeks: weeks,
-        zipcode: zipcode
-      )
-
       sign_in(statistician)
-      get reporting_dashboards_path(department: statistician.department_name)
+      get reporting_dashboards_path(department: statistician.department)
       assert_response :success
-      assert_select "#test-school-without-manager-#{school_without_manager.id}"
-      assert_select "#test-school-with-manager-#{school_with_manager.id}"
     end
 
     test 'GET #index as statistician fails ' \
-         'when department params does not match his department_name' do
+         'when department params does not match his department' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_dashboards_path(department: 'Ain')

@@ -8,7 +8,7 @@ class ReportingDashboardTest < ApplicationSystemTestCase
     @sector_wood = create(:sector, name: 'Filière bois')
     @group1 = create(:group, name: 'group1', is_public: true)
     @group2 = create(:group, name: 'group2', is_public: true)
-    @department_name = @statistician.department_name # Oise
+    @department = @statistician.department # Oise
     @school_with_segpa = create(
       :school_with_troisieme_segpa_class_room,
       :with_school_manager,
@@ -27,9 +27,9 @@ class ReportingDashboardTest < ApplicationSystemTestCase
                      group: @group2)
     }
     sign_in(@statistician)
-    visit reporting_dashboards_path(department: @department_name)
-    @total_offers_css = 'span.ml-auto.h2.text-warning'
-    page.assert_selector(@total_offers_css, text: '6')
+    visit reporting_dashboards_path(department: @department)
+
+    page.assert_selector("span[data-test-total=total-created-at]", text: '6')
     find_link('Offres').click
 
     total_report_css = 'tfoot .test-total-report'

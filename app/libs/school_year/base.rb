@@ -10,6 +10,14 @@ module SchoolYear
       june_to_august.member?(current_month)
     end
 
+    def range
+      beginning_of_period..(self.next_year).beginning_of_period
+    end
+
+    def next_year
+      SchoolYear::Floating.new_by_year(year: end_of_period.year)
+    end
+
     private
 
     attr_reader :date

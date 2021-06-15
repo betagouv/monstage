@@ -103,6 +103,7 @@ module Dashboard
         select_editable?('internship_agreement_new_daily_hours_samedi_end', true)
       end
 
+
       # School_track 'troisieme generale' hides some fields
       assert_no_selector('label', text: 'Compétences visées')
       assert_no_selector('label', text: 'Modalités de la concertation')
