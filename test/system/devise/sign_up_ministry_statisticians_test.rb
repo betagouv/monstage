@@ -7,7 +7,6 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
     # go to signup as statistician
     email = 'kikoolol_levrai@gmail.com'
     ministry_statistician_email_whitelist = create(:ministry_statistician_email_whitelist, email: email)
-    # group = ministry_statistician_email_whitelist.group
     bad_email = 'lol@lol.fr'
 
     visit new_user_registration_path(as: 'MinistryStatistician')
