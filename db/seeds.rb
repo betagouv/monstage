@@ -94,6 +94,7 @@ end
 def populate_sectors
   Sector.create!(name: 'REVIEW-SECTOR-1')
   Sector.create!(name: 'REVIEW-SECTOR-2')
+  Sector.create!(name: 'Aéronautique')
 end
 
 def populate_groups
@@ -115,9 +116,15 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
-  EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 75)
+  statistician_email = 'statistician@ms3e.fr'
+  ministry_statistician = 'ministry_statistician@ms3e.fr'
+  last_public_group = Group.where(is_public: true).last
 
-  with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
+  EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
+  EmailWhitelists::Ministry.create!(email: ministry_statistician, group_id: last_public_group.id)
+  with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
+  with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
+
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
@@ -485,9 +492,9 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_schools,
     :populate_class_rooms,
     :populate_operators,
-    :populate_users,
     :populate_sectors,
     :populate_groups,
+    :populate_users,
     :populate_internship_offers,
     :populate_students,
     :populate_school_weeks,

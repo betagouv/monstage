@@ -68,7 +68,15 @@ FactoryBot.define do
     factory :statistician, class: 'Users::Statistician', parent: :user do
       type { 'Users::Statistician' }
       before(:create) do |user|
-        create(:email_whitelist, email: user.email, zipcode: '60', user: user)
+        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
+      end
+    end
+
+    factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
+      type { 'Users::MinistryStatistician' }
+      before(:create) do |user|
+        group = create(:public_group)
+        create(:ministry_statistician_email_whitelist, email: user.email, user: user, group_id: group.id)
       end
     end
 
