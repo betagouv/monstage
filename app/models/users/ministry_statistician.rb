@@ -21,8 +21,7 @@ module Users
     validate :email_in_list
 
     belongs_to :ministry,
-               class_name: 'Group',
-               optional: true
+               class_name: 'Group'
     validates_associated :ministry, if: :exists_and_is_public?
 
     has_one :ministry_email_whitelist,
@@ -34,9 +33,7 @@ module Users
     before_validation :assign_ministry_email_whitelist
 
     def exists_and_is_public?
-      return true if ministry_id.nil?
-
-      ministry.is_public
+      ministry&.is_public
     end
 
     def custom_dashboard_path
@@ -66,7 +63,9 @@ module Users
 
     # on create, make sure to assign existing email whitelist
     def assign_ministry_email_whitelist
-      self.ministry_email_whitelist = EmailWhitelists::Ministry.find_by(email: email)
+      email_whitelist_obj = EmailWhitelists::Ministry.find_by(email: email)
+      self.ministry_email_whitelist = email_whitelist_obj
+      self.ministry = email_whitelist_obj&.group
     end
 
     def email_in_list

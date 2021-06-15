@@ -3,15 +3,15 @@
 require 'application_system_test_case'
 
 class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
-  test 'navigation & interaction works until statistician creation' do
+  test 'navigation & interaction works until ministry statistician creation' do
     # go to signup as statistician
     email = 'kikoolol_levrai@gmail.com'
-    group = create(:public_group)
-    create(:ministry_statistician_email_whitelist, email: email, group_id: group.id)
+    ministry_statistician_email_whitelist = create(:ministry_statistician_email_whitelist, email: email)
+    # group = ministry_statistician_email_whitelist.group
     bad_email = 'lol@lol.fr'
 
     visit new_user_registration_path(as: 'MinistryStatistician')
-
+    
     # fails to create ministry_statistician with unexisting email
     assert_difference('Users::MinistryStatistician.count', 0) do
       fill_in 'Prénom', with: 'Martin'
@@ -22,7 +22,6 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
-    # byebug
 
     # create ministry_statistician with previously set email
     visit new_user_registration_path(as: 'MinistryStatistician')
