@@ -84,7 +84,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "monstage_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
-
+  config.action_mailer.show_previews = true
   config.action_mailer.default_url_options = { host: HOST }
 
   response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Rails.application.credentials.dig(:review, :mailtrap, :api_token)}"
