@@ -42,10 +42,8 @@
                   = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
                   .card-body
                     = news.get('news_description').as_html(nil).html_safe
-                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold' do
+                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
                       = news.get('news_link_text').as_text
-                      | &nbsp;
-                      i.fas.fa-chevron-right
 
   .bg-cover-image-homepage
     .container
