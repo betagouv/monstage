@@ -49,11 +49,11 @@ module Users
     end
 
     def department_zipcode
-      email_whitelist.zipcode
+      email_whitelist&.zipcode
     end
 
     def destroy
-      email_whitelist.delete
+      email_whitelist&.delete 
       super
     end
 
