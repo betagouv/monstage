@@ -9,6 +9,7 @@ module Users
       list do
         field :ministry_name do
           label 'Administration centrale'
+          pretty_value { bindings[:object]&.ministry&.name }
         end
         fields(*UserAdmin::DEFAULTS_FIELDS)
         field :sign_in_count
