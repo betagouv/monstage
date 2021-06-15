@@ -13,7 +13,7 @@ module EmailWhitelists
         field :id
         field :email
         field :ministry_name do
-          label 'Entité publique'
+          label 'Administration centrale'
           formatted_value { bindings[:object].group.name }
         end
       end
@@ -22,7 +22,7 @@ module EmailWhitelists
         field :id
         field :email
         field :ministry_name do
-          label 'Entité publique'
+          label 'Administration centrale'
           formatted_value { bindings[:object].group.name }
         end
       end
