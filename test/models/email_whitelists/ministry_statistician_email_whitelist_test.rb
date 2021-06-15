@@ -23,12 +23,8 @@ class MinistryStatisticianEmailWhitelistTest < ActiveSupport::TestCase
   end
 
   test 'destroy email whitelist also discard statistician' do
-    valid_group = create(:group, is_public: true)
     ministry_statistician = create(:ministry_statistician)
-    ministry_email_whitelist = create(:ministry_statistician_email_whitelist,
-                                      email: ministry_statistician.email,
-                                      user: ministry_statistician,
-                                      group_id: valid_group.id)
+    ministry_email_whitelist = ministry_statistician.ministry_email_whitelist
     freeze_time do
       assert_changes(-> { ministry_statistician.reload.discarded_at.try(:utc) },
                      from: nil,
