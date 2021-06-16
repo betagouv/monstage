@@ -46,6 +46,10 @@ module Users
       ]
     end
 
+    def statistician?
+      true
+    end
+
     def dashboard_name
       'Statistiques'
     end

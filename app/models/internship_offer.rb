@@ -50,6 +50,10 @@ class InternshipOffer < ApplicationRecord
     where(department: user.department)
   }
 
+  scope :limited_to_ministry, lambda { |user:|
+    where(group_id: user.ministry.id)
+  }
+
   scope :from_api, lambda {
     where.not(permalink: nil)
   }

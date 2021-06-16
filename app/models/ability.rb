@@ -188,22 +188,25 @@ class Ability
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi # grant access to the dashboard
-    can %i[index], Acl::Reporting do |_acl|
+    can %i[index department_filter], Acl::Reporting do |_acl|
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[switch_user
-           read
-           update
-           destroy
-           export
-           export_reporting_dashboard_data
-           see_reporting_dashboard
-           see_reporting_internship_offers
-           see_reporting_schools
-           see_reporting_associations
-           see_reporting_entreprises
-           reset_cache ], User
+    can %i[ switch_user
+            read
+            update
+            destroy
+            export
+            export_reporting_dashboard_data
+            see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_associations
+            see_reporting_entreprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary
+            reset_cache ], User
     can :manage, Operator
   end
 
@@ -215,16 +218,23 @@ class Ability
     can %i[ see_reporting_dashboard
             see_reporting_internship_offers
             see_reporting_schools
-            see_reporting_entreprises ], User
+            see_reporting_entreprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary
+            ], User
   end
 
   def ministry_statistician_abilities
     can :view, :department
+    can :read, Group
     can %i[read], InternshipOffer
     can %i[index], Acl::Reporting
     can %i[index_and_filter], Reporting::InternshipOffer
     can %i[ see_reporting_dashboard
-            export_reporting_dashboard_data], User
+            export_reporting_dashboard_data
+            see_dashboard_administrations_summary
+            ], User
   end
 
   private

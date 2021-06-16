@@ -106,6 +106,9 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Statistician' do
     statistician = create(:statistician)
     ability = Ability.new(statistician)
+    assert(ability.can?(:view, :department),
+           'statistician should be able to view his own department')
+    assert(ability.can?(:read, InternshipOffer))
     refute(ability.can?(:show, :account),
            'statistician should be able to see his account')
     refute(ability.can?(:update, School),
@@ -118,6 +121,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
     refute ability.can?(:index, Acl::Reporting.new(user: statistician, params: {}))
+    assert(ability.can?(:index, Acl::Reporting, &:allowed?))
 
     refute ability.can?(:apply, create(:weekly_internship_offer))
     refute ability.can?(:apply, create(:free_date_internship_offer))
@@ -133,6 +137,9 @@ class AbilityTest < ActiveSupport::TestCase
   test 'MinistryStatistician' do
     ministry_statistician = create(:ministry_statistician)
     ability = Ability.new(ministry_statistician)
+    assert(ability.can?(:index, Acl::Reporting, &:allowed?))
+    assert(ability.can?(:read, Group),
+           'ministry statistician should be able to view his own ministry')
     refute(ability.can?(:show, :account),
            'ministry_statistician should be able to see his account')
     refute(ability.can?(:update, School),

@@ -127,11 +127,12 @@ module Finders
 
     private
 
-    attr_reader :params
+    attr_reader :params, :user
 
     def base_query
       query = Reporting::InternshipOffer.all
       query = query.during_year(school_year: school_year) if school_year_param?
+      query = query.limited_to_ministry(user: user) if user.ministry_statistician?
       query = query.by_department(department: params[:department]) if department_param?
 
       query
@@ -145,8 +146,9 @@ module Finders
       params.key?(:school_year)
     end
 
-    def initialize(params:)
+    def initialize(params:, user: )
       @params = params
+      @user = user
     end
 
 

@@ -32,7 +32,7 @@ module Reporting
     end
 
     def dashboard_finder
-      @dashboard_finder ||= Finders::ReportingDashboard.new(params: reporting_cross_view_params)
+      @dashboard_finder ||= Finders::ReportingDashboard.new(params: reporting_cross_view_params, user: current_user)
     end
   end
 end

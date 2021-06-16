@@ -28,11 +28,15 @@ h1.h2.mb-3 Mon identité
                    {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
     small.d-none data-signup-target="emailHint"
 
+  - if current_user.ministry_statistician?
+    h2.h4 Administration centrale
+    p.mb-5
+      strong = current_user.ministry.name
   - if can?(:change, :department) || can?(:view, :department)
     .form-group
       = f.label :department do
         = "Département d'intervention"
-        small.form-text.text-muted Le département d'intervention permet limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
+        small.form-text.text-muted Le département d'intervention permet de limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
       = f.select :department,
                  [['Pas de département', nil]] + Department.to_select,
                  {  },

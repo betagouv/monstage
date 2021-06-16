@@ -68,6 +68,14 @@ module Reporting
       where(department: department)
     }
 
+    scope :limited_to_ministry, lambda { |user:|
+      where(group_id: user.ministry.id)
+    }
+
+    scope :by_group, lambda { |group_id:|
+      where(group_id: group_id)
+    }
+
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
     }
