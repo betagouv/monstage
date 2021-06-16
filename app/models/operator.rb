@@ -4,7 +4,6 @@ class Operator < ApplicationRecord
   AIRTABLE_CREDENTIAL_MAP = {
     'Un stage et après !' => :unstageetapres,
     'Le Réseau' => :lereseau,
-    'Institut Télémaque' => :telemaque,
     'Myfuture' => :myfuture,
     'Les entreprises pour la cité (LEPC)' => :lepc,
     'Tous en stage' => :tousenstage,
