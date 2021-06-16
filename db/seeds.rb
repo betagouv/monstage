@@ -87,7 +87,7 @@ def populate_operators
                   target_count: 120,
                   airtable_reporting_enabled: true,
                   airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),
-                  airtable_id: 'shruBXWzFRpRx8G9q')
+                  airtable_id: 'shrauIKjiyi4MhWAJ')
   Operator.create(name: "JobIRL",
                   website: "",
                   logo: 'Logo-jobirl.jpg',
