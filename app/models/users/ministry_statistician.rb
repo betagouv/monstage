@@ -59,6 +59,10 @@ module Users
       super
     end
 
+    def ministry_statistician?
+      true
+    end
+
     private
 
     # on create, make sure to assign existing email whitelist

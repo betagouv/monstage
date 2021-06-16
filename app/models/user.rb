@@ -180,6 +180,11 @@ class User < ApplicationRecord
            phone_password_reset_count: 0)
   end
 
+  def ministry_statistician?
+    false
+  end
+
+
   def check_phone_token?(token)
     phone_confirmable? && phone_token == token
   end

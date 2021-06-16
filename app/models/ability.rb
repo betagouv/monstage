@@ -165,7 +165,6 @@ class Ability
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
-
     can %i[index update], InternshipApplication
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
@@ -175,28 +174,11 @@ class Ability
     end
   end
 
-  def statistician_abilities
-    can :view, :department
-    can %i[read], InternshipOffer
-    can %i[index], Acl::Reporting, &:allowed?
-    can %i[index_and_filter], Reporting::InternshipOffer
-  end
-
-  def ministry_statistician_abilities
-    can :view, :department
-    # can :read, :dashboard
-    can %i[read], InternshipOffer
-    can %i[index], Acl::Reporting, &:allowed?
-    can %i[index_and_filter], Reporting::InternshipOffer
-  end
-
   def god_abilities
     can :show, :account
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update destroy export], User
-    can :switch_user, User
     can %i[read update export], InternshipOffer
     can :manage, EmailWhitelists::Statistician
     can :manage, EmailWhitelists::Ministry
@@ -210,8 +192,39 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can :reset_cache, User
+    can %i[switch_user
+           read
+           update
+           destroy
+           export
+           export_reporting_dashboard_data
+           see_reporting_dashboard
+           see_reporting_internship_offers
+           see_reporting_schools
+           see_reporting_associations
+           see_reporting_entreprises
+           reset_cache ], User
     can :manage, Operator
+  end
+
+  def statistician_abilities
+    can :view, :department
+    can %i[read], InternshipOffer
+    can %i[index], Acl::Reporting, &:allowed?
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_entreprises ], User
+  end
+
+  def ministry_statistician_abilities
+    can :view, :department
+    can %i[read], InternshipOffer
+    can %i[index], Acl::Reporting
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            export_reporting_dashboard_data], User
   end
 
   private
