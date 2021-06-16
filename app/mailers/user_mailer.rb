@@ -7,8 +7,9 @@ class UserMailer < ApplicationMailer
 
   def export_offers(recipient_email, params)
     offers = Finders::ReportingInternshipOffer.new(params: params).dimension_offer
-    xlsx = render_to_string layout: false, handlers: [:axlsx], formats: [:xlsx], template: "reporting/internship_offers/index_offers", locals: { offers: offers, presenter_for_dimension: Presenters::Reporting::DimensionByOffer }
-    attachments["offers.xlsx"] = {mime_type: Mime[:xlsx], content: xlsx}
-    mail(to: "maxime.pierrot@gmail.com", subject: 'Export Offres')
+    @department = params[:department].capitalize
+    xlsx = render_to_string layout: false, handlers: [:axlsx], formats: [:xlsx], template: "reporting/internship_offers/index_offers", locals: { offers: offers, presenter_for_dimension: Presenters::Reporting::DimensionByOffer, department: @department }
+    attachments["offres_#{params[:department].capitalize}.xlsx"] = {mime_type: Mime[:xlsx], content: xlsx}
+    mail(to: recipient_email, subject: "Export des offres du département #{@department}")
   end
 end
