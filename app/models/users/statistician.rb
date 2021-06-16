@@ -7,8 +7,14 @@ module Users
       configure :created_at, :datetime
 
       list do
-        field :department
-        field :department_zipcode
+        field :department do
+          label 'Département'
+          pretty_value { bindings[:object]&.department}
+        end
+        field :department_zipcode do
+          label 'Code postal'
+          pretty_value { bindings[:object]&.department_zipcode}
+        end
         fields(*UserAdmin::DEFAULTS_FIELDS)
         field :sign_in_count
         field :last_sign_in_at

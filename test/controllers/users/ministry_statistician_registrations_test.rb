@@ -32,5 +32,8 @@ class MinistryStatiticianRegistrationsTest < ActionDispatch::IntegrationTest
                                                     accept_terms: '1' } })
       assert_response 302
     end
+    last_ministry_statistician = Users::MinistryStatistician.last
+    assert_equal email, last_ministry_statistician.email
+    assert_equal group.name, last_ministry_statistician.ministry.name
   end
 end
