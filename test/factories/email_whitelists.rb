@@ -6,7 +6,7 @@ FactoryBot.define do
           class: EmailWhitelists::Statistician,
           parent: :email_whitelist do
     email { "departemental_statistician_#{rand(1..10_000)}@ms3e.fr" }
-    zipcode { 75 }
+    zipcode { 60 }
   end
 
   factory :ministry_statistician_email_whitelist,
