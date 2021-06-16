@@ -39,9 +39,9 @@ module Reporting
         finder.dimension_offer
       when 'group'
         finder.dimension_by_group
-      when 'sector'
-        finder.dimension_by_sector
-      else
+      when 'public_group', 'private_group', 'paqte_group'
+        finder.dimension_by_detailed_typology(detailed_typology: params[:dimension])
+      else # including 'sector'
         finder.dimension_by_sector
       end
     end
@@ -55,7 +55,7 @@ module Reporting
       case params[:dimension]
       when 'offers'
         Presenters::Reporting::DimensionByOffer
-      when 'group'
+      when 'group', 'public_group', 'private_group', 'paqte_group'
         Presenters::Reporting::DimensionByGroup
       when 'sector'
         Presenters::Reporting::DimensionBySector
