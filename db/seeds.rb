@@ -101,7 +101,7 @@ def populate_operators
                   target_count: 710,
                   airtable_reporting_enabled: true,
                   airtable_link: Rails.application.credentials.dig(:air_table, :operators, :lereseau, :share_link),
-                  airtable_id: 'shruz0IQ4gW3jbse0')
+                  airtable_id: 'shrcTuYlB7c2znRTq')
   Operator.create(name: "Institut Télémaque",
                   website: "",
                   logo: 'Logo-telemaque.png',
