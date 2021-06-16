@@ -3,15 +3,12 @@ class CreateAirTableRecords < ActiveRecord::Migration[6.1]
     create_table :air_table_records do |t|
       t.text :remote_id
 
-      t.text :school_name
-      t.text :organisation_name
-      t.text :department_name
-      t.text :sector_name
       t.boolean :is_public
       t.integer :nb_spot_available, default: 0
       t.integer :nb_spot_used, default: 0
       t.integer :nb_spot_male, default: 0
       t.integer :nb_spot_female, default: 0
+      t.text :department_name
       t.text :school_track
       t.text :internship_offer_type
       t.text :comment
@@ -19,8 +16,8 @@ class CreateAirTableRecords < ActiveRecord::Migration[6.1]
       t.bigint :school_id
       t.bigint :group_id
       t.bigint :sector_id
-      t.bigint :week_id
-
+      t.references :week
+      t.references :operator
       t.text :created_by
 
       t.timestamps

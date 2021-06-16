@@ -1,26 +1,28 @@
 # frozen_string_literal: true
 module Airtable
   class TableSynchronizer
-    CAST_MAPPING = {
-      "privé_/_public"=> :is_public,
-      "filière"=> :school_track,
-      "départements"=> :department_name,
-      "operator_id" => :operator_id
-    }
 
-    COPY_MAPPING = {
-      "nb_places_dispo"=> :nb_spot_available,
-      "etablissement_des_élèves"=> :school_name,
-      "nb_d'élèves_en_stage"=> :nb_spot_used,
-      "nb_d'élèves_masculins"=> :nb_spot_male,
-      "entreprise_d'accueil"=> :organisation_name,
-      "secteur_d'activité"=> :sector_name,
+    CAST_MAPPING = {
+      # bool
+      "privé_/_public"=> :is_public,
+      # enum
+      "filière"=> :school_track,
+      # reference, beware airtable returns an array for 1<->1 references
+      "department_code"=> :department_name,
+      "operator_id" => :operator_id,
       "sector_id"=>:sector_id,
       "group_id"=>:group_id,
       "school_id"=>:school_id,
       "week_id"=>:week_id,
       "created_by" => "created_by",
-      "last_modified" => "updated_at",
+    }
+
+    COPY_MAPPING = {
+      "id" => :remote_id,
+      "nb_places_dispo"=> :nb_spot_available,
+      "nb_d'élèves_en_stage"=> :nb_spot_used,
+      "nb_d'élèves_masculins"=> :nb_spot_male,
+      "last_modified" => :updated_at,
       "type_de_stage"=> :internship_offer_type,
       "nb_d'élèves_féminins"=> :nb_spot_female
     }
@@ -28,8 +30,8 @@ module Airtable
     # main job, with some safe stuffs
     def pull_all
       ActiveRecord::Base.transaction do
-        AirTableRecord.destroy_all
-        table.all.map do |record|
+        operator.air_table_records.destroy_all
+        table.all(view: "Reporting").map do |record|
           import_record(record)
         end
       end
@@ -38,6 +40,7 @@ module Airtable
     # data integrity
     def import_record(record)
       attrs = {}
+
       CAST_MAPPING.map do |airtable_key, ar_key|
         attrs[ar_key] = send("cast_#{ar_key}", record.attributes[airtable_key])
       end
@@ -47,12 +50,33 @@ module Airtable
 
       return if attrs.except(:is_public, :operator_id).values.all?(&:blank?)
       AirTableRecord.create!(attrs)
+    rescue ActiveRecord::RecordInvalid => invalid
+      Rails.logger.info("Fail to import airtable record #{record.id} from #{operator.name}")
     end
 
     ### casting
-
     def cast_is_public(value)
       value != "Privé"
+    end
+
+    def cast_sector_id(array_value)
+      array_value.try(:first)
+    end
+
+    def cast_group_id(array_value)
+      array_value.try(:first)
+    end
+
+    def cast_school_id(array_value)
+      array_value.try(:first)
+    end
+
+    def cast_week_id(array_value)
+      array_value.try(:first)
+    end
+
+    def cast_created_by(reference_created_by)
+      reference_created_by.try(:dig, "email")
     end
 
     def cast_school_track(value)
@@ -73,7 +97,7 @@ module Airtable
     end
 
     def cast_department_name(value)
-      Department::MAP[value]
+      Department::MAP[value.try(:first)]
     end
 
     private

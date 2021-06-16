@@ -349,15 +349,12 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 CREATE TABLE public.air_table_records (
     id bigint NOT NULL,
     remote_id text,
-    school_name text,
-    organisation_name text,
-    department_name text,
-    sector_name text,
     is_public boolean,
     nb_spot_available integer DEFAULT 0,
     nb_spot_used integer DEFAULT 0,
     nb_spot_male integer DEFAULT 0,
     nb_spot_female integer DEFAULT 0,
+    department_name text,
     school_track text,
     internship_offer_type text,
     comment text,
@@ -365,10 +362,10 @@ CREATE TABLE public.air_table_records (
     group_id bigint,
     sector_id bigint,
     week_id bigint,
+    operator_id bigint,
     created_by text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    operator_id bigint
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1595,6 +1592,13 @@ CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records 
 
 
 --
+-- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
+
+
+--
 -- Name: index_class_rooms_on_anonymized; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2389,7 +2393,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210517145027'),
 ('20210601154254'),
 ('20210602142914'),
-('20210615113123'),
-('20210616054233');
+('20210615113123');
 
 

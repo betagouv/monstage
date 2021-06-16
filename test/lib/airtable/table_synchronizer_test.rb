@@ -7,7 +7,7 @@ module Airtable
       @request_body = File.read(Rails.root.join(*%w[test fixtures files airtable-request.json]))
       @parsed_body = JSON.parse(@request_body)
       @operator = create(:operator, name: Operator::AIRTABLE_CREDENTIAL_MAP.keys.first)
-
+      @ref_week = Week.selectable_on_school_year.first
       stub_request(:get, %r[https://api.airtable.com/*]).
             with(
               headers: {
@@ -24,7 +24,7 @@ module Airtable
     end
 
     test '.pull_all truncate table and reload data' do
-      AirTableRecord.create!(operator: create(:operator))
+      AirTableRecord.create!(operator: create(:operator), week: @ref_week)
       assert_changes -> { AirTableRecord.count },
                     from: 1,
                     to: @parsed_body["records"].size do
@@ -34,7 +34,7 @@ module Airtable
     end
 
     test '.pull_all fails gracefully (does not destroy existing data when there is a failure) if needed' do
-      AirTableRecord.create!(operator: create(:operator))
+      AirTableRecord.create!(operator: create(:operator), week: @ref_week)
       airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
       sync = Airtable::TableSynchronizer.new(operator: @operator)
 
@@ -47,7 +47,10 @@ module Airtable
     end
 
     test '.import_record map as expected' do
-      airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
+      airtable_record = Airtable::Record.new(@parsed_body["records"]
+                                                         .first["fields"]
+                                                         .merge({"week_id" => [@ref_week.id]}))
+
       assert_changes -> { AirTableRecord.count }, 1 do
         Airtable::TableSynchronizer.new(operator: @operator)
                                    .import_record(airtable_record)
@@ -74,8 +77,8 @@ module Airtable
     test 'cast_is_public(value)' do
       airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
 
-      refute airtable_sync.cast_is_public ("Privé")
-      assert airtable_sync.cast_is_public ("Public")
+      refute airtable_sync.cast_is_public("Privé")
+      assert airtable_sync.cast_is_public("Public")
     end
 
     test 'cast_operator_id(value)' do
@@ -95,7 +98,7 @@ module Airtable
     test 'cast_department_name(value)' do
       airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
 
-      value = "60"
+      value = ["60"]
       assert_equal "Oise", airtable_sync.cast_department_name(value)
     end
 

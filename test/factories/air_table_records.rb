@@ -1,9 +1,8 @@
 FactoryBot.define do
   factory :air_table_record do
-    school_name { "MyText" }
-    organisation_name { "MyText" }
+    week { Week.selectable_from_now_until_end_of_school_year.first }
+    operator { create(:operator) }
     department_name { "MyText" }
-    sector_name { "MyText" }
     is_public { false }
     nb_spot_available { 1 }
     nb_spot_used { 1 }

@@ -10,10 +10,12 @@ class Operator < ApplicationRecord
     'Tous en stage' => :tousenstage,
     'Viens voir mon taf' => :vvmt,
     'JobIRL' => :jobirl,
+    'Télémaque' => :telemaque
   }
 
   has_many :operators, class_name: 'Users::Operator'
   has_many :internship_offers, through: :operators
+  has_many :air_table_records
 
   def airtable_table
     Rails.application.credentials.dig(:air_table,
