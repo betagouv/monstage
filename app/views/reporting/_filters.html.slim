@@ -1,8 +1,9 @@
+- filters = "Presenters::#{current_user.class.name.split('::').second}".constantize.new(current_user).profile_filters
 fieldset
   legend.h6.text-body.mb-3 Filtrer par
   - if can?(:index_and_filter, Reporting::InternshipOffer)
-    .row
-      - if by_subscribed_school
+    - if filters.dig(view_tab, :by_school_name)
+      .row
         .col-5
           .form-group.smashed
             = react_component("SearchSchoolByName", props: { classes: 'col-12',
@@ -12,54 +13,29 @@ fieldset
                                                       resourceName: :user})
             = label_tag :reporting_searched_school, '', class: 'font-weight-light'
     .row
-      - if by_academy
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :academy,
-                          options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]),
-                          prompt: 'Toutes',
-                          class: 'form-control custom-select',
-                          data: { action: 'statistics#filterByAcademy' }
-            = label_tag :academy, 'Académie', class: 'font-weight-light'
-      - if by_department && current_user.is_a?(Users::God)
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :department,
-                          options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]),
-                          prompt: 'Tous',
-                          class: 'form-control custom-select',
-                          data: { action: 'statistics#filterByDepartment' }
-            = label_tag :department, 'Département', class: 'font-weight-light'
-      - if by_subscribed_school
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :subscribed_school,
-                          options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school]),
-                          class: 'form-control custom-select',
-                          data: { action: 'statistics#filterBySubscribedSchool' }
-            = label_tag :subscribed_school, "Inscrits", class: 'font-weight-light'
-      - if by_typology
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :is_public,
-                         options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]),
-                         class: 'form-control custom-select',
-                         data: { action: 'statistics#filterByPublicy' }
-            = label_tag :is_public, "Public / Privé", class: 'font-weight-light'
-      - if by_detailed_typology
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :dimension,
-                         options_for_select([["Tous secteurs", "group"], ["Secteur Public", "public_group"],["Secteur Privé (dont Sign. PaQte)", "private_group"],["Sign. PaQte", "paqte_group"]], selected: params[:dimension]),
-                         class: 'form-control custom-select',
-                         data: { action: 'statistics#useDimension' }
-            = label_tag :dimension, "Public / Privé / PaQte", class: 'font-weight-light'
-      - if by_school_track
-        .col-3
-          .form-group.smashed.custom-label-container
-            = select_tag :school_track,
-                         grouped_options_for_select(Presenters::ClassRoom.school_tracks_options, selected: params[:school_track]),
-                         class: 'form-control custom-select',
-                         prompt: 'Toutes',
-                         data: { action: 'statistics#filterBySchoolTrack' }
-            = label_tag :school_track, "Filière", class: 'font-weight-light'
+      - if filters.dig(view_tab, :by_academy)
+        = render partial: "reporting/filters/academy", locals: {params: params}
+      - if filters.dig(view_tab, :by_department)
+        = render partial: "reporting/filters/department", locals: {params: params}
+      - if filters.dig(view_tab, :by_subscribed_school)
+        = render partial: "reporting/filters/subscribed_school", locals: {params: params}
+      - if filters.dig(view_tab, :by_typology)
+        = render partial: "reporting/filters/typology", locals: {params: params}
+      - if filters.dig(view_tab, :by_detailed_typology)
+        = render partial: "reporting/filters/detailed_typology", locals: {params: params}
+      - if filters.dig(view_tab, :by_school_track)
+        = render partial: "reporting/filters/school_track", locals: {params: params}
+
+    - if filters.dig(view_tab, :by_school_year)
+      .row
+        - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
+        - options = years.map { |year| [ "#{year}/#{year+1}", year] }
+        .col-4
+          .form-group
+            = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase'
+
+            = select_tag :school_year,
+                          options_for_select(options, params[:school_year]),
+                          include_blank: 'Toutes',
+                          data: { action: 'statistics#filterBySchoolYear' },
+                          class: 'form-control'

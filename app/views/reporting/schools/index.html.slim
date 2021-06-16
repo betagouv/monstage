@@ -2,12 +2,7 @@
   = render partial: 'reporting/navigation'
   div.rounded[data-controller='statistics']
     = render partial: 'reporting/filters',
-          locals: {by_academy: false,
-                    by_typology: false,
-                    by_detailed_typology: false,
-                    by_department: true,
-                    by_school_track: false,
-                    by_subscribed_school: true}
+             locals: {view_tab: :schools}
 
   .row.mt-3
     .col-lg-8.col-12.mb-2
