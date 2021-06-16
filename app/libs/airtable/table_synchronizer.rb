@@ -4,8 +4,8 @@ module Airtable
     CAST_MAPPING = {
       "privé_/_public"=> :is_public,
       "filière"=> :school_track,
-      "départements"=> :department_name
-
+      "départements"=> :department_name,
+      "operator_id" => :operator_id
     }
 
     COPY_MAPPING = {
@@ -45,7 +45,7 @@ module Airtable
         attrs[ar_key] = record.attributes[airtable_key]
       end
 
-      return if attrs.except(:is_public).values.all?(&:blank?)
+      return if attrs.except(:is_public, :operator_id).values.all?(&:blank?)
       AirTableRecord.create!(attrs)
     end
 
@@ -68,16 +68,21 @@ module Airtable
       end
     end
 
+    def cast_operator_id(_)
+      operator.id
+    end
+
     def cast_department_name(value)
       Department::MAP[value]
     end
 
     private
-    attr_reader :client, :table
+    attr_reader :client, :table, :operator
 
-    def initialize(app_id:, table:)
+    def initialize(operator:)
+      @operator = operator
       @client = Airtable::Client.new(Rails.application.credentials.dig(:air_table, :api_key))
-      @table = client.table(app_id, table)
+      @table = client.table(operator.airtable_app_id, operator.airtable_table)
     end
 
   end

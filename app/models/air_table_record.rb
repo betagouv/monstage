@@ -5,6 +5,7 @@ class AirTableRecord < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :sector, optional: true
   belongs_to :week, optional: true
+  belongs_to :operator
 
   # AIRtable relationship
   INTERNSHIP_OFFER_TYPE = {

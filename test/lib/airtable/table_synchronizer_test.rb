@@ -6,8 +6,7 @@ module Airtable
     def setup
       @request_body = File.read(Rails.root.join(*%w[test fixtures files airtable-request.json]))
       @parsed_body = JSON.parse(@request_body)
-      @app_id = "see the rest doc".parameterize
-      @table = "see the ui for each operator".parameterize
+      @operator = create(:operator, name: Operator::AIRTABLE_CREDENTIAL_MAP.keys.first)
 
       stub_request(:get, %r[https://api.airtable.com/*]).
             with(
@@ -25,21 +24,20 @@ module Airtable
     end
 
     test '.pull_all truncate table and reload data' do
-      AirTableRecord.create!
+      AirTableRecord.create!(operator: create(:operator))
       assert_changes -> { AirTableRecord.count },
                     from: 1,
                     to: @parsed_body["records"].size do
-        Airtable::TableSynchronizer.new(app_id: @app_id,
-                                        table: @table)
+        Airtable::TableSynchronizer.new(operator: @operator)
                                    .pull_all
       end
     end
 
     test '.pull_all fails gracefully (does not destroy existing data when there is a failure) if needed' do
-      AirTableRecord.create!
+      AirTableRecord.create!(operator: create(:operator))
       airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
-      sync = Airtable::TableSynchronizer.new(app_id: @app_id,
-                                             table: @table)
+      sync = Airtable::TableSynchronizer.new(operator: @operator)
+
       raises_exception = proc { |_| raise ArgumentError.new }
       assert_no_changes -> { AirTableRecord.count } do
         AirTableRecord.stub :create!, raises_exception do
@@ -51,8 +49,7 @@ module Airtable
     test '.import_record map as expected' do
       airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
       assert_changes -> { AirTableRecord.count }, 1 do
-        Airtable::TableSynchronizer.new(app_id: @app_id,
-                                        table: @table)
+        Airtable::TableSynchronizer.new(operator: @operator)
                                    .import_record(airtable_record)
       end
 
@@ -70,26 +67,34 @@ module Airtable
 
       airtable_record = Airtable::Record.new(request_body_with_empty_records["records"][2]["fields"])
       assert_no_changes -> { AirTableRecord.count }, 1 do
-        Airtable::TableSynchronizer.new(app_id: @app_id, table: @table).import_record(airtable_record)
+        Airtable::TableSynchronizer.new(operator: @operator).import_record(airtable_record)
       end
     end
 
     test 'cast_is_public(value)' do
-      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
-                                                      table: @table)
+      airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
+
       refute airtable_sync.cast_is_public ("Privé")
       assert airtable_sync.cast_is_public ("Public")
     end
 
+    test 'cast_operator_id(value)' do
+      @operator.save!
+      @operator.reload
+      airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
+
+      assert_equal @operator.id, airtable_sync.cast_operator_id(@operator.id)
+    end
+
     test 'cast_school_track(value)' do
-      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
-                                                      table: @table)
+      airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
+
       assert_equal :troisieme_generale, airtable_sync.cast_school_track("3e")
     end
 
     test 'cast_department_name(value)' do
-      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
-                                                      table: @table)
+      airtable_sync = Airtable::TableSynchronizer.new(operator: @operator)
+
       value = "60"
       assert_equal "Oise", airtable_sync.cast_department_name(value)
     end

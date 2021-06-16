@@ -367,7 +367,8 @@ CREATE TABLE public.air_table_records (
     week_id bigint,
     created_by text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    operator_id bigint
 );
 
 
@@ -883,7 +884,8 @@ CREATE TABLE public.operators (
     created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
     updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
     airtable_id character varying,
-    airtable_link character varying
+    airtable_link character varying,
+    airtable_reporting_enabled boolean DEFAULT false
 );
 
 
@@ -1583,6 +1585,13 @@ CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active
 --
 
 CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
 
 
 --
@@ -2379,6 +2388,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210506143015'),
 ('20210517145027'),
 ('20210601154254'),
-('20210602142914');
+('20210602142914'),
+('20210615113123'),
+('20210616054233');
 
 
