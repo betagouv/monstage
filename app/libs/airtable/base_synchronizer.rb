@@ -3,13 +3,19 @@ module Airtable
   class BaseSynchronizer
 
     # main job, with some safe stuffs
-    def pull_all
-      # ActiveRecord::Base.transaction do
-      #   Operator.where(airtable_reporting_enabled: true).map do |operator|
-      #     AirTable::TableSynchronizer.new(app_id: operator.airtable_app_id, table: operator.airtable_table)
-      #                                .pull_all
-      #   end
-      # end
+    def pull_all()
+      synchronizers = Operator.reportable
+                              .map { |operator| Airtable::TableSynchronizer.new(operator: operator) }
+
+      pool = Concurrent::FixedThreadPool.new(synchronizers.size, fallback_policy: :abort)
+      synchronizers.map do |synchronizer|
+        pool.post do
+          puts "pust to pull: #{synchronizer}"
+          synchronizer.pull_all
+        end
+      end
+      pool.shutdown
+      pool.wait_for_termination
     end
   end
 end
