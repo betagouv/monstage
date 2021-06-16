@@ -2,7 +2,7 @@
 module Finders
   class ReportingDashboard
 
-    ### ooperator queries, those data are collected via airtable, synced with AirtableSynchronizer,
+    ### ooperator queries, those data are collected via airtable, synced with Airtable::TableSynchronizer,
     ### then aggregated and summed here
     # expects bool
     def operator_count_by_private_sector(is_public:)

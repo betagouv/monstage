@@ -44,7 +44,7 @@ module Reporting
       sign_in(god)
       airtable_syncronizer_mock = Minitest::Mock.new
       airtable_syncronizer_mock.expect(:pull_all, true)
-      AirtableSynchronizer.stub :new, airtable_syncronizer_mock do
+      Airtable::BaseSynchronizer.stub :new, airtable_syncronizer_mock do
         post reporting_dashboards_refresh_path
         assert_response 302
       end

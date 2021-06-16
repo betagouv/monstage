@@ -10,7 +10,7 @@ module Reporting
     end
 
     def refresh
-      AirtableSynchronizer.new.pull_all
+      Airtable::BaseSynchronizer.new.pull_all
       redirect_back fallback_location: current_user.custom_dashboard_path,
                     flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
     end

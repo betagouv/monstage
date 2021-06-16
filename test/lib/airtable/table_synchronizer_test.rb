@@ -1,0 +1,98 @@
+# frozen_string_literal: true
+
+require 'test_helper'
+module Airtable
+  class SynchronizerTest < ActiveSupport::TestCase
+    def setup
+      @request_body = File.read(Rails.root.join(*%w[test fixtures files airtable-request.json]))
+      @parsed_body = JSON.parse(@request_body)
+      @app_id = "see the rest doc".parameterize
+      @table = "see the ui for each operator".parameterize
+
+      stub_request(:get, %r[https://api.airtable.com/*]).
+            with(
+              headers: {
+              'Accept'=>'*/*',
+              'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+              'Authorization'=>'Bearer keysnrS8qqDtlTl6N',
+              'User-Agent'=>'Ruby'
+              }).
+            to_return(
+              status: 200,
+              body: @request_body,
+              headers: {"Content-Type" => "application/json; charset=utf-8"})
+
+    end
+
+    test '.pull_all truncate table and reload data' do
+      AirTableRecord.create!
+      assert_changes -> { AirTableRecord.count },
+                    from: 1,
+                    to: @parsed_body["records"].size do
+        Airtable::TableSynchronizer.new(app_id: @app_id,
+                                        table: @table)
+                                   .pull_all
+      end
+    end
+
+    test '.pull_all fails gracefully (does not destroy existing data when there is a failure) if needed' do
+      AirTableRecord.create!
+      airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
+      sync = Airtable::TableSynchronizer.new(app_id: @app_id,
+                                             table: @table)
+      raises_exception = proc { |_| raise ArgumentError.new }
+      assert_no_changes -> { AirTableRecord.count } do
+        AirTableRecord.stub :create!, raises_exception do
+          assert_raise { sync.pull_all }
+        end
+      end
+    end
+
+    test '.import_record map as expected' do
+      airtable_record = Airtable::Record.new(@parsed_body["records"].first["fields"])
+      assert_changes -> { AirTableRecord.count }, 1 do
+        Airtable::TableSynchronizer.new(app_id: @app_id,
+                                        table: @table)
+                                   .import_record(airtable_record)
+      end
+
+      {"nb_d'élèves_féminins"=> :nb_spot_female,
+      "nb_places_dispo"=> :nb_spot_available,
+      "nb_d'élèves_en_stage"=> :nb_spot_used,
+      "nb_d'élèves_masculins"=> :nb_spot_male}.map do |airtable_key, ar_key|
+        assert_equal 1, AirTableRecord.where("#{ar_key}" => airtable_record.attributes[airtable_key]).count
+      end
+    end
+
+    test '.import_record ignore empty records' do
+      request_body_with_empty_records = File.read(Rails.root.join(*%w[test fixtures files airtable-request-empty-records.json]))
+      request_body_with_empty_records = JSON.parse(request_body_with_empty_records)
+
+      airtable_record = Airtable::Record.new(request_body_with_empty_records["records"][2]["fields"])
+      assert_no_changes -> { AirTableRecord.count }, 1 do
+        Airtable::TableSynchronizer.new(app_id: @app_id, table: @table).import_record(airtable_record)
+      end
+    end
+
+    test 'cast_is_public(value)' do
+      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
+                                                      table: @table)
+      refute airtable_sync.cast_is_public ("Privé")
+      assert airtable_sync.cast_is_public ("Public")
+    end
+
+    test 'cast_school_track(value)' do
+      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
+                                                      table: @table)
+      assert_equal :troisieme_generale, airtable_sync.cast_school_track("3e")
+    end
+
+    test 'cast_department_name(value)' do
+      airtable_sync = Airtable::TableSynchronizer.new(app_id: @app_id,
+                                                      table: @table)
+      value = "60"
+      assert_equal "Oise", airtable_sync.cast_department_name(value)
+    end
+
+  end
+end
