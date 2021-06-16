@@ -20,9 +20,8 @@ module Dashboard::InternshipOffers
     end
 
     test 'DELETE #destroy as statistician not owning internship_offer redirects to user_session_path' do
-      #internship_offer = create(:weekly_internship_offer_by_statistician)
-      internship_offer = create(:weekly_internship_offer)
-      internship_offer.update(employer_id: create(:statistician).id)
+      internship_offer = create(:weekly_internship_offer_by_statistician)
+      statistician = internship_offer.employer
       sign_in(create(:statistician))
       delete(dashboard_internship_offer_path(internship_offer.to_param))
       assert_redirected_to root_path
@@ -39,10 +38,8 @@ module Dashboard::InternshipOffers
     end
 
     test 'DELETE #destroy as statistician owning internship_offer updates internship_offer' do
-      # internship_offer = create(:weekly_internship_offer_by_statistician)
-      internship_offer = create(:weekly_internship_offer)
-      statistician = create(:statistician)
-      internship_offer.update(employer_id: statistician.id)
+      internship_offer = create(:weekly_internship_offer_by_statistician)
+      statistician = internship_offer.employer
       sign_in(statistician)
       assert_changes -> { internship_offer.reload.discarded_at } do
         delete(dashboard_internship_offer_path(internship_offer.to_param))

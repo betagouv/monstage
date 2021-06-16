@@ -188,7 +188,6 @@ class Ability
 
     can %i[index], Acl::InternshipOfferDashboard
 
-    #can %i[index update], InternshipApplication
     can :show, :api_token
 
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?

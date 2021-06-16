@@ -92,6 +92,9 @@ FactoryBot.define do
     factory :weekly_internship_offer, traits: [:weekly_internship_offer],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
+    factory :weekly_internship_offer_by_statistician, traits: [:weekly_internship_offer_by_statistician],
+                                      class: 'InternshipOffers::WeeklyFramed',
+                                      parent: :internship_offer
     factory :free_date_internship_offer, traits: [:free_date_internship_offer],
                                       class: 'InternshipOffers::FreeDate',
                                       parent: :internship_offer
