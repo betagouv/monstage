@@ -9,8 +9,7 @@ class Operator < ApplicationRecord
     'Les entreprises pour la cité (LEPC)' => :lepc,
     'Tous en stage' => :tousenstage,
     'Viens voir mon taf' => :vvmt,
-    'JobIRL' => :jobirl,
-    'Télémaque' => :telemaque
+    'JobIRL' => :jobirl
   }
 
   has_many :operators, class_name: 'Users::Operator'

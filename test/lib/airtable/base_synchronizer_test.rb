@@ -14,7 +14,7 @@ module Airtable
         Airtable::TableSynchronizer.stub(:new, mock) do
           Airtable::BaseSynchronizer.new.pull_all
         end
-        # mock.verify
+        mock.verify
       end
 
     end
