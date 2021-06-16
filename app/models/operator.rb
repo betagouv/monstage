@@ -16,6 +16,7 @@ class Operator < ApplicationRecord
   has_many :operators, class_name: 'Users::Operator'
   has_many :internship_offers, through: :operators
   has_many :air_table_records
+  scope :reportable, lambda { where(airtable_reporting_enabled: true) }
 
   def airtable_table
     Rails.application.credentials.dig(:air_table,
