@@ -18,6 +18,10 @@ class AirTableRecord < ApplicationRecord
     maximum(:updated_at)
   }
 
+  scope :last_synchro, lambda {
+    maximum(:created_at)
+  }
+
 
   # where clauses
   scope :during_year, lambda { |school_year:|

@@ -42,6 +42,10 @@ module Finders
       operator_base_query.last_modified_at
     end
 
+    def operator_last_synchro
+      operator_base_query.last_synchro
+    end
+
 
     ### platform queries, data owned by ourself. this is our "analytics"
     def platform_count_by_private_sector

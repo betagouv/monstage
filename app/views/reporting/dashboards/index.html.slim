@@ -126,11 +126,14 @@
           h2.text-body
             | Stages pourvus hors plateforme
             = link_to "Rafraichir", reporting_dashboards_refresh_path, method: :post, class: 'btn btn-success ml-4', data: {test_refresh: 1}
-        - if dashboard_finder.operator_last_modified_at.present?
-          .col-4
+
+        .col-4
+          - if dashboard_finder.operator_last_modified_at.present?
             h2.text-body.text-right.font-weight-light
               = "au "
-              = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_yyyy)
+              = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_hh)
+          - if dashboard_finder.operator_last_synchro.present?
+            p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
 
   .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
@@ -200,6 +203,7 @@
           .row.
             .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
               span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
+
   .row.mt-3.align-items-center.no-gutters.rounded-lg.py-4.b-4.bc-blue-stats-total.mb-5
     .col-12.col-md-3
       h3.m-0.d-inline-block.text-blue-stats-total.nowrap.ml-3
