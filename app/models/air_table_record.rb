@@ -32,13 +32,13 @@ class AirTableRecord < ApplicationRecord
     where(department_name: department)
   }
 
-  scope :countable_in_grand_total, lambda {
-    where(internship_offer_type: [
-      INTERNSHIP_OFFER_TYPE[:onsite_internship_offer],
-      INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
-      INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]
-    ])
-  }
+    scope :countable_in_grand_total, lambda {
+      where(internship_offer_type: [
+        INTERNSHIP_OFFER_TYPE[:onsite_internship_offer],
+        INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
+        INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]
+      ])
+    }
 
 
   # aggregates

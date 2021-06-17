@@ -9,7 +9,7 @@ class OperatorTest < ActiveSupport::TestCase
       operator.airtable_table
 
     end
-    operator = build(:operator, name: 'Un stage et après !')
+    operator = build(:operator, name: Operator::AIRTABLE_CREDENTIAL_MAP.keys.first)
     assert_not_nil operator.airtable_table
 
   end
@@ -20,7 +20,7 @@ class OperatorTest < ActiveSupport::TestCase
       operator.airtable_app_id
 
     end
-    operator = build(:operator, name: 'Un stage et après !')
+    operator = build(:operator, name: Operator::AIRTABLE_CREDENTIAL_MAP.keys.first)
     assert_not_nil operator.airtable_app_id
   end
 

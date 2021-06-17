@@ -9,8 +9,8 @@ module Finders
       @operator_count_by_private_sector ||= operator_base_query.by_publicy
 
       @operator_count_by_private_sector.select { |group| group.is_public == is_public }
-                            .first
-                            .try(:[], "total_count")
+                                       .first
+                                       .try(:[], "total_count")
     end
 
     # expects AirTableRecord::INTERNSHIP_OFFER_TYPE.key
