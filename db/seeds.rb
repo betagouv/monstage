@@ -81,18 +81,28 @@ def with_class_name_for_defaults(object)
 end
 
 def populate_operators
-  Operator.create!(name: 'MS3E-OPERATOR-1')
-  Operator.create!(name: 'MS3E-OPERATOR-2')
+  Operator.create(name: "Un stage et après", website: "", logo: 'Logo-jobirl.jpg', target_count: 120)
+  Operator.create(name: "JobIRL", website: "", logo: 'Logo-jobirl.jpg', target_count: 32)
+  Operator.create(name: "Le Réseau", website: "", logo: 'Logo-le-reseau.jpg', target_count: 710)
+  Operator.create(name: "Télémaque", website: "", logo: 'Logo-telemaque.png', target_count: 1200)
+  Operator.create(name: "MyFutur", website: "", logo: 'Logo-moidans10ans.png', target_count: 1200)
+  Operator.create(name: "Les entreprises pour la cité", website: "", logo: 'Logo-les-entreprises-pour-la-cite.jpg', target_count: 1200)
+  Operator.create(name: "Tous en stage", website: "", logo: 'Logo-tous-en-stage.jpg', target_count: 1200)
+  Operator.create(name: "Viens voir mon taf", website: "", logo: 'Logo-viens-voir-mon-taf.jpg', target_count: 1200)
 end
 
 def populate_sectors
   Sector.create!(name: 'REVIEW-SECTOR-1')
   Sector.create!(name: 'REVIEW-SECTOR-2')
+  Sector.create!(name: 'Aéronautique')
 end
 
 def populate_groups
-  Group.create!(name: 'PUBLIC GROUP', is_public: true)
-  Group.create!(name: 'PRIVATE GROUP', is_public: false)
+  Group.create!(name: 'PUBLIC GROUP', is_public: true, is_pacte: false)
+  Group.create!(name: 'PRIVATE GROUP', is_public: false, is_pacte: false)
+  Group.create!(name: 'Carrefour', is_public: false, is_pacte: true)
+  Group.create!(name: 'Engie', is_public: false, is_pacte: true)
+  Group.create!(name: 'Ministère de la Justice', is_public: true, is_pacte: false)
 end
 
 def populate_users
@@ -106,9 +116,15 @@ def populate_users
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
 
-  EmailWhitelist.create!(email: 'statistician@ms3e.fr', zipcode: 75)
+  statistician_email = 'statistician@ms3e.fr'
+  ministry_statistician = 'ministry_statistician@ms3e.fr'
+  last_public_group = Group.where(is_public: true).last
 
-  with_class_name_for_defaults(Users::Statistician.new(email: 'statistician@ms3e.fr', password: 'review')).save!
+  EmailWhitelists::Statistician.create!(email: statistician_email, zipcode: 75)
+  EmailWhitelists::Ministry.create!(email: ministry_statistician, group_id: last_public_group.id)
+  with_class_name_for_defaults(Users::Statistician.new(email: statistician_email, password: 'review')).save!
+  with_class_name_for_defaults(Users::MinistryStatistician.new(email: ministry_statistician, password: 'review', ministry: last_public_group)).save!
+
   with_class_name_for_defaults(Users::Student.new(email: 'student@ms3e.fr',       password: 'review', first_name: 'Abdelaziz', last_name: 'Benzedine', school: find_default_school_during_test, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'student_other@ms3e.fr', password: 'review', first_name: 'Mohammed', last_name: 'Rivière', school: find_default_school_during_test, class_room: ClassRoom.troisieme_generale.first, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'teacher', email: 'teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
@@ -137,7 +153,7 @@ def populate_internship_offers
     employer: Users::Employer.first,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
-    group: Group.is_private.first,
+    group: Group.is_pacte.first,
     is_public: false,
     title: 'Stage assistant.e ressources humaines - Service des recrutements',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
@@ -150,7 +166,29 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Du temps pour moi',
+    employer_name: Group.is_pacte.first.name,
+    school_track: :troisieme_generale
+  )
+
+    # 3eme generale public
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.second,
+    group: Group.is_public.last,
+    is_public: true,
+    title: "Observation du métier de chef de service - Ministère",
+    description: "Découvrez les réunions et comment se prennent les décisions au plus haut niveau mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services ",
+    description_rich_text: "Venez découvrir le métier de chef de service ! Vous observerez comment nos administrateurs garantissent aux usagers l'exercice de leur droits, tout en respectant leurs devoirs.",
+    employer_description_rich_text: "De multiples méthodes de travail et de prises de décisions seront observées",
+    tutor_name: 'Etienne Weil',
+    tutor_email: 'etienne@free.fr',
+    tutor_phone: '+33637697756',
+    street: '18 rue Damiens',
+    zipcode: '75012',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: Group.is_public.last.name,
     school_track: :troisieme_generale
   )
 
@@ -237,6 +275,7 @@ def populate_internship_offers
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'IBM',
   )
+
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
@@ -433,7 +472,6 @@ def populate_applications
   end
 end
 
-
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"
 end
@@ -454,9 +492,9 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_schools,
     :populate_class_rooms,
     :populate_operators,
-    :populate_users,
     :populate_sectors,
     :populate_groups,
+    :populate_users,
     :populate_internship_offers,
     :populate_students,
     :populate_school_weeks,

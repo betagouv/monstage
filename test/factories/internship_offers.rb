@@ -100,9 +100,6 @@ FactoryBot.define do
                                       parent: :internship_offer
 
 
-    factory :troisieme_generale_internship_offer, traits: [:troisieme_generale_internship_offer],
-                                                  class: 'InternshipOffers::WeeklyFramed',
-                                                  parent: :internship_offer
     factory :troisieme_segpa_internship_offer, traits: [:troisieme_segpa_internship_offer],
                                                class: 'InternshipOffers::FreeDate',
                                                parent: :internship_offer

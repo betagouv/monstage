@@ -17,6 +17,10 @@ module Reporting
       }
     end
 
+    def import_data
+      @user = current_user
+    end
+
     private
 
     def internship_offers_finder

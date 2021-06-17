@@ -55,7 +55,8 @@ RailsAdmin.config do |config|
     export
   end
 
-  config.included_models = %w[EmailWhitelist
+  config.included_models = %w[EmailWhitelists::Statistician
+                              EmailWhitelists::Ministry
                               School
                               Sector
                               Group
@@ -64,11 +65,13 @@ RailsAdmin.config do |config|
                               InternshipOffers::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
+                              Operator
                               Organisation
                               Tutor
                               Users::Student
                               Users::SchoolManagement
                               Users::Statistician
+                              Users::MinistryStatistician
                               Users::Operator
                               Users::Employer
                               Users::God]

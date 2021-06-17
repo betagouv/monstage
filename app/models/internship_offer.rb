@@ -215,4 +215,6 @@ class InternshipOffer < ApplicationRecord
       SyncInternshipOfferKeywordsJob.perform_later
     end
   end
+
+
 end

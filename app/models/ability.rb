@@ -12,6 +12,7 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities(user: user)
+      when 'Users::MinistryStatistician' then ministry_statistician_abilities
       when 'Users::SchoolManagement' then
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
@@ -169,14 +170,14 @@ class Ability
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index], Acl::Reporting do |_acl|
+    can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
   end
 
   def statistician_abilities(user:)
     can :view, :department
-    can %i[create see_tutor], InternshipOffer
+    can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
 
     can %i[create], InternshipOfferInfo
@@ -196,6 +197,14 @@ class Ability
     can %i[index_and_filter], Reporting::InternshipOffer
   end
 
+  def ministry_statistician_abilities
+    can :view, :department
+    # can :read, :dashboard
+    can %i[read], InternshipOffer
+    can %i[index], Acl::Reporting, &:allowed?
+    can %i[index_and_filter], Reporting::InternshipOffer
+  end
+
   def god_abilities
     can :show, :account
     can :manage, School
@@ -204,7 +213,8 @@ class Ability
     can %i[read update destroy export], User
     can :switch_user, User
     can %i[read update export], InternshipOffer
-    can :manage, EmailWhitelist
+    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin
@@ -216,6 +226,7 @@ class Ability
     end
     can %i[index_and_filter], Reporting::InternshipOffer
     can :reset_cache, User
+    can :manage, Operator
   end
 
   private
