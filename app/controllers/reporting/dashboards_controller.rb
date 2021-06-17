@@ -11,8 +11,8 @@ module Reporting
 
     def refresh
       Airtable::BaseSynchronizer.new.pull_all
-      redirect_back fallback_location: current_user.custom_dashboard_path,
-                    flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
+
+      redirect_to redirect_back_with_anchor_to_stats, flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
     end
 
     def import_data
@@ -20,6 +20,14 @@ module Reporting
     end
 
     private
+
+    # inspired by : https://github.com/rails/rails/blob/75ac626c4e21129d8296d4206a1960563cc3d4aa/actionpack/lib/action_controller/metal/redirecting.rb#L90
+    def redirect_back_with_anchor_to_stats
+      redirect_url = [ request.headers["Referer"], current_user.custom_dashboard_path].compact.first
+      uri = URI.parse(redirect_url)
+      uri.fragment = "operator-stats"
+      uri.to_s
+    end
 
     def internship_offers_finder
       @internship_offers_finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)

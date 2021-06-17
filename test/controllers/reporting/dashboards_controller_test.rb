@@ -46,7 +46,7 @@ module Reporting
       airtable_syncronizer_mock.expect(:pull_all, true)
       Airtable::BaseSynchronizer.stub :new, airtable_syncronizer_mock do
         post reporting_dashboards_refresh_path
-        assert_response 302
+        assert_redirected_to "#{god.custom_dashboard_path}#operator-stats"
       end
       airtable_syncronizer_mock.verify
     end
