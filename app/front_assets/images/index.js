@@ -17,6 +17,10 @@ import './pages/remote_internships/digital_week_2x.png';
 
 import './icons/noun_Handshake_2803586-1.svg'
 import './icons/noun_job_offer_1461730-1.svg'
+import './icons/noun_building_353052.svg'
+import './icons/noun_Computer_2646597.svg'
+import './icons/noun_group_Computeur_People.svg'
+import './icons/noun_group_establishment.svg'
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
