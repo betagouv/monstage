@@ -25,6 +25,8 @@ module Reporting
       zipcode = "#{statistician.department_zipcode}000"
       sign_in(statistician)
       get reporting_dashboards_path(department: statistician.department)
+      assert_select "a[data-test-refresh=1][href=?]", reporting_dashboards_refresh_path
+      assert_select "a[data-test-refresh=1][data-method=post]"
       assert_response :success
     end
 
@@ -35,6 +37,18 @@ module Reporting
       get reporting_dashboards_path(department: 'Ain')
       assert_response 302
       assert_redirected_to root_path
+    end
+
+    test 'POST #refresh as super admin' do
+      god = create(:god)
+      sign_in(god)
+      airtable_syncronizer_mock = Minitest::Mock.new
+      airtable_syncronizer_mock.expect(:pull_all, true)
+      Airtable::BaseSynchronizer.stub :new, airtable_syncronizer_mock do
+        post reporting_dashboards_refresh_path
+        assert_redirected_to "#{god.custom_dashboard_path}#operator-stats"
+      end
+      airtable_syncronizer_mock.verify
     end
   end
 end

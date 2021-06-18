@@ -343,6 +343,52 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 
 --
+-- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.air_table_records (
+    id bigint NOT NULL,
+    remote_id text,
+    is_public boolean,
+    nb_spot_available integer DEFAULT 0,
+    nb_spot_used integer DEFAULT 0,
+    nb_spot_male integer DEFAULT 0,
+    nb_spot_female integer DEFAULT 0,
+    department_name text,
+    school_track text,
+    internship_offer_type text,
+    comment text,
+    school_id bigint,
+    group_id bigint,
+    sector_id bigint,
+    week_id bigint,
+    operator_id bigint,
+    created_by text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.air_table_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -837,7 +883,8 @@ CREATE TABLE public.operators (
     created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
     updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
     airtable_id character varying,
-    airtable_link character varying
+    airtable_link character varying,
+    airtable_reporting_enabled boolean DEFAULT false
 );
 
 
@@ -1173,6 +1220,13 @@ ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
+
+
+--
 -- Name: class_rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1327,6 +1381,14 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.active_storage_blobs
     ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records
+    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
 
 
 --
@@ -1523,6 +1585,20 @@ CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active
 --
 
 CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
+
+
+--
+-- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
 
 
 --
@@ -2334,8 +2410,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210506143015'),
 ('20210517145027'),
 ('20210601154254'),
+('20210602142914'),
 ('20210602171315'),
 ('20210604095934'),
-('20210604144318');
+('20210604144318'),
+('20210615113123');
 
 

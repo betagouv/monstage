@@ -103,3 +103,4 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
 end
 
+gem 'airtable'

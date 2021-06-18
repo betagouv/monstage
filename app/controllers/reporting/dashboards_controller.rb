@@ -6,15 +6,13 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
-      render locals: {
-        count_by_private_sector_pacte: dashboard_finder.count_by_private_sector_pacte,
-        count_by_private_sector: dashboard_finder.count_by_private_sector,
-        count_by_public_sector: dashboard_finder.count_by_public_sector,
-        count_by_association: dashboard_finder.count_by_association,
-        grand_total: [],
-        internship_offer_created_at_by_month: dashboard_finder.internship_offer_created_at_by_month,
-        internship_application_approved_at_month: dashboard_finder.internship_application_approved_at_month
-      }
+      render locals: { dashboard_finder: dashboard_finder }
+    end
+
+    def refresh
+      Airtable::BaseSynchronizer.new.pull_all
+
+      redirect_to redirect_back_with_anchor_to_stats, flash: { success: 'Les statistiques seront rafraichies dans 5 minutes.' }
     end
 
     def import_data
@@ -22,6 +20,14 @@ module Reporting
     end
 
     private
+
+    # inspired by : https://github.com/rails/rails/blob/75ac626c4e21129d8296d4206a1960563cc3d4aa/actionpack/lib/action_controller/metal/redirecting.rb#L90
+    def redirect_back_with_anchor_to_stats
+      redirect_url = [ request.headers["Referer"], current_user.custom_dashboard_path].compact.first
+      uri = URI.parse(redirect_url)
+      uri.fragment = "operator-stats"
+      uri.to_s
+    end
 
     def internship_offers_finder
       @internship_offers_finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)

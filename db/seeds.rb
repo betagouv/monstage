@@ -81,14 +81,60 @@ def with_class_name_for_defaults(object)
 end
 
 def populate_operators
-  Operator.create(name: "Un stage et après", website: "", logo: 'Logo-jobirl.jpg', target_count: 120)
-  Operator.create(name: "JobIRL", website: "", logo: 'Logo-jobirl.jpg', target_count: 32)
-  Operator.create(name: "Le Réseau", website: "", logo: 'Logo-le-reseau.jpg', target_count: 710)
-  Operator.create(name: "Télémaque", website: "", logo: 'Logo-telemaque.png', target_count: 1200)
-  Operator.create(name: "MyFutur", website: "", logo: 'Logo-moidans10ans.png', target_count: 1200)
-  Operator.create(name: "Les entreprises pour la cité", website: "", logo: 'Logo-les-entreprises-pour-la-cite.jpg', target_count: 1200)
-  Operator.create(name: "Tous en stage", website: "", logo: 'Logo-tous-en-stage.jpg', target_count: 1200)
-  Operator.create(name: "Viens voir mon taf", website: "", logo: 'Logo-viens-voir-mon-taf.jpg', target_count: 1200)
+  Operator.create(name: "Un stage et après !",
+                  website: "",
+                  logo: 'Logo-jobirl.jpg',
+                  target_count: 120,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),
+                  airtable_id: 'shrauIKjiyi4MhWAJ')
+  Operator.create(name: "JobIRL",
+                  website: "",
+                  logo: 'Logo-jobirl.jpg',
+                  target_count: 32,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :jobirl, :share_link),
+                  airtable_id: 'shrEJhYILer3ZHBiV')
+  Operator.create(name: "Le Réseau",
+                  website: "",
+                  logo: 'Logo-le-reseau.jpg',
+                  target_count: 710,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :lereseau, :share_link),
+                  airtable_id: 'shrcTuYlB7c2znRTq')
+  Operator.create(name: "Institut Télémaque",
+                  website: "",
+                  logo: 'Logo-telemaque.png',
+                  target_count: 1200,
+                  airtable_reporting_enabled: false)
+  Operator.create(name: "Myfuture",
+                  website: "",
+                  logo: 'Logo-moidans10ans.png',
+                  target_count: 1200,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :myfuture, :share_link),
+                  airtable_id: 'shrkmCsiBu4KpfnNJ')
+  Operator.create(name: "Les entreprises pour la cité (LEPC)",
+                  website: "",
+                  logo: 'Logo-les-entreprises-pour-la-cite.jpg',
+                  target_count: 1200,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :lepc, :share_link),
+                  airtable_id: 'shrKD4JKsyPi2CdOD')
+  Operator.create(name: "Tous en stage",
+                  website: "",
+                  logo: 'Logo-tous-en-stage.jpg',
+                  target_count: 1200,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :tousenstage, :share_link),
+                  airtable_id: 'shrXOR0CxIPE0iqwS')
+  Operator.create(name: "Viens voir mon taf",
+                  website: "",
+                  logo: 'Logo-viens-voir-mon-taf.jpg',
+                  target_count: 1200,
+                  airtable_reporting_enabled: true,
+                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :vvmt, :share_link),
+                  airtable_id: 'shrWuRLYOmbrCQ9Or')
 end
 
 def populate_sectors
@@ -111,6 +157,9 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
+  Operator.reportable.map do |operator|
+    with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
+  end
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "school_manager@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
