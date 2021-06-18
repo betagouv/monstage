@@ -34,6 +34,20 @@ FactoryBot.define do
       description { 'Lorem ipsum dolor weekly_internship_offer' }
     end
 
+    trait :weekly_internship_offer_by_statistician do
+      school_track { :troisieme_generale }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
+      employer { create(:employer) }
+      description { 'Lorem ipsum dolor weekly_internship_offer' }
+    end
+
+    trait :troisieme_generale_internship_offer do
+      weeks { [Week.first] }
+      school_track { :troisieme_generale }
+      employer { create(:employer) }
+      description { 'Lorem ipsum dolor troisieme_generale_internship_offer' }
+    end
+
     trait :free_date_internship_offer do
       employer { create(:employer ) }
       school_track { :bac_pro}
@@ -76,6 +90,9 @@ FactoryBot.define do
                                    parent: :weekly_internship_offer
 
     factory :weekly_internship_offer, traits: [:weekly_internship_offer],
+                                      class: 'InternshipOffers::WeeklyFramed',
+                                      parent: :internship_offer
+    factory :weekly_internship_offer_by_statistician, traits: [:weekly_internship_offer_by_statistician],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
     factory :free_date_internship_offer, traits: [:free_date_internship_offer],
