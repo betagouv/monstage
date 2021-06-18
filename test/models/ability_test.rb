@@ -115,8 +115,8 @@ class AbilityTest < ActiveSupport::TestCase
            'statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'statistician should be able to edit user')
-    refute(ability.can?(:see_tutor, InternshipOffer),
-           'statistician should be able see_tutor')
+    assert(ability.can?(:create, Tutor),
+           'statistician should be able to create tutors')
     refute ability.can?(:read, User)
     refute ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)

@@ -242,9 +242,7 @@ class Ability
 
   def ministry_statistician_abilities
     can :view, :department
-    # can :read, :dashboard
     can %i[read], InternshipOffer
-    # can %i[index], Acl::Reporting, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
     can :read, Group
     can %i[read], InternshipOffer
