@@ -69,7 +69,7 @@ module Reporting
     }
 
     scope :limited_to_ministry, lambda { |user:|
-      where(group_id: user.ministry.id)
+      where(group_id: user.ministry_id)
     }
 
     scope :by_group, lambda { |group_id:|
