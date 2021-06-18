@@ -229,7 +229,7 @@ class Ability
     can :view, :department
     can :read, Group
     can %i[read], InternshipOffer
-    can %i[index], Acl::Reporting
+    can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
     can %i[ see_reporting_dashboard
             export_reporting_dashboard_data

@@ -64,6 +64,10 @@ module Users
       true
     end
 
+    def presenter
+      Presenters::MinistryStatistician.new(self)
+    end
+
     private
 
     # on create, make sure to assign existing email whitelist

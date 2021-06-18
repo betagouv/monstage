@@ -1,17 +1,9 @@
-- filters = "Presenters::#{current_user.class.name.split('::').second}".constantize.new(current_user).profile_filters
+- filters = current_user.presenter.profile_filters
 fieldset
   legend.h6.text-body.mb-3 Filtrer par
   - if can?(:index_and_filter, Reporting::InternshipOffer)
     - if filters.dig(view_tab, :by_school_name)
-      .row
-        .col-5
-          .form-group.smashed
-            = react_component("SearchSchoolByName", props: { classes: 'col-12',
-                                                      label: "Etablissement",
-                                                      required: true,
-                                                      chosenSchoolName: @schools&.first&.name || '',
-                                                      resourceName: :user})
-            = label_tag :reporting_searched_school, '', class: 'font-weight-light'
+      = render partial: "reporting/filters/by_school_name", locals: { schools: @schools}
     .row
       - if filters.dig(view_tab, :by_academy)
         = render partial: "reporting/filters/academy", locals: {params: params}
