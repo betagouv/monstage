@@ -122,7 +122,6 @@ module Reporting
       sign_in(god)
 
       {
-        offers: :index_offers,
         group: :index_stats,
         sector: :index_stats
       }.each_pair do |dimension, template|
@@ -131,6 +130,19 @@ module Reporting
         assert_response :success
         assert_template template
       end
+    end
+
+    test 'GET call async Job as god success ' \
+         'when department params match his departement_name' do
+      god = create(:god)
+      create(:weekly_internship_offer)
+      create(:api_internship_offer)
+      sign_in(god)
+
+      get(reporting_internship_offers_path(dimension: 'offers',
+                                             format: :xlsx, school_year: 2019, department: 'Paris'))
+      assert_response 302
+      assert_redirected_to reporting_dashboards_path(department: 'Paris', school_year: 2019)
     end
 
     test 'GET #index as statistician fails ' \
