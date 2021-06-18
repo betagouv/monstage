@@ -3,14 +3,6 @@
 module SchoolYear
   # period from now until end of school year
   class Floating < Base
-    def strict_beginning_of_period
-      case current_month
-      when january_to_may, june_to_august
-        Date.new(current_year - 1, 9, 1)
-      when september_to_december
-        Date.new(current_year, 9, 1)
-      end
-    end
 
     def beginning_of_period
       case current_month

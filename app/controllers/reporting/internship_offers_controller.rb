@@ -12,9 +12,13 @@ module Reporting
       @no_offers = no_current_offers
       respond_to do |format|
         format.xlsx do
-          @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
           response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
-          render dimension_is?('offers', params[:dimension]) ? :index_offers : :index_stats
+          if dimension_is?('offers', params[:dimension])
+            SendExportOffersJob.perform_later(current_user, offers_hash)
+            redirect_to reporting_dashboards_path(department: params[:department], school_year: params[:school_year]), flash: { success: "Votre fichier a été envoyé à l'adresse email : #{current_user.email}"}
+          else
+            render :index_stats
+          end
         end
         format.html do
         end
@@ -67,6 +71,10 @@ module Reporting
 
     def finder
       @finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)
+    end
+
+    def offers_hash
+      { department: params[:department], school_year: params[:school_year] }
     end
   end
 end

@@ -24,6 +24,7 @@ module Users
 
     validate :email_in_list
 
+    has_many :internship_offers, foreign_key: 'employer_id'
     has_one :email_whitelist,
             class_name: 'EmailWhitelists::Statistician',
             foreign_key: :user_id,
