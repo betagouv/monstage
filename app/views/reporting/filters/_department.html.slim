@@ -2,7 +2,6 @@
   .form-group.smashed.custom-label-container
     = select_tag :department,
                   options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]),
-                  prompt: 'Tous',
+                  prompt: 'Tous les départements',
                   class: 'form-control custom-select',
                   data: { action: 'statistics#filterByDepartment' }
-    = label_tag :department, 'Département', class: 'font-weight-light'
