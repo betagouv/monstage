@@ -18,8 +18,8 @@ module Finders
       @operator_count_by_type ||= operator_base_query.by_type
 
       @operator_count_by_type.select { |group| group.internship_offer_type == type }
-                            .first
-                            .try(:[], "total_count")
+                             .first
+                             .try(:[], "total_count")
     end
 
     def operator_count_by_private_sector_pacte
@@ -208,6 +208,7 @@ module Finders
       query = AirTableRecord.all
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
+      query = query.by_ministry(user: user) if user.ministry_statistician?
       query = query.countable_in_grand_total
 
       query
