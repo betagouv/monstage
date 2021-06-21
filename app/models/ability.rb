@@ -173,6 +173,7 @@ class Ability
       true
     end
      can %i[see_reporting_internship_offers
+            export_reporting_dashboard_data
             see_reporting_schools
             see_reporting_enterprises ], User
   end
