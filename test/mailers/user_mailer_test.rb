@@ -20,7 +20,7 @@ class UserMailerTest < ActionMailer::TestCase
 
     email = UserMailer.export_offers(ministry_statistician, {})
     assert_nothing_raised do
-      Timeout::timeout(1) do
+      Timeout::timeout(5) do
         email.deliver_now
       end
     end
