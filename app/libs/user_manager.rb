@@ -13,6 +13,7 @@ class UserManager
   }.freeze
 
   PRESENTERS = {
+    "Users::Operator" => Presenters::Operator,
     "Users::Statistician" => Presenters::Statistician,
     "Users::God" => Presenters::God,
     "Users::MinistryStatistician" => Presenters::MinistryStatistician

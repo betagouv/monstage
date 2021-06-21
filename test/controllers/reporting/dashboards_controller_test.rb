@@ -39,6 +39,14 @@ module Reporting
       assert_redirected_to root_path
     end
 
+    test 'GET #index as operator fails' do
+      user_operator = create(:user_operator)
+      sign_in(user_operator)
+      get reporting_dashboards_path(department: 'Ain')
+      assert_response 302
+      assert_redirected_to root_path
+    end
+
     test 'GET #index as ministry statistician counts ' \
          'offers of his own administration' do
       ministry_statistician = create(:ministry_statistician)

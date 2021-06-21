@@ -172,6 +172,9 @@ class Ability
     can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
+     can %i[see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_enterprises ], User
   end
 
   def god_abilities

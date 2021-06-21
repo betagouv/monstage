@@ -153,6 +153,14 @@ module Reporting
       assert_response 302
     end
 
+
+    test 'GET #index as operator works' do
+      user_operator = create(:user_operator)
+      sign_in(user_operator)
+      get reporting_internship_offers_path(department: 'Ain')
+      assert_response 200
+    end
+
     # This helper method retrieves the figures in front of class1,
     # class2 being just a delimiter
     def retrieve_html_value(class1, class2, response)
