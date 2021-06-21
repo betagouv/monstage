@@ -54,7 +54,7 @@ module Finders
     attr_reader :params
 
     def initialize(params:)
-      @params = sanitize(params)
+      @params = params
     end
 
     def base_query
@@ -100,10 +100,6 @@ module Finders
 
     def academy_param?
       params.key?(:academy)
-    end
-
-    def sanitize(params)
-      params.extract!(:department) if params[:department].nil?
     end
   end
 end

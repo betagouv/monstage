@@ -100,7 +100,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:see_reporting_internship_offers, User)
     assert ability.can?(:see_reporting_schools, User)
     assert ability.can?(:see_reporting_associations, User)
-    assert ability.can?(:see_reporting_entreprises, User)
+    assert ability.can?(:see_reporting_enterprises, User)
   end
 
   test 'Statistician' do
@@ -131,7 +131,7 @@ class AbilityTest < ActiveSupport::TestCase
     assert ability.can?(:see_reporting_internship_offers, User)
     assert ability.can?(:see_reporting_schools, User)
     refute ability.can?(:see_reporting_associations, User)
-    assert ability.can?(:see_reporting_entreprises, User)
+    assert ability.can?(:see_reporting_enterprises, User)
   end
 
   test 'MinistryStatistician' do
