@@ -43,17 +43,6 @@ module Presenters
       }
     end
 
-    def offer_export_mail_subject(department: nil)
-      "Export des offres de l'administration : #{ministry_filename}"
-    end
-
-    def ministry_filename
-      I18n.transliterate(
-        ministry_statistician.ministry.name
-      )
-    end
-
-
     private
     attr_reader :ministry_statistician
 

@@ -15,7 +15,7 @@ class UserMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test '.export_offers' do
+  test '.export_offers ministry_statistician' do
     ministry_statistician = create(:ministry_statistician)
 
     email = UserMailer.export_offers(ministry_statistician, {})
@@ -24,8 +24,32 @@ class UserMailerTest < ActionMailer::TestCase
         email.deliver_now
       end
     end
-    presenter = UserManager.new.presenter(ministry_statistician)
-    assert_equal presenter.offer_export_mail_subject, email.subject
+    assert_equal "Export des offres de monstagedetroisieme", email.subject
+    refute_email_spammyness(email)
+  end
+
+  test '.export_offers user god' do
+    god = create(:god)
+
+    email = UserMailer.export_offers(god, {})
+    assert_nothing_raised do
+      Timeout::timeout(10) do
+        email.deliver_now
+      end
+    end
+    assert_equal "Export des offres de monstagedetroisieme", email.subject
+    refute_email_spammyness(email)
+  end
+  test '.export_offers user god with departement param' do
+    god = create(:god)
+
+    email = UserMailer.export_offers(god, {department: 'Oise'})
+    assert_nothing_raised do
+      Timeout::timeout(10) do
+        email.deliver_now
+      end
+    end
+    assert_equal "Export des offres de monstagedetroisieme", email.subject
     refute_email_spammyness(email)
   end
 end

@@ -43,10 +43,6 @@ module Presenters
       }
     end
 
-    def offer_export_mail_subject(department: nil)
-      "Export des offres du super admin"
-    end
-
     private
     attr_reader :god
 
