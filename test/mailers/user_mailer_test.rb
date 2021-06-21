@@ -14,4 +14,18 @@ class UserMailerTest < ActionMailer::TestCase
     assert_equal [recipient_email], email.to
     refute_email_spammyness(email)
   end
+
+  test '.export_offers' do
+    ministry_statistician = create(:ministry_statistician)
+
+    email = UserMailer.export_offers(ministry_statistician, {})
+    assert_nothing_raised do
+      Timeout::timeout(1) do
+        email.deliver_now
+      end
+    end
+    presenter = UserManager.new.presenter(ministry_statistician)
+    assert_equal presenter.offer_export_mail_subject, email.subject
+    refute_email_spammyness(email)
+  end
 end

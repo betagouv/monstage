@@ -21,8 +21,6 @@ class UserMailer < ApplicationMailer
                                       department: @department }
     attachments[attachment_name] = {mime_type: Mime[:xlsx], content: xlsx}
     subject = presenter.offer_export_mail_subject(department: @department)
-    # subject = "Export des offres #{user.ministry_statistician? ? "de l'administration #{ministry_string_name(user)}" : "du département #{@department}"}"
     mail(to: recipient_email, subject: subject)
-    # mail(to: recipient_email, subject: "Export des offres du département #{@department}")
   end
 end
