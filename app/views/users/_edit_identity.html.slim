@@ -29,9 +29,13 @@ h1.h2.mb-3 Mon identité
     small.d-none data-signup-target="emailHint"
 
   - if current_user.ministry_statistician?
-    h2.h4 Administration centrale
-    p.mb-5
-      strong = current_user.ministry.name
+    .form-group
+      = f.label :ministry do
+        = "Administration centrale"
+      = f.text_field :ministry,
+                      value: current_user.ministry.name,
+                      class: "form-control col-lg-6",
+                      disabled: true
   - if can?(:change, :department) || can?(:view, :department)
     .form-group
       = f.label :department do

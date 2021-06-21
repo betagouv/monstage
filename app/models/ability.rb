@@ -202,7 +202,7 @@ class Ability
             see_reporting_internship_offers
             see_reporting_schools
             see_reporting_associations
-            see_reporting_entreprises
+            see_reporting_enterprises
             see_dashboard_enterprises_summary
             see_dashboard_administrations_summary
             see_dashboard_associations_summary
@@ -233,7 +233,7 @@ class Ability
     can %i[ see_reporting_dashboard
             see_reporting_internship_offers
             see_reporting_schools
-            see_reporting_entreprises
+            see_reporting_enterprises
             see_dashboard_enterprises_summary
             see_dashboard_administrations_summary
             see_dashboard_associations_summary
@@ -248,8 +248,8 @@ class Ability
     can %i[read], InternshipOffer
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ see_reporting_dashboard
-            export_reporting_dashboard_data
             see_dashboard_administrations_summary
+            export_reporting_dashboard_data
             ], User
   end
 
