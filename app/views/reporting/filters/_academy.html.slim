@@ -1,0 +1,8 @@
+.col-3
+  .form-group.smashed.custom-label-container
+    = select_tag :academy,
+                  options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]),
+                  prompt: 'Toutes',
+                  class: 'form-control custom-select',
+                  data: { action: 'statistics#filterByAcademy' }
+    = label_tag :academy, 'Académie', class: 'font-weight-light'

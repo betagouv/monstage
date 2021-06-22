@@ -22,6 +22,6 @@
       - if @internship_offer.weekly?
         = render partial: 'dashboard/internship_offers/internship_applications/filters'
       = render partial: 'dashboard/internship_offers/internship_applications/internship_application',
-                  collection: @internship_applications
+               collection: @internship_applications
 
     = paginate(@internship_applications)

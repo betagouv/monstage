@@ -47,6 +47,14 @@ module Users
       ]
     end
 
+    def statistician?
+      true
+    end
+
+    def presenter
+      Presenters::Statistician.new(self)
+    end
+
     def dashboard_name
       'Statistiques'
     end
@@ -60,7 +68,7 @@ module Users
     end
 
     def destroy
-      email_whitelist&.delete 
+      email_whitelist&.delete
       super
     end
 

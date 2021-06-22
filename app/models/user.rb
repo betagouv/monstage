@@ -226,6 +226,14 @@ class User < ApplicationRecord
     end
   end
 
+  def statistician?
+    false
+  end
+
+  def ministry_statistician?
+    false
+  end
+
   private
 
 

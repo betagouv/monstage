@@ -77,8 +77,8 @@ FactoryBot.define do
         white_list { create(:ministry_statistician_email_whitelist) }
       end
       type { 'Users::MinistryStatistician' }
-      email { white_list.email}
-      ministry_id { white_list.group.id}
+      email { white_list.email }
+      ministry_id { white_list.group.id }
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do

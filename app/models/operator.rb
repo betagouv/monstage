@@ -29,7 +29,6 @@ class Operator < ApplicationRecord
                                       AIRTABLE_CREDENTIAL_MAP.fetch(name),
                                       :app_id)
   end
-
   rails_admin do
     list do
       field :name

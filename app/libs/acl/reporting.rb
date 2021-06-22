@@ -6,6 +6,10 @@ module Acl
       user.department == params[:department]
     end
 
+    def ministry_statistician_allowed?
+      user.respond_to?(:ministry)
+    end
+
     private
 
     attr_reader :params, :user

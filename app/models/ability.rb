@@ -165,7 +165,6 @@ class Ability
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
-
     can %i[index update], InternshipApplication
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
@@ -173,6 +172,46 @@ class Ability
     can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
+     can %i[see_reporting_internship_offers
+            export_reporting_dashboard_data
+            see_reporting_schools
+            see_reporting_enterprises ], User
+  end
+
+  def god_abilities
+    can :show, :account
+    can :manage, School
+    can :manage, Sector
+    can %i[destroy see_tutor], InternshipOffer
+    can %i[read update export], InternshipOffer
+    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::Ministry
+    can :manage, InternshipOfferKeyword
+    can %i[create read update], Group
+    can :access, :rails_admin   # grant access to rails_admin
+    can %i[read update delete discard export], InternshipOffers::Api
+    can :read, :dashboard       # grant access to the dashboard
+    can :read, :kpi # grant access to the dashboard
+    can %i[index department_filter], Acl::Reporting do |_acl|
+      true
+    end
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ switch_user
+            read
+            update
+            destroy
+            export
+            export_reporting_dashboard_data
+            see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_associations
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary
+            reset_cache ], User
+    can :manage, Operator
   end
 
   def statistician_abilities(user:)
@@ -195,38 +234,27 @@ class Ability
     can %i[index], Acl::Reporting, &:allowed?
 
     can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary
+            ], User
   end
 
   def ministry_statistician_abilities
     can :view, :department
-    # can :read, :dashboard
     can %i[read], InternshipOffer
-    can %i[index], Acl::Reporting, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-  end
-
-  def god_abilities
-    can :show, :account
-    can :manage, School
-    can :manage, Sector
-    can %i[destroy see_tutor], InternshipOffer
-    can %i[read update destroy export], User
-    can :switch_user, User
-    can %i[read update export], InternshipOffer
-    can :manage, EmailWhitelists::Statistician
-    can :manage, EmailWhitelists::Ministry
-    can :manage, InternshipOfferKeyword
-    can %i[create read update], Group
-    can :access, :rails_admin   # grant access to rails_admin
-    can %i[read update delete discard export], InternshipOffers::Api
-    can :read, :dashboard       # grant access to the dashboard
-    can :read, :kpi # grant access to the dashboard
-    can %i[index], Acl::Reporting do |_acl|
-      true
-    end
-    can %i[index_and_filter], Reporting::InternshipOffer
-    can :reset_cache, User
-    can :manage, Operator
+    can :read, Group
+    can %i[read], InternshipOffer
+    can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
+    can %i[ see_reporting_dashboard
+            see_dashboard_administrations_summary
+            export_reporting_dashboard_data
+            ], User
   end
 
   private

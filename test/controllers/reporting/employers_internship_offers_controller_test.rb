@@ -169,5 +169,13 @@ module Reporting
       assert_select ".test-public-", text: 'Privé'
       assert_select ".test-published-offers-", text: '20'
     end
+
+
+    test 'GET #index as operator works' do
+      user_operator = create(:user_operator)
+      sign_in(user_operator)
+      get reporting_employers_internship_offers_path
+      assert_response 200
+    end
   end
 end
