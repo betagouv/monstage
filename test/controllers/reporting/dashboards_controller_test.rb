@@ -118,6 +118,7 @@ module Reporting
       )
 
       get reporting_dashboards_path
+
       assert_response 200
       assert_select ".test-administrations-proposed-offers", text: '4'
       assert_select ".test-administrations-approved-offers", text: '1'
