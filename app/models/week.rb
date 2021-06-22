@@ -41,6 +41,14 @@ class Week < ApplicationRecord
     from_date_to_date(from: school_year.beginning_of_period,
                       to: school_year.end_of_period)
   }
+
+  scope :of_previous_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+
+    from_date_to_date(from: school_year.beginning_of_period,
+                      to: school_year.end_of_period)
+  }
+  
   scope :selectable_for_school_year, lambda { |school_year:|
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }

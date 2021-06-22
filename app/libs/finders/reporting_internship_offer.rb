@@ -62,7 +62,7 @@ module Finders
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_school_track(school_track: params[:school_track]) if school_track?
-      query = query.by_group(group: params[:group]) if group_param?
+      query = query.by_group(group_id: params[:group]) if group_param?
       query = query.by_academy(academy: params[:academy]) if academy_param?
       query = query.where(is_public: params[:is_public]) if public_param?
       query = query.by_detailed_typology(detailed_typology: params[:dimension]) if detailed_typology?

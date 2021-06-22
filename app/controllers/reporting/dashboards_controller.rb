@@ -5,6 +5,7 @@ module Reporting
     # TODO: refactor for understandable widgetization
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
+      authorize! :see_reporting_dashboard, current_user
 
       render locals: { dashboard_finder: dashboard_finder }
     end
@@ -38,7 +39,7 @@ module Reporting
     end
 
     def dashboard_finder
-      @dashboard_finder ||= Finders::ReportingDashboard.new(params: reporting_cross_view_params)
+      @dashboard_finder ||= Finders::ReportingDashboard.new(params: reporting_cross_view_params, user: current_user)
     end
   end
 end

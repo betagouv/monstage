@@ -38,7 +38,8 @@ module Users
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(
-        school_year: SchoolYear::Current.new.beginning_of_period.year
+        school_year: SchoolYear::Current.new.beginning_of_period.year,
+        ministry: ministry
       )
     end
 
@@ -59,6 +60,14 @@ module Users
       super
     end
 
+    def ministry_statistician?
+      true
+    end
+
+    def presenter
+      Presenters::MinistryStatistician.new(self)
+    end
+
     private
 
     # on create, make sure to assign existing email whitelist
@@ -70,7 +79,8 @@ module Users
 
     def email_in_list
       unless EmailWhitelists::Ministry.exists?(email: email)
-        errors.add(:email, 'Cette adresse électronique n\'est pas autorisée')
+        errors.add(:email, "Cette adresse électronique n\'est pas enregistrée, " \
+                           "assurez-vous qu'elle l'a été auprès des administrateurs")
       end
     end
   end
