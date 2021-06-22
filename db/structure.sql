@@ -445,7 +445,7 @@ CREATE TABLE public.email_whitelists (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_id bigint,
-    type character varying DEFAULT 'EmailWhitelist::Statistician'::character varying NOT NULL,
+    type character varying DEFAULT 'EmailWhitelists::Statistician'::character varying NOT NULL,
     group_id integer
 );
 
@@ -2414,6 +2414,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210602171315'),
 ('20210604095934'),
 ('20210604144318'),
-('20210615113123');
+('20210615113123'),
+('20210622105914');
 
 
