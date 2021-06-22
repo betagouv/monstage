@@ -7,6 +7,8 @@ module Users
       configure :created_at, :datetime
 
       list do
+        scopes [:active]
+
         field :department do
           label 'Département'
           pretty_value { bindings[:object]&.department}
@@ -31,6 +33,8 @@ module Users
             dependent: :destroy
     validates :email_whitelist, presence: true
     before_validation :assign_email_whitelist
+
+    scope :active, -> { where(discarded_at: nil) }
 
     def custom_dashboard_path
       url_helpers.reporting_dashboards_path(

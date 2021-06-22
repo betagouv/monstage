@@ -49,5 +49,11 @@ module Users
         statistician.destroy
       end
     end
+
+    test 'active scope' do
+      statistician = create(:statistician)
+      statistician2 = create(:statistician, discarded_at: 1.minute.ago)
+      assert_equal Users::Statistician.active.count, 1
+    end
   end
 end
