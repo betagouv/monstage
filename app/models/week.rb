@@ -112,4 +112,8 @@ class Week < ApplicationRecord
       end
     end
   end
+
+  def consecutive_to?(other_week)
+    id.to_i == other_week.id.to_i + 1
+  end
 end

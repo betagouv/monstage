@@ -28,9 +28,29 @@ module Presenters
       end
     end
 
+    def split_weeks_in_trunks
+      week_list, container = [weeks.dup.to_a, []]
+      while week_list.present?
+        joined_weeks = [week_list.slice!(0)]
+        while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
+          joined_weeks << week_list.slice!(0)
+        end
+        container << self.class.new(weeks: joined_weeks)
+      end
+      container
+    end
+
+    def student_compatible_week_list(student)
+      self.class.new(weeks: weeks & student.school.weeks)
+    end
+
     def to_s
       weeks.map(&:long_select_text_method)
            .join("\n")
+    end
+
+    def empty?
+      weeks.empty?
     end
 
     def split_range_string
