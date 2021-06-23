@@ -7,13 +7,20 @@ module Reporting
     def index
       authorize! :index, Acl::Reporting.new(user: current_user, params: params)
 
+      params.merge!(group: current_user.ministry_id) if current_user.ministry_statistician?
+
       @offers = current_offers
       @no_offers = no_current_offers
       respond_to do |format|
         format.xlsx do
-          @offers = @offers.find_each(batch_size: 1000) if dimension_is?('offers', params[:dimension])
           response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
-          render dimension_is?('offers', params[:dimension]) ? :index_offers : :index_stats
+          if dimension_is?('offers', params[:dimension])
+            SendExportOffersJob.perform_later(current_user, offers_hash)
+            redirect_back fallback_location: reporting_dashboards_path(department: params[:department], school_year: params[:school_year]),
+                          flash: { success: "Votre fichier a été envoyé à l'adresse email : #{current_user.email}"}
+          else
+            render :index_stats
+          end
         end
         format.html do
         end
@@ -21,7 +28,9 @@ module Reporting
     end
 
     def employers_offers
-      index
+      authorize! :index, Acl::Reporting.new(user: current_user, params: params)
+
+      @offers = current_offers
     end
 
     private
@@ -37,9 +46,9 @@ module Reporting
         finder.dimension_offer
       when 'group'
         finder.dimension_by_group
-      when 'sector'
-        finder.dimension_by_sector
-      else
+      when 'public_group', 'private_group', 'paqte_group'
+        finder.dimension_by_detailed_typology(detailed_typology: params[:dimension])
+      else # including 'sector'
         finder.dimension_by_sector
       end
     end
@@ -53,7 +62,7 @@ module Reporting
       case params[:dimension]
       when 'offers'
         Presenters::Reporting::DimensionByOffer
-      when 'group'
+      when 'group', 'public_group', 'private_group', 'paqte_group'
         Presenters::Reporting::DimensionByGroup
       when 'sector'
         Presenters::Reporting::DimensionBySector
@@ -64,6 +73,10 @@ module Reporting
 
     def finder
       @finder ||= Finders::ReportingInternshipOffer.new(params: reporting_cross_view_params)
+    end
+
+    def offers_hash
+      { department: params[:department], school_year: params[:school_year] }
     end
   end
 end

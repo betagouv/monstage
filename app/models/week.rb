@@ -41,6 +41,14 @@ class Week < ApplicationRecord
     from_date_to_date(from: school_year.beginning_of_period,
                       to: school_year.end_of_period)
   }
+
+  scope :of_previous_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+
+    from_date_to_date(from: school_year.beginning_of_period,
+                      to: school_year.end_of_period)
+  }
+  
   scope :selectable_for_school_year, lambda { |school_year:|
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }
@@ -89,6 +97,19 @@ class Week < ApplicationRecord
     else
 
       raise ArgumentError "unknown root: #{root}, selectable week only works with school/internship_offer"
+    end
+  end
+
+  def self.airtablize(school_year = SchoolYear::Current.new)
+    school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
+    weeks = Week.selectable_for_school_year(school_year: school_year)
+
+    require 'csv'
+    CSV.open("myfile.csv", "w") do |csv|
+      csv << ["Semaine", "ID MS3e", "year"]
+      weeks.map do |w|
+        csv << [w.select_text_method, w.id, school_year_str]
+      end
     end
   end
 end

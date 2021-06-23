@@ -3,25 +3,7 @@
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
     = render partial: 'reporting/filters',
-                      locals: {by_academy: false,
-                               by_typology: false,
-                               by_detailed_typology: true,
-                               by_subscribed_school: false,
-                               by_department: true,
-                               by_school_track: false}
-    = render partial: 'reporting/school_years_filter'
-
-  .row.mt-3
-    .col-lg-8.col-12
-      .d-flex.align-items-center.mb-4
-        h2.h3.text-black-50
-          | Offres de stage par types d'entreprises
-        / = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-danger ml-auto ', data: {turbolinks: false} do
-        /   i.fas.fa-download
-        /   | &nbsp;
-        /   span Télécharger
-
-
+                      locals: {view_tab: :employers_internship_offers}
   .row.mt-3
     .col-12
       table.table.table-statistics.table-sticky-thead
@@ -33,11 +15,3 @@
         tbody= render partial: 'reporting/internship_offers/employer_offer',
                       collection: @offers.map(&presenter_for_dimension.method(:new))
 
-        / tfoot= render 'reporting/internship_offers/internship_offer',
-        /               internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
-        /               font_weight_bold: true,
-        /               font_color_blue: true
-
-  / .row.mt-3.mb-3
-  /   .col-12.text-center
-  /     = link_to "Exporter", reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-danger', data: {turbolinks: false}

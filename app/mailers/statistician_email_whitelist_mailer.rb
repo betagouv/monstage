@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EmailWhitelistMailer < ApplicationMailer
+class StatisticianEmailWhitelistMailer < ApplicationMailer
   def notify_ready(recipient_email:)
     @recipient_email = recipient_email
     mail(to: recipient_email,

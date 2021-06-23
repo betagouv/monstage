@@ -5,7 +5,7 @@
 
   "repository": "https://github.com/betagouv/monstage",
 
-  "stack": "heroku-18",
+  "stack": "heroku-20",
 
   "buildpacks": [
     {

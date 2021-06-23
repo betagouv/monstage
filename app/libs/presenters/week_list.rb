@@ -33,6 +33,10 @@ module Presenters
            .join("\n")
     end
 
+    def split_range_string
+      to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
+    end
+
     protected
 
     def render_first_week_only

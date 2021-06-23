@@ -11,11 +11,20 @@ module Finders
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,
+        Users::MinistryStatistician.name => :ministry_statistician_query,
         Users::God.name => :god_query
       }
     end
 
     private
+
+    def kept_offers_query
+      InternshipOffer.kept
+    end
+
+    def god_query
+      common_filter { kept_offers_query }
+    end
 
     def school_track_by_class_room_query(query)
       query.merge(
@@ -57,16 +66,12 @@ module Finders
       end
     end
 
+    def ministry_statistician_query
+      god_query.limited_to_ministry(user: user)
+    end
+
     def visitor_query
       common_filter { kept_offers_query.in_the_future.published }
-    end
-
-    def god_query
-      common_filter { kept_offers_query }
-    end
-
-    def kept_offers_query
-      InternshipOffer.kept
     end
   end
 end

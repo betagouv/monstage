@@ -7,9 +7,15 @@ module Users
       configure :created_at, :datetime
 
       list do
+        field :department do
+          label 'Département'
+          pretty_value { bindings[:object]&.department}
+        end
+        field :department_zipcode do
+          label 'Code postal'
+          pretty_value { bindings[:object]&.department_zipcode}
+        end
         fields(*UserAdmin::DEFAULTS_FIELDS)
-        field :department
-        field :department_zipcode
         field :sign_in_count
         field :last_sign_in_at
         field :created_at
@@ -18,7 +24,11 @@ module Users
 
     validate :email_in_list
 
-    has_one :email_whitelist, foreign_key: :user_id, dependent: :destroy
+    has_many :internship_offers, foreign_key: 'employer_id'
+    has_one :email_whitelist,
+            class_name: 'EmailWhitelists::Statistician',
+            foreign_key: :user_id,
+            dependent: :destroy
     validates :email_whitelist, presence: true
     before_validation :assign_email_whitelist
 
@@ -37,6 +47,14 @@ module Users
       ]
     end
 
+    def statistician?
+      true
+    end
+
+    def presenter
+      Presenters::Statistician.new(self)
+    end
+
     def dashboard_name
       'Statistiques'
     end
@@ -46,11 +64,11 @@ module Users
     end
 
     def department_zipcode
-      email_whitelist.zipcode
+      email_whitelist&.zipcode
     end
 
     def destroy
-      email_whitelist.delete
+      email_whitelist&.delete
       super
     end
 
@@ -58,11 +76,11 @@ module Users
 
     # on create, make sure to assign existing email whitelist
     def assign_email_whitelist
-      self.email_whitelist = EmailWhitelist.where(email: email).first
+      self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
     end
 
     def email_in_list
-      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelist.exists?(email: email)
+      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelists::Statistician.exists?(email: email)
     end
   end
 end

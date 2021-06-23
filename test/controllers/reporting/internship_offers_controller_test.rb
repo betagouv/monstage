@@ -76,6 +76,16 @@ module Reporting
         assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
+
+        get reporting_internship_offers_path(department: department, dimension: 'group')
+        assert_response :success
+        assert_equal 1, retrieve_html_value('test-total-report','test-total-applications', response)
+        assert_equal 3, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
+        assert_equal 2, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
+        assert_equal 1, retrieve_html_value('test-total-female-applications','test-approved-applications', response)
+        assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
+        assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
+        assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
         # null
         assert_equal 0, retrieve_html_value('test-total-report-null','test-total-applications', response)
         assert_equal 0, retrieve_html_value('test-total-applications-null', 'test-total-male-applications', response)
@@ -85,21 +95,20 @@ module Reporting
         assert_equal 0, retrieve_html_value('test-male-approved-applications-null', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications-null', 'test-male-approved-applications', response)
 
-        get reporting_internship_offers_path(department: department, is_public: true)
+        get reporting_internship_offers_path(department: department, is_public: true, dimension: 'group')
         assert_response :success
-        assert_equal 2, retrieve_html_value('test-total-report','test-total-applications', response)
-        assert_equal 4, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
-        assert_equal 3, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
+        assert_equal 1, retrieve_html_value('test-total-report','test-total-applications', response)
+        assert_equal 3, retrieve_html_value('test-total-applications', 'test-total-male-applications', response)
+        assert_equal 2, retrieve_html_value('test-total-male-applications', 'test-total-female-applications', response)
         assert_equal 1, retrieve_html_value('test-total-female-applications','test-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-approved-applications','test-custom-track-approved-applications', response)
         assert_equal 1, retrieve_html_value('test-male-approved-applications', 'test-approved-applications', response)
         assert_equal 0, retrieve_html_value('test-female-approved-applications', 'test-male-approved-applications', response)
-        # null
         assert_select('test-total-report-null', false)
         assert_select('test-total-applications-null', false)
         assert_select('test-total-male-applications-null', false)
         assert_select('test-total-female-applications-null', false)
-        assert_select('test-approved-applications-null',false)
+        assert_select('test-approved-applications-null', false)
         assert_select('test-male-approved-applications-null', false)
         assert_select('test-female-approved-applications-null', false)
       end
@@ -113,7 +122,6 @@ module Reporting
       sign_in(god)
 
       {
-        offers: :index_offers,
         group: :index_stats,
         sector: :index_stats
       }.each_pair do |dimension, template|
@@ -124,12 +132,33 @@ module Reporting
       end
     end
 
+    test 'GET call async Job as god success ' \
+         'when department params match his departement_name' do
+      god = create(:god)
+      create(:weekly_internship_offer)
+      create(:api_internship_offer)
+      sign_in(god)
+
+      get(reporting_internship_offers_path(dimension: 'offers',
+                                             format: :xlsx, school_year: 2019, department: 'Paris'))
+      assert_response 302
+      assert_redirected_to reporting_dashboards_path(department: 'Paris', school_year: 2019)
+    end
+
     test 'GET #index as statistician fails ' \
          'when department params does not match his department' do
       statistician = create(:statistician)
       sign_in(statistician)
       get reporting_internship_offers_path(department: 'Ain')
       assert_response 302
+    end
+
+
+    test 'GET #index as operator works' do
+      user_operator = create(:user_operator)
+      sign_in(user_operator)
+      get reporting_internship_offers_path(department: 'Ain')
+      assert_response 200
     end
 
     # This helper method retrieves the figures in front of class1,

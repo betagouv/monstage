@@ -8,8 +8,16 @@ class UserManager
     'SchoolManagement' => Users::SchoolManagement,
     'Student' => Users::Student,
     'Operator' => Users::Operator,
-    'Statistician' => Users::Statistician
+    'Statistician' => Users::Statistician,
+    'MinistryStatistician' => Users::MinistryStatistician
   }.freeze
+
+  PRESENTERS = {
+    "Users::Operator" => Presenters::Operator,
+    "Users::Statistician" => Presenters::Statistician,
+    "Users::God" => Presenters::God,
+    "Users::MinistryStatistician" => Presenters::MinistryStatistician
+  }
 
   # raises KeyError whe can't find expected role
   def by_params(params:)
@@ -17,6 +25,12 @@ class UserManager
     key ||= String(params.dig(:user, :type)).demodulize
 
     ROLES_BY_PARAMS.fetch(key)
+  end
+
+  def presenter(user)
+    PRESENTERS[user.class.name].new(user)
+  rescue KeyError
+    Rails.logger.error "this specific user is not implemented yet: #{user.class.name}"
   end
 
   def valid?(params:)
