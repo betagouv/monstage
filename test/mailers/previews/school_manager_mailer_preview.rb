@@ -7,36 +7,17 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
 
   def new_member
     SchoolManagerMailer.new_member(school_manager: school_manager,
-                                   member: create_or_fetch_teacher)
+                                   member: fetch_teacher)
   end
 
   private
 
   def school_manager
-    school_managers = Users::SchoolManagement.where(role: 'school_manager')
-    return school_managers.first if school_managers.present?
-
-    FactoryBot.create(
-      :school_manager,
-      school: School.first,
-      email: "perfect-school-manager-#{rand(1..1_000)}@ac-paris.fr"
-    )
+    Users::SchoolManagement.find_by(role: 'school_manager')
   end
 
-  def create_or_fetch_teacher
-    teachers = Users::SchoolManagement.where(role: 'teacher')
-    return teachers.first if teachers.present?
-
-    FactoryBot.create(
-      :school_manager,
-      school: School.first,
-      email: "perfect-school-manager-#{rand(1..1_000)}@ac-paris.fr"
-    )
-    FactoryBot.create(
-      :teacher,
-      school: School.first,
-      email: "perfect-teacher-#{rand(1..1_000)}@ms3e.fr"
-    )
+  def fetch_teacher
+    Users::SchoolManagement.find_by(role: 'teacher')
   end
 
 end
