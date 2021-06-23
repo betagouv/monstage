@@ -87,14 +87,14 @@ module Reporting
 
       create(
         :last_year_weekly_internship_offer,
-        max_candidates: 3,
+        max_candidates: 5,
         group: ministry_group,
         is_public: true
       )
 
       get reporting_dashboards_path
       assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '4'
+      assert_select ".test-administrations-proposed-offers", text: '6'
       assert_select ".test-administrations-approved-offers", text: '0'
 
       create(
@@ -102,12 +102,24 @@ module Reporting
         :approved,
         internship_offer: first_offer
       )
+      
+      last_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+                                      .beginning_of_period
+                                      .year
+      current_year = SchoolYear::Current.new
+                                        .beginning_of_period
+                                        .year
+      # no change on older offers
+      get reporting_dashboards_path(school_year: last_year)
+      assert_response 200
+      assert_select ".test-administrations-proposed-offers", text: '5'
+      assert_select ".test-administrations-approved-offers", text: '0'
 
       # no change on older offers
-      get reporting_dashboards_path(school_year: (Date.today - 1.year).year)
+      get reporting_dashboards_path(school_year: current_year)
       assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '3'
-      assert_select ".test-administrations-approved-offers", text: '0'
+      assert_select ".test-administrations-proposed-offers", text: '1'
+      assert_select ".test-administrations-approved-offers", text: '1'
 
       # public internship offer other group with 100
       create(
@@ -120,7 +132,7 @@ module Reporting
       get reporting_dashboards_path
 
       assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '4'
+      assert_select ".test-administrations-proposed-offers", text: '6'
       assert_select ".test-administrations-approved-offers", text: '1'
     end
 
