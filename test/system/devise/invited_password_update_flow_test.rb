@@ -20,9 +20,7 @@ class InvitedPasswordUpdateFlowTest < ApplicationSystemTestCase
     fill_in('Mot de passe', with: password)
     fill_in('Confirmation de mot de passe', with: password)
     click_on('Choisissez votre mot de passe')
-    assert_equal 'Me connecter',
-                  find('.container h1.h2').text,
-                  'Bad redirection to dashboard_internship_offers_path through connexion screen'
+    find '#alert-success #alert-text', text: 'Votre compte a bien été créé.'
   end
 
   test 'inexistant tutor invited by mail, updates her email with an invalid password' do

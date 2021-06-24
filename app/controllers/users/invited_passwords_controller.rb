@@ -14,7 +14,8 @@ module Users
     def update
       @user ||= User.find_by_reset_password_token!(invited_params[:reset_password_token])
       @user.update!(password: invited_params[:password])
-      redirect_to dashboard_internship_offers_path
+      sign_in(@user)
+      redirect_to dashboard_internship_offers_path, flash: { success: 'Votre compte a bien été créé.' }
     rescue ActiveRecord::RecordNotFound
       flash[:error] = 'Le formulaire soumis contient des erreurs'
       render 'devise/invited_passwords/edit'
