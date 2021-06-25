@@ -43,12 +43,10 @@ class Week < ApplicationRecord
   }
 
   scope :of_previous_school_year, lambda {
-    school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
-
-    from_date_to_date(from: school_year.beginning_of_period,
-                      to: school_year.end_of_period)
+    school_year = SchoolYear::Floating.new(date: Date.today)
+    weeks_of_school_year(school_year: school_year.beginning_of_period.year - 1)
   }
-  
+
   scope :selectable_for_school_year, lambda { |school_year:|
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }
@@ -73,6 +71,10 @@ class Week < ApplicationRecord
   def self.current
     current_date = Date.today
     Week.find_by(number: current_date.cweek, year: current_date.year)
+  end
+
+  def self.from_date(date)
+    Week.find_by(number: date.cweek, year: date.year)
   end
 
   rails_admin do

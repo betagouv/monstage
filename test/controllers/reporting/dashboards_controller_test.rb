@@ -53,12 +53,20 @@ module Reporting
       ministry_group = ministry_statistician.ministry
       public_group = create(:public_group)
       private_group  = create(:private_group)
+      strict_beginning_year = SchoolYear::Current.new.strict_beginning_of_period.year
+      weeks_of_current_year = [::Week.from_date(Date.new(strict_beginning_year, 9, 8))]
+      weeks_of_passed_year  = [::Week.from_date(Date.new(strict_beginning_year - 1, 9, 8))]
+      current_year = strict_beginning_year
+      last_year = current_year - 1
+      # current_year_week_array = [::Week.from_date(Date.today)]
 
       assert ministry_group.is_public,
              'ministry_statistician associated group should have been public'
       # ministry internship offer with 1
       first_offer = create(
         :weekly_internship_offer,
+        :troisieme_generale_internship_offer,
+        weeks: weeks_of_current_year,
         group: ministry_group,
         is_public: true
       )
@@ -66,6 +74,7 @@ module Reporting
       # private independant internship_offer with 10
       create(
         :weekly_internship_offer,
+        :troisieme_generale_internship_offer,
         max_candidates: 10,
         group: nil,
         is_public: false
@@ -74,6 +83,7 @@ module Reporting
       # private internship offer with 20
       create(
         :weekly_internship_offer,
+        :troisieme_generale_internship_offer,
         max_candidates: 20,
         group: private_group,
         is_public: false
@@ -89,9 +99,9 @@ module Reporting
         :last_year_weekly_internship_offer,
         max_candidates: 5,
         group: ministry_group,
+        weeks: weeks_of_passed_year,
         is_public: true
       )
-
       get reporting_dashboards_path
       assert_response 200
       assert_select ".test-administrations-proposed-offers", text: '6'
@@ -102,13 +112,6 @@ module Reporting
         :approved,
         internship_offer: first_offer
       )
-      
-      last_year = SchoolYear::Floating.new(date: Date.today - 1.year)
-                                      .beginning_of_period
-                                      .year
-      current_year = SchoolYear::Current.new
-                                        .beginning_of_period
-                                        .year
       # no change on older offers
       get reporting_dashboards_path(school_year: last_year)
       assert_response 200
