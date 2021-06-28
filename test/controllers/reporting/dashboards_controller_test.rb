@@ -113,7 +113,6 @@ module Reporting
         :approved,
         internship_offer: first_offer
       )
-      # byebug
       # no change on older offers
       get reporting_dashboards_path(school_year: last_year)
       assert_response 200
