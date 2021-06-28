@@ -219,6 +219,26 @@ def populate_internship_offers
     employer_name: Group.is_pacte.first.name,
     school_track: :troisieme_generale
   )
+  InternshipOffers::WeeklyFramed.create!(
+      employer: Users::Employer.first,
+      weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
+      sector: Sector.first,
+      group: Group.is_pacte.first,
+      is_public: false,
+      title: 'Stage avec deux segments de date, bugfix',
+      description_rich_text: 'Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.'.truncate(249),
+      employer_description_rich_text: "Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.".truncate(249),
+      employer_website: 'https://www.asml.com/en/careers',
+      tutor_name: 'John smith',
+      tutor_email: 'fourcade.m@gmail.com',
+      tutor_phone: '+33637607756',
+      street: '128 rue brancion',
+      zipcode: '75015',
+      city: 'paris',
+      coordinates: { latitude: 48.866667, longitude: 2.333333 },
+      employer_name: Group.is_pacte.first.name,
+      school_track: :troisieme_generale
+    )
 
     # 3eme generale public
   InternshipOffers::WeeklyFramed.create!(
