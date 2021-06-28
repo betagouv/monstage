@@ -45,6 +45,7 @@ module InternshipOffersHelper
     internship_offer.employer.operator.name
   end
 
+  # TODO refactor? add week_ids
   def forwardable_params
     params.permit(
       :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_track
@@ -58,7 +59,7 @@ module InternshipOffersHelper
 
     default_params = {}
 
-    internship_offers_path(default_params.merge(forwardable_params))
+    internship_offers_path(default_params.merge(forwardable_params)) # TODO refactor? pass thru custom url helper
   end
 
   def listable_internship_offer_path(internship_offer, options = {})

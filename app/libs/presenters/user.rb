@@ -23,10 +23,11 @@ module Presenters
       UserManagementRole.new(user: user).role
     end
 
+    # TODO refactor?
     def default_internship_offers_path
-      return internship_offers_path if user.nil?
-      return internship_offers_path unless user.respond_to?(:school)
-      return internship_offers_path if user.school.nil?
+      return internship_offers_path if user.nil? # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
+      return internship_offers_path unless user.respond_to?(:school) # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
+      return internship_offers_path if user.school.nil?# TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
 
       opts = {
         city: user.school.city,
@@ -35,7 +36,7 @@ module Presenters
         radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
       }
       opts.merge!({school_track: user.try(:school_track)}) if user.try(:school_track)
-      internship_offers_path(opts)
+      internship_offers_path(opts) # TODO refactor?: use pass thru url helper
     end
 
     private

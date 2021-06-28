@@ -10,6 +10,7 @@ h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
         th.p-0
           .pb-4.pb-sm-0.pt-4.pt-sm-3.bg-light-gray-sm.mb-3.mb-sm-4
             .col-12
+              - # TODO refactor?:use default
               = react_component("SearchInternshipOffer",
                                 props: { url: internship_offers_path, className: 'flex-row focusable-search-bar' })
 

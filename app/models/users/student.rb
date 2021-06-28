@@ -61,7 +61,7 @@ module Users
     end
 
     def after_sign_in_path
-      url_helpers.internship_offers_path
+      url_helpers.internship_offers_path # TODO refactor?: should be refactored so student starts with offer prefiltered
     end
 
     def custom_dashboard_path
