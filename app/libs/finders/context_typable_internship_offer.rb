@@ -62,6 +62,12 @@ module Finders
       params[:school_year].to_i
     end
 
+    def week_ids_params
+      return nil unless params.key?(:week_ids)
+
+      params[:week_ids]
+    end
+
     def common_filter
       query = yield
 
