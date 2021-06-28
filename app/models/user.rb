@@ -226,16 +226,10 @@ class User < ApplicationRecord
     end
   end
 
-  def statistician?
-    false
-  end
-
-  def ministry_statistician?
-    false
-  end
+  def statistician? ; false end
+  def ministry_statistician? ; false end
 
   private
-
 
   def clean_phone
     self.phone = nil if phone == '+33'

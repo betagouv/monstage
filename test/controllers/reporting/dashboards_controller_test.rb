@@ -104,10 +104,10 @@ module Reporting
       )
 
       # no change on older offers
-      get reporting_dashboards_path(school_year: (Date.today - 1.year).year)
+      get reporting_dashboards_path(school_year: (SchoolYear::Current.new.beginning_of_period - 1.year).year)
       assert_response 200
-      assert_select ".test-administrations-proposed-offers", text: '3'
-      assert_select ".test-administrations-approved-offers", text: '0'
+      assert_select ".test-administrations-proposed-offers", text: '4'
+      assert_select ".test-administrations-approved-offers", text: '1'
 
       # public internship offer other group with 100
       create(
