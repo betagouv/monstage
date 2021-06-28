@@ -18,3 +18,4 @@ Ongoing active measures :
 * every email are previewable via /rails/mailers (for team email review)
 * ensure subject line between 35/50 chars (https://www.mailjet.com/blog/news/avoid-email-spam-filters/)
 * ensure body does not contains upcase words (https://www.mailjet.com/blog/news/avoid-email-spam-filters/)
+* mails a previewable in development,review,staging using `$HOST/rails/mailers`

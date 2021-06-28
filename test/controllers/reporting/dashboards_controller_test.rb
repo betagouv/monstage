@@ -102,6 +102,7 @@ module Reporting
         weeks: weeks_of_passed_year,
         is_public: true
       )
+
       get reporting_dashboards_path
       assert_response 200
       assert_select ".test-administrations-proposed-offers", text: '6'
@@ -112,6 +113,7 @@ module Reporting
         :approved,
         internship_offer: first_offer
       )
+      # byebug
       # no change on older offers
       get reporting_dashboards_path(school_year: last_year)
       assert_response 200
