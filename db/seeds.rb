@@ -186,6 +186,7 @@ def populate_students
   class_room_4 = ClassRoom.fourth
   school = class_room_1.school
 
+  with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Mesnard', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
   with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
@@ -406,7 +407,7 @@ def populate_applications
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
-                                   .first(2)
+                                   .first(3)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
 
@@ -419,6 +420,7 @@ def populate_applications
       student: bac_pro_stud
     )
   end
+  puts "every 3e generale offers receives an application first 3e generale stud"
   troisieme_generale_offers.each do |io_trois_gene|
     InternshipApplications::WeeklyFramed.create!(
       aasm_state: :submitted,
@@ -429,17 +431,48 @@ def populate_applications
       internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
-  if trois_gene_studs&.second
-    InternshipApplications::WeeklyFramed.create!(
-      aasm_state: :approved,
-      submitted_at: 10.days.ago,
-      approved_at: 2.days.ago,
-      student: trois_gene_studs.second,
-      motivation: 'Au taquet',
-      internship_offer: troisieme_generale_offers.first,
-      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
-    )
-  end
+
+  puts "second 3e generale offer receive an approval --> second 3e generale stud"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.second,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.first,
+    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+  )
+
+  puts  "third 3e generale stud cancels his application to first offer"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :canceled_by_student,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.third,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.first,
+    internship_offer_week: troisieme_generale_offers.second.internship_offer_weeks.sample
+  )
+  puts  "second 3e generale stud is canceled by employer of last internship_offer"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :canceled_by_employer,
+    submitted_at: 10.days.ago,
+    approved_at: 3.days.ago,
+    student: trois_gene_studs.second,
+    motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
+    internship_offer: troisieme_generale_offers.last,
+    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+  )
+  puts  "third 3e generale stud is rejected of last internship_offer"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :rejected,
+    submitted_at: 8.days.ago,
+    approved_at: 3.days.ago,
+    student: trois_gene_studs.third,
+    motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
+    internship_offer: troisieme_generale_offers.last,
+    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+  )
 end
 
 def populate_aggreements
@@ -481,45 +514,6 @@ def populate_internship_weeks
   school.week_ids = Week.selectable_on_school_year.pluck(:id)
 end
 
-def populate_applications
-  bac_pro_studs = Users::Student.joins(:class_room)
-                                .where('class_rooms.school_track = ?', :bac_pro)
-                                .to_a
-                                .shuffle
-                                .first(2)
-  trois_gene_studs = Users::Student.joins(:class_room)
-                                   .where('class_rooms.school_track = ?', :troisieme_generale)
-                                   .to_a
-                                   .shuffle
-                                   .first(2)
-  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
-
-  bac_pro_studs.each do |bac_pro_stud|
-    FactoryBot.create(
-      :free_date_internship_application,
-      :submitted,
-      internship_offer: ios_bac_pro.first,
-      student: bac_pro_stud
-    )
-  end
-  ios_troisieme_generale.each do |io_trois_gene|
-    FactoryBot.create(
-      :weekly_internship_application,
-      :submitted,
-      internship_offer: io_trois_gene,
-      student: trois_gene_studs.first
-    )
-  end
-  if trois_gene_studs&.second
-    FactoryBot.create(
-      :weekly_internship_application,
-      :approved,
-      internship_offer: ios_troisieme_generale.first,
-      student: trois_gene_studs.second
-    )
-  end
-end
 
 ActiveSupport::Notifications.subscribe /seed/ do |event|
   puts "#{event.name} done! #{event.duration}"

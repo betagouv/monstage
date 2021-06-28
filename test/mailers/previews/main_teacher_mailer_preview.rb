@@ -2,15 +2,19 @@
 
 class MainTeacherMailerPreview < ActionMailer::Preview
   def internship_application_approved_email
-    internship_application = InternshipApplication.approved
-                                                  .first
-    main_teacher = internship_application.student
-                                         .school
-                                         .main_teachers
-                                         .first
+    internship_application = InternshipApplication&.approved&.first
+
     MainTeacherMailer.internship_application_approved_email(
       internship_application: internship_application,
-      main_teacher: main_teacher
+      main_teacher: fetch_main_teacher(internship_application)
     )
   end
+
+  private
+
+  def fetch_main_teacher(internship_application)
+    school = internship_application.student.school
+    return school.main_teachers.first if school.main_teachers.present?
+  end
+
 end
