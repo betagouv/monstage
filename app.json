@@ -27,8 +27,7 @@
         }
       },
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:migrate db:seed infra:notify_deployed SCHEMA=./infra/review/structure-review.sql",
-        "release": "bundle exec bin/rails infra:notify_deployed"
+        "postdeploy": "bundle exec bin/rails db:structure:load db:migrate db:seed infra:notify_deployed SCHEMA=./infra/review/structure-review.sql"
       },
       "env": {
         "RAILS_ENV": "review",
