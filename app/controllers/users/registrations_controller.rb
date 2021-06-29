@@ -40,12 +40,16 @@ module Users
 
     # GET /resource/sign_up
     def new
+      targeted_offer_id = params.dig(:user, :targeted_offer_id)
+      options = {}
+      options = options.merge(targeted_offer_id: targeted_offer_id) if targeted_offer_id
+
       if UserManager.new.valid?(params: params)
         super do |resource|
           @current_ability = Ability.new(resource)
         end
       else
-        redirect_to users_choose_profile_path
+        redirect_to users_choose_profile_path(options)
       end
     end
 
@@ -54,6 +58,7 @@ module Users
       clean_phone_param
       super do |resource|
         @current_ability = Ability.new(resource)
+        # store_location_for(:user, internship_offer_path(id: params.dig(:user, :targeted_offer_id)))
       end
     end
 
@@ -112,6 +117,7 @@ module Users
           role
           phone
           email
+          targeted_offer_id
         ]
       )
     end

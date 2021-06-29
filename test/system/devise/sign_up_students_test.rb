@@ -68,6 +68,53 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal 'm', created_student.gender
   end
 
+  test 'subscription with former internship_offer choice leads to offer page' do
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
+    class_room_1 = create(:class_room, name: '3e A', school: school_1)
+    birth_date = 14.years.ago
+    password = 'kikoololletest'
+    offer = create(:weekly_internship_offer)
+
+    visit internship_offers_path
+    click_link 'Je postule'
+    # below : 'Pas encore de compte ? Inscrivez-vous'
+    find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
+
+    # signup as student
+    assert_difference('Users::Student.count', 1) do
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+      find('#downshift-2-item-0').click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
+      select(class_room_1.name, from: 'user_class_room_id')
+      fill_in 'Prénom', with: 'Martine'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcadex'
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+      find('label', text: 'Féminin').click
+      find('label', text: 'Email').click
+      fill_in 'Adresse électronique', with: 'yetanother@email.com'
+      fill_in 'Créer un mot de passe', with: password
+      fill_in 'Ressaisir le mot de passe', with: password
+      find('label[for="user_accept_terms"]').click
+      click_on "Je m'inscris"
+    end
+
+    created_student = Users::Student.where(email: 'yetanother@email.com').first
+
+    # confirmation mail under the hood
+    created_student.confirm
+    created_student.reload
+    assert created_student.confirmed?
+    # visit login mail from confirmation mail
+    visit new_user_session_path
+    find("input[name='user[email]']").fill_in with: created_student.email
+    find("input[name='user[password]']").fill_in with: password
+    click_on "Connexion"
+    # redirected page is a show of targeted internship_offer
+    assert current_path, "/internship_offer/#{offer.id}"
+    # targeted page is now empty
+    assert_nil created_student.targeted_offer_id, 'targeted offer should have been reset'
+  end
+
   test 'navigation & interaction works until student creation with phone' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')

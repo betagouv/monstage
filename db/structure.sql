@@ -1143,7 +1143,8 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
-    ministry_id bigint
+    ministry_id bigint,
+    targeted_offer_id integer
 );
 
 
@@ -2415,6 +2416,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210604095934'),
 ('20210604144318'),
 ('20210615113123'),
-('20210622105914');
+('20210622105914'),
+('20210628172603');
 
 

@@ -61,7 +61,12 @@ module Users
     end
 
     def after_sign_in_path
-      url_helpers.internship_offers_path
+      options = {}
+      if targeted_offer_id
+        options.merge(id: targeted_offer_id)
+        reset_targeted_offer_id
+      end
+      url_helpers.internship_offers_path(options)
     end
 
     def custom_dashboard_path
@@ -100,6 +105,13 @@ module Users
       if new_record? && school.blank?
         errors.add(:school, :blank)
       end
+    end
+
+    private
+
+    def reset_targeted_offer_id
+      self.targeted_offer_id = nil
+      save
     end
   end
 end
