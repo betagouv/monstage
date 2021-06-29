@@ -73,28 +73,22 @@ module InternshipOffers
       assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show as Student when school has no weeks' do
+    test 'GET #show as Student when school has no weeks it shows caution message and weeks offer select' do
       school = create(:school, weeks: [])
       student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
-      get internship_offer_path(create(:weekly_internship_offer))
+      internship_offer = create(:weekly_internship_offer)
+      get internship_offer_path(internship_offer)
 
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
-
-      assert_select('.student-form-missing-school-weeks',
+      assert_select('.test-missing-school-weeks',
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
-      assert_select('a[href=?]',
-                    account_path(user: {missing_weeks_school_id: student.school.id}))
-      student.update(missing_weeks_school_id: school.id)
-      get internship_offer_path(create(:weekly_internship_offer))
-
-      assert_response :success
-      assert_select('.student-form-missing-school-weeks',
-                    { count: 0 },
-                    'missing rendering of call_to_action/student_missing_school_weeks')
+      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
     end
+
+  
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
