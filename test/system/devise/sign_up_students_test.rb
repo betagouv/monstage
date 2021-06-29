@@ -99,6 +99,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     created_student = Users::Student.where(email: 'yetanother@email.com').first
+    assert_equal offer.id, created_student.targeted_offer_id
 
     # confirmation mail under the hood
     created_student.confirm
@@ -110,9 +111,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
     # redirected page is a show of targeted internship_offer
-    assert current_path, "/internship_offer/#{offer.id}"
+    assert_equal  "/internship_offers/#{offer.id}", current_path
     # targeted page is now empty
-    assert_nil created_student.targeted_offer_id, 'targeted offer should have been reset'
+    assert_nil created_student.reload.targeted_offer_id,
+              'targeted offer should have been reset'
   end
 
   test 'navigation & interaction works until student creation with phone' do

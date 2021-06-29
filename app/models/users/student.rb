@@ -61,12 +61,11 @@ module Users
     end
 
     def after_sign_in_path
-      options = {}
-      if targeted_offer_id
-        options.merge(id: targeted_offer_id)
-        reset_targeted_offer_id
-      end
-      url_helpers.internship_offers_path(options)
+      return url_helpers.internship_offers_path if targeted_offer_id.nil?
+
+      options = { id: targeted_offer_id }
+      reset_targeted_offer_id
+      url_helpers.internship_offer_path(options)
     end
 
     def custom_dashboard_path
