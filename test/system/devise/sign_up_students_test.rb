@@ -68,7 +68,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal 'm', created_student.gender
   end
 
-  test 'subscription with former internship_offer choice leads to offer page' do
+  test 'Student with mail subscription with former internship_offer choice leads to offer page' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     birth_date = 14.years.ago
@@ -112,6 +112,61 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     click_on "Connexion"
     # redirected page is a show of targeted internship_offer
     assert_equal  "/internship_offers/#{offer.id}", current_path
+    # targeted page is now empty
+    assert_nil created_student.reload.targeted_offer_id,
+              'targeted offer should have been reset'
+
+  end
+
+  test 'Student with phone subscription with former internship_offer choice leads to offer page' do
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
+    class_room_1 = create(:class_room, name: '3e A', school: school_1)
+    birth_date = 14.years.ago
+    password = 'kikoololletest'
+    valid_phone_number = '+330637607756'
+    offer = create(:weekly_internship_offer)
+
+    visit internship_offers_path
+    click_link 'Je postule'
+    # below : 'Pas encore de compte ? Inscrivez-vous'
+    find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
+
+    # signup as student
+    assert_difference('Users::Student.count', 1) do
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+      find('#downshift-2-item-0').click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
+      select(class_room_1.name, from: 'user_class_room_id')
+      fill_in 'Prénom', with: 'Coufert'
+      find("input[name='user[last_name]']").fill_in with: 'Darmarin'
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+      find('label', text: 'Masculin').click
+      find('label', text: 'SMS').click
+      execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
+      fill_in 'Créer un mot de passe', with: password
+      fill_in 'Ressaisir le mot de passe', with: password
+      execute_script("document.getElementById('user_accept_terms').checked = true;")
+      safe_submit
+    end
+
+    created_student = Users::Student.where(phone: valid_phone_number).first
+    assert_equal offer.id, created_student.targeted_offer_id
+
+    # confirmation mail under the hood
+    created_student.confirm
+    created_student.reload
+    assert created_student.confirmed?
+    # confirmation code step
+    find('label', text: 'Code de confirmation').click
+    find_field('Code de confirmation').fill_in(with: created_student.phone_token)
+    click_on "Valider"
+    # visit login mail from confirmation mail
+    find('label', text: 'Téléphone').click
+    execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
+    find("input[name='user[password]']").fill_in with: password
+    click_on "Connexion"
+    # redirected page is a show of targeted internship_offer
+    assert_equal internship_offer_path(id: offer.id), current_path
     # targeted page is now empty
     assert_nil created_student.reload.targeted_offer_id,
               'targeted offer should have been reset'

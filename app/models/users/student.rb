@@ -63,8 +63,7 @@ module Users
     def after_sign_in_path
       return url_helpers.internship_offers_path if targeted_offer_id.nil?
 
-      options = { id: targeted_offer_id }
-      reset_targeted_offer_id
+      options = { id: reset_targeted_offer_id! }
       url_helpers.internship_offer_path(options)
     end
 
@@ -104,13 +103,6 @@ module Users
       if new_record? && school.blank?
         errors.add(:school, :blank)
       end
-    end
-
-    private
-
-    def reset_targeted_offer_id
-      self.targeted_offer_id = nil
-      save
     end
   end
 end

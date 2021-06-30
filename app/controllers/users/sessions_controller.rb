@@ -12,8 +12,10 @@ module Users
         user = fetch_user_by_phone
         if user.confirmed?
           sign_in(user)
-          redirect_to root_path
-          return
+          redirect_to root_path and return if user.targeted_offer_id.nil?
+
+          offer_id = user.reset_targeted_offer_id!
+          redirect_to internship_offer_path(id: offer_id) and return
         else
           user.send_sms_token
           redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)

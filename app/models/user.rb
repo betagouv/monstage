@@ -226,6 +226,13 @@ class User < ApplicationRecord
     end
   end
 
+  def reset_targeted_offer_id!
+    targeted_offer_id = self.targeted_offer_id
+    self.targeted_offer_id = nil
+    save
+    targeted_offer_id
+  end
+
   def statistician? ; false end
   def ministry_statistician? ; false end
 
