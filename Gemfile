@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 # fwk/server
+gem 'actionpack', ">= 6.1.3.2"
 gem 'rails'
 gem 'puma'
 # db
@@ -21,6 +22,7 @@ gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
+gem 'inline_svg'
 gem 'slim-rails'
 gem "view_component", require: "view_component/engine"
 gem 'turbolinks'

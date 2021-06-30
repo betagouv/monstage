@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
     get '/schools', to: 'schools#index'
+    get '/employers_internship_offers', to: 'internship_offers#employers_offers'
     get 'internship_offers', to: 'internship_offers#index'
   end
 

@@ -97,7 +97,10 @@ class InternshipOffer < ApplicationRecord
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 
-  has_one :organisation
+  belongs_to :employer, polymorphic: true
+  belongs_to :organisation, optional: true
+
+  has_one :tutor
   has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text

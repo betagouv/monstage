@@ -1,7 +1,31 @@
 - content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
 
-= render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
+.row.d-print-none
+  .col-12
+    p
+      = link_to dashboard_school_internship_applications_path(@school), {id: 'test-backlink', class: 'text-danger font-weight-bold'} do
+        i.fa.fa-arrow-left
+        |&nbsp;
+        = "Conventions de stage"
 
-h1.h3.py-5 Informations récurrentes aux conventions de stages
+.row
+  .col-12
+    ul.nav.nav-tabs.test-dashboard-nav.mb-2.nav-xs-inline
+      li.nav-item
+        = link_to "", class: "nav-link px-2 px-sm-3 active" do
+          | 3e Générale &nbsp;
+          
+.row data={'controller': 'internship-agreement-form'}
+  .col
+  .col-4.text-center.gradient-to-white
+    p.mt-3.mb-0.font-weight-normal
+      = content_tag :div, class: 'btn btn-link p-0 font-weight-normal d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
+        | Afficher les notes
+        = " "
+        i.fa.fa-eye
+      = content_tag :div, class:'btn btn-link p-0 font-weight-normal', data: { action: "click->internship-agreement-form#toggleToolnote",  :"internship-agreement-form-target" => 'hideButton', turbolinks: "false" } do
+        | Masquer les notes
+        = " "
+        i.fa.fa-eye-slash
 
 = render partial: "dashboard/schools/internship_agreement_presets/form", locals: { school: @school, internship_agreement_preset: @school.internship_agreement_preset }

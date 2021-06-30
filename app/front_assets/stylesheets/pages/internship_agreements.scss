@@ -87,36 +87,34 @@ $custom-grey: rgb(51,51,51);
   // border-left: 2px solid #9F98AA;
 }
 
-.valid-form-field::before {
-  content: '';
+$position-form-field-helper: 55px;
+.input-group-custom{
+  position: relative;
+}
+.input-helper{
+  display: flex;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: 4px;
+  right: -55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.valid-form-field {
   background: url("../images/green_check.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
-.editable-form-field::before {
-  content: '';
+.editable-form-field {
   background: url("../images/blue_edit.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
-.required-form-field::before {
-  content: '';
+.delegated-form-field{
+  background: url("../images/delegated-to-another-one.svg") no-repeat top right;
+}
+.required-form-field {
   background: url("../images/yellow_sign.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
 .trix-header-vanisher {
   trix-toolbar{
     display: none;
@@ -138,11 +136,33 @@ $custom-grey: rgb(51,51,51);
 .offset-absolute{
   width: 100%;
   position: absolute;
-  margin-top: 3px;
+  margin-top: 13px;
+  height: 0;
 
   .gradient-to-white{
     background: rgb(255,255,255);
     background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
+    border-top: 2px solid $light-grey;
+    position: relative;
+    left: -2px;
+    box-shadow: 3px -10px white, -3px -10px white;
+  }
+}
 
+.internship-agreement {
+  .row {
+    margin: 0;
+  }
+  .offset-2 {
+    background-color: white;
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
+    
+  }
+  .end-form {
+    border-bottom: 2px solid $light-grey;
+    padding-top: 1rem;
   }
 }

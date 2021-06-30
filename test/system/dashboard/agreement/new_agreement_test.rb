@@ -111,12 +111,14 @@ module Dashboard
         internship_agreement_complementary_terms_rich_text
       ].each do |trix_field_id|
         assert_trix_editor_editable(trix_field_id)
+
       end
       %w[
         internship_agreement_activity_rating_rich_text
       ].each do |trix_field_id|
         refute_trix_editor_editable(trix_field_id)
       end
+
     end
 
     test 'as Tutor, I can edit my own fields only' do
@@ -180,6 +182,7 @@ module Dashboard
                                       )
       sign_in(school.school_manager)
       visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
+
 
       #Fields edition tests
       field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',

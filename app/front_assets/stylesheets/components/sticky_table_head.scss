@@ -10,7 +10,9 @@
       z-index: 2;
       position: sticky;
       border-top: none;
-      top:0
+      top:0;
+      left: -20px;
+      right: -20px;
     }
     tr:first-child:not(:last-child) th{
       height: 67px;
@@ -21,9 +23,14 @@
   }
 
   .tr-white{
-    box-shadow: 0 2px 0px rgba($blue,.5);
+    box-shadow: 0 2px 0px rgba($blue,.5),
+                -11px 0 0 #fff,
+                10px 0 0 #fff;
+
     th{
-      box-shadow: 0 2px 0px rgba($blue,.5),;
+      box-shadow: 0 2px 0px rgba($blue,.5),
+                -11px 0 0 #fff,
+                10px 0 0 #fff;
       background-color: $white;
     }
   }

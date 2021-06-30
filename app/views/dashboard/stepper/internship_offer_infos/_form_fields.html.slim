@@ -82,15 +82,14 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
       = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form, disabled: false }
 
       - if submit_button
-        .row.mt-5
-          .col-6.text-left style="display: flex;align-items: center"
-            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]) do
-              i.fa.fa-arrow-left
-              = " Précédent"
-          .col-6.text-right
-            = button_tag :submit, class: 'btn btn-primary' do
-              = 'Suivant '
-              i.fas.fa-arrow-right
+        .actions
+          .row.mt-5
+            .col-4.text-left
+              = button_tag :submit, class: 'btn btn-primary' do
+                = 'Suivant '
+                i.fas.fa-arrow-right
+            .col-8.text-left style="display: flex;align-items: center"
+              = link_to 'Précédent', edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id])
     - if warning_bloc
       .d-none.d-md-flex.col-md-6
         .sticky-top= render partial: 'dashboard/stepper/warning_block'

@@ -34,7 +34,7 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
                                          weeks: available_weeks)
 
       click_on "Suivant"
-      find('legend', text: 'Informations complémentaires')
+      find('legend', text: 'Informations sur le tuteur')
       click_on "Précédent"
       find('legend', text: 'Offre de stage')
       click_on "Précédent"
@@ -42,7 +42,7 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
       click_on "Suivant"
       find('legend', text: 'Offre de stage')
       click_on "Suivant"
-      find('legend', text: 'Informations complémentaires')
+      find('legend', text: 'Informations sur le tuteur')
       fill_in_tutor_form
       click_on "Publier l'offre !"
       wait_form_submitted

@@ -23,6 +23,15 @@ def populate_week_reference
   end
 end
 
+def populate_month_reference
+  next_month = 3.years.ago.beginning_of_month
+  loop do
+    Month.create!(date: next_month)
+    next_month = next_month.next_month
+    break if next_month > 10.years.from_now
+  end
+end
+
 def geo_point_factory_array(coordinates_as_array)
   type = { geo_type: 'point' }
   factory = RGeo::ActiveRecord::SpatialFactoryStore.instance
@@ -243,7 +252,27 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Beta.gouv.fr',
+    employer_name: 'Du temps pour moi',
+    school_track: :troisieme_generale
+  )
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Stage assistant.e banque et assurance',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Gilles Charles',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
 
@@ -269,7 +298,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Octo Technology',
+    employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
 
@@ -294,7 +323,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Agence Zero',
+    employer_name: 'Chottin',
     school_track: :bac_pro
   )
   # Bac_pro
@@ -318,7 +347,7 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'BFM',
+    employer_name: 'Rabier Ent.',
     school_track: :bac_pro
   )
   # 3eme generale API
@@ -345,7 +374,7 @@ def populate_internship_offers
     remote_id: '1',
     permalink: 'https://www.google.fr',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'SNCF',
+    employer_name: 'IBM',
   )
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
@@ -373,7 +402,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'RATP',
+    employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
   # 3eme segpa multi-line
@@ -398,7 +427,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Vinci',
+    employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
 end
@@ -428,7 +457,7 @@ def populate_applications
                                 .where('class_rooms.school_track = ?', :bac_pro)
                                 .to_a
                                 .shuffle
-                                .first(2)
+                                .first(4)
   trois_gene_studs = Users::Student.joins(:class_room)
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
@@ -484,44 +513,68 @@ def populate_applications
       internship_offer: troisieme_generale_offers.first,
       internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     )
-    InternshipApplications::WeeklyFramed.create!(
-      aasm_state: :approved,
+  end
+end
+
+
+def populate_internship_weeks
+  manager = Users::SchoolManagement.find_by(role: 'school_manager')
+  school = manager.school
+  school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_applications
+  bac_pro_studs = Users::Student.joins(:class_room)
+                                .where('class_rooms.school_track = ?', :bac_pro)
+                                .to_a
+                                .shuffle
+                                .first(2)
+  trois_gene_studs = Users::Student.joins(:class_room)
+                                   .where('class_rooms.school_track = ?', :troisieme_generale)
+                                   .to_a
+                                   .shuffle
+                                   .first(4)
+  ios_troisieme_generale = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
+  ios_bac_pro = InternshipOffers::FreeDate.where(school_track: :bac_pro)
+
+  bac_pro_studs.each do |bac_pro_stud|
+    InternshipApplications::FreeDate.create!(
+      aasm_state: :submitted,
       submitted_at: 10.days.ago,
-      approved_at: 2.days.ago,
-      student: trois_gene_studs.third,
+      internship_offer: ios_bac_pro.first,
       motivation: 'Au taquet',
-      internship_offer: troisieme_generale_offers.first,
-      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+      student: bac_pro_stud
     )
+  end
+  ios_troisieme_generale.each do |io_trois_gene|
     InternshipApplications::WeeklyFramed.create!(
       aasm_state: :approved,
       submitted_at: 10.days.ago,
       approved_at: 2.days.ago,
       student: trois_gene_studs.fourth,
       motivation: 'Au taquet',
-      internship_offer: troisieme_generale_offers.first,
-      internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+      internship_offer: io_trois_gene,
+      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
 end
 
 def populate_agreements
-  troisieme_generale_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
-
-  agreement_1 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[0].internship_offer.employer)
-                                                    .new_from_application(troisieme_generale_offers[0])
+  troisieme_applications_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
+  agreement_1 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[0].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[0])
   agreement_1.school_manager_accept_terms = true
   agreement_1.employer_accept_terms = false
   agreement_1.save!
 
-  agreement_2 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[1].internship_offer.employer)
-                                                    .new_from_application(troisieme_generale_offers[1])
+  agreement_2 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[1].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[1])
   agreement_2.school_manager_accept_terms = false
   agreement_2.employer_accept_terms = true
   agreement_2.save!
 
-  agreement_3 = Builders::InternshipAgreementBuilder.new(user: troisieme_generale_offers[2].internship_offer.employer)
-                                                    .new_from_application(troisieme_generale_offers[2])
+  agreement_3 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[2].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[2])
   agreement_3.school_manager_accept_terms = true
   agreement_3.employer_accept_terms = true
   agreement_3.save!
@@ -546,8 +599,8 @@ def prevent_sidekiq_to_run_job_after_seed_loaded
 end
 
 if Rails.env == 'review' || Rails.env.development?
-  require 'factory_bot_rails'
   call_method_with_metrics_tracking([
+    :populate_month_reference,
     :populate_week_reference,
     :populate_schools,
     :populate_class_rooms,

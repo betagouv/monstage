@@ -33,7 +33,7 @@ class School < ApplicationRecord
                            .having('count(users.id) = 0')
   }
 
-    scope :without_weeks_on_current_year, lambda {
+  scope :without_weeks_on_current_year, lambda {
     all.where.not(
       id: self.joins(:weeks)
               .merge(Week.selectable_on_school_year)

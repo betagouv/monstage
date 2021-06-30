@@ -2,6 +2,7 @@ import './favicon.png';
 import './logo-mon-stage-3e.svg';
 import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
+import './notice_people.svg';
 
 import './onboarding/confirm-desktop.svg';
 import './onboarding/confirm-mobile.svg';
@@ -15,6 +16,9 @@ import './pages/logo_cget_texte.png';
 import './pages/remote_internships/webinar_2x.png';
 import './pages/remote_internships/face_to_face_2x.png';
 import './pages/remote_internships/digital_week_2x.png';
+
+import './icons/noun_Handshake_2803586-1.svg'
+import './icons/noun_job_offer_1461730-1.svg'
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';

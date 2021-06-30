@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :internship_offer do
+  factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     max_candidates { 1 }
     blocked_weeks_count { 0 }
@@ -69,6 +69,15 @@ FactoryBot.define do
 
     trait :discarded do
       discarded_at { Time.now }
+    end
+
+    trait :with_private_employer_group do
+      is_public { false }
+      group { create(:group, is_public: false) }
+    end
+    trait :with_public_group do
+      is_public { true }
+      group { create(:group, is_public: true) }
     end
 
     factory :api_internship_offer, traits: [:api_internship_offer],

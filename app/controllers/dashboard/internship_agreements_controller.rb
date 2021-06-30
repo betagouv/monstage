@@ -49,7 +49,7 @@ module Dashboard
     rescue ActionController::ParameterMissing
       @internship_agreement = InternshipAgreement.find(params[:id])
       @available_weeks = Week.selectable_on_school_year
-      render :edit, status: :bad_request
+      render :edit
     end
 
     def show # TODO : test
@@ -91,7 +91,8 @@ module Dashboard
               :main_teacher_accept_terms,
               :tutor_accept_terms,
               weekly_hours:[],
-              new_daily_hours:[]
+              new_daily_hours:{},
+              daily_lunch_break: {}
               )
     end
 

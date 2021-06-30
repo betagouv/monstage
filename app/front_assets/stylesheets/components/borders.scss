@@ -22,6 +22,9 @@
   border-left: 1px;
   border-left-style: solid;
 }
+.bc-custom-blue{
+  border-color: rgb(169,163,185);
+}
 
 // border-color
 .bt-light{
@@ -33,6 +36,9 @@
 .rounded-circle-right-input{
   border-top-right-radius: $input-border-radius!important;
   border-bottom-right-radius:$input-border-radius!important;
+}
+.bc-stats{
+  border-color: rgb(73,61,96);
 }
 .rounded-circle-right{
   border-top-left-radius:0;

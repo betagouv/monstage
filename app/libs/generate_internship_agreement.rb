@@ -89,6 +89,25 @@ class GenerateInternshipAgreement < Prawn::Document
     label_form "Dates de la séquence d’observation en milieu professionnel :"
     field_form @internship_agreement.date_range
 
+    label_form "Horaires journaliers de l’élève :"
+    if !@internship_agreement.new_daily_hours.blank?
+      %w(lundi mardi mercredi jeudi vendredi samedi).map do |day|
+        hours = @internship_agreement.new_daily_hours[day]
+        lunch_break = @internship_agreement.daily_lunch_break[day]
+        next if hours.blank? || hours.size != 2
+        daily_schedule = [ "de #{hours[0]} à #{hours[1]}" ]
+        daily_schedule = daily_schedule.push("pause dejeuner : #{lunch_break}") if lunch_break.present?
+        field_form "#{day.capitalize} : #{daily_schedule.join(', ')}"
+      end
+    else
+      hours = @internship_agreement.weekly_hours
+      lunch_break = @internship_agreement.weekly_lunch_break
+      daily_schedule = [ "de #{hours[0]} à #{hours[1]}" ]
+      daily_schedule = daily_schedule.push("pause dejeuner : #{lunch_break}") if lunch_break.present?
+
+      field_form "Tous les jours : #{daily_schedule.join(', ')}."
+    end
+
     unless @internship_agreement.troisieme_generale?
       label_form "Objectifs assignés à la séquence d’observation en milieu professionnel :"
       field_form @internship_agreement.activity_learnings_rich_text.body.html_safe, html: true
@@ -99,8 +118,6 @@ class GenerateInternshipAgreement < Prawn::Document
       field_form @internship_agreement.activity_preparation_rich_text.body.html_safe, html: true
     end
 
-    label_form "HORAIRES journaliers de l’élève :"
-    field_form @internship_agreement.internship_application.internship_offer.weekly_hours.join('-')
 
     label_form "Activités prévues :"
     field_form @internship_agreement.activity_scope_rich_text.body.html_safe, html: true

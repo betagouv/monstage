@@ -1,0 +1,4 @@
+- if edit_enable
+  div class="input-helper #{form.object.send(field).present? ? 'valid-form-field' : 'required-form-field'} " data-internship-agreement-field-target="helper"
+- else
+  div class="input-helper #{form.object.send(field).present? ? 'valid-form-field' : 'delegated-form-field'}" data-toggle="tooltip" data-placement="top" title="Sera complété par #{filled_by.join(" et ")}" data-controller='tooltip'

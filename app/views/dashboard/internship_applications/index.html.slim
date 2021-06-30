@@ -1,13 +1,11 @@
-- if can? :create_remote_internship_request, SupportTicket
-  = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
-
 .row
   .col-12
     h2.h3.title-with-button-line
       |Editer, imprimer et bientôt signer les conventions dématérialisées
 
-= render partial: "dashboard/internship_offers/tabs",
+.row= render partial: "dashboard/internship_offers/tabs",
           locals: { internship_offers: @internship_offers }
+
 table.mt-4.table.table-hover.table-sticky-thead.table-rg2a
   thead
     tr.d-flex.tr-white.row

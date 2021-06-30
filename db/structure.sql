@@ -430,7 +430,8 @@ CREATE TABLE public.groups (
     is_public boolean,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    is_pacte boolean
 );
 
 
@@ -512,7 +513,9 @@ CREATE TABLE public.internship_agreements (
     main_teacher_accept_terms boolean DEFAULT false,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     school_delegation_to_sign_delivered_at date,
-    tutor_accept_terms boolean DEFAULT false
+    tutor_accept_terms boolean DEFAULT false,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -633,7 +636,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -779,7 +784,10 @@ CREATE TABLE public.internship_offers (
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -800,6 +808,17 @@ CREATE SEQUENCE public.internship_offers_id_seq
 --
 
 ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers.id;
+
+
+--
+-- Name: months; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.months (
+    date date,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -849,7 +868,9 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    creator_id bigint NOT NULL
+    creator_id bigint NOT NULL,
+    employer_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -2301,10 +2322,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210128162938'),
 ('20210129121617'),
 ('20210224160904'),
+('20210225164349'),
 ('20210310173554'),
+('20210326100435'),
 ('20210407131810'),
 ('20210407132925'),
 ('20210414084512'),
-('20210422145040');
+('20210422145040'),
+('20210506142429'),
+('20210506143015'),
+('20210517145027');
 
 
