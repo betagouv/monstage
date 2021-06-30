@@ -32,7 +32,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
     # check application is now here, ensure feature is here
     page.find '#internship-application-closeform', visible: true
-    page.find('.student-form-missing-school-weeks', visible: true)
+    page.find('.test-missing-school-weeks', visible: true)
 
     # check for phone and email fields disabled
     disabled_input_selectors = %w[
@@ -40,12 +40,6 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       internship_application[student_attributes][email]
     ].map do |disabled_selector|
       page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
-
-    assert_changes -> { student.reload.missing_weeks_school_id },
-                   from: nil,
-                   to: student.school_id do
-      click_on 'Je souhaite une semaine de stage'
     end
   end
 
