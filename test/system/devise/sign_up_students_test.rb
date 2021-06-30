@@ -162,6 +162,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     click_on "Valider"
     # visit login mail from confirmation mail
     find('label', text: 'Téléphone').click
+    sleep 0.5
     execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
