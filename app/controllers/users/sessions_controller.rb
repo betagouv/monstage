@@ -8,20 +8,19 @@ module Users
     after_action :switch_back, only: %i[destroy]
 
     def create
-      if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
-        user = fetch_user_by_phone
-        if user.confirmed?
-          sign_in(user)
-          redirect_to root_path and return if user.targeted_offer_id.nil?
+      user = fetch_user_by_phone
+      super and return if user.nil?
 
-          offer_id = user.reset_targeted_offer_id!
-          redirect_to internship_offer_path(id: offer_id) and return
-        else
-          user.send_sms_token
-          redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
-          return
-        end
+      if by_phone? && !user.confirmed?
+        user.send_sms_token
+        redirect_to users_registrations_phone_standby_path(phone: safe_phone_param) and return
       end
+
+      if by_phone? && user.valid_password?(params[:user][:password])
+        sign_in(user)
+        redirect_to after_sign_in_path_for(user) and return
+      end
+
       super
     end
 
