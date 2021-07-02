@@ -29,6 +29,10 @@ FactoryBot.define do
       trait :female do
         gender { 'f' }
       end
+      trait :registered_with_phone do
+        email { nil }
+        phone { '+330637607756' }
+      end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do

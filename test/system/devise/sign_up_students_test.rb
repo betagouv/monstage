@@ -99,21 +99,82 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     created_student = Users::Student.where(email: 'yetanother@email.com').first
-    assert_equal offer.id, created_student.targeted_offer_id
 
     # confirmation mail under the hood
     created_student.confirm
     created_student.reload
     assert created_student.confirmed?
+    assert_equal offer.id, created_student.targeted_offer_id
     # visit login mail from confirmation mail
     visit new_user_session_path
+    find('label', text: 'Email').click
+    sleep 0.7
     find("input[name='user[email]']").fill_in with: created_student.email
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
     # redirected page is a show of targeted internship_offer
     assert_equal  "/internship_offers/#{offer.id}", current_path
-    # targeted page is now empty
+    # targeted offer id at student's level is now empty
     assert_nil created_student.reload.targeted_offer_id,
+              'targeted offer should have been reset'
+
+  end
+
+  test 'Student with account and former internship_offer choice land on offer page after login' do
+    password = 'kikoololletest'
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515', )
+    class_room_1 = create(:class_room, name: '3e A', school: school_1)
+    student = create(:student, school: school_1, class_room: class_room_1, password: password)
+    offer = create(:weekly_internship_offer)
+
+    visit internship_offer_path(offer.id)
+
+    click_link 'Je postule'
+    # below : 'Pas encore de compte ? Inscrivez-vous'
+    within('.onboarding-card.onboarding-card-sm') do
+      click_link 'Me connecter'
+    end
+    # sign_in as Student
+    find('label', text: 'Email').click
+    sleep 0.7
+    find("input[name='user[email]']").fill_in with: student.email
+    find("input[name='user[password]']").fill_in with: password
+    click_on "Connexion"
+
+    # redirected page is a show of targeted internship_offer
+    assert_equal  "/internship_offers/#{offer.id}", current_path
+    # targeted offer id at student's level is now empty
+    assert_nil student.reload.targeted_offer_id,
+              'targeted offer should have been reset'
+
+  end
+
+  test 'Student registered with phone logs in after visiting an internship_offer and lands on offer page' do
+    password = 'kikoololletest'
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515' )
+    class_room_1 = create(:class_room, name: '3e A', school: school_1)
+    student = create(:student, :registered_with_phone, school: school_1, class_room: class_room_1, password: password )
+    offer = create(:weekly_internship_offer)
+
+    visit internship_offer_path(offer.id)
+
+    click_link 'Je postule'
+    # byebug
+    # below : 'Pas encore de compte ? Inscrivez-vous'
+    within('.onboarding-card.onboarding-card-sm') do
+      click_link 'Me connecter'
+    end
+    # sign_in as Student
+    find('label', text: 'Téléphone').click
+    sleep 0.7
+    execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
+    find("input[name='user[password]']").fill_in with: password
+    click_on "Connexion"
+
+    # redirected page is a show of targeted internship_offer
+    assert_equal "/internship_offers/#{offer.id}", current_path
+    # targeted offer id at student's level is now empty
+    assert_nil student.reload.targeted_offer_id,
               'targeted offer should have been reset'
 
   end
@@ -162,13 +223,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     click_on "Valider"
     # visit login mail from confirmation mail
     find('label', text: 'Téléphone').click
-    sleep 0.5
+    sleep 0.6
     execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
     # redirected page is a show of targeted internship_offer
     assert_equal internship_offer_path(id: offer.id), current_path
-    # targeted page is now empty
+    # targeted offer id at student's level is now empty
     assert_nil created_student.reload.targeted_offer_id,
               'targeted offer should have been reset'
   end
