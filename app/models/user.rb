@@ -226,7 +226,7 @@ class User < ApplicationRecord
     end
   end
 
-  def reset_targeted_offer_id!
+  def canceled_targeted_offer_id
     canceled_targeted_offer_id = self.targeted_offer_id
     self.targeted_offer_id = nil
     save

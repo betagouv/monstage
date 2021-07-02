@@ -63,7 +63,7 @@ module Users
     def after_sign_in_path
       return url_helpers.internship_offers_path if targeted_offer_id.nil?
 
-      options = { id: reset_targeted_offer_id! }
+      options = { id: canceled_targeted_offer_id }
       url_helpers.internship_offer_path(options)
     end
 
