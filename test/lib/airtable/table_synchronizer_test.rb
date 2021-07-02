@@ -57,7 +57,7 @@ module Airtable
       end
 
       {"nombre_d'élèves_féminins"=> :nb_spot_female,
-      "nombre_de places_disponibles"=> :nb_spot_available,
+      "nombre_de_places_disponibles"=> :nb_spot_available,
       "nombre_d'élèves_en_stage"=> :nb_spot_used,
       "nombre_d'élèves_masculins"=> :nb_spot_male}.map do |airtable_key, ar_key|
         assert_equal 1, AirTableRecord.where("#{ar_key}" => airtable_record.attributes[airtable_key]).count
