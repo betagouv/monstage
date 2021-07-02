@@ -10,22 +10,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     execute_script("document.getElementById('new_user').submit()")
   end
 
-  def show_phone_form_field
-    execute_script("document.querySelector('div[data-signup-target=\"phoneBloc\"]').style.display = null;")
-    execute_script("document.querySelector('div[data-signup-target=\"phoneBloc\"]').classList.remove('d-none');")
-    execute_script("document.getElementById('phone-input').classList.remove('d-none');")
-    execute_script("document.getElementById('user_email').classList.add('d-none');")
-    find("input[name='user[phone]']")
-  end
-
-  def show_email_form_field
-    execute_script("document.querySelector('div[data-signup-target=\"emailBloc\"]').style.display = null;")
-    execute_script("document.querySelector('div[data-signup-target=\"emailBloc\"]').classList.remove('d-none');")
-    execute_script("document.getElementById('user_email').classList.remove('d-none');")
-    execute_script("document.getElementById('phone-input').classList.add('d-none');")
-    find("input[name='user[email]']")
-  end
-
   test 'navigation & interaction works until student creation' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')
@@ -123,7 +107,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal offer.id, created_student.targeted_offer_id
     # visit login mail from confirmation mail
     visit new_user_session_path
-    find('label', text: 'Email').click && show_email_form_field
+    find('label', text: 'Email').click 
     find("input[name='user[email]']").fill_in with: created_student.email
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
@@ -150,7 +134,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_link 'Me connecter'
     end
     # sign_in as Student
-    find('label', text: 'Email').click && show_email_form_field
+    find('label', text: 'Email').click 
     find("input[name='user[email]']").fill_in with: student.email
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
@@ -179,8 +163,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_link 'Me connecter'
     end
     # sign_in as Student
-    find('label', text: 'Téléphone').click && sleep(0.3) && show_phone_form_field
-
+    find('label', text: 'Téléphone').click && sleep(0.7)
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
@@ -236,7 +219,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find_field('Code de confirmation').fill_in(with: created_student.phone_token)
     click_on "Valider"
     # visit login mail from confirmation mail
-    find('label', text: 'Téléphone').click && sleep(0.3) && show_phone_form_field
+    find('label', text: 'Téléphone').click && sleep(0.6)
     execute_script("document.getElementById('phone-input').value = '#{valid_phone_number}';")
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
