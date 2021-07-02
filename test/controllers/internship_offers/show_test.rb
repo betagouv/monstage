@@ -184,17 +184,14 @@ module InternshipOffers
     end
 
     test 'GET #show as Student with existing submitted, approved, rejected application shows _state component' do
-      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: weeks)
       student = create(:student,
                        class_room: create(:class_room, :troisieme_generale, school: school),
                        school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
       internship_applications = {
         submitted: create(:weekly_internship_application, :submitted, student: student),
         approved: create(:weekly_internship_application, :approved, student: student),
-        rejected: create(:weekly_internship_application, :rejected, student: student),
-        convention_signed: create(:weekly_internship_application, :convention_signed, student: student)
+        rejected: create(:weekly_internship_application, :rejected, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
