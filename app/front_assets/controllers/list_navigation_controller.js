@@ -1,6 +1,5 @@
-import {
-  Controller
-} from 'stimulus';
+import { Controller } from 'stimulus';
+import isMobile from '../utils/responsive';
 import Hammer from 'hammerjs';
 import Turbolinks from 'turbolinks';
 
@@ -14,7 +13,7 @@ export default class extends Controller {
     // see: http://hammerjs.github.io/tips/#i-cant-select-my-text-anymore
     delete Hammer.defaults.cssProps.userSelect;
     this.hammer = new Hammer(document.body, {});
-    if (navigator.userAgent.toLowerCase().match(/mobile/i)) {
+    if (isMobile()) {
       if (this.previousUrlValue.length > 0) {
         this.hammer.on('swipeleft', this.previous.bind(this));
       }
