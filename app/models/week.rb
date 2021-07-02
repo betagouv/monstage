@@ -35,6 +35,10 @@ class Week < ApplicationRecord
     by_year(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
+  scope :fetch_from, lambda { |date: |
+    find_by(number: date.cweek, year: date.year)
+  }
+
   scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
@@ -71,10 +75,6 @@ class Week < ApplicationRecord
   def self.current
     current_date = Date.today
     Week.find_by(number: current_date.cweek, year: current_date.year)
-  end
-
-  def self.from_date(date)
-    Week.find_by(number: date.cweek, year: date.year)
   end
 
   rails_admin do

@@ -54,11 +54,10 @@ module Reporting
       public_group = create(:public_group)
       private_group  = create(:private_group)
       strict_beginning_year = SchoolYear::Current.new.strict_beginning_of_period.year
-      weeks_of_current_year = [::Week.from_date(Date.new(strict_beginning_year, 9, 8))]
-      weeks_of_passed_year  = [::Week.from_date(Date.new(strict_beginning_year - 1, 9, 8))]
+      weeks_of_current_year = [::Week.fetch_from(date: Date.new(strict_beginning_year, 9, 8))]
+      weeks_of_passed_year  = [::Week.fetch_from(date: Date.new(strict_beginning_year - 1, 9, 8))]
       current_year = strict_beginning_year
       last_year = current_year - 1
-      # current_year_week_array = [::Week.from_date(Date.today)]
 
       assert ministry_group.is_public,
              'ministry_statistician associated group should have been public'
