@@ -12,8 +12,9 @@ export default class extends Controller {
   connect() {
     // see: http://hammerjs.github.io/tips/#i-cant-select-my-text-anymore
     delete Hammer.defaults.cssProps.userSelect;
-    this.hammer = new Hammer(document.body, {});
+
     if (isMobile()) {
+      this.hammer = new Hammer(document.body, {});
       if (this.previousUrlValue.length > 0) {
         this.hammer.on('swipeleft', this.previous.bind(this));
       }
@@ -34,6 +35,9 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.hammer.destroy();
+    if (isMobile() && this.hammer) {
+
+      this.hammer.destroy();
+    }
   }
 }
