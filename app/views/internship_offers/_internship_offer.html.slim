@@ -1,13 +1,9 @@
-tr[class="hoverable-row-with-btn #{'fade' if internship_offer.unpublished?}"]
+tr.hoverable-row-with-btn
   td.p-0
     div class="col-12 py-4 px-3 d-block"
       .row
         = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-9 text-decoration-none', data: { test_id: internship_offer.id.to_s } do
 
-          - if internship_offer.unpublished?
-            span.badge.badge-danger.my-2 
-              i.fa.fa-eye-slash
-              |  Non publiée
           p.h5.font-weight-bold.internship-item-title.mb-3= internship_offer.title
 
           p.text-strong.internship-item-badge.mb-3
