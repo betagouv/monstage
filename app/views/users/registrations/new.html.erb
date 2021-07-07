@@ -194,7 +194,9 @@
           <%= f.label :accept_terms, class: 'custom-control-label' do %>
             J'accepte les
           <% end %>
-          <%=link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'font-weight-normal'  %>
+          <%= link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: 'font-weight-normal'  %>.
+          <%= link_to "Lire la Politique de confidentialité", politique_de_confidentialite_path, title: "Lire la Politique de confidentialité (nouvelle fenètre)", target: "_blank", rel: "external noopener noreferrer", class: 'font-weight-normal' %>
+          <span class="font-weight-normal"><%= " pour connaître les modalités d'utilisations de mes informations récoltées." %></span>
         </div>
       </div>
 
