@@ -45,6 +45,10 @@ class School < ApplicationRecord
     where('missing_school_weeks_count > ?', threshold)
   }
 
+  def has_weeks_on_current_year?
+    weeks.selectable_on_school_year.exists?
+  end
+
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
   end

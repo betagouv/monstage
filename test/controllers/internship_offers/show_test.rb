@@ -86,6 +86,9 @@ module InternshipOffers
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
       assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+      assert_select '.btn-danger[disabled]',
+                    { count: 0 },
+                    'form should be submitable'
     end
 
   
@@ -218,6 +221,26 @@ module InternshipOffers
                                 count: 0
         assert_select 'option', text: matching_week.human_select_text_method,
                                 count: 1
+      end
+    end
+
+    test 'GET #show as Student displays select with default option an no more when no weeks matches intersection between school weeks and internship_offer weeks' do
+      school_week = Week.find_by(number: 11, year: 2019)
+      internship_offer_week = Week.find_by(number: 12, year: 2019)
+
+      internship_offer = create(:weekly_internship_offer,
+                                weeks: [internship_offer_week])
+
+      school = create(:school, weeks: [school_week])
+      sign_in(create(:student,
+                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     school: school))
+      travel_to(school_week.week_date - 1.month) do
+        get internship_offer_path(internship_offer)
+
+        assert_response :success
+        assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
+                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>`
       end
     end
 
