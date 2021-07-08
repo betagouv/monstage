@@ -1,16 +1,4 @@
 = cache PrismicFinder do
-  / .bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{PrismicFinder.homepage()['homepage.image'].url})"
-  /   .container
-  /     .row
-  /       .col-12
-  /         #des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
-  /           = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
-  /                         alt: "Dispositif Covid-19",
-  /                         width: 240,
-  /                         class: 'mb-3'
-
-  /           .h1.text-white
-  /             = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
   .bg-cover-image-homepage
     .container
       .row.py-3.py-sm-5
@@ -158,5 +146,4 @@
             - partners_map_of_logo_url.each do |partner|
               = render partial: "partner_link",
                       locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-
 
