@@ -31,7 +31,7 @@ module Presenters
     end
 
     def large_number(number)
-      number.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse
+      number.to_s.reverse.gsub(/...(?=.)/,'\& ').reverse
     end
 
   end
