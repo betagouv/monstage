@@ -3,8 +3,8 @@ import Turbolinks from 'turbolinks';
 
 import isMobile from '../utils/responsive';
 
-import CityInput from './search_internship_offer/CityInput';
-import KeywordInput from './search_internship_offer/KeywordInput';
+import ManagedCityInput from './search_internship_offer/ManagedCityInput';
+import ManagedKeywordInput from './search_internship_offer/ManagedKeywordInput';
 
 function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   const searchParams = new URLSearchParams(window.location.search);
@@ -72,8 +72,8 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   return (
     <form onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
-        <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
-        <CityInput
+        <ManagedKeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
+        <ManagedCityInput
           city={city}
           longitude={longitude}
           latitude={latitude}

@@ -1,0 +1,30 @@
+.modal.show.modal-fullscreen-lg  aria-modal="true" role="dialog" style="display: block"
+  .modal-dialog
+    .modal-content
+      .modal-header.bb-1.bt-light
+        .modal-title Modifier ma recherche
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+
+      .modal-body
+        .row
+          .col-12
+            .form-group
+              label for="input-search-by-keyword" Rechercher une profession
+              = react_component("KeywordInput")
+
+            .form-group
+              label for="input-search-by-city" Ville ou code postal
+              = react_component("CityInput")
+
+            .form-group
+              label for="input-search-by-city" Filtrer par filière
+
+
+            .form-group
+              - Presenters::ClassRoom.school_tracks_list.map.with_index do |i, (track_key, track_i18n)|
+                .row
+                  .col-6= "key #{track_key}"
+                  .col-6= "track #{track_i18n}"
+                  .col-6= "i #{i}"
+

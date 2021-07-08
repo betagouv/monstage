@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import { fetch } from 'whatwg-fetch';
+import focusedInput from './FocusedInput';
 import { endpoints } from '../../utils/api';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
-function KeywordInput({ }) {
-  const searchParams = new URLSearchParams(window.location.search);
-
-  const [keyword, setKeyword] = useState(searchParams.get('keyword') || '');
+function ManagedKeywordInput({ keyword, setKeyword, focus, setFocus }) {
   const [searchResults, setSearchResults] = useState([]);
   const [keywordDebounced] = useDebounce(keyword, 200);
   const inputChange = (event) => {
@@ -53,7 +51,10 @@ function KeywordInput({ }) {
       }) => (
         <div
           id="test-input-keyword-container"
-          className={`input-group input-group-search col`}
+          className={`input-group input-group-search col ${focusedInput({
+            check: COMPONENT_FOCUS_LABEL,
+            focus,
+          })}`}
         >
           <div className="input-group-prepend">
             <label
@@ -74,6 +75,9 @@ function KeywordInput({ }) {
               name: 'keyword',
               placeholder: 'Profession',
               'aria-label': 'Rechercher par Profession',
+              onFocus: () => {
+                setFocus(COMPONENT_FOCUS_LABEL);
+              },
             })}
           />
           <div className="search-in-place bg-white shadow">
@@ -109,4 +113,4 @@ function KeywordInput({ }) {
     </Downshift>
   );
 }
-export default KeywordInput;
+export default ManagedKeywordInput;

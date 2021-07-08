@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
+import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
 import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 
-// see: https://geo.api.gouv.fr/decoupage-administratif/communes
-function CityInput({}) {
-  const searchParams = new URLSearchParams(window.location.search);
 
-  const [city, setCity] = useState(searchParams.get('city'));
-  const [latitude, setLatitude] = useState(searchParams.get('latitude'));
-  const [longitude, setLongitude] = useState(searchParams.get('longitude'));
-  const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+// see: https://geo.api.gouv.fr/decoupage-administratif/communes
+
+function ManagedCityInput({
+  // getters
+  city,
+  // setters
+  setCity,
+  setLatitude,
+  setLongitude,
+  // forwarded to radiusInput
+  radius,
+  setRadius,
+  // used by container
+  focus,
+  setFocus,
+}) {
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(city, 100);
   const inputChange = (event) => {
@@ -80,7 +90,10 @@ function CityInput({}) {
         <div
           id="test-input-location-container"
           title="Resulltat de recherche"
-          className={`input-group input-group-search col`}
+          className={`input-group input-group-search col ${focusedInput({
+            check: COMPONENT_FOCUS_LABEL,
+            focus,
+          })}`}
         >
           <div className="input-group-prepend ">
             <label
@@ -103,6 +116,7 @@ function CityInput({}) {
               placeholder: 'Lieu',
               "aria-label": "Autour de",
               onFocus: (event) => {
+                setFocus(COMPONENT_FOCUS_LABEL);
                 openMenu(event);
               },
             })}
@@ -115,6 +129,11 @@ function CityInput({}) {
                 "aria-labelledby": 'input-search-by-city',
               })}
             >
+              {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
+                <li>
+                  <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
+                </li>
+              )}
               {isOpen
                 ? searchResults.map((item, index) => (
                   <li
@@ -141,4 +160,4 @@ function CityInput({}) {
   );
 }
 
-export default CityInput;
+export default ManagedCityInput;
