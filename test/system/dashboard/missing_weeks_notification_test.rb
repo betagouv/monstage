@@ -61,7 +61,6 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
     school = create(:school, :with_school_manager, weeks: [])
     class_room = create(:class_room, :bac_pro, school: school)
     student = create(:student, school: school, class_room: class_room)
-    message_no_week = "Attention, votre établissement n'a pas encore renseigné ses dates de stage."
     student_message = "Nous allons prévenir votre chef d'établissement pour que vous puissiez postuler"
     student_wish_message = "Je souhaite une semaine de stage"
 
@@ -69,7 +68,6 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       sign_in(student)
       visit internship_offers_path
       assert_presence_of(internship_offer: internship_offer)
-      find "#alert-text", text: message_no_week
       click_link("Voir l'annonce")
       find("a[href='#internship-application-form']").click
       page.has_no_content? student_wish_message
@@ -81,15 +79,6 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       find ".label", text: "Pourquoi ce stage me motive"
       page.find "input[name='commit']"
       sign_out(student)
-
-      # Cron would find out and mail a notification
-      cronjob_instance = Triggers::SchoolMissingWeeksReminder.new
-      fake_notify_response = Minitest::Mock.new
-      fake_notify_response.expect :call, true, [school]
-
-      cronjob_instance.stub :notify, fake_notify_response do
-        assert_equal [], cronjob_instance.enqueue_all
-      end
     end
   end
 end

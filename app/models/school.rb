@@ -5,9 +5,6 @@ class School < ApplicationRecord
   include Zipcodable
   include SchoolUsersAssociations
 
-  has_many :students_with_missing_school_week, dependent: :nullify,
-                                               class_name: 'Users::Student'
-
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
@@ -39,10 +36,6 @@ class School < ApplicationRecord
               .merge(Week.selectable_on_school_year)
               .pluck(:id)
     )
-  }
-
-  scope :missing_school_week_count_gt, lambda { |threshold|
-    where('missing_school_weeks_count > ?', threshold)
   }
 
   def has_weeks_on_current_year?

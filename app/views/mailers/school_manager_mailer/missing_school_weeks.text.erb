@@ -1,9 +1,0 @@
-Vos élèves comptent sur vous !
-
-<%= "Bonjour #{@school_manager.name}," %>
-
-Vous vous êtes inscrit sur monstagedetroisieme.fr pour votre établissement, mais n'avez pas sélectionné de semaines de stage. Sans cette démarche vos élèves ne pourront pas postuler.
-
-<%= "A l'heure actuelle, #{@school.missing_school_weeks_count} élève(s) n'ont pas pu postuler? Vous pouvez ajouter des semaines de stage depuis votre espace en cliquant sur ce lien : " %>
-
-<%= edit_dashboard_school_url(@school) %>
