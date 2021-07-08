@@ -40,9 +40,9 @@ module Users
 
     # GET /resource/sign_up
     def new
-      targeted_offer_id = params.dig(:user, :targeted_offer_id)
+      @targeted_offer_id = params.dig(:user, :targeted_offer_id)
       options = {}
-      options = options.merge(targeted_offer_id: targeted_offer_id) if targeted_offer_id
+      options = options.merge(targeted_offer_id: @targeted_offer_id) if @targeted_offer_id
 
       if UserManager.new.valid?(params: params)
         super do |resource|

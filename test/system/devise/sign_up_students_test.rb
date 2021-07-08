@@ -72,6 +72,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     birth_date = 14.years.ago
+    email = 'yetanother@gmail.com'
     password = 'kikoololletest'
     offer = create(:weekly_internship_offer)
 
@@ -91,14 +92,14 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Féminin').click
       find('label', text: 'Email').click
-      fill_in 'Adresse électronique', with: 'yetanother@email.com'
+      fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 
-    created_student = Users::Student.where(email: 'yetanother@email.com').first
+    created_student = Users::Student.where(email: email).first
 
     # confirmation mail under the hood
     created_student.confirm
@@ -107,7 +108,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal offer.id, created_student.targeted_offer_id
     # visit login mail from confirmation mail
     visit new_user_session_path
-    find('label', text: 'Email').click 
+    find('label', text: 'Email').click
     find("input[name='user[email]']").fill_in with: created_student.email
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
@@ -134,7 +135,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_link 'Me connecter'
     end
     # sign_in as Student
-    find('label', text: 'Email').click 
+    find('label', text: 'Email').click
     find("input[name='user[email]']").fill_in with: student.email
     find("input[name='user[password]']").fill_in with: password
     click_on "Connexion"
@@ -157,7 +158,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer.id)
 
     click_link 'Je postule'
-    # byebug
     # below : 'Pas encore de compte ? Inscrivez-vous'
     within('.onboarding-card.onboarding-card-sm') do
       click_link 'Me connecter'

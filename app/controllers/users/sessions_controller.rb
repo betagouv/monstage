@@ -15,18 +15,17 @@ module Users
     def create
       user_with_email = fetch_user_by_email
       user_with_phone = fetch_user_by_phone
-      store_targeted_offer_id(user: user_with_email || user_with_phone)
+      user = user_with_phone || user_with_email
+      store_targeted_offer_id(user: user)
 
-      super and return if user_with_phone.nil? || !by_phone?
-
-      unless user_with_phone.confirmed?
+      if user_with_email.nil? && !user_with_phone&.confirmed?
         user_with_phone.send_sms_token
         redirect_to users_registrations_phone_standby_path(phone: safe_phone_param) and return
       end
 
-      if user_with_phone.valid_password?(params[:user][:password])
-        sign_in(user_with_phone)
-        redirect_to after_sign_in_path_for(user_with_phone) and return
+      if user&.valid_password?(params[:user][:password])
+        sign_in(user)
+        redirect_to after_sign_in_path_for(user) and return
       end
 
       super
@@ -36,10 +35,7 @@ module Users
 
     def store_targeted_offer_id(user:)
       if user && params[:user][:targeted_offer_id].present?
-        offer_id = params[:user][:targeted_offer_id]
-        return false if offer_id.nil?
-
-        store_location_for(:user, internship_offer_path(id: offer_id))
+        user.update(targeted_offer_id: params[:user][:targeted_offer_id])
       end
     end
 
