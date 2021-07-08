@@ -8,7 +8,7 @@
           h1.text-white.text-center.mb-3
             | monstagedetroisieme.fr,
             br
-            | c'est
+            | ce sont
             - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
             - presenter = Presenters::InternshipOffer.new
             span.home-blue-shadow = " #{presenter.large_number(offers)} "
