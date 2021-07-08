@@ -1,3 +1,4 @@
+- applicable_weeks = current_user.school.has_weeks_on_current_year? ?  @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
 #internship-application-form data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   .bg-light-blue
     .col-12
