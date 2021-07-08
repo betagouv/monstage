@@ -35,7 +35,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       find("a[href='#internship-application-form']").click
       find "label", text: "Quelle semaine ?"
       find "p.test-missing-school-weeks", text: explanation
-      page.find "input[name='commit'][disabled]", visible: true
+      page.find "input[name='commit']", visible: true
       sign_out(student)
 
       # Back to interfaces
