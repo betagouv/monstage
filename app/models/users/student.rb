@@ -32,6 +32,12 @@ module Users
 
     attr_reader :handicap_present
 
+    def channel
+      return :email if email.present?
+
+      :phone
+    end
+
     def internship_applications_type
       return nil unless class_room.present?
       return InternshipApplications::WeeklyFramed.name if class_room.troisieme_generale?
