@@ -70,7 +70,6 @@ module InternshipOffers
 
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application'
-      assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
     test 'GET #show as Student when school has no weeks it shows caution message and weeks offer select' do
