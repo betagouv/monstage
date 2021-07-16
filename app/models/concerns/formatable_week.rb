@@ -13,6 +13,14 @@ module FormatableWeek
         .join(' ')
     end
 
+    def short_range_as_str
+      [
+        I18n.localize(week_date.beginning_of_week, format: "%e %B"),
+        " ➝ ",
+        I18n.localize(week_date.end_of_week, format: "%e %B")
+      ].join("")
+    end
+
     def long_select_text_method
       ['du', beginning_of_week_with_year, 'au', end_of_week_with_years]
         .map(&:to_s)

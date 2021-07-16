@@ -7,7 +7,7 @@
           span aria-hidden="true" &times;
 
       .modal-body
-        = form_with url: internship_offers_path do |f|
+        = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true do |f|
           .row
             .col-12
               .form-group
@@ -31,3 +31,18 @@
                         = f.radio_button :school_track, enum_right
                         = f.label :"school_track_#{enum_right}", track_right
 
+              .form-group
+                .label Quand se déroule le stage ?
+
+                - Week.weeks_by_month.map do |month_i, weeks|
+                  - next if weeks.empty?
+                  .custom-list-group.border.rounded name="month_#{month_i}"
+                    - weeks.map do |week|
+                      .custom-list-group-item.d-flex.py-3.border-bottom
+                        = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2' }, week.id, false
+
+                        = f.label :"week_id", for:  "checkbox_#{week.id}", class: "mb-0 flex-fill " do
+                          p.mb-0= week.short_range_as_str
+                          small= "Semaine #{week.week_date.cweek}"
+
+              .actions.d-flex.d-sm-block.d-xs-stick.p-2= f.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil

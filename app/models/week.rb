@@ -77,6 +77,34 @@ class Week < ApplicationRecord
     Week.find_by(number: current_date.cweek, year: current_date.year)
   end
 
+  MONTHS_MAP = {
+    '9' => [],
+    '10' => [],
+    '11' => [],
+    '12' => [],
+    '1' => [],
+    '2' => [],
+    '3' => [],
+    '4' => [],
+    '5' => [],
+    '6' => [],
+    '7' => [],
+    '8' => [],
+
+  }
+  def self.weeks_by_month
+    selectable_from_now_until_end_of_school_year
+      .inject(MONTHS_MAP.dup) do |months, week|
+        week_date = week.week_date
+        beginning_of_week = week_date.beginning_of_week
+        # end_of_week = week_date.end_of_week
+
+        months[beginning_of_week.month.to_s].push(week)
+        # months[end_of_week.month.to_s].push(week) if beginning_of_week.month != end_of_week.month
+        months
+      end
+  end
+
   rails_admin do
     export do
       field :number

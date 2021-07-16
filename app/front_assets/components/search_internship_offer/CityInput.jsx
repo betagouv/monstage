@@ -11,8 +11,8 @@ function CityInput({}) {
   const searchParams = new URLSearchParams(window.location.search);
 
   const [city, setCity] = useState(searchParams.get('city'));
-  const [latitude, setLatitude] = useState(searchParams.get('latitude'));
-  const [longitude, setLongitude] = useState(searchParams.get('longitude'));
+  const [latitude, setLatitude] = useState(searchParams.get('latitude') || "");
+  const [longitude, setLongitude] = useState(searchParams.get('longitude') || "");
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(city, 100);
@@ -60,84 +60,89 @@ function CityInput({}) {
   }, [cityDebounced]);
 
   return (
-    <Downshift
-      initialInputValue={city || ""}
-      onChange={setLocation}
-      selectedItem={city}
-      itemToString={(item) => (item ? item.nom : '')}
-    >
-      {({
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        isOpen,
-        inputValue,
-        highlightedIndex,
-        selectedItem,
-        openMenu,
-      }) => (
-        <div
-          id="test-input-location-container"
-          title="Resulltat de recherche"
-          className={`input-group input-group-search col`}
-        >
-          <div className="input-group-prepend ">
-            <label
-              {...getLabelProps()}
-              className="input-group-text input-group-text-bigger input-group-separator"
-              htmlFor="input-search-by-city"
-            >
-              <i className="fas fa-map-marker-alt fa-fw" />
-              <strong className="d-none">Autour de</strong>
-            </label>
-          </div>
+    <>
+      <input type="hidden" name="latitude" value={latitude} />
+      <input type="hidden" name="longitude" value={longitude} />
 
-          <input
-            {...getInputProps({
-              onChange: inputChange,
-              value: inputValue,
-              className: 'form-control pl-2 input-group-search-right-border',
-              name: 'city',
-              id: 'input-search-by-city',
-              placeholder: 'Lieu',
-              "aria-label": "Autour de",
-              onFocus: (event) => {
-                openMenu(event);
-              },
-            })}
-          />
+      <Downshift
+        initialInputValue={city || ""}
+        onChange={setLocation}
+        selectedItem={city}
+        itemToString={(item) => (item ? item.nom : '')}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          getLabelProps,
+          getMenuProps,
+          isOpen,
+          inputValue,
+          highlightedIndex,
+          selectedItem,
+          openMenu,
+        }) => (
+          <div
+            id="test-input-location-container"
+            title="Resulltat de recherche"
+            className={`input-group input-group-search col`}
+          >
+            <div className="input-group-prepend ">
+              <label
+                {...getLabelProps()}
+                className="input-group-text input-group-text-bigger input-group-separator"
+                htmlFor="input-search-by-city"
+              >
+                <i className="fas fa-map-marker-alt fa-fw" />
+                <strong className="d-none">Autour de</strong>
+              </label>
+            </div>
 
-          <div className="search-in-place bg-white shadow">
-            <ul
-              {...getMenuProps({
-                className: 'p-0 m-0',
-                "aria-labelledby": 'input-search-by-city',
+            <input
+              {...getInputProps({
+                onChange: inputChange,
+                value: inputValue,
+                className: 'form-control pl-2 input-group-search-right-border',
+                name: 'city',
+                id: 'input-search-by-city',
+                placeholder: 'Lieu',
+                "aria-label": "Autour de",
+                onFocus: (event) => {
+                  openMenu(event);
+                },
               })}
-            >
-              {isOpen
-                ? searchResults.map((item, index) => (
-                  <li
-                    {...getItemProps({
-                      className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
-                        }`,
-                      key: item.code,
-                      index,
-                      item,
-                      style: {
-                        fontWeight: selectedItem === item ? 'bold' : 'normal',
-                      },
-                    })}
-                  >
-                    {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
-                  </li>
-                ))
-                : null}
-            </ul>
+            />
+
+            <div className="search-in-place bg-white shadow">
+              <ul
+                {...getMenuProps({
+                  className: 'p-0 m-0',
+                  "aria-labelledby": 'input-search-by-city',
+                })}
+              >
+                {isOpen
+                  ? searchResults.map((item, index) => (
+                    <li
+                      {...getItemProps({
+                        className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
+                          }`,
+                        key: item.code,
+                        index,
+                        item,
+                        style: {
+                          fontWeight: selectedItem === item ? 'bold' : 'normal',
+                        },
+                      })}
+                    >
+                      {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+                    </li>
+                  ))
+                  : null}
+              </ul>
+            </div>
           </div>
-        </div>
-      )}
-    </Downshift>
+        )}
+      </Downshift>
+    </>
   );
 }
 
