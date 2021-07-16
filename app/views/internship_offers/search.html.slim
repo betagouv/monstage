@@ -7,24 +7,27 @@
           span aria-hidden="true" &times;
 
       .modal-body
-        .row
-          .col-12
-            .form-group
-              label for="input-search-by-keyword" Rechercher une profession
-              = react_component("KeywordInput")
+        = form_with url: internship_offers_path do |f|
+          .row
+            .col-12
+              .form-group
+                label for="input-search-by-keyword" Rechercher une profession
+                = react_component("KeywordInput")
 
-            .form-group
-              label for="input-search-by-city" Ville ou code postal
-              = react_component("CityInput")
+              .form-group
+                label for="input-search-by-city" Ville ou code postal
+                = react_component("CityInput")
 
-            .form-group
-              label for="input-search-by-city" Filtrer par filière
+              .form-group
+                .label Filtrer par filière
 
-
-            .form-group
-              - Presenters::ClassRoom.school_tracks_list.map.with_index do |i, (track_key, track_i18n)|
-                .row
-                  .col-6= "key #{track_key}"
-                  .col-6= "track #{track_i18n}"
-                  .col-6= "i #{i}"
+              .form-group
+                - Presenters::ClassRoom.school_tracks_list.each_slice(2) do |(track_left, enum_left), (track_right, enum_right)|
+                    .row
+                      .col-6
+                        = f.radio_button :school_track, enum_left
+                        = f.label :"school_track_#{enum_left}", track_left
+                      .col-6
+                        = f.radio_button :school_track, enum_right
+                        = f.label :"school_track_#{enum_right}", track_right
 
