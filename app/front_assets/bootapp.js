@@ -24,6 +24,8 @@ import ReservedSchoolInput from "components/ReservedSchoolInput";
 import FilterInternshipOffer from "components/FilterInternshipOffer";
 import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
+import CityInput from "components/search_internship_offer/CityInput";
+import KeywordInput from "components/search_internship_offer/KeywordInput";
 import CountryPhoneSelect from "components/inputs/CountryPhoneSelect";
 import AddressInput from "components/inputs/AddressInput";
 import DistanceIcon from "components/icons/DistanceIcon";
@@ -36,6 +38,8 @@ ReactOnRails.register({
   SearchSchool,
   SearchSchoolByName,
   DistanceIcon,
+  CityInput,
+  KeywordInput,
   CountryPhoneSelect,
   AddressInput,
 });

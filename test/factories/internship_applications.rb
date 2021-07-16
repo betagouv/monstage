@@ -50,14 +50,12 @@ FactoryBot.define do
       convention_signed_at { 1.days.ago }
     end
 
+    transient do
+      weekly_internship_offer_helper {create(:weekly_internship_offer)}
+    end
     trait :weekly do
-      internship_offer { create(:weekly_internship_offer) }
-      before(:create) do |ia|
-        # kind of trick
-        if ia.internship_offer_week.blank?
-          ia.internship_offer_week = create(:internship_offer_week, internship_offer: ia.internship_offer)
-        end
-      end
+      internship_offer { weekly_internship_offer_helper }
+      internship_offer_week { internship_offer.internship_offer_weeks.first}
     end
 
     trait :free_date do

@@ -15,6 +15,13 @@ module Presenters
       [general_track, professional_track]
     end
 
+    def self.school_tracks_list
+       ::ClassRoom.school_tracks.keys.map do |school_track|
+         [self.tr_school_track(school_track), school_track]
+       end
+    end
+
+
     def self.tr_school_track(track)
       I18n.t("enum.school_tracks.#{track}")
     end
