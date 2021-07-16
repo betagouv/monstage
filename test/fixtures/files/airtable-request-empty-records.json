@@ -31,15 +31,15 @@
             "Secteur d'activitÃ©" : "MÃ©canique",
             "Entreprise d'accueil" : "BNP Paribas",
             "FiliÃ¨re" : "3e",
-            "Nb d'Ã©lÃ¨ves masculins" : 2,
-            "Nb places dispo" : 32,
-            "Nb d'Ã©lÃ¨ves en stage" : 3,
+            "Nombre d'Ã©lÃ¨ves masculins" : 2,
+            "Nombre de places disponibles" : 32,
+            "Nombre d'Ã©lÃ¨ves en stage" : 3,
             "PrivÃ© / Public" : "PrivÃ©",
             "ID" : 1,
             "Type de stage" : "Stage Ã  distance",
             "Sync Source" : "Grid view",
             "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Versailles",
-            "Nb d'Ã©lÃ¨ves fÃ©minins" : 1
+            "Nombre d'Ã©lÃ¨ves fÃ©minins" : 1
          }
       },
       {
@@ -83,17 +83,17 @@
          "createdTime" : "2021-06-06T07:19:45.000Z",
          "fields" : {
             "PrivÃ© / Public" : "PrivÃ©",
-            "Nb d'Ã©lÃ¨ves en stage" : 3,
+            "Nombre d'Ã©lÃ¨ves en stage" : 3,
             "ID" : 1,
-            "Nb places dispo" : 32,
-            "Nb d'Ã©lÃ¨ves masculins" : 2,
+            "Nombre de places disponibles" : 32,
+            "Nombre d'Ã©lÃ¨ves masculins" : 2,
             "FiliÃ¨re" : "3e",
             "Entreprise d'accueil" : "BNP Paribas",
             "Secteur d'activitÃ©" : "MÃ©canique",
             "Sync Source" : "Grid view",
             "Type de stage" : "Stage Ã  distance",
             "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Versailles",
-            "Nb d'Ã©lÃ¨ves fÃ©minins" : 1
+            "Nombre d'Ã©lÃ¨ves fÃ©minins" : 1
          },
          "id" : "reccvgGQYrvewfN9N"
       },

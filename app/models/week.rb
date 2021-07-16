@@ -35,6 +35,10 @@ class Week < ApplicationRecord
     by_year(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
+  scope :fetch_from, lambda { |date: |
+    find_by(number: date.cweek, year: date.year)
+  }
+
   scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
@@ -43,12 +47,10 @@ class Week < ApplicationRecord
   }
 
   scope :of_previous_school_year, lambda {
-    school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
-
-    from_date_to_date(from: school_year.beginning_of_period,
-                      to: school_year.end_of_period)
+    school_year = SchoolYear::Floating.new(date: Date.today)
+    weeks_of_school_year(school_year: school_year.beginning_of_period.year - 1)
   }
-  
+
   scope :selectable_for_school_year, lambda { |school_year:|
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }

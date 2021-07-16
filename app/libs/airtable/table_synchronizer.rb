@@ -19,12 +19,12 @@ module Airtable
 
     COPY_MAPPING = {
       "id" => :remote_id,
-      "nb_places_dispo"=> :nb_spot_available,
-      "nb_d'élèves_en_stage"=> :nb_spot_used,
-      "nb_d'élèves_masculins"=> :nb_spot_male,
+      "nombre_de_places_disponibles"=> :nb_spot_available,
+      "nombre_d'élèves_en_stage"=> :nb_spot_used,
+      "nombre_d'élèves_masculins"=> :nb_spot_male,
       "last_modified" => :updated_at,
       "type_de_stage"=> :internship_offer_type,
-      "nb_d'élèves_féminins"=> :nb_spot_female
+      "nombre_d'élèves_féminins"=> :nb_spot_female
     }
 
     # main job, with some safe stuffs
