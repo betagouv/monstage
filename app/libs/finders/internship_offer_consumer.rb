@@ -46,14 +46,8 @@ module Finders
 
       # WeeklyFramed offers are dedicated to :troisieme_generale and API
       if user.try(:class_room).try(:fit_to_weekly?)
-        if week_ids_params
-          query = query.merge(
-            InternshipOffers::WeeklyFramed.by_weeks(weeks: OpenStruct.new(ids: week_ids_params))
-          )
-        end
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
-
         query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
       elsif user.try(:class_room).try(:fit_to_free_date?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))

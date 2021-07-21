@@ -34,12 +34,14 @@ module Finders
 
     def keyword_params
       return nil unless params.key?(:keyword)
+      return nil if params.dig(:keyword).blank?
 
       params[:keyword]
     end
 
     def coordinate_params
       return nil unless params.key?(:latitude) || params.key?(:longitude)
+      return nil if params.dig(:latitude).blank? if params.dig(:longitude).blank?
 
       geo_point_factory(latitude: params[:latitude], longitude: params[:longitude])
     end
@@ -52,18 +54,21 @@ module Finders
 
     def school_track_params
       return nil unless params.key?(:school_track)
+      return nil if params.dig(:school_track).blank?
 
       params[:school_track]
     end
 
     def school_year_param
       return nil unless params.key?(:school_year)
+      return nil if params.dig(:school_year).blank?
 
       params[:school_year].to_i
     end
 
     def week_ids_params
       return nil unless params.key?(:week_ids)
+      return nil if params.dig(:week_ids).blank?
 
       params[:week_ids]
     end
@@ -75,8 +80,16 @@ module Finders
       query = nearby_query(query) if coordinate_params
       query = school_track_query(query) if school_track_params
       query = school_year_query(query) if school_year_param
+      query = week_ids_query(query) if week_ids_params
       query
     end
+
+    def week_ids_query(query)
+      query = query.merge(
+        InternshipOffers::WeeklyFramed.by_weeks(weeks: OpenStruct.new(ids: week_ids_params))
+      )
+    end
+
 
     def school_year_query(query)
       query.merge(InternshipOffers::WeeklyFramed.specific_school_year(school_year: school_year_param))
