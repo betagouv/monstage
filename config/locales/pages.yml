@@ -73,6 +73,8 @@ fr:
     show:
       page_title: "Ma candidature"
   internship_offers:
+    search:
+      page_title: "Rechercher parmis nos offres de stages"
     index:
       page_title: "Recherche de stages"
     show:

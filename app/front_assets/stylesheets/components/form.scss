@@ -224,3 +224,33 @@
   }
 }
 
+.custom-radio-box{
+  text-align: center;
+  border-width: 2px!important;
+  border-style: solid !important;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05)!important;
+  cursor: pointer;
+
+  &.active{
+    /* blue/50 */
+    background: #EFF6FF;
+
+    /* blue/800 */
+    border-color: #1E40AF!important;
+  }
+
+  &:hover, &:focus{
+    background: #EFF6FF;
+
+    /* gray/200 */
+    border: 1px solid #E5E7EB;
+  }
+  input{
+    position: absolute;
+    left: -10000px;
+  }
+}
+
+.custom-list-item{
+
+}

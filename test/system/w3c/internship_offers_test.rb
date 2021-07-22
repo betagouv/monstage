@@ -26,5 +26,11 @@ module W3c
         end
       end
     end
+
+    test 'search_internship_offer_path' do
+      run_request_and_cache_response(report_as: "search_internship_offer_path") do
+        visit search_internship_offers_path
+      end
+    end
   end
 end

@@ -84,7 +84,7 @@ function CityInput({}) {
           <div
             id="test-input-location-container"
             title="Resulltat de recherche"
-            className={`input-group input-group-search col`}
+            className={`input-group input-group-search col p-0`}
           >
             <div className="input-group-prepend ">
               <label
