@@ -33,21 +33,40 @@
 
               .form-group
                 .label Quand se déroule le stage ?
-                .list-group#list-tab role="tablist"
-                  - list_months_for_search.map do |month_i, _|
-                    = link_to month_in_text(month_i), "#month_#{month_i}", data: {turbolinks: false, toggle: "list"}, aria: { controls: month_in_text(month_i)}, role: "tab"
 
-                .tab-content
+                div role="tabpanel"
+                  #year_select.d-none aria-labelledby="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
+                    .list-group role="tablist"
+                      - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
+                        .row
+                          - if month_i_left
+                            .col-6= link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, aria: { controls: month_in_text(month_i_left, format: "%B")}, role: "tab"
+                          - if month_i_right
+                            .col-6= link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, aria: { controls: month_in_text(month_i_right, format: "%B")}, role: "tab"
+
                   - list_months_for_search.map do |month_i, weeks|
                     - next if weeks.empty?
 
-                    div class=" custom-list-group border rounded   tab-pane #{month_i.to_i == current_month_for_search ? 'active' : 'fade'}" id="month_#{month_i}" role="tabpanel" aria-labelledby="Semaines de #{month_in_text(month_i)}"
-                      - weeks.map do |week|
-                        div class="custom-list-group-item d-flex py-3 border-bottom"
-                          = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2' }, week.id, false
 
-                          = f.label :"week_id", for:  "checkbox_#{week.id}", class: "mb-0 flex-fill " do
-                            p.mb-0= week.short_range_as_str
-                            small= "Semaine #{week.week_date.cweek}"
+                    div class="#{month_i == current_month_for_search ? 'active' : 'd-none'}" id="month_#{month_i}" role="tabpanel" data-search-form-target="tabPane" aria-labelledby="Semaines de #{month_in_text(month_i, format: :month_with_year)}"
+
+                      .row.text-center role="tablist"
+                        .col-2.p-3
+                          - unless search_first_month?(month_i)
+                            = link_to "<", "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
+                        .col-8.p-3
+                          = link_to "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}", "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, aria: { controls: "Liste des mois"}, role: "tab"
+                        .col-2.p-3
+                          - unless search_last_month?(month_i)
+                            = link_to ">", "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
+
+                      .border.rounded
+                        - weeks.map do |week|
+                          div class="d-flex py-3 border-bottom"
+                            = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2' }, week.id, false
+
+                            = f.label :"week_id", for:  "checkbox_#{week.id}", class: "mb-0 flex-fill " do
+                              p.mb-0= week.short_range_as_str
+                              small= "Semaine #{week.week_date.cweek}"
 
               .actions.d-flex.d-sm-block.d-xs-stick.p-2= f.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil
