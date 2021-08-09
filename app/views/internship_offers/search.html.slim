@@ -47,10 +47,10 @@
                         .row.mb-3
                           - if month_i_left
                             .col-6.pr-2
-                                = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none'
+                                = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
                           - if month_i_right
                             .col-6.pl-2
-                                = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none'
+                                = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
 
                   - list_months_for_search.map do |month_i, weeks|
                     - next if weeks.empty?
@@ -64,7 +64,7 @@
                             = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                               i.fas.fa-chevron-left
                         .col-8
-                          = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body'  do
+                          = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
                             i.fas.fa-calendar-alt.text-border-color.mr-3
 
                             = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
