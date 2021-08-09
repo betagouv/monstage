@@ -22,17 +22,19 @@
                 legend.label Filtrer par filière
 
                 - Presenters::ClassRoom.school_tracks_list.each_slice(2) do |(track_left, enum_left), (track_right, enum_right)|
-                  .row.no-gutters
-                    = f.label :"school_track_#{enum_left}", track_left, class: "col-6 custom-radio-box border rounded-8 p-3 font-weight-normal" do
-                      = f.radio_button :school_track, enum_left, 'data-radioboxes-target': 'input', 'data-action': 'change->radioboxes#onChange'
-                      = " "
-                      = t("enum.school_tracks.#{enum_left}")
+                  .row
+                    .col-6.pr-2
+                      = f.label :"school_track_#{enum_left}", track_left, class: "custom-radio-box border rounded-8 p-3 font-weight-normal d-block" do
+                        = f.radio_button :school_track, enum_left, 'data-radioboxes-target': 'input', 'data-action': 'change->radioboxes#onChange'
+                        = " "
+                        = t("enum.school_tracks.#{enum_left}")
+                    .col-6.pl-2
 
-                    = f.label :"school_track_#{enum_right}", track_right, class: "col-6 custom-radio-box border rounded-8 p-3 font-weight-normal" do
+                      = f.label :"school_track_#{enum_right}", track_right, class: "custom-radio-box border rounded-8 p-3 font-weight-normal  d-block" do
 
-                      = f.radio_button :school_track, enum_right, 'data-radioboxes-target': 'input', 'data-action': 'change->radioboxes#onChange'
-                      = " "
-                      = t("enum.school_tracks.#{enum_right}")
+                        = f.radio_button :school_track, enum_right, 'data-radioboxes-target': 'input', 'data-action': 'change->radioboxes#onChange'
+                        = " "
+                        = t("enum.school_tracks.#{enum_right}")
 
               .form-group
                 .label Quand se déroule le stage ?
@@ -72,13 +74,12 @@
                             = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                               i.fas.fa-chevron-right
 
-                      .border.rounded-8
+                      div
                         - weeks.map do |week|
-                          div class="d-flex py-3 border-bottom .custom-list-item"
-                            = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2' }, week.id, false
-
-                            = f.label :"week_id", for:  "checkbox_#{week.id}", class: "mb-0 flex-fill " do
-                              p.mb-0= week.short_range_as_str
-                              small= "Semaine #{week.week_date.cweek}"
+                            = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3   custom-check-box mb-0 font-weight-normal" do
+                              = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2', 'data-checkboxes-target': 'input', 'data-action': 'change->checkboxes#onChange', 'data-controller': "checkboxes" }, week.id, false
+                              span.flex-fill
+                                span.d-block.mb-0= week.short_range_as_str
+                                small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
               .pb-5
               .actions.d-flex.d-sm-block.d-xs-stick.p-2= f.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil
