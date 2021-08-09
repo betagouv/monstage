@@ -40,13 +40,15 @@
                 div role="tabpanel"
 
                   #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
-                    .list-group role="tablist"
+                    div role="tablist"
                       - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
-                        .row
+                        .row.mb-3
                           - if month_i_left
-                            .col-6= link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
+                            .col-6.pr-2
+                                = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none'
                           - if month_i_right
-                            .col-6= link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
+                            .col-6.pl-2
+                                = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none'
 
                   - list_months_for_search.map do |month_i, weeks|
                     - next if weeks.empty?
@@ -54,15 +56,21 @@
 
                     div class="#{month_i == current_month_for_search ? 'active' : 'd-none'}" id="month_#{month_i}" role="tabpanel" data-search-form-target="tabPane" aria-label="Semaines de #{month_in_text(month_i, format: :month_with_year)}"
 
-                      .row.text-center role="tablist"
-                        .col-2.p-3
+                      .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
+                        .col-2
                           - unless search_first_month?(month_i)
-                            = link_to "<", "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
-                        .col-8.p-3
-                          = link_to "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}", "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
-                        .col-2.p-3
+                            = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                              i.fas.fa-chevron-left
+                        .col-8
+                          = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body'  do
+                            i.fas.fa-calendar-alt.text-border-color.mr-3
+
+                            = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
+
+                        .col-2
                           - unless search_last_month?(month_i)
-                            = link_to ">", "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab"
+                            = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                              i.fas.fa-chevron-right
 
                       .border.rounded-8
                         - weeks.map do |week|
@@ -72,5 +80,5 @@
                             = f.label :"week_id", for:  "checkbox_#{week.id}", class: "mb-0 flex-fill " do
                               p.mb-0= week.short_range_as_str
                               small= "Semaine #{week.week_date.cweek}"
-              pb-5
+              .pb-5
               .actions.d-flex.d-sm-block.d-xs-stick.p-2= f.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil
