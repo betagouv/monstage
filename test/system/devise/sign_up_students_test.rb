@@ -85,25 +85,26 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
 
-    # mistaking with birth date
+    # mistaking with password confirmation
     assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
       fill_in 'Prénom', with: 'Martine'
       find("input[name='user[last_name]']").fill_in with: 'Fourcadex'
-
-      fill_in 'Date de naissance', with: ('00/00/0000')
-
+      find('label', text: school_1.name).click
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Féminin').click
       find('label', text: 'Email').click
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: password
-      fill_in 'Ressaisir le mot de passe', with: password
+
+      fill_in 'Ressaisir le mot de passe', with: 'password'
+
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
 
-    assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
+    assert_equal "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do

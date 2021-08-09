@@ -58,6 +58,7 @@ module Users
     def create
       clean_phone_param
       super do |resource|
+        resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
       end
     end
