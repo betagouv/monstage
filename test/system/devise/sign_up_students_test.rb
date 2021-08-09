@@ -68,7 +68,9 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal 'm', created_student.gender
   end
 
-  test 'Student with mail subscription with former internship_offer choice leads to offer page' do
+
+  test 'Student with mail subscription with former internship_offer ' \
+       'visit leads to offer page even when mistaking along the way' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     birth_date = 14.years.ago
@@ -76,20 +78,22 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     password = 'kikoololletest'
     offer = create(:weekly_internship_offer)
 
-    visit internship_offers_path
+    visit internship_offer_path(offer)
     click_link 'Je postule'
     # below : 'Pas encore de compte ? Inscrivez-vous'
     find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
 
-    # signup as student
-    assert_difference('Users::Student.count', 1) do
+    assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
+
+    # mistaking with birth date
+    assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      find('#downshift-2-item-0').click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
-      select(class_room_1.name, from: 'user_class_room_id')
+      find('#downshift-0-item-0').click
       fill_in 'Prénom', with: 'Martine'
       find("input[name='user[last_name]']").fill_in with: 'Fourcadex'
-      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+
+      fill_in 'Date de naissance', with: ('00/00/0000')
+
       find('label', text: 'Féminin').click
       find('label', text: 'Email').click
       fill_in 'Adresse électronique', with: email
@@ -99,13 +103,29 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_on "Je m'inscris"
     end
 
-    created_student = Users::Student.where(email: email).first
+    assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
+
+    # real signup as student
+    assert_difference('Users::Student.count', 1) do
+      fill_in 'Date de naissance', with: ('')
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+      find('label', text: 'Masculin').click
+      find('label', text: 'Féminin').click
+      find('label', text: school_1.name).click
+      fill_in 'Créer un mot de passe', with: ''
+      fill_in 'Créer un mot de passe', with: password
+      fill_in 'Ressaisir le mot de passe', with: password
+      click_on "Je m'inscris"
+    end
+
+    created_student = Users::Student.find_by(email: email)
 
     # confirmation mail under the hood
     created_student.confirm
     created_student.reload
     assert created_student.confirmed?
     assert_equal offer.id, created_student.targeted_offer_id
+
     # visit login mail from confirmation mail
     visit new_user_session_path
     find('label', text: 'Email').click
@@ -120,7 +140,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
   end
 
-  test 'Student with account and former internship_offer choice land on offer page after login' do
+  test 'Student with account and former internship offer visit lands on offer page after login' do
     password = 'kikoololletest'
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515', )
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
@@ -234,7 +254,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
-    class_room_2 = create(:class_room, name: '3e B', school: school_2)
+    create(:class_room, name: '3e B', school: school_2)
     existing_phone = '+330600110011'
     birth_date = 14.years.ago
     student = create(:student, phone: existing_phone)
@@ -273,5 +293,9 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       safe_submit
     end
+  end
+
+  test 'even with a first error while signing up, user finds his offer back after registering' do
+
   end
 end

@@ -46,6 +46,7 @@ module Users
 
       if UserManager.new.valid?(params: params)
         super do |resource|
+          resource.targeted_offer_id ||= @targeted_offer_id
           @current_ability = Ability.new(resource)
         end
       else
