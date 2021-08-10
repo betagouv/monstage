@@ -100,7 +100,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
       fill_in 'Ressaisir le mot de passe', with: 'password'
 
-      find('label[for="user_accept_terms"]').click
+      accept_terms = find('label[for="user_accept_terms"].custom-control-label')
+      accept_terms.click
       click_on "Je m'inscris"
     end
 
@@ -109,14 +110,16 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
-      fill_in 'Date de naissance', with: ('')
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
-      find('label', text: 'Masculin').click
-      find('label', text: 'Féminin').click
-      find('label', text: school_1.name).click
-      fill_in 'Créer un mot de passe', with: ''
+      find('label[for="select-gender-boy"]', text: 'Masculin').click
+      find('label[for="select-gender-girl"]', text: 'Féminin').click
+
+      # fill_in 'Créer un mot de passe', with: ''
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
+      accept_terms = page.find('label[for="user_accept_terms"].custom-control-label')
+      sleep 0.1
+      accept_terms.click
       click_on "Je m'inscris"
     end
 
