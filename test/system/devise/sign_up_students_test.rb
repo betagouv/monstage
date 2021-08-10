@@ -104,7 +104,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_on "Je m'inscris"
     end
 
-    assert_equal "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}", current_url.split('?').second
+    hidden_input = find('input[name="user[targeted_offer_id]"]', visible: false)
+    assert_equal offer.id.to_s, hidden_input.value
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
