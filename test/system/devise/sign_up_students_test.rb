@@ -279,7 +279,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       execute_script("document.getElementById('user_accept_terms').checked = true;")
-      # find('label[for="user_accept_terms"]').click
       safe_submit
     end
 
@@ -295,9 +294,5 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       safe_submit
     end
-  end
-
-  test 'even with a first error while signing up, user finds his offer back after registering' do
-
   end
 end
