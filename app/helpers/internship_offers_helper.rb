@@ -85,4 +85,9 @@ module InternshipOffersHelper
   def select_daily_end(internship_offer, day)
     internship_offer.new_daily_hours.fetch(day) { '17:00' }
   end
+
+  def truncate_description(internship_offer)
+    description = internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_plain_text : internship_offer.description
+    description.truncate(280, separator: ' ')
+  end
 end

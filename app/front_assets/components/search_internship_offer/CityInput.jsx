@@ -7,19 +7,23 @@ import { fetch } from 'whatwg-fetch';
 const COMPONENT_FOCUS_LABEL = 'location';
 
 // see: https://geo.api.gouv.fr/decoupage-administratif/communes
+// and
+// 'https://geo.api.gouv.fr/communes?codePostal=78000' --> code curl
+// 'https://geo.api.gouv.fr/communes?code=78646&fields=code,nom,codesPostaux,code
+
 function CityInput({}) {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const [city, setCity] = useState(searchParams.get('city'));
+  const [cityOrZipcode, setCity] = useState(searchParams.get('city'));
   const [latitude, setLatitude] = useState(searchParams.get('latitude') || "");
   const [longitude, setLongitude] = useState(searchParams.get('longitude') || "");
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
   const [searchResults, setSearchResults] = useState([]);
-  const [cityDebounced] = useDebounce(city, 100);
+  const [cityDebounced] = useDebounce(cityOrZipcode, 100);
   const inputChange = (event) => {
     setCity(event.target.value);
   };
-
+  const endpoint = new URL('https://geo.api.gouv.fr/communes');
   const setLocation = (item) => {
     if (item) {
       setCity(item.nom);
@@ -28,46 +32,84 @@ function CityInput({}) {
     }
   };
 
+  const isZipcode = (str) => {
+    return (str.length == 5 && !isNaN(str))
+  }
+
+  const searchCityByNameOrByZipcode = () => {
+    isZipcode(cityOrZipcode) ? searchByZipcode(cityOrZipcode) : searchCityByName(cityOrZipcode);
+  };
+
   const searchCityByName = () => {
-    const endpoint = new URL('https://geo.api.gouv.fr/communes');
     const searchParams = new URLSearchParams();
 
-    searchParams.append('nom', city);
+    searchParams.append('nom', cityOrZipcode);
     searchParams.append('fields', ['nom', 'centre', 'departement', 'codesPostaux'].join(','));
     searchParams.append('limit', 10);
     searchParams.append('boost', 'population');
     endpoint.search = searchParams.toString();
-
     fetch(endpoint)
       .then((response) => response.json())
       .then(setSearchResults);
+  };
+  // zipcodes represent a set of communes referenced with a code.
+  // This set represents an area that have a center from which a radius can be used for other search criteria
+  const searchByZipcode = (zipcode) => {
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('codePostal', zipcode);
+    endpoint.search = searchParams.toString();
+
+    fetch(endpoint)
+      .then((response) => response.json())
+      .then((jsonResponse) => searchByCode(jsonResponse[0]))
+  };
+
+  const searchByCode = (responseWithCode) => {
+    if (responseWithCode == undefined || responseWithCode.code == undefined) {
+      setCity(cityOrZipcode + " : code postal invalide")
+    } else {
+      const code = responseWithCode.code
+      const searchParams = new URLSearchParams();
+
+      searchParams.append('code', code);
+      searchParams.append('nom', responseWithCode.nom);
+      searchParams.append('fields', ['nom', 'centre', 'departement', 'codesPostaux', 'code'].join(','));
+      searchParams.append('limit', 10);
+      searchParams.append('boost', 'population');
+      endpoint.search = searchParams.toString();
+
+      fetch(endpoint)
+        .then((response) => response.json())
+        .then(setSearchResults);
+    }
   };
 
   const codePostauxSample = (codes) => {
     let zipcode = ""
     if (codes.length == undefined || codes.length === 0) { return zipcode; }
     if (codes.length >= 1) { zipcode = codes[0]; }
-    // TODO remove following comments after october 2021
-    // if (codes.length >= 2) { zipcode += ", " + codes[1]; }
-    // if (codes.length > 2) { zipcode += ", ... " }
-    return zipcode
+    if (codes.length >= 2) { zipcode += ", " + codes[1]; }
+    if (codes.length > 2) { zipcode += ", ... " }
+    return `(${zipcode})`;
   };
 
   useEffect(() => {
     if (cityDebounced && cityDebounced.length > 2) {
-      searchCityByName(cityDebounced);
+      searchCityByNameOrByZipcode(cityDebounced);
     }
   }, [cityDebounced]);
 
   return (
+
     <>
       <input type="hidden" name="latitude" value={latitude} />
       <input type="hidden" name="longitude" value={longitude} />
 
       <Downshift
-        initialInputValue={city || ""}
+        initialInputValue={cityOrZipcode || ""}
         onChange={setLocation}
-        selectedItem={city}
+        selectedItem={cityOrZipcode}
         itemToString={(item) => (item ? item.nom : '')}
       >
         {({

@@ -23,7 +23,7 @@ module Finders
     end
 
     def god_query
-      common_filter { kept_offers_query }
+      common_filter { kept_offers_query.published }
     end
 
     def school_track_by_class_room_query(query)
