@@ -7,11 +7,6 @@ module Users
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
 
-    def new
-      @targeted_offer_id = params.dig(:user, :targeted_offer_id) if params.dig(:user, :targeted_offer_id)
-      super
-    end
-
     def create
       user_with_email = fetch_user_by_email
       user_with_phone = fetch_user_by_phone
