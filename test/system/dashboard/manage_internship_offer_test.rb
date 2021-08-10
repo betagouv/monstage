@@ -109,6 +109,29 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
+  test 'Employer can change max candidates parameter back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    assert_equal 1, internship_offer.max_candidates
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    find('label[for="internship_type_false"]').click # max_candidates can be set to many now
+    within('.form-group-select-max-candidates') do
+      fill_in('Nombre de stagiaires maximum par groupe', with: 20)
+    end
+    click_button('Modifier l\'offre')
+    assert_equal 20, internship_offer.reload.max_candidates
+
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    find('label[for="internship_type_true"]').click
+    click_button('Modifier l\'offre')
+    assert_equal 1, internship_offer.reload.max_candidates
+  end
+
   test 'Employer can filter internship_offers from dashboard filters' do
     travel_to(Date.new(2020, 10, 10)) do
       employer = create(:employer)
