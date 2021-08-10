@@ -99,7 +99,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      from: 0,
                      to: 1 do
         click_on 'Valider'
-        page.find('a.btn.btn-danger', text: 'Envoyer')
+        page.find('#submit_application_form') # timer
       end
 
       assert_changes lambda {
@@ -149,7 +149,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    from: 0,
                    to: 1 do
       click_on 'Valider'
-      page.find('a.btn.btn-danger', text: 'Envoyer')
+      page.find('#submit_application_form') # timer
     end
 
     assert_changes lambda {
@@ -198,7 +198,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    from: 0,
                    to: 1 do
       click_on 'Valider'
-      page.find('a.btn.btn-danger', text: 'Envoyer')
+      page.find('#submit_application_form')
     end
 
     assert_changes lambda {
@@ -247,7 +247,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                    from: 0,
                    to: 1 do
       click_on 'Valider'
-      page.find('a.btn.btn-danger', text: 'Envoyer')
+      page.find('#submit_application_form') # timer
     end
 
     assert_changes lambda {

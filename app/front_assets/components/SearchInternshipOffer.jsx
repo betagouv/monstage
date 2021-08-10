@@ -71,7 +71,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true }) {
   useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
 
   return (
-    <form onSubmit={filterOffers}>
+    <form id="search_form" onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
         <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
