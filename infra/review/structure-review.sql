@@ -340,6 +340,52 @@ ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage
 
 
 --
+-- Name: air_table_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.air_table_records (
+    id bigint NOT NULL,
+    remote_id text,
+    is_public boolean,
+    nb_spot_available integer DEFAULT 0,
+    nb_spot_used integer DEFAULT 0,
+    nb_spot_male integer DEFAULT 0,
+    nb_spot_female integer DEFAULT 0,
+    department_name text,
+    school_track text,
+    internship_offer_type text,
+    comment text,
+    school_id bigint,
+    group_id bigint,
+    sector_id bigint,
+    week_id bigint,
+    operator_id bigint,
+    created_by text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.air_table_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: air_table_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.air_table_records_id_seq OWNED BY public.air_table_records.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -395,7 +441,9 @@ CREATE TABLE public.email_whitelists (
     zipcode character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id bigint
+    user_id bigint,
+    type character varying DEFAULT 'EmailWhitelists::Statistician'::character varying NOT NULL,
+    group_id integer
 );
 
 
@@ -783,7 +831,15 @@ CREATE TABLE public.months (
 
 CREATE TABLE public.operators (
     id bigint NOT NULL,
-    name character varying
+    name character varying,
+    target_count integer DEFAULT 0,
+    logo character varying,
+    website character varying,
+    created_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.377616'::timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
+    airtable_id character varying,
+    airtable_link character varying,
+    airtable_reporting_enabled boolean DEFAULT false
 );
 
 
@@ -906,7 +962,6 @@ CREATE TABLE public.schools (
     city_tsv tsvector,
     kind character varying,
     visible boolean DEFAULT true,
-    missing_school_weeks_count integer DEFAULT 0,
     internship_agreement_online boolean DEFAULT false
 );
 
@@ -1033,14 +1088,14 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
-    missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
     phone_token_validity timestamp without time zone,
     phone_password_reset_count integer DEFAULT 0,
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
-    organisation_id bigint
+    banners jsonb DEFAULT '{}'::jsonb,
+    ministry_id bigint
 );
 
 
@@ -1114,6 +1169,13 @@ ALTER TABLE ONLY public.active_storage_attachments ALTER COLUMN id SET DEFAULT n
 --
 
 ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
+
+
+--
+-- Name: air_table_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records ALTER COLUMN id SET DEFAULT nextval('public.air_table_records_id_seq'::regclass);
 
 
 --
@@ -1264,6 +1326,22 @@ ALTER TABLE ONLY public.active_storage_attachments
 
 ALTER TABLE ONLY public.active_storage_blobs
     ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: air_table_records air_table_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.air_table_records
+    ADD CONSTRAINT air_table_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
 
 
 --
@@ -1444,6 +1522,20 @@ CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active
 --
 
 CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
+
+
+--
+-- Name: index_air_table_records_on_operator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_operator_id ON public.air_table_records USING btree (operator_id);
+
+
+--
+-- Name: index_air_table_records_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_air_table_records_on_week_id ON public.air_table_records USING btree (week_id);
 
 
 --
@@ -1741,17 +1833,10 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_users_on_ministry_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree (missing_weeks_school_id);
-
-
---
--- Name: index_users_on_organisation_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_organisation_id ON public.users USING btree (organisation_id);
+CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id);
 
 
 --
@@ -1856,6 +1941,14 @@ ALTER TABLE ONLY public.internship_offers
 
 
 --
+-- Name: internship_offers fk_rails_3cef9bdd89; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_offers
+    ADD CONSTRAINT fk_rails_3cef9bdd89 FOREIGN KEY (group_id) REFERENCES public.groups(id);
+
+
+--
 -- Name: class_rooms fk_rails_49ae717ca2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1896,6 +1989,14 @@ ALTER TABLE ONLY public.internship_offer_infos
 
 
 --
+-- Name: users fk_rails_720d9e0bfd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_720d9e0bfd FOREIGN KEY (ministry_id) REFERENCES public.groups(id);
+
+
+--
 -- Name: internship_applications fk_rails_75752a1ac2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1909,14 +2010,6 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_77a64a8062 FOREIGN KEY (school_id) REFERENCES public.schools(id);
-
-
---
--- Name: users fk_rails_8eea5d5e28; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_weeks_school_id) REFERENCES public.schools(id);
 
 
 --
@@ -1965,6 +2058,14 @@ ALTER TABLE ONLY public.tutors
 
 ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT fk_rails_c3b3935057 FOREIGN KEY (blob_id) REFERENCES public.active_storage_blobs(id);
+
+
+--
+-- Name: users fk_rails_d23d91f0e6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_d23d91f0e6 FOREIGN KEY (class_room_id) REFERENCES public.class_rooms(id);
 
 
 --
@@ -2185,9 +2286,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200904083343'),
 ('20200909065612'),
 ('20200909134849'),
+('20200911153500'),
 ('20200911153501'),
 ('20200911160718'),
 ('20200918165533'),
+('20200923164419'),
 ('20200924093439'),
 ('20200928102905'),
 ('20200928122922'),
@@ -2204,14 +2307,30 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20201106143850'),
 ('20201109145559'),
 ('20201116085327'),
-('20201125102052'),
 ('20201203153154'),
 ('20210112164129'),
+('20210113140604'),
+('20210121171025'),
 ('20210121172155'),
+('20210128162938'),
+('20210129121617'),
+('20210224160904'),
+('20210225164349'),
 ('20210310173554'),
+('20210326100435'),
+('20210408113406'),
 ('20210422145040'),
+('20210430083329'),
 ('20210506142429'),
 ('20210506143015'),
-('20210517145027');
+('20210517145027'),
+('20210601154254'),
+('20210602142914'),
+('20210602171315'),
+('20210604095934'),
+('20210604144318'),
+('20210615113123'),
+('20210622105914'),
+('20210708094334');
 
 
