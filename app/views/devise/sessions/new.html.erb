@@ -20,7 +20,8 @@
     <%= form_with(model: resource,
                   scope: resource_name,
                   local: true,
-                  url: session_path(resource_name)) do |f| %>
+                  url: session_path(resource_name),
+                  html: {id: 'sign_in_form'}) do |f| %>
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
