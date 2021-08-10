@@ -27,7 +27,7 @@ tr.hoverable-row-with-btn
           - if can?(:apply, internship_offer) || !user_signed_in? || internship_offer.from_api?
             = link_to internship_offer_application_path(internship_offer), internship_offer_application_html_opts(internship_offer, class: 'btn btn-primary mb-3') do
               | Je postule
-              - if !internship_offer.from_api?
+              - unless internship_offer.from_api?
                 i.fas.fa-fw.fa-xs.ml-1.fa-rocket
 
             br
