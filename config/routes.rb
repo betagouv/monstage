@@ -80,15 +80,21 @@ Rails.application.routes.draw do
 
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
+    get '/import_data', to: 'dashboards#import_data'
+    post '/dashboards/refresh', to: 'dashboards#refresh'
+
     get '/schools', to: 'schools#index'
     get '/employers_internship_offers', to: 'internship_offers#employers_offers'
     get 'internship_offers', to: 'internship_offers#index'
+    get 'operators', to: 'operators#index'
+    put 'operators', to: 'operators#update'
   end
 
   get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search
 
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
+  patch 'account_password', to: 'users#update_password'
 
   get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'

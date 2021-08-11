@@ -35,11 +35,24 @@ class Week < ApplicationRecord
     by_year(year: to.year).where('number <= :to_week', to_week: to.cweek)
   }
 
+  scope :fetch_from, lambda { |date: |
+    find_by(number: date.cweek, year: date.year)
+  }
+
   scope :selectable_from_now_until_end_of_school_year, lambda {
     school_year = SchoolYear::Floating.new(date: Date.today)
 
     from_date_to_date(from: school_year.beginning_of_period,
                       to: school_year.end_of_period)
+  }
+
+  scope :of_previous_school_year, lambda {
+    school_year = SchoolYear::Floating.new(date: Date.today)
+    weeks_of_school_year(school_year: school_year.beginning_of_period.year - 1)
+  }
+
+  scope :selectable_for_school_year, lambda { |school_year:|
+    weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }
 
   scope :selectable_on_school_year, lambda {
@@ -91,5 +104,18 @@ class Week < ApplicationRecord
 
   def consecutive_to?(other_week)
     self.id.to_i == other_week.id.to_i + 1
+  end
+
+  def self.airtablize(school_year = SchoolYear::Current.new)
+    school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
+    weeks = Week.selectable_for_school_year(school_year: school_year)
+
+    require 'csv'
+    CSV.open("myfile.csv", "w") do |csv|
+      csv << ["Semaine", "ID MS3e", "year"]
+      weeks.map do |w|
+        csv << [w.select_text_method, w.id, school_year_str]
+      end
+    end
   end
 end

@@ -11,6 +11,8 @@ header.header-account
     = link_to "Je suis membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-primary'
   .mt-3.d-flex.d-sm-block
     = link_to "Je suis référent départemental", new_user_registration_path(as: 'Statistician'), class: 'btn btn-primary'
+  .mt-3.d-flex.d-sm-block
+    = link_to "Je suis référent d'aministration centrale", new_user_registration_path(as: 'MinistryStatistician'), class: 'btn btn-primary'
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
@@ -45,3 +47,11 @@ header.header-account
         p
           | Vous êtes référent départemental et souhaitez accéder aux statistiques relatives aux offres de stage de votre département.
         .actions.d-flex.d-sm-block= link_to "Créer mon compte référent départemental", new_user_registration_path(as: 'Statistician'), class: 'btn btn-outline-primary'
+.row
+  .d-none.d-sm-block.col-12.col-md-6.my-3
+    .onboarding-col
+      .mt-3
+        h2= "Je suis référent d'administration centrale"
+        p
+          | Vous êtes référent d'administration centrale et souhaitez accéder aux statistiques relatives aux offres de stage de votre administration.
+        .actions.d-flex.d-sm-block= link_to "Créer mon compte référent d'administration centrale", new_user_registration_path(as: 'MinistryStatistician'), class: 'btn btn-outline-primary'

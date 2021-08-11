@@ -1,0 +1,138 @@
+{
+   "records" : [
+      {
+         "createdTime" : "2021-06-06T07:18:09.000Z",
+         "id" : "recJDSh6qX1TyPyPG",
+         "fields" : {
+            "ID" : 3,
+            "Sync Source" : "Grid view"
+         }
+      },
+      {
+         "fields" : {
+            "Sync Source" : "Grid view",
+            "ID" : 4
+         },
+         "id" : "recAVGs5yIDcg3kpU",
+         "createdTime" : "2021-06-06T07:18:09.000Z"
+      },
+      {
+         "createdTime" : "2021-06-06T07:18:09.000Z",
+         "id" : "recfeKkLtumWu0kYt",
+         "fields" : {
+            "Sync Source" : "Grid view",
+            "ID" : 5
+         }
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:14.000Z",
+         "id" : "recIVJgWwUQY1ud0j",
+         "fields" : {
+            "Secteur d'activitÃ©" : "MÃ©canique",
+            "Entreprise d'accueil" : "BNP Paribas",
+            "FiliÃ¨re" : "3e",
+            "Nombre d'Ã©lÃ¨ves masculins" : 2,
+            "Nombre de places disponibles" : 32,
+            "Nombre d'Ã©lÃ¨ves en stage" : 3,
+            "PrivÃ© / Public" : "PrivÃ©",
+            "ID" : 1,
+            "Type de stage" : "Stage Ã  distance",
+            "Sync Source" : "Grid view",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Versailles",
+            "Nombre d'Ã©lÃ¨ves fÃ©minins" : 1
+         }
+      },
+      {
+         "id" : "recbKIaUdaXPTFWUS",
+         "fields" : {
+            "Sync Source" : "Grid view",
+            "PrivÃ© / Public" : "PrivÃ©",
+            "ID" : 2,
+            "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre",
+            "FiliÃ¨re" : "3e Segpa",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Lille",
+            "Entreprise d'accueil" : "Engie"
+         },
+         "createdTime" : "2021-06-06T07:19:14.000Z"
+      },
+      {
+         "fields" : {
+            "ID" : 3,
+            "Sync Source" : "Grid view"
+         },
+         "id" : "reccwHo9PFPt6lLaO",
+         "createdTime" : "2021-06-06T07:19:14.000Z"
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:14.000Z",
+         "fields" : {
+            "ID" : 4,
+            "Sync Source" : "Grid view"
+         },
+         "id" : "rec4rcSr1GhMd5RWw"
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:14.000Z",
+         "id" : "recqzzn5Ln0Rvn1GG",
+         "fields" : {
+            "ID" : 5,
+            "Sync Source" : "Grid view"
+         }
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:45.000Z",
+         "fields" : {
+            "PrivÃ© / Public" : "PrivÃ©",
+            "Nombre d'Ã©lÃ¨ves en stage" : 3,
+            "ID" : 1,
+            "Nombre de places disponibles" : 32,
+            "Nombre d'Ã©lÃ¨ves masculins" : 2,
+            "FiliÃ¨re" : "3e",
+            "Entreprise d'accueil" : "BNP Paribas",
+            "Secteur d'activitÃ©" : "MÃ©canique",
+            "Sync Source" : "Grid view",
+            "Type de stage" : "Stage Ã  distance",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Versailles",
+            "Nombre d'Ã©lÃ¨ves fÃ©minins" : 1
+         },
+         "id" : "reccvgGQYrvewfN9N"
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:45.000Z",
+         "fields" : {
+            "Sync Source" : "Grid view",
+            "ID" : 2,
+            "PrivÃ© / Public" : "PrivÃ©",
+            "Etablissement des Ã©lÃ¨ves" : "Victor Hugo - AcadÃ©mie de Lille",
+            "Entreprise d'accueil" : "Engie",
+            "Semaine de stage" : "Semaine 41 - du 5 octobre au 11 octobre",
+            "FiliÃ¨re" : "3e Segpa"
+         },
+         "id" : "recbXQkUA7k7Wn0Gr"
+      },
+      {
+         "id" : "recAvdisBAQnLRfVk",
+         "fields" : {
+            "ID" : 3,
+            "Sync Source" : "Grid view"
+         },
+         "createdTime" : "2021-06-06T07:19:45.000Z"
+      },
+      {
+         "fields" : {
+            "ID" : 4,
+            "Sync Source" : "Grid view"
+         },
+         "id" : "recGXL84w2ZvLNnN9",
+         "createdTime" : "2021-06-06T07:19:45.000Z"
+      },
+      {
+         "createdTime" : "2021-06-06T07:19:45.000Z",
+         "fields" : {
+            "Sync Source" : "Grid view",
+            "ID" : 5
+         },
+         "id" : "recX7oXHHREgWd0pr"
+      }
+   ]
+}

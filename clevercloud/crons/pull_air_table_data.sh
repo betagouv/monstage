@@ -8,5 +8,5 @@ fi
 
 cd ${APP_HOME}
 
-bundle exec rails school_missing_weeks_reminders
+bundle exec rails pull_air_table_data
 

@@ -1,5 +1,5 @@
   [
     "0 7 * * * $ROOT/clevercloud/crons/internship_application_reminders.sh",
-    "0 7 * * * $ROOT/clevercloud/crons/school_missing_weeks_reminders.sh"
+    "0 * * * * $ROOT/clevercloud/crons/pull_airtable_data.sh"
   ]
 

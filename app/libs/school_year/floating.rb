@@ -3,6 +3,7 @@
 module SchoolYear
   # period from now until end of school year
   class Floating < Base
+
     def beginning_of_period
       case current_month
       when january_to_may

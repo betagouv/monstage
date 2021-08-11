@@ -9,5 +9,9 @@ module Users
     def dashboard_name
       'Admin'
     end
+
+    def presenter
+      Presenters::God.new(self)
+    end
   end
 end

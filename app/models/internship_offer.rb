@@ -50,6 +50,10 @@ class InternshipOffer < ApplicationRecord
     where(department: user.department)
   }
 
+  scope :limited_to_ministry, lambda { |user:|
+    where(group_id: user.ministry_id)
+  }
+
   scope :from_api, lambda {
     where.not(permalink: nil)
   }
@@ -123,6 +127,11 @@ class InternshipOffer < ApplicationRecord
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
+  def operator
+    return nil if !from_api?
+    employer.operator
   end
 
   def published?

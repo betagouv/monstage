@@ -42,7 +42,8 @@ class InternshipApplicationsController < ApplicationController
   def create
     set_internship_offer
     authorize! :apply, @internship_offer
-    @internship_application = InternshipApplication.create!(create_internship_application_params)
+
+    @internship_application = InternshipApplication.create!({user_id: current_user.id}.merge(create_internship_application_params))
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
@@ -79,7 +80,6 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :type,
-            :user_id,
             :internship_offer_week_id,
             :internship_offer_id,
             :internship_offer_type,

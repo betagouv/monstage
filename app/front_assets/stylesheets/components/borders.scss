@@ -22,6 +22,13 @@
   border-left: 1px;
   border-left-style: solid;
 }
+.b-4{
+  border-width: 4px;
+  border-style: solid;
+}
+.bc-blue-stats-total{
+  border-color: $blue_border;
+}
 .bc-custom-blue{
   border-color: rgb(169,163,185);
 }

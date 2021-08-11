@@ -1,0 +1,21 @@
+p style=(p_styles)
+  | Madame, Monsieur,
+p style=(p_styles)
+  |
+    Vous avez été désigné référent central, pour cette année scolaire, dans le cadre
+    du suivi des activités de votre administration
+  strong = " #{@ministry_name} "
+
+p style=(p_styles)
+  | Vous pouvez dès à présent créer un compte sur monstagedetroisieme.fr
+
+= render(partial: "mailers/call_to_action", locals: {href: new_user_registration_url(as: 'MinistryStatistician', email: @recipient_email), label:"Créer mon compte"})
+
+p style=(p_styles)
+  |
+    Cet accès est uniquement possible via l’adresse électronique
+    (e-mail) à laquelle ce message vous a été adressé.
+  br
+  |
+    Il vous permettra le suivi du nombre d’offres de stage disponibles
+    et le nombre de candidatures déposées par les élèves.

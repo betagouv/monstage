@@ -43,6 +43,32 @@ module Dashboard::InternshipOffers
 
     end
 
+    test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
+      internship_offer = create(:weekly_internship_offer)
+      statistician = create(:statistician)
+      internship_offer.update(employer_id: statistician.id)
+      new_title = 'new title'
+      new_group = create(:group, is_public: false, name: 'woop')
+      sign_in(statistician)
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: { internship_offer: {
+              title: new_title,
+              week_ids: [weeks(:week_2019_1).id],
+              is_public: false,
+              group_id: new_group.id,
+              new_daily_hours: {'lundi' => ['10h', '12h']}
+
+            } })
+      assert_redirected_to(internship_offer_path(internship_offer),
+                           'redirection should point to updated offer')
+
+      assert_equal(new_title,
+                   internship_offer.reload.title,
+                   'can\'t update internship_offer title')
+      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+
+    end
+
     test 'PATCH #update as employer owning internship_offer can publish/unpublish offer' do
       internship_offer = create(:weekly_internship_offer)
       published_at = 2.days.ago.utc

@@ -42,6 +42,12 @@ class SchoolTest < ActiveSupport::TestCase
     assert_includes school.users, school_manager
   end
 
+  test '.has_weeks_on_current_year?' do
+    refute create(:school, weeks: []).has_weeks_on_current_year?
+    refute create(:school, weeks: Week.of_previous_school_year).has_weeks_on_current_year?
+    assert create(:school, weeks: Week.selectable_on_school_year).has_weeks_on_current_year?
+  end
+
   test 'destroy nullilfy internship_offers.shcool_id' do
     school = create(:school)
     internship_offer = create(:weekly_internship_offer, school: school)

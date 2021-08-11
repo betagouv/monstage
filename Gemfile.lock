@@ -72,8 +72,10 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
+    airtable (0.0.9)
+      httparty
     ansi (1.5.0)
     ast (2.4.2)
     bcrypt (3.1.16)
@@ -106,19 +108,19 @@ GEM
       actionpack (>= 3.1)
       caxlsx (>= 3.0)
     childprocess (3.0.0)
-    concurrent-ruby (1.1.8)
-    connection_pool (2.2.3)
+    concurrent-ruby (1.1.9)
+    connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
     damerau-levenshtein (1.3.3)
-    devise (4.7.3)
+    devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.9.2)
+    devise-i18n (1.9.4)
       devise (>= 4.7.1)
     discard (1.2.0)
       activerecord (>= 4.2, < 7)
@@ -160,6 +162,9 @@ GEM
     http-form_data (2.3.0)
     http-parser (1.2.3)
       ffi-compiler (>= 1.0, < 2.0)
+    httparty (0.18.1)
+      mime-types (~> 3.0)
+      multi_xml (>= 0.5.2)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     inline_svg (1.7.2)
@@ -195,7 +200,7 @@ GEM
       activesupport (>= 4)
       railties (>= 4)
       request_store (~> 1.0)
-    loofah (2.9.1)
+    loofah (2.10.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -209,7 +214,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.0.3)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     minitest-reporters (1.4.3)
       ansi
@@ -219,10 +224,11 @@ GEM
     minitest-retry (0.2.1)
       minitest (>= 5.0)
     msgpack (1.4.2)
+    multi_xml (0.6.0)
     nested_form (0.3.2)
     netrc (0.11.0)
     nio4r (2.5.7)
-    nokogiri (1.11.5)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     oga (2.15)
@@ -313,7 +319,7 @@ GEM
       rails (>= 3.2)
       rainbow (~> 3.0)
       webpacker (>= 4.0)
-    redis (4.2.5)
+    redis (4.3.0)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     regexp_parser (2.1.1)
@@ -361,7 +367,7 @@ GEM
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     semantic_range (2.3.1)
-    sidekiq (6.1.3)
+    sidekiq (6.2.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -438,6 +444,7 @@ DEPENDENCIES
   actionpack (>= 6.1.3.2)
   activerecord-explain-analyze
   activerecord-postgis-adapter
+  airtable
   bootsnap
   bullet
   byebug
