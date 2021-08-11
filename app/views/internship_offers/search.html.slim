@@ -7,7 +7,7 @@
           span aria-hidden="true" &times;
 
       .modal-body.mt-3
-        = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, data: {controller: 'search-form'} do |f|
+        = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, data: {controller: 'search-form'} do |form|
           .row
             .col-12
               .form-group
@@ -17,69 +17,8 @@
               .form-group
                 label for="input-search-by-city" Ville ou code postal
                 = react_component("CityInput")
-              div data-controller="radioboxes-search-school-track"
-                fieldset.form-group
-                  legend.label Filtrer par filière
 
-                  - Presenters::ClassRoom.school_tracks_list.each_slice(2) do |(track_left, enum_left), (track_right, enum_right)|
-                    .row
-                      .col-6.pr-2
-                        = f.label :"school_track_#{enum_left}", track_left, class: "custom-radio-box border rounded-8 p-3 font-weight-normal d-block" do
-                          = f.radio_button :school_track, enum_left, 'data-radioboxes-search-school-track-target': 'input', 'data-action': 'change->radioboxes-search-school-track#onChange'
-                          = " "
-                          = t("enum.school_tracks.#{enum_left}")
-                      .col-6.pl-2
+              = render partial: "internship_offers/search/track_and_weeks", locals: {f: form}
 
-                        = f.label :"school_track_#{enum_right}", track_right, class: "custom-radio-box border rounded-8 p-3 font-weight-normal  d-block" do
-
-                          = f.radio_button :school_track, enum_right, 'data-radioboxes-search-school-track-target': 'input', 'data-action': 'change->radioboxes-search-school-track#onChange'
-                          = " "
-                          = t("enum.school_tracks.#{enum_right}")
-
-                .form-group data-radioboxes-search-school-track-target="searchByDateContainer"
-                  .label Quand se déroule le stage ?
-
-                  div role="tabpanel"
-
-                    #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
-                      div role="tablist"
-                        - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
-                          .row.mb-3
-                            - if month_i_left
-                              .col-6.pr-2
-                                  = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
-                            - if month_i_right
-                              .col-6.pl-2
-                                  = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
-
-                    - list_months_for_search.map do |month_i, weeks|
-                      - next if weeks.empty?
-
-
-                      div class="#{month_i == current_month_for_search ? 'active' : 'd-none'}" id="month_#{month_i}" role="tabpanel" data-search-form-target="tabPane" aria-label="Semaines de #{month_in_text(month_i, format: :month_with_year)}"
-
-                        .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
-                          .col-2
-                            - unless search_first_month?(month_i)
-                              = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
-                                i.fas.fa-chevron-left
-                          .col-8
-                            = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
-                              i.fas.fa-calendar-alt.text-border-color.mr-3
-
-                              = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
-
-                          .col-2
-                            - unless search_last_month?(month_i)
-                              = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
-                                i.fas.fa-chevron-right
-
-                        div
-                          - weeks.map do |week|
-                              = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3   custom-check-box mb-0 font-weight-normal" do
-                                = f.check_box :week_ids, {multiple: true, id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2', 'data-checkboxes-target': 'input', 'data-action': 'change->checkboxes#onChange', 'data-controller': "checkboxes" }, week.id, false
-                                span.flex-fill
-                                  span.d-block.mb-0= week.short_range_as_str
-                                  small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
               .pb-5
-              .actions.d-flex.d-sm-block.d-xs-stick.p-2= f.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil
+              .actions.d-flex.d-sm-block.d-xs-stick.p-2= form.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil

@@ -5,7 +5,6 @@ export default class extends Controller {
   static targets = [ 'input', 'searchByDateContainer' ]
 
   connect(){
-    console.log('lol')
     this.inputTargets.map((element) => {
       if (element.checked) {
          element.parentNode.classList.add('active')
