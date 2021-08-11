@@ -292,7 +292,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student with phone
     assert_difference('Users::Student.count', 1) do
-      execute_script("document.getElementById('phone-input').value = '+330637607756';")
+      find('label', text: 'SMS').click
+      execute_script("document.getElementById('phone-input').value = '+330637607796';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       safe_submit

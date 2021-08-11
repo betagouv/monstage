@@ -40,6 +40,7 @@ module Users
 
     # GET /resource/sign_up
     def new
+      @resource_channel = resource_channel
       options = {}
       options = options.merge(targeted_offer_id: params.dig(:user, :targeted_offer_id)) if params.dig(:user, :targeted_offer_id)
 
@@ -59,6 +60,7 @@ module Users
       super do |resource|
         resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
+        ab_finished(:subscription_channel_experiment)
       end
     end
 

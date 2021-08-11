@@ -1,0 +1,5 @@
+subscription_channel_experiment:
+  alternatives:
+    - phone
+    - email
+  resettable: false

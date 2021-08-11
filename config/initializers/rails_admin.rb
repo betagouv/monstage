@@ -79,6 +79,7 @@ RailsAdmin.config do |config|
   config.navigation_static_links = {
     "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
     "Sidekiq" => "/sidekiq",
-    "Zammad (Support)" => "https://monstage.zammad.com"
+    "Zammad (Support)" => "https://monstage.zammad.com",
+    "AB Testing" => "/split"
   }
 end

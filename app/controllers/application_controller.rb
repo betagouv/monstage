@@ -21,6 +21,17 @@ class ApplicationController < ActionController::Base
     current_user || Users::Visitor.new
   end
 
+  def resource_channel
+    return current_user.channel unless current_user.nil?
+    return :email unless params[:as] == 'Student'
+
+    ab_test(:subscription_channel_experiment) do |chan|
+      chan == 'phone' ? :phone : :email
+    end
+    # when ab_test is over, remove method and replace resource_channel
+    # with: resource.channel directly in the views
+  end
+
   helper_method :user_presenter
   def user_presenter
     @user_presenter ||= Presenters::User.new(current_user_or_visitor)
