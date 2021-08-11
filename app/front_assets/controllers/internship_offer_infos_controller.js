@@ -43,13 +43,10 @@ export default class extends Controller {
 
   // show/hide group (maxCandidates>1) internship custom controls
   toggleInternshipMaxCandidates(event) {
-    if (event.target.value === 'true') {
-      hideElement($(this.maxCandidatesGroupTarget));
-      this.maxCandidatesInputTarget.value = undefined;
-    } else {
-      showElement($(this.maxCandidatesGroupTarget));
-      this.maxCandidatesInputTarget.value = 1;
-    }
+    const groupSizeElt = $(this.maxCandidatesGroupTarget);
+    const toggleValue = event.target.value;
+    (toggleValue === 'true') ? hideElement(groupSizeElt) : showElement(groupSizeElt);
+    this.maxCandidatesInputTarget.value = 1;
   }
 
   connect() {
