@@ -1008,7 +1008,6 @@ CREATE TABLE public.schools (
     city_tsv tsvector,
     kind character varying,
     visible boolean DEFAULT true,
-    missing_school_weeks_count integer DEFAULT 0,
     internship_agreement_online boolean DEFAULT false
 );
 
@@ -1135,7 +1134,6 @@ CREATE TABLE public.users (
     accept_terms boolean DEFAULT false NOT NULL,
     discarded_at timestamp without time zone,
     department character varying,
-    missing_weeks_school_id bigint,
     role public.user_role,
     phone_token character varying,
     phone_token_validity timestamp without time zone,
@@ -1143,7 +1141,8 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
-    ministry_id bigint
+    ministry_id bigint,
+    targeted_offer_id integer
 );
 
 
@@ -1910,13 +1909,6 @@ CREATE INDEX index_users_on_ministry_id ON public.users USING btree (ministry_id
 
 
 --
--- Name: index_users_on_missing_weeks_school_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_users_on_missing_weeks_school_id ON public.users USING btree (missing_weeks_school_id);
-
-
---
 -- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2087,14 +2079,6 @@ ALTER TABLE ONLY public.internship_applications
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT fk_rails_77a64a8062 FOREIGN KEY (school_id) REFERENCES public.schools(id);
-
-
---
--- Name: users fk_rails_8eea5d5e28; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT fk_rails_8eea5d5e28 FOREIGN KEY (missing_weeks_school_id) REFERENCES public.schools(id);
 
 
 --
@@ -2415,6 +2399,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210604095934'),
 ('20210604144318'),
 ('20210615113123'),
-('20210622105914');
+('20210622105914'),
+('20210708094334'),
+('20210628172603');
 
 

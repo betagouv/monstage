@@ -14,4 +14,18 @@ namespace :infra do
         { "Content-Type" => "application/json" }
       )
     end
+
+    # irb(main):003:0> Users::Student.where("created_at > ?", 1.year.ago).count
+    # => 7975
+    # irb(main):004:0> Users::Student.where("created_at > ?", 1.year.ago).where(class_room_id: nil).count
+    # => 865
+    desc 'pull some metrics /'
+    task :metrics => :environment do
+      total_student_last_year = Users::Student.where("created_at > ?", 1.year.ago).count
+      total_student_last_year_without_class_room = Users::Student.where("created_at > ?", 1.year.ago).where(class_room_id: nil).count
+
+      puts "total_student_last_year: #{total_student_last_year}"
+      puts "total_student_last_year_without_class_room: #{total_student_last_year_without_class_room}"
+      puts "percent total_student_last_year_without_class_room: #{total_student_last_year_without_class_room * 100 / total_student_last_year}%"
+    end
 end

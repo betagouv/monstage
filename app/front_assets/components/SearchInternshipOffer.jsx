@@ -6,7 +6,8 @@ import isMobile from '../utils/responsive';
 import CityInput from './search_internship_offer/CityInput';
 import KeywordInput from './search_internship_offer/KeywordInput';
 
-function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
+function SearchInternshipOffer({ url, className, searchWordVisible = true }) {
+  const DEFAULT_RADIUS = 60000; //60 km
   const searchParams = new URLSearchParams(window.location.search);
 
   // hand made dirty tracking
@@ -22,7 +23,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   const [city, setCity] = useState(searchParams.get('city'));
   const [latitude, setLatitude] = useState(initialLatitude);
   const [longitude, setLongitude] = useState(initialLongitude);
-  const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+  const [radius, setRadius] = useState(searchParams.get('radius') || DEFAULT_RADIUS);
 
   // used by both
   const [focus, setFocus] = useState(null);
@@ -70,7 +71,7 @@ function SearchInternshipOffer({ url, className, searchWordVisible = true}) {
   useEffect(dirtyTrackSearch, [latitude, longitude, keyword]);
 
   return (
-    <form onSubmit={filterOffers}>
+    <form id="search_form" onSubmit={filterOffers}>
       <div className={`row search-bar ${className}`}>
         <KeywordInput keyword={keyword} setKeyword={setKeyword} focus={focus} setFocus={setFocus} />
         <CityInput
