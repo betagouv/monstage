@@ -118,7 +118,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
       accept_terms = page.find('label[for="user_accept_terms"].custom-control-label')
-      sleep 0.2
+      sleep 0.4
       accept_terms.click
       click_on "Je m'inscris"
     end
