@@ -5,16 +5,19 @@ import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['handicapGroup',
-                    'emailHint',
-                    'emailInput',
-                    'phoneInput',
-                    'label',
-                    'emailBloc',
-                    'phoneBloc',
-                    'passwordHint',
-                    'passwordInput',
-                    'passwordConfirmationHint',
-                    'passwordConfirmationInput'];
+    'emailHint',
+    'emailInput',
+    'phoneInput',
+    'label',
+    'emailBloc',
+    'phoneBloc',
+    'emailRadioButton',
+    'phoneRadioButton',
+    'passwordHint',
+    'passwordInput',
+    'passwordConfirmationHint',
+    'passwordConfirmationInput'
+  ];
 
   static values = {
     channel: String,
@@ -150,10 +153,12 @@ export default class extends Controller {
   }
 
   checkEmail() {
+    this.emailRadioButtonTarget.checked = true
     this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
 
   checkPhone() {
+    this.phoneRadioButtonTarget.checked = true
     this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
   }
 
