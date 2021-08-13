@@ -303,10 +303,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
   test 'ab testing with mail or phone active button shows corresponding input field' do
     options = { 'as' => 'Student' }
     visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'email'}))
-    page.find('#user_email', visible: true)
-    page.find('#phone-input', visible: false)
+    assert page.has_css?('#user_email', wait: 3)
     visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'phone'}))
-    page.find('#user_email', visible: false)
-    page.find('#phone-input', visible: true)
+    assert page.has_css?('#phone-input', wait: 3)
   end
 end
