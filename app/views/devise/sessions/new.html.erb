@@ -1,6 +1,6 @@
 <div class='onboarding-card onboarding-card-sm mb-4'
      data-controller="signup"
-     data-signup-channel-value="<%= @resource_channel %>">
+     data-signup-channel-value="<%= resource.channel %>">
   <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0">
       <div class="col-12 align-self-end col-sm-6 h-100">
@@ -32,7 +32,6 @@
       <%= render 'users/select_channel',
                   label: 'Comment vous connecter ?',
                   form: f,
-                  chan: 'email',
                   resource: resource,
                   phone: 'Téléphone' %>
 

@@ -113,12 +113,7 @@
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <%= render 'users/select_channel',
-                   label: 'Comment vous contacter ?',
-                   form: f,
-                   resource: resource,
-                   chan: @resource_channel,
-                   phone: 'SMS' do %>
+        <%= render "users/ab_select_channel", label: "Comment vous contacter ?", form: f, resource: resource, chan: @resource_channel, phone: "SMS" do %>
           <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
         <% end %>
       <% else %>

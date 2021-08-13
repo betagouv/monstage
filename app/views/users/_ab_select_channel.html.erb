@@ -14,10 +14,11 @@
                     for: "select-channel-phone" do %>
         <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
         <br/>
-        <%= form.radio_button :channel,
-                        "phone",
-                        id: 'select-channel-phone',
-                        'data-action' => "change->signup#checkPhone" %>
+        <%= radio_button_tag 'channel',
+                             "phone",
+                             ('phone' == chan.to_s),
+                             {id: 'select-channel-phone',
+                             'data-action' => "change->signup#checkPhone"} %>
           <%= phone %>
       <% end %>
     </div>
@@ -29,10 +30,11 @@
 
         <i class="fa fa-fw fa-4x far fa-envelope"></i>
         <br />
-        <%= form.radio_button :channel,
-                              "email",
-                              id: 'select-channel-email',
-                              'data-action' => "change->signup#checkEmail" %>
+        <%= radio_button_tag 'channel',
+                             "email",
+                             ('email' == chan.to_s),
+                             {id: 'select-channel-email',
+                             'data-action' => "change->signup#checkEmail"} %>
           Email
       <% end %>
     </div>

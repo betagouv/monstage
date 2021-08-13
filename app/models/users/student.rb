@@ -28,8 +28,6 @@ module Users
 
     attr_reader :handicap_present
 
-    def student? ; true end
-
     def channel
       return :email if email.present?
 

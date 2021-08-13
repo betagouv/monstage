@@ -299,4 +299,12 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       safe_submit
     end
   end
+
+  test 'ab testing with mail or phone active button shows corresponding input field' do
+    options = { 'as' => 'Student' }
+    visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'email'}))
+    find('#user_email')
+    visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'phone'}))
+    find('#phone-input')
+  end
 end
