@@ -1,9 +1,24 @@
-= form_with({ model: @internship_offer_info, url: (@internship_offer_info.new_record? ? dashboard_stepper_internship_offer_infos_path(organisation_id: params[:organisation_id]) : dashboard_stepper_internship_offer_info_path(id: @internship_offer_info, internship_offer_info_id: @internship_offer_info.id, organisation_id: params[:organisation_id])), scope: :internship_offer_info, local: true }) do |form|
+- new_record = @internship_offer_info.new_record?
+- when_new = dashboard_stepper_internship_offer_infos_path(organisation_id: params[:organisation_id])
+- unless new_record
+  - when_old = dashboard_stepper_internship_offer_info_path(id: @internship_offer_info,
+                                                            organisation_id: params[:organisation_id])
+= form_with({ model: @internship_offer_info,
+              url: (new_record ? when_new : when_old),
+              scope: :internship_offer_info,
+              method: (new_record ? 'POST' : 'PATCH' ),
+              local: true }) do |form|
 
   = render "dashboard/stepper/steps"
 
-  = render "layouts/form_errors", resource: @internship_offer_info, resource_name: :internship_offer_info
+  = render "layouts/form_errors",
+            resource: @internship_offer_info,
+            resource_name: :internship_offer_info
 
-  = render 'form_fields', { form: form, resource: @internship_offer_info, submit_button: true, warning_bloc: true}
+  = render 'form_fields', { form: form,
+                            resource: @internship_offer_info,
+                            submit_button: true, warning_bloc: true}
 
-div data-controller='broadcast-coordinates-changed' data-broadcast-coordinates-changed-latitude-value=@organisation.coordinates.lat data-broadcast-coordinates-changed-longitude-value=@organisation.coordinates.lon
+div [data-controller='broadcast-coordinates-changed'
+     data-broadcast-coordinates-changed-latitude-value=@organisation.coordinates.lat
+     data-broadcast-coordinates-changed-longitude-value=@organisation.coordinates.lon]
