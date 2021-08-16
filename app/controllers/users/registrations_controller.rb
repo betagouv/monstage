@@ -141,7 +141,9 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
-        users_registrations_phone_standby_path(phone: resource.phone, as: 'Student')
+        options = { phone: resource.phone }
+        options = options.merge({ as: 'Student'}) if current_user.student?
+        users_registrations_phone_standby_path(options)
       else
         users_registrations_standby_path(email: resource.email)
       end
