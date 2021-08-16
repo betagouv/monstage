@@ -142,7 +142,7 @@ module Users
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
         options = { phone: resource.phone }
-        options = options.merge({ as: 'Student'}) if current_user.student?
+        options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
       else
         users_registrations_standby_path(email: resource.email)
