@@ -13,7 +13,7 @@ export default class extends Controller {
 
       if (!$(el).hasClass(TURBOLINK_IDEMPOTENT_CLASSNAME)) {
         $(el).addClass(TURBOLINK_IDEMPOTENT_CLASSNAME);
-        $(el).append('<i class="fas fa-external-link-alt fa-fw fa-xs ml-1"></i>');
+        $(el).prepend('<i class="fas fa-external-link-alt fa-fw fa-xs ml-1"></i> ');
       }
     });
   }
