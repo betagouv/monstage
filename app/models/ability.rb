@@ -26,7 +26,7 @@ class Ability
   end
 
   def visitor_abilities
-    can :read, InternshipOffer
+    can %i[read apply], InternshipOffer
   end
 
   def student_abilities(user:)

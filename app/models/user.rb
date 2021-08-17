@@ -235,6 +235,7 @@ class User < ApplicationRecord
 
   def statistician? ; false end
   def ministry_statistician? ; false end
+  def student? ; false end
 
   private
 
