@@ -5,7 +5,9 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+         :recoverable, :rememberable,
+         :validatable, :confirmable, :trackable,
+         :timeoutable
 
   include DelayedDeviseEmailSender
 
