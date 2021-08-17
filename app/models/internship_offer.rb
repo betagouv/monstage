@@ -129,6 +129,11 @@ class InternshipOffer < ApplicationRecord
     Department.lookup_by_zipcode(zipcode: zipcode)
   end
 
+  def operator
+    return nil if !from_api?
+    employer.operator
+  end
+
   def published?
     published_at.present?
   end

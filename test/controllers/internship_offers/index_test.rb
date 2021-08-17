@@ -91,38 +91,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student when school.weeks is empty, shows warning' do
-    school = create(:school, weeks: [])
-    student = create(:student, school: school)
-    sign_in(student)
-    get internship_offers_path
-    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
-                                 count: 1
-  end
-
-  test 'GET #index as student when school.weeks are stale, shows warning' do
-    create(:weekly_internship_offer)
-    # 2019
-    school = create(:school, weeks: Week.weeks_of_school_year(school_year: 2019).to_a)
-    class_room = create(:class_room, school: school)
-    student = create(:student, school: school, class_room: class_room)
-    sign_in(student)
-    #2021
-    travel_to(Date.new(2021, 10, 1)) do
-      InternshipOffer.stub :nearby, InternshipOffer.all do
-        get internship_offers_path
-        assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
-                                     count: 1
-      end
-    end
-  end
-
-  test 'GET #index as visitor when school.weeks is empty, shows warning' do
-    get internship_offers_path
-    assert_select '#alert-text', text: "Attention, votre établissement n'a pas encore renseigné ses dates de stage.",
-                                 count: 0
-  end
-
   test 'GET #index as visitor does not show discarded offers' do
     discarded_internship_offer = create(:weekly_internship_offer, discarded_at: 2.days.ago)
     not_discarded_internship_offer = create(:weekly_internship_offer, discarded_at: nil)

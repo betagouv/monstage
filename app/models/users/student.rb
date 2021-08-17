@@ -3,10 +3,6 @@
 module Users
   class Student < User
     belongs_to :school, optional: true
-    belongs_to :missing_school_weeks, optional: true,
-                                      foreign_key: 'missing_weeks_school_id',
-                                      class_name: 'School',
-                                      counter_cache: :missing_school_weeks_count
 
     belongs_to :class_room, optional: true
 
@@ -66,8 +62,12 @@ module Users
       "#{super}, in school: #{school&.zipcode}"
     end
 
+    # TODO refactor?: should be refactored so student starts with offer prefiltered
     def after_sign_in_path
-      url_helpers.internship_offers_path # TODO refactor?: should be refactored so student starts with offer prefiltered
+      return url_helpers.internship_offers_path if targeted_offer_id.nil?
+
+      options = { id: canceled_targeted_offer_id }
+      url_helpers.internship_offer_path(options)
     end
 
     def custom_dashboard_path

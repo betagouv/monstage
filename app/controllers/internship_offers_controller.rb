@@ -2,7 +2,6 @@
 
 class InternshipOffersController < ApplicationController
   before_action :authenticate_user!, only: %i[create edit update destroy]
-  before_action :flash_message_when_missing_school_weeks, only: :index
 
   with_options only: [:show] do
     before_action :set_internship_offer,
@@ -37,13 +36,6 @@ class InternshipOffersController < ApplicationController
     @internship_offer = InternshipOffer.with_rich_text_description_rich_text
                                        .with_rich_text_employer_description_rich_text
                                        .find(params[:id])
-  end
-
-  def flash_message_when_missing_school_weeks
-    return unless current_user_or_visitor.missing_school_weeks?
-
-    flash.now[:warning] = "Attention, votre établissement n'a pas encore " \
-                          "renseigné ses dates de stage."
   end
 
   def check_internship_offer_is_not_discarded_or_redirect
