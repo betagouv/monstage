@@ -26,6 +26,7 @@ import SearchSchool from "components/SearchSchool";
 import SearchSchoolByName from "components/SearchSchoolByName";
 import CountryPhoneSelect from "components/inputs/CountryPhoneSelect";
 import AddressInput from "components/inputs/AddressInput";
+import SirenInput from "components/inputs/SirenInput";
 import DistanceIcon from "components/icons/DistanceIcon";
 
 
@@ -38,4 +39,5 @@ ReactOnRails.register({
   DistanceIcon,
   CountryPhoneSelect,
   AddressInput,
+  SirenInput
 });

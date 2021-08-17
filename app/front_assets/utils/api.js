@@ -41,4 +41,15 @@ export const endpoints = {
     const endpoint = new URL(`${host}/api/schools/search`);
     return endpoint;
   },
+
+  // @get
+  searchCompanyBySiren: ({ siren }) => {
+    const endpoint = new URL(`${host}/api_sirene_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('siren', siren);
+    endpoint.search = searchParams.toString();
+    console.log(endpoint);
+    return endpoint;
+  },
 };

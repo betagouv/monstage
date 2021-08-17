@@ -136,6 +136,7 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
+        siren: Code Siren
 
       operator: &operator_fields
         name: Nom
@@ -205,7 +206,7 @@ fr:
         full_employer: Employeur
         full_address: Adresse de l'employeur
         group_name: Groupe ou institution
-
+        siren: Code Siren
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
