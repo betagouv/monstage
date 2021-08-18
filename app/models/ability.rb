@@ -126,9 +126,14 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    can :renew, InternshipOffer do |internship_offer|
+      internship_offer.persisted? &&
+        internship_offer.created_at < SchoolYear::Current.new.beginning_of_period &&
+        internship_offer&.employer_id == user.id
+    end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
-    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
@@ -155,6 +160,11 @@ class Ability
     can :show, :account
     can :choose_operator, :sign_up
     can :change, :department
+    can :renew, InternshipOffer do |internship_offer|
+      internship_offer.persisted? &&
+        internship_offer.created_at < SchoolYear::Current.new.beginning_of_period &&
+        internship_offer&.employer_id == user.id
+    end
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
