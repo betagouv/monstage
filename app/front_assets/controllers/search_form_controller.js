@@ -2,7 +2,10 @@ import { Controller } from 'stimulus';
 import { isVisible, hideElement, showElement } from '../utils/dom';
 
 export default class extends Controller {
-  static targets = ["tabPane"];
+
+  static targets = [
+    "tabPane", // multiple targets to navigate weeks selection
+  ];
 
   navigate(clickEvent) {
     const currentTarget = clickEvent.currentTarget;

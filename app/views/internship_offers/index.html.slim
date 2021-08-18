@@ -1,20 +1,16 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
-h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
+h1.text-muted.opacity-05.text-center.text-center.mt-5.mb-4
   = "Postulez à des offres de stage"
 
 
 .row
   table.table.table-sticky-thead.table-dashboard-internship-offers.mb-0
-    thead
-      tr.tr-white
-        th.p-0
-          .pb-4.pb-sm-0.pt-4.pt-sm-3.bg-light-gray-sm.mb-3.mb-sm-4
-            .col-12
-              - # TODO refactor?:use default
-              = react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path, className: 'flex-row focusable-search-bar' })
+    thead.search-container
+      tr.tr-search.rounded-6
+        th.p-0.rounded-6
+          .py-3.bb-1.bl-1.br-1.bc-light.rounded-6.bg-white
+            = render partial: "internship_offers/search/form", locals: { desktop_rendering: true }
 
-          .col-12= render "internship_offers/title", internship_offers: @internship_offers
     tbody
       - if @internship_offers.blank?
         tr
@@ -22,6 +18,11 @@ h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
             .row
               p.col-12[style='color: gray'] Aucune offre n'est disponible.
       - else
+        tr
+          td
+            .row
+              .col-12= render "internship_offers/title", internship_offers: @internship_offers
+
         = render partial: "internship_offer", collection: @internship_offers
 .row.d-flex.d-md-none
   .col-12= paginate(@internship_offers)

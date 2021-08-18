@@ -128,22 +128,11 @@ function CityInput({}) {
             title="Resulltat de recherche"
             className={`input-group input-group-search col p-0`}
           >
-            <div className="input-group-prepend ">
-              <label
-                {...getLabelProps()}
-                className="input-group-text input-group-text-bigger input-group-separator"
-                htmlFor="input-search-by-city"
-              >
-                <i className="fas fa-map-marker-alt fa-fw" />
-                <strong className="d-none">Autour de</strong>
-              </label>
-            </div>
-
             <input
               {...getInputProps({
                 onChange: inputChange,
                 value: inputValue,
-                className: 'form-control pl-2 input-group-search-right-border',
+                className: 'bg-white form-control input-group-search-right-border',
                 name: 'city',
                 id: 'input-search-by-city',
                 placeholder: 'Lieu',

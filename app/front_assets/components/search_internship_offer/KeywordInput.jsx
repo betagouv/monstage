@@ -55,21 +55,11 @@ function KeywordInput({ }) {
           id="test-input-keyword-container"
           className={`input-group input-group-search col p-0`}
         >
-          <div className="input-group-prepend">
-            <label
-              {...getLabelProps()}
-              className="input-group-text input-group-search-left-border input-group-text-bigger"
-              htmlFor="input-search-by-keyword"
-            >
-              <i className="fas fa-suitcase fa-fw" />
-              <strong className="d-none">Rechercher par Profession</strong>
-            </label>
-          </div>
           <input
             {...getInputProps({
               onChange: inputChange,
               value: inputValue,
-              className: 'form-control pl-2',
+              className: 'bg-white form-control',
               id: 'input-search-by-keyword',
               name: 'keyword',
               placeholder: 'Profession',

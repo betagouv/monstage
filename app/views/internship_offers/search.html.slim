@@ -6,19 +6,4 @@
         button.close-absolute type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
 
-      .modal-body.mt-3
-        = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, data: {controller: 'search-form'} do |form|
-          .row
-            .col-12
-              .form-group
-                label for="input-search-by-keyword" Rechercher une profession
-                = react_component("KeywordInput", )
-
-              .form-group
-                label for="input-search-by-city" Ville ou code postal
-                = react_component("CityInput")
-
-              = render partial: "internship_offers/search/track_and_weeks", locals: {f: form}
-
-              .pb-5
-              .actions.d-flex.d-sm-block.d-xs-stick.p-2= form.submit 'Afficher les résultats', class: 'btn btn-primary', name: nil
+      .modal-body.mt-3= render partial: "internship_offers/search/form", locals: {desktop_rendering: false }

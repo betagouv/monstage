@@ -1,0 +1,16 @@
+= form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, data: {controller: 'search-form search-popover radioboxes-search-school-track'} do |form|
+  .row.no-gutters
+
+    .form-group.mb-md-0.col-12.col-md
+      label.d-inline-block.d-md-none for="input-search-by-keyword" Rechercher une profession
+      = react_component("KeywordInput")
+
+    .form-group.mb-md-0.col-12.col-md
+      label.d-inline-block.d-md-none for="input-search-by-city" Ville ou code postal
+      = react_component("CityInput")
+
+    = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering}
+
+    .pb-5
+
+    .col-auto-md.actions.d-flex.d-md-block.d-sm-stick data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger mr-md-3', name: nil
