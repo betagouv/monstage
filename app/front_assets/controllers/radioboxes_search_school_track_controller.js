@@ -3,13 +3,14 @@ import { Controller } from 'stimulus';
 export default class extends Controller {
 
   static targets = [
-    'input',
+    'schoolTrackInput',
     'tabPane',
     'searchByDateContainer' ,
+    'desktopPlaceholder'
     ]
 
   connect(){
-    this.updateVisibleForm(this.inputTarget.value);
+    this.updateVisibleForm(this.schoolTrackInputTarget.value);
   }
 
   onChange(changeEvent){
@@ -22,9 +23,5 @@ export default class extends Controller {
     } else {
       this.searchByDateContainerTarget.classList.add('d-none')
     }
-  }
-
-  clear(clickEvent) {
-
   }
 }

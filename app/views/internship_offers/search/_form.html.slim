@@ -1,16 +1,19 @@
-= form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, data: {controller: 'search-form search-popover radioboxes-search-school-track'} do |form|
-  .row.no-gutters
+div data-controller='search-form search-popover radioboxes-search-school-track'
+  = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{desktop_rendering ? 'd-none d-md-block py-3 bb-1 bl-1 br-1 bc-light rounded-6 bg-white' : ''}" } do |form|
+    .row.no-gutters
+      .form-group.mb-md-0.col-12.col-md
+        label.d-inline-block.d-md-none for="input-search-by-keyword" Rechercher une profession
+        = react_component("KeywordInput")
 
-    .form-group.mb-md-0.col-12.col-md
-      label.d-inline-block.d-md-none for="input-search-by-keyword" Rechercher une profession
-      = react_component("KeywordInput")
+      .form-group.mb-md-0.col-12.col-md
+        label.d-inline-block.d-md-none for="input-search-by-city" Ville ou code postal
+        = react_component("CityInput")
 
-    .form-group.mb-md-0.col-12.col-md
-      label.d-inline-block.d-md-none for="input-search-by-city" Ville ou code postal
-      = react_component("CityInput")
+      = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering}
 
-    = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering}
+      .pb-5
 
-    .pb-5
+      .col-auto-md.actions.d-flex.d-md-block.d-sm-stick data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger mr-md-3', name: nil
 
-    .col-auto-md.actions.d-flex.d-md-block.d-sm-stick data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger mr-md-3', name: nil
+  - if desktop_rendering
+    .actions.d-flex.d-stick.d-md-none=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger'
