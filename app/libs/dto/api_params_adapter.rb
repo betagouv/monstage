@@ -7,16 +7,18 @@ module Dto
       map_sector_uuid_to_sector
       map_week_slugs_to_weeks
       assign_offer_to_current_api_user
+      assign_school_track
       params
     end
 
     private
 
-    attr_reader :params, :user, :fallback_weeks
-    def initialize(params:, user:, fallback_weeks:)
+    attr_reader :params, :user, :fallback_weeks, :school_track
+    def initialize(params:, user:, fallback_weeks:, school_track:)
       @params = params
       @user = user
       @fallback_weeks = fallback_weeks
+      @school_track = school_track
     end
 
     def map_sector_uuid_to_sector
@@ -45,6 +47,11 @@ module Dto
 
     def assign_offer_to_current_api_user
       params[:employer] = user
+      params
+    end
+
+    def assign_school_track
+      params[:school_track] = school_track
       params
     end
   end

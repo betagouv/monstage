@@ -48,12 +48,18 @@ module Finders
       if user.try(:class_room).try(:fit_to_weekly?)
         unless user.missing_school_weeks?
           query = query.merge(
-            InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
+            weekly_framed_scopes(:internship_offers_overlaping_school_weeks, {weeks: user.school.weeks})
           )
         end
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
+        query = query.merge(
+          weekly_framed_scopes(:ignore_already_applied, {user: user})
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_candidates_reached)
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
+        )
       elsif user.try(:class_room).try(:fit_to_free_date?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end

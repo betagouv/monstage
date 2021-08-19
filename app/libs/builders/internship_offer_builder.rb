@@ -3,6 +3,7 @@
 module Builders
   # wrap internship offer creation logic / failure for API/web usage
   class InternshipOfferBuilder < BuilderBase
+    API_DEFAULT_SCHOOL_TRACK = :troisieme_generale
 
     # called by dashboard/stepper/tutor#create during creating with steps
     def create_from_stepper(tutor:, organisation:, internship_offer_info:)
@@ -75,6 +76,7 @@ module Builders
 
       opts = { params: params,
                user: user,
+               school_track: API_DEFAULT_SCHOOL_TRACK,
                fallback_weeks: fallback_weeks }
 
       Dto::ApiParamsAdapter.new(opts)
