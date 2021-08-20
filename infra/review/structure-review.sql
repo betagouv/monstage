@@ -476,7 +476,7 @@ CREATE TABLE public.groups (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    is_pacte boolean
+    is_paqte boolean
 );
 
 

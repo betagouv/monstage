@@ -25,20 +25,20 @@ class AirTableRecordTest < ActiveSupport::TestCase
     assert_includes(result.map(&:attributes), {"total_count"=>20, "is_public"=>true, "id"=>nil})
   end
 
-  test '.by_pacte' do
+  test '.by_paqte' do
     create(:air_table_record,
            nb_spot_used: 10,
            group: true,
            group: create(:group, name: "mfo",
-                                 is_pacte: true))
+                                 is_paqte: true))
     create(:air_table_record,
            nb_spot_used: 10,
            group: true,
            group: create(:group, name: "fom",
-                                 is_pacte: false))
+                                 is_paqte: false))
 
 
-    result = AirTableRecord.by_pacte
+    result = AirTableRecord.by_paqte
     assert_includes(result.map(&:attributes), {"total_count"=>10, "id"=>nil})
   end
 

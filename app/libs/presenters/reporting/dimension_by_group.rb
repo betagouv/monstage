@@ -21,7 +21,7 @@ module Presenters
 
       def human_category
         return 'Public' if instance&.group&.is_public
-        return 'PaQte' if instance&.group&.is_pacte
+        return 'PaQte' if instance&.group&.is_paqte
 
         'Privé'
       end
