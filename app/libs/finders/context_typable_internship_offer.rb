@@ -73,7 +73,7 @@ module Finders
     end
 
     def school_year_query(query)
-      query.merge(InternshipOffers::WeeklyFramed.specific_school_year(school_year: school_year_param))
+      query.merge(weekly_framed_scopes(:specific_school_year, school_year: school_year_param))
     end
 
     def keyword_query(query)
@@ -86,6 +86,18 @@ module Finders
 
     def school_track_query(query)
       query.merge(InternshipOffer.school_track(school_track: school_track_params))
+    end
+
+    protected
+
+    def weekly_framed_scopes(scope, args = nil)
+      if args.nil?
+        InternshipOffers::WeeklyFramed.send(scope)
+          .or(InternshipOffers::Api.send(scope))
+      else
+        InternshipOffers::WeeklyFramed.send(scope, args)
+          .or(InternshipOffers::Api.send(scope, args))
+      end
     end
   end
 end
