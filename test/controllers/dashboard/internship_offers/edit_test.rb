@@ -26,10 +26,29 @@ module Dashboard::InternshipOffers
                                                           max_candidates: 2)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
-      Week.selectable_on_school_year.each do |week|
+
+      internship_offer.available_weeks.each do |week|
         assert_select 'label', text: week.select_text_method
       end
       assert_response :success
+    end
+
+    test 'GET #edit post offer render selectable week of past year' do
+      travel_to(Date.new(Date.today.year - 1, 5, 31)) do
+        employer = create(:employer)
+        school_year_n_minus_one = SchoolYear::Floating.new_by_year(year: Date.today.year - 1)
+
+        first_week = Week.where(year: school_year_n_minus_one.beginning_of_period.year,
+                                number: school_year_n_minus_one.beginning_of_period.cweek)
+                         .first
+
+        sign_in(employer)
+        internship_offer = create(:weekly_internship_offer, weeks: [first_week],
+                                                            employer: employer,
+                                                            max_candidates: 2)
+        get edit_dashboard_internship_offer_path(internship_offer.to_param)
+        assert_response :success
+      end
     end
 
     test 'GET #edit is not turbolinkable' do

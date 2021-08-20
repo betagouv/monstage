@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
 
 # fwk/server
+gem 'actionpack', ">= 6.1.3.2"
 gem 'rails'
 gem 'puma'
 
@@ -22,6 +24,7 @@ gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
+gem 'inline_svg'
 gem 'slim-rails'
 gem 'turbolinks'
 gem "react_on_rails"
@@ -37,8 +40,8 @@ gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 # instrumentation
-gem 'newrelic_rpm'
-gem 'sentry-raven'
+gem "lograge"
+gem 'elastic-apm'
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
 
@@ -100,3 +103,4 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
 end
 
+gem 'airtable'

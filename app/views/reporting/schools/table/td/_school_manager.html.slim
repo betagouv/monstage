@@ -1,4 +1,8 @@
 - if has_school_manager
-  i.fas.fa-check.text-success
+  = image_tag asset_pack_path('media/images/pages/statistics/green_check.svg'),
+              alt: "Etablissement inscrit",
+              class: 'align-top',
+              height: 22
 - else
-  i.fas.fa-times.text-danger
+  span.red-x-badge
+    i.fas.fa-times

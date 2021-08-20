@@ -29,6 +29,10 @@ FactoryBot.define do
       trait :female do
         gender { 'f' }
       end
+      trait :registered_with_phone do
+        email { nil }
+        phone { '+330637607756' }
+      end
     end
 
     factory :employer, class: 'Users::Employer', parent: :user do
@@ -68,8 +72,17 @@ FactoryBot.define do
     factory :statistician, class: 'Users::Statistician', parent: :user do
       type { 'Users::Statistician' }
       before(:create) do |user|
-        create(:email_whitelist, email: user.email, zipcode: '60', user: user)
+        create(:statistician_email_whitelist, email: user.email, zipcode: '60', user: user)
       end
+    end
+
+    factory :ministry_statistician, class: 'Users::MinistryStatistician', parent: :user do
+      transient do
+        white_list { create(:ministry_statistician_email_whitelist) }
+      end
+      type { 'Users::MinistryStatistician' }
+      email { white_list.email }
+      ministry_id { white_list.group.id }
     end
 
     factory :user_operator, class: 'Users::Operator', parent: :user do

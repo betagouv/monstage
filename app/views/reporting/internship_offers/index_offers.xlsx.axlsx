@@ -1,0 +1,24 @@
+wb = xlsx_package.workbook
+max_weeks =  offers.map { |o| o.respond_to?(:weeks) ? o.weeks.count : 0 }.max
+wb.add_worksheet(name: 'Offres') do |sheet|
+  # headers
+  sheet.add_row(
+    [].concat(
+      [presenter_for_dimension.dimension_name],
+      presenter_for_dimension.metrics.map { |metric_name| InternshipOffer.human_attribute_name(metric_name) },
+      presenter_for_dimension == Presenters::Reporting::DimensionByOffer && max_weeks.to_i > 0 ? (1..max_weeks).map { |i| "Semaine #{i}" } : []
+    )
+  )
+
+  # raws
+  offers.each do |offer|
+    presented_internship_offer = presenter_for_dimension.new(offer)
+    sheet.add_row(
+      [].concat(
+        [presented_internship_offer.dimension],
+        presenter_for_dimension.metrics.map { |metric| presented_internship_offer.send(metric) },
+        presenter_for_dimension == Presenters::Reporting::DimensionByOffer ? presented_internship_offer.weeks_list : []
+      )
+    )
+  end
+end

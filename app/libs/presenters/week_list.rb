@@ -21,16 +21,38 @@ module Presenters
         ''
       when 1
         render_first_week_only(&block)
-      when 2..5
-        render_five_first_weeks(&block)
       else
         render_by_collapsing_date_from_first_to_last_week(&block)
       end
     end
 
+    def split_weeks_in_trunks
+      week_list, container = [weeks.dup.to_a, []]
+      while week_list.present?
+        joined_weeks = [week_list.slice!(0)]
+        while week_list.present? && week_list.first.consecutive_to?(joined_weeks.last)
+          joined_weeks << week_list.slice!(0)
+        end
+        container << self.class.new(weeks: joined_weeks)
+      end
+      container
+    end
+
+    def student_compatible_week_list(student)
+      self.class.new(weeks: weeks & student.school.weeks)
+    end
+
     def to_s
       weeks.map(&:long_select_text_method)
            .join("\n")
+    end
+
+    def empty?
+      weeks.empty?
+    end
+
+    def split_range_string
+      to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
     end
 
     protected
@@ -39,14 +61,6 @@ module Presenters
       [
         'Disponible la semaine',
         yield(is_first: false, is_last: false, week: first_week)
-      ].join(' ')
-    end
-
-    def render_five_first_weeks
-      [
-        "Disponible sur #{weeks.size} semaines :",
-        weeks.map { |week| yield(is_first: false, is_last: false, week: week) }
-             .join(', ')
       ].join(' ')
     end
 

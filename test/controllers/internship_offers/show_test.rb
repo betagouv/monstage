@@ -70,31 +70,27 @@ module InternshipOffers
 
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application'
-      assert_select "input[type=hidden][name='internship_application[user_id]'][value=#{student.id}]"
     end
 
-    test 'GET #show as Student when school has no weeks' do
+    test 'GET #show as Student when school has no weeks it shows caution message and weeks offer select' do
       school = create(:school, weeks: [])
       student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
       sign_in(student)
-      get internship_offer_path(create(:weekly_internship_offer))
+      internship_offer = create(:weekly_internship_offer)
+      get internship_offer_path(internship_offer)
 
       assert_response :success
       assert_select 'form[id=?]', 'new_internship_application', count: 1
-
-      assert_select('.student-form-missing-school-weeks',
+      assert_select('.test-missing-school-weeks',
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
-      assert_select('a[href=?]',
-                    account_path(user: {missing_weeks_school_id: student.school.id}))
-      student.update(missing_weeks_school_id: school.id)
-      get internship_offer_path(create(:weekly_internship_offer))
-
-      assert_response :success
-      assert_select('.student-form-missing-school-weeks',
+      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+      assert_select '.btn-danger[disabled]',
                     { count: 0 },
-                    'missing rendering of call_to_action/student_missing_school_weeks')
+                    'form should be submitable'
     end
+
+  
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
@@ -184,17 +180,14 @@ module InternshipOffers
     end
 
     test 'GET #show as Student with existing submitted, approved, rejected application shows _state component' do
-      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: weeks)
       student = create(:student,
                        class_room: create(:class_room, :troisieme_generale, school: school),
                        school: school)
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
       internship_applications = {
         submitted: create(:weekly_internship_application, :submitted, student: student),
         approved: create(:weekly_internship_application, :approved, student: student),
-        rejected: create(:weekly_internship_application, :rejected, student: student),
-        convention_signed: create(:weekly_internship_application, :convention_signed, student: student)
+        rejected: create(:weekly_internship_application, :rejected, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
@@ -224,6 +217,26 @@ module InternshipOffers
                                 count: 0
         assert_select 'option', text: matching_week.human_select_text_method,
                                 count: 1
+      end
+    end
+
+    test 'GET #show as Student displays select with default option an no more when no weeks matches intersection between school weeks and internship_offer weeks' do
+      school_week = Week.find_by(number: 11, year: 2019)
+      internship_offer_week = Week.find_by(number: 12, year: 2019)
+
+      internship_offer = create(:weekly_internship_offer,
+                                weeks: [internship_offer_week])
+
+      school = create(:school, weeks: [school_week])
+      sign_in(create(:student,
+                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     school: school))
+      travel_to(school_week.week_date - 1.month) do
+        get internship_offer_path(internship_offer)
+
+        assert_response :success
+        assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
+                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>`
       end
     end
 

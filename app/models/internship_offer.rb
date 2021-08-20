@@ -47,7 +47,11 @@ class InternshipOffer < ApplicationRecord
   }
 
   scope :limited_to_department, lambda { |user:|
-    where(department: user.department_name)
+    where(department: user.department)
+  }
+
+  scope :limited_to_ministry, lambda { |user:|
+    where(group_id: user.ministry_id)
   }
 
   scope :from_api, lambda {
@@ -98,8 +102,8 @@ class InternshipOffer < ApplicationRecord
                                      foreign_key: 'internship_offer_id'
 
   belongs_to :employer, polymorphic: true
+  belongs_to :organisation, optional: true
 
-  has_one :organisation
   has_one :tutor
   has_one :internship_offer_info
 
@@ -123,6 +127,11 @@ class InternshipOffer < ApplicationRecord
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
+  def operator
+    return nil if !from_api?
+    employer.operator
   end
 
   def published?

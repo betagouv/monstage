@@ -9,6 +9,20 @@
   <div class='row' >
     <div class='col-6 d-table form-group'>
       <%= form.label :channel,
+                    "SMS",
+                    class: 'channel-radio-label  d-table-cell align-middle',
+                    for: "select-channel-phone" do %>
+        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
+        <br/>
+        <%= form.radio_button :channel,
+                        "phone",
+                        id: 'select-channel-phone',
+                        'data-action' => "change->signup#checkPhone" %>
+          <%= phone %>
+      <% end %>
+    </div>
+    <div class='col-6 d-table form-group'>
+      <%= form.label :channel,
                      "Email",
                      class: 'channel-radio-label d-table-cell align-middle',
                      for: "select-channel-email" do %>
@@ -20,20 +34,6 @@
                               id: 'select-channel-email',
                               'data-action' => "change->signup#checkEmail" %>
           Email
-      <% end %>
-    </div>
-    <div class='col-6 d-table form-group'>
-      <%= form.label :channel,
-                    "SMS",
-                    class: 'channel-radio-label  d-table-cell align-middle',
-                    for: "select-channel-phone" do %>
-        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
-        <br/>
-        <%= form.radio_button :channel,
-                        "phone",
-                        id: 'select-channel-phone',
-                        'data-action' => "change->signup#checkPhone" %>
-          <%= phone %>
       <% end %>
     </div>
   </div>

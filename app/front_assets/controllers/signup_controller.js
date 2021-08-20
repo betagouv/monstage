@@ -79,7 +79,7 @@ export default class extends Controller {
           case 'hint':
             $hint.attr('class', 'invalid-feedback');
             $input.attr('class', 'form-control is-invalid');
-            emailHintElement.innerText = `Peut être avez-vous fait une typo ? ${data.replacement}`;
+            emailHintElement.innerText = `Peut être avez-vous fait une erreur de frappe ? ${data.replacement}`;
             break;
           default:
             hideElement($hint);

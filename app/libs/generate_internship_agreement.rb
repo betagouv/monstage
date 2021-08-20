@@ -78,7 +78,7 @@ class GenerateInternshipAgreement < Prawn::Document
     field_form @internship_agreement.student_school 
     label_form "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur :"
     field_form @internship_agreement.tutor_full_name 
-    label_form "Nom du ou (des) enseignant(s) chargé(s) de suivre le déroulement de séquence d’observation en milieu professionnel : "
+    label_form "Nom du ou des enseignants chargés de suivre le déroulement de séquence d’observation en milieu professionnel : "
     field_form @internship_agreement.main_teacher_full_name 
     label_form "Dates de la séquence d’observation en milieu professionnel :"
     field_form @internship_agreement.date_range 

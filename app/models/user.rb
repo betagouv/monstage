@@ -226,8 +226,17 @@ class User < ApplicationRecord
     end
   end
 
-  private
+  def canceled_targeted_offer_id
+    canceled_targeted_offer_id = self.targeted_offer_id
+    self.targeted_offer_id = nil
+    save
+    canceled_targeted_offer_id
+  end
 
+  def statistician? ; false end
+  def ministry_statistician? ; false end
+
+  private
 
   def clean_phone
     self.phone = nil if phone == '+33'

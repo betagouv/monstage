@@ -15,6 +15,24 @@ import './pages/remote_internships/webinar_2x.png';
 import './pages/remote_internships/face_to_face_2x.png';
 import './pages/remote_internships/digital_week_2x.png';
 
+import './icons/noun_Handshake_2803586-1.svg';
+import './icons/noun_job_offer_1461730-1.svg';
+import './icons/noun_building_353052.svg';
+import './icons/noun_Computer_2646597.svg';
+import './icons/noun_group_Computeur_People.svg';
+import './icons/noun_group_establishment.svg';
+import './icons/noun_people_3139638.svg';
+
+import './pages/statistics/hand_left.svg';
+import './pages/statistics/hand_right.svg';
+import './pages/statistics/handshake.svg';
+import './pages/statistics/ok.svg';
+import './pages/statistics/green_check.svg';
+import './pages/statistics/school.svg';
+import './pages/statistics/reseau.png';
+import './pages/statistics/la_poste.png';
+import './pages/statistics/carrefour.png';
+
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';

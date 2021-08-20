@@ -2,6 +2,8 @@
 
 module Finders
   class ReportingInternshipOffer
+
+    DETAILED_TYPOLOGY_GROUPS = ['private_group','paqte_group','public_group']
     #
     # raw queries for widgets (reporting/dashboard)
     #
@@ -38,6 +40,10 @@ module Finders
                 .includes(:group)
     end
 
+    def dimension_by_detailed_typology(detailed_typology:)
+      base_query.dimension_by_detailed_typology(detailed_typology: detailed_typology)
+    end
+
     def dimension_by_sector
       base_query.dimension_by_sector
                 .includes(:sector)
@@ -52,18 +58,23 @@ module Finders
     end
 
     def base_query
-      base_query = Reporting::InternshipOffer.all
-      base_query = base_query.during_year(school_year: school_year) if school_year_param?
-      base_query = base_query.by_department(department: params[:department]) if department_param?
-      base_query = base_query.by_school_track(school_track: school_track) if school_track
-      base_query = base_query.by_group(group: params[:group]) if group_param?
-      base_query = base_query.by_academy(academy: params[:academy]) if academy_param?
-      base_query = base_query.where(is_public: params[:is_public]) if public_param?
-      base_query
+      query = Reporting::InternshipOffer.all
+      query = query.during_year(school_year: school_year) if school_year_param?
+      query = query.by_department(department: params[:department]) if department_param?
+      query = query.by_school_track(school_track: params[:school_track]) if school_track?
+      query = query.by_group(group_id: params[:group]) if group_param?
+      query = query.by_academy(academy: params[:academy]) if academy_param?
+      query = query.where(is_public: params[:is_public]) if public_param?
+      query = query.by_detailed_typology(detailed_typology: params[:dimension]) if detailed_typology?
+      query
     end
 
     def school_year
       SchoolYear::Floating.new_by_year(year: params[:school_year].to_i)
+    end
+
+    def school_track?
+      params.key?(:school_track)
     end
 
     def school_year_param?
@@ -72,6 +83,11 @@ module Finders
 
     def public_param?
       params.key?(:is_public)
+    end
+
+    def detailed_typology?
+      params.key?(:dimension) &&
+        params[:dimension].in?(DETAILED_TYPOLOGY_GROUPS)
     end
 
     def department_param?
@@ -84,10 +100,6 @@ module Finders
 
     def academy_param?
       params.key?(:academy)
-    end
-
-    def school_track
-      params[:school_track]
     end
   end
 end

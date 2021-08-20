@@ -1,0 +1,26 @@
+.container.mt-3
+  = render partial: 'reporting/navigation'    
+
+  .row.mt-3
+    .col-12
+      .table.table.table-statistics.table-sticky-thead
+        .thead
+          .tr.tr-blue
+            .th.bl-1.bc-light= Operator.model_name.human
+            .th.bl-1.bc-light= Operator.human_attribute_name(:target_count)
+            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels, distanciels, hybrides" data-controller='tooltip' Stages Pourvus
+            .th.bl-1.bc-light Dernière mise à jour
+            .th.bl-1.bc-light
+
+        .tbody= render partial: 'reporting/operators/operator', collection: @operators
+
+        .tr class="font-weight-bold text-blue"
+          .td.align-middle.bl-1.bc-light Total
+          .td.align-middle.bl-1.bc-light.text-blue.font-weight-bold= @operators.sum(&:target_count)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.countable_in_grand_total.countable_in_grand_total.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.last_modified_at.try(:strftime, '%d-%m-%Y') || '-'
+          .td.align-middle.bl-1.bc-light
+
+  .row.mt-3.mb-3
+    .col-12.text-center
+      = link_to "Exporter", reporting_operators_path(format: :xlsx), class: 'btn btn-danger', data: {turbolinks: false}

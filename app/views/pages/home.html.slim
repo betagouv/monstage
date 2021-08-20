@@ -1,29 +1,40 @@
 = cache PrismicFinder do
-  .bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{PrismicFinder.homepage()['homepage.image'].url})"
+  .bg-cover-image-homepage
     .container
-      .row
+      .row.py-3.py-sm-5
+
+      .row.no-gutters.py-5
         .col-12
-          #des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
-            = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
-                          alt: "Dispositif Covid-19",
-                          width: 240,
-                          class: 'mb-3'
-                
-            .h1.text-white      
-              = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
+          h1.text-white.text-center.mb-3
+            | monstagedetroisieme.fr,
+            br
+            | ce sont
+            - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
+            - presenter = Presenters::InternshipOffer.new
+            span.home-blue-shadow = " #{presenter.large_number(offers)} "
+            | offres de stages
+            br
+            | qui n'attendent que vous
+          .col-12= react_component("SearchInternshipOffer",
+                                props: { url: internship_offers_path,
+                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
+                                  schoolTypeVisibility: false }) do
+                .input-loading-skeleton
+
+      .row.py-3.py-sm-5
 
   .bg-transparent
     .container
       .row
         .col-12
           h2.py-5.text-center
-            
+
             = PrismicFinder.homepage()['homepage.slider_title'].as_text
       .row.pb-5.mb-3.flex-md-reverse-column
         .col-12.col-md-6.align-self-center
           .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
 
-            
+
             - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
               = link_to "#news#{index}",
                         class: "p-3 nav-link my-2 #{'active' if index == 0}",
@@ -35,37 +46,15 @@
 
         .col-12.col-md-6
           .tab-content.partners-height
-            
+
             - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
               .tab-pane role="tabpanel" id="news#{index}" class="#{'active' if index == 0}"
                 .card
                   = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
                   .card-body
                     = news.get('news_description').as_html(nil).html_safe
-                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold' do
+                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
                       = news.get('news_link_text').as_text
-                      | &nbsp;
-                      i.fas.fa-chevron-right
-
-  .bg-cover-image-homepage
-    .container
-      .row.py-3.py-sm-5
-
-      .row.no-gutters.py-5
-        .col-12
-          h1.text-white.text-center.mb-3
-            | Et après le confinement ?
-            br
-            | Des offres de stages vous attendent déjà !
-          .col-12= react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path,
-                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                  schoolTypeVisibility: false }) do
-                .input-loading-skeleton
-
-      .row.py-3.py-sm-5
-
-
 
   .bg-light-blue
     .container
@@ -157,5 +146,4 @@
             - partners_map_of_logo_url.each do |partner|
               = render partial: "partner_link",
                       locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-
 

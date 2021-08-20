@@ -28,13 +28,14 @@ class EmailUpdateFlowTest < ApplicationSystemTestCase
                   " votre nouvelle adresse électronique (e-mail)."
     end
     visit account_path
-    # byebug
     assert_equal alt_email, find('#user_unconfirmed_email').value
     assert_text(
       "Cet email n'est pas encore confirmé : veuillez consulter vos emails"
     )
     find_link( text: "Vous n'avez pas reçu le message d'activation ?" ).click
-    assert_equal alt_email, find('#user_email').value
+    find('label[for=select-channel-email]').click
+    execute_script("document.getElementById('user_email').value = '#{alt_email}';")
+
     click_on('Renvoyer')
     user.confirm
     visit account_path

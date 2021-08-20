@@ -2,6 +2,7 @@
 
 module Finders
   class ReportingSchool
+    ALL = 'all'
     def total_with_manager
       base_query.count_with_school_manager
     end
@@ -34,12 +35,30 @@ module Finders
 
     def base_query
       query = Reporting::School.all
-      query = query.with_school_track(params[:school_track])  if params[:school_track]
       query = query.where(visible: true)
-      query = query.where(department: params[:department]) if params[:department]
+      query = query.with_school_track(params[:school_track])  if school_track_params?
+      query = query.where(department: params[:department]) if department_param?
+      query = query.where(id: params[:school_id]) if specific_school?
+      query = query.by_subscribed_school(subscribed_school: params[:subscribed_school]) if subscribed_school_param?
       query = query.joins(:class_rooms)
-                   .where('class_rooms.school_track = ?', params[:school_track]) if params[:school_track]
+                   .where('class_rooms.school_track = ?', params[:school_track]) if school_track_params?
       query
+    end
+
+    def department_param?
+      params.key?(:department)
+    end
+
+    def school_track_params?
+      params.key?(:school_track)
+    end
+
+    def specific_school?
+      params.key?(:school_id)
+    end
+
+    def subscribed_school_param?
+      params.key?(:subscribed_school) && params[:subscribed_school] != ALL
     end
   end
 end
