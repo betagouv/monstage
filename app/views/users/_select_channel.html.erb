@@ -17,7 +17,8 @@
         <%= form.radio_button :channel,
                         "phone",
                         id: 'select-channel-phone',
-                        'data-action' => "change->signup#checkPhone" %>
+                        'data-action' => "change->signup#checkPhone",
+                        'data-signup-target' => 'phoneRadioButton'   %>
           <%= phone %>
       <% end %>
     </div>
@@ -32,7 +33,8 @@
         <%= form.radio_button :channel,
                               "email",
                               id: 'select-channel-email',
-                              'data-action' => "change->signup#checkEmail" %>
+                              'data-action' => "change->signup#checkEmail",
+                              'data-signup-target' => 'emailRadioButton'   %>
           Email
       <% end %>
     </div>
@@ -59,7 +61,7 @@
     <%= react_component("CountryPhoneSelect",
       props: {
         name: 'user[phone]',
-        value: resource.phone
+        value: resource.phone || params[:phone]
       })
     %>
   </div>
