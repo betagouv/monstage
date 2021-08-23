@@ -34,7 +34,7 @@ class Ability
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
+      (!internship_offer.reserved_to_school? || (internship_offer.school_id == user.school_id)) &&
         !internship_offer.from_api? &&
         user.try(:class_room).try(:applicable?, internship_offer)
     end
