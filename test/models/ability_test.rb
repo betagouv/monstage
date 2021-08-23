@@ -110,9 +110,12 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Statistician' do
     statistician = create(:statistician)
     ability = Ability.new(statistician)
+
     assert(ability.can?(:view, :department),
            'statistician should be able to view his own department')
     assert(ability.can?(:read, InternshipOffer))
+    assert(ability.cannot?(:renew, InternshipOffer.new),
+           'employers should not be able to renew internship offer not belonging to him')
     refute(ability.can?(:show, :account),
            'statistician should be able to see his account')
     refute(ability.can?(:update, School),
