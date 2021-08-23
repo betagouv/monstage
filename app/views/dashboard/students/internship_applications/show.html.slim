@@ -55,7 +55,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
     .row
       .col-12.py-2
         h3.h4 Prochaine étape, la convention de stage
-        - if current_user.is_a?(Users::Student)
+        - if current_user.student?
           p La convention est fournie par l'établissement. Vous pouvez en demander un modèle à votre professeur principal.
         - else
           p La convention est fournie par l'établissement, son modèle est généralement fourni par le professeur principal.

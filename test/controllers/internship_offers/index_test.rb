@@ -76,7 +76,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student. ignores internship offers not published' do
-    internship_offer_published = create(:weekly_internship_offer)
+    api_internship_offer         = create(:api_internship_offer)
+    internship_offer_published   = create(:weekly_internship_offer)
     internship_offer_unpublished = create(:weekly_internship_offer)
     internship_offer_unpublished.update_column(:published_at, nil)
     student = create(:student)
@@ -85,6 +86,9 @@ class IndexTest < ActionDispatch::IntegrationTest
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path
         assert_absence_of(internship_offer: internship_offer_unpublished)
+        assert_presence_of(internship_offer: api_internship_offer)
+        # Api offer is targeted with new window
+        assert_equal 'Continuer pour postuler', Nokogiri::HTML.parse(response.body).at("[target='_blank']").text
         assert_presence_of(internship_offer: internship_offer_published)
       end
     end

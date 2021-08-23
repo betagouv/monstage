@@ -5,7 +5,9 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+         :recoverable, :rememberable,
+         :validatable, :confirmable, :trackable,
+         :timeoutable
 
   include DelayedDeviseEmailSender
 
@@ -235,6 +237,7 @@ class User < ApplicationRecord
 
   def statistician? ; false end
   def ministry_statistician? ; false end
+  def student? ; false end
 
   private
 
