@@ -1,4 +1,4 @@
-- unless current_user.is_a?(Users::Student)
+- unless current_user&.student?
   = render partial: 'common/filter_with_mobile_alternative',
            locals: { large_screen_react_component: 'FilterInternshipOffer',
                      field: :school_track,
