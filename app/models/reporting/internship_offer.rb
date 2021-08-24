@@ -114,7 +114,7 @@ module Reporting
         opposite_query = Group.where(is_public: true)
         where.not(group_id: opposite_query.ids).or(where(group_id: nil))
       when 'paqte_group'
-        joins(:group).where(group: { is_pacte: true })
+        joins(:group).where(group: { is_paqte: true })
       when 'public_group'
         joins(:group).where(group: { is_public: true })
       else
