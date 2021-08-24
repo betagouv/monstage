@@ -7,6 +7,8 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new
     assert(ability.can?(:read, InternshipOffer.new),
            'visitors should be able to consult internships')
+    assert(ability.can?(:apply, InternshipOffer.new),
+           'visitors should be lured into thinking that they can apply directly')
     assert(ability.cannot?(:manage, InternshipOffer.new),
            'visitors should not be able to con manage internships')
   end
