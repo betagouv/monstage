@@ -102,6 +102,8 @@ Rails.application.routes.draw do
   get '/documents-utiles', to: 'pages#documents_utiles'
   get '/javascript-required', to: 'pages#javascript_required'
   get '/mentions-legales', to: 'pages#mentions_legales'
+  get '/blog', to: 'pages#blog'
+  get '/blog/:slug', to: 'pages#blog_post', as: :blog_post
   get '/les-10-commandements-d-une-bonne-offre', to: 'pages#les_10_commandements_d_une_bonne_offre'
   get '/operators', to: 'pages#operators'
   get '/partenaires', to: 'pages#partenaires'

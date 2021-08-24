@@ -1,0 +1,15 @@
+h1 Le blog 
+h4.mb-4 Toute l'actualité de Mon Stage de 3e
+
+.container.mt-3.blog
+  .row
+    - PrismicFinder.blog().each do |blog_post|
+      .col-12.col-md-4.d-flex.align-items-stretch
+        .card.mb-5
+          = image_tag blog_post['blog_post.image'].url, class: 'card-img-top'
+          .card-body
+            - blog_post.tags.each do |tag|
+              span.badge.badge-warning.mx-2= tag
+            h5.card-titleCard.mt-2= blog_post['blog_post.main_title'].as_text            
+            p.card-text= blog_post['blog_post.description'].as_text
+            = link_to "en savoir plus", blog_post_path(blog_post.uid), class: "btn btn-primary" 
