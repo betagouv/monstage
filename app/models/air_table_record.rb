@@ -59,9 +59,9 @@ class AirTableRecord < ApplicationRecord
       .group(:is_public)
   }
 
-  scope :by_pacte, lambda {
+  scope :by_paqte, lambda {
     select("sum(nb_spot_used) as total_count")
-      .where(group_id: Group.is_pacte)
+      .where(group_id: Group.is_paqte)
   }
 
 end
