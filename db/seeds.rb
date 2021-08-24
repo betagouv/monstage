@@ -144,11 +144,11 @@ def populate_sectors
 end
 
 def populate_groups
-  Group.create!(name: 'PUBLIC GROUP', is_public: true, is_pacte: false)
-  Group.create!(name: 'PRIVATE GROUP', is_public: false, is_pacte: false)
-  Group.create!(name: 'Carrefour', is_public: false, is_pacte: true)
-  Group.create!(name: 'Engie', is_public: false, is_pacte: true)
-  Group.create!(name: 'Ministère de la Justice', is_public: true, is_pacte: false)
+  Group.create!(name: 'PUBLIC GROUP', is_public: true, is_paqte: false)
+  Group.create!(name: 'PRIVATE GROUP', is_public: false, is_paqte: false)
+  Group.create!(name: 'Carrefour', is_public: false, is_paqte: true)
+  Group.create!(name: 'Engie', is_public: false, is_paqte: true)
+  Group.create!(name: 'Ministère de la Justice', is_public: true, is_paqte: false)
 end
 
 def populate_users
@@ -203,7 +203,7 @@ def populate_internship_offers
     employer: Users::Employer.first,
     weeks: Week.selectable_on_school_year,
     sector: Sector.first,
-    group: Group.is_pacte.first,
+    group: Group.is_paqte.first,
     is_public: false,
     title: 'Stage assistant.e ressources humaines - Service des recrutements',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
@@ -216,14 +216,14 @@ def populate_internship_offers
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: Group.is_pacte.first.name,
+    employer_name: Group.is_paqte.first.name,
     school_track: :troisieme_generale
   )
   InternshipOffers::WeeklyFramed.create!(
       employer: Users::Employer.first,
       weeks: [].concat(Week.selectable_on_school_year[0..1], Week.selectable_on_school_year[3..5]),
       sector: Sector.first,
-      group: Group.is_pacte.first,
+      group: Group.is_paqte.first,
       is_public: false,
       title: 'Stage avec deux segments de date, bugfix',
       description_rich_text: 'Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.'.truncate(249),
@@ -236,7 +236,7 @@ def populate_internship_offers
       zipcode: '75015',
       city: 'paris',
       coordinates: { latitude: 48.866667, longitude: 2.333333 },
-      employer_name: Group.is_pacte.first.name,
+      employer_name: Group.is_paqte.first.name,
       school_track: :troisieme_generale
     )
 

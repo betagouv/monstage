@@ -5,16 +5,19 @@ import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['handicapGroup',
-                    'emailHint',
-                    'emailInput',
-                    'phoneInput',
-                    'label',
-                    'emailBloc',
-                    'phoneBloc',
-                    'passwordHint',
-                    'passwordInput',
-                    'passwordConfirmationHint',
-                    'passwordConfirmationInput'];
+    'emailHint',
+    'emailInput',
+    'phoneInput',
+    'label',
+    'emailBloc',
+    'phoneBloc',
+    'emailRadioButton',
+    'phoneRadioButton',
+    'passwordHint',
+    'passwordInput',
+    'passwordConfirmationHint',
+    'passwordConfirmationInput'
+  ];
 
   static values = {
     channel: String,
@@ -55,9 +58,12 @@ export default class extends Controller {
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
-    
+
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
-    this.channelParams = { channel: 'MailValidationChannel', uid: Math.random().toString(36) };
+    this.channelParams = {
+      channel: 'MailValidationChannel',
+      uid: Math.random().toString(36)
+    };
     this.wssClient = ActionCable.createConsumer('/cable');
     this.validator = this.wssClient.subscriptions.create(this.channelParams, {
       received: data => {
@@ -87,7 +93,7 @@ export default class extends Controller {
       },
     });
 
-    setTimeout( () => {
+    setTimeout(() => {
       this.checkChannel();
     }, 100);
   }
@@ -150,10 +156,12 @@ export default class extends Controller {
   }
 
   checkEmail() {
+    this.emailRadioButtonTarget.checked = true
     this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
   }
 
   checkPhone() {
+    this.phoneRadioButtonTarget.checked = true
     this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
   }
 
@@ -162,16 +170,16 @@ export default class extends Controller {
     this.hide(fieldToHide)
     this.show(fieldToDisplay);
   }
-  clean(fieldToClean){
+  clean(fieldToClean) {
     $(fieldToClean).val('');
   }
 
-  hide(fieldToHide){
+  hide(fieldToHide) {
     $(fieldToHide).hide();
     $(fieldToHide).addClass('d-none');
   }
 
-  show(fieldToDisplay){
+  show(fieldToDisplay) {
     $(fieldToDisplay).hide();
     $(fieldToDisplay).removeClass('d-none');
     $(fieldToDisplay).slideDown();
