@@ -29,11 +29,6 @@ jobs: # a collection of steps
             sudo apt-get update --allow-releaseinfo-change
             sudo apt-get upgrade google-chrome-stable
 
-      # Which version of bundler?
-      - run:
-          name: Which bundler?
-          command: bundle -v
-
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
