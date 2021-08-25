@@ -15,7 +15,6 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
-* copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
@@ -153,8 +152,6 @@ Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
-
-* we use a custom postgres docker image for our synonym dictionnary
 
 ### User testing with review apps
 
