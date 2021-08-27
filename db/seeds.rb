@@ -480,7 +480,25 @@ def populate_applications
     approved_at: 2.days.ago,
     student: trois_gene_studs.second,
     motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
+    internship_offer: troisieme_generale_offers.second,
+    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+  )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.third,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.third,
+    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+  )
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.fourth,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.fourth,
     internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
   )
 

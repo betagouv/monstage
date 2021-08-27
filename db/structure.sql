@@ -20,7 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
 --
@@ -34,7 +33,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -48,7 +46,6 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
 --
@@ -62,7 +59,6 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
@@ -87,15 +83,6 @@ CREATE TYPE public.user_role AS ENUM (
     'main_teacher',
     'other'
 );
-
-
---
--- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
-    TEMPLATE = pg_catalog.thesaurus,
-    dictfile = 'thesaurus_monstage', dictionary = 'french_stem' );
 
 
 --
@@ -140,34 +127,34 @@ ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
 
 
 --
--- Name: config_search_with_synonym; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+-- Name: config_search_keyword; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
+CREATE TEXT SEARCH CONFIGURATION public.config_search_keyword (
     PARSER = pg_catalog."default" );
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR asciiword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR word WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
     ADD MAPPING FOR hword_numpart WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword_part WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword_asciipart WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR asciihword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
     ADD MAPPING FOR "int" WITH simple;
 
 
@@ -511,8 +498,7 @@ CREATE TABLE public.internship_agreement_presets (
     school_delegation_to_sign_delivered_at date,
     school_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    weekly_hours text[] DEFAULT '{}'::text[]
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1975,7 +1961,7 @@ CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.intern
 -- Name: internship_offers sync_internship_offers_tsv; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE FUNCTION tsvector_update_trigger('search_tsv', 'public.config_search_with_synonym', 'title', 'description', 'employer_description');
+CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE FUNCTION tsvector_update_trigger('search_tsv', 'public.config_search_keyword', 'title', 'description', 'employer_description');
 
 
 --
@@ -2401,6 +2387,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210615113123'),
 ('20210622105914'),
 ('20210628172603'),
-('20210708094334');
+('20210708094334'),
+('20210820140527'),
+('20210825145759'),
+('20210825150743');
 
 

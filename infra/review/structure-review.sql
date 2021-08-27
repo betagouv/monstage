@@ -86,16 +86,6 @@ CREATE TYPE public.user_role AS ENUM (
 
 
 --
--- Name: dict_search_with_synonoym; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH DICTIONARY public.dict_search_with_synonoym (
-  TEMPLATE = pg_catalog.snowball,
-  language = 'french');
-
-
-
---
 -- Name: french_nostopwords; Type: TEXT SEARCH DICTIONARY; Schema: public; Owner: -
 --
 
@@ -137,34 +127,34 @@ ALTER TEXT SEARCH CONFIGURATION public.config_internship_offer_keywords
 
 
 --
--- Name: config_search_with_synonym; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+-- Name: config_search_keyword; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
 --
 
-CREATE TEXT SEARCH CONFIGURATION public.config_search_with_synonym (
+CREATE TEXT SEARCH CONFIGURATION public.config_search_keyword (
     PARSER = pg_catalog."default" );
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciiword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR asciiword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR word WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR word WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
     ADD MAPPING FOR hword_numpart WITH simple;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_part WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword_part WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword_asciipart WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword_asciipart WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR asciihword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR asciihword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
-    ADD MAPPING FOR hword WITH public.dict_search_with_synonoym, public.unaccent, french_stem;
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
+    ADD MAPPING FOR hword WITH public.unaccent, french_stem;
 
-ALTER TEXT SEARCH CONFIGURATION public.config_search_with_synonym
+ALTER TEXT SEARCH CONFIGURATION public.config_search_keyword
     ADD MAPPING FOR "int" WITH simple;
 
 
@@ -500,6 +490,38 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: internship_agreement_presets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.internship_agreement_presets (
+    id bigint NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    school_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.internship_agreement_presets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: internship_agreement_presets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.internship_agreement_presets_id_seq OWNED BY public.internship_agreement_presets.id;
+
+
+--
 -- Name: internship_agreements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -518,12 +540,16 @@ CREATE TABLE public.internship_agreements (
     tutor_full_name character varying,
     main_teacher_full_name character varying,
     doc_date date,
+    school_manager_accept_terms boolean DEFAULT false,
+    employer_accept_terms boolean DEFAULT false,
     weekly_hours text[] DEFAULT '{}'::text[],
     daily_hours text[] DEFAULT '{}'::text[],
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    school_manager_accept_terms boolean DEFAULT false,
-    employer_accept_terms boolean DEFAULT false,
-    main_teacher_accept_terms boolean DEFAULT false
+    main_teacher_accept_terms boolean DEFAULT false,
+    school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
+    school_delegation_to_sign_delivered_at date,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -644,7 +670,9 @@ CREATE TABLE public.internship_offer_infos (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
-    new_daily_hours jsonb DEFAULT '{}'::jsonb
+    new_daily_hours jsonb DEFAULT '{}'::jsonb,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -791,7 +819,10 @@ CREATE TABLE public.internship_offers (
     daily_hours text[] DEFAULT '{}'::text[],
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
-    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED
+    daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
+    siren character varying,
+    daily_lunch_break jsonb DEFAULT '{}'::jsonb,
+    weekly_lunch_break text
 );
 
 
@@ -880,7 +911,8 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL
+    employer_id bigint NOT NULL,
+    siren character varying
 );
 
 
@@ -1095,7 +1127,8 @@ CREATE TABLE public.users (
     last_phone_password_reset timestamp without time zone,
     anonymized boolean DEFAULT false NOT NULL,
     banners jsonb DEFAULT '{}'::jsonb,
-    ministry_id bigint
+    ministry_id bigint,
+    targeted_offer_id integer
 );
 
 
@@ -1197,6 +1230,13 @@ ALTER TABLE ONLY public.email_whitelists ALTER COLUMN id SET DEFAULT nextval('pu
 --
 
 ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets ALTER COLUMN id SET DEFAULT nextval('public.internship_agreement_presets_id_seq'::regclass);
 
 
 --
@@ -1366,6 +1406,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: internship_agreement_presets internship_agreement_presets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_agreement_presets
+    ADD CONSTRAINT internship_agreement_presets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1557,6 +1605,13 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_internship_agreement_presets_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_agreement_presets_on_school_id ON public.internship_agreement_presets USING btree (school_id);
 
 
 --
@@ -1906,7 +1961,7 @@ CREATE UNIQUE INDEX uniq_applications_per_internship_offer_week ON public.intern
 -- Name: internship_offers sync_internship_offers_tsv; Type: TRIGGER; Schema: public; Owner: -
 --
 
-CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE FUNCTION tsvector_update_trigger('search_tsv', 'public.config_search_with_synonym', 'title', 'description', 'employer_description');
+CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.internship_offers FOR EACH ROW EXECUTE FUNCTION tsvector_update_trigger('search_tsv', 'public.config_search_keyword', 'title', 'description', 'employer_description');
 
 
 --
@@ -2331,6 +2386,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210604144318'),
 ('20210615113123'),
 ('20210622105914'),
-('20210708094334');
+('20210628172603'),
+('20210708094334'),
+('20210820140527'),
+('20210825145759'),
+('20210825150743');
 
 
