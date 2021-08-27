@@ -44,6 +44,8 @@ gem "lograge"
 gem 'elastic-apm'
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
+gem "sentry-ruby"
+gem "sentry-rails"
 
 # acl
 gem 'cancancan'
