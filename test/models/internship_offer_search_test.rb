@@ -42,13 +42,4 @@ class InternshipOfferSearchTest < ActiveSupport::TestCase
                    "can't find with #{word_part}")
     end
   end
-
-  test 'search by term find by synonym' do
-    assert_equal(2,
-                 InternshipOffer.search_by_keyword('police').count,
-                 "can't find with synonym police")
-    assert_equal(2,
-                 InternshipOffer.search_by_keyword('gendarme').count,
-                 "can't find with synonym gendarme")
-  end
 end
