@@ -7,6 +7,8 @@ class AbilityTest < ActiveSupport::TestCase
     ability = Ability.new
     assert(ability.can?(:read, InternshipOffer.new),
            'visitors should be able to consult internships')
+    assert(ability.can?(:apply, InternshipOffer.new),
+           'visitors should be lured into thinking that they can apply directly')
     assert(ability.cannot?(:manage, InternshipOffer.new),
            'visitors should not be able to con manage internships')
   end
@@ -55,8 +57,12 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to create internships')
     assert(ability.cannot?(:update, InternshipOffer.new),
            'employers should not be able to update internship offer not belonging to him')
+    assert(ability.cannot?(:renew, InternshipOffer.new),
+           'employers should not be able to renew internship offer not belonging to him')
     assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
            'employers should be able to update internships offer that belongs to him')
+    assert(ability.can?(:renew, internship_offer),
+           'employers should be able to renew internships offer that belongs to him')
     assert(ability.cannot?(:discard, InternshipOffer.new),
            'employers should be able to discard internships offer not belonging to him')
     assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
@@ -109,9 +115,12 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Statistician' do
     statistician = create(:statistician)
     ability = Ability.new(statistician)
+
     assert(ability.can?(:view, :department),
            'statistician should be able to view his own department')
     assert(ability.can?(:read, InternshipOffer))
+    assert(ability.cannot?(:renew, InternshipOffer.new),
+           'employers should not be able to renew internship offer not belonging to him')
     refute(ability.can?(:show, :account),
            'statistician should be able to see his account')
     refute(ability.can?(:update, School),

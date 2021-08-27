@@ -26,7 +26,7 @@ class Ability
   end
 
   def visitor_abilities
-    can :read, InternshipOffer
+    can %i[read apply], InternshipOffer
   end
 
   def student_abilities(user:)
@@ -34,7 +34,7 @@ class Ability
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
+      (!internship_offer.reserved_to_school? || (internship_offer.school_id == user.school_id)) &&
         !internship_offer.from_api? &&
         user.try(:class_room).try(:applicable?, internship_offer)
     end
@@ -135,9 +135,12 @@ class Ability
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
-    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
@@ -168,6 +171,9 @@ class Ability
     can :choose_operator, :sign_up
     can :change, :department
     can %i[create see_tutor], InternshipOffer
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
@@ -232,6 +238,9 @@ class Ability
     can :view, :department
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
 
     can %i[create], InternshipOfferInfo
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
@@ -311,5 +320,11 @@ class Ability
           .include?(user.id.to_i)
     end
     yield if block_given?
+  end
+
+  def renewable?(internship_offer:, user: )
+    internship_offer.persisted? &&
+      internship_offer.created_at < SchoolYear::Current.new.beginning_of_period &&
+      internship_offer.employer_id == user.id
   end
 end
