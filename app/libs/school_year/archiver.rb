@@ -3,7 +3,10 @@ module SchoolYear
     def perform
       ActiveRecord::Base.transaction do
         archive_students
+        say_in_green('So long with the students')
         archive_class_rooms
+        say_in_green('So long with the class_rooms')
+        say_in_green('Archiving passed year\'s data is over')
       end
     end
 
@@ -21,6 +24,10 @@ module SchoolYear
         class_room.archive
       end
       true
+    end
+
+    def say_in_green(str)
+      puts "\e[32m=====> #{str} <=====\e[0m"
     end
   end
 end

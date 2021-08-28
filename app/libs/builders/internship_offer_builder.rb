@@ -127,7 +127,7 @@ module Builders
     def check_type_switch(instance:, params:)
       if type_will_change?(params: params, instance: instance)
         if type_can_change?(instance: instance)
-          instance = instance.becomes(params[:type].constantize)
+          instance = instance.becomes!(params[:type].constantize)
         else
           error_message = 'Impossible de changer le type de stage pour cette '  \
                           'offre car des candidatures s\'y sont déjà portées'
