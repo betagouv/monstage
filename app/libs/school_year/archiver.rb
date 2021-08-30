@@ -6,7 +6,6 @@ module SchoolYear
         say_in_green('So long with the students')
         archive_class_rooms
         say_in_green('So long with the class_rooms')
-        say_in_green('Archiving passed year\'s data is over')
       end
     end
 

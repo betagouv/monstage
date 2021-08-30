@@ -231,8 +231,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def anonymize
-    motivation.body = ActionText::Content.new('NA')
-    motivation.save!
+    motivation.try(:delete)
   end
 
   def new_format?
