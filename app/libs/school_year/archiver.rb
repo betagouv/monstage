@@ -18,10 +18,13 @@ module SchoolYear
     end
 
     def archive_class_rooms
+      class_room_elements = []
       ClassRoom.current
                .find_each do |class_room|
+        class_room_elements << ClassRoom.new(class_room.attributes.except!('id', 'created_at', 'updated_at'))
         class_room.archive
       end
+      class_room_elements.each do |new_class_room| new_class_room.save! end
       true
     end
 
