@@ -39,7 +39,9 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance = check_type_switch(instance: instance, params: params)
+      if type_will_change?(params: params, instance: instance)
+        instance = switch_type(instance: instance, params: params)
+      end
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance.save!
       callback.on_success.try(:call, instance)
@@ -124,9 +126,7 @@ module Builders
       context == :api
     end
 
-    def check_type_switch(instance:, params:)
-      return instance unless type_will_change?(params: params, instance: instance)
-
+    def switch_type(instance:, params:)
       unless type_can_change?(instance: instance)
         error_message = 'Impossible de changer le type de stage pour cette '  \
                         'offre car des candidatures s\'y sont déjà portées'
