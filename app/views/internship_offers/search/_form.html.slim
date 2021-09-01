@@ -13,7 +13,7 @@ div data-controller='search-form search-popover radioboxes-search-school-track'
 
       .pb-5
 
-      .col-auto-md.actions.d-flex.d-md-block.d-sm-stick data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger mr-md-3', name: nil
+      .col-auto-md.d-flex data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger align-self-center mr-3', name: nil
 
   - if desktop_rendering
     .actions.d-flex.d-stick.d-md-none=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger'

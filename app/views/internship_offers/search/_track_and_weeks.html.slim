@@ -1,21 +1,4 @@
 .form-group.mb-md-0.col-12.col-md
-  / fieldset
-  /   legend.label.d-inline-block.d-md-none Filtrer par filière
-
-  /   - Presenters::ClassRoom.school_tracks_list.each_slice(2) do |(track_left, enum_left), (track_right, enum_right)|
-  /     .row
-  /       .col-6.pr-2
-  /         = f.label :"school_track_#{enum_left}", track_left, class: "custom-radio-box border rounded-8 p-3 font-weight-normal d-block" do
-  /           = f.radio_button :school_track, enum_left, 'data-radioboxes-search-school-track-target': 'input', 'data-action': 'change->radioboxes-search-school-track#onChange'
-  /           = " "
-  /           = t("enum.school_tracks.#{enum_left}")
-  /       .col-6.pl-2
-  /         = f.label :"school_track_#{enum_right}", track_right, class: "custom-radio-box border rounded-8 p-3 font-weight-normal  d-block" do
-
-  /           = f.radio_button :school_track, enum_right, 'data-radioboxes-search-school-track-target': 'input', 'data-action': 'change->radioboxes-search-school-track#onChange'
-  /           = " "
-  /           = t("enum.school_tracks.#{enum_right}")
-
   = f.label :school_track, class: "d-inline-block d-md-none" do
     | Filtrer par filière
   = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none bg-white', 'data-action': 'change->radioboxes-search-school-track#onChange', 'data-radioboxes-search-school-track-target': 'schoolTrackInput', id: 'input-search-school-track'
