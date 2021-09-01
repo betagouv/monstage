@@ -125,17 +125,15 @@ module Builders
     end
 
     def check_type_switch(instance:, params:)
-      if type_will_change?(params: params, instance: instance)
-        if type_can_change?(instance: instance)
-          instance = instance.becomes!(params[:type].constantize)
-        else
-          error_message = 'Impossible de changer le type de stage pour cette '  \
-                          'offre car des candidatures s\'y sont déjà portées'
-          instance.errors.add(:type, error_message)
-          raise ActiveRecord::RecordInvalid, instance
-        end
+      return instance unless type_will_change?(params: params, instance: instance)
+
+      unless type_can_change?(instance: instance)
+        error_message = 'Impossible de changer le type de stage pour cette '  \
+                        'offre car des candidatures s\'y sont déjà portées'
+        instance.errors.add(:type, error_message)
+        raise ActiveRecord::RecordInvalid, instance
       end
-      instance
+      instance.becomes!(params[:type].constantize)
     end
 
     def type_can_change?(instance:)
