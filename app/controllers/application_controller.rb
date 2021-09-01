@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  include Instrumentation::ElasticApm
   include TurbolinkHelpers
 
   default_form_builder Rg2aFormBuilder
