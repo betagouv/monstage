@@ -73,4 +73,28 @@ class SignInFlowTest < ApplicationSystemTestCase
     click_on 'Connexion'
     find "a[href=\"#{account_path}\"]"
   end
+
+  test 'inexistant account' do
+    password = 'kikoolol'
+    phone = '+330637607756'
+
+    visit new_user_session_path
+    find('label', text: 'Email').click
+    find('label', text: 'Email').click
+    fill_in 'Adresse électronique', with: 'email@free.fr'
+    fill_in 'Mot de passe', with: password
+    click_on 'Connexion'
+    error_message = find('#alert-text').text
+    assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrects.',
+                 error_message
+
+    find('label', text: 'Téléphone').click
+    execute_script("document.getElementById('phone-input').value = '#{phone}';")
+        fill_in 'Numéro de mobile', with: phone
+    fill_in 'Mot de passe', with: password
+    click_on 'Connexion'
+    error_message = find('#alert-text').text
+    assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrects.',
+                 error_message
+  end
 end
