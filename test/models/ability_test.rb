@@ -63,6 +63,11 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to update internships offer that belongs to him')
     assert(ability.can?(:renew, internship_offer),
            'employers should be able to renew internships offer that belongs to him')
+    travel_to(Date.new(2021,9,1)) do
+       assert(ability.cannot?(:renew, InternshipOffer.new),
+           'employers should be able to renew offer on 1st sept. date comparission less or equal')
+    end
+
     assert(ability.cannot?(:discard, InternshipOffer.new),
            'employers should be able to discard internships offer not belonging to him')
     assert(ability.can?(:discard, InternshipOffer.new(employer: employer)),
