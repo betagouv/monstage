@@ -13,7 +13,7 @@ module Reporting
     test 'get index as Statistician' \
          'when department params match his departement_name' do
       statistician = create(:statistician) # Oise is the department
-      pacte_group = create(:group, is_pacte: true)
+      paqte_group = create(:group, is_paqte: true)
       public_internship_offer = create(
         :weekly_internship_offer, # public internship by default
         zipcode: 75012 # Paris
@@ -25,7 +25,7 @@ module Reporting
       private_internship_offer = create(
         :weekly_internship_offer,
         :with_private_employer_group,
-        group: pacte_group,
+        group: paqte_group,
         max_candidates: 10,
         zipcode: 60580
       ) # 10 paqte(private) Oise

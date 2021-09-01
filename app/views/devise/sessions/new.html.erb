@@ -1,4 +1,4 @@
-<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= resource.channel %>">
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= (resource.channel == :phone || params[:phone].present?) ? "phone" : "email" %>">
   <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0">
       <div class="col-12 align-self-end col-sm-6 h-100">

@@ -13,7 +13,7 @@ module Users
       user = user_with_phone || user_with_email
       store_targeted_offer_id(user: user)
 
-      if user_with_email.nil? && !user_with_phone&.confirmed?
+      if user_with_phone.present? && !user_with_phone&.confirmed?
         user_with_phone.send_sms_token
         redirect_to users_registrations_phone_standby_path(phone: safe_phone_param) and return
       end

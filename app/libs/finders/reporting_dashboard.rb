@@ -22,8 +22,8 @@ module Finders
                              .try(:[], "total_count")
     end
 
-    def operator_count_by_private_sector_pacte
-      @operator_count_by_private_sector_pacte ||= operator_base_query.by_pacte
+    def operator_count_by_private_sector_paqte
+      @operator_count_by_private_sector_paqte ||= operator_base_query.by_paqte
                                                                      .entries
                                                                      .first
                                                                      .attributes
@@ -56,11 +56,11 @@ module Finders
               .first
     end
 
-    def platform_count_by_private_sector_pacte
+    def platform_count_by_private_sector_paqte
       platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
               .where(permalink: nil)
               .joins(:group)
-              .where(group: {is_pacte: false})
+              .where(group: {is_paqte: false})
               .map(&:attributes)
               .first
     end

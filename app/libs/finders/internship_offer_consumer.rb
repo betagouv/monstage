@@ -46,9 +46,15 @@ module Finders
 
       # WeeklyFramed offers are dedicated to :troisieme_generale and API
       if user.try(:class_room).try(:fit_to_weekly?)
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
+        query = query.merge(
+          weekly_framed_scopes(:ignore_already_applied, {user: user})
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_candidates_reached)
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
+        )
       elsif user.try(:class_room).try(:fit_to_free_date?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
