@@ -2,7 +2,7 @@
 
 class SchoolTabFinder
   def approved_application_count
-    @application_count ||= school.internship_applications.approved.count
+    @application_count ||= school.internship_applications.with_active_students.approved.count
   end
 
   def student_without_class_room_count

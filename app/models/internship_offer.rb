@@ -223,4 +223,8 @@ class InternshipOffer < ApplicationRecord
       SyncInternshipOfferKeywordsJob.perform_later
     end
   end
+
+  def with_applications?
+    self.internship_applications.count.positive?
+  end
 end
