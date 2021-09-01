@@ -97,4 +97,19 @@ class SignInFlowTest < ApplicationSystemTestCase
     assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrects.',
                  error_message
   end
+
+
+  test 'POST session with crappy data does not redirect to user' do
+    email = 'fourcade.m@gmail.com'
+    pwd = 'okokok'
+    student = create(:student, email: 'tartanpion@gmail.com', phone: '', password: pwd, confirmed_at: nil)
+    visit new_user_session_path
+    find('label', text: 'Email').click
+    fill_in 'Adresse électronique', with: student.email
+    fill_in 'Mot de passe', with: 'akjdsasdas'
+    click_on 'Connexion'
+    error_message = find('#alert-text').text
+    assert_equal 'Courriel, numéro de téléphone ou mot de passe incorrects.',
+                 error_message
+  end
 end
