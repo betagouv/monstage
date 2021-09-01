@@ -12,8 +12,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return resource.after_sign_in_path if resource.is_a?(Users::God)
-
-    stored_location_for(resource) || resource.after_sign_in_path || super
+    stored_location_for(resource) || resource.reload.after_sign_in_path || super
   end
 
   def current_user_or_visitor
