@@ -34,6 +34,23 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
+    test 'GET #index with filters includes thoses filter in search form' do
+      employer = create(:employer)
+      sign_in(employer)
+      filters = {
+        direction: 'asc',
+        filter: '2',
+        order: 'view_count',
+        school_year: '2020'
+      }
+      get dashboard_internship_offers_path(filters)
+      assert_response :success
+      assert_select '.search-container'
+      filters.map do |input_name, input_value|
+        assert_select "input[name=\"#{input_name}\"]"
+      end
+    end
+
     test 'GET #index as operator returns his internship_offers as well as other offers from similar operator' do
       operator = create(:operator)
       operator_2 = create(:operator)

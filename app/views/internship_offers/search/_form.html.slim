@@ -1,5 +1,10 @@
-div data-controller='search-form search-popover radioboxes-search-school-track'
-  = form_with url: internship_offers_path, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{desktop_rendering ? 'd-none d-md-block py-3 bb-1 bl-1 br-1 bc-light rounded-6 bg-white' : ''}" } do |form|
+div.search-container data-controller='search-form search-popover radioboxes-search-school-track'
+  = form_with url: url, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{desktop_rendering ? 'd-none d-md-block bb-1 bl-1 br-1 bc-light rounded-6 bg-white' : ''}" } do |form|
+    / also used on dashboard_internship_offer, should support external filters
+    - %i[direction filter order school_year].each do |dashboard_custom_filter|
+      - if params.key?(dashboard_custom_filter)
+        = form.hidden_field dashboard_custom_filter, value: params[dashboard_custom_filter]
+
     .row.no-gutters
       .form-group.mb-md-0.col-12.col-md
         label.d-inline-block.d-md-none for="input-search-by-keyword" Rechercher une profession

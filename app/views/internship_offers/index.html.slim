@@ -8,7 +8,7 @@ h1.text-muted.opacity-05.text-center.text-center.mt-5.mb-4
     thead.search-container
       tr.tr-search.rounded-6
         th.p-0.rounded-6.bb-0
-          = render partial: "internship_offers/search/form", locals: { desktop_rendering: true }
+          = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: dashboard_internship_offers_path }
 
     tbody
       - if @internship_offers.blank?

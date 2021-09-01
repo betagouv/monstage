@@ -15,11 +15,7 @@
             | offres de stages
             br
             | qui n'attendent que vous
-          .col-12= react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path,
-                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                  schoolTypeVisibility: false }) do
-                .input-loading-skeleton
+          .col-12= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
 
       .row.py-3.py-sm-5
 
