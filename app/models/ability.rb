@@ -310,7 +310,7 @@ class Ability
 
   def renewable?(internship_offer:, user: )
     internship_offer.persisted? &&
-      internship_offer.created_at < SchoolYear::Current.new.beginning_of_period &&
+      internship_offer.created_at.to_date <= SchoolYear::Current.new.beginning_of_period &&
       internship_offer.employer_id == user.id
   end
 end
