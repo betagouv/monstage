@@ -1,5 +1,5 @@
 div.search-container data-controller='search-form search-popover radioboxes-search-school-track'
-  = form_with url: url, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{desktop_rendering ? 'd-none d-md-block bb-1 bl-1 br-1 bc-light rounded-6 bg-white' : ''}" } do |form|
+  = form_with url: url, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{desktop_rendering ? 'd-none d-md-block rounded-6' : ''}" } do |form|
     / also used on dashboard_internship_offer, should support external filters
     - %i[direction filter order school_year].each do |dashboard_custom_filter|
       - if params.key?(dashboard_custom_filter)
@@ -21,4 +21,4 @@ div.search-container data-controller='search-form search-popover radioboxes-sear
       .col-auto-md.d-flex data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil
 
   - if desktop_rendering
-    .actions.d-flex.d-stick.d-md-none=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger'
+    .actions.d-flex.d-stick.d-md-none=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-0'

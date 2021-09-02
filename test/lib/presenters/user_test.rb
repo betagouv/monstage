@@ -46,7 +46,6 @@ module Presenters
       student = create(:student, school: school, class_room: class_room)
 
       path = Presenters::User.new(student).default_internship_offers_path
-      byebug
       params = CGI.parse(URI.parse(path).query)
       assert_equal [school.city], params["city"]
       assert_equal [school.latitde], params["latitude"]

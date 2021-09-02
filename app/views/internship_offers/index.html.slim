@@ -1,15 +1,17 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
-h1.text-muted.opacity-05.text-center.text-center.mt-5.mb-4
-  = "Postulez à des offres de stage"
+- content_for(:custom_header) do
 
+  h1.text-white.text-center.pt-5.pb-4.my-0.bg-custom-blue
+    = "Postulez à des offres de stage"
+
+  .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
+    .container
+      .row
+        .col-12
+          .pt-3= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
 
 .row
-  table.table.table-sticky-thead.table-dashboard-internship-offers.mb-0
-    thead.search-container
-      tr.tr-search.rounded-6
-        th.p-0.rounded-6.bb-0
-          = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
-
+  table.table.table-dashboard-internship-offers.mb-0
     tbody
       - if @internship_offers.blank?
         tr

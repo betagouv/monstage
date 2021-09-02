@@ -11,6 +11,9 @@
       td{
         padding: 1rem .75rem;
       }
+      td:first-child{
+        border-top: none;
+      }
     }
   }
 }
