@@ -1,12 +1,13 @@
 .row.mb-4
   .col-6
     h1.h3 Mes offres de stages
-  .col-6.text-right
-    = link_to new_dashboard_stepper_organisation_path,
-              class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
-              id: 'test-create-offer'
-      i.fas.fa-plus
-      span.px-3 Déposer une offre
+  - if can?(:create, InternshipOffer)
+    .col-6.text-right
+      = link_to new_dashboard_stepper_organisation_path,
+                class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
+                id: 'test-create-offer'
+        i.fas.fa-plus
+        span.px-3 Déposer une offre
 - if current_user.is_a?(Users::Employer) && current_user.internship_applications.submitted.count.positive?
 
 .fake-table
