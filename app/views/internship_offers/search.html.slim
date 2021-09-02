@@ -6,4 +6,4 @@
         button.close-absolute type="button" class="close" data-dismiss="modal" aria-label="Close"
           span aria-hidden="true" &times;
 
-      .modal-body.mt-3= render partial: "internship_offers/search/form", locals: {desktop_rendering: false }
+      .modal-body.mt-3= render partial: "internship_offers/search/form", locals: {desktop_rendering: false, url: internship_offers_path }

@@ -59,7 +59,7 @@ function KeywordInput({ }) {
             {...getInputProps({
               onChange: inputChange,
               value: inputValue,
-              className: 'bg-white form-control',
+              className: 'form-control',
               id: 'input-search-by-keyword',
               name: 'keyword',
               placeholder: 'Profession',

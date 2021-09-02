@@ -1,12 +1,12 @@
 .form-group.mb-md-0.col-12.col-md
   = f.label :school_track, class: "d-inline-block d-md-none" do
     | Filtrer par filière
-  = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none bg-white', 'data-action': 'change->radioboxes-search-school-track#onChange', 'data-radioboxes-search-school-track-target': 'schoolTrackInput', id: 'input-search-school-track'
+  = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->radioboxes-search-school-track#onChange', 'data-radioboxes-search-school-track-target': 'schoolTrackInput', id: 'input-search-school-track'
 
 .form-group.mb-md-0.col-12.col-md data-radioboxes-search-school-track-target="searchByDateContainer" data-search-popover-target="searchByDateContainer" data-controller="checkboxes"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
 
-  input.label.d-none.d-md-inline-block.mb-0.form-control.bg-white.no-border.rounded-0.font-weight-normal.text-decoration-none data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-checkboxes-target="inputPlaceholder" id="input-search-by-week"
+  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-radioboxes-search-school-track-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week"
 
   div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
 

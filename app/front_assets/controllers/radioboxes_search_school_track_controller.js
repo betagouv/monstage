@@ -4,6 +4,7 @@ export default class extends Controller {
 
   static targets = [
     'schoolTrackInput',
+    'inputPlaceholder',
     'tabPane',
     'searchByDateContainer' ,
     'desktopPlaceholder'
@@ -19,9 +20,9 @@ export default class extends Controller {
 
   updateVisibleForm(value) {
     if (value == 'troisieme_generale') {
-      this.searchByDateContainerTarget.classList.remove('d-none')
+      $(this.inputPlaceholderTarget).attr('readonly', false)
     } else {
-      this.searchByDateContainerTarget.classList.add('d-none')
+      $(this.inputPlaceholderTarget).attr('readonly', 'readonly')
     }
   }
 }

@@ -132,7 +132,7 @@ function CityInput({}) {
               {...getInputProps({
                 onChange: inputChange,
                 value: inputValue,
-                className: 'bg-white form-control input-group-search-right-border',
+                className: 'form-control input-group-search-right-border',
                 name: 'city',
                 id: 'input-search-by-city',
                 placeholder: 'Lieu',

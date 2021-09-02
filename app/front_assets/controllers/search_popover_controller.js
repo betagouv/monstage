@@ -5,12 +5,17 @@ export default class extends Controller {
   // on desktop, the week input is popoverable. so their is a caller input
   static targets = [
     'popover',
-
+    'inputPlaceholder',
     'searchByDateContainer',
     'searchSubmitContainer'
   ];
 
   show(clickEvent) {
+    if (clickEvent.currentTarget.readOnly) {
+      clickEvent.preventDefault()
+      return false;
+    }
+
     const $popover = $(this.popoverTarget);
 
     $popover.width($(this.searchByDateContainerTarget).width() +
