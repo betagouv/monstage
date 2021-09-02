@@ -46,6 +46,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   test 'Employer' do
+    
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
@@ -60,9 +61,11 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should not be able to renew internship offer not belonging to him')
     assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
            'employers should be able to update internships offer that belongs to him')
-    assert(ability.can?(:renew, internship_offer),
+    travel_to(Date.new(Date.today.year + 1,9,2)) do
+       assert(ability.can?(:renew, internship_offer),
            'employers should be able to renew internships offer that belongs to him')
-    travel_to(Date.new(2021,9,1)) do
+    end
+    travel_to(Date.new(Date.today.year,9,2)) do
        assert(ability.cannot?(:renew, InternshipOffer.new),
            'employers should be able to renew offer on 1st sept. date comparission less or equal')
     end
