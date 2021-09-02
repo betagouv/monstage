@@ -156,7 +156,7 @@ def populate_users
   troisieme_segpa_class_room = ClassRoom.find_by(school_track: :troisieme_segpa)
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
-  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
+  with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', department: 'Indre-et-Loire', operator: Operator.first)).save!
   Operator.reportable.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
   end
@@ -225,7 +225,7 @@ def populate_internship_offers
       sector: Sector.first,
       group: Group.is_paqte.first,
       is_public: false,
-      title: 'Stage avec deux segments de date, bugfix',
+      title: 'Stage avec deux segments de date',
       description_rich_text: 'Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.'.truncate(249),
       employer_description_rich_text: "Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.".truncate(249),
       employer_website: 'https://www.asml.com/en/careers',
@@ -269,9 +269,9 @@ def populate_internship_offers
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Stage editeur - A la recherche du temps passé par les collaborateurs',
+    title: 'Stage editeur - Publication de la revue "Temps libre"',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion des projets internes touchant à la gestion des contrats.',
-    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_description_rich_text: "Editegis est une société d'édition tournée vers les pays du Sud, dont la caractéristique est l'auto-gestion. Notre activité consister à aider les familles de la métropole lilloise à trouver leur conseiller.ère.",
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
@@ -394,6 +394,27 @@ MULTI_LINE
     coordinates: { latitude: 48.866667, longitude: 2.333333 },
     employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
+  )
+  # 3eme_generale: public sector from an *operator* and in the
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Operator.first,
+    weeks: [Week.of_previous_school_year.second],
+    sector: Sector.first,
+    group: nil,
+    is_public: false,
+    title: 'Stage assistant.e libraire - La fouine d\'Electre',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des micro éditeurs et la gestion des contrats de celles et ceux en contrat avec notre maison.',
+    employer_description_rich_text: "La fouine d\'Electre est une librairie toute simple.",
+    employer_website: 'http://www.electre.fr/',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '2, rue du bon pasteur',
+    zipcode: '69000',
+    city: 'Lyon',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'La fouine d\'Electre',
+    school_track: :troisieme_generale
   )
 end
 

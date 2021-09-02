@@ -35,23 +35,23 @@ module Dashboard::InternshipOffers
     end
 
     test 'GET #index as operator returns his internship_offers as well as other offers from similar operator' do
-      operator = create(:operator)
-      operator_2 = create(:operator)
-      user_operator_1 = create(:user_operator, operator: operator)
-      user_operator_1_bis = create(:user_operator, operator: operator)
-      user_operator_2 = create(:user_operator, operator: operator_2)
-      included_internship_offer_1 = create(:weekly_internship_offer, employer: user_operator_1)
-      included_internship_offer_1_bis = create(:weekly_internship_offer, employer: user_operator_1_bis)
-      excluded_internship_offer = create(:weekly_internship_offer, employer: user_operator_2)
+      operator                        = create(:operator)
+      operator_2                      = create(:operator)
+      user_operator_1                 = create(:user_operator, operator: operator)
+      user_operator_1_bis             = create(:user_operator, operator: operator)
+      user_operator_2                 = create(:user_operator, operator: operator_2)
+      included_internship_offer_1     = create(:weekly_internship_offer, employer: user_operator_1)
+      excluded_internship_offer_1_bis = create(:weekly_internship_offer, employer: user_operator_1_bis)
+      excluded_internship_offer       = create(:weekly_internship_offer, employer: user_operator_2)
       sign_in(user_operator_1)
       get dashboard_internship_offers_path
       assert_response :success
       assert_presence_of(internship_offer: included_internship_offer_1)
-      assert_presence_of(internship_offer: included_internship_offer_1_bis)
+      assert_absence_of(internship_offer: excluded_internship_offer_1_bis)
       assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
-        test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
+    test 'GET #index as operator having departement-constraint no longer return internship offer with location constraint' do
       operator = create(:operator)
       user_operator = create(:user_operator, operator: operator, department: 'Oise')
       included_internship_offer = create(:weekly_internship_offer,
@@ -64,7 +64,7 @@ module Dashboard::InternshipOffers
       get dashboard_internship_offers_path
       assert_response :success
       assert_presence_of(internship_offer: included_internship_offer)
-      assert_absence_of(internship_offer: excluded_internship_offer)
+      assert_presence_of(internship_offer: excluded_internship_offer)
     end
 
     test 'GET #index as operator not departement-constraint returns internship offer not considering location constraint' do

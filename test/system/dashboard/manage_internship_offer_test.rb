@@ -196,4 +196,70 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
+  test 'Operator can filter internship_offers from dashboard filters' do
+    travel_to(Date.new(2020, 10, 10)) do
+      # operator from 37 Indre-et-Loire
+      operator = create(:user_operator, department: 'Indre-et-Loire')
+      collegue_operator = create(:user_operator, operator: operator.operator, department: 'Rhône')
+
+      week_1 = Week.find_by(year: 2019, number: 50) #2019-20
+      week_2 = Week.find_by(year: 2020, number: 2)  #2019-20
+      week_3 = Week.find_by(year: 2021, number: 2)  #2020-21
+
+      # 2019-20 - Rhone
+      create(:api_internship_offer, weeks: [week_1, week_2], employer: operator, title: '2019/2020', department: 'Rhône')
+
+      # 2020-21
+      target_offer = create(:api_internship_offer, weeks: [week_3], employer: operator, title: '2020/2021')
+
+      # wrong operator
+      create(:api_internship_offer, weeks: [week_2], title: 'wrong operator')
+
+      # free
+      create(:free_date_internship_offer, employer: operator, title: 'free')
+
+      # 2019-20 unpublished
+      io = create(:api_internship_offer, employer: operator, weeks: [week_1, week_2], title: '2019/2020 unpublished')
+      io.update_column(:published_at, nil)
+      io.reload
+      create(:weekly_internship_offer, employer: collegue_operator, weeks: [week_1, week_2], title: 'collegue 2019/2020' )
+
+      # 2020-21
+      create(:weekly_internship_application, :approved, internship_offer: target_offer)
+
+      sign_in(operator)
+      visit dashboard_internship_offers_path
+
+      refute page.has_css?('.school_year')
+
+      click_link('Passées')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+      assert_text('2019/2020')
+      assert_text('2019/2020 unpublished')
+
+      select('2019/2020')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
+      assert_text('2019/2020')
+      assert_text('2019/2020 unpublished')
+      refute_text('collegue 2019/2020')
+
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+
+      click_link('Dépubliées')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+
+      select('2019/2020')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      if ENV['CONVENTION_ENABLED']
+        refute page.has_css?("a[href=\"/dashboard/internship_applications\"]")
+        refute page.has_css?("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge")
+      end
+    end
+  end
+
 end
