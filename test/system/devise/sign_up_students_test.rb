@@ -195,7 +195,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     click_on 'Connexion'
-
+    page.find "h2", text: 'Informations sur le stage'
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}", current_path
     # targeted offer id at student's level is now empty
