@@ -48,7 +48,15 @@ module InternshipOffersHelper
   # TODO refactor? add week_ids
   def forwardable_params
     params.permit(
-      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_track
+      :latitude,
+      :longitude,
+      :radius,
+      :city,
+      :keyword,
+      :page,
+      :filter,
+      :school_track,
+      week_ids: [],
     )
   end
 

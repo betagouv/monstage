@@ -38,6 +38,18 @@ class School < ApplicationRecord
     )
   }
 
+  def default_search_options
+    opts = {
+      city: city,
+      latitude: coordinates.lat,
+      longitude: coordinates.lon,
+      radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
+    }
+    current_week_ids = weeks.where(id: Week.selectable_on_school_year.pluck(:id)).pluck(:id)
+    opts = opts.merge(week_ids: current_week_ids) if !current_week_ids.size.zero?
+    opts
+  end
+
   def has_weeks_on_current_year?
     weeks.selectable_on_school_year.exists?
   end

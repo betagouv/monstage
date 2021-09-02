@@ -294,16 +294,29 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'GET #index as student with latitude/longitude ' \
-       'includes latitude/longitude for listable behaviour on show page' do
+  test 'GET #index as student ' \
+       'includes forwardable_params for listable behaviour on show page' do
     sign_in(create(:student))
     internship_1 = create(:weekly_internship_offer)
-    internship_2 = create(:weekly_internship_offer)
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path, params: { latitude: 1, longitude: 1 }
-        assert_select('a[href=?]', internship_offer_path(id: internship_1, latitude: 1, longitude: 1, origin: 'search'))
+        forwarded_params = {
+          city: 'Paris',
+          latitude: 1,
+          longitude: 1,
+          page: 1,
+          radius: 1_000,
+          school_track: 'troisieme_generale',
+          week_ids: [1,2,3]
+        }
+        get internship_offers_path, params: forwarded_params
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge(id: internship_1, origin: 'search')
+          )
+        )
       end
     end
   end

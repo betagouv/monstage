@@ -29,13 +29,8 @@ module Presenters
       return internship_offers_path unless user.respond_to?(:school) # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
       return internship_offers_path if user.school.nil?# TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
 
-      opts = {
-        city: user.school.city,
-        latitude: user.school.coordinates.lat,
-        longitude: user.school.coordinates.lon,
-        radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
-      }
-      opts.merge!({school_track: user.try(:school_track)}) if user.try(:school_track)
+      opts = user.school.default_search_options
+      opts = opts.merge({school_track: user.try(:school_track)}) if user.try(:school_track)
       internship_offers_path(opts) # TODO refactor?: use pass thru url helper
     end
 
