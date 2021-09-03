@@ -191,11 +191,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_link 'Me connecter'
     end
     # sign_in as Student
-    find('label', text: 'Téléphone').click && sleep(0.7)
+    find('label', text: 'Téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     click_on 'Connexion'
-    page.find "h2", text: 'Informations sur le stage'
+    assert page.title.starts_with?('Offre de stage'),
+           'Right after connexion, student should be connected to the offer show page'
+    page.find('h2', text: 'Informations sur le stage')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}", current_path
     # targeted offer id at student's level is now empty
