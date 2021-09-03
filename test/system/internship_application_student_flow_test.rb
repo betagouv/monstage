@@ -120,7 +120,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-  test 'student in bac pro can draft, submit, and cancel(by_student) internship_applications' do
+  test 'student in troisieme_segpa can draft, submit, and cancel(by_student) internship_applications' do
     school = create(:school)
     student = create(:student, school: school, class_room: create(:class_room, :troisieme_segpa, school: school))
     internship_offer = create(:free_date_internship_offer)

@@ -73,12 +73,6 @@ FactoryBot.define do
       description { 'Lorem ipsum dolor troisieme_prepa_metiers_internship_offer' }
     end
 
-    trait :bac_pro_internship_offer do
-      employer { create(:employer ) }
-      school_track { :bac_pro}
-      description { 'Lorem ipsum dolor bac_pro_internship_offer' }
-    end
-
     trait :discarded do
       discarded_at { Time.now }
     end
@@ -116,9 +110,6 @@ FactoryBot.define do
     factory :troisieme_prepa_metiers_internship_offer, traits: [:troisieme_prepa_metiers_internship_offer],
                                                        class: 'InternshipOffers::FreeDate',
                                                        parent: :internship_offer
-    factory :bac_pro_internship_offer, traits: [:bac_pro_internship_offer],
-                                       class: 'InternshipOffers::FreeDate',
-                                       parent: :internship_offer
 
   end
 end

@@ -56,7 +56,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
     end
   end
 
-  test 'student bac pro try to apply to an offer while school manager has not open any internship week' do
+  test 'troisieme segpa student try to apply to an offer while school manager has not open any internship week' do
     internship_offer = create(:troisieme_segpa_internship_offer)
     school = create(:school, :with_school_manager, weeks: [])
     class_room = create(:class_room, :troisieme_segpa, school: school)

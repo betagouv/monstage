@@ -53,7 +53,7 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
     assert_difference 'InternshipOfferInfos::FreeDate.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-        fill_in_internship_offer_info_form(school_track: :bac_pro,
+        fill_in_internship_offer_info_form(school_track: :troisieme_segpa,
                                            sector: sector,
                                            weeks: available_weeks)
         click_on "Suivant"
