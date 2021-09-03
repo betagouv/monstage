@@ -12,10 +12,10 @@
   }
 }
 @include media-breakpoint-down(xs){
-  $external_padding: 15px;
+  // $external_padding: 15px;
   .search-in-place{
-    left: $external_padding;
-    right: $external_padding;
+    left: 0;
+    right: 0;
   }
 
 }

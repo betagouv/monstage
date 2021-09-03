@@ -20,6 +20,7 @@ function CityInput({}) {
   const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(cityOrZipcode, 100);
+  const [focus, setFocus] = useState(null);
   const inputChange = (event) => {
     setCity(event.target.value);
   };
@@ -150,6 +151,11 @@ function CityInput({}) {
                   "aria-labelledby": 'input-search-by-city',
                 })}
               >
+                {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
+                  <li>
+                    <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
+                  </li>
+                )}
                 {isOpen
                   ? searchResults.map((item, index) => (
                     <li

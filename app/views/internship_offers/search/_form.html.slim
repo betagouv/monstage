@@ -18,7 +18,7 @@ div.search-container data-controller='search-form search-popover radioboxes-sear
 
       .pb-5
 
-      .col-auto-md.d-flex data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil
+      .col-auto-md.d-md-flex.d-none data-search-popover-target="searchSubmitContainer"= form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil
 
-  - if desktop_rendering
-    .actions.d-flex.d-stick.d-md-none.p-2=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm'
+  .mt-5.d-block.d-md-none
+  .actions.d-flex.d-stick.d-md-none.p-2=link_to "Rechercher",search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm'
