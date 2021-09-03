@@ -34,9 +34,7 @@ class Ability
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      (!internship_offer.reserved_to_school? || (internship_offer.school_id == user.school_id)) &&
-        !internship_offer.from_api? &&
-        user.try(:class_room).try(:applicable?, internship_offer)
+      student_can_apply?(student: user, internship_offer: internship_offer)
     end
     can %i[submit_internship_application update], InternshipApplication do |internship_application|
       internship_application.student.id == user.id
@@ -312,5 +310,16 @@ class Ability
     internship_offer.persisted? &&
       internship_offer.created_at.to_date <= SchoolYear::Current.new.beginning_of_period &&
       internship_offer.employer_id == user.id
+  end
+
+  def student_can_apply?(internship_offer:, student:)
+    offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
+
+    return false if offer_is_reserved_to_another_school
+    return false if internship_offer.from_api?
+    return true if student.try(:class_room).nil?
+    return true if student.try(:class_room).try(:applicable?, internship_offer)
+
+    false
   end
 end

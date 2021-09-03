@@ -43,6 +43,11 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.cannot?(:dashboard_show, create(:weekly_internship_application)))
     assert(ability.cannot?(:index, Acl::InternshipOfferDashboard.new(user: student)),
            'employers should be able to index InternshipOfferDashboard')
+
+    student_2 = create(:student) # with no class_room
+    ability = Ability.new(student_2)
+    assert(ability.can?(:apply, internship_offer),
+           'students should be able to apply for internship offers')
   end
 
   test 'Employer' do
