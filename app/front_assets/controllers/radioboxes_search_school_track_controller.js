@@ -5,9 +5,7 @@ export default class extends Controller {
   static targets = [
     'schoolTrackInput',
     'inputPlaceholder',
-    'tabPane',
-    'searchByDateContainer' ,
-    'desktopPlaceholder'
+    'dateContainer'
     ]
 
   connect(){
@@ -19,10 +17,14 @@ export default class extends Controller {
   }
 
   updateVisibleForm(value) {
+    const $inputPlaceholder = $(this.inputPlaceholderTarget);
+    const $dateContainer = $(this.dateContainerTarget)
     if (value == 'troisieme_generale') {
-      $(this.inputPlaceholderTarget).attr('readonly', false)
+      $inputPlaceholder.attr('readonly', false).attr('disabled', false);
+      $dateContainer.removeClass('d-none').addClass('d-md-block')
     } else {
-      $(this.inputPlaceholderTarget).attr('readonly', 'readonly')
+      $inputPlaceholder.attr('readonly', 'readonly').attr('disabled', 'disabled');
+      $dateContainer.addClass('d-none').removeClass('d-md-block');
     }
   }
 }

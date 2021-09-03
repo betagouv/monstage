@@ -3,56 +3,57 @@
     | Filtrer par filière
   = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->radioboxes-search-school-track#onChange', 'data-radioboxes-search-school-track-target': 'schoolTrackInput', id: 'input-search-school-track'
 
-.form-group.mb-md-0.col-12.col-md data-radioboxes-search-school-track-target="searchByDateContainer" data-search-popover-target="searchByDateContainer" data-controller="checkboxes"
+.form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer" data-controller="checkboxes"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
 
   input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-radioboxes-search-school-track-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week"
 
-  div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
+  div data-radioboxes-search-school-track-target="dateContainer"
+    div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
 
-    #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
-      div role="tablist"
-        - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
-          .row.mb-3
-            - if month_i_left
-              .col-6.pr-2
-                  = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
-            - if month_i_right
-              .col-6.pl-2
-                  = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+      #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
+        div role="tablist"
+          - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
+            .row.mb-3
+              - if month_i_left
+                .col-6.pr-2
+                    = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+              - if month_i_right
+                .col-6.pl-2
+                    = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
 
-    - list_months_for_search.map do |month_i, weeks|
-      - next if weeks.empty?
+      - list_months_for_search.map do |month_i, weeks|
+        - next if weeks.empty?
 
 
-      div class="#{month_i == current_month_for_search ? 'active' : 'd-none'}" id="month_#{month_i}" role="tabpanel" data-search-form-target="tabPane" aria-label="Semaines de #{month_in_text(month_i, format: :month_with_year)}"
+        div class="#{month_i == current_month_for_search ? 'active' : 'd-none'}" id="month_#{month_i}" role="tabpanel" data-search-form-target="tabPane" aria-label="Semaines de #{month_in_text(month_i, format: :month_with_year)}"
 
-        .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
-          .col-2
-            - unless search_first_month?(month_i)
-              = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
-                i.fas.fa-chevron-left
-          .col-8
-            = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
-              i.fas.fa-calendar-alt.text-border-color.mr-3
+          .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
+            .col-2
+              - unless search_first_month?(month_i)
+                = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                  i.fas.fa-chevron-left
+            .col-8
+              = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
+                i.fas.fa-calendar-alt.text-border-color.mr-3
 
-              = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
+                = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
 
-          .col-2
-            - unless search_last_month?(month_i)
-              = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
-                i.fas.fa-chevron-right
+            .col-2
+              - unless search_last_month?(month_i)
+                = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                  i.fas.fa-chevron-right
 
-        div
-          - weeks.map do |week|
-              = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3   custom-check-box mb-0 font-weight-normal" do
-                = f.check_box :week_ids, {multiple: true, checked: params.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2', 'data-checkboxes-target': 'input', 'data-action': 'change->checkboxes#onChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
-                span.flex-fill
-                  span.d-block.mb-0= week.short_range_as_str
-                  small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
+          div
+            - weeks.map do |week|
+                = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3   custom-check-box mb-0 font-weight-normal" do
+                  = f.check_box :week_ids, {multiple: true, checked: params.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2', 'data-checkboxes-target': 'input', 'data-action': 'change->checkboxes#onChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
+                  span.flex-fill
+                    span.d-block.mb-0= week.short_range_as_str
+                    small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
 
-    div.col-12 data-checkboxes-target="badgeList"
+      div.col-12 data-checkboxes-target="badgeList"
 
-    .desktop-actions.d-none.d-md-flex.bt-1.bt-light.mt-3.pt-3.px-3
-      a.col.text-left.btn.btn-link data-action="click->checkboxes#clear" Tout effacer
-      a.col.btn.btn.btn-primary data-action="click->search-popover#hide" Enregistrer
+      .desktop-actions.d-none.d-md-flex.bt-1.bt-light.mt-3.pt-3.px-3
+        a.col.text-left.btn.btn-link data-action="click->checkboxes#clear" Tout effacer
+        a.col.btn.btn.btn-primary data-action="click->search-popover#hide" Enregistrer
