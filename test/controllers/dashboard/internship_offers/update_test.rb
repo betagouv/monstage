@@ -93,7 +93,7 @@ module Dashboard::InternshipOffers
       end
     end
 
-    test 'PATCH #update offer type from 3e general to bac_pro should not break ' do
+    test 'PATCH #update offer type from 3e general to troisieme_segpa should not break ' do
       internship_offer = create(:weekly_internship_offer)
       sign_in(internship_offer.employer)
       assert_changes -> { InternshipOffer.find(internship_offer.id).type },
@@ -103,7 +103,7 @@ module Dashboard::InternshipOffers
           dashboard_internship_offer_path(internship_offer.to_param),
           params:
             {
-              internship_offer: { school_track: :bac_pro,
+              internship_offer: { school_track: :troisieme_segpa,
                                   type: InternshipOffers::FreeDate.name }
             }
         )

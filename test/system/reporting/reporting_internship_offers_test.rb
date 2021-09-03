@@ -36,8 +36,5 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
 
     select '3e SEGPA'
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "10")
-
-    select 'Bac pro'
-    page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "0")
   end
 end

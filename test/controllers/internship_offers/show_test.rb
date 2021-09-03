@@ -55,7 +55,7 @@ module InternshipOffers
       internship_offer = create(:free_date_internship_offer)
       school = create(:school, :with_school_manager)
       sign_in(create(:student,
-                     class_room: create(:class_room, :bac_pro, school: school),
+                     class_room: create(:class_room, :troisieme_segpa, school: school),
                      school: school))
       get internship_offer_path(internship_offer)
       assert_template 'internship_applications/forms/_free_date'

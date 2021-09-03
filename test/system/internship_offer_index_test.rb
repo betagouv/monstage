@@ -102,33 +102,33 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   end
 
   test 'as teacher, search filters are complete and do filter by school_track' do
-    school                              = create(:school)
-    school_manager                      = create(:school_manager, school: school)
-    teacher                             = create(:main_teacher, school: school)
-    weekly_internship_offer = create(:weekly_internship_offer)
-    bac_pro_internship_offer            = create(:bac_pro_internship_offer)
+    school                           = create(:school)
+    school_manager                   = create(:school_manager, school: school)
+    teacher                          = create(:main_teacher, school: school)
+    weekly_internship_offer          = create(:weekly_internship_offer)
+    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     sign_in(teacher)
 
     visit internship_offers_path
 
     # all offers presents
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
+    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
 
     # filter
     find('label[for="search-by-troisieme-generale"]').click
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_absence_of(internship_offer: bac_pro_internship_offer)
+    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
 
     # filtered by middle-school
-    find('label[for="search-by-bac-pro"]').click
+    find('label[for="search-by-troisieme-segpa"]').click
     assert_absence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
+    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
 
     # uncheck selection make both search active == "Toutes"
-    find('label[for="search-by-bac-pro"]').click
+    find('label[for="search-by-troisieme-segpa"]').click
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
+    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
   end
 
   test 'as student, search filters are not available and ' \
@@ -143,7 +143,6 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     troisieme_prepa_metiers_internship_offer = create(:troisieme_prepa_metiers_internship_offer)
     weekly_internship_offer = create(:weekly_internship_offer)
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
-    bac_pro_internship_offer = create(:bac_pro_internship_offer)
     sign_in(student)
     visit internship_offers_path
 
@@ -151,14 +150,12 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     find('span.troisieme_prepa_metiers', text: '3e prépa métiers')
     assert page.has_no_selector?('span.troisieme_generale')
     assert page.has_no_content? "3e SEGPA"
-    assert page.has_no_content? "Bac Pro"
 
     assert page.has_content? "3e prépa métier", count: 1
     assert_presence_of(internship_offer: troisieme_prepa_metiers_internship_offer)
 
     assert_absence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
-    assert_absence_of(internship_offer: bac_pro_internship_offer)
   end
 
   test 'one can search internship offers with zipcodes' do

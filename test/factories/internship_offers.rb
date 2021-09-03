@@ -57,7 +57,7 @@ FactoryBot.define do
 
     trait :free_date_internship_offer do
       employer { create(:employer ) }
-      school_track { :bac_pro}
+      school_track { :troisieme_segpa }
       description { 'Lorem ipsum dolor free_date_internship_offer' }
     end
 
