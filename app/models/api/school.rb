@@ -5,7 +5,7 @@ module Api
     include Nearbyable
     include PgSearch::Model
 
-    has_many :class_rooms, dependent: :destroy
+    has_many :class_rooms,-> { where anonymized: false }, dependent: :destroy
     has_many :school_internship_weeks, dependent: :destroy
     has_many :weeks, through: :school_internship_weeks
 
