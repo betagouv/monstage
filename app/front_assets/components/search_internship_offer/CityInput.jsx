@@ -23,6 +23,10 @@ function CityInput({}) {
   const [focus, setFocus] = useState(null);
   const inputChange = (event) => {
     setCity(event.target.value);
+    if (event.target.value == "") {
+      setLatitude("")
+      setLongitude("")
+    }
   };
   const endpoint = new URL('https://geo.api.gouv.fr/communes');
   const setLocation = (item) => {
