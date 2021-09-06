@@ -23,7 +23,6 @@ module Presenters
       UserManagementRole.new(user: user).role
     end
 
-    # TODO refactor?
     def default_internship_offers_path
       return internship_offers_path if user.nil? # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
       return internship_offers_path unless user.respond_to?(:school) # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing

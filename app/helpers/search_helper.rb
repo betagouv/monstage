@@ -68,10 +68,8 @@ module SearchHelper
       .inject(months_map.clone) do |months, week|
         week_date = week.week_date
         beginning_of_week = week_date.beginning_of_week
-        # end_of_week = week_date.end_of_week
 
         months[beginning_of_week.month].push(week)
-        # months[end_of_week.month.to_s].push(week) if beginning_of_week.month != end_of_week.month
         months
       end
   end

@@ -67,7 +67,7 @@ module InternshipOffersHelper
 
     default_params = {}
 
-    internship_offers_path(default_params.merge(forwardable_params)) # TODO refactor? pass thru custom url helper
+    internship_offers_path(default_params.merge(forwardable_params))
   end
 
   def listable_internship_offer_path(internship_offer, options = {})

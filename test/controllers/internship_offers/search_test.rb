@@ -11,7 +11,7 @@ class SearchTest < ActionDispatch::IntegrationTest
     assert_select "label[for=input-search-by-city]"
     assert_select "label", text:  "Filtrer par filière"
     assert_select ".label", text:  "Quand se déroule le stage ?"
-    Presenters::ClassRoom.school_tracks_list.each do |(track, enum)|
+    ClassRoom.school_tracks.map do |(enum)|
       assert_select "select option[value=\"#{enum}\"]"
     end
   end
