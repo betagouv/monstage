@@ -157,18 +157,19 @@ export default class extends Controller {
 
   checkEmail() {
     this.emailRadioButtonTarget.checked = true
-    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
+    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget, 'email')
   }
 
   checkPhone() {
     this.phoneRadioButtonTarget.checked = true
-    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
+    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget, 'phone')
   }
 
-  displayField(fieldToClean, fieldToHide, fieldToDisplay) {
+  displayField(fieldToClean, fieldToHide, fieldToDisplay, channel) {
     this.clean(fieldToClean);
     this.hide(fieldToHide)
     this.show(fieldToDisplay);
+    this.channelValue = channel;
   }
   clean(fieldToClean) {
     $(fieldToClean).val('');

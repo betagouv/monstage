@@ -68,6 +68,23 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     assert_equal 'm', created_student.gender
   end
 
+  test 'class room is filters archived clas_rooms' do
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
+    class_room_0 = create(:class_room, name: '3e A', school: school_1)
+    class_room_0.archive
+    existing_email = 'fourcade.m@gmail.com'
+    student = create(:student, email: existing_email)
+
+    # go to signup as student
+    visit new_user_registration_path(as: 'Student')
+
+    # fails to find a class_room though there's an anonymized one
+    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+    find('#downshift-0-item-0').click
+    find("label[for=\"select-school-#{school_1.id}\"]").click
+    page.find("input[name='user[class_room_id]'][placeholder='Aucune classe disponible']")
+  end
+
   test 'Student with mail subscription with former internship_offer ' \
        'visit leads to offer page even when mistaking along the way' do
     school_1 = create(:school, name: 'Etablissement Test 1',
@@ -191,11 +208,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       click_link 'Me connecter'
     end
     # sign_in as Student
-    find('label', text: 'Téléphone').click && sleep(0.7)
+    find('label', text: 'Téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     click_on 'Connexion'
-    page.find "h2", text: 'Informations sur le stage'
+    assert page.title.starts_with?('Offre de stage'),
+           'Right after connexion, student should be connected to the offer show page'
+    page.find('h2', text: 'Informations sur le stage')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}", current_path
     # targeted offer id at student's level is now empty
