@@ -4,18 +4,13 @@ require 'application_system_test_case'
 
 class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include ::SearchInternshipOfferHelpers
   include ::ApiTestHelpers
 
-  def assert_presence_of(internship_offer:)
-    assert_selector "a[data-test-id='#{internship_offer.id}']",
-                    count: 1
+  def submit_form
+    find('input#test-submit-search').click
   end
 
-  def assert_absence_of(internship_offer:)
-    assert_no_selector "a[data-test-id='#{internship_offer.id}']"
-  end
-
-  # TODO, rewrite tests for desktop search (from same view)
   test 'search form is visible' do
     visit internship_offers_path
 
@@ -30,25 +25,15 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
-    # check everything is here by default
-    assert_presence_of(internship_offer: internship_offer_at_paris)
-    assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+    fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
+    submit_form
 
-    find('#input-search-by-city-or-zipcode').fill_in(with: 'Pari')
-    find('#test-input-location-container #downshift-1-item-0').click
-    assert_equal 'Paris',
-                 find('#test-input-location-container #input-search-by-city-or-zipcode').value,
-                 'click on list view does not fill location input'
-
-    # submit search and check result had been filtered
-    find('input#test-submit-search').click
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_absence_of(internship_offer: internship_offer_at_bordeaux)
 
-    # # reset search and submit
-    find('#input-search-by-city-or-zipcode').fill_in(with: '')
-    # submit search and check result had been filtered
-    find('input#test-submit-search').click
+    # reset search and submit
+    fill_in_city_or_zipcode(with: '', expect: '')
+    submit_form
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
@@ -60,52 +45,43 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
-    # check everything is here by default
-    assert_presence_of(internship_offer: internship_offer_at_paris)
-    assert_presence_of(internship_offer: internship_offer_at_bordeaux)
+    fill_in_city_or_zipcode(with: '75012', expect: 'Paris')
 
-    find('#input-search-by-city-or-zipcode').fill_in(with: '75012')
-    find('#test-input-location-container #downshift-1-item-0').click
-    assert_equal 'Paris',
-                  find('#test-input-location-container #input-search-by-city-or-zipcode').value,
-                  'click on list view does not fill location input'
-
-    # # submit search and check result had been filtered
-    find('input#test-submit-search').click
+    submit_form
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_absence_of(internship_offer: internship_offer_at_bordeaux)
+
+    # reset search and submit
+    fill_in_city_or_zipcode(with: '', expect: '')
+    submit_form
+    assert_presence_of(internship_offer: internship_offer_at_paris)
+    assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
   test 'search by school_track works' do
-    school                              = create(:school)
-    school_manager                      = create(:school_manager, school: school)
-    teacher                             = create(:main_teacher, school: school)
     weekly_internship_offer = create(:weekly_internship_offer)
-    bac_pro_internship_offer            = create(:bac_pro_internship_offer)
-    sign_in(teacher)
-
+    bac_pro_internship_offer = create(:bac_pro_internship_offer)
     visit internship_offers_path
 
-    # all offers presents
-    assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
-
     select('3ème')
-    find('input#test-submit-search').click
+    submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: bac_pro_internship_offer)
+    # ensure selection of school track disable week placeholder input
     assert_selector("#input-search-by-week[readonly]", count: 0)
     assert_selector("#input-search-by-week", count: 1)
+    # TODO: ensure selection of school track disable week checkboxes
 
-    # # filtered by middle-school
+    # filtered by another
     select('Bac pro')
-    find('input#test-submit-search').click
+    submit_form
     assert_absence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
     assert_selector("#input-search-by-week[readonly]", count: 1)
 
+    # reset search and submit
     select("Filière")
-    find('input#test-submit-search').click
+    submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: bac_pro_internship_offer)
   end
@@ -114,32 +90,19 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     searched_keyword = 'helloworld'
     searched_internship_offer = create(:weekly_internship_offer, title: searched_keyword)
     not_searched_internship_offer = create(:weekly_internship_offer)
-
     dictionnary_api_call_stub
     SyncInternshipOfferKeywordsJob.perform_now
     InternshipOfferKeyword.update_all(searchable: true)
 
     visit internship_offers_path
-    # check everything is here by default
-    assert_presence_of(internship_offer: searched_internship_offer)
-    assert_presence_of(internship_offer: not_searched_internship_offer)
-
-    find("#input-search-by-keyword").fill_in(with: searched_keyword[0..5])
-    find('#test-input-keyword-container .listview-item').click
-    assert_equal searched_keyword,
-                 find('#test-input-keyword-container #input-search-by-keyword').value,
-                 'click on list view does not fill keyword input'
-
-    # submit search and check result had been filtered
-    find('input#test-submit-search').click
+    fill_in_keyword(keyword: searched_keyword)
+    submit_form
     assert_presence_of(internship_offer: searched_internship_offer)
     assert_absence_of(internship_offer: not_searched_internship_offer)
 
-    # # reset search and submit
-    find("#input-search-by-keyword").fill_in(with: '')
-
-    # # submit search and check result had been filtered
-    find('input#test-submit-search').click
+    # reset search and submit
+    fill_in_keyword(keyword: '')
+    submit_form
     assert_presence_of(internship_offer: searched_internship_offer)
     assert_presence_of(internship_offer: not_searched_internship_offer)
   end
@@ -155,15 +118,12 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                              weeks: [not_searched_week])
       visit internship_offers_path
 
-      assert_presence_of(internship_offer: searched_internship_offer)
-      assert_presence_of(internship_offer: not_searched_internship_offer)
-
       select('3ème')
-      find("#input-search-by-week").click
-      find("#checkbox_#{searched_week.id}").click
-      find('input#test-submit-search').click
+      fill_in_week(week: searched_week)
+      submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
       assert_absence_of(internship_offer: not_searched_internship_offer)
+      # TODO: ensure weeks navigation and months navigation
     end
 
   end
@@ -205,14 +165,11 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
     visit internship_offers_path
 
-    find('#input-search-by-city-or-zipcode').fill_in(with: 'Pari')
-    find('#test-input-location-container #downshift-1-item-0').click
+    fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
+    fill_in_keyword(keyword: searched_keyword)
     select('3ème')
-    find("#input-search-by-keyword").fill_in(with: searched_keyword[0..5])
-    find('#test-input-keyword-container .listview-item').click
-    find("#input-search-by-week").click
-    find("#checkbox_#{searched_week.id}").click
-    find('input#test-submit-search').click
+    fill_in_week(week: searched_week)
+    submit_form
 
     assert_presence_of(internship_offer: findable_internship_offer)
     assert_absence_of(internship_offer: not_found_by_location)
