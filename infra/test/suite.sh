@@ -5,7 +5,7 @@ set -x
 bundle exec rails test
 
 # run system test in major browsers, ie not yet rdy
-SELENIUM_DRIVER=chrome_headless PARALLEL_WORKERS=1 bundle exec bin/rails test:system
+$(pwd)/test/system_all.sh
 
 # ensure w3c validity
 java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
