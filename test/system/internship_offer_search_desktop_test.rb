@@ -8,7 +8,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   include ::ApiTestHelpers
 
   def submit_form
-    find('input#test-submit-search').click
+    find('input#test-desktop-submit-search').click
   end
 
   test 'search form is visible' do

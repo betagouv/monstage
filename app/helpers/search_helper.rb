@@ -42,7 +42,7 @@ module SearchHelper
   end
 
   def search_button_label
-    count = params.permit(:city, :keyword, :school_track, week_ids: [])
+    count = params.permit(:latitude, :keyword, :school_track, week_ids: [])
                   .to_h
                   .map do |k,v|
                     v.empty? ? 0 : 1
