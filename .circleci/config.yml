@@ -137,12 +137,10 @@ workflows:
             branches:
               only:
                 - master
-                - test-hold-deploy
       - deploy-test-hold:
           requires:
             - build
           filters:
             branches:
               only:
-                - master
                 - test-hold-deploy
