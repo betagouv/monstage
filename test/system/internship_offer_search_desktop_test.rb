@@ -119,7 +119,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       visit internship_offers_path
 
       select('3ème')
-      fill_in_week(week: searched_week)
+      fill_in_week(week: searched_week, open_popover: true)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
       assert_absence_of(internship_offer: not_searched_internship_offer)
@@ -168,7 +168,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
     fill_in_keyword(keyword: searched_keyword)
     select('3ème')
-    fill_in_week(week: searched_week)
+    fill_in_week(week: searched_week, open_popover: true)
     submit_form
 
     assert_presence_of(internship_offer: findable_internship_offer)

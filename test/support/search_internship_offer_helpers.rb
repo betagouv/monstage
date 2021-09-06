@@ -24,8 +24,8 @@ module SearchInternshipOfferHelpers
                  'click on list view does not fill keyword input'
   end
 
-  def fill_in_week(week:)
-    find("#input-search-by-week").click
+  def fill_in_week(week:, open_popover:)
+    find("#input-search-by-week").click if open_popover
     find("#checkbox_#{week.id}").click
   end
 end

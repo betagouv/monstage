@@ -78,16 +78,12 @@ jobs: # a collection of steps
           command: PARALLEL_WORKERS=4 bundle exec rake test
 
       - run:
-          name: Run TestSystem with headless_chrome
-          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome bundle exec rake test:system
+          name: Run Desktop TestSystem with headless_chrome
+          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome bundle exec rake test:system TESTOPTS='--exclude /USE_IPHONE_EMULATION/'
 
-      # - run:
-      #     name: Run TestSystem with chrome
-      #     command: PARALLEL_WORKERS=1 BROWSER=chrome bundle exec rake test:system
-
-      # - run:
-      #     name: Run TestSystem with firefox
-      #     command: PARALLEL_WORKERS=1 BROWSER=firefox bundle exec rake test:system
+      - run:
+          name: Run Mobile TestSystem with headless_chrome using chrome's iPhone 6 emulation
+          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome USE_IPHONE_EMULATION=true bundle exec rake test:system TESTOPTS='--name /^USE_IPHONE_EMULATION/'
 
       - run:
           name: w3c validation
