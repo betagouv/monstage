@@ -46,7 +46,7 @@ class School < ApplicationRecord
       radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
     }
     current_week_ids = weeks.where(id: Week.selectable_on_school_year.pluck(:id)).pluck(:id)
-    opts = opts.merge(week_ids: current_week_ids) if !current_week_ids.size.zero?
+    opts = opts.merge(week_ids: current_week_ids) if current_week_ids.size.positive?
     opts
   end
 

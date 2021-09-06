@@ -40,19 +40,18 @@ module Presenters
     end
 
     test '.default_internship_offers_path includes expected params' do
-      school = create(:school, weeks: Week.selectable_on_school_year[1..2])
+      school = create(:school, weeks: Week.selectable_from_now_until_end_of_school_year[1..2])
       school_manager = create(:school_manager, school: school)
       class_room = create(:class_room, :troisieme_generale, school: school)
       student = create(:student, school: school, class_room: class_room)
-
       path = Presenters::User.new(student).default_internship_offers_path
       params = CGI.parse(URI.parse(path).query)
       assert_equal [school.city], params["city"]
-      assert_equal [school.latitde], params["latitude"]
-      assert_equal [school.longitude], params["longitude"]
-      assert_equal [Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER], params["radius"]
-      assert_equal school.weeks_ids, params["week_ids"]
-      assert_equal student.school_track, params["school_track"]
+      assert_equal [school.coordinates.lat.to_s], params["latitude"]
+      assert_equal [school.coordinates.lon.to_s], params["longitude"]
+      assert_equal [Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER.to_s], params["radius"]
+      assert_equal school.week_ids.map(&:to_s), params["week_ids[]"]
+      assert_equal [student.school_track], params["school_track"]
     end
   end
 end
