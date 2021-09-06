@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class InternshipOfferSearchTest < ActiveSupport::TestCase
+class InternshipOfferKeywordSearchTest < ActiveSupport::TestCase
   include ::ApiTestHelpers
   setup do
     FactoryBot.create(:weekly_internship_offer,
