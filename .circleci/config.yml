@@ -126,10 +126,6 @@ workflows:
   build-deploy:
     jobs:
       - build
-      - hold:
-          type: approval
-          requires:
-            - build
       - deploy:
           requires:
             - build
@@ -137,6 +133,10 @@ workflows:
             branches:
               only:
                 - master
+      - hold:
+          type: approval
+          requires:
+            - build
       - deploy-test-hold:
           requires:
             - build
