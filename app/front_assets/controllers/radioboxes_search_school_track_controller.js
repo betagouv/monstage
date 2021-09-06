@@ -1,30 +1,27 @@
 import { Controller } from 'stimulus';
+import { enableInput, disableInput } from  '../utils/dom';
 
 export default class extends Controller {
 
   static targets = [
     'schoolTrackInput',
-    'inputPlaceholder',
-    'dateContainer'
+    'inputPlaceholder'
     ]
 
   connect(){
     this.updateVisibleForm(this.schoolTrackInputTarget.value);
   }
 
-  onChange(changeEvent){
+  onSchoolTrackChange(changeEvent){
     this.updateVisibleForm(changeEvent.currentTarget.value);
   }
 
   updateVisibleForm(value) {
     const $inputPlaceholder = $(this.inputPlaceholderTarget);
-    const $dateContainer = $(this.dateContainerTarget)
     if (value == 'troisieme_generale') {
-      $inputPlaceholder.attr('readonly', false).attr('disabled', false);
-      $dateContainer.removeClass('d-none').addClass('d-md-block')
+      enableInput($inputPlaceholder)
     } else {
-      $inputPlaceholder.attr('readonly', 'readonly').attr('disabled', 'disabled');
-      $dateContainer.addClass('d-none').removeClass('d-md-block');
+      disableInput($inputPlaceholder)
     }
   }
 }

@@ -41,6 +41,16 @@ module SearchHelper
       default_month
   end
 
+  def search_filter_button_label
+    count = params.permit(:city, :keyword, :school_track, week_ids: [])
+                  .to_h
+                  .map do |k,v|
+                    v.empty? ? 0 : 1
+                  end
+                  .sum
+    count.zero? ? 'Rechercher' : "Modifier ma recherche (#{count})"
+  end
+
   def list_months_for_search
     months_map = {
       9 => [],

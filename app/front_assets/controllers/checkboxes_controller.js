@@ -1,4 +1,5 @@
 import { Controller } from 'stimulus';
+import { enableInput, disableInput } from  '../utils/dom';
 
 export default class extends Controller {
 
@@ -7,10 +8,27 @@ export default class extends Controller {
                      'badgeList' ]
 
 
-  onChange(changeEvent){
+  onCheckboxChange(changeEvent){
     this.toggleActiveOnParentNode(changeEvent.currentTarget)
   }
 
+  onSchoolTrackChange(changeEvent) {
+   this.updateOnSchoolTrackChange(changeEvent.currentTarget.value)
+  }
+
+  updateOnSchoolTrackChange(newValue) {
+     if (newValue == 'troisieme_generale') {
+      $(this.inputTargets).map((i, element) => {
+        enableInput($(element));
+        element.parentNode.classList.remove('disabled')
+      });
+    } else {
+      $(this.inputTargets).map((i, element) => {
+        disableInput($(element));
+        element.parentNode.classList.add('disabled')
+      });
+    }
+  }
 
   remove(clickEvent) {
     const $badgeRemoveButton = $(clickEvent.currentTarget);
@@ -23,7 +41,6 @@ export default class extends Controller {
   }
 
   clear(clickEvent) {
-    console.log('click')
     this.getSelectedInputs().map((i, element) => {
       element.checked = false
       this.toggleActiveOnParentNode(element);

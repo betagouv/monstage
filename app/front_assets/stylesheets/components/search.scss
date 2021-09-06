@@ -19,6 +19,7 @@
       padding-right: 1rem;
     }
   }
+
   .search-container {
     #input-search-by-keyword,
     #input-search-by-city,
@@ -47,6 +48,12 @@
     height: 100%;
   }
 
+  .position-sticky-md {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+  }
 }
 
 #input-search-by-keyword,
@@ -92,3 +99,4 @@
   background-size: 100% 55px;
   background-repeat: no-repeat;
 }
+

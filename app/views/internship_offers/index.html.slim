@@ -1,14 +1,20 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
 - content_for(:custom_header) do
 
-  h1.text-white.text-center.pt-5.pb-4.my-0.bg-custom-blue
+  h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-custom-blue
     = "Postulez à des offres de stage"
 
   .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
-    .container
+    .container.d-none.d-md-block
       .row
         .col-12
-          .pt-3= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
+          .pt-3
+            = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
+.actions.d-flex.d-stick.d-md-none.p-2
+  =link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm'
+    = search_filter_button_label
+
+
 
 .row
   table.table.table-dashboard-internship-offers.mb-0
