@@ -1,7 +1,0 @@
-= link_to internship_offer_application_path(internship_offer),
-          internship_offer_application_html_opts(internship_offer, class: 'btn btn-primary mb-3 btn-sm') do
-  - if internship_offer.from_api?
-    = "Postuler sur #{internship_offer.employer.operator.name}"
-  - else
-    i.fas.fa-fw.fa-xs.ml-1.fa-rocket
-    =" Postuler"
