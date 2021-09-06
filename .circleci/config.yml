@@ -79,11 +79,11 @@ jobs: # a collection of steps
 
       - run:
           name: Run Desktop TestSystem with headless_chrome
-          command: ./infra/test/desktop.sh
+          command: ~/project/infra/test/desktop.sh
 
       - run:
           name: Run Mobile TestSystem with headless_chrome using chrome's iPhone 6 emulation
-          command: ./infra/test/mobile.sh
+          command: ~/project/infra/test/mobile.sh
 
       - run:
           name: w3c validation
