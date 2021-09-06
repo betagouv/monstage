@@ -130,7 +130,7 @@ function CityInput({}) {
         }) => (
           <div
             id="test-input-location-container"
-            title="Resulltat de recherche"
+            title="Resultat de recherche"
             className={`input-group col p-0`}
           >
             <input
@@ -138,8 +138,8 @@ function CityInput({}) {
                 onChange: inputChange,
                 value: inputValue,
                 className: 'form-control',
-                name: 'city',
-                id: 'input-search-by-city',
+                name: 'cityOrZipcode',
+                id: 'input-search-by-city-or-zipcode',
                 placeholder: 'Lieu',
                 "aria-label": "Autour de",
                 onFocus: (event) => {
@@ -152,7 +152,7 @@ function CityInput({}) {
               <ul
                 {...getMenuProps({
                   className: 'p-0 m-0',
-                  "aria-labelledby": 'input-search-by-city',
+                  "aria-labelledby": 'input-search-by-city-or-zipcode',
                 })}
               >
                 {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (

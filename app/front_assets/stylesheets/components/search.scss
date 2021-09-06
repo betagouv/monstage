@@ -22,13 +22,13 @@
 
   .search-container {
     #input-search-by-keyword,
-    #input-search-by-city,
+    #input-search-by-city-or-zipcode,
     #input-search-school-track,
     #input-search-by-week{
       border: none;
     }
     #input-search-by-keyword,
-    #input-search-by-city{
+    #input-search-by-city-or-zipcode{
       border-right: 1px solid $gray_300;
     }
     #input-search-by-week{
@@ -38,7 +38,7 @@
   }
   // bigger input for visible overflow
   #input-search-by-keyword,
-  #input-search-by-city,
+  #input-search-by-city-or-zipcode,
   // #input-search-school-track -> forced with height 100%, padding does not play nicely
   #input-search-by-week{
     padding-top: 2.4rem;
@@ -57,7 +57,7 @@
 }
 
 #input-search-by-keyword,
-#input-search-by-city,
+#input-search-by-city-or-zipcode,
 #input-search-by-week{
  padding-right: 0.75rem;
  padding-left:   2.75rem;
@@ -68,7 +68,7 @@
 
 // # input with icons
 #input-search-by-keyword,
-#input-search-by-city,
+#input-search-by-city-or-zipcode,
 #input-search-school-track,
 #input-search-by-week{
   background-repeat: no-repeat;
@@ -81,7 +81,7 @@
 #input-search-by-keyword{
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 13.2554C18.2207 14.3805 15.1827 15 12 15C8.8173 15 5.7793 14.3805 3 13.2554M16 6V4C16 2.89543 15.1046 2 14 2H10C8.89543 2 8 2.89543 8 4V6M12 12H12.01M5 20H19C20.1046 20 21 19.1046 21 18V8C21 6.89543 20.1046 6 19 6H5C3.89543 6 3 6.89543 3 8V18C3 19.1046 3.89543 20 5 20Z' stroke='%231E40AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
 }
-#input-search-by-city{
+#input-search-by-city-or-zipcode{
   background-image: url("data:image/svg+xml,%3Csvg width='18' height='21' viewBox='0 0 18 21' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.6569 14.6569C13.7202 15.5935 11.7616 17.5521 10.4138 18.8999C9.63275 19.681 8.36768 19.6814 7.58663 18.9003C6.26234 17.576 4.34159 15.6553 3.34315 14.6569C0.218951 11.5327 0.218951 6.46734 3.34315 3.34315C6.46734 0.218951 11.5327 0.218951 14.6569 3.34315C17.781 6.46734 17.781 11.5327 14.6569 14.6569Z' stroke='%231E40AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12 9C12 10.6569 10.6569 12 9 12C7.34315 12 6 10.6569 6 9C6 7.34315 7.34315 6 9 6C10.6569 6 12 7.34315 12 9Z' stroke='%231E40AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
 }
 #input-search-by-week{

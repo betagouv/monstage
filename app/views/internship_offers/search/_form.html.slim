@@ -19,7 +19,7 @@ div.search-container data-controller='search-form search-popover search-school-t
       .pb-5
       - if desktop_rendering
         .col-auto-md.d-md-flex data-search-popover-target="searchSubmitContainer"
-          = form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil
+          = form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil, id: 'test-submit-search'
       - else desktop_rendering
         .actions.d-flex.d-stick.d-md-none.p-2= form.submit search_button_label, class: 'btn btn-danger rounded-sm'
 
