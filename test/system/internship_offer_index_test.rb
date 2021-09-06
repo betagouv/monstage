@@ -98,7 +98,7 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
   test 'visitor is lured into thinking he can submit an application' do
     create(:weekly_internship_offer)
     visit internship_offers_path
-    page.find_link('Continuer pour postuler')
+    page.find_link('Postuler')
   end
 
   test 'as teacher, search filters are complete and do filter by school_track' do

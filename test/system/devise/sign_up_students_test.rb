@@ -232,7 +232,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     offer = create(:weekly_internship_offer)
 
     visit internship_offers_path
-    click_link 'Continuer pour postuler'
+    click_link 'Postuler'
     # below : 'Pas encore de compte ? Inscrivez-vous'
     find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
 
