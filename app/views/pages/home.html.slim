@@ -24,7 +24,6 @@
       .row
         .col-12
           h2.py-5.text-center
-
             = PrismicFinder.homepage()['homepage.slider_title'].as_text
       .row.pb-5.mb-3.flex-md-reverse-column
         .col-12.col-md-6.align-self-center
@@ -52,25 +51,6 @@
                     p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
                       = news.get('news_link_text').as_text
 
-<<<<<<< HEAD
-  .bg-cover-image-homepage
-    .container
-      .row.py-3.py-sm-5
-
-      .row.no-gutters.py-5
-        .col-12
-          h1.text-white.text-center.mb-3
-            | Et après le confinement ?
-            br
-            | Des offres de stages vous attendent déjà !
-          - # TODO refactor?:use default
-          .col-12= react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path,
-                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                  schoolTypeVisibility: false }) do
-                .input-loading-skeleton
-
-      .row.py-3.py-sm-5
 
 
   .bg-light-blue
