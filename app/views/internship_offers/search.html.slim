@@ -3,7 +3,9 @@
     .modal-content
       .modal-header.bb-1.bt-light.border-bottom
         .modal-title.col.text-center Modifier ma recherche
-        button.close-absolute type="button" class="close" data-dismiss="modal" aria-label="Close"
+
+        = link_to internship_offers_path(forwardable_params), class: "close-absolute close", data: {dismiss: "modal"}, aria: { label: "Close" } do
           span aria-hidden="true" &times;
+
 
       .modal-body.mt-3= render partial: "internship_offers/search/form", locals: {desktop_rendering: false, url: internship_offers_path }
