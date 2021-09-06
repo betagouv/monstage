@@ -1,35 +1,27 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
-- content_for(:custom_header) do
 
+- content_for(:custom_header) do
   h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-custom-blue
     = "Postulez à des offres de stage"
-
   .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
     .container.d-none.d-md-block
       .row
         .col-12
           .pt-3
             = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
+
 .actions.d-flex.d-stick.d-md-none.p-2
   =link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm'
     = search_filter_button_label
 
 
-
 .row
-  table.table.table-dashboard-internship-offers.mb-0
-    tbody
-      - if @internship_offers.blank?
-        tr
-          td
-            .row
-              p.col-12[style='color: gray'] Aucune offre n'est disponible.
-      - else
-        tr
-          td
-            .row
-              .col-12= render "internship_offers/title", internship_offers: @internship_offers
+  - if @internship_offers.blank?
+    h.col-12[style='color: gray'] Aucune offre n'est disponible.
+  - else
+    .col-12= render "internship_offers/title", internship_offers: @internship_offers
 
-        = render partial: "internship_offer", collection: @internship_offers
+    = render partial: "internship_offer", collection: @internship_offers
+
 .row.d-flex.d-md-none
   .col-12= paginate(@internship_offers)
