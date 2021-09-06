@@ -3,9 +3,9 @@ import { enableInput, disableInput } from  '../utils/dom';
 
 export default class extends Controller {
 
-  static targets = [ 'input',
-                     'inputPlaceholder',
-                     'badgeList' ]
+  static targets = [ 'input',           // many checkboxes, references all inputs
+                     'inputPlaceholder',// a placeholder for inline view with a popover
+                     'badgeList' ]      // list of weeks always visible when calendar view
 
 
   onCheckboxChange(changeEvent){
@@ -28,23 +28,6 @@ export default class extends Controller {
         element.parentNode.classList.add('disabled')
       });
     }
-  }
-
-  remove(clickEvent) {
-    const $badgeRemoveButton = $(clickEvent.currentTarget);
-    $(this.inputTargets).map((i, element) => {
-      if (element.value ==  $badgeRemoveButton.data('week-id')) {
-        element.checked = false;
-        this.toggleActiveOnParentNode(element);
-      }
-    })
-  }
-
-  clear(clickEvent) {
-    this.getSelectedInputs().map((i, element) => {
-      element.checked = false
-      this.toggleActiveOnParentNode(element);
-    })
   }
 
   // private utils
@@ -81,7 +64,7 @@ export default class extends Controller {
     $(this.badgeListTarget).empty();
     this.getSelectedInputs().map((i, weekInput) => {
       const weekStr = $(weekInput).data('text-week-str')
-      $(this.badgeListTarget).append(`<div class="badge badge-pill badge-search mt-2" >${weekStr}<a class="ml-1" data-action="click->checkboxes#remove" data-week-id="${weekInput.value}">&times;<a></div>`)
+      $(this.badgeListTarget).append(`<div class="badge badge-pill badge-search mt-2" >${weekStr}<a class="ml-1" data-action="click->search-week-checkboxes#remove" data-week-id="${weekInput.value}">&times;<a></div>`)
     })
   }
 

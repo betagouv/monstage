@@ -131,13 +131,13 @@ function CityInput({}) {
           <div
             id="test-input-location-container"
             title="Resulltat de recherche"
-            className={`input-group input-group-search col p-0`}
+            className={`input-group col p-0`}
           >
             <input
               {...getInputProps({
                 onChange: inputChange,
                 value: inputValue,
-                className: 'form-control input-group-search-right-border',
+                className: 'form-control',
                 name: 'city',
                 id: 'input-search-by-city',
                 placeholder: 'Lieu',

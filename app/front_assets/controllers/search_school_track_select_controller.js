@@ -4,8 +4,8 @@ import { enableInput, disableInput } from  '../utils/dom';
 export default class extends Controller {
 
   static targets = [
-    'schoolTrackInput',
-    'inputPlaceholder'
+    'schoolTrackInput', // select
+    'inputPlaceholder'  // used as 'label/placeholder'
     ]
 
   connect(){

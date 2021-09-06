@@ -4,7 +4,7 @@ import { isVisible, hideElement, showElement } from '../utils/dom';
 export default class extends Controller {
 
   static targets = [
-    "tabPane", // multiple targets to navigate weeks selection
+    "tabPane", // multiple targets to navigate weeks selection // months
   ];
 
   navigate(clickEvent) {

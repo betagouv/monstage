@@ -41,7 +41,7 @@ module SearchHelper
       default_month
   end
 
-  def search_filter_button_label
+  def search_button_label
     count = params.permit(:city, :keyword, :school_track, week_ids: [])
                   .to_h
                   .map do |k,v|

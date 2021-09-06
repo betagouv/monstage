@@ -24,9 +24,9 @@ module Presenters
     end
 
     def default_internship_offers_path
-      return internship_offers_path if user.nil? # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
-      return internship_offers_path unless user.respond_to?(:school) # TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
-      return internship_offers_path if user.school.nil?# TODO refactor?: should be able to use request.params[**] or user.default[**] or nothing
+      return internship_offers_path if user.nil?
+      return internship_offers_path unless user.respond_to?(:school)
+      return internship_offers_path if user.school.nil?
 
       opts = user.school.default_search_options
       opts = opts.merge({school_track: user.try(:school_track)}) if user.try(:school_track)

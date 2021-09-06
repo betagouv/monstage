@@ -1,14 +1,14 @@
 .form-group.mb-md-0.col-12.col-md
   = f.label :school_track, class: "d-inline-block d-md-none" do
     | Filtrer par filière
-  = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->radioboxes-search-school-track#onSchoolTrackChange change->checkboxes#onSchoolTrackChange', 'data-radioboxes-search-school-track-target': 'schoolTrackInput', id: 'input-search-school-track'
+  = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', id: 'input-search-school-track'
 
 .form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
 
-  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-radioboxes-search-school-track-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week"
+  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-search-school-track-select-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-search-week-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week"
 
-  div data-radioboxes-search-school-track-target="dateContainer"
+  div data-search-school-track-select-target="dateContainer"
     div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
 
       #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
@@ -47,13 +47,9 @@
           div
             - weeks.map do |week|
                 = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3 custom-checkbox-search mb-0 font-weight-normal" do
-                  = f.check_box :week_ids, {multiple: true, checked: params.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2 ', 'data-checkboxes-target': 'input', 'data-action': 'change->checkboxes#onCheckboxChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
+                  = f.check_box :week_ids, {multiple: true, checked: params.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2 ', 'data-search-week-checkboxes-target': 'input', 'data-action': 'change->search-week-checkboxes#onCheckboxChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
                   span.flex-fill
                     span.d-block.mb-0= week.short_range_as_str
                     small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
 
-      div.col-12 data-checkboxes-target="badgeList"
-
-      .desktop-actions.d-none.d-md-flex.bt-1.bt-light.mt-3.pt-3.px-3
-        a.col.text-left.btn.btn-link data-action="click->checkboxes#clear" Tout effacer
-        a.col.btn.btn.btn-primary data-action="click->search-popover#hide" Enregistrer
+      div.col-12 data-search-week-checkboxes-target="badgeList"

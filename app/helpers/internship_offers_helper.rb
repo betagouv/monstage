@@ -45,7 +45,6 @@ module InternshipOffersHelper
     internship_offer.employer.operator.name
   end
 
-  # TODO refactor? add week_ids
   def forwardable_params
     params.permit(
       :latitude,

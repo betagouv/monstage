@@ -15,10 +15,6 @@ import './pages/remote_internships/webinar_2x.png';
 import './pages/remote_internships/face_to_face_2x.png';
 import './pages/remote_internships/digital_week_2x.png';
 
-import './icons/briefcase.svg';
-import './icons/calendar.svg';
-import './icons/hat.svg';
-import './icons/marker.svg';
 import './icons/noun_Handshake_2803586-1.svg';
 import './icons/noun_job_offer_1461730-1.svg';
 import './icons/noun_building_353052.svg';

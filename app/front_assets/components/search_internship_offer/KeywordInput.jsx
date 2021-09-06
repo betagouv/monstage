@@ -53,7 +53,7 @@ function KeywordInput({ }) {
       }) => (
         <div
           id="test-input-keyword-container"
-          className={`input-group input-group-search col p-0`}
+          className={`input-group col p-0`}
         >
           <input
             {...getInputProps({

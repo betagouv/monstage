@@ -4,10 +4,9 @@ import { isVisible, showElement, hideElement } from '../utils/dom';
 export default class extends Controller {
   // on desktop, the week input is popoverable. so their is a caller input
   static targets = [
-    'popover',
-    'inputPlaceholder',
-    'searchByDateContainer',
-    'searchSubmitContainer'
+    'popover',               // contains list of weeks
+    'searchByDateContainer', // contains label + list of weeks + badges
+    'searchSubmitContainer'  // used to size popover
   ];
 
   show(clickEvent) {

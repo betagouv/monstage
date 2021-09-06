@@ -66,7 +66,7 @@ module Users
 
     def after_sign_in_path
       if targeted_offer_id.present?
-        url_helpers.internship_offer_path({ id: canceled_targeted_offer_id })
+        url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
       else
         Presenters::User.new(self).default_internship_offers_path
       end
