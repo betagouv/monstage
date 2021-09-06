@@ -111,14 +111,36 @@ jobs: # a collection of steps
           command: |
             git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
             git push -u clever master
+  deploy-test-hold:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy test-hold-deploy to Clever Cloud
+          command: |
+            git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            git push -u clever test-hold-deploy
 workflows:
   version: 2
   build-deploy:
-      jobs:
-        - build
-        - deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-test-hold:
+          requires:
+            - build
+          hold:
+            type: approval
             requires:
               - build
-            filters:
-              branches:
-                only: master
+          filters:
+            branches:
+              only:
+                - test-hold-deploy
