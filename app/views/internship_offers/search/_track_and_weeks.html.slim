@@ -1,5 +1,5 @@
 .form-group.mb-md-0.col-12.col-md
-  = f.label :school_track, class: "d-inline-block d-md-none" do
+  = f.label :school_track, class: "d-inline-block d-md-none", for: 'input-search-school-track' do
     | Filtrer par filière
   = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', id: 'input-search-school-track'
 

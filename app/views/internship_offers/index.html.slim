@@ -11,13 +11,13 @@
             = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
 
 .actions.d-flex.d-stick.d-md-none.p-2
-  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data_test_id: 'mobile-search-button'
+  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
     = search_button_label
 
 
 .row
   - if @internship_offers.blank?
-    h.col-12[style='color: gray'] Aucune offre n'est disponible.
+    h2.col-12[style='color: gray'] Aucune offre n'est disponible.
   - else
     .col-12= render "internship_offers/title", internship_offers: @internship_offers
 

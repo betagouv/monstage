@@ -7,11 +7,9 @@ div.search-container data-controller='search-form search-popover search-school-t
 
     .row.no-gutters
       .form-group.mb-md-0.col-12.col-md
-        label.d-inline-block.d-md-none for="input-search-by-keyword" Rechercher une profession
         = react_component("KeywordInput")
 
       .form-group.mb-md-0.col-12.col-md
-        label.d-inline-block.d-md-none for="input-search-by-city" Ville ou code postal
         = react_component("CityInput")
 
       = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering}

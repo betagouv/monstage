@@ -128,57 +128,63 @@ function CityInput({}) {
           selectedItem,
           openMenu,
         }) => (
-          <div
-            id="test-input-location-container"
-            title="Resultat de recherche"
-            className={`input-group col p-0`}
-          >
-            <input
-              {...getInputProps({
-                onChange: inputChange,
-                value: inputValue,
-                className: 'form-control',
-                name: 'cityOrZipcode',
-                id: 'input-search-by-city-or-zipcode',
-                placeholder: 'Lieu',
-                "aria-label": "Autour de",
-                onFocus: (event) => {
-                  openMenu(event);
-                },
-              })}
-            />
+          <div>
+            <label getLabelProps {...getLabelProps({className: ' d-inline-block d-md-none', htmlFor: "input-search-by-city-or-zipcode"})}>
+                   Ville ou code postal
+            </label>
+            <div
+              id="test-input-location-container"
+              title="Resultat de recherche"
+              className={`input-group col p-0`}
+            >
 
-            <div className="search-in-place bg-white shadow">
-              <ul
-                {...getMenuProps({
-                  className: 'p-0 m-0',
-                  "aria-labelledby": 'input-search-by-city-or-zipcode',
+              <input
+                {...getInputProps({
+                  onChange: inputChange,
+                  value: inputValue,
+                  className: 'form-control',
+                  name: 'cityOrZipcode',
+                  id: 'input-search-by-city-or-zipcode',
+                  placeholder: 'Lieu',
+                  "aria-label": "Autour de",
+                  onFocus: (event) => {
+                    openMenu(event);
+                  },
                 })}
-              >
-                {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
-                  <li>
-                    <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
-                  </li>
-                )}
-                {isOpen
-                  ? searchResults.map((item, index) => (
-                    <li
-                      {...getItemProps({
-                        className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
-                          }`,
-                        key: item.code,
-                        index,
-                        item,
-                        style: {
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        },
-                      })}
-                    >
-                      {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+              />
+
+              <div className="search-in-place bg-white shadow">
+                <ul
+                  {...getMenuProps({
+                    className: 'p-0 m-0',
+                    "aria-labelledby": 'input-search-by-city-or-zipcode',
+                  })}
+                >
+                  {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
+                    <li>
+                      <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
                     </li>
-                  ))
-                  : null}
-              </ul>
+                  )}
+                  {isOpen
+                    ? searchResults.map((item, index) => (
+                      <li
+                        {...getItemProps({
+                          className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
+                            }`,
+                          key: item.code,
+                          index,
+                          item,
+                          style: {
+                            fontWeight: selectedItem === item ? 'bold' : 'normal',
+                          },
+                        })}
+                      >
+                        {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+                      </li>
+                    ))
+                    : null}
+                </ul>
+              </div>
             </div>
           </div>
         )}

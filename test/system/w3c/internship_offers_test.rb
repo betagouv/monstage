@@ -7,7 +7,7 @@ module W3c
     include Html5Validator
     include Devise::Test::IntegrationHelpers
 
-    test 'internship_offers_path' do
+    test 'USE_W3C, internship_offers_path' do
       %i[employer
          student
          school_manager].each do |role|
@@ -18,7 +18,7 @@ module W3c
       end
     end
 
-    test 'internship_offer_path' do
+    test 'USE_W3C, internship_offer_path' do
       %i[employer student].each do |role|
         run_request_and_cache_response(report_as: "internship_offer_path_#{role}") do
           sign_in(create(role))
@@ -27,7 +27,7 @@ module W3c
       end
     end
 
-    test 'search_internship_offer_path' do
+    test 'USE_W3C, search_internship_offer_path' do
       run_request_and_cache_response(report_as: "search_internship_offer_path") do
         visit search_internship_offers_path
       end

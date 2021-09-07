@@ -15,7 +15,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     visit internship_offers_path
 
     assert_selector('.search-container', visible: true)
-    assert_selector('a[data_test_id="mobile-search-button"]', visible: false)
+    assert_selector('a[data-test-id="mobile-search-button"]', visible: false)
   end
 
   test 'search by location (city) works' do

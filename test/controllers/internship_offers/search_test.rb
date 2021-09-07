@@ -8,7 +8,7 @@ class SearchTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "label[for=input-search-by-keyword]"
-    assert_select "label[for=input-search-by-city]"
+    assert_select "label[for=input-search-by-city-or-zipcode]"
     assert_select "label", text:  "Filtrer par filière"
     assert_select ".label", text:  "Quand se déroule le stage ?"
     ClassRoom.school_tracks.map do |(enum)|

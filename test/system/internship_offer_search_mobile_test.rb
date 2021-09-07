@@ -11,7 +11,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
   end
 
   def edit_search
-    find('a[data_test_id="mobile-search-button"]').click
+    find('a[data-test-id="mobile-search-button"]').click
     find('.search-container')
   end
 
@@ -19,8 +19,8 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     visit internship_offers_path
 
     assert_selector('.search-container', visible: false)
-    assert_selector('a[data_test_id="mobile-search-button"]', visible: true)
-    find('a[data_test_id="mobile-search-button"]').click
+    assert_selector('a[data-test-id="mobile-search-button"]', visible: true)
+    find('a[data-test-id="mobile-search-button"]').click
     find(".modal-fullscreen-lg")
   end
 

@@ -51,48 +51,53 @@ function KeywordInput({ }) {
         highlightedIndex,
         selectedItem,
       }) => (
-        <div
-          id="test-input-keyword-container"
-          className={`input-group col p-0`}
-        >
-          <input
-            {...getInputProps({
-              onChange: inputChange,
-              value: inputValue,
-              className: 'form-control',
-              id: 'input-search-by-keyword',
-              name: 'keyword',
-              placeholder: 'Profession',
-              'aria-label': 'Rechercher par Profession',
-            })}
-          />
-          <div className="search-in-place bg-white shadow">
-            <ul
-              {...getMenuProps({
-                className: 'p-0 m-0',
-                'aria-labelledby': 'input-search-by-keyword',
+        <div>
+          <label getLabelProps {...getLabelProps({className: 'd-inline-block d-md-none', htmlFor: "input-search-by-keyword"})}>
+             Rechercher une profession
+          </label>
+          <div
+            id="test-input-keyword-container"
+            className={`input-group col p-0`}
+          >
+            <input
+              {...getInputProps({
+                onChange: inputChange,
+                value: inputValue,
+                className: 'form-control',
+                id: 'input-search-by-keyword',
+                name: 'keyword',
+                placeholder: 'Profession',
+                'aria-label': 'Rechercher par Profession',
               })}
-            >
-              {isOpen
-                ? searchResults.map((item, index) => (
-                    <li
-                      {...getItemProps({
-                        className: `py-2 px-3 listview-item ${
-                          highlightedIndex === index ? 'highlighted-listview-item' : ''
-                        }`,
-                        key: item.id,
-                        index,
-                        item,
-                        style: {
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        },
-                      })}
-                    >
-                      {item.word}
-                    </li>
-                  ))
-                : null}
-            </ul>
+            />
+            <div className="search-in-place bg-white shadow">
+              <ul
+                {...getMenuProps({
+                  className: 'p-0 m-0',
+                  'aria-labelledby': 'input-search-by-keyword',
+                })}
+              >
+                {isOpen
+                  ? searchResults.map((item, index) => (
+                      <li
+                        {...getItemProps({
+                          className: `py-2 px-3 listview-item ${
+                            highlightedIndex === index ? 'highlighted-listview-item' : ''
+                          }`,
+                          key: item.id,
+                          index,
+                          item,
+                          style: {
+                            fontWeight: selectedItem === item ? 'bold' : 'normal',
+                          },
+                        })}
+                      >
+                        {item.word}
+                      </li>
+                    ))
+                  : null}
+              </ul>
+            </div>
           </div>
         </div>
       )}

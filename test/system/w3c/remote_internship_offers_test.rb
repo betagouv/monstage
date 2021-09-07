@@ -6,7 +6,7 @@ module W3c
     include Html5Validator
     include Devise::Test::IntegrationHelpers
 
-    test 'employer_new_dashboard_support_ticket_path' do
+    test 'USE_W3C, employer_new_dashboard_support_ticket_path' do
       employer = create(:employer)
       school_manager = create(:school_manager, school: create(:school))
 
