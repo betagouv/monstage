@@ -125,26 +125,39 @@ our test suite contains
   * w3c (using previously created html files)
   * a11y (using previously created html files)
 
-you can also run all kinds of test in one run `./infra/test/suite.sh`
-
 ### about/run units test
 
 run with ```rails test``` (JS is not executed, so quick tests)
 
 ### about/run system/e2e tests
 
-by default we run our tests with a chrome_headless (JS is executed, kinda slow tests).
+this app is BUILT FOR TWO PLATFORMs : web/mobile
 
-* run in background (chrome_headless) : `rails test:system`
-* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test:system`
+DEPENDING OF THE TARGETED PLAFORM, FEATURES and TEST DIFFER. but rails test:system include all e2e tests in one big suite. To split this big suite per platform we use an env var : USE_IPHONE_EMULATION=anything AND two of minitest's TEST_OPTS flags :
+
+1. `--name='/pattern_to_run_tests_matching/'`
+2. `--exclude='/pattern_to_skip_tests_matching/'`
+
+To make it easier to run a suite for a dedicated platform :
+
+* mobile only shortcut: `./infra/test/system_mobile.sh` [only mobile, capybara with a selenium driver, driving an chrome_headless + emulator]
+* desktop only shortcut: `./infra/test/system_desktop.sh` [only desktop, capybara with a selenium driver, driving an chrome_headless]
+* w3c only shortcut: `./infra/test/w3c_desktop.sh` [only desktop, capybara with a selenium driver, driving an chrome_headless]
+* mobile and desktop + w3c : `./infra/test/system_all.sh` [only w3c run through system]
+
+( thoses scripts are also used for the CI. )
+
+Good to know :
+
+* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test/system/${YOUR_TEST}`
 
 ### about/run w3c tests (using vnu.jar)
 
-those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c.sh```
+those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c_desktop.sh```
 
 ### a11y tests (using pa11y-ci)
 
-those tests depends on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
+those tests depends on the ```./infra/test/w3c_desktop.sh``` (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
 
 ### CI, full suite (unit, system, w3c, a11y)
 
