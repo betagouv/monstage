@@ -6,7 +6,7 @@
 .form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
 
-  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-search-school-track-select-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-search-week-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week"
+  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-search-school-track-select-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-search-week-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week" aria-label="Afficher les semaines de stage"
 
   div data-search-school-track-select-target="dateContainer"
     div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
@@ -31,17 +31,17 @@
           .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
             .col-2
               - unless search_first_month?(month_i)
-                = link_to "#month_#{previous_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                = link_to "#month_#{previous_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(previous_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-left
             .col-8
-              = link_to "#year_select", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
+              = link_to "#year_select", title: "Afficher tous les mois", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
                 i.fas.fa-calendar-alt.text-border-color.mr-3
 
                 = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
 
             .col-2
               - unless search_last_month?(month_i)
-                = link_to "#month_#{next_month(month_i)}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                = link_to "#month_#{next_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(next_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-right
 
           div
