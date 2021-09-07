@@ -316,7 +316,7 @@ class Ability
     offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
 
     return false if offer_is_reserved_to_another_school
-    return false if internship_offer.from_api?
+    return true if internship_offer.from_api?
     return true if student.try(:class_room).nil?
     return true if student.try(:class_room).try(:applicable?, internship_offer)
 
