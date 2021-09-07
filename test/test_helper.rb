@@ -44,11 +44,11 @@ class ActiveSupport::TestCase
 
   parallelize_setup do |_worker|
     # setup database
-    if ENV['CI'].blank?
-      postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')
-      postgis_spatial_ref_sys_sql = File.read(postgis_spatial_ref_sys_path)
-      ActiveRecord::Base.connection.execute(postgis_spatial_ref_sys_sql)
-    end
+    # if ActiveRecord::Base.connection.execute('select * from spatial_ref_sys').count == 0
+    #   postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')
+    #   postgis_spatial_ref_sys_sql = File.read(postgis_spatial_ref_sys_path)
+    #   ActiveRecord::Base.connection.execute(postgis_spatial_ref_sys_sql)
+    # end
   end
 
   parallelize_teardown do |worker|
