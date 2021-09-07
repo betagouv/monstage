@@ -32,7 +32,9 @@ module Monstage
 
     config.middleware.use Rack::Deflater
 
-    ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::SchemaDumper.ignore_tables - ["spatial_ref_sys"]
+    if ENV['MFO'] # sry :D using pg_13 following a brew upgrade, now db export fails...
+       ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::SchemaDumper.ignore_tables - ["spatial_ref_sys"]
+    end
   end
 end
 
