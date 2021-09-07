@@ -42,19 +42,6 @@ Capybara.save_path = Rails.root.join('tmp/screenshots')
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
-  parallelize_setup do |_worker|
-    # setup database
-    # if ActiveRecord::Base.connection.execute('select * from spatial_ref_sys').count == 0
-    #   postgis_spatial_ref_sys_path = Rails.root.join('db/test/spatial_ref_sys.sql')
-    #   postgis_spatial_ref_sys_sql = File.read(postgis_spatial_ref_sys_path)
-    #   ActiveRecord::Base.connection.execute(postgis_spatial_ref_sys_sql)
-    # end
-  end
-
-  parallelize_teardown do |worker|
-    # cleanup database
-  end
-
   # Run tests in parallel with specified workers
   parallelize(workers: ENV.fetch('PARALLEL_WORKERS') { :number_of_processors })
 
