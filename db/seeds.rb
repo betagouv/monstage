@@ -83,7 +83,7 @@ end
 def populate_operators
   Operator.create(name: "Un stage et après !",
                   website: "",
-                  logo: 'Logo-jobirl.jpg',
+                  logo: 'Logo-un-stage-et-apres.jpg',
                   target_count: 120,
                   airtable_reporting_enabled: true,
                   airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),

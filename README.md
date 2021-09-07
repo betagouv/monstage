@@ -100,7 +100,7 @@ foreman start -f Procfile.dev
 
 ### Tooling: linting, etc...
 
-* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
 ### Etapes de travail jusqu'au merge dans master
