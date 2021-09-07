@@ -133,14 +133,13 @@ workflows:
             branches:
               only:
                 - master
-      - production_release:
-          type: approval
-          requires:
-            - deploy_staging
+                - FEAT/circle-ci-to-deploy-on-hold
       - deploy_production:
-          requires:
-            - deploy_staging
-          filters:
-            branches:
-              only:
-                - test-hold-deploy
+            type: approval
+            requires:
+              - deploy_staging
+            filters:
+              branches:
+                only:
+                  - master
+                  - FEAT/circle-ci-to-deploy-on-hold
