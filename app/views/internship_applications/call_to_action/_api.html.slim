@@ -1,5 +1,5 @@
 p.actions.d-flex.d-sm-block.d-xs-stick.mb-0
-  p.mb-1.d-none.d-md-block.text-muted.small
+  p.mb-1.d-none.d-md-block.text-muted.small.text-center
     = "Offre publiée par #{operator_name(@internship_offer)}"
   - if current_user&.student?
     .actions.d-flex.d-sm-block.d-xs-stick
@@ -9,3 +9,6 @@ p.actions.d-flex.d-sm-block.d-xs-stick.mb-0
                 target: "_blank",
                 rel: "external noopener noreferrer",
                 title: "Je postule sur #{operator_name(@internship_offer)} (nouvelle fenêtre)"
+  - unless user_signed_in?
+    = render partial: 'internship_offers/apply_cta',
+             locals: {internship_offer: internship_offer}
