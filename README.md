@@ -140,9 +140,9 @@ DEPENDING OF THE TARGETED PLAFORM, FEATURES and TEST DIFFER. but rails test:syst
 
 To make it easier to run a suite for a dedicated platform :
 
-* mobile only shortcut: `./infra/test/system_mobile.sh` [only mobile, capybara with a selenium driver, driving an chrome_headless + emulator]
-* desktop only shortcut: `./infra/test/system_desktop.sh` [only desktop, capybara with a selenium driver, driving an chrome_headless]
-* w3c only shortcut: `./infra/test/w3c_desktop.sh` [only desktop, capybara with a selenium driver, driving an chrome_headless]
+* mobile only shortcut: `./infra/test/system_mobile.sh` [only mobile, capybara with a selenium driver, driving a chrome_headless + emulator]
+* desktop only shortcut: `./infra/test/system_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
+* w3c only shortcut: `./infra/test/w3c_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
 * mobile and desktop + w3c : `./infra/test/system_all.sh` [only w3c run through system]
 
 ( thoses scripts are also used for the CI. )
