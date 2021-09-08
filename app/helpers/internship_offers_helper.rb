@@ -70,11 +70,11 @@ module InternshipOffersHelper
   end
 
   def select_weekly_start(internship_offer)
-    internship_offer.new_daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:first) || '9:00'
+    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:first) || '9:00' : '--'
   end
 
   def select_weekly_end(internship_offer)
-    internship_offer.new_daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:last) || '17:00'
+    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:last) || '17:00' : '--'
   end
 
   def select_daily_start(internship_offer, day)

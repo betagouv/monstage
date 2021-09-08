@@ -113,4 +113,7 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
+  def weekly_planning?
+    weekly_hours.any?(&:present?)
+  end
 end
