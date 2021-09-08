@@ -61,10 +61,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :submitted_by_operator, lambda { |user:|
-    merge(user.operator.internship_offers)
-  }
-
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
     where(school_id: [nil, school_id])
   }
