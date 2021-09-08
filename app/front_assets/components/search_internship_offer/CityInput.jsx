@@ -143,7 +143,7 @@ function CityInput({}) {
                   onChange: inputChange,
                   value: inputValue,
                   className: 'form-control',
-                  name: 'cityOrZipcode',
+                  name: 'city',
                   id: 'input-search-by-city-or-zipcode',
                   placeholder: 'Lieu',
                   "aria-label": "Autour de",
@@ -179,7 +179,7 @@ function CityInput({}) {
                           },
                         })}
                       >
-                        {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+                        {`${item.nom} ${codePostauxSample(item.codesPostaux)}`}
                       </li>
                     ))
                     : null}

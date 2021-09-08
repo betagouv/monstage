@@ -41,7 +41,7 @@ module Finders
 
     def coordinate_params
       return nil unless params.key?(:latitude) || params.key?(:longitude)
-      return nil if params.dig(:latitude).blank? if params.dig(:longitude).blank?
+      return nil if params.dig(:latitude).blank? || params.dig(:longitude).blank?
 
       geo_point_factory(latitude: params[:latitude], longitude: params[:longitude])
     end

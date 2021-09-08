@@ -7,7 +7,7 @@ export default class extends Controller {
     "tabPane", // multiple targets to navigate weeks selection // months
   ];
 
-  navigate(clickEvent) {
+  showWeekOrMonthSelection(clickEvent) {
     const currentTarget = clickEvent.currentTarget;
     const href = new URL(currentTarget.href);
     const target = href.hash.replace(/#/, '');

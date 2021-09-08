@@ -17,10 +17,10 @@
             .row.mb-3
               - if month_i_left
                 .col-6.pr-2
-                    = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+                    = link_to month_in_text(month_i_left, format: "%B"), "#month_#{month_i_left}", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
               - if month_i_right
                 .col-6.pl-2
-                    = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+                    = link_to month_in_text(month_i_right, format: "%B"), "#month_#{month_i_right}", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
 
       - list_months_for_search.map do |month_i, weeks|
         - next if weeks.empty?
@@ -31,17 +31,17 @@
           .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
             .col-2
               - unless search_first_month?(month_i)
-                = link_to "#month_#{previous_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(previous_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                = link_to "#month_#{previous_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(previous_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-left
             .col-8
-              = link_to "#year_select", title: "Afficher tous les mois", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
+              = link_to "#year_select", title: "Afficher tous les mois", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
                 i.fas.fa-calendar-alt.text-border-color.mr-3
 
                 = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
 
             .col-2
               - unless search_last_month?(month_i)
-                = link_to "#month_#{next_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(next_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#navigate"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
+                = link_to "#month_#{next_month(month_i)}", title: "Voir les semaines du mois de #{month_in_text(next_month(month_i), format: "%B")}", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: "text-decoration-none text-body px-3 py-1 " do
                   i.fas.fa-chevron-right
 
           div

@@ -42,11 +42,9 @@ export default class extends Controller {
   }
 
   toggleActiveOnParentNode(input) {
-    if (input.checked) {
-      input.parentNode.classList.add('active')
-    } else {
-      input.parentNode.classList.remove('active')
-    }
+   const nodeClassList = input.parentNode.classList
+
+    input.checked ? nodeClassList.add('active') : nodeClassList.remove('active')
     this.propagateChangesToPlaceholder()
     this.propagateChangesToBadgeList()
   }
