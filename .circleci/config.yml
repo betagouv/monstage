@@ -134,4 +134,8 @@ workflows:
               only:
                 - master
                 - FEAT/circle-ci-to-deploy-on-hold
-
+      - mise_en_production:
+          type: approval
+          requires:
+            - deploy_staging
+      
