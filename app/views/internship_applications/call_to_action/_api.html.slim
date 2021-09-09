@@ -1,8 +1,4 @@
 p.actions.d-flex.d-sm-block.d-xs-stick.mb-0
-  p.mb-1.d-none.d-md-block.text-muted.small
-    span.bg-light-blue.py-3.px-2
-      = "Offre publiée par  "
-      = image_tag asset_pack_path("media/images/homepage/partenaires/#{@internship_offer.operator.logo}"), height: 30 if @internship_offer.operator.logo.present?
   - if current_user&.student?
     .actions.d-flex.d-sm-block.d-xs-stick
       = link_to "Je postule",
