@@ -20,7 +20,7 @@
 }
 @include media-breakpoint-up(sm){
   .search-in-place{
-    width: 100%;
+    width: 300px;
   }
 }
 
@@ -37,7 +37,7 @@ $sliderHeight: 20px;
   position: relative;
   float: left;
   top: -10px;
-  width: 100%;
+  width: 90%;
 }
 $handleWidth: 60px;
 .slider-handle{

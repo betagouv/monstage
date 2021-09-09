@@ -30,6 +30,16 @@ export default class extends Controller {
     }
   }
 
+  remove(clickEvent) {
+    const $badgeRemoveButton = $(clickEvent.currentTarget);
+    $(this.inputTargets).map((i, element) => {
+      if (element.value ==  $badgeRemoveButton.data('week-id')) {
+        element.checked = false;
+        this.toggleActiveOnParentNode(element);
+      }
+    })
+  }
+
   // private utils
   connect(){
     $(this.inputTargets).map((i, element) => {

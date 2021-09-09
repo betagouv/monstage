@@ -35,8 +35,6 @@
                   i.fas.fa-chevron-left
             .col-8
               = link_to "#year_select", title: "Afficher tous les mois", data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"}, role: "tab", class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
-                i.fas.fa-calendar-alt.text-border-color.mr-3
-
                 = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
 
             .col-2

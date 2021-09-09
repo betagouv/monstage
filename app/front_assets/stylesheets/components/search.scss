@@ -2,9 +2,7 @@
   .search-container{
     border-radius: 6px;
     background-color: $input-bg;
-    box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1),
-                0px 0px 25px -5px rgba(0, 0, 0, 0.1),
-                0px 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   #weeks-container{
@@ -37,6 +35,10 @@
 
   }
   // bigger input for visible overflow
+  #input-search-by-keyword{
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
   #input-search-by-keyword,
   #input-search-by-city-or-zipcode,
   // #input-search-school-track -> forced with height 100%, padding does not play nicely
@@ -93,7 +95,7 @@
 }
 
 .bg-custom-blue{
-  background-image: linear-gradient(90deg, #2A5298 0%, #2A5298 100%);
+  background-image: linear-gradient(90deg, #2A5298 0%, #192949 100%);
 }
 .wrapper-sticky-with-offset{
   background-size: 100% 55px;
