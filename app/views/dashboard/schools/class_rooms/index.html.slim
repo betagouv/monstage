@@ -1,8 +1,8 @@
 - content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
 
 = render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
-
-- if @school.students.without_class_room.present?
+- unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
+- if unaffected_students.present?
   div data-controller='students'
     = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
       .row.mt-3
@@ -25,7 +25,7 @@
                   small Elève
                 th.col-4
             tbody class="class-room"
-              - @school.students.without_class_room.each do |student|
+              - unaffected_students.each do |student|
                 tr class="d-flex" data-test="student-not-in-class-room-#{student.id}"
                   td.col-7.d-flex.align-items-center data-head="#{student.name}"= student.name
                   td.col-4 data-head="Action"
@@ -43,7 +43,7 @@
                       br
                       small Supprimer
 
-- @school.class_rooms.includes([:students]).order(:name).group_by { |c| c.school_track }.each do |school_track, class_rooms|
+- Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
   .row.mt-5
     h5.mb-0= tr_school_track(school_track)
   .row

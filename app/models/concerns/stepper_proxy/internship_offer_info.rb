@@ -50,6 +50,17 @@ module StepperProxy
       def init
         self.max_candidates ||= 1
       end
+
+
+      def available_weeks
+        return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
+        return Week.selectable_from_now_until_end_of_school_year unless persisted?
+        return Week.selectable_for_school_year(school_year: SchoolYear::Floating.new(date: Date.today)) if respond_to?(:weeks) && weeks.first.nil?
+
+        school_year = SchoolYear::Floating.new(date: self.weeks.first.week_date)
+
+        Week.selectable_for_school_year(school_year: school_year)
+      end
     end
   end
 end

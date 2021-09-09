@@ -5,7 +5,7 @@ p style=p_styles
   p style=p_styles
     = "Vous avez actuellement "
     strong style="color:#dc3545"= "#{@remindable_application_ids.size}  candidature(s)"
-    = " en attente de réponse. En l'absence de réponse de votre part ; elle(s) seront "
-    strong= "automatiquement expirées après de 15 jours."
+    = " en attente de réponse. En l'absence de réponse de votre part, elle(s) "
+    strong= "expirera(ont) automatiquement dans 15 jours."
 
 = render(partial: "mailers/call_to_action", locals: {href: dashboard_internship_offers_url, label:"Gérer mes candidatures"})

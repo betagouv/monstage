@@ -1,3 +1,4 @@
+- applicable_weeks = current_user.school.has_weeks_on_current_year? ?  @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
 #internship-application-form data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   .bg-light-blue
     .col-12
@@ -18,10 +19,6 @@
         = form_with({model: @internship_application, url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)), scope: :internship_application, html: {method: is_creating ? :post : :patch, id: 'new_internship_application'}}) do |f|
 
           = render "layouts/form_errors", resource: @internship_application, resource_name: :internship_applications
-          = f.rg2a_explain_required_asterisk
-
-          - if current_user.is_a?(Users::Student)
-            = f.hidden_field :user_id, value: current_user.id
 
           = f.hidden_field :type
           = f.hidden_field :internship_offer_id
@@ -30,38 +27,30 @@
           fieldset.mb-4
             legend.h3 Ma Candidature
             .form-group
-              - if disabled
-                .label
-                  | Quelle semaine ?
-                  = f.rg2a_required_content_tag
+              = f.label :internship_offer_week_id, class: 'required' do
+                | Quelle semaine ?
+                = f.rg2a_required_content_tag
+              - unless current_user.school.has_weeks_on_current_year?
                 = render partial: "internship_applications/forms/student_missing_school_weeks"
-
-              - else
-                = f.label :internship_offer_week_id, class: 'required' do
-                  | Quelle semaine ?
-                  = f.rg2a_required_content_tag
-                = f.select :internship_offer_week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
-                  { prompt: '-- Choisir une semaine --'}, class: "form-control col-6", required: true, disabled: disabled
+              = f.select :internship_offer_week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+                { prompt: '-- Choisir une semaine --'}, class: "form-control col-6", required: true
 
 
-            div class="form-group #{disabled ? 'opacity-05' : ''}"
-              .label.required data-controller="rich-text-label" data-rich-text-label-enable-value=!disabled data-rich-text-label-for-value="internship_application_motivation"
+            div class="form-group"
+              .label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
                 = "Pourquoi ce stage me motive"
                 small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
-                = f.rg2a_required_content_tag
 
-              = f.rich_text_area :motivation, class: "form-control col-12", required: true, disabled: disabled, rows: 5
+              = f.rich_text_area :motivation, class: "form-control col-12", required: true, rows: 5
 
           = f.fields_for :student do |resume_form|
             = render partial: "users/resume_fields",
-                     locals: { form: resume_form, disabled: disabled , phone_mail_disabled: true}
+                     locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
 
           .actions.d-flex.d-sm-block
             = link_to "#internship-application-closeform", class: 'btn btn-outline-primary text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
               i.fa.fa-chevron-left.mr-1
               | Annuler
             span.mx-1= " "
-            = f.submit "Valider", { class: 'btn btn-danger', disabled: disabled }
-
-
+            = f.submit "Valider", { class: 'btn btn-danger' }
 

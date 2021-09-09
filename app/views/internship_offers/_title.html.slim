@@ -1,4 +1,4 @@
-- unless current_user.is_a?(Users::Student)
+- unless current_user&.student?
   = render partial: 'common/filter_with_mobile_alternative',
            locals: { large_screen_react_component: 'FilterInternshipOffer',
                      field: :school_track,
@@ -6,7 +6,7 @@
                      matching_param: params[:school_track] }
 .row.align-items-center.no-gutters.pt-4
   .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center
-    p.h2.mb-0#internship-offers-count
+    p.h2.mb-0#internship-offers-count.text-left
       strong= "#{internship_offers.total_count}"
       = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
 

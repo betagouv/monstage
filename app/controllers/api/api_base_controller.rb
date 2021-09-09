@@ -8,7 +8,6 @@ module Api
     include Api::Authentication
     include Api::ResponseRenderer
     include Api::ErrorHandler
-    include Instrumentation::Sentry
     include Api::DidYouMeanFormatter
   end
 end

@@ -11,6 +11,16 @@
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
 }
+.nav-link.active {
+  color: $bg-less-light-blue;
+  font-weight: bolder;
+}
+.home-blue-shadow {
+  line-height: 2rem;
+  color: white;
+  font-size: 3rem;
+  text-shadow: 5px 5px 0px $blue;
+}
 @include media-breakpoint-up(sm) {
 
   .big-tagline{

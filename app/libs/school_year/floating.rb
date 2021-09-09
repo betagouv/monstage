@@ -3,6 +3,7 @@
 module SchoolYear
   # period from now until end of school year
   class Floating < Base
+
     def beginning_of_period
       case current_month
       when january_to_may
@@ -28,9 +29,6 @@ module SchoolYear
       end
     end
 
-    def next_year
-      SchoolYear::Floating.new_by_year(year: end_of_period.year)
-    end
 
     def self.new_by_year(year:)
       new(date: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))

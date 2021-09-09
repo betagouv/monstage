@@ -26,6 +26,9 @@ RailsAdmin.config do |config|
   config.authorize_with :cancancan
 
   config.parent_controller = 'AdminController'
+  config.model 'User' do
+    navigation_icon 'icon-user'
+  end
 
   ## == PaperTrail ==
   # config.audit_with :paper_trail, 'User', 'PaperTrail::Version' # PaperTrail >= 3.0.0
@@ -52,7 +55,8 @@ RailsAdmin.config do |config|
     export
   end
 
-  config.included_models = %w[EmailWhitelist
+  config.included_models = %w[EmailWhitelists::Statistician
+                              EmailWhitelists::Ministry
                               School
                               Sector
                               Group
@@ -61,15 +65,19 @@ RailsAdmin.config do |config|
                               InternshipOffers::WeeklyFramed
                               InternshipOffers::FreeDate
                               InternshipOffers::Api
+                              Operator
+                              Organisation
+                              Tutor
                               Users::Student
                               Users::SchoolManagement
                               Users::Statistician
+                              Users::MinistryStatistician
                               Users::Operator
                               Users::Employer
                               Users::God]
 
   config.navigation_static_links = {
-    "Stats" => "/reporting/dashboards",
+    "Stats" => "/reporting/dashboards?school_year=#{SchoolYear::Current.new.beginning_of_period.year}",
     "Sidekiq" => "/sidekiq",
     "Zammad (Support)" => "https://monstage.zammad.com"
   }

@@ -2,8 +2,9 @@
 - content_for(:canonical_url, internship_offer_url(@internship_offer))
 
 div data-controller="internship-application-form"
-
-  .row.no-gutters data-controller='list-navigation' data-list-navigation-next-url-value=listable_internship_offer_path(@next_internship_offer) data-list-navigation-previous-url-value=listable_internship_offer_path(@previous_internship_offer)
+  .row.no-gutters [data-controller='list-navigation'
+                   data-list-navigation-next-url-value=listable_internship_offer_path(@next_internship_offer)
+                   data-list-navigation-previous-url-value=listable_internship_offer_path(@previous_internship_offer)]
 
     .col-12.col-sm-10.order-2
       table.table.table-sticky-thead
@@ -20,7 +21,8 @@ div data-controller="internship-application-form"
 
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left.order-1
       - if @previous_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@previous_internship_offer), class: 'list-item list-item-previous text-danger' do
+        = link_to listable_internship_offer_path(@previous_internship_offer),
+                  class: 'list-item list-item-previous text-danger' do
           i.fa-icon.fas.fa-chevron-left
           span.mt-3.d-block.list-item-label.small
             | Offre
@@ -28,7 +30,8 @@ div data-controller="internship-application-form"
             | Précédente
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-right.order-3
       - if @next_internship_offer && support_listable?(current_user)
-        = link_to listable_internship_offer_path(@next_internship_offer), class: 'list-item list-item-next text-danger' do
+        = link_to listable_internship_offer_path(@next_internship_offer),
+                  class: 'list-item list-item-next text-danger' do
           i.fa-icon.fas.fa-chevron-right
           span.mt-3.d-block.list-item-label.small
             | Offre
@@ -38,16 +41,15 @@ div data-controller="internship-application-form"
   .row.no-gutters
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     .col-12.col-sm-10
+      
       - if user_signed_in?
         - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
           - if @internship_offer.weekly?
-            - applicable_weeks = @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer)
-            - disabled = applicable_weeks.size.zero?
-            = render "internship_applications/forms/weekly", disabled: disabled, applicable_weeks: applicable_weeks
+            = render "internship_applications/forms/weekly"
           - if @internship_offer.free_date?
-            = render "internship_applications/forms/free_date", disabled: false
+            = render "internship_applications/forms/free_date"
       - else
-          = render "internship_applications/forms/visitor"
+        = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
 
 - if can?(:discard, InternshipOffer)

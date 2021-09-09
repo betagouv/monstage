@@ -12,8 +12,12 @@ module Reporting
                     :academy,
                     :group,
                     :school_track,
+                    :subscribed_school,
                     :dimension,
-                    :school_year)
+                    :detailed_typology,
+                    :school_year,
+                    :school_id
+                  )
     end
 
     def export_filename(base_name)

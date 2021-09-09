@@ -1,9 +1,8 @@
 
 .custom-select{
   box-shadow: 0px 1px 3px rgba(0,0,0,.2);
+  border-radius: 5px;
 }
-
-
 .custom-control-checkbox-list{
   height: 180px;
   overflow: scroll;
@@ -66,6 +65,7 @@
 
     label{
       padding: .5rem 1rem;
+      cursor: pointer;
     }
 
     .custom-radio-box-control-input{
@@ -153,8 +153,48 @@
 		outline: 2px $blue solid;
 	}
 }
+.name-search {
+  margin-bottom: 0;
+  .input-group {
+    input {
+      background-color: $bg-light-blue;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border-right: 0px;
+      }
 
-@include media-breakpoint-down(md){
+    button.btn-clear-city {
+      background-color: $bg-light-blue;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      border-left: 0px;
+      width: 3rem;
+    }
+
+    label.chosen-name {
+        background-color: $bg-less-light-blue;
+        padding: 0.2rem 0.6rem 0.2rem 0.6rem;
+        margin-left: 0.5rem;
+        border-radius: 4px;
+        color: $very-dark-blue;
+      font-weight: 800;
+      }
+
+      label.not-chosen-name {
+        font-weight: 400;
+    }
+  }
+}
+
+.form-group.smashed {
+  margin-bottom: 1.0rem;
+}
+
+.row.smashed-margin-top {
+  margin-top: 0;
+}
+
+@include media-breakpoint-down(md) {
   .custom-radio-boxes{
     .custom-radio-box-control{
       label{

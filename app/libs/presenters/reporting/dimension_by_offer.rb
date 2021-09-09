@@ -18,11 +18,13 @@ module Presenters
       METHODS = %i[group_name
                    human_is_public
                    sector_name
-                   full_tutor
+                   tutor_name
+                   tutor_email
+                   tutor_phone
                    full_employer
                    full_address
                    full_school
-                   full_weeks].freeze
+                   full_year].freeze
 
       def self.metrics
         [].concat(ATTRS, METHODS)
@@ -39,7 +41,7 @@ module Presenters
           ' Stage individuel (un seul élève par stage)'
         else
           " Stage collectif (par groupe de #{instance.max_candidates} élèves)"
-end
+        end
       end
 
       def human_is_public
@@ -58,8 +60,16 @@ end
         instance.group.try(:name) || 'Indépendant'
       end
 
-      def full_tutor
-        [instance.tutor_name, instance.tutor_email, instance.tutor_phone].compact.join("\n")
+      def tutor_name
+        instance.tutor_name
+      end
+
+      def tutor_email
+        instance.tutor_email
+      end
+
+      def tutor_phone
+        instance.tutor_phone
       end
 
       def full_employer
@@ -70,14 +80,21 @@ end
         Address.new(instance: instance).to_s
       end
 
+      def full_year
+        instance.type == InternshipOffers::FreeDate.name ? 'Oui' : 'Non'
+      end
+
       def full_school
         return nil unless instance.school
 
         [instance.school.name, "#{instance.school.city} – CP #{instance.school.zipcode}"].compact.join("\n")
-      end
+      end  
 
-      def full_weeks
-        WeekList.new(weeks: instance.weeks).to_range_as_str
+      def weeks_list
+        return [] unless instance.respond_to?(:weeks)
+        instance.weeks.each_with_index.map do |week, i| 
+          "Du #{week.beginning_of_week} au #{week.end_of_week}"
+        end
       end
     end
   end

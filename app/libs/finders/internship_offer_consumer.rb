@@ -11,11 +11,20 @@ module Finders
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,
+        Users::MinistryStatistician.name => :ministry_statistician_query,
         Users::God.name => :god_query
       }
     end
 
     private
+
+    def kept_offers_query
+      InternshipOffer.kept
+    end
+
+    def god_query
+      common_filter { kept_offers_query.published }
+    end
 
     def school_track_by_class_room_query(query)
       query.merge(
@@ -39,12 +48,18 @@ module Finders
       if user.try(:class_room).try(:fit_to_weekly?)
         unless user.missing_school_weeks?
           query = query.merge(
-            InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
+            weekly_framed_scopes(:internship_offers_overlaping_school_weeks, {weeks: user.school.weeks})
           )
         end
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
+        query = query.merge(
+          weekly_framed_scopes(:ignore_already_applied, {user: user})
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_candidates_reached)
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
+        )
       elsif user.try(:class_room).try(:fit_to_free_date?)
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
       end
@@ -53,20 +68,16 @@ module Finders
 
     def statistician_query
       god_query.tap do |query|
-        query.merge(query.limited_to_department(user: user)) if user.department_name
+        query.merge(query.limited_to_department(user: user)) if user.department
       end
+    end
+
+    def ministry_statistician_query
+      god_query.limited_to_ministry(user: user)
     end
 
     def visitor_query
       common_filter { kept_offers_query.in_the_future.published }
-    end
-
-    def god_query
-      common_filter { kept_offers_query }
-    end
-
-    def kept_offers_query
-      InternshipOffer.kept
     end
   end
 end

@@ -35,9 +35,9 @@ module UserAdmin
         fields(*DEFAULTS_FIELDS)
       end
 
-      show do
-        fields(*UserAdmin::DEFAULTS_FIELDS)
-      end
+      # show do
+      #   fields(*UserAdmin::DEFAULTS_FIELDS)
+      # end
 
       show do
         fields(*DEFAULTS_FIELDS)

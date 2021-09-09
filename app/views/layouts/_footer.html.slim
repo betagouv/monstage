@@ -12,10 +12,11 @@
       br
       |incubé par beta.gouv.fr
       br
-      = image_tag asset_pack_path('media/images/beta-gouv-logo.png'),
-                  alt: "Logo beta gouv",
-                  class: 'mt-3 d-print-none footer-logo-img',
-                  'aria-hidden': true
+      =link_to 'https://beta.gouv.fr/', target: '_blank'
+        = image_tag asset_pack_path('media/images/beta-gouv-logo.png'),
+                    alt: "Logo beta gouv",
+                    class: 'mt-3 d-print-none footer-logo-img',
+                    'aria-hidden': true
 
   .col-md-7.col-sm-12.d-flex.align-items-center
     .row.no-gutters.font-weight-bold-sm.d-print-none
@@ -58,6 +59,8 @@
                                 class: 'nav-link px-0 py-1',
                                 title: "Contacter le support de la plateforme monstagedetroisieme.fr"
 
+          li.nav-item= link_to "Statistiques", statistiques_path, class: 'nav-link px-0 py-1', title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
+
           li.nav-item
             = link_to "#{root_url}/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf",
                       title: "Accéder au guide d'utilisation",
@@ -81,14 +84,6 @@
         .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
         .col-md-8.col-12.text-center.text-sm-center
           p.h4.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des établissements des réseaux d'éducation prioritaire (REP et REP+)
-          p.mt-2.mb-0
-            = "Les élèves des autres établissements trouveront "
-            = link_to "https://eduscol.education.fr/cid46879/sequence-d-observation-en-classe-de-troisieme.html", class: 'text-danger font-weight-bold' do
-              | toutes les informations utiles
-            = " sur le site EDUSCOL et chercheront des stages sur le portail "
-            = link_to "https://www.monstageenligne.fr", class: 'text-danger font-weight-bold' do
-              | Mon stage en ligne
-            = " de l'ONISEP"
 
       button [type="button"
               class="close close-top-right"

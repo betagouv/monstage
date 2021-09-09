@@ -1,0 +1,41 @@
+
+.row
+  .col-12.text-center
+    span.little-title
+      = image_tag asset_pack_path('media/images/pages/statistics/hand_left.svg'),
+                    alt: "Offres de stage",
+                    class: 'align-top',
+                    height: 19
+    span.h6.ml-2 Offres de stages
+.row.mt-3
+  .col-12
+    table.table.table-borderless.table-caption-bottom.table-results
+      - unless caption.blank?
+        caption.px-1 = caption
+      thead
+        tr.text-center
+          th scope="col"
+          th scope="col"
+            |Secteur
+            br
+            |public
+          th scope="col"
+            |Secteur
+            br
+            |privé
+          th scope="col"
+            |Tous
+            br
+            |secteurs
+      tbody
+        tr
+          th scope="row"  Objectif&nbsp;*
+          td.text-center = public_goal
+          td.text-center = private_goal
+          td.text-center
+            strong = total_goal
+        tr
+          th scope="row"  Réalisé
+          td.text-center = public_achieved
+          td.text-center = private_achieved
+          td.text-center = total_achieved

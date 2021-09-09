@@ -125,7 +125,7 @@ class InternshipAgreement < ApplicationRecord
 
   def valid_trix_employer_fields
     errors.add(:activity_scope_rich_text, "Veuillez compléter les objectifs du stage") if activity_scope_rich_text.blank?
-    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liés au financement du stage") if financial_conditions_rich_text.blank?
+    errors.add(:financial_conditions_rich_text, "Veuillez compléter les conditions liées au financement du stage") if financial_conditions_rich_text.blank?
     errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées") if activity_learnings_rich_text.blank?
   end
 

@@ -1,6 +1,4 @@
 import { library, dom, config } from '@fortawesome/fontawesome-svg-core';
-// get list with ./infra/dev/find-font-awesome-icons.sh
-// grep -riE 'fas' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import {
   faAngleLeft,
   faArrowCircleLeft,
@@ -67,8 +65,6 @@ import {
   faWalking
 } from '@fortawesome/free-solid-svg-icons';
 
-// get list with ./infra/dev/find-font-awesome-icons.sh
-// grep -riE 'far' ./app   | grep -E 'fa(-[a-z]+)+' --only-matching | sort | uniq
 import {
   faCircle,
   faEnvelope,

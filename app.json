@@ -5,7 +5,7 @@
 
   "repository": "https://github.com/betagouv/monstage",
 
-  "stack": "heroku-18",
+  "stack": "heroku-20",
 
   "buildpacks": [
     {
@@ -27,7 +27,7 @@
         }
       },
       "scripts": {
-        "postdeploy": "bundle exec bin/rails db:structure:load db:migrate db:seed SCHEMA=./infra/review/structure-review.sql"
+        "postdeploy": "bundle exec bin/rails db:structure:load db:migrate db:seed infra:notify_deployed"
       },
       "env": {
         "RAILS_ENV": "review",
@@ -43,7 +43,6 @@
             "version": "12"
           }
         },
-        { "plan": "newrelic:wayne" },
         { "plan": "papertrail:choklad" },
         { "plan": "scheduler:standard" },
         { "plan": "mailtrap:unpaid" }

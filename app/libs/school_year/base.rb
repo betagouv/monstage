@@ -6,8 +6,25 @@ module SchoolYear
     MONTH_OF_YEAR_SHIFT = 5
     DAY_OF_YEAR_SHIFT   = 31
 
+    def strict_beginning_of_period
+      case current_month
+      when january_to_may, june_to_august
+        Date.new(current_year - 1, 9, 1)
+      when september_to_december
+        Date.new(current_year, 9, 1)
+      end
+    end
+
     def between_june_to_august?
       june_to_august.member?(current_month)
+    end
+
+    def range
+      beginning_of_period..(self.next_year).beginning_of_period
+    end
+
+    def next_year
+      SchoolYear::Floating.new_by_year(year: end_of_period.year)
     end
 
     private

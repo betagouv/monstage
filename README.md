@@ -15,7 +15,6 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
-* copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
@@ -24,6 +23,13 @@ Things you may want to cover:
 * create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
 
 # Architecture
+
+We keep things simple and secure :
+
+* a simple monolith mostly based on rails
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
 
 ## backend
 
@@ -45,6 +51,8 @@ Things you may want to cover:
 
 ## 3rd party services
 
+As a public french service, we try to keep most data hosted by french service provider with servers located in france (in hope to stay compliant with most regulations)
+
 ### Hosting
 * Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
@@ -62,11 +70,12 @@ Things you may want to cover:
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-
-* Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
-* Bug monitoring solution: [sentry](https://sentry.io/)
+* Infra management with elatic stack
+ * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
+ * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
+ * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
 * Mail: [mailjet](https://mailjet.com)
-* uptime/downtime:
+* Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
 # Build: test, dev
 
@@ -91,7 +100,7 @@ foreman start -f Procfile.dev
 
 ### Tooling: linting, etc...
 
-* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
 ### Etapes de travail jusqu'au merge dans master
@@ -139,13 +148,11 @@ those tests depends on the system / e2e (which goes throught browser with js exe
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file.
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
 
-* we use a custom postgres docker image for our synonym dictionnary
- 
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
@@ -204,3 +211,6 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
+# disaster recovery plan
+
+in case of a disaster we do have a plan starting with : [monstage-backup-manager](https://github.com/betagouv/monstage-backup-manager/)

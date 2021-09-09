@@ -36,7 +36,7 @@ module Dashboard
     def edit
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
-      @available_weeks = Week.selectable_on_school_year
+      @available_weeks = @internship_offer.available_weeks
     end
 
     def update
@@ -48,13 +48,13 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer
-          @available_weeks = Week.selectable_on_school_year
+          @available_weeks = failed_internship_offer.available_weeks
           render :edit, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.find(params[:id])
-      @available_weeks = Week.selectable_on_school_year
+      @available_weeks = @internship_offer.available_weeks
       render :edit, status: :bad_request
     end
 

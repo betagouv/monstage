@@ -1,48 +1,182 @@
-.bg-cover-image-statistiques{
+.bg-cover-image-statistiques {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mM0TgMAANIAm3/ipYoAAAAASUVORK5CYII='),
-                    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
   background-position: bottom left, right -80px;
   background-repeat: repeat, no-repeat;
   background-size: contain, cover;
 }
-.wrapper-breadcrumb{
+.wrapper-breadcrumb {
   background-image: linear-gradient(to bottom, #f6f6f6, #eaeaea);
 }
 
-.bg-stats-filter{
+.bg-stats-filter {
   background-color: #eaeaea;
 }
 .table-statistics accr {
   border-bottom: 1px dotted #4CA2CD;
   cursor: help;
 }
-.custom-stats-checkbox{
+.custom-stats-checkbox {
   padding-top: $input-btn-padding-y;
   padding-bottom: $input-btn-padding-y;
 }
 
 .table-statistics {
-  td:first-child{
-    border-left: 1px solid #d8d8d8;
-  }
-  td:last-child{
-    border-right: 1px solid #d8d8d8;
-  }
   tbody {
-    tr{
+    tr {
       border-bottom-color: #d8d8d8;
     }
-    tr:last-child td{
+  tr:first-child td {
+    border-top: 0.3rem solid $blue;
+  }
+  tr:last-child td {
       border-bottom: 1px solid $blue;
     }
-    tr:hover{
+  tr:hover {
       background-color: #cce4f0;
     }
   }
 
-  tfoot{
-    tr{
+  tfoot {
+    tr {
       border-bottom: 2px solid $blue;
     }
   }
 }
+// ******************
+// Main page statistiques / statistics
+// ******************
+
+p.hero {
+  font-size: 1.1rem;
+}
+
+.lead.hero {
+  line-height: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.progress-title-rep {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  color: $green1;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+
+.progress {
+  height: 5rem;
+  text-align: left;
+
+  .progress-bar-left {
+    padding-left: 0.1rem;
+    font-size: 1.3rem;
+    line-height: 0.4rem;
+    text-align: right;
+  }
+
+  .progress-bar-right {
+    padding-right: 1rem;
+    font-size: 1rem;
+  }
+
+  .progress-bar-left.rep-subscribed {
+    background-color: $green1;
+  }
+
+  .progress-bar-left.rep-plus-subscribed {
+    background-color: $green2;
+  }
+
+  .progress-bar-right.rep-total {
+    background-color: $light-green1;
+  }
+
+  .progress-bar-right.rep-plus-total {
+    background-color: $light-green2;
+  }
+
+  .special-achievement {
+    font-size: 1.7rem;
+  }
+
+  .box-to-center {
+    text-align: center;
+    display: block;
+    height: 2rem;
+    position: absolute;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  .box-to-center.left {
+    top: 55%;
+    left: 2rem;
+  }
+
+  .box-to-center.right {
+    top: 60%;
+    right: 2rem;
+  }
+}
+
+.little-title {
+  line-height: 1.6rem;
+}
+
+.max-academical {
+  font-size: 3rem;
+  color: $blue;
+}
+
+.bg-rounded {
+  border-radius: 1rem;
+}
+
+.hr {
+  border-top: 1px dashed #707070;
+}
+.kpi-internship-global {
+  display: block;
+  width: 488px;
+}
+
+.brand.statistics {
+  object-fit: scale-down;
+  width: 150px;
+  height: 73px;
+  }
+
+.table-results {
+  background-color: $bg-light-blue;
+  border-radius: 1rem;
+
+  tbody {
+    border-radius: 1rem;
+
+    tr {
+      line-height: 2.3rem;
+    }
+
+    tr:last-child {
+      background-color: $bg-less-light-blue;
+
+      td:first-child {
+        border-bottom-left-radius: 10px;
+      }
+
+      td:last-of-type {
+        color: $blue;
+        font-weight: 800;
+        border-bottom-right-radius: 10px;
+        }
+    }
+  }
+  }
+
+  .bg-light-blue{
+    background-color: $bg-light-blue;
+  }

@@ -13,7 +13,7 @@ module Dashboard::InternshipOffers
                                                           max_candidates: 2)
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
-      assert_select 'h1', "Renouveller l'offre pour l'année courante"
+      assert_select 'h1', "Renouveler l'offre pour l'année en cours"
       assert_select "input[value=\"#{internship_offer.title}\"]", count: 1
       assert_select '#internship_offer_is_public_true[checked]',
                     count: 1 # "ensure user select kind of group"
@@ -27,6 +27,24 @@ module Dashboard::InternshipOffers
       assert_select '.form-group-select-max-candidates.d-none', count: 0
       assert_select '.form-group-select-max-candidates', count: 1
       assert_select 'meta[name="turbolinks-visit-control"][content="reload"]'
+      sign_out(internship_offer.employer)
+
+      god = create(:god)
+      sign_in(god)
+      get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
+      assert_select 'h1', {
+        count: 0,
+        text: "Renouveler l'offre pour l'année en cours"
+      }
+      sign_out(god)
+
+      student = create(:student)
+      sign_in(student)
+      get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
+      assert_select 'h1', {
+        count: 0,
+        text: "Renouveler l'offre pour l'année en cours"
+      }
     end
   end
 end

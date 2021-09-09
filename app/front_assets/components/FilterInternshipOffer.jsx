@@ -22,7 +22,7 @@ function FilterInternshipOffer({ filterOptions }) {
   }
   return (
     <div className="form-group form-inline justify-content-center p-0 m-0 custom-radio-boxes">
-      <span className="font-weight-normal justify-content-sm-center mr-1">{filterOptions.component_label} : </span>
+      <span className="font-weight-normal justify-content-sm-center mr-1">{filterOptions.component_label}  </span>
       {filterOptions.options.map(
         function (buttonLabel, index) {
           let extraClass = (index == 0) ? "custom-radio-box-control-prepend" : ""

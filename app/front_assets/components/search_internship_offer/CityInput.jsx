@@ -7,12 +7,12 @@ import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 
-// see: https://geo.api.gouv.fr/decoupage-administratif/communes
+// see: https://geo.api.gouv.fr/decoupage-administratif/communes 
+// and
+// 'https://geo.api.gouv.fr/communes?codePostal=78000' --> code curl
+// 'https://geo.api.gouv.fr/communes?code=78646&fields=code,nom,codesPostaux,code
+
 function CityInput({
-  // getters
-  city,
-  latitude,
-  longitude,
   // setters
   setCity,
   setLatitude,
@@ -23,13 +23,15 @@ function CityInput({
   // used by container
   focus,
   setFocus,
+  // getters
+  city: cityOrZipcode
 }) {
   const [searchResults, setSearchResults] = useState([]);
-  const [cityDebounced] = useDebounce(city, 100);
+  const [cityDebounced] = useDebounce(cityOrZipcode, 100);
   const inputChange = (event) => {
     setCity(event.target.value);
   };
-
+  const endpoint = new URL('https://geo.api.gouv.fr/communes');
   const setLocation = (item) => {
     if (item) {
       setCity(item.nom);
@@ -38,42 +40,79 @@ function CityInput({
     }
   };
 
+  const isZipcode = (str) => {
+    return (str.length == 5 && !isNaN(str))
+  }
+
+  const searchCityByNameOrByZipcode = () => {
+    isZipcode(cityOrZipcode) ? searchByZipcode(cityOrZipcode) : searchCityByName(cityOrZipcode);
+  };
+
   const searchCityByName = () => {
-    const endpoint = new URL('https://geo.api.gouv.fr/communes');
     const searchParams = new URLSearchParams();
 
-    searchParams.append('nom', city);
+    searchParams.append('nom', cityOrZipcode);
     searchParams.append('fields', ['nom', 'centre', 'departement', 'codesPostaux'].join(','));
     searchParams.append('limit', 10);
     searchParams.append('boost', 'population');
     endpoint.search = searchParams.toString();
-
     fetch(endpoint)
       .then((response) => response.json())
       .then(setSearchResults);
+  };
+  // zipcodes represent a set of communes referenced with a code. 
+  // This set represents an area that have a center from which a radius can be used for other search criteria
+  const searchByZipcode = (zipcode) => {
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('codePostal', zipcode);
+    endpoint.search = searchParams.toString();
+
+    fetch(endpoint)
+      .then((response) => response.json())
+      .then((jsonResponse) => searchByCode(jsonResponse[0]))
+  };
+
+  const searchByCode = (responseWithCode) => {
+    if (responseWithCode == undefined || responseWithCode.code == undefined) {
+      setCity(cityOrZipcode + " : code postal invalide")
+    } else {
+      const code = responseWithCode.code
+      const searchParams = new URLSearchParams();
+
+      searchParams.append('code', code);
+      searchParams.append('nom', responseWithCode.nom);
+      searchParams.append('fields', ['nom', 'centre', 'departement', 'codesPostaux', 'code'].join(','));
+      searchParams.append('limit', 10);
+      searchParams.append('boost', 'population');
+      endpoint.search = searchParams.toString();
+
+      fetch(endpoint)
+        .then((response) => response.json())
+        .then(setSearchResults);
+    }
   };
 
   const codePostauxSample = (codes) => {
     let zipcode = ""
     if (codes.length == undefined || codes.length === 0) { return zipcode; }
     if (codes.length >= 1) { zipcode = codes[0]; }
-    // TODO remove following comments after october 2021
-    // if (codes.length >= 2) { zipcode += ", " + codes[1]; }
-    // if (codes.length > 2) { zipcode += ", ... " }
-    return zipcode
+    if (codes.length >= 2) { zipcode += ", " + codes[1]; }
+    if (codes.length > 2) { zipcode += ", ... " }
+    return `(${zipcode})`;
   };
 
   useEffect(() => {
     if (cityDebounced && cityDebounced.length > 2) {
-      searchCityByName(cityDebounced);
+      searchCityByNameOrByZipcode(cityDebounced);
     }
   }, [cityDebounced]);
 
   return (
     <Downshift
-      initialInputValue={city || ""}
+      initialInputValue={cityOrZipcode || ""}
       onChange={setLocation}
-      selectedItem={city}
+      selectedItem={cityOrZipcode}
       itemToString={(item) => (item ? item.nom : '')}
     >
       {({
@@ -85,11 +124,11 @@ function CityInput({
         inputValue,
         highlightedIndex,
         selectedItem,
-        openMenu,
+        openMenu
       }) => (
         <div
           id="test-input-location-container"
-          title="Resulltat de recherche"
+          title="Résultat de recherche"
           className={`input-group input-group-search col ${focusedInput({
             check: COMPONENT_FOCUS_LABEL,
             focus,
@@ -99,7 +138,7 @@ function CityInput({
             <label
               {...getLabelProps()}
               className="input-group-text input-group-text-bigger input-group-separator"
-              htmlFor="input-search-by-city"
+              htmlFor="input-search-by-city-or-zipcode"
             >
               <i className="fas fa-map-marker-alt fa-fw" />
               <strong className="d-none">Autour de</strong>
@@ -111,8 +150,8 @@ function CityInput({
               onChange: inputChange,
               value: inputValue,
               className: 'form-control pl-2 input-group-search-right-border',
-              name: 'city',
-              id: 'input-search-by-city',
+              name: 'cityOrZipcode',
+              id: 'input-search-by-city-or-zipcode',
               placeholder: 'Lieu',
               "aria-label": "Autour de",
               onFocus: (event) => {
@@ -126,7 +165,7 @@ function CityInput({
             <ul
               {...getMenuProps({
                 className: 'p-0 m-0',
-                "aria-labelledby": 'input-search-by-city',
+                "aria-labelledby": 'input-search-by-city-or-zipcode',
               })}
             >
               {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
@@ -138,8 +177,7 @@ function CityInput({
                 ? searchResults.map((item, index) => (
                   <li
                     {...getItemProps({
-                      className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
-                        }`,
+                      className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''}`,
                       key: item.code,
                       index,
                       item,
@@ -148,7 +186,7 @@ function CityInput({
                       },
                     })}
                   >
-                    {`${item.nom} (${codePostauxSample(item.codesPostaux)})`}
+                    {`${item.nom} ${codePostauxSample(item.codesPostaux)}`}
                   </li>
                 ))
                 : null}

@@ -23,6 +23,7 @@ import SearchInternshipOffer from "components/SearchInternshipOffer";
 import ReservedSchoolInput from "components/ReservedSchoolInput";
 import FilterInternshipOffer from "components/FilterInternshipOffer";
 import SearchSchool from "components/SearchSchool";
+import SearchSchoolByName from "components/SearchSchoolByName";
 import CountryPhoneSelect from "components/inputs/CountryPhoneSelect";
 import AddressInput from "components/inputs/AddressInput";
 import DistanceIcon from "components/icons/DistanceIcon";
@@ -33,6 +34,7 @@ ReactOnRails.register({
   ReservedSchoolInput,
   FilterInternshipOffer,
   SearchSchool,
+  SearchSchoolByName,
   DistanceIcon,
   CountryPhoneSelect,
   AddressInput,

@@ -23,6 +23,7 @@ module W3c
           accessibilite_path
           documents_utiles_path
           operators_path
+          statistiques_path
         ].map do |page_path|
           run_request_and_cache_response(report_as: page_path.to_s) do
             path = Rails.application.routes.url_helpers.send(page_path)

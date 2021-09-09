@@ -12,18 +12,6 @@ module Users
                         .internship_offers_path)
     end
 
-    test 'student.missing_school_week' do
-      school = create(:school)
-      student = create(:student, school: school)
-      student.missing_school_weeks = school
-      assert_changes -> { school.reload.missing_school_weeks_count },
-                     from: 0,
-                     to: 1 do
-        student.save!
-      end
-      assert_equal [student], school.students_with_missing_school_week
-    end
-
     test 'validate wrong mobile phone format' do
       user = build(:student, phone: '+330111223344')
       refute user.valid?

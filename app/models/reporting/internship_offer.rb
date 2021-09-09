@@ -6,13 +6,16 @@ module Reporting
     def readonly?
       true
     end
+
     self.inheritance_column = nil
 
     belongs_to :sector
+    # belongs_to :organisation
     belongs_to :group, optional: true
     belongs_to :school, optional: true
     has_many :internship_offer_weeks
     has_many :weeks, through: :internship_offer_weeks
+    has_many :internship_applications
 
     delegate :name, to: :group, prefix: true
     delegate :name, to: :sector, prefix: true
@@ -54,6 +57,7 @@ module Reporting
       Arel::Nodes::InfixOperation.new('&&', left, right)
     end
 
+
     # year parameter is the first year from a school year.
     # For example, year would be 2019 for school year 2019/2020
     scope :during_year, lambda { |school_year:|
@@ -62,6 +66,14 @@ module Reporting
 
     scope :by_department, lambda { |department:|
       where(department: department)
+    }
+
+    scope :limited_to_ministry, lambda { |user:|
+      where(group_id: user.ministry_id)
+    }
+
+    scope :by_group, lambda { |group_id:|
+      where(group_id: group_id)
     }
 
     scope :by_academy, lambda { |academy:|
@@ -88,6 +100,26 @@ module Reporting
         .includes(:group)
         .group(:group_id)
         .order(:group_id)
+    }
+
+    scope :dimension_by_detailed_typology, lambda { |detailed_typology:|
+      select('group_id', 'sum(max_candidates) as total_report_count')
+        .group(:group_id)
+        .order(:group_id)
+    }
+
+    scope :by_detailed_typology, lambda { |detailed_typology:|
+      case detailed_typology
+      when 'private_group'
+        opposite_query = Group.where(is_public: true)
+        where.not(group_id: opposite_query.ids).or(where(group_id: nil))
+      when 'paqte_group'
+        joins(:group).where(group: { is_paqte: true })
+      when 'public_group'
+        joins(:group).where(group: { is_public: true })
+      else
+        all
+      end
     }
   end
 end

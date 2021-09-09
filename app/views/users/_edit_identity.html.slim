@@ -28,21 +28,29 @@ h1.h2.mb-3 Mon identité
                    {class: 'form-control col-lg-6', required: true, data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
     small.d-none data-signup-target="emailHint"
 
-  - if can?(:change, :department_name) || can?(:view, :department_name)
+  - if current_user.ministry_statistician?
     .form-group
-      = f.label :department_name do
+      = f.label :ministry do
+        = "Administration centrale"
+      = f.text_field :ministry,
+                      value: current_user.ministry.name,
+                      class: "form-control col-lg-6",
+                      disabled: true
+  - if can?(:change, :department) || can?(:view, :department)
+    .form-group
+      = f.label :department do
         = "Département d'intervention"
-        small.form-text.text-muted Le département d'intervention permet limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
-      = f.select :department_name,
+        small.form-text.text-muted Le département d'intervention permet de limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
+      = f.select :department,
                  [['Pas de département', nil]] + Department.to_select,
                  {  },
-                 { class: "form-control col-lg-6" }.merge(can?(:change, :department_name) ? {} : {disabled: true})
+                 { class: "form-control col-lg-6" }.merge(can?(:change, :department) ? {} : {disabled: true})
 
   - if can?(:change, :class_room)
     .form-group
       = f.label :class_room_id do
         = 'Classe'
-        = f.rg2a_required_content_tag
+        = f.rg2a_required_content_tag unless current_user.main_teacher?
       = f.select :class_room_id,
                  options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
                  { prompt: class_rooms_options_for_default },

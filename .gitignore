@@ -42,3 +42,5 @@ yarn-debug.log*
 /doc/output/internship_offers/create/*
 /doc/output/internship_offers/destroy/*
 /doc/output/internship_offers/update/*
+
+/infra/disaster/docker/backup_manager/_docker-run-with-env.sh

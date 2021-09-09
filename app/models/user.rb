@@ -5,7 +5,9 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+         :recoverable, :rememberable,
+         :validatable, :confirmable, :trackable,
+         :timeoutable
 
   include DelayedDeviseEmailSender
 
@@ -112,12 +114,16 @@ class User < ApplicationRecord
     "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
+  def email_domain_name
+    self.email.split('@').last
+  end
+
   def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
 
     fields_to_reset = {
-      email: SecureRandom.hex,
+      email: "#{SecureRandom.hex}@#{email_domain_name}" ,
       first_name: 'NA',
       last_name: 'NA',
       phone: nil,
@@ -222,8 +228,18 @@ class User < ApplicationRecord
     end
   end
 
-  private
+  def canceled_targeted_offer_id
+    canceled_targeted_offer_id = self.targeted_offer_id
+    self.targeted_offer_id = nil
+    save
+    canceled_targeted_offer_id
+  end
 
+  def statistician? ; false end
+  def ministry_statistician? ; false end
+  def student? ; false end
+
+  private
 
   def clean_phone
     self.phone = nil if phone == '+33'

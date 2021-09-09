@@ -1,15 +1,14 @@
-# frozen_string_literal: true
+Sentry.init do |config|
+  config.dsn = Rails.application.credentials.sentry_dsn
+  config.breadcrumbs_logger = [:active_support_logger, :http_logger]
 
-Raven.configure do |config|
-  config.dsn = Rails.application.credentials.sentry_dns
-  config.environments = %w[review staging production]
-
-  # works async, if it fails, goes in queue
-  config.async = lambda { |event| SentryJob.perform_later(event) }
-
-  # record post data, helps with debug
-  config.processors -= [Raven::Processor::PostData]
-
-  # by recording posts data, ensure we do not track password fields
-  config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
+  # Set tracesSampleRate to 1.0 to capture 100%
+  # of transactions for performance monitoring.
+  # We recommend adjusting this value in production
+  config.traces_sample_rate = 0.5
+  # or
+  config.traces_sampler = lambda do |context|
+    true
+  end
+  config.enabled_environments = %w[production staging]
 end

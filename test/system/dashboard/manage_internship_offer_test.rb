@@ -54,14 +54,14 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
   test 'employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
 
-    week_with_school = Week.find_by(number: 10, year: 2019)
-    week_without_school = Week.find_by(number: 11, year: 2019)
-    create(:school, weeks: [week_with_school])
-    internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
 
     sign_in(employer)
-
     travel_to(Date.new(2019, 3, 1)) do
+      week_with_school = Week.find_by(number: 10, year: Date.today.year)
+      week_without_school = Week.find_by(number: 11, year: Date.today.year)
+      create(:school, weeks: [week_with_school])
+      internship_offer = create(:weekly_internship_offer, employer: employer, weeks: [week_with_school])
+
       visit edit_dashboard_internship_offer_path(internship_offer)
       find(".bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
       find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
@@ -107,6 +107,43 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
                         delta = 10
       end
     end
+  end
+
+  test 'Employer can change max candidates parameter back and forth' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    assert_equal 1, internship_offer.max_candidates
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    find('label[for="internship_type_false"]').click # max_candidates can be set to many now
+    within('.form-group-select-max-candidates') do
+      fill_in('Nombre de stagiaires maximum par groupe', with: 20)
+    end
+    click_button('Modifier l\'offre')
+    assert_equal 20, internship_offer.reload.max_candidates
+
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    find('label[for="internship_type_true"]').click
+    click_button('Modifier l\'offre')
+    assert_equal 1, internship_offer.reload.max_candidates
+  end
+
+  test 'Employer cannot change type if applications are associated' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    create(:weekly_internship_application, internship_offer: internship_offer)
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    select('Bac pro', from: 'Filière cible')
+    click_button('Modifier l\'offre')
+    assert_equal 'InternshipOffers::WeeklyFramed', internship_offer.reload.type
+    find("#error_explanation[role='alert']")
   end
 
   test 'Employer can filter internship_offers from dashboard filters' do

@@ -26,25 +26,28 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
       fill_in_organisation_form(is_public: true, group: group)
       click_on "Suivant"
       click_link "Précédent"
-      find('legend', text: 'Information sur l\'entreprise')
+      find('legend', text: 'Informations sur l\'entreprise')
       click_on "Suivant"
       find('legend', text: 'Offre de stage')
       fill_in_internship_offer_info_form(school_track: :troisieme_generale,
                                          sector: sector,
                                          weeks: available_weeks)
 
-      click_on "Suivant"
+      click_on 'Suivant'
       find('legend', text: 'Informations complémentaires')
-      click_on "Précédent"
+      click_on 'Précédent'
       find('legend', text: 'Offre de stage')
-      click_on "Précédent"
-      find('legend', text: 'Information sur l\'entreprise')
-      click_on "Suivant"
+      click_on 'Précédent'
+      find('legend', text: 'Informations sur l\'entreprise')
+      click_on 'Suivant'
       find('legend', text: 'Offre de stage')
-      click_on "Suivant"
+      click_on 'Suivant'
       find('legend', text: 'Informations complémentaires')
+      click_link 'Précédent'
+      find('legend', text: 'Offre de stage')
+      click_on 'Suivant'
       fill_in_tutor_form
-      click_on "Publier l'offre !"
+      click_on 'Publier l\'offre !'
       wait_form_submitted
     end
   end
