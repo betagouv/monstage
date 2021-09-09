@@ -3,7 +3,7 @@
     | Filtrer par filière
   = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', id: 'input-search-school-track'
 
-.form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer"
+.form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer" data-search-school-track-select-target="searchByDateContainer"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
 
   input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-search-school-track-select-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-search-week-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week" aria-label="Afficher les semaines de stage"
