@@ -74,7 +74,7 @@ module Users
 
     def official_uai_email_address
       return if school_id.blank?
-      unless email =~ /\Ace\.\d{6}\D@#{school.email_domain_name}\z/
+      unless email =~ /\Ace\.\d{7}\S  @#{school.email_domain_name}\z/
         errors.add(:email, "L'adresse email utilisée doit être officielle. ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
       end
     end
