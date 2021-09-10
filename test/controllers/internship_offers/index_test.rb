@@ -91,7 +91,7 @@ class IndexTest < ActionDispatch::IntegrationTest
         # but student cannot apply in the index page, he will 
         # follow applying link in the view page
         assert_presence_of(internship_offer: api_internship_offer)
-        refute_equal 'Continuer pour postuler', Nokogiri::HTML.parse(response.body).at("[target='_blank']").text
+        refute_equal 'Postuler', Nokogiri::HTML.parse(response.body).at("[target='_blank']").text
         assert_presence_of(internship_offer: internship_offer_published)
       end
     end

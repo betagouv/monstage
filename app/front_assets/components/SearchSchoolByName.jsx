@@ -72,6 +72,10 @@ export default function SearchSchool({
     setCity(event.target.value);
   }
 
+  const inputFocus = () => {
+    if (cityCurrentlyChosen) { onResetSearch() }
+  }
+
   const renderAutocompleteInput = () => {
     return (
       <Downshift
@@ -96,6 +100,7 @@ export default function SearchSchool({
               <input
                 {...getInputProps({
                   onChange: inputChange,
+                  onFocus: inputFocus,
                   value: currentCityString(),
                   className: `smashed form-control form-control-lg ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
                   id: `${resourceName}_school_name`,
