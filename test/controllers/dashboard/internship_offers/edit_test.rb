@@ -102,7 +102,7 @@ module Dashboard::InternshipOffers
 
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_response :success
-      assert_select '#internship_offer_school_track option[selected][value=bac_pro]'
+      assert_select '#internship_offer_school_track option[selected][value=troisieme_segpa]'
     end
 
     test 'GET #edit with default fields' do
