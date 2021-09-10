@@ -30,6 +30,7 @@ gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
+gem "split", require: "split/dashboard"
 
 # background jobs
 gem 'sidekiq'
