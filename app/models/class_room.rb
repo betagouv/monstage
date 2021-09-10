@@ -43,6 +43,8 @@ class ClassRoom < ApplicationRecord
   end
 
   def anonymize
+    Users::SchoolManagement.where(class_room_id: id)
+                           .update(class_room_id: nil)
     update_columns(
       anonymized: true,
       name: 'classe archivée'

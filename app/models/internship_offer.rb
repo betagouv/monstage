@@ -20,13 +20,12 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
-  # public.config_search_with_synonym config is
-  # this TEXT SEARCH CONFIGURATION is based on 3 keys concepts
-  #   public.dict_search_with_synonoym : why allow us to links kind of same words for input search
+  # public.config_search_keyword config is
+  # this TEXT SEARCH CONFIGURATION is based on 2 keys concepts
   #   unaccent : which tokenize content without accent [search is also applied without accent]
   # .  french stem : which tokenize content for french FT
   # plus some customization to ignores
-  #   email, url, host, file, int, float
+  #   email, url, host, file, uint, url_path, sfloat, float, numword, numhword, version;
   pg_search_scope :search_by_keyword,
                   against: {
                     title: 'A',
@@ -36,7 +35,7 @@ class InternshipOffer < ApplicationRecord
                   ignoring: :accents,
                   using: {
                     tsearch: {
-                      dictionary: 'public.config_search_with_synonym',
+                      dictionary: 'public.config_search_keyword',
                       tsvector_column: 'search_tsv',
                       prefix: true
                     }
@@ -223,5 +222,9 @@ class InternshipOffer < ApplicationRecord
         previous_employer_description != new_employer_description].any?
       SyncInternshipOfferKeywordsJob.perform_later
     end
+  end
+
+  def with_applications?
+    self.internship_applications.count.positive?
   end
 end

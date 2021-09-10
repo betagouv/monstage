@@ -39,7 +39,9 @@ module Builders
     def update(instance:, params:)
       yield callback if block_given?
       authorize :update, instance
-      instance = instance.becomes(params[:type].constantize) if type_will_change?(params: params, instance: instance)
+      if type_will_change?(params: params, instance: instance)
+        instance = switch_type(instance: instance, params: params)
+      end
       instance.attributes = preprocess_api_params(params, fallback_weeks: false)
       instance.save!
       callback.on_success.try(:call, instance)
@@ -122,6 +124,17 @@ module Builders
 
     def from_api?
       context == :api
+    end
+
+    def switch_type(instance:, params:)
+      if instance.with_applications?
+        error_message = 'Impossible de modifier la filière de ' \
+                        'cette offre de stage car ' \
+                        'vous avez au moins une candidature pour cette offre.'
+        instance.errors.add(:type, error_message)
+        raise ActiveRecord::RecordInvalid, instance
+      end
+      instance.becomes!(params[:type].constantize)
     end
 
     def type_will_change?(params: , instance: )

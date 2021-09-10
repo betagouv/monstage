@@ -25,18 +25,16 @@ tr.hoverable-row-with-btn
                 = react_component("DistanceIcon", props: { radius: internship_offer.relative_distance})
 
         .d-none.d-sm-block.col-sm-3.text-center.align-self-center
-          - if internship_offer.from_api?
-            .mb-2= image_tag asset_pack_path("media/images/homepage/partenaires/#{internship_offer.operator.logo}"), height: 45 if internship_offer.operator.logo.present?
-          - if can?(:apply, internship_offer) || !user_signed_in? || internship_offer.from_api?
-            = link_to internship_offer_application_path(internship_offer), internship_offer_application_html_opts(internship_offer, class: 'btn btn-primary mb-3 btn-sm') do
-              - if !internship_offer.from_api?
-                i.fas.fa-fw.fa-xs.ml-1.fa-rocket
-                | Je postule
-              -else
-                | Continuer pour postuler
+          - if internship_offer.from_api? && internship_offer.operator.logo.present?
+              .mb-2= image_tag asset_pack_path("media/images/homepage/partenaires/#{internship_offer.operator.logo}"),
+                               height: 45
+          - if can?(:apply, internship_offer)
+            = render partial: 'internship_offers/apply_cta',
+                     locals: {internship_offer: internship_offer}
 
             br
-          = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'text-danger' do
+          = link_to listable_internship_offer_path(internship_offer, origin: 'search'),
+                    class: 'text-danger' do
             | Voir l'annonce
             span.icon-link
               | &nbsp;

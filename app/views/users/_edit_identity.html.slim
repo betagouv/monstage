@@ -50,7 +50,7 @@ h1.h2.mb-3 Mon identité
     .form-group
       = f.label :class_room_id do
         = 'Classe'
-        = f.rg2a_required_content_tag
+        = f.rg2a_required_content_tag unless current_user.main_teacher?
       = f.select :class_room_id,
                  options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
                  { prompt: class_rooms_options_for_default },

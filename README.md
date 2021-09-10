@@ -15,7 +15,6 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
-* copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
@@ -76,7 +75,7 @@ As a public french service, we try to keep most data hosted by french service pr
  * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
  * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
 * Mail: [mailjet](https://mailjet.com)
-
+* Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
 # Build: test, dev
 
@@ -101,7 +100,7 @@ foreman start -f Procfile.dev
 
 ### Tooling: linting, etc...
 
-* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
 ### Etapes de travail jusqu'au merge dans master
@@ -153,8 +152,6 @@ Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
-
-* we use a custom postgres docker image for our synonym dictionnary
 
 ### User testing with review apps
 

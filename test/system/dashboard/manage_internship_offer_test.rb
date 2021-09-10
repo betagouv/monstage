@@ -132,6 +132,20 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert_equal 1, internship_offer.reload.max_candidates
   end
 
+  test 'Employer cannot change type if applications are associated' do
+    employer = create(:employer)
+    internship_offer = create(:weekly_internship_offer, employer: employer)
+    create(:weekly_internship_application, internship_offer: internship_offer)
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: internship_offer)
+    page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
+    click_link("Modifier")
+    select('Bac pro', from: 'Filière cible')
+    click_button('Modifier l\'offre')
+    assert_equal 'InternshipOffers::WeeklyFramed', internship_offer.reload.type
+    find("#error_explanation[role='alert']")
+  end
+
   test 'Employer can filter internship_offers from dashboard filters' do
     travel_to(Date.new(2020, 10, 10)) do
       employer = create(:employer)

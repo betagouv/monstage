@@ -95,6 +95,12 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
+  test 'visitor is lured into thinking he can submit an application' do
+    create(:weekly_internship_offer)
+    visit internship_offers_path
+    page.find_link('Postuler')
+  end
+
   test 'as teacher, search filters are complete and do filter by school_track' do
     school                              = create(:school)
     school_manager                      = create(:school_manager, school: school)
