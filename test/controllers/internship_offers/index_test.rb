@@ -17,7 +17,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as "Users::Visitor" works and has a page title' do
     get internship_offers_path
     assert_response :success
-    assert_select 'title', "Recherche de stages | Monstage"
+    assert_select 'title', 'Recherche de stages | Monstage'
   end
 
   test 'GET #index with coordinates as "Users::Visitor" works' do
@@ -27,16 +27,23 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index canonical links works' do
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
-    assert_match /<link rel='canonical' href='http:\/\/www.example.com\/internship_offers' \/>/, response.body
+    assert_match(
+      %r{<link rel='canonical' href='http://www.example.com/internship_offers' />}, response.body
+    )
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512, page: 2)
-    assert_match /<link rel='canonical' href='http:\/\/www.example.com\/internship_offers\?page=2' \/>/, response.body
+    assert_match(
+      %r{<link rel='canonical' href='http://www.example.com/internship_offers\?page=2' />}, response.body
+    )
   end
 
   test 'GET #index as student ignores internship_offers with existing applicaiton' do
-    internship_offer_without_application = create(:weekly_internship_offer, title: 'ok')
+    internship_offer_without_application = create(:weekly_internship_offer,
+                                                  title: 'ok')
     school = create(:school, weeks: internship_offer_without_application.weeks)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer_with_application = create(:weekly_internship_offer, title: 'o', weeks: internship_offer_without_application.weeks)
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
+    internship_offer_with_application = create(:weekly_internship_offer,
+                                               title: 'o', weeks: internship_offer_without_application.weeks)
     internship_application = create(:weekly_internship_application, {
                                       student: student,
                                       internship_offer_week: internship_offer_with_application.internship_offer_weeks.first
@@ -56,7 +63,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     internship_offer_3em = create(:weekly_internship_offer, title: '3e')
     internship_offer_troisieme_segpa = create(:troisieme_segpa_internship_offer, title: 'segpa')
     school = create(:school, weeks: internship_offer_3em.weeks)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
 
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -87,26 +95,26 @@ class IndexTest < ActionDispatch::IntegrationTest
         get internship_offers_path
         assert_absence_of(internship_offer: internship_offer_unpublished)
         assert_presence_of(internship_offer: api_internship_offer)
-        # Api offer is targeted with new window
-        # but student cannot apply in the index page, he will 
-        # follow applying link in the view page
-        assert_presence_of(internship_offer: api_internship_offer)
-        refute_equal 'Postuler', Nokogiri::HTML.parse(response.body).at("[target='_blank']").text
+        assert_equal "Postuler sur #{api_internship_offer.operator.name}",
+                     Nokogiri::HTML.parse(response.body).at("[target='_blank']").text
         assert_presence_of(internship_offer: internship_offer_published)
       end
     end
   end
 
   test 'GET #index as visitor does not show discarded offers' do
-    discarded_internship_offer = create(:weekly_internship_offer, discarded_at: 2.days.ago)
-    not_discarded_internship_offer = create(:weekly_internship_offer, discarded_at: nil)
+    discarded_internship_offer = create(:weekly_internship_offer,
+                                        discarded_at: 2.days.ago)
+    not_discarded_internship_offer = create(:weekly_internship_offer,
+                                            discarded_at: nil)
     get internship_offers_path
     assert_presence_of(internship_offer: not_discarded_internship_offer)
     assert_absence_of(internship_offer: discarded_internship_offer)
   end
 
   test 'GET #index as visitor does not show unpublished offers' do
-    published_internship_offer = create(:weekly_internship_offer, published_at: 2.days.ago)
+    published_internship_offer = create(:weekly_internship_offer,
+                                        published_at: 2.days.ago)
     not_published_internship_offer = create(:weekly_internship_offer)
     not_published_internship_offer.update!(published_at: nil)
     get internship_offers_path
@@ -132,9 +140,16 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student. ignores internship offers with blocked_weeks_count > internship_offer_weeks_count' do
     school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer_with_max_internship_offer_weeks_count_reached = create(:weekly_internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 2)
-    internship_offer_without_max_internship_offer_weeks_count_reached = create(:weekly_internship_offer, weeks: [Week.first, Week.last], blocked_weeks_count: 0)
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
+    internship_offer_with_max_internship_offer_weeks_count_reached = create(
+      :weekly_internship_offer, weeks: [Week.first,
+                                        Week.last], blocked_weeks_count: 2
+    )
+    internship_offer_without_max_internship_offer_weeks_count_reached = create(
+      :weekly_internship_offer, weeks: [Week.first,
+                                        Week.last], blocked_weeks_count: 0
+    )
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -150,7 +165,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     max_candidates = 1
     week = Week.first
     school = create(:school)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
@@ -251,7 +267,10 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student with page, returns paginated content' do
     internship_offers = (InternshipOffer::PAGE_SIZE + 1)
                         .times
-                        .map { create(:weekly_internship_offer, max_candidates: 2) }
+                        .map do
+      create(:weekly_internship_offer,
+             max_candidates: 2)
+    end
 
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
@@ -272,7 +291,9 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student with InternshipOffers::Api, returns paginated content' do
-    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map { create(:api_internship_offer) }
+    internship_offers = (InternshipOffer::PAGE_SIZE + 1).times.map do
+      create(:api_internship_offer)
+    end
     travel_to(Date.new(2019, 3, 1)) do
       sign_in(create(:student))
       InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -300,7 +321,9 @@ class IndexTest < ActionDispatch::IntegrationTest
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
         get internship_offers_path, params: { latitude: 1, longitude: 1 }
-        assert_select('a[href=?]', internship_offer_path(id: internship_1, latitude: 1, longitude: 1, origin: 'search'))
+        assert_select('a[href=?]',
+                      internship_offer_path(id: internship_1, latitude: 1, longitude: 1,
+                                            origin: 'search'))
       end
     end
   end
@@ -332,7 +355,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.find_by(year: 2019, number: 10)
     school_at_bordeaux = create(:school, :at_bordeaux)
     student = create(:student, school: school_at_bordeaux)
-    create(:weekly_internship_offer, weeks: [week], coordinates: Coordinates.paris)
+    create(:weekly_internship_offer, weeks: [week],
+                                     coordinates: Coordinates.paris)
 
     InternshipOffer.stub :by_weeks, InternshipOffer.all do
       sign_in(student)
@@ -348,9 +372,14 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student ignores internship_offer not in school.weeks' do
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer, weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2019, number: 11)])
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
+    offer_overlaping_school_weeks = create(:weekly_internship_offer,
+                                           weeks: [week])
+    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+                                               weeks: [Week.find_by(
+                                                 year: 2019, number: 11
+                                               )])
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       travel_to(Date.new(2019, 3, 1)) do
@@ -368,8 +397,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: create(:school))
     sign_in(student)
 
-    internship_limited_to_another_school = create(:weekly_internship_offer, school: create(:school))
-    internship_limited_to_student_school = create(:weekly_internship_offer, school: student.school)
+    internship_limited_to_another_school = create(:weekly_internship_offer,
+                                                  school: create(:school))
+    internship_limited_to_student_school = create(:weekly_internship_offer,
+                                                  school: student.school)
     internship_not_restricted_to_school = create(:weekly_internship_offer)
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -387,8 +418,10 @@ class IndexTest < ActionDispatch::IntegrationTest
   #
   test 'GET #index as employer returns all internship offers' do
     employer = create(:employer)
-    included_internship_offer = create(:weekly_internship_offer, employer: employer, title: 'Hellow-me')
-    excluded_internship_offer = create(:weekly_internship_offer, title: 'Not hellow-me')
+    included_internship_offer = create(:weekly_internship_offer,
+                                       employer: employer, title: 'Hellow-me')
+    excluded_internship_offer = create(:weekly_internship_offer,
+                                       title: 'Not hellow-me')
     sign_in(employer)
     get internship_offers_path
     assert_response :success
@@ -399,7 +432,8 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as god returns all internship_offers' do
     sign_in(create(:god))
     internship_offer_1 = create(:weekly_internship_offer, title: 'Hellow-me')
-    internship_offer_2 = create(:weekly_internship_offer, title: 'Not hellow-me')
+    internship_offer_2 = create(:weekly_internship_offer,
+                                title: 'Not hellow-me')
     get internship_offers_path
     assert_response :success
     assert_presence_of(internship_offer: internship_offer_1)
@@ -415,12 +449,14 @@ class IndexTest < ActionDispatch::IntegrationTest
     get internship_offers_path
 
     assert_response :success
-    assert_select 'a[href=?]', internship_offer_url(discarded_internship_offer), 0
+    assert_select 'a[href=?]',
+                  internship_offer_url(discarded_internship_offer), 0
   end
 
   test 'GET #index as Visitor with search keyword find internship offer' do
     keyword = 'foobar'
-    foundable_internship_offer = create(:weekly_internship_offer, title: keyword)
+    foundable_internship_offer = create(:weekly_internship_offer,
+                                        title: keyword)
     ignored_internship_offer = create(:weekly_internship_offer, title: 'bom')
 
     dictionnary_api_call_stub
