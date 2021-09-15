@@ -4,7 +4,6 @@ const TRADS = {
   troisieme_generale: '3e',
   troisieme_prepa_metier: '3e prépa-métiers',
   troisieme_segpa: 'Segpa',
-  bac_pro: 'Bac pro',
 };
 function RenderClassRoomsInput({
   selectedClassRoom,

@@ -40,6 +40,7 @@ module Users
 
     # GET /resource/sign_up
     def new
+      @resource_channel = resource_channel
       options = {}
       options = options.merge(targeted_offer_id: params.dig(:user, :targeted_offer_id)) if params.dig(:user, :targeted_offer_id)
 
@@ -53,12 +54,22 @@ module Users
       end
     end
 
+    def resource_channel
+      return current_user.channel unless current_user.nil?
+      return :email unless params[:as] == 'Student'
+
+      ab_test(:subscription_channel_experiment) do |chan|
+        chan == 'phone' ? :phone : :email
+      end
+    end
+
     # POST /resource
     def create
       clean_phone_param
       super do |resource|
         resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
+        ab_finished(:subscription_channel_experiment)
       end
     end
 

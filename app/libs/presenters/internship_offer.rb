@@ -17,10 +17,7 @@ module Presenters
             label: '3e SEGPA'},
           { value: 'troisieme_prepa_metiers',
             id: 'search-by-troisieme-prepa-metiers',
-            label: '3e prépa métiers'},
-          { value: 'bac_pro',
-            id: 'search-by-bac-pro',
-            label: 'Bac Pro'}
+            label: '3e prépa métiers'}
         ]
       }
     end

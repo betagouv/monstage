@@ -95,7 +95,7 @@ module InternshipApplications
     test 'POST #create date free internship application as student' do
       internship_offer = create(:free_date_internship_offer)
       school = create(:school)
-      student = create(:student, school: school, class_room: create(:class_room, :bac_pro, school: school))
+      student = create(:student, school: school, class_room: create(:class_room, :troisieme_segpa, school: school))
       sign_in(student)
       valid_params = {
         internship_application: {
