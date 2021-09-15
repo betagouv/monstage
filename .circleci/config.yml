@@ -119,7 +119,7 @@ jobs: # a collection of steps
       - run:
           name: Deploy Master to Clever Cloud
           command: |
-            git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
             git push -u clever master
 workflows:
   version: 2
