@@ -110,10 +110,14 @@ jobs: # a collection of steps
       - image: buildpack-deps:trusty
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
       - run:
           name: Deploy Master to Clever Cloud
           command: |
-            git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            ssh-keyscan push-n2-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
+            git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
             git push -u clever master
 workflows:
   version: 2
@@ -125,4 +129,7 @@ workflows:
               - build
             filters:
               branches:
-                only: master
+                only:
+                  - master
+                  - US/deploy-ssh
+
