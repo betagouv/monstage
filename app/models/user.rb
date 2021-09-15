@@ -118,6 +118,10 @@ class User < ApplicationRecord
     self.email.split('@').last
   end
 
+  def archive
+    anonymize(send_email: false)
+  end
+
   def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
@@ -135,13 +139,13 @@ class User < ApplicationRecord
 
     discard!
 
-    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-    RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+    unless email_for_job.blank?
+      AnonymizeUserJob.perform_later(email: email_for_job) if send_email
+      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+    end
   end
 
-  def archive
-    anonymize(send_email: false)
-  end
+
 
   def destroy
     anonymize
