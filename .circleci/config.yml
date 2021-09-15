@@ -113,6 +113,9 @@ jobs: # a collection of steps
       - image: buildpack-deps:trusty
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
       - run:
           name: Deploy Master to Clever Cloud
           command: |
@@ -128,4 +131,7 @@ workflows:
               - build
             filters:
               branches:
-                only: master
+                only:
+                  - master
+                  - US/deploy-ssh
+
