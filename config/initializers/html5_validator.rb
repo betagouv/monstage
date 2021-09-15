@@ -4,6 +4,7 @@ require 'fileutils'
 
 module Html5Validator
   RESPONSE_STORED_DIR = Rails.root.join('tmp', 'w3c')
+  SCREENSHOT_DIR = Rails.root.join('tmp', 'functional_screenshots')
 
   def self.files_to_validates
     Dir["#{RESPONSE_STORED_DIR}/*"]
@@ -30,6 +31,9 @@ module Html5Validator
     File.open(RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
+      if ENV.has_key?('FUNCTIONAL_SCREENSHOTS')
+        page.save_screenshot(SCREENSHOT_DIR.join("#{basename}.png"), full: true)
+      end
       assert page_title_ok?(page.body)
     end
   end
