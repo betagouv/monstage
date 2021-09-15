@@ -60,30 +60,30 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
   test 'search by school_track works' do
     weekly_internship_offer = create(:weekly_internship_offer)
-    bac_pro_internship_offer = create(:bac_pro_internship_offer)
+    troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     visit internship_offers_path
 
     select('3ème')
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_absence_of(internship_offer: bac_pro_internship_offer)
+    assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
     # ensure selection of school track disable week placeholder input
     assert_selector("#input-search-by-week[readonly]", count: 0)
     assert_selector("#input-search-by-week", count: 1)
     # TODO: ensure selection of school track disable week checkboxes
 
     # filtered by another
-    select('Bac pro')
+    select('3e SEGPA')
     submit_form
     assert_absence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
+    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
     assert_selector("#input-search-by-week[readonly]", count: 1)
 
     # reset search and submit
     select("Filière")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
-    assert_presence_of(internship_offer: bac_pro_internship_offer)
+    assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
   end
 
   test 'search by keyword works' do
@@ -155,7 +155,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       searched_opts.merge(weeks: [not_searched_week])
     )
     not_found_by_school_track = create(
-      :bac_pro_internship_offer,
+      :troisieme_segpa_internship_offer,
       searched_opts.reject { |k,v| k == :weeks }
     )
 
