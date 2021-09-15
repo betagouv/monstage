@@ -59,7 +59,6 @@ def populate_class_rooms
   ClassRoom.create(name: '3e A – troisieme', school_track: :troisieme_generale, school: school)
   ClassRoom.create(name: '3e B – troisieme_prepa_metiers', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
-  ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
   create_a_discarded_class_room
 end
 
@@ -83,7 +82,7 @@ end
 def populate_operators
   Operator.create(name: "Un stage et après !",
                   website: "",
-                  logo: 'Logo-jobirl.jpg',
+                  logo: 'Logo-un-stage-et-apres.jpg',
                   target_count: 120,
                   airtable_reporting_enabled: true,
                   airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),
@@ -283,46 +282,6 @@ def populate_internship_offers
     employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
-  # Bac_pro
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Boucherie Chottin - gestion des approvisionnements frontaliers',
-    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion de la logistique routière et ferrée des approvisionnements de viande en provenance d\'Europe et d\'Argentine.',
-    employer_description_rich_text: "La Boucherie Chottin doit sa réputation à la qualité de sa viande reconnue et appréciée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
-    employer_website: 'http://www.dtpm.fr/',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Chottin',
-    school_track: :bac_pro
-  )
-  # Bac_pro
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Scierie Rabier - maitrise des machines outils',
-    description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
-    employer_description_rich_text: "La scierie Rabier attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
-    employer_website: 'http://www.dtpm.fr/',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Rabier Ent.',
-    school_track: :bac_pro
-  )
   # 3eme generale API
   InternshipOffers::Api.create!(
     employer: Users::Operator.first,
@@ -418,28 +377,12 @@ def populate_school_weeks
 end
 
 def populate_applications
-  bac_pro_studs = Users::Student.joins(:class_room)
-                                .where('class_rooms.school_track = ?', :bac_pro)
-                                .to_a
-                                .shuffle
-                                .first(2)
   trois_gene_studs = Users::Student.joins(:class_room)
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
                                    .first(3)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
-
-  bac_pro_studs.each do |bac_pro_stud|
-    InternshipApplications::FreeDate.create!(
-      aasm_state: :submitted,
-      submitted_at: 10.days.ago,
-      internship_offer: bac_pro_offers.first,
-      motivation: 'Au taquet',
-      student: bac_pro_stud
-    )
-  end
   puts "every 3e generale offers receives an application first 3e generale stud"
   troisieme_generale_offers.each do |io_trois_gene|
     InternshipApplications::WeeklyFramed.create!(

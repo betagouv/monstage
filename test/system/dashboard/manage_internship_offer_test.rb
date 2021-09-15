@@ -27,7 +27,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
-    internship_offer = create(:bac_pro_internship_offer, employer: employer)
+    internship_offer = create(:troisieme_segpa_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
@@ -41,7 +41,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     visit edit_dashboard_internship_offer_path(internship_offer)
 
-    select 'Bac pro', from: 'Filière cible'
+    select '3e SEGPA', from: 'Filière cible'
     fill_in 'internship_offer_title', with: 'editok'
     find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
     click_on "Modifier l'offre"
@@ -140,7 +140,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
     click_link("Modifier")
-    select('Bac pro', from: 'Filière cible')
+    select('3e SEGPA', from: 'Filière cible')
     click_button('Modifier l\'offre')
     assert_equal 'InternshipOffers::WeeklyFramed', internship_offer.reload.type
     find("#error_explanation[role='alert']")

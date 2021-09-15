@@ -51,11 +51,11 @@ module InternshipOffers
       assert_select 'a', text: 'Je postule', count: 0
     end
 
-    test 'GET #show form as Student with class_room.bac_pro, and internship_offer with free_date' do
+    test 'GET #show form as Student with class_room.troisieme_segpa, and internship_offer with free_date' do
       internship_offer = create(:free_date_internship_offer)
       school = create(:school, :with_school_manager)
       sign_in(create(:student,
-                     class_room: create(:class_room, :bac_pro, school: school),
+                     class_room: create(:class_room, :troisieme_segpa, school: school),
                      school: school))
       get internship_offer_path(internship_offer)
       assert_template 'internship_applications/forms/_free_date'
