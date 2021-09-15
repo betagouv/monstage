@@ -181,7 +181,7 @@ def populate_sectors
     "Arts du spectacle" => "055b7580-c979-480f-a026-e94c8b8dc46e",
     "Culture et patrimoine" => "c76e6364-7257-473c-89aa-c951141810ce"
   }.map do |sector_name, sector_uuid|
-    Sector.create!(name: sector_name, sector_uuid)
+    Sector.create!(name: sector_name, uuid: sector_uuid)
   end
 end
 
