@@ -36,7 +36,17 @@ module Presenters
       class_room = create(:class_room, :troisieme_generale, school: school_manager.school)
       student = create(:student, school: school_manager.school, class_room: class_room)
 
-      assert_equal url_helpers.internship_offers_path(school_manager.school.default_search_options.merge(school_track: student.school_track)), Presenters::User.new(student).default_internship_offers_path
+      assert_equal url_helpers.internship_offers_path(student.default_search_options),
+                   Presenters::User.new(student).default_internship_offers_path
+    end
+
+   test '.default_internship_offers_path with school_manager having a school with weeks does not prefilter by weeks' do
+      school_manager = create(:school_manager)
+      class_room = create(:class_room, :troisieme_generale, school: school_manager.school)
+      student = create(:student, school: school_manager.school, class_room: class_room)
+
+      url_options = url_helpers.internship_offers_path(school_manager.default_search_options)
+      refute url_options.key?(:weeks)
     end
 
     test '.default_internship_offers_path includes expected params' do

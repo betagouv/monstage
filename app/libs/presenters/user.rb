@@ -28,9 +28,7 @@ module Presenters
       return internship_offers_path unless user.respond_to?(:school)
       return internship_offers_path if user.school.nil?
 
-      opts = user.school.default_search_options
-      opts = opts.merge({school_track: user.try(:school_track)}) if user.try(:school_track)
-      internship_offers_path(opts) # TODO refactor?: use pass thru url helper
+      internship_offers_path(user.default_search_options)
     end
 
     private
