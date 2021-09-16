@@ -84,12 +84,10 @@ module Finders
       query
     end
 
-    def week_ids_query(query)
-      query = query.merge(
-        InternshipOffers::WeeklyFramed.by_weeks(weeks: OpenStruct.new(ids: week_ids_params))
-      )
-    end
 
+    def week_ids_query(query)
+      query.merge(InternshipOffers::WeeklyFramed.by_weeks(weeks: OpenStruct.new(ids: week_ids_params)))
+    end
 
     def school_year_query(query)
       query.merge(weekly_framed_scopes(:specific_school_year, school_year: school_year_param))
@@ -104,7 +102,22 @@ module Finders
     end
 
     def school_track_query(query)
-      query.merge(InternshipOffer.school_track(school_track: school_track_params))
+      query = query.merge(InternshipOffer.school_track(school_track: params[:school_track]))
+
+      if params[:school_track] == 'troisieme_generale'
+        query = query.merge(
+          weekly_framed_scopes(:ignore_already_applied, {user: user})
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_candidates_reached)
+        )
+        query = query.merge(
+          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
+        )
+      else
+        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
+      end
+      query
     end
 
     protected

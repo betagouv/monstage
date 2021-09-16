@@ -53,7 +53,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
+        get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer_with_application)
         assert_presence_of(internship_offer: internship_offer_without_application)
       end
@@ -70,7 +70,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
+        get internship_offers_path(school_track: :troisieme_generale)
         assert_presence_of(internship_offer: internship_offer_3em)
         assert_absence_of(internship_offer: internship_offer_troisieme_segpa)
       end
@@ -154,7 +154,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
+        get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer_with_max_internship_offer_weeks_count_reached)
         assert_presence_of(internship_offer: internship_offer_without_max_internship_offer_weeks_count_reached)
       end
@@ -177,7 +177,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path
+        get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer)
       end
     end
@@ -241,7 +241,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                                class_room: create(:class_room, :troisieme_generale, school: school)))
 
       InternshipOffer.stub :nearby, InternshipOffer.all do
-        get internship_offers_path(week_ids: school.week_ids)
+        get internship_offers_path(week_ids: school.week_ids, school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer)
       end
     end
