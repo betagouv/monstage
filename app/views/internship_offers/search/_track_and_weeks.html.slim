@@ -1,7 +1,7 @@
 .form-group.mb-md-0.col-12.col-md
   = f.label :school_track, class: "d-inline-block d-md-none", for: 'input-search-school-track' do
     | Filtrer par filière
-  = f.select :school_track, options_for_select(options_for_school_tracks, params[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', id: 'input-search-school-track'
+  = f.select :school_track, options_for_select(options_for_school_tracks, default_values[:school_track]), { prompt: 'Filière' }, class: 'custom-select shadow-none', 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', id: 'input-search-school-track'
 
 .form-group.mb-md-0.col-12.col-md data-search-popover-target="searchByDateContainer" data-search-school-track-select-target="searchByDateContainer"
   .label.d-inline-block.d-md-none Quand se déroule le stage ?
@@ -45,7 +45,7 @@
           div
             - weeks.map do |week|
                 = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3 custom-checkbox-search mb-0 font-weight-normal" do
-                  = f.check_box :week_ids, {multiple: true, checked: params.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2 ', 'data-search-week-checkboxes-target': 'input', 'data-action': 'change->search-week-checkboxes#onCheckboxChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
+                  = f.check_box :week_ids, {multiple: true, checked: default_values.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}", class: 'align-self-start mt-1 mx-2 ', 'data-search-week-checkboxes-target': 'input', 'data-action': 'change->search-week-checkboxes#onCheckboxChange', 'data-text-week-str':week.short_range_as_str }, week.id, false
                   span.flex-fill
                     span.d-block.mb-0= week.short_range_as_str
                     small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"

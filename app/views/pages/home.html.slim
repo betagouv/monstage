@@ -1,27 +1,28 @@
+.bg-cover-image-homepage
+  .container
+    .row.py-3.py-sm-5
+
+    .row.no-gutters.py-5
+      .col-12
+        h1.text-white.text-center.mb-3
+          | monstagedetroisieme.fr,
+          br
+          | ce sont
+          - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
+          - presenter = Presenters::InternshipOffer.new
+          span.home-blue-shadow = " #{presenter.large_number(offers)} "
+          | offres de stages
+          br
+          | qui n'attendent que vous
+
+        .col-12= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path, default_values: user_presenter.default_search_options }
+        .actions.d-flex.d-stick.d-md-none.p-2
+          = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+            = "Rechercher un stage"
+
+
+    .row.py-3.py-sm-5
 = cache PrismicFinder do
-  .bg-cover-image-homepage
-    .container
-      .row.py-3.py-sm-5
-
-      .row.no-gutters.py-5
-        .col-12
-          h1.text-white.text-center.mb-3
-            | monstagedetroisieme.fr,
-            br
-            | ce sont
-            - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
-            - presenter = Presenters::InternshipOffer.new
-            span.home-blue-shadow = " #{presenter.large_number(offers)} "
-            | offres de stages
-            br
-            | qui n'attendent que vous
-          .col-12= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
-          .actions.d-flex.d-stick.d-md-none.p-2
-            = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
-              = "Rechercher un stage"
-
-
-      .row.py-3.py-sm-5
 
   .bg-transparent
     .container

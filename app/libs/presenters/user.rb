@@ -6,6 +6,7 @@ module Presenters
     delegate :routes, to: :application
     delegate :url_helpers, to: :routes
     delegate :internship_offers_path, to: :url_helpers
+    delegate :default_search_options, to: :user
 
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"
@@ -28,7 +29,7 @@ module Presenters
       return internship_offers_path unless user.respond_to?(:school)
       return internship_offers_path if user.school.nil?
 
-      internship_offers_path(user.default_search_options)
+      internship_offers_path(default_search_options)
     end
 
     private

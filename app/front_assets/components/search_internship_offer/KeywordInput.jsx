@@ -6,10 +6,10 @@ import { endpoints } from '../../utils/api';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
-function KeywordInput({ }) {
+function KeywordInput({ existingKeyword }) {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const [keyword, setKeyword] = useState(searchParams.get('keyword') || '');
+  const [keyword, setKeyword] = useState(existingKeyword || searchParams.get('keyword') || '');
   const [searchResults, setSearchResults] = useState([]);
   const [keywordDebounced] = useDebounce(keyword, 200);
   const inputChange = (event) => {
@@ -52,7 +52,7 @@ function KeywordInput({ }) {
         selectedItem,
       }) => (
         <div>
-          <label getLabelProps {...getLabelProps({className: 'd-inline-block d-md-none', htmlFor: "input-search-by-keyword"})}>
+          <label {...getLabelProps({className: 'd-inline-block d-md-none', htmlFor: "input-search-by-keyword"})}>
              Rechercher une profession
           </label>
           <div

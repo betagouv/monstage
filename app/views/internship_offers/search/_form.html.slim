@@ -7,12 +7,12 @@ div.search-container data-controller='search-form search-popover search-school-t
 
     .row.no-gutters
       .form-group.mb-md-0.col-12.col-md
-        = react_component("KeywordInput")
+        = react_component("KeywordInput", props: {keyword: default_values[:keyword]})
 
       .form-group.mb-md-0.col-12.col-md
-        = react_component("CityInput")
+        = react_component("CityInput", props: { city: default_values[:city], latitude: default_values[:latitude], longitude: default_values[:longitude], radius: default_values[:radius] })
 
-      = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering}
+      = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, desktop_rendering: desktop_rendering, default_values: default_values}
 
       .pb-5
       - if desktop_rendering

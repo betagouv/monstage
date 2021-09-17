@@ -4,7 +4,7 @@
 - else
   .row.bc-light.br-1.bl-1.bb-1
     .col-12.px-0
-      = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: dashboard_internship_offers_path }
+      = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: dashboard_internship_offers_path, default_values: params }
 
   .row.bc-light.br-1.bl-1.bb-1
     .col-12.px-0= render partial: 'dashboard/internship_offers/table'

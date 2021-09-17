@@ -11,13 +11,13 @@ const COMPONENT_FOCUS_LABEL = 'location';
 // 'https://geo.api.gouv.fr/communes?codePostal=78000' --> code curl
 // 'https://geo.api.gouv.fr/communes?code=78646&fields=code,nom,codesPostaux,code
 
-function CityInput({}) {
+function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: defaultLongitude, radius: defaultRadius}) {
   const searchParams = new URLSearchParams(window.location.search);
 
-  const [cityOrZipcode, setCity] = useState(searchParams.get('city'));
-  const [latitude, setLatitude] = useState(searchParams.get('latitude') || "");
-  const [longitude, setLongitude] = useState(searchParams.get('longitude') || "");
-  const [radius, setRadius] = useState(searchParams.get('radius') || 60000);
+  const [cityOrZipcode, setCity] = useState(searchParams.get('city') || defaultCity || "");
+  const [latitude, setLatitude] = useState(searchParams.get('latitude') || defaultLatitude || "");
+  const [longitude, setLongitude] = useState(searchParams.get('longitude') || defaultLongitude || "");
+  const [radius, setRadius] = useState(searchParams.get('radius') || defaultRadius || 60000);
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(cityOrZipcode, 100);
   const [focus, setFocus] = useState(null);
@@ -129,7 +129,7 @@ function CityInput({}) {
           openMenu,
         }) => (
           <div>
-            <label getLabelProps {...getLabelProps({className: ' d-inline-block d-md-none', htmlFor: "input-search-by-city-or-zipcode"})}>
+            <label {...getLabelProps({className: ' d-inline-block d-md-none', htmlFor: "input-search-by-city-or-zipcode"})}>
                    Ville ou code postal
             </label>
             <div

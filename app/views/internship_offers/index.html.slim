@@ -8,7 +8,7 @@
       .row
         .col-12
           .pt-3
-            = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path }
+            = render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path, default_values: params }
 
 .actions.d-flex.d-stick.d-md-none.p-2
   = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }

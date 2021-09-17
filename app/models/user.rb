@@ -63,7 +63,7 @@ class User < ApplicationRecord
     opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
     if has_relationship?(:class_room) && class_room.troisieme_generale?
       current_week_ids = school.weeks.where(id: Week.selectable_on_school_year.pluck(:id)).pluck(:id)
-      opts = opts.merge(week_ids: current_week_ids) if current_week_ids.size.positive?
+      opts = opts.merge(week_ids: current_week_ids.map(&:to_s)) if current_week_ids.size.positive?
     end
     opts
   end
