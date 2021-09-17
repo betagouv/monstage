@@ -41,12 +41,14 @@ module Presenters
     end
 
    test '.default_internship_offers_path with school_manager having a school with weeks does not prefilter by weeks' do
-      school_manager = create(:school_manager)
+      weeks =  [Week.selectable_from_now_until_end_of_school_year.first]
+      school = create(:school, weeks: weeks)
+      school_manager = create(:school_manager, school: school)
       class_room = create(:class_room, :troisieme_generale, school: school_manager.school)
-      student = create(:student, school: school_manager.school, class_room: class_room)
 
       url_options = school_manager.default_search_options
-      refute url_options.key?(:weeks)
+      assert url_options.key?(:week_ids), 'missing weeks params'
+      assert url_options.key?(:school_track), 'missing school_track params'
     end
 
     test '.default_internship_offers_path includes expected params' do
