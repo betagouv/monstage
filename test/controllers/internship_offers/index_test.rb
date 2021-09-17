@@ -226,24 +226,27 @@ class IndexTest < ActionDispatch::IntegrationTest
         Week.selectable_from_now_until_end_of_school_year.first,
         Week.selectable_from_now_until_end_of_school_year.last
       ]
-      school = create(:school, weeks: [internship_weeks[0]])
-      blocked_internship_week = build(:internship_offer_week, internship_offer: nil,
-                                                              blocked_applications_count: max_candidates,
-                                                              week: internship_weeks[0])
-      not_blocked_internship_week = build(:internship_offer_week, internship_offer: nil,
-                                                                  blocked_applications_count: 0,
-                                                                  week: internship_weeks[1])
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
-                                                          internship_offer_weeks: [blocked_internship_week,
-                                                                                   not_blocked_internship_week])
+      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates, weeks: internship_weeks)
+      blocked_internship_week = create(:weekly_internship_application,
+                                       internship_offer: internship_offer,
+                                       aasm_state: :approved,
+                                       week: internship_weeks[0])
+      blocked_internship_week.signed!
+      not_blocked_internship_week = create(:weekly_internship_application,
+                                            internship_offer: internship_offer,
+                                            aasm_state: :submitted,
+                                            week: internship_weeks[1])
 
-      sign_in(create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school)))
+      sign_in(create(:student))
 
-      InternshipOffer.stub :nearby, InternshipOffer.all do
-        get internship_offers_path(week_ids: school.week_ids, school_track: :troisieme_generale)
-        assert_absence_of(internship_offer: internship_offer)
-      end
+      get internship_offers_path(week_ids: internship_weeks.map(&:id), school_track: :troisieme_generale)
+      assert_presence_of(internship_offer: internship_offer)
+
+      get internship_offers_path(week_ids: [internship_weeks[0].id], school_track: :troisieme_generale)
+      assert_absence_of(internship_offer: internship_offer)
+
+      get internship_offers_path(week_ids: [internship_weeks[1].id], school_track: :troisieme_generale)
+      assert_presence_of(internship_offer: internship_offer)
     end
   end
 

@@ -45,7 +45,7 @@ module Presenters
       class_room = create(:class_room, :troisieme_generale, school: school_manager.school)
       student = create(:student, school: school_manager.school, class_room: class_room)
 
-      url_options = url_helpers.internship_offers_path(school_manager.default_search_options)
+      url_options = school_manager.default_search_options
       refute url_options.key?(:weeks)
     end
 
