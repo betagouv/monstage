@@ -31,7 +31,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer_id = internship_offer.id
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
-    select '3ème', from: 'Filière cible'
+    select '3e', from: 'Filière cible'
     find("label[for='all_year_long']").click
     fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
     click_on "Modifier l'offre"

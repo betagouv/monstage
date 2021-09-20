@@ -71,7 +71,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     visit search_internship_offers_path
 
-    select('3ème')
+    select('3e')
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
@@ -124,7 +124,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
                                              weeks: [not_searched_week])
       visit search_internship_offers_path
 
-      select('3ème')
+      select('3e')
       fill_in_week(week: searched_week, open_popover: false)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
@@ -173,7 +173,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
     fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
     fill_in_keyword(keyword: searched_keyword)
-    select('3ème')
+    select('3e')
     fill_in_week(week: searched_week, open_popover: false)
     submit_form
 
