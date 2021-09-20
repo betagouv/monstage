@@ -16,12 +16,9 @@
 
 
 .row
-  - if @internship_offers.blank?
-    h2.col-12[style='color: gray'] Aucune offre n'est disponible.
-  - else
-    .col-12= render "internship_offers/title", internship_offers: @internship_offers
+  .col-12= render "internship_offers/title", internship_offers: @internship_offers
 
-    = render partial: "internship_offer", collection: @internship_offers
+  = render partial: "internship_offer", collection: @internship_offers
 
 .row.d-flex.d-md-none
   .col-12= paginate(@internship_offers)
