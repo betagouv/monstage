@@ -24,14 +24,6 @@ module Finders
       @listable_query_builder = Finders::ListableInternshipOffer.new(finder: self)
     end
 
-    def nearby_query_part(query, coordinates)
-      query.nearby(latitude: coordinates.latitude,
-                   longitude: coordinates.longitude,
-                   radius: radius_params)
-           .with_distance_from(latitude: coordinates.latitude,
-                               longitude: coordinates.longitude)
-    end
-
     def keyword_params
       return nil unless params.key?(:keyword)
       return nil if params.dig(:keyword).blank?
@@ -98,7 +90,13 @@ module Finders
     end
 
     def nearby_query(query)
-      query.merge(nearby_query_part(query, coordinate_params))
+      query.merge(
+        query.nearby(latitude: coordinate_params.latitude,
+                   longitude: coordinate_params.longitude,
+                   radius: radius_params)
+           .with_distance_from(latitude: coordinate_params.latitude,
+                               longitude: coordinate_params.longitude)
+      )
     end
 
     def school_track_query(query)

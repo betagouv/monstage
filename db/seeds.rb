@@ -257,7 +257,7 @@ def populate_internship_offers
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name,
     school_track: :troisieme_generale
   )
@@ -277,7 +277,7 @@ def populate_internship_offers
       street: '128 rue brancion',
       zipcode: '75015',
       city: 'paris',
-      coordinates: { latitude: 48.866667, longitude: 2.333333 },
+      coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
       employer_name: Group.is_paqte.first.name,
       school_track: :troisieme_generale
     )
@@ -299,7 +299,7 @@ def populate_internship_offers
     street: '18 rue Damiens',
     zipcode: '75012',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name,
     school_track: :troisieme_generale
   )
@@ -321,7 +321,7 @@ def populate_internship_offers
     street: '129 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Editegis',
     school_track: :troisieme_generale
   )
@@ -344,7 +344,7 @@ def populate_internship_offers
     city: 'paris',
     remote_id: '1',
     permalink: 'https://www.google.fr',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'IBM',
   )
 
@@ -369,7 +369,7 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
@@ -393,7 +393,7 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
@@ -412,7 +412,7 @@ def populate_school_weeks
   school.save!
 
   # used to test matching between internship_offers.weeks and existing school_weeks
-  other_schools = School.nearby(latitude: 48.866667, longitude: 2.333333, radius: 60_000).limit(4)
+  other_schools = School.nearby(latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude], radius: 60_000).limit(4)
                         .where.not(id: school.id)
   other_schools.each.with_index do |another_school, i|
     another_school.update!(weeks: Week.selectable_on_school_year.limit(i+1))
@@ -508,7 +508,7 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )

@@ -28,7 +28,8 @@ module Presenters
       school_manager = create(:school_manager)
       main_teacher = create(:main_teacher, school: school_manager.school)
 
-      assert_equal url_helpers.internship_offers_path(school_manager.school.default_search_options), Presenters::User.new(main_teacher).default_internship_offers_path
+      assert_equal url_helpers.internship_offers_path(school_manager.default_search_options),
+                   Presenters::User.new(main_teacher).default_internship_offers_path
     end
 
     test '.default_internship_offers_path with student having a school/school_track also include school_track param' do
