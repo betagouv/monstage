@@ -1,0 +1,12 @@
+- sup_text   = can?(:renew, internship_offer) ? "Souhaitez-vous renouveler cette offre pour la nouvelle année scolaire ?" : ''
+- cta_text   = can?(:renew, internship_offer) ? "Renouveler" : 'Dupliquer cette offre'
+- parameters = { duplicate_id: internship_offer.to_param }
+- parameters = parameters.merge(renewed: true) if can?(:renew, internship_offer)
+div
+  .actions.d-flex.d-sm-block.d-xs-stick.text-center
+    p.mb-1.d-none.d-md-block.text-muted.small= sup_text
+    p.mb-0.w-100= link_to new_dashboard_internship_offer_path(parameters),
+                          class: 'btn btn-primary rounded-xs-0 w-100' do
+      i.fas.fa-copy
+      small.test-renew-button
+        =" #{cta_text}"
