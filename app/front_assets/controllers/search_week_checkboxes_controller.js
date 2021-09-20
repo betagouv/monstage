@@ -3,7 +3,8 @@ import { enableInput, disableInput } from  '../utils/dom';
 
 export default class extends Controller {
 
-  static targets = [ 'input',           // many checkboxes, references all inputs
+  static targets = [ 'inputCheckboxes',           // many checkboxes, references all inputs
+                     'inputSelect',     // select of current track
                      'inputPlaceholder',// a placeholder for inline view with a popover
                      'badgeList' ]      // list of weeks always visible when calendar view
 
@@ -14,16 +15,17 @@ export default class extends Controller {
 
   onSchoolTrackChange(changeEvent) {
    this.updateOnSchoolTrackChange(changeEvent.currentTarget.value)
+   this.propagateChangesToPlaceholder()
   }
 
   updateOnSchoolTrackChange(newValue) {
      if (newValue == 'troisieme_generale') {
-      $(this.inputTargets).map((i, element) => {
+      $(this.inputCheckboxesTargets).map((i, element) => {
         enableInput($(element));
         element.parentNode.classList.remove('disabled')
       });
     } else {
-      $(this.inputTargets).map((i, element) => {
+      $(this.inputCheckboxesTargets).map((i, element) => {
         disableInput($(element));
         element.parentNode.classList.add('disabled')
       });
@@ -32,7 +34,7 @@ export default class extends Controller {
 
   remove(clickEvent) {
     const $badgeRemoveButton = $(clickEvent.currentTarget);
-    $(this.inputTargets).map((i, element) => {
+    $(this.inputCheckboxesTargets).map((i, element) => {
       if (element.value ==  $badgeRemoveButton.data('week-id')) {
         element.checked = false;
         this.toggleActiveOnParentNode(element);
@@ -42,7 +44,7 @@ export default class extends Controller {
 
   // private utils
   connect(){
-    $(this.inputTargets).map((i, element) => {
+    $(this.inputCheckboxesTargets).map((i, element) => {
       if (element.checked) {
         element.parentNode.classList.add('active')
       }
@@ -62,9 +64,10 @@ export default class extends Controller {
   // private, ui complexity... do not like this kind of complexe dom manipulation
   propagateChangesToPlaceholder() {
     const selectedWeeksCount = this.getSelectedInputs().length
-    const placeholderValue = selectedWeeksCount == 0 ?
-                             'Dates de stage' :
+    const placeholderValue = this.inputSelectTarget.value != 'troisieme_generale' || selectedWeeksCount == 0 ?
+                             'Dates de stage':
                              `${selectedWeeksCount} semaine${selectedWeeksCount > 1 ? 's' : ''}`
+
     $(this.inputPlaceholderTarget).attr("placeholder", placeholderValue)
   }
 
@@ -77,5 +80,5 @@ export default class extends Controller {
   }
 
   // dom selectors
-  getSelectedInputs() { return $(this.inputTargets).filter((i, el) => el.checked) }
+  getSelectedInputs() { return $(this.inputCheckboxesTargets).filter((i, el) => el.checked) }
 }
