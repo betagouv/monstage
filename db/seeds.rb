@@ -347,6 +347,28 @@ def populate_internship_offers
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'IBM',
   )
+  # 3eme generale API
+  InternshipOffers::Api.create!(
+    employer: Users::Operator.first,
+    weeks: Week.of_previous_school_year,
+    sector: Sector.first,
+    group: Group.is_public.first,
+    is_public: false,
+    title: "Découverte des métiers administratifs de l'Education nationale",
+    description: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) propose des stages d'observation",
+    description_rich_text: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) se compose de plusieurs services répartis sur 11 étages. Ses 240 agents exercent des métiers variés et complémentaires. Les activités et compétences à découvrir lors du stage sont diverses : secrétariat, accueil et logistique, ressources humaines, juridiques, financières, statistiques ...",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    remote_id: '2',
+    permalink: 'https://www.google.fr',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Ministère de l\'Education Nationale',
+  )
 
   # 3eme prépa métier multi-line
   multiline_description = <<-MULTI_LINE
