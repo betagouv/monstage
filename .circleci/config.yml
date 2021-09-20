@@ -131,5 +131,4 @@ workflows:
               branches:
                 only:
                   - master
-                  - US/deploy-ssh
 
