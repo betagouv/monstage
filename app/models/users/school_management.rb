@@ -19,7 +19,6 @@ module Users
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
-    validate :official_email_address, if: :school_manager?
     validate :official_uai_email_address, on: :create, if: :school_manager?
 
     before_update :notify_school_manager, if: :notifiable?
@@ -74,8 +73,9 @@ module Users
 
     def official_uai_email_address
       return if school_id.blank?
+      
       unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être officielle. ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
+        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement. ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
       end
     end
 
