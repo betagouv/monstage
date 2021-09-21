@@ -199,7 +199,7 @@ chmod 600 ~/.ssh/clevercloud-monstage
 cat infra/dev/ssh/config >> ~/.ssh/config
 ```
 
-## staging app : [v2-test.monstagedetroisieme.fr](https://v2-test.monstagedetroisieme.fr)
+## staging app : [staging.monstagedetroisieme.fr](https://staging.monstagedetroisieme.fr)
 
 * deployement automated via CI (merge on master, push on staging)
 * push on staging can be "forced" manually using ```infra/staging/deploy.sh```
