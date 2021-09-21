@@ -20,7 +20,7 @@ function RadiusInput({ radius,
         type="range"
         min={MIN_RADIUS}
         max={MAX_RADIUS}
-        id="radius"
+        id="radius_slider"
         name="radius"
         className="form-control-range form-control px-0"
         value={radius}

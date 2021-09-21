@@ -58,20 +58,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     assert_presence_of(internship_offer: internship_offer_at_bordeaux)
   end
 
-  test 'search by location (radius) works' do
-    internship_offer_at_paris = create(:weekly_internship_offer,
-                                       coordinates: Coordinates.paris)
-    internship_offer_at_verneuil = create(:weekly_internship_offer,
-                                          coordinates: Coordinates.verneuil)
-
-    visit internship_offers_path
-    fill_in_city_or_zipcode(with: 'verneuil', expect: 'Verneuil', radius: 5_000)
-
-    submit_form
-    assert_presence_of(internship_offer: internship_offer_at_verneuil)
-    assert_absence_of(internship_offer: internship_offer_at_paris)
-  end
-
   test 'search by school_track works' do
     weekly_internship_offer = create(:weekly_internship_offer)
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)

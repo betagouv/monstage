@@ -345,6 +345,27 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+
+  test 'search by location (radius) works' do
+    internship_offer_at_paris = create(:weekly_internship_offer,
+                                       coordinates: Coordinates.paris)
+    internship_offer_at_verneuil = create(:weekly_internship_offer,
+                                          coordinates: Coordinates.verneuil)
+
+    get internship_offers_path(latitude: Coordinates.paris[:latitude],
+                               longitude: Coordinates.paris[:longitude],
+                               radius: 60_000)
+    assert_presence_of(internship_offer: internship_offer_at_verneuil)
+    assert_presence_of(internship_offer: internship_offer_at_paris)
+
+    get internship_offers_path(latitude: Coordinates.verneuil[:latitude],
+                               longitude: Coordinates.verneuil[:longitude],
+                               radius: 5_000)
+    assert_presence_of(internship_offer: internship_offer_at_verneuil)
+    assert_absence_of(internship_offer: internship_offer_at_paris)
+  end
+
+
   test 'GET #index?latitude=?&longitude=? as student returns internship_offer 60km around this location' do
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)

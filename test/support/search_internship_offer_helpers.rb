@@ -8,9 +8,8 @@ module SearchInternshipOfferHelpers
     assert_no_selector "a[data-test-id='#{internship_offer.id}']"
   end
 
-  def fill_in_city_or_zipcode(with:, expect:, radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER)
+  def fill_in_city_or_zipcode(with:, expect:)
     find('#input-search-by-city-or-zipcode').fill_in(with: with)
-    find('#radius').fill_in(with: radius)
     find('#test-input-location-container #downshift-1-item-0').click if with.size.positive?
     assert_equal expect,
                  find('#test-input-location-container #input-search-by-city-or-zipcode').value,

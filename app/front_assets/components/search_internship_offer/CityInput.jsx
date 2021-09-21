@@ -166,7 +166,7 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
                     </li>
                   )}
                   {!(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
-                    <input type="hidden" name='radius' value={radius} />
+                    <input id="radius" type="hidden" name='radius' value={radius} />
                   )}
                   {isOpen
                     ? searchResults.map((item, index) => (
