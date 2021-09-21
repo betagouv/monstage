@@ -330,14 +330,15 @@ class Ability
   def duplicable?(internship_offer:, user:)
     school_year_start = SchoolYear::Current.new.beginning_of_period
     main_condition = internship_offer.persisted? &&
-                     internship_offer.employer_id == user.id
+                     internship_offer.employer_id == user.id &&
     weekly_condition = internship_offer.weekly? &&
                        internship_offer.internship_offer_weeks
                                        .first
                                        .week
                                        .week_date
                                        .to_date >= school_year_start
-    main_condition && (weekly_condition || internship_offer.free_date?)
+    free_date_condition = internship_offer.free_date?
+    main_condition && (weekly_condition || free_date_condition)
   end
 
   def student_can_apply?(internship_offer:, student:)

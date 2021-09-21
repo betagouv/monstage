@@ -18,8 +18,15 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
+          # byebug
+          success_message = if(params[:commit] == 'Renouveler l\'offre')
+            'Votre offre de stage a été renouvelée pour cette année scolaire.'
+                            else
+            "L'offre de stage a été dupliquée en tenant compte" \
+            " de vos éventuelles modifications."
+                            end
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
+                      flash: { success: success_message })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -144,7 +151,7 @@ module Dashboard
 
     def internship_offer_params
       params.require(:internship_offer)
-            .permit(:title, :description_rich_text, :sector_id, :max_candidates,
+            .permit(:title, :description_rich_text, :sector_id, :max_candidates, :renewed,
                     :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
                     :street, :zipcode, :city, :department, :region, :academy,
                     :is_public, :group_id, :published_at, :type,

@@ -490,7 +490,7 @@ module InternshipOffers
     end
 
     test "GET #show as employer have duplicate/renew button for last year's internship offer" do
-      internship_offer = create(:weekly_internship_offer, created_at: 1.year.ago)
+      internship_offer = create(:weekly_internship_offer, weeks: Week.of_previous_school_year.first(2))
 
       sign_in(internship_offer.employer)
 
@@ -499,13 +499,14 @@ module InternshipOffers
       assert_select '.test-renew-button', count: 1
     end
 
-    test 'GET #show as employer does not show renew button when internship_offer has been created durent current_year' do
+    test 'GET #show as employer does show duplicate  button when internship_offer has been created durent current_year' do
       internship_offer = create(:weekly_internship_offer, created_at: SchoolYear::Current.new.beginning_of_period + 1.day)
 
       sign_in(internship_offer.employer)
 
       get internship_offer_path(internship_offer)
       assert_response :success
+      assert_select '.test-duplicate-button', count: 1
       assert_select '.test-renew-button', count: 0
     end
 

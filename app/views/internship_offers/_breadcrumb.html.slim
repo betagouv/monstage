@@ -16,24 +16,8 @@
 
 
   .col-12.col-sm-4.text-right.relative
-    - if can?(:renew, @internship_offer)
-      div
-        .actions.d-flex.d-sm-block.d-xs-stick.text-center
-          p.mb-1.d-none.d-md-block.text-muted.small= "Souhaitez-vous renouveler cette offre pour la nouvelle année scolaire ?"
-          p.mb-0.w-100= link_to new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param), class: 'btn btn-primary rounded-xs-0 w-100' do
-            i.fas.fa-copy
-            small.test-renew-button
-              |&nbsp;
-              | Renouveler
-    - elsif can?(:duplicate, @internship_offer)
-      div
-        .actions.d-flex.d-sm-block.d-xs-stick.text-center
-          p.mb-1.d-none.d-md-block.text-muted.small= ""
-          p.mb-0.w-100= link_to root_path, class: 'btn btn-primary rounded-xs-0 w-100' do
-            i.fas.fa-copy
-            small.test-renew-button
-              |&nbsp;
-              | Dupliquer cette offre
+    - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
+      = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
     - elsif internship_offer.from_api?
       = render "internship_applications/call_to_action/api", internship_offer: internship_offer
     - elsif user_signed_in?

@@ -53,6 +53,7 @@ class AbilityTest < ActiveSupport::TestCase
   test 'Employer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
+    internship_offer_api = create(:api_internship_offer, employer: employer)
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
     internship_agreement = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(employer)
@@ -61,7 +62,7 @@ class AbilityTest < ActiveSupport::TestCase
            'employers should be able to create internships')
     assert(ability.cannot?(:update, InternshipOffer.new),
            'employers should not be able to update internship offer not belonging to him')
-		assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
+    assert(ability.can?(:update, InternshipOffer.new(employer: employer)),
 					'employers should be able to update internships offer that belongs to him')
 		#renewing
 		assert(ability.cannot?(:renew, InternshipOffer.new),
@@ -69,6 +70,7 @@ class AbilityTest < ActiveSupport::TestCase
     travel_to(internship_offer.internship_offer_weeks.last.week.week_date.to_date + 1.year) do
        assert(ability.can?(:renew, internship_offer),
            'employers should be able to renew internships offer that belongs to him')
+       assert(ability.can?(:renew, internship_offer_api), 'api internship_offers can be renewed')
     end
     travel_to(Date.new(Date.today.year - 1 ,9,1)) do
        assert(ability.cannot?(:renew, internship_offer),
