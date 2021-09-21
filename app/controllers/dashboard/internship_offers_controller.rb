@@ -18,7 +18,6 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          # byebug
           success_message = if(params[:commit] == 'Renouveler l\'offre')
             'Votre offre de stage a été renouvelée pour cette année scolaire.'
                             else
