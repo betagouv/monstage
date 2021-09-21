@@ -31,7 +31,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     internship_offer_id = internship_offer.id
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
-    select '3ème', from: 'Filière cible'
+    select '3e', from: 'Filière cible'
     find("label[for='all_year_long']").click
     fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
     click_on "Modifier l'offre"
@@ -178,29 +178,21 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offers_path
 
       refute page.has_css?('.school_year')
-
       click_link('Passées')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-      assert_text('2019/2020')
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Passées (2)")
 
       select('2019/2020')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-      assert_text('2019/2020')
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Passées (2)")
 
       select('2020/2021')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      find('.nav-link.active', text: "Passées (0)")
 
       click_link('Dépubliées')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Dépubliées (0)")
 
       select('2019/2020')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-      assert_text('2019/2020 unpublished')
-      select('2020/2021')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      find('.nav-link.active', text: "Dépubliées (1)")
+
       if ENV['CONVENTION_ENABLED']
         page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
         page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')

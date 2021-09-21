@@ -6,10 +6,13 @@ module Users
     test 'student.after_sign_in_path redirects to internship_offers_path' do
       student = create(:student)
       assert_equal(student.after_sign_in_path,
-                   Rails.application
-                        .routes
-                        .url_helpers
-                        .internship_offers_path)
+                   Presenters::User.new(student).default_internship_offers_path,
+                   'failed to use default_internship_offers_path for user without targeted_offer_id')
+
+      student.targeted_offer_id= 1
+      assert_equal(student.after_sign_in_path,
+                   Rails.application.routes.url_helpers.internship_offer_path(id: 1))
+
     end
 
     test 'validate wrong mobile phone format' do

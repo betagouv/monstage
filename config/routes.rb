@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: %i[index show] do
+    collection do
+      get :search
+    end
     resources :internship_applications, only: %i[create index show update]
   end
 
