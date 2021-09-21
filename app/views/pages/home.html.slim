@@ -8,16 +8,16 @@
           | monstagedetroisieme.fr,
           br
           | ce sont
-          - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
+          - offer_count = Finders::InternshipOfferConsumer.new(params: current_user_or_visitor.default_search_options, user: current_user_or_visitor).all.total_count
           - presenter = Presenters::InternshipOffer.new
-          span.home-blue-shadow = " #{presenter.large_number(offers)} "
+          span.home-blue-shadow = " #{presenter.large_number(offer_count)} "
           | offres de stages
           br
           | qui n'attendent que vous
 
         .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
         .actions.d-flex.d-stick.d-md-none.p-2
-          = link_to search_internship_offers_path(forwardable_params), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+          = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
             = "Rechercher un stage"
 
 
