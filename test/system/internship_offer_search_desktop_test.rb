@@ -77,7 +77,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     troisieme_segpa_internship_offer = create(:troisieme_segpa_internship_offer)
     visit internship_offers_path
 
-    select('3e')
+    find('#input-search-school-track').select('3e')
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
@@ -87,14 +87,14 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     # TODO: ensure selection of school track disable week checkboxes
 
     # filtered by another
-    select('3e SEGPA')
+    find('#input-search-school-track').select('3e SEGPA')
     submit_form
     assert_absence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
     assert_selector("#input-search-by-week[readonly]", count: 1)
 
     # reset search and submit
-    select("Filière")
+    find('#input-search-school-track').select("Filière")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
@@ -122,6 +122,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   end
 
   test 'search by week works' do
+
     travel_to(Date.new(2020,9,6)) do
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
@@ -131,8 +132,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
       not_searched_internship_offer = create(:weekly_internship_offer,
                                              weeks: [not_searched_week])
       visit internship_offers_path
-
-      select('3e')
+      find('#input-search-school-track').select('3e')
       fill_in_week(week: searched_week, open_popover: true)
       submit_form
       assert_presence_of(internship_offer: searched_internship_offer)
@@ -181,7 +181,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
     fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
     fill_in_keyword(keyword: searched_keyword)
-    select('3e')
+    find('#input-search-school-track').select('3e')
     fill_in_week(week: searched_week, open_popover: true)
     submit_form
 

@@ -18,7 +18,7 @@
 .row
   .col-12= render "internship_offers/title", internship_offers: @internship_offers
 
-  = render partial: "internship_offer", collection: @internship_offers
+= render partial: "internship_offer", collection: @internship_offers
 
 .row.d-flex.d-md-none
   .col-12= paginate(@internship_offers)
