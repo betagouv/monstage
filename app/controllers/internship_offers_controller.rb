@@ -41,14 +41,22 @@ class InternshipOffersController < ApplicationController
   def check_internship_offer_is_not_discarded_or_redirect
     return unless @internship_offer.discarded?
 
-    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre a été supprimée et n'est donc plus accessible" })
+    redirect_to(
+      user_presenter.default_internship_offers_path,
+      flash: {
+        warning: "Cette offre a été supprimée et n'est donc plus accessible"
+      }
+    )
   end
 
   def check_internship_offer_is_published_or_redirect
     return if can?(:create, @internship_offer)
     return if @internship_offer.published?
 
-    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre n'est plus disponible" })
+    redirect_to(
+      user_presenter.default_internship_offers_path,
+      flash: { warning: "Cette offre n'est plus disponible" }
+    )
   end
 
   def current_user_id

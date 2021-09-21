@@ -51,7 +51,7 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: excluded_internship_offer)
     end
 
-        test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
+    test 'GET #index as operator having departement-constraint only return internship offer with location constraint' do
       operator = create(:operator)
       user_operator = create(:user_operator, operator: operator, department: 'Oise')
       included_internship_offer = create(:weekly_internship_offer,

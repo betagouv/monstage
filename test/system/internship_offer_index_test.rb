@@ -180,22 +180,5 @@ class StudentFilterOffersTest < ApplicationSystemTestCase
     find('button#test-submit-search').click
     assert_presence_of(internship_offer: internship_offer_at_paris)
     assert_absence_of(internship_offer: internship_offer_at_bordeaux)
-    
-    # visit internship_offers_path
-    # fill_in('Autour de', with: '98554')
-    # assert_equal '98554',
-    #               find('#test-input-location-container #input-search-by-city-or-zipcode').value,
-    #               'click on list view does not fill location input'
-
-    # click_button('Rechercher').click
-    # # sleep 3
-
-    # # set_
-    # new_search_content = find('#test-input-location-container #input-search-by-city-or-zipcode').value
-    # assert_equal '98554 : code postal invalide',
-    #              new_search_content,
-    #              'search is to detect wrong codes postaux'
-
-
   end
 end
