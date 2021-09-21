@@ -9,7 +9,7 @@
   input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none data-search-school-track-select-target='inputPlaceholder' data-action='focus->search-popover#show' placeholder="Dates de stage" type="text" data-search-week-checkboxes-target="inputPlaceholder" data-search-popover-target="inputPlaceholder" id="input-search-by-week" aria-label="Afficher les semaines de stage"
 
   div data-search-school-track-select-target="dateContainer"
-    div#weeks-container role="tabpanel" class="rounded-6 bg-white #{desktop_rendering ? 'd-none' : ''}" data-search-popover-target="popover"
+    div#weeks-container role="tabpanel" class="rounded-6 bg-white #{render_as_partial ? 'd-none' : ''}" data-search-popover-target="popover"
 
       #year_select.d-none aria-label="Mois de l'année scolaire : #{list_months_range}" role="tabpanel" data-search-form-target="tabPane"
         div role="tablist"

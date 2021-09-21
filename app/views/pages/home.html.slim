@@ -15,9 +15,9 @@
           br
           | qui n'attendent que vous
 
-        .col-12= render partial: "internship_offers/search/form", locals: { desktop_rendering: true, url: internship_offers_path, default_values: user_presenter.default_search_options }
+        .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
         .actions.d-flex.d-stick.d-md-none.p-2
-          = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+          = link_to search_internship_offers_path(forwardable_params), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
             = "Rechercher un stage"
 
 
