@@ -316,29 +316,38 @@ class Ability
   end
 
   def renewable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
     school_year_start = SchoolYear::Current.new.beginning_of_period
-    internship_offer.persisted? &&
-      internship_offer.employer_id == user.id &&
-      internship_offer.weekly? &&
-      internship_offer.internship_offer_weeks
-                      .last
-                      .week
-                      .week_date
-                      .to_date <= school_year_start
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.internship_offer_weeks
+                                       .last
+                                       .week
+                                       .week_date
+                                       .to_date <= school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.created_at < school_year_start.to_datetime
+    weekly_condition || free_date_condition
   end
 
   def duplicable?(internship_offer:, user:)
-    school_year_start = SchoolYear::Current.new.beginning_of_period
     main_condition = internship_offer.persisted? &&
-                     internship_offer.employer_id == user.id &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
     weekly_condition = internship_offer.weekly? &&
                        internship_offer.internship_offer_weeks
-                                       .first
+                                       .last
                                        .week
                                        .week_date
-                                       .to_date >= school_year_start
-    free_date_condition = internship_offer.free_date?
-    main_condition && (weekly_condition || free_date_condition)
+                                       .to_date > school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.created_at >= school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
   end
 
   def student_can_apply?(internship_offer:, student:)
