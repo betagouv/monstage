@@ -11,6 +11,7 @@ module Services
 
       https = Net::HTTP.new(url.host, url.port)
       https.use_ssl = true
+      https.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       request = Net::HTTP::Post.new(url)
       request['Accept'] = 'application/json'

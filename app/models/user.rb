@@ -56,6 +56,26 @@ class User < ApplicationRecord
     :email
   end
 
+  def default_search_options
+    opts = {}
+
+    opts = opts.merge(school.default_search_options) if has_relationship?(:school)
+    opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
+    opts = opts.merge(school_track: :troisieme_generale) if self.is_a?(Users::SchoolManagement)
+    if (has_relationship?(:class_room) && class_room.troisieme_generale?) || self.is_a?(Users::SchoolManagement)
+      week_ids = school.weeks
+                       .where(id: Week.selectable_on_school_year.pluck(:id))
+                       .pluck(:id)
+                       .map(&:to_s)
+      opts = opts.merge(week_ids: week_ids) if week_ids.size.positive?
+    end
+    opts
+  end
+
+  def has_relationship?(relationship)
+    respond_to?(relationship) && self.send(relationship).present?
+  end
+
   def missing_school_weeks?
     return false unless respond_to?(:school)
     return true if school.try(:weeks).try(:size).try(:zero?)

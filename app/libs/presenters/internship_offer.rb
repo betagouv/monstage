@@ -11,7 +11,7 @@ module Presenters
         options: [
           { value: 'troisieme_generale',
             id: 'search-by-troisieme-generale',
-            label: '3ème'},
+            label: '3è'},
           { value: 'troisieme_segpa',
             id: 'search-by-troisieme-segpa',
             label: '3e SEGPA'},

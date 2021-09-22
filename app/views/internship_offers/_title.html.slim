@@ -1,15 +1,12 @@
-- unless current_user&.student?
-  = render partial: 'common/filter_with_mobile_alternative',
-           locals: { large_screen_react_component: 'FilterInternshipOffer',
-                     field: :school_track,
-                     presenter: Presenters::InternshipOffer.new,
-                     matching_param: params[:school_track] }
-.row.align-items-center.no-gutters.pt-4
+.row.align-items-center.no-gutters.pt-4.bb-1.bc-light
   .col-12.col-md-6.order-3.order-md-1.mb-3.mb-sm-3.text-center
-    p.h2.mb-0#internship-offers-count.text-left
-      strong= "#{internship_offers.total_count}"
-      = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
+    h2.h2.mb-0#internship-offers-count.text-left [style=(@internship_offers.blank? ? 'color: gray' : '')]
+      - if @internship_offers.blank?
+        | Aucune offre n'est disponible.
+      - else
+        strong= "#{internship_offers.total_count}"
+        = " #{'offre'.pluralize(internship_offers.total_count)} de stage"
 
-
-  ul.col-12.d-none.d-md-flex.order-3.col-md-6.mb-0.mb-sm-3.justify-content-end
-    = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)
+  - if !@internship_offers.blank?
+    ul.col-12.d-none.d-md-flex.order-3.col-md-6.mb-0.mb-sm-3.justify-content-end
+      = paginate(@internship_offers, views_prefix: 'internship_offers', window: 2)

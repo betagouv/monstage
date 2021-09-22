@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
-import focusedInput from './FocusedInput';
 import RadiusInput from './RadiusInput';
 import { fetch } from 'whatwg-fetch';
 
 const COMPONENT_FOCUS_LABEL = 'location';
 
-// see: https://geo.api.gouv.fr/decoupage-administratif/communes 
+// see: https://geo.api.gouv.fr/decoupage-administratif/communes
 // and
 // 'https://geo.api.gouv.fr/communes?codePostal=78000' --> code curl
 // 'https://geo.api.gouv.fr/communes?code=78646&fields=code,nom,codesPostaux,code
 
-function CityInput({
-  // setters
-  setCity,
-  setLatitude,
-  setLongitude,
-  // forwarded to radiusInput
-  radius,
-  setRadius,
-  // used by container
-  focus,
-  setFocus,
-  // getters
-  city: cityOrZipcode
-}) {
+function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: defaultLongitude, radius: defaultRadius}) {
+  const searchParams = new URLSearchParams(window.location.search);
+
+  const [cityOrZipcode, setCity] = useState(searchParams.get('city') || defaultCity || "");
+  const [latitude, setLatitude] = useState(searchParams.get('latitude') || defaultLatitude || "");
+  const [longitude, setLongitude] = useState(searchParams.get('longitude') || defaultLongitude || "");
+  const [radius, setRadius] = useState(searchParams.get('radius') || defaultRadius || 60000);
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(cityOrZipcode, 100);
+  const [focus, setFocus] = useState(null);
   const inputChange = (event) => {
     setCity(event.target.value);
+    if (event.target.value == "") {
+      setLatitude("")
+      setLongitude("")
+    }
   };
   const endpoint = new URL('https://geo.api.gouv.fr/communes');
   const setLocation = (item) => {
@@ -60,7 +57,7 @@ function CityInput({
       .then((response) => response.json())
       .then(setSearchResults);
   };
-  // zipcodes represent a set of communes referenced with a code. 
+  // zipcodes represent a set of communes referenced with a code.
   // This set represents an area that have a center from which a radius can be used for other search criteria
   const searchByZipcode = (zipcode) => {
     const searchParams = new URLSearchParams();
@@ -109,92 +106,93 @@ function CityInput({
   }, [cityDebounced]);
 
   return (
-    <Downshift
-      initialInputValue={cityOrZipcode || ""}
-      onChange={setLocation}
-      selectedItem={cityOrZipcode}
-      itemToString={(item) => (item ? item.nom : '')}
-    >
-      {({
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        isOpen,
-        inputValue,
-        highlightedIndex,
-        selectedItem,
-        openMenu
-      }) => (
-        <div
-          id="test-input-location-container"
-          title="Résultat de recherche"
-          className={`input-group input-group-search col ${focusedInput({
-            check: COMPONENT_FOCUS_LABEL,
-            focus,
-          })}`}
-        >
-          <div className="input-group-prepend ">
-            <label
-              {...getLabelProps()}
-              className="input-group-text input-group-text-bigger input-group-separator"
-              htmlFor="input-search-by-city-or-zipcode"
-            >
-              <i className="fas fa-map-marker-alt fa-fw" />
-              <strong className="d-none">Autour de</strong>
+
+    <>
+      <input type="hidden" name="latitude" value={latitude} />
+      <input type="hidden" name="longitude" value={longitude} />
+
+      <Downshift
+        initialInputValue={cityOrZipcode || ""}
+        onChange={setLocation}
+        selectedItem={cityOrZipcode}
+        itemToString={(item) => (item ? item.nom : '')}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          getLabelProps,
+          getMenuProps,
+          isOpen,
+          inputValue,
+          highlightedIndex,
+          selectedItem,
+          openMenu,
+        }) => (
+          <div>
+            <label {...getLabelProps({className: ' d-inline-block d-md-none', htmlFor: "input-search-by-city-or-zipcode"})}>
+                   Ville ou code postal
             </label>
-          </div>
-
-          <input
-            {...getInputProps({
-              onChange: inputChange,
-              value: inputValue,
-              className: 'form-control pl-2 input-group-search-right-border',
-              name: 'cityOrZipcode',
-              id: 'input-search-by-city-or-zipcode',
-              placeholder: 'Lieu',
-              "aria-label": "Autour de",
-              onFocus: (event) => {
-                setFocus(COMPONENT_FOCUS_LABEL);
-                openMenu(event);
-              },
-            })}
-          />
-
-          <div className="search-in-place bg-white shadow">
-            <ul
-              {...getMenuProps({
-                className: 'p-0 m-0',
-                "aria-labelledby": 'input-search-by-city-or-zipcode',
-              })}
+            <div
+              id="test-input-location-container"
+              title="Resultat de recherche"
+              className={`input-group col p-0`}
             >
-              {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
-                <li>
-                  <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
-                </li>
-              )}
-              {isOpen
-                ? searchResults.map((item, index) => (
-                  <li
-                    {...getItemProps({
-                      className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''}`,
-                      key: item.code,
-                      index,
-                      item,
-                      style: {
-                        fontWeight: selectedItem === item ? 'bold' : 'normal',
-                      },
-                    })}
-                  >
-                    {`${item.nom} ${codePostauxSample(item.codesPostaux)}`}
-                  </li>
-                ))
-                : null}
-            </ul>
+
+              <input
+                {...getInputProps({
+                  onChange: inputChange,
+                  value: inputValue,
+                  className: 'form-control',
+                  name: 'city',
+                  id: 'input-search-by-city-or-zipcode',
+                  placeholder: 'Lieu',
+                  "aria-label": "Autour de",
+                  onFocus: (event) => {
+                    openMenu(event);
+                  },
+                })}
+              />
+
+              <div className="search-in-place bg-white shadow">
+                <ul
+                  {...getMenuProps({
+                    className: 'p-0 m-0',
+                    "aria-labelledby": 'input-search-by-city-or-zipcode',
+                  })}
+                >
+                  {(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
+                    <li>
+                      <RadiusInput radius={radius} setRadius={setRadius} focus={focus} setFocus={setFocus} />
+                    </li>
+                  )}
+                  {!(isOpen || focus == COMPONENT_FOCUS_LABEL) && (
+                    <input id="radius" type="hidden" name='radius' value={radius} />
+                  )}
+                  {isOpen
+                    ? searchResults.map((item, index) => (
+                      <li
+                        {...getItemProps({
+                          className: `py-2 px-3 listview-item ${highlightedIndex === index ? 'highlighted-listview-item' : ''
+                            }`,
+                          key: item.code,
+                          index,
+                          item,
+                          style: {
+                            fontWeight: selectedItem === item ? 'bold' : 'normal',
+                          },
+                        })}
+                      >
+                        {`${item.nom} ${codePostauxSample(item.codesPostaux)}`}
+                      </li>
+                    ))
+                    : null}
+                </ul>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-    </Downshift>
+        )}
+      </Downshift>
+    </>
   );
 }
 
