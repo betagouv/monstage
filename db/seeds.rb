@@ -419,6 +419,37 @@ MULTI_LINE
     employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
   )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
+- Présentation des principes secondaires du métier.
+- Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  acme = InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de gestionnaire de compte',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
+    employer_name: 'Oyonnax Corp.',
+    school_track: :troisieme_segpa,
+    created_at: Date.today - 1.year,
+    updated_at: Date.today - 1.year
+  )
+  school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+  acme.update_columns(
+    last_date: school_year.end_of_period,
+    first_date: school_year.beginning_of_period
+  )
 end
 
 def find_default_school_during_test
