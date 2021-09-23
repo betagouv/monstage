@@ -1,6 +1,8 @@
-fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-infos-base-type-value="#{resource.class.to_s.split("s::").first}"
+- klass = resource.class.to_s.split("s::").first
+fieldset.mt-4 [data-controller='internship-offer-infos'
+               data-internship-offer-infos-base-type-value="#{klass}"]
   legend.my-4 Offre de stage
-  .row.mt-3
+  .row.mt-3 data-controller='populate-weeks-wizard'
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       .form-group
@@ -12,7 +14,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
                       { include_blank: '-- Veuillez choisir une filière --' },
                       { class: "form-control", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
-        = form.hidden_field :type, data: {:"internship-offer-infos-target" => "type"}
+        = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type", :"populate-weeks-wizard-target" => "type" }
 
       .form-group
         = form.label :title do
@@ -37,6 +39,21 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
         = form.rich_text_area :description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_internship_offer_info_description_rich_text'}
         small.form-text data-maxlength-input-target="trixElementCharCount"
 
+      .form-group.form-group-select-max-candidates
+        = form.label :max_candidates do
+          = "Nombre total d'élèves que vous souhaitez accueillir sur l'année scolaire"
+          = form.rg2a_required_content_tag
+
+          small.form-text.text-muted
+            | Vous accueillerez ces élèves individuellement ou par groupes
+        = form.number_field :max_candidates,
+                            class: "form-control",
+                            placeholder: "Nombre d'élèves prévus pour cette offre",
+                            disabled: !resource.is_fully_editable?,
+                            required: true,
+                            data: {:"populate-weeks-wizard-target" => 'maxCandidatesInput',
+                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges"}
+
       .form-group
         div.label
           = "Type de stage"
@@ -48,7 +65,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
+                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentGroupSize" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
               | Individuel
               span.small
@@ -58,34 +75,52 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipMaxCandidates" }
+                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentGroupSize" }
 
           = label_tag :internship_type_false, class: 'd-flex flex-column' do
               | Collectif
               span.small
                 |un groupe de plusieurs élèves
 
-      div class="form-group form-group-select-max-candidates #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='maxCandidatesGroup'
-        = form.label :max_candidates do
-          = 'Nombre de stagiaires maximum par groupe'
+      div class="form-group form-group-select-max-student-group-size #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='studentsMaxGroupGroup'
+        = form.label :max_student_group_size do
+          = 'Nombre maximal d\'élèves par groupe'
           = form.rg2a_required_content_tag
-          small.form-text.text-muted Indiquez le nombre maximum de stagiaires que vous pouvez recevoir par stage collectif
-        = form.number_field :max_candidates, value: resource.max_candidates, min: 1, max: InternshipOffer::MAX_CANDIDATES_PER_GROUP, step: 1, class: 'form-control col-lg-6', disabled: !resource.is_fully_editable?, data: { :"internship-offer-infos-target" => "maxCandidatesInput" }
+          small.form-text.text-muted Renseignez ici l'effectif maximal de votre groupe d'élèves
+        = form.number_field :max_student_group_size,
+                            value: resource.max_student_group_size,
+                            min: 1,
+                            max: InternshipOffer::MAX_CANDIDATES_PER_GROUP,
+                            step: 1,
+                            class: 'form-control col-lg-6',
+                            disabled: !resource.is_fully_editable?,
+                            data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
+                                    :"populate-weeks-wizard-target"=> "studentsMaxGroupInput",
+                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges"}
 
-      = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
-                                                  required: false,
-                                                  resourceName: form.object_name,
-                                                  selectClassRoom: false,
-                                                  existingSchool: resource.school.as_json})
+      = react_component("ReservedSchoolInput",
+                        props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
+                                 required: false,
+                                 resourceName: form.object_name,
+                                 selectClassRoom: false,
+                                 existingSchool: resource.school.as_json})
 
-      div= render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: form, render_employer_components: true, label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
+      .form-group
+        = render partial: "weeks/checkbox_inputs",
+                          locals: {current_weeks: @available_weeks,
+                                   form: form,
+                                   render_employer_components: true,
+                                   label: "Choisir la ou les semaine(s) où vous pouvez accueillir un stagiaire" }
 
-      = render partial: "dashboard/stepper/internship_offer_infos/daily_hours", locals: { form: form, disabled: false }
+      = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
+               locals: { form: form, disabled: false }
 
       - if submit_button
         .row.mt-5
           .col-6.text-left style="display: flex;align-items: center"
-            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id]) do
+            = link_to edit_dashboard_stepper_organisation_path(params[:organisation_id],
+                                                               organisation_id: params[:organisation_id],
+                                                               internship_offer_info_id: params[:internship_offer_info_id]) do
               i.fa.fa-arrow-left
               = " Précédent"
           .col-6.text-right

@@ -71,6 +71,7 @@ module Dashboard::Stepper
               :employer_id,
               :description_rich_text,
               :max_candidates,
+              :max_student_group_size,
               :school_track,
               weekly_hours: [],
               new_daily_hours: {},

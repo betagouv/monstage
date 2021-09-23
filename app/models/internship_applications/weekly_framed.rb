@@ -18,7 +18,6 @@ module InternshipApplications
     before_validation :internship_offer_has_spots_left?, on: :create
     before_validation :internship_offer_week_has_spots_left?, on: :create
 
-
     def approvable?
       return false unless internship_offer_week.present?
       return false unless internship_offer.has_spots_left?

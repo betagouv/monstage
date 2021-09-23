@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     max_candidates { 1 }
+    max_student_group_size { 1 }
     blocked_weeks_count { 0 }
     sector { create(:sector) }
     tutor_name { 'Eric Dubois' }

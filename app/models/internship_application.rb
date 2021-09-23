@@ -200,6 +200,11 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
+  scope :approved_or_signed, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
   def internship_application_counter_hook
     case self
     when InternshipApplications::WeeklyFramed

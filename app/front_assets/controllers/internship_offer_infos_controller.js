@@ -7,8 +7,9 @@ export default class extends Controller {
     'type',
     'selectType',
     'weeksContainer',
-    'maxCandidatesGroup',
-    'maxCandidatesInput',
+    'studentsMaxGroupGroup',
+    'studentsMaxGroupInput',
+    'wholeYear',
   ];
   static values = {
     baseType: String
@@ -41,12 +42,12 @@ export default class extends Controller {
     }
   }
 
-  // show/hide group (maxCandidates>1) internship custom controls
-  toggleInternshipMaxCandidates(event) {
-    const groupSizeElt = $(this.maxCandidatesGroupTarget);
+  // show/hide group (maxStudentGroupSize>1) internship custom controls
+  toggleInternshipmaxStudentGroupSize(event) {
+    const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     const toggleValue = event.target.value;
     (toggleValue === 'true') ? hideElement(groupSizeElt) : showElement(groupSizeElt);
-    this.maxCandidatesInputTarget.value = 1;
+    this.studentsMaxGroupInputTarget.value = 1;
   }
 
   connect() {

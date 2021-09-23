@@ -119,17 +119,22 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     click_link("Modifier")
     find('label[for="internship_type_false"]').click # max_candidates can be set to many now
     within('.form-group-select-max-candidates') do
-      fill_in('Nombre de stagiaires maximum par groupe', with: 20)
+      fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 40)
+    end
+    within('.form-group-select-max-student-group-size') do
+      fill_in('Nombre maximal d\'élèves par groupe', with: 20)
     end
     click_button('Modifier l\'offre')
-    assert_equal 20, internship_offer.reload.max_candidates
+    assert_equal 40, internship_offer.reload.max_candidates
+    assert_equal 20, internship_offer.max_student_group_size
 
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
     click_link("Modifier")
     find('label[for="internship_type_true"]').click
     click_button('Modifier l\'offre')
-    assert_equal 1, internship_offer.reload.max_candidates
+    assert_equal 40, internship_offer.reload.max_candidates
+    assert_equal 1, internship_offer.max_student_group_size
   end
 
   test 'Employer cannot change type if applications are associated' do

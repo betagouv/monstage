@@ -147,6 +147,7 @@ fr:
         sector: Secteur
         school_track: Filière
         max_candidates: Nbr. max de candidats
+        max_student_group_size: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
 
       tutor: &tutor_fields

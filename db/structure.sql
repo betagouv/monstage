@@ -20,6 +20,7 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
 
 
 --
@@ -33,6 +34,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -46,6 +48,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
 --
@@ -59,6 +62,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
@@ -673,7 +677,8 @@ CREATE TABLE public.internship_offer_infos (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    max_student_group_size integer DEFAULT 1 NOT NULL
 );
 
 
@@ -823,7 +828,8 @@ CREATE TABLE public.internship_offers (
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
     siren character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    max_student_group_size integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2391,6 +2397,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210708094334'),
 ('20210820140527'),
 ('20210825145759'),
-('20210825150743');
+('20210825150743'),
+('20210910142500');
 
 

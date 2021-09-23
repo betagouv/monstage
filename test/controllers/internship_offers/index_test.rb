@@ -166,12 +166,16 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.first
     school = create(:school)
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room,
+                                                  :troisieme_generale,
+                                                  school: school)
+                    )
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
-                                build(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                              week: Week.first)
+                                build(:internship_offer_week,
+                                      blocked_applications_count: max_candidates,
+                                      week: week)
                               ])
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -226,6 +230,7 @@ class IndexTest < ActionDispatch::IntegrationTest
         Week.selectable_from_now_until_end_of_school_year.last
       ]
       school = create(:school, weeks: [internship_weeks[0]])
+      # building internship_offer_weeks is creating a new internship_offer
       blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
                                                               week: internship_weeks[0])
       not_blocked_internship_week = build(:internship_offer_week, blocked_applications_count: 0,

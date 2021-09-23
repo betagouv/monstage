@@ -38,6 +38,7 @@ module InternshipOffers
           field :title
           field :description
           field :max_candidates
+          field :max_student_group_size
           field :tutor_name
           field :tutor_phone
           field :tutor_email
@@ -56,6 +57,7 @@ module InternshipOffers
           field :group
           field :school_track
           field :max_candidates
+          field :max_student_group_size
           field :total_applications_count
           field :convention_signed_applications_count
           field :group

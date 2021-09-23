@@ -16,9 +16,15 @@ module StepperProxy
       # Validations
       validates :title, presence: true, length: { maximum: InternshipOffer::TITLE_MAX_CHAR_COUNT }
       validates :school_track, presence: true
-      validates :max_candidates, numericality: { only_integer: true,
-                                                 greater_than: 0,
-                                                 less_than_or_equal_to: InternshipOffer::MAX_CANDIDATES_PER_GROUP }
+      validates :max_candidates,
+                numericality: { only_integer: true,
+                                greater_than: 0,
+                                less_than_or_equal_to: InternshipOffer::MAX_CANDIDATES_PER_GROUP }
+      validates :max_student_group_size,
+                numericality: { only_integer: true,
+                                greater_than: 0,
+                                less_than_or_equal_to: :max_candidates ,
+                                message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
 

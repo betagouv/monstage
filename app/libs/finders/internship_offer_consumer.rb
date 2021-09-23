@@ -55,7 +55,9 @@ module Finders
           weekly_framed_scopes(:ignore_already_applied, {user: user})
         )
         query = query.merge(
+          # TODO : follow this track
           weekly_framed_scopes(:ignore_max_candidates_reached)
+          #  InternshipOffers::WeeklyFramed.ignore_max_candidates_reached
         )
         query = query.merge(
           weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
