@@ -63,8 +63,11 @@
 
           li.nav-item
             = link_to "#{root_url}/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf",
-                      title: "Accéder au guide d'utilisation",
-                      class: 'nav-link px-0 py-1' do
+                      title: "Accéder au guide d'utilisation (nouvelle fenêtre)",
+                      class: 'nav-link px-0 py-1',
+                      target: '_blank',
+                      rel: "external noopener noreferrer" do
+
                = "Guide d'utilisation (PDF – 2.7MB)"
 
 
