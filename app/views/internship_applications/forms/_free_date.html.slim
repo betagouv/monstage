@@ -21,19 +21,20 @@
           - if current_user.student?
               = f.hidden_field :user_id
 
-          = f.hidden_field :type
-          = f.hidden_field :internship_offer_id
-          = f.hidden_field :internship_offer_type
+          = f.hidden_field :type, value: InternshipApplications::FreeDate.name
+          = f.hidden_field :internship_offer_id, value: @internship_offer.id
+          = f.hidden_field :internship_offer_type,  value: InternshipOffer.name
 
           fieldset.mb-4
             legend.h3 Ma Candidature
 
             div class="form-group"
-              .label.required data-controller="rich-text-label"   data-rich-text-label-for-value="internship_application_motivation"
+              .label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
                 = "Pourquoi ce stage me motive"
                 small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
 
               = f.rich_text_area :motivation, class: "form-control col-12", required: true, rows: 5
+
 
           = f.fields_for :student do |resume_form|
             = render partial: "users/resume_fields",
