@@ -190,7 +190,6 @@ export default function AddressInput({
               className="form-control"
               value={street}
               onChange={(event) => {
-                console.log('set street va etre déclanché');
                 setStreet(event.target.value);
               }}
               required="required"
