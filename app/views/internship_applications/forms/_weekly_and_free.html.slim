@@ -26,14 +26,11 @@
                    resource: @internship_application,
                    resource_name: :internship_applications
 
-          - if @internship_offer.free_date?
-            = f.hidden_field :type, value: InternshipApplications::FreeDate.name
-            - if current_user.student?
-              = f.hidden_field :user_id
-          - else
-            = f.hidden_field :type, value: InternshipApplications::WeeklyFramed.name
-          = f.hidden_field :internship_offer_id, value: @internship_offer.id
-          = f.hidden_field :internship_offer_type,  value: InternshipOffer.name
+          - if @internship_offer.free_date? && current_user.student?
+            = f.hidden_field :user_id
+          = f.hidden_field :type
+          = f.hidden_field :internship_offer_id
+          = f.hidden_field :internship_offer_type
 
           fieldset.mb-4
             legend.h3 Ma Candidature
