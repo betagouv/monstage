@@ -166,7 +166,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # fill in application form
       select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
-      find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+      find('#internship_application_motivation').native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
       assert_changes lambda {
                        student.internship_applications
@@ -216,7 +216,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
 
     # fill in application form
-    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    find('#internship_application_motivation').native.send_keys('Je suis au taquet')
     refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
     assert_changes lambda {
                      student.internship_applications
@@ -265,7 +265,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
 
     # fill in application form
-    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    find('#internship_application_motivation').native.send_keys('Je suis au taquet')
     refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
     assert_changes lambda {
                      student.internship_applications
