@@ -8,7 +8,7 @@ module SearchHelper
   end
 
   def search_first_month?(month_i)
-    month_i == 9
+    month_i == list_months_for_search.keys.first
   end
 
   def search_last_month?(month_i)
@@ -72,5 +72,8 @@ module SearchHelper
         months[beginning_of_week.month].push(week)
         months
       end
+      .select{ |month_number, weeks|
+        weeks.size.positive?
+      }
   end
 end
