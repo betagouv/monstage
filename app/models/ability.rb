@@ -322,13 +322,10 @@ class Ability
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
     weekly_condition = internship_offer.weekly? &&
-                       internship_offer.internship_offer_weeks
-                                       .last
-                                       .week
-                                       .week_date
-                                       .to_date <= school_year_start
+                       internship_offer.last_date <= school_year_start
     free_date_condition = internship_offer.free_date? &&
-                          internship_offer.created_at < school_year_start.to_datetime
+                          internship_offer.last_date < school_year_start.to_datetime
+
     weekly_condition || free_date_condition
   end
 
@@ -339,13 +336,9 @@ class Ability
 
     school_year_start = SchoolYear::Current.new.beginning_of_period
     weekly_condition = internship_offer.weekly? &&
-                       internship_offer.internship_offer_weeks
-                                       .last
-                                       .week
-                                       .week_date
-                                       .to_date > school_year_start
+                       internship_offer.last_date > school_year_start
     free_date_condition = internship_offer.free_date? &&
-                          internship_offer.created_at >= school_year_start.to_datetime
+                          internship_offer.last_date >= school_year_start.to_datetime
 
     weekly_condition || free_date_condition
   end

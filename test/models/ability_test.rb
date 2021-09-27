@@ -56,8 +56,10 @@ class AbilityTest < ActiveSupport::TestCase
     internship_offer = create(:weekly_internship_offer, employer: employer)
     alt_internship_offer = create(:weekly_internship_offer, employer: another_employer)
     internship_offer_api = create(:api_internship_offer, employer: employer)
-    free_date_internship_offer = create(:free_date_internship_offer, employer: employer, created_at: Date.new(2020, 9,2))
-    alt_free_date_internship_offer = create(:free_date_internship_offer, employer: another_employer, created_at: Date.new(2020, 9,2))
+    free_date_internship_offer = create(:free_date_internship_offer, employer: employer)
+    free_date_internship_offer.update_columns(first_date: Date.new(2020, 9 ,1), last_date: Date.new(2020, 9,2))
+    alt_free_date_internship_offer = create(:free_date_internship_offer, employer: another_employer)
+    alt_free_date_internship_offer.update_columns(first_date: Date.new(2020, 9 ,1), last_date: Date.new(2020, 9,2))
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
     internship_agreement = create(:internship_agreement, internship_application: internship_application)
     ability = Ability.new(employer)
@@ -82,6 +84,7 @@ class AbilityTest < ActiveSupport::TestCase
        assert(ability.cannot?(:renew, internship_offer),
            'employers should be able to renew offer on 1st sept. date comparission less or equal')
     end
+
     assert(ability.can?(:renew, free_date_internship_offer),
            'employers should be able to renew offer that is a FreeDate one')
     assert(ability.cannot?(:renew, alt_free_date_internship_offer),
