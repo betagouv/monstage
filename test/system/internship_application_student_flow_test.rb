@@ -42,7 +42,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
-  test 'student with no class_room can submit application wheen school have not choosen week' do
+  test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
+    weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
     school = create(:school, weeks: [])
     student = create(:student, school: school)
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
@@ -57,6 +58,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     # check application is now here, ensure feature is here
     page.find '#internship-application-closeform', visible: true
     page.find('.test-missing-school-weeks', visible: true)
+    week_label = Week.selectable_from_now_until_end_of_school_year
+                     .first
+                     .human_select_text_method
+    select(week_label)
     # check for phone and email fields disabled
     disabled_input_selectors = %w[
       internship_application[student_attributes][phone]
@@ -64,7 +69,61 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     ].map do |disabled_selector|
       page.find "input[name='#{disabled_selector}'][disabled]", visible: true
     end
-    page.find("input[type='submit'][value='Valider']")
+    page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    page.find("input[type='submit'][value='Envoyer']").click
+    page.find('h1', text: 'Mes candidatures')
+    assert page.has_content?(internship_offer.title)
+  end
+
+  test 'student with no class_room can submit a 3e segpa when school have not choosen week' do
+    # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    internship_offer = create(:troisieme_segpa_internship_offer)
+
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    # check application form opener and check form is hidden by default
+    page.find '#internship-application-closeform', visible: false
+
+    click_on 'Je postule'
+    # check application is now here, ensure feature is here
+    page.find '#internship-application-closeform', visible: true
+    # check for phone and email fields disabled
+    page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    page.find("input[type='submit'][value='Envoyer']").click
+    page.find('h1', text: 'Mes candidatures')
+    assert page.has_content?(internship_offer.title)
+  end
+
+  test 'student with no class_room can submit a 3e generale application when school have not choosen week' do
+    # weeks = Week.selectable_from_now_until_end_of_school_year.to_a.first(2)
+    school = create(:school, weeks: [])
+    student = create(:student, school: school)
+    internship_offer = create(:troisieme_segpa_internship_offer)
+
+    sign_in(student)
+    visit internship_offer_path(internship_offer)
+    # check application form opener and check form is hidden by default
+    page.find '#internship-application-closeform', visible: false
+
+    click_on 'Je postule'
+    # check application is now here, ensure feature is here
+    page.find '#internship-application-closeform', visible: true
+    # check for phone and email fields disabled
+    disabled_input_selectors = %w[
+      internship_application[student_attributes][phone]
+      internship_application[student_attributes][email]
+    ].map do |disabled_selector|
+      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
+    end
+    page.find("input[type='submit'][value='Valider']").click
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    page.find("input[type='submit'][value='Envoyer']").click
+    page.find('h1', text: 'Mes candidatures')
+    assert page.has_content?(internship_offer.title)
   end
 
   test 'student can browse his internship_applications' do
@@ -107,7 +166,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
 
       # fill in application form
       select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
-      find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+      find('#internship_application_motivation').native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
       assert_changes lambda {
                        student.internship_applications
@@ -157,7 +216,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
 
     # fill in application form
-    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    find('#internship_application_motivation').native.send_keys('Je suis au taquet')
     refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
     assert_changes lambda {
                      student.internship_applications
@@ -206,7 +265,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
 
     # fill in application form
-    find('#internship_application_motivation', visible: false).set('Je suis au taquet')
+    find('#internship_application_motivation').native.send_keys('Je suis au taquet')
     refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
     assert_changes lambda {
                      student.internship_applications

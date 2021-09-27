@@ -7,4 +7,3 @@
   = Presenters::User.new(school_employee).short_name
   br
   = "#{Presenters::User.new(school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
-

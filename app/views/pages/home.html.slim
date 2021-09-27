@@ -7,11 +7,7 @@
         h1.text-white.text-center.mb-3
           | monstagedetroisieme.fr,
           br
-          | ce sont
-          - offer_count = Finders::InternshipOfferConsumer.new(params: current_user_or_visitor.default_search_options, user: current_user_or_visitor).all.total_count
-          - presenter = Presenters::InternshipOffer.new
-          span.home-blue-shadow = " #{presenter.large_number(offer_count)} "
-          | offres de stages
+          | ce sont des offres de stage
           br
           | qui n'attendent que vous
 

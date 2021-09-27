@@ -1,8 +1,12 @@
+<% matomo_production_site_id = '2' %>
+<% matomo_other_env_site_id = '3' %>
+
 <% if Rails.env.development? || Rails.env.staging? || Rails.env.review? || Rails.env.production? %>
   <!-- Matomo -->
   <script type="text/javascript">
     var _paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    // TODO: setup custom dimensions
     _paq.push(['setCustomVariable',
       '1',
       'UserType',
@@ -15,7 +19,7 @@
     (function() {
      var u="https://betagouv-matomo.osc-secnum-fr1.scalingo.io/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', '2']);
+    _paq.push(['setSiteId', <%= Rails.env.production? ? matomo_production_site_id : matomo_other_env_site_id %>]);
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
       g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
     })();

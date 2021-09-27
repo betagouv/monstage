@@ -58,7 +58,7 @@ module InternshipOffers
                      class_room: create(:class_room, :troisieme_segpa, school: school),
                      school: school))
       get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/forms/_free_date'
+      assert_template 'internship_applications/forms/_weekly_and_free'
       assert_template 'internship_applications/call_to_action/_free_date'
     end
 
@@ -103,7 +103,7 @@ module InternshipOffers
                        school: school))
         get internship_offer_path(internship_offer)
         assert_template 'internship_applications/call_to_action/_weekly'
-        assert_template 'internship_applications/forms/_weekly'
+        assert_template 'internship_applications/forms/_weekly_and_free'
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
         assert_select '.btn-primary', text: 'Je postule'
@@ -353,7 +353,7 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_template 'internship_applications/call_to_action/_weekly'
-      assert_template 'internship_applications/forms/_weekly'
+      assert_template 'internship_applications/forms/_weekly_and_free'
     end
 
     #
