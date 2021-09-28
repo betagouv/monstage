@@ -72,4 +72,5 @@ import './modes_d_emploi/MS3_Guide-stage-a-distance-2020.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-eleves.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-entreprises.png';
 import './modes_d_emploi/MS3_Mode-d-emploi-membres-pedagogique.png';
+import './modes_d_emploi/MS3_Mode-d-emploi-referents-departementaux.png';
 

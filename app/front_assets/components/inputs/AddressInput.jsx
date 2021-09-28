@@ -45,11 +45,15 @@ export default function AddressInput({
 
   const setFullAddressComponents = (item) => {
     setFullAddress(item.properties.label);
-    setStreet(
-      [item.properties.housenumber, item.properties.street]
-        .filter((component) => component)
-        .join(' '),
-    );
+    if (item.properties.housenumber === undefined) {
+      setStreet(item.properties.name);
+    } else {
+      setStreet(
+        [item.properties.housenumber, item.properties.street]
+          .filter((component) => component)
+          .join(' ')
+      )
+    };
     setCity(item.properties.city);
     setZipcode(item.properties.postcode);
     setLatitude(parseFloat(item.geometry.coordinates[1]));

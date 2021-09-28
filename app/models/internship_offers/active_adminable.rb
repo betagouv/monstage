@@ -60,7 +60,6 @@ module InternshipOffers
           field :max_student_group_size
           field :total_applications_count
           field :convention_signed_applications_count
-          field :group
           field :employer_name
           field :tutor_name
           field :tutor_phone

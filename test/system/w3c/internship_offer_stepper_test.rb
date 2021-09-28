@@ -10,7 +10,7 @@ module W3c
     include InternshipOfferInfoFormFiller
     include TutorFormFiller
 
-    test 'new_dashboard_stepper_organisation_path' do
+    test 'USE_W3C, new_dashboard_stepper_organisation_path' do
       employer = create(:employer)
       group = create(:group, name: 'hello', is_public: true)
 
@@ -21,7 +21,7 @@ module W3c
       end
     end
 
-    test 'new_dashboard_stepper_internship_offer_info_path' do
+    test 'USE_W3C, new_dashboard_stepper_internship_offer_info_path' do
       employer = create(:employer)
       organisation = create(:organisation, employer: employer)
       sector = create(:sector)
@@ -38,7 +38,7 @@ module W3c
       end
     end
 
-    test 'new_dashboard_stepper_tutor_path' do
+    test 'USE_W3C, new_dashboard_stepper_tutor_path' do
       employer = create(:employer)
       sign_in(employer)
       organisation = create(:organisation, employer: employer)

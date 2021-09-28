@@ -59,10 +59,6 @@ module InternshipOffers
         where('internship_offer_weeks_count > blocked_weeks_count')
       }
 
-      scope :internship_offers_overlaping_school_weeks, lambda { |weeks:|
-        by_weeks(weeks: weeks)
-      }
-
       scope :specific_school_year, lambda { |school_year:|
         week_ids = Week.weeks_of_school_year(school_year: school_year).pluck(:id)
 

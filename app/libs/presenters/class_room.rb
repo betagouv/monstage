@@ -18,7 +18,7 @@ module Presenters
     def self.tr_school_track(track)
       I18n.t("enum.school_tracks.#{track}")
     end
-    
+
     def self.with_school_tracks(school)
       school.class_rooms
             .current

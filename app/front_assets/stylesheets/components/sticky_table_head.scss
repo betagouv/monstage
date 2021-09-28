@@ -2,8 +2,10 @@
 // * nested th loose background color
 // * plus it fails with border-bottom (use box-shadow instead)
 .table-sticky-thead{
+
   position: relative;
   border-collapse: collapse;
+
 
   thead, .thead {
     th, .th{
@@ -40,5 +42,6 @@
       font-weight: normal;
     }
   }
+
 }
 

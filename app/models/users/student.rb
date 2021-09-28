@@ -65,10 +65,11 @@ module Users
     end
 
     def after_sign_in_path
-      return url_helpers.internship_offers_path if targeted_offer_id.nil?
-
-      options = { id: canceled_targeted_offer_id }
-      url_helpers.internship_offer_path(options)
+      if targeted_offer_id.present?
+        url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
+      else
+        Presenters::User.new(self).default_internship_offers_path
+      end
     end
 
     def custom_dashboard_path

@@ -31,7 +31,7 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
     visit reporting_internship_offers_path(department: @department)
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "11")
 
-    select '3ème'
+    select '3e'
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "1")
 
     select '3e SEGPA'
