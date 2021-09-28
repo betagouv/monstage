@@ -1,6 +1,11 @@
 import $ from 'jquery';
-import { Controller } from 'stimulus';
-import { showElement, hideElement } from '../utils/dom';
+import {
+  Controller
+} from 'stimulus';
+import {
+  showElement,
+  hideElement
+} from '../utils/dom';
 
 export default class extends Controller {
   static targets = [
@@ -13,8 +18,14 @@ export default class extends Controller {
   ];
 
   handleCheckboxesChanges() {
-    debugger;
-    if (this.typeTarget.value != 'InternshipOfferInfos::WeeklyFramed') { return; }
+    const weeklyTypes = [
+      'InternshipOfferInfos::WeeklyFramed',
+      'InternshipOffers::WeeklyFramed'
+    ];
+    if (weeklyTypes.indexOf(this.typeTarget.value) == -1) {
+      return;
+    }
+
     const activatedWeeksCount = (this.allYearLongTarget.checked) ? this.weekCheckboxesTargets.length : this.countWeeks();
     this.messaging(this.remainingWeeksToAdd(activatedWeeksCount));
   }
@@ -22,7 +33,9 @@ export default class extends Controller {
   countWeeks() {
     let activatedWeeks = 0
     $(this.weekCheckboxesTargets).each((i, el) => {
-      if (el.checked) { activatedWeeks += 1; }
+      if (el.checked) {
+        activatedWeeks += 1;
+      }
     });
     return activatedWeeks;
   }
@@ -35,7 +48,8 @@ export default class extends Controller {
 
   messaging(remaining) {
     if (remaining <= 0) {
-      hideElement($(this.hintTarget)); return;
+      hideElement($(this.hintTarget));
+      return;
     }
 
     const content = (remaining === 1) ? "1 semaine" : `${remaining} semaines`
@@ -44,10 +58,7 @@ export default class extends Controller {
   }
 
 
-  connect() {
-    this.handleCheckboxesChanges();
-  }
+  connect() { }
 
-  disconnect() {
-  }
+  disconnect() { }
 }
