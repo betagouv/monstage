@@ -46,43 +46,6 @@
   background-color: #585858;
   border: #585858;
 }
-.custom-radio-boxes{
-  .custom-radio-box-control{
-    border: 1px solid $input-border-color;
-
-    // border left on first element
-    &.custom-radio-box-control-prepend{
-      border-top-left-radius: 1rem;
-      border-bottom-left-radius: 1rem;
-      border-right: none;
-    }
-
-    // border right on last element
-    &.custom-radio-box-control-append{
-      border-top-right-radius: 1rem;
-      border-bottom-right-radius: 1rem;
-    }
-
-    label{
-      padding: .5rem 1rem;
-      cursor: pointer;
-    }
-
-    .custom-radio-box-control-input{
-      position: fixed;
-      visibility: hidden;
-    }
-    .custom-radio-box-control-input:checked + label{
-      background-color: $blue;
-      // inherit parent border radius to avoid squared background color when label is contained in rounded container
-      border-top-left-radius: inherit;
-      border-top-right-radius: inherit;
-      border-bottom-left-radius: inherit;
-      border-bottom-right-radius: inherit;
-      color: white;
-    }
-  }
-}
 
 .toggle-radio {
 	margin: 0 0 1.5rem;
@@ -194,33 +157,49 @@
   margin-top: 0;
 }
 
-@include media-breakpoint-down(md) {
-  .custom-radio-boxes{
-    .custom-radio-box-control{
-      label{
-        padding: .25rem 1rem;
-      }
-    }
-  }
-}
-@include media-breakpoint-down(sm){
-  .custom-radio-boxes{
-    .custom-radio-box-control{
-      label{
-        padding: .17rem 0.5rem;
-      }
-    }
+
+
+.hover-light-blue{
+  &:hover{
+    background: $blue_50;
+
+    /* gray/200 */
+    border: 1px solid $gray_200;
   }
 }
 
-@include media-breakpoint-down(xs){
-  .custom-radio-boxes{
-    .custom-radio-box-control{
-      label{
-        padding: .1rem 0.25rem;
-      }
-      font-size: 0.85rem;
+.custom-checkbox-search{
+  border-left: 1px solid $input-border-color;
+  border-right: 1px solid $input-border-color;
+  border-bottom: 1px solid $input-border-color;
+  border-top: 1px solid transparent;
+  &:first-child{
+    border-top: 1px solid  $input-border-color;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  &:last-child{
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  &.active{
+    background: $blue_50;
+    border-color: $blue_800!important;
+
+    .active-blue-700 {
+      color: $blue_700;
+    }
+  }
+
+  &:hover, &:focus{
+    cursor: pointer;
+    background:$blue_50;
+    border-colro: $gray_200;
+  }
+  &.disabled {
+    background: $input-disabled-bg;
+    &:hover{
+      cursor: not-allowed;
     }
   }
 }
-

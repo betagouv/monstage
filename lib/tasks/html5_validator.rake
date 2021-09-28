@@ -13,4 +13,10 @@ namespace :html5_validator do
     puts 'run Html5Validator.run'
     Html5Validator.run
   end
+
+  desc 'run all of w3c tests and adds functional screenshots from test'
+  task run_with_screenshots: :environment do
+    puts 'run Html5Validator.run with screenshots'
+    system 'FUNCTIONAL_SCREENSHOTS=true ./infra/test/w3c.sh'
+  end
 end

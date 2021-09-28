@@ -25,9 +25,11 @@ class InternshipOffersController < ApplicationController
                                                  .where(user_id: current_user_id)
                                                  .first
     end
+    module_type = "InternshipApplications::WeeklyFramed"
+    module_type = 'InternshipApplications::FreeDate' if @internship_offer.type == 'InternshipOffers::FreeDate'
+    type = current_user.try(:internship_applications_type) || module_type
     @internship_application ||= @internship_offer.internship_applications
-                                                 .build(user_id: current_user_id,
-                                                        type: current_user.try(:internship_applications_type))
+                                                 .build(user_id: current_user_id, type: type)
   end
 
   private
@@ -63,7 +65,8 @@ class InternshipOffersController < ApplicationController
         :longitude,
         :radius,
         :keyword,
-        :school_track
+        :school_track,
+        week_ids: []
       ),
       user: current_user_or_visitor
     )

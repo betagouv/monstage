@@ -17,6 +17,9 @@ jobs: # a collection of steps
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
+      - image: circleci/redis:6.0.15-alpine
+        environment:
+          REDIS_URL: localhost:6379
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -66,6 +69,10 @@ jobs: # a collection of steps
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
+          name: Wait for redis
+          command: dockerize -wait tcp://localhost:6379 -timeout 1m
+
+      - run:
           name: Load DB schema
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
@@ -76,22 +83,19 @@ jobs: # a collection of steps
       - run:
           name: Run TestUnit
           command: PARALLEL_WORKERS=4 bundle exec rake test
+      # beware, system tests on CI with more than 1 PARALLEL_WORKERS leads to OOM errors
+      - run:
+          name: Run Desktop TestSystem with headless_chrome
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
 
       - run:
-          name: Run TestSystem with headless_chrome
-          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome bundle exec rake test:system
-
-      # - run:
-      #     name: Run TestSystem with chrome
-      #     command: PARALLEL_WORKERS=1 BROWSER=chrome bundle exec rake test:system
-
-      # - run:
-      #     name: Run TestSystem with firefox
-      #     command: PARALLEL_WORKERS=1 BROWSER=firefox bundle exec rake test:system
+          name: Run Mobile TestSystem with headless_chrome using chrome's iPhone 6 emulation
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_mobile.sh
 
       - run:
-          name: w3c validation
-          command: java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
+          name: Run Desktop w3c System with headless_chrome
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_w3c.sh
+
       - run:
           name: a11y validation
           command: ~/project/node_modules/.bin/pa11y-ci $(find ~/project/tmp/w3c/*.html -name '*.html')
@@ -101,41 +105,30 @@ jobs: # a collection of steps
           path: test_results
       # See https://circleci.com/docs/2.0/deployment-integrations/ for example deploy configs
 
-  deploy_staging:
+  deploy:
     docker:
       - image: buildpack-deps:trusty
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
       - run:
-          name: Deploy Master to staging
+          name: Deploy Master to Clever Cloud
           command: |
-            git remote add staging https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID_STAGING.git
-            git push -u staging master
-  deploy_production:
-    docker:
-      - image: buildpack-deps:trusty
-    steps:
-      - checkout
-      - run:
-          name: Deploy Master to production
-          command: |
-            git remote add production https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID_PRODUCTION.git
-            git push -u production master
+            ssh-keyscan push-n2-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
+            git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            git push -u clever master
 workflows:
   version: 2
-  continuous-integration:
-    jobs:
-      - build
-      - deploy_staging:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - master
-                - FEAT/circle-ci-to-deploy-on-hold
-      - mise_en_production:
-          type: approval
-          requires:
-            - deploy_staging
-      
+  build-deploy:
+      jobs:
+        - build
+        - deploy:
+            requires:
+              - build
+            filters:
+              branches:
+                only:
+                  - master
+

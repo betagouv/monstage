@@ -8,7 +8,7 @@ module W3c
     include Devise::Test::IntegrationHelpers
     include ThirdPartyTestHelpers
 
-    test 'static pages' do
+    test 'USE_W3C, static pages' do
       prismic_root_path_stubbing do
         %i[
           root_path

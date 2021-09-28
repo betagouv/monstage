@@ -6,7 +6,11 @@
     |Ce stage ne propose pas de dates compatibles avec celles que votre établissement a ouvertes
   -else
     - presenter.split_weeks_in_trunks.each do |presenter_week_list|
-      span.badge.badge-pill.badge-secondary.mr-2.mt-2
-        = presenter_week_list.to_range_as_str
+      .d-none.d-sm-block
+        span.badge.badge-pill.badge-secondary.mr-2.mt-2
+          = presenter_week_list.to_range_as_str
+      .d-block.d-sm-none
+        div.badge-pill.badge-secondary.mr-2.mt-2.py-2
+          = presenter_week_list.to_range_as_str
 - else
   |Ce stage ne comporte pas d'indication de semaines de stages

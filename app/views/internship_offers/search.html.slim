@@ -1,0 +1,11 @@
+.modal.show.modal-fullscreen-lg  aria-modal="true" role="dialog" style="display: block"
+  .modal-dialog
+    .modal-content
+      .modal-header.bb-1.bt-light.border-bottom
+        .modal-title.col.text-center Modifier ma recherche
+
+        = link_to internship_offers_path(forwardable_params), class: "close-absolute close", data: {dismiss: "modal"}, aria: { label: "Close" } do
+          span aria-hidden="true" &times;
+
+
+      .modal-body.mt-3= render partial: "internship_offers/search/form", locals: {render_as_partial: false, url: internship_offers_path, default_values: params, form_id: :mobile_internship_offers_index_search_form }

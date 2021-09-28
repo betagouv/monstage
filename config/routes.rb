@@ -4,6 +4,9 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   authenticate :user, lambda { |u| u.is_a?(Users::God) } do
     mount Sidekiq::Web => '/sidekiq'
+    match "/split" => Split::Dashboard,
+        anchor: false,
+        via: [:get, :post, :delete]
   end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -17,7 +20,7 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get 'users/choose_profile' => 'users/registrations#choose_profile'
+    get 'users/choose_profile', to: 'users/registrations#choose_profile'
     get '/users/registrations/standby', to: 'users/registrations#confirmation_standby'
     get '/users/registrations/phone_standby', to: 'users/registrations#confirmation_phone_standby'
     post '/users/registrations/phone_validation', to: 'users/registrations#phone_validation', as: 'phone_validation'
@@ -32,6 +35,9 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: %i[index show] do
+    collection do
+      get :search
+    end
     resources :internship_applications, only: %i[create index show update]
   end
 
