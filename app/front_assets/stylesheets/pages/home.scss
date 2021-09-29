@@ -5,12 +5,35 @@
 }
 
 .bg-cover-image-homepage{
-  background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%),
-                    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
+  background-image: url('../images/homepage/hero.jpg');
   background-position: center center, center center;
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
+  border-radius: 1rem;
 }
+
+h1 {
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-link {
+  text-decoration: none !important;
+}
+
+.white {
+  color: white !important;
+}
+
+.btn {
+  border-radius: 0.3rem;
+  font-weight: normal;
+}
+
+.search-form {
+  position: relative;
+  top: -30px;
+}
+
 .nav-link.active {
   color: $bg-less-light-blue;
   font-weight: bolder;

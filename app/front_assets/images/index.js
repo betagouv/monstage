@@ -1,5 +1,6 @@
 import './favicon.png';
 import './logo-mon-stage-3e.svg';
+import './logo-mon-stage-3e-blanc-short.svg';
 import './beta-gouv-logo.png';
 
 import './onboarding/confirm-desktop.svg';
@@ -59,6 +60,7 @@ import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
 import './homepage/sponsors/Logo-anct.jpg';
+import './homepage/sponsors/logo-anct.png';
 
 import './documents_utiles/CarnetStagePro_USEA_WEB-2.jpg';
 import './documents_utiles/RienNeSertDeCourirPageBD.jpg';

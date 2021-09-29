@@ -1,60 +1,34 @@
-.bg-cover-image-homepage
-  .container
-    .row.py-3.py-sm-5
+.row
+  .col-10.offset-1
+    .bg-cover-image-homepage
+      .container.pb-5
+        .row.py-3.py-sm-3
+          .col.px-0
+            = render 'layouts/navbar_home'
+        
+        .row.no-gutters.py-3
+          .col-12
+            h1.text-white.mb-3
+              | Des stages de troisième 
+              br
+              | de premier choix !
 
-    .row.no-gutters.py-5
-      .col-12
-        h1.text-white.text-center.mb-3
-          | monstagedetroisieme.fr,
-          br
-          | ce sont des offres de stage
-          br
-          | qui n'attendent que vous
+        .row.py-2.pb-5
+          .col-6
+            p.white Trouvez votre stage parmi une grande quantité d’offres de qualité, dédiées aux élèves scolarisés en REP/REP+.
 
-        .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
-        .actions.d-flex.d-stick.d-md-none.p-2
-          = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
-            = "Rechercher un stage"
-
-
-    .row.py-3.py-sm-5
-= cache PrismicFinder do
-
-  .bg-transparent
-    .container
-      .row
-        .col-12
-          h2.py-5.text-center
-            = PrismicFinder.homepage()['homepage.slider_title'].as_text
-      .row.pb-5.mb-3.flex-md-reverse-column
-        .col-12.col-md-6.align-self-center
-          .nav.flex-md-column.column.nav-pills.nav-pills-home.py-md-5.align-middle role="tablist"
+    .row.search-form.px-5
+      .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
+      .actions.d-flex.d-stick.d-md-none.p-2
+        = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+          = "Rechercher un stage"
 
 
-            - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
-              = link_to "#news#{index}",
-                        class: "p-3 nav-link my-2 #{'active' if index == 0}",
-                        data: {toggle: "pill"}, role: 'tab',
-                        aria: {controls:"news#{index}", selected: index == 0  }  do
-                i.fas.fa-fw class="fa-#{news.get('news_icone').as_text}"
-                | &nbsp;
-                h6.h6.d-none.d-md-inline= news.get('news_title').as_text
-
-        .col-12.col-md-6
-          .tab-content.partners-height
-
-            - PrismicFinder.homepage()['homepage.news'].each_with_index do |news, index|
-              .tab-pane role="tabpanel" id="news#{index}" class="#{'active' if index == 0}"
-                .card
-                  = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
-                  .card-body
-                    = news.get('news_description').as_html(nil).html_safe
-                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
-                      = news.get('news_link_text').as_text
+    
 
 
-
-  .bg-light-blue
+.row.bg-light-blue
+  .col-12
     .container
       .row
         .col-12
@@ -102,8 +76,8 @@
             p.mb-0 Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de la recherche de leur stage.
 
 
-
-  .bg-white
+.row.bg-white
+  .col-12
     .container
       .row
         .col-12
@@ -120,28 +94,29 @@
                     documents_utiles_path,
                     class: "btn btn-outline-danger",
                     title: 'Consulter les documents utiles'
-
-  .bg-white.d-none.d-md-block
+.row.bg-white.d-none.d-md-block
+  .col-12
     .container
       .row.pb-5
-        .col-6
-          h3.h3.py-5.text-center Un projet porté par
+        .col-12
+          h2.h3.py-5 Un projet porté par
           .row
-            .col-12
-              p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-anct.jpg"),
+            .col-3
+              = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
                           alt: "Logo anct",
                           class: 'img-fluid'
-          .row
-            .col-12
-              p= image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"),
-                          alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                          class: 'img-fluid'
 
-        .col-6
-          h3.h3.py-5.text-center Nos partenaires
+            .col-3
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg"),
+                      alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                      class: 'img-fluid'
 
-          .col-12.text-center.pt-4
-            - partners_map_of_logo_url.each do |partner|
-              = render partial: "partner_link",
+.row.bg-white.d-none.d-md-block
+  .col-12
+    .container
+      .row.pb-5
+        .col-12.text-center.pt-4
+          - partners_map_of_logo_url.each do |partner|
+            = render partial: "partner_link",
                       locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
 
