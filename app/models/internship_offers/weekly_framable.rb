@@ -18,20 +18,13 @@ module InternshipOffers
                       .merge(InternshipApplication.where(user_id: user.id)))
       }
 
-      # scope :ignore_max_candidates_reached, lambda {
-      #   # .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_candidates')
-      #   joins(:internship_offer_weeks, :internship_applications)
-      #     .where('internship_offer_weeks.blocked_applications_count < internship_offers.max_student_group_size')
-      #     .where('internship_offers.max_candidates <= total des applications pour cette offre')
-      # }
-
       scope :fulfilled, lambda {
         applications_ar = InternshipApplication.arel_table
         offers_ar       = InternshipOffer.arel_table
 
         joins(internship_offer_weeks: :internship_applications)
           .where(applications_ar[:aasm_state].in(%w[approved signed]))
-          .select([offers_ar[:id], applications_ar[:id].count.as('applications_count'), offers_ar[:max_candidates]])
+          .select([offers_ar[:id], applications_ar[:id].count.as('applications_count'), offers_ar[:max_candidates], offers_ar[:max_student_group_size]])
           .group(offers_ar[:id])
           .having(applications_ar[:id].count.gteq(offers_ar[:max_candidates]))
       }
@@ -41,18 +34,18 @@ module InternshipOffers
         full_offers_ids = InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)
 
         where(offers_ar[:id].not_in(full_offers_ids))
-
       }
 
       scope :ignore_max_candidates_reached, lambda {
-        offer_weeks_ar  = InternshipOfferWeek.arel_table
-        offers_ar       = InternshipOffer.arel_table
+        offer_weeks_ar = InternshipOfferWeek.arel_table
+        offers_ar      = InternshipOffer.arel_table
 
         joins(:internship_offer_weeks)
+          .select('internship_offers.*, count(internship_offers.id)')
           .left_joins(:internship_applications)
           .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_student_group_size]))
           .where(offers_ar[:id].not_in(InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)))
-          .distinct
+          .group(offers_ar[:id])
       }
 
       scope :ignore_max_internship_offer_weeks_reached, lambda {
@@ -63,7 +56,7 @@ module InternshipOffers
         week_ids = Week.weeks_of_school_year(school_year: school_year).pluck(:id)
 
         joins(:internship_offer_weeks)
-        .where('internship_offer_weeks.week_id in (?)', week_ids)
+          .where('internship_offer_weeks.week_id in (?)', week_ids)
       }
 
       def weekly?

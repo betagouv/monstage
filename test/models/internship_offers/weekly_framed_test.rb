@@ -125,24 +125,24 @@ module InternshipsOffers
                                 max_candidates: 2,
                                 max_student_group_size: 2,
                                 weeks: [Week.first, Week.last])
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.count
+                                # byebug
+      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
-      # second_io_week = internship_offer.internship_offer_weeks.second
       create(:weekly_internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
              internship_offer_week: first_io_week)
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.count
+      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       create(:weekly_internship_application,
             :submitted,
             internship_offer: first_io_week.internship_offer,
             internship_offer_week: first_io_week)
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.count
+      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       create(:weekly_internship_application,
             :approved,
             internship_offer: first_io_week.internship_offer,
             internship_offer_week: first_io_week)
-      assert_equal 0, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.count
+      assert_equal 0, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
     end
 
     test 'has spots left' do
