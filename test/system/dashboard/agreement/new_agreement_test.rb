@@ -91,7 +91,7 @@ module Dashboard
       field_edit_is_allowed?(label: "Dates de la séquence d’observation en milieu professionnel du",
                             id: 'internship_agreement_date_range')
       #Schedule fields tests
-      assert execute_script("return document.getElementById('same_daily_planning').checked")
+      refute execute_script("return document.getElementById('same_daily_planning').checked")
       execute_script("document.getElementById('same_daily_planning').checked = false")
       refute execute_script("return document.getElementById('same_daily_planning').checked")
       execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
@@ -99,8 +99,8 @@ module Dashboard
       within '.schedules' do
         assert_text('Lundi')
         assert_text('Samedi')
-        select_editable?('internship_agreement_new_daily_hours_samedi_start', true)
-        select_editable?('internship_agreement_new_daily_hours_samedi_end', true)
+        select_editable?('internship_agreement_new_daily_hours_samedi_start', false)
+        select_editable?('internship_agreement_new_daily_hours_samedi_end', false)
       end
 
 
@@ -158,12 +158,6 @@ module Dashboard
       execute_script("document.getElementById('same_daily_planning').checked = false")
       execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
 
-      within '.schedules' do
-        select_editable?('internship_agreement_weekly_hours_start', false)
-        select_editable?('internship_agreement_weekly_hours_end', false)
-      end
-
-
       # Trix fields tests
       %w[
         internship_agreement_activity_scope_rich_text
@@ -212,10 +206,6 @@ module Dashboard
       #Schedule fields tests
       execute_script("document.getElementById('same_daily_planning').checked = false")
       execute_script("document.getElementById('daily-planning').classList.remove('d-none')")
-      within '.schedules' do
-        select_editable?('internship_agreement_weekly_hours_start', false)
-        select_editable?('internship_agreement_weekly_hours_end', false)
-      end
 
       # Trix fields tests
       %w[

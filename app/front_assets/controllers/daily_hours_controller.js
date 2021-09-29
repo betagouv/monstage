@@ -45,7 +45,6 @@ export default class extends Controller {
   }
 
   initialize_daily_hours() {
-    console.log('clean hours')
     $("#internship_agreement_new_daily_hours_lundi_start").val('9:00')
     $("#internship_agreement_new_daily_hours_mardi_start").val('9:00')
     $("#internship_agreement_new_daily_hours_mercredi_start").val('9:00')
