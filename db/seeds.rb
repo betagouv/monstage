@@ -59,7 +59,6 @@ def populate_class_rooms
   ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
   ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
-  ClassRoom.create(name: '2nd 1 - bac_pro', school_track: :bac_pro, school: school)
   create_a_discarded_class_room
 end
 
@@ -83,7 +82,7 @@ end
 def populate_operators
   Operator.create(name: "Un stage et après !",
                   website: "",
-                  logo: 'Logo-jobirl.jpg',
+                  logo: 'Logo-un-stage-et-apres.jpg',
                   target_count: 120,
                   airtable_reporting_enabled: true,
                   airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),
@@ -138,9 +137,52 @@ def populate_operators
 end
 
 def populate_sectors
-  Sector.create!(name: 'REVIEW-SECTOR-1')
-  Sector.create!(name: 'REVIEW-SECTOR-2')
-  Sector.create!(name: 'Aéronautique')
+  {
+    "Mode" => "b7564ac4-e184-41c4-a7a9-57233a9d244a",
+    "Banque et assurance" => "6a8f813b-c338-4d4f-a4cd-99a28748b57d",
+    "Audiovisuel" => "4b6427b1-b289-486d-b7ea-f33134995a99",
+    "Communication" => "63d73fd3-9ca6-4838-95aa-9901896be99c",
+    "Édition, librairie, bibliothèque" => "27c1d368-0846-4038-903f-d63b989e0fe4",
+    "Traduction, interprétation" => "1123edde-0d77-498a-85c5-2ab3d81b3cd8",
+    "Bâtiment et travaux publics (BTP)" => "ab69287d-273a-4626-b645-d98f567b22ba",
+    "Comptabilité, gestion, ressources humaines" => "bfb24e1c-aebc-4451-bb4b-569ab71a814d",
+    "Droit et justice" => "1711c7c8-89dc-48dd-9ae9-22bde1bd281b",
+    "Enseignement" => "76f3a155-e592-4bb9-8512-358a7d9db313",
+    "Recherche" => "c5db692a-2a17-403c-8151-1b3cd7dc48ba",
+    "Énergie" => "af7e191a-7065-403e-844d-197e7e1e8bdb",
+    "Environnement" => "1bbc6281-805e-4045-b85b-65a1479a865d",
+    "Logistique et transport" => "19ccd244-5fac-4ad9-8513-7488d0980f4c",
+    "Hôtellerie, restauration" => "92e5ad0c-6e30-43a4-8158-818236d01390",
+    "Tourisme" => "dd9d626b-735a-4139-87b8-8c67990b97ba",
+    "Agroéquipement" => "0b91687a-f3cc-4cd1-bfb5-b9f03994b1bd",
+    "Automobile" => "f3733e9c-f33c-4c33-9903-baf9c8e2d2fb",
+    "Construction aéronautique, ferroviaire et navale" => "ee0e9e5c-f19e-4be8-9399-2cff4f4e5ca5",
+    "Électronique" => "1ce6aa62-6d91-41e5-9135-ce97e7c94a46",
+    "Industrie alimentaire" => "95776212-ddd1-466e-ba5b-089f4e2f11ac",
+    "Industrie chimique" => "4974df57-0111-492d-ab60-3bfdad10733d",
+    "Maintenance" => "0f51b2d6-91da-4543-a0aa-d49a7be3d249",
+    "Mécanique" => "4ee8bd54-7b5b-4ae9-9603-78f303d5aea8",
+    "Verre, béton, céramique" => "463578f1-b371-4466-a13f-b0e99f783391",
+    "Informatique et réseaux" => "bfd92448-5eae-4d99-ae2c-67fffc8fec69",
+    "Jeu vidéo" => "be4bab4d-09ed-4205-bca1-1047da0500f8",
+    "Commerce et distribution" => "ae267ff2-76d5-460a-9a41-3b820c392149",
+    "Marketing, publicité" => "811621f0-e2d1-4c32-a406-5b45979d7c6d",
+    "Médical" => "1aae3b41-1394-4109-83cf-17214e1aefdd",
+    "Paramédical" => "89946839-8e18-4087-b48d-e6ee5f7d8480",
+    "Social" => "d5a7ec0f-5f9c-44cb-add0-66465b4e7d3c",
+    "Sport" => "01d06ada-55be-4ebf-8ad2-2666e7a7f521",
+    "Agriculture" => "76de34d3-b524-456d-bc91-92e133cdab2b",
+    "Filiere bois" => "aa658f28-a9ac-4a29-976f-a528c994f37a",
+    "Architecture, urbanisme et paysage" => "1ee1b11c-97ca-4b7e-a6fb-afe404f24954",
+    "Armée - Défense" => "4c0e0937-d7af-4b1c-998c-c1b1d628e3a3",
+    "Sécurité" => "ec4ce411-f8fd-4690-b51f-3290ffd069e0",
+    "Art et design" => "c1f72076-43fb-44ae-a811-d55eccf15c08",
+    "Artisanat d'art" => "1ce60ecc-273d-4c73-9b1a-2f5ee14e1bc6",
+    "Arts du spectacle" => "055b7580-c979-480f-a026-e94c8b8dc46e",
+    "Culture et patrimoine" => "c76e6364-7257-473c-89aa-c951141810ce"
+  }.map do |sector_name, sector_uuid|
+    Sector.create!(name: sector_name, uuid: sector_uuid)
+  end
 end
 
 def populate_groups
@@ -180,22 +222,27 @@ def populate_users
 end
 
 def populate_students
-  class_room_1 = ClassRoom.first
-  class_room_2 = ClassRoom.second
-  class_room_3 = ClassRoom.third
-  class_room_4 = ClassRoom.fourth
-  school = class_room_1.school
+  class_room_3e_generale     = ClassRoom.first
+  class_room_3e_prepa_metier = ClassRoom.second
+  class_room_3e_segpa        = ClassRoom.third
+  class_room_archived        = ClassRoom.fourth
 
-  with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Mesnard', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'benoit@ms3e.fr', password: 'review', first_name: 'Benoit', last_name: 'Lafond', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_1)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_2)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
-  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_4)).save!
+  school = class_room_3e_generale.school
+
+  # sans classe
+  with_class_name_for_defaults(Users::Student.new(email: 'enzo@ms3e.fr', password: 'review', first_name: 'Enzo', last_name: 'Mesnard', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 3.days.ago)).save!
+  # 3e générale
+  with_class_name_for_defaults(Users::Student.new(email: 'abdelaziz@ms3e.fr', password: 'review', first_name: 'Mohsen', last_name: 'Yahyaoui', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alfred@ms3e.fr', password: 'review', first_name: 'Alfred', last_name: 'Cali', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_generale)).save!
+  # 3e prepa métier
+  with_class_name_for_defaults(Users::Student.new(email: 'louis@ms3e.fr', password: 'review', first_name: 'Louis', last_name: 'Tardieu', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'leon@ms3e.fr', password: 'review', first_name: 'Leon', last_name: 'Dupre', school: school, birth_date: 14.years.ago, gender: 'm', confirmed_at: 2.days.ago, class_room: class_room_3e_prepa_metier)).save!
+  # 3e segpa
+  with_class_name_for_defaults(Users::Student.new(email: 'martine@ms3e.fr', password: 'review',first_name: 'Martine', last_name: 'Perchot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'alexandrine@ms3e.fr', password: 'review', first_name: 'Alexandrine', last_name: 'Gidonot',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_3e_segpa)).save!
+  # archived class_room
+  with_class_name_for_defaults(Users::Student.new(email: 'frederique@ms3e.fr', password: 'review', first_name: 'Frédérique', last_name: 'Dupin',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
+  with_class_name_for_defaults(Users::Student.new(email: 'karima@ms3e.fr', password: 'review', first_name: 'Karima', last_name: 'Belgarde',  school: school, birth_date: 14.years.ago, gender: 'f', confirmed_at: 2.days.ago, class_room: class_room_archived)).save!
 end
 
 def populate_internship_offers
@@ -216,7 +263,7 @@ def populate_internship_offers
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_paqte.first.name,
     school_track: :troisieme_generale
   )
@@ -236,7 +283,7 @@ def populate_internship_offers
       street: '128 rue brancion',
       zipcode: '75015',
       city: 'paris',
-      coordinates: { latitude: 48.866667, longitude: 2.333333 },
+      coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
       employer_name: Group.is_paqte.first.name,
       school_track: :troisieme_generale
     )
@@ -258,7 +305,7 @@ def populate_internship_offers
     street: '18 rue Damiens',
     zipcode: '75012',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name,
     school_track: :troisieme_generale
   )
@@ -300,49 +347,9 @@ def populate_internship_offers
     street: '129 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Editegis',
     school_track: :troisieme_generale
-  )
-  # Bac_pro
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Boucherie Chottin - gestion des approvisionnements frontaliers',
-    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion de la logistique routière et ferrée des approvisionnements de viande en provenance d\'Europe et d\'Argentine.',
-    employer_description_rich_text: "La Boucherie Chottin doit sa réputation à la qualité de sa viande reconnue et appréciée par plus de la moitié des restaurateurs haut de gamme de la ville de Paris.",
-    employer_website: 'http://www.dtpm.fr/',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Chottin',
-    school_track: :bac_pro
-  )
-  # Bac_pro
-  InternshipOffers::FreeDate.create!(
-    employer: Users::Employer.first,
-    sector: Sector.first,
-    group: Group.is_private.first,
-    is_public: false,
-    title: 'Scierie Rabier - maitrise des machines outils',
-    description_rich_text: 'Vous assistez la responsable de production dans la conception, l\'exécution de commandes pour différents clients.',
-    employer_description_rich_text: "La scierie Rabier attire des clients européens par la qualité de ses réalisations et la rapidité de ses livraisons point à point",
-    employer_website: 'http://www.dtpm.fr/',
-    tutor_name: 'Martin Fourcade',
-    tutor_email: 'fourcade.m@gmail.com',
-    tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
-    employer_name: 'Rabier Ent.',
-    school_track: :bac_pro
   )
   # 3eme generale API
   InternshipOffers::Api.create!(
@@ -363,8 +370,30 @@ def populate_internship_offers
     city: 'paris',
     remote_id: '1',
     permalink: 'https://www.google.fr',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'IBM',
+  )
+  # 3eme generale API
+  InternshipOffers::Api.create!(
+    employer: Users::Operator.first,
+    weeks: Week.of_previous_school_year,
+    sector: Sector.first,
+    group: Group.is_public.first,
+    is_public: false,
+    title: "Découverte des métiers administratifs de l'Education nationale",
+    description: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) propose des stages d'observation",
+    description_rich_text: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) se compose de plusieurs services répartis sur 11 étages. Ses 240 agents exercent des métiers variés et complémentaires. Les activités et compétences à découvrir lors du stage sont diverses : secrétariat, accueil et logistique, ressources humaines, juridiques, financières, statistiques ...",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    remote_id: '2',
+    permalink: 'https://www.google.fr',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Ministère de l\'Education Nationale',
   )
 
   # 3eme prépa métier multi-line
@@ -388,7 +417,7 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
   )
@@ -412,9 +441,40 @@ MULTI_LINE
     street: '128 rue brancion',
     zipcode: '75015',
     city: 'paris',
-    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
     employer_name: 'Oyonnax Corp.',
     school_track: :troisieme_segpa
+  )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Acme Corp. (banque de dépôt).
+- Présentation des principes secondaires du métier.
+- Immersion au sein d’une équipe d'admiistrateurs de comptes de la banque. Proposition de gestion de portefeuille de clients en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  acme = InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de gestionnaire de compte',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
+    employer_name: 'Oyonnax Corp.',
+    school_track: :troisieme_segpa,
+    created_at: Date.today - 1.year,
+    updated_at: Date.today - 1.year
+  )
+  school_year = SchoolYear::Floating.new(date: Date.today - 1.year)
+  acme.update_columns(
+    last_date: school_year.end_of_period,
+    first_date: school_year.beginning_of_period
   )
 end
 
@@ -431,7 +491,7 @@ def populate_school_weeks
   school.save!
 
   # used to test matching between internship_offers.weeks and existing school_weeks
-  other_schools = School.nearby(latitude: 48.866667, longitude: 2.333333, radius: 60_000).limit(4)
+  other_schools = School.nearby(latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude], radius: 60_000).limit(4)
                         .where.not(id: school.id)
   other_schools.each.with_index do |another_school, i|
     another_school.update!(weeks: Week.selectable_on_school_year.limit(i+1))
@@ -439,28 +499,12 @@ def populate_school_weeks
 end
 
 def populate_applications
-  bac_pro_studs = Users::Student.joins(:class_room)
-                                .where('class_rooms.school_track = ?', :bac_pro)
-                                .to_a
-                                .shuffle
-                                .first(4)
   trois_gene_studs = Users::Student.joins(:class_room)
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
                                    .first(4)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
-  bac_pro_offers = InternshipOffers::FreeDate.where(school_track: :bac_pro)
-
-  bac_pro_studs.each do |bac_pro_stud|
-    InternshipApplications::FreeDate.create!(
-      aasm_state: :submitted,
-      submitted_at: 10.days.ago,
-      internship_offer: bac_pro_offers.first,
-      motivation: 'Au taquet',
-      student: bac_pro_stud
-    )
-  end
   puts "every 3e generale offers receives an application first 3e generale stud"
   troisieme_generale_offers.each do |io_trois_gene|
     InternshipApplications::WeeklyFramed.create!(
@@ -534,6 +578,38 @@ def populate_applications
   )
 end
 
+def populate_aggreements
+  application = InternshipApplication.find_by(aasm_state: 'approved')
+  FactoryBot.create(
+    :internship_agreement,
+    internship_application: application,
+    employer_accept_terms: true
+  )
+  # 3eme segpa multi-line
+  multiline_description = <<-MULTI_LINE
+- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des principes fondamentaux du métier.
+- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+MULTI_LINE
+  InternshipOffers::FreeDate.create!(
+    employer: Users::Employer.first,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Découverte du travail de trader en ligne',
+    description_rich_text: multiline_description,
+    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    tutor_name: 'Martin Fourcade',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
+    employer_name: 'Oyonnax Corp.',
+    school_track: :troisieme_segpa
+  )
+end
 
 def populate_internship_weeks
   manager = Users::SchoolManagement.find_by(role: 'school_manager')

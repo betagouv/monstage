@@ -1,47 +1,46 @@
-- forwarded_params = params.permit(:latitude, :longitude, :radius, :city, :order, :direction, :keyword)
 - badge_counter = Finders::TabEmployer.new(user: current_user)
 
 - if can? :create_remote_internship_request, SupportTicket
   = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
 
-.row.no-gutters
-  ul.nav.nav-tabs.test-dashboard-nav.badge_counter-light.col-12.nav-xs-inline
-    - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-    li.nav-item= link_to dashboard_internship_offers_path(forwarded_params),
+ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
+  - is_active = controller_name == 'internship_offers' && params[:filter].blank?
+  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+      div.my-auto
+        = "En cours "
+        - if is_active
+          = " (#{internship_offers.total_count})"
+
+  - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
+  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+      div.my-auto
+        = "Dépubliées "
+        - if is_active
+          = " (#{internship_offers.total_count})"
+
+  - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
+  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
+                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+      div.my-auto
+        = "Passées "
+        - if is_active
+          = " (#{internship_offers.total_count})"
+  
+  - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
+  - is_active = current_page?(dashboard_internship_applications_path)
+
+    li.nav-item= link_to dashboard_internship_applications_path,
                          class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          = "En cours "
-          - if is_active
-            = " (#{internship_offers.total_count})"
+      div.my-auto
+        = "Conventions de stage "
+        - if badge_counter.pending_agreements_count.positive?
+          span.red-notification-badge=> "#{badge_counter.pending_agreements_count}"
+  - if can? :create_remote_internship_request, SupportTicket
+    - is_active = current_page?(new_dashboard_support_ticket_path)
 
-    - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
-    li.nav-item= link_to dashboard_internship_offers_path({filter: 'unpublished'}.merge(forwarded_params)),
+    li.nav-item= link_to new_dashboard_support_ticket_path,
                          class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          = "Dépubliées "
-          - if is_active
-            = " (#{internship_offers.total_count})"
-
-    - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
-    li.nav-item= link_to dashboard_internship_offers_path({filter: 'past'}.merge(forwarded_params)),
-                         class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          = "Passées "
-          - if is_active
-            = " (#{internship_offers.total_count})"
-    - if can?(:create, InternshipAgreement)
-      - is_active = current_page?(dashboard_internship_applications_path)
-
-      li.nav-item= link_to dashboard_internship_applications_path,
-                           class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          = "Conventions de stage "
-          - if badge_counter.pending_agreements_count.positive?
-            span.red-notification-badge=> "#{badge_counter.pending_agreements_count}"
-    - if can? :create_remote_internship_request, SupportTicket
-      - is_active = current_page?(new_dashboard_support_ticket_path)
-
-      li.nav-item= link_to new_dashboard_support_ticket_path,
-                           class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-        div.my-auto
-          | Stages à distance
+      div.my-auto
+        | Stages à distance

@@ -61,10 +61,6 @@ class InternshipOffer < ApplicationRecord
     where(permalink: nil)
   }
 
-  scope :submitted_by_operator, lambda { |user:|
-    merge(user.operator.internship_offers)
-  }
-
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
     where(school_id: [nil, school_id])
   }
@@ -103,7 +99,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
 
-  has_one :tutor
+  belongs_to :tutor, optional: true
   has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text

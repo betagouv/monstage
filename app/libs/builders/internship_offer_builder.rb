@@ -130,8 +130,9 @@ module Builders
 
     def switch_type(instance:, params:)
       if instance.with_applications?
-        error_message = 'Impossible de changer le type de stage pour cette '  \
-                        'offre car des candidatures s\'y sont déjà portées'
+        error_message = 'Impossible de modifier la filière de ' \
+                        'cette offre de stage car ' \
+                        'vous avez au moins une candidature pour cette offre.'
         instance.errors.add(:type, error_message)
         raise ActiveRecord::RecordInvalid, instance
       end

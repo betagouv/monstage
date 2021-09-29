@@ -40,6 +40,9 @@ module Html5Validator
     File.open(W3C_RESPONSE_STORED_DIR.join("#{basename}#{ext}"), 'w+') do |fd|
       fd.write("<!DOCTYPE html>")
       fd.write(page.body)
+      if ENV.has_key?('FUNCTIONAL_SCREENSHOTS')
+        page.save_screenshot(SCREENSHOT_DIR.join("#{basename}.png"), full: true)
+      end
       assert page_title_ok?(page.body)
     end
     screenshot_full_page("#{report_as.parameterize}.png")

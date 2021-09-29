@@ -13,7 +13,7 @@ class Ability
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities(user: user)
       when 'Users::MinistryStatistician' then ministry_statistician_abilities
-      when 'Users::SchoolManagement' then
+      when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
         main_teacher_abilities(user: user)   if user.main_teacher?
@@ -34,11 +34,10 @@ class Ability
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      (!internship_offer.reserved_to_school? || (internship_offer.school_id == user.school_id)) &&
-        !internship_offer.from_api? &&
-        user.try(:class_room).try(:applicable?, internship_offer)
+      student_can_apply?(student: user, internship_offer: internship_offer)
     end
-    can %i[submit_internship_application update], InternshipApplication do |internship_application|
+    can %i[submit_internship_application update],
+        InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
 
@@ -70,7 +69,8 @@ class Ability
         school.id == user.school_id
       end
     end
-    can %i[submit_internship_application validate_convention], InternshipApplication do |internship_application|
+    can %i[submit_internship_application validate_convention],
+        InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
     can %i[update destroy], InternshipApplication do |internship_application|
@@ -138,6 +138,9 @@ class Ability
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
@@ -174,6 +177,9 @@ class Ability
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
@@ -190,10 +196,10 @@ class Ability
     can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
-     can %i[see_reporting_internship_offers
-            export_reporting_dashboard_data
-            see_reporting_schools
-            see_reporting_enterprises ], User
+    can %i[see_reporting_internship_offers
+           export_reporting_dashboard_data
+           see_reporting_schools
+           see_reporting_enterprises ], User
   end
 
   def god_abilities
@@ -241,6 +247,9 @@ class Ability
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
 
     can %i[create], InternshipOfferInfo
     can %i[update edit], InternshipOfferInfo, employer_id: user.id
@@ -263,8 +272,7 @@ class Ability
             see_reporting_enterprises
             see_dashboard_enterprises_summary
             see_dashboard_administrations_summary
-            see_dashboard_associations_summary
-            ], User
+            see_dashboard_associations_summary], User
   end
 
   def ministry_statistician_abilities
@@ -276,8 +284,7 @@ class Ability
     can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
     can %i[ see_reporting_dashboard
             see_dashboard_administrations_summary
-            export_reporting_dashboard_data
-            ], User
+            export_reporting_dashboard_data], User
   end
 
   private
@@ -322,9 +329,41 @@ class Ability
     yield if block_given?
   end
 
-  def renewable?(internship_offer:, user: )
-    internship_offer.persisted? &&
-      internship_offer.created_at.to_date <= SchoolYear::Current.new.beginning_of_period &&
-      internship_offer.employer_id == user.id
+  def renewable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date <= school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date < school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
+  end
+
+  def duplicable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date > school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date >= school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
+  end
+
+  def student_can_apply?(internship_offer:, student:)
+    offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
+
+    return false if offer_is_reserved_to_another_school
+    return true if student.try(:class_room).nil?
+    return true if student.try(:class_room).try(:applicable?, internship_offer)
+
+    false
   end
 end

@@ -1,34 +1,30 @@
+.bg-cover-image-homepage
+  .container
+    .row.py-3.py-sm-5
+
+    .row.no-gutters.py-5
+      .col-12
+        h1.text-white.text-center.mb-3
+          | monstagedetroisieme.fr,
+          br
+          | ce sont des offres de stage
+          br
+          | qui n'attendent que vous
+
+        .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
+        .actions.d-flex.d-stick.d-md-none.p-2
+          = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+            = "Rechercher un stage"
+
+
+    .row.py-3.py-sm-5
 = cache PrismicFinder do
-  .bg-cover-image-homepage
-    .container
-      .row.py-3.py-sm-5
-
-      .row.no-gutters.py-5
-        .col-12
-          h1.text-white.text-center.mb-3
-            | monstagedetroisieme.fr,
-            br
-            | ce sont
-            - offers = Reporting::InternshipOffer.during_year(school_year: SchoolYear::Current.new).sum(:max_candidates)
-            - presenter = Presenters::InternshipOffer.new
-            span.home-blue-shadow = " #{presenter.large_number(offers)} "
-            | offres de stages
-            br
-            | qui n'attendent que vous
-          .col-12= react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path,
-                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                  schoolTypeVisibility: false }) do
-                .input-loading-skeleton
-
-      .row.py-3.py-sm-5
 
   .bg-transparent
     .container
       .row
         .col-12
           h2.py-5.text-center
-
             = PrismicFinder.homepage()['homepage.slider_title'].as_text
       .row.pb-5.mb-3.flex-md-reverse-column
         .col-12.col-md-6.align-self-center
@@ -55,6 +51,8 @@
                     = news.get('news_description').as_html(nil).html_safe
                     p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
                       = news.get('news_link_text').as_text
+
+
 
   .bg-light-blue
     .container

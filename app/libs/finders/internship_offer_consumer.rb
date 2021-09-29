@@ -26,12 +26,6 @@ module Finders
       common_filter { kept_offers_query.published }
     end
 
-    def school_track_by_class_room_query(query)
-      query.merge(
-        InternshipOffer.school_track(school_track: user.try(:school_track))
-      )
-    end
-
     def school_management_query
       common_filter do
         kept_offers_query.in_the_future
@@ -41,29 +35,7 @@ module Finders
     end
 
     def school_members_query
-      query = school_management_query
-      query = school_track_by_class_room_query(query) if user.try(:school_track)
-
-      # WeeklyFramed offers are dedicated to :troisieme_generale and API
-      if user.try(:class_room).try(:fit_to_weekly?)
-        unless user.missing_school_weeks?
-          query = query.merge(
-            weekly_framed_scopes(:internship_offers_overlaping_school_weeks, {weeks: user.school.weeks})
-          )
-        end
-        query = query.merge(
-          weekly_framed_scopes(:ignore_already_applied, {user: user})
-        )
-        query = query.merge(
-          weekly_framed_scopes(:ignore_max_candidates_reached)
-        )
-        query = query.merge(
-          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
-        )
-      elsif user.try(:class_room).try(:fit_to_free_date?)
-        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
-      end
-      query
+      school_management_query
     end
 
     def statistician_query

@@ -61,12 +61,6 @@ FactoryBot.define do
         create(:class_room, school: school, school_track: 'troisieme_generale')
       end
     end
-
-    factory :school_with_bac_pro_class_room do
-      after(:create) do |school|
-        create(:class_room, school: school, school_track: 'bac_pro')
-      end
-    end
   end
 
   factory :api_school, class: Api::School do

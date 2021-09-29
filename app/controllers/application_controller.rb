@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  include Instrumentation::ElasticApm
   include TurbolinkHelpers
 
   default_form_builder Rg2aFormBuilder
@@ -13,16 +12,14 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     return resource.after_sign_in_path if resource.is_a?(Users::God)
-
-    stored_location_for(resource) || resource.after_sign_in_path || super
+    stored_location_for(resource) || resource.reload.after_sign_in_path || super
   end
 
   def current_user_or_visitor
     current_user || Users::Visitor.new
   end
 
-
-  helper_method :user_presenter
+  helper_method :user_presenter, :current_user_or_visitor
   def user_presenter
     @user_presenter ||= Presenters::User.new(current_user_or_visitor)
   end

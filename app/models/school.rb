@@ -38,6 +38,15 @@ class School < ApplicationRecord
     )
   }
 
+  def default_search_options
+    {
+      city: city,
+      latitude: coordinates.lat,
+      longitude: coordinates.lon,
+      radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
+    }
+  end
+
   def has_weeks_on_current_year?
     weeks.selectable_on_school_year.exists?
   end

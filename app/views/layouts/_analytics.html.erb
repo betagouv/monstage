@@ -1,33 +1,12 @@
-<% if Rails.env.production? %>
+<% matomo_production_site_id = '2' %>
+<% matomo_other_env_site_id = '3' %>
+
+<% if Rails.env.development? || Rails.env.staging? || Rails.env.review? || Rails.env.production? %>
   <!-- Matomo -->
   <script type="text/javascript">
     var _paq = window._paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['setCustomVariable',
-      '1',
-      'UserType',
-      "<%= user_presenter.role_name %>",
-      'visit'
-    ])
-
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-      var u="//stats.data.gouv.fr/";
-      _paq.push(['setTrackerUrl', u+'piwik.php']);
-      _paq.push(['setSiteId', '119']);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-    })();
-  </script>
-  <!-- End Matomo Code -->
-<% end %>
-
-<% if Rails.env.development? || Rails.env.staging? || Rails.env.review? %>
-  <!-- Matomo -->
-  <script type="text/javascript">
-    var _paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    // TODO: setup custom dimensions
     _paq.push(['setCustomVariable',
       '1',
       'UserType',
@@ -40,7 +19,7 @@
     (function() {
      var u="https://betagouv-matomo.osc-secnum-fr1.scalingo.io/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', '2']);
+    _paq.push(['setSiteId', <%= Rails.env.production? ? matomo_production_site_id : matomo_other_env_site_id %>]);
       var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
       g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
     })();

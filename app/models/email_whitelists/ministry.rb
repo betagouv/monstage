@@ -28,19 +28,12 @@ module EmailWhitelists
       end
 
       edit do
-        configure :group do
+        field :email
+        field :group do
           associated_collection_scope do
-            resource_scope = bindings[:object].class
-                                              .reflect_on_association(:group)
-                                              .source_reflection
-                                              .scope
-            proc do |scope|
-              resource_scope ? scope.merge(resource_scope) : scope
-            end
+            Proc.new { |scope| scope.where(is_public: true) }
           end
         end
-        field :email
-        field :group, :belongs_to_association
       end
     end
 

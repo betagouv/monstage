@@ -99,7 +99,7 @@ Rails.application.configure do
                                        password: first_inbox['password'],
                                        address: first_inbox['domain'],
                                        domain: first_inbox['domain'],
-                                       port: first_inbox['smtp_ports'][0],
+                                       port: 587,
                                        authentication: :plain
                                      }
 

@@ -30,6 +30,7 @@ gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
+gem "split", require: "split/dashboard"
 
 # background jobs
 gem 'sidekiq'
@@ -41,9 +42,10 @@ gem 'rails_admin-i18n'
 
 # instrumentation
 gem "lograge"
-gem 'elastic-apm'
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
+gem "sentry-ruby"
+gem "sentry-rails"
 
 # acl
 gem 'cancancan'

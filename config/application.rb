@@ -31,14 +31,6 @@ module Monstage
     config.active_record.schema_format = :sql
 
     config.middleware.use Rack::Deflater
-
-    config.elastic_apm.disable_send = Rails.env.test?
-    config.elastic_apm.recording = !Rails.env.test?
-    config.elastic_apm.active = !Rails.env.test?
-
-    if ENV['MFO'] # sry :D using pg_13 following a brew upgrade, now db export fails...
-       ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::SchemaDumper.ignore_tables - ["spatial_ref_sys"]
-    end
   end
 end
 

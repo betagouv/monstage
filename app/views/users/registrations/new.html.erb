@@ -1,5 +1,5 @@
-<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= resource.channel %>">
-    <header class="header-account header-onboarding-card my-0">
+<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= @resource_channel %>">
+  <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0">
       <div class="col-12 align-self-end col-sm-6 h-100">
         <div class="row">
@@ -101,11 +101,12 @@
       <% end %>
 
       <% if can?(:register_with_phone, resource) %>
-        <%= render 'users/select_channel',
-                   label: 'Comment vous contacter ?',
-                   form: f,
-                   resource: resource,
-                   phone: 'SMS' do %>
+        <%= render "users/select_channel",
+                  label: "Comment vous contacter ?",
+                  form: f,
+                  resource: resource,
+                  chan: @resource_channel,
+                  phone: "SMS" do %>
           <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
         <% end %>
       <% else %>

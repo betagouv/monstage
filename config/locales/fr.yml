@@ -428,9 +428,8 @@ fr:
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3ème'
+      troisieme_generale: '3e'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
-      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

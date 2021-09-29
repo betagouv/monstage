@@ -27,11 +27,11 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'employer can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
-    internship_offer = create(:bac_pro_internship_offer, employer: employer)
+    internship_offer = create(:troisieme_segpa_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
     sign_in(employer)
     visit edit_dashboard_internship_offer_path(internship_offer)
-    select '3ème', from: 'Filière cible'
+    select '3e', from: 'Filière cible'
     find("label[for='all_year_long']").click
     fill_in_trix_editor('internship_offer_description_rich_text', with: 'description')
     click_on "Modifier l'offre"
@@ -41,7 +41,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
     visit edit_dashboard_internship_offer_path(internship_offer)
 
-    select 'Bac pro', from: 'Filière cible'
+    select '3e SEGPA', from: 'Filière cible'
     fill_in 'internship_offer_title', with: 'editok'
     find('#internship_offer_description_rich_text', visible: false).set("On fait des startup d'état qui déchirent")
     click_on "Modifier l'offre"
@@ -140,10 +140,51 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
     click_link("Modifier")
-    select('Bac pro', from: 'Filière cible')
+    select('3e SEGPA', from: 'Filière cible')
     click_button('Modifier l\'offre')
     assert_equal 'InternshipOffers::WeeklyFramed', internship_offer.reload.type
     find("#error_explanation[role='alert']")
+  end
+
+  test 'Employer can renew an old internship offer' do
+    employer = create(:employer)
+    older_weeks = [Week.of_previous_school_year.first]
+    old_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: older_weeks
+    )
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
+    page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
+    click_link("Renouveler")
+    assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
+    click_button('Renouveler l\'offre')
+    assert_selector(
+      "#alert-text",
+      text: "Votre offre de stage a été renouvelée pour cette année scolaire."
+    )
+  end
+
+  test 'Employer can duplicate an internship offer' do
+    employer = create(:employer)
+    older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+    current_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: older_weeks
+    )
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
+    page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
+    click_link("Dupliquer cette offre")
+    assert_selector('h1', text: "Dupliquer une offre")
+    click_button('Dupliquer l\'offre')
+    assert_selector(
+      "#alert-text",
+      text: "L'offre de stage a été dupliquée en tenant " \
+            "compte de vos éventuelles modifications."
+    )
   end
 
   test 'Employer can filter internship_offers from dashboard filters' do
@@ -178,23 +219,17 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offers_path
 
       refute page.has_css?('.school_year')
-
       click_link('Passées')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-      assert_text('2019/2020')
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Passées (2)")
 
       select('2019/2020')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 2)
-      assert_text('2019/2020')
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Passées (2)")
 
       select('2020/2021')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      find('.nav-link.active', text: "Passées (0)")
 
       click_link('Dépubliées')
-      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
-      assert_text('2019/2020 unpublished')
+      find('.nav-link.active', text: "Dépubliées (0)")
 
       select('2019/2020')
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
@@ -205,6 +240,16 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
       click_link('Conventions de stage')
       page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      
+      # TouDoux : Master à merger ?
+      # find('.nav-link.active', text: "Dépubliées (1)")
+
+      # if ENV['CONVENTION_ENABLED']
+      #   page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
+      #   page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      #   click_link('Conventions à signer')
+      #   page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
+      # end
     end
   end
 
