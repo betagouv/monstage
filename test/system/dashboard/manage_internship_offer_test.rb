@@ -240,16 +240,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
       click_link('Conventions de stage')
       page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      
-      # TouDoux : Master à merger ?
-      # find('.nav-link.active', text: "Dépubliées (1)")
-
-      # if ENV['CONVENTION_ENABLED']
-      #   page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
-      #   page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      #   click_link('Conventions à signer')
-      #   page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      # end
     end
   end
 
