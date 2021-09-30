@@ -31,12 +31,12 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
   - is_active = current_page?(dashboard_internship_applications_path)
 
-    li.nav-item= link_to dashboard_internship_applications_path,
-                         class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        = "Conventions de stage "
-        - if badge_counter.pending_agreements_count.positive?
-          span.red-notification-badge=> "#{badge_counter.pending_agreements_count}"
+  li.nav-item= link_to dashboard_internship_applications_path,
+                       class: "d-flex px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+    div.my-auto
+      = "Conventions de stage "
+      - if badge_counter.pending_agreements_count.positive?
+        span.red-notification-badge=> "#{badge_counter.pending_agreements_count}"
   - if can? :create_remote_internship_request, SupportTicket
     - is_active = current_page?(new_dashboard_support_ticket_path)
 
