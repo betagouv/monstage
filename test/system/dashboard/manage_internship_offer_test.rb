@@ -121,7 +121,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     within('.form-group-select-max-candidates') do
       fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 40)
     end
-    within('.form-group-select-max-student-group-size') do
+    within('.form-group-select-max-students-per-group') do
       fill_in('Nombre maximal d\'élèves par groupe', with: 20)
     end
     click_button('Modifier l\'offre')

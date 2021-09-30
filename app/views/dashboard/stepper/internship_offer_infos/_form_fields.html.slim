@@ -65,7 +65,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentGroupSize" }
+                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
               | Individuel
               span.small
@@ -75,14 +75,14 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentGroupSize" }
+                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
 
           = label_tag :internship_type_false, class: 'd-flex flex-column' do
               | Collectif
               span.small
                 |un groupe de plusieurs élèves
 
-      div class="form-group form-group-select-max-student-group-size #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='studentsMaxGroupGroup'
+      div class="form-group form-group-select-max-students-per-group #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='studentsMaxGroupGroup'
         = form.label :max_students_per_group do
           = 'Nombre maximal d\'élèves par groupe'
           = form.rg2a_required_content_tag

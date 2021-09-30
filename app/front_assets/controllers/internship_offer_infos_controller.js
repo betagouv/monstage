@@ -42,8 +42,8 @@ export default class extends Controller {
     }
   }
 
-  // show/hide group (maxStudentGroupSize>1) internship custom controls
-  toggleInternshipmaxStudentGroupSize(event) {
+  // show/hide group (maxStudentsPerGroup>1) internship custom controls
+  toggleInternshipmaxStudentsPerGroup(event) {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     const toggleValue = event.target.value;
     (toggleValue === 'true') ? hideElement(groupSizeElt) : showElement(groupSizeElt);
