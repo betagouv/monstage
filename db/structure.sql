@@ -678,7 +678,7 @@ CREATE TABLE public.internship_offer_infos (
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    max_student_group_size integer DEFAULT 1 NOT NULL
+    max_students_per_group integer DEFAULT 1 NOT NULL
 );
 
 
@@ -829,7 +829,7 @@ CREATE TABLE public.internship_offers (
     siren character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    max_student_group_size integer DEFAULT 1 NOT NULL
+    max_students_per_group integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2398,6 +2398,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743'),
-('20210910142500');
+('20210910142500'),
+('20210930082835');
 
 

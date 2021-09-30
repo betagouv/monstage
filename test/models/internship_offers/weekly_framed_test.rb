@@ -36,22 +36,22 @@ module InternshipsOffers
       assert_not_empty internship_offer.errors[:coordinates]
     end
 
-    test 'max_student_group_size' do
+    test 'max_students_per_group' do
       internship_offer = build(:weekly_internship_offer,
                                max_candidates: 2,
-                               max_student_group_size: 1,
+                               max_students_per_group: 1,
                                weeks: [Week.first, Week.last])
       assert internship_offer.valid?
 
       internship_offer = build(:weekly_internship_offer,
                                max_candidates: 2,
-                               max_student_group_size: 2,
+                               max_students_per_group: 2,
                                weeks: [Week.first, Week.last])
       assert internship_offer.valid?
 
       internship_offer = build(:weekly_internship_offer,
                                max_candidates: 2,
-                               max_student_group_size: 3,
+                               max_students_per_group: 3,
                                weeks: [Week.first, Week.last])
       refute internship_offer.valid?
     end
@@ -59,7 +59,7 @@ module InternshipsOffers
     test 'group size is lower than max_candidates' do
       internship_offer = build(:weekly_internship_offer,
                                 max_candidates: 2,
-                                max_student_group_size: 3,
+                                max_students_per_group: 3,
                                 weeks: [Week.first, Week.last])
       refute internship_offer.valid?
       error_message = "Effectif max. d'un groupe d'élèves " \
@@ -73,7 +73,7 @@ module InternshipsOffers
     test 'fulfilled internship_offers' do
       internship_offer = create(:weekly_internship_offer,
                                 max_candidates: 2,
-                                max_student_group_size: 1,
+                                max_students_per_group: 1,
                                 weeks: [Week.first, Week.last])
       assert_equal 0, InternshipOffers::WeeklyFramed.fulfilled.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
@@ -98,7 +98,7 @@ module InternshipsOffers
     test 'uncompleted internship_offers' do
       internship_offer = create(:weekly_internship_offer,
                                 max_candidates: 2,
-                                max_student_group_size: 1,
+                                max_students_per_group: 1,
                                 weeks: [Week.first, Week.last])
       assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.count
       first_io_week = internship_offer.internship_offer_weeks.first
@@ -123,7 +123,7 @@ module InternshipsOffers
     test 'ignore_max_candidates_reached internship_offers' do
       internship_offer = create(:weekly_internship_offer,
                                 max_candidates: 2,
-                                max_student_group_size: 2,
+                                max_students_per_group: 2,
                                 weeks: [Week.first, Week.last])
                                 # byebug
       assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count

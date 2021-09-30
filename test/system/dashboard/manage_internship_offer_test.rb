@@ -126,7 +126,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
     click_button('Modifier l\'offre')
     assert_equal 40, internship_offer.reload.max_candidates
-    assert_equal 20, internship_offer.max_student_group_size
+    assert_equal 20, internship_offer.max_students_per_group
 
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
@@ -134,7 +134,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find('label[for="internship_type_true"]').click
     click_button('Modifier l\'offre')
     assert_equal 40, internship_offer.reload.max_candidates
-    assert_equal 1, internship_offer.max_student_group_size
+    assert_equal 1, internship_offer.max_students_per_group
   end
 
   test 'Employer cannot change type if applications are associated' do

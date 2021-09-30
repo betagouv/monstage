@@ -52,7 +52,7 @@ module Api
               :sector_uuid,
               :type,
               :max_candidates,
-              :max_student_group_size,
+              :max_students_per_group,
               coordinates: {},
               weeks: []
             )
@@ -72,7 +72,7 @@ module Api
               :permalink,
               :sector_uuid,
               :max_candidates,
-              :max_student_group_size,
+              :max_students_per_group,
               :published_at,
               coordinates: {},
               weeks: []

@@ -24,7 +24,7 @@ module InternshipOffers
 
         joins(internship_offer_weeks: :internship_applications)
           .where(applications_ar[:aasm_state].in(%w[approved signed]))
-          .select([offers_ar[:id], applications_ar[:id].count.as('applications_count'), offers_ar[:max_candidates], offers_ar[:max_student_group_size]])
+          .select([offers_ar[:id], applications_ar[:id].count.as('applications_count'), offers_ar[:max_candidates], offers_ar[:max_students_per_group]])
           .group(offers_ar[:id])
           .having(applications_ar[:id].count.gteq(offers_ar[:max_candidates]))
       }
@@ -43,7 +43,7 @@ module InternshipOffers
         joins(:internship_offer_weeks)
           .select('internship_offers.*, count(internship_offers.id)')
           .left_joins(:internship_applications)
-          .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_student_group_size]))
+          .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_students_per_group]))
           .where(offers_ar[:id].not_in(InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)))
           .group(offers_ar[:id])
       }

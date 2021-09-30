@@ -83,12 +83,12 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                 |un groupe de plusieurs élèves
 
       div class="form-group form-group-select-max-student-group-size #{resource.is_individual? ? 'd-none' : ''}" data-internship-offer-infos-target='studentsMaxGroupGroup'
-        = form.label :max_student_group_size do
+        = form.label :max_students_per_group do
           = 'Nombre maximal d\'élèves par groupe'
           = form.rg2a_required_content_tag
           small.form-text.text-muted Renseignez ici l'effectif maximal de votre groupe d'élèves
-        = form.number_field :max_student_group_size,
-                            value: resource.max_student_group_size,
+        = form.number_field :max_students_per_group,
+                            value: resource.max_students_per_group,
                             min: 1,
                             max: InternshipOffer::MAX_CANDIDATES_PER_GROUP,
                             step: 1,

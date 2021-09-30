@@ -34,7 +34,7 @@ module InternshipOffers
         field :remote_id
         field :permalink
         field :max_candidates
-        field :max_student_group_size
+        field :max_students_per_group
         field :is_public
       end
 
@@ -44,7 +44,7 @@ module InternshipOffers
         field :zipcode
         field :city
         field :max_candidates
-        field :max_student_group_size
+        field :max_students_per_group
         field :total_applications_count
         field :approved_applications_count
         field :rejected_applications_count
@@ -88,7 +88,7 @@ module InternshipOffers
                  permalink
                  sector_uuid
                  max_candidates
-                 max_student_group_size
+                 max_students_per_group
                  published_at],
         methods: [:formatted_coordinates]
       ))

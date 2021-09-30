@@ -6,7 +6,7 @@ module Presenters
     class DimensionByOffer < BaseDimension
       ATTRS = %i[description
                  human_max_candidates
-                 human_max_student_group_size
+                 human_max_students_per_group
                  published_at
                  discarded_at
                  submitted_applications_count
@@ -41,12 +41,12 @@ module Presenters
         ' Nombre d\'élèves accueillis pour ce stage'
       end
 
-      def human_max_student_group_size
-        if instance.max_student_group_size == 1
+      def human_max_students_per_group
+        if instance.max_students_per_group == 1
           ' Stage individuel (un seul élève par stage)'
         else
           " Stage collectif (par groupe " \
-          "de #{instance.max_student_group_size} élèves)"
+          "de #{instance.max_students_per_group} élèves)"
         end
       end
 
