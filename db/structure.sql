@@ -502,8 +502,7 @@ CREATE TABLE public.internship_agreement_presets (
     school_delegation_to_sign_delivered_at date,
     school_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    weekly_hours text[] DEFAULT '{}'::text[]
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
