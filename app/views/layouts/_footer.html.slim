@@ -61,6 +61,15 @@
 
           li.nav-item= link_to "Statistiques", statistiques_path, class: 'nav-link px-0 py-1', title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
 
+          li.nav-item
+            = link_to "#{root_url}/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf",
+                      title: "Accéder au guide d'utilisation (nouvelle fenêtre)",
+                      class: 'nav-link px-0 py-1',
+                      target: '_blank',
+                      rel: "external noopener noreferrer" do
+
+               = "Guide d'utilisation (PDF – 6.5MB)"
+
 
 
 .row.d-print-none.bg-light-blue
