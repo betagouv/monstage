@@ -41,6 +41,8 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       # Back to interfaces
       sign_in(school_manager)
       visit edit_dashboard_school_path(school)
+      # Remove modal
+      find('.modal .close').click
       all(".custom-control.custom-checkbox label").first.click
       find('input[type="submit"]').click
       find "#alert-text", text: school_message

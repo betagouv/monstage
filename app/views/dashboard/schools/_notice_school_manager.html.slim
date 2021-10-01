@@ -1,0 +1,15 @@
+.modal id="notice-school-manager-empty-weeks" tabindex="-1" role="dialog" data-controller='dashboard-schools-modal'
+  .modal-dialog.modal-dialog-centered role="document"
+    .modal-content
+      .modal-body.modal-open
+        .row.pb-4
+          .col-12.align-right.text-right
+            button type="button" class="close" data-dismiss="modal" aria-label="Close"
+              span aria-hidden="true" &times;
+        .row
+          .col-6.text-center
+            = image_tag asset_pack_path("media/images/homepage/explications.svg"), alt: 'horloge', height: '150px'
+          .col-6
+            p Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.
+            = link_to "Renseigner maintenant", edit_dashboard_school_path(school.id), class: "btn btn-primary", style: "border-radius: 0.5rem"
+      .modal-footer.actions

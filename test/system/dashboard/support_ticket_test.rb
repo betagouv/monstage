@@ -6,7 +6,7 @@ class SupportTicketTest < ApplicationSystemTestCase
   include ActiveJob::TestHelper
 
   test 'as School Manager, I can send a support ticket with remote internship fields informations' do
-    school_manager = create(:school, :with_school_manager).school_manager
+    school_manager = create(:school, :with_weeks, :with_school_manager).school_manager
     sign_in(school_manager)
 
     visit school_manager.custom_dashboard_path

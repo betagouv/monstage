@@ -2,6 +2,7 @@
 
 = render partial: 'dashboard/schools/navbar', locals: { school: @school, render_ux_guidelines: true }
 - unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
+
 - if unaffected_students.present?
   div data-controller='students'
     = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
