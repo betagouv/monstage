@@ -28,6 +28,20 @@
 
       <%= f.hidden_field :type %>
       <%= f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id) %>
+
+      <% if can?(:choose_role, resource) %>
+        <div class="form-group custom-label-container">
+          <%= f.select :role,
+                        options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
+                        { prompt: '-- Veuillez choisir une fonction --' },
+                        { class: 'custom-select', required: true, data: {action: 'change->signup#refreshRoleFields'} } %>
+          <%= f.label :role do %>
+            Fonction
+            <%= f.rg2a_required_content_tag %>
+          <% end %>
+        </div>
+      <% end %>
+
       <% if can?(:choose_school, resource) %>
         <%= react_component(
           "SearchSchool", props: {
@@ -56,18 +70,7 @@
           <%= f.rg2a_required_content_tag %>
         <% end %>
       </div>
-      <% if can?(:choose_role, resource) %>
-      <div class="form-group custom-label-container">
-        <%= f.select :role,
-                      options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
-                      { prompt: '-- Veuillez choisir une fonction --' },
-                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
-        <%= f.label :role do %>
-          Fonction
-          <%= f.rg2a_required_content_tag %>
-        <% end %>
-      </div>
-      <% end %>
+      
 
       <% if can?(:choose_gender_and_birthday, resource) %>
         <div class="form-group custom-label-container" data-controller="a11y-date-input">

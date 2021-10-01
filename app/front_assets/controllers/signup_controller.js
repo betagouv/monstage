@@ -2,6 +2,7 @@ import $ from 'jquery';
 import { Controller } from 'stimulus';
 import ActionCable from 'actioncable';
 import { toggleElement, showElement, hideElement } from '../utils/dom';
+import { faCommentsDollar } from '@fortawesome/free-solid-svg-icons';
 
 export default class extends Controller {
   static targets = ['handicapGroup',
@@ -28,6 +29,11 @@ export default class extends Controller {
     this.show(this.emailBlocTarget)
   }
 
+  refreshRoleFields(event) {
+    this.refreshEmailFieldLabel(event)
+    this.refreshClassField(event)
+  }
+
   // on change email address, ensure user is shown academia address requirement when neeeded
   refreshEmailFieldLabel(event) {
     $(this.labelTarget).text(
@@ -35,6 +41,14 @@ export default class extends Controller {
       "Adresse électronique académique" :
       'Adresse électronique (e-mail)'
     )
+  }
+
+  refreshClassField(event) {
+    if ((event.target.value == 'school_manager') || (event.target.value == 'other')) {
+      $('#user_class_room_id').hide()
+    } else {
+      $('#user_class_room_id').show()
+    }
   }
 
   // show/hide handicap input if checkbox is checked
