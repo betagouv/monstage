@@ -19,7 +19,7 @@ module StepperProxy
       validates :max_candidates,
                 numericality: { only_integer: true,
                                 greater_than: 0,
-                                less_than_or_equal_to: InternshipOffer::MAX_CANDIDATES_PER_GROUP }
+                                less_than_or_equal_to: InternshipOffer::MAX_CANDIDATES_HIGHEST }
       validates :max_students_per_group,
                 numericality: { only_integer: true,
                                 greater_than: 0,

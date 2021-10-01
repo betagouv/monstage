@@ -90,7 +90,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
         = form.number_field :max_students_per_group,
                             value: resource.max_students_per_group,
                             min: 1,
-                            max: InternshipOffer::MAX_CANDIDATES_PER_GROUP,
+                            max: InternshipOffer::MAX_CANDIDATES_HIGHEST,
                             step: 1,
                             class: 'form-control col-lg-6',
                             disabled: !resource.is_fully_editable?,
