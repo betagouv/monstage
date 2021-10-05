@@ -362,7 +362,7 @@ fr:
         users/student:
           attributes:
             gender:
-              blank: Veuillez saisir un genre
+              blank: Veuillez faire un choix parmi les options de genre proposés
 
         users/operator:
           attributes:
