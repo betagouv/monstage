@@ -61,4 +61,34 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
     visit internship_offers_path
     page.find_link('Postuler')
   end
+
+  test 'student can see a school_track filter restricted to his own ' \
+       'school_track when she belongs to a troisieme generale class_room' do
+    school = create(:school)
+    class_room = create(:class_room, school_track: :troisieme_generale, school: school)
+    student = create(:student, school: school, class_room: class_room)
+
+    sign_in(student)
+    visit internship_offers_path
+    assert_equal "",
+                 page.find_by_id("input-search-school-track").find(:xpath, 'option[1]').value
+    assert_equal 'troisieme_generale',
+                 page.find_by_id("input-search-school-track").find(:xpath, 'option[2]').value
+    assert_selector("#input-search-school-track option", count: 2)
+  end
+
+  test 'student can see a school_track filter restricted to his own ' \
+       'school_track when she belongs to a 3e segpa ' do
+    school = create(:school)
+    class_room = create(:class_room, school_track: :troisieme_segpa, school: school)
+    student = create(:student, school: school, class_room: class_room)
+
+    sign_in(student)
+    visit internship_offers_path
+    assert_equal "",
+                 page.find_by_id("input-search-school-track").find(:xpath, 'option[1]').value
+    assert_equal 'troisieme_segpa',
+                 page.find_by_id("input-search-school-track").find(:xpath, 'option[2]').value
+    assert_selector("#input-search-school-track option", count: 2)
+  end
 end

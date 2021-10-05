@@ -16,7 +16,8 @@ module Finders
 
     private
 
-    attr_reader :user, :params, :listable_query_builder
+    attr_accessor :params # since school_track can be an implicit filter
+    attr_reader :user, :listable_query_builder
 
     def initialize(user:, params:)
       @user = user
