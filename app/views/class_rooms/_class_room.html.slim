@@ -1,7 +1,7 @@
 - class_room_stats = Presenters::Dashboard::ClassRoomStats.new(class_room: class_room)
 
 tr class="test-class-room-#{class_room.id}"
-  td data-head="#{cols[0]}" class="class-room-name"
+  td.class-room-name.align-middle data-head="#{cols[0]}"
     .row.no-gutters
       .col-8.col-sm-12
         h2.h5.mb-0.d-none.d-sm-block
@@ -20,11 +20,15 @@ tr class="test-class-room-#{class_room.id}"
     span class='total_student_with_zero_application'= class_room_stats.total_student_with_zero_application
   td.align-middle.text-sm-center data-head="#{cols[3]}"
     span class='total_student_with_zero_internship'= class_room_stats.total_student_with_zero_internship
-  td.align-middle.text-sm-center.hidden-links data-head="#{cols[4]}"
+  td.align-middle.text-sm-center data-head="#{cols[4]}"
     - if can?(:edit, ClassRoom)
       = link_to edit_dashboard_school_class_room_path(school, class_room), class: 'btn btn-link float-right small', aria: {label: "Modifier la classe de #{class_room.name}"} do
         i.fas.fa-pen
+        br
+        small Editer
     - if can?(:destroy, ClassRoom) && class_room.students.count.zero?
       = button_to dashboard_school_class_room_path(school, class_room), class: 'btn btn-link float-right mr-1 small', method: :delete, data: {confirm: 'Etes vous sur ?' }, aria: { label: "Supprimer la classe de #{class_room.name}" } do
         i.fas.fa-trash
+        br
+        small Supprimer
 

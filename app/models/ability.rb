@@ -129,6 +129,9 @@ class Ability
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
     end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
     can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
@@ -161,6 +164,9 @@ class Ability
     can %i[create see_tutor], InternshipOffer
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
+    end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
     end
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
@@ -226,6 +232,9 @@ class Ability
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :renew, InternshipOffer do |internship_offer|
       renewable?(internship_offer: internship_offer, user: user)
+    end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
     end
 
     can %i[create], InternshipOfferInfo
@@ -307,9 +316,31 @@ class Ability
   end
 
   def renewable?(internship_offer:, user:)
-    internship_offer.persisted? &&
-      internship_offer.created_at.to_date <= SchoolYear::Current.new.beginning_of_period &&
-      internship_offer.employer_id == user.id
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date <= school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date < school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
+  end
+
+  def duplicable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date > school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date >= school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
   end
 
   def student_can_apply?(internship_offer:, student:)
