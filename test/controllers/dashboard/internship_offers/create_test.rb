@@ -73,7 +73,6 @@ module Dashboard::InternshipOffers
       employer = create(:ministry_statistician)
       weeks = [weeks(:week_2019_1)]
       internship_offer = build(:troisieme_segpa_internship_offer, employer: employer)
-      byebug
       sign_in(internship_offer.employer)
       params = internship_offer
                .attributes
@@ -88,7 +87,6 @@ module Dashboard::InternshipOffers
 
       assert_difference('InternshipOffer.count', 1) do
         post(dashboard_internship_offers_path, params: { internship_offer: params })
-        byebug
       end
       created_internship_offer = InternshipOffer.last
       assert_equal InternshipOffers::WeeklyFramed.name, created_internship_offer.type
