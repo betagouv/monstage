@@ -1,30 +1,31 @@
 .row
   .col-10.offset-1
-    .bg-cover-image-homepage
-      .container.pb-5
-        .row.py-3.py-sm-3
-          .col.px-0
-            = render 'layouts/navbar_home'
-        
-        .row.no-gutters.py-3
-          .col-12
-            h1.text-white.mb-3
-              | Des stages de troisième 
-              br
-              | de premier choix !
+    .bg-cover-image-homepage.px-5.pb-5
+      .row.py-3.py-sm-3
+        .col.px-0
+          = render 'layouts/navbar_home'
 
-        .row.py-2.pb-5
-          .col-6
-            p.white Trouvez votre stage parmi une grande quantité d’offres de qualité, dédiées aux élèves scolarisés en REP/REP+.
+      .row.no-gutters.py-3
+        .col-12
+          h1.text-white.mb-3
+            | Des stages de troisième
+            br
+            | de premier choix !
+
+      .row.py-2.pb-5
+        .col-6
+          p.white Trouvez votre stage parmi une grande quantité d’offres de qualité, dédiées aux élèves scolarisés en REP/REP+.
 
     .row.search-form.px-5
       .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
       .actions.d-flex.d-stick.d-md-none.p-2
-        = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+        = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'btn btn-danger rounded-sm',
+                  data: { :"test-id" => 'mobile-search-button' }
           = "Rechercher un stage"
 
 
-    
+
 
 
 .row.bg-light-blue

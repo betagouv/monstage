@@ -11,3 +11,11 @@ a.btn {
   font-weight: bold;
   border-radius: 1rem * 1.5;
 }
+.btn-outline-fat {
+  font-weight: 800;
+  border-radius: 1rem * 1.5;
+  border: 3px solid white;
+  color: white;
+  background-color: $blue;
+
+}

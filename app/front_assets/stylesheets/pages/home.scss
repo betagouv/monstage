@@ -5,11 +5,24 @@
 }
 
 .bg-cover-image-homepage{
-  background-image: url('../images/homepage/hero.jpg');
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
+  // background-image: url('../images/homepage/hero.jpg');
+  // background-position: center center, center center;
+  // background-repeat: no-repeat, no-repeat;
+  // background-size: cover, cover;
+  background-color: $blue;
   border-radius: 1rem;
+}
+.perso-1 {
+  /* image 17 */
+
+  position: absolute;
+  width: 351px;
+  height: 448px;
+  left: 711px;
+  top: 208px;
+
+  // background: url(image.png);
+
 }
 
 h1 {
