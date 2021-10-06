@@ -69,7 +69,7 @@ module Users
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
         errors.add(
           :email,
-          "L'adresse email utilisée doit être officielle.<br>ex: xxx@ac-MON_ACADEMIE.fr".html_safe
+          "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe
         )
       end
     end
