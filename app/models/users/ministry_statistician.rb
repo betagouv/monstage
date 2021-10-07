@@ -24,6 +24,7 @@ module Users
                class_name: 'Group'
     validates_associated :ministry, if: :exists_and_is_public?
 
+    has_many :internship_offers, foreign_key: 'employer_id'
     has_one :ministry_email_whitelist,
             class_name: 'EmailWhitelists::Ministry',
             foreign_key: :user_id,
