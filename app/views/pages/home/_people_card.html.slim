@@ -1,0 +1,16 @@
+.download-card.d-flex.flex-wrap.mr-5.mb-3
+  = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
+              alt: alt_text,
+              height: 220,
+              class: 'rounded-adjust card-shadow'
+  p.card-text.align-self-start.bg-blue
+    strong = strong_text
+    br
+    = subtitle
+  p.align-self-end.bg-blue
+    = link_to "#{root_url}/modes_d_emploi/#{file}",
+              title: link_title,
+              class: 'white text-decoration-none' do
+      i.fas.fa-download
+      span.ml-2
+        strong ="Télécharger"
