@@ -8,6 +8,7 @@ module Finders
         Users::Operator.name => :operator_query,
         Users::Employer.name => :employer_query,
         Users::Statistician.name => :statistician_query,
+        Users::MinistryStatistician.name => :statistician_query,
       }
     end
 

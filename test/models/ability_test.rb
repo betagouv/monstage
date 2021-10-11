@@ -199,6 +199,7 @@ class AbilityTest < ActiveSupport::TestCase
 
   test 'MinistryStatistician' do
     ministry_statistician = create(:ministry_statistician)
+    ministry = ministry_statistician.ministry
     ability = Ability.new(ministry_statistician)
     assert(ability.can?(:index, Acl::Reporting, &:allowed?))
     assert(ability.can?(:read, Group),
@@ -209,11 +210,17 @@ class AbilityTest < ActiveSupport::TestCase
            'ministry_statistician should be able to manage school')
     refute(ability.can?(:edit, User),
            'ministry_statistician should be able to edit user')
-    refute(ability.can?(:see_tutor, InternshipOffer),
+    assert(ability.can?(:see_tutor, InternshipOffer),
            'ministry_statistician should be able see_tutor')
     refute ability.can?(:read, User)
     refute ability.can?(:destroy, User)
     assert ability.can?(:index_and_filter, Reporting::InternshipOffer)
+
+    offer = create(:weekly_internship_offer,
+       group_id: ministry.id,
+       employer: ministry_statistician,
+       is_public: true
+    )
 
     refute ability.can?(:apply, create(:weekly_internship_offer))
     refute ability.can?(:apply, create(:free_date_internship_offer))

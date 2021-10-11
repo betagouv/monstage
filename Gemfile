@@ -46,6 +46,8 @@ gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'airtable'
+gem 'geocoder'
 
 # acl
 gem 'cancancan'
@@ -105,4 +107,4 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
 end
 
-gem 'airtable'
+
