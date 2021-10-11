@@ -61,13 +61,13 @@
       div data-controller='carousel' data-carousel-index-value='0'
         .slide-show
           .row
-            .col-6.text-left 
+            .col-6.text-left
               a data-action="carousel#previous"
                 = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
                             alt: "bouton précédent",
                             height: '50px',
                             class: ''
-            .col-6.text-right 
+            .col-6.text-right
               a data-action="carousel#next"
                 = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
                             alt: "bouton suivant",
@@ -212,13 +212,12 @@
                          link_title: 'mode d\'emploi pour les administrations et référents',
                          file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
 
-.row.bg-white.d-none.d-md-block
-  .col-12
+.row.bg-white
     .container
       .row.pb-5
         .col-12
           h2.h3.py-5.text-dark Un projet porté par
-          .row
+          .row.d-none.d-lg-block
             .col-12
               .d-flex.justify-content-between
                 = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
@@ -242,17 +241,37 @@
                 = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
                             alt: "Logo du ministère de la ville",
                             height: '150px'
+          .row.d-block.d-lg-none.text-center
+            .col-12.mb-3
+                = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
+                            alt: "Logo anct",
+                            height: '133px'
+            .col-12
+              .row.mb-3
+                .col-6
+                  = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
+                              alt: "Logo anct",
+                              height: '150px',
+                              class: 'pl-5'
+                .col-6
+                  = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
+                              alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                              height: '150px',
+                              class: 'pr-5'
+            .col-12
+                = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
+                            alt: "Logo du ministère de la ville",
+                            height: '150px'
           .row
             .col-12
               h2.h3.pt-5.text-dark Nos associations partenaires
 .container-fluid
-  .d-none.d-md-block
-    .pb-5.mx-5
-      .row
-        .col-12.text-center
-          - partners_map_of_colored_logo_url.each do |partner|
-            = render partial: "partner_link",
-                    locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
+  .pb-5.mx-5
+    .row
+      .col-12.text-center
+        - partners_map_of_colored_logo_url.each do |partner|
+          = render partial: "partner_link",
+                  locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
 .right-flying-email
 .container-monstage.mb-5
   .row

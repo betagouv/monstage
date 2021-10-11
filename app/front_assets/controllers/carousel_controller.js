@@ -9,7 +9,7 @@ export default class extends Controller {
 
   showCurrentSlide() {
     this.slideTargets.forEach((element, index) => {
-      // element.hidden = (index != this.indexValue);
+      element.hidden = (index != this.indexValue);
     })
   }
 
