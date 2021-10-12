@@ -1,10 +1,10 @@
-.bg-hero-homepage{
+.bg-hero-homepage {
   background-position: center center, center center;
   background-repeat: no-repeat, no-repeat;
   background-size: cover, cover;
 }
 
-.bg-cover-image-homepage{
+.bg-cover-image-homepage {
   // background-image: url('../images/homepage/hero.jpg');
   // background-position: center center, center center;
   // background-repeat: no-repeat, no-repeat;
@@ -137,17 +137,6 @@ h1 {
   position: relative;
   top: 3rem;
 }
-
-.yellow-strike {
-  // -webkit-background-clip: text;
-  // background-size: 6em 1.2em;
-  background-repeat: no-repeat;
-  // background-position: -0.2rem -0.1rem;
-  // overflow: visible;
-  background-size: cover;
-  margin: -50px 0 -50px 0;
-}
-
 .box-before-vertical-center {
   position: relative;
 }
@@ -159,33 +148,48 @@ h1 {
   height: 100%;
 }
 
-.h1.yellow-strike {
-  line-height: 150%;
+.chacun-image-left {
+  background: transparent url('../images/homepage/chacun-left.png') top left no-repeat;
+  background-size: 100% 100%;
 }
 
-.yellow-strike.chacun {
-  background-image: url("../images/homepage/yellow-strike.png");
-  background-position: 3px -5px;
-  background-size: 216px 57px;
-  // background-clip: content-box;
+.chacun-image-right {
+  background: transparent url('../images/homepage/chacun-right.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 0 10px;
 }
 
-.yellow-strike.trouver {
-  background-image: url("../images/homepage/carousel/trouver.svg");
-  background-position: -30px -5px;
-  background-size: 171px 65px;
+.trouver-image-left {
+  background: transparent url('../images/homepage/carousel/trouver-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
 }
 
-.yellow-strike.accompagner {
-  background-position: -2rem -0.0rem;
-  background-size: 12em 1.2em;
-  background-image: url("../images/homepage/carousel/accompagner.svg");
+.trouver-image-right {
+  background: transparent url('../images/homepage/carousel/trouver-right.png') top left no-repeat;
+  background-size: 100% 100%;
 }
 
-.yellow-strike.accueillir {
-  background-image: url("../images/homepage/carousel/accueillir.svg");
-  background-size: 171px 65px;
-  background-position: -30px -5px;
+.accueillir-image-right {
+  background: transparent url('../images/homepage/carousel/accueillir-right.png') top left no-repeat;
+  background-size: 100% 100%;
+}
+
+.accueillir-image-left {
+  background: transparent url('../images/homepage/carousel/accueillir-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
+}
+
+.accompagner-image-right {
+  background: transparent url('../images/homepage/carousel/accompagner-right.png') top left no-repeat;
+  background-size: 100% 100%;
+}
+
+.accompagner-image-left {
+  background: transparent url('../images/homepage/carousel/accompagner-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
 }
 
 .ms3e-blurry-badge {
@@ -224,32 +228,32 @@ h1 {
 
 @include media-breakpoint-up(sm) {
 
-  .big-tagline{
+  .big-tagline {
     font-size: 20px;
     line-height: 30px;
   }
-  .flex-md-column{
+.flex-md-column {
     flex-direction: column !important;
   }
-  .nav-pills-home .nav-link.active{
+.nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
   }
 }
 @include media-breakpoint-down(sm) {
 
-  .flex-md-reverse-column{
+  .flex-md-reverse-column {
     flex-direction: column-reverse;
-    .flex-md-column{
+.flex-md-column {
       text-align: center;
       display: block;
-      .nav-link{
+.nav-link {
         display: inline-block;
       }
     }
   }
-  .nav-pills-home .nav-link{
+.nav-pills-home .nav-link {
     text-decoration: none;
-    &.active{
+&.active {
       border-top: 4px solid #DA000C;
       border-right: none;
     }
@@ -260,10 +264,10 @@ h1 {
 
 // alert
 .bg-covid-19-notice {
-  .relative{
+  .relative {
     position: relative;
   }
-  .close{
+.close {
     opacity: 1;
     position: absolute;
     top: 0;
@@ -272,9 +276,9 @@ h1 {
 }
 // pills customization
 @include media-breakpoint-down(xs) {
-  .bg-covid-19-notice .close{
-    right: 5px!important;
-    top: 5px!important;
+  .bg-covid-19-notice .close {
+    right: 5px !important;
+    top: 5px !important;
   }
 }
 
@@ -284,21 +288,21 @@ h1 {
   background-color: #080091;
 }
 
-.bg-light-blue{
+.bg-light-blue {
   background-color: $blue_light;
 }
 
 // nav pills
-.nav-pills-home{
-  .nav-link{
+.nav-pills-home {
+  .nav-link {
     border-radius: 0;
   }
-  .nav-link.active{
+.nav-link.active {
     color: #100090;
     font-weight: bold;
     background-color: rgba(17, 0, 145, 0.13);
   }
 }
-.partners-height{
+.partners-height {
   min-height: 450px;
 }

@@ -41,7 +41,12 @@
                         width: '85%',
                         class: 'mt-auto rounded-adjust'
         .col-md-6.col-sm-12
-          h1 ="Des stages pour tous, une opportunité pour <span class='yellow-strike chacun pr-5 pl-1'>&nbsp;chacun#{ '&nbsp;' * 5 }</span>".html_safe
+          h1
+            | Des stages pour tous, une opportunité pour
+            br
+            span.chacun-image-left.pr-2 &nbsp;
+            span.chacun-image-right chacun
+
           p.mt-3
             |
               Plus qu’un passage obligatoire, le stage de troisième est une
@@ -83,8 +88,10 @@
           .col-md-6.col-sm-12
             .how-to-offers.text-center
                 div.my-5
-                  a href='#Eleves'
-                  h2.h1="Trouver un<span class='pr-5 pl-1  yellow-strike trouver'>&nbsp; stage</span>".html_safe
+                  h2.h2
+                    span.trouver-image-left Trouver
+                    span.trouver-image-right.pr-2 &nbsp;
+                    | un stage
                   h3.h5.text-muted.pb-3 Elèves
                   .row.no-gutters
                     .col-lg-3.col-sm-2
@@ -107,8 +114,10 @@
           .col-md-6.col-sm-12
             .how-to-offers.text-center
               div.my-5
-                  a href='#Professionnels'
-                  h2.h1="<span class='pl-5 yellow-strike accueillir'> Accueillir</span> un stagiaire".html_safe
+                  h2.h2
+                    span.trouver-image-left Accueillir
+                    span.trouver-image-right.pr-2 &nbsp;
+                    | un stagiare
                   h3.h5.text-muted.pb-3
                     |Entreprises - Administrations publiques
                     br
@@ -125,17 +134,21 @@
                               data: { :"test-id" => 'mobile-search-button' }
                       = "Accueillir un stagiaire"
                   p.my-5.py-5
-        .row.mb-4.w-100 data-carousel-target='slide'
+        .row.mb-4.no-gutters data-carousel-target='slide'
           .col-md-6.col-sm-12
             .how-to-offers.text-center
               = image_tag asset_pack_path('media/images/homepage/carousel/entreprise.svg'),
                           alt: "Illustration , un prof une élève",
-                          height: '250px',
+                          height: '240px',
                           class: 'mt-5'
           .col-md-6.col-sm-12
             .how-to-offers.text-center
               div.my-5
-                h2.h1="<span class='pl-5 pr-1  yellow-strike accompagner'>Accompagner</span> vos élèves".html_safe
+                h2.h2
+                  span.trouver-image-left Accompagner
+                  br
+                  span.trouver-image-right.pr-2 &nbsp;
+                  |vos élèves
                 h3.h5.text-muted.pb-3 Equipes pédagogiques
                 .row.no-gutters
                   .col-3

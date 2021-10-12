@@ -38,14 +38,19 @@ import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
 import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';
+import './homepage/chacun-left.png';
+import './homepage/chacun-right.png';
 
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';
 import './homepage/carousel/prof.svg';
 import './homepage/carousel/equipe_pedago.svg';
-import './homepage/carousel/accompagner.svg';
-import './homepage/carousel/accueillir.svg';
-import './homepage/carousel/trouver.svg';
+import './homepage/carousel/accompagner-left.png';
+import './homepage/carousel/accompagner-right.png';
+import './homepage/carousel/accueillir-left.png';
+import './homepage/carousel/accueillir-right.png';
+import './homepage/carousel/trouver-left.png';
+import './homepage/carousel/trouver-right.png';
 import './homepage/carousel/right.svg';
 import './homepage/carousel/left.svg';
 
