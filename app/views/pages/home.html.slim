@@ -2,14 +2,14 @@
   .row
     .col-10.offset-1
       .bg-cover-image-homepage
-        .row.py-3.py-sm-3.px-5
+        .row.py-3.py-sm-3.px-md-5.px-sm-4.px-xs-0
           .col.px-0
             = render 'layouts/navbar_home'
 
         .row.no-gutters
           .col-lg-5.col-md-12
             .px-5
-              h1.h1.h1-text-hero.text-white.mb-3.mb-3
+              h1.h1.h1-text-hero.text-white
                 | Des stages de troisième de premier choix !
               p.subtitle-hero.white.py-5
                 |
@@ -55,12 +55,13 @@
               le meilleur intérêt des élèves en leur offrant la meilleure
               expérience du stage possible.
           p.py-3
-            = link_to root_path,
-                      class: 'btn btn-danger rounded-sm'
+            = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
+                              class: 'btn btn-danger rounded-sm',
+                              data: { :"test-id" => 'mobile-search-button-first' }
               = "Trouver un stage"
       div data-controller='carousel' data-carousel-index-value='0'
-        .slide-show
-          .row
+        .slide-show.d-none.d-md-block
+          .row.no-gutters
             .col-6.text-left
               a data-action="carousel#previous"
                 = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
@@ -73,13 +74,13 @@
                             alt: "bouton suivant",
                             height: '50px',
                             class: ''
-        .row.mb-4 data-carousel-target='slide'
-          .col-6.text-center
+        .row data-carousel-target='slide'
+          .col-md-6.col-sm-12.text-center
             = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
                         alt: "Illustration, une élève",
                         height: '250px',
-                        class: 'my-5'
-          .col-6
+                        class: 'mt-5'
+          .col-md-6.col-sm-12
             .how-to-offers.text-center
                 div.my-5
                   a href='#Eleves'
@@ -97,13 +98,13 @@
                               data: { :"test-id" => 'mobile-search-button' }
                       = "Rechercher un stage"
                   p.my-5.py-5
-        .row.mb-4 data-carousel-target='slide'
-          .col-6.text-center
-            = image_tag asset_pack_path('media/images/homepage/carousel/prof.svg'),
+        .row data-carousel-target='slide'
+          .col-md-6.col-sm-12.text-center
+            = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
                         alt: "Illustration , une élève",
                         height: '250px',
-                        class: 'my-5'
-          .col-6
+                        class: 'mt-5'
+          .col-md-6.col-sm-12
             .how-to-offers.text-center
               div.my-5
                   a href='#Professionnels'
@@ -125,18 +126,18 @@
                       = "Accueillir un stagiaire"
                   p.my-5.py-5
         .row.mb-4.w-100 data-carousel-target='slide'
-          .col-6
+          .col-md-6.col-sm-12
             .how-to-offers.text-center
               = image_tag asset_pack_path('media/images/homepage/carousel/entreprise.svg'),
                           alt: "Illustration , un prof une élève",
                           height: '250px',
-                          class: 'my-5'
-          .col-6
+                          class: 'mt-5'
+          .col-md-6.col-sm-12
             .how-to-offers.text-center
               div.my-5
                 h2.h1="<span class='pl-5 pr-1  yellow-strike accompagner'>Accompagner</span> vos élèves".html_safe
                 h3.h5.text-muted.pb-3 Equipes pédagogiques
-                .row
+                .row.no-gutters
                   .col-3
                   .col-6
                     p.text-muted.mb-5
@@ -245,23 +246,25 @@
             .col-12.mb-3
                 = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
                             alt: "Logo anct",
-                            height: '133px'
+                            width: '100%',
+                            class: 'px-5'
             .col-12
               .row.mb-3
                 .col-6
                   = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
                               alt: "Logo anct",
-                              height: '150px',
-                              class: 'pl-5'
+                              width: '95%',
+                              class: 'pl-3'
                 .col-6
                   = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
                               alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                              height: '150px',
-                              class: 'pr-5'
+                              width: '95%',
+                              class: 'pr-3'
             .col-12
                 = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
                             alt: "Logo du ministère de la ville",
-                            height: '150px'
+                            width: '50%',
+                            class: 'px-5'
           .row
             .col-12
               h2.h3.pt-5.text-dark Nos associations partenaires

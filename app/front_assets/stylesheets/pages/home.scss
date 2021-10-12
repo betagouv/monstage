@@ -12,17 +12,17 @@
   background-color: $blue;
   border-radius: 1rem;
 }
-.perso-1 {
-  /* image 17 */
+// .perso-1 {
+//   /* image 17 */
 
-  position: absolute;
-  width: 351px;
-  height: 448px;
-  left: 711px;
-  top: 208px;
+//   position: absolute;
+//   width: 351px;
+//   height: 448px;
+//   left: 711px;
+//   top: 208px;
 
-  // background: url(image.png);
-}
+//   // background: url(image.png);
+// }
 
 h1 {
   font-family: 'Inter', sans-serif;
@@ -144,6 +144,7 @@ h1 {
   background-repeat: no-repeat;
   // background-position: -0.2rem -0.1rem;
   // overflow: visible;
+  background-size: cover;
   margin: -50px 0 -50px 0;
 }
 
@@ -166,6 +167,7 @@ h1 {
   background-image: url("../images/homepage/yellow-strike.png");
   background-position: 3px -5px;
   background-size: 216px 57px;
+  // background-clip: content-box;
 }
 
 .yellow-strike.trouver {
