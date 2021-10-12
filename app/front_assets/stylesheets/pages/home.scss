@@ -5,24 +5,9 @@
 }
 
 .bg-cover-image-homepage {
-  // background-image: url('../images/homepage/hero.jpg');
-  // background-position: center center, center center;
-  // background-repeat: no-repeat, no-repeat;
-  // background-size: cover, cover;
   background-color: $blue;
   border-radius: 1rem;
 }
-// .perso-1 {
-//   /* image 17 */
-
-//   position: absolute;
-//   width: 351px;
-//   height: 448px;
-//   left: 711px;
-//   top: 208px;
-
-//   // background: url(image.png);
-// }
 
 h1 {
   font-family: 'Inter', sans-serif;
@@ -74,11 +59,6 @@ h1 {
   flex-grow: 1;
   overflow-y: auto;
 }
-
-// .card-shadow {
-//   box-shadow: 8px 8px 12px #aaa;
-// }
-
 .rounded-adjust {
   border-radius: 1rem;
 }
@@ -100,8 +80,6 @@ h1 {
 .home-card {
   width: 18rem;
 }
-
-
 .btn-link {
   text-decoration: none !important;
 }
@@ -259,8 +237,6 @@ h1 {
     }
   }
 }
-
-
 
 // alert
 .bg-covid-19-notice {
