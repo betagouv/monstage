@@ -263,6 +263,7 @@ class User < ApplicationRecord
   def ministry_statistician? ; false end
   def student? ; false end
 
+
   private
 
   def clean_phone

@@ -1,9 +1,10 @@
-.download-card.d-flex.flex-wrap.mr-5.mb-3
+.download-card.d-flex.flex-wrap.mb-5.mr-2
   = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
               alt: alt_text,
-              height: 220,
-              class: 'rounded-adjust card-shadow'
-  p.card-text.align-self-start.bg-blue
+              height: '249px',
+              width: '335px',
+              class: 'rounded-adjust card-shadow mb-4'
+  p.card-text.align-self-start.bg-blue.extended-lines
     strong = strong_text
     br
     = subtitle

@@ -1,3 +1,9 @@
+.container-monstage {
+  max-width: 1440px;
+  margin: auto;
+  position: relative;
+}
+
 .bg-hero-homepage {
   background-position: center center, center center;
   background-repeat: no-repeat, no-repeat;
@@ -12,9 +18,24 @@
 h1 {
   font-family: 'Inter', sans-serif;
 }
+.to-regular {
+  font-family: 'Regular', sans-serif;
+}
+
+.wider-text {
+  font-size: 1.2rem;
+}
 .bg-blue {
   color: white;
   background-color: $blue;
+}
+
+.shrinked-lines {
+  line-height: 85%;
+}
+
+.extended-lines {
+  line-height: 150%;
 }
 
 .wrapper {
@@ -25,16 +46,9 @@ h1 {
 
 .download-card {
   display: inline-flexbox;
-  width: 280px;
+  width: 340px;
   height: 380px;
 }
-
-.container-monstage {
-  max-width: 1440px;
-  margin: auto;
-  position: relative;
-}
-
 .center-box {
   display: flex;
   align-items-center: center;
@@ -69,7 +83,7 @@ h1 {
 
 .h1-text-hero {
   font-weight: 900;
-  font-size: 3.15rem;
+  font-size: 3.10rem;
 }
 
 .subtitle-hero {
@@ -99,11 +113,11 @@ h1 {
 }
 
 .right-flying-email {
-  position: relative;
+  position: absolute;
   width: 118.41px;
   height: 106.41px;
-  left: 70%;
-  top: 50px;
+  right : 10%;
+  top: -44px;
   z-index: 1;
 
   background: url("../images/homepage/courrier.png");
@@ -177,13 +191,13 @@ h1 {
   background-image: url("../images/homepage/ms3e-big-badge.svg");
   background-repeat: no-repeat no-repeat;
   background-clip: content-box;
-  background-size: 400px;
+  background-size: 480px;
 
   background-position-x: 0;
-  background-position-y: 30%;
+  background-position-y: -8%;
   left: 0px;
   top: 0px;
-  padding-bottom: 20px;
+  // padding-bottom: 20px;
 }
 
 .slide-show {

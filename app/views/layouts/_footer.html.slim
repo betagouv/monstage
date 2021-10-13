@@ -75,17 +75,3 @@
 .bg-light-blue.d-none.fixed-footer.d-print-none [
   data-footer-target="fixedContent"
 ]
-  - if show_restricted_to_anct?
-    .container
-      .row.align-items-top.no-gutters.py-3
-        .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
-        .col-md-8.col-12.text-center.text-sm-center
-          p.h4.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des établissements des réseaux d'éducation prioritaire (REP et REP+)
-
-      button [type="button"
-              class="close close-top-right"
-              id="test-close-covid-notice"
-              data-dismiss="modal"
-              aria-label="Close"
-              data-action="click->footer#close"]
-        span aria-hidden="true" &times;
