@@ -5,7 +5,9 @@ class User < ApplicationRecord
   include UserAdmin
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :trackable
+         :recoverable, :rememberable,
+         :validatable, :confirmable, :trackable,
+         :timeoutable
 
   include DelayedDeviseEmailSender
 
@@ -52,6 +54,26 @@ class User < ApplicationRecord
     return :phone if phone.present?
 
     :email
+  end
+
+  def default_search_options
+    opts = {}
+
+    opts = opts.merge(school.default_search_options) if has_relationship?(:school)
+    opts = opts.merge(school_track: school_track) if has_relationship?(:school_track)
+    opts = opts.merge(school_track: :troisieme_generale) if self.is_a?(Users::SchoolManagement)
+    if (has_relationship?(:class_room) && class_room.troisieme_generale?) || self.is_a?(Users::SchoolManagement)
+      week_ids = school.weeks
+                       .where(id: Week.selectable_on_school_year.pluck(:id))
+                       .pluck(:id)
+                       .map(&:to_s)
+      opts = opts.merge(week_ids: week_ids) if week_ids.size.positive?
+    end
+    opts
+  end
+
+  def has_relationship?(relationship)
+    respond_to?(relationship) && self.send(relationship).present?
   end
 
   def missing_school_weeks?
@@ -116,6 +138,10 @@ class User < ApplicationRecord
     self.email.split('@').last
   end
 
+  def archive
+    anonymize(send_email: false)
+  end
+
   def anonymize(send_email: true)
     # Remove all personal information
     email_for_job = email.dup
@@ -133,13 +159,13 @@ class User < ApplicationRecord
 
     discard!
 
-    AnonymizeUserJob.perform_later(email: email_for_job) if send_email
-    RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+    unless email_for_job.blank?
+      AnonymizeUserJob.perform_later(email: email_for_job) if send_email
+      RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email_for_job)
+    end
   end
 
-  def archive
-    anonymize(send_email: false)
-  end
+
 
   def destroy
     anonymize
@@ -229,9 +255,18 @@ class User < ApplicationRecord
   def tutor? ; false end
   def employer? ; false end
   def operator? ; false end
-
+  def statistician? ; false end
+  def ministry_statistician? ; false end
+  def student? ; false end
+  
   private
 
+  def canceled_targeted_offer_id
+    canceled_targeted_offer_id = self.targeted_offer_id
+    self.targeted_offer_id = nil
+    save
+    canceled_targeted_offer_id
+  end
 
   def clean_phone
     self.phone = nil if phone == '+33'

@@ -9,7 +9,7 @@ wb.add_worksheet(name: 'Établissements') do |sheet|
     )
   )
 
-  # raws
+  # rows
   @schools.map{ |school|presenter_for_dimension.new(school, params) }
           .each do |presented_school|
     sheet.add_row(

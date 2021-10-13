@@ -81,6 +81,10 @@ class InternshipApplication < ApplicationRecord
     joins(student: :class_room).where('users.class_room_id = ?', teacher.class_room_id)
   }
 
+  scope :with_active_students, lambda{
+    joins(:student).where('users.discarded_at is null')
+  }
+
   #
   # Other stuffs
   #
@@ -250,7 +254,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def anonymize
-    update(motivation: 'NA')
+    motivation.try(:delete)
   end
 
   def new_format?

@@ -4,6 +4,9 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   authenticate :user, lambda { |u| u.is_a?(Users::God) } do
     mount Sidekiq::Web => '/sidekiq'
+    match "/split" => Split::Dashboard,
+        anchor: false,
+        via: [:get, :post, :delete]
   end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -34,6 +37,9 @@ Rails.application.routes.draw do
   end
 
   resources :internship_offers, only: %i[index show] do
+    collection do
+      get :search
+    end
     resources :internship_applications, only: %i[create index show update]
   end
 
@@ -49,7 +55,7 @@ Rails.application.routes.draw do
 
   namespace :dashboard, path: 'dashboard' do
     resources :support_tickets, only: %i[new create]
-    resources :internship_agreements,  except: %i[index destroy]
+    resources :internship_agreements,  except: %i[destroy]
     resources :internship_applications, only: %i[index]
 
     resources :schools, only: %i[index edit update show] do
@@ -82,15 +88,21 @@ Rails.application.routes.draw do
 
   namespace :reporting, path: 'reporting' do
     get '/dashboards', to: 'dashboards#index'
+    get '/import_data', to: 'dashboards#import_data'
+    post '/dashboards/refresh', to: 'dashboards#refresh'
+
     get '/schools', to: 'schools#index'
     get '/employers_internship_offers', to: 'internship_offers#employers_offers'
     get 'internship_offers', to: 'internship_offers#index'
+    get 'operators', to: 'operators#index'
+    put 'operators', to: 'operators#update'
   end
 
   get 'api_address_proxy/search', to: 'api_address_proxy#search', as: :api_address_proxy_search
 
   get 'account(/:section)', to: 'users#edit', as: 'account'
   patch 'account', to: 'users#update'
+  patch 'account_password', to: 'users#update_password'
 
   get '/reset-cache', to: 'pages#reset_cache', as: 'reset_cache'
   get '/accessibilite', to: 'pages#accessibilite'

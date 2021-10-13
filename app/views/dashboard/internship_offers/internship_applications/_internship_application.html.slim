@@ -97,7 +97,7 @@
         - if internship_application.approved? && !internship_application.convention_signed? && can?(:create, InternshipAgreement)
           div.d-flex.align-items-center.mt-2
             .d-inline-flex
-              = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user, label: "Editer la convention"))
+              = render(InternshipApplications::ButtonComponent.new(internship_application: internship_application, current_user: current_user, label: "Editer la convention"))
 
         - if internship_application.rejected?
           div.d-flex.align-items-center
@@ -108,12 +108,6 @@
               br
               = "Le #{localize(internship_application.rejected_at, format: :human_mm_dd_hh)}"
 
-        - if internship_application.convention_signed?
-          div.d-flex.align-items-center.mt-3
-            .d-inline-flex.mr-1.text-success
-              i.fas.fa-check.fa-2x.fa-fw
-            .d-inline-flex
-              = "Convention signée"
 
         - if internship_application.expired?
           div.d-flex.align-items-center

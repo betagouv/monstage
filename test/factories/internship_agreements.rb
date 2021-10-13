@@ -13,6 +13,7 @@ FactoryBot.define do
     activity_scope_rich_text { '<div>Accueil clients</div>'}
     complementary_terms_rich_text { '<div>Ticket resto</div>'}
     activity_preparation_rich_text { '<div>Appel téléphonique</div>'}
+    aasm_state { 'draft' }
 
     trait :troisieme_generale_internship_agreement_trait do
       school_track { 'troisieme_generale' }

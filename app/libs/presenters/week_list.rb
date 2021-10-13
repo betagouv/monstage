@@ -21,16 +21,9 @@ module Presenters
         ''
       when 1
         render_first_week_only(&block)
-      when 2
-        render_two_first_weeks(&block)
       else
         render_by_collapsing_date_from_first_to_last_week(&block)
       end
-    end
-
-    def to_s
-      weeks.map(&:long_select_text_method)
-           .join("\n")
     end
 
     def split_weeks_in_trunks
@@ -49,8 +42,17 @@ module Presenters
       self.class.new(weeks: weeks & student.school.weeks)
     end
 
+    def to_s
+      weeks.map(&:long_select_text_method)
+           .join("\n")
+    end
+
     def empty?
       weeks.empty?
+    end
+
+    def split_range_string
+      to_range_as_str.split(/(\d*\s?semaines?\s?:?)/)
     end
 
     protected
@@ -59,14 +61,6 @@ module Presenters
       [
         'Disponible la semaine',
         yield(is_first: false, is_last: false, week: first_week)
-      ].join(' ')
-    end
-
-    def render_two_first_weeks
-      [
-        "Disponible sur #{weeks.size} semaines :",
-        weeks.map { |week| yield(is_first: false, is_last: false, week: week) }
-             .join(', ')
       ].join(' ')
     end
 

@@ -23,13 +23,27 @@ FactoryBot.define do
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:user_operator) }
-      school_track { :troisieme_generale }
+      school_track { :troisieme_generale } # default parameter
       permalink { 'https://google.fr' }
       description { 'Lorem ipsum dolor api' }
       sequence(:remote_id) { |n| n }
     end
 
     trait :weekly_internship_offer do
+      school_track { :troisieme_generale }
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
+      employer { create(:employer) }
+      description { 'Lorem ipsum dolor weekly_internship_offer' }
+    end
+
+    trait :last_year_weekly_internship_offer do
+      school_track { :troisieme_generale }
+      weeks { [Week.of_previous_school_year.first] }
+      employer { create(:employer) }
+      description { 'Lorem ipsum dolor weekly_internship_offer' }
+    end
+
+    trait :weekly_internship_offer_by_statistician do
       school_track { :troisieme_generale }
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
       employer { create(:employer) }
@@ -45,7 +59,7 @@ FactoryBot.define do
 
     trait :free_date_internship_offer do
       employer { create(:employer ) }
-      school_track { :bac_pro}
+      school_track { :troisieme_segpa }
       description { 'Lorem ipsum dolor free_date_internship_offer' }
     end
 
@@ -59,12 +73,6 @@ FactoryBot.define do
       employer { create(:employer ) }
       school_track { :troisieme_prepa_metiers }
       description { 'Lorem ipsum dolor troisieme_prepa_metiers_internship_offer' }
-    end
-
-    trait :bac_pro_internship_offer do
-      employer { create(:employer ) }
-      school_track { :bac_pro}
-      description { 'Lorem ipsum dolor bac_pro_internship_offer' }
     end
 
     trait :discarded do
@@ -87,23 +95,23 @@ FactoryBot.define do
     factory :weekly_internship_offer, traits: [:weekly_internship_offer],
                                       class: 'InternshipOffers::WeeklyFramed',
                                       parent: :internship_offer
+    factory :last_year_weekly_internship_offer, traits: [:last_year_weekly_internship_offer],
+                                                class: 'InternshipOffers::WeeklyFramed',
+                                                parent: :internship_offer
+    factory :weekly_internship_offer_by_statistician, traits: [:weekly_internship_offer_by_statistician],
+                                      class: 'InternshipOffers::WeeklyFramed',
+                                      parent: :internship_offer
     factory :free_date_internship_offer, traits: [:free_date_internship_offer],
                                       class: 'InternshipOffers::FreeDate',
                                       parent: :internship_offer
 
 
-    factory :troisieme_generale_internship_offer, traits: [:troisieme_generale_internship_offer],
-                                                  class: 'InternshipOffers::WeeklyFramed',
-                                                  parent: :internship_offer
     factory :troisieme_segpa_internship_offer, traits: [:troisieme_segpa_internship_offer],
                                                class: 'InternshipOffers::FreeDate',
                                                parent: :internship_offer
     factory :troisieme_prepa_metiers_internship_offer, traits: [:troisieme_prepa_metiers_internship_offer],
                                                        class: 'InternshipOffers::FreeDate',
                                                        parent: :internship_offer
-    factory :bac_pro_internship_offer, traits: [:bac_pro_internship_offer],
-                                       class: 'InternshipOffers::FreeDate',
-                                       parent: :internship_offer
 
   end
 end

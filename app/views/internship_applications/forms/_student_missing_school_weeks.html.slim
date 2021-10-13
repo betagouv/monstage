@@ -1,22 +1,8 @@
-.row
+.row.my-2
   .col-12
-    .row.align-items-center.no-gutters
-        .col-1.col-sm-auto.text-center.mr-2
+    .d-flex.no-gutters.mb-3
+        .col-1.col-sm-auto.d-flex.align-items-center.mr-2
           i.fa.fa-exclamation-triangle.fa-2x
-        .col
+        .col.d-flex.align-items-center
           p.my-0.test-missing-school-weeks
-            | Vous ne pouvez postuler à aucun stage, car votre chef
-              d'établissement n'a pas renseigné les semaines
-              de stage de l'établissement
-            br
-- unless current_user.missing_weeks_school_id.present?
-  .row.my-3.student-form-missing-school-weeks
-    .col-12
-      p
-        = "Cliquez sur le bouton ci-dessous pour prévenir votre "
-        strong chef d'établissement
-        =" que vous ne pouvez postuler à aucun stage."
-      p.my-0= link_to account_path(user: {missing_weeks_school_id: current_user.school_id}),
-                      class: "btn btn-outline-primary",
-                      method: :patch do
-        | Je souhaite une semaine de stage
+            |  Attention, vérifiez bien que les dates de stage proposées dans l'annonce correspondent à vos dates de stage. Votre chef d'établissement n'a en effet pas renseigné les semaines de stage de votre établissement.

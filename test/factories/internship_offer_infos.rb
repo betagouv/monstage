@@ -15,15 +15,15 @@ FactoryBot.define do
       type { 'InternshipOfferInfos::WeeklyFramed' }
     end
     trait :free_date_internship_offer_info do
-      school_track { :bac_pro }
+      school_track { :troisieme_segpa }
       type { 'InternshipOfferInfos::FreeDate' }
     end
 
     factory :weekly_internship_offer_info, traits: [:weekly_internship_offer_info],
-                                      class: 'InternshipOfferInfos::WeeklyFramed',
-                                      parent: :internship_offer_info
+                                           class: 'InternshipOfferInfos::WeeklyFramed',
+                                           parent: :internship_offer_info
     factory :free_date_internship_offer_info, traits: [:free_date_internship_offer_info],
-                                      aliases: [:bac_pro_internship_offer_info],
+                                      aliases: [:troisieme_segpa_internship_offer_info],
                                       class: 'InternshipOfferInfos::FreeDate',
                                       parent: :internship_offer_info
   end

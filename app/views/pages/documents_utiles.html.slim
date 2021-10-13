@@ -8,7 +8,7 @@
     h2.h3 Modes d'emploi
 
 .row
-  - {"Stage à distance" => "MS3_Guide-stage-a-distance-2020", "Global" => "MS3_Guide-d-utilisation-global-2020", "Élève" => "MS3_Mode-d-emploi-eleves", "Entreprise" => "MS3_Mode-d-emploi-entreprises", "Équipe pédagogique" => "MS3_Mode-d-emploi-membres-pedagogique"}.each do |user_segmeent, file_name|
+  - {"Stage à distance" => "MS3_Guide-stage-a-distance-2020", "Élève" => "MS3_Mode-d-emploi-eleves", "Entreprise" => "MS3_Mode-d-emploi-entreprises", "Équipe pédagogique" => "MS3_Mode-d-emploi-membres-pedagogique", "référents administratifs et départementaux" => "MS3_Mode-d-emploi-referents-departementaux"}.each do |user_segmeent, file_name|
     .col-12.col-sm-6.col-md-4.col-lg-3.text-center
       = link_to "#{root_url}/modes_d_emploi/#{file_name}.pdf", title: "Accéder au mode d'emploi #{user_segmeent}"  do
         = image_tag asset_pack_path("media/images/modes_d_emploi/#{file_name}.png"), alt: "Couverture du mode d'emploi #{user_segmeent}", size: '200x283', class: 'img-thumbnail'

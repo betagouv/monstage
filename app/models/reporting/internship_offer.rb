@@ -68,6 +68,14 @@ module Reporting
       where(department: department)
     }
 
+    scope :limited_to_ministry, lambda { |user:|
+      where(group_id: user.ministry_id)
+    }
+
+    scope :by_group, lambda { |group_id:|
+      where(group_id: group_id)
+    }
+
     scope :by_academy, lambda { |academy:|
       where(academy: academy)
     }
@@ -94,15 +102,22 @@ module Reporting
         .order(:group_id)
     }
 
+    scope :dimension_by_detailed_typology, lambda { |detailed_typology:|
+      select('group_id', 'sum(max_candidates) as total_report_count')
+        .group(:group_id)
+        .order(:group_id)
+    }
+
     scope :by_detailed_typology, lambda { |detailed_typology:|
       case detailed_typology
-      when 'private'
-        where(is_public: false)
-      when 'paqte'
-        where(is_public: false).where.not(group_id: nil)
-      when 'public'
-        where(is_public: true)
-      else # all
+      when 'private_group'
+        opposite_query = Group.where(is_public: true)
+        where.not(group_id: opposite_query.ids).or(where(group_id: nil))
+      when 'paqte_group'
+        joins(:group).where(group: { is_paqte: true })
+      when 'public_group'
+        joins(:group).where(group: { is_public: true })
+      else
         all
       end
     }

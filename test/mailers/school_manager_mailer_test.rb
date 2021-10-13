@@ -15,11 +15,4 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'missing_school_weeks' do
-    school = create(:school, :with_school_manager)
-
-    email = SchoolManagerMailer.missing_school_weeks(school_manager: school.school_manager)
-    assert_includes email.to, school.school_manager.email
-    refute_email_spammyness(email)
-  end
 end

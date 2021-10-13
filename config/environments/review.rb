@@ -5,7 +5,7 @@ require 'json'
 
 Rails.application.configure do
   HOST = ENV.fetch("HOST") {
-    "https://#{ENV.fetch('HEROKU_APP_NAME')}-#{ENV.fetch('HEROKU_PR_NUMBER') {'1'}}.herokuapp.com"
+    "https://#{ENV.fetch('HEROKU_APP_NAME')}.herokuapp.com"
   }
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
@@ -99,7 +99,7 @@ Rails.application.configure do
                                        password: first_inbox['password'],
                                        address: first_inbox['domain'],
                                        domain: first_inbox['domain'],
-                                       port: first_inbox['smtp_ports'][0],
+                                       port: 587,
                                        authentication: :plain
                                      }
 

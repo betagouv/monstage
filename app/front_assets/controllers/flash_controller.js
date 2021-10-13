@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import findBootstrapEnvironment from '../utils/responsive';
+import isMobile from '../utils/responsive';
 
 const DELAY_BEFORE_REMOVAL = 10000
 
@@ -12,7 +12,7 @@ export default class extends Controller {
   }
 
   connect(){
-    if (findBootstrapEnvironment() == 'xs') {
+    if (isMobile()) {
       this.timeout = setTimeout(this.removeAlert.bind(this),
                                 DELAY_BEFORE_REMOVAL)
     }

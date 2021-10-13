@@ -22,16 +22,13 @@
 }
 
 .table-statistics {
-  td:first-child {
-    border-left: 1px solid #d8d8d8;
-  }
-  td:last-child {
-    border-right: 1px solid #d8d8d8;
-  }
   tbody {
     tr {
       border-bottom-color: #d8d8d8;
     }
+  tr:first-child td {
+    border-top: 0.3rem solid $blue;
+  }
   tr:last-child td {
       border-bottom: 1px solid $blue;
     }

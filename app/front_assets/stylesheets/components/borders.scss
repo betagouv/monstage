@@ -10,9 +10,18 @@
   border-top: 1px;
   border-top-style: solid;
 }
+.bb-0{
+  border-bottom: none!important;
+}
 .bb-1 {
   border-bottom: 1px;
   border-bottom-style: solid;
+}
+.br-0{
+  border-right: none;
+}
+.bl-0{
+  border-left: none;
 }
 .br-1{
   border-right: 1px;
@@ -21,6 +30,13 @@
 .bl-1{
   border-left: 1px;
   border-left-style: solid;
+}
+.b-4{
+  border-width: 4px;
+  border-style: solid;
+}
+.bc-blue-stats-total{
+  border-color: $blue_border;
 }
 .bc-custom-blue{
   border-color: rgb(169,163,185);
@@ -68,4 +84,10 @@
   .rounded-xs-0{
     border-radius: 0
   }
+}
+.rounded-8{
+  border-radius: 8px;
+}
+.rounded-6{
+  border-radius: 6px;
 }

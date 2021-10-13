@@ -2,12 +2,7 @@
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
     = render partial: 'reporting/filters',
-              locals: {by_academy: true,
-                        by_typology: true,
-                        by_detailed_typology: false,
-                        by_department: true,
-                        by_school_track: true,
-                        by_subscribed_school: false}
+             locals: {view_tab: :internship_offers}
 
     fieldset
       legend.h6 Grouper par
@@ -20,14 +15,26 @@
         = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label' do
           = "Groupe ou institution de tutelle"
 
-    .mt-4= render partial: 'reporting/school_years_filter'
-
+  .row.mt-3.mb-3
+    .col-12
+      = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
+                class: 'btn btn-danger',
+                data: {turbolinks: false} do
+        i.fas.fa-download
+        span =" Exporter les statistiques des offres"
+      - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
+        = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
+                  class: 'ml-3 btn btn-danger',
+                  data: {turbolinks: false} do
+          i.fas.fa-download
+          span =" Exporter les offres"
   .row.mt-3
     .col-12
       table.table.table-statistics.table-sticky-thead
         thead
           tr.tr-blue
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:sector_id)
+            th.bl-1.bc-light
+              = dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
             th.bl-1.bc-light colspan="3"= InternshipOffer.human_attribute_name(:total_applications_count)
             th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:approved_applications_count)
@@ -44,14 +51,16 @@
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
             th.border-right= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
 
-        tbody= render partial: 'reporting/internship_offers/internship_offer',
-                      collection: @offers.map(&presenter_for_dimension.method(:new))
+        tbody
+          - if dimension_is?('group', params[:dimension])
+            = render partial: 'reporting/internship_offers/internship_no_offer',
+                     locals: {groups: @no_offers}
+          = render partial: 'reporting/internship_offers/internship_offer',
+                   collection: @offers.map(&presenter_for_dimension.method(:new))
 
         tfoot= render 'reporting/internship_offers/internship_offer',
                       internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
                       font_weight_bold: true,
                       font_color_blue: true
 
-  .row.mt-3.mb-3
-    .col-12.text-center
-      = link_to "Exporter", reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)), class: 'btn btn-danger', data: {turbolinks: false}
+

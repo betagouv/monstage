@@ -47,12 +47,23 @@ module InternshipOffersHelper
 
   def forwardable_params
     params.permit(
-      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_track
+      :latitude,
+      :longitude,
+      :radius,
+      :city,
+      :keyword,
+      :page,
+      :filter,
+      :school_year,
+      :school_track,
+      :order,
+      :direction,
+      week_ids: [],
     )
   end
 
   def back_to_internship_offers_from_internship_offer_path(current_user, url)
-    if url.include?('dashboard') && ((current_user.employer? || current_user.operator?))
+    if url.include?('dashboard') && ((current_user.employer? || current_user.operator? || current_user.is_a?(Users:: Statistician)))
       return dashboard_internship_offers_path
     end
 
@@ -70,11 +81,11 @@ module InternshipOffersHelper
   end
 
   def select_weekly_start(internship_offer)
-    internship_offer.new_daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:first) || '9:00'
+    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:first) || '9:00' : '--'
   end
 
   def select_weekly_end(internship_offer)
-    internship_offer.new_daily_hours.present? ? '--' : internship_offer.weekly_hours.try(:last) || '17:00'
+    internship_offer.weekly_planning? ? internship_offer.weekly_hours.try(:last) || '17:00' : '--'
   end
 
   def select_daily_start(internship_offer, day)
@@ -83,5 +94,10 @@ module InternshipOffersHelper
 
   def select_daily_end(internship_offer, day)
     internship_offer.new_daily_hours.fetch(day) { '17:00' }
+  end
+
+  def truncate_description(internship_offer)
+    description = internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_plain_text : internship_offer.description
+    description.truncate(280, separator: ' ')
   end
 end

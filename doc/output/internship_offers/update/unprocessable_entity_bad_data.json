@@ -1,4 +1,4 @@
 {
   "code": "BAD_ARGUMENT",
-  "error": "bad week format: 2020-Wsem9-23, expecting ISO 8601 format"
+  "error": "wrong number of arguments (given 1, expected 0; required keywords: params, fallback_weeks)"
 }

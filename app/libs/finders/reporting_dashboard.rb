@@ -2,37 +2,103 @@
 module Finders
   class ReportingDashboard
 
+    ### ooperator queries, those data are collected via airtable, synced with Airtable::TableSynchronizer,
+    ### then aggregated and summed here
+    # expects bool
+    def operator_count_by_private_sector(is_public:)
+      @operator_count_by_private_sector ||= operator_base_query.by_publicy
 
-    def count_by_private_sector
-      base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
+      @operator_count_by_private_sector.select { |group| group.is_public == is_public }
+                                       .first
+                                       .try(:[], "total_count")
+    end
+
+    # expects AirTableRecord::INTERNSHIP_OFFER_TYPE.key
+    def operator_count_by_type(type)
+      @operator_count_by_type ||= operator_base_query.by_type
+
+      @operator_count_by_type.select { |group| group.internship_offer_type == type }
+                             .first
+                             .try(:[], "total_count")
+    end
+
+    def operator_count_by_private_sector_paqte
+      @operator_count_by_private_sector_paqte ||= operator_base_query.by_paqte
+                                                                     .entries
+                                                                     .first
+                                                                     .attributes
+                                                                     .try(:[], "total_count")
+    end
+
+    def operator_total
+      operator_base_query.total
+                         .entries
+                         .first
+                         .attributes
+                         .try(:[], "total_count")
+    end
+
+    def operator_last_modified_at
+      operator_base_query.last_modified_at
+    end
+
+    def operator_last_synchro
+      operator_base_query.last_synchro
+    end
+
+
+    ### platform queries, data owned by ourself. this is our "analytics"
+    def platform_count_by_private_sector
+      platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
               .where(permalink: nil)
               .where(is_public: false)
               .map(&:attributes)
               .first
     end
 
-    def count_by_private_sector_pacte
-      base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
+    def platform_count_by_private_sector_paqte
+      platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
               .where(permalink: nil)
               .joins(:group)
-              .where(group: {is_pacte: false})
+              .where(group: {is_paqte: false})
               .map(&:attributes)
               .first
     end
 
-    def count_by_public_sector
-      base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
+    def platform_count_by_public_sector
+      platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
                 .where(permalink: nil)
                 .where(is_public: true)
                 .map(&:attributes)
                 .first
     end
 
-    def count_by_association
-      base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
+    def platform_count_by_association
+      platform_base_query.select('sum(max_candidates) as total_count, sum(approved_applications_count) as approved_applications_count')
                 .merge(InternshipOffer.from_api)
                 .map(&:attributes)
                 .first
+    end
+
+    def platform_approved_applications_count
+      [
+        platform_count_by_private_sector,
+        platform_count_by_public_sector,
+        platform_count_by_association
+      ].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+    end
+
+    def platform_total_count
+      [
+        platform_count_by_private_sector,
+        platform_count_by_public_sector,
+        platform_count_by_association
+      ].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+    end
+
+    # overall
+    def overall_total
+      (operator_total || 0) + (platform_total_count || 0)
     end
 
 
@@ -127,12 +193,23 @@ module Finders
 
     private
 
-    attr_reader :params
+    attr_reader :params, :user
 
-    def base_query
+    def platform_base_query
       query = Reporting::InternshipOffer.all
       query = query.during_year(school_year: school_year) if school_year_param?
+      query = query.limited_to_ministry(user: user) if user.ministry_statistician?
       query = query.by_department(department: params[:department]) if department_param?
+
+      query
+    end
+
+    def operator_base_query
+      query = AirTableRecord.all
+      query = query.during_year(school_year: school_year) if school_year_param?
+      query = query.by_department(department: params[:department]) if department_param?
+      query = query.by_ministry(user: user) if user.ministry_statistician?
+      query = query.countable_in_grand_total
 
       query
     end
@@ -145,8 +222,9 @@ module Finders
       params.key?(:school_year)
     end
 
-    def initialize(params:)
+    def initialize(params:, user: )
       @params = params
+      @user = user
     end
 
 
@@ -155,7 +233,5 @@ module Finders
         'DATE_TRUNC', [Arel.sql("'#{by}'"), attribute]
       )
     end
-
-
   end
 end

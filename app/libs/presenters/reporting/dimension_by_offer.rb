@@ -24,7 +24,7 @@ module Presenters
                    full_employer
                    full_address
                    full_school
-                   full_week].freeze
+                   full_year].freeze
 
       def self.metrics
         [].concat(ATTRS, METHODS)
@@ -80,14 +80,21 @@ module Presenters
         Address.new(instance: instance).to_s
       end
 
+      def full_year
+        instance.type == InternshipOffers::FreeDate.name ? 'Oui' : 'Non'
+      end
+
       def full_school
         return nil unless instance.school
 
         [instance.school.name, "#{instance.school.city} – CP #{instance.school.zipcode}"].compact.join("\n")
-      end
+      end  
 
-      def full_week(week)
-        "Du #{week.beginning_of_week} au #{week.end_of_week}"
+      def weeks_list
+        return [] unless instance.respond_to?(:weeks)
+        instance.weeks.each_with_index.map do |week, i| 
+          "Du #{week.beginning_of_week} au #{week.end_of_week}"
+        end
       end
     end
   end

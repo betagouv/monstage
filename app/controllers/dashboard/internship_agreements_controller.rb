@@ -38,7 +38,9 @@ module Dashboard
       internship_agreement_builder.update(instance: InternshipAgreement.find(params[:id]),
                                           params: internship_agreement_params) do |on|
         on.success do |updated_internship_agreement|
-          redirect_to current_user.custom_agreements_path,
+          updated_internship_agreement.send(params[:internship_agreement][:event]) if updated_internship_agreement.send("may_#{params[:internship_agreement][:event]}?")
+          updated_internship_agreement.save
+          redirect_to dashboard_internship_agreements_path,
                       flash: { success: 'La convention a été enregistrée.' }
         end
         on.failure do |failed_internship_agreement|
@@ -60,6 +62,10 @@ module Dashboard
           send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_#{@internship_agreement.id}.pdf", type: 'application/pdf',disposition: 'inline')
         end
       end
+    end
+
+    def index
+      @internship_agreements = current_user.internship_agreements
     end
 
     private
@@ -90,6 +96,7 @@ module Dashboard
               :employer_accept_terms,
               :main_teacher_accept_terms,
               :tutor_accept_terms,
+              :weekly_lunch_break,
               weekly_hours:[],
               new_daily_hours:{},
               daily_lunch_break: {}

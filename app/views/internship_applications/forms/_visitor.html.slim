@@ -15,7 +15,12 @@
         h2.h3 Connectez-vous pour postuler à ce stage
       .col-12
         p.text-center
-          = link_to 'Me connecter', new_user_session_path, class: "btn btn-outline-primary"
+          = link_to 'Me connecter',
+                    new_user_session_path(user: {targeted_offer_id: @internship_application.internship_offer.id}),
+                    class: "btn btn-outline-primary"
           br
           br
-          = link_to 'Pas encore de compte ? Inscrivez-vous', new_user_registration_path(as: 'Student'), class: "text-danger font-weight-bold"
+          = link_to 'Pas encore de compte ? Inscrivez-vous',
+                    new_user_registration_path(as: 'Student',
+                    user: {targeted_offer_id: @internship_application.internship_offer.id}),
+                    class: "text-danger font-weight-bold test-offer-id-#{@internship_application.internship_offer.id}"

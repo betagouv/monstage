@@ -2,108 +2,213 @@
   = render partial: 'reporting/navigation'
   div.bg-stats-filter.rounded.p-3[data-controller='statistics']
     = render partial: 'reporting/filters',
-            locals: {by_academy: false,
-                      by_typology: false,
-                      by_detailed_typology: false,
-                      by_department: true,
-                      by_school_track: false,
-                      by_subscribed_school: false}
-    = render partial: 'reporting/school_years_filter'
+             locals: { view_tab: :dashboard }
+  - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
+    .row.mt-3.mb-3
+      .col-12
+        = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
+                  class: 'btn btn-danger',
+                  data: {turbolinks: false} do
+          i.fas.fa-download
+          span =" Exporter les offres"
 
+  // platform stats
   .row.mt-5
     .col-12
       h2.text-body Stages sur la plateforme
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
-    .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-warning-custom Entreprises
-    .col-12.col-md-9
-      .row
-        .col-6.bl-1.br-1.bc-light
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-warning-custom')
-            .col
-              .row.no-gutters
-                .col.align-self-center Offres proposées
-                .col.align-self-center.text-right.h2.mb-0.text-warning-custom= count_by_private_sector["total_count"]
-              .row.no-gutters.mt-3
-                .col.align-self-center Dont PaQte
-                .col.align-self-center.text-right.h3.mb-0.text-warning-custom= count_by_private_sector_pacte["total_count"]
-        .col-6
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-warning-custom')
-            .col
-              .row.no-gutters
-                .col.align-self-center Candidatures acceptées
-                .col.align-self-center.text-right.h2.mb-0.text-warning-custom
-                  span.mr-3= count_by_private_sector["approved_applications_count"]
-              .row.no-gutters.mt-3
-                .col.align-self-center Dont PaQte
-                .col.align-self-center.text-right.h3.mb-0.text-warning-custom
-                  span.mr-3= count_by_private_sector_pacte["approved_applications_count"]
+  - if can?(:see_dashboard_enterprises_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+      .col-12.col-md-3.text-center
+        h3.m-0.d-inline-block.text-warning-custom Entreprises
+      .col-12.col-md-9
+        .row
+          .col-6.bl-1.br-1.bc-light
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-warning-custom')
+              .col
+                .row.no-gutters
+                  .col.align-self-center Offres proposées
+                  .col.align-self-center.text-right.h2.mb-0.text-warning-custom= dashboard_finder.platform_count_by_private_sector["total_count"] || "0"
+                .row.no-gutters.mt-3
+                  .col.align-self-center Dont PaQte
+                  .col.align-self-center.text-right.h3.mb-0.text-warning-custom= dashboard_finder.platform_count_by_private_sector_paqte["total_count"] || "0"
+          .col-6
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-warning-custom')
+              .col
+                .row.no-gutters
+                  .col.align-self-center Candidatures acceptées
+                  .col.align-self-center.text-right.h2.mb-0.text-warning-custom
+                    span.mr-3= dashboard_finder.platform_count_by_private_sector["approved_applications_count"]  || "0"
+                .row.no-gutters.mt-3
+                  .col.align-self-center Dont PaQte
+                  .col.align-self-center.text-right.h3.mb-0.text-warning-custom
+                    span.mr-3= dashboard_finder.platform_count_by_private_sector_paqte["approved_applications_count"] || "0"
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
-    .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-blue-custom Administrations
-    .col-12.col-md-9
-      .row
-        .col-6.bl-1.br-1.bc-light
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-blue-custom')
-            .col.align-self-center Offres proposées
-            .col.align-self-center.text-right.h2.mb-0.text-blue-custom= count_by_public_sector["total_count"]
-        .col-6
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-blue-custom')
-            .col.align-self-center Candidatures acceptées
-            .col.align-self-center.text-right.h2.mb-0.text-blue-custom
-              span.mr-3= count_by_public_sector["approved_applications_count"]
+  - if can?(:see_dashboard_administrations_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+      .col-12.col-md-3.text-center
+        h3.m-0.d-inline-block.text-blue-custom Administrations
+      .col-12.col-md-9
+        .row
+          .col-6.bl-1.br-1.bc-light
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-blue-custom')
+              .col.align-self-center Offres proposées
+              .col.align-self-center.text-right.h2.mb-0.text-blue-custom.test-administrations-proposed-offers= dashboard_finder.platform_count_by_public_sector["total_count"] || "0"
+          .col-6
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-blue-custom')
+              .col.align-self-center Candidatures acceptées
+              .col.align-self-center.text-right.h2.mb-0.text-blue-custom
+                span.mr-3.test-administrations-approved-offers= dashboard_finder.platform_count_by_public_sector["approved_applications_count"] || "0"
 
-  .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded.py-4
-    .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-red-custom Associations
-    .col-12.col-md-9
-      .row
-        .col-6.bl-1.br-1.bc-light
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-red-custom')
-            .col.align-self-center Offres proposées
-            .col.align-self-center.text-right.h2.mb-0.text-red-custom= count_by_association["total_count"]
-        .col-6
-          .row.h-100
-            .col-auto.align-self-center
-              = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-red-custom')
-            .col.align-self-center Candidatures acceptées
-            .col.align-self-center.text-right.h2.mb-0.text-red-custom
-              span.mr-3 -
+  - if can?(:see_dashboard_associations_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+      .col-12.col-md-3.text-center
+        h3.m-0.d-inline-block.text-red-custom Associations
+      .col-12.col-md-9
+        .row
+          .col-6.bl-1.br-1.bc-light
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-red-custom')
+              .col.align-self-center Offres proposées
+              .col.align-self-center.text-right.h2.mb-0.text-red-custom= dashboard_finder.platform_count_by_association["total_count"] || "0"
+          .col-6
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_Handshake_2803586-1.svg', class: 'fill-red-custom')
+              .col.align-self-center Candidatures acceptées
+              .col.align-self-center.text-right.h2.mb-0.text-red-custom
+                span.mr-3 -
 
-
-  .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded.py-4
+  // platform sum
+  .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3 Total des offres proposées
+      h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.nowrap.ml-3 Total des offres proposées sur la plateforme
     .col-12.col-md-9
-      .row
-        .col-6.px-3.bl-1.br-1.bc-stats.h-100
-          .row
-            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-body
-              span.text-counter-stats data-test-total="total-created-at"= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[], "total_count") || 0}
+      .row.align-items-center
+        .col-6.px-3.bc-stats
+          .row.
+            .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats.text-counter-stats-size
+              span.text-counter-stats.text-counter-stats-size data-test-total="total-created-at"= dashboard_finder.platform_total_count
 
         .col-6.px-3
-          .row
-            .col-8.align-self-center.h6.font-weight-normal.mb-0.text-body.text-counter-stats
-              = "Total des "
-              strong candidatures acceptées
-            .col-4.align-self-center.text-right.h2.mb-0.text-body
-              span.text-counter-stats.mr-3= [count_by_private_sector, count_by_public_sector, count_by_association].sum{|total_per_segment| total_per_segment.try(:[],"approved_applications_count") || 0}
+          .row.align-items-center
+            .col.align-self-center
+              h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.ml-3 Total des candidatures acceptées sur la plateforme
+            .col-auto.align-self-center.text-right.h2.mb-0.text-body
+              span.text-counter-stats.text-counter-stats-size.mr-3= dashboard_finder.platform_approved_applications_count
 
+  // chart
   .row
     .col-12
       div.py-5[data-controller="chart"
-               data-chart-internship-offer-created-at-by-month-value="#{internship_offer_created_at_by_month.to_json}"
-               data-chart-internship-application-accepted-at-by-month-value="#{internship_application_approved_at_month.to_json}" ]
+               data-chart-internship-offer-created-at-by-month-value="#{dashboard_finder.internship_offer_created_at_by_month.to_json}"
+               data-chart-internship-application-accepted-at-by-month-value="#{dashboard_finder.internship_application_approved_at_month.to_json}" ]
         div data-chart-target='svg'
+
+  // operators stats
+  .row.mt-5
+    .col-12
+      .row
+        .col-8
+          h2.text-body#operator-stats
+            | Stages pourvus hors plateforme
+            = link_to "Rafraichir", reporting_dashboards_refresh_path, method: :post, class: 'btn btn-success ml-4', data: {test_refresh: 1}
+
+        .col-4
+          - if dashboard_finder.operator_last_modified_at.present?
+            h2.text-body.text-right.font-weight-light
+              = "au "
+              = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_hh)
+          - if dashboard_finder.operator_last_synchro.present?
+            p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
+
+  - if can?(:see_dashboard_administrations_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+      .col-12.col-md-3.text-center
+        h3.m-0.d-inline-block.text-purple-custom Type de stage
+      .col-12.col-md-9
+        .row
+          .col-6.bl-1.bc-light
+            .row.h-100.pb-2
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_people_3139638.svg', class: 'fill-purple-custom')
+              .col.align-self-center Présentiel
+              .col.align-self-center.text-right.h2.mb-0.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:onsite_internship_offer]) || "0"
+          .col-6.bl-1.bc-light
+            .row.h-100.pb-2
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_Computer_2646597.svg', class: 'fill-purple-custom')
+              .col.align-self-center À distance
+              .col.align-self-center.text-right.h2.mb-0.text-purple-custom
+                span.mr-3= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:remote_internship_offer]) || "0"
+        .row
+          .col-12
+            hr.separator.p-0.mt-0.mb-0.ml-0.mr-3
+        .row
+          .col-12.bc-light.pt-3.bl-1
+            .row.h-100
+              .offset-3.col-6.align-self-center.text-center
+                = inline_svg_pack_tag('media/images/icons/noun_group_Computeur_People.svg', class: 'fill-purple-custom mx-3')
+                | Hybride
+                span.h2.mb-0.mx-3.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) || "0"
+
+  - if can?(:see_dashboard_enterprises_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+      .col-12.col-md-3.text-center
+        h3.m-0.d-inline-block.text-cyan-custom Secteur
+      .col-12.col-md-9
+        .row
+          .col-6.bl-1.br-1.bc-light
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_building_353052.svg', class: 'fill-cyan-custom')
+              .col
+                .row.no-gutters
+                  .col.align-self-center Secteur privé
+                  .col.align-self-center.text-right.h2.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector(is_public: false) || "0"
+                .row.no-gutters.mt-3
+                  .col.align-self-center Dont PaQte
+                  .col.align-self-center.text-right.h3.mb-0.text-cyan-custom= dashboard_finder.operator_count_by_private_sector_paqte || "0"
+          .col-6
+            .row.h-100
+              .col-auto.align-self-center
+                = inline_svg_pack_tag('media/images/icons/noun_group_establishment.svg', class: 'fill-cyan-custom')
+              .col.align-self-center
+                .row.no-gutters
+                  .col.align-self-center Secteur public
+                  .col.align-self-center.text-right.h2.mb-0.text-cyan-custom
+                    span.mr-3= dashboard_finder.operator_count_by_private_sector(is_public: true) || "0"
+
+  - if can?(:see_dashboard_enterprises_summary, current_user) && can?(:see_dashboard_administrations_summary, current_user) && can?(:see_dashboard_associations_summary, current_user)
+    .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
+      .col-12.col-md-3
+        h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3.font-weight-normal
+          | Total des stages pourvus
+          br
+          strong hors plateforme
+      .col-12.col-md-9
+        .row.align-items-center
+          .col-12.px-3.bc-stats
+            .row.
+              .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
+                span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
+
+    .row.mt-3.align-items-center.no-gutters.rounded-lg.py-4.b-4.bc-blue-stats-total.mb-5
+      .col-12.col-md-3
+        h3.m-0.d-inline-block.text-blue-stats-total.nowrap.ml-3
+          | Grand total des stages pourvus
+      .col-12.col-md-9
+        .row.align-items-center
+          .col-12.px-3.bc-stats
+            .row.
+              .offset-8.col-4.align-self-center.text-right.h2.mb-0
+                span.text-blue-stats-total.mr-3= dashboard_finder.overall_total || '0'

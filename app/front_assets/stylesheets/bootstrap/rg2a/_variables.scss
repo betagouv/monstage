@@ -3,15 +3,28 @@ $enable-print-style: false;
 
 // Le gris #767676 est le plus pâle qui puisse être utilisé sur fond blanc (RGAA Critère 3.3 [AA]).
 $gray-600: #767676; // text muted color
+$gray_200: #E5E7EB;
+$gray_300: #D1D5DB;
 // Éviter les contrastes maximum (tel que noir #000000 sur blanc #FFFFFF).
 $gray-900: #3F3256;    // body text color
 
 // s'assurer d'un contrast fort entre la couleur du body #fff et les alerts
 // $primary:
-$blue:    #10008F;
+$blue: #10008F;
 $blue_light: rgb(247,248,252);
 $blue_sky: rgb(46,134,255);
 $blue_dark: rgb(47,94,167);
+$blue_800: #1E40AF;
+$blue_700: #1D4ED8;
+$blue_100: #DBEAFE;
+$blue_50: #EFF6FF;
+$blue_border: #0C0D91;
+$text_stat: #493D60;
+$red_custom: #E24646;
+$blue_custom: #160D91;
+$warning_custom: #FCA000;
+$purple_custom: #8E62CA;
+$cyan_custom: #62CAC6;
 $yellow:  #feb620;
 // darken colors based on a11y feed
 $red:     darken(#dc3545, 3); // do not change

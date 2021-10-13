@@ -6,6 +6,15 @@ module SchoolYear
     MONTH_OF_YEAR_SHIFT = 5
     DAY_OF_YEAR_SHIFT   = 31
 
+    def strict_beginning_of_period
+      case current_month
+      when january_to_may, june_to_august
+        Date.new(current_year - 1, 9, 1)
+      when september_to_december
+        Date.new(current_year, 9, 1)
+      end
+    end
+
     def between_june_to_august?
       june_to_august.member?(current_month)
     end

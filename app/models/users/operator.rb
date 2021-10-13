@@ -33,6 +33,11 @@ module Users
       true
     end
     
+
+    def presenter
+      Presenters::Operator.new(self)
+    end
+
     private
 
     def set_api_token

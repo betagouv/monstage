@@ -14,8 +14,10 @@ module Users
 
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
-    has_many :students, through: :class_room
+    has_many :students, through: :school
     has_many :main_teachers, through: :school
+    has_many :internship_applications, through: :students
+    has_many :internship_agreements, through: :internship_applications 
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?

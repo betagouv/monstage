@@ -34,8 +34,8 @@ class ManageTutorsTest < ApplicationSystemTestCase
   test 'can create "3e segpa" InternshipOffer' do
     employer = create(:employer)
     sign_in(employer)
-    organisation = create(:organisation, creator_id: employer.id)
-    internship_offer_info = create(:bac_pro_internship_offer_info, employer: employer)
+    organisation = create(:organisation, creator: employer)
+    internship_offer_info = create(:troisieme_segpa_internship_offer_info, employer: employer)
     assert_difference 'InternshipOffer.count' do
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
@@ -46,6 +46,39 @@ class ManageTutorsTest < ApplicationSystemTestCase
       end
     end
     assert_equal employer, InternshipOffer.first.employer
-    assert_equal 'bac_pro', InternshipOffer.last.school_track
+    assert_equal 'User', InternshipOffer.first.employer_type
+    assert_equal 'troisieme_segpa', InternshipOffer.last.school_track
+  end
+
+  test 'as Employer, I can forget my tutor\'s phone and add it afterwards' do
+    employer = create(:employer)
+    organisation = create(:organisation, creator: employer)
+    sign_in(employer)
+    internship_offer_info = create(:troisieme_segpa_internship_offer_info, employer: employer)
+    assert_no_difference 'InternshipOffer.count' do
+      travel_to(Date.new(2019, 3, 1)) do
+        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
+                                               internship_offer_info_id: internship_offer_info.id)
+        fill_in 'Nom du tuteur/trice', with: 'Brice Durand'
+        fill_in 'Adresse électronique / Email', with: 'le@brice.durand'
+        fill_in 'Numéro de téléphone', with: ' ' # there is the error
+        click_on "Publier l'offre !"
+        # wait_form_submitted
+        find(
+          '.alert ul li label',
+          text: 'Veuillez saisir le numéro de téléphone du tuteur de l\'offre de stage'
+        )
+      end
+    end
+    new_phone_number = '+330625441145'
+    assert_difference 'InternshipOffer.count' do
+      travel_to(Date.new(2019, 3, 1)) do
+        visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
+                                               internship_offer_info_id: internship_offer_info.id)
+        fill_in 'Numéro de téléphone', with: new_phone_number
+        click_on "Publier l'offre !"
+        assert_equal new_phone_number, Tutor.last.tutor_phone, 'Tutor s phone number is not updated'
+      end
+    end
   end
 end

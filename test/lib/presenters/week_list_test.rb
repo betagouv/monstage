@@ -1,5 +1,4 @@
 require 'test_helper'
-
 module Presenters
   class WeekListTest < ActiveSupport::TestCase
     test '#first_joined_weeks' do

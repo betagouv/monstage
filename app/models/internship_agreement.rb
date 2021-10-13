@@ -12,6 +12,7 @@
 # only use dedicated builder to CRUD those objects
 class InternshipAgreement < ApplicationRecord
   include SchoolTrackable
+  include AASM
 
   belongs_to :internship_application
 
@@ -32,24 +33,46 @@ class InternshipAgreement < ApplicationRecord
   attr_accessor :skip_validations_for_system
 
   # todo flip based on current switch/branch
-  with_options if: :enforce_main_teacher_validations? do
-    validates :student_class_room, presence: true
-    validates :main_teacher_full_name, presence: true
-    validate :valid_trix_main_teacher_fields
-  end
+  # with_options if: :enforce_main_teacher_validations? do
+  #   validates :student_class_room, presence: true
+  #   validates :main_teacher_full_name, presence: true
+  #   validate :valid_trix_main_teacher_fields
+  # end
 
-  with_options if: :enforce_school_manager_validations? do
-    validates :student_school, presence: true
-    validates :school_representative_full_name, presence: true
-    validates :student_full_name, presence: true
-    validate :valid_trix_school_manager_fields
-  end
+  # with_options if: :enforce_school_manager_validations? do
+  #   validates :student_school, presence: true
+  #   validates :school_representative_full_name, presence: true
+  #   validates :student_full_name, presence: true
+  #   validate :valid_trix_school_manager_fields
+  # end
 
-  with_options if: :enforce_employer_validations? do
-    validates :organisation_representative_full_name, presence: true
-    validates :tutor_full_name, presence: true
-    validates :date_range, presence: true
-    validate :valid_trix_employer_fields
+  # with_options if: :enforce_employer_validations? do
+  #   validates :organisation_representative_full_name, presence: true
+  #   validates :tutor_full_name, presence: true
+  #   validates :date_range, presence: true
+  #   validate :valid_trix_employer_fields
+  # end
+
+  # validate :at_least_one_validated_terms
+
+  aasm do
+    state :draft, initial: true
+    state :started_by_employer,
+          :completed_by_employer,
+          :validated,
+          :signed
+
+    event :start_by_employer do
+      transitions from: :draft, to: :started_by_employer
+    end
+
+    event :complete do
+      transitions from: %i[draft started_by_employer], to: :completed_by_employer
+    end
+
+    event :validate do
+      transitions from: :completed_by_employer, to: :validated
+    end
   end
 
   with_options if: :enforce_tutor_validations? do
@@ -143,4 +166,7 @@ class InternshipAgreement < ApplicationRecord
     end
   end
 
+  def weekly_planning?
+    weekly_hours.any?(&:present?)
+  end
 end

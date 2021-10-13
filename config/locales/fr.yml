@@ -29,9 +29,12 @@ fr:
         confirm_new_password: Confirmation de mot de passe
   activerecord:
     models:
-      email_whitelist:
-        one: Email autorisé du référent
-        other: Email autorisés des référents
+      email_whitelists/statistician:
+        one: Email autorisé du référent départemental
+        other: Emails autorisés des référents départementaux
+      email_whitelists/ministry:
+        one: Email autorisé du référent central
+        other: Emails autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -47,6 +50,9 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      operator:
+        one: Association
+        other: Associations
       sector:
         one: Secteur
         other: Secteurs
@@ -104,6 +110,9 @@ fr:
       email_whitelist:
         one: Email autorisé du référent
         other: Email autorisés des référents
+      users/ministry_statistician:
+        one: Référent central
+        other: Référents centraux
       week:
         one: Semaine
         other: Semaines
@@ -114,6 +123,7 @@ fr:
         is_public: Secteur public/privé
         name: Nom du groupe
         updated_at: Mis à jour le
+        name: Administration centrale
       school:
         name: Nom
         kind: Type
@@ -150,6 +160,10 @@ fr:
         city: Ville
         coordinates: Coordonnées GPS
 
+      operator: &operator_fields
+        name: Nom
+        target_count: Objectif annuel
+
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
         description: Description
@@ -158,6 +172,23 @@ fr:
         max_candidates: Nbr. max de candidats
         sector_id: Secteurs professionnels
 
+      tutor: &tutor_fields
+        tutor_name: Nom du tuteur
+        tutor_phone: Téléphone du tuteur
+        tutor_email: Email du tuteur
+      
+      internship_agreement:
+        aasm_state:
+          employer:
+            draft: À remplir par les deux parties.
+            started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
+            completed_by_employer: Votre convention est dans les mains du chef d'établissement.
+            validated: Votre convention est prête. Imprimez la et renvoyez la signée au chef d'établissement.
+          school_manager:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
+            validated: Votre convention est prête.
 
       internship_offer:
         <<: *organisation_fields
@@ -206,6 +237,7 @@ fr:
         full_weeks: Semaines
         full_week: Semaine
         full_tutor: Tuteur
+        full_year: Disponible toute l'année
         full_employer: Employeur
         full_address: Adresse de l'employeur
         group_name: Groupe ou institution
@@ -268,7 +300,9 @@ fr:
               blank: "Veuillez renseigner la ville l'employeur"
             public:
               inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
-
+        partner:
+          attributes: &partner_errors
+            target_count: Objectif annuel
         internship_offer_info:
           attributes: &internship_offer_info_errors
             title:
@@ -403,8 +437,8 @@ fr:
     scopes:
       _all: "Tous"
       school:
-        with_manager: "Avec un chef d'etb"
-        without_manager: "Sans un chef d'etb"
+        with_manager: "Avec chef d'établissement"
+        without_manager: "Sans chef d'établissement"
 
   dashboard:
     internship_offer:
@@ -432,9 +466,8 @@ fr:
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3ème'
+      troisieme_generale: '3e'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
-      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

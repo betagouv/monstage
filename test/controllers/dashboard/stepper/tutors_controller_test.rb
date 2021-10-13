@@ -162,7 +162,7 @@ module Dashboard::Stepper
                    created_internship_offer.school_track,
                    'school_track not copied')
 
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 
     test 'POST #create/InternshipOffers::WeeklyFramed as employer with employer tutor account creates tutor' do
@@ -243,7 +243,35 @@ module Dashboard::Stepper
       assert_equal(internship_offer_info.school_track,
                    created_internship_offer.school_track,
                    'school_track not copied')
-      assert_redirected_to internship_offer_path(created_internship_offer)
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
+    end
+
+    test 'POST #create/InternshipOffers::FreeDate as statistician creates the post' do
+      statistician = create(:statistician)
+      sign_in(statistician)
+      school = create(:school)
+      internship_offer_info = create(:free_date_internship_offer_info)
+      organisation = create(:organisation, creator: statistician)
+
+      assert_difference('InternshipOffer.count', 1) do
+        post(
+          dashboard_stepper_tutors_path(organisation_id: organisation.id,
+                                        internship_offer_info_id: internship_offer_info.id),
+          params: {
+            tutor: {
+              tutor_name: 'mfo', tutor_email: 'mf@oo.com', tutor_phone: '0123456789'
+            }
+          }
+        )
+      end
+      created_internship_offer = InternshipOffer.last
+      assert_equal InternshipOffers::FreeDate.name, created_internship_offer.type
+      assert_equal statistician, created_internship_offer.employer
+      assert_nil created_internship_offer.school
+      assert_equal(internship_offer_info.school_track,
+                   created_internship_offer.school_track,
+                   'school_track not copied')
+      assert_redirected_to internship_offer_path(created_internship_offer, origin: 'dashboard')
     end
 
     test 'POST #create/InternshipOffers::FreeDate duplicate' do

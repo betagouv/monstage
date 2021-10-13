@@ -2,6 +2,8 @@
 
 module Finders
   class ReportingInternshipOffer
+
+    DETAILED_TYPOLOGY_GROUPS = ['private_group','paqte_group','public_group']
     #
     # raw queries for widgets (reporting/dashboard)
     #
@@ -38,6 +40,10 @@ module Finders
                 .includes(:group)
     end
 
+    def dimension_by_detailed_typology(detailed_typology:)
+      base_query.dimension_by_detailed_typology(detailed_typology: detailed_typology)
+    end
+
     def dimension_by_sector
       base_query.dimension_by_sector
                 .includes(:sector)
@@ -56,10 +62,10 @@ module Finders
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_school_track(school_track: params[:school_track]) if school_track?
-      query = query.by_group(group: params[:group]) if group_param?
+      query = query.by_group(group_id: params[:group]) if group_param?
       query = query.by_academy(academy: params[:academy]) if academy_param?
       query = query.where(is_public: params[:is_public]) if public_param?
-      query = query.by_detailed_typology(detailed_typology: params[:detailed_typology]) if detailed_typology_param?
+      query = query.by_detailed_typology(detailed_typology: params[:dimension]) if detailed_typology?
       query
     end
 
@@ -79,8 +85,9 @@ module Finders
       params.key?(:is_public)
     end
 
-    def detailed_typology_param?
-      params.key?(:detailed_typology)
+    def detailed_typology?
+      params.key?(:dimension) &&
+        params[:dimension].in?(DETAILED_TYPOLOGY_GROUPS)
     end
 
     def department_param?

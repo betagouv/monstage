@@ -13,7 +13,9 @@ module Presenters
       when Users::Operator
         'Operateur'
       when Users::Statistician
-        'Référent Departemental'
+        'Référent départemental'
+      when Users::MinistryStatistician
+        'Référent central'
       when Users::SchoolManagement
         case user.role.to_sym
         when :school_manager

@@ -25,7 +25,7 @@ class InternshipApplicationsController < ApplicationController
       @internship_application.submit!
       @internship_application.save!
       redirect_to dashboard_students_internship_applications_path(@internship_application.student, @internship_application),
-                  flash: { success: 'Votre candidature a bien été envoyée' }
+                  flash: { success: "Votre candidature a bien été envoyée. Poursuivez votre recherche d'un stage et notez que en l'absence de réponse dans un délai de 2 semaines, votre candidature sera automatiquement annulée." }
     else
       @internship_application.update(update_internship_application_params)
       redirect_to internship_offer_internship_application_path(@internship_offer, @internship_application)
@@ -42,7 +42,8 @@ class InternshipApplicationsController < ApplicationController
   def create
     set_internship_offer
     authorize! :apply, @internship_offer
-    @internship_application = InternshipApplication.create!(create_internship_application_params)
+
+    @internship_application = InternshipApplication.create!({user_id: current_user.id}.merge(create_internship_application_params))
     redirect_to internship_offer_internship_application_path(@internship_offer,
                                                              @internship_application)
   rescue ActiveRecord::RecordInvalid => e
@@ -79,7 +80,6 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :type,
-            :user_id,
             :internship_offer_week_id,
             :internship_offer_id,
             :internship_offer_type,

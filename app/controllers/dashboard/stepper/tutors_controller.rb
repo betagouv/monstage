@@ -13,9 +13,10 @@ module Dashboard::Stepper
 
     # render step 3
     def create
+      byebug
       internship_offer_builder.create_from_stepper(builder_params) do |on|
         on.success do |created_internship_offer|
-          redirect_to(internship_offer_path(created_internship_offer),
+          redirect_to(internship_offer_path(created_internship_offer, origin: 'dashboard'),
                       flash: { success: 'Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.' })
         end
         on.failure do |failed_internship_offer|

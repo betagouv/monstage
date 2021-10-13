@@ -2,35 +2,35 @@
 // * nested th loose background color
 // * plus it fails with border-bottom (use box-shadow instead)
 .table-sticky-thead{
+
   position: relative;
   border-collapse: collapse;
+  width: 100%;
 
-  thead {
-    th{
-      z-index: 2;
+
+  thead, .thead {
+    th, .th{
+      z-index: 1;
       position: sticky;
       border-top: none;
       top:0;
       left: -20px;
       right: -20px;
     }
-    tr:first-child:not(:last-child) th{
+    tr:first-child:not(:last-child) th,
+    .tr:first-child:not(:last-child) .th{
       height: 67px;
     }
-    tr:last-child:not(:first-child) th{
+    tr:last-child:not(:first-child) th,
+    .tr:last-child:not(:first-child) .th{
       top: 67px;
     }
   }
 
   .tr-white{
-    box-shadow: 0 2px 0px rgba($blue,.5),
-                -11px 0 0 #fff,
-                10px 0 0 #fff;
-
-    th{
-      box-shadow: 0 2px 0px rgba($blue,.5),
-                -11px 0 0 #fff,
-                10px 0 0 #fff;
+    box-shadow: 0 2px 0px rgba($blue,.5);
+    th, .th{
+      box-shadow: 0 2px 0px rgba($blue,.5),;
       background-color: $white;
     }
   }
@@ -42,7 +42,7 @@
 
   .tr-blue{
     box-shadow: 0 2px 0px rgb(97,161,201);
-    th{
+    th, .th{
       box-shadow: 0 2px 0px rgb(97,161,201);
       color: $white;
       background-color: $blue;
@@ -50,5 +50,6 @@
       font-weight: normal;
     }
   }
+
 }
 

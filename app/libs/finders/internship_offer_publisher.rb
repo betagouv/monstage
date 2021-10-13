@@ -7,7 +7,8 @@ module Finders
       {
         Users::Operator.name => :operator_query,
         Users::Employer.name => :employer_query,
-        Users::Tutor.name => :tutor_query
+        Users::Tutor.name => :tutor_query,
+        Users::Statistician.name => :statistician_query, # TO DO No Ministry Statistician ?
       }
     end
 
@@ -15,9 +16,8 @@ module Finders
 
     def operator_query
       query = common_filter do
-        InternshipOffer.kept.submitted_by_operator(user: user)
+        InternshipOffer.kept.where(employer: user)
       end
-      query = query.merge(query.limited_to_department(user: user)) if user.department.present?
 
       query
     end

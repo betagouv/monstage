@@ -98,7 +98,7 @@ module Reporting
 
     private
     def students_not_anonymized
-      users.select { |user| user.is_a?(Users::Student) }
+      users.select(&:student?)
            .reject(&:anonymized)
     end
   end

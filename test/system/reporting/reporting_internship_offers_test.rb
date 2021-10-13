@@ -10,7 +10,7 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
     @sector_agri = create(:sector, name: 'Agriculture')
     @sector_wood = create(:sector, name: 'Filière bois')
     @internship_offer_agri_1 = create(
-      :troisieme_generale_internship_offer,
+      :weekly_internship_offer,
       zipcode: 60,
       sector: @sector_agri,
       max_candidates: 1,
@@ -31,13 +31,10 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
     visit reporting_internship_offers_path(department: @department)
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "11")
 
-    select '3ème'
+    select '3e'
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "1")
 
     select '3e SEGPA'
     page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "10")
-
-    select 'Bac pro'
-    page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "0")
   end
 end

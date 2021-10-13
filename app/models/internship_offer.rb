@@ -20,13 +20,12 @@ class InternshipOffer < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
-  # public.config_search_with_synonym config is
-  # this TEXT SEARCH CONFIGURATION is based on 3 keys concepts
-  #   public.dict_search_with_synonoym : why allow us to links kind of same words for input search
+  # public.config_search_keyword config is
+  # this TEXT SEARCH CONFIGURATION is based on 2 keys concepts
   #   unaccent : which tokenize content without accent [search is also applied without accent]
   # .  french stem : which tokenize content for french FT
   # plus some customization to ignores
-  #   email, url, host, file, int, float
+  #   email, url, host, file, uint, url_path, sfloat, float, numword, numhword, version;
   pg_search_scope :search_by_keyword,
                   against: {
                     title: 'A',
@@ -36,7 +35,7 @@ class InternshipOffer < ApplicationRecord
                   ignoring: :accents,
                   using: {
                     tsearch: {
-                      dictionary: 'public.config_search_with_synonym',
+                      dictionary: 'public.config_search_keyword',
                       tsvector_column: 'search_tsv',
                       prefix: true
                     }
@@ -50,16 +49,16 @@ class InternshipOffer < ApplicationRecord
     where(department: user.department)
   }
 
+  scope :limited_to_ministry, lambda { |user:|
+    where(group_id: user.ministry_id)
+  }
+
   scope :from_api, lambda {
     where.not(permalink: nil)
   }
 
   scope :not_from_api, lambda {
     where(permalink: nil)
-  }
-
-  scope :submitted_by_operator, lambda { |user:|
-    merge(user.operator.internship_offers)
   }
 
   scope :ignore_internship_restricted_to_other_schools, lambda { |school_id:|
@@ -100,7 +99,7 @@ class InternshipOffer < ApplicationRecord
   belongs_to :employer, polymorphic: true
   belongs_to :organisation, optional: true
 
-  has_one :tutor
+  belongs_to :tutor, optional: true
   has_one :internship_offer_info
 
   has_rich_text :employer_description_rich_text
@@ -132,6 +131,11 @@ class InternshipOffer < ApplicationRecord
 
   def departement
     Department.lookup_by_zipcode(zipcode: zipcode)
+  end
+
+  def operator
+    return nil if !from_api?
+    employer.operator
   end
 
   def published?
@@ -227,5 +231,13 @@ class InternshipOffer < ApplicationRecord
 
   def notify_tutor
     TutorMailer.new_tutor(tutor_id, id).deliver_later
+  end
+  
+  def with_applications?
+    self.internship_applications.count.positive?
+  end
+
+  def weekly_planning?
+    weekly_hours.any?(&:present?)
   end
 end

@@ -55,5 +55,14 @@ module Reporting
       get reporting_schools_path(subscribed_school: 'true')
       assert_select  'tr.test-school-count', count: 1
     end
+
+
+
+    test 'GET #index as operator works' do
+      user_operator = create(:user_operator)
+      sign_in(user_operator)
+      get reporting_schools_path(department: 'Ain')
+      assert_response 200
+    end
   end
 end

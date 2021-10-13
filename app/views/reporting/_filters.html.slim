@@ -1,55 +1,33 @@
+- filters = current_user.presenter.profile_filters
 fieldset
-  legend.h6 Filtrer par
-  .row
-    - if can?(:index_and_filter, Reporting::InternshipOffer)
-      - if by_academy
-        .col-3
+  legend.h6.text-body.mb-3 Filtrer par
+  - if can?(:index_and_filter, Reporting::InternshipOffer)
+    - if filters.dig(view_tab, :by_school_name)
+      = render partial: "reporting/filters/by_school_name", locals: { schools: @schools}
+    .row
+      - if filters.dig(view_tab, :by_academy)
+        = render partial: "reporting/filters/academy", locals: {params: params}
+      - if filters.dig(view_tab, :by_department)
+        = render partial: "reporting/filters/department", locals: {params: params}
+      - if filters.dig(view_tab, :by_subscribed_school)
+        = render partial: "reporting/filters/subscribed_school", locals: {params: params}
+      - if filters.dig(view_tab, :by_typology)
+        = render partial: "reporting/filters/typology", locals: {params: params}
+      - if filters.dig(view_tab, :by_detailed_typology)
+        = render partial: "reporting/filters/detailed_typology", locals: {params: params}
+      - if filters.dig(view_tab, :by_school_track)
+        = render partial: "reporting/filters/school_track", locals: {params: params}
+
+    - if filters.dig(view_tab, :by_school_year)
+      .row
+        - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
+        - options = years.map { |year| [ "#{year}/#{year+1}", year] }
+        .col-4
           .form-group
-            = label_tag :academy, 'Académie', class: 'text-uppercase'
-            = select_tag :academy,
-                          options_for_select(Academy.to_select, selected: params[:academy].blank? ? nil : params[:academy]),
-                          prompt: 'Toutes',
-                          class: 'form-control',
-                          data: { action: 'statistics#filterByAcademy' }
-      - if by_department && current_user.is_a?(Users::God)
-        .col-3
-          .form-group
-            = label_tag :department, 'Département', class: 'text-uppercase'
-            = select_tag :department,
-                          options_for_select(Department.to_select(only: (params[:academy].blank? ? nil : Academy.departments_by_name(academy: params[:academy]))), selected: params[:department].blank? ? nil : params[:department]),
-                          prompt: 'Tous',
-                          class: 'form-control',
-                          data: { action: 'statistics#filterByDepartment' }
-      - if by_subscribed_school
-        .col-3
-          .form-group
-            = label_tag :subscribed_school, "Inscrits", class: 'text-uppercase'
-            = select_tag :subscribed_school,
-                          options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school]),
-                          class: 'form-control',
-                          data: { action: 'statistics#filterBySubscribedSchool' }
-      - if by_typology
-        .col-3
-          .form-group
-            = label_tag :is_public, "Public / Privé", class: 'text-uppercase'
-            = select_tag :is_public,
-                         options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]),
-                         class: 'form-control',
-                         data: { action: 'statistics#filterByPublicy' }
-      - if by_detailed_typology
-        .col-3
-          .form-group
-            = label_tag :detailed_typology, "Public / Privé / PaQte", class: 'text-uppercase'
-            = select_tag :detailed_typology,
-                         options_for_select([["Tous", ""], ["Secteur Public", "public"],["Secteur Privé (dont Sign. PaQte)", "private"],["Sign. PaQte", "paqte"]], selected: params[:detailed_typology]),
-                         class: 'form-control',
-                         data: { action: 'statistics#filterByDetailedTypology' }
-      - if by_school_track
-        .col-3
-          .form-group
-            = label_tag :school_track, "Filière", class: 'text-uppercase'
-            = select_tag :school_track,
-                         grouped_options_for_select(Presenters::ClassRoom.school_tracks_options, selected: params[:school_track]),
-                         class: 'form-control',
-                         prompt: 'Toutes',
-                         data: { action: 'statistics#filterBySchoolTrack' }
+            = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase'
+
+            = select_tag :school_year,
+                          options_for_select(options, params[:school_year]),
+                          include_blank: 'Toutes',
+                          data: { action: 'statistics#filterBySchoolYear' },
+                          class: 'form-control'

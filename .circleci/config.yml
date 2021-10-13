@@ -12,11 +12,14 @@ jobs: # a collection of steps
           PGUSER: monstage_test
           RAILS_ENV: test
           HOST: https://www.example.fr
-      - image: monstage/postgres-12-alpine-postgis-synonym:1.0.1 # database image with support of current dir
+      - image: circleci/postgres:12.0-alpine-postgis # database image with support of current dir
         environment: # environment variables for database
           POSTGRES_DB: monstage_test
           POSTGRES_USER: monstage_test
           POSTGRES_PASSWORD: monstage_test
+      - image: circleci/redis:6.0.15-alpine
+        environment:
+          REDIS_URL: localhost:6379
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -25,14 +28,9 @@ jobs: # a collection of steps
           name: Update Chromedriver
           command: |
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo apt-get update --allow-releaseinfo-change
             sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-            sudo apt-get update
             sudo apt-get upgrade google-chrome-stable
-
-      # Which version of bundler?
-      - run:
-          name: Which bundler?
-          command: bundle -v
 
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
@@ -71,6 +69,10 @@ jobs: # a collection of steps
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
+          name: Wait for redis
+          command: dockerize -wait tcp://localhost:6379 -timeout 1m
+
+      - run:
           name: Load DB schema
           environment:
             DATABASE_URL: "postgis://monstage_test:monstage_test@localhost:5432/monstage_test"
@@ -81,22 +83,19 @@ jobs: # a collection of steps
       - run:
           name: Run TestUnit
           command: PARALLEL_WORKERS=4 bundle exec rake test
+      # beware, system tests on CI with more than 1 PARALLEL_WORKERS leads to OOM errors
+      - run:
+          name: Run Desktop TestSystem with headless_chrome
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_desktop.sh
 
       - run:
-          name: Run TestSystem with headless_chrome
-          command: PARALLEL_WORKERS=1 BROWSER=headless_chrome bundle exec rake test:system
-
-      # - run:
-      #     name: Run TestSystem with chrome
-      #     command: PARALLEL_WORKERS=1 BROWSER=chrome bundle exec rake test:system
-
-      # - run:
-      #     name: Run TestSystem with firefox
-      #     command: PARALLEL_WORKERS=1 BROWSER=firefox bundle exec rake test:system
+          name: Run Mobile TestSystem with headless_chrome using chrome's iPhone 6 emulation
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_mobile.sh
 
       - run:
-          name: w3c validation
-          command: java -jar ~/project/node_modules/vnu-jar/build/dist/vnu.jar --errors-only ~/project/tmp/w3c/*.html
+          name: Run Desktop w3c System with headless_chrome
+          command: PARALLEL_WORKERS=1 ~/project/infra/test/system_w3c.sh
+
       - run:
           name: a11y validation
           command: ~/project/node_modules/.bin/pa11y-ci $(find ~/project/tmp/w3c/*.html -name '*.html')
@@ -111,10 +110,14 @@ jobs: # a collection of steps
       - image: buildpack-deps:trusty
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
       - run:
           name: Deploy Master to Clever Cloud
           command: |
-            git remote add clever https://$CLEVER_TOKEN:$CLEVER_SECRET@push-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
+            ssh-keyscan push-n2-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
+            git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
             git push -u clever master
 workflows:
   version: 2
@@ -126,4 +129,6 @@ workflows:
               - build
             filters:
               branches:
-                only: master
+                only:
+                  - master
+

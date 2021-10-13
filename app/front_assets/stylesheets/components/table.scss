@@ -24,3 +24,30 @@
     }
   }
 }
+
+
+.table {
+    display:table;
+}
+.tr {
+    display:table-row;
+}
+.td, .th {
+    display:table-cell;
+    padding: $table-cell-padding;
+    vertical-align: top;
+    border-top: $table-border-width solid $table-border-color;
+}
+.thead {
+  display: table-header-group;
+  .th{
+    vertical-align: bottom;
+    border-bottom: (2 * $table-border-width) solid $table-border-color;
+  }
+}
+.tbody{
+  display: table-row-group;
+}
+.tfoot{
+  display: table-footer-group;
+}

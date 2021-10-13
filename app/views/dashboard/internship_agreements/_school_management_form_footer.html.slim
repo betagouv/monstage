@@ -1,0 +1,19 @@
+div data-controller="footer"
+  div  [
+    data-footer-target="placeholder"
+    data-action="resize@window->footer#resize"
+    ]
+
+  .sticky-footer.bg-light data-footer-target="fixedContent"
+    .container.py-4
+      .row
+        .col-12.d-flex.justify-content-end
+          = button_tag type: "button", data: { toggle: 'modal', target: "#validation-modal", turbolinks: false }, class: 'btn btn-primary mx-1' do
+            i.fas.fa-check
+            |  Valider la convention
+
+= render "dashboard/internship_agreements/validation_modal", form: form,
+                                                             title: 'Valider la convention',
+                                                             action: 'validate',
+                                                             button: 'Je valide la convention',
+                                                             content: 'En validant la convention, vous ne pourrez plus modifier les informations. L’offreur sera averti que la convention est validée, il sera invité à l’imprimer, la signer et vous la renvoyer.'

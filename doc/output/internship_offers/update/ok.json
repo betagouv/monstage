@@ -1,18 +1,4 @@
 {
-  "title": "hellow",
-  "max_candidates": 2,
-  "published_at": null,
-  "zipcode": "75001",
-  "description": "Lorem ipsum dolor api",
-  "employer_website": null,
-  "street": "1 rue du poulet",
-  "city": "Paris",
-  "employer_name": "Octo",
-  "employer_description": "on envoie du parpaing",
-  "remote_id": "1",
-  "permalink": "https://google.fr",
-  "formatted_coordinates": {
-    "latitude": 48.866667,
-    "longitude": 2.333333
-  }
+  "code": "BAD_ARGUMENT",
+  "error": "wrong number of arguments (given 1, expected 0; required keywords: params, fallback_weeks)"
 }

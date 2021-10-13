@@ -90,6 +90,51 @@ module Dashboard::Stepper
       )
     end
 
+    test 'when statistician POST create redirects to new tutor' do
+      statistician = create(:statistician)
+      sign_in(statistician)
+      sector = create(:sector)
+      weeks = [weeks(:week_2019_1)]
+      organisation = create(:organisation, creator: statistician)
+      assert_difference('InternshipOfferInfo.count') do
+        post(
+          dashboard_stepper_internship_offer_infos_path(organisation_id: organisation.id),
+          params: {
+            internship_offer_info: {
+              sector_id: sector.id,
+              title: 'PDG stagiaire',
+              type: 'InternshipOfferInfos::WeeklyFramed',
+              description_rich_text: '<div><b>Activités de découverte</b></div>',
+              'week_ids' => weeks.map(&:id),
+              new_daily_hours: {
+                "lundi" => ['07:00', '12:00'],
+                "mardi" => ['08:00', '13:00'],
+                "mercredi" => ['09:00', '14:00'],
+                "jeudi" => ['10:00', '15:00'],
+                "vendredi" => ['11:00', '16:00'],
+                "samedi" => ['--', '--']
+              }
+            },
+          })
+      end
+      created_internship_offer_info = InternshipOfferInfo.last
+      assert_equal 'PDG stagiaire', created_internship_offer_info.title
+      assert_equal sector.id, created_internship_offer_info.sector_id
+      assert_equal 'InternshipOfferInfos::WeeklyFramed', created_internship_offer_info.type
+      assert_equal 'Activités de découverte', created_internship_offer_info.description_rich_text.to_plain_text
+      assert_equal ['07:00', '12:00'], created_internship_offer_info.new_daily_hours["lundi"]
+      assert_equal ['08:00', '13:00'], created_internship_offer_info.new_daily_hours["mardi"]
+      assert_equal ['09:00', '14:00'], created_internship_offer_info.new_daily_hours["mercredi"]
+      assert_equal ['10:00', '15:00'], created_internship_offer_info.new_daily_hours["jeudi"]
+      assert_equal ['11:00', '16:00'], created_internship_offer_info.new_daily_hours["vendredi"]
+      assert_equal ['--', '--'], created_internship_offer_info.new_daily_hours["samedi"]
+      assert_equal weeks.map(&:id), created_internship_offer_info.week_ids
+      assert_redirected_to new_dashboard_stepper_tutor_path(
+        organisation_id: organisation.id,
+        internship_offer_info_id: created_internship_offer_info.id,
+      )
+    end
+
 
     test 'POST create render new when missing params, prefill form' do
       employer = create(:employer)

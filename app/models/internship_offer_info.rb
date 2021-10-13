@@ -20,4 +20,8 @@ class InternshipOfferInfo < ApplicationRecord
   def is_fully_editable?
     true
   end
+
+  def weekly_planning?
+    weekly_hours.any?(&:present?)
+  end
 end

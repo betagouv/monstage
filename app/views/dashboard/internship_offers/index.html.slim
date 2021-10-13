@@ -1,8 +1,8 @@
 .row
   .col-6
-    h1.h3.title-with-button-line Mes offres de stage
-  .col-6.text-right
-    .title-with-button-line
+    h1.h3 Mes offres de stages
+  - if can?(:create, InternshipOffer)
+    .col-6.text-right
       = link_to new_dashboard_stepper_organisation_path,
                 class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
                 id: 'test-create-offer'

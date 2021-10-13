@@ -18,8 +18,14 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
+          success_message = if(params[:commit] == 'Renouveler l\'offre')
+            'Votre offre de stage a été renouvelée pour cette année scolaire.'
+                            else
+            "L'offre de stage a été dupliquée en tenant compte" \
+            " de vos éventuelles modifications."
+                            end
           redirect_to(internship_offer_path(created_internship_offer),
-                      flash: { success: 'Votre offre de stage a été renouvelée pour cette année scolaire.' })
+                      flash: { success: success_message })
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer || InternshipOffer.new
@@ -36,7 +42,7 @@ module Dashboard
     def edit
       @internship_offer = InternshipOffer.find(params[:id])
       authorize! :update, @internship_offer
-      @available_weeks = Week.selectable_on_school_year
+      @available_weeks = @internship_offer.available_weeks
     end
 
     def update
@@ -48,13 +54,13 @@ module Dashboard
         end
         on.failure do |failed_internship_offer|
           @internship_offer = failed_internship_offer
-          @available_weeks = Week.selectable_on_school_year
+          @available_weeks = failed_internship_offer.available_weeks
           render :edit, status: :bad_request
         end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.find(params[:id])
-      @available_weeks = Week.selectable_on_school_year
+      @available_weeks = @internship_offer.available_weeks
       render :edit, status: :bad_request
     end
 
@@ -168,12 +174,16 @@ module Dashboard
                     :department,
                     :region,
                     :academy,
-                    coordinates: {},
+                    :renewed,
+                    :weekly_lunch_break,
 
+                    coordinates: {},
                     week_ids: [],
                     new_daily_hours: {},
                     weekly_hours:[],
+                    daily_lunch_break: {},
                     tutor_attributes: {})
+
     end
   end
 end

@@ -4,7 +4,7 @@ FactoryBot.define do
     employer_name { "MyCorp" }
     employer_website { "https://website.com" }
     employer_description { "MyText" }
-    employer
+    #employer
     street { '1 rue du poulet' }
     zipcode { '75001' }
     city { 'Paris' }

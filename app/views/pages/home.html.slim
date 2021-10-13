@@ -1,23 +1,30 @@
-= cache PrismicFinder do
-  .bg-hero-homepage style="background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%), url(#{PrismicFinder.homepage()['homepage.image'].url})"
-    .container
-      .row
-        .col-12
-          #des-solutions-pour-vous-tout-de-suite.py-3.py-sm-5.my-5.text-center.text-white
-            = image_tag asset_pack_path('media/images/homepage/covid-alert.svg'),
-                          alt: "Dispositif Covid-19",
-                          width: 240,
-                          class: 'mb-3'
+.bg-cover-image-homepage
+  .container
+    .row.py-3.py-sm-5
 
-            .h1.text-white
-              = PrismicFinder.homepage()['homepage.title'].as_html(nil).html_safe
+    .row.no-gutters.py-5
+      .col-12
+        h1.text-white.text-center.mb-3
+          | monstagedetroisieme.fr,
+          br
+          | ce sont des offres de stage
+          br
+          | qui n'attendent que vous
+
+        .col-12= render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: user_presenter.default_search_options, form_id: :home_search_form }
+        .actions.d-flex.d-stick.d-md-none.p-2
+          = link_to search_internship_offers_path(current_user_or_visitor.default_search_options), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+            = "Rechercher un stage"
+
+
+    .row.py-3.py-sm-5
+= cache PrismicFinder do
 
   .bg-transparent
     .container
       .row
         .col-12
           h2.py-5.text-center
-
             = PrismicFinder.homepage()['homepage.slider_title'].as_text
       .row.pb-5.mb-3.flex-md-reverse-column
         .col-12.col-md-6.align-self-center
@@ -42,28 +49,8 @@
                   = image_tag news.get('news_image').url, class: "card-img-top", alt: news.get('news_image').alt.blank? ? 'image' : news.get('news_image').alt
                   .card-body
                     = news.get('news_description').as_html(nil).html_safe
-                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold' do
+                    p.mb-0= link_to news.get('news_link').url, class: 'text-danger font-weight-bold', target: '_blank', rel: "external noopener noreferrer" do
                       = news.get('news_link_text').as_text
-                      | &nbsp;
-                      i.fas.fa-chevron-right
-
-  .bg-cover-image-homepage
-    .container
-      .row.py-3.py-sm-5
-
-      .row.no-gutters.py-5
-        .col-12
-          h1.text-white.text-center.mb-3
-            | Et après le confinement ?
-            br
-            | Des offres de stages vous attendent déjà !
-          .col-12= react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path,
-                                  className: 'd-block d-sm-flex not-focusable-search-bar' ,
-                                  schoolTypeVisibility: false }) do
-                .input-loading-skeleton
-
-      .row.py-3.py-sm-5
 
 
 
@@ -157,5 +144,4 @@
             - partners_map_of_logo_url.each do |partner|
               = render partial: "partner_link",
                       locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-
 
