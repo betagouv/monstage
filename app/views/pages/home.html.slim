@@ -1,97 +1,98 @@
-.container-monstage
-  .bg-cover-image-homepage
-    .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
-      .col.px-0
-        = render 'layouts/navbar_home'
+.mx-2
+  .container-monstage
+    .bg-cover-image-homepage
+      .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
+        .col.px-0
+          = render 'layouts/navbar_home'
 
-    .row.no-gutters
-      .col-lg-6.col-md-12
-        .px-lg-5.pl-md-4.pl-sm-3.pl-2.mr-lg-n5.overflow-auto
-          h1.h1.h1-text-hero.white
-            | Des stages de troisième de premier choix !
-          p.subtitle-hero.white.py-5.to-regular
-            |
-              Trouvez votre stage parmi une grande quantité d’offres
-              de qualité, dédiées aux élèves scolarisés en REP/REP+.
-      .col-lg-6.col-md-12
-        .d-flex.align-items-end.flex-column
-          = image_tag asset_pack_path('media/images/homepage/hero-group-resized.png'),
-                      alt: "Illustration, un groupe d'élèves",
-                      width: '85%',
-                      class: 'mt-auto rounded-adjust ml-lg-n5'
+      .row.no-gutters
+        .col-lg-6.col-md-12
+          .pl-lg-5.pl-md-4.pl-sm-3.pl-2.mr-lg-n5.overflow-auto
+            h1.h1.h1-text-hero.white.mb-3
+              | Des stages de troisième de premier choix !
+            p.subtitle-hero.white.py-lg-5.py-md-4.py-sm-4.py-xs-3.to-regular
+              |
+                Trouvez votre stage parmi une grande quantité d’offres
+                de qualité, dédiées aux élèves scolarisés en REP/REP+.
+        .col-lg-6.col-md-12
+          .d-flex.align-items-end.flex-column
+            = image_tag asset_pack_path('media/images/homepage/hero-group-resized.png'),
+                        alt: "Illustration, un groupe d'élèves",
+                        width: '85%',
+                        class: 'mt-auto rounded-adjust ml-lg-n5'
 
-  .row.search-form.px-5.mt-2
-    .col-12= render partial: "internship_offers/search/form",
-                    locals: { render_as_partial: true,
-                              url: internship_offers_path,
-                              default_values: user_presenter.default_search_options,
-                              form_id: :home_search_form }
-    .actions.d-flex.d-stick.d-md-none.p-2
-      = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'btn btn-danger rounded-sm',
-                data: { :"test-id" => 'mobile-search-button' }
-        = "Rechercher un stage"
-
-  .row.py-5
-    .col-md-7.col-sm-12.text-center
-      = image_tag asset_pack_path('media/images/homepage/animated_people.gif'),
-                    alt: "Illustration animée, prof élèves",
-                    height: '90%',
-                    class: ''
-    .col-md-5.col-sm-12
-      h1.px-2.px-sm-2.px-md-0
-        | Des stages pour tous, une opportunité pour
-        span.chacun-image-left.pr-2 &nbsp;
-        span.chacun-image-right chacun
-
-      p.mt-3.text-muted.wider-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.px-2.px-sm-2.px-md-0
-        |
-          Plus qu’un passage obligatoire, le stage de troisième est une
-          opportunité unique d’explorer le monde du travail.
-          L’expérience, forcément enrichissante, aide l’élève à ouvrir
-          ses horizons professionnels et à dessiner son projet personnel.
-
-      p.text-muted.wider-text.px-2.px-sm-2.px-md-0
-        |
-          Notre plateforme permet de mettre en relation des établissements
-          scolaires éligibles et des entreprises engagées afin d’agir dans
-          le meilleur intérêt des élèves en leur offrant la meilleure
-          expérience du stage possible.
-      p.py-4.px-2.px-sm-2.px-md-0
+    .row.search-form.px-5.mt-2
+      .col-12= render partial: "internship_offers/search/form",
+                      locals: { render_as_partial: true,
+                                url: internship_offers_path,
+                                default_values: user_presenter.default_search_options,
+                                form_id: :home_search_form }
+      .actions.d-flex.d-stick.d-md-none.p-2
         = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
-                          class: 'btn btn-danger rounded-sm px-5',
-                          data: { :"test-id" => 'mobile-search-button-first' }
-          = "Trouver un stage"
-  .row
-    .col-12.text-center
-      h2.h3 monstagedetroisieme.fr vous permet de :
+                  class: 'btn btn-danger rounded-sm',
+                  data: { :"test-id" => 'mobile-search-button' }
+          = "Rechercher un stage"
 
-.container-monstage data-controller='carousel' data-carousel-index-value='0'
-  .slide-show.d-none.d-md-block
-    .row.no-gutters
-      .col-6.text-left
-        a data-action="carousel#previous"
-          = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
-                      alt: "bouton précédent",
-                      height: '50px',
+    .row.py-5
+      .col-md-7.col-sm-12.text-center
+        = image_tag asset_pack_path('media/images/homepage/animated_people.gif'),
+                      alt: "Illustration animée, prof élèves",
+                      height: '90%',
                       class: ''
-      .col-6.text-right
-        a data-action="carousel#next"
-          = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
-                      alt: "bouton suivant",
-                      height: '50px',
-                      class: ''
-  .container
-    .row data-carousel-target='slide'
-      .col-md-6.col-sm-12
-        .how-to-offers.text-center
+      .col-md-5.col-sm-12
+        h1.px-2.px-sm-2.px-md-0
+          | Des stages pour tous, une opportunité pour
+          span.chacun-image-left.pr-2 &nbsp;
+          span.chacun-image-right chacun
+
+        p.mt-3.text-muted.wider-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.px-2.px-sm-2.px-md-0
+          |
+            Plus qu’un passage obligatoire, le stage de troisième est une
+            opportunité unique d’explorer le monde du travail.
+            L’expérience, forcément enrichissante, aide l’élève à ouvrir
+            ses horizons professionnels et à dessiner son projet personnel.
+
+        p.text-muted.wider-text.px-2.px-sm-2.px-md-0
+          |
+            Notre plateforme permet de mettre en relation des établissements
+            scolaires éligibles et des entreprises engagées afin d’agir dans
+            le meilleur intérêt des élèves en leur offrant la meilleure
+            expérience du stage possible.
+        p.py-4.px-2.px-sm-2.px-md-0
+          = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
+                            class: 'btn btn-danger rounded-sm px-5',
+                            data: { :"test-id" => 'mobile-search-button-first' }
+            = "Trouver un stage"
+    .row
+      .col-12.text-center
+        h2.h3 monstagedetroisieme.fr vous permet de :
+
+  .container-monstage data-controller='carousel' data-carousel-index-value='0'
+    .slide-show.d-none.d-md-block
+      .row.no-gutters
+        .col-6.text-left
+          a data-action="carousel#previous"
+            = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
+                        alt: "bouton précédent",
+                        height: '50px',
+                        class: ''
+        .col-6.text-right
+          a data-action="carousel#next"
+            = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
+                        alt: "bouton suivant",
+                        height: '50px',
+                        class: ''
+    .container
+      .row data-carousel-target='slide'
+        .col-md-6.col-sm-12
+          .how-to-offers.text-center-left
             div.my-5
               h3.h2
-                span.trouver-image-left.ml-n3.overflow-auto Trouver
+                span.trouver-image-left.ml-n3 Trouver
                 span.trouver-image-right.pr-2 &nbsp;
                 | un stage
               h4.h5.text-muted.pb-3 Elèves
-              .row.no-gutters.text-center
+              .row.no-gutters.text-center-left
                 .col-lg-3.col-sm-2
                 .col-lg-6.col-sm-8.col-xs-12
                   p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
@@ -104,223 +105,227 @@
                             class: 'btn btn-danger rounded-sm px-4',
                             data: { :"test-id" => 'mobile-search-button' }
                     = "Rechercher un stage"
-      .col-md-6.col-sm-12.text-center
-        = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
-                    alt: "Illustration, une élève",
-                    class: 'fitting'
+        .col-md-6.col-sm-12.text-center
+          = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
+                      alt: "Illustration, une élève",
+                      class: 'fitting'
 
-    .row data-carousel-target='slide'
-      .col-md-6.col-sm-12
-        .how-to-offers.text-center
-          div.my-5
+      .row data-carousel-target='slide'
+        .col-md-6.col-sm-12
+          .how-to-offers.text-center-left
+            div.my-5
+                h3.h2
+                  span.accueillir-image-left.pr-2 &nbsp;
+                  span.accueillir-image-right Accueillir
+                  |&nbsp; un stagiaire
+                h4.h5.text-muted.pb-3.text-center-left
+                  |Entreprises - Administrations publiques
+                  br
+                  | et services de l’État
+                .row.no-gutters
+                  .col-lg-3.col-sm-2
+                  .col-lg-6.col-sm-8.col-xs-12
+                    p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
+                      |
+                        Du dépôt d’offres via votre espace personnalisé aux conseils
+                        pour bien vous préparer à l’arrivée du stagiaire.
+                - if !user_signed_in? || can?(:supply_offers, current_user)
+                  - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+                  p = link_to target_link,
+                              class: 'btn btn-danger rounded-sm px-4',
+                              data: { :"test-id" => 'mobile-search-button' }
+                      = "Accueillir un stagiaire"
+        .col-md-6.col-sm-12.text-center
+          = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
+                      alt: "Illustration , une élève",
+                      class: 'fitting'
+
+      .row.mb-4.no-gutters data-carousel-target='slide'
+        .col-md-6.col-sm-12
+          .how-to-offers.text-center-left
+            div.my-5
               h3.h2
-                span.accueillir-image-left.pr-2 &nbsp;
-                span.accueillir-image-right Accueillir
-                |&nbsp; un stagiaire
-              h4.h5.text-muted.pb-3
-                |Entreprises - Administrations publiques
-                br
-                | et services de l’État
-              .row.no-gutters
+                span.accompagner-image-left.pr-2 &nbsp;
+                span.accompagner-image-right Accompagner
+                |&nbsp;vos élèves
+              h4.h5.text-muted.pb-3 Equipes pédagogiques
+              .row.no-gutters.text-center-left
                 .col-lg-3.col-sm-2
                 .col-lg-6.col-sm-8.col-xs-12
                   p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
                     |
-                      Du dépôt d’offres via votre espace personnalisé aux conseils
-                      pour bien vous préparer à l’arrivée du stagiaire.
-              - if !user_signed_in? || can?(:supply_offers, current_user)
+                      Consultez de nombreuses offres, soignez votre
+                      candidature et postulez à vos stages préférés.
+              - if can?(:welcome_students, current_user) || !user_signed_in?
                 - target_link = current_user&.custom_dashboard_path || new_user_registration_path
                 p = link_to target_link,
-                            class: 'btn btn-danger rounded-sm px-4',
-                            data: { :"test-id" => 'mobile-search-button' }
-                    = "Accueillir un stagiaire"
-      .col-md-6.col-sm-12.text-center
-        = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
-                    alt: "Illustration , une élève",
-                    class: 'fitting'
+                          class: 'btn btn-danger rounded-sm px-4',
+                          data: { :"test-id" => 'mobile-search-button' }
+                  = "Accompagner mes élèves"
+        .col-md-6.col-sm-12
+          .how-to-offers.text-center
+            = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
+                        alt: "Illustration , un prof une élève",
+                        class: 'fitting',
+                        class: 'pt-5'
 
-    .row.mb-4.no-gutters data-carousel-target='slide'
-      .col-md-6.col-sm-12
-        .how-to-offers.text-center
-          div.my-5
-            h3.h2
-              span.accompagner-image-left.pr-2 &nbsp;
-              span.accompagner-image-right Accompagner
-              |&nbsp;vos élèves
-            h4.h5.text-muted.pb-3 Equipes pédagogiques
-            .row.no-gutters
-              .col-lg-3.col-sm-2
-              .col-lg-6.col-sm-8.col-xs-12
-                p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
-                  |
-                    Consultez de nombreuses offres, soignez votre
-                    candidature et postulez à vos stages préférés.
-            - if can?(:welcome_students, current_user) || !user_signed_in?
-              - target_link = current_user&.custom_dashboard_path || new_user_registration_path
-              p = link_to target_link,
-                        class: 'btn btn-danger rounded-sm px-4',
-                        data: { :"test-id" => 'mobile-search-button' }
-                = "Accompagner mes élèves"
-      .col-md-6.col-sm-12
-        .how-to-offers.text-center
-          = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
-                      alt: "Illustration , un prof une élève",
-                      class: 'fitting',
-                      class: 'pt-5'
-
-.container-fluid.bg-blue
-  .container-monstage
-    .row
-      .col-12
-        .row
-          .col-12
-            h5.pl-5.pt-5.white RESSOURCES
-        .row
-          .col-md-8.col-sm-12
-            h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines Prenez en main la plateforme dès maintenant
-            .row
-              .col-11
-                p.px-5.py-3.extended-lines.wider-text
-                  |
-                    Des questions ? Que vous soyez élève ou professionnel, membre
-                    d’une équipe pédagogique ou d’une administration centrale,
-                    vous trouverez forcément la réponse dans nos modes d’emploi,
-                    pensés pour vous accompagner quel que soit votre usage de
-                    la plateforme.
-          .col-md-1
-          .col-md-3.col-sm-12.text-right.mb-3
-            .mr-1
-              = link_to "/documents-utiles",
-                        title: 'Documents utiles',
-                        class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
-                | Voir les ressources
-
-.bg-blue
-  .container-monstage
-    .wrapper.pl-5.text-left
-      = render partial: "pages/home/people_card.html",
-               locals: { strong_text: "Elèves, parents d'élèves,",
-                         subtitle: "découvrez comment candidater à nos offres",
-                         image_file_name: 'eleves-parents-eleves.png',
-                         alt_text: "Illustration trouver un stage",
-                         link_title: "Accéder au mode d'emploi élève",
-                         file: "MS3_Mode-d-emploi-eleves.pdf" }
-      = render partial: "pages/home/people_card.html",
-               locals: { strong_text: "Professionnels,",
-                         subtitle: "offrez des stages et un accueil de qualité aux élèves",
-                         image_file_name: 'professionnels.png',
-                         alt_text: "Illustration fournir un stage",
-                         link_title: "Accéder au mode d'emploi entreprise",
-                         file: "MS3_Mode-d-emploi-entreprises.pdf" }
-      = render partial: "pages/home/people_card.html",
-               locals: { image_file_name: 'etablissements-scolaires.png',
-                         alt_text: "Aider à trouver un stage",
-                         strong_text: "Etablissements scolaires,",
-                         subtitle: "suivez vos élèves dans leur parcours autour du stage de troisième",
-                         link_title: 'Accéder au mode des établissements scolaires',
-                         file: "MS3_Mode-d-emploi-membres-pedagogique.pdf"}
-      = render partial: "pages/home/people_card.html",
-               locals: { image_file_name: 'referents-centraux.png',
-                         alt_text: "Fournir un stage, superviser",
-                         strong_text: "Référents centraux ou départements,",
-                         subtitle: "accédez à un suivi pertinent",
-                         link_title: 'mode d\'emploi pour les administrations et référents',
-                         file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
-
-.row.bg-white
-.container-monstage
-  .row.pb-5.px-5
-    .col-12
-      h2.h2.py-5.text-dark Un projet porté par
-      .row.d-none.d-lg-block
-        .col-12
-          .d-flex.justify-content-between
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
-                        alt: "Logo anct",
-                        height: '133px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "bar démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
-                        alt: "Logo anct",
-                        width: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "bar démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
-                        alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                        width: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                        alt: "bar démarcatrice",
-                        height: '150px'
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
-                        alt: "Logo du ministère de la ville",
-                        height: '150px'
-      .row.d-block.d-lg-none.text-center
-        .col-12.mb-3
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
-                        alt: "Logo anct",
-                        width: '260px',
-                        class: 'px-3'
-        .col-12
-          .row.mb-3
-            .col-6
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
-                          alt: "Logo anct",
-                          width: '150px',
-                          class: 'pl-3'
-            .col-6
-              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
-                          alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                          width: '150px',
-                          class: 'pr-3'
-        .col-12
-            = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
-                        alt: "Logo du ministère de la ville",
-                        width: '130px',
-                        class: 'px-3'
+  .container-fluid.bg-blue
+    .container-monstage
       .row
         .col-12
-          h2.h2.pt-5.text-dark Nos associations partenaires
+          .row
+            .col-12
+              h5.pl-5.pt-5.white RESSOURCES
+          .row
+            .col-md-8.col-sm-12
+              h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines Prenez en main la plateforme dès maintenant
+              .row
+                .col-11
+                  p.px-5.py-3.extended-lines.wider-text
+                    |
+                      Des questions ? Que vous soyez élève ou professionnel, membre
+                      d’une équipe pédagogique ou d’une administration centrale,
+                      vous trouverez forcément la réponse dans nos modes d’emploi,
+                      pensés pour vous accompagner quel que soit votre usage de
+                      la plateforme.
+            .col-md-1
+            .col-md-3.col-sm-12.text-center-right.mb-3
+                = link_to "/documents-utiles",
+                          title: 'Documents utiles',
+                          class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
+                  | Voir les ressources
+
+  .bg-blue
+    .container-monstage
+      .wrapper.pl-5.text-left
+        = render partial: "pages/home/people_card.html",
+                locals: { strong_text: "Elèves, parents d'élèves,",
+                          subtitle: "découvrez comment candidater à nos offres",
+                          image_file_name: 'eleves-parents-eleves.png',
+                          alt_text: "Illustration trouver un stage",
+                          link_title: "Accéder au mode d'emploi élève",
+                          file: "MS3_Mode-d-emploi-eleves.pdf" }
+        = render partial: "pages/home/people_card.html",
+                locals: { strong_text: "Professionnels,",
+                          subtitle: "offrez des stages et un accueil de qualité aux élèves",
+                          image_file_name: 'professionnels.png',
+                          alt_text: "Illustration fournir un stage",
+                          link_title: "Accéder au mode d'emploi entreprise",
+                          file: "MS3_Mode-d-emploi-entreprises.pdf" }
+        = render partial: "pages/home/people_card.html",
+                locals: { image_file_name: 'etablissements-scolaires.png',
+                          alt_text: "Aider à trouver un stage",
+                          strong_text: "Etablissements scolaires,",
+                          subtitle: "suivez vos élèves dans leur parcours autour du stage de troisième",
+                          link_title: 'Accéder au mode des établissements scolaires',
+                          file: "MS3_Mode-d-emploi-membres-pedagogique.pdf"}
+        = render partial: "pages/home/people_card.html",
+                locals: { image_file_name: 'referents-centraux.png',
+                          alt_text: "Fournir un stage, superviser",
+                          strong_text: "Référents centraux ou départements,",
+                          subtitle: "accédez à un suivi pertinent",
+                          link_title: 'mode d\'emploi pour les administrations et référents',
+                          file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
+
+  .row.bg-white
+  .container-monstage
+    .row.pb-5.px-5
+      .col-12
+        h2.h2.py-5.text-dark Un projet porté par
+        .row.d-none.d-lg-block
+          .col-12
+            .d-flex.justify-content-between
+              = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
+                          alt: "Logo anct",
+                          height: '133px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
+                          alt: "bar démarcatrice",
+                          height: '150px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
+                          alt: "Logo anct",
+                          width: '150px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
+                          alt: "bar démarcatrice",
+                          height: '150px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
+                          alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                          width: '150px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
+                          alt: "bar démarcatrice",
+                          height: '150px'
+              = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
+                          alt: "Logo du ministère de la ville",
+                          height: '150px'
+        .row.d-block.d-lg-none.text-center
+          .col-12.mb-3
+              = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
+                          alt: "Logo anct",
+                          width: '260px',
+                          class: 'px-3'
+          .col-12
+            .row.mb-3
+              .col-6
+                = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
+                            alt: "Logo anct",
+                            width: '150px',
+                            class: 'pl-3'
+              .col-6
+                = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
+                            alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
+                            width: '150px',
+                            class: 'pr-3'
+          .col-12
+              = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
+                          alt: "Logo du ministère de la ville",
+                          width: '130px',
+                          class: 'px-3'
+        .row
+          .col-12
+            h2.h2.pt-5.text-dark Nos associations partenaires
 .container-fluid
-  .pb-5.mx-5
-    .row
-      .col-12.text-center
+  .text-center.pb-5
+    .d-none.d-lg-block
+      .d-flex.justify-content-center
         - partners_map_of_colored_logo_url.each do |partner|
           = render partial: "partner_link",
                   locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-.container-monstage.mb-5
-  .right-flying-email
-  .row
-    .col-sm-10.offset-sm-1.col-xs-12.bg-cover-image-homepage.mt-3
-      .row.px-5
-        .col-12.text-center.bg-cover-image-homepage.ms3e-blurry-badge
-          h3.mt-5.white Vous vous posez des questions sur votre stage ?
+    .d-block.d-lg-none              
+      .d-inline-block
+      - partners_map_of_colored_logo_url.each do |partner|
+        = render partial: "partner_link",
+                locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
+  .container-monstage.mb-5
+    .right-flying-email
+    .row
+      .col-sm-10.offset-sm-1.col-xs-12.bg-cover-image-homepage.mt-3
+        .row.px-5
+          .col-12.text-center.bg-cover-image-homepage.ms3e-blurry-badge
+            h3.mt-5.white Vous vous posez des questions sur votre stage ?
 
-          p.white.mt-3.wider-text
-            | Inscrivez-vous à la newsletter
-            strong =" Mon Stage de Troisième "
-            | et découvrez des
-            br
-              | milliers d’offres de stage sélectionnées rien que pour vous.
-          p.pt-1.pb-3
-            .row.pb-5.text-center
-              .col-lg-3.col-md-2.col-sm-12
-              .col-lg-6.col-md-8.col-sm-12
+            p.white.mt-3.wider-text
+              | Inscrivez-vous à la newsletter
+              strong =" Mon Stage de Troisième "
+              | et découvrez des
+              br
+                | milliers d’offres de stage sélectionnées rien que pour vous.
+            p.pt-1.pb-3
+              .row.pb-5.text-center
+                .col-lg-3.col-md-2.col-sm-12
+                .col-lg-6.col-md-8.col-sm-12
 
-                .input-group.mb-3.bg-blue
-                  / Form
-                  input.form-control type="text" placeholder="Votre email" aria-label="Email recueilli" aria-describedby="nl-email"
-                  .input-group-append
-                    span.input-group-text.white.bg-blue.px-lg-5.px-md-5.px-sm-3.px-2 id="nl-email"
-                      i.far.fa-envelope.mr-2.d-none.d-sm-block
-                      = " S'inscrire"
+                  .input-group.mb-3.bg-blue
+                    / Form
+                    input.form-control type="text" placeholder="Votre email" aria-label="Email recueilli" aria-describedby="nl-email"
+                    .input-group-append
+                      span.input-group-text.white.bg-blue.px-lg-5.px-md-5.px-sm-3.px-2 id="nl-email"
+                        i.far.fa-envelope.mr-2.d-none.d-sm-block
+                        = " S'inscrire"
 
-.row.my-3
-.d-print-none.footer-elevator.pr-0
-  = link_to "#top",
-            class: 'float-right back-to-top',
-            data: {turbolinks: false},
-            aria: {label: "Retour en haut de page"} do
-    .fa-2x.fas.fa-arrow-circle-up
-    span.d-none Retour en haut de page
+  .row.my-3
+  .d-print-none.footer-elevator.pr-0
+    = link_to "#top",
+              class: 'float-right back-to-top',
+              data: {turbolinks: false},
+              aria: {label: "Retour en haut de page"} do
+      .fa-2x.fas.fa-arrow-circle-up
+      span.d-none Retour en haut de page

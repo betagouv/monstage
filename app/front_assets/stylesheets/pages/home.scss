@@ -62,6 +62,7 @@ h4 {
 .h1-text-hero {
   font-weight: 900;
   font-size: 3.10rem;
+  margin-bottom: 1rem;
 }
 
 .subtitle-hero {
@@ -175,6 +176,16 @@ h4 {
   font-weight: bolder;
 }
 
+@include media-breakpoint-up(md) {
+  .text-center-left {
+    text-align: left;
+  }
+
+  .text-center-right {
+    text-align: right;
+  }
+}
+
 @include media-breakpoint-up(sm) {
 
   .big-tagline {
@@ -189,6 +200,13 @@ h4 {
   }
 }
 @include media-breakpoint-down(sm) {
+  .text-center-left {
+    text-align: center;
+  }
+
+  .text-center-right {
+    text-align: center;
+  }
 
   .flex-md-reverse-column {
     flex-direction: column-reverse;
@@ -227,6 +245,9 @@ h4 {
     right: 5px !important;
     top: 5px !important;
   }
+    .text-center-left {
+      text-align: center;
+    }
 }
 
 
