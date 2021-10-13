@@ -43,7 +43,8 @@ import './homepage/chacun-right.png';
 
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';
-import './homepage/carousel/prof.svg';
+// import './homepage/carousel/prof.svg';
+import './homepage/carousel/prof.png';
 import './homepage/carousel/equipe_pedago.svg';
 import './homepage/carousel/accompagner-left.png';
 import './homepage/carousel/accompagner-right.png';
