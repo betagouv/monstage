@@ -32,33 +32,32 @@
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage"
 
-
   .row.py-5
-    .col-md-7.col-sm-12.text-center 
+    .col-md-7.col-sm-12.text-center
       = image_tag asset_pack_path('media/images/homepage/animated_people.gif'),
                     alt: "Illustration animée, prof élèves",
                     height: '90%',
                     class: ''
     .col-md-5.col-sm-12
-      h1
+      h1.px-2.px-sm-2.px-md-0
         | Des stages pour tous, une opportunité pour
         span.chacun-image-left.pr-2 &nbsp;
         span.chacun-image-right chacun
 
-      p.mt-3.text-muted.wider-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+      p.mt-3.text-muted.wider-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.px-2.px-sm-2.px-md-0
         |
           Plus qu’un passage obligatoire, le stage de troisième est une
           opportunité unique d’explorer le monde du travail.
           L’expérience, forcément enrichissante, aide l’élève à ouvrir
           ses horizons professionnels et à dessiner son projet personnel.
-      
-      p.text-muted.wider-text
+
+      p.text-muted.wider-text.px-2.px-sm-2.px-md-0
         |
           Notre plateforme permet de mettre en relation des établissements
           scolaires éligibles et des entreprises engagées afin d’agir dans
           le meilleur intérêt des élèves en leur offrant la meilleure
           expérience du stage possible.
-      p.py-4
+      p.py-4.px-2.px-sm-2.px-md-0
         = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
                           class: 'btn btn-danger rounded-sm',
                           data: { :"test-id" => 'mobile-search-button-first' }
@@ -66,6 +65,7 @@
   .row.pb-5
     .col-12.text-center
       h2.h3 monstagedetroisieme.fr vous permet de :
+.container
   div data-controller='carousel' data-carousel-index-value='0'
     .slide-show.d-none.d-md-block
       .row.no-gutters
@@ -93,7 +93,7 @@
               .row.no-gutters
                 .col-lg-3.col-sm-2
                 .col-lg-6.col-sm-8.col-xs-12
-                  p.text-muted.mb-5.wider-text
+                  p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
                     |
                       Consultez de nombreuses offres, soignez votre
                       candidature et postulez à vos stages préférés.
@@ -103,7 +103,6 @@
                             class: 'btn btn-danger rounded-sm',
                             data: { :"test-id" => 'mobile-search-button' }
                     = "Rechercher un stage"
-              p.my-5.py-5
       .col-md-6.col-sm-12.text-center
         = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
                     alt: "Illustration, une élève",
@@ -125,7 +124,7 @@
               .row.no-gutters
                 .col-lg-3.col-sm-2
                 .col-lg-6.col-sm-8.col-xs-12
-                  p.text-muted.mb-5.wider-text
+                  p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
                     |
                       Du dépôt d’offres via votre espace personnalisé aux conseils
                       pour bien vous préparer à l’arrivée du stagiaire.
@@ -135,7 +134,6 @@
                             class: 'btn btn-danger rounded-sm',
                             data: { :"test-id" => 'mobile-search-button' }
                     = "Accueillir un stagiaire"
-              p.my-5.py-5
       .col-md-6.col-sm-12.text-center
         = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
                     alt: "Illustration , une élève",
@@ -156,7 +154,7 @@
             .row.no-gutters
               .col-3
               .col-6
-                p.text-muted.mb-5.wider-text
+                p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
                   |
                     Consultez de nombreuses offres, soignez votre
                     candidature et postulez à vos stages préférés.
@@ -166,15 +164,12 @@
                         class: 'btn btn-danger rounded-sm',
                         data: { :"test-id" => 'mobile-search-button' }
                 = "Accompagner mes élèves"
-            p.my-5.py-5
       .col-md-6.col-sm-12
         .how-to-offers.text-center
           = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
                       alt: "Illustration , un prof une élève",
                       height: '350px',
                       class: 'pt-5'
-
-
 
 .container-fluid.bg-blue
   .container-monstage
