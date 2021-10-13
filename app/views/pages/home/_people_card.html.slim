@@ -1,10 +1,10 @@
-.download-card.d-flex.flex-wrap.mb-5.mr-2
+.download-card.d-flex.flex-wrap.mb-5
   = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
               alt: alt_text,
-              height: '249px',
-              width: '335px',
+              height: '220px',
+              width: '280px',
               class: 'rounded-adjust card-shadow mb-4'
-  p.card-text.align-self-start.bg-blue.extended-lines
+  p.align-self-start.bg-blue.extended-lines.wider-text
     strong = strong_text
     br
     = subtitle
@@ -13,5 +13,5 @@
               title: link_title,
               class: 'white text-decoration-none' do
       i.fas.fa-download
-      span.ml-2
+      span.ml-2.wider-text
         strong ="Télécharger"

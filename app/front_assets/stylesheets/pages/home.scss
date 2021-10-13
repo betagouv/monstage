@@ -1,5 +1,5 @@
 .container-monstage {
-  max-width: 1440px;
+  max-width: 1280px;
   margin: auto;
   position: relative;
 }
@@ -8,7 +8,10 @@
   border-radius: 1rem;
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4 {
   font-family: 'Inter', sans-serif;
 }
 .to-regular {
@@ -39,8 +42,9 @@ h1 {
 
 .download-card {
   display: inline-flexbox;
-  width: 340px;
-  height: 380px;
+  width: 280px;
+  margin-right: 30px;
+  height: 450px;
 }
 
 .how-to-offers {
@@ -81,6 +85,10 @@ h1 {
   position: relative;
   top: -30px;
 }
+.fitting {
+  object-fit: cover;
+  width: 100%
+}
 
 .right-flying-email {
   position: absolute;
@@ -119,6 +127,7 @@ h1 {
 .accueillir-image-right {
   background: transparent url('../images/homepage/carousel/accueillir-right.png') top left no-repeat;
   background-size: 100% 100%;
+  padding: 5px 0 5px 5px;
 }
 
 .accueillir-image-left {
@@ -130,6 +139,7 @@ h1 {
 .accompagner-image-right {
   background: transparent url('../images/homepage/carousel/accompagner-right.png') top left no-repeat;
   background-size: 100% 100%;
+  padding: 10px 0 10px 0;
 }
 
 .accompagner-image-left {

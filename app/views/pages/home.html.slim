@@ -20,7 +20,7 @@
                       width: '85%',
                       class: 'mt-auto rounded-adjust ml-lg-n5'
 
-  .row.search-form.px-5
+  .row.search-form.px-5.mt-2
     .col-12= render partial: "internship_offers/search/form",
                     locals: { render_as_partial: true,
                               url: internship_offers_path,
@@ -59,38 +59,39 @@
           expérience du stage possible.
       p.py-4.px-2.px-sm-2.px-md-0
         = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
-                          class: 'btn btn-danger rounded-sm',
+                          class: 'btn btn-danger rounded-sm px-5',
                           data: { :"test-id" => 'mobile-search-button-first' }
           = "Trouver un stage"
-  .row.pb-5
+  .row
     .col-12.text-center
       h2.h3 monstagedetroisieme.fr vous permet de :
-.container
-  div data-controller='carousel' data-carousel-index-value='0'
-    .slide-show.d-none.d-md-block
-      .row.no-gutters
-        .col-6.text-left
-          a data-action="carousel#previous"
-            = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
-                        alt: "bouton précédent",
-                        height: '50px',
-                        class: ''
-        .col-6.text-right
-          a data-action="carousel#next"
-            = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
-                        alt: "bouton suivant",
-                        height: '50px',
-                        class: ''
+
+.container-monstage data-controller='carousel' data-carousel-index-value='0'
+  .slide-show.d-none.d-md-block
+    .row.no-gutters
+      .col-6.text-left
+        a data-action="carousel#previous"
+          = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
+                      alt: "bouton précédent",
+                      height: '50px',
+                      class: ''
+      .col-6.text-right
+        a data-action="carousel#next"
+          = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
+                      alt: "bouton suivant",
+                      height: '50px',
+                      class: ''
+  .container
     .row data-carousel-target='slide'
       .col-md-6.col-sm-12
         .how-to-offers.text-center
             div.my-5
-              h2.h2
-                span.trouver-image-left Trouver
+              h3.h2
+                span.trouver-image-left.ml-n3.overflow-auto Trouver
                 span.trouver-image-right.pr-2 &nbsp;
                 | un stage
-              h3.h5.text-muted.pb-3 Elèves
-              .row.no-gutters
+              h4.h5.text-muted.pb-3 Elèves
+              .row.no-gutters.text-center
                 .col-lg-3.col-sm-2
                 .col-lg-6.col-sm-8.col-xs-12
                   p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
@@ -100,24 +101,23 @@
               - if !user_signed_in? || can?(:look_for_offers, current_user)
                 - target_link = current_user&.custom_dashboard_path|| new_user_registration_path
                 p = link_to target_link,
-                            class: 'btn btn-danger rounded-sm',
+                            class: 'btn btn-danger rounded-sm px-4',
                             data: { :"test-id" => 'mobile-search-button' }
                     = "Rechercher un stage"
       .col-md-6.col-sm-12.text-center
         = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
                     alt: "Illustration, une élève",
-                    height: '350px',
-                    class: ''
+                    class: 'fitting'
 
     .row data-carousel-target='slide'
       .col-md-6.col-sm-12
         .how-to-offers.text-center
           div.my-5
-              h2.h2
-                span.trouver-image-left Accueillir
-                span.trouver-image-right.pr-2 &nbsp;
-                | un stagiaire
-              h3.h5.text-muted.pb-3
+              h3.h2
+                span.accueillir-image-left.pr-2 &nbsp;
+                span.accueillir-image-right Accueillir
+                |&nbsp; un stagiaire
+              h4.h5.text-muted.pb-3
                 |Entreprises - Administrations publiques
                 br
                 | et services de l’État
@@ -131,29 +131,26 @@
               - if !user_signed_in? || can?(:supply_offers, current_user)
                 - target_link = current_user&.custom_dashboard_path || new_user_registration_path
                 p = link_to target_link,
-                            class: 'btn btn-danger rounded-sm',
+                            class: 'btn btn-danger rounded-sm px-4',
                             data: { :"test-id" => 'mobile-search-button' }
                     = "Accueillir un stagiaire"
       .col-md-6.col-sm-12.text-center
         = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
                     alt: "Illustration , une élève",
-                    height: '350px',
-                    class: ''
+                    class: 'fitting'
 
     .row.mb-4.no-gutters data-carousel-target='slide'
       .col-md-6.col-sm-12
         .how-to-offers.text-center
           div.my-5
-            h2.h2
-              span.trouver-image-left Accompagner
-              span.trouver-image-right.pr-2 &nbsp;
-              |vos
-              br
-              |élèves
-            h3.h5.text-muted.pb-3 Equipes pédagogiques
+            h3.h2
+              span.accompagner-image-left.pr-2 &nbsp;
+              span.accompagner-image-right Accompagner
+              |&nbsp;vos élèves
+            h4.h5.text-muted.pb-3 Equipes pédagogiques
             .row.no-gutters
-              .col-3
-              .col-6
+              .col-lg-3.col-sm-2
+              .col-lg-6.col-sm-8.col-xs-12
                 p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
                   |
                     Consultez de nombreuses offres, soignez votre
@@ -161,14 +158,14 @@
             - if can?(:welcome_students, current_user) || !user_signed_in?
               - target_link = current_user&.custom_dashboard_path || new_user_registration_path
               p = link_to target_link,
-                        class: 'btn btn-danger rounded-sm',
+                        class: 'btn btn-danger rounded-sm px-4',
                         data: { :"test-id" => 'mobile-search-button' }
                 = "Accompagner mes élèves"
       .col-md-6.col-sm-12
         .how-to-offers.text-center
           = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
                       alt: "Illustration , un prof une élève",
-                      height: '350px',
+                      class: 'fitting',
                       class: 'pt-5'
 
 .container-fluid.bg-blue
@@ -183,7 +180,7 @@
             h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines Prenez en main la plateforme dès maintenant
             .row
               .col-11
-                p.px-5.py-3.extended-lines
+                p.px-5.py-3.extended-lines.wider-text
                   |
                     Des questions ? Que vous soyez élève ou professionnel, membre
                     d’une équipe pédagogique ou d’une administration centrale,
@@ -192,7 +189,7 @@
                     la plateforme.
           .col-md-1
           .col-md-3.col-sm-12.text-right.mb-3
-            .mr-2
+            .mr-1
               = link_to "/documents-utiles",
                         title: 'Documents utiles',
                         class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
@@ -263,25 +260,25 @@
         .col-12.mb-3
             = image_tag asset_pack_path("media/images/homepage/sponsors/logo-anct.png"),
                         alt: "Logo anct",
-                        width: '100%',
-                        class: 'px-5'
+                        width: '260px',
+                        class: 'px-3'
         .col-12
           .row.mb-3
             .col-6
               = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
                           alt: "Logo anct",
-                          width: '95%',
+                          width: '150px',
                           class: 'pl-3'
             .col-6
               = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
                           alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
-                          width: '95%',
+                          width: '150px',
                           class: 'pr-3'
         .col-12
             = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
                         alt: "Logo du ministère de la ville",
-                        width: '50%',
-                        class: 'px-5'
+                        width: '130px',
+                        class: 'px-3'
       .row
         .col-12
           h2.h2.pt-5.text-dark Nos associations partenaires
@@ -300,7 +297,7 @@
         .col-12.text-center.bg-cover-image-homepage.ms3e-blurry-badge
           h3.mt-5.white Vous vous posez des questions sur votre stage ?
 
-          p.white.mt-3
+          p.white.mt-3.wider-text
             | Inscrivez-vous à la newsletter
             strong =" Mon Stage de Troisième "
             | et découvrez des
