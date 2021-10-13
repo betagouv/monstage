@@ -1,5 +1,5 @@
 .mx-2
-  .container-monstage
+  .container-monstage.container-xl
     .bg-cover-image-homepage
       .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
         .col.px-0
@@ -58,7 +58,7 @@
             scolaires éligibles et des entreprises engagées afin d’agir dans
             le meilleur intérêt des élèves en leur offrant la meilleure
             expérience du stage possible.
-        p.py-4.px-2.px-sm-2.px-md-0
+        p.py-4.px-2.px-sm-2.px-md-0.text-center-left
           = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
                             class: 'btn btn-danger rounded-sm px-5',
                             data: { :"test-id" => 'mobile-search-button-first' }
@@ -86,19 +86,17 @@
       .row data-carousel-target='slide'
         .col-md-6.col-sm-12
           .how-to-offers.text-center-left
-            div.my-5
+            .my-5.ml-lg-5.ml-md-5.ml-sm-0
               h3.h2
-                span.trouver-image-left.ml-n3 Trouver
+                span.trouver-image-left Trouver
                 span.trouver-image-right.pr-2 &nbsp;
                 | un stage
               h4.h5.text-muted.pb-3 Elèves
-              .row.no-gutters.text-center-left
-                .col-lg-3.col-sm-2
-                .col-lg-6.col-sm-8.col-xs-12
-                  p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
-                    |
-                      Consultez de nombreuses offres, soignez votre
-                      candidature et postulez à vos stages préférés.
+              .text-center-left
+                p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
+                  |
+                    Consultez de nombreuses offres, soignez votre
+                    candidature et postulez à vos stages préférés.
               - if !user_signed_in? || can?(:look_for_offers, current_user)
                 - target_link = current_user&.custom_dashboard_path|| new_user_registration_path
                 p = link_to target_link,
@@ -113,28 +111,25 @@
       .row data-carousel-target='slide'
         .col-md-6.col-sm-12
           .how-to-offers.text-center-left
-            div.my-5
-                h3.h2
-                  span.accueillir-image-left.pr-2 &nbsp;
-                  span.accueillir-image-right Accueillir
-                  |&nbsp; un stagiaire
-                h4.h5.text-muted.pb-3.text-center-left
-                  |Entreprises - Administrations publiques
-                  br
-                  | et services de l’État
-                .row.no-gutters
-                  .col-lg-3.col-sm-2
-                  .col-lg-6.col-sm-8.col-xs-12
-                    p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
-                      |
-                        Du dépôt d’offres via votre espace personnalisé aux conseils
-                        pour bien vous préparer à l’arrivée du stagiaire.
-                - if !user_signed_in? || can?(:supply_offers, current_user)
-                  - target_link = current_user&.custom_dashboard_path || new_user_registration_path
-                  p = link_to target_link,
-                              class: 'btn btn-danger rounded-sm px-4',
-                              data: { :"test-id" => 'mobile-search-button' }
-                      = "Accueillir un stagiaire"
+            .my-5.ml-lg-5.ml-md-5.ml-sm-0
+              h3.h2
+                span.accueillir-image-left.pr-2 &nbsp;
+                span.accueillir-image-right Accueillir
+                |&nbsp; un stagiaire
+              h4.h5.text-muted.pb-3.text-center-left
+                |Entreprises - Administrations publiques
+                br
+                | et services de l’État
+              p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
+                |
+                  Du dépôt d’offres via votre espace personnalisé aux conseils
+                  pour bien vous préparer à l’arrivée du stagiaire.
+              - if !user_signed_in? || can?(:supply_offers, current_user)
+                - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+                p = link_to target_link,
+                            class: 'btn btn-danger rounded-sm px-4',
+                            data: { :"test-id" => 'mobile-search-button' }
+                    = "Accueillir un stagiaire"
         .col-md-6.col-sm-12.text-center
           = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
                       alt: "Illustration , une élève",
@@ -143,19 +138,17 @@
       .row.mb-4.no-gutters data-carousel-target='slide'
         .col-md-6.col-sm-12
           .how-to-offers.text-center-left
-            div.my-5
+            .my-5.ml-lg-5.ml-md-5.ml-sm-0
               h3.h2
                 span.accompagner-image-left.pr-2 &nbsp;
                 span.accompagner-image-right Accompagner
                 |&nbsp;vos élèves
               h4.h5.text-muted.pb-3 Equipes pédagogiques
-              .row.no-gutters.text-center-left
-                .col-lg-3.col-sm-2
-                .col-lg-6.col-sm-8.col-xs-12
-                  p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
-                    |
-                      Consultez de nombreuses offres, soignez votre
-                      candidature et postulez à vos stages préférés.
+
+              p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0.text-center-left
+                |
+                  Consultez de nombreuses offres, soignez votre
+                  candidature et postulez à vos stages préférés.
               - if can?(:welcome_students, current_user) || !user_signed_in?
                 - target_link = current_user&.custom_dashboard_path || new_user_registration_path
                 p = link_to target_link,
@@ -239,19 +232,19 @@
                           alt: "Logo anct",
                           height: '133px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                          alt: "bar démarcatrice",
+                          alt: "barre démarcatrice",
                           height: '150px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg"),
                           alt: "Logo anct",
                           width: '150px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                          alt: "bar démarcatrice",
+                          alt: "barre démarcatrice",
                           height: '150px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg"),
                           alt: "Logo ministere de la cohesion des territoire et ministere de l'education nationale",
                           width: '150px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/Line9.png"),
-                          alt: "bar démarcatrice",
+                          alt: "barre démarcatrice",
                           height: '150px'
               = image_tag asset_pack_path("media/images/homepage/sponsors/logo-min-ville.png"),
                           alt: "Logo du ministère de la ville",
@@ -289,7 +282,7 @@
         - partners_map_of_colored_logo_url.each do |partner|
           = render partial: "partner_link",
                   locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-    .d-block.d-lg-none              
+    .d-block.d-lg-none
       .d-inline-block
       - partners_map_of_colored_logo_url.each do |partner|
         = render partial: "partner_link",
@@ -315,7 +308,7 @@
 
                   .input-group.mb-3.bg-blue
                     / Form
-                    input.form-control type="text" placeholder="Votre email" aria-label="Email recueilli" aria-describedby="nl-email"
+                    input.form-control type="text" placeholder="Saisir votre email" aria-label="Email recueilli" aria-describedby="nl-email"
                     .input-group-append
                       span.input-group-text.white.bg-blue.px-lg-5.px-md-5.px-sm-3.px-2 id="nl-email"
                         i.far.fa-envelope.mr-2.d-none.d-sm-block
