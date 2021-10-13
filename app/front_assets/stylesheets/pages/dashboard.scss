@@ -65,3 +65,10 @@ tr:hover a.trash-user{
   box-shadow: 0px 3px 6px #0000001A;
   border-radius: 14px;
 }
+
+.btn .disabled {
+  background: $input-disabled-bg;
+  &:hover{
+    cursor: not-allowed;
+  }
+}

@@ -7,21 +7,4 @@ thead
           .d-inline-flex
             .span.pr-1.font-weight-normal
               = "Stage concerné :"
-            .h6.test-header role="heading" aria-level="6" = link_to internship_application.internship_offer.title, dashboard_internship_applications_path(internship_application)
-        .col-4.text-center.text-grey
-          .row
-            .col
-            .col-auto.text-center.text-grey
-              p.small.text-muted.mb-2=" Complété par"
-              .h6=render(InternshipAgreements::ProgressComponent.new(internship_agreement: internship_agreement, current_user: current_user, custom_classes: ' small font-weight-bold text-dark'))
-      .offset-absolute
-        .float-right.col-3.text-center.gradient-to-white.mr-0.rounded-top
-          p.mt-3.mb-0.font-weight-normal
-            = content_tag :div, class: 'btn btn-link p-0 font-weight-normal d-none', data: { action: "click->internship-agreement-form#toggleToolnote", :"internship-agreement-form-target" => 'displayButton', turbolinks: "false" } do
-              | Afficher les notes
-              = " "
-              i.fa.fa-eye
-            = content_tag :div, class:'btn btn-link p-0 font-weight-normal', data: { action: "click->internship-agreement-form#toggleToolnote",  :"internship-agreement-form-target" => 'hideButton', turbolinks: "false" } do
-              | Masquer les notes
-              = " "
-              i.fa.fa-eye-slash
+            .h6.test-header role="heading" aria-level="6" = link_to internship_application.internship_offer.title, internship_offer_path(internship_application.internship_offer), target: '_blank'

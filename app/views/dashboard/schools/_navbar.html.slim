@@ -34,11 +34,11 @@
           = link_to "Semaines", edit_dashboard_school_path(school),
                     class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
 
-      - if can?(:create, InternshipAgreement)
+      - if can?(:edit, InternshipAgreement)
         li.nav-item
-          = link_to dashboard_school_internship_applications_path(school),
-                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_applications_path(school)) ? 'active' : ''}" do
-            | Conventions de stages &nbsp;
+          = link_to dashboard_internship_agreements_path,
+                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
+            | Mes Conventions de stages &nbsp;
             - if badge_counter.pending_agreements_count.positive?
               span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
       - if can?(:create_remote_internship_request, SupportTicket)

@@ -153,6 +153,19 @@ fr:
         tutor_name: Nom du tuteur
         tutor_phone: Téléphone du tuteur
         tutor_email: Email du tuteur
+      
+      internship_agreement:
+        aasm_state:
+          employer:
+            draft: À remplir par les deux parties.
+            started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
+            completed_by_employer: Votre convention est dans les mains du chef d'établissement.
+            validated: Votre convention est prête. Imprimez la et renvoyez la signée au chef d'établissement.
+          school_manager:
+            draft: En attente de l'offreur.
+            started_by_employer: En attente de l'offreur.
+            completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
+            validated: Votre convention est prête.
 
       internship_offer:
         <<: *organisation_fields

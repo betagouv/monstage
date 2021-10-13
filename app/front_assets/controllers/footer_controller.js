@@ -5,6 +5,11 @@ import { hideElement } from '../utils/dom';
 export default class extends Controller {
   static targets = ['placeholder', 'fixedContent'];
 
+  saveAndQuit() {
+    $('#internship_agreement_event').val('start_by_employer');
+    $('#submit').click();
+  }
+
   close() {
     hideElement($(this.fixedContentTarget));
     this.resize();

@@ -41,14 +41,15 @@ module Dashboard::InternshipAgreements
       params = {
         'internship_agreement' => {
           main_teacher_full_name: new_main_teacher_full_name,
-          main_teacher_accept_terms: true
+          main_teacher_accept_terms: true,
+          event: 'start_by_employer'
         }
       }
       sign_in(main_teacher)
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_school_internship_applications_path(school),
+      assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
       assert_equal(new_main_teacher_full_name,
                   internship_agreement.reload.main_teacher_full_name,
@@ -78,14 +79,15 @@ module Dashboard::InternshipAgreements
       params = {
         'internship_agreement' => {
           employer_accept_terms: true,
-          organisation_representative_full_name: new_organisation_representative_full_name
+          organisation_representative_full_name: new_organisation_representative_full_name,
+          event: 'start_by_employer'
         }
       }
       sign_in(internship_application.internship_offer.employer)
 
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(dashboard_internship_applications_path,
+      assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
       assert_equal(new_organisation_representative_full_name,
                   internship_agreement.reload.organisation_representative_full_name,
@@ -111,13 +113,14 @@ module Dashboard::InternshipAgreements
       new_school_representative_full_name = 'John Doe'
       params = {
         'internship_agreement' => {
-          school_representative_full_name: new_school_representative_full_name
+          school_representative_full_name: new_school_representative_full_name,
+          event: 'start_by_employer'
         }
       }
       sign_in(school_manager)
       patch dashboard_internship_agreement_path(internship_agreement.id, params)
 
-      assert_redirected_to(school_manager.custom_agreements_path,
+      assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
       assert_equal(new_school_representative_full_name,
                    internship_agreement.reload.school_representative_full_name,

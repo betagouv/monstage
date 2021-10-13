@@ -12,6 +12,7 @@ module Users
         where(type: InternshipApplications::WeeklyFramed.name)
       end
     end
+    has_many :internship_agreements, through: :internship_applications 
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 

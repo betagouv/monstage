@@ -3,7 +3,7 @@
 - hint = hint || ''
 - title = title || ''
 - content = content || ''
-.col-7
+.col-12.pt-3
   .form-group.mb-0 data-controller="a11y-date-input"
     = form.label field do
       span.mb-2= text_label
@@ -25,8 +25,6 @@
                           disabled: true
         = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_hidden"
 
-      = render partial: "dashboard/internship_agreements/field_badge", locals: {filled_by: filled_by, form: form, edit_enable: edit_enable, field: field}
-
 
 
 
@@ -35,8 +33,4 @@
 
     small.form-text.text-danger.d-none data-a11y-date-input-target="errorContainer"
 
-.col-3.offset-2
-  - if title.present? && content.present?
-    div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
-      .title = title
-      span = content
+

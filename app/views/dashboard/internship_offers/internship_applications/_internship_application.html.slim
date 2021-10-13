@@ -97,7 +97,7 @@
         - if internship_application.approved? && !internship_application.convention_signed? && can?(:create, InternshipAgreement)
           div.d-flex.align-items-center.mt-2
             .d-inline-flex
-              = render(InternshipAgreements::ButtonComponent.new(internship_application: internship_application, current_user: current_user, label: "Editer la convention"))
+              = render(InternshipApplications::ButtonComponent.new(internship_application: internship_application, current_user: current_user, label: "Editer la convention"))
 
         - if internship_application.rejected?
           div.d-flex.align-items-center

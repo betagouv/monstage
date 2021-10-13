@@ -1,17 +1,9 @@
-- if !internship_application.student.troisieme_generale?
-  div.d-flex.align-items-center.text-warning.mt-3
-    .d-inline-flex-mr-1
-      i.fas.fa-hourglass-start.fa-2x.fa-fw
-    .d-inline-flex data-test='no-yet-supported'
-      = "Convention à gérer hors plateforme"
-- elsif internship_agreement.try(:confirmed_by?, user: current_user)
-  - if ready_to_print?
-    = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'btn btn-outline-primary ml-2 text-nowrap ', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
-      | Imprimer
-  - else
-    span.btn.btn.btn-light.ml-2.text-nowrap data-test="inactive-internship-agreement-progress-#{internship_agreement.id}"
-      | Imprimer
-- else
-  = link_to internship_agreement ? edit_dashboard_internship_agreement_path(internship_agreement) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
-            class: 'btn btn-outline-primary ml-2 text-nowrap' do
+- if internship_agreement.validated?
+  = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
     = label
+- elsif @current_user.is_a?(Users::Employer) || internship_agreement.completed_by_employer?
+  = link_to edit_dashboard_internship_agreement_path(internship_agreement), class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm' do
+    = label
+- else 
+  = link_to label, '', class: 'btn btn-outline-primary ml-2 text-nowrap disabled btn-block'
+

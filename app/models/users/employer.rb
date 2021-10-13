@@ -9,6 +9,7 @@ module Users
              class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications 
 
     has_many :organisations
     has_many :tutors

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module InternshipAgreements
+module InternshipApplications
   class ButtonComponentTest < ViewComponent::TestCase
     delegate :application, to: Rails
     delegate :routes, to: :application
@@ -15,7 +15,7 @@ module InternshipAgreements
                                       :approved,
                                       internship_offer: internship_offer,
                                       user_id: student.id)
-      render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_application,
+      render_inline(InternshipApplications::ButtonComponent.new(internship_application: internship_application,
                                                               current_user: employer))
 
       assert_selector("div[data-test='no-yet-supported']")
@@ -31,7 +31,7 @@ module InternshipAgreements
                                       :approved,
                                       internship_offer: internship_offer,
                                       user_id: student.id)
-      render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_application,
+      render_inline(InternshipApplications::ButtonComponent.new(internship_application: internship_application,
                                         current_user: employer))
 
       assert_selector("a[href=\"#{url_helpers.new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)}\"]")
@@ -48,7 +48,7 @@ module InternshipAgreements
                                       user_id: student.id)
       internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
                                     internship_application: internship_application)
-      render_inline(InternshipAgreements::ButtonComponent.new(internship_application: internship_agreement.internship_application,
+      render_inline(InternshipApplications::ButtonComponent.new(internship_application: internship_agreement.internship_application,
                                         current_user: employer))
 
       assert_selector("a[href=\"#{url_helpers.edit_dashboard_internship_agreement_path(internship_agreement)}\"]")
@@ -66,7 +66,7 @@ module InternshipAgreements
       internship_agreement = create(:internship_agreement, internship_application: internship_application,
                                                            employer_accept_terms: true,
                                                            school_manager_accept_terms: false)
-      render_inline(InternshipAgreements::ButtonComponent.new(
+      render_inline(InternshipApplications::ButtonComponent.new(
         internship_application: internship_agreement.internship_application,
         current_user: employer
       ))
@@ -86,7 +86,7 @@ module InternshipAgreements
       internship_agreement = create(:internship_agreement, internship_application: internship_application,
                                                            employer_accept_terms: true,
                                                            school_manager_accept_terms: true)
-      render_inline(InternshipAgreements::ButtonComponent.new(
+      render_inline(InternshipApplications::ButtonComponent.new(
         internship_application: internship_agreement.internship_application,
         current_user: employer
       ))
