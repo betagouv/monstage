@@ -3,13 +3,6 @@
   margin: auto;
   position: relative;
 }
-
-.bg-hero-homepage {
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
-}
-
 .bg-cover-image-homepage {
   background-color: $blue;
   border-radius: 1rem;
@@ -49,25 +42,6 @@ h1 {
   width: 340px;
   height: 380px;
 }
-.center-box {
-  display: flex;
-  align-items-center: center;
-  justify-content: center;
-}
-
-.internship-offers-box {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  max-height: 400px;
-  overflow: hidden;
-}
-
-#navbar-example2 {
-  position: sticky;
-  top: 0;
-  left: 0;
-}
 
 .how-to-offers {
   flex-grow: 1;
@@ -89,10 +63,6 @@ h1 {
 .subtitle-hero {
   font-weight: 900;
   font-size: 1rem;
-}
-
-.home-card {
-  width: 18rem;
 }
 .btn-link {
   text-decoration: none !important;
@@ -124,22 +94,6 @@ h1 {
   transform: rotate(15deg);
   border-radius: 1rem;
 }
-
-.button-layer {
-  position: relative;
-  top: 3rem;
-}
-.box-before-vertical-center {
-  position: relative;
-}
-
-.vertical-centering {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  height: 100%;
-}
-
 .chacun-image-left {
   background: transparent url('../images/homepage/chacun-left.png') top left no-repeat;
   background-size: 100% 100%;
@@ -210,13 +164,6 @@ h1 {
   color: $bg-less-light-blue;
   font-weight: bolder;
 }
-.home-blue-shadow {
-  line-height: 2rem;
-  color: white;
-  font-size: 3rem;
-  text-shadow: 5px 5px 0px $blue;
-}
-
 
 @include media-breakpoint-up(sm) {
 

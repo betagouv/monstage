@@ -10,7 +10,6 @@ export default class extends Controller {
 
   showCurrentSlide() {
     this.slideTargets.forEach((element, index) => {
-      console.log('isMobile : ' + isMobile())
       if (!isMobile()) {
         element.hidden = (index != this.indexValue);
       }
