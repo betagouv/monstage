@@ -179,3 +179,8 @@ $position-form-field-helper: 55px;
     padding-top: 1rem;
   }
 }
+
+.internship-agreement input:invalid {
+  border: 1px solid red;
+  background-color: rgb(255, 188, 188);
+}

@@ -1,4 +1,4 @@
-- edit_enable = can?("edit_#{field}".to_sym, form.object)
+- edit_enable = can?("edit_#{field}".to_sym, form.object) && !disabled
 - class_label = class_label || ''
 
 .col-12.pt-3
@@ -25,4 +25,4 @@
 
       - else
         div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
-          = form.rich_text_area field, class: 'form-control', disabled: disabled, contenteditable: !disabled
+          = form.rich_text_area field, class: 'form-control', disabled: disabled

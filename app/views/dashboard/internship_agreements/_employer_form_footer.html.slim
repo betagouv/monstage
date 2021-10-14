@@ -13,7 +13,7 @@
             = button_tag type: "button", data: { action: 'click->footer#saveAndQuit' }, class: 'btn btn-outline-primary mx-1' do
               | Enregistrer et quitter
 
-            = button_tag type: "button", data: { toggle: 'modal', target: "#validation-modal", turbolinks: false }, class: 'btn btn-primary mx-1' do
+            = button_tag type: "button", data: { action: 'click->footer#checkFormValidity' }, class: 'btn btn-primary mx-1' do
               i.fas.fa-check
               |  Envoyer la convention
 

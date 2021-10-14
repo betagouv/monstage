@@ -10,6 +10,15 @@ export default class extends Controller {
     $('#submit').click();
   }
 
+  checkFormValidity() {
+    if ($('.form-offset-header')[0].checkValidity()) {
+      $('.modal').modal();
+    } else {
+      var invalidField = document.querySelectorAll(':invalid')[0];
+      invalidField.scrollIntoView();
+    };
+  }
+
   close() {
     hideElement($(this.fixedContentTarget));
     this.resize();
