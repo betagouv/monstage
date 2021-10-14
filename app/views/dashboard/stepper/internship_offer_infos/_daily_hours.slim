@@ -87,4 +87,4 @@ div data-controller="daily-hours"
               small.form-text.text-muted
                 | Indiquez les horaires et qui est responsable de l'élève.
 
-            = form.text_area :"daily_lunch_break[#{weekday}]", value: form.object.daily_lunch_break[weekday], class: "form-control", placeholder: "12h -13h dans les locaux…"
+            = form.text_area :"daily_lunch_break[#{weekday}]", value: form.object.daily_lunch_break[weekday], class: "form-control", placeholder: "12h -13h dans les locaux…", disabled: disabled

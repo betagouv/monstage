@@ -14,7 +14,7 @@ module Dashboard
         authorize! :update, @school.internship_agreement_preset
         @internship_offer_preset = @school.internship_agreement_preset
         @internship_offer_preset.update!(internship_agreement_preset_params)
-        redirect_to(dashboard_school_internship_applications_path,
+        redirect_to(dashboard_internship_agreements_path,
                     flash: { success: 'Etablissement mis à jour avec succès' })
       rescue ActiveRecord::RecordInvalid
         render :edit, status: :bad_request

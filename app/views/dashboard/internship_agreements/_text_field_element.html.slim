@@ -13,7 +13,7 @@
       i.fa.fa-info-circle
 
     .input-group-custom data-controller="internship-agreement-field"
-      - if edit_enable
+      - if edit_enable && !disabled
         = form.text_field field,
                           class: 'form-control',
                           required: true

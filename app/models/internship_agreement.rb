@@ -32,25 +32,26 @@ class InternshipAgreement < ApplicationRecord
   attr_accessor :skip_validations_for_system
 
   # todo flip based on current switch/branch
-  # with_options if: :enforce_main_teacher_validations? do
-  #   validates :student_class_room, presence: true
-  #   validates :main_teacher_full_name, presence: true
-  #   validate :valid_trix_main_teacher_fields
-  # end
+  with_options if: :enforce_main_teacher_validations? do
+    validates :student_class_room, presence: true
+    validates :main_teacher_full_name, presence: true
+    validate :valid_trix_main_teacher_fields
+  end
 
-  # with_options if: :enforce_school_manager_validations? do
-  #   validates :student_school, presence: true
-  #   validates :school_representative_full_name, presence: true
-  #   validates :student_full_name, presence: true
-  #   validate :valid_trix_school_manager_fields
-  # end
+  with_options if: :enforce_school_manager_validations? do
+    validates :student_school, presence: true
+    validates :school_representative_full_name, presence: true
+    validates :student_full_name, presence: true
+    validate :valid_trix_school_manager_fields
+  end
 
-  # with_options if: :enforce_employer_validations? do
-  #   validates :organisation_representative_full_name, presence: true
-  #   validates :tutor_full_name, presence: true
-  #   validates :date_range, presence: true
-  #   validate :valid_trix_employer_fields
-  # end
+  with_options if: :enforce_employer_validations? do
+    validates :organisation_representative_full_name, presence: true
+    validates :tutor_full_name, presence: true
+    validates :date_range, presence: true
+    validate :valid_trix_employer_fields
+    validate :valid_working_hours_fields
+  end
 
   # validate :at_least_one_validated_terms
 
@@ -119,21 +120,43 @@ class InternshipAgreement < ApplicationRecord
       errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
     end
   end
-
+  
   def valid_trix_school_manager_fields
     errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
     if !troisieme_generale? && activity_rating_rich_text.blank?
       errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
     end
   end
-
+  
   def valid_trix_main_teacher_fields
     if !troisieme_generale? && activity_preparation_rich_text.blank?
       errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation")
     end
   end
 
+  def valid_working_hours_fields
+    if weekly_planning?
+      errors.add(:same_daily_planning, "Veuillez compléter les horaires et repas de la journée de stage") unless valid_weekly_planning?
+    elsif daily_planning?
+      errors.add(:weekly_planning, "Veuillez compléter les horaires et repas de la semaine de stage") unless valid_daily_planning?
+    else
+      errors.add(:weekly_planning, "Veuillez compléter les horaires du stage")
+    end
+  end
+
   def weekly_planning?
-    weekly_hours.any?(&:present?)
+    weekly_hours.any?(&:present?) || weekly_lunch_break.present?
+  end
+
+  def valid_weekly_planning?
+    weekly_hours.any?(&:present?) && weekly_lunch_break.present?
+  end
+
+  def daily_planning?
+    new_daily_hours.except('samedi').values.any? { |v| ! v.blank? }
+  end
+
+  def valid_daily_planning?
+    new_daily_hours.except('samedi').values.all? { |v| !v.blank? } && daily_lunch_break.except('samedi').values.all? { |v| !v.blank? } 
   end
 end

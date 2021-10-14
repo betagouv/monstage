@@ -14,6 +14,8 @@ FactoryBot.define do
     complementary_terms_rich_text { '<div>Ticket resto</div>'}
     activity_preparation_rich_text { '<div>Appel téléphonique</div>'}
     aasm_state { 'draft' }
+    weekly_hours { ['9:00', '17:00'] }
+    weekly_lunch_break { '1h dans la cantine. Repas fourni.' }
 
     trait :troisieme_generale_internship_agreement do
       school_track { 'troisieme_generale' }

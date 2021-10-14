@@ -21,7 +21,7 @@ module Dashboard
                   school_delegation_to_sign_delivered_at: date
                 }
              }
-        assert_redirected_to dashboard_school_internship_applications_path(school)
+        assert_redirected_to dashboard_internship_agreements_path
         school.internship_agreement_preset.reload
         assert_equal date, school.internship_agreement_preset.school_delegation_to_sign_delivered_at
       end
