@@ -1,4 +1,4 @@
-nav.navbar.navbar-dark.navbar-expand-md.py-0
+nav.navbar.navbar-dark.navbar-expand-md.py-0 data-controller='hamburger'
   .navbar-brand.w-100.d-flex.justify-content-between
     = link_to root_path, class: 'nav-item' do
       = image_tag asset_pack_path('media/images/logo-mon-stage-3e-blanc-short.svg'),
@@ -6,8 +6,8 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0
                   width: 100,
                   height: 60,
                   class: 'my-0 py-0'
-    button.navbar-toggler aria-controls="navbarScroll" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarScroll" data-toggle="collapse" type="button" 
-      span.navbar-toggler-icon.white
+    button.navbar-toggler aria-controls="navbarScroll" aria-expanded="false" data-hamburger-target='hamburger' aria-label=("Toggle navigation") data-target="#navbarScroll" data-toggle="collapse" type="button" 
+      span.navbar-toggler-icon.white 
   - if current_user.is_a?(Users::God)
     .nav-item.h6.d-none.d-md-inline.px-1
       = link_to "Reset cache",
@@ -16,8 +16,8 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0
 
   = render partial: 'layouts/extra_for_devs'
 
-  #navbarScroll.collapse.navbar-collapse.flex-row-reverse
-    ul.navbar-nav.navbar-nav-scroll.text-right style=("max-height: 120px;")
+  #navbarScroll.collapse.navbar-collapse.flex-row-reverse data-hamburger-target='menu'
+    ul.navbar-nav.navbar-nav-scroll.text-right.show style=("max-height: 120px;")
       - if user_signed_in?
         - if current_user.is_a?(Users::Employer)
           li.nav-item
@@ -46,21 +46,21 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0
           li.nav-item= link_to 'Revenir en admin', destroy_user_session_path, style: "background-color: #f00; color: #fff; font-weight: bold; text-decoration: underline", class: "nav-link pl-1 pr-1 py-4", method: :delete
 
       - else
-        li.nav-item.d-none.d-sm-block
+        li.d-none.d-sm-block
           = link_to 'Se connecter',
                     new_user_session_path,
                     class: "btn btn-link white mr-2  font-weight-bold #{current_controller?(:sessions) ? 'active' : ''}"
-        li.nav-item.d-none.d-sm-block
+        li.d-none.d-sm-block
           = link_to "S'inscrire",
                     new_user_registration_path,
-                    class: "btn btn-outline-primary font-weight-bold btn-outline-fat ml-2  #{current_controller?(:registrations) ? 'active' : ''}",
+                    class: "btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 text-center #{current_controller?(:registrations) ? 'active' : ''}",
                     id: 'signup-header'
 
         li.nav-item.d-block.d-sm-none
-          = link_to 'Inscription',
-                    new_user_registration_path,
-                    class: "btn btn-link white mr-2  font-weight-bold #{current_controller?(:registrations) ? 'active' : ''}"
-        li.nav-item.d-block.d-sm-none
           = link_to 'Connexion',
                     new_user_session_path,
-                    class: "btn btn-link white mr-2 font-weight-bold #{current_controller?(:sessions) ? 'active' : ''}"
+                    class: "btn btn-link white mx-1 font-weight-bold #{current_controller?(:sessions) ? 'active' : ''}"
+        li#subscription-hamburger.nav-item.d-block.d-sm-none
+          = link_to 'Inscription',
+                    new_user_registration_path,
+                    class: "btn btn-link white mx-1 font-weight-bold #{current_controller?(:registrations) ? 'active' : ''}"

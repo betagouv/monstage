@@ -40,6 +40,7 @@ import './homepage/illustration-documents-utiles.svg';
 import './homepage/scroll_down.svg';
 import './homepage/chacun-left.png';
 import './homepage/chacun-right.png';
+import './homepage/back-to-top.svg';
 
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';

@@ -10,10 +10,12 @@
           .pl-lg-5.pl-md-4.pl-sm-3.pl-2.mr-lg-n5.overflow-auto
             h1.h1.h1-text-hero.white.mb-3
               | Des stages de troisième de premier choix !
+            p.my-5.d-sm-none
             p.subtitle-hero.white.py-lg-5.py-md-4.py-sm-4.py-xs-3.to-regular
               |
                 Trouvez votre stage parmi une grande quantité d’offres
                 de qualité, dédiées aux élèves scolarisés en REP/REP+.
+            p.my-5.d-sm-none
         .col-lg-6.col-md-12
           .d-flex.align-items-end.flex-column
             = image_tag asset_pack_path('media/images/homepage/hero-group-resized.png'),
@@ -33,6 +35,7 @@
                   data: { :"test-id" => 'mobile-search-button' }
           = "Rechercher un stage"
 
+    .row.py-4
     .row.py-5
       .col-md-7.col-sm-12.text-center
         = image_tag asset_pack_path('media/images/homepage/animated_people.gif'),
@@ -63,9 +66,12 @@
                             class: 'btn btn-danger rounded-sm px-5',
                             data: { :"test-id" => 'mobile-search-button-first' }
             = "Trouver un stage"
+
+    .row.py-4
     .row
       .col-12.text-center
         h2.h3 monstagedetroisieme.fr vous permet de :
+
 
   .container-monstage data-controller='carousel' data-carousel-index-value='0'
     .slide-show.d-none.d-md-block
@@ -74,14 +80,12 @@
           a data-action="carousel#previous"
             = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
                         alt: "bouton précédent",
-                        height: '50px',
-                        class: ''
+                        height: '50px'
         .col-6.text-right
           a data-action="carousel#next"
             = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
                         alt: "bouton suivant",
-                        height: '50px',
-                        class: ''
+                        height: '50px'
     .container
       .row.mb-5.no-gutters data-carousel-target='slide'
         .col-md-6.col-sm-12
@@ -113,8 +117,8 @@
           .how-to-offers.text-center-left
             .my-5.ml-lg-5.ml-md-5.ml-sm-0
               h3.h2.mb-3
-                span.accueillir-image-left.pr-2 &nbsp;
-                span.accueillir-image-right Accueillir
+                span.accueillir-image-left Accueillir
+                span.accueillir-image-right.pr-2 &nbsp;
                 |&nbsp; un stagiaire
               h4.h5.text-muted.pb-3.text-center-left
                 |Entreprises - Administrations publiques
@@ -132,7 +136,7 @@
                     = "Accueillir un stagiaire"
         .col-md-6.col-sm-12.text-center
           = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
-                      alt: "Illustration , une élève",
+                      alt: "Illustration, une élève",
                       class: 'fitting'
 
       .row.mb-5.no-gutters data-carousel-target='slide'
@@ -140,8 +144,8 @@
           .how-to-offers.text-center-left
             .my-5.ml-lg-5.ml-md-5.ml-sm-0
               h3.h2.mb-3
-                span.accompagner-image-left.pr-2 &nbsp;
-                span.accompagner-image-right Accompagner
+                span.accompagner-image-left Accompagner
+                span.accompagner-image-right.pr-2 &nbsp;
                 |&nbsp;vos élèves
               h4.h5.text-muted.pb-3 Equipes pédagogiques
 
@@ -160,20 +164,21 @@
             = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
                         alt: "Illustration , un prof une élève",
                         class: 'fitting'
-
+    p.py-4
   .container-fluid.bg-blue
     .container-monstage
-      .row
+      .row.no-gutters
         .col-12
-          .row
+          .row.no-gutters
             .col-12
-              h5.pl-5.pt-5.white RESSOURCES
-          .row
+              h5.pl-5.pt-5.white.text-center-left RESSOURCES
+          .row.no-gutters
             .col-md-8.col-sm-12
-              h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines Prenez en main la plateforme dès maintenant
+              h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines.text-center-left
+                | Prenez en main la plateforme dès maintenant
               .row
-                .col-11
-                  p.px-5.py-3.extended-lines.wider-text
+                .col-md-11.col-sm-12
+                  p.px-5.py-3.extended-lines.wider-text.text-center-left
                     |
                       Des questions ? Que vous soyez élève ou professionnel, membre
                       d’une équipe pédagogique ou d’une administration centrale,
@@ -219,11 +224,12 @@
                           link_title: 'mode d\'emploi pour les administrations et référents',
                           file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
 
-  .row.bg-white
+  / .row.bg-white
   .container-monstage
+    p.py-4
     .row.pb-5.px-5
       .col-12
-        h2.h2.py-5.text-dark Un projet porté par
+        h2.h2.py-5.text-dark.text-center-left Un projet porté par
         .row.d-none.d-lg-block
           .col-12
             .d-flex.justify-content-between
@@ -271,8 +277,9 @@
                           alt: "Logo du ministère de la ville",
                           width: '130px',
                           class: 'px-3'
+        .row.py-4
         .row
-          .col-12
+          .col-12.text-center-left
             h2.h2.pt-5.text-dark Nos associations partenaires
 .container-fluid
   .text-center.pb-5
@@ -286,6 +293,7 @@
       - partners_map_of_colored_logo_url.each do |partner|
         = render partial: "pages/home/partner_link",
                 locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
+  p.py-4
   .container-monstage.mb-5
     .right-flying-email
     .row
@@ -319,5 +327,8 @@
               class: 'float-right back-to-top',
               data: {turbolinks: false},
               aria: {label: "Retour en haut de page"} do
-      .fa-2x.fas.fa-arrow-circle-up
+      = image_tag asset_pack_path('media/images/homepage/back-to-top.svg'),
+                  alt: "Mon stage de 3e",
+                  width: 33,
+                  class: 'my-0 py-0'
       span.d-none Retour en haut de page
