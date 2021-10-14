@@ -33,12 +33,6 @@ FactoryBot.define do
       activity_learnings_rich_text { '<div>Communication orale</div>'}
     end
 
-    trait :bac_pro_internship_agreement_trait do
-      school_track { 'bac_pro' }
-      activity_rating_rich_text { '<div>Rapport de stage</div>'}
-      activity_learnings_rich_text { '<div>Communication orale</div>'}
-    end
-
     trait :created_by_system do
       skip_validations_for_system { true }
     end
@@ -49,7 +43,5 @@ FactoryBot.define do
                                                           parent: :internship_agreement
     factory :troisieme_segpa_internship_agreement, traits: [:troisieme_segpa_internship_agreement_trait],
                                                    parent: :internship_agreement
-    factory :bac_pro_internship_agreement, traits: [:bac_pro_internship_agreement_trait],
-                                           parent: :internship_agreement
   end
 end

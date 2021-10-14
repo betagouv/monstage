@@ -57,6 +57,11 @@ module Dashboard
           @available_weeks = failed_internship_offer.available_weeks
           render :edit, status: :bad_request
         end
+        on.argument_error do |argument_error_internship_offer|
+          @internship_offer = InternshipOffer.find(params[:id])
+          @available_weeks = @internship_offer.available_weeks
+          render :edit, status: :bad_request
+        end
       end
     rescue ActionController::ParameterMissing
       @internship_offer = InternshipOffer.find(params[:id])

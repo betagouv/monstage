@@ -16,6 +16,7 @@ module Users
     has_many :kept_internship_offers, -> (id) { merge(InternshipOffer.kept.where(tutor_id: id)) },
                                       class_name: 'InternshipOffer'
     has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications
 
     def from_api?
       false

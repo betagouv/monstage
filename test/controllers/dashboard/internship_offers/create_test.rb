@@ -109,7 +109,7 @@ module Dashboard::InternshipOffers
 
     test 'internship creation sends an email to the tutor' do
       assert_emails 1 do
-        create(:troisieme_generale_internship_offer)
+        create(:weekly_internship_offer)
       end
     end
   end

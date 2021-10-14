@@ -94,35 +94,6 @@ module Dashboard::InternshipAgreements
                   'can\'t update internship_agreement organisation representative full name')
     end
 
-    test 'PATCH #update as employer owning internship_offer fails updating ' \
-         'internship_agreement when accept terms go missing' do
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, school: school, class_room: class_room)
-      main_teacher = create(:main_teacher, school: school, class_room: class_room)
-      internship_application = create(:weekly_internship_application, :submitted, user_id: student.id)
-      internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
-                                    internship_application: internship_application)
-      new_organisation_representative_full_name = 'John Doe'
-      params = {
-        'internship_agreement' => {
-          employer_accept_terms: false,
-          organisation_representative_full_name: new_organisation_representative_full_name
-        }
-      }
-      sign_in(internship_application.internship_offer.employer)
-
-      patch dashboard_internship_agreement_path(internship_agreement.id, params)
-
-      assert_select '#error_explanation ul li',
-                    I18n.t('activerecord.errors.models.internship_agreement.attributes.employer_accept_terms.missing'),
-                    'employer accept terms alert is invisible'
-
-      refute_equal(new_organisation_representative_full_name,
-                  internship_agreement.reload.organisation_representative_full_name,
-                  'can\'t update internship_agreement organisation representative full name')
-    end
-
     # As Tutor
     test 'PATCH #update as tutor not tutor in the internship_offer redirects ' \
          'to dashboard_internship_applications path' do
@@ -160,9 +131,9 @@ module Dashboard::InternshipAgreements
       sign_in(tutor)
       new_tutor_full_name = 'M. Lune'
       patch dashboard_internship_agreement_path(internship_agreement.id),
-            params: {internship_agreement: {tutor_full_name: new_tutor_full_name, tutor_accept_terms: true}}
+            params: {internship_agreement: {tutor_full_name: new_tutor_full_name, tutor_accept_terms: true, event: 'start_by_employer'}}
 
-      assert_redirected_to(dashboard_internship_applications_path,
+      assert_redirected_to(dashboard_internship_agreements_path,
                            'redirection should point to updated agreement')
       assert_equal(new_tutor_full_name,
                   internship_agreement.reload.tutor_full_name,

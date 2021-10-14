@@ -44,7 +44,7 @@ module Builders
       if type_will_change?(params: params, instance: instance)
         instance = switch_type(instance: instance, params: params)
       end
-      instance.attributes = preprocess_params(params, fallback_weeks: false)
+      instance.attributes = preprocess_params(params: params, fallback_weeks: false)
       instance.save!
       callback.on_success.try(:call, instance)
     rescue ActiveRecord::RecordInvalid => e

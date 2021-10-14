@@ -59,14 +59,15 @@ class ManageTutorsTest < ApplicationSystemTestCase
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                                internship_offer_info_id: internship_offer_info.id)
-        fill_in 'Nom du tuteur/trice', with: 'Brice Durand'
+        fill_in 'Nom du tuteur/trice', with: 'Durand'
+        fill_in 'Prénom du tuteur/trice', with: 'Brice'
         fill_in 'Adresse électronique / Email', with: 'le@brice.durand'
-        fill_in 'Numéro de téléphone', with: ' ' # there is the error
+        fill_in 'Numéro de mobile', with: ' ' # there is the error
         click_on "Publier l'offre !"
         # wait_form_submitted
         find(
           '.alert ul li label',
-          text: 'Veuillez saisir le numéro de téléphone du tuteur de l\'offre de stage'
+          text: 'Veuillez saisir un numéro de téléphone pour le tuteur'
         )
       end
     end
@@ -75,10 +76,11 @@ class ManageTutorsTest < ApplicationSystemTestCase
       travel_to(Date.new(2019, 3, 1)) do
         visit new_dashboard_stepper_tutor_path(organisation_id: organisation.id,
                                                internship_offer_info_id: internship_offer_info.id)
-        fill_in 'Numéro de téléphone', with: new_phone_number
+        fill_in 'Numéro de mobile', with: new_phone_number
         click_on "Publier l'offre !"
-        assert_equal new_phone_number, Tutor.last.tutor_phone, 'Tutor s phone number is not updated'
+        # TO DO : wait_form_submitted 
       end
     end
+    assert_equal new_phone_number, Users::Tutor.last.phone, 'Tutor s phone number is not updated'
   end
 end

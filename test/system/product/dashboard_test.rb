@@ -181,39 +181,6 @@ module Product
       end
     end
 
-    test 'school_manager new_dashboard_agreement_path' do
-      internship_offer = create(:weekly_internship_offer)
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, school: school, class_room: class_room)
-      internship_application = create(:weekly_internship_application,
-                                      :approved,
-                                      student: student,
-                                      internship_offer: internship_offer
-                                      )
-      sign_in(school.school_manager)
-      run_request_and_cache_response(report_as: 'school_manager new_dashboard_ageement_path') do
-        visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
-      end
-    end
-
-    test 'employer new_dashboard_agreement_path' do
-      employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
-      school = create(:school, :with_school_manager)
-      class_room = create(:class_room, school: school)
-      student = create(:student, school: school, class_room: class_room)
-      internship_application = create(:weekly_internship_application,
-                                      :approved,
-                                      student: student,
-                                      internship_offer: internship_offer
-                                      )
-      sign_in(employer)
-      run_request_and_cache_response(report_as: 'employer new_dashboard_ageement_path') do
-        visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
-      end
-    end
-
     test 'school_manager edit_dashboard_agreement_path' do
       internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system)
       sign_in(internship_agreement.internship_application.student.school_manager)

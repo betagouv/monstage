@@ -48,7 +48,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
 
 
 --
@@ -502,8 +502,7 @@ CREATE TABLE public.internship_agreement_presets (
     school_delegation_to_sign_delivered_at date,
     school_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    weekly_hours text[] DEFAULT '{}'::text[]
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -678,12 +677,7 @@ CREATE TABLE public.internship_offer_infos (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text,
-    street character varying,
-    zipcode character varying,
-    city character varying,
-    website character varying,
-    coordinates public.geography(Point,4326)
+    weekly_lunch_break text
 );
 
 
@@ -832,10 +826,6 @@ CREATE TABLE public.internship_offers (
     siren character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    employer_street character varying,
-    employer_zipcode character varying,
-    employer_city character varying,
-    employer_coordinates public.geography(Point,4326),
     tutor_id bigint
 );
 
@@ -1681,13 +1671,6 @@ CREATE INDEX index_internship_offer_info_weeks_on_week_id ON public.internship_o
 
 
 --
--- Name: index_internship_offer_infos_on_coordinates; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offer_infos_on_coordinates ON public.internship_offer_infos USING gist (coordinates);
-
-
---
 -- Name: index_internship_offer_infos_on_sector_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1762,13 +1745,6 @@ CREATE INDEX index_internship_offers_on_department ON public.internship_offers U
 --
 
 CREATE INDEX index_internship_offers_on_discarded_at ON public.internship_offers USING btree (discarded_at);
-
-
---
--- Name: index_internship_offers_on_employer_coordinates; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internship_offers_on_employer_coordinates ON public.internship_offers USING gist (employer_coordinates);
 
 
 --
@@ -2441,8 +2417,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210622105914'),
 ('20210628172603'),
 ('20210708094334'),
-('20210817111220'),
-('20210817155814'),
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743');
