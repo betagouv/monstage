@@ -176,6 +176,18 @@ h4 {
   font-weight: bolder;
 }
 
+.navbar-nav-scroll a {
+  width: 140px;
+}
+
+#navbarScroll.collapse {
+  display: none;
+}
+
+#navbarScroll.collapse.show {
+  display: block;
+}
+
 @include media-breakpoint-up(md) {
   .text-center-left {
     text-align: left;
@@ -206,6 +218,9 @@ h4 {
 
   .text-center-right {
     text-align: center;
+  }
+  .navbar-nav-scroll a {
+    text-align: right;
   }
 
   .flex-md-reverse-column {
