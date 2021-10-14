@@ -280,12 +280,12 @@
     .d-none.d-lg-block
       .d-flex.justify-content-center
         - partners_map_of_colored_logo_url.each do |partner|
-          = render partial: "partner_link",
+          = render partial: "pages/home/partner_link",
                   locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
     .d-block.d-lg-none
       .d-inline-block
       - partners_map_of_colored_logo_url.each do |partner|
-        = render partial: "partner_link",
+        = render partial: "pages/home/partner_link",
                 locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
   .container-monstage.mb-5
     .right-flying-email
