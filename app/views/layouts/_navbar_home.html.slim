@@ -1,4 +1,4 @@
-nav.navbar.navbar-dark.navbar-expand-md.py-0 data-controller='hamburger'
+nav.navbar.navbar-dark.navbar-expand-md.py-0
   .navbar-brand.w-100.d-flex.justify-content-between
     = link_to root_path, class: 'nav-item' do
       = image_tag asset_pack_path('media/images/logo-mon-stage-3e-blanc-short.svg'),
@@ -6,7 +6,7 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0 data-controller='hamburger'
                   width: 100,
                   height: 60,
                   class: 'my-0 py-0'
-    button.navbar-toggler aria-controls="navbarScroll" aria-expanded="false" data-hamburger-target='hamburger' aria-label=("Toggle navigation") data-target="#navbarScroll" data-toggle="collapse" type="button" 
+    button.navbar-toggler aria-controls="navbarScroll" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarScroll" data-toggle="collapse" type="button" 
       span.navbar-toggler-icon.white 
   - if current_user.is_a?(Users::God)
     .nav-item.h6.d-none.d-md-inline.px-1
@@ -16,7 +16,7 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0 data-controller='hamburger'
 
   = render partial: 'layouts/extra_for_devs'
 
-  #navbarScroll.collapse.navbar-collapse.flex-row-reverse data-hamburger-target='menu'
+  #navbarScroll.collapse.navbar-collapse.flex-row-reverse 
     ul.navbar-nav.navbar-nav-scroll.text-right.show style=("max-height: 120px;")
       - if user_signed_in?
         - if current_user.is_a?(Users::Employer)
@@ -60,7 +60,7 @@ nav.navbar.navbar-dark.navbar-expand-md.py-0 data-controller='hamburger'
           = link_to 'Connexion',
                     new_user_session_path,
                     class: "btn btn-link white mx-1 font-weight-bold #{current_controller?(:sessions) ? 'active' : ''}"
-        li#subscription-hamburger.nav-item.d-block.d-sm-none
+        li.nav-item.d-block.d-sm-none
           = link_to 'Inscription',
                     new_user_registration_path,
                     class: "btn btn-link white mx-1 font-weight-bold #{current_controller?(:registrations) ? 'active' : ''}"

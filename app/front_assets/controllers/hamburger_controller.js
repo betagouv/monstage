@@ -9,10 +9,10 @@ export default class extends Controller {
 
   clickOnHamburger() {
     if (isMobile()) {
-      this.hamburgerTarget.classList.remove('collapsed');
-      $(this.hamburgerTarget).attr('aria-expanded', true);
-      this.menuTarget.classList.add('show');
-      document.getElementById("subscription-hamburger").focus();
+      // this.hamburgerTarget.classList.remove('collapsed');
+      // $(this.hamburgerTarget).attr('aria-expanded', true);
+      // this.menuTarget.classList.add('show');
+      // document.getElementById("subscription-hamburger").focus();
     }
   }
 
