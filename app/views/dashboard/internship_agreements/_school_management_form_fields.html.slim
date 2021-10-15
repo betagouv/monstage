@@ -19,7 +19,7 @@ tbody.internship-agreement
                  locals: { field: :school_representative_full_name, form: form, text_label: label, title: title, content: content, filled_by: filled_by, disabled: disabled }
       
       .row.mt-0
-        - label = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du :"
+        - label = "Le chef d'établissement a été nommé apte à signer les conventions par le conseil d'administration de l'établissement en date du"
         - title = "Note au chef d'établissement :"
         - content = "Date du conseil d'administration"
         - filled_by = ["le chef d'établissement"]
@@ -68,7 +68,7 @@ tbody.internship-agreement
         = render partial: 'dashboard/internship_agreements/trix_form_element',
                  locals: { field: :activity_rating_rich_text, form: form, text_label: label, title: title, content: content , filled_by: filled_by, disabled: disabled }
 
-      / = form.submit 'Submit', class: 'd-none', id: 'submit'
+      = form.submit 'Submit', class: 'd-none', id: 'submit'
 
       - unless disabled
         .row.mt-0

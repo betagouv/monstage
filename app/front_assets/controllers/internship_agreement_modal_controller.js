@@ -5,6 +5,7 @@ export default class extends Controller {
 
   completeByEmployer() {
     $('#internship_agreement_event').val('complete');
+    $('#submit').click();
   }
 
   validate() {

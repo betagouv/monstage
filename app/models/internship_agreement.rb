@@ -153,7 +153,7 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def daily_planning?
-    new_daily_hours.except('samedi').values.any? { |v| ! v.blank? }
+    new_daily_hours.except('samedi').values.flatten.any? { |v| ! v.blank? }
   end
 
   def valid_daily_planning?
