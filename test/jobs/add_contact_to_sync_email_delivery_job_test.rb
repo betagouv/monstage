@@ -39,18 +39,20 @@ class AddContactToSyncEmailDeliveryJobTest < ActiveJob::TestCase
     special_name="#{user.first_name.downcase.capitalize} #{user.last_name}"
     travel_to(Date.new(2019, 3, 1)) do
       stub_request(:get, "https://api.mailjet.com/v3/REST/contact/#{user.email}").
-            with( headers: headers).to_return(status: 400, body:  json_error, headers: {})
+            with( headers: headers).to_return(status: 400, body: json_error, headers: {})
 
-    stub_request(:post, "https://api.mailjet.com/v3/REST/contact").
-          with(
-            body: api.send(:make_create_contact_payload, user: user).to_json,
-            headers: headers).to_return(status: 201, body: {"Count"=>1, "Data"=>data, "Total"=>1}.to_json, headers: {})
+      stub_request(:post, "https://api.mailjet.com/v3/REST/contact").
+            with(
+              body: api.send(:make_create_contact_payload, user: user).to_json, headers: headers)
+                       .to_return(
+                         status: 201,
+                         body: {"Count"=>1, "Data"=>data, "Total"=>1}.to_json,
+                         headers: {})
 
-    stub_request(:put, "https://api.mailjet.com/v3/REST/contactdata/#{user.email}").
-          with(
-            body: api.send(:make_update_contact_payload, user: user).to_json,
-            headers: headers).to_return(status: 200, body: "{}", headers: {})
-
+      stub_request(:put, "https://api.mailjet.com/v3/REST/contactdata/#{user.email}").
+            with(
+              body: api.send(:make_update_contact_payload, user: user).to_json, headers: headers)
+                       .to_return(status: 200, body: "{}", headers: {})
       AddContactToSyncEmailDeliveryJob.perform_now(user: user)
     end
   end
