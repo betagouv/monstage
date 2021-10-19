@@ -24,7 +24,7 @@ module Users
     end
 
     def dashboard_name
-      'Mes offres'
+      'Mon tableau de bord'
     end
 
     def account_link_name
