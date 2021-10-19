@@ -9,6 +9,6 @@ export default class extends Controller {
   connect() {
     setTimeout(() => {
       this.openModal();
-    }, 100);
+    }, 300);
   }
 }
