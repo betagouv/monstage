@@ -63,6 +63,7 @@ import './homepage/alternatives/viens-voir-mon-taff.png';
 
 import './homepage/benefices/icon-accompagner-les-eleves.png';
 import './homepage/hero-group-resized.png';
+import './homepage/hero-group-xs.png';
 import './homepage/eleves-parents-eleves.png';
 import './homepage/etablissements-scolaires.png';
 import './homepage/professionnels.png';

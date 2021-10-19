@@ -94,6 +94,10 @@ h4 {
   object-fit: cover;
   width: 100%
 }
+.img-almost-fluid {
+  max-width: 90%;
+  height: auto;
+}
 
 .right-flying-email {
   position: absolute;
@@ -225,11 +229,19 @@ h4 {
   .text-center-right {
     text-align: center;
   }
-.subtitle-hero,
-.h1-text-hero {
-  line-height: 150%;
-  padding: 1rem;
-}
+  .bg-cover-image-homepage {
+    border-radius: 0;
+  }
+
+  .changing-order {
+    -moz-box-direction: reverse;
+    -webkit-flex-direction: row-reverse;
+  }
+  .subtitle-hero,
+  .h1-text-hero {
+    line-height: 150%;
+    padding: 1rem;
+  }
   .navbar-nav-scroll a {
     text-align: right;
   }
