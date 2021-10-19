@@ -34,7 +34,7 @@ module ApplicationHelper
 
   def body_class_name
     class_names = []
-    class_names.push('homepage') if homepage?
+    class_names.push('homepage px-0') if homepage?
     class_names.push('onboarding-flow') if onboarding_flow?
     class_names.join(' ')
   end

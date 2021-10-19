@@ -2,8 +2,12 @@
   border: 2px dotted hotpink;
 }
 
+.homepage {
+  overflow-x: hidden;
+}
+
 .container-monstage {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: auto;
   position: relative;
 }
@@ -46,7 +50,7 @@ h4 {
 
 .download-card {
   display: inline-flexbox;
-  width: 280px;
+  width: 290px;
   margin-right: 30px;
   height: 450px;
 }
@@ -164,13 +168,12 @@ h4 {
   background-image: url("../images/homepage/ms3e-big-badge.svg");
   background-repeat: no-repeat no-repeat;
   background-clip: content-box;
-  background-size: 480px;
+  background-size: 22rem;
 
   background-position-x: 0;
-  background-position-y: -8%;
+  background-position-y: 60%;
   left: 0px;
   top: 0px;
-  // padding-bottom: 20px;
 }
 
 .slide-show {

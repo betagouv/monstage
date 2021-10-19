@@ -76,7 +76,7 @@ module UsersHelper
       {
         logo: 'logo-viens-voir-mon-taf.png',
         url: 'https://www.viensvoirmontaf.fr',
-        height: 65
+        height: 50
       },
       {
         logo: 'logo-telemaque.png',
