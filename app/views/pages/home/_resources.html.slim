@@ -1,61 +1,61 @@
 .container-fluid.bg-blue.px-0
-  .row.no-gutters
-    .col-12
-      .row.no-gutters
-        .col-12
-          h5.pl-5.pt-5.white.text-center-left RESSOURCES
-      .row.no-gutters
-        .col-md-8.col-sm-12
-          h2.h1.pl-5.h1-text-hero.white.mb-0.shrinked-lines.text-center-left
-            | Prenez en main la plateforme dès maintenant
-          .row
-            .col-md-11.col-sm-12
-              p.px-5.py-3.extended-lines.wider-text.text-center-left
-                |
-                  Des questions ? Que vous soyez élève ou professionnel, membre
-                  d’une équipe pédagogique ou d’une administration centrale,
-                  vous trouverez forcément la réponse dans nos modes d’emploi,
-                  pensés pour vous accompagner quel que soit votre usage de
-                  la plateforme.
-        .col-md-1
-        .col-md-3.col-sm-12.text-center-right.mb-3.d-none.d-sm-block
-            = link_to "/documents-utiles",
-                      title: 'Documents utiles',
-                      class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
-              | Voir les ressources
+  .container-monstage
+    .row.no-gutters.text-center-left
+      .col-12.mb-3
+        .row.no-gutters
+          .col-12
+            h5.pl-sm-5.pl-0.pt-5.white RESSOURCES
+        .row.no-gutters
+          .col-md-8.col-sm-12
+            h2.h1.pl-sm-5.pl-1.h1-text-hero.white.mb-0.shrinked-lines
+              | Prenez en main la plateforme dès maintenant
+            .row
+              .col-md-11.col-sm-12
+                p.px-5.py-3.extended-lines.wider-text
+                  |
+                    Des questions ? Que vous soyez élève ou professionnel, membre
+                    d’une équipe pédagogique ou d’une administration centrale,
+                    vous trouverez forcément la réponse dans nos modes d’emploi,
+                    pensés pour vous accompagner quel que soit votre usage de
+                    la plateforme.
+          .col-md-4.col-sm-12.text-center-right.mb-3.d-none.d-sm-block
+              = link_to "/documents-utiles",
+                        title: 'Documents utiles',
+                        class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 px-5 py-3 mr-md-5 mr-sm-0" do
+                | Voir les ressources
 
 
-  .wrapper.pl-5.text-left
-    = render partial: "pages/home/people_card.html",
-            locals: { strong_text: "Elèves, parents d'élèves,",
-                      subtitle: "découvrez comment candidater à nos offres",
-                      image_file_name: 'eleves-parents-eleves.png',
-                      alt_text: "Illustration trouver un stage",
-                      link_title: "Accéder au mode d'emploi élève",
-                      file: "MS3_Mode-d-emploi-eleves.pdf" }
-    = render partial: "pages/home/people_card.html",
-            locals: { strong_text: "Professionnels,",
-                      subtitle: "offrez des stages et un accueil de qualité aux élèves",
-                      image_file_name: 'professionnels.png',
-                      alt_text: "Illustration fournir un stage",
-                      link_title: "Accéder au mode d'emploi entreprise",
-                      file: "MS3_Mode-d-emploi-entreprises.pdf" }
-    = render partial: "pages/home/people_card.html",
-            locals: { image_file_name: 'etablissements-scolaires.png',
-                      alt_text: "Aider à trouver un stage",
-                      strong_text: "Etablissements scolaires,",
-                      subtitle: "suivez vos élèves dans leur parcours autour du stage de troisième",
-                      link_title: 'Accéder au mode des établissements scolaires',
-                      file: "MS3_Mode-d-emploi-membres-pedagogique.pdf"}
-    = render partial: "pages/home/people_card.html",
-            locals: { image_file_name: 'referents-centraux.png',
-                      alt_text: "Fournir un stage, superviser",
-                      strong_text: "Référents centraux ou départements,",
-                      subtitle: "accédez à un suivi pertinent",
-                      link_title: 'mode d\'emploi pour les administrations et référents',
-                      file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
-  .col-12.text-center.mb-3.d-block.d-sm-none
-    = link_to "/documents-utiles",
-              title: 'Documents utiles',
-              class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
-      | Voir les ressources
+    .wrapper.pl-5.text-left
+      = render partial: "pages/home/people_card.html",
+              locals: { strong_text: "Elèves, parents d'élèves,",
+                        subtitle: "découvrez comment candidater à nos offres",
+                        image_file_name: 'eleves-parents-eleves.png',
+                        alt_text: "Illustration trouver un stage",
+                        link_title: "Accéder au mode d'emploi élève",
+                        file: "MS3_Mode-d-emploi-eleves.pdf" }
+      = render partial: "pages/home/people_card.html",
+              locals: { strong_text: "Professionnels,",
+                        subtitle: "offrez des stages et un accueil de qualité aux élèves",
+                        image_file_name: 'professionnels.png',
+                        alt_text: "Illustration fournir un stage",
+                        link_title: "Accéder au mode d'emploi entreprise",
+                        file: "MS3_Mode-d-emploi-entreprises.pdf" }
+      = render partial: "pages/home/people_card.html",
+              locals: { image_file_name: 'etablissements-scolaires.png',
+                        alt_text: "Aider à trouver un stage",
+                        strong_text: "Etablissements scolaires,",
+                        subtitle: "suivez vos élèves dans leur parcours autour du stage de troisième",
+                        link_title: 'Accéder au mode des établissements scolaires',
+                        file: "MS3_Mode-d-emploi-membres-pedagogique.pdf"}
+      = render partial: "pages/home/people_card.html",
+              locals: { image_file_name: 'referents-centraux.png',
+                        alt_text: "Fournir un stage, superviser",
+                        strong_text: "Référents centraux ou départements,",
+                        subtitle: "accédez à un suivi pertinent",
+                        link_title: 'mode d\'emploi pour les administrations et référents',
+                        file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
+    .col-12.text-center.mb-3.d-block.d-sm-none.pb-4
+      = link_to "/documents-utiles",
+                title: 'Documents utiles',
+                class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
+        | Voir les ressources
