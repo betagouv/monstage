@@ -36,8 +36,8 @@
             th.bl-1.bc-light
               = dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
-            th.bl-1.bc-light colspan="3"= InternshipOffer.human_attribute_name(:total_applications_count)
-            th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:approved_applications_count)
+            th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:total_applications_count)
+            th.bl-1.bc-light colspan="5"= InternshipOffer.human_attribute_name(:approved_applications_count)
           tr.tr-white
             th.bl-1.bc-light
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
@@ -45,11 +45,13 @@
 
             th= InternshipOffer.human_attribute_name(:total_male_applications_count)
             th= InternshipOffer.human_attribute_name(:total_female_applications_count)
+            th= InternshipOffer.human_attribute_name(:total_no_gender_applications_count)
             th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
             th
               accr title="Cordée de la réussite, parcours d'excellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
             th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
-            th.border-right= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
+            th= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
+            th.border-right= InternshipOffer.human_attribute_name(:total_no_gender_approved_applications_count)
 
         tbody
           - if dimension_is?('group', params[:dimension])
