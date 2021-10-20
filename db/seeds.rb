@@ -610,4 +610,6 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_aggreements
   ])
   School.update_all(updated_at: Time.now)
+  Services::CounterManager.reset_internship_offer_counters
+  Services::CounterManager.reset_internship_offer_weeks_counter
 end
