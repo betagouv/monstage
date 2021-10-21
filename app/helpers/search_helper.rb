@@ -45,7 +45,7 @@ module SearchHelper
     count = params.permit(:latitude, :keyword, :school_track, week_ids: [])
                   .to_h
                   .map do |k,v|
-                    v.empty? ? 0 : 1
+                    v&.empty? ? 0 : 1
                   end
                   .sum
     count.zero? ? 'Rechercher' : "Modifier ma recherche (#{count})"

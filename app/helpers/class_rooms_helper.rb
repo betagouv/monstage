@@ -6,11 +6,15 @@ module ClassRoomsHelper
   end
 
   def options_for_school_tracks
-    scholl_tracks_hash_translated = {}
+    school_tracks_hash_translated = {}
     ClassRoom.school_tracks.map do |key, val|
-      scholl_tracks_hash_translated[tr_school_track(key)] = val
+      next if current_user&.student? &&
+              current_user.class_room.present? &&
+              current_user.school_track != key
+
+      school_tracks_hash_translated[tr_school_track(key)] = val
     end
-    scholl_tracks_hash_translated
+    school_tracks_hash_translated
   end
 
   def tr_school_track(school_track)

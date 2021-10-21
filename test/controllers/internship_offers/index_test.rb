@@ -353,6 +353,46 @@ class IndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'GET #index as student includes ' \
+       'forwardable_params and takes an implicit param with school_track' do
+    school     = create(:school)
+    class_room = create(:class_room, school: school)
+    sign_in(create(:student, school: school, class_room: class_room))
+    # default school_track is troisieme_generale
+    # and it's an implicit filter for student's search
+    internship_1 = create(:weekly_internship_offer)
+    internship_free = create(:free_date_internship_offer)
+
+    InternshipOffer.stub :nearby, InternshipOffer.all do
+      InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        forwarded_params = {
+          city: 'Paris',
+          latitude: 1,
+          longitude: 1,
+          page: 1,
+          radius: 1_000,
+          week_ids: [1, 2, 3]
+        }
+        get internship_offers_path, params: forwarded_params
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge( id: internship_1, origin: 'search' )
+          ),
+          count: 2 #Voir l'annonce and availibility link
+        )
+        assert_select(
+          'a[href=?]',
+          internship_offer_path(
+            forwarded_params.merge( id: internship_free, origin: 'search' )
+          ),
+          count: 0
+        )
+      end
+    end
+  end
+
+
   test 'search by location (radius) works' do
     internship_offer_at_paris = create(:weekly_internship_offer,
                                        coordinates: Coordinates.paris)

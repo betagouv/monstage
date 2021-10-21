@@ -5,7 +5,7 @@
 
 ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params),
+  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
       div.my-auto
         = "En cours "

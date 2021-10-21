@@ -1,0 +1,17 @@
+.form-group
+  = form.label :group_id do
+    = "Administration"
+  = form.text_field :employer_name,
+                      class: 'form-control',
+                      value: current_user.ministry.name,
+                      disabled: true
+.form-group
+  = form.label :employer_name do
+    = "Institution proposant l’offre"
+    = form.rg2a_required_content_tag
+
+  = form.text_field :employer_name,
+                    class: 'form-control',
+                    placeholder: 'Mon Institution', required: true
+= form.hidden_field :is_public, value: true
+= form.hidden_field :group_id, value: current_user.ministry_id
