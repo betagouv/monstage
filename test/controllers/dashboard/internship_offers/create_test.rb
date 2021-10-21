@@ -116,8 +116,6 @@ module Dashboard::InternshipOffers
              }
            })
 
-      byebug
-
       assert_select 'li label[for=internship_offer_coordinates]',
                     text: 'Veuillez saisir et sélectionner une adresse avec ' \
                           "l'outil de complétion automatique"
