@@ -1,0 +1,98 @@
+.container-monstage data-controller='carousel' data-carousel-index-value='0'
+  .slide-show.d-none.d-md-block
+    .row.no-gutters
+      .col-6.text-left
+        a data-action="carousel#previous"
+          = image_tag asset_pack_path('media/images/homepage/carousel/left.svg'),
+                      alt: "bouton précédent",
+                      height: '50px'
+      .col-6.text-right
+        a data-action="carousel#next"
+          = image_tag asset_pack_path('media/images/homepage/carousel/right.svg'),
+                      alt: "bouton suivant",
+                      height: '50px'
+  .container
+    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none
+      .col-12.py-4.d-block.d-sm-none
+      .col-md-6.col-sm-12
+        .how-to-offers.text-center-left
+          .my-5.ml-lg-5.ml-md-5.ml-sm-0
+            h3.h2.mb-3
+              span.trouver-image-left Trouver
+              span.trouver-image-right.pr-2 &nbsp;
+              | un stage
+            h4.h5.text-muted.pb-3 Elèves
+            .text-center-left
+              p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
+                |
+                  Consultez de nombreuses offres, soignez votre
+                  candidature et postulez à vos stages préférés.
+            - if !user_signed_in? || can?(:look_for_offers, current_user)
+              - target_link = current_user&.custom_dashboard_path|| new_user_registration_path
+              p = link_to target_link,
+                          class: 'btn btn-danger rounded-sm px-4',
+                          data: { :"test-id" => 'mobile-search-button' }
+                  = "Rechercher un stage"
+      .col-md-6.col-sm-12.text-center
+        = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
+                    alt: "Illustration, une élève",
+                    class: 'img-almost-fluid'
+
+    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column  data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none
+      .col-12.py-4.d-block.d-sm-none
+      .col-md-6.col-sm-12
+        .how-to-offers.text-center-left
+          .my-5.ml-lg-5.ml-md-5.ml-sm-0
+            h3.h2.mb-3
+              span.accompagner-image-left Accompagner
+              span.accompagner-image-right.pr-2 &nbsp;
+              |&nbsp;vos élèves
+            h4.h5.text-muted.pb-3 Equipes pédagogiques
+
+            p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0.text-center-left
+              |
+                Consultez de nombreuses offres, soignez votre
+                candidature et postulez à vos stages préférés.
+            - if can?(:welcome_students, current_user) || !user_signed_in?
+              - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+              p = link_to target_link,
+                        class: 'btn btn-danger rounded-sm px-4',
+                        data: { :"test-id" => 'mobile-search-button' }
+                = "Accompagner mes élèves"
+      .col-md-6.col-sm-12
+        .how-to-offers.text-center
+          = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
+                      alt: "Illustration , un prof une élève",
+                      class: 'img-almost-fluid'
+    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column  data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none
+      .col-12.py-4.d-block.d-sm-none
+      .col-md-6.col-sm-12
+        .how-to-offers.text-center-left
+          .my-5.ml-lg-5.ml-md-5.ml-sm-0
+            h3.h2.mb-3
+              span.accueillir-image-left Accueillir
+              span.accueillir-image-right.pr-2 &nbsp;
+              |&nbsp; un stagiaire
+            h4.h5.text-muted.pb-3.text-center-left
+              |Entreprises - Administrations publiques
+              br
+              | et services de l’État
+            p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0
+              |
+                Du dépôt d’offres via votre espace personnalisé aux conseils
+                pour bien vous préparer à l’arrivée du stagiaire.
+            - if !user_signed_in? || can?(:supply_offers, current_user)
+              - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+              p = link_to target_link,
+                          class: 'btn btn-danger rounded-sm px-4',
+                          data: { :"test-id" => 'mobile-search-button' }
+                  = "Accueillir un stagiaire"
+      .col-md-6.col-sm-12.text-center
+        = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
+                    alt: "Illustration, une élève",
+                    class: 'img-almost-fluid'
+      
+  p.py-4

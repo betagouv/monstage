@@ -1,0 +1,27 @@
+.container-fluid
+  p.py-4
+  .container-monstage.mb-5
+    .right-flying-email
+    .row
+      .col-sm-10.offset-sm-1.col-xs-12.bg-cover-image-homepage.mt-3
+        .row.px-2
+          .col-12.text-center.bg-cover-image-homepage.ms3e-blurry-badge
+            h3.mt-5.white Vous vous posez des questions sur votre stage ?
+
+            p.white.mt-3.wider-text
+              | Inscrivez-vous à la newsletter
+              strong =" Mon Stage de Troisième "
+              | et découvrez des
+              br
+                | milliers d’offres de stage sélectionnées rien que pour vous.
+            p.pt-1.pb-3
+              .row.pb-5.text-center
+                .col-lg-3.col-md-2.col-sm-12
+                .col-lg-6.col-md-8.col-sm-12
+                  .input-group.mb-3.bg-blue
+                    / Form
+                    input.form-control type="text" placeholder="Renseignez votre email" aria-label="Email recueilli" aria-describedby="nl-email"
+                    .input-group-append
+                      span.input-group-text.white.bg-blue.px-lg-5.px-md-5.px-sm-3.px-2 id="nl-email"
+                        i.far.fa-envelope.mr-2.d-none.d-sm-block
+                        = " S'inscrire"
