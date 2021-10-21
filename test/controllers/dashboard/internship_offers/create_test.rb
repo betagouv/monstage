@@ -111,9 +111,13 @@ module Dashboard::InternshipOffers
                title: 'hello',
                is_public: false,
                group: 'Accenture',
-               max_candidates: 2
+               max_candidates: 2,
+               max_students_per_group: 2
              }
            })
+
+      byebug
+
       assert_select 'li label[for=internship_offer_coordinates]',
                     text: 'Veuillez saisir et sélectionner une adresse avec ' \
                           "l'outil de complétion automatique"

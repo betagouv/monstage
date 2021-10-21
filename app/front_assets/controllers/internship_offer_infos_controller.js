@@ -46,8 +46,15 @@ export default class extends Controller {
   toggleInternshipmaxStudentsPerGroup(event) {
     const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     const toggleValue = event.target.value;
-    (toggleValue === 'true') ? hideElement(groupSizeElt) : showElement(groupSizeElt);
-    this.studentsMaxGroupInputTarget.value = 1;
+    if (toggleValue === 'true') {
+      hideElement(groupSizeElt);
+      this.studentsMaxGroupInputTarget.setAttribute('min', 1);
+      this.studentsMaxGroupInputTarget.value = 1;
+    } else {
+      showElement(groupSizeElt);
+      this.studentsMaxGroupInputTarget.setAttribute('min', 2);
+      this.studentsMaxGroupInputTarget.value = 2;
+    }
   }
 
   connect() {

@@ -52,9 +52,10 @@ export default class extends Controller {
       return;
     }
 
-    const content = (remaining === 1) ? "1 semaine" : `${remaining} semaines`
-    this.hintTarget.innerText = `Il reste ${content} à ajouter`
-    showElement($(this.hintTarget))
+    const content = (remaining === 1) ? "<strong>1 semaine</strong>" : `<strong>${remaining} semaines</strong>`
+    this.hintTarget.innerHTML = `Il reste ${content} à ajouter`
+    showElement($(this.hintTarget));
+    return;
   }
 
 

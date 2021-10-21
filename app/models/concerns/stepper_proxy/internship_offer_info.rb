@@ -37,7 +37,7 @@ module StepperProxy
       has_rich_text :description_rich_text
 
       def is_individual?
-        max_candidates == 1
+        max_students_per_group == 1
       end
 
       # @note some possible confusion, miss-understanding here
