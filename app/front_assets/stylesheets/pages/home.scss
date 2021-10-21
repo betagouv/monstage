@@ -198,6 +198,40 @@ h4 {
 #navbarScroll.collapse.show {
   display: block;
 }
+.x-close {
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 1px 0 white;
+}
+
+.modal-covid {
+  z-index: 1204;
+  position: fixed;
+  width: 460px;
+  height: 274px;
+  top: 540px;
+  left: 15%;
+  font-weight: 900;
+  font-size: 1.2rem;
+  border-radius: 6px;
+  display: block;
+  line-height: 80%;
+}
+
+.red-up {
+  position: absolute;
+  text-align: center;
+  width: 260px;
+  background-color: $red_custom;
+  top: -20px;
+  left: 20px;
+  border-radius: 0.4rem;
+}
+
+a.white {
+  text-decoration: underline;
+  color: white;
+}
 
 
 
