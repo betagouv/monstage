@@ -71,6 +71,7 @@ h4 {
   font-weight: 900;
   font-size: 3.10rem;
   margin-bottom: 1rem;
+  margin-right: -9rem;
 }
 
 .subtitle-hero {
@@ -202,6 +203,7 @@ h4 {
   font-size: 2rem;
   font-weight: 700;
   text-shadow: 0 1px 0 white;
+  line-height: 1.3rem;
 }
 
 .modal-covid {
@@ -223,7 +225,7 @@ h4 {
   text-align: center;
   width: 260px;
   background-color: $red_custom;
-  top: -20px;
+  top: -23px;
   left: 20px;
   border-radius: 0.4rem;
 }
@@ -251,6 +253,9 @@ a.white {
   @include media-breakpoint-down(md) {
     .text-md-center-right {
       text-align: center;
+    }
+    .h1-text-hero {
+      margin-right: -0rem;
     }
 }
 
