@@ -30,6 +30,7 @@ class Ability
   end
 
   def student_abilities(user:)
+    can :look_for_offers, User
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
@@ -52,6 +53,7 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
+    can :welcome_students, User
     can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
@@ -120,6 +122,7 @@ class Ability
   end
 
   def employer_abilities(user:)
+    can :supply_offers, User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -158,6 +161,7 @@ class Ability
   end
 
   def operator_abilities(user:)
+    can :supply_offers, User
     can :show, :account
     can :choose_operator, :sign_up
     can :change, :department
@@ -227,6 +231,7 @@ class Ability
   end
 
   def statistician_abilities(user:)
+    
     common_to_all_statisticians(user: user)
 
     can :show, :api_token
@@ -260,6 +265,7 @@ class Ability
   end
 
   def common_to_all_statisticians(user: )
+    can :supply_offers, User
     can :view, :department
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id

@@ -66,7 +66,7 @@ function KeywordInput({ existingKeyword }) {
                 className: 'form-control',
                 id: 'input-search-by-keyword',
                 name: 'keyword',
-                placeholder: 'Profession',
+                placeholder: 'Métiers, mots-clés...',
                 'aria-label': 'Rechercher par Profession',
               })}
             />
