@@ -14,6 +14,11 @@ module Dashboard::InternshipOffers
       assert_select "tr.test-internship-offer-#{internship_offer.id}", 0
     end
 
+    def assert_data_presence_of(internship_offer:)
+      assert_select "a[data-test-id='#{internship_offer.id}']",
+                      count: 1
+    end
+
     test 'GET #index as Employer displays internship_applications link' do
       internship_offer = create(:weekly_internship_offer)
       sign_in(internship_offer.employer)
@@ -118,6 +123,29 @@ module Dashboard::InternshipOffers
       sign_in(create(:student))
       get dashboard_internship_offers_path
       assert_redirected_to root_path
+    end
+
+    test 'week selection does not prevent from showing api offers' do
+      travel_to(Date.new(2019, 9, 1)) do
+        available_weeks = Week.selectable_on_school_year
+        school_weeks = Week.selectable_on_school_year[0..2]
+        school = create(:school, weeks: school_weeks)
+        student = create(:student, school: school)
+        internship_offer = create(:weekly_internship_offer, weeks: [school_weeks.first] )
+        internship_offer_api = create(:api_internship_offer, weeks: [school_weeks.last] )
+        week = internship_offer.internship_offer_weeks.first.week
+        week_api = internship_offer_api.internship_offer_weeks.first.week
+        sign_in(student)
+
+        InternshipOffer.stub :nearby, InternshipOffer.all do
+          get internship_offers_path
+          assert_data_presence_of(internship_offer: internship_offer)
+          assert_data_presence_of(internship_offer: internship_offer_api)
+          get internship_offers_path( week_ids: [week.id, week_api.id])
+          assert_data_presence_of(internship_offer: internship_offer)
+          assert_data_presence_of(internship_offer: internship_offer_api)
+        end
+      end
     end
 
     test 'GET #index tabs forward expected params' do
