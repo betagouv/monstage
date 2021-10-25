@@ -14,7 +14,7 @@ export default class extends Controller {
     'type',
     'allYearLong',
     'weekCheckboxes',
-    'hint',
+    'hintWizard',
   ];
 
   handleCheckboxesChanges() {
@@ -48,13 +48,13 @@ export default class extends Controller {
 
   messaging(remaining) {
     if (remaining <= 0) {
-      hideElement($(this.hintTarget));
+      hideElement($(this.hintWizardTarget));
       return;
     }
 
     const content = (remaining === 1) ? "<strong>1 semaine</strong>" : `<strong>${remaining} semaines</strong>`
-    this.hintTarget.innerHTML = `Il reste ${content} à ajouter`
-    showElement($(this.hintTarget));
+    this.hintWizardTarget.innerHTML = `Il reste ${content} à ajouter`
+    showElement($(this.hintWizardTarget));
     return;
   }
 

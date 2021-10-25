@@ -13,7 +13,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
   end
 
-  test 'can edit internship offer' do
+  test 'Employer can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
@@ -25,7 +25,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
-  test 'can edit school_track of an internship offer back and forth' do
+  test 'Employer can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
     internship_offer = create(:troisieme_segpa_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
@@ -51,7 +51,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert_equal 'editok', internship_offer.title
   end
 
-  test 'employer can see which week is choosen by nearby schools on edit' do
+  test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
 
 
@@ -68,7 +68,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'can discard internship_offer' do
+  test 'Employer can discard internship_offer' do
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
@@ -85,7 +85,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'can publish/unpublish internship_offer' do
+  test 'Employer can publish/unpublish internship_offer' do
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
@@ -246,6 +246,33 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
         page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
       end
     end
+  end
+
+  test 'Employer can edit a collective internship offer and be assisted with the week wizard' do
+    employer = create(:employer)
+    future_weeks = [Week.selectable_from_now_until_end_of_school_year.last]
+    current_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: future_weeks,
+      max_candidates: 10,
+      max_students_per_group: 2
+    )
+    sign_in(employer)
+    visit edit_dashboard_internship_offer_path(id: current_internship_offer.id)
+    find("label[for='internship_type_false']").click
+    page.assert_selector('input#internship_offer_max_students_per_group', minimum: 1, wait: 2)
+    fill_in("Nombre maximal d'élèves par groupe", with: 3)
+
+    label = "Semaine du #{Week.selectable_from_now_until_end_of_school_year.first.number} - #{Week.selectable_from_now_until_end_of_school_year.first.short_select_text_method}"
+    week_doc_id = "internship_offer_week_ids_#{Week.selectable_from_now_until_end_of_school_year.first.id}_checkbox"
+    find("label[for='#{week_doc_id}']").click
+    find(".form-text.text-primary", text: 'Il reste 2 semaines à ajouter', wait: 2)
+
+    label = "Semaine du #{Week.selectable_from_now_until_end_of_school_year.second.number} - #{Week.selectable_from_now_until_end_of_school_year.second.short_select_text_method}"
+    week_doc_id = "internship_offer_week_ids_#{Week.selectable_from_now_until_end_of_school_year.second.id}_checkbox"
+    find("label[for='#{week_doc_id}']").click
+    find(".form-text.text-primary", text: 'Il reste 1 semaine à ajouter', wait: 2)
   end
 
 end

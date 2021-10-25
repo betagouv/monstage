@@ -17,7 +17,7 @@ class SupportTicketTest < ApplicationSystemTestCase
     # js validation
     fill_in("Nombre d'élèves", with: 20)
     click_on "Envoyer la demande"
-    find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
+    find(".form-text.text-primary", text: 'Veuillez saisir au moins une semaine de stage')
 
     all(".custom-control-checkbox-list label").first.click
     click_on "Envoyer la demande"
@@ -44,7 +44,7 @@ class SupportTicketTest < ApplicationSystemTestCase
     click_on "Envoyer la demande"
 
     # js validation
-    find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
+    find(".form-text.text-primary", text: 'Veuillez saisir au moins une semaine de stage')
     all(".custom-control-checkbox-list label").first.click
 
     click_on "Envoyer la demande"
