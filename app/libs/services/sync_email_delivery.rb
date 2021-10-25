@@ -49,7 +49,7 @@ module Services
       response = send_read_contact(email: email)
       raise "unknown email : #{email} - contact destroy impossible" if response["StatusCode"].to_s == '404'
 
-      response
+      JSON.parse(response.body)
     end
 
     def contact_exists?(email:)
@@ -91,28 +91,7 @@ module Services
     end
 
     # see: https://dev.mailjet.com/email/reference/contacts/contact#v3_send_read_contact_contact_ID
-    # reading contacxt with unknown email : { "ErrorInfo" : "",
-    #                                         "ErrorMessage" : Object not found",
-    #                                         "StatusCode" : 404 }
-    # without error : {
-    # "Count" : 1,
-    # "Data" : [
-    #   { "CreatedAt" : "2020-10-26T14:18:58Z",
-    #     "DeliveredCount" : 0,
-    #     "Email" : "weil.etienne@hotmail.fr",
-    #     "ExclusionFromCampaignsUpdatedAt" : "",
-    #     "ID" : 1344374913,
-    #     "IsExcludedFromCampaigns" : false,
-    #     "IsOptInPending" : false,
-    #     "IsSpamComplaining" : false,
-    #     "LastActivityAt" : "2020-10-26T14:18:58Z",
-    #     "LastUpdateAt" : "2020-10-26T14:18:58Z",
-    #     "Name" : "",
-    #     "UnsubscribedAt" : "",
-    #     "UnsubscribedBy" : "" }
-    #   ],
-    #   "Total" : 1
-    # }
+
 
     def send_read_contact(email:)
       with_http_connection do |http|
