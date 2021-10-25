@@ -145,7 +145,7 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
                   className: 'form-control',
                   name: 'city',
                   id: 'input-search-by-city-or-zipcode',
-                  placeholder: 'Lieu',
+                  placeholder: 'Ville ou code postal',
                   "aria-label": "Autour de",
                   onFocus: (event) => {
                     openMenu(event);
