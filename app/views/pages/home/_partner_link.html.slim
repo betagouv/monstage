@@ -1,7 +1,7 @@
 = link_to partner_url,
-          class: 'mx-xl-5 mx-lg-4 mx-md-3 mx-sm-2 mx-2 px-2 py-3',
-          title: "Visiter le site de #{partner_logo.gsub(/-/, ' ').gsub(/logo/, '').gsub(/\.(jpg|png)$/, '')}" do
+          title: "Visiter le site de #{partner_logo.gsub(/-/, ' ').gsub(/logo/, '').gsub(/\.(jpg|png|svg)$/, '')}" do
   = image_tag asset_pack_path("media/images/homepage/partenaires/colored_logo/#{partner_logo}"),
-              alt: "#{partner_logo.gsub(/-/, ' ').gsub(/logo/, '').gsub(/\.(jpg|png)$/, '')}",
+              alt: "#{partner_logo.gsub(/-/, ' ').gsub(/logo/, '').gsub(/\.(jpg|png|svg)$/, '')}",
               height: partner_height,
-              margin: '1rem'
+              margin: '1rem',
+              class: 'mx-lg-4 mx-md-3 mx-sm-2 mx-1 my-3 py-3'
