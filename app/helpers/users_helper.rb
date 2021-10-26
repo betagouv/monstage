@@ -49,45 +49,50 @@ module UsersHelper
   def partners_map_of_colored_logo_url
     [
       {
+        logo: 'logo-moi-dans-10-ans.png',
+        url: 'https://https://moidans10ans.fr/',
+        height: 60
+      },
+      {
         logo: 'logo-job-irl.png',
         url: 'https://www.jobirl.com',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-le-reseau.png',
         url: 'http://www.lereseau.asso.fr',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-epc.png',
         url: 'http://www.reseau-lepc.fr',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-tous-en-stage.png',
         url: 'https://tousenstage.com',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-un-stage-et-apres.png',
         url: 'https://www.unstageetapres.fr',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-viens-voir-mon-taf.png',
         url: 'https://www.viensvoirmontaf.fr',
-        height: 80
+        height: 60
       },
       {
         logo: 'logo-telemaque.png',
         url: 'https://www.institut-telemaque.org/',
-        height: 80
+        height: 60
       },
-      {
-        logo: 'logo-my-future.png',
-        url: 'https://myfutu.re/',
-        height: 80
-      },
+      # {
+      #   logo: 'logo-my-future.png',
+      #   url: 'https://myfutu.re/',
+      #   height: 60
+      # },
     ].shuffle
   end
       
