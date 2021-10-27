@@ -7,5 +7,6 @@ FactoryBot.define do
     airtable_id { 'abc' }
     airtable_link { 'abc' }
     airtable_table { 'abc' }
+    airtable_app_id { 'abc' }
   end
 end
