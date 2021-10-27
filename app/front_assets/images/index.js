@@ -86,6 +86,7 @@ import './homepage/partenaires/Logo-moidans10ans.png';
 import './homepage/partenaires/Logo-telemaque.png';
 
 import './homepage/partenaires/colored_logo/logo-moi-dans-10-ans.png';
+import './homepage/partenaires/colored_logo/logo-moi-dans-10-ans-my-future.png';
 import './homepage/partenaires/colored_logo/logo-epc.png';
 import './homepage/partenaires/colored_logo/logo-job-irl.png';
 import './homepage/partenaires/colored_logo/logo-le-reseau.png';
