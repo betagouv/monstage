@@ -47,18 +47,12 @@ module UsersHelper
     ].shuffle
   end
   def partners_map_of_colored_logo_url
-    # TODO remove these comments after 2021/12/01
     [
-      # { 
-      #   logo: 'logo-moi-dans-10-ans-my-future.png',
-      #   url: 'https://https://moidans10ans.fr/',
-      #   height: 60
-      # },
-      # {
-      #   logo: 'logo-moi-dans-10-ans.png',
-      #   url: 'https://https://moidans10ans.fr/',
-      #   height: 60
-      # },
+      { 
+        logo: 'logo-moi-dans-10-ans-my-future.png',
+        url: 'https://https://moidans10ans.fr/',
+        height: 60
+      },
       {
         logo: 'logo-job-irl.png',
         url: 'https://www.jobirl.com',
@@ -92,11 +86,6 @@ module UsersHelper
       {
         logo: 'logo-telemaque.png',
         url: 'https://www.institut-telemaque.org/',
-        height: 60
-      },
-      {
-        logo: 'logo-my-future.png',
-        url: 'https://myfutu.re/',
         height: 60
       },
     ].shuffle
