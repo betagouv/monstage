@@ -9,13 +9,13 @@ module Airtable
       @request_body = ERB.new(template)
                          .result(OpenStruct.new(week: @ref_week).instance_eval { binding })
       @parsed_body = JSON.parse(@request_body)
-      @operator = create(:operator, name: Operator::AIRTABLE_CREDENTIAL_MAP.keys.first)
+      @operator = create(:operator, name: 'unstageetapres')
       stub_request(:get, %r[https://api.airtable.com/*]).
             with(
               headers: {
               'Accept'=>'*/*',
               'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-              'Authorization'=>'Bearer keysnrS8qqDtlTl6N',
+              'Authorization'=> %r[Bearer*],
               'User-Agent'=>'Ruby'
               }).
             to_return(
