@@ -105,7 +105,7 @@ module Airtable
 
     def initialize(operator:)
       @operator = operator
-      @client = Airtable::Client.new(Rails.application.credentials.dig(:air_table, :api_key))
+      @client = Airtable::Client.new(ENV['AIRTABLE_API_KEY'])
       @table = client.table(operator.airtable_app_id, operator.airtable_table)
     end
 
