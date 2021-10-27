@@ -6,8 +6,8 @@ module Services
     # include FormatableWeek
     require 'net/https'
 
-    ZAMMAD_HOST = Rails.application.credentials.dig(:zammad, :url)
-    TOKEN       = Rails.application.credentials.dig(:zammad, :http_token)
+    ZAMMAD_HOST = ENV['ZAMMAD_URL']
+    TOKEN       = ENV['ZAMMAD_TOKEN']
     ENDPOINTS   = {
       tickets: {
         create: '/api/v1/tickets'

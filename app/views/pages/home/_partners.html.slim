@@ -2,14 +2,7 @@
   .row.px-5
     .col-12.text-center-left
       h2.h2.pt-5.text-dark Nos associations partenaires
-  .text-center.pb-5.overflow-hidden.mx-1.pt-2
-    .d-none.d-lg-block
-      .d-flex.justify-content-center
-        - partners_map_of_colored_logo_url.each do |partner|
-          = render partial: "pages/home/partner_link",
-                   locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
-    .d-block.d-lg-none
-      .d-inline-block
-      - partners_map_of_colored_logo_url.each do |partner|
-        = render partial: "pages/home/partner_link",
-                 locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }
+  .text-center.pb-5.mx-2.pt-2
+    - partners_map_of_colored_logo_url.each do |partner|
+      = render partial: "pages/home/partner_link",
+                locals: { partner_url: partner[:url], partner_logo: partner[:logo], partner_height: partner[:height] }

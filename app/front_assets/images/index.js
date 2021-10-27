@@ -72,7 +72,6 @@ import './homepage/yellow-strike.png';
 import './homepage/courrier.png';
 import './homepage/ms3e-big-badge.svg';
 import './homepage/animated_people.gif';
-// import './homepage/logo-anct.svg';
 import './homepage/benefices/icon-offrir-un-stage.png';
 import './homepage/benefices/icon-trouver-un-stage.png';
 
@@ -86,6 +85,8 @@ import './homepage/partenaires/Logo-viens-voir-mon-taf.jpg';
 import './homepage/partenaires/Logo-moidans10ans.png';
 import './homepage/partenaires/Logo-telemaque.png';
 
+import './homepage/partenaires/colored_logo/logo-moi-dans-10-ans.png';
+import './homepage/partenaires/colored_logo/logo-moi-dans-10-ans-my-future.png';
 import './homepage/partenaires/colored_logo/logo-epc.png';
 import './homepage/partenaires/colored_logo/logo-job-irl.png';
 import './homepage/partenaires/colored_logo/logo-le-reseau.png';
