@@ -1,3 +1,68 @@
+.warning-block-wrapper {
+  position: sticky;
+  top: 18px;
+}
+
+.warning-block-wrapper.application {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  position: sticky;
+  margin-bottom: 2rem;
+  z-index: 100;
+
+}
+
+application .info-covid {
+  margin-left: 0 !important;
+}
+
+.info-covid {
+  position: static;
+  top: 50px;
+  left: 50px;
+  font-weight: 900;
+  font-size: 0.9rem;
+  // line-height: 120%;
+  box-shadow: 0px 15px 20px -20px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+}
+
+.red-up {
+  position: absolute;
+  text-align: left;
+
+  width: 260px;
+  background-color: $red_custom;
+  top: -23px;
+  left: 60px;
+  border-radius: 0.4rem;
+}
+
+a.white {
+  text-decoration: underline;
+  color: white;
+}
+
+.warning-bloc {
+  position: relative;
+  top: 20px;
+  background-color: $bg-light-blue;
+  padding: 30px;
+
+  .explanation {
+    font-family: 'Helvetica Neue';
+    color: $blue;
+    font-size: 0.9rem;
+    ;
+  }
+
+  .know-more {
+    font-size: 1rem;
+  }
+}
+
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers{
@@ -90,6 +155,13 @@ $sortLinkOffset: 15px;
 @include media-breakpoint-up(xs) {
   .internship-item-badge{
     line-height: 1.5;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .red-up {
+    left: 10%;
+    text-align: center;
   }
 }
 

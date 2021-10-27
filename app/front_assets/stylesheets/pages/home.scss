@@ -1,5 +1,5 @@
 :focus {
-  border: 2px dotted hotpink;
+  border: 2px dotted $purple_custom;
 }
 
 .homepage {
@@ -199,41 +199,7 @@ h4 {
 #navbarScroll.collapse.show {
   display: block;
 }
-.x-close {
-  font-size: 2rem;
-  font-weight: 700;
-  text-shadow: 0 1px 0 white;
-  line-height: 1.3rem;
-}
 
-.modal-covid {
-  z-index: 1204;
-  position: fixed;
-  width: 460px;
-  height: 274px;
-  top: 540px;
-  left: 15%;
-  font-weight: 900;
-  font-size: 1.2rem;
-  border-radius: 6px;
-  display: block;
-  line-height: 80%;
-}
-
-.red-up {
-  position: absolute;
-  text-align: center;
-  width: 260px;
-  background-color: $red_custom;
-  top: -23px;
-  left: 20px;
-  border-radius: 0.4rem;
-}
-
-a.white {
-  text-decoration: underline;
-  color: white;
-}
 
 
 
@@ -264,12 +230,15 @@ a.white {
     font-size: 20px;
     line-height: 30px;
   }
-.flex-md-column {
+  .flex-md-column {
     flex-direction: column !important;
   }
-.nav-pills-home .nav-link.active {
+  .nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
-  }
+    }
+// .flex-md-reverse-column {
+//   flex-direction: column;
+// }
 }
 @include media-breakpoint-down(sm) {
   .text-center-left {
@@ -285,11 +254,6 @@ a.white {
 
   .ms3e-blurry-badge {
     background: none;
-  }
-
-  .changing-order {
-    -moz-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
   }
   .subtitle-hero,
   .h1-text-hero {

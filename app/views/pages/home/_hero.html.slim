@@ -37,21 +37,3 @@
                 class: 'btn btn-danger rounded-sm',
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage"
-div data-controller='warning'
-  .modal-covid.bg-blue.white  tabindex="-1" data-warning-target="covidModal"
-    .red-up.p-2.mt-2
-      |Info Coronavirus Covid-19
-    .text-right.px-3.pt-2
-      a.pt-2.x-close.text-decoration-none [aria-label="Close"
-                                           data-dismiss="modal"
-                                           type="button"
-                                           href='#'
-                                           data-action='click->warning#onClick']
-        span.white aria-hidden="true"  &times;
-    .h3.white.px-3.pt-n2 Prenez vos précautions !
-    .h3.white.px-3
-      |
-        Les entreprises vous demanderons d'avoir votre passe sanitaire pour
-        pouvoir accéder à votre stage
-    .px-3.mt-4.mb-2 = link_to '#' do
-      .white.wider-text.text-underline.font-weight-light En savoir plus
