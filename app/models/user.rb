@@ -210,16 +210,8 @@ class User < ApplicationRecord
     phone_confirmable? && phone_token == token
   end
 
-  # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
-    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
-
-    return if email_previous_change.try(:first).nil?
-
-    RemoveContactFromSyncEmailDeliveryJob.perform_later(
-      email: email_previous_change.first
-    )
   end
 
   rails_admin do

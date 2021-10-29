@@ -85,22 +85,22 @@ def populate_operators
                   logo: 'Logo-un-stage-et-apres.jpg',
                   target_count: 120,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :unstageetapres, :share_link),
-                  airtable_id: 'shrauIKjiyi4MhWAJ')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "JobIRL",
                   website: "",
                   logo: 'Logo-jobirl.jpg',
                   target_count: 32,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :jobirl, :share_link),
-                  airtable_id: 'shrEJhYILer3ZHBiV')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "Le Réseau",
                   website: "",
                   logo: 'Logo-le-reseau.jpg',
                   target_count: 710,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :lereseau, :share_link),
-                  airtable_id: 'shrcTuYlB7c2znRTq')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "Institut Télémaque",
                   website: "",
                   logo: 'Logo-telemaque.png',
@@ -111,29 +111,29 @@ def populate_operators
                   logo: 'Logo-moidans10ans.png',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :myfuture, :share_link),
-                  airtable_id: 'shrkmCsiBu4KpfnNJ')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "Les entreprises pour la cité (LEPC)",
                   website: "",
                   logo: 'Logo-les-entreprises-pour-la-cite.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :lepc, :share_link),
-                  airtable_id: 'shrKD4JKsyPi2CdOD')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "Tous en stage",
                   website: "",
                   logo: 'Logo-tous-en-stage.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :tousenstage, :share_link),
-                  airtable_id: 'shrXOR0CxIPE0iqwS')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
   Operator.create(name: "Viens voir mon taf",
                   website: "",
                   logo: 'Logo-viens-voir-mon-taf.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
-                  airtable_link: Rails.application.credentials.dig(:air_table, :operators, :vvmt, :share_link),
-                  airtable_id: 'shrWuRLYOmbrCQ9Or')
+                  airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
+                  airtable_id: ENV['AIRTABLE_ID_TEST'])
 end
 
 def populate_sectors

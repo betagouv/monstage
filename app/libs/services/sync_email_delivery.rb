@@ -170,8 +170,8 @@ module Services
 
     # see: https://dev.mailjet.com/email/reference/overview/authentication/
     def default_headers
-      user = Rails.application.credentials.dig(:mailjet, :apikey_public)
-      pass = Rails.application.credentials.dig(:mailjet, :apikey_private)
+      user = ENV['MAILJET_API_KEY_PUBLIC']
+      pass = ENV['MAILJET_API_KEY_PRIVATE']
       auth = ActionController::HttpAuthentication::Basic.encode_credentials(user, pass)
 
       {
