@@ -35,15 +35,22 @@ application .info-covid {
   top: -58px;
 }
 
+
+
 .red-up {
   position: absolute;
-  text-align: left;
+  text-align: center;
 
-  width: 260px;
+  width: 13.5rem;
   background-color: $red_custom;
   top: -23px;
-  left: 2.5rem;
+  left: 1.2rem;
   border-radius: 0.4rem;
+  margin-top: 2rem;
+  }
+
+  .employer .red-up {
+    left: 3rem;
 }
 
 a.white {
