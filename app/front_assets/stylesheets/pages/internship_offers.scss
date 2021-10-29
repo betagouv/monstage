@@ -14,18 +14,23 @@
 
 }
 
-application .info-covid {
+.application .info-covid {
   margin-left: 0 !important;
 }
 
 .info-covid {
-  position: static;
+  position: relative;
+  top: 15px;
   font-weight: 900;
   font-size: 0.9rem;
   // line-height: 120%;
   box-shadow: 0px 15px 20px -20px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
 }
+.employer .info-covid {
+  top: 58px;
+}
+
 .white-mask {
   position: absolute;
   text-align: left;
@@ -34,19 +39,16 @@ application .info-covid {
   background-color: white;
   top: -58px;
 }
-
-
-
 .red-up {
   position: absolute;
   text-align: center;
 
-  width: 13.5rem;
+  width: 14rem;
   background-color: $red_custom;
-  top: -23px;
+  top: -20px;
   left: 1.2rem;
   border-radius: 0.4rem;
-  margin-top: 2rem;
+  margin-top: 20rem;
   }
 
   .employer .red-up {
@@ -60,7 +62,7 @@ a.white {
 
 .warning-bloc {
   position: relative;
-  top: 20px;
+  top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
 
@@ -183,11 +185,13 @@ $sortLinkOffset: 15px;
 }
 
 @include media-breakpoint-down(sm) {
+  .info-covid {
+    position: static;
+  }
   .red-up {
     text-align: center;
-        left:0;
-        margin-right: -50%;
-        transform: translate(7%, 0%);
+    left:0;
+    margin-right: -50%;
   }
 }
 
