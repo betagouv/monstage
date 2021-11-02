@@ -29,6 +29,9 @@ FactoryBot.define do
       trait :female do
         gender { 'f' }
       end
+      trait :not_precised do
+        gender { 'np' }
+      end
       trait :registered_with_phone do
         email { nil }
         phone { '+330637607756' }

@@ -1,5 +1,10 @@
-- url = @class_room.persisted? ? edit_dashboard_school_class_room_path(@school, @class_room, id: @class_room.id) : dashboard_school_class_rooms_path(@school, @class_room)
-= form_with model: @class_room, scope: :class_room, url: url do |form|
+- url = @class_room.persisted? ? dashboard_school_class_room_path(@school, @class_room, id: @class_room) : dashboard_school_class_rooms_path(@school, @class_room)
+= form_with model: @class_room,
+            scope: :class_room,
+            url: url,
+            method: (@class_room.new_record? ? 'POST' : 'PATCH' ),
+            local: true  do |form|
+
   = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @class_room, resource_name: :class_room
 

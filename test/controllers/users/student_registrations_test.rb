@@ -55,7 +55,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
             first_name: 'Martin',
             last_name: 'Fourcade',
             birth_date: birth_date,
-            gender: 'm',
+            gender: 'np',
             email: 'fourcade.m@gmail.com',
             password: 'okokok',
             password_confirmation: 'okokok',
@@ -74,7 +74,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
     assert_equal birth_date.year, created_student.birth_date.year
     assert_equal birth_date.month, created_student.birth_date.month
     assert_equal birth_date.day, created_student.birth_date.day
-    assert_equal 'm', created_student.gender
+    assert_equal 'np', created_student.gender
     assert_equal 'fourcade.m@gmail.com', created_student.email
     assert_equal 'cotorep', created_student.handicap
   end

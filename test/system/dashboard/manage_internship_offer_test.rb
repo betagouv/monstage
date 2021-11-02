@@ -146,6 +146,47 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find("#error_explanation[role='alert']")
   end
 
+  test 'Employer can renew an old internship offer' do
+    employer = create(:employer)
+    older_weeks = [Week.of_previous_school_year.first]
+    old_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: older_weeks
+    )
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: old_internship_offer, filter: 'past')
+    page.find("a[data-test-id=\"#{old_internship_offer.id}\"]").click
+    click_link("Renouveler")
+    assert_selector('h1', text: "Renouveler l'offre pour l'année en cours")
+    click_button('Renouveler l\'offre')
+    assert_selector(
+      "#alert-text",
+      text: "Votre offre de stage a été renouvelée pour cette année scolaire."
+    )
+  end
+
+  test 'Employer can duplicate an internship offer' do
+    employer = create(:employer)
+    older_weeks = [Week.selectable_from_now_until_end_of_school_year.first]
+    current_internship_offer = create(
+      :weekly_internship_offer,
+      employer: employer,
+      weeks: older_weeks
+    )
+    sign_in(employer)
+    visit dashboard_internship_offers_path(internship_offer: current_internship_offer)
+    page.find("a[data-test-id=\"#{current_internship_offer.id}\"]").click
+    click_link("Dupliquer cette offre")
+    assert_selector('h1', text: "Dupliquer une offre")
+    click_button('Dupliquer l\'offre')
+    assert_selector(
+      "#alert-text",
+      text: "L'offre de stage a été dupliquée en tenant " \
+            "compte de vos éventuelles modifications."
+    )
+  end
+
   test 'Employer can filter internship_offers from dashboard filters' do
     travel_to(Date.new(2020, 10, 10)) do
       employer = create(:employer)

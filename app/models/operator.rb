@@ -16,19 +16,6 @@ class Operator < ApplicationRecord
   has_many :air_table_records
   scope :reportable, lambda { where(airtable_reporting_enabled: true) }
 
-  def airtable_table
-    Rails.application.credentials.dig(:air_table,
-                                      :operators,
-                                      AIRTABLE_CREDENTIAL_MAP.fetch(name),
-                                      :table)
-  end
-
-  def airtable_app_id
-    Rails.application.credentials.dig(:air_table,
-                                      :operators,
-                                      AIRTABLE_CREDENTIAL_MAP.fetch(name),
-                                      :app_id)
-  end
   rails_admin do
     list do
       field :name

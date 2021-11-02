@@ -84,30 +84,39 @@
           <small class="form-text text-danger d-none" data-a11y-date-input-target="errorContainer"></small>
         </div>
 
-        <fieldset class="form-group form-check form-check-inline">
-          <legend class="label float-left">
+        <fieldset class="form-group">
+          <legend class="label">
             Sexe
             <%= f.rg2a_required_content_tag %>
           </legend>
 
-          <div class="custom-control custom-radio custom-control-inline">
+          <div class="form-check pl-5" >
             <%= f.radio_button :gender,
                                "f",
-                               class: 'custom-control-input',
+                               class: 'form-check-input',
                                id: "select-gender-girl",
                                required: true  %>
             <%= f.label :gender, "Féminin",
-                                class: 'custom-control-label',
+                                class: 'form-check-label',
                                 for: "select-gender-girl" %>
           </div>
-          <div class="custom-control custom-radio custom-control-inline">
+          <div class="form-check pl-5" >
             <%= f.radio_button :gender,
                                "m",
-                               class: 'custom-control-input',
+                               class: 'form-check-input',
                                id: "select-gender-boy"  %>
             <%= f.label :gender, "Masculin",
-                                 class: 'custom-control-label',
+                                 class: 'form-check-label',
                                  for: "select-gender-boy" %>
+          </div>
+          <div class="form-check pl-5" >
+            <%= f.radio_button :gender,
+                               "np",
+                               class: "form-check-input",
+                               id: "select-gender-unknown" %>
+            <%= f.label :gender, "Non précisé",
+                        class: "form-check-label",
+                        for: "select-gender-unknown" %>
           </div>
         </fieldset>
       <% end %>
