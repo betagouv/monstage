@@ -123,7 +123,7 @@ class User < ApplicationRecord
   end
 
   def gender_text
-    return '' if gender.blank?
+    return '' if gender.blank? || gender.eql?('np')
     return 'Madame' if gender.eql?('f')
     return 'Monsieur' if gender.eql?('m')
 
@@ -262,6 +262,7 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+
 
   private
 

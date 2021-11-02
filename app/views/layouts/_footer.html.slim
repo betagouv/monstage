@@ -1,29 +1,23 @@
-.d-print-none.footer-elevator.pr-0
-  = link_to "#top",
-            class: 'float-right',
-            data: {turbolinks: false},
-            aria: {label: "Retour en haut de page"} do
-    .fa-2x.fas.fa-arrow-circle-up
-    span.d-none Retour en haut de page
 .row.footer-content.no-gutters.bg-light-blue
   .col-md-5.col-sm-12.py-5
     p.mt-1.print-footer.pl-5
-      | Un service fourni par la DINUM et
+      | Un service fourni par l'incubateur des
       br
-      |incubé par beta.gouv.fr
+      |Territoires de l'ANCT
       br
-      =link_to 'https://beta.gouv.fr/', target: '_blank'
-        = image_tag asset_pack_path('media/images/beta-gouv-logo.png'),
+      =link_to 'https://incubateur.anct.gouv.fr/', target: '_blank'
+        = image_tag asset_pack_path('media/images/homepage/sponsors/incubateur-anct.png'),
                     alt: "Logo beta gouv",
                     class: 'mt-3 d-print-none footer-logo-img',
-                    'aria-hidden': true
+                    'aria-hidden': true,
+                    'width': '250px'
 
   .col-md-7.col-sm-12.d-flex.align-items-center
     .row.no-gutters.font-weight-bold-sm.d-print-none
       .col-md-6.col-sm-12.pr-1.pl-5
         ul.nav.flex-column
           li.nav-item= link_to "Qui sommes-nous&nbsp;?".html_safe,
-                                "https://beta.gouv.fr/startups/monstage.html",
+                                "https://incubateur.anct.gouv.fr/",
                                 class: 'nav-link px-0 py-1',
                                 title: "Qui sommes-nous ? (nouvelle fenêtre)",
                                 target: '_blank',
@@ -81,17 +75,3 @@
 .bg-light-blue.d-none.fixed-footer.d-print-none [
   data-footer-target="fixedContent"
 ]
-  - if show_restricted_to_anct?
-    .container
-      .row.align-items-top.no-gutters.py-3
-        .offset-1.col-2.d-none.d-md-block.mr-3.sticky-footer-illustration
-        .col-md-8.col-12.text-center.text-sm-center
-          p.h4.my-0.h3-bis-home.text-blue Cette plateforme est réservée aux élèves des établissements des réseaux d'éducation prioritaire (REP et REP+)
-
-      button [type="button"
-              class="close close-top-right"
-              id="test-close-covid-notice"
-              data-dismiss="modal"
-              aria-label="Close"
-              data-action="click->footer#close"]
-        span aria-hidden="true" &times;

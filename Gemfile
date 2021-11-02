@@ -46,6 +46,8 @@ gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
 gem "sentry-ruby"
 gem "sentry-rails"
+gem 'airtable'
+gem 'geocoder'
 
 # acl
 gem 'cancancan'
@@ -67,6 +69,7 @@ gem 'bootsnap', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -105,4 +108,4 @@ group :test, :development, :review do
   gem 'factory_bot_rails'
 end
 
-gem 'airtable'
+

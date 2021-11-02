@@ -25,11 +25,11 @@ fr:
   activerecord:
     models:
       email_whitelists/statistician:
-        one: Email autorisé du référent départemental
-        other: Emails autorisés des référents départementaux
+        one: courriel autorisé du référent départemental
+        other: courriels autorisés des référents départementaux
       email_whitelists/ministry:
-        one: Email autorisé du référent central
-        other: Emails autorisés des référents centraux
+        one: courriel autorisé du référent central
+        other: courriels autorisés des référents centraux
       group:
         one: Groupe
         other: Groupes
@@ -362,7 +362,7 @@ fr:
         users/student:
           attributes:
             gender:
-              blank: Veuillez saisir un genre
+              blank: Veuillez faire un choix parmi les options de genres proposés
 
         users/operator:
           attributes:

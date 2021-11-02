@@ -11,6 +11,15 @@ body {
 }
 .footer-elevator {
   transform: translate(0, -15px);
+  z-index: 1024;
+  position: fixed;
+  bottom: 50px;
+  left:91%
+  }
+
+  .back-to-top {
+    border: 2px white solid;
+    border-radius: 50%;
 }
 
 .footer {

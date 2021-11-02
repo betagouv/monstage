@@ -12,7 +12,7 @@ class Ability
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
       when 'Users::Statistician' then statistician_abilities(user: user)
-      when 'Users::MinistryStatistician' then ministry_statistician_abilities
+      when 'Users::MinistryStatistician' then ministry_statistician_abilities(user: user)
       when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
@@ -30,6 +30,7 @@ class Ability
   end
 
   def student_abilities(user:)
+    can :look_for_offers, User
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
@@ -52,6 +53,7 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
+    can :welcome_students, User
     can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
@@ -120,6 +122,7 @@ class Ability
   end
 
   def employer_abilities(user:)
+    can :supply_offers, User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
@@ -158,6 +161,7 @@ class Ability
   end
 
   def operator_abilities(user:)
+    can :supply_offers, User
     can :show, :account
     can :choose_operator, :sign_up
     can :change, :department
@@ -227,6 +231,41 @@ class Ability
   end
 
   def statistician_abilities(user:)
+    
+    common_to_all_statisticians(user: user)
+
+    can :show, :api_token
+
+    can %i[create], Organisation
+
+    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+    can %i[index], Acl::Reporting, &:allowed?
+
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            see_dashboard_administrations_summary
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_associations_summary], User
+  end
+
+  def ministry_statistician_abilities(user: )
+    common_to_all_statisticians(user: user)
+
+    can %i[create], Organisation do  |organisation|
+      user.ministry == organisation.group && organisation.is_public == true
+    end
+
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can :read, Group
+    can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
+    can %i[export_reporting_dashboard_data], User
+  end
+
+  def common_to_all_statisticians(user: )
+    can :supply_offers, User
     can :view, :department
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
@@ -245,33 +284,10 @@ class Ability
     can %i[create], Tutor
 
     can %i[index], Acl::InternshipOfferDashboard
-
-    can :show, :api_token
-
-    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
-    can %i[index], Acl::Reporting, &:allowed?
-
-    can %i[index_and_filter], Reporting::InternshipOffer
     can %i[ see_reporting_dashboard
-            see_reporting_internship_offers
-            see_reporting_schools
-            see_reporting_enterprises
-            see_dashboard_enterprises_summary
-            see_dashboard_administrations_summary
-            see_dashboard_associations_summary], User
+            see_dashboard_administrations_summary ], User
   end
 
-  def ministry_statistician_abilities
-    can :view, :department
-    can %i[read], InternshipOffer
-    can %i[index_and_filter], Reporting::InternshipOffer
-    can :read, Group
-    can %i[read], InternshipOffer
-    can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
-    can %i[ see_reporting_dashboard
-            see_dashboard_administrations_summary
-            export_reporting_dashboard_data], User
-  end
 
   private
 

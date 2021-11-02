@@ -16,7 +16,8 @@ module Finders
 
     private
 
-    attr_reader :user, :params, :listable_query_builder
+    attr_accessor :params # since school_track can be an implicit filter
+    attr_reader :user, :listable_query_builder
 
     def initialize(user:, params:)
       @user = user
@@ -78,7 +79,7 @@ module Finders
 
 
     def week_ids_query(query)
-      query.merge(InternshipOffers::WeeklyFramed.by_weeks(weeks: OpenStruct.new(ids: week_ids_params)))
+      query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: week_ids_params)))
     end
 
     def school_year_query(query)
