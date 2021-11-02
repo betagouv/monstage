@@ -316,10 +316,21 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student with phone
     assert_difference('Users::Student.count', 1) do
-      execute_script("document.getElementById('phone-input').value = '+330637607756';")
+      find('label', text: 'SMS').click
+      execute_script("document.getElementById('phone-input').value = '+330637607796';")
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       safe_submit
     end
+  end
+
+  test 'ab testing with mail or phone active button shows corresponding input field' do
+    options = { 'as' => 'Student' }
+    visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'email'}))
+    page.find('#user_email', visible: true)
+    page.find('#phone-input', visible: false)
+    visit new_user_registration_path(options.merge({'ab_test[subscription_channel_experiment]' => 'phone'}))
+    page.find('#user_email', visible: false)
+    page.find('#phone-input', visible: true)
   end
 end

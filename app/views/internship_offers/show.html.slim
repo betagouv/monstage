@@ -12,12 +12,16 @@ div data-controller="internship-application-form"
           tr.tr-white
             th
               - if can?(:create, @internship_offer)
-                = render "dashboard/internship_offers/navigation", internship_offer: @internship_offer
+                = render "dashboard/internship_offers/navigation",
+                         internship_offer: @internship_offer
               - else
-                = render "internship_offers/breadcrumb", internship_offer: @internship_offer
+                = render "internship_offers/breadcrumb",
+                          internship_offer: @internship_offer,
+                          renewed: params[:renewed]
         tbody
           tr
-            td= render "internship_offers/show_details", internship_offer: @internship_offer
+            td= render "internship_offers/show_details",
+                       internship_offer: @internship_offer
 
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left.order-1
       - if @previous_internship_offer && support_listable?(current_user)
@@ -41,16 +45,13 @@ div data-controller="internship-application-form"
   .row.no-gutters
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
     .col-12.col-sm-10
-      
       - if user_signed_in?
-        - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left?
-          - if @internship_offer.weekly?
-            = render "internship_applications/forms/weekly"
-          - if @internship_offer.free_date?
-            = render "internship_applications/forms/free_date"
+        - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && (@internship_offer.weekly? || @internship_offer.free_date?)
+            = render "internship_applications/forms/weekly_and_free"
       - else
         = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left
 
 - if can?(:discard, InternshipOffer)
-  = render "dashboard/internship_offers/delete_internship_offer_modal", internship_offer: @internship_offer
+  = render "dashboard/internship_offers/delete_internship_offer_modal",
+           internship_offer: @internship_offer

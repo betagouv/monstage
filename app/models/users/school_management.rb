@@ -67,7 +67,10 @@ module Users
     def official_email_address
       return if school_id.blank?
       unless email =~ /\A[^@\s]+@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être officielle. ex: xxx@ac-MON_ACADEMIE.fr")
+        errors.add(
+          :email,
+          "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe
+        )
       end
     end
 

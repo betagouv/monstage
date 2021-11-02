@@ -56,7 +56,7 @@ GEM
     activerecord-explain-analyze (0.1.0)
       activerecord (>= 4)
       pg
-    activerecord-postgis-adapter (7.0.1)
+    activerecord-postgis-adapter (7.1.1)
       activerecord (~> 6.1)
       rgeo-activerecord (~> 7.0.0)
     activestorage (6.1.4.1)
@@ -126,6 +126,10 @@ GEM
       activerecord (>= 4.2, < 7)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.7.6)
+    dotenv-rails (2.7.6)
+      dotenv (= 2.7.6)
+      railties (>= 3.2)
     email_inquire (0.11.0)
       damerau-levenshtein (~> 1.2)
     erubi (1.10.0)
@@ -156,6 +160,7 @@ GEM
     faraday-rack (1.0.0)
     ffi (1.15.0)
     foreman (0.87.2)
+    geocoder (1.6.7)
     globalid (0.5.2)
       activesupport (>= 5.0)
     haml (5.2.1)
@@ -231,10 +236,12 @@ GEM
     msgpack (1.4.2)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
     nested_form (0.3.2)
     netrc (0.11.0)
     nio4r (2.5.8)
-    nokogiri (1.12.3)
+    nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     oga (2.15)
@@ -259,13 +266,15 @@ GEM
     prismic.io (1.8.0)
       hashery (~> 2.1.1)
     public_suffix (4.0.6)
-    puma (5.3.1)
+    puma (5.5.1)
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-pjax (1.1.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
+    rack-protection (2.1.0)
+      rack
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -341,7 +350,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
-    rgeo (2.2.0)
+    rgeo (2.3.0)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
@@ -388,6 +397,12 @@ GEM
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
+    simple-random (1.0.3)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
     slim (4.1.0)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -395,6 +410,10 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (>= 3.0, < 5.0)
+    split (3.4.1)
+      redis (>= 2.1)
+      simple-random (>= 0.9.3)
+      sinatra (>= 1.2.6)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -470,9 +489,11 @@ DEPENDENCIES
   devise
   devise-i18n
   discard
+  dotenv-rails
   email_inquire
   factory_bot_rails
   foreman
+  geocoder
   inline_svg
   kaminari
   letter_opener
@@ -500,6 +521,7 @@ DEPENDENCIES
   sentry-ruby
   sidekiq
   slim-rails
+  split
   spring
   spring-watcher-listen
   turbolinks

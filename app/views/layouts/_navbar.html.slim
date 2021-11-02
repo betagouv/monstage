@@ -16,9 +16,10 @@ nav.navbar.navbar-light.py-0
           = link_to 'Accueil', root_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(root_path) ? 'active' : ''}"
         li.nav-item
           = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
-      - elsif current_user.is_a?(Users::Statistician)
+      - elsif current_user.statistician? || current_user.ministry_statistician?
         li.nav-item
           = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
+
         li.nav-item
           = link_to 'Recherche', user_presenter.default_internship_offers_path, class: "nav-link pl-1 pr-1 py-4 #{current_page?(internship_offers_path) && !request.url.include?('origin=dashboard') ? 'active' : ''}"
         li.nav-item

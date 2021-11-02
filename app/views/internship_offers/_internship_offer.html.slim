@@ -1,43 +1,37 @@
-tr.hoverable-row-with-btn
-  td.p-0
-    div class="col-12 py-4 px-3 d-block"
-      .row
-        = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-9 text-decoration-none', data: { test_id: internship_offer.id.to_s } do
+div class="hoverable-row-with-btn bb-1 bc-light row"
+  .col-12.py-4.d-block
+    .row
+      = link_to listable_internship_offer_path(internship_offer, origin: 'search'), class: 'col-12 col-sm-9 text-decoration-none', data: { test_id: internship_offer.id.to_s } do
 
-          p.h5.font-weight-bold.internship-item-title= internship_offer.title
-          p.small.font-weight-bold.mb-3.gray-666= internship_offer.employer_name
+        p.h5.font-weight-bold.internship-item-title= internship_offer.title
+        p.small.font-weight-bold.mb-3.gray-666= internship_offer.employer_name
 
-          p.text-strong.internship-item-badge.mb-3
-            span class="py-1 px-2 #{internship_offer.school_track}"= tr_school_track(internship_offer.school_track)
-            span.text-sky-blue.px-2= "Disponible du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
+        p.text-strong.internship-item-badge.mb-3
+          span class="py-1 px-2 #{internship_offer.school_track}"= tr_school_track(internship_offer.school_track)
+          span.text-sky-blue.px-2= "Disponible du #{I18n.localize(internship_offer.first_date, format: :human_mm_dd_yyyy)} au #{I18n.localize(internship_offer.last_date, format: :human_mm_dd_yyyy)}"
 
-          p.max-lines-3.text-body= truncate_description(internship_offer)
-
-
-          .text-muted.internship-item-city.small.mb-0
-            .icon-container.d-inline-block
-              span.mr-1
-                i.fas.fa-map-marker-alt
-              = internship_offer.city
-
-            - if internship_offer.respond_to?(:relative_distance)
-              .icon-container.d-inline-block.ml-3
-                = react_component("DistanceIcon", props: { radius: internship_offer.relative_distance})
-
-        .d-none.d-sm-block.col-sm-3.text-center.align-self-center
-          - if internship_offer.from_api? && internship_offer.operator.logo.present?
-              .mb-2= image_tag asset_pack_path("media/images/homepage/partenaires/#{internship_offer.operator.logo}"),
-                               height: 45
-          - if can?(:apply, internship_offer)
-            = render partial: 'internship_offers/apply_cta',
-                     locals: {internship_offer: internship_offer}
-
-            br
-          = link_to listable_internship_offer_path(internship_offer, origin: 'search'),
-                    class: 'text-danger' do
-            | Voir l'annonce
-            span.icon-link
-              | &nbsp;
-              .fas.fa-chevron-right
+        p.max-lines-3.text-body= truncate_description(internship_offer)
 
 
+        .text-muted.internship-item-city.small.mb-0
+          .icon-container.d-inline-block
+            span.mr-1
+              i.fas.fa-map-marker-alt
+            = internship_offer.city
+
+          - if internship_offer.respond_to?(:relative_distance)
+            .icon-container.d-inline-block.ml-3
+              = react_component("DistanceIcon", props: { radius: internship_offer.relative_distance})
+
+      .d-none.d-sm-block.col-sm-3.text-center.align-self-center
+        - if can?(:apply, internship_offer)
+          = render partial: 'internship_offers/apply_cta',
+                   locals: {internship_offer: internship_offer}
+
+          br
+        = link_to listable_internship_offer_path(internship_offer, origin: 'search'),
+                  class: 'text-danger' do
+          | Voir l'annonce
+          span.icon-link
+            | &nbsp;
+            .fas.fa-chevron-right

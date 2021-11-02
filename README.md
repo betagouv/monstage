@@ -103,14 +103,19 @@ foreman start -f Procfile.dev
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
-### Etapes de travail jusqu'au merge dans master
+### Etapes de travail jusqu'au merge dans staging
 
-- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
 - (mabranche) $ ```git commit``` # coder sa feature et commiter
-- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
-- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
-- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
-- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+- (mabranche) $ ```git checkout staging``` # besoin de récupérer le code de staging? on repasse sur staging
+- (staging) $ ```git pull origin staging --rebase``` # on rebase la différence par rapport a soi-même
+- (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
+
+Pour les mises en production, on utilise le script de déploiement après avoir fait : 
+- (master) $ ```git merge staging``` # on merge staging dans master
+
+Ainsi, on peut faire des hotfixes à merger directement sur master
 
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
@@ -125,26 +130,39 @@ our test suite contains
   * w3c (using previously created html files)
   * a11y (using previously created html files)
 
-you can also run all kinds of test in one run `./infra/test/suite.sh`
-
 ### about/run units test
 
 run with ```rails test``` (JS is not executed, so quick tests)
 
 ### about/run system/e2e tests
 
-by default we run our tests with a chrome_headless (JS is executed, kinda slow tests).
+this app is BUILT FOR TWO PLATFORMs : web/mobile
 
-* run in background (chrome_headless) : `rails test:system`
-* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test:system`
+DEPENDING OF THE TARGETED PLAFORM, FEATURES and TEST DIFFER. but rails test:system include all e2e tests in one big suite. To split this big suite per platform we use an env var : USE_IPHONE_EMULATION=anything AND two of minitest's TEST_OPTS flags :
+
+1. `--name='/pattern_to_run_tests_matching/'`
+2. `--exclude='/pattern_to_skip_tests_matching/'`
+
+To make it easier to run a suite for a dedicated platform :
+
+* mobile only shortcut: `./infra/test/system_mobile.sh` [only mobile, capybara with a selenium driver, driving a chrome_headless + emulator]
+* desktop only shortcut: `./infra/test/system_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
+* w3c only shortcut: `./infra/test/w3c_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
+* mobile and desktop + w3c : `./infra/test/system_all.sh` [only w3c run through system]
+
+( thoses scripts are also used for the CI. )
+
+Good to know :
+
+* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test/system/${YOUR_TEST}`
 
 ### about/run w3c tests (using vnu.jar)
 
-those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c.sh```
+those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c_desktop.sh```
 
 ### a11y tests (using pa11y-ci)
 
-those tests depends on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
+those tests depends on the ```./infra/test/w3c_desktop.sh``` (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
 
 ### CI, full suite (unit, system, w3c, a11y)
 

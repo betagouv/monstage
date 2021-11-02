@@ -87,7 +87,7 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   config.action_mailer.default_url_options = { host: HOST }
 
-  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Rails.application.credentials.dig(:review, :mailtrap, :api_token)}"
+  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
 
   first_inbox = JSON.parse(response)[0] # get first inbox
 
@@ -97,7 +97,7 @@ Rails.application.configure do
                                        password: first_inbox['password'],
                                        address: first_inbox['domain'],
                                        domain: first_inbox['domain'],
-                                       port: first_inbox['smtp_ports'][0],
+                                       port: 587,
                                        authentication: :plain
                                      }
 

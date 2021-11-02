@@ -30,7 +30,7 @@
                   td.col-7.d-flex.align-items-center data-head="#{student.name}"= student.name
                   td.col-4 data-head="Action"
                     = select_tag "student_#{student.id}",
-                                  options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                                  options_from_collection_for_select(student.school.class_rooms.current, :id, :name, student.class_room_id),
                                   prompt: 'Choisissez une classe' ,
                                   class: "form-control",
                                   data: { action: 'change->students#selectStudentClassRoom' }

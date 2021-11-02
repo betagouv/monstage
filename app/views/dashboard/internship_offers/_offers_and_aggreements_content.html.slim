@@ -3,9 +3,8 @@
     tbody= render template: 'dashboard/internship_agreements/index'
 - else
   .row.bc-light.br-1.bl-1.bb-1
-    .col-12.py-3
-      = react_component("SearchInternshipOffer", props: { url: dashboard_internship_offers_path, className: 'flex-row focusable-search-bar', searchWordVisible: false })
-
+    .col-12.px-0
+      = render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: dashboard_internship_offers_path, default_values: params, form_id: :dashboard_internship_offers_index_search_form }
 
   .row.bc-light.br-1.bl-1.bb-1
     .col-12.px-0= render partial: 'dashboard/internship_offers/table'

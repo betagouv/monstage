@@ -25,9 +25,11 @@ class InternshipOffersController < ApplicationController
                                                  .where(user_id: current_user_id)
                                                  .first
     end
+    module_type = "InternshipApplications::WeeklyFramed"
+    module_type = 'InternshipApplications::FreeDate' if @internship_offer.type == 'InternshipOffers::FreeDate'
+    type = current_user.try(:internship_applications_type) || module_type
     @internship_application ||= @internship_offer.internship_applications
-                                                 .build(user_id: current_user_id,
-                                                        type: current_user.try(:internship_applications_type))
+                                                 .build(user_id: current_user_id, type: type)
   end
 
   private
@@ -41,14 +43,22 @@ class InternshipOffersController < ApplicationController
   def check_internship_offer_is_not_discarded_or_redirect
     return unless @internship_offer.discarded?
 
-    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre a été supprimée et n'est donc plus accessible" })
+    redirect_to(
+      user_presenter.default_internship_offers_path,
+      flash: {
+        warning: "Cette offre a été supprimée et n'est donc plus accessible"
+      }
+    )
   end
 
   def check_internship_offer_is_published_or_redirect
     return if can?(:create, @internship_offer)
     return if @internship_offer.published?
 
-    redirect_to(user_presenter.default_internship_offers_path, flash: { warning: "Cette offre n'est plus disponible" })
+    redirect_to(
+      user_presenter.default_internship_offers_path,
+      flash: { warning: "Cette offre n'est plus disponible" }
+    )
   end
 
   def current_user_id
@@ -63,7 +73,8 @@ class InternshipOffersController < ApplicationController
         :longitude,
         :radius,
         :keyword,
-        :school_track
+        :school_track,
+        week_ids: []
       ),
       user: current_user_or_visitor
     )

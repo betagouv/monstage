@@ -5,7 +5,7 @@ class Tutor < ApplicationRecord
   belongs_to :employer, class_name: 'User'
 
   # linked via stepper
-  belongs_to :internship_offer, optional: true
+  has_many :internship_offers
 
   def from_api?
     false

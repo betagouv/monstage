@@ -51,14 +51,14 @@ module InternshipOffers
       assert_select 'a', text: 'Je postule', count: 0
     end
 
-    test 'GET #show form as Student with class_room.bac_pro, and internship_offer with free_date' do
+    test 'GET #show form as Student with class_room.troisieme_segpa, and internship_offer with free_date' do
       internship_offer = create(:free_date_internship_offer)
       school = create(:school, :with_school_manager)
       sign_in(create(:student,
-                     class_room: create(:class_room, :bac_pro, school: school),
+                     class_room: create(:class_room, :troisieme_segpa, school: school),
                      school: school))
       get internship_offer_path(internship_offer)
-      assert_template 'internship_applications/forms/_free_date'
+      assert_template 'internship_applications/forms/_weekly_and_free'
       assert_template 'internship_applications/call_to_action/_free_date'
     end
 
@@ -103,7 +103,7 @@ module InternshipOffers
                        school: school))
         get internship_offer_path(internship_offer)
         assert_template 'internship_applications/call_to_action/_weekly'
-        assert_template 'internship_applications/forms/_weekly'
+        assert_template 'internship_applications/forms/_weekly_and_free'
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
         assert_select '.btn-primary', text: 'Je postule'
@@ -353,7 +353,7 @@ module InternshipOffers
 
       get internship_offer_path(internship_offer)
       assert_template 'internship_applications/call_to_action/_weekly'
-      assert_template 'internship_applications/forms/_weekly'
+      assert_template 'internship_applications/forms/_weekly_and_free'
     end
 
     #
@@ -490,7 +490,7 @@ module InternshipOffers
     end
 
     test "GET #show as employer have duplicate/renew button for last year's internship offer" do
-      internship_offer = create(:weekly_internship_offer, created_at: 1.year.ago)
+      internship_offer = create(:weekly_internship_offer, weeks: Week.of_previous_school_year.first(2))
 
       sign_in(internship_offer.employer)
 
@@ -499,13 +499,14 @@ module InternshipOffers
       assert_select '.test-renew-button', count: 1
     end
 
-    test 'GET #show as employer does not show renew button when internship_offer has been created durent current_year' do
+    test 'GET #show as employer does show duplicate  button when internship_offer has been created durent current_year' do
       internship_offer = create(:weekly_internship_offer, created_at: SchoolYear::Current.new.beginning_of_period + 1.day)
 
       sign_in(internship_offer.employer)
 
       get internship_offer_path(internship_offer)
       assert_response :success
+      assert_select '.test-duplicate-button', count: 1
       assert_select '.test-renew-button', count: 0
     end
 
