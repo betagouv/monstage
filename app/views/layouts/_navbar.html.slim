@@ -47,6 +47,3 @@ nav.navbar.navbar-light.py-0
         = link_to 'Inscription', new_user_registration_path, class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:registrations) ? 'active' : ''}"
       li.nav-item.d-block.d-sm-none
         = link_to 'Connexion', new_user_session_path, class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:sessions) ? 'active' : ''}"
-
-- if user_signed_in?
-  = render partial: 'dashboard/schools/notice_school_manager', locals: { school: current_user.school } if current_user.is_a?(Users::SchoolManagement) && !current_user.school.has_weeks_on_current_year?
