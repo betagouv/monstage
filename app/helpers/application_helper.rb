@@ -1,15 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def show_restricted_to_anct?
-    return false if Rails.env.test? # otherwise sticky position fucked up capybara
-    return false if user_signed_in?
-    return false if current_page?(internship_offers_path)
-    return false if params[:id] && current_page?(internship_offer_path(id: params[:id]))
-
-    true
-  end
-
   def env_class_name
     return 'development' if Rails.env.development?
     return 'staging' if Rails.env.staging?
@@ -43,7 +34,7 @@ module ApplicationHelper
 
   def body_class_name
     class_names = []
-    class_names.push('homepage') if homepage?
+    class_names.push('homepage px-0') if homepage?
     class_names.push('onboarding-flow') if onboarding_flow?
     class_names.join(' ')
   end

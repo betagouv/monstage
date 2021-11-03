@@ -1,0 +1,12 @@
+.container-fluid
+  .row.my-3
+  .d-print-none.footer-elevator.pr-0
+    = link_to "#top",
+              class: 'float-right back-to-top',
+              data: {turbolinks: false},
+              aria: {label: "Retour en haut de page"} do
+      = image_tag asset_pack_path('media/images/homepage/back-to-top.svg'),
+                  alt: "Mon stage de 3e",
+                  width: 33,
+                  class: 'my-0 py-0'
+      span.d-none Retour en haut de page
