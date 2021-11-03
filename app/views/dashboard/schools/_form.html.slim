@@ -31,8 +31,8 @@
 
   - else
     fieldset
-      legend= "Semaines de stage de l'établissement"
-      = render partial: "inputs/weeks_checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: nil, render_employer_components: false }
+      legend= "Semaines de stage"
+      = render partial: "inputs/weeks_checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: "Semaines de stage de l'établissement (uniquement valable pour les classes de 3e)", render_employer_components: false }
 
 
   .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-primary'

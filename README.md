@@ -106,14 +106,19 @@ foreman start -f Procfile.dev
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
-### Etapes de travail jusqu'au merge dans master
+### Etapes de travail jusqu'au merge dans staging
 
-- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
 - (mabranche) $ ```git commit``` # coder sa feature et commiter
-- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
-- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
-- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
-- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+- (mabranche) $ ```git checkout staging``` # besoin de récupérer le code de staging? on repasse sur staging
+- (staging) $ ```git pull origin staging --rebase``` # on rebase la différence par rapport a soi-même
+- (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
+
+Pour les mises en production, on utilise le script de déploiement après avoir fait : 
+- (master) $ ```git merge staging``` # on merge staging dans master
+
+Ainsi, on peut faire des hotfixes à merger directement sur master
 
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)

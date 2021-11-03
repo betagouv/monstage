@@ -32,6 +32,9 @@ FactoryBot.define do
       factory :student_with_class_room_3e, class: 'Users::Student', parent: :student do
         class_room { create(:class_room, school: school, school_track: 'troisieme_generale') }
       end
+      trait :not_precised do
+        gender { 'np' }
+      end
       trait :registered_with_phone do
         email { nil }
         phone { '+330637607756' }

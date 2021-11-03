@@ -10,7 +10,7 @@ class FooterTest < ActionDispatch::IntegrationTest
       get root_path
 
       assert_select('a[href=?]',
-                    'https://beta.gouv.fr/startups/monstage.html')
+                    'https://incubateur.anct.gouv.fr/')
       assert_select('a[href=?]', mentions_legales_path)
       assert_select('a[href=?]', conditions_d_utilisation_path)
       assert_select('a[href=?]', accessibilite_path)
