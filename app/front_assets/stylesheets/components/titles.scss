@@ -80,23 +80,23 @@ html .gray-999{
   }
   html h1,
   html .h1 {
-    font-size: $html-font-size-base * 1.625;
-    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base * 2;
+    line-height: ($html-font-size-base * 1.75) * $mobile-line-height-ratio;
   }
   html h2,
   html .h2 {
-    font-size: $html-font-size-base * 1.5;
-    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base * 1.9;
+    line-height: ($html-font-size-base * 1.75) * $mobile-line-height-ratio;
   }
   html h3,
   html .h3 {
-    font-size: $html-font-size-base * 1.5;
-    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base * 1.8;
+    line-height: ($html-font-size-base * 1.75) * $mobile-line-height-ratio;
   }
   html h4,
   html .h4 {
-    font-size: $html-font-size-base * 1.25;
-    line-height: ($html-font-size-base * 1.25) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base * 1.5;
+    line-height: ($html-font-size-base * 1.5) * $mobile-line-height-ratio;
   }
   html h5,
   html .h5 {
@@ -105,8 +105,8 @@ html .gray-999{
   }
   html h6,
   html .h6 {
-    font-size: $html-font-size-base * 0.75;
-    line-height: ($html-font-size-base * 0.75) * $mobile-line-height-ratio;
+    font-size: $html-font-size-base;
+    line-height: ($html-font-size-base) * $mobile-line-height-ratio;
   }
 }
 .text-bigger{

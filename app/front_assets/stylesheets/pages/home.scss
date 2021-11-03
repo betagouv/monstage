@@ -1,70 +1,291 @@
-.bg-hero-homepage{
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
+:focus {
+  border: 2px dotted hotpink;
 }
 
-.bg-cover-image-homepage{
-  background-image: linear-gradient(90deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.25) 100%),
-                    url('../images/homepage/mon-stage-de-3e-illustration.jpg');
-  background-position: center center, center center;
-  background-repeat: no-repeat, no-repeat;
-  background-size: cover, cover;
+.homepage {
+  overflow-x: hidden;
 }
+
+.container-monstage {
+  max-width: 1200px;
+  margin: auto;
+  position: relative;
+}
+.bg-cover-image-homepage {
+  background-color: $blue;
+  border-radius: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Inter', sans-serif;
+}
+.to-regular {
+  font-family: 'Regular', sans-serif;
+}
+
+.wider-text {
+  font-size: 1.2rem;
+}
+.bg-blue {
+  color: white;
+  background-color: $blue;
+}
+
+.shrinked-lines {
+  line-height: 85%;
+}
+
+.extended-lines {
+  line-height: 150%;
+}
+
+.wrapper {
+  overflow-x: auto;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+}
+
+.download-card {
+  display: inline-flexbox;
+  width: 290px;
+  margin-right: 30px;
+  height: 450px;
+}
+
+.how-to-offers {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.rounded-adjust {
+  border-radius: 1rem;
+}
+
+.card-shadow {
+  box-shadow: 0px 25px 25px -20px rgba(0, 0, 0, 0.25)
+}
+
+.h1-text-hero {
+  font-weight: 900;
+  font-size: 3.10rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle-hero {
+  font-weight: 900;
+  font-size: 1rem;
+}
+.btn-link {
+  text-decoration: none !important;
+}
+
+.white {
+  color: white !important;
+}
+
+.btn {
+  border-radius: 0.3rem;
+  font-weight: normal;
+}
+
+.search-form {
+  position: relative;
+  top: -37px;
+}
+.fitting {
+  object-fit: cover;
+  width: 100%
+}
+.img-almost-fluid {
+  max-width: 90%;
+  height: auto;
+}
+
+.right-flying-email {
+  position: absolute;
+  width: 118.41px;
+  height: 106.41px;
+  right : 10%;
+  top: -44px;
+  z-index: 1;
+
+  background: url("../images/homepage/courrier.png");
+  transform: rotate(15deg);
+  border-radius: 1rem;
+}
+.chacun-image-left {
+  background: transparent url('../images/homepage/chacun-left.png') top left no-repeat;
+  background-size: 100% 100%;
+}
+
+.chacun-image-right {
+  background: transparent url('../images/homepage/chacun-right.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 0 10px;
+}
+
+.trouver-image-left {
+  background: transparent url('../images/homepage/carousel/trouver-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
+}
+
+.trouver-image-right {
+  background: transparent url('../images/homepage/carousel/trouver-right.png') top left no-repeat;
+  background-size: 100% 100%;
+}
+
+.accueillir-image-right {
+  background: transparent url('../images/homepage/carousel/accueillir-right.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 5px;
+}
+
+.accueillir-image-left {
+  background: transparent url('../images/homepage/carousel/accueillir-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
+}
+
+.accompagner-image-right {
+  background: transparent url('../images/homepage/carousel/accompagner-right.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 10px 0 10px 0;
+}
+
+.accompagner-image-left {
+  background: transparent url('../images/homepage/carousel/accompagner-left.png') top left no-repeat;
+  background-size: 100% 100%;
+  padding: 5px 0 5px 10px;
+}
+
+.ms3e-blurry-badge {
+  position: left center;
+  content: '';
+  background-color: $blue;
+  background-image: url("../images/homepage/ms3e-big-badge.svg");
+  background-repeat: no-repeat no-repeat;
+  background-clip: content-box;
+  background-size: 22rem;
+
+  background-position-x: 0;
+  background-position-y: 60%;
+  left: 0px;
+  top: 0px;
+}
+
+.slide-show {
+  position: relative;
+  top: 212px;
+  z-index: 7
+}
+
 .nav-link.active {
   color: $bg-less-light-blue;
   font-weight: bolder;
 }
-.home-blue-shadow {
-  line-height: 2rem;
-  color: white;
-  font-size: 3rem;
-  text-shadow: 5px 5px 0px $blue;
-}
-@include media-breakpoint-up(sm) {
 
-  .big-tagline{
+.navbar-nav-scroll a {
+  width: 140px;
+}
+
+#navbarScroll.collapse {
+  display: none;
+}
+
+#navbarScroll.collapse.show {
+  display: block;
+}
+
+
+
+@include media-breakpoint-up(md) {
+  .text-center-left {
+    text-align: left;
+  }
+
+  .text-center-right {
+    text-align: right;
+  }
+  .text-md-center-right {
+    text-align: right;
+  }
+  }
+
+  @include media-breakpoint-down(md) {
+    .text-md-center-right {
+      text-align: center;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+  .big-tagline {
     font-size: 20px;
     line-height: 30px;
   }
-
-
-  .flex-md-column{
+.flex-md-column {
     flex-direction: column !important;
   }
-  .nav-pills-home .nav-link.active{
+.nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
   }
 }
 @include media-breakpoint-down(sm) {
+  .text-center-left {
+    text-align: center;
+  }
 
-  .flex-md-reverse-column{
+  .text-center-right {
+    text-align: center;
+  }
+  .bg-cover-image-homepage {
+    border-radius: 0;
+  }
+
+  .ms3e-blurry-badge {
+    background: none;
+  }
+
+  .changing-order {
+    -moz-box-direction: reverse;
+    -webkit-flex-direction: row-reverse;
+  }
+  .subtitle-hero,
+  .h1-text-hero {
+    line-height: 150%;
+    padding: 1rem;
+  }
+  .navbar-nav-scroll a {
+    text-align: right;
+  }
+
+  .flex-md-reverse-column {
     flex-direction: column-reverse;
-    .flex-md-column{
+.flex-md-column {
       text-align: center;
       display: block;
-      .nav-link{
+.nav-link {
         display: inline-block;
       }
     }
   }
-  .nav-pills-home .nav-link{
+.nav-pills-home .nav-link {
     text-decoration: none;
-    &.active{
+&.active {
       border-top: 4px solid #DA000C;
       border-right: none;
     }
   }
 }
 
-
-
 // alert
 .bg-covid-19-notice {
-  .relative{
+  .relative {
     position: relative;
   }
-  .close{
+.close {
     opacity: 1;
     position: absolute;
     top: 0;
@@ -73,10 +294,13 @@
 }
 // pills customization
 @include media-breakpoint-down(xs) {
-  .bg-covid-19-notice .close{
-    right: 5px!important;
-    top: 5px!important;
+  .bg-covid-19-notice .close {
+    right: 5px !important;
+    top: 5px !important;
   }
+    .text-center-left {
+      text-align: center;
+    }
 }
 
 
@@ -85,21 +309,21 @@
   background-color: #080091;
 }
 
-.bg-light-blue{
+.bg-light-blue {
   background-color: $blue_light;
 }
 
 // nav pills
-.nav-pills-home{
-  .nav-link{
+.nav-pills-home {
+  .nav-link {
     border-radius: 0;
   }
-  .nav-link.active{
+.nav-link.active {
     color: #100090;
     font-weight: bold;
     background-color: rgba(17, 0, 145, 0.13);
   }
 }
-.partners-height{
+.partners-height {
   min-height: 450px;
 }
