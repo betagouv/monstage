@@ -37,6 +37,7 @@
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+.env
 
 /doc/env.sh
 /doc/output/internship_offers/create/*

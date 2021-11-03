@@ -20,9 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -33,9 +30,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
-
-COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
-
 
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
@@ -48,9 +42,6 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
-
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -61,9 +52,6 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
-
-COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
-
 
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
@@ -502,7 +490,8 @@ CREATE TABLE public.internship_agreement_presets (
     school_delegation_to_sign_delivered_at date,
     school_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    weekly_hours text[] DEFAULT '{}'::text[]
 );
 
 
@@ -825,7 +814,7 @@ CREATE TABLE public.internship_offers (
     tutor_id bigint,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
-    siren character varying,
+    siret character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
     max_students_per_group integer DEFAULT 1 NOT NULL
@@ -876,7 +865,9 @@ CREATE TABLE public.operators (
     updated_at timestamp without time zone DEFAULT '2021-05-06 08:22:40.384734'::timestamp without time zone NOT NULL,
     airtable_id character varying,
     airtable_link character varying,
-    airtable_reporting_enabled boolean DEFAULT false
+    airtable_reporting_enabled boolean DEFAULT false,
+    airtable_table character varying,
+    airtable_app_id character varying
 );
 
 
@@ -2397,6 +2388,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743'),
-('20210910142500');
+('20210910142500'),
+('20211026200850'),
+('20211027130402');
 
 

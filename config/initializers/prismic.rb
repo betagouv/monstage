@@ -1,3 +1,3 @@
-PRISMIC_URL = 'https://monstage.cdn.prismic.io/api'
-PRISMIC_TOKEN = Rails.application.credentials.prismic[:api_key]
+PRISMIC_URL = ENV['PRISMIC_URL']
+PRISMIC_TOKEN = ENV['PRISMIC_API_KEY']
 # PrismicClient = Prismic.api(PRISMIC_URL, token)
