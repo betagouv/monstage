@@ -11,3 +11,8 @@ div
       i.fas.fa-copy
       small class="#{klass}"
         =" #{cta_text}"
+    p.mt-1.w-100= link_to new_dashboard_internship_offer_path(parameters.merge(without_location: true)),
+                          class: 'btn btn-secondary rounded-xs-0 w-100' do
+      i.fas.fa-copy
+      small.test-duplicate-without-location-button
+        |  Publier la même offre pour un lieu de stage différent
