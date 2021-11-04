@@ -11,16 +11,19 @@ module Finders
         Users::SchoolManagement.name => :school_management_query,
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,
+        Users::MinistryStatistician.name => :ministry_statistician_query,
         Users::God.name => :god_query
       }
     end
 
     private
 
-    def school_track_by_class_room_query(query)
-      query.merge(
-        InternshipOffer.school_track(school_track: user.try(:school_track))
-      )
+    def kept_offers_query
+      InternshipOffer.kept
+    end
+
+    def god_query
+      common_filter { kept_offers_query.published }
     end
 
     def school_management_query
@@ -32,41 +35,29 @@ module Finders
     end
 
     def school_members_query
-      query = school_management_query
-      query = school_track_by_class_room_query(query) if user.try(:school_track)
-
-      # WeeklyFramed offers are dedicated to :troisieme_generale and API
-      if user.try(:class_room).try(:fit_to_weekly?)
-        unless user.missing_school_weeks?
-          query = query.merge(
-            InternshipOffers::WeeklyFramed.internship_offers_overlaping_school_weeks(weeks: user.school.weeks)
-          )
-        end
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_already_applied(user: user))
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_candidates_reached)
-        query = query.merge(InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached)
-      elsif user.try(:class_room).try(:fit_to_free_date?)
-        query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))
-      end
-      query
+      @params = implicit_conditions(params: @params, user: user)
+      school_management_query
     end
 
     def statistician_query
       god_query.tap do |query|
-        query.merge(query.limited_to_department(user: user)) if user.department_name
+        query.merge(query.limited_to_department(user: user)) if user.department
       end
+    end
+
+    def ministry_statistician_query
+      god_query.limited_to_ministry(user: user)
     end
 
     def visitor_query
       common_filter { kept_offers_query.in_the_future.published }
     end
 
-    def god_query
-      common_filter { kept_offers_query }
-    end
-
-    def kept_offers_query
-      InternshipOffer.kept
+    def implicit_conditions(params: , user: )
+      if user.student? && user&.class_room.present?
+        params.merge!(school_track: user.school_track)
+      end
+      params
     end
   end
 end

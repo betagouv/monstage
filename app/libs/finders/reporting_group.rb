@@ -2,12 +2,21 @@
 
 module Finders
   class ReportingGroup
-    def groups_not_involved(is_public:)
+    def groups_commitment(is_public:)
       Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
-           .where(is_public: is_public)
+           .group_nature(is_public)
            .joins(join_sources(is_public: is_public))
            .group('groups.id')
            .order(group_internship_offers_count: :desc)
+    end
+
+    def groups_with_no_commitment(is_public:)
+      Group.select('groups.*, count(internship_offers.id) as group_internship_offers_count')
+           .group_nature(is_public)
+           .joins(join_sources(is_public: is_public))
+           .group('groups.id')
+           .having('count(internship_offers.id) = 0')
+           .order(name: :asc)
     end
 
     private
@@ -23,9 +32,9 @@ module Finders
       groups = Group.arel_table
 
       conditions = internship_offers[:group_id].eq(groups[:id])
-      conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
+      conditions = conditions.and(internship_offers[:is_public]).eq(is_public) unless is_public.nil?
       conditions = conditions.and(internship_offers[:school_track]).eq(params[:school_track]) if school_track_param?
-      conditions = conditions.and(internship_offers[:is_public]).eq(is_public)
+      conditions = conditions.and(groups[:is_public]).eq(is_public) unless is_public.nil?
       conditions = conditions.and(internship_offers[:department]).eq(params[:department]) if department_param?
       if school_year_param?
         conditions = conditions.and(Reporting::InternshipOffer.during_year_predicate(school_year: school_year))

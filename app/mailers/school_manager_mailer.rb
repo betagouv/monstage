@@ -9,11 +9,4 @@ class SchoolManagerMailer < ApplicationMailer
     mail(subject: "Nouveau #{@member_presenter.role_name}: #{@member_presenter.full_name}",
          to: school_manager.email)
   end
-
-  def missing_school_weeks(school_manager:)
-    @school = school_manager.school
-    @school_manager = school_manager
-    mail(subject: 'Information manquante : semaines de stage',
-         to: school_manager.email)
-  end
 end

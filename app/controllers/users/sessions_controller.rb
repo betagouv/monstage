@@ -10,20 +10,32 @@ module Users
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
         user = fetch_user_by_phone
+        store_targeted_offer_id(user: user)
         if user.confirmed?
           sign_in(user)
-          redirect_to root_path
-          return
+          redirect_to after_sign_in_path_for(user)
         else
           user.send_sms_token
           redirect_to users_registrations_phone_standby_path(phone: safe_phone_param)
-          return
         end
+        return
       end
+      store_targeted_offer_id(user: fetch_user_by_email)
       super
     end
 
     protected
+
+    def store_targeted_offer_id(user:)
+      if user && params[:user][:targeted_offer_id].present?
+        user.update(targeted_offer_id: params[:user][:targeted_offer_id])
+      end
+    end
+
+    def fetch_user_by_email
+      param_email = params[:user][:email]
+      return User.find_by(email: params[:user][:email]) if param_email.present?
+    end
 
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_in_params
@@ -32,6 +44,7 @@ module Users
         keys: %i[
           email
           phone
+          targeted_offer_id
         ]
       )
     end

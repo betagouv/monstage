@@ -73,6 +73,8 @@ fr:
     show:
       page_title: "Ma candidature"
   internship_offers:
+    search:
+      page_title: "Rechercher parmi nos offres de stage"
     index:
       page_title: "Recherche de stages"
     show:
@@ -102,6 +104,8 @@ fr:
       page_title: 'Page opérateurs'
     partenaires:
       page_title: 'Pages partenaires'
+    statistiques:
+      page_title: 'Compte-rendu statistique'
   reporting:
     dashboards:
       index:

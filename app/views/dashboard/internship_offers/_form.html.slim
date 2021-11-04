@@ -1,5 +1,7 @@
-= form_with({model: @internship_offer, url: (@internship_offer.new_record? ? dashboard_internship_offers_path() : dashboard_internship_offer_path(@internship_offer)), scope: :internship_offer, data: { controller: 'internship-form'}, local: true}) do |form|
-  = form.rg2a_explain_required_asterisk
+= form_with({model: @internship_offer,
+             url: (@internship_offer.new_record? ? dashboard_internship_offers_path() : dashboard_internship_offer_path(@internship_offer)),
+             scope: :internship_offer,
+             data: { controller: 'internship-form'}, local: true}) do |form|
   = render "layouts/form_errors", resource: @internship_offer, resource_name: :internship_offer
 
   // used when
@@ -7,26 +9,42 @@
   = form.hidden_field :employer_type, value: "User"
 
   // used when posted from stepper
-  = form.hidden_field :organisation_id, value: @internship_offer.organisation_id
-
-  = form.hidden_field :internship_offer_info_id, value: @internship_offer.internship_offer_info_id
-
-  = form.hidden_field :tutor_id, value: @internship_offer.tutor_id
+  = form.hidden_field :organisation_id,
+                      value: @internship_offer.organisation_id
+  = form.hidden_field :internship_offer_info_id,
+                      value: @internship_offer.internship_offer_info_id
+  = form.hidden_field :tutor_id,
+                      value: @internship_offer.tutor_id
 
   // Organisation
-  = render 'dashboard/stepper/organisations/form_fields', { resource: @internship_offer, form: form, warning_bloc: false, submit_button: false }
+  = render 'dashboard/stepper/organisations/form_fields',
+            { resource: @internship_offer,
+               form: form,
+               warning_bloc: false,
+               submit_button: false }
 
   hr
   // OfferInfo
-  = render 'dashboard/stepper/internship_offer_infos/form_fields', { resource: @internship_offer, form: form, warning_bloc: false, submit_button: false }
+  = render 'dashboard/stepper/internship_offer_infos/form_fields',
+           { resource: @internship_offer,
+             form: form,
+             warning_bloc: false,
+             submit_button: false }
 
   hr
   // Tutor
-  = render 'dashboard/stepper/tutors/form_fields', { resource: @internship_offer, form: form, submit_button: false, warning_bloc: false }
+  = render 'dashboard/stepper/tutors/form_fields',
+           { resource: @internship_offer,
+             form: form,
+             submit_button: false,
+             warning_bloc: false }
 
   .actions
     .row
       .col-8.text-center
         = form.submit submit_text, class: 'btn btn-primary'
       .coll-4 style="display: flex;align-items: center"
-        = link_to "Annuler", dashboard_internship_offers_path, title: 'Retourner sur mes stages', class: 'ml-3 btn-back'
+        = link_to "Annuler",
+                  dashboard_internship_offers_path,
+                  title: 'Retourner sur mes stages',
+                  class: 'ml-3 btn-back'

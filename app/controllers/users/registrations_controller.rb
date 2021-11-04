@@ -40,12 +40,26 @@ module Users
 
     # GET /resource/sign_up
     def new
+      @resource_channel = resource_channel
+      options = {}
+      options = options.merge(targeted_offer_id: params.dig(:user, :targeted_offer_id)) if params.dig(:user, :targeted_offer_id)
+
       if UserManager.new.valid?(params: params)
         super do |resource|
+          resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
           @current_ability = Ability.new(resource)
         end
       else
-        redirect_to users_choose_profile_path
+        redirect_to users_choose_profile_path(options)
+      end
+    end
+
+    def resource_channel
+      return current_user.channel unless current_user.nil?
+      return :email unless params[:as] == 'Student'
+
+      ab_test(:subscription_channel_experiment) do |chan|
+        chan == 'phone' ? :phone : :email
       end
     end
 
@@ -53,18 +67,26 @@ module Users
     def create
       clean_phone_param
       super do |resource|
+        resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
+        ab_finished(:subscription_channel_experiment)
       end
     end
 
     def phone_validation
       if fetch_user_by_phone.try(:check_phone_token?, params[:phone_token])
         fetch_user_by_phone.confirm_by_phone!
-        redirect_to(new_user_session_path(phone: fetch_user_by_phone.phone),
-                    flash: { success: I18n.t('devise.confirmations.confirmed') })
+        message = { success: I18n.t('devise.confirmations.confirmed') }
+        redirect_to(
+          new_user_session_path(phone: fetch_user_by_phone.phone),
+          flash: message
+        )
       else
-        redirect_to(users_registrations_phone_standby_path(phone: params[:phone]),
-                    flash: { alert: I18n.t('devise.confirmations.unconfirmed') })
+        err_message = { alert: I18n.t('devise.confirmations.unconfirmed') }
+        redirect_to(
+          users_registrations_phone_standby_path(phone: params[:phone]),
+          flash: err_message
+        )
       end
     end
 
@@ -112,6 +134,7 @@ module Users
           role
           phone
           email
+          targeted_offer_id
         ]
       )
     end
@@ -129,7 +152,9 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
-        users_registrations_phone_standby_path(phone: resource.phone)
+        options = { phone: resource.phone }
+        options = options.merge({ as: 'Student'}) if resource.student?
+        users_registrations_phone_standby_path(options)
       else
         users_registrations_standby_path(email: resource.email)
       end

@@ -5,7 +5,7 @@ require 'json'
 
 Rails.application.configure do
   HOST = ENV.fetch("HOST") {
-    "https://#{ENV.fetch('HEROKU_APP_NAME')}-#{ENV.fetch('HEROKU_PR_NUMBER') {'1'}}.herokuapp.com"
+    "https://#{ENV.fetch('HEROKU_APP_NAME')}.herokuapp.com"
   }
 
   # Verifies that versions and hashed value of the package contents in the project's package.json
@@ -84,10 +84,10 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "monstage_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
-
+  config.action_mailer.show_previews = true
   config.action_mailer.default_url_options = { host: HOST }
 
-  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{Rails.application.credentials.dig(:review, :mailtrap, :api_token)}"
+  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
 
   first_inbox = JSON.parse(response)[0] # get first inbox
 
@@ -97,7 +97,7 @@ Rails.application.configure do
                                        password: first_inbox['password'],
                                        address: first_inbox['domain'],
                                        domain: first_inbox['domain'],
-                                       port: first_inbox['smtp_ports'][0],
+                                       port: 587,
                                        authentication: :plain
                                      }
 

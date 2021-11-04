@@ -24,9 +24,36 @@ fr:
       update: 'Mot de passe mis à jour.'
   activerecord:
     models:
+      email_whitelists/statistician:
+        one: courriel autorisé du référent départemental
+        other: courriels autorisés des référents départementaux
+      email_whitelists/ministry:
+        one: courriel autorisé du référent central
+        other: courriels autorisés des référents centraux
+      group:
+        one: Groupe
+        other: Groupes
+      internship_agreement:
+        one: Convention
+        other: Conventions
+      internship_offers/weekly_framed:
+        one: Offre 3eme générale
+        other: Offres 3eme générale
+      internship_offers/free_date:
+        one: Offre de la voie pro
+        other: Offres de la voie pro
+      internship_offers/api:
+        one: Offre API
+        other: Offres API
+      operator:
+        one: Association
+        other: Associations
       sector:
         one: Secteur
         other: Secteurs
+      school:
+        one: Etablissement
+        other: Etablissements
       user:
         one: Utilisateur
         other: Utilisateurs
@@ -60,29 +87,20 @@ fr:
       users/statistician:
         one: Référent départemental
         other: Référents départementaux
-      school:
-        one: Etablissement
-        other: Etablissements
-      internship_agreement:
-        one: Convention
-        other: Conventions
-      internship_offers/weekly_framed:
-        one: Offre 3eme générale
-        other: Offres 3eme générale
-      internship_offers/free_date:
-        one: Offre de la voie pro
-        other: Offres de la voie pro
-      internship_offers/api:
-        one: Offre API
-        other: Offres API
-      email_whitelist:
-        one: Email autorisé du référent
-        other: Email autorisés des référents
+      users/ministry_statistician:
+        one: Référent central
+        other: Référents centraux
       week:
         one: Semaine
         other: Semaines
 
     attributes:
+      group:
+        created_at: Crée le
+        is_public: Secteur public/privé
+        name: Nom du groupe
+        updated_at: Mis à jour le
+        name: Administration centrale
       school:
         name: Nom
         kind: Type
@@ -119,6 +137,10 @@ fr:
         city: Ville
         coordinates: Coordonnées GPS
         siren: Code Siren
+
+      operator: &operator_fields
+        name: Nom
+        target_count: Objectif annuel
 
       internship_offer_info: &internship_offer_info_fields
         title: Intitulé
@@ -167,15 +189,25 @@ fr:
         total_female_convention_signed_applications_count: Fille
         total_custom_track_convention_signed_applications_count: 'CR/PE'
         approved_applications_count: "Nbr. de candidatures acceptées"
-        submitted_applications_count: "Nbr. de candidatures en attentes"
-        rejected_applications_count: "Nbr. de candidatures rejectées"
+        submitted_applications_count: "Nbr. de candidatures en attente"
+        rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
-        permalink: Association partenaire
         siren: Code Siren
+        permalink: "Lien vers l'association partenaire"
+        sector_name: Secteur
+        full_school: Établissement
+        full_weeks: Semaines
+        full_week: Semaine
+        full_tutor: Tuteur
+        full_year: Disponible toute l'année
+        full_employer: Employeur
+        full_address: Adresse de l'employeur
+        group_name: Groupe ou institution
+
       user:
         accept_terms: "Conditions d'utilisation"
         class_room: "Classe"
@@ -235,7 +267,9 @@ fr:
               blank: "Veuillez renseigner la ville l'employeur"
             public:
               inclusion: "Veuillez choisir une institution de tutelle pour cette offre de stage"
-
+        partner:
+          attributes: &partner_errors
+            target_count: Objectif annuel
         internship_offer_info:
           attributes: &internship_offer_info_errors
             title:
@@ -330,7 +364,7 @@ fr:
         users/student:
           attributes:
             gender:
-              blank: Veuillez saisir un genre
+              blank: Veuillez faire un choix parmi les options de genres proposés
 
         users/operator:
           attributes:
@@ -366,6 +400,12 @@ fr:
         title: 'Key Performance Indicators'
         breadcrumb: KPI
         menu: KPI
+    scopes:
+      _all: "Tous"
+      school:
+        with_manager: "Avec chef d'établissement"
+        without_manager: "Sans chef d'établissement"
+
   dashboard:
     internship_offer:
       created: Votre offre de stage est désormais en ligne, Vous pouvez à tout moment la supprimer ou la modifier.
@@ -384,9 +424,8 @@ fr:
       other: "Autre fonction"
 
     school_tracks:
-      troisieme_generale: '3ème'
+      troisieme_generale: '3e'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
-      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]

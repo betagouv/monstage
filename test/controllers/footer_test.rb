@@ -10,15 +10,12 @@ class FooterTest < ActionDispatch::IntegrationTest
       get root_path
 
       assert_select('a[href=?]',
-                    'https://beta.gouv.fr/startups/monstage.html')
+                    'https://incubateur.anct.gouv.fr/')
       assert_select('a[href=?]', mentions_legales_path)
       assert_select('a[href=?]', conditions_d_utilisation_path)
       assert_select('a[href=?]', accessibilite_path)
       assert_select('a[href=?]', accessibilite_path)
-      assert_select(
-        'a[href=?]',
-        "#{root_url}/modes_d_emploi/MS3_Guide-d-utilisation-global-2020.pdf"
-      )
+
     end
   end
 end

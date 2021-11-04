@@ -43,6 +43,32 @@ module Dashboard::InternshipOffers
 
     end
 
+    test 'PATCH #update as statistician owning internship_offer updates internship_offer' do
+      internship_offer = create(:weekly_internship_offer)
+      statistician = create(:statistician)
+      internship_offer.update(employer_id: statistician.id)
+      new_title = 'new title'
+      new_group = create(:group, is_public: false, name: 'woop')
+      sign_in(statistician)
+      patch(dashboard_internship_offer_path(internship_offer.to_param),
+            params: { internship_offer: {
+              title: new_title,
+              week_ids: [weeks(:week_2019_1).id],
+              is_public: false,
+              group_id: new_group.id,
+              new_daily_hours: {'lundi' => ['10h', '12h']}
+
+            } })
+      assert_redirected_to(internship_offer_path(internship_offer),
+                           'redirection should point to updated offer')
+
+      assert_equal(new_title,
+                   internship_offer.reload.title,
+                   'can\'t update internship_offer title')
+      assert_equal ['10h', '12h'], internship_offer.reload.new_daily_hours['lundi']
+
+    end
+
     test 'PATCH #update as employer owning internship_offer can publish/unpublish offer' do
       internship_offer = create(:weekly_internship_offer)
       published_at = 2.days.ago.utc
@@ -58,7 +84,6 @@ module Dashboard::InternshipOffers
     test 'PATCH #update as employer is able to remove school' do
       school = create(:school)
       internship_offer = create(:weekly_internship_offer, school: school)
-      published_at = 2.days.ago.utc
       sign_in(internship_offer.employer)
       assert_changes -> { internship_offer.reload.school },
                      from: school,
@@ -68,10 +93,25 @@ module Dashboard::InternshipOffers
       end
     end
 
+    test 'PATCH #update offer type from 3e general to troisieme_segpa should not break ' do
+      internship_offer = create(:weekly_internship_offer)
+      sign_in(internship_offer.employer)
+      assert_changes -> { InternshipOffer.find(internship_offer.id).type },
+                     from: 'InternshipOffers::WeeklyFramed',
+                     to: 'InternshipOffers::FreeDate' do
+        patch(
+          dashboard_internship_offer_path(internship_offer.to_param),
+          params:
+            {
+              internship_offer: { school_track: :troisieme_segpa,
+                                  type: InternshipOffers::FreeDate.name }
+            }
+        )
+      end
+    end
 
-    test 'PATCH #update bac_pro to 3e general should break if no weeks' do
+    test 'PATCH #update troisieme_segpa to 3e general should break if no weeks' do
       internship_offer = create(:free_date_internship_offer)
-      published_at = 2.days.ago.utc
       sign_in(internship_offer.employer)
       patch(dashboard_internship_offer_path(internship_offer.to_param), params:
         {
@@ -80,6 +120,24 @@ module Dashboard::InternshipOffers
         }
       )
       assert_response :bad_request
+    end
+
+    test 'PATCH #update offer type from 3e general to troisieme_segpa' \
+         ' should break when applications are done on internships prior to change' do
+      internship_offer = create(:weekly_internship_offer)
+      create(:weekly_internship_application, internship_offer: internship_offer)
+      sign_in(internship_offer.employer)
+
+      assert_no_changes -> { InternshipOffer.find(internship_offer.id).type } do
+        patch(
+          dashboard_internship_offer_path(internship_offer.to_param),
+          params:
+            {
+              internship_offer: { school_track: :troisieme_segpa,
+                                  type: InternshipOffers::FreeDate.name }
+            }
+        )
+      end
     end
   end
 end

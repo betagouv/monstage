@@ -15,7 +15,6 @@ Things you may want to cover:
   - If you are using Postgres.app, Postgis is already here
   - If you installed postgres with Homebrew, run : `brew install postgis`
   - Setup Postgis : `rake db:gis:setup`
-* copy synonym dictionnary for pg search : `./infra/dev/setup_pg_synonym.sh`
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
@@ -24,6 +23,13 @@ Things you may want to cover:
 * create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
 
 # Architecture
+
+We keep things simple and secure :
+
+* a simple monolith mostly based on rails
+* minimals effort for an SPA like feeling while ensuring it works without js (90% based on turbolinks, some react for advanced user inputs [autocomplete, nearby searches], other wise a good old html form is required)
+* we try to avoid stacking technologies over technologies (fewer dependencies makes us happy). 
+* we try to keep our dependencies up to date (bundle update, yarn update... at least once a month).
 
 ## backend
 
@@ -45,6 +51,8 @@ Things you may want to cover:
 
 ## 3rd party services
 
+As a public french service, we try to keep most data hosted by french service provider with servers located in france (in hope to stay compliant with most regulations)
+
 ### Hosting
 * Registrar: [Gandi](https://www.gandi.net/fr)
 * Backend/Frontend provider : [CleverCloud](console.clever-cloud.com/), see [ruby](https://github.com/betagouv/monstage/tree/master/clevercloud/ruby.json), [cron](https://github.com/betagouv/monstage/tree/master/clevercloud/cron.json)
@@ -62,11 +70,12 @@ Things you may want to cover:
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-
-* Infrastructure monitoring solution: [newrelic](https://rpm.newrelic.com/)
-* Bug monitoring solution: [sentry](https://sentry.io/)
+* Infra management with elatic stack
+ * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
+ * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
+ * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
 * Mail: [mailjet](https://mailjet.com)
-* uptime/downtime:
+* Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
 # Build: test, dev
 
@@ -91,17 +100,22 @@ foreman start -f Procfile.dev
 
 ### Tooling: linting, etc...
 
-* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./git/hooks/ ```
+* **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
-### Etapes de travail jusqu'au merge dans master
+### Etapes de travail jusqu'au merge dans staging
 
-- (master) $ ```git checkout -b mabranche``` # donc creer sa feature branch
+- (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
 - (mabranche) $ ```git commit``` # coder sa feature et commiter
-- (mabranche) $ ```git checkout master``` # besoin de récupérer le code de master? on repasse sur master
-- (master) $ ```git pull origin master --rebase``` # on rebase la différence par rapport a soi-même
-- (master) $ ```git checkout mabranche``` # on repasse sur sa branche
-- (mabranche) $ ```git merge master``` # on merge master dans sa propre branche
+- (mabranche) $ ```git checkout staging``` # besoin de récupérer le code de staging? on repasse sur staging
+- (staging) $ ```git pull origin staging --rebase``` # on rebase la différence par rapport a soi-même
+- (staging) $ ```git checkout mabranche``` # on repasse sur sa branche
+- (mabranche) $ ```git merge staging``` # on merge staging dans sa propre branche
+
+Pour les mises en production, on utilise le script de déploiement après avoir fait : 
+- (master) $ ```git merge staging``` # on merge staging dans master
+
+Ainsi, on peut faire des hotfixes à merger directement sur master
 
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
@@ -116,36 +130,47 @@ our test suite contains
   * w3c (using previously created html files)
   * a11y (using previously created html files)
 
-you can also run all kinds of test in one run `./infra/test/suite.sh`
-
 ### about/run units test
 
 run with ```rails test``` (JS is not executed, so quick tests)
 
 ### about/run system/e2e tests
 
-by default we run our tests with a chrome_headless (JS is executed, kinda slow tests).
+this app is BUILT FOR TWO PLATFORMs : web/mobile
 
-* run in background (chrome_headless) : `rails test:system`
-* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test:system`
+DEPENDING OF THE TARGETED PLAFORM, FEATURES and TEST DIFFER. but rails test:system include all e2e tests in one big suite. To split this big suite per platform we use an env var : USE_IPHONE_EMULATION=anything AND two of minitest's TEST_OPTS flags :
+
+1. `--name='/pattern_to_run_tests_matching/'`
+2. `--exclude='/pattern_to_skip_tests_matching/'`
+
+To make it easier to run a suite for a dedicated platform :
+
+* mobile only shortcut: `./infra/test/system_mobile.sh` [only mobile, capybara with a selenium driver, driving a chrome_headless + emulator]
+* desktop only shortcut: `./infra/test/system_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
+* w3c only shortcut: `./infra/test/w3c_desktop.sh` [only desktop, capybara with a selenium driver, driving a chrome_headless]
+* mobile and desktop + w3c : `./infra/test/system_all.sh` [only w3c run through system]
+
+( thoses scripts are also used for the CI. )
+
+Good to know :
+
+* run in foreground, with visual feedback : `BROWSER=firefox|chrome|safari rails test/system/${YOUR_TEST}`
 
 ### about/run w3c tests (using vnu.jar)
 
-those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c.sh```
+those tests depends on the system / e2e (which goes throught a web browser with js execution, then save .html files). run w3c tests via ```./infra/test/w3c_desktop.sh```
 
 ### a11y tests (using pa11y-ci)
 
-those tests depends on the system / e2e (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
+those tests depends on the ```./infra/test/w3c_desktop.sh``` (which goes throught browser with js execution). run a11y tests via ```./infra/test/a11y_suite.sh```
 
 ### CI, full suite (unit, system, w3c, a11y)
 
-Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file. 
+Our CI (circleCI) run all 4 kinds of test. We used circleci configuration format : [.circle/config](https://github.com/betagouv/monstage/blob/master/.circleci/config.yml) file.
 Results are available using [CircleCI](https://circleci.com/gh/betagouv/monstage) ui.
 
 **Important notes :**
 
-* we use a custom postgres docker image for our synonym dictionnary
- 
 ### User testing with review apps
 
 our review apps are hosted by heroku, we also try to maintain a cross functionnal seed.rb (seeding of db) to try each and every key feature easily
@@ -204,3 +229,6 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
 
+# disaster recovery plan
+
+in case of a disaster we do have a plan starting with : [monstage-backup-manager](https://github.com/betagouv/monstage-backup-manager/)

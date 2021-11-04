@@ -5,9 +5,6 @@ class School < ApplicationRecord
   include Zipcodable
   include SchoolUsersAssociations
 
-  has_many :students_with_missing_school_week, dependent: :nullify,
-                                               class_name: 'Users::Student'
-
   has_many :class_rooms, dependent: :destroy
   has_many :school_internship_weeks, dependent: :destroy
   has_many :weeks, through: :school_internship_weeks
@@ -27,6 +24,11 @@ class School < ApplicationRecord
                            .group('schools.id')
                            .having('count(users.id) > 0')
                        }
+  scope :without_manager, lambda {
+     left_joins(:school_manager)
+                           .group('schools.id')
+                           .having('count(users.id) = 0')
+  }
 
   scope :without_weeks_on_current_year, lambda {
     all.where.not(
@@ -36,9 +38,18 @@ class School < ApplicationRecord
     )
   }
 
-  scope :missing_school_week_count_gt, lambda { |threshold|
-    where('missing_school_weeks_count > ?', threshold)
-  }
+  def default_search_options
+    {
+      city: city,
+      latitude: coordinates.lat,
+      longitude: coordinates.lon,
+      radius: Nearbyable::DEFAULT_NEARBY_RADIUS_IN_METER
+    }
+  end
+
+  def has_weeks_on_current_year?
+    weeks.selectable_on_school_year.exists?
+  end
 
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
@@ -84,6 +95,7 @@ class School < ApplicationRecord
       field :zipcode do
         visible false
       end
+      scopes [:all, :with_manager, :without_manager]
     end
 
     edit do

@@ -2,17 +2,95 @@
 
 module UsersHelper
   def partners_map_of_logo_url
-    {
-      'Logo-jobirl.jpg' => 'https://www.jobirl.com',
-      'Logo-le-reseau.jpg' => 'http://www.lereseau.asso.fr',
-      'Logo-moidans10ans.png' => 'https://moidans10ans.fr/',
-      'Logo-les-entreprises-pour-la-cite.jpg' => 'http://www.reseau-lepc.fr',
-      'Logo-tous-en-stage.jpg' => 'https://tousenstage.com',
-      'Logo-un-stage-et-apres.jpg' => 'https://www.unstageetapres.fr',
-      'Logo-viens-voir-mon-taf.jpg' => 'https://www.viensvoirmontaf.fr',
-      'Logo-telemaque.png' => 'https://www.institut-telemaque.org/',
-    }.sort.to_h
+    [
+      {
+        logo: 'Logo-jobirl.jpg',
+        url: 'https://www.jobirl.com',
+        height: 50
+      },
+      {
+        logo: 'Logo-le-reseau.jpg',
+        url: 'http://www.lereseau.asso.fr',
+        height: 50
+      },
+      {
+        logo: 'Logo-moidans10ans.png',
+        url: 'https://moidans10ans.fr/',
+        height: 50
+      },
+      {
+        logo: 'Logo-les-entreprises-pour-la-cite.jpg',
+        url: 'http://www.reseau-lepc.fr',
+        height: 50
+      },
+      {
+        logo: 'Logo-tous-en-stage.jpg',
+        url: 'https://tousenstage.com',
+        height: 50
+      },
+      {
+        logo: 'Logo-un-stage-et-apres.jpg',
+        url: 'https://www.unstageetapres.fr',
+        height: 50
+      },
+      {
+        logo: 'Logo-viens-voir-mon-taf.jpg',
+        url: 'https://www.viensvoirmontaf.fr',
+        height: 65
+      },
+      {
+        logo: 'Logo-telemaque.png',
+        url: 'https://www.institut-telemaque.org/',
+        height: 50
+      },
+
+    ].shuffle
   end
+  def partners_map_of_colored_logo_url
+    [
+      { 
+        logo: 'logo-moi-dans-10-ans-my-future.png',
+        url: 'https://https://moidans10ans.fr/',
+        height: 60
+      },
+      {
+        logo: 'logo-job-irl.png',
+        url: 'https://www.jobirl.com',
+        height: 60
+      },
+      {
+        logo: 'logo-le-reseau.png',
+        url: 'http://www.lereseau.asso.fr',
+        height: 60
+      },
+      {
+        logo: 'logo-epc.png',
+        url: 'http://www.reseau-lepc.fr',
+        height: 60
+      },
+      {
+        logo: 'logo-tous-en-stage.png',
+        url: 'https://tousenstage.com',
+        height: 60
+      },
+      {
+        logo: 'logo-un-stage-et-apres.png',
+        url: 'https://www.unstageetapres.fr',
+        height: 60
+      },
+      {
+        logo: 'logo-viens-voir-mon-taf.png',
+        url: 'https://www.viensvoirmontaf.fr',
+        height: 60
+      },
+      {
+        logo: 'logo-telemaque.png',
+        url: 'https://www.institut-telemaque.org/',
+        height: 60
+      },
+    ].shuffle
+  end
+      
 
   def user_roles_to_select
     Users::SchoolManagement.roles.map do |ruby_role, _pg_role|

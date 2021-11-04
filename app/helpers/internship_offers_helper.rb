@@ -47,12 +47,23 @@ module InternshipOffersHelper
 
   def forwardable_params
     params.permit(
-      :latitude, :longitude, :radius, :city, :keyword, :page, :filter, :school_track
+      :latitude,
+      :longitude,
+      :radius,
+      :city,
+      :keyword,
+      :page,
+      :filter,
+      :school_year,
+      :school_track,
+      :order,
+      :direction,
+      week_ids: [],
     )
   end
 
-  def back_to_internship_offers_from_internship_offer_path(current_user)
-    if current_user.is_a?(Users::Employer) || current_user.is_a?(Users::Operator)
+  def back_to_internship_offers_from_internship_offer_path(current_user, url)
+    if url.include?('dashboard') && [Users::Employer, Users::Operator, Users::Statistician].include?(current_user.class)
       return dashboard_internship_offers_path
     end
 
@@ -83,5 +94,10 @@ module InternshipOffersHelper
 
   def select_daily_end(internship_offer, day)
     internship_offer.new_daily_hours.fetch(day) { '17:00' }
+  end
+
+  def truncate_description(internship_offer)
+    description = internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_plain_text : internship_offer.description
+    description.truncate(280, separator: ' ')
   end
 end

@@ -79,7 +79,6 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "monstage_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
-
   config.action_mailer.default_url_options = { host: ENV.fetch("HOST") }
 
   ActionMailer::Base.delivery_method = :smtp
@@ -117,4 +116,5 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
 end

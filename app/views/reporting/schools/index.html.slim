@@ -1,25 +1,29 @@
 .container.mt-3
   = render partial: 'reporting/navigation'
-  div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters', locals: {by_academy: false, by_typology: false, by_department: true, by_school_track: false}
+  div.rounded[data-controller='statistics']
+    = render partial: 'reporting/filters',
+             locals: {view_tab: :schools}
 
+  .row.mt-3
+    .col-lg-8.col-12.mb-2
+      = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
+                class: 'btn btn-danger ml-auto ',
+                data: {turbolinks: false} do
+        i.fas.fa-download
+        span =" Exporter la liste des établissements"
   .row.mt-3
     .col-12
       table.table.table-statistics.table-sticky-thead
         thead
-          tr.tr-blue
-            th.bl-1.bc-light= "Établissement"
-            th.bl-1.bc-light colspan="1"= "Semaines de stage"
-            th.bl-1.bc-light colspan="2"= "Nombre d'élèves"
-            th.bl-1.bc-light colspan="2"= "Personnel impliqué"
           tr.tr-white
-            th.bl-1.bc-light
-            th.bl-1.bc-light= "Semaines"
-            th.bl-1.bc-light= "E-mail confirmé"
-            th.bl-1= "Chef établissement"
-            th= "Professeurs principaux"
+            th.bc-light.font-weight-light.text-black-50= "Établissements"
+            th.bc-light.font-weight-light.text-black-50= "Semaines de stage"
+            th.bc-light.font-weight-light.text-black-50= "E-mails confirmés"
+            th.bc-light.font-weight-light.text-black-50= "Chef établissement"
+            th.bc-light.font-weight-light.text-black-50= "Professeurs principaux"
         tbody
           = render partial: 'reporting/schools/school', collection: @schools
 
   .row.mt-3
     .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+

@@ -1,0 +1,3 @@
+[submodule "infra/disaster/docker/monstage-backup-manager"]
+	path = infra/disaster/docker/monstage-backup-manager
+	url = git@github.com:betagouv/monstage-backup-manager.git

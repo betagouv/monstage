@@ -3,10 +3,6 @@
 module Users
   class Student < User
     belongs_to :school, optional: true
-    belongs_to :missing_school_weeks, optional: true,
-                                      foreign_key: 'missing_weeks_school_id',
-                                      class_name: 'School',
-                                      counter_cache: :missing_school_weeks_count
 
     belongs_to :class_room, optional: true
 
@@ -31,6 +27,14 @@ module Users
     validate :validate_school_presence_at_creation
 
     attr_reader :handicap_present
+
+    def student?; true end
+
+    def channel
+      return :email if email.present?
+
+      :phone
+    end
 
     def internship_applications_type
       return nil unless class_room.present?
@@ -61,7 +65,11 @@ module Users
     end
 
     def after_sign_in_path
-      url_helpers.internship_offers_path
+      if targeted_offer_id.present?
+        url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
+      else
+        Presenters::User.new(self).default_internship_offers_path
+      end
     end
 
     def custom_dashboard_path
@@ -89,8 +97,6 @@ module Users
       super(send_email: send_email)
 
       update_columns(birth_date: nil,
-                     gender: nil,
-                     class_room_id: nil,
                      handicap: nil)
       resume_educational_background.try(:delete)
       resume_other.try(:delete)

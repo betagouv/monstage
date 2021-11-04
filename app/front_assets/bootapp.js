@@ -19,10 +19,11 @@ application.load(definitionsFromContext(context))
 // Support component names relative to this directory:
 const componentRequireContext = require.context("components", true);
 
-import SearchInternshipOffer from "components/SearchInternshipOffer";
 import ReservedSchoolInput from "components/ReservedSchoolInput";
-import FilterInternshipOffer from "components/FilterInternshipOffer";
 import SearchSchool from "components/SearchSchool";
+import SearchSchoolByName from "components/SearchSchoolByName";
+import CityInput from "components/search_internship_offer/CityInput";
+import KeywordInput from "components/search_internship_offer/KeywordInput";
 import CountryPhoneSelect from "components/inputs/CountryPhoneSelect";
 import AddressInput from "components/inputs/AddressInput";
 import SirenInput from "components/inputs/SirenInput";
@@ -30,11 +31,12 @@ import DistanceIcon from "components/icons/DistanceIcon";
 
 
 ReactOnRails.register({
-  SearchInternshipOffer,
   ReservedSchoolInput,
-  FilterInternshipOffer,
   SearchSchool,
+  SearchSchoolByName,
   DistanceIcon,
+  CityInput,
+  KeywordInput,
   CountryPhoneSelect,
   AddressInput,
   SirenInput

@@ -1,17 +1,19 @@
-<div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= resource.channel %>">
+<div class='onboarding-card onboarding-card-sm mb-4'
+     data-controller="signup"
+     data-signup-channel-value="<%= (resource.channel == :phone || params[:phone].present?) ? "phone" : "email" %>">
   <header class="header-account header-onboarding-card my-0">
     <div class="row mx-0">
       <div class="col-12 align-self-end col-sm-6 h-100">
         <div class="row">
           <div class='col-12 text-center text-sm-left'>
             <h1 class="h2">Me connecter</h1>
-            <p><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: 'text-danger' %></p>
+            <p><%= link_to "Pas encore de compte&nbsp;?".html_safe, users_choose_profile_path, class: "text-danger" %></p>
           </div>
         </div>
       </div>
       <div class="col-6 d-none d-sm-flex h-100 flex-row align-items-end justify-content-end pt-4">
           <div class="row">
-            <%= image_tag asset_pack_path('media/images/onboarding/student.svg'), class:'justify-content-end align-self-end', alt: "Elève", height: 220 %>
+            <%= image_tag asset_pack_path("media/images/onboarding/student.svg"), class: "justify-content-end align-self-end", alt: "Elève", height: 220 %>
           </div>
       </div>
     </div>
@@ -20,30 +22,37 @@
     <%= form_with(model: resource,
                   scope: resource_name,
                   local: true,
+                  html: { id: "sign_in_form" },
                   url: session_path(resource_name)) do |f| %>
+      <%= f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id) %>
+
       <%= f.rg2a_explain_required_asterisk %>
       <%= render "layouts/form_errors", resource: resource, resource_name: :user %>
 
-      <%= render 'users/select_channel', label: 'Comment vous connecter ?', form: f, resource: resource, phone: 'Téléphone' %>
+      <%= render "users/select_channel",
+                 label: "Comment vous connecter ?",
+                 form: f,
+                 resource: resource,
+                 phone: "Téléphone" %>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control  ', required: true, autofocus: params[:email].blank? ? false : true %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "form-control  ", required: true, autofocus: params[:email].blank? ? false : true %>
         <%= f.label :password do %>
           Mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
-        <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-          <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: 'form-text text-muted small' %>
+        <% -if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
+          <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: "form-text text-muted small" %>
         <% end %>
       </div>
 
       <div class="form-group form-check">
-        <%= f.check_box :remember_me, class: 'form-check-input' %>
-        <%= f.label :remember_me, class: 'form-check-label' %>
+        <%= f.check_box :remember_me, class: "form-check-input" %>
+        <%= f.label :remember_me, class: "form-check-label" %>
       </div>
 
       <div class="actions d-flex d-sm-block text-center">
-        <%= f.submit t('.sign_in'), class: 'btn btn-primary' %>
+        <%= f.submit t(".sign_in"), class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>

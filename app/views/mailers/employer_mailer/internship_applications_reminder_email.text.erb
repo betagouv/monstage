@@ -1,7 +1,7 @@
 <%= "Bonjour #{@employer.name}," %>
 
 <% if @remindable_application_ids.size.positive? %>
-<%= "Vous avez actuellement #{@remindable_application_ids.size} candidature(s) en attente de réponse. En l'absence de réponse de votre part ; elle(s) seront automatiquement expirées après de 15 jours." %>
+<%= "Vous avez actuellement #{@remindable_application_ids.size} candidature(s) en attente de réponse. En l'absence de réponse de votre part, elle(s) expireront automatiquement dans 15 jours." %>
 <% end %>
 
 <%= dashboard_internship_offers_url %>

@@ -7,6 +7,6 @@ class MainTeacherMailer < ApplicationMailer
     @student_presenter = Presenters::User.new(student)
 
     mail(to: main_teacher.email,
-         subject: "Une convention de stage peut être établie")
+         subject: "Une convention de stage à remplir vous attend")
   end
 end

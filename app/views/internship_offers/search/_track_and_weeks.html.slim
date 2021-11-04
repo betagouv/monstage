@@ -1,0 +1,100 @@
+.form-group.mb-md-0.col-12.col-md
+  = f.label :school_track, class: "d-inline-block d-md-none", for: 'input-search-school-track' do
+    | Filtrer par filière
+  = f.select :school_track,
+             options_for_select(options_for_school_tracks,
+             default_values[:school_track]),
+             { prompt: 'Filière' },
+             class: 'custom-select shadow-none',
+             'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', 'data-search-week-checkboxes-target': 'inputSelect', id: 'input-search-school-track'
+
+.form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"
+                                   data-search-school-track-select-target="searchByDateContainer"]
+  .label.d-inline-block.d-md-none Quand se déroule le stage ?
+
+  input.label.d-none.d-md-inline-block.mb-0.form-control.no-border.rounded-0.font-weight-normal.text-decoration-none [data-search-school-track-select-target='inputPlaceholder'
+    data-action='focus->search-popover#show'
+    placeholder="Dates de stage"
+    type="text"
+    data-search-week-checkboxes-target="inputPlaceholder"
+    data-search-popover-target="inputPlaceholder"
+    id="input-search-by-week"
+    aria-label="Afficher les semaines de stage"]
+
+  div data-search-school-track-select-target="dateContainer"
+    div#weeks-container [role="tabpanel"
+                         class="rounded-6 bg-white #{render_as_partial ? 'd-none' : ''}"
+                         data-search-popover-target="popover"]
+
+      #year_select.d-none [aria-label="Mois de l'année scolaire : #{list_months_range}"
+                           role="tabpanel" data-search-form-target="tabPane"]
+        div role="tablist"
+          - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
+            .row.mb-3
+              - if month_i_left
+                .col-6.pr-2
+                    = link_to month_in_text(month_i_left, format: "%B"),
+                              "#month_#{month_i_left}",
+                              data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                              role: "tab",
+                              class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+              - if month_i_right
+                .col-6.pl-2
+                    = link_to month_in_text(month_i_right, format: "%B"),
+                              "#month_#{month_i_right}",
+                              data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                              role: "tab",
+                              class: 'border rounded-8 d-block text-center p-3 text-body text-decoration-none hover-light-blue'
+
+      - list_months_for_search.map do |month_i, weeks|
+        - next if weeks.empty?
+
+
+        div [class="#{month_i == current_month_for_search ? 'active' : 'd-none'}"
+             id="month_#{month_i}"
+             role="tabpanel"
+             data-search-form-target="tabPane"
+             aria-label="Semaines de #{month_in_text(month_i, format: :month_with_year)}"]
+
+          .row.text-center.no-gutters.pt-3.pb-4 role="tablist"
+            .col-2
+              - unless search_first_month?(month_i)
+                = link_to "#month_#{previous_month(month_i)}",
+                          title: "Voir les semaines du mois de #{month_in_text(previous_month(month_i), format: "%B")}",
+                          data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                          role: "tab",
+                          class: "text-decoration-none text-body px-3 py-1 " do
+                  i.fas.fa-chevron-left
+            .col-8
+              = link_to "#year_select",
+                        title: "Afficher tous les mois",
+                        data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                        role: "tab",
+                        class: 'border px-3 py-2 rounded-8 text-decoration-none text-body hover-light-blue'  do
+                = "#{month_in_text(month_i, format: "%B")} #{weeks.first.try(:year)}"
+
+            .col-2
+              - unless search_last_month?(month_i)
+                = link_to "#month_#{next_month(month_i)}",
+                          title: "Voir les semaines du mois de #{month_in_text(next_month(month_i), format: "%B")}",
+                          data: {turbolinks: false, "action" => "click->search-form#showWeekOrMonthSelection"},
+                          role: "tab",
+                          class: "text-decoration-none text-body px-3 py-1 " do
+                  i.fas.fa-chevron-right
+
+          div
+            - weeks.map do |week|
+                = f.label :"week_id", for:  "checkbox_#{week.id}", class: "d-flex py-3 custom-checkbox-search mb-0 font-weight-normal" do
+                  = f.check_box :week_ids,
+                                {multiple: true, checked: default_values.fetch(:week_ids) { {} }.include?(week.id.to_s), id: "checkbox_#{week.id}",
+                                class: 'align-self-start mt-1 mx-2 ',
+                                'data-search-week-checkboxes-target': 'inputCheckboxes',
+                                'data-action': 'change->search-week-checkboxes#onCheckboxChange',
+                                'data-text-week-str':week.short_range_as_str },
+                                week.id,
+                                false
+                  span.flex-fill
+                    span.d-block.mb-0= week.short_range_as_str
+                    small.text-muted.active-blue-700= "Semaine #{week.week_date.cweek}"
+
+      div.col-12 data-search-week-checkboxes-target="badgeList"

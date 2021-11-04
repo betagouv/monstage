@@ -1,26 +1,24 @@
 - content_for(:canonical_url, params[:page] ? internship_offers_url(page: params[:page]) : internship_offers_url)
-h1.text-muted.opacity-05.text-center.text-sm-left.mt-4.mb-3
-  = "Postulez à des offres de stages."
+
+- content_for(:custom_header) do
+  h1.text-white.text-center.pt-5.pb-5.pb-md-4.my-0.bg-custom-blue
+    = "Postulez à des offres de stage"
+  .position-sticky.sticky-top.bg-custom-blue.wrapper-sticky-with-offset
+    .container.d-none.d-md-block
+      .row
+        .col-12
+          .pt-3
+            = render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: params, form_id: :desktop_internship_offers_index_search_form }
+
+.actions.d-flex.d-stick.d-md-none.p-2
+  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+    = search_button_label
 
 
 .row
-  table.table.table-sticky-thead.table-dashboard-internship-offers.mb-0
-    thead
-      tr.tr-white
-        th.p-0
-          .pb-4.pb-sm-0.pt-4.pt-sm-3.bg-light-gray-sm.mb-3.mb-sm-4
-            .col-12
-              = react_component("SearchInternshipOffer",
-                                props: { url: internship_offers_path, className: 'flex-row focusable-search-bar' })
+  .col-12= render "internship_offers/title", internship_offers: @internship_offers
 
-          .col-12= render "internship_offers/title", internship_offers: @internship_offers
-    tbody
-      - if @internship_offers.blank?
-        tr
-          td
-            .row
-              p.col-12[style='color: gray'] Aucune offre n'est disponible
-      - else
-        = render partial: "internship_offer", collection: @internship_offers
+= render partial: "internship_offer", collection: @internship_offers
+
 .row.d-flex.d-md-none
   .col-12= paginate(@internship_offers)

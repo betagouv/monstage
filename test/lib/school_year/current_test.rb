@@ -34,5 +34,6 @@ module SchoolYear
         assert_equal Date.new(2020, 5, 31), school_year.end_of_period
       end
     end
+
   end
 end

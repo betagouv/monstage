@@ -10,4 +10,37 @@ html body{
     // color: $blue_sky;
     color: $blue;
   }
+  .text-warning-custom{
+    color: $warning_custom;
+  }
+  .text-blue-custom{
+    color: $blue_custom;
+  }
+  .text-red-custom{
+    color: $red_custom;
+  }
+  .text-counter-stats{
+    color: $text_stat;
+
+  }
+  .text-counter-stats-size{
+    font-size: 1.2rem;
+  }
+  .text-purple-custom{
+    color: $purple_custom;
+  }
+  .text-cyan-custom{
+    color: $cyan_custom;
+  }
+  .text-blue-stats-total{
+    color: $blue_border;
+  }
+  .nowrap{
+    white-space: nowrap;
+  }
+  .text-border-color{
+     color: $nav-tabs-border-color;
+  }
+
 }
+

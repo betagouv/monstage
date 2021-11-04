@@ -1,7 +1,7 @@
 .row.d-print-none
   .col-12
     p
-      = link_to back_to_internship_offers_from_internship_offer_path(current_user), {id: 'test-backlink', class: 'text-danger font-weight-bold'} do
+      = link_to back_to_internship_offers_from_internship_offer_path(current_user, request.original_url), {id: 'test-backlink', class: 'text-danger font-weight-bold'} do
         i.fas.fa-chevron-left
         |&nbsp;
         = "Retour aux stages"
@@ -16,15 +16,8 @@
 
 
   .col-12.col-sm-4.text-right.relative
-    - if can?(:create, InternshipOffer) && @internship_offer.created_at < SchoolYear::Current.new.beginning_of_period
-      div
-        .actions.d-flex.d-sm-block.d-xs-stick.text-center
-          p.mb-1.d-none.d-md-block.text-muted.small= "Souhaitez-vous renouveller cette offre pour la nouvelle année scolaire ?"
-          p.mb-0.w-100= link_to new_dashboard_internship_offer_path(duplicate_id: @internship_offer.to_param), class: 'btn btn-primary rounded-xs-0 w-100' do
-            i.fas.fa-copy
-            small.test-renew-button
-              |&nbsp;
-              | Renouveler
+    - if can?(:renew, @internship_offer) || can?(:duplicate, @internship_offer)
+      = render "internship_offers/duplicate_or_renew", internship_offer: @internship_offer
     - elsif internship_offer.from_api?
       = render "internship_applications/call_to_action/api", internship_offer: internship_offer
     - elsif user_signed_in?

@@ -44,6 +44,11 @@ export const endpoints = {
     searchParams.append('siren', siren);
     endpoint.search = searchParams.toString();
     console.log(endpoint);
+  },
+  
+  // @post
+  apiSearchSchool: () => {
+    const endpoint = new URL(`${host}/api/schools/search`);
     return endpoint;
   },
 };

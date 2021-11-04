@@ -2,7 +2,8 @@
 
 class MainTeacherTabFinder
   def approved_application_count
-    @application_count ||= InternshipApplication.approved
+    @application_count ||= InternshipApplication.with_active_students
+                                                .approved
                                                 .through_teacher(teacher: main_teacher)
                                                 .count
   end

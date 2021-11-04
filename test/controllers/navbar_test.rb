@@ -52,9 +52,9 @@ class NavbarTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get operator.custom_dashboard_path
-    assert_select(".navbar a[href=\"#{reporting_internship_offers_path(school_year: SchoolYear::Current.new.beginning_of_period.year)}\"]",
-                  count: 1,
-                  text: 'Statistiques')
+    # assert_select(".navbar a[href=\"#{reporting_dashboards_path(school_year: SchoolYear::Current.new.beginning_of_period.year, subscribed_school: false)}\"]",
+    #               count: 1,
+    #               text: 'Statistiques')
     assert_select('.navbar a.active', count: 1)
     assert_select('.navbar a.active', text: operator.dashboard_name,
                                       count: 1)

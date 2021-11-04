@@ -9,21 +9,34 @@ body {
 .content {
   flex: 1 0 auto;
 }
+.footer-elevator {
+  transform: translate(0, -15px);
+  z-index: 1024;
+  position: fixed;
+  bottom: 50px;
+  left:91%
+  }
 
-.footer{
-  border-top: 1px solid $gray-400;
+  .back-to-top {
+    border: 2px white solid;
+    border-radius: 50%;
+}
+
+.footer {
+  font-weight: bold;
+  font: "normal normal medium 14px/27px Helvetica Neue";
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  letter-spacing: 0px;
   flex-shrink: 0;
   .footer-content{
     color: $gray-900;
-    // color: rgb(241,241,241);
     a{
       text-decoration: none;
       color: $gray-900;
-      // color: rgb(241,241,241);
     }
   }
-  background-color: $gray-100;
-  // background-color: rgba(51, 51, 51, 0.9);
+  background-color: $bg-light-blue;
   }
 
 @include media-breakpoint-down(xs) {

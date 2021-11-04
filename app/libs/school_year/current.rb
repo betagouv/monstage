@@ -3,11 +3,13 @@
 module SchoolYear
   # period from beginning of school year until end
   class Current < Base
+    SEPTEMBER = 9
+    FIRST = 1
     def beginning_of_period
       case current_month
-      when january_to_may then Date.new(current_year - 1, 9, 1)
-      when june_to_august then Date.new(current_year, 9, 1)
-      when september_to_december then Date.new(current_year, 9, 1)
+      when january_to_may then Date.new(current_year - 1, SEPTEMBER, FIRST)
+      when june_to_august then Date.new(current_year, SEPTEMBER, FIRST)
+      when september_to_december then Date.new(current_year, SEPTEMBER, FIRST)
       end
     end
 

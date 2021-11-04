@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
 
 # fwk/server
+gem 'actionpack', ">= 6.1.3.2"
 gem 'rails'
 gem 'puma'
 
@@ -22,11 +24,13 @@ gem 'prawn-styled-text'
 
 # front end
 gem 'uglifier'
+gem 'inline_svg'
 gem 'slim-rails'
 gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'
 gem 'caxlsx_rails'
+gem "split", require: "split/dashboard"
 
 # background jobs
 gem 'sidekiq'
@@ -37,10 +41,13 @@ gem 'rails_admin'
 gem 'rails_admin-i18n'
 
 # instrumentation
-gem 'newrelic_rpm'
-gem 'sentry-raven'
+gem "lograge"
 gem 'ovh-rest'
 gem 'prismic.io', require: 'prismic'
+gem "sentry-ruby"
+gem "sentry-rails"
+gem 'airtable'
+gem 'geocoder'
 
 # acl
 gem 'cancancan'
@@ -62,6 +69,7 @@ gem 'bootsnap', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'dotenv-rails'
 end
 
 group :development do
@@ -99,4 +107,5 @@ end
 group :test, :development, :review do
   gem 'factory_bot_rails'
 end
+
 

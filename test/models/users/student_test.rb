@@ -6,22 +6,13 @@ module Users
     test 'student.after_sign_in_path redirects to internship_offers_path' do
       student = create(:student)
       assert_equal(student.after_sign_in_path,
-                   Rails.application
-                        .routes
-                        .url_helpers
-                        .internship_offers_path)
-    end
+                   Presenters::User.new(student).default_internship_offers_path,
+                   'failed to use default_internship_offers_path for user without targeted_offer_id')
 
-    test 'student.missing_school_week' do
-      school = create(:school)
-      student = create(:student, school: school)
-      student.missing_school_weeks = school
-      assert_changes -> { school.reload.missing_school_weeks_count },
-                     from: 0,
-                     to: 1 do
-        student.save!
-      end
-      assert_equal [student], school.students_with_missing_school_week
+      student.targeted_offer_id= 1
+      assert_equal(student.after_sign_in_path,
+                   Rails.application.routes.url_helpers.internship_offer_path(id: 1))
+
     end
 
     test 'validate wrong mobile phone format' do

@@ -19,8 +19,8 @@
 
   <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
-    <div class="content" data-controller='rg2a'>
-      <header role="banner" class="custom-navbar <%= homepage? || statistics? ? '' : 'mb-4' %>">
+    <div class="content pt-0" data-controller='rg2a'>
+      <header role="banner" class="custom-navbar <%= homepage? || statistics? || content_for?(:custom_header) ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
             <% if onboarding_flow? %>
@@ -35,6 +35,7 @@
         <%= render 'layouts/flash' %>
         <div role="main"><%= yield %></div>
       <% else %>
+        <% if content_for?(:custom_header) %> <%= content_for(:custom_header) %> <% end %>
         <div class="container">
           <%= render 'layouts/flash' %>
           <div role="main"><%= yield %></div>

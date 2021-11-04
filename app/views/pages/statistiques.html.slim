@@ -1,0 +1,163 @@
+.container
+  .row.text-dark.bg-light-blue.bg-rounded.py-4
+    .col-md-5.col-sm-12.d-flex.align-items-center.justify-content-center
+      = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'),
+                  alt: "Mon stage de 3e",
+                  class: 'text-center',
+                  height: 148
+    .col-md-7.col-sm-12.text-dark
+      p.lead.hero
+        |
+          Dans la continuité du discours «&nbsp;La France, une chance pour chacun&nbsp;»
+          du Président de la République le 23 mai 2018, la plateforme
+          www.monstagedetroisieme.fr pilotée par l'Agence nationale de
+          la cohésion des territoires a été mise en ligne dès
+          la rentrée 2018-2019.
+      p.lead.hero
+        |
+          Elle permet aux élèves de troisième des établissements des réseaux
+          éducation prioritaire (REP et REP+) d’accéder à des offres de
+          stage de qualité en entreprises et dans les services publics.
+      
+      p.lead.hero 
+        | En
+        span.h3 =" 2 ans et 5 mois "
+        | d'existence, appuyée par 
+        br
+        span.h3 = " 8 associations* "
+        | partenaires au niveau national,
+        |&nbsp;plus de
+        br
+        span.h3.px-1 33&nbsp;000 élèves
+        | ont bénéficié de ce dispositif !
+  .row.my-1.text-muted.font-weight-light.font-italic
+    |
+      (*) Les 8 associations sont : JobIRL, Institut Télémaque, 
+      Le réseau, Les entreprises pour la cité, Moi dans 10 ans, 
+      Tous en stage, Un stage et après, et Viens voir mon taf
+  .row.my-5
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
+                  alt: "bilan pour les établissements scolaires",
+                  height: 44
+      br
+      h1.h6.mb-0.pt-2 Année scolaire 2019 / 2020
+      h2.h4.text-dark.font-weight-bold Les établissements scolaires
+  .row
+  .row.mt-3.no-gutters
+    .col-md-5.col-sm-12
+      = render 'pages/statistics/platform_use_header'
+      = render partial: 'pages/statistics/all_rep',
+                locals: { achieved: 434, total: 729, title: 'REP', type: 'rep'}
+      = render partial: 'pages/statistics/all_rep',
+                locals: { achieved: 278, total: 361, title: 'REP+', type: 'rep-plus' }
+    .col-md-6.offset-md-1.col-sm-12
+      = render partial: 'pages/statistics/academical',
+                locals: { achieved: 34, total: 56 }
+  .row.my-5
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
+                  alt: "bilan des stages",
+                  height: 44
+      br
+      h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
+      h2.h4.text-dark Les stages
+  .row
+  .row.mt-3
+    .col-md-6.col-sm-12
+      = render partial: 'pages/statistics/internship_offers',
+                locals: { caption: "Objectif fixé par la *circulaire du Premier ministre du 31 juillet 2019*",
+                          public_goal: "15 000",
+                          private_goal: "15 000",
+                          total_goal: "30 000",
+                          public_achieved: "7 339",
+                          private_achieved: "22 970",
+                          total_achieved: "30 309" }
+
+    .col-md-6.col-sm-12
+      = render partial: 'pages/statistics/internship_applications',
+              locals: { caption: "Objectif fixé par la *circulaire du Premier ministre du 31 juillet 2019*",
+                        presence_goal: "16 000",
+                        remote_goal: "",
+                        total_goal: "16 000",
+                        presence_achieved: "14 724",
+                        remote_achieved: "4 527",
+                        total_achieved: "19 251" }
+
+
+  / .row.mt-5.mb-3
+  /   .col-12.text-center
+  /     = image_tag asset_pack_path('media/images/pages/statistics/reseau.png'),
+  /                 alt: "Le réseau",
+  /                 height: 47
+  /     br
+  /     h1.h6.pt-2.mb-0 Année scolaire 2019 / 2020
+  /     h2.h4.text-dark Le réseau
+  / .row
+  / .row.mt-3
+  /   .col-12.text-center
+  /     |Pour cette année scolaire, les deux entreprises
+  /     br
+  /     | signataires du PaQte les plus actives ont été :
+  / .row.mt-4
+  /   = render partial: 'pages/statistics/best_partners',
+  /             locals: { entreprise_name: 'La Poste',
+  /                       image: 'la_poste.png',
+  /                       bg_height: '110px',
+  /                       offers_proposed_count: 1340,
+  /                       accepted_offers_count: 354}
+  /   = render partial: 'pages/statistics/best_partners',
+  /             locals: { entreprise_name: 'Carrefour',
+  /                       image: 'carrefour.png',
+  /                       bg_height: '110px',
+  /                       offers_proposed_count: 800,
+  /                       accepted_offers_count: 288}
+  / .row.mb-5.mt-2
+  /   .col-12.text-center
+  /     p Ces chiffres décomptent des accueils de stagiaires en présentiel uniquement
+
+
+  / 2020 / 2021
+
+  .hr.my-5
+
+  .row.my-5
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/school.svg'),
+                  alt: "bilan pour les établissements scolaires",
+                  height: 44
+      br
+      h1.h6.mb-0.pt-2 Année scolaire 2020 / 2021, au 25 mars 2021
+      h2.h4.text-dark Les établissements scolaires
+  .row
+  .row.mt-3.no-gutters
+    .col-md-5.col-sm-12
+      = render 'pages/statistics/platform_use_header'
+      = render partial: 'pages/statistics/all_rep',
+                locals: { achieved: 446, total: 729, title: 'REP', type: 'rep'}
+      = render partial: 'pages/statistics/all_rep',
+                locals: { achieved: 285, total: 362, title: 'REP+', type: 'rep-plus' }
+    .col-md-6.offset-md-1.col-sm-12
+      = render partial: 'pages/statistics/academical',
+                locals: { achieved: 79, total: 108 }
+  .row.my-5
+    .col-12.text-center
+      = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
+                  alt: "bilan des stages",
+                  height: 44
+      br
+      h1.h6.pt-2.mb-0 Année scolaire 2020 / 2021, au 25 mars 2021
+      h2.h4.text-dark Les stages
+  .row
+  .row.my-3
+    .col-12.d-flex.justify-content-center
+      .kpi-internship-global.bg-light-blue.bg-rounded
+        .row.p-3
+          .col-5.d-flex.justify-content-center.align-items-center
+            .max-academical.font-weight-bold.d-none.d-md-block  10 881
+            .h1.d-block.d-md-none 10 881
+          .col-7.d-flex.justify-content-center.align-items-center
+            |
+              C’est le nombre d’élèves ayant bénéficié
+              d’un stage à distance, compte tenu du contexte sanitaire
+  .row.my-5

@@ -11,8 +11,9 @@ class Ability
       when 'Users::Employer' then employer_abilities(user: user)
       when 'Users::God' then god_abilities
       when 'Users::Operator' then operator_abilities(user: user)
-      when 'Users::Statistician' then statistician_abilities
-      when 'Users::SchoolManagement' then
+      when 'Users::Statistician' then statistician_abilities(user: user)
+      when 'Users::MinistryStatistician' then ministry_statistician_abilities(user: user)
+      when 'Users::SchoolManagement'
         common_school_management_abilities(user: user)
         school_manager_abilities(user: user) if user.school_manager?
         main_teacher_abilities(user: user)   if user.main_teacher?
@@ -25,19 +26,19 @@ class Ability
   end
 
   def visitor_abilities
-    can :read, InternshipOffer
+    can %i[read apply], InternshipOffer
   end
 
   def student_abilities(user:)
+    can :look_for_offers, User
     can :show, :account
     can :change, :class_room
     can %i[read], InternshipOffer
     can :apply, InternshipOffer do |internship_offer|
-      !(internship_offer.reserved_to_school? && (internship_offer.school_id != user.school_id)) &&
-        !internship_offer.from_api? &&
-        user.try(:class_room).try(:applicable?, internship_offer)
+      student_can_apply?(student: user, internship_offer: internship_offer)
     end
-    can %i[submit_internship_application update], InternshipApplication do |internship_application|
+    can %i[submit_internship_application update],
+        InternshipApplication do |internship_application|
       internship_application.student.id == user.id
     end
 
@@ -52,6 +53,7 @@ class Ability
   end
 
   def common_school_management_abilities(user:)
+    can :welcome_students, User
     can :choose_role, User
     can_create_and_manage_account(user: user) do
       can [:choose_class_room], User
@@ -68,7 +70,8 @@ class Ability
         school.id == user.school_id
       end
     end
-    can %i[submit_internship_application validate_convention], InternshipApplication do |internship_application|
+    can %i[submit_internship_application validate_convention],
+        InternshipApplication do |internship_application|
       internship_application.student.school_id == user.school_id
     end
     can %i[update destroy], InternshipApplication do |internship_application|
@@ -110,7 +113,7 @@ class Ability
       edit_main_teacher_full_name
       edit_activity_rating_rich_text
       edit_activity_preparation_rich_text
-        ], InternshipAgreement do |agreement|
+    ], InternshipAgreement do |agreement|
       is_student_in_school = agreement.internship_application.student.school_id == user.school_id
       is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
 
@@ -119,15 +122,22 @@ class Ability
   end
 
   def employer_abilities(user:)
+    can :supply_offers, User
     can :show, :account
 
     can :create_remote_internship_request, SupportTicket
 
     can %i[create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
     # internship_offer stepper
     can %i[create], InternshipOfferInfo
-    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+    can %i[update edit renew], InternshipOfferInfo, employer_id: user.id
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
@@ -151,10 +161,17 @@ class Ability
   end
 
   def operator_abilities(user:)
+    can :supply_offers, User
     can :show, :account
     can :choose_operator, :sign_up
-    can :change, :department_name
+    can :change, :department
     can %i[create see_tutor], InternshipOffer
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :create, InternshipOffers::Api
     can %i[update discard], InternshipOffers::Api, employer_id: user.id
@@ -164,23 +181,17 @@ class Ability
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
-
     can %i[index update], InternshipApplication
     can :show, :api_token
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
     can %i[index_and_filter], Reporting::InternshipOffer
-    can %i[index], Acl::Reporting do |_acl|
+    can %i[index import_data], Acl::Reporting do |_acl|
       true
     end
-  end
-
-  def statistician_abilities
-    can :view, :department_name
-    can %i[read], InternshipOffer
-
-    can %i[index], Acl::Reporting, &:allowed?
-
-    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[see_reporting_internship_offers
+           export_reporting_dashboard_data
+           see_reporting_schools
+           see_reporting_enterprises ], User
   end
 
   def god_abilities
@@ -188,22 +199,95 @@ class Ability
     can :manage, School
     can :manage, Sector
     can %i[destroy see_tutor], InternshipOffer
-    can %i[read update destroy export], User
-    can :switch_user, User
     can %i[read update export], InternshipOffer
-    can :manage, EmailWhitelist
+    can :manage, EmailWhitelists::Statistician
+    can :manage, EmailWhitelists::Ministry
     can :manage, InternshipOfferKeyword
     can %i[create read update], Group
     can :access, :rails_admin   # grant access to rails_admin
     can %i[read update delete discard export], InternshipOffers::Api
     can :read, :dashboard       # grant access to the dashboard
     can :read, :kpi # grant access to the dashboard
-    can %i[index], Acl::Reporting do |_acl|
+    can %i[index department_filter], Acl::Reporting do |_acl|
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
-    can :reset_cache, User
+    can %i[ switch_user
+            read
+            update
+            destroy
+            export
+            export_reporting_dashboard_data
+            see_reporting_dashboard
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_associations
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_administrations_summary
+            see_dashboard_associations_summary
+            reset_cache ], User
+    can :manage, Operator
   end
+
+  def statistician_abilities(user:)
+    
+    common_to_all_statisticians(user: user)
+
+    can :show, :api_token
+
+    can %i[create], Organisation
+
+    can %i[index], Acl::InternshipOfferDashboard, &:allowed?
+    can %i[index], Acl::Reporting, &:allowed?
+
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[ see_reporting_dashboard
+            see_dashboard_administrations_summary
+            see_reporting_internship_offers
+            see_reporting_schools
+            see_reporting_enterprises
+            see_dashboard_enterprises_summary
+            see_dashboard_associations_summary], User
+  end
+
+  def ministry_statistician_abilities(user: )
+    common_to_all_statisticians(user: user)
+
+    can %i[create], Organisation do  |organisation|
+      user.ministry == organisation.group && organisation.is_public == true
+    end
+
+    can %i[index_and_filter], Reporting::InternshipOffer
+    can :read, Group
+    can %i[index], Acl::Reporting, &:ministry_statistician_allowed?
+    can %i[export_reporting_dashboard_data], User
+  end
+
+  def common_to_all_statisticians(user: )
+    can :supply_offers, User
+    can :view, :department
+    can %i[read create see_tutor], InternshipOffer
+    can %i[read update discard], InternshipOffer, employer_id: user.id
+    can :renew, InternshipOffer do |internship_offer|
+      renewable?(internship_offer: internship_offer, user: user)
+    end
+    can :duplicate, InternshipOffer do |internship_offer|
+      duplicable?(internship_offer: internship_offer, user: user)
+    end
+
+    can %i[create], InternshipOfferInfo
+    can %i[update edit], InternshipOfferInfo, employer_id: user.id
+
+    can %i[create], Organisation
+    can %i[update edit], Organisation, employer_id: user.id
+    can %i[create], Tutor
+
+    can %i[index], Acl::InternshipOfferDashboard
+    can %i[ see_reporting_dashboard
+            see_dashboard_administrations_summary ], User
+  end
+
 
   private
 
@@ -245,5 +329,43 @@ class Ability
           .include?(user.id.to_i)
     end
     yield if block_given?
+  end
+
+  def renewable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date <= school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date < school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
+  end
+
+  def duplicable?(internship_offer:, user:)
+    main_condition = internship_offer.persisted? &&
+                     internship_offer.employer_id == user.id
+    return false unless main_condition
+
+    school_year_start = SchoolYear::Current.new.beginning_of_period
+    weekly_condition = internship_offer.weekly? &&
+                       internship_offer.last_date > school_year_start
+    free_date_condition = internship_offer.free_date? &&
+                          internship_offer.last_date >= school_year_start.to_datetime
+
+    weekly_condition || free_date_condition
+  end
+
+  def student_can_apply?(internship_offer:, student:)
+    offer_is_reserved_to_another_school = internship_offer.reserved_to_school? && (internship_offer.school_id != student.school_id)
+
+    return false if offer_is_reserved_to_another_school
+    return true if student.try(:class_room).nil?
+    return true if student.try(:class_room).try(:applicable?, internship_offer)
+
+    false
   end
 end

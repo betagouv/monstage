@@ -14,6 +14,11 @@
 .badge-light{
   border: 1px solid $gray-300;
 }
+.badge-search{
+  border: none;
+  background-color: $blue_100;
+  color: $blue_800;
+}
 
 .middle-school-badge,
 .high-school-badge{
@@ -44,6 +49,16 @@
   text-align: center;
   border-radius: 50%;
   padding: 0.2rem 0.5rem;
+  font-weight: bolder;
+  font-size: smaller;
+}
+// This has to be temporary
+.red-x-badge {
+  background-color: $red;
+  color: white;
+  text-align: center;
+  border-radius: 50%;
+  padding: 0.2rem 0.4rem;
   font-weight: bolder;
   font-size: smaller;
 }

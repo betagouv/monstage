@@ -3,14 +3,15 @@
 module SchoolYear
   # period from now until end of school year
   class Floating < Base
+
     def beginning_of_period
       case current_month
       when january_to_may
         return Floating.new(date: Date.new(current_year, 6, 1)).beginning_of_period if last_week_of_may?
 
-        Date.today
+        Date.new(current_year, Date.today.month, Date.today.day)
       when june_to_august then Date.new(current_year, 9, 1)
-      when september_to_december then Date.today
+      when september_to_december then Date.new(current_year, Date.today.month, Date.today.day)
       end
     end
 
@@ -28,9 +29,6 @@ module SchoolYear
       end
     end
 
-    def next_year
-      SchoolYear::Floating.new_by_year(year: end_of_period.year)
-    end
 
     def self.new_by_year(year:)
       new(date: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))

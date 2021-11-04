@@ -5,16 +5,19 @@ import { toggleElement, showElement, hideElement } from '../utils/dom';
 
 export default class extends Controller {
   static targets = ['handicapGroup',
-                    'emailHint',
-                    'emailInput',
-                    'phoneInput',
-                    'label',
-                    'emailBloc',
-                    'phoneBloc',
-                    'passwordHint',
-                    'passwordInput',
-                    'passwordConfirmationHint',
-                    'passwordConfirmationInput'];
+    'emailHint',
+    'emailInput',
+    'phoneInput',
+    'label',
+    'emailBloc',
+    'phoneBloc',
+    'emailRadioButton',
+    'phoneRadioButton',
+    'passwordHint',
+    'passwordInput',
+    'passwordConfirmationHint',
+    'passwordConfirmationInput'
+  ];
 
   static values = {
     channel: String,
@@ -55,9 +58,12 @@ export default class extends Controller {
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
-    
+
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
-    this.channelParams = { channel: 'MailValidationChannel', uid: Math.random().toString(36) };
+    this.channelParams = {
+      channel: 'MailValidationChannel',
+      uid: Math.random().toString(36)
+    };
     this.wssClient = ActionCable.createConsumer('/cable');
     this.validator = this.wssClient.subscriptions.create(this.channelParams, {
       received: data => {
@@ -79,7 +85,7 @@ export default class extends Controller {
           case 'hint':
             $hint.attr('class', 'invalid-feedback');
             $input.attr('class', 'form-control is-invalid');
-            emailHintElement.innerText = `Peut être avez-vous fait une typo ? ${data.replacement}`;
+            emailHintElement.innerText = `Peut être avez-vous fait une erreur de frappe ? ${data.replacement}`;
             break;
           default:
             hideElement($hint);
@@ -87,7 +93,7 @@ export default class extends Controller {
       },
     });
 
-    setTimeout( () => {
+    setTimeout(() => {
       this.checkChannel();
     }, 100);
   }
@@ -150,28 +156,31 @@ export default class extends Controller {
   }
 
   checkEmail() {
-    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget)
+    this.emailRadioButtonTarget.checked = true
+    this.displayField(this.phoneInputTarget, this.phoneBlocTarget, this.emailBlocTarget, 'email')
   }
 
   checkPhone() {
-    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget)
+    this.phoneRadioButtonTarget.checked = true
+    this.displayField(this.emailInputTarget, this.emailBlocTarget, this.phoneBlocTarget, 'phone')
   }
 
-  displayField(fieldToClean, fieldToHide, fieldToDisplay) {
+  displayField(fieldToClean, fieldToHide, fieldToDisplay, channel) {
     this.clean(fieldToClean);
     this.hide(fieldToHide)
     this.show(fieldToDisplay);
+    this.channelValue = channel;
   }
-  clean(fieldToClean){
+  clean(fieldToClean) {
     $(fieldToClean).val('');
   }
 
-  hide(fieldToHide){
+  hide(fieldToHide) {
     $(fieldToHide).hide();
     $(fieldToHide).addClass('d-none');
   }
 
-  show(fieldToDisplay){
+  show(fieldToDisplay) {
     $(fieldToDisplay).hide();
     $(fieldToDisplay).removeClass('d-none');
     $(fieldToDisplay).slideDown();

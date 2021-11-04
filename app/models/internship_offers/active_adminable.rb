@@ -30,7 +30,8 @@ module InternshipOffers
                          :total_male_convention_signed_applications_count,
                          :total_custom_track_convention_signed_applications_count,
                          :submitted_applications_count,
-                         :rejected_applications_count
+                         :rejected_applications_count,
+                         :tutor
         end
 
         edit do
@@ -53,10 +54,10 @@ module InternshipOffers
           field :title
           field :description
           field :group
+          field :school_track
           field :max_candidates
           field :total_applications_count
           field :convention_signed_applications_count
-          field :group
           field :employer_name
           field :tutor_name
           field :tutor_phone
@@ -66,8 +67,11 @@ module InternshipOffers
           field :departement
           field :city
           field :sector_name
+          field :is_public
           field :supplied_applications
           field :visible
+          field :created_at
+          field :updated_at
         end
       end
     end
