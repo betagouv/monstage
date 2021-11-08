@@ -9,6 +9,7 @@ export default class extends Controller {
     'weeksContainer',
     'studentsMaxGroupGroup',
     'studentsMaxGroupInput',
+    'maxCandidatesInput',
     'wholeYear',
   ];
   static values = {
@@ -42,19 +43,29 @@ export default class extends Controller {
     }
   }
 
+  handleMaxCandidatesChanges() {
+    const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
+    if (maxCandidates === 1) { this.withIndividualToggling() }
+  }
+
   // show/hide group (maxStudentsPerGroup>1) internship custom controls
   toggleInternshipmaxStudentsPerGroup(event) {
-    const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
     const toggleValue = event.target.value;
-    if (toggleValue === 'true') {
-      hideElement(groupSizeElt);
-      this.studentsMaxGroupInputTarget.setAttribute('min', 1);
-      this.studentsMaxGroupInputTarget.value = 1;
-    } else {
-      showElement(groupSizeElt);
-      this.studentsMaxGroupInputTarget.setAttribute('min', 2);
-      this.studentsMaxGroupInputTarget.value = 2;
-    }
+    (toggleValue === 'true') ? this.withIndividualToggling() : this.withCollectiveToggling()
+  }
+
+  withIndividualToggling() {
+    const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
+    hideElement(groupSizeElt);
+    this.studentsMaxGroupInputTarget.setAttribute('min', 1);
+    this.studentsMaxGroupInputTarget.value = 1;
+  }
+
+  withCollectiveToggling() {
+    const groupSizeElt = $(this.studentsMaxGroupGroupTarget);
+    showElement(groupSizeElt);
+    this.studentsMaxGroupInputTarget.setAttribute('min', 2);
+    this.studentsMaxGroupInputTarget.value = 2;
   }
 
   connect() {

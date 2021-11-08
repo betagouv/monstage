@@ -15,6 +15,8 @@ export default class extends Controller {
     'allYearLong',
     'weekCheckboxes',
     'hintWizard',
+    'collectiveButton',
+    'individualButton'
   ];
 
   handleCheckboxesChanges() {
@@ -22,6 +24,9 @@ export default class extends Controller {
       'InternshipOfferInfos::WeeklyFramed',
       'InternshipOffers::WeeklyFramed'
     ];
+    const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
+    (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
+
     if (weeklyTypes.indexOf(this.typeTarget.value) == -1) {
       return;
     }
@@ -55,6 +60,17 @@ export default class extends Controller {
     const content = (remaining === 1) ? "<strong>1 semaine</strong>" : `<strong>${remaining} semaines</strong>`
     this.hintWizardTarget.innerHTML = `Il reste ${content} à ajouter`
     showElement($(this.hintWizardTarget));
+    return;
+  }
+
+  collectiveOptionInhibit(doInhibit) {
+    if (doInhibit) {
+      this.individualButtonTarget.checked = true;
+      this.collectiveButtonTarget.setAttribute('disabled', true);
+      this.individualButtonTarget.focus()
+    } else {
+      $(this.collectiveButtonTarget).prop('disabled', false);
+    }
     return;
   }
 

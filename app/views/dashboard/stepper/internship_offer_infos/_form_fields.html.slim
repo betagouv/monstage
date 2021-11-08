@@ -55,7 +55,8 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                             disabled: !resource.is_fully_editable?,
                             required: true,
                             data: {:"populate-weeks-wizard-target" => 'maxCandidatesInput',
-                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges"}
+                                   :"internship-offer-infos-target" => 'maxCandidatesInput',
+                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges change->internship-offer-infos#handleMaxCandidatesChanges"}
 
       .form-group
         div.label
@@ -68,7 +69,8 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
+                              data: { :'populate-weeks-wizard-target' => 'individualButton',
+                                      action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
               | Individuel
               span.small
@@ -78,7 +80,8 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
+                              data: { :'populate-weeks-wizard-target' => 'collectiveButton',
+                                      action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
 
           = label_tag :internship_type_false, class: 'd-flex flex-column' do
               | Collectif
@@ -111,7 +114,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
       .form-group
         = render partial: "dashboard/stepper/internship_offer_infos/daily_hours",
                  locals: { form: form, disabled: false }
-      .form-group  
+      .form-group
         = react_component("ReservedSchoolInput",
                   props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
                             required: false,
