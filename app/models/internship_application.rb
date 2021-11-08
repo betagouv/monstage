@@ -231,8 +231,8 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'm'
   end
 
-  def student_gender_not_precised?
-    student.gender == 'np'
+  def student_is_female?
+    student.gender == 'f'
   end
 
   def student_is_custom_track?

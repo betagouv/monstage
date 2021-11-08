@@ -153,12 +153,12 @@ class InternshipOffer < ApplicationRecord
     self.max_candidates ||= 1
   end
 
-  def total_female_applications_count
-    total_applications_count - total_male_applications_count
+  def total_no_gender_applications_count
+    total_applications_count - total_male_applications_count - total_female_applications_count
   end
 
-  def total_female_convention_signed_applications_count
-    convention_signed_applications_count - total_male_convention_signed_applications_count
+  def total_no_gender_convention_signed_applications_count
+    convention_signed_applications_count - total_male_convention_signed_applications_count - total_female_convention_signed_applications_count
   end
 
   def anonymize
@@ -186,6 +186,21 @@ class InternshipOffer < ApplicationRecord
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
+    generate_offer_from_attributes(white_list)
+  end
+
+  def duplicate_without_location
+    white_list_without_location = %w[type title sector_id max_candidates
+                    tutor_name tutor_phone tutor_email employer_website
+                    employer_name is_public group school_id coordinates 
+                    first_date last_date school_track
+                    internship_offer_info_id organisation_id tutor_id
+                    weekly_hours new_daily_hours]
+
+    generate_offer_from_attributes(white_list_without_location)
+  end
+
+  def generate_offer_from_attributes(white_list)
     internship_offer = InternshipOffer.new(attributes.slice(*white_list))
     internship_offer.description_rich_text = (if description_rich_text.present?
                                                 description_rich_text.to_s
