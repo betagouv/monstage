@@ -31,8 +31,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
-
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -44,8 +42,6 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
-
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -56,12 +52,7 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
-<<<<<<< HEAD
-COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
-
-=======
->>>>>>> staging
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
 --
@@ -499,7 +490,8 @@ CREATE TABLE public.internship_agreement_presets (
     school_delegation_to_sign_delivered_at date,
     school_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    weekly_hours text[] DEFAULT '{}'::text[]
 );
 
 
@@ -825,13 +817,10 @@ CREATE TABLE public.internship_offers (
     siret character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-<<<<<<< HEAD
     max_students_per_group integer DEFAULT 1 NOT NULL
-=======
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0
->>>>>>> staging
 );
 
 
@@ -2402,12 +2391,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743'),
-<<<<<<< HEAD
 ('20210910142500');
-=======
 ('20211020160439'),
 ('20211026200850'),
 ('20211027130402');
->>>>>>> staging
 
 
