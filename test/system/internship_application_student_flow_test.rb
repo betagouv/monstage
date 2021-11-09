@@ -4,7 +4,6 @@ require 'application_system_test_case'
 
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])

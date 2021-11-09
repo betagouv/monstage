@@ -5,7 +5,6 @@ require 'application_system_test_case'
 class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
 
-
   test 'Offer reporting can be filtered by school_track' do
     prismic_root_path_stubbing do
       statistician = create(:statistician) # Oise is the department
