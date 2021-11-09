@@ -23,6 +23,10 @@ module Presenters
         offers.sum(&:total_female_applications_count)
       end
 
+      def total_no_gender_applications_count
+        offers.sum(&:total_no_gender_applications_count)
+      end
+
       def approved_applications_count
         offers.sum(&:approved_applications_count)
       end
@@ -33,6 +37,10 @@ module Presenters
 
       def total_female_approved_applications_count
         offers.sum(&:total_female_approved_applications_count)
+      end
+
+      def total_no_gender_approved_applications_count
+        offers.sum(&:total_no_gender_approved_applications_count)
       end
 
       def total_custom_track_approved_applications_count

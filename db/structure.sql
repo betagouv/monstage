@@ -53,7 +53,6 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
-
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
@@ -821,7 +820,10 @@ CREATE TABLE public.internship_offers (
     daterange daterange GENERATED ALWAYS AS (daterange(first_date, last_date)) STORED,
     siret character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    total_female_applications_count integer DEFAULT 0 NOT NULL,
+    total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
+    total_female_approved_applications_count integer DEFAULT 0
 );
 
 
@@ -2392,6 +2394,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743'),
+('20211020160439'),
 ('20211026200850'),
 ('20211027130402');
 
