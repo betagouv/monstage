@@ -17,6 +17,7 @@ FactoryBot.define do
     city { 'Paris' }
     employer_name { 'Octo' }
     coordinates { Coordinates.paris }
+    siret { '11122233300000' }
 
     trait :api_internship_offer do
       weeks { [Week.selectable_from_now_until_end_of_school_year.first] }

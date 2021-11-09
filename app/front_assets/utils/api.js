@@ -43,7 +43,17 @@ export const endpoints = {
 
     searchParams.append('siren', siren);
     endpoint.search = searchParams.toString();
-    console.log(endpoint);
+    return endpoint;
+  },
+
+  // @get
+  searchCompanyBySiret: ({ siret }) => {
+    const endpoint = new URL(`${host}/api_sirene_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('siret', siret);
+    endpoint.search = searchParams.toString();
+    return endpoint;
   },
   
   // @post

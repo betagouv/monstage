@@ -16,8 +16,11 @@ module Dashboard::Stepper
     def create
       authorize! :create, Organisation
 
-      @organisation = Organisation.new(organisation_params)
-      @organisation.save!
+      @organisation = Organisation.find_by(siret: organisation_params[:siret])
+      unless @organisation
+        @organisation = Organisation.new(organisation_params)
+        @organisation.save!
+      end
       redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
     rescue ActiveRecord::RecordInvalid
       render :new, status: :bad_request
@@ -51,7 +54,7 @@ module Dashboard::Stepper
               :street,
               :zipcode,
               :city,
-              :siren,
+              :siret,
               :employer_description_rich_text,
               :employer_website,
               :is_public,

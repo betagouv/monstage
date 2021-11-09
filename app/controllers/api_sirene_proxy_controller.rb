@@ -4,7 +4,7 @@
 # not the neciest solution, but safest
 class ApiSireneProxyController < ApplicationController
   def search
-     render json: Api::AutocompleteSirene.search_by_siren(params: params.permit(:siren)).body
+     render json: Api::AutocompleteSirene.search_by_siret(siret: params[:siret]).body
   end
 end
 

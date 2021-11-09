@@ -8,17 +8,17 @@ import { endpoints } from '../../utils/api';
 // see: https://geo.api.gouv.fr/adresse
 export default function SirenInput({
   resourceName,
-  currentSiren
+  currentSiret
 }) {
-  const [siren, setSiren] = useState(currentSiren || '');
+  const [siret, setSiret] = useState(currentSiret || '');
   const [searchResults, setSearchResults] = useState([]);
 
   const inputChange = (event) => {
-    setSiren(event.target.value);
+    setSiret(event.target.value);
   };
 
-  const searchCompanyBySiren = (siren) => {
-    fetch(endpoints.searchCompanyBySiren({ siren }))
+  const searchCompanyBySiret = (siret) => {
+    fetch(endpoints.searchCompanyBySiret({ siret }))
       .then((response) => response.json())
       .then((json) => {
         if (json.etablissements !== undefined) {
@@ -40,13 +40,13 @@ export default function SirenInput({
   };
 
   useEffect(() => {
-    const cleanSiren = siren.replace(/\s/g, '');
-    if (cleanSiren.length === 9) {
-      searchCompanyBySiren(cleanSiren);
+    const cleanSiret = siret.replace(/\s/g, '');
+    if (cleanSiret.length === 14) {
+      searchCompanyBySiret(cleanSiret);
     } else {
       setSearchResults([]);
     }
-  }, [siren]);
+  }, [siret]);
 
 
   return (
@@ -83,10 +83,10 @@ export default function SirenInput({
               <label
                 {...getLabelProps({
                   className: 'label',
-                  htmlFor: `${resourceName}_siren`,
+                  htmlFor: `${resourceName}_siret`,
                 })}
               >
-                Indiquez votre numéro Siren pour faciliter la saisie
+                Indiquez votre numéro Siret pour faciliter la saisie
               </label>
 
               <div className="form-group custom-label-container">
@@ -94,11 +94,11 @@ export default function SirenInput({
                   <input
                     {...getInputProps({
                       onChange: inputChange,
-                      value: currentSiren,
+                      value: currentSiret,
                       className: 'form-control rounded-0',
-                      id: `${resourceName}_siren`,
-                      placeholder: '123 456 789',
-                      name: `${resourceName}[siren]`
+                      id: `${resourceName}_siret`,
+                      placeholder: '123 456 789 00000',
+                      name: `${resourceName}[siret]`
                     })}
                   />
                 </div>
