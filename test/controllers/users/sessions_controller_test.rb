@@ -45,17 +45,15 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'POST session with phone' do
-    prismic_root_path_stubbing do
-      pwd = 'okokok'
-      phone = '+330637607756'
-      student = create(:student, email: nil, phone: phone, password: pwd, confirmed_at: 2.days.ago)
-      post user_session_path(params: { user: { channel: 'phone',
-                                              phone: student.phone,
-                                              password: pwd } })
-      assert_response :found
-      follow_redirect!
-      assert_select 'a[href=?]', account_path
-    end
+    pwd = 'okokok'
+    phone = '+330637607756'
+    student = create(:student, email: nil, phone: phone, password: pwd, confirmed_at: 2.days.ago)
+    post user_session_path(params: { user: { channel: 'phone',
+                                            phone: student.phone,
+                                            password: pwd } })
+    assert_response :found
+    follow_redirect!
+    assert_select 'a[href=?]', account_path
   end
 
   test 'POST session with email' do

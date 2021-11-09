@@ -139,13 +139,11 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     }
     sign_in(student)
 
-    prismic_root_path_stubbing do
-      visit '/'
+    visit '/'
+    click_on 'Candidatures'
+    internship_applications.each do |_aasm_state, internship_application|
+      click_on internship_application.internship_offer.title
       click_on 'Candidatures'
-      internship_applications.each do |_aasm_state, internship_application|
-        click_on internship_application.internship_offer.title
-        click_on 'Candidatures'
-      end
     end
   end
 

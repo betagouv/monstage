@@ -121,9 +121,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     within('.form-group-select-max-candidates') do
       fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 40)
     end
-    within('.form-group-select-max-students-per-group') do
-      fill_in('Nombre maximal d\'élèves par groupe', with: 20)
-    end
+    execute_script("document.getElementById('internship_offer_max_students_per_group').value = '20';")
     click_button('Modifier l\'offre')
     assert_equal 40, internship_offer.reload.max_candidates
     assert_equal 20, internship_offer.max_students_per_group

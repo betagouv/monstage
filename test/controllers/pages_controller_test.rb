@@ -9,12 +9,10 @@ class PagesTest < ActionDispatch::IntegrationTest
     # write a mock : File.open(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump'), 'wb') { |fd| fd.write Marshal.dump(rs) }
     # read a mock : Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
     # mock with mock : PrismicFinder.stub(:homepage, mock_prismic)
-    prismic_root_path_stubbing do
-      get root_path
-      assert_response :success
-      assert_template 'pages/home'
-      assert_select 'title', "Accueil | Monstage"
-    end
+    get root_path
+    assert_response :success
+    assert_template 'pages/home'
+    assert_select 'title', "Accueil | Monstage"
   end
 
   test '10_commandements_d_une_bonne_offre' do
