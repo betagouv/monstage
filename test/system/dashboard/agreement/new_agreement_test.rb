@@ -3,7 +3,6 @@ require 'application_system_test_case'
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
-    include ThirdPartyTestHelpers
 
     if ENV['CONVENTION_ENABLED']
       def field_edit_is_allowed?(label:, id: nil)

@@ -4,7 +4,6 @@ require 'application_system_test_case'
 
 class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  include ThirdPartyTestHelpers
 
 
   test 'Offer reporting can be filtered by school_track' do
