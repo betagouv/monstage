@@ -75,7 +75,9 @@ export default class extends Controller {
   }
 
 
-  connect() { }
+  connect() {
+    this.handleCheckboxesChanges();
+  }
 
   disconnect() { }
 }
