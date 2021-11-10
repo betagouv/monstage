@@ -130,7 +130,7 @@
               <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
-          <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+          <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
           <small class="d-none" data-signup-target="emailHint"></small>
         </div>
       <% end %>

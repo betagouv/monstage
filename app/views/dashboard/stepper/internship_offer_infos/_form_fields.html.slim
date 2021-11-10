@@ -1,6 +1,6 @@
 fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-infos-base-type-value="#{resource.class.to_s.split("s::").first}"
   legend.my-4 Offre de stage
-  .row.mt-3
+  .row.mt-3.d-flex.flex-row-reverse 
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       .form-group
@@ -92,7 +92,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
             .col-8.text-left style="display: flex;align-items: center"
               = link_to 'Précédent', edit_dashboard_stepper_organisation_path(params[:organisation_id], organisation_id: params[:organisation_id], internship_offer_info_id: params[:internship_offer_info_id])
     - if warning_bloc
-      .d-none.d-md-flex.col-md-6
-        .sticky-top= render partial: 'dashboard/stepper/warning_block'
+      .d-md-flex.col-md-6.col-lg-12
+        .sticky-top.employer = render partial: 'dashboard/stepper/warning_block'
 
 

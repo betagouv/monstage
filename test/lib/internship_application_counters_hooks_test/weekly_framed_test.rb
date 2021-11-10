@@ -99,6 +99,16 @@ module InternshipApplicationCountersHooks
       end
     end
 
+    test '.update_internship_offer_counters does not tracks internship_offer.total_male_approved_applications_count when student does not precise gender' do
+      @internship_application.student = create(:student, gender: 'np')
+      @internship_application.aasm_state = :submitted
+      @internship_application.save!
+
+      assert_no_changes -> { @internship_offer.reload.total_male_approved_applications_count } do
+        @internship_application.approve!
+      end
+    end
+
     test '.update_internship_offer_counters tracks internship_offer.total_custom_track_approved_applications_count when student is custom track' do
       @internship_application.student = create(:student, custom_track: true)
       @internship_application.aasm_state = :submitted

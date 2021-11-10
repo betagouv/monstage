@@ -34,9 +34,9 @@
         - if internship_application.submitted?
           div class="mb-3 reboot-trix-content" data-internship-application-index-target='motivation'= internship_application.motivation.to_s
         - elsif internship_application.rejected?
-          div class="mb-3 reboot-trix-content text-truncate-max-height-50 d-none"  data-internship-application-index-target='motivation'= internship_application.motivation.to_s
+          div class="mb-3 reboot-trix-content text-truncate-max-height-50 d-none" data-internship-application-index-target='motivation'= internship_application.motivation.to_s
         - else
-          div class="mb-3 reboot-trix-content text-truncate-max-height-50"         data-internship-application-index-target='motivation'= internship_application.motivation.to_s
+          div class="mb-3 reboot-trix-content text-truncate-max-height-50"        data-internship-application-index-target='motivation'= internship_application.motivation.to_s
 
     .row.no-gutters.ml-4
       .col-10

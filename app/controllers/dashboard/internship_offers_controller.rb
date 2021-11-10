@@ -80,9 +80,13 @@ module Dashboard
     # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = current_user.internship_offers
-                                      .find(params[:duplicate_id])
-                                      .duplicate
+      internship_offer = current_user.internship_offers.find(params[:duplicate_id]).duplicate
+      
+      if params[:without_location].present? 
+        @internship_offer = internship_offer.duplicate_without_location
+      else
+        @internship_offer = internship_offer.duplicate
+      end
 
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end

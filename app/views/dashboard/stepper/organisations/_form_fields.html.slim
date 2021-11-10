@@ -1,6 +1,6 @@
 fieldset.mt-4 data-controller='organisation-form'
   legend.my-4 Informations sur l'entreprise
-  .row.mt-3
+  .row.mt-3.d-flex.flex-md-reverse-column
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
 
@@ -69,7 +69,7 @@ fieldset.mt-4 data-controller='organisation-form'
               i.fas.fa-arrow-right
 
     - if warning_bloc
-      .d-none.d-md-flex.col-md-6
-        .sticky-top= render partial: 'dashboard/stepper/warning_block'
+      .d-md-flex.col-md-6.col-sm-12
+        .sticky-top.employer = render partial: 'dashboard/stepper/warning_block'
 
 

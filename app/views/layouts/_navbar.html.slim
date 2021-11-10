@@ -2,10 +2,6 @@ nav.navbar.navbar-light.py-0
   = link_to root_path, class: 'nav-item' do
     = image_tag asset_pack_path('media/images/logo-mon-stage-3e.svg'), alt: "Mon stage de 3e", width: 80, height: 45, class: 'my-0 py-0'
 
-  - if current_user.is_a?(Users::God)
-    .nav-item.h6.d-none.d-md-inline.px-1
-      = link_to "Reset cache", reset_cache_path(), class: "btn btn-outline-danger btn-sm"
-
   = render partial: 'layouts/extra_for_devs'
 
 
@@ -35,14 +31,16 @@ nav.navbar.navbar-light.py-0
       li.nav-item
         = link_to current_user.account_link_name,
                   account_path,
-                  class: "nav-link pl-1 pr-1 px-md-2 px-lg-3 py-4 #{account_controller?(user: current_user) ? 'active' : ''}",
+                  class: "nav-link pl-1 pr-1 py-4 #{account_controller?(user: current_user) ? 'active' : ''}",
                   id: 'test-user-is-signed-up'
-      - if user_signed_in? && cookies.signed[Rails.application.credentials.dig(:cookie_switch_back)].present?
-        li.nav-item= link_to 'Revenir en admin',
-                              destroy_user_session_path,
-                              style: "background-color: #f00; color: #fff; font-weight: bold; text-decoration: underline",
-                              class: "nav-link pl-1 pr-1 px-md-2 px-lg-3 py-4",
-                              method: :delete
+      - if cookies.signed[Rails.application.credentials.dig(:cookie_switch_back)].present?
+          li.nav-item= link_to destroy_user_session_path,
+                               class: "nav-link pl-1 pr-1 py-4 ",
+                               method: :delete do
+            .inline-block style="background-color: red; color: #fff; font-weight: bold; "
+              .px-2.white
+                i.white.fas.fa-lg.fa-caret-right
+                | Admin
 
     - else
       li.nav-item.d-none.d-sm-block
