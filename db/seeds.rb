@@ -87,6 +87,7 @@ def populate_operators
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
                   airtable_id: ENV['AIRTABLE_ID_TEST'])
+  # this one is for test
   Operator.create(name: "JobIRL",
                   website: "",
                   logo: 'Logo-jobirl.jpg',

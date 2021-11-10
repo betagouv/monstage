@@ -31,7 +31,7 @@ module Airtable
     def pull_all
       ActiveRecord::Base.transaction do
         operator.air_table_records.destroy_all
-        table.all(view: "Reporting").map do |record|
+        table.all(view: "Reporting_template").map do |record|
           import_record(record)
         end
       end
