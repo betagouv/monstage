@@ -104,7 +104,7 @@ export default function SirenInput({
                 </div>
               </div>
               <div>
-                <div className="search-in-place bg-white shadow">
+                <div className="search-in-sirene bg-white shadow">
                   <ul {...getMenuProps({
                       className: 'p-0 m-0',
                     })}

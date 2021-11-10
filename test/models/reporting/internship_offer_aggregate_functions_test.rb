@@ -50,6 +50,7 @@ module Reporting
 
       assert_equal 2, agri_stats.total_male_applications_count
       assert_equal 1, wood_stats.total_male_applications_count
+      assert_equal 0, wood_stats.total_no_gender_applications_count
     end
 
     test 'computes internship_offer total_female_applications_count' do
@@ -65,6 +66,7 @@ module Reporting
 
       assert_equal 1, agri_stats.total_female_applications_count
       assert_equal 0, wood_stats.total_female_applications_count
+      assert_equal 0, wood_stats.total_no_gender_applications_count
     end
 
     test 'computes internship_offer approved_applications_count' do
