@@ -5,6 +5,7 @@ class StudentMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.student.email,
+         from: @internship_application.internship_offer.employer.email,
          subject: "Une de vos candidatures a été acceptée")
   end
 
