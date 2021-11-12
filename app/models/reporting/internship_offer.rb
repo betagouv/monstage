@@ -25,10 +25,13 @@ module Reporting
       total_report_count: 'sum(max_candidates)',
       total_applications_count: 'sum(total_applications_count)',
       total_male_applications_count: 'sum(total_male_applications_count)',
-      total_female_applications_count:
+      total_female_applications_count: 'sum(total_female_applications_count)',
+      total_no_gender_applications_count:
         'sum(total_applications_count)' \
         ' - ' \
-        'sum(total_male_applications_count)',
+        'sum(total_male_applications_count)' \
+        ' - ' \
+        'sum(total_female_applications_count)',
       approved_applications_count:
         'sum(approved_applications_count)',
       total_custom_track_approved_applications_count:
@@ -36,9 +39,13 @@ module Reporting
       total_male_approved_applications_count:
         'sum(total_male_approved_applications_count)',
       total_female_approved_applications_count:
+        'sum(total_female_approved_applications_count)',
+      total_no_gender_approved_applications_count:
         'sum(approved_applications_count)' \
         ' - ' \
-        'sum(total_male_approved_applications_count)'
+        'sum(total_male_approved_applications_count)' \
+        ' - ' \
+        'sum(total_female_approved_applications_count)'
     }.freeze
 
     def self.aggregate_functions_to_sql_select
