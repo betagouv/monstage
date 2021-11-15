@@ -5,35 +5,37 @@ class SupportTicketTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
 
-  test 'as School Manager, I can send a support ticket with remote internship fields informations' do
-    school_manager = create(:school, :with_school_manager).school_manager
-    sign_in(school_manager)
+  # Remove code after  February, 15th 2022 or uncomment
 
-    visit school_manager.custom_dashboard_path
-    click_link('Contactez-nous !')
-    find('.h4.text-body', text: "Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.")
-    click_on "Envoyer la demande"
+  # test 'as School Manager, I can send a support ticket with remote internship fields informations' do
+  #   school_manager = create(:school, :with_school_manager).school_manager
+  #   sign_in(school_manager)
 
-    # js validation
-    fill_in("Nombre d'élèves", with: 20)
-    click_on "Envoyer la demande"
-    find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
+  #   visit school_manager.custom_dashboard_path
+  #   click_link('Contactez-nous !')
+  #   find('.h4.text-body', text: "Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.")
+  #   click_on "Envoyer la demande"
 
-    all(".custom-control-checkbox-list label").first.click
-    click_on "Envoyer la demande"
-    find('label', text: "L'un des trois modes 'Semaine digitale', 'Webinaire' ou 'En présentiel' doivent être sélectionnés")
-    find('label', text: "Il manque à cette demande le nombre d'étudiants concernés")
+  #   # js validation
+  #   fill_in("Nombre d'élèves", with: 20)
+  #   click_on "Envoyer la demande"
+  #   find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
 
-    assert_enqueued_with(job: SupportTicketJobs::SchoolManager) do
-      all(".custom-control-checkbox-list label").first.click
-      check 'support_ticket[webinar]'
-      select "2 classes"
-      fill_in("Nombre d'élèves", with: 5)
-      click_on "Envoyer la demande"
-    end
-  end
+  #   all(".custom-control-checkbox-list label").first.click
+  #   click_on "Envoyer la demande"
+  #   find('label', text: "L'un des trois modes 'Semaine digitale', 'Webinaire' ou 'En présentiel' doivent être sélectionnés")
+  #   find('label', text: "Il manque à cette demande le nombre d'étudiants concernés")
 
-  # Remove code after  February, 15th 2022
+  #   assert_enqueued_with(job: SupportTicketJobs::SchoolManager) do
+  #     all(".custom-control-checkbox-list label").first.click
+  #     check 'support_ticket[webinar]'
+  #     select "2 classes"
+  #     fill_in("Nombre d'élèves", with: 5)
+  #     click_on "Envoyer la demande"
+  #   end
+  # end
+
+
   # test 'as Employer, I can send a support ticket with remote internship fields informations' do
   #   employer = create(:employer)
   #   sign_in(employer)
