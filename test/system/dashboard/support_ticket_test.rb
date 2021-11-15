@@ -33,32 +33,33 @@ class SupportTicketTest < ApplicationSystemTestCase
     end
   end
 
-  test 'as Employer, I can send a support ticket with remote internship fields informations' do
-    employer = create(:employer)
-    sign_in(employer)
+  # Remove code after  February, 15th 2022
+  # test 'as Employer, I can send a support ticket with remote internship fields informations' do
+  #   employer = create(:employer)
+  #   sign_in(employer)
 
-    visit employer.custom_dashboard_path
-    click_link('Contactez-nous !')
-    find('.h4.text-body', text: "Vous souhaitez participer à la mise en place de stages à distance ?")
+  #   visit employer.custom_dashboard_path
+  #   click_link('Contactez-nous !')
+  #   find('.h4.text-body', text: "Vous souhaitez participer à la mise en place de stages à distance ?")
 
-    click_on "Envoyer la demande"
+  #   click_on "Envoyer la demande"
 
-    # js validation
-    find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
-    all(".custom-control-checkbox-list label").first.click
+  #   # js validation
+  #   find(".form-text.text-danger", text: 'Veuillez saisir au moins une semaine de stage')
+  #   all(".custom-control-checkbox-list label").first.click
 
-    click_on "Envoyer la demande"
-    find('label', text: "L'un des trois modes 'Semaine digitale', 'Webinaire' ou 'En présentiel' doivent être sélectionnés")
-    find('label', text: "Il manque à cette demande le nombre d'intervenants")
-    find('label', text: "Il manque à cette demande le nombre de métiers abordés")
-    assert_enqueued_with(job: SupportTicketJobs::Employer) do
-      all(".custom-control-checkbox-list label").first.click
-      check 'support_ticket[webinar]'
-      select "1 intervenant"
-      select "1 métier"
-      click_on "Envoyer la demande"
-    end
-  end
+  #   click_on "Envoyer la demande"
+  #   find('label', text: "L'un des trois modes 'Semaine digitale', 'Webinaire' ou 'En présentiel' doivent être sélectionnés")
+  #   find('label', text: "Il manque à cette demande le nombre d'intervenants")
+  #   find('label', text: "Il manque à cette demande le nombre de métiers abordés")
+  #   assert_enqueued_with(job: SupportTicketJobs::Employer) do
+  #     all(".custom-control-checkbox-list label").first.click
+  #     check 'support_ticket[webinar]'
+  #     select "1 intervenant"
+  #     select "1 métier"
+  #     click_on "Envoyer la demande"
+  #   end
+  # end
 
 
   test 'as Main Teacher, my default page do not shxo support ticket with remote internship fields informations' do
