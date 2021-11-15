@@ -114,11 +114,11 @@ jobs: # a collection of steps
           fingerprints:
             - "64:44:1e:17:fb:00:ae:75:15:ba:d2:cb:ad:c2:95:ee"
       - run:
-          name: Deploy Master to Clever Cloud
+          name: Deploy Staging to Clever Cloud
           command: |
             ssh-keyscan push-n2-par-clevercloud-customers.services.clever-cloud.com >>  ~/.ssh/known_hosts
             git remote add clever git+ssh://git@push-n2-par-clevercloud-customers.services.clever-cloud.com/$CLEVER_APP_ID.git
-            git push -u clever master
+            git push -u clever staging
 workflows:
   version: 2
   build-deploy:
@@ -130,5 +130,5 @@ workflows:
             filters:
               branches:
                 only:
-                  - master
+                  - staging
 
