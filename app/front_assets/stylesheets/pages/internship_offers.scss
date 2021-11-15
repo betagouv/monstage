@@ -43,17 +43,13 @@
   position: absolute;
   text-align: center;
 
-  width: 14rem;
+  width: 220px;
   background-color: $red_custom;
   top: -20px;
-  left: 1.2rem;
+  left: 28px;
   border-radius: 0.4rem;
   margin-top: 20rem;
   }
-
-  .employer .red-up {
-    left: 3rem;
-}
 
 a.white {
   text-decoration: underline;
@@ -148,6 +144,11 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
+@include media-breakpoint-down(md) {
+  .info-covid {
+    position: static;
+  }
+}
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {
@@ -185,13 +186,8 @@ $sortLinkOffset: 15px;
 }
 
 @include media-breakpoint-down(sm) {
-  .info-covid {
-    position: static;
-  }
   .red-up {
     text-align: center;
-    left:0;
-    margin-right: -50%;
   }
 }
 

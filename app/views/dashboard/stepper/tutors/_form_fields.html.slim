@@ -1,6 +1,6 @@
 fieldset.mt-4
   legend.my-4 Informations complémentaires
-  .row.mt-3.d-flex.flex-row-reverse 
+  .row.mt-3.d-flex
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       p.small.text-muted Les coordonnées du tuteur seront uniquement transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire.
@@ -41,7 +41,3 @@ fieldset.mt-4
             .col-6.text-right
               = form.submit "Publier l'offre !", class: 'btn btn-primary' do
                 i.fas.fa-arrow-right
-
-    - if warning_bloc
-      .d-md-flex.col-md-12.sticky-top.employer
-        = render partial: 'dashboard/stepper/warning_block'

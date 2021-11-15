@@ -1,7 +1,7 @@
 fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-infos-base-type-value="#{resource.class.to_s.split("s::").first}"
   legend.my-4 Offre de stage
-  .row.mt-3.d-flex.flex-row-reverse 
-    .col-12.col-md-6
+  .row.mt-3
+    .col-lg-6.col-md-12.order-lg-1.order-md-2.order-sm-2.order-2
       = form.rg2a_explain_required_asterisk
       .form-group
         = form.label :school_track do
@@ -92,8 +92,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
             = button_tag :submit, class: 'btn btn-primary' do
               = 'Suivant '
               i.fas.fa-arrow-right
-    - if warning_bloc
-      .d-md-flex.col-md-6.col-lg-12
-        .sticky-top.employer = render partial: 'dashboard/stepper/warning_block'
+    .col-lg-6.col-md-12.order-lg-2.order-md-1.order-sm-1.order-1
+      .sticky-top.employer = render partial: 'dashboard/stepper/warning_block'
 
 

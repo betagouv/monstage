@@ -20,7 +20,6 @@
   = render 'dashboard/stepper/organisations/form_fields',
             { resource: @internship_offer,
                form: form,
-               warning_bloc: false,
                submit_button: false }
 
   hr
@@ -28,7 +27,6 @@
   = render 'dashboard/stepper/internship_offer_infos/form_fields',
            { resource: @internship_offer,
              form: form,
-             warning_bloc: false,
              submit_button: false }
 
   hr
@@ -36,8 +34,7 @@
   = render 'dashboard/stepper/tutors/form_fields',
            { resource: @internship_offer,
              form: form,
-             submit_button: false,
-             warning_bloc: false }
+             submit_button: false }
 
   .actions
     .row
