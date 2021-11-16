@@ -94,7 +94,7 @@ fieldset.mt-4 data-controller='internship-offer-infos' data-internship-offer-inf
               i.fas.fa-arrow-right
     - warning_block = true if warning_block.nil?
     - if warning_block
-      .col-lg-6.col-md-12.order-lg-2.order-1.sticky-top
-        .employer = render partial: 'dashboard/stepper/warning_block'
-
+      .col-lg-6.col-md-12.order-lg-2.order-1.employer
+        = render partial: 'dashboard/stepper/warning_block'
+  .row.my-5
 

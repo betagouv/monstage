@@ -1,6 +1,6 @@
 .warning-block-wrapper {
   position: sticky;
-  top: 18px;
+  top: 0px;
 }
 
 .warning-block-wrapper.application {
@@ -9,6 +9,7 @@
   margin-left: 0 !important;
   margin-right: 0 !important;
   position: sticky;
+  top: 22px;
   margin-bottom: 2rem;
   z-index: 100;
 
@@ -29,6 +30,13 @@
 }
 .employer .info-covid {
   top: 58px;
+}
+
+.employer {
+  position: sticky;
+  top: 20px;
+  z-index: 3;
+  background-color: white;
 }
 
 .white-mask {
@@ -61,8 +69,6 @@ a.white {
   background-color: $bg-light-blue;
   padding: 30px;
   margin-bottom: 10px;
-
-
   .explanation {
     font-family: 'Helvetica Neue';
     color: $blue;
