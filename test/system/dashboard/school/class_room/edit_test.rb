@@ -5,7 +5,7 @@ module Dashboard
     include Devise::Test::IntegrationHelpers
 
     test 'school manager can edit and update school name' do
-      school = create(:school, :with_school_manager)
+      school = create(:school, :with_weeks, :with_school_manager)
       class_room = create(:class_room, school: school, name: 'old name')
 
       sign_in(school.school_manager)
