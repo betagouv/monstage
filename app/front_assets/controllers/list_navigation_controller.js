@@ -1,5 +1,5 @@
 import { Controller } from 'stimulus';
-import isMobile from '../utils/responsive';
+import { isMobile } from '../utils/responsive';
 import Hammer from 'hammerjs';
 import Turbolinks from 'turbolinks';
 

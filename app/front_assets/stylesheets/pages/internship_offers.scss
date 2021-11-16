@@ -41,12 +41,11 @@
 }
 .red-up {
   position: absolute;
-  text-align: center;
 
-  width: 220px;
+  width: 240px;
   background-color: $red_custom;
   top: -20px;
-  left: 28px;
+  left: 30px;
   border-radius: 0.4rem;
   margin-top: 20rem;
   }
@@ -61,6 +60,8 @@ a.white {
   top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
+  margin-bottom: 10px;
+
 
   .explanation {
     font-family: 'Helvetica Neue';
@@ -74,6 +75,9 @@ a.white {
   }
 }
 
+  .tutors .warning-bloc {
+    top: 25px;
+  }
 
 
 // sorting headers for dashboard/internship_offers#index
@@ -183,9 +187,12 @@ $sortLinkOffset: 15px;
   .internship-item-badge{
     line-height: 1.5;
   }
+    .red-up {
+      text-align: left;
+    }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(xs) {
   .red-up {
     text-align: center;
   }
