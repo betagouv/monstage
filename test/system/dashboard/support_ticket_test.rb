@@ -5,10 +5,8 @@ class SupportTicketTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ActiveJob::TestHelper
 
-  # Remove code after  February, 15th 2022 or uncomment
-
   # test 'as School Manager, I can send a support ticket with remote internship fields informations' do
-  #   school_manager = create(:school, :with_school_manager).school_manager
+  #   school_manager = create(:school, :with_weeks, :with_school_manager).school_manager
   #   sign_in(school_manager)
 
   #   visit school_manager.custom_dashboard_path
@@ -34,7 +32,6 @@ class SupportTicketTest < ApplicationSystemTestCase
   #     click_on "Envoyer la demande"
   #   end
   # end
-
 
   # test 'as Employer, I can send a support ticket with remote internship fields informations' do
   #   employer = create(:employer)
@@ -64,13 +61,13 @@ class SupportTicketTest < ApplicationSystemTestCase
   # end
 
 
-  test 'as Main Teacher, my default page do not shxo support ticket with remote internship fields informations' do
-    school = create(:school, :with_school_manager)
-    main_teacher = create(:main_teacher, school: school)
-    sign_in(main_teacher)
+  # test 'as Main Teacher, my default page do not shxo support ticket with remote internship fields informations' do
+  #   school = create(:school, :with_school_manager)
+  #   main_teacher = create(:main_teacher, school: school)
+  #   sign_in(main_teacher)
 
-    visit main_teacher.custom_dashboard_path
-    refute page.has_content?("Contactez-nous !")
-  end
+  #   visit main_teacher.custom_dashboard_path
+  #   refute page.has_content?("Contactez-nous !")
+  # end
 end
 
