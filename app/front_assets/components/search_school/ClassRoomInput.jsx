@@ -102,6 +102,7 @@ function RenderClassRoomsInput({
 
             {Object.keys(classRoomsSuggestionsByType).length <= 1 &&
               (classRoomsSuggestions || []).map(renderClassRoomOption)}
+            <option value="">Autre classe</option>
           </select>
           <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
         </>
