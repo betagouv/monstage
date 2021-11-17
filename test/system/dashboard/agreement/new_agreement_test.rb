@@ -112,8 +112,8 @@ module Dashboard
       end
 
       test 'as School Manager, I can edit my own fields only' do
-        internship_offer = create(:weekly_internship_offer)
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_weeks, :with_school_manager)
+        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         internship_application = create(:weekly_internship_application,
@@ -165,8 +165,8 @@ module Dashboard
       end
 
       test 'as Main Teacher, I can edit my own fields only' do
-        internship_offer = create(:weekly_internship_offer)
-        school           = create(:school, :with_school_manager)
+        school = create(:school, :with_weeks, :with_school_manager)
+        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
         class_room       = create(:class_room, school: school)
         main_teacher     = create(:main_teacher, school: school, class_room_id: class_room.id)
         student          = create(:student, school: school, class_room: class_room)
@@ -175,14 +175,13 @@ module Dashboard
                                         student: student,
                                         internship_offer: internship_offer )
 
+        # prismic_root_path_stubbing do
         sign_in(main_teacher)
         visit root_path
         within('header') do
-          find("a.nav-link", text: main_teacher.dashboard_name).click
+          find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher.dashboard_name).click
         end
-        click_link('Conventions à signer')
-        find('.actions a.btn.btn-primary').click
-        # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
+        visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
         #Fields edition tests
         field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
@@ -193,6 +192,7 @@ module Dashboard
                                   id: 'internship_agreement_student_full_name')
         field_edit_is_allowed?(label: 'Classe',
                                   id: 'internship_agreement_student_class_room')
+        # byebug
         field_edit_is_not_allowed?(label: 'Établissement d’origine',
                                   id: 'internship_agreement_student_school')
         field_edit_is_not_allowed?(label: "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur",
@@ -225,8 +225,8 @@ module Dashboard
 
 
       test 'mere teachers cannot reach Convention à signer' do
-        internship_offer = create(:weekly_internship_offer)
-        school           = create(:school, :with_school_manager)
+        school = create(:school, :with_weeks, :with_school_manager)
+        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
         class_room       = create(:class_room, school: school)
         teacher          = create(:teacher, school: school, class_room: class_room)
         student          = create(:student, school: school, class_room: class_room)
@@ -238,7 +238,7 @@ module Dashboard
                                         )
         sign_in(teacher)
         visit root_path
-        find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: teacher.dashboard_name).click
+        find("li.nav-item a.btn.btn-sm.btn-link.white", text: teacher.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.cannot?(:create, InternshipAgreement)
         refute page.has_content?('Conventions à signer')
@@ -261,7 +261,7 @@ module Dashboard
                                         )
         sign_in(main_teacher_2)
         visit root_path
-        find("li.nav-item a.nav-link.pl-1.pr-1.py-4", text: main_teacher_2.dashboard_name).click
+        find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher_2.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.can?(:create, InternshipAgreement)
         assert page.has_content?('Conventions à signer')

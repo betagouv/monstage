@@ -4,7 +4,7 @@ require 'application_system_test_case'
 
 class SignUpSchoolManagersTest < ApplicationSystemTestCase
   test 'navigation & interaction works until school manager creation' do
-    existing_email = 'fourcade.m@gmail.com'
+    existing_email = 'ce.0750655E@ac-paris.fr'
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin')
     create(:student, email: existing_email)
     # go to signup as school_manager
@@ -16,7 +16,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select "Chef d'établissement", from: 'user_role'
-      fill_in 'Adresse électronique académique', with: 'fourcade.m@gmail.com'
+      fill_in 'Adresse électronique académique', with: 'ce.0750655E@ac-paris.fr'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
@@ -27,7 +27,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # create school_manager
     assert_difference('Users::SchoolManagement.school_manager.count', 1) do
-      fill_in 'Adresse électronique académique', with: 'fourcade.m@ac-paris.fr'
+      fill_in 'Adresse électronique académique', with: 'ce.1234567E@ac-paris.fr'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'

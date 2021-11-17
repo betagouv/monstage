@@ -7,7 +7,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
   setup do
     @default_school_name = 'Pasteur'
     @default_school_city = 'Mantes-la-Jolie'
-    @default_school = create(:school, :with_school_manager, name: @default_school_name,
+    @default_school = create(:school, :with_school_manager, :with_weeks, name: @default_school_name,
                                                             city: @default_school_city)
     @next_school_city = 'Paris'
     @next_school_name = 'Charlemagne'

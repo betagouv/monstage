@@ -29,8 +29,7 @@
                   Consultez de nombreuses offres, soignez votre
                   candidature et postulez à vos stages préférés.
             - if !user_signed_in? || can?(:look_for_offers, current_user)
-              - target_link = current_user&.custom_dashboard_path|| new_user_registration_path
-              p = link_to target_link,
+              p = link_to internship_offers_path(current_user_or_visitor.default_search_options),
                           class: 'btn btn-danger rounded-sm px-4',
                           data: { :"test-id" => 'mobile-search-button' }
                   = "Rechercher un stage"
