@@ -1,5 +1,5 @@
 :focus {
-  border: 2px dotted $purple_custom;
+  border: 2px dotted $blue;
 }
 
 .homepage {
@@ -214,6 +214,9 @@ h4 {
   .text-md-center-right {
     text-align: right;
   }
+    .flex-md-reverse-column {
+      flex-direction: column-reverse !important;
+    }
   }
 
   @include media-breakpoint-down(md) {
@@ -236,9 +239,6 @@ h4 {
   .nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
     }
-// .flex-md-reverse-column {
-//   flex-direction: column;
-// }
 }
 @include media-breakpoint-down(sm) {
   .text-center-left {

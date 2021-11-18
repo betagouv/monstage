@@ -1,6 +1,6 @@
 .warning-block-wrapper {
   position: sticky;
-  top: 18px;
+  top: 0px;
 }
 
 .warning-block-wrapper.application {
@@ -9,6 +9,7 @@
   margin-left: 0 !important;
   margin-right: 0 !important;
   position: sticky;
+  top: 22px;
   margin-bottom: 2rem;
   z-index: 100;
 
@@ -31,6 +32,13 @@
   top: 58px;
 }
 
+.employer {
+  position: sticky;
+  top: 20px;
+  z-index: 3;
+  background-color: white;
+}
+
 .white-mask {
   position: absolute;
   text-align: left;
@@ -41,19 +49,14 @@
 }
 .red-up {
   position: absolute;
-  text-align: center;
 
-  width: 14rem;
+  width: 240px;
   background-color: $red_custom;
   top: -20px;
-  left: 1.2rem;
+  left: 30px;
   border-radius: 0.4rem;
   margin-top: 20rem;
   }
-
-  .employer .red-up {
-    left: 3rem;
-}
 
 a.white {
   text-decoration: underline;
@@ -65,7 +68,7 @@ a.white {
   top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
-
+  margin-bottom: 10px;
   .explanation {
     font-family: 'Helvetica Neue';
     color: $blue;
@@ -78,6 +81,9 @@ a.white {
   }
 }
 
+  .tutors .warning-bloc {
+    top: 25px;
+  }
 
 
 // sorting headers for dashboard/internship_offers#index
@@ -148,6 +154,11 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
+@include media-breakpoint-down(md) {
+  .info-covid {
+    position: static;
+  }
+}
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {
@@ -182,16 +193,14 @@ $sortLinkOffset: 15px;
   .internship-item-badge{
     line-height: 1.5;
   }
+    .red-up {
+      text-align: left;
+    }
 }
 
-@include media-breakpoint-down(sm) {
-  .info-covid {
-    position: static;
-  }
+@include media-breakpoint-down(xs) {
   .red-up {
     text-align: center;
-    left:0;
-    margin-right: -50%;
   }
 }
 
