@@ -1,9 +1,8 @@
 class AddSiretNumberToOrganisation < ActiveRecord::Migration[6.1]
-  def change
-    add_column :organisations, :siret, :string
-    add_column :organisations, :is_paqte, :boolean
+  def up
     change_column :organisations, :employer_id, :integer, null: true
+  end
 
-    add_index :organisations, :siret, unique: true
+  def down
   end
 end

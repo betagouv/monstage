@@ -1836,13 +1836,6 @@ CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree
 
 
 --
--- Name: index_organisations_on_siret; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_organisations_on_siret ON public.organisations USING btree (siret);
-
-
---
 -- Name: index_school_internship_weeks_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
