@@ -33,7 +33,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 
 
-
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -914,8 +913,10 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL,
-    siren character varying
+    employer_id integer,
+    siren character varying,
+    siret character varying,
+    is_paqte boolean
 );
 
 
@@ -1835,6 +1836,13 @@ CREATE INDEX index_organisations_on_group_id ON public.organisations USING btree
 
 
 --
+-- Name: index_organisations_on_siret; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_organisations_on_siret ON public.organisations USING btree (siret);
+
+
+--
 -- Name: index_school_internship_weeks_on_school_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2396,6 +2404,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210825150743'),
 ('20211020160439'),
 ('20211026200850'),
-('20211027130402');
+('20211027130402'),
+('20211110133150');
 
 
