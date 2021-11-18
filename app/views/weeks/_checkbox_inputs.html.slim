@@ -16,16 +16,15 @@ div [data-controller="select-weeks"
                         preselect_all,
                         { class: 'custom-control-input',
                           disabled: allow_select_all,
-                          data: {action: "change->populate-weeks-wizard#handleCheckboxesChanges change->select-weeks#handleToggleWeeks",
-                                "internship-offer-infos-target": "allYearLong",
-                                "populate-weeks-wizard-target": "allYearLong"}}
+                          data: { "internship-offer-infos-target": "allYearLong",
+                                  action: "change->select-weeks#handleToggleWeeks"}}
         = label_tag 'all_year_long', class: 'custom-control-label' do
           | Toute l'année scolaire
 
           = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
 
-    div [data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"]
-      div [class="custom-control-checkbox-list" data-populate-weeks-wizard-target="checkboxesContainer"]
+    div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
+      .custom-control-checkbox-list
         - current_weeks.map do |week|
           .custom-control.custom-checkbox.position-relative.pr-3.my-2
             - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
@@ -40,8 +39,7 @@ div [data-controller="select-weeks"
                                           class: 'custom-control-input',
                                           disabled: has_applications,
                                           data: {:"select-weeks-target" => 'weekCheckboxes',
-                                                 :"populate-weeks-wizard-target" => 'weekCheckboxes',
-                                                 action: 'change->populate-weeks-wizard#handleCheckboxesChanges change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
+                                                 action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
                                           week.id,
                                           false
 
@@ -69,4 +67,3 @@ div [data-controller="select-weeks"
                 .col-4 Forte
 
     .form-text.text-primary.d-none data-select-weeks-target="hint" Veuillez saisir au moins une semaine de stage
-    .form-text.text-primary.d-none data-populate-weeks-wizard-target="hintWizard"

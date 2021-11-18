@@ -11,6 +11,8 @@ export default class extends Controller {
     'studentsMaxGroupInput',
     'maxCandidatesInput',
     'wholeYear',
+    'collectiveButton',
+    'individualButton'
   ];
   static values = {
     baseType: String
@@ -43,7 +45,24 @@ export default class extends Controller {
     }
   }
 
+  checkOnCandidateCount() {
+    const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10);
+    (maxCandidates === 1) ? this.collectiveOptionInhibit(true) : this.collectiveOptionInhibit(false);
+  }
+
+  collectiveOptionInhibit(doInhibit) {
+    if (doInhibit) {
+      this.individualButtonTarget.checked = true;
+      this.collectiveButtonTarget.setAttribute('disabled', true);
+      this.individualButtonTarget.focus()
+    } else {
+      $(this.collectiveButtonTarget).prop('disabled', false);
+    }
+    return;
+  }
+
   handleMaxCandidatesChanges() {
+    this.checkOnCandidateCount();
     const maxCandidates = parseInt(this.maxCandidatesInputTarget.value, 10)
     if (maxCandidates === 1) { this.withIndividualToggling() }
   }
@@ -70,6 +89,7 @@ export default class extends Controller {
 
   connect() {
     this.induceType(this.selectTypeTarget.value)
+    this.checkOnCandidateCount()
   }
 
   disconnect() {}

@@ -28,6 +28,8 @@ module StepperProxy
       validates :description, presence: true,
                               length: { maximum: InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT }
 
+      validate :enough_weeks
+
       before_validation :replicate_description_rich_text_to_raw_field, unless: :from_api?
 
       # Relations
@@ -54,8 +56,24 @@ module StepperProxy
 
       def init
         self.max_candidates ||= 1
+        self.max_students_per_group ||= 1
       end
 
+      def enough_weeks
+        return unless self.type.in? ["InternshipOfferInfos::WeeklyFramed", "InternshipOffers::WeeklyFramed"]
+
+        weeks = self.try(:internship_offer_weeks) || self.internship_offer_info_weeks
+        return if weeks.size.zero?
+        
+	if self.max_candidates / self.max_students_per_group - weeks.size > 0
+          error_message = "Le nombre maximal d'élèves est trop important par " \
+                          "rapport au nombre de semaines de stage choisi. Ajoutez des " \
+                          "semaines de stage ou augmentez la taille des groupes  " \
+                          "ou diminuez le nombre de " \
+                          "stagiaires prévus."
+          errors.add(:max_candidates, error_message)
+        end
+      end
 
       def available_weeks
         return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)

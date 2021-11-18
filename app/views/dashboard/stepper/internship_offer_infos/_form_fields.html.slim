@@ -1,8 +1,8 @@
 - klass = resource.class.to_s.split("s::").first
-fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
+fieldset.mt-4 [data-controller='internship-offer-infos'
                data-internship-offer-infos-base-type-value="#{klass}"]
   legend.my-4 Offre de stage
-  .row.mt-3 data-controller='populate-weeks-wizard'
+  .row.mt-3
     .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       .form-group
@@ -14,7 +14,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
                       { include_blank: '-- Veuillez choisir une filière --' },
                       { class: "form-control", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
-        = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type", :"populate-weeks-wizard-target" => "type" }
+        = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
 
       .form-group
         = form.label :title do
@@ -54,9 +54,8 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                             placeholder: "Nombre d'élèves prévus pour cette offre",
                             disabled: !resource.is_fully_editable?,
                             required: true,
-                            data: {:"populate-weeks-wizard-target" => 'maxCandidatesInput',
-                                   :"internship-offer-infos-target" => 'maxCandidatesInput',
-                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges change->internship-offer-infos#handleMaxCandidatesChanges"}
+                            data: { :"internship-offer-infos-target" => 'maxCandidatesInput',
+                                    action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
 
       .form-group
         div.label
@@ -69,7 +68,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { :'populate-weeks-wizard-target' => 'individualButton',
+                              data: { :'internship-offer-infos-target' => 'individualButton',
                                       action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
           = label_tag :internship_type_true, class: 'd-flex flex-column' do
               | Individuel
@@ -80,7 +79,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                               resource.new_record? && resource.errors.empty? && params[:duplicate_id].blank? ? false : !resource.is_individual?,
                               class: '',
                               disabled: !resource.is_fully_editable?,
-                              data: { :'populate-weeks-wizard-target' => 'collectiveButton',
+                              data: { :'internship-offer-infos-target' => 'collectiveButton',
                                       action: "change->internship-offer-infos#toggleInternshipmaxStudentsPerGroup" }
 
           = label_tag :internship_type_false, class: 'd-flex flex-column' do
@@ -101,8 +100,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos populate-weeks-wizard'
                             class: 'form-control col-lg-6',
                             disabled: !resource.is_fully_editable?,
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
-                                    :"populate-weeks-wizard-target"=> "studentsMaxGroupInput",
-                                    action: "change->populate-weeks-wizard#handleCheckboxesChanges"}
+                                    action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
 
       .form-group
         = render partial: "weeks/checkbox_inputs",

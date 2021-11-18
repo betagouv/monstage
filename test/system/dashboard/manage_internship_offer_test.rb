@@ -245,32 +245,4 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       end
     end
   end
-
-  test 'Employer can edit a collective internship offer and be assisted with the week wizard' do
-    employer = create(:employer)
-    future_weeks = [Week.selectable_from_now_until_end_of_school_year.last]
-    current_internship_offer = create(
-      :weekly_internship_offer,
-      employer: employer,
-      weeks: future_weeks,
-      max_candidates: 10,
-      max_students_per_group: 2
-    )
-    sign_in(employer)
-    visit edit_dashboard_internship_offer_path(id: current_internship_offer.id)
-    find("label[for='internship_type_false']").click
-    page.assert_selector('input#internship_offer_max_students_per_group', minimum: 1, wait: 2)
-    fill_in("Nombre maximal d'élèves par groupe", with: 3)
-
-    label = "Semaine du #{Week.selectable_from_now_until_end_of_school_year.first.number} - #{Week.selectable_from_now_until_end_of_school_year.first.short_select_text_method}"
-    week_doc_id = "internship_offer_week_ids_#{Week.selectable_from_now_until_end_of_school_year.first.id}_checkbox"
-    find("label[for='#{week_doc_id}']").click
-    find(".form-text.text-primary", text: 'Il reste 2 semaines à ajouter', wait: 2)
-
-    label = "Semaine du #{Week.selectable_from_now_until_end_of_school_year.second.number} - #{Week.selectable_from_now_until_end_of_school_year.second.short_select_text_method}"
-    week_doc_id = "internship_offer_week_ids_#{Week.selectable_from_now_until_end_of_school_year.second.id}_checkbox"
-    find("label[for='#{week_doc_id}']").click
-    find(".form-text.text-primary", text: 'Il reste 1 semaine à ajouter', wait: 2)
-  end
-
 end

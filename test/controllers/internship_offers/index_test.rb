@@ -192,6 +192,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     max_candidates = 2
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
+                              max_students_per_group: max_candidates,
                               internship_offer_weeks: [
                                 build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
                                                               week: Week.first)
@@ -283,7 +284,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                         .times
                         .map do
       create(:weekly_internship_offer,
-             max_candidates: 2)
+             max_candidates: 1)
     end
 
     travel_to(Date.new(2019, 3, 1)) do

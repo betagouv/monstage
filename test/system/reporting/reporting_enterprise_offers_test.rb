@@ -13,6 +13,7 @@ class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
     public_internship_offer_0 = create(
       :weekly_internship_offer,
       max_candidates: 100,
+      max_students_per_group: 100,
       zipcode: 75012 # Paris
     )
     public_internship_offer = create(
@@ -23,6 +24,7 @@ class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
       :weekly_internship_offer,
       :with_private_employer_group,
       max_candidates: 10,
+      max_students_per_group: 10,
       zipcode: 60580
     ) # 10 paqte(private) Oise
     private_internship_offer_no_group = create(
@@ -30,6 +32,7 @@ class ReportingEnterpriseOffersTest < ApplicationSystemTestCase
       is_public: false,
       group: nil,
       max_candidates: 20,
+      max_students_per_group: 20,
       zipcode: 60580
     ) # 20 private Oise --> 30 to go as private
     sign_in(statistician)
