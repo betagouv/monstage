@@ -592,6 +592,7 @@ def make_airtable_single_record
   nb_spot_used =  nb_spot_available - (0..7).to_a.shuffle.first
   nb_spot_male = (1..nb_spot_used).to_a.shuffle.first
   group_id = Group.where(is_public: is_public).shuffle.first.id
+  random_week = nb_spot_available.even? ? Week.of_previous_school_year : Week.selectable_for_school_year(school_year: SchoolYear::Current.new)
   {
     remote_id: make_airtable_rec_id,
     is_public: is_public,
@@ -606,7 +607,7 @@ def make_airtable_single_record
     school_id: School.all.shuffle.first.id,
     group_id: group_id,
     sector_id: Sector.all.shuffle.first.id,
-    week_id: Week.selectable_for_school_year(school_year: SchoolYear::Current.new).to_a.shuffle.first.id,
+    week_id: random_week.to_a.shuffle.first.id,
     operator_id: Operator.all.to_a.shuffle.first.id,
     created_by: 'tech@monstagedetroisieme.fr'
   }
