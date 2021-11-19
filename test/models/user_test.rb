@@ -191,4 +191,18 @@ class UserTest < ActiveSupport::TestCase
     end
     mock_mail.verify
   end
+
+  test '#formatted_phone' do
+    user = build(:student)
+    phone = user[:phone]
+    assert_nil user.formatted_phone
+
+    user = build(:student, phone: '+330123654789')
+    phone = user[:phone]
+    assert_equal '+33123654789', user.formatted_phone
+
+    user = build(:student, phone: '')
+    phone = user[:phone]
+    assert_nil user.formatted_phone
+  end
 end
