@@ -18,11 +18,11 @@
           Elle permet aux élèves de troisième des établissements des réseaux
           éducation prioritaire (REP et REP+) d’accéder à des offres de
           stage de qualité en entreprises et dans les services publics.
-      
-      p.lead.hero 
+
+      p.lead.hero
         | En
-        span.h3 =" 2 ans et 5 mois "
-        | d'existence, appuyée par 
+        span.h3 =" 3 ans et 5 mois "
+        | d'existence, appuyée par
         br
         span.h3 = " 8 associations* "
         | partenaires au niveau national,
@@ -32,8 +32,8 @@
         | ont bénéficié de ce dispositif !
   .row.my-1.text-muted.font-weight-light.font-italic
     |
-      (*) Les 8 associations sont : JobIRL, Institut Télémaque, 
-      Le réseau, Les entreprises pour la cité, Moi dans 10 ans, 
+      (*) Les 8 associations sont : JobIRL, Institut Télémaque,
+      Le réseau, Les entreprises pour la cité, Moi dans 10 ans,
       Tous en stage, Un stage et après, et Viens voir mon taf
   .row.my-5
     .col-12.text-center
@@ -127,37 +127,56 @@
                   alt: "bilan pour les établissements scolaires",
                   height: 44
       br
-      h1.h6.mb-0.pt-2 Année scolaire 2020 / 2021, au 25 mars 2021
+      h1.h6.mb-0.pt-2 Année scolaire 2020 / 2021, au 1er juin 2021
       h2.h4.text-dark Les établissements scolaires
   .row
   .row.mt-3.no-gutters
     .col-md-5.col-sm-12
       = render 'pages/statistics/platform_use_header'
       = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 446, total: 729, title: 'REP', type: 'rep'}
+                locals: { achieved: 448, total: 730, title: 'REP', type: 'rep'}
       = render partial: 'pages/statistics/all_rep',
-                locals: { achieved: 285, total: 362, title: 'REP+', type: 'rep-plus' }
+                locals: { achieved: 287, total: 363, title: 'REP+', type: 'rep-plus' }
     .col-md-6.offset-md-1.col-sm-12
       = render partial: 'pages/statistics/academical',
-                locals: { achieved: 79, total: 108 }
+                locals: { achieved: 80, total: 120 }
   .row.my-5
     .col-12.text-center
       = image_tag asset_pack_path('media/images/pages/statistics/handshake.svg'),
                   alt: "bilan des stages",
                   height: 44
       br
-      h1.h6.pt-2.mb-0 Année scolaire 2020 / 2021, au 25 mars 2021
+      h1.h6.pt-2.mb-0 Année scolaire 2020 / 2021, au 1er juin 2021
       h2.h4.text-dark Les stages
   .row
+    .col-12.d-flex.justify-content-center
+      .kpi-internship-global.px-3
+        | Dans le contexte de l’épidémie de la COVID-19, l’instruction interministérielle du 20 novembre 2020 prévoyait :
+        ul.mt-3
+          li une ambition renouvelée sans objectif chiffré
+          li une solution alternative aux stages en présentiel : les sessions digitales
+  .row.my-3
   .row.my-3
     .col-12.d-flex.justify-content-center
       .kpi-internship-global.bg-light-blue.bg-rounded
         .row.p-3
           .col-5.d-flex.justify-content-center.align-items-center
-            .max-academical.font-weight-bold.d-none.d-md-block  10 881
-            .h1.d-block.d-md-none 10 881
+            .max-academical.font-weight-bold.d-none.d-md-block  18 752
+            .h1.d-block.d-md-none 18 752
           .col-7.d-flex.justify-content-center.align-items-center
-            |
-              C’est le nombre d’élèves ayant bénéficié
-              d’un stage à distance, compte tenu du contexte sanitaire
+             .inline-block
+              | C’est le nombre d’élèves ayant bénéficié
+              span.font-weight-bold &nbsp; d’un stage à distance
+              | , compte tenu du contexte sanitaire
+  .row.my-3
+    .col-12.d-flex.justify-content-center
+      .kpi-internship-global.bg-light-blue.bg-rounded
+        .row.p-3
+          .col-5.d-flex.justify-content-center.align-items-center
+            .max-academical.font-weight-bold.d-none.d-md-block  862
+            .h1.d-block.d-md-none 862
+          .col-7.d-flex.justify-content-center.align-items-center
+            .inline-block
+              | C’est le nombre d’élèves ayant bénéficié d’un 
+              span.font-weight-bold stage en présentiel
   .row.my-5

@@ -36,6 +36,26 @@ export const endpoints = {
     return endpoint;
   },
 
+  // @get
+  searchCompanyBySiren: ({ siren }) => {
+    const endpoint = new URL(`${host}/api_sirene_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('siren', siren);
+    endpoint.search = searchParams.toString();
+    return endpoint;
+  },
+
+  // @get
+  searchCompanyBySiret: ({ siret }) => {
+    const endpoint = new URL(`${host}/api_sirene_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('siret', siret);
+    endpoint.search = searchParams.toString();
+    return endpoint;
+  },
+  
   // @post
   apiSearchSchool: () => {
     const endpoint = new URL(`${host}/api/schools/search`);

@@ -3,7 +3,6 @@ require 'application_system_test_case'
 module Dashboard
   class NewAgreementTest < ApplicationSystemTestCase
     include Devise::Test::IntegrationHelpers
-    include ThirdPartyTestHelpers
 
     if ENV['CONVENTION_ENABLED']
       def field_edit_is_allowed?(label:, id: nil)
@@ -176,13 +175,15 @@ module Dashboard
                                         student: student,
                                         internship_offer: internship_offer )
 
+        # prismic_root_path_stubbing do
         sign_in(main_teacher)
         visit root_path
-        within('#navbarScroll ul') do
-          find("li.nav-item a.btn.btn-sm", text: main_teacher.dashboard_name).click
+        within('header') do
+          find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher.dashboard_name).click
         end
         click_link('Conventions à signer')
         find('.actions a.btn.btn-primary').click
+        # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
         #Fields edition tests
         field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
@@ -221,6 +222,7 @@ module Dashboard
         ].each do |trix_field_id|
           assert_trix_editor_editable(trix_field_id)
         end
+        # end
       end
 
 
@@ -238,7 +240,7 @@ module Dashboard
                                         )
         sign_in(teacher)
         visit root_path
-        find("li.nav-item a.btn.btn-sm.btn-link.white.mr-2.mb-1", text: teacher.dashboard_name).click 
+        find("li.nav-item a.btn.btn-sm.btn-link.white", text: teacher.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.cannot?(:create, InternshipAgreement)
         refute page.has_content?('Conventions à signer')
@@ -261,7 +263,7 @@ module Dashboard
                                         )
         sign_in(main_teacher_2)
         visit root_path
-        find("li.nav-item a.btn.btn-sm.btn-link.white.mr-2.mb-1", text: main_teacher_2.dashboard_name).click
+        find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher_2.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.can?(:create, InternshipAgreement)
         assert page.has_content?('Conventions à signer')

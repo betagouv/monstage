@@ -136,6 +136,7 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
+        siren: Code Siren
 
       operator: &operator_fields
         name: Nom
@@ -198,6 +199,7 @@ fr:
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
+        siren: Code Siren
         permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
         full_school: Établissement

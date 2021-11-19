@@ -61,8 +61,22 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
           p La convention est fournie par l'établissement, son modèle est généralement fourni par le professeur principal.
         p Elle doit être remplie et signée par les responsables légaux puis envoyée à l'employeur, au plus tôt, par courrier (postal ou électronique) ou remise en mains propres. Après l'avoir signée, l'employeur la retourne à l'établissement.
         p.font-weight-bold Sans une convention convenablement remplie et signée, le stage ne peut pas avoir lieu.
+        - internship_offer = @internship_application.internship_offer
+        p
+          .font-weight-bold Contact de l'employeur
+          ul.list-unstyled
+            li = internship_offer.employer_name
+            li = "Email : #{internship_offer.employer_email}"
 
-        h3.h4 À quoi sert la convention ?
+        p
+          .font-weight-bold Contact du tuteur
+          ul.list-unstyled
+            li = internship_offer.tutor_name
+            - phone_number = internship_offer&.tutor_phone.gsub('+33', '0')&.scan(/.{2}/)&.join(" ")
+            li = "Téléphone : #{phone_number}"
+            li = "Email : #{internship_offer.tutor_email}"
+
+        h3.h4.mt-4 À quoi sert la convention ?
         p La convention rappelle les engagements et responsabilités de chacun : entreprise ou administration, stagiaire et établissement scolaire. Elle précise que le stagiaire est couvert par l’assurance responsabilité civile de l’établissement scolaire.
 
         p La convention comprend des données relatives aux élèves : nom, coordonnées, contact à prévenir en cas d’urgence, nom de l'établissement, dates et horaires du stage. Elle comporte aussi le nom de l’entreprise ou de l’administration, son secteur d’activité, son adresse, un cachet, le nom du tuteur du stage et ses coordonnées.

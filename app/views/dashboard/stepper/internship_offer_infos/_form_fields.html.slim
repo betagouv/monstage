@@ -3,7 +3,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
                data-internship-offer-infos-base-type-value="#{klass}"]
   legend.my-4 Offre de stage
   .row.mt-3
-    .col-12.col-md-6
+    .col-lg-6.col-md-12.order-lg-1.order-2
       = form.rg2a_explain_required_asterisk
       .form-group
         = form.label :school_track do
@@ -132,8 +132,9 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
             = button_tag :submit, class: 'btn btn-primary' do
               = 'Suivant '
               i.fas.fa-arrow-right
-    - if warning_bloc
-      .d-none.d-md-flex.col-md-6
-        .sticky-top= render partial: 'dashboard/stepper/warning_block'
-
+    - warning_block = true if warning_block.nil?
+    - if warning_block
+      .col-lg-6.col-md-12.order-lg-2.order-1.employer
+        = render partial: 'dashboard/stepper/warning_block'
+  .row.my-5
 

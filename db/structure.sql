@@ -20,8 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
 
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
@@ -51,6 +49,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
+
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -61,8 +60,6 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
-
-COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
@@ -923,8 +920,10 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL,
-    siren character varying
+    employer_id integer,
+    siren character varying,
+    siret character varying,
+    is_paqte boolean
 );
 
 
@@ -2406,6 +2405,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210910142500'),
 ('20211020160439'),
 ('20211026200850'),
-('20211027130402');
+('20211027130402'),
+('20211110133150');
 
 

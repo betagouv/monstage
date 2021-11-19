@@ -1,12 +1,12 @@
-.mx-sm-2.mx-0
-  .bg-cover-image-homepage.container-xl
-    header.row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
+.mx-sm-2.mx-0 data-controller='modal-covid'
+  header.bg-cover-image-homepage.container-xl
+    .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
       .col.px-0
         = render 'pages/home/navbar_home'
 
     .row.no-gutters
       .col-lg-6.col-md-12
-        .pl-lg-5.pl-md-4.pl-sm-4.pl-4.mr-lg-n3.overflow-auto
+        .pl-lg-5.pl-md-4.pl-sm-4.pl-4
           h1.h1.h1-text-hero.white.mb-3
             | Des stages de troisième de premier choix !
           p.my-5.d-sm-none
@@ -33,7 +33,7 @@
                               default_values: user_presenter.default_search_options,
                               form_id: :home_search_form }
     .actions.d-flex.d-stick.d-md-none.p-2
-      = link_to search_internship_offers_path(current_user_or_visitor.default_search_options),
+      = link_to internship_offers_path(current_user_or_visitor.default_search_options),
                 class: 'btn btn-danger rounded-sm',
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage"
