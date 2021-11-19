@@ -39,6 +39,14 @@ class InternshipOfferTest < ActiveSupport::TestCase
     end
   end
 
+  test 'faulty zipcode' do
+    internship_offer_attr = build(:weekly_internship_offer).attributes
+    internship_offer_attr['zipcode'] = "x75012"
+    offer = InternshipOffer.new(internship_offer_attr)
+    refute offer.valid?
+    assert_equal ["Semaine de stage Veuillez saisir des semaines de stage"], offer.errors.full_messages
+  end
+
 
   test 'internship_offer.available_weeks for past year offer returns selectable_on_past_school_year' do
     travel_to(Date.new(2021, 5, 31)) do

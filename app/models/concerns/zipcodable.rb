@@ -11,7 +11,12 @@ module Zipcodable
     end
 
     def reverse_department_by_zipcode
-      self.department = Department.lookup_by_zipcode(zipcode: zipcode)
+      department = Department.lookup_by_zipcode(zipcode: zipcode)
+      if department.nil?
+        errors.add(:department, 'le code postal ne permet pas de déduire le département')
+        return false
+      end
+      self.department = department
     end
   end
 end
