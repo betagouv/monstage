@@ -55,6 +55,10 @@ module Users
       SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
     end
 
+    def school_manager?
+      role == 'school_manager'
+    end
+
     private
 
     # validators

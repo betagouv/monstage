@@ -254,6 +254,7 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+  def school_manager? ; false end
 
 
   private

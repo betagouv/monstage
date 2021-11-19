@@ -127,7 +127,7 @@ module Dashboard::Stepper
             zipcode: '75001',
             city: 'Paris',
             coordinates: { latitude: 1, longitude: 1 },
-            description_tich_text: '<p>Activités de découverte</p>',
+            description_rich_text: '<p>Activités de découverte</p>',
             is_public: 'true',
             website: 'www.website.com'
           }
