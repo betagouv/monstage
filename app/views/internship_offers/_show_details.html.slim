@@ -56,7 +56,7 @@
               span.ml-1= "Dans quelle entreprise ?"
             strong.pl-4.test-employer-name= internship_offer.employer_name
             - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
-              .reboot-trix-content.mt-2= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+              .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
             - if internship_offer.employer_website.present?
               p
                 = link_to internship_offer.employer_website,
