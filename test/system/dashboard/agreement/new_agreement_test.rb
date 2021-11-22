@@ -113,7 +113,7 @@ module Dashboard
 
       test 'as School Manager, I can edit my own fields only' do
         internship_offer = create(:weekly_internship_offer)
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager, :with_weeks)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         internship_application = create(:weekly_internship_application,
@@ -166,7 +166,7 @@ module Dashboard
 
       test 'as Main Teacher, I can edit my own fields only' do
         internship_offer = create(:weekly_internship_offer)
-        school           = create(:school, :with_school_manager)
+        school           = create(:school, :with_school_manager, :with_weeks)
         class_room       = create(:class_room, school: school)
         main_teacher     = create(:main_teacher, school: school, class_room_id: class_room.id)
         student          = create(:student, school: school, class_room: class_room)
@@ -192,7 +192,7 @@ module Dashboard
                                   id: 'internship_agreement_school_representative_full_name')
         field_edit_is_not_allowed?(label: 'Nom de l’élève ou des élèves concernés',
                                   id: 'internship_agreement_student_full_name')
-        field_edit_is_allowed?(label: 'Classe',
+        field_edit_is_allowed?(label: 'Classe :',
                                   id: 'internship_agreement_student_class_room')
         field_edit_is_not_allowed?(label: 'Établissement d’origine',
                                   id: 'internship_agreement_student_school')
@@ -224,7 +224,6 @@ module Dashboard
         end
         # end
       end
-
 
       test 'mere teachers cannot reach Convention à signer' do
         internship_offer = create(:weekly_internship_offer)
