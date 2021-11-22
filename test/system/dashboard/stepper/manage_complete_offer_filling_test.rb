@@ -49,6 +49,9 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
       fill_in_tutor_form
       click_on 'Publier l\'offre !'
       wait_form_submitted
+      assert_equal 'Delta dev', find('strong.test-employer-name.pl-4').text
+      assert_equal "La rue qui existe pas dans l'API / OSM", find('span.test-street').text
+      assert_equal '75013 Paris 13e Arrondissement', find('span.test-zipcode-and-city').text
     end
   end
 end
