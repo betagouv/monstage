@@ -16,7 +16,7 @@ module StepperProxy
       validates :employer_description, length: { maximum: InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT }
 
       validates :is_public, inclusion: { in: [true, false] }
-      validates :siret, length: { is: 14 }, allow_blank: true
+      # validates :siret, length: { is: 14 }, allow_blank: true #WHEN_SIRET
 
       validate :validate_group_is_public?, if: :is_public?
       validate :validate_group_is_not_public?, unless: :is_public?
@@ -45,7 +45,7 @@ module StepperProxy
       end
 
       def clean_siret
-        self.siret = self.siret.gsub(' ', '') if self.siret
+        self.siret = self.siret.gsub(' ', '') if self.try(:siret) #WHEN_SIRET
       end
     end
   end
