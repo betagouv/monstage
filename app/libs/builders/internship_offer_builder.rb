@@ -95,7 +95,7 @@ module Builders
         employer_description_rich_text: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
-        # siret: organisation.siret, #WHEN_SIRET
+        siret: organisation.siret
       }
     end
 

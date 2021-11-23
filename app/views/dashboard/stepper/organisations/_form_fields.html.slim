@@ -7,7 +7,7 @@ fieldset.mt-4 data-controller='organisation-form'
       - if current_user.ministry_statistician?
         = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
       - else
-        / = react_component("SirenInput", props: { resourceName: form.object_name, currentSiren: resource.siret })
+        = react_component("SirenInput", props: { resourceName: form.object_name, currentSiren: resource.siret })
         
         .form-group
           = form.label :employer_name do
