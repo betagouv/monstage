@@ -39,6 +39,15 @@ class InternshipOfferTest < ActiveSupport::TestCase
     end
   end
 
+  test 'faulty zipcode' do
+    internship_offer = create(:weekly_internship_offer)
+    internship_offer.update_columns(zipcode: 'xy75012')
+
+    refute internship_offer.valid?
+    assert_equal ["Code postal le code postal ne permet pas de déduire le département" ],
+                 internship_offer.errors.full_messages
+  end
+
 
   test 'internship_offer.available_weeks for past year offer returns selectable_on_past_school_year' do
     travel_to(Date.new(2021, 5, 31)) do

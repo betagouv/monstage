@@ -4,6 +4,11 @@ class SendSmsJob < ApplicationJob
   queue_as :default
 
   def perform(user)
+    if user.formatted_phone.nil?
+      error_message = "sms [user_id = #{user.id}] to be sent with empty phone number !"
+      Rails.logger.error(error_message) && return
+    end
+
     client = OVH::REST.new(
       ENV['OVH_APPLICATION_KEY'],
       ENV['OVH_APPLICATION_SECRET'],
