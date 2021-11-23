@@ -40,11 +40,12 @@ class InternshipOfferTest < ActiveSupport::TestCase
   end
 
   test 'faulty zipcode' do
-    internship_offer_attr = build(:weekly_internship_offer).attributes
-    internship_offer_attr['zipcode'] = "x75012"
-    offer = InternshipOffer.new(internship_offer_attr)
-    refute offer.valid?
-    assert_equal ["Semaine de stage Veuillez saisir des semaines de stage"], offer.errors.full_messages
+    internship_offer = create(:weekly_internship_offer)
+    internship_offer.update_columns(zipcode: 'xy75012')
+
+    refute internship_offer.valid?
+    assert_equal ["Code postal le code postal ne permet pas de déduire le département" ],
+                 internship_offer.errors.full_messages
   end
 
 

@@ -3,6 +3,7 @@ module Zipcodable
 
   included do
     validates :zipcode, presence: true
+    validate :reverse_department_by_zipcode
     before_save :ensure_good_zipcode,
                 :reverse_department_by_zipcode
 
@@ -11,9 +12,11 @@ module Zipcodable
     end
 
     def reverse_department_by_zipcode
+      return false if zipcode.blank?
+
       department = Department.lookup_by_zipcode(zipcode: zipcode)
       if department.nil?
-        errors.add(:department, 'le code postal ne permet pas de déduire le département')
+        errors.add(:zipcode, 'le code postal ne permet pas de déduire le département')
         return false
       end
       self.department = department
