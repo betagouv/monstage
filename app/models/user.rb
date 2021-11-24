@@ -180,6 +180,8 @@ class User < ApplicationRecord
   end
 
   def formatted_phone
+    return if phone.blank?
+
     phone[0..4].gsub('0', '') + phone[5..]
   end
 

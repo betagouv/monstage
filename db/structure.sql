@@ -33,7 +33,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 
 
-
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -914,8 +913,10 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL,
-    siren character varying
+    employer_id integer,
+    siren character varying,
+    siret character varying,
+    is_paqte boolean
 );
 
 
@@ -2396,6 +2397,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210825150743'),
 ('20211020160439'),
 ('20211026200850'),
-('20211027130402');
+('20211027130402'),
+('20211110133150');
 
 

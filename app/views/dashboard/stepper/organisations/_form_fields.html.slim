@@ -1,20 +1,20 @@
 fieldset.mt-4 data-controller='organisation-form'
   legend.my-4 Informations sur l'entreprise
-  .row.mt-3.d-flex.flex-md-reverse-column
-    .col-12.col-md-6
+  .row.mt-3
+    .col-12.col-md-6.order-md-1.order-2
       = form.rg2a_explain_required_asterisk
 
       - if current_user.ministry_statistician?
         = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
       - else
+        / = react_component("SirenInput", props: { resourceName: form.object_name, currentSiren: resource.siret })
+        
         .form-group
           = form.label :employer_name do
-            = "Nom de l’entreprise / institution proposant l’offre"
+            = "Nom de l’entreprise proposant l’offre"
             = form.rg2a_required_content_tag
 
-          = form.text_field :employer_name,
-                            class: 'form-control',
-                            placeholder: 'Ma Société / Mon Institution', required: true
+          = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété', required: true, data: { "organisation-form-target": "organisationName" }
         .form-group
           .label
             | Secteur
@@ -22,16 +22,9 @@ fieldset.mt-4 data-controller='organisation-form'
           .row
             .col-8
               .toggle-radio
-                = form.radio_button :is_public,
-                                    true, class: '',
-                                    required: true,
-                                    data: { action: 'change->organisation-form#handleClickIsPublic' }
+                = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
                 = form.label :is_public_true, 'Public', class: ''
-                = form.radio_button :is_public,
-                                    false,
-                                    class: '',
-                                    required: true,
-                                    data: { action: 'change->organisation-form#handleClickIsPublic' }
+                = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
                 = form.label :is_public_false, 'Privé', class: ''
 
         div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
@@ -68,9 +61,10 @@ fieldset.mt-4 data-controller='organisation-form'
             = button_tag :submit, class: 'btn btn-primary' do
               ="Suivant "
               i.fas.fa-arrow-right
-
-    - if warning_bloc
-      .d-md-flex.col-md-6.col-sm-12
-        .sticky-top.employer = render partial: 'dashboard/stepper/warning_block'
+    - warning_block = true if warning_block.nil?
+    - if warning_block
+      .col-lg-6.col-md-12.order-md-2.order-1.employer 
+        = render partial: 'dashboard/stepper/warning_block'
+  .row.my-5
 
 

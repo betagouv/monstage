@@ -51,7 +51,7 @@ module Dto
 
     def check_street
       if params[:street].blank? && params[:coordinates].present?
-        params[:street] = Geofinder.get_street(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
+        params[:street] = Geofinder.street(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
       end
       params
     end

@@ -47,7 +47,7 @@ module Dashboard
         employer = create(:employer)
         # School_track is 'troisieme_générale'
         internship_offer = create(:weekly_internship_offer, employer: employer)
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager, :with_weeks)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         internship_application = create(:weekly_internship_application,
@@ -165,8 +165,8 @@ module Dashboard
       end
 
       test 'as Main Teacher, I can edit my own fields only' do
-        school = create(:school, :with_weeks, :with_school_manager)
-        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
+        internship_offer = create(:weekly_internship_offer)
+        school           = create(:school, :with_school_manager, :with_weeks)
         class_room       = create(:class_room, school: school)
         main_teacher     = create(:main_teacher, school: school, class_room_id: class_room.id)
         student          = create(:student, school: school, class_room: class_room)
@@ -225,8 +225,8 @@ module Dashboard
 
 
       test 'mere teachers cannot reach Convention à signer' do
-        school = create(:school, :with_weeks, :with_school_manager)
-        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
+        internship_offer = create(:weekly_internship_offer)
+        school           = create(:school, :with_school_manager, :with_weeks)
         class_room       = create(:class_room, school: school)
         teacher          = create(:teacher, school: school, class_room: class_room)
         student          = create(:student, school: school, class_room: class_room)

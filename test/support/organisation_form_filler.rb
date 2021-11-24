@@ -1,6 +1,6 @@
 module OrganisationFormFiller
   def fill_in_organisation_form(is_public:, group:)
-    fill_in 'Nom de l’entreprise / institution proposant l’offre', with: 'Stage de dev @betagouv.fr ac Brice & Martin'
+    fill_in 'Nom de l’entreprise proposant l’offre', with: 'Delta dev'
     find('label', text: 'Public').click
     select group.name, from: 'organisation_group_id' if group
 
