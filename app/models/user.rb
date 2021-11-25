@@ -1,8 +1,10 @@
 # frozen_string_literal: true
+require "sti_preload"
 
 class User < ApplicationRecord
   include Discard::Model
   include UserAdmin
+  include StiPreload
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,

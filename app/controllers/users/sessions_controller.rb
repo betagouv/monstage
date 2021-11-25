@@ -6,6 +6,7 @@ module Users
     before_action :configure_sign_in_params, only: %i[new create]
     after_action :remove_notice, only: %i[destroy create]
     after_action :switch_back, only: %i[destroy]
+    after_action :set_up_sentry, only: :create
 
     def create
       if by_phone? && fetch_user_by_phone.try(:valid_password?, params[:user][:password])
@@ -64,6 +65,10 @@ module Users
       user = User.find(switch_back)
       cookies.delete(cookie_name)
       sign_in(user, scope: :user)
+    end
+
+    def set_up_sentry
+      Sentry.set_user(id: current_user.id)
     end
   end
 end
