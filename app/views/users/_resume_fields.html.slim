@@ -24,10 +24,10 @@
             small.form-text.text-muted Langues étudiées et/ou parlées
           = form.rich_text_area :resume_languages, class: 'form-control col-12', disabled: disabled, rows: 3
 
-  fieldset class="#{phone_mail_disabled ? 'opacity-05' : ''} col-12 mb-4"
+  fieldset.col-12.mb-4
     legend.h3 Me contacter
     .row
-      .col-12.col-md-6
+      .col-12.col-md-6 class="#{phone_mail_disabled ? 'opacity-05' : ''}"
         .form-group
           = form.label :phone, for: 'phone-input', class: '' do
             = 'Numéro de mobile'
@@ -36,9 +36,10 @@
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
+            = form.rg2a_required_content_tag
 
           - if current_user.unconfirmed_email.nil?
-            = form.email_field :email, class: 'form-control col-lg-12', required: !current_user.phone , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+            = form.email_field :email, class: 'form-control col-lg-12', required: true
             small.form-text.text-muted.mb-1
               |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           - else
