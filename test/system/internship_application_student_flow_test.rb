@@ -4,7 +4,6 @@ require 'application_system_test_case'
 
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
-  include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
@@ -33,13 +32,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
     page.find('.test-missing-school-weeks', visible: true)
 
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
   end
 
   test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
@@ -62,13 +58,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                      .first
                      .human_select_text_method
     select(week_label)
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
     page.find("input[type='submit'][value='Envoyer']").click
@@ -112,13 +105,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     click_on 'Je postule'
     # check application is now here, ensure feature is here
     page.find '#internship-application-closeform', visible: true
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
     page.find("input[type='submit'][value='Envoyer']").click
@@ -138,14 +128,11 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
-
-    prismic_root_path_stubbing do
-      visit '/'
+    visit '/'
+    click_on 'Candidatures'
+    internship_applications.each do |_aasm_state, internship_application|
+      click_on internship_application.internship_offer.title
       click_on 'Candidatures'
-      internship_applications.each do |_aasm_state, internship_application|
-        click_on internship_application.internship_offer.title
-        click_on 'Candidatures'
-      end
     end
   end
 
