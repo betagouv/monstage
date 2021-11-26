@@ -1,29 +1,44 @@
 module Presenters
   class UserManagementRole
+    TYPE_TRANSLATOR = {
+      'Users::Student': 'Elève',
+      'Users::Employer': 'Offreur',
+      'Users::God': 'Administrateur',
+      'Users::Operator': 'Operateur',
+      'Users::Statistician': 'Référent départemental',
+      'Users::MinistryStatistician': 'Référent central'
+    }
+    ROLE_TRANSLATOR = {
+      school_manager: "Chef d'établissement",
+      teacher: 'Professeur',
+      other: 'Autres fonctions',
+      main_teacher: 'Professeur principal'
+    }
+
     def role
       case user
       when Users::Student
-        'Elève'
+        TYPE_TRANSLATOR['Users::Student'.to_sym]
       when Users::Employer
-        'Offreur'
+        TYPE_TRANSLATOR['Users::Employer'.to_sym]
       when Users::God
-        'Dieu'
+        TYPE_TRANSLATOR['Users::God'.to_sym]
       when Users::Operator
-        'Operateur'
+        TYPE_TRANSLATOR['Users::Operator'.to_sym]
       when Users::Statistician
-        'Référent départemental'
+        TYPE_TRANSLATOR['Users::Statistician'.to_sym]
       when Users::MinistryStatistician
-        'Référent central'
+        TYPE_TRANSLATOR['Users::MinistryStatistician'.to_sym]
       when Users::SchoolManagement
         case user.role.to_sym
         when :school_manager
-          "Chef d'établissement"
+          ROLE_TRANSLATOR[:school_manager]
         when :teacher
-          'Professeur'
+          ROLE_TRANSLATOR[:teacher]
         when :other
-          'Autres fonctions'
+          ROLE_TRANSLATOR[:other]
         when :main_teacher
-          'Professeur principal'
+          ROLE_TRANSLATOR[:main_teacher]
         else
           'Utilisateur'
         end
@@ -31,6 +46,16 @@ module Presenters
         'Visiteur'
       else
         'Utilisateur'
+      end
+    end
+
+    def self.human_types_and_roles(key)
+      if TYPE_TRANSLATOR.has_key?(key)
+        TYPE_TRANSLATOR[key]
+      elsif ROLE_TRANSLATOR.has_key?(key)
+        ROLE_TRANSLATOR[key]
+      else
+        'Erreur'
       end
     end
 
