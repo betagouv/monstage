@@ -11,3 +11,20 @@ task :delete_user, [:user_id] => :environment do |task, args|
 
   puts 'done'
 end
+
+desc 'Remote contacts of email delivery service'
+task :delete_remote_contacts => [:environment] do
+  require 'fileutils'
+  require 'csv'
+
+  email_addresses = []
+
+  CSV.foreach(Rails.root.join('tmp/adresses_email.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
+    email_addresses << row[1]
+  end
+
+  email_addresses.each do |email|
+    RemoveContactFromSyncEmailDeliveryJob.perform_later(email: email)
+  end
+  puts 'every single email removing is scheduled in Sidekiq'
+end
