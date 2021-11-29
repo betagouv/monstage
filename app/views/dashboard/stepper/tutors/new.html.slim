@@ -9,6 +9,8 @@
       = render "dashboard/stepper/steps"
       = render "layouts/form_errors", resource: @tutor, resource_name: :tutor
 
-      = render 'dashboard/stepper/tutors/form_fields', { resource: @tutor, form: form, submit_button: true, warning_bloc: true }
+      = render 'dashboard/stepper/tutors/form_fields', { resource: @tutor,
+                                                         form: form,
+                                                         submit_button: true }
 
 

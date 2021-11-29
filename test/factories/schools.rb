@@ -28,6 +28,10 @@ FactoryBot.define do
       school_manager { build(:school_manager) }
     end
 
+    trait :with_weeks do
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
+    end
+
     factory :school_with_troisieme_segpa_class_room do
       after(:create) do |school|
         create(:class_room, school: school, school_track: 'troisieme_segpa')

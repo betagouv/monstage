@@ -47,7 +47,7 @@ div data-controller="internship-application-form"
     .col-12.col-sm-10
       - if user_signed_in?
         - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && (@internship_offer.weekly? || @internship_offer.free_date?)
-            = render "internship_applications/forms/weekly_and_free"
+          = render "internship_applications/forms/weekly_and_free"
       - else
         = render "internship_applications/forms/visitor"
     .d-none.d-sm-flex.col-sm-1.align-items-center.text-left

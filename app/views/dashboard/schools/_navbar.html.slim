@@ -39,7 +39,8 @@
           ' Conventions à signer &nbsp;
           - if badge_counter.approved_application_count.positive?
             span.badge-pill.badge-danger.small= badge_counter.approved_application_count
-    - if can? :create_remote_internship_request, SupportTicket
+    /Remove code after  February, 15th 2022 or uncomment
+    /- if can? :create_remote_internship_request, SupportTicket 
       li.nav-item
         = link_to new_dashboard_support_ticket_path,
                   class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do

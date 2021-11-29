@@ -1,7 +1,5 @@
-import {
-  Controller
-} from 'stimulus';
-import isMobile from 'utils/responsive';
+import { Controller } from 'stimulus';
+import { isMobile, isTablet } from '../utils/responsive';
 
 export default class extends Controller {
 
@@ -10,7 +8,7 @@ export default class extends Controller {
 
   showCurrentSlide() {
     this.slideTargets.forEach((element, index) => {
-      if (!isMobile()) {
+      if (!isMobile() && !isTablet()) {
         element.hidden = (index != this.indexValue);
       }
     })
