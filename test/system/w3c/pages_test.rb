@@ -6,7 +6,6 @@ module W3c
   class HomeValidationTest < ApplicationSystemTestCase
     include Html5Validator
     include Devise::Test::IntegrationHelpers
-    include ThirdPartyTestHelpers
 
     test 'USE_W3C, static pages' do
       %i[

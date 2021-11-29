@@ -12,6 +12,8 @@
         .form-group.phone
           = label_tag 'Numéro de mobile'
           = react_component("CountryPhoneSelect", props: { name: 'phone', value: params[:phone]})
+          small.text-muted 
+            | (+33 puis 06 11 22 33 44 par exemple)
         .form-group.custom-label-container
           = number_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
           = label_tag :phone_token, 'Code de confirmation'

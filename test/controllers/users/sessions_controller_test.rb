@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
-  include ThirdPartyTestHelpers
   test 'GET works' do
     get new_user_session_path
     assert_response :success

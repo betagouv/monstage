@@ -47,7 +47,7 @@ module Dashboard
         employer = create(:employer)
         # School_track is 'troisieme_générale'
         internship_offer = create(:weekly_internship_offer, employer: employer)
-        school = create(:school, :with_school_manager)
+        school = create(:school, :with_school_manager, :with_weeks)
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         internship_application = create(:weekly_internship_application,
@@ -112,8 +112,8 @@ module Dashboard
       end
 
       test 'as School Manager, I can edit my own fields only' do
-        internship_offer = create(:weekly_internship_offer)
-        school = create(:school, :with_school_manager, :with_weeks)
+        school = create(:school, :with_weeks, :with_school_manager)
+        internship_offer = create(:weekly_internship_offer, weeks: [school.weeks.first])
         class_room = create(:class_room, school: school)
         student = create(:student, school: school, class_room: class_room)
         internship_application = create(:weekly_internship_application,
@@ -181,9 +181,7 @@ module Dashboard
         within('header') do
           find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher.dashboard_name).click
         end
-        click_link('Conventions à signer')
-        find('.actions a.btn.btn-primary').click
-        # visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
+        visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
         #Fields edition tests
         field_edit_is_not_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
@@ -194,6 +192,7 @@ module Dashboard
                                   id: 'internship_agreement_student_full_name')
         field_edit_is_allowed?(label: 'Classe :',
                                   id: 'internship_agreement_student_class_room')
+        # byebug
         field_edit_is_not_allowed?(label: 'Établissement d’origine',
                                   id: 'internship_agreement_student_school')
         field_edit_is_not_allowed?(label: "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur",
@@ -222,12 +221,11 @@ module Dashboard
         ].each do |trix_field_id|
           assert_trix_editor_editable(trix_field_id)
         end
-        # end
       end
 
       test 'mere teachers cannot reach Convention à signer' do
         internship_offer = create(:weekly_internship_offer)
-        school           = create(:school, :with_school_manager)
+        school           = create(:school, :with_school_manager, :with_weeks)
         class_room       = create(:class_room, school: school)
         teacher          = create(:teacher, school: school, class_room: class_room)
         student          = create(:student, school: school, class_room: class_room)

@@ -3,12 +3,8 @@
 require 'test_helper'
 
 class PagesTest < ActionDispatch::IntegrationTest
-  include ThirdPartyTestHelpers
 
   test 'home' do
-    # write a mock : File.open(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump'), 'wb') { |fd| fd.write Marshal.dump(rs) }
-    # read a mock : Marshal.load(File.read(Rails.root.join('test', 'fixtures', 'files', 'prismic-homepage-response.dump')))
-    # mock with mock : PrismicFinder.stub(:homepage, mock_prismic)
     get root_path
     assert_response :success
     assert_template 'pages/home'
