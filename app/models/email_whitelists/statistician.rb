@@ -1,6 +1,10 @@
 module EmailWhitelists
   class Statistician < EmailWhitelist
-    validates :zipcode, inclusion: { in: Department::MAP.keys }
+    validates :zipcode,
+              inclusion: { in: Department::MAP.keys },
+              presence: { message: 'Le département doit être saisi ' \
+                                   'avec 2 chiffres ou 3 caractères' }
+    validates :email, presence: true          
     rails_admin do
       list do
         field :id
@@ -14,7 +18,9 @@ module EmailWhitelists
       end
       edit do
         field :email
-        field :zipcode
+        field :zipcode do
+          label 'Departement (sur 2 ou 3 caractères)'
+        end
       end
     end
 
