@@ -8,5 +8,5 @@
         li
           label for="#{defined?(resource_name) ? resource_name : resource.class.name.downcase }_#{key}"
             - errors_message.each do |error_message|
-              = error_message
+              = error_message.html_safe
 
