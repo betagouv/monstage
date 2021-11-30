@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require 'application_system_test_case'
-
+include ActiveJob::TestHelper
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
+  include ThirdPartyTestHelpers
 
   test 'student not in class room can not ask for week' do
     school = create(:school, weeks: [])
@@ -142,6 +143,27 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     internship_applications.each do |_aasm_state, internship_application|
       click_on internship_application.internship_offer.title
       click_on 'Candidatures'
+    end
+  end
+
+  test 'student can receive a SMS when employer accepts her application' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     email: "",
+                     phone: '+330612345678'
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      student: student
+    )
+    sign_in(internship_application.internship_offer.employer)
+    bitly_stub do
+      visit dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      click_on 'Accepter'
+      click_on 'Confirmer'
     end
   end
 
