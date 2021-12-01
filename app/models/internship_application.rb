@@ -147,7 +147,7 @@ class InternshipApplication < ApplicationRecord
                             SendSmsJob.perform_later(
                               user: student,
                               message: sms_message
-                            )
+                            ) unless Rails.env.development?
                           else
                             mesg = "while internship ##{id} has been accepted," \
                                    " no message has been sent to the " \
@@ -276,7 +276,6 @@ class InternshipApplication < ApplicationRecord
                     application.id,
                     Rails.configuration.action_mailer.default_url_options
                   )
-    target = target.gsub('localhost', '127.0.0.1') if Rails.env.development?
     UrlShortener.short_url(target)
   end
 end
