@@ -142,17 +142,8 @@ class InternshipApplication < ApplicationRecord
                               StudentMailer.internship_application_approved_email(internship_application: self)
                             end
                           elsif student.phone.present?
-                            target = Rails.application
-                                          .routes
-                                          .url_helpers
-                                          .dashboard_students_internship_application_url(
-                                            id,
-                                            student.id,
-                                            Rails.configuration.action_mailer.default_url_options
-                                          )
-                            shortened_url = UrlShortener.short_url(target)
                             sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
-                                          "été acceptée ! Consultez-la ici : #{shortened_url}"
+                                          "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
                             SendSmsJob.perform_later(
                               user: student,
                               message: sms_message
@@ -274,5 +265,18 @@ class InternshipApplication < ApplicationRecord
     return false if created_at < Date.parse('01/09/2020')
 
     true
+  end
+
+  def short_target_url(application)
+    target = Rails.application
+                  .routes
+                  .url_helpers
+                  .dashboard_students_internship_application_url(
+                    application.student.id,
+                    application.id,
+                    Rails.configuration.action_mailer.default_url_options
+                  )
+    target = target.gsub('localhost', '127.0.0.1')
+    UrlShortener.short_url(target)
   end
 end
