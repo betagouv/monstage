@@ -276,7 +276,7 @@ class InternshipApplication < ApplicationRecord
                     application.id,
                     Rails.configuration.action_mailer.default_url_options
                   )
-    target = target.gsub('localhost', '127.0.0.1')
+    target = target.gsub('localhost', '127.0.0.1') if Rails.env.development?
     UrlShortener.short_url(target)
   end
 end
