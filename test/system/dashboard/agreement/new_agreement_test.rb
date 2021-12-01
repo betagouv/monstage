@@ -61,13 +61,13 @@ module Dashboard
         find('h1.h2', text: 'Votre convention de stage')
         find('h6.h6.test-header a', text: internship_offer.title)
 
-        #Tool notes
+        # Tool notes
         page.has_css?('.col-4 .tool-note')
         find('a.text-danger', text: 'Masquer les notes').click
         refute page.has_css?('.col-4 .tool-note')
         find('a', text: 'Afficher les notes').click
 
-        #Fields edition tests
+        # Fields edition tests
         field_edit_is_allowed?(label: 'L’entreprise ou l’organisme d’accueil, représentée par',
                               id: 'internship_agreement_organisation_representative_full_name')
         field_edit_is_not_allowed?(label: 'L’établissement d’enseignement scolaire, représenté par',
@@ -84,7 +84,7 @@ module Dashboard
                                   id: 'internship_agreement_main_teacher_full_name')
         field_edit_is_allowed?(label: "Dates de la séquence d’observation en milieu professionnel",
                               id: 'internship_agreement_date_range')
-        #Schedule fields tests
+        # Schedule fields tests
         assert execute_script("return document.getElementById('same_daily_planning').checked")
         execute_script("document.getElementById('same_daily_planning').checked = false")
         refute execute_script("return document.getElementById('same_daily_planning').checked")
@@ -190,7 +190,7 @@ module Dashboard
                                   id: 'internship_agreement_school_representative_full_name')
         field_edit_is_not_allowed?(label: 'Nom de l’élève ou des élèves concernés',
                                   id: 'internship_agreement_student_full_name')
-        field_edit_is_allowed?(label: 'Classe',
+        field_edit_is_allowed?(label: 'Classe :',
                                   id: 'internship_agreement_student_class_room')
         # byebug
         field_edit_is_not_allowed?(label: 'Établissement d’origine',
@@ -222,7 +222,6 @@ module Dashboard
           assert_trix_editor_editable(trix_field_id)
         end
       end
-
 
       test 'mere teachers cannot reach Convention à signer' do
         internship_offer = create(:weekly_internship_offer)
