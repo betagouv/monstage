@@ -8,7 +8,7 @@ class GodMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
     assert_equal [EmailUtils.from], email.from
-    assert_equal [ENV['KPI_ADMIN_EMAIL']], email.to
+    assert_equal [ENV['TEAM_EMAIL']], email.to
     refute_email_spammyness(email)
   end
 end

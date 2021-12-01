@@ -16,7 +16,7 @@ class GodMailer < ApplicationMailer
     @human_date = Date.today.strftime('%d %B %Y')
 
     mail(
-      to: ENV['KPI_ADMIN_EMAIL'],
+      to: ENV['TEAM_EMAIL'],
       subject: "Monitoring monstagede3e : kpi du #{@human_date}"
     )
   end
