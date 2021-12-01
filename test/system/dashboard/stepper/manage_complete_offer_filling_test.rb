@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class ManageComplteOfferFillingTest < ApplicationSystemTestCase
+class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include OrganisationFormFiller
   include InternshipOfferInfoFormFiller

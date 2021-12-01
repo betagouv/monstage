@@ -5,4 +5,5 @@ class InternshipOfferInfoWeek < ApplicationRecord
   belongs_to :internship_offer_info, counter_cache: true
 
   delegate :max_candidates, to: :internship_offer_info
+  delegate :max_students_per_group, to: :internship_offer_info
 end
