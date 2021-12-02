@@ -121,6 +121,13 @@ Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
 - https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
 
+#### Hotfixes, les étapes
+
+- Développer son fix sur une branche, merger sur master
+- déployer master avec `./infra/production/deploy.sh`
+- merger master sur staging une fois le fix constaté
+- pousser staging sur github
+
 ## test
 
 our test suite contains
