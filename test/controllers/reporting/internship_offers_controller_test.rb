@@ -15,13 +15,16 @@ module Reporting
       @group_with_no_offer = create(:group, name: "no offer", is_public: false)
       @internship_offer_agri_1 = create(:weekly_internship_offer,
                                         sector: @sector_agri,
-                                        max_candidates: 1)
+                                        max_candidates: 1,
+                                        max_students_per_group: 1)
       @internship_offer_agri_2 = create(:weekly_internship_offer,
                                         sector: @sector_agri,
-                                        max_candidates: 1)
+                                        max_candidates: 1,
+                                        max_students_per_group: 1)
       @internship_offer_wood = create(:weekly_internship_offer,
                                       sector: @sector_wood,
-                                      max_candidates: 10)
+                                      max_candidates: 10,
+                                      max_students_per_group: 10)
       create(:weekly_internship_application,
              :submitted,
              internship_offer: @internship_offer_agri_1,

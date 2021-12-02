@@ -3,7 +3,7 @@
 class InternshipOffer < ApplicationRecord
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
-  MAX_CANDIDATES_PER_GROUP = 200
+  MAX_CANDIDATES_HIGHEST = 200
   TITLE_MAX_CHAR_COUNT = 150
   DESCRIPTION_MAX_CHAR_COUNT= 500
 
@@ -178,7 +178,7 @@ class InternshipOffer < ApplicationRecord
   end
 
   def duplicate
-    white_list = %w[type title sector_id max_candidates
+    white_list = %w[type title sector_id max_candidates max_students_per_group
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
