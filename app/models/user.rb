@@ -237,7 +237,6 @@ class User < ApplicationRecord
     end
     if add_email_to_phone_account?
       self.confirm
-      
     else
       unless @skip_confirmation_notification
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })

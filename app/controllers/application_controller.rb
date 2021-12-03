@@ -30,11 +30,9 @@ class ApplicationController < ActionController::Base
   private
 
   def check_school_requested
-    return unless current_user
-    return unless current_user.student? || current_user.is_a?(Users::SchoolManagement)
-    return if current_user.has_relationship?(:school)
-
-    redirect_to account_path(:school), flash: {warning: 'Veuillez choisir un établissement scolaire'}
+    if current_user && current_user.missing_school?
+      redirect_to account_path(:school), flash: {warning: 'Veuillez choisir un établissement scolaire'}
+    end
   end
 
 end
