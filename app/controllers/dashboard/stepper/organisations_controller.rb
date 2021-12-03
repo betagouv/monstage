@@ -16,11 +16,13 @@ module Dashboard::Stepper
     def create
       authorize! :create, Organisation
 
-      @organisation = Organisation.new(organisation_params)
-      @organisation.save!
-      redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
-    rescue ActiveRecord::RecordInvalid
-      render :new, status: :bad_request
+      # @organisation = Organisation.find_by(siret: organisation_params[:siret]) #WHEN_SIRET
+      @organisation ||= Organisation.new(organisation_params)
+      if @organisation.save
+        redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
+      else
+        render :new, status: :bad_request
+      end
     end
 
     # TODO: edit/update. other back does not works. which is missing
@@ -51,6 +53,7 @@ module Dashboard::Stepper
               :street,
               :zipcode,
               :city,
+              :siret,
               :employer_description_rich_text,
               :employer_website,
               :is_public,

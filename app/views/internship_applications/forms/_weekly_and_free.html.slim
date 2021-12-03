@@ -1,6 +1,10 @@
+
 - if @internship_offer.weekly?
   - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
-#internship-application-form data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
+div data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
+  #internship-application-form
+  .warning-block-wrapper.application.mt-4
+    = render partial: 'dashboard/stepper/info_coronavirus'
   .bg-light-blue
     .col-12
       - if !@internship_application.new_record? && !@internship_application.drafted?
@@ -16,7 +20,7 @@
 
     .col-12
       .py-3
-        - is_creating =  @internship_application.try(:new_record?)
+        - is_creating = @internship_application.try(:new_record?)
         = form_with({model: @internship_application,
                      url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
                      scope: :internship_application,

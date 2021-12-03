@@ -85,6 +85,22 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     page.find("input[name='user[class_room_id]'][placeholder='Aucune classe disponible']")
   end
 
+  test 'select other class room' do
+    school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
+    class_room_0 = create(:class_room, name: '3e A', school: school_1)
+    existing_email = 'fourcade.m@gmail.com'
+    student = create(:student, email: existing_email)
+
+    # go to signup as student
+    visit new_user_registration_path(as: 'Student')
+
+    # fails to find a class_room though there's an anonymized one
+    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+    find('#downshift-0-item-0').click
+    find("label[for=\"select-school-#{school_1.id}\"]").click
+    select("Autre classe", from: 'user_class_room_id')
+  end
+
   test 'Student with mail subscription with former internship_offer ' \
        'visit leads to offer page even when mistaking along the way' do
     school_1 = create(:school, name: 'Etablissement Test 1',

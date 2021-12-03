@@ -1,6 +1,6 @@
 import { Controller } from 'stimulus';
 import $ from 'jquery';
-import isMobile from '../utils/responsive';
+import { isMobile } from '../utils/responsive';
 
 const DELAY_BEFORE_REMOVAL = 10000
 

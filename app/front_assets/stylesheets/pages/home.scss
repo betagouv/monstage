@@ -71,6 +71,7 @@ h4 {
   font-weight: 900;
   font-size: 3.10rem;
   margin-bottom: 1rem;
+  margin-right: -9rem;
 }
 
 .subtitle-hero {
@@ -260,6 +261,7 @@ button.navigation-pill {
 }
 
 
+
 @include media-breakpoint-up(md) {
   .text-center-left {
     text-align: left;
@@ -271,11 +273,17 @@ button.navigation-pill {
   .text-md-center-right {
     text-align: right;
   }
+    .flex-md-reverse-column {
+      flex-direction: column-reverse !important;
+    }
   }
 
   @include media-breakpoint-down(md) {
     .text-md-center-right {
       text-align: center;
+    }
+    .h1-text-hero {
+      margin-right: -0rem;
     }
 }
 
@@ -284,12 +292,12 @@ button.navigation-pill {
     font-size: 20px;
     line-height: 30px;
   }
-.flex-md-column {
+  .flex-md-column {
     flex-direction: column !important;
   }
-.nav-pills-home .nav-link.active {
+  .nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
-  }
+    }
 }
 @include media-breakpoint-down(sm) {
   .text-center-left {
@@ -305,11 +313,6 @@ button.navigation-pill {
 
   .ms3e-blurry-badge {
     background: none;
-  }
-
-  .changing-order {
-    -moz-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
   }
   .subtitle-hero,
   .h1-text-hero {

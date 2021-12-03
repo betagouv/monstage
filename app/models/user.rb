@@ -180,6 +180,8 @@ class User < ApplicationRecord
   end
 
   def formatted_phone
+    return if phone.blank?
+
     phone[0..4].gsub('0', '') + phone[5..]
   end
 
@@ -187,7 +189,8 @@ class User < ApplicationRecord
     return unless phone.present?
 
     create_phone_token
-    SendSmsJob.perform_later(self)
+    message = "Votre code de validation : #{self.phone_token}"
+    SendSmsJob.perform_later(user: self, message: message)
   end
 
   def create_phone_token

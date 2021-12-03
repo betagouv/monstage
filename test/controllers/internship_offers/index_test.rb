@@ -20,7 +20,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_select 'title', 'Recherche de stages | Monstage'
   end
 
-
   test 'GET #index with coordinates as "Users::Visitor" works' do
     get internship_offers_path(latitude: 44.8378, longitude: -0.579512)
     assert_response :success
@@ -62,7 +61,9 @@ class IndexTest < ActionDispatch::IntegrationTest
 
   test 'GET #index as student ignores internship_offers of another school_track than his' do
     internship_offer_3em = create(:weekly_internship_offer, title: '3e')
-    internship_offer_troisieme_segpa = create(:troisieme_segpa_internship_offer, title: 'segpa')
+    internship_offer_troisieme_segpa = create(
+      :troisieme_segpa_internship_offer, title: 'segpa'
+    )
     school = create(:school, weeks: internship_offer_3em.weeks)
     student = create(:student, school: school,
                                class_room: create(:class_room, :troisieme_generale, school: school))
@@ -167,12 +168,15 @@ class IndexTest < ActionDispatch::IntegrationTest
     week = Week.first
     school = create(:school)
     student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
+                               class_room: create(:class_room,
+                                                  :troisieme_generale,
+                                                  school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
                               internship_offer_weeks: [
-                                build(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                              week: Week.first)
+                                build(:internship_offer_week,
+                                      blocked_applications_count: max_candidates,
+                                      week: week)
                               ])
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
@@ -188,6 +192,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     max_candidates = 2
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
+                              max_students_per_group: max_candidates,
                               internship_offer_weeks: [
                                 build(:internship_offer_week, blocked_applications_count: max_candidates - 1,
                                                               week: Week.first)
@@ -226,26 +231,30 @@ class IndexTest < ActionDispatch::IntegrationTest
         Week.selectable_from_now_until_end_of_school_year.first,
         Week.selectable_from_now_until_end_of_school_year.last
       ]
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates, weeks: internship_weeks)
+      internship_offer = create(:weekly_internship_offer,
+                                max_candidates: max_candidates, weeks: internship_weeks)
       blocked_internship_week = create(:weekly_internship_application,
                                        internship_offer: internship_offer,
                                        aasm_state: :approved,
                                        week: internship_weeks[0])
       blocked_internship_week.signed!
       not_blocked_internship_week = create(:weekly_internship_application,
-                                            internship_offer: internship_offer,
-                                            aasm_state: :submitted,
-                                            week: internship_weeks[1])
+                                           internship_offer: internship_offer,
+                                           aasm_state: :submitted,
+                                           week: internship_weeks[1])
 
       sign_in(create(:student))
 
-      get internship_offers_path(week_ids: internship_weeks.map(&:id), school_track: :troisieme_generale)
+      get internship_offers_path(week_ids: internship_weeks.map(&:id),
+                                 school_track: :troisieme_generale)
       assert_presence_of(internship_offer: internship_offer)
 
-      get internship_offers_path(week_ids: [internship_weeks[0].id], school_track: :troisieme_generale)
+      get internship_offers_path(week_ids: [internship_weeks[0].id],
+                                 school_track: :troisieme_generale)
       assert_absence_of(internship_offer: internship_offer)
 
-      get internship_offers_path(week_ids: [internship_weeks[1].id], school_track: :troisieme_generale)
+      get internship_offers_path(week_ids: [internship_weeks[1].id],
+                                 school_track: :troisieme_generale)
       assert_presence_of(internship_offer: internship_offer)
     end
   end
@@ -275,7 +284,7 @@ class IndexTest < ActionDispatch::IntegrationTest
                         .times
                         .map do
       create(:weekly_internship_offer,
-             max_candidates: 2)
+             max_candidates: 1)
     end
 
     travel_to(Date.new(2019, 3, 1)) do
@@ -332,7 +341,7 @@ class IndexTest < ActionDispatch::IntegrationTest
           page: 1,
           radius: 1_000,
           school_track: 'troisieme_generale',
-          week_ids: [1,2,3]
+          week_ids: [1, 2, 3]
         }
         get internship_offers_path, params: forwarded_params
         assert_select(
@@ -404,7 +413,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_absence_of(internship_offer: internship_offer_at_paris)
   end
 
-
   test 'GET #index?latitude=?&longitude=? as student returns internship_offer 60km around this location' do
     week = Week.find_by(year: 2019, number: 10)
     school_at_paris = create(:school, :at_paris)
@@ -470,9 +478,14 @@ class IndexTest < ActionDispatch::IntegrationTest
   test 'GET #index as student filtering by weeks shows all offers' do
     week = Week.find_by(year: 2019, number: 10)
     school = create(:school, weeks: [week])
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-    offer_overlaping_school_weeks = create(:weekly_internship_offer, weeks: [week])
-    offer_not_overlaping_school_weeks = create(:weekly_internship_offer, weeks: [Week.find_by(year: 2019, number: 11)])
+    student = create(:student, school: school,
+                               class_room: create(:class_room, :troisieme_generale, school: school))
+    offer_overlaping_school_weeks = create(:weekly_internship_offer,
+                                           weeks: [week])
+    offer_not_overlaping_school_weeks = create(:weekly_internship_offer,
+                                               weeks: [Week.find_by(
+                                                 year: 2019, number: 11
+                                               )])
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       travel_to(Date.new(2019, 3, 1)) do

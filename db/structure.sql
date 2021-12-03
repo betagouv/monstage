@@ -20,6 +20,7 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
+
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -30,6 +31,8 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -43,6 +46,9 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
+
+
 
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
@@ -50,9 +56,11 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 
+
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
+
 
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
@@ -666,7 +674,8 @@ CREATE TABLE public.internship_offer_infos (
     school_track public.class_room_school_track DEFAULT 'troisieme_generale'::public.class_room_school_track NOT NULL,
     new_daily_hours jsonb DEFAULT '{}'::jsonb,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
-    weekly_lunch_break text
+    weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL
 );
 
 
@@ -817,6 +826,7 @@ CREATE TABLE public.internship_offers (
     siret character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
+    max_students_per_group integer DEFAULT 1 NOT NULL,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0
@@ -910,8 +920,10 @@ CREATE TABLE public.organisations (
     group_id bigint,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    employer_id bigint NOT NULL,
-    siren character varying
+    employer_id integer,
+    siren character varying,
+    siret character varying,
+    is_paqte boolean
 );
 
 
@@ -2390,8 +2402,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20210820140527'),
 ('20210825145759'),
 ('20210825150743'),
+('20210910142500'),
 ('20211020160439'),
 ('20211026200850'),
-('20211027130402');
+('20211027130402'),
+('20211110133150');
 
 

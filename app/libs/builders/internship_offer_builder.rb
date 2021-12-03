@@ -95,6 +95,7 @@ module Builders
         employer_description_rich_text: organisation.employer_description,
         is_public: organisation.is_public,
         group_id: organisation.group_id,
+        # siret: organisation.siret, #WHEN_SIRET
       }
     end
 
@@ -103,6 +104,7 @@ module Builders
         title: internship_offer_info.title,
         description_rich_text: (internship_offer_info.description_rich_text.present? ? internship_offer_info.description_rich_text.to_s : internship_offer_info.description),
         max_candidates: internship_offer_info.max_candidates,
+        max_students_per_group: internship_offer_info.max_students_per_group,
         school_id: internship_offer_info.school_id,
         weekly_hours: internship_offer_info.weekly_hours,
         new_daily_hours: internship_offer_info.new_daily_hours,
