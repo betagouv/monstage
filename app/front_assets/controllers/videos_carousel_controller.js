@@ -1,7 +1,5 @@
-import {
-  Controller
-} from 'stimulus';
-import isMobile from 'utils/responsive';
+import { Controller } from 'stimulus';
+import { isMobile } from '../utils/responsive';
 
 export default class extends Controller {
 
@@ -22,6 +20,7 @@ export default class extends Controller {
   slidesNumber() {
     return this.slideTargets.length;
   }
+
 
   show() {
     this.indexValue = (this.indexValue == (this.slidesNumber() - 1)) ? 0 : this.indexValue + 1
