@@ -7,13 +7,11 @@ script src="https://player.vimeo.com/api/player.js">
       .col-md-6.col-sm-12
         .how-to-offers.text-center.videos
           .big-blue-video-shadow.d-none.d-md-block
-          #one-dailymotion-player.home-video-frame.embed-responsive.embed-responsive-1by1.rounded-lg data-videos-carousel-target='player'
-            div style="padding:75% 0 0 0;position:relative;"
-              iframe [src="https://player.vimeo.com/video/654044749?h=61d502097e&badge=0&autopause=0&playerid=0&app_id=58479"
-                    frameborder="0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen style="position:absolute;top:-350px;left:0;width:100%;height:100%;"
-                    title="mS3E_video.mp4"]
+          .home-video-frame.embed-responsive.embed-responsive-1by1.rounded-lg data-videos-carousel-target='player'
+            iframe.vimeo [ allow=("autoplay; fullscreen; picture-in-picture")
+                           allowfullscreen
+                           frameborder="0"
+                           src="https://player.vimeo.com/video/654044749?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1" ]
       .col-md-6.col-sm-12.d-flex.align-items-center
         .how-to-offers.text-center-left
           .my-5.ml-lg-5.ml-md-5.ml-sm-0
