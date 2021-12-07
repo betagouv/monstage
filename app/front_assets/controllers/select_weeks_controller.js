@@ -56,14 +56,12 @@ export default class extends Controller {
   }
 
   fetchSchoolsNearby(event) {
-    console.log('fetchSchoolsNearby', event)
     fetch(endpoints.apiSchoolsNearby(event.detail), { method: 'POST' })
       .then((response) => response.json())
       .then(this.onApiSchoolsNearbySuccess);
   }
 
   showSchoolDensityPerWeek(schools) {
-    console.log('response', schools)
     const weeksSchoolsHash = mapNumberOfSchoolHavingWeek(schools);
 
     $(this.inputWeekLegendTargets).each((i, el) => {

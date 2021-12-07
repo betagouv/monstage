@@ -8,8 +8,9 @@ module Weekable
 
     delegate :select_text_method, :human_select_text_method, to: :week
 
-    scope :ignore_max_candidates_reached, lambda { |max_candidates:|
-      where('blocked_applications_count < :max_candidates', max_candidates: max_candidates)
+    # TODO : rename
+    scope :ignore_max_candidates_reached, lambda { |max_students_per_group:|
+      where('blocked_applications_count < :max_students_per_group', max_students_per_group: max_students_per_group)
     }
 
     scope :by_weeks, lambda { |weeks:|
@@ -25,7 +26,7 @@ module Weekable
     }
 
     def has_spots_left?
-      blocked_applications_count < max_candidates
+      blocked_applications_count < max_students_per_group
     end
   end
 end

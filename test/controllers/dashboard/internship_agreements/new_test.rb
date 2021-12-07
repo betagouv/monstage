@@ -11,7 +11,7 @@ module Dashboard::InternshipAgreements
       school = create(:school, :with_school_manager)
       internship_offer = create(:weekly_internship_offer, employer: operator,
         is_public: true,
-        max_candidates: 2)
+        max_candidates: 1)
       internship_application = create(:weekly_internship_application, :approved, internship_offer: internship_offer)
       class_room = create(:class_room, school: school)
       internship_application.student.update(class_room_id: class_room.id, school_id: school.id)

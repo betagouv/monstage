@@ -1,0 +1,27 @@
+p style=head_styles
+  = "Indicateurs de produit du #{@human_date}"
+
+p style=p_styles
+  = "Pour la semaine "
+  br
+  table
+    tr
+      td Du lundi
+      td style='padding: 0 10px' = @last_monday.strftime('%d %B %Y')
+    tr
+      td au dimanche
+      td style='padding: 0 10px' = @last_sunday.strftime('%d %B %Y')
+p style=p_styles
+  h3
+    |Inscriptions
+  ul 
+    - @kpis[:subscriptions].each do |key, kpi|
+      li =  "#{key} : #{kpi}"
+p style=p_styles
+  h3
+    |Autres chiffres
+  ul
+    li = "Nombre total de candidatures : #{@kpis[:applications_count]}"
+    li = "Nombre total d'élèves pour ces candidatures : #{@kpis[:student_applyers_count]}"
+    li = "Nombre total d'offres valides sur la plateforme : #{@kpis[:offers_count]}"
+    li = "Nombre total de places pour ces offres : #{@kpis[:seats_count]}"
