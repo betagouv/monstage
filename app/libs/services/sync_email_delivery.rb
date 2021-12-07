@@ -47,9 +47,11 @@ module Services
 
     def read_contact(email: )
       response = send_read_contact(email: email)
-      raise "unknown email : #{email} - contact destroy impossible" if response["StatusCode"].to_s == '404'
+      parsed_response = JSON.parse(response.body)
+      byebug
+      raise "unknown email : #{email} - contact destroy impossible" if parsed_response["StatusCode"].to_s == '404'
 
-      JSON.parse(response.body)
+      parsed_response
     end
 
     def contact_exists?(email:)
