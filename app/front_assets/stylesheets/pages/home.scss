@@ -205,27 +205,21 @@ h4 {
   display: block;
 }
 
-
-.home-video-frame {
-  position: relative;
-  padding-bottom: 100%;
-  // margin: 25px;
-  height: 0;
-  // overflow: hidden;
-  // margin-top: 50px;
-
-  margin: auto;
+#one-dailymotion-player {
+  height: 450px;
+  width: 450px;
+  border-radius: 1.25rem;
 }
 
-.home-videos {
-  width: 450px;
-  height: 450px;
-  position: absolute;
+.home-video-frame {
+  border-radius: 1.25rem;
+  position: relative;
+  padding-bottom: 100%;
+  margin: auto;
   top: 25px;
-  left: 25px;
+  // left: 25px;
   z-index: 1;
   overflow: hidden;
-  // padding: 15px;
 }
 
 .big-blue-video-shadow {

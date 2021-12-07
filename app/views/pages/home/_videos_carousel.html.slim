@@ -1,3 +1,4 @@
+script src="https://player.vimeo.com/api/player.js">
 .container-monstage data-controller='videos-carousel' data-videos-carousel-index-value='0'
   .container
     .row.mb-sm-5.my-4.no-gutters data-videos-carousel-target='slide'
@@ -6,15 +7,13 @@
       .col-md-6.col-sm-12
         .how-to-offers.text-center.videos
           .big-blue-video-shadow.d-none.d-md-block
-          .home-video-frame.embed-responsive.embed-responsive-1by1.rounded-lg
-            iframe.home-videos [allow="autoplay"
-                                mute='true'
-                                allowfullscreen=""
-                                title="le métier de Luca Biancheri"
-                                frameborder="0"
-                                src="https://www.dailymotion.com/embed/video/x8630n7?autoplay=1"
-                                type="text/html"
-                                width="100%" ]
+          #one-dailymotion-player.home-video-frame.embed-responsive.embed-responsive-1by1.rounded-lg data-videos-carousel-target='player'
+            div style="padding:75% 0 0 0;position:relative;"
+              iframe [src="https://player.vimeo.com/video/654044749?h=61d502097e&badge=0&autopause=0&playerid=0&app_id=58479"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen style="position:absolute;top:-350px;left:0;width:100%;height:100%;"
+                    title="mS3E_video.mp4"]
       .col-md-6.col-sm-12.d-flex.align-items-center
         .how-to-offers.text-center-left
           .my-5.ml-lg-5.ml-md-5.ml-sm-0
@@ -26,11 +25,11 @@
               p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0.text-center-left
                 | Responsabilité, sens du détail et savoir-faire.... Luca nous raconte son passionnant métier dans le bâtiment.
               - if can?(:welcome_students, current_user) || !user_signed_in?
-                p = link_to internship_offers_path,
+                p data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
                           class: 'btn btn-danger rounded-sm px-4',
                           data: { :"test-id" => 'mobile-search-button' }
                   = "Trouver un stage"
-    
+
     .slide-show-videos.d-none.d-md-block
       .row.no-gutters.text-center
         .col-md-6.col-sm-12.col-sm-11.circle-list

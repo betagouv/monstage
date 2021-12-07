@@ -3,7 +3,7 @@ import { isMobile } from '../utils/responsive';
 
 export default class extends Controller {
 
-  static targets = ['slide', 'pill'];
+  static targets = ['slide', 'pill', 'inViewPort', 'player'];
   static values = { index: Number }
 
   showCurrentSlide() {
@@ -27,15 +27,38 @@ export default class extends Controller {
     this.showCurrentSlide();
   }
 
+  handleIntersect(entries, observer) {
+    if (!this.playerWasLaunched) {
+      // one time only
+      if (entries[0].isIntersecting) {
+        this.launchPlayer();
+        this.playerWasLaunched = true
+      } else {
+        this.pausePlayer();
+      }
+    }
+  }
+
+  launchPlayer() {
+  }
+
+  pausePlayer() {
+  }
+
+  createObserver() {
+  }
+
   connect() {
     this.showCurrentSlide();
   }
 
   initialize() {
     this.index = 0;
+    this.observer = null
+    this.player = null;
+    this.playerWasLaunched = false
     this.showCurrentSlide();
   }
 
-  disconnect() {
-  }
+  disconnect() { }
 }
