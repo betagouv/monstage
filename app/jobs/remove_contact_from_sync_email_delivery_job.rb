@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RemoveContactFromSyncEmailDeliveryJob < ApplicationJob
+class RemoveContactFromSyncEmailDeliveryJob < ActiveJob::Base
   queue_as :default
 
   def perform(email:)
