@@ -37,14 +37,20 @@ fr:
         one: Convention
         other: Conventions
       internship_offers/weekly_framed:
-        one: Offre 3eme générale
-        other: Offres 3eme générale
+        one: Offre pour la 3eme
+        other: Offres pour la 3eme
       internship_offers/free_date:
         one: Offre de la voie pro
         other: Offres de la voie pro
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_applications/weekly_framed:
+        one: Candidature pour la 3eme
+        other: Candidatures pour la 3eme
+      internship_applications/free_date:
+        one: Candidature de la voie pro
+        other: Candidatures de la voie pro
       operator:
         one: Association
         other: Associations
@@ -148,6 +154,7 @@ fr:
         sector: Secteur
         school_track: Filière
         max_candidates: Nbr. max de candidats
+        max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
 
       tutor: &tutor_fields

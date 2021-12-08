@@ -189,7 +189,8 @@ class User < ApplicationRecord
     return unless phone.present?
 
     create_phone_token
-    SendSmsJob.perform_later(self)
+    message = "Votre code de validation : #{self.phone_token}"
+    SendSmsJob.perform_later(user: self, message: message)
   end
 
   def create_phone_token

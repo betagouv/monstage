@@ -48,6 +48,7 @@ gem "sentry-ruby"
 gem "sentry-rails"
 gem 'airtable'
 gem 'geocoder'
+gem 'bitly'
 
 # acl
 gem 'cancancan'

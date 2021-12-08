@@ -3,7 +3,7 @@
 class SendSmsJob < ApplicationJob
   queue_as :default
 
-  def perform(user)
+  def perform(user:, message:)
     if user.formatted_phone.nil?
       error_message = "sms [user_id = #{user.id}] to be sent with empty phone number !"
       Rails.logger.error(error_message) && return
@@ -17,7 +17,7 @@ class SendSmsJob < ApplicationJob
     response = client.post("/sms/#{ENV['OVH_SMS_APPLICATION']}/jobs",
                            {
                              'sender': ENV['OVH_SENDER'],
-                             'message': "Votre code de validation : #{user.phone_token}",
+                             'message': message,
                              'receivers': [user.formatted_phone]
                            })
   end

@@ -8,7 +8,11 @@ module Services
       email_parameter = { email: 'test@test.fr' }
 
       fake_user_id = Minitest::Mock.new
-      fake_user_response = OpenStruct.new(body: JSON.generate({ Data: [ID: expected_id], Count: 1 }.with_indifferent_access ))
+      fake_user_response = OpenStruct.new(
+        body: JSON.generate(
+          { Data: [ID: expected_id], Count: 1 }.with_indifferent_access
+        )
+      )
       fake_user_id.expect :call, fake_user_response, [ email_parameter ]
       fake_response = Minitest::Mock.new
       fake_response.expect :call,

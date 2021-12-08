@@ -150,6 +150,7 @@ module Dashboard::Stepper
             'week_ids' => weeks.map(&:id),
             organisation_id: 1,
             max_candidates: 3,
+            max_students_per_group: 3,
             weekly_hours: ['10h', '12h']
           }
         })
