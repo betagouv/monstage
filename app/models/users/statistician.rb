@@ -31,7 +31,7 @@ module Users
             class_name: 'EmailWhitelists::Statistician',
             foreign_key: :user_id,
             dependent: :destroy
-    validates :email_whitelist, presence: true
+    validates :email_whitelist, presence: {message: 'none'}
     before_validation :assign_email_whitelist
 
     scope :active, -> { where(discarded_at: nil) }
@@ -84,7 +84,14 @@ module Users
     end
 
     def email_in_list
-      errors.add(:email, 'Cette adresse électronique n\'est pas autorisée') unless EmailWhitelists::Statistician.exists?(email: email)
+      unless EmailWhitelists::Statistician.exists?(email: email)
+        errors.add(
+          :email,
+          'Votre adresse électronique n\'est pas reconnue, veuillez la ' \
+          'transmettre à monstagedetroisieme@anct.gouv.fr afin que nous' \
+          ' puissions la valider.'
+        )
+      end
     end
   end
 end
