@@ -10,7 +10,8 @@ module Dashboard::InternshipOffers
       operator = create(:user_operator)
       internship_offer = create(:weekly_internship_offer, employer: operator,
                                                           is_public: true,
-                                                          max_candidates: 2)
+                                                          max_candidates: 2,
+                                                          max_students_per_group: 2)
       sign_in(internship_offer.employer)
       get new_dashboard_internship_offer_path(duplicate_id: internship_offer.id)
       assert_select 'h1', "Dupliquer une offre"

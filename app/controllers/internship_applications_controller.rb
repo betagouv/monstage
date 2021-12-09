@@ -68,6 +68,7 @@ class InternshipApplicationsController < ApplicationController
           .permit(
             :motivation,
             student_attributes: %i[
+              email
               phone
               resume_educational_background
               resume_other

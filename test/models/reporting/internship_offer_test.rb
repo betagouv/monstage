@@ -35,9 +35,21 @@ class ReportingInternshipOfferTest < ActiveSupport::TestCase
   test '.dimension_by_sector sum max_candidates' do
     sector_a = create(:sector, name: 'Agriculture')
     sector_b = create(:sector, name: 'Filière bois')
-    create(:weekly_internship_offer, weeks: [Week.first], sector: sector_a, max_candidates: 3)
-    create(:weekly_internship_offer, weeks: [Week.first, Week.last], sector: sector_a, max_candidates: 1)
-    create(:weekly_internship_offer, weeks: [Week.first, Week.last], sector: sector_b, max_candidates: 10)
+    create(:weekly_internship_offer,
+           weeks: [Week.first],
+           sector: sector_a,
+           max_candidates: 3,
+           max_students_per_group: 3)
+    create(:weekly_internship_offer,
+           weeks: [Week.first, Week.last],
+           sector: sector_a,
+           max_candidates: 1,
+           max_students_per_group: 1)
+    create(:weekly_internship_offer,
+           weeks: [Week.first, Week.last],
+           sector: sector_b,
+           max_candidates: 10,
+           max_students_per_group: 10)
 
     results = Reporting::InternshipOffer.dimension_by_sector
     first_sectored_report = results[0]

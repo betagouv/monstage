@@ -21,16 +21,17 @@ module Users
     validate :email_in_list
 
     belongs_to :ministry,
-               class_name: 'Group'
-    validates_associated :ministry, if: :exists_and_is_public?
-
+               class_name: 'Group',
+               optional: true
+    validates_associated :ministry,
+                         if: :exists_and_is_public?
     has_many :internship_offers, foreign_key: 'employer_id'
     has_one :ministry_email_whitelist,
             class_name: 'EmailWhitelists::Ministry',
             foreign_key: :user_id,
             dependent: :destroy
-    validates :ministry_email_whitelist, presence: true
-
+    validates :ministry_email_whitelist,
+              presence: { message: 'none' }
     before_validation :assign_ministry_email_whitelist
 
     def exists_and_is_public?
@@ -80,8 +81,11 @@ module Users
 
     def email_in_list
       unless EmailWhitelists::Ministry.exists?(email: email)
-        errors.add(:email, "Cette adresse électronique n\'est pas enregistrée, " \
-                           "assurez-vous qu'elle l'a été auprès des administrateurs")
+        errors.add(
+          :email,
+          'Votre adresse électronique n\'est pas reconnue, veuillez la ' \
+          'transmettre à monstagedetroisieme@anct.gouv.fr afin que nous ' \
+          'puissions la valider.')
       end
     end
   end

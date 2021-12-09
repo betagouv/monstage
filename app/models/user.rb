@@ -189,7 +189,8 @@ class User < ApplicationRecord
     return unless phone.present?
 
     create_phone_token
-    SendSmsJob.perform_later(self)
+    message = "Votre code de validation : #{self.phone_token}"
+    SendSmsJob.perform_later(user: self, message: message)
   end
 
   def create_phone_token
@@ -236,8 +237,7 @@ class User < ApplicationRecord
       generate_confirmation_token!
     end
     if add_email_to_phone_account?
-      devise_mailer.add_email_instructions(self)
-                   .deliver_later
+      self.confirm
     else
       unless @skip_confirmation_notification
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
