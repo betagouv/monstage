@@ -44,4 +44,33 @@ class UserUpdateTest < ApplicationSystemTestCase
     end
     assert alert_message == 'Veuillez modifier le numéro de téléphone mobile'
   end
+
+  test 'teacher with no school is redirected to account(:school)' do
+    school_new = create(:school, name: 'Etablissement Test 1', city: 'Paris', zipcode: '75012')
+    student = create(:student)
+    student.school = nil
+    student.save
+
+    sign_in(student.reload)
+
+    visit internship_offers_path
+    find('h1.h2', text: 'Mon établissement')
+    find('#alert-warning', text:'Veuillez choisir un établissement scolaire')
+    within('#alert-warning') do
+      click_button('Fermer')
+    end
+    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris')
+    find('li#downshift-0-item-0').click
+    find("label[for=\"select-school-#{school_new.id}\"]").click
+    click_button('Enregistrer')
+
+    visit internship_offers_path
+    find('h1', text: 'Postulez à des offres de stage')
+    sign_out(student)
+
+    employer = create(:employer)
+    sign_in(employer)
+    visit internship_offers_path
+    find('h1', text: 'Postulez à des offres de stage')
+  end
 end
