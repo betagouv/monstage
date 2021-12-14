@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :check_school_requested, only: [:edit, :update]
 
   def edit
     authorize! :update, current_user
