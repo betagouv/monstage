@@ -25,14 +25,16 @@ module Reporting
         last_monday: last_monday,
         last_sunday: last_sunday
       )
-      offers_count, seats_count = internship_offers_count
+      offers = internship_offers_count
 
       {
         subscriptions: subscriptions,
         applications_count: applications_count,
         student_applyers_count: student_applyers_count,
-        offers_count: offers_count,
-        seats_count: seats_count
+        offers_count: offers[:offers_count],
+        public_offers_count: offers[:public_offers_count],
+        seats_count: offers[:seats_count],
+        public_seats_count: offers[:public_seats_count]
       }
     end
 
@@ -67,7 +69,13 @@ module Reporting
 
     def internship_offers_count
       offers = ::InternshipOffer.kept.in_the_future
-      [offers.count, offers.pluck(:max_candidates).sum]
+      public_offers = ::InternshipOffer.kept.in_the_future.where(is_public: true)
+      {
+        offers_count: offers.count,
+        public_offers_count: public_offers.count,
+        seats_count: offers.pluck(:max_candidates).sum,
+        public_seats_count: public_offers.pluck(:max_candidates).sum
+      }
     end
 
     def initialize; end
