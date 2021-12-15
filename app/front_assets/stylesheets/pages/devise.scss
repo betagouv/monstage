@@ -10,3 +10,15 @@
 .actions .btn {
   flex: 1
 }
+
+#error_explanation {
+   ul {
+    list-style-type: none;
+   }
+   li:before { 
+    content:  url('../images/puce.svg');
+    position:relative; 
+    left: -12px;
+    top: 16px;
+  }
+}

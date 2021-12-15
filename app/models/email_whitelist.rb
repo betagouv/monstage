@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class EmailWhitelist < ApplicationRecord
-  validates :email, format: { with: Devise.email_regexp }, on: :create
+  validates :email,
+            format: { with: Devise.email_regexp },
+            on: :create
 
   after_create :notify_account_ready
   belongs_to :user, optional: true
