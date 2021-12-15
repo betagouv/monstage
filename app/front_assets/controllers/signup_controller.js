@@ -76,7 +76,6 @@ export default class extends Controller {
     this.validator = this.wssClient.subscriptions.create(this.channelParams, {
       received: data => {
         showElement($hint);
-        showElement($(this.labelTarget))
 
         switch (data.status) {
           case 'valid':
@@ -87,7 +86,6 @@ export default class extends Controller {
           case 'invalid':
             $hint.attr('class', 'invalid-feedback');
             $input.attr('class', 'form-control is-invalid');
-            hideElement($(this.labelTarget))
 
             emailHintElement.innerText =
               'Cette adresse éléctronique ne nous semble pas valide, veuillez vérifier';
