@@ -8,6 +8,7 @@ export default class extends Controller {
     'emailHint',
     'emailExplanation',
     'emailInput',
+    'rolelInput',
     'phoneInput',
     'label',
     'emailBloc',
@@ -55,6 +56,7 @@ export default class extends Controller {
       this.validator.perform('validate', {
         email,
         uid: this.channelParams.uid,
+        role: $('#user_role').val(),
       });
     }
   }
