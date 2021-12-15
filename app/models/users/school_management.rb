@@ -49,6 +49,7 @@ module Users
     def dashboard_name
       return 'Ma classe' if school.present? && class_room.present?
       return 'Mon établissement' if school.present?
+      ""
     end
 
     def new_support_ticket(params: {})
@@ -76,9 +77,9 @@ module Users
 
     def official_uai_email_address
       return if school_id.blank?
-      
+
       unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement. ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
+        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
       end
     end
 

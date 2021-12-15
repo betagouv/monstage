@@ -34,7 +34,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 
 
-
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
