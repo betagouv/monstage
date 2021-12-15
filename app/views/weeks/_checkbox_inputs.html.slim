@@ -43,11 +43,11 @@ div [data-controller="select-weeks"
                                           week.id,
                                           false
 
-            - if has_applications
-              = form.hidden_field :week_ids,
-                                  value: week.id,
-                                  multiple: true,
-                                  id: hidden_id
+            / - if has_applications
+            /   = form.hidden_field :week_ids,
+            /                       value: week.id,
+            /                       multiple: true,
+            /                       id: hidden_id
 
             = form.label :"week_id", for: checkbox_id, class: 'custom-control-label' do
               = week.select_text_method

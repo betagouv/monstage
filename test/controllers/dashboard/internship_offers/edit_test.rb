@@ -84,9 +84,6 @@ module Dashboard::InternshipOffers
                       { count: 1 },
                       "internship_application week should not be selectable")
 
-        assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[0].week_id}_hidden",
-                      { count: 1 })
-
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}[disabled='disabled']",
                       { count: 0 },
                       "other week should not be not selectable")

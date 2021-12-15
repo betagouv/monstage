@@ -54,9 +54,6 @@ module Dashboard
           assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
                         { count: 1 },
                         "internship_application week should not be selectable")
-        assert_select("input#school_week_ids_#{week.id}_hidden",
-                        { count: 1 },
-                        "internship_application week should have an hidden field")
         else
           assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
                         { count: 0 },

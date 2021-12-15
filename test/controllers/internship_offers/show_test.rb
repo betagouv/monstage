@@ -84,7 +84,7 @@ module InternshipOffers
       assert_select('.test-missing-school-weeks',
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
-      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+      assert_select 'option', count: internship_offer.internship_offer_weeks.count # No prompt
       assert_select '.btn-danger[disabled]',
                     { count: 0 },
                     'form should be submitable'
@@ -220,7 +220,7 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show as Student displays select with default option an no more when no weeks matches intersection between school weeks and internship_offer weeks' do
+    test 'GET #show as Student displays warning message when no weeks matches intersection between school weeks and internship_offer weeks' do
       school_week = Week.find_by(number: 11, year: 2019)
       internship_offer_week = Week.find_by(number: 12, year: 2019)
 
@@ -235,8 +235,7 @@ module InternshipOffers
         get internship_offer_path(internship_offer)
 
         assert_response :success
-        assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
-                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>`
+        assert_select '.alert-danger', { text: "Candidature impossible. Les dates du stages ne correspondent pas avec les dates renseignées par votre chef d'établissement." }
       end
     end
 
