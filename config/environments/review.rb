@@ -43,8 +43,6 @@ Rails.application.configure do
   # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
   
-  #https://stackoverflow.com/questions/19650621/heroku-upload-precompiling-assets-failed
-  config.assets.initialize_on_precompile = false
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
