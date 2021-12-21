@@ -55,6 +55,10 @@ class Week < ApplicationRecord
     weeks_of_school_year(school_year: school_year.strict_beginning_of_period.year)
   }
 
+  scope :selectable_on_specific_school_year, lambda { |school_year:|
+    weeks_of_school_year(school_year: school_year.beginning_of_period.year)
+  }
+
   scope :selectable_on_school_year, lambda {
     school_year = SchoolYear::Current.new
 

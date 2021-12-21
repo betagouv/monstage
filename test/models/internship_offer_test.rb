@@ -62,14 +62,13 @@ class InternshipOfferTest < ActiveSupport::TestCase
       first_week = Week.where(year: school_year_n_minus_one.beginning_of_period.year,
                               number: school_year_n_minus_one.beginning_of_period.cweek)
                        .first
-
       internship_offer = create(:weekly_internship_offer, weeks: [first_week])
 
       first = internship_offer.available_weeks.first
       last = internship_offer.available_weeks.last
-      assert_equal Week.selectable_for_school_year(school_year: school_year_n_minus_one).first,
+      assert_equal Week.selectable_on_specific_school_year(school_year: school_year_n_minus_one).first,
                    first
-      assert_equal Week.selectable_for_school_year(school_year: school_year_n_minus_one).last,
+      assert_equal Week.selectable_on_specific_school_year(school_year: school_year_n_minus_one).last,
                    last
     end
   end
