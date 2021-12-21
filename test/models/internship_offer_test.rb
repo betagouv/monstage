@@ -51,9 +51,9 @@ class InternshipOfferTest < ActiveSupport::TestCase
 
   test 'internship_offer.available_weeks for past year offer returns selectable_on_past_school_year' do
     travel_to(Date.new(2021, 5, 31)) do
-      school_year_n_plus_one = SchoolYear::Floating.new_by_year(year: 2020)
-      assert_equal Date.new(2020, 9, 1), school_year_n_plus_one.beginning_of_period
-      assert_equal Date.new(2021, 5, 31), school_year_n_plus_one.end_of_period
+      school_year_n = SchoolYear::Floating.new_by_year(year: 2020)
+      assert_equal Date.new(2020, 9, 1), school_year_n.beginning_of_period
+      assert_equal Date.new(2021, 5, 31), school_year_n.end_of_period
 
       school_year_n_minus_one = SchoolYear::Floating.new_by_year(year: 2019)
       assert_equal Date.new(2019, 9, 1), school_year_n_minus_one.beginning_of_period

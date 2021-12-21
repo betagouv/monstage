@@ -40,7 +40,7 @@ module SchoolYear
     end
 
     def january_to_may
-      1..5
+      1..MONTH_OF_YEAR_SHIFT
     end
 
     def june_to_august
@@ -52,7 +52,7 @@ module SchoolYear
     end
 
     def last_week_of_may?
-      last_day_of_may = Date.new(current_year, 5, 31)
+      last_day_of_may = Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
       date.between?(last_day_of_may.beginning_of_week, last_day_of_may.end_of_week)
     end
   end

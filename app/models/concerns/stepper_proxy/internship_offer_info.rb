@@ -60,19 +60,22 @@ module StepperProxy
       end
 
       def enough_weeks
-        return unless self.type.in? ["InternshipOfferInfos::WeeklyFramed", "InternshipOffers::WeeklyFramed"]
+        weekly_framed_types = [
+          'InternshipOfferInfos::WeeklyFramed',
+          'InternshipOffers::WeeklyFramed'
+        ]
+        return unless type.in? weekly_framed_types
 
-        weeks = self.try(:internship_offer_weeks) || self.internship_offer_info_weeks
+        weeks = self.try(:internship_offer_weeks) || self&.internship_offer_info_weeks
         return if weeks.size.zero?
-        
-	if self.max_candidates / self.max_students_per_group - weeks.size > 0
-          error_message = "Le nombre maximal d'élèves est trop important par " \
-                          "rapport au nombre de semaines de stage choisi. Ajoutez des " \
-                          "semaines de stage ou augmentez la taille des groupes  " \
-                          "ou diminuez le nombre de " \
-                          "stagiaires prévus."
-          errors.add(:max_candidates, error_message)
-        end
+        return if (max_candidates / max_students_per_group - weeks.size) <= 0
+
+        error_message = 'Le nombre maximal d\'élèves est trop important par ' \
+                        'rapport au nombre de semaines de stage choisi. Ajoutez des ' \
+                        'semaines de stage ou augmentez la taille des groupes  ' \
+                        'ou diminuez le nombre de ' \
+                        'stagiaires prévus.'
+        errors.add(:max_candidates, error_message)
       end
 
       def available_weeks

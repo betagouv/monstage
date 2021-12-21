@@ -125,7 +125,6 @@ module InternshipsOffers
                                 max_candidates: 2,
                                 max_students_per_group: 2,
                                 weeks: [Week.first, Week.last])
-                                # byebug
       assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
       create(:weekly_internship_application,

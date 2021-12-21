@@ -20,22 +20,23 @@ module SchoolYear
       when january_to_may
         return Floating.new(date: Date.new(current_year, 6, 1)).end_of_period if last_week_of_may?
 
-        Date.new(current_year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
+        SchoolYear::Floating.shift_day(year: current_year)
       when june_to_august,
              september_to_december
-        Date.new(current_year + 1,
-                 MONTH_OF_YEAR_SHIFT,
-                 DAY_OF_YEAR_SHIFT)
+        SchoolYear::Floating.shift_day(year: current_year + 1)
       end
     end
 
 
     def self.new_by_year(year:)
-      new(date: Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT))
+      new(date: SchoolYear::Floating.shift_day(year: year))
+    end
+
+    def self.shift_day(year:)
+      Date.new(year, MONTH_OF_YEAR_SHIFT, DAY_OF_YEAR_SHIFT)
     end
 
     private
-
     def initialize(date:)
       @date = date
     end
