@@ -37,6 +37,8 @@
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+.yarn/*
+.yarnrc
 .env
 
 /doc/env.sh
