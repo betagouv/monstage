@@ -24,4 +24,10 @@ p style=p_styles
     li = "Nombre total de candidatures : #{@kpis[:applications_count]}"
     li = "Nombre total d'élèves pour ces candidatures : #{@kpis[:student_applyers_count]}"
     li = "Nombre total d'offres valides sur la plateforme : #{@kpis[:offers_count]}"
+    ul style='padding-left: 10px; margin-left: 10px'
+      li style='font-style: italic'= "Dont offres du secteur public : #{@kpis[:public_offers_count]}"
+      li style='font-style: italic' = "Dont offres du secteur privé : #{@kpis[:offers_count] - @kpis[:public_offers_count]}"
     li = "Nombre total de places pour ces offres : #{@kpis[:seats_count]}"
+    ul style='padding-left: 10px; margin-left: 10px'
+      li style='font-style: italic'= "Dont places du secteur public : #{@kpis[:public_seats_count]}"
+      li style='font-style: italic'= "Dont places du secteur privé : #{@kpis[:seats_count] - @kpis[:public_seats_count]}"
