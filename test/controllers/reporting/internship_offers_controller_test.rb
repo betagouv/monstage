@@ -13,6 +13,12 @@ module Reporting
       @student_male2 = create(:student, :male)
       @student_female1 = create(:student, :female)
       @group_with_no_offer = create(:group, name: "no offer", is_public: false)
+      # Following will be discarded
+      @internship_offer_agri_0 = create(:weekly_internship_offer,
+                                        sector: @sector_agri,
+                                        max_candidates: 1,
+                                        discarded_at: Date.today,
+                                        max_students_per_group: 1)
       @internship_offer_agri_1 = create(:weekly_internship_offer,
                                         sector: @sector_agri,
                                         max_candidates: 1,
@@ -69,7 +75,7 @@ module Reporting
       total_report = retrieve_html_value('test-total-report','test-total-applications', response)
       assert_equal 0, total_report.to_i
 
-      Reporting::InternshipOffer.stub :by_department, Reporting::InternshipOffer.all do
+      Reporting::InternshipOffer.stub :by_department, Reporting::InternshipOffer.where(discarded_at: nil) do
         get reporting_internship_offers_path(department: department)
         assert_response :success
         assert_equal 2, retrieve_html_value('test-total-report','test-total-applications', response)
