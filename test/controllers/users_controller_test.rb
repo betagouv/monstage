@@ -171,22 +171,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
-  test 'sentry#1823543902 PATCH edit as student registered by phone, add an email' do
+  test 'PATCH edit as student registered by phone, add an email' do
     destination_email = 'origin@to.com'
     student = create(:student, email: nil, phone: '+330637607756')
     sign_in(student)
-    assert_enqueued_email_with(
-      CustomDeviseMailer,
-      :add_email_instructions,
-      args: [student]
-    ) do
-        patch(account_path, params: {
-              user: {
-                email: destination_email,
-              }
-            })
-        assert_redirected_to account_path
-    end
+    
+    patch(account_path, params: { user: { email: destination_email } })
+
+    assert_redirected_to account_path
+    student.reload
+    assert true, student.confirmed?
   end
 
   test 'PATCH edit as student cannot nullify his email' do

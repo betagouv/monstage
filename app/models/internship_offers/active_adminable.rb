@@ -28,6 +28,8 @@ module InternshipOffers
                          :approved_applications_count,
                          :total_male_applications_count,
                          :total_male_convention_signed_applications_count,
+                         :total_female_applications_count,
+                         :total_female_convention_signed_applications_count,
                          :total_custom_track_convention_signed_applications_count,
                          :submitted_applications_count,
                          :rejected_applications_count,
@@ -38,6 +40,7 @@ module InternshipOffers
           field :title
           field :description
           field :max_candidates
+          field :max_students_per_group
           field :tutor_name
           field :tutor_phone
           field :tutor_email
@@ -56,6 +59,7 @@ module InternshipOffers
           field :group
           field :school_track
           field :max_candidates
+          field :max_students_per_group
           field :total_applications_count
           field :convention_signed_applications_count
           field :employer_name

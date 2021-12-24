@@ -7,9 +7,9 @@ module Reporting
       @sector_agri = create(:sector, name: 'Agriculture')
       @sector_wood = create(:sector, name: 'Filière bois')
       weeks = [::Week.first, ::Week.last]
-      @internship_offer_agri_1 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
-      @internship_offer_agri_2 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1)
-      @internship_offer_wood = create(:weekly_internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10)
+      @internship_offer_agri_1 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1, max_students_per_group: 1)
+      @internship_offer_agri_2 = create(:weekly_internship_offer, weeks: weeks, sector: @sector_agri, max_candidates: 1, max_students_per_group: 1)
+      @internship_offer_wood = create(:weekly_internship_offer, weeks: weeks, sector: @sector_wood, max_candidates: 10, max_students_per_group: 10)
     end
 
     test '.group_by(:sector_name)' do
@@ -50,6 +50,7 @@ module Reporting
 
       assert_equal 2, agri_stats.total_male_applications_count
       assert_equal 1, wood_stats.total_male_applications_count
+      assert_equal 0, wood_stats.total_no_gender_applications_count
     end
 
     test 'computes internship_offer total_female_applications_count' do
@@ -65,6 +66,7 @@ module Reporting
 
       assert_equal 1, agri_stats.total_female_applications_count
       assert_equal 0, wood_stats.total_female_applications_count
+      assert_equal 0, wood_stats.total_no_gender_applications_count
     end
 
     test 'computes internship_offer approved_applications_count' do

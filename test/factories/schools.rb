@@ -48,6 +48,7 @@ FactoryBot.define do
     trait :with_agreement_presets_missing_date do
       internship_agreement_preset { build(:internship_agreement_preset,
                                            school_delegation_to_sign_delivered_at: nil)}
+      weeks { [Week.selectable_from_now_until_end_of_school_year.first] }
     end
 
     factory :school_with_troisieme_segpa_class_room do

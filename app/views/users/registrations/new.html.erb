@@ -17,7 +17,6 @@
     </div>
   </header>
   <div class="body">
-
     <%= form_with(model: resource,
                   scope: resource_name,
                   local: true,
@@ -61,7 +60,7 @@
         <%= f.select :role,
                       options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
                       { prompt: '-- Veuillez choisir une fonction --' },
-                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel'} } %>
+                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} } %>
         <%= f.label :role do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
@@ -119,6 +118,11 @@
           <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
         <% end %>
       <% else %>
+        <% # <% following avoids javascript errors %>
+        <span data-signup-target="emailBloc"></span>
+        <span data-signup-target="emailRadioButton"></span>
+        <span data-signup-target="phoneInput"></span>
+        <span data-signup-target="phoneBloc"></span>
         <div class="form-group custom-label-container">
           <%= f.email_field :email,
                             class: 'form-control',
@@ -130,7 +134,7 @@
               <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
               <%= f.rg2a_required_content_tag %>
           <% end %>
-          <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+          <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
           <small class="d-none" data-signup-target="emailHint"></small>
         </div>
       <% end %>

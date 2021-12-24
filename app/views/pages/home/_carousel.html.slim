@@ -12,10 +12,10 @@
                       alt: "bouton suivant",
                       height: '50px'
   .container
-    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column data-carousel-target='slide'
-      .col-12.py-4.d-block.d-sm-none
-      .col-12.py-4.d-block.d-sm-none
-      .col-md-6.col-sm-12
+    .row.mb-sm-5.my-4.no-gutters data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none.order-1
+      .col-12.py-4.d-block.d-sm-none.order-2
+      .col-md-6.col-sm-12.order-md-3.order-4
         .how-to-offers.text-center-left
           .my-5.ml-lg-5.ml-md-5.ml-sm-0
             h3.h2.mb-3
@@ -29,20 +29,20 @@
                   Consultez de nombreuses offres, soignez votre
                   candidature et postulez à vos stages préférés.
             - if !user_signed_in? || can?(:look_for_offers, current_user)
-              - target_link = current_user&.custom_dashboard_path|| new_user_registration_path
-              p = link_to target_link,
+              p = link_to internship_offers_path(current_user_or_visitor.default_search_options),
                           class: 'btn btn-danger rounded-sm px-4',
                           data: { :"test-id" => 'mobile-search-button' }
                   = "Rechercher un stage"
-      .col-md-6.col-sm-12.text-center
-        = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
-                    alt: "Illustration, une élève",
-                    class: 'img-almost-fluid'
+      .col-md-6.col-sm-12.order-md-4.order-3
+        .how-to-offers.text-center
+          = image_tag asset_pack_path('media/images/homepage/carousel/eleve.svg'),
+                      alt: "Illustration, une élève",
+                      class: 'img-almost-fluid'
 
-    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column  data-carousel-target='slide'
-      .col-12.py-4.d-block.d-sm-none
-      .col-12.py-4.d-block.d-sm-none
-      .col-md-6.col-sm-12
+    .row.mb-sm-5.my-4.no-gutters  data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none.order-1
+      .col-12.py-4.d-block.d-sm-none.order-2
+      .col-md-6.col-sm-12.order-md-3.order-4
         .how-to-offers.text-center-left
           .my-5.ml-lg-5.ml-md-5.ml-sm-0
             h3.h2.mb-3
@@ -61,15 +61,15 @@
                         class: 'btn btn-danger rounded-sm px-4',
                         data: { :"test-id" => 'mobile-search-button' }
                 = "Accompagner mes élèves"
-      .col-md-6.col-sm-12
+      .col-md-6.col-sm-12.order-md-4.order-3
         .how-to-offers.text-center
           = image_tag asset_pack_path('media/images/homepage/carousel/prof.png'),
                       alt: "Illustration , un prof une élève",
                       class: 'img-almost-fluid'
-    .row.mb-sm-5.my-4.no-gutters.flex-md-reverse-column  data-carousel-target='slide'
-      .col-12.py-4.d-block.d-sm-none
-      .col-12.py-4.d-block.d-sm-none
-      .col-md-6.col-sm-12
+    .row.mb-sm-5.my-4.no-gutters  data-carousel-target='slide'
+      .col-12.py-4.d-block.d-sm-none.order-1
+      .col-12.py-4.d-block.d-sm-none.order-2
+      .col-md-6.col-sm-12.order-md-3.order-4
         .how-to-offers.text-center-left
           .my-5.ml-lg-5.ml-md-5.ml-sm-0
             h3.h2.mb-3
@@ -90,9 +90,10 @@
                           class: 'btn btn-danger rounded-sm px-4',
                           data: { :"test-id" => 'mobile-search-button' }
                   = "Accueillir un stagiaire"
-      .col-md-6.col-sm-12.text-center
-        = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
-                    alt: "Illustration, une élève",
-                    class: 'img-almost-fluid'
+      .col-md-6.col-sm-12.order-md-4.order-3
+        .how-to-offers.text-center
+          = image_tag asset_pack_path('media/images/homepage/carousel/equipe_pedago.svg'),
+                      alt: "Illustration, une élève",
+                      class: 'img-almost-fluid'
       
   p.py-4

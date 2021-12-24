@@ -2,7 +2,7 @@ p
   - if internship_offer.is_individual?
     span.badge-internship-offer-alone= " Stage individuel (un seul élève par stage)"
   - else
-    span.badge-internship-offer-by-group= " Stage collectif (par groupe de #{internship_offer.max_candidates} élèves)"
+    span.badge-internship-offer-by-group= " Stage collectif (par groupe de #{internship_offer.max_students_per_group} élèves)"
 
   - if internship_offer.reserved_to_school?
       span.badge-school-reserved= " Stage reservé (aux élèves de l'établissement #{internship_offer.school.name})"

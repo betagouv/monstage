@@ -180,6 +180,8 @@ class User < ApplicationRecord
   end
 
   def formatted_phone
+    return if phone.blank?
+
     phone[0..4].gsub('0', '') + phone[5..]
   end
 
@@ -187,7 +189,8 @@ class User < ApplicationRecord
     return unless phone.present?
 
     create_phone_token
-    SendSmsJob.perform_later(self)
+    message = "Votre code de validation : #{self.phone_token}"
+    SendSmsJob.perform_later(user: self, message: message)
   end
 
   def create_phone_token
@@ -210,16 +213,8 @@ class User < ApplicationRecord
     phone_confirmable? && phone_token == token
   end
 
-  # in case of an email update, former one has to be withdrawn
   def after_confirmation
     super
-    AddContactToSyncEmailDeliveryJob.perform_later(user: self)
-
-    return if email_previous_change.try(:first).nil?
-
-    RemoveContactFromSyncEmailDeliveryJob.perform_later(
-      email: email_previous_change.first
-    )
   end
 
   rails_admin do
@@ -242,8 +237,7 @@ class User < ApplicationRecord
       generate_confirmation_token!
     end
     if add_email_to_phone_account?
-      devise_mailer.add_email_instructions(self)
-                   .deliver_later
+      self.confirm
     else
       unless @skip_confirmation_notification
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })

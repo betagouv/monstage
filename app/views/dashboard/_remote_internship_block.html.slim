@@ -1,13 +1,15 @@
-.row.no-gutters.bg-cover-image-remote-internship.mb-3
-  .col-sm-12.col-md-7
-    h1.h3.mt-2.p-3.text-white
-      = "Vous souhaitez proposer des stages à distance à #{user.is_a?(Users::SchoolManagement) ? "vos" : "des"} élèves ?"
-    p.text-white.p-3
-      |
-        Contactez nos associations partenaires qui vous accompagneront
-        dans la mise en place de stages à distance.
-  .col-sm-12.col-md-5.align-self-center
-    .text-right
-      = link_to new_dashboard_support_ticket_path,
-                class: "nav-link text-white mr-4 px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'd-none' : ''}" do
-        .btn.btn-primary Nous contacter
+/Remove code after  February, 15th 2022 or uncomment
+/.row 
+  .bg-cover-image-remote-internship.mb-3
+    .container
+      .row
+        .col-sm-12.col-md-7
+          h1.h3.mt-2.p-3.text-white
+            = "Vous souhaitez proposer des stages à distance à #{current_user.is_a?(Users::SchoolManagement) ? "vos" : "des"} élèves ?"
+          p.text-white.p-3
+            | Contactez nos associations partenaires qui vous accompagneront dans la mise en place de stages à distance.
+        .col-sm-12.col-md-5.align-self-center
+          .text-right.mr-4
+            = link_to new_dashboard_support_ticket_path,
+                      class: "nav-link text-white px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'd-none' : ''}" do
+              .btn.btn-primary Contactez-nous !

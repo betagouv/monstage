@@ -3,7 +3,8 @@
 module Dashboard
   class InternshipOffersController < ApplicationController
     before_action :authenticate_user!
-    before_action :disable_turbolink_caching_to_force_page_refresh, only: %i[new edit]
+    before_action :disable_turbolink_caching_to_force_page_refresh,
+                  only: %i[new edit]
     helper_method :order_direction
 
     def index
@@ -18,11 +19,11 @@ module Dashboard
     def create
       internship_offer_builder.create(params: internship_offer_params) do |on|
         on.success do |created_internship_offer|
-          success_message = if(params[:commit] == 'Renouveler l\'offre')
-            'Votre offre de stage a été renouvelée pour cette année scolaire.'
+          success_message = if params[:commit] == 'Renouveler l\'offre'
+                              'Votre offre de stage a été renouvelée pour cette année scolaire.'
                             else
-            "L'offre de stage a été dupliquée en tenant compte" \
-            " de vos éventuelles modifications."
+                              "L'offre de stage a été dupliquée en tenant compte" \
+                              ' de vos éventuelles modifications.'
                             end
           redirect_to(internship_offer_path(created_internship_offer),
                       flash: { success: success_message })
@@ -80,9 +81,13 @@ module Dashboard
     # duplicate form
     def new
       authorize! :create, InternshipOffer
-      @internship_offer = current_user.internship_offers
-                                      .find(params[:duplicate_id])
-                                      .duplicate
+      internship_offer = current_user.internship_offers.find(params[:duplicate_id]).duplicate
+      
+      if params[:without_location].present? 
+        @internship_offer = internship_offer.duplicate_without_location
+      else
+        @internship_offer = internship_offer.duplicate
+      end
 
       @available_weeks = Week.selectable_from_now_until_end_of_school_year
     end
@@ -130,7 +135,8 @@ module Dashboard
 
     def order_column
       if params[:order] && !valid_order_column?
-        redirect_to(dashboard_internship_offers_path, flash: { danger: "Impossible de trier par #{params[:order]}" })
+        redirect_to(dashboard_internship_offers_path,
+                    flash: { danger: "Impossible de trier par #{params[:order]}" })
       end
       return params[:order] if params[:order] && valid_order_column?
 
@@ -138,7 +144,8 @@ module Dashboard
     end
 
     def order_direction
-      return params[:direction] if params[:direction] && %w[asc desc].include?(params[:direction])
+      return params[:direction] if params[:direction] && %w[asc
+                                                            desc].include?(params[:direction])
 
       :desc
     end
@@ -150,11 +157,13 @@ module Dashboard
 
     def internship_offer_params
       params.require(:internship_offer)
-            .permit(:title, :description_rich_text, :sector_id, :max_candidates, :renewed,
-                    :tutor_name, :tutor_phone, :tutor_email, :employer_website, :employer_name,
-                    :street, :zipcode, :city, :department, :region, :academy,
+            .permit(:title, :description_rich_text, :sector_id, :max_candidates,
+                    :max_students_per_group, :tutor_name, :tutor_phone,
+                    :tutor_email, :employer_website, :employer_name, :street,
+                    :zipcode, :city, :department, :region, :academy, :renewed,
                     :is_public, :group_id, :published_at, :type,
-                    :employer_id, :employer_type, :school_id, :employer_description_rich_text,
+                    :employer_id, :employer_type, :school_id,
+                    :employer_description_rich_text,
                     :school_track, :weekly_lunch_break, coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
     end

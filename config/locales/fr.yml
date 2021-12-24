@@ -37,14 +37,20 @@ fr:
         one: Convention
         other: Conventions
       internship_offers/weekly_framed:
-        one: Offre 3eme générale
-        other: Offres 3eme générale
+        one: Offre pour la 3eme
+        other: Offres pour la 3eme
       internship_offers/free_date:
         one: Offre de la voie pro
         other: Offres de la voie pro
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_applications/weekly_framed:
+        one: Candidature pour la 3eme
+        other: Candidatures pour la 3eme
+      internship_applications/free_date:
+        one: Candidature de la voie pro
+        other: Candidatures de la voie pro
       operator:
         one: Association
         other: Associations
@@ -136,6 +142,7 @@ fr:
         zipcode: Code postal
         city: Ville
         coordinates: Coordonnées GPS
+        siren: Code Siren
 
       operator: &operator_fields
         name: Nom
@@ -147,6 +154,7 @@ fr:
         sector: Secteur
         school_track: Filière
         max_candidates: Nbr. max de candidats
+        max_students_per_group: Effectif max. d'un groupe d'élèves
         sector_id: Secteurs professionnels
 
       tutor: &tutor_fields
@@ -196,6 +204,7 @@ fr:
         total_applications_count: Nbr. de candidatures
         total_male_applications_count: Garçon
         total_female_applications_count: Fille
+        total_no_gender_applications_count: Non précisé
         total_convention_signed_applications_count: Nbr. de stages conclus
         total_male_convention_signed_applications_count: Garçon
         total_female_convention_signed_applications_count: Fille
@@ -205,9 +214,11 @@ fr:
         rejected_applications_count: "Nbr. de candidatures rejetées"
         total_male_approved_applications_count: Garçon
         total_female_approved_applications_count: Fille
+        total_no_gender_approved_applications_count: Non précisé
         total_custom_track_approved_applications_count: 'CR/PE'
         total: Total
         convention_signed_applications_count: Nbr. de stages conclus
+        siren: Code Siren
         permalink: "Lien vers l'association partenaire"
         sector_name: Secteur
         full_school: Établissement
@@ -355,7 +366,7 @@ fr:
             password:
               too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
             password_confirmation:
-              confirmation: "La confirmation du mot de passe n'est pas identique a celle du mot de passe."
+              confirmation: "Les mots de passe saisis ne sont pas identiques."
             first_name:
               blank: Veuillez saisir un prénom
             last_name:

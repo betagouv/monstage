@@ -25,8 +25,6 @@
         h3.h6
           i.fa-fw.fas.fa-calendar-alt
           span.ml-1 Quand ce stage est-il proposé ?
-    .row
-      .col-12
         = render partial: "internship_offers/weeks_badges", locals: {internship_offer: internship_offer}
 
     - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
@@ -54,9 +52,9 @@
             h3.h6.mb-2
               i.fa-fw.fa.fa-info-circle
               span.ml-1= "Dans quelle entreprise ?"
-            strong.pl-4= internship_offer.employer_name
+            strong.pl-4.test-employer-name= internship_offer.employer_name
             - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
-              .reboot-trix-content.mt-2= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+              .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
             - if internship_offer.employer_website.present?
               p
                 = link_to internship_offer.employer_website,
@@ -71,9 +69,9 @@
               i.fa-fw.fa.fa-map-marker-alt
               span.ml-1 Où se déroule ce stage ?
             p
-              = internship_offer.street
+              span.test-street = internship_offer.street
               br
-              = "#{internship_offer.zipcode} #{internship_offer.city}"
+              span.test-zipcode-and-city= "#{internship_offer.zipcode} #{internship_offer.city}"
               .d-print-none.mt-3
                 = link_to "Voir sur une carte",
                           internship_offer.osm_url,

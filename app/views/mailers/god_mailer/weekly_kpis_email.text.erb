@@ -1,0 +1,20 @@
+ <%= "Indicateurs de produit du #{@human_date}" %>
+==============
+Pour la semaine du  lundi <%= @last_monday.strftime("%d %B %Y") %> au dimanche <%= @last_sunday.strftime("%d %B %Y") %>
+==============
+Inscriptions
+
+<% @kpis[:subscriptions].each do |key, kpi| %>
+    <%= "#{key} : #{kpi}" %>
+<% end %>
+
+Autres chiffres
+
+- Nombre total de candidatures : <%= @kpis[:applications_count] %>
+- Nombre total d'élèves pour ces candidatures : <%= @kpis[:student_applyers_count] %>
+- Nombre total d'offres valides sur la plateforme : <%= @kpis[:offers_count] %>
+- Dont offres du secteur public : <%= @kpis[:public_offers_count] %>
+- Dont offres du secteur privé : <%= @kpis[:offers_count] - @kpis[:public_offers_count] %>
+- Nombre total de places pour ces offres : <%= @kpis[:seats_count] %>
+- Dont places du secteur public : <%= @kpis[:public_seats_count] %>
+- Dont places du secteur privé : <%= @kpis[:seats_count] - @kpis[:public_seats_count] %>

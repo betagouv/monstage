@@ -21,7 +21,7 @@ module Users
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
-    validate :official_email_address, if: :school_manager?
+    validate :official_uai_email_address, on: :create, if: :school_manager?
 
     before_update :notify_school_manager, if: :notifiable?
     after_create :notify_school_manager, if: :notifiable?
@@ -51,6 +51,7 @@ module Users
     def dashboard_name
       return 'Ma classe' if school.present? && class_room.present?
       return 'Mon établissement' if school.present?
+      ""
     end
 
     def new_support_ticket(params: {})
@@ -77,6 +78,14 @@ module Users
           :email,
           "L'adresse email utilisée doit être officielle.<br>ex: XXXX@ac-academie.fr".html_safe
         )
+      end
+    end
+
+    def official_uai_email_address
+      return if school_id.blank?
+
+      unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
+        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr".html_safe)
       end
     end
 

@@ -135,11 +135,32 @@ class InternshipApplication < ApplicationRecord
       transitions from: %i[submitted cancel_by_employer rejected],
                   to: :approved,
                   after: proc { |*_args|
-                           update!("approved_at": Time.now.utc)
-                           notify_student
-                           notify_school_management
-                           create_agreement
-                         }
+                          update!("approved_at": Time.now.utc)
+                          create_agreement
+                          if student.email.present?
+                            deliver_later_with_additional_delay do
+                              StudentMailer.internship_application_approved_email(internship_application: self)
+                            end
+                          elsif student.phone.present?
+                            sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
+                                          "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
+                            SendSmsJob.perform_later(
+                              user: student,
+                              message: sms_message
+                            ) unless Rails.env.development?
+                          else
+                            mesg = "while internship ##{id} has been accepted," \
+                                   " no message has been sent to the " \
+                                   "student ##{student.id}"
+                            Rails.logger.error(mesg)
+                          end
+
+                          student.school.main_teachers.map do |main_teacher|
+                            MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                                                    main_teacher: main_teacher)
+                                             .deliver_later
+                          end
+                        }
     end
 
     event :reject do
@@ -219,6 +240,11 @@ class InternshipApplication < ApplicationRecord
     agreement.save!
   end
 
+  scope :approved_or_signed, lambda {
+    applications = InternshipApplication.arel_table
+    where(applications[:aasm_state].in(['approved', 'signed']))
+  }
+
   def internship_application_counter_hook
     case self
     when InternshipApplications::WeeklyFramed
@@ -245,8 +271,8 @@ class InternshipApplication < ApplicationRecord
     student.gender == 'm'
   end
 
-  def student_gender_not_precised?
-    student.gender == 'np'
+  def student_is_female?
+    student.gender == 'f'
   end
 
   def student_is_custom_track?
@@ -266,5 +292,17 @@ class InternshipApplication < ApplicationRecord
     return false if created_at < Date.parse('01/09/2020')
 
     true
+  end
+
+  def short_target_url(application)
+    target = Rails.application
+                  .routes
+                  .url_helpers
+                  .dashboard_students_internship_application_url(
+                    application.student.id,
+                    application.id,
+                    Rails.configuration.action_mailer.default_url_options
+                  )
+    UrlShortener.short_url(target)
   end
 end

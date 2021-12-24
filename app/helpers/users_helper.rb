@@ -50,7 +50,7 @@ module UsersHelper
     [
       { 
         logo: 'logo-moi-dans-10-ans-my-future.png',
-        url: 'https://https://moidans10ans.fr/',
+        url: 'https://moidans10ans.fr/',
         height: 60
       },
       {

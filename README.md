@@ -70,10 +70,7 @@ As a public french service, we try to keep most data hosted by french service pr
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-* Infra management with elatic stack
- * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
- * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
- * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
+* Infra management
 * Mail: [mailjet](https://mailjet.com)
 * Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
@@ -123,6 +120,13 @@ Ainsi, on peut faire des hotfixes à merger directement sur master
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
 - https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
+
+#### Hotfixes, les étapes
+
+- Développer son fix sur une branche, merger sur master
+- déployer master avec `./infra/production/deploy.sh`
+- merger master sur staging une fois le fix constaté
+- pousser staging sur github
 
 ## test
 

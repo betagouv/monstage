@@ -6,7 +6,9 @@ import { toggleElement, showElement, hideElement } from '../utils/dom';
 export default class extends Controller {
   static targets = ['handicapGroup',
     'emailHint',
+    'emailExplanation',
     'emailInput',
+    'rolelInput',
     'phoneInput',
     'label',
     'emailBloc',
@@ -34,6 +36,11 @@ export default class extends Controller {
       event.target.value == "school_manager" ?
       "Adresse électronique académique" :
       'Adresse électronique (e-mail)'
+    );
+    $(this.emailExplanationTarget).text(
+      event.target.value == "school_manager" ?
+      'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
+      'Cette adresse sera utilisée pour communiquer avec vous.'
     )
   }
 
@@ -49,6 +56,7 @@ export default class extends Controller {
       this.validator.perform('validate', {
         email,
         uid: this.channelParams.uid,
+        role: $('#user_role').val(),
       });
     }
   }

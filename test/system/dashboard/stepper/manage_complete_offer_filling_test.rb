@@ -1,6 +1,6 @@
 require 'application_system_test_case'
 
-class ManageComplteOfferFillingTest < ApplicationSystemTestCase
+class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include OrganisationFormFiller
   include InternshipOfferInfoFormFiller
@@ -28,7 +28,7 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
       click_link "Précédent"
       find('legend', text: 'Informations sur l\'entreprise')
       click_on "Suivant"
-      find('legend', text: 'Offre de stage')
+      find('fieldset legend', text: 'Offre de stage')
       fill_in_internship_offer_info_form(school_track: :troisieme_generale,
                                          sector: sector,
                                          weeks: available_weeks)
@@ -49,6 +49,10 @@ class ManageComplteOfferFillingTest < ApplicationSystemTestCase
       fill_in_tutor_form
       click_on 'Publier l\'offre !'
       wait_form_submitted
+      assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
+      assert_equal 'Une super cool entreprise', find('.test-description').text
+      assert_equal 'Delta dev', find('strong.test-employer-name.pl-4').text
+      assert_equal '75013 Paris 13e Arrondissement', find('span.test-zipcode-and-city').text
     end
   end
 end

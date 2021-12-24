@@ -43,7 +43,7 @@
   <div data-signup-target="emailBloc" class="form-group email d-none">
     <%= form.label :email do %>
       <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-      <small class="form-text text-muted">Cette adresse sera utilisée pour communiquer avec vous</small>
+      <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
     <% end %>
     <%= form.email_field :email,
                          class: 'form-control',
@@ -64,5 +64,6 @@
         value: resource.phone || params[:phone]
       })
     %>
+    <small class="text-muted">(+33 puis 06 11 22 33 44 par exemple)</small>
   </div>
 </fieldset>

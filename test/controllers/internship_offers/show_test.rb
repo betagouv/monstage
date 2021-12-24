@@ -522,6 +522,7 @@ module InternshipOffers
       get internship_offer_path(internship_offer)
       assert_response :success
       assert_select '.test-duplicate-button', count: 1
+      assert_select '.test-duplicate-without-location-button', count: 1
       assert_select '.test-renew-button', count: 0
     end
 

@@ -281,6 +281,7 @@ class Ability
   def common_to_all_statisticians(user: )
     can :supply_offers, User
     can :view, :department
+    can %i[index update], InternshipApplication
     can %i[read create see_tutor], InternshipOffer
     can %i[read update discard], InternshipOffer, employer_id: user.id
     can :renew, InternshipOffer do |internship_offer|

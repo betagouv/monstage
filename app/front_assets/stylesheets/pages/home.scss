@@ -1,5 +1,5 @@
 :focus {
-  border: 2px dotted hotpink;
+  border: 2px dotted $blue;
 }
 
 .homepage {
@@ -56,8 +56,8 @@ h4 {
 }
 
 .how-to-offers {
-  flex-grow: 1;
-  overflow-y: auto;
+  // flex-grow: 1;
+  // overflow-y: auto;
 }
 .rounded-adjust {
   border-radius: 1rem;
@@ -71,6 +71,7 @@ h4 {
   font-weight: 900;
   font-size: 3.10rem;
   margin-bottom: 1rem;
+  margin-right: -9rem;
 }
 
 .subtitle-hero {
@@ -181,6 +182,11 @@ h4 {
   top: 212px;
   z-index: 7
 }
+.slide-show-videos {
+  position: relative;
+  top: 0;
+  z-index: 7
+}
 
 .nav-link.active {
   color: $bg-less-light-blue;
@@ -198,6 +204,44 @@ h4 {
 #navbarScroll.collapse.show {
   display: block;
 }
+.home-video-frame {
+  height: 450px;
+  border-radius: 1.25rem;
+  width: 450px;
+  position: absolute;
+  margin: 10px;
+  left:-25px;
+  top: -25px;
+}
+
+.big-blue-video-shadow {
+  width: 450px;
+  height:450px;
+  border-radius: 1.25rem;
+  background-color: $blue_border;
+}
+
+.circle-list {
+  text-align: center;
+}
+
+.navigation-pill {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: $gray_300;
+}
+
+button.navigation-pill {
+  border: 0;
+}
+
+.navigation-pill.active {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: $blue_border;
+}
 
 
 
@@ -212,11 +256,17 @@ h4 {
   .text-md-center-right {
     text-align: right;
   }
+    .flex-md-reverse-column {
+      flex-direction: column-reverse !important;
+    }
   }
 
   @include media-breakpoint-down(md) {
     .text-md-center-right {
       text-align: center;
+    }
+    .h1-text-hero {
+      margin-right: -0rem;
     }
 }
 
@@ -225,12 +275,12 @@ h4 {
     font-size: 20px;
     line-height: 30px;
   }
-.flex-md-column {
+  .flex-md-column {
     flex-direction: column !important;
   }
-.nav-pills-home .nav-link.active {
+  .nav-pills-home .nav-link.active {
     border-right: 4px solid #DA000C;
-  }
+    }
 }
 @include media-breakpoint-down(sm) {
   .text-center-left {
@@ -246,11 +296,6 @@ h4 {
 
   .ms3e-blurry-badge {
     background: none;
-  }
-
-  .changing-order {
-    -moz-box-direction: reverse;
-    -webkit-flex-direction: row-reverse;
   }
   .subtitle-hero,
   .h1-text-hero {
