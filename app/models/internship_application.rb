@@ -287,6 +287,10 @@ class InternshipApplication < ApplicationRecord
     motivation.try(:delete)
   end
 
+  def internship_agreement_open?
+    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').include?(student.school.zipcode[0..1])
+  end
+
   def new_format?
     return true if new_record?
     return false if created_at < Date.parse('01/09/2020')
