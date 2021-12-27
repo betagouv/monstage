@@ -13,7 +13,7 @@
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bootstrap": "^4.3.1",
-    "core-js": "^3.19.3",
+    "core-js": "^3.4.1",
     "d3": "^6.7.0",
     "downshift": "6.0.6",
     "hammerjs": "^2.0.8",
@@ -47,6 +47,5 @@
     "prop-types": "^15.7.2",
     "vnu-jar": "^20.3.16",
     "webpack-dev-server": "3.11.0"
-  },
-  "version": "1.22.17"
+  }
 }
