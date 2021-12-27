@@ -34,7 +34,8 @@
         "RAKE_ENV": "review",
         "RAILS_MAX_THREADS": 6,
         "WEB_CONCURRENCY": 1,
-        "CONVENTION_ENABLED": true
+        "CONVENTION_ENABLED": true,
+        "YARN_PRODUCTION": false
       },
       "addons": [
         {
