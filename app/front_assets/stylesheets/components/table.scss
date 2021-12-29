@@ -8,6 +8,11 @@
     padding-left: 1em;
   }
 }
+.hoverable-row-with-btn {
+  td a:focus {
+    border: 0;
+  }
+}
 @include media-breakpoint-up(sm) {
   .hoverable-row-with-btn{
     .btn-hoverable{
@@ -19,7 +24,7 @@
     &:hover{
       background-color: $blue_light;
       .btn-hoverable{
-      opacity: 1;
+        opacity: 1;
       }
     }
   }
