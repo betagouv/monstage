@@ -218,7 +218,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       # 2020-21
       application = create(:weekly_internship_application, :approved, internship_offer: target_offer)
-      internship_agreement = create(:troisieme_generale_internship_agreement, internship_application: application)
 
       sign_in(employer)
       visit dashboard_internship_offers_path

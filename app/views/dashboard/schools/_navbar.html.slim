@@ -34,7 +34,7 @@
           = link_to "Semaines", edit_dashboard_school_path(school),
                     class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
 
-      - if can?(:edit, InternshipAgreement)
+      - if can?(:edit, InternshipAgreement) && current_user.school.internship_agreement_open?
         li.nav-item
           = link_to dashboard_internship_agreements_path,
                     class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do

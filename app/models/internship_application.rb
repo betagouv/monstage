@@ -136,7 +136,7 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                           update!("approved_at": Time.now.utc)
-                          create_agreement
+                          create_agreement if student.school.internship_agreement_open?
                           if student.email.present?
                             deliver_later_with_additional_delay do
                               StudentMailer.internship_application_approved_email(internship_application: self)
@@ -285,10 +285,6 @@ class InternshipApplication < ApplicationRecord
 
   def anonymize
     motivation.try(:delete)
-  end
-
-  def internship_agreement_open?
-    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').include?(student.school.zipcode[0..1])
   end
 
   def new_format?

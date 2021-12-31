@@ -7,6 +7,10 @@ module Finders
           .count
     end
 
+    def agreements_count
+      user.internship_agreements.count
+    end
+
     private
 
     attr_reader :user

@@ -31,7 +31,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
   - is_active = current_page?(dashboard_internship_applications_path)
 
-  - if can?(:edit, InternshipAgreement)
+  - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
     li.nav-item
       = link_to dashboard_internship_agreements_path,
                 class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do

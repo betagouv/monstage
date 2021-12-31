@@ -80,6 +80,10 @@ class School < ApplicationRecord
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
   end
 
+  def internship_agreement_open?
+    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').include?(zipcode[0..1])
+  end
+
   rails_admin do
     list do
       field :id

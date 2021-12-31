@@ -94,10 +94,10 @@
               br
               = "Le #{localize(internship_application.approved_at, format: :human_mm_dd_hh)}"
 
-        - if internship_application.approved? && !internship_application.convention_signed? && can?(:create, InternshipAgreement)
+        - if internship_application.approved? && internship_application.student.school.internship_agreement_open? && can?(:create, InternshipAgreement) && internship_application.internship_agreement
           div.d-flex.align-items-center.mt-2
             .d-inline-flex
-              = render(InternshipApplications::ButtonComponent.new(internship_application: internship_application, current_user: current_user, label: "Editer la convention"))
+              = render(InternshipAgreements::ButtonComponent.new(internship_agreement: internship_application.internship_agreement, current_user: current_user))
 
         - if internship_application.rejected?
           div.d-flex.align-items-center
