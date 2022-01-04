@@ -7,10 +7,10 @@
 
 .row.mb-2
   .d-flex style="align-items: baseline"
-    h1.h3.mr-3= school.name
+    h1.h2.mr-3= school.name
     a.ml-2.text-danger href="#{account_path(section: 'school')}" Modifier
 
--if defined?(render_ux_guidelines)
+- if defined?(render_ux_guidelines)
   = render partial: 'dashboard/schools/ux_classrooms_and_weeks_guidelines', locals: {school: school }
 
 .row
