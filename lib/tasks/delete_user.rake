@@ -51,7 +51,7 @@ task :delete_idle_employers, [:school_year] => [:environment] do |t, args|
     identified_exceptions_ids = Users::Operator.ids
     puts "identified_exceptions_ids #{identified_exceptions_ids.count}"
     in_white_list = reconnected_employers_ids + identified_exceptions_ids
-    employers = Users::Employer.where.not(id: in_white_list)
+    employers = Users::Employer.kept.where.not(id: in_white_list)
     puts "Ready to anonymize #{employers.count}"
     employers.each do |employer|
       sleep 0.3
