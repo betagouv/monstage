@@ -34,7 +34,7 @@ module Services
       response = send_create_contact(user:user)
       return JSON.parse(response.body) if status?([201, 401], response)
 
-      raise "fail create_contact: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail create_contact: code[#{response.code}], #{response.body}"
     end
 
     def destroy_contact(email:)
@@ -42,14 +42,16 @@ module Services
       response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
       return true if status?(200, response)
 
-      raise "fail destroy_contact: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
     def read_contact(email: )
       response = send_read_contact(email: email)
-      raise "unknown email : #{email} - contact destroy impossible" if response["StatusCode"].to_s == '404'
+      parsed_response = JSON.parse(response.body)
 
-      JSON.parse(response.body)
+      raise ArgumentError.new("unknown email : #{email} - contact destroy impossible") if parsed_response["StatusCode"].to_s == '404'
+
+      parsed_response
     end
 
     def contact_exists?(email:)
@@ -62,14 +64,14 @@ module Services
       response = send_index_contact_metadata
       return JSON.parse(response.body) if status?(200, response)
 
-      raise "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
     def update_contact_metadata(user:)
       response = send_update_contact_metadata(user: user)
       return JSON.parse(response.body) if status?(200, response)
 
-      raise "fail update_contact_metadata: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail update_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
 
