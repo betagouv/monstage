@@ -6,10 +6,9 @@
   "repository": "https://github.com/betagouv/monstage",
 
   "stack": "heroku-20",
-
-  "buildpacks": [ {
+  "buildpacks": [{
       "url": "heroku/nodejs"
-      }, {
+    }, {
       "url": "heroku/ruby"
   }],
 

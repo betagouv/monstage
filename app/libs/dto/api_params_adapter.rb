@@ -28,7 +28,8 @@ module Dto
     end
 
     def map_week_slugs_to_weeks
-      if params.key?(:weeks)
+      # if params[:weeks] is empty, validation error will be raised when persisting
+      if params.key?(:weeks) && params[:weeks].present?
         concatenated_query = nil
         Array(params.delete(:weeks)).map do |week_str|
           year, number = week_str.split('-W')
