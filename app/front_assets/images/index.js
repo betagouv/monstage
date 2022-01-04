@@ -10,12 +10,6 @@ import './onboarding/student.svg';
 import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
 
-import './pages/logo_onisep.jpg';
-import './pages/logo_cget_texte.png';
-import './pages/remote_internships/webinar_2x.png';
-import './pages/remote_internships/face_to_face_2x.png';
-import './pages/remote_internships/digital_week_2x.png';
-
 import './icons/noun_Handshake_2803586-1.svg';
 import './icons/noun_job_offer_1461730-1.svg';
 import './icons/noun_building_353052.svg';
@@ -23,6 +17,12 @@ import './icons/noun_Computer_2646597.svg';
 import './icons/noun_group_Computeur_People.svg';
 import './icons/noun_group_establishment.svg';
 import './icons/noun_people_3139638.svg';
+
+import './pages/logo_onisep.jpg';
+import './pages/logo_cget_texte.png';
+import './pages/remote_internships/webinar_2x.png';
+import './pages/remote_internships/face_to_face_2x.png';
+import './pages/remote_internships/digital_week_2x.png';
 
 import './pages/statistics/hand_left.svg';
 import './pages/statistics/hand_right.svg';
@@ -33,6 +33,9 @@ import './pages/statistics/school.svg';
 import './pages/statistics/reseau.png';
 import './pages/statistics/la_poste.png';
 import './pages/statistics/carrefour.png';
+
+import './pages/invitations/briefcase_icon.svg';
+import './pages/invitations/email_icon.svg';
 
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';
