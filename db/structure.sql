@@ -20,6 +20,8 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
 
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
@@ -31,6 +33,8 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 --
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
 --
@@ -44,6 +48,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
+COMMENT ON EXTENSION postgis IS 'PostGIS geometry and geography spatial types and functions';
 
 
 --
@@ -56,6 +61,8 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
@@ -849,6 +856,44 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 
 --
+-- Name: invitations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.invitations (
+    id bigint NOT NULL,
+    invitation_sent_at timestamp without time zone,
+    invitation_read_at timestamp without time zone,
+    invitation_accepted_at timestamp without time zone,
+    email character varying(70),
+    first_name character varying(60),
+    last_name character varying(60),
+    role character varying(50),
+    user_id bigint,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.invitations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: invitations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.invitations_id_seq OWNED BY public.invitations.id;
+
+
+--
 -- Name: months; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1296,6 +1341,13 @@ ALTER TABLE ONLY public.internship_offers ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
+-- Name: invitations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations ALTER COLUMN id SET DEFAULT nextval('public.invitations_id_seq'::regclass);
+
+
+--
 -- Name: operators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1477,6 +1529,14 @@ ALTER TABLE ONLY public.internship_offer_weeks
 
 ALTER TABLE ONLY public.internship_offers
     ADD CONSTRAINT internship_offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: invitations invitations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.invitations
+    ADD CONSTRAINT invitations_pkey PRIMARY KEY (id);
 
 
 --
@@ -1822,6 +1882,13 @@ CREATE INDEX index_internship_offers_on_tutor_id ON public.internship_offers USI
 --
 
 CREATE INDEX index_internship_offers_on_type ON public.internship_offers USING btree (type);
+
+
+--
+-- Name: index_invitations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_invitations_on_user_id ON public.invitations USING btree (user_id);
 
 
 --
@@ -2402,6 +2469,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211020160439'),
 ('20211026200850'),
 ('20211027130402'),
-('20211110133150');
+('20211110133150'),
+('20211228162749');
 
 
