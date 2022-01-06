@@ -5,6 +5,8 @@ module SchoolYear
     YEAR_START          = 2019
     MONTH_OF_YEAR_SHIFT = 5
     DAY_OF_YEAR_SHIFT   = 31
+    SEPTEMBER = 9
+    FIRST = 1
 
     def strict_beginning_of_period
       case current_month
