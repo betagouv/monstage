@@ -61,17 +61,11 @@ export default class extends Controller {
     }
   }
 
-  cleanLocalStorage() {
-    localStorage.removeItem('close_school_manager')
-  }
-
   connect() {
     const emailHintElement = this.emailHintTarget;
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
-
-    this.cleanLocalStorage();
 
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
     this.channelParams = {
