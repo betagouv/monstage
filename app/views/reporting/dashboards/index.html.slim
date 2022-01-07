@@ -127,7 +127,7 @@
           - if dashboard_finder.operator_last_modified_at.present?
             h2.text-body.text-right.font-weight-light
               = "au "
-              = I18n.localize(dashboard_finder.operator_last_modified_at, format: :human_mm_dd_hh)
+              = l dashboard_finder.operator_last_modified_at, format: :human_mm_dd_hh
           - if dashboard_finder.operator_last_synchro.present?
             p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
 

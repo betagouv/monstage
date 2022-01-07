@@ -7,6 +7,7 @@ module Dashboard
 
       def index
         authorize! :manage_school_users, @school
+        @collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
       end
 
       def destroy
