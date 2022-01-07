@@ -82,6 +82,8 @@ class Ability
 
   def school_manager_abilities(user:)
     can :create_remote_internship_request, SupportTicket
+    can :list_invitations, Invitation
+    can :create_invitation, Invitation
     can_manage_school(user: user) do
       can [:delete], User do |managed_user_from_school|
         managed_user_from_school.school_id == user.school_id

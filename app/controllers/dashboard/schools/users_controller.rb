@@ -8,6 +8,7 @@ module Dashboard
       def index
         authorize! :manage_school_users, @school
         @collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
+        @invitations = Invitation.where(user_id: current_user.id)
       end
 
       def destroy

@@ -1,14 +1,17 @@
 class Invitation < ApplicationRecord
-  belongs_to :user,
-             class_name: "user",
-             foreign_key: "user_id"
-  # school_managements includes different roles
-  # 1. school_manager should register with ac-xxx.fr email
-  # 2.3.4. can register
+  belongs_to :school_manager, -> { where(role: :school_manager) },
+             class_name: 'Users::SchoolManagement', foreign_key: 'user_id'
+
   enum role: {
-    teacher: 'teacher',
-    main_teacher: 'main_teacher',
-    other: 'other'
+    teacher: 'Professeur',
+    main_teacher: 'Professeur principal',
+    other: 'Autre'
   }
 
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :role, presence: true
+  validates :email,
+            format: { with: Devise.email_regexp },
+            on: :create
 end

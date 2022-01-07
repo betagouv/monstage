@@ -16,7 +16,7 @@ module Users
     belongs_to :class_room, optional: true
     has_many :students, through: :class_room
     has_many :main_teachers, through: :school
-    has_many :invitations
+    has_many :invitations, class_name: 'Invitation', foreign_key: 'user_id'
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?

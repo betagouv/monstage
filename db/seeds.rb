@@ -203,10 +203,44 @@ def populate_users
   Operator.reportable.map do |operator|
     with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
   end
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
-  with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  with_class_name_for_defaults(
+    Users::SchoolManagement.new(
+      first_name: 'Cize',
+      last_name: 'Yokoma',
+      role: 'school_manager',
+      email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}",
+      password: 'review',
+      school: find_default_school_during_test)
+    ).save!
+  with_class_name_for_defaults(
+    Users::SchoolManagement.new(
+      first_name: 'Yasmina',
+      last_name: 'Bollore',
+      role: 'main_teacher',
+      class_room: troisieme_generale_class_room,
+      email: 'main_teacher@ms3e.fr',
+      password: 'review',
+      school: find_default_school_during_test)
+    ).save!
+  with_class_name_for_defaults(
+    Users::SchoolManagement.new(
+      first_name: 'Mohsen',
+      last_name: 'Yahyaoui',
+      role: 'main_teacher',
+      class_room: troisieme_segpa_class_room,
+      email: 'main_teacher_segpa@ms3e.fr',
+      password: 'review',
+      school: find_default_school_during_test)
+    ).save!
+  with_class_name_for_defaults(
+    Users::SchoolManagement.new(
+      first_name: 'Paul',
+      last_name: 'Morand',
+      role: 'other',
+      email: 'other@ms3e.fr',
+      password: 'review',
+      school: find_default_school_during_test)
+    ).save!
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician = 'ministry_statistician@ms3e.fr'
@@ -575,8 +609,7 @@ MULTI_LINE
 end
 
 def populate_internship_weeks
-  manager = Users::SchoolManagement.find_by(role: 'school_manager')
-  school = manager.school
+  school = fetch_school_manager.school
   school.week_ids = Week.selectable_on_school_year.pluck(:id)
 end
 
@@ -584,6 +617,21 @@ def populate_airtable_records
   (25..50).to_a.shuffle.first.times do |n|
     AirTableRecord.create!(make_airtable_single_record)
   end
+end
+
+def populate_invitations
+  Invitation.create!(
+    first_name: 'Nestor',
+    last_name: 'Burma',
+    email: 'invited_nestor@free.fr',
+    role: 'teacher',
+    user_id: fetch_school_manager.id,
+    sent_at: 2.days.ago
+  )
+end
+
+def fetch_school_manager
+  Users::SchoolManagement.find_by(role: 'school_manager')
 end
 
 def make_airtable_single_record
@@ -650,7 +698,8 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_school_weeks,
     :populate_applications,
     :populate_aggreements,
-    :populate_airtable_records
+    :populate_airtable_records,
+    :populate_invitations
   ])
   School.update_all(updated_at: Time.now)
   Services::CounterManager.reset_internship_offer_counters

@@ -36,6 +36,7 @@ import './pages/statistics/carrefour.png';
 
 import './pages/invitations/briefcase_icon.svg';
 import './pages/invitations/email_icon.svg';
+import './pages/invitations/person_icon.svg';
 
 import './homepage/covid-alert.svg';
 import './homepage/explications.svg';

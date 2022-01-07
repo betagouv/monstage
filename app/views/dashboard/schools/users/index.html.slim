@@ -2,20 +2,34 @@
 = render partial: 'dashboard/schools/navbar', locals: { school: @school }
 
 - if @school.has_staff?
+  - info = "Assurez-vous que les personnes mentionnées ci-dessous font bien " \
+           "partie de votre établissement, sinon, supprimez leur compte."
+  .row.px-0.mt-3
+    .col-12
+      .alert.mx-n3.alert-info.py-3.bg-blue-50 role="alert"
+        .row.no-gutters
+          .col-12.d-none.d-lg-block
+            i.fa.fa-info-circle
+            span.ml-3.font-weight-bolder = info
+          .col-1.d-lg-none
+            i.fa.fa-info-circle
+          .col-11.d-lg-none
+            span.font-weight-bolder = info
+
   .row
     .col-12
-      small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
-
-  .row= render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
-
+      ul.list-group.mx-n3
+        - @invitations.each do |invitation|
+          = render partial: "dashboard/schools/users/invited_school_employee",
+                  locals: { invitation: invitation}
+        = render partial: "dashboard/schools/users/school_employee",
+                 collection: @collection
 - else
-  .row
-    .col-12
-      .alert.alert-info.alert-outlined.mb-2
-        .row.align-items-center.no-gutters
-          .col-1.col-sm-auto.text-center.mr-2
-            i.fa.fa-info-circle.fa-2x
-          .col
-            p.mb-0
-              span.test-presence-of-ux-guideline-invitation
-                | Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.
+  .row.mb-5
+-if can?(:create_invitation, Invitation)
+  div data-controller='open-modal'
+    .text-center
+      #invite-button.text-center
+        button.btn.btn-outline-dark.rounded-pill.test-modal-link data-action='open-modal#openModal'
+          | + Inviter un membre du personnel
+    = render 'dashboard/schools/invitation_modal'

@@ -247,7 +247,11 @@ class AbilityTest < ActiveSupport::TestCase
     school_manager = create(:school_manager, school: school)
     internship_application = create(:weekly_internship_application, student: student)
     internship_agreement = create(:internship_agreement, internship_application: internship_application)
+    invitation = create(:invitation, user_id: school_manager.id)
     ability = Ability.new(school_manager)
+
+    assert(ability.can?(:create_invitation, Invitation))
+    assert(ability.can?(:list_invitations, Invitation))
 
     assert(ability.can?(:welcome_students, school_manager), 'school_manager are to be able to supply offers')
     assert(ability.can?(:choose_class_room, User))

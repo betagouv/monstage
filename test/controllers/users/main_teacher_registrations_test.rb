@@ -49,4 +49,26 @@ class MainTeacherRegistrationsTest < ActionDispatch::IntegrationTest
       assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.edu.fr')
     end
   end
+
+  test 'POST #create with all params create MainTeacher and withdraws the invitation' do
+    email = 'teacher@acu.edu.fr'
+    school = create(:school)
+    school_manager = create(:school_manager, school: school)
+    create(:invitation, email: email, user_id: school_manager.id)
+    class_room = create(:class_room, name: '3e A', school: school)
+    assert_equal 1, Invitation.count
+    assert_difference('Users::SchoolManagement.main_teacher.count', 1) do
+      post user_registration_path(params: { user: { email: email,
+                                                    password: 'okokok',
+                                                    password_confirmation: 'okokok',
+                                                    type: 'Users::SchoolManagement',
+                                                    first_name: 'Martin',
+                                                    last_name: 'Fourcade',
+                                                    school_id: school.id,
+                                                    class_room_id: class_room.id,
+                                                    accept_terms: '1',
+                                                    role: :main_teacher } })
+    end
+    assert_equal 0, Invitation.count
+  end
 end

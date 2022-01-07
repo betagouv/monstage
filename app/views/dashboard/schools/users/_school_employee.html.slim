@@ -1,9 +1,51 @@
-.col-12.pt-1.pb-2.listview-item.align-items-center
-  - if can?(:delete, school_employee)
-    = link_to dashboard_school_user_path(school_employee.school, school_employee), data: { confirm: "Êtes-vous sur ?"}, method: :delete, class: 'float-right btn btn-link' do
-      i class="fas fa-trash fa-2x"
-      small.d-block
-        | Supprimer
-  = Presenters::User.new(school_employee).short_name
-  br
-  = "#{Presenters::User.new(school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
+- prez = Presenters::User.new(school_employee)
+- class_room = school_employee.try(:class_room).try(:name)
+- class_room_cpl = class_room.present? ? " </br> (#{class_room})" : ""
+li.list-group-item.teachers-list
+  .row.no-gutters
+    .col-lg-8.col-9
+      .row
+        .col-lg-6.col-md-7.col-12
+          p.mb-3.font-weight-bolder
+            = "#{prez.full_name} #{class_room_cpl}".html_safe
+          p.mb-2.text-muted
+            = image_tag asset_pack_path('media/images/pages/invitations/briefcase_icon.svg'),
+                            alt: "personnel inscrit",
+                            class: 'align-top mr-2',
+                            width: 16
+            span.ml-2= prez.role_name
+          p.mb-md-3.mb-sm-2.text-muted
+            = image_tag asset_pack_path('media/images/pages/invitations/email_icon.svg'),
+                alt: "personnel inscrit",
+                class: 'mr-2 grey-icon',
+                width: 16
+            span.ml-2 = school_employee.email
+
+        .col-lg-6.col-md-5.col-12.d-flex.green-check-room
+          - unless school_employee.confirmed_at.nil?
+            p.mb-2.align-self-center
+              span.text-muted
+                = image_tag asset_pack_path('media/images/pages/statistics/green_check.svg'),
+                            alt: "personnel inscrit",
+                            class: 'align-top mr-2',
+                            height: 16
+                | Inscription confirmée
+
+    .col-lg-4.col-3.d-flex.justify-content-end
+      - if can?(:delete, school_employee)
+        p.text-right.mr-2.align-self-center.d-none.d-md-block
+          = link_to dashboard_school_user_path(school_employee.school, school_employee),
+                    data: { confirm: "Êtes-vous sur ?"},
+                    method: :delete,
+                    class: 'float-right text-center text-muted btn-link' do
+            i class="fas fa-trash"
+            small.d-block
+              | Supprimer
+        p.text-right.mr-2.align-self-start.d-md-none
+          = link_to dashboard_school_user_path(school_employee.school, school_employee),
+                    data: { confirm: "Êtes-vous sur ?"},
+                    method: :delete,
+                    class: 'float-right text-center text-muted btn-link' do
+            i class="fas fa-trash"
+            small.d-block
+              | Supprimer

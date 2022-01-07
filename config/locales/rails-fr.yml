@@ -220,6 +220,7 @@ fr:
       short: "%d %b %Hh%M"
       human_mm_dd: "%e %B"
       human_mm_dd_yyyy: "%e %B %Y"
+      short_human_dd_mm_yyyy: "%e %b %Y"
       human_mm_dd_hh: "%e %B à %Hh%M"
 
     pm: pm

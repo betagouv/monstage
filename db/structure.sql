@@ -861,9 +861,7 @@ ALTER SEQUENCE public.internship_offers_id_seq OWNED BY public.internship_offers
 
 CREATE TABLE public.invitations (
     id bigint NOT NULL,
-    invitation_sent_at timestamp without time zone,
-    invitation_read_at timestamp without time zone,
-    invitation_accepted_at timestamp without time zone,
+    sent_at timestamp without time zone,
     email character varying(70),
     first_name character varying(60),
     last_name character varying(60),

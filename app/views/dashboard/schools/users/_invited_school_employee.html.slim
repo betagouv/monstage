@@ -1,0 +1,46 @@
+li.list-group-item.teachers-list
+  .row.no-gutters
+    .col-lg-8.col-9
+      .row
+        .col-lg-6.col-md-7.col-12
+          p.mb-3.font-weight-bolder
+            = "#{invitation.first_name} #{invitation.last_name}"
+          p.mb-2.text-muted
+            = image_tag asset_pack_path('media/images/pages/invitations/briefcase_icon.svg'),
+                            alt: "personnel inscrit",
+                            class: 'align-top mr-2',
+                            width: 16
+            span.ml-2= invitation.role
+          p.mb-md-3.mb-sm-2.text-muted
+            = image_tag asset_pack_path('media/images/pages/invitations/email_icon.svg'),
+                alt: "personnel inscrit",
+                class: 'mr-2 grey-icon',
+                width: 16
+            span.ml-2 = invitation.email
+
+        .col-lg-6.col-md-5.col-12.d-flex.green-check-room
+          p.mb-2.align-self-center
+            span.text-muted
+            table
+              tr
+                td = image_tag asset_pack_path('media/images/pages/invitations/person_icon.svg'),
+                                alt: "personnel inscrit",
+                                class: 'align-top mr-2',
+                                height: 16
+                td
+                  = "Inscription envoyée le #{l invitation.sent_at, format: :short_human_dd_mm_yyyy}"
+                  br
+                  = link_to "Renvoyer l'invitation ➔",
+                            dashboard_school_resend_invitation_path(@school.id, id: invitation.id),
+                            class: 'blue_bold text-decoration-none'
+
+
+    .col-lg-4.col-3.d-flex.justify-content-end
+      p.text-right.mr-2.align-self-center.d-none.d-md-block
+        = link_to dashboard_school_invitation_path(@school.id, invitation.id),
+                  data: { confirm: "Êtes-vous sur ?"},
+                  method: :delete,
+                  class: 'float-right text-center text-muted btn-link' do
+          i class="fas fa-trash"
+          small.d-block
+            | Supprimer

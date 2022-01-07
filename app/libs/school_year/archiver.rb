@@ -6,6 +6,8 @@ module SchoolYear
         say_in_green('So long with the students')
         archive_class_rooms
         say_in_green('So long with the class_rooms')
+        archive_invitations
+        say_in_green('So long with the invitations of school managers toward their teachers and all')
       end
     end
 
@@ -27,6 +29,14 @@ module SchoolYear
       class_room_elements.each do |new_class_room| new_class_room.save! end
       true
     end
+
+    def archive_invitations
+      Invitation.all.find_each do |invitation|
+        invitation.destroy
+      end
+      true
+    end
+
 
     def say_in_green(str)
       puts "\e[32m=====> #{str} <=====\e[0m"
