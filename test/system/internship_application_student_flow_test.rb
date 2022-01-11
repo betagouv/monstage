@@ -162,7 +162,11 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     school = create(:school)
     student = create(:student,
                      school: school,
-                     class_room: create(:class_room, :troisieme_generale, school: school)
+                     class_room: create(
+                       :class_room,
+                       :troisieme_generale,
+                       school: school
+                     )
     )
     internship_application = create(
       :weekly_internship_application,
@@ -171,7 +175,8 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     )
     sign_in(student)
     visit '/'
-    visit dashboard_students_internship_application_path(student, internship_application.internship_offer)
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
     assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
@@ -183,12 +188,13 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     )
     internship_application = create(
       :weekly_internship_application,
-      :approved,
+      :submitted,
       student: student
     )
     sign_in(student)
-    visit '/'
-    visit dashboard_students_internship_application_path(student, internship_application.internship_offer)
+    # visit '/'
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
     refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
