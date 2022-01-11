@@ -524,6 +524,7 @@ def populate_applications
     aasm_state: :canceled_by_employer,
     submitted_at: 10.days.ago,
     approved_at: 3.days.ago,
+    canceled_at: 5.days.ago,
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
