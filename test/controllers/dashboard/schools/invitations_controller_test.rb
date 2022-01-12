@@ -27,6 +27,47 @@ module Dashboard
         assert_equal 'Pablo', Invitation.last.first_name, 'invitation creation failed'
       end
 
+      test 'POST invitation with existing teacher' do
+        school_manager = create(:school_manager)
+        teacher = create(:teacher, school: school_manager.school)
+        invitations = {
+          first_name: teacher.first_name,
+          last_name: teacher.last_name,
+          email: teacher.email,
+          user_id: school_manager.id,
+          role: 'teacher'
+        }
+
+        sign_in(school_manager)
+        post(
+          dashboard_school_invitations_path(school_manager.school.id),
+          params: { invitations: invitations }
+        )
+        assert_redirected_to dashboard_school_users_path
+        assert_equal 0, Invitation.count, 'invitation should not have been successfull'
+      end
+
+      test 'POST invitation with existing teacher but from another school' do
+        school_manager = create(:school_manager)
+        teacher = create(:teacher, school: create(:school, :with_school_manager))
+        invitations = {
+          first_name: teacher.first_name,
+          last_name: teacher.last_name,
+          email: teacher.email,
+          user_id: school_manager.id,
+          role: 'teacher'
+        }
+
+        sign_in(school_manager)
+        assert_difference 'Invitation.count' do
+          post(
+            dashboard_school_invitations_path(school_manager.school.id),
+            params: { invitations: invitations }
+          )
+          assert_redirected_to dashboard_school_users_path(school_manager.school)
+        end
+      end
+
       test 'DESTROY invitation' do
         school_manager = create(:school_manager)
         invitation = create(:invitation, user_id: school_manager.id)

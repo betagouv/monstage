@@ -8,6 +8,12 @@ module Dashboard
       end
 
       def create
+        redirect_to(
+            dashboard_school_users_path,
+            flash: { alert: "La personne que vous voulez inviter est déjà " \
+                            "inscrite ou en cours d'inscription"}
+        ) and return if is_already_in_staff?(params, current_user)
+
         @invitation = current_user.invitations.build(invitation_params)
         @invitation.sent_at = Time.now
         if @invitation.save && invite_staff(invitation: @invitation, from: current_user)
@@ -65,6 +71,14 @@ module Dashboard
 
       def set_invitation
         @invitation = Invitation.find params[:id]
+      end
+
+      def is_already_in_staff?(params, manager)
+        staff = Users::SchoolManagement.find_by_email(invitation_params[:email])
+        return false if staff.nil?
+        return false if staff&.school != manager.school
+      
+        true
       end
     end
   end
