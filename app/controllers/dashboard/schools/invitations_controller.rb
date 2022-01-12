@@ -76,9 +76,8 @@ module Dashboard
       def already_in_staff?(params, manager)
         staff = Users::SchoolManagement.find_by_email(invitation_params[:email])
         return false if staff.nil?
-        return false if staff&.school != manager.school
-      
-        true
+
+        staff&.school == manager.school
       end
     end
   end
