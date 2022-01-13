@@ -19,6 +19,14 @@
   background-color: $blue_100;
   color: $blue_800;
 }
+.blue-outlined-pill {
+  &:hover {
+    background-color: $blue;
+  }
+
+  color: $gray_800;
+  border:1px solid $gray_400;
+}
 
 .middle-school-badge,
 .high-school-badge{

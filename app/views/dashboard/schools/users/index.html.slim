@@ -2,8 +2,8 @@
 = render partial: 'dashboard/schools/navbar', locals: { school: @school }
 
 - if @school.has_staff?
-  - info = "Assurez-vous que les personnes mentionnées ci-dessous font bien " \
-           "partie de votre établissement, sinon, supprimez leur compte."
+  - info = "Assurez-vous que chacun fait partie de l'établissement. " \
+           "Sinon, vous pouvez supprimer leur compte."
   .row.px-0.mt-3
     .col-12
       .alert.mx-n3.alert-info.py-3.bg-blue-50 role="alert"
@@ -30,6 +30,6 @@
   div data-controller='open-modal'
     .text-center
       #invite-button.text-center
-        button.btn.btn-outline-dark.rounded-pill.test-modal-link data-action='open-modal#openModal'
+        button.btn.btn-outline-primary.rounded-pill.blue-outlined-pill.test-modal-link data-action='open-modal#openModal'
           | + Inviter un membre du personnel
     = render 'dashboard/schools/invitation_modal'
