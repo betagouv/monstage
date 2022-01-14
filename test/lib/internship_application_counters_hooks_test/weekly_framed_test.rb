@@ -7,7 +7,7 @@ module InternshipApplicationCountersHooks
       @week = Week.find_by(number: 1, year: 2019)
       @internship_offer_week = build(:internship_offer_week, week: @week)
       @internship_offer = build(:weekly_internship_offer, internship_offer_weeks: [@internship_offer_week])
-      @internship_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week,
+      @internship_application = build(:weekly_internship_application, week: @week,
                                                                       internship_offer: @internship_offer)
     end
 
@@ -15,6 +15,7 @@ module InternshipApplicationCountersHooks
     # tracks internship_offer_weeks counters
     #
     test '.update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count' do
+      byebug
       @internship_application.aasm_state = :approved
       @internship_application.save!
       assert_changes -> { @internship_offer_week.reload.blocked_applications_count },
