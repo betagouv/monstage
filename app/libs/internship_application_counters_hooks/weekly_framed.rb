@@ -3,7 +3,7 @@
 module InternshipApplicationCountersHooks
   class WeeklyFramed < InternshipApplicationCountersHook
     delegate :internship_offer, to: :internship_application
-    delegate :internship_offer_week, to: :internship_application
+    delegate :week, to: :internship_application
 
     # BEWARE: order matters
     def update_all_counters
@@ -16,11 +16,16 @@ module InternshipApplicationCountersHooks
     # select sum(aasm_state == convention_signed) as convention_signed_count
     #        sum(aasm_state == approved) as approved_count )
     def update_internship_offer_week_counters
+      internship_offer_week = InternshipOfferWeek.where(
+        internship_offer: internship_offer.id,
+        week_id: week.id 
+      ).first
+      
       internship_offer_week.update(
-        blocked_applications_count: internship_offer_week.internship_applications
-                                                         .where(aasm_state: :convention_signed)
-                                                         .count
-      )
+        blocked_applications_count: week.internship_applications
+                                      .where(aasm_state: :approved)
+                                      .count
+      ) if internship_offer_week
     end
 
     private

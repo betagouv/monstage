@@ -388,6 +388,8 @@ fr:
               has_no_spots_left: "Cette offre est complète"
             internship_offer_week:
               has_no_spots_left: "Impossible de postuler car l'offre est complète pour cette semaine"
+            week:
+              has_no_spots_left: "Impossible de postuler car l'offre est complète pour cette semaine"
             motivation:
               blank: Veuillez renseigner vos motivations
             student:

@@ -1,6 +1,6 @@
 
 - if @internship_offer.weekly?
-  - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
+  - applicable_weeks = current_user.school.has_weeks_on_current_year? ? @internship_offer.weeks.available_for_student(user: current_user) : @internship_offer.internship_offer_weeks
 div data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   #internship-application-form
   .warning-block-wrapper.application.mt-4
@@ -40,12 +40,12 @@ div data-internship-application-form-target="containerForm" class="#{@internship
             legend.h3 Ma Candidature
             - if @internship_offer.weekly?
               .form-group
-                = f.label :internship_offer_week_id, class: 'required' do
+                = f.label :week_id, class: 'required' do
                   | Quelle semaine ?
                   = f.rg2a_required_content_tag
                 - unless current_user.school.has_weeks_on_current_year?
                   = render partial: "internship_applications/forms/student_missing_school_weeks"
-                = f.select :internship_offer_week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+                = f.select :week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
                   { prompt: '-- Choisir une semaine --'}, class: "form-control col-6", required: true
 
 

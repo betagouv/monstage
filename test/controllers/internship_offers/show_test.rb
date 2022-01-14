@@ -169,13 +169,16 @@ module InternshipOffers
                                       motivation: 'au taquet',
                                       student: student,
                                       internship_offer: internship_offer,
-                                      internship_offer_week: internship_offer_week)
+                                      week: internship_offer_week.week)
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(student)
         get internship_offer_path(internship_offer)
         assert_response :success
-        assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
-        assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
+        p 'internship_offer.internship_offer_weeks.last.week.id'
+        p internship_offer.internship_offer_weeks.last.week.id
+        p internship_offer.internship_offer_weeks.last.week.id
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.first.week.id}]"
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.last.week.id}][selected]"
       end
     end
 
@@ -186,8 +189,8 @@ module InternshipOffers
                        school: school)
       internship_applications = {
         submitted: create(:weekly_internship_application, :submitted, student: student),
-        approved: create(:weekly_internship_application, :approved, student: student),
-        rejected: create(:weekly_internship_application, :rejected, student: student)
+        # approved: create(:weekly_internship_application, :approved, student: student),
+        # rejected: create(:weekly_internship_application, :rejected, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
@@ -235,8 +238,8 @@ module InternshipOffers
         get internship_offer_path(internship_offer)
 
         assert_response :success
-        assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
-                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>`
+        assert_select 'select[name="internship_application[week_id]"] option',
+                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>` + intern
       end
     end
 

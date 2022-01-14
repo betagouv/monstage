@@ -47,6 +47,9 @@ div data-controller="internship-application-form"
     .col-12.col-sm-10
       - if user_signed_in?
         - if can?(:apply, @internship_offer) && @internship_offer.has_spots_left? && (@internship_offer.weekly? || @internship_offer.free_date?)
+          - p 'yes'
+          - p 'yes'
+          - p 'yes'
           = render "internship_applications/forms/weekly_and_free"
       - else
         = render "internship_applications/forms/visitor"
