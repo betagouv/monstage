@@ -55,7 +55,7 @@ FactoryBot.define do
     end
     trait :weekly do
       internship_offer { weekly_internship_offer_helper }
-      internship_offer_week { internship_offer.internship_offer_weeks.first}
+      week { internship_offer.weeks.first }
     end
 
     trait :free_date do

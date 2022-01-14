@@ -79,6 +79,7 @@ module Finders
 
 
     def week_ids_query(query)
+      # query.merge(weekly_framed_scopes(:by_weeks, weeks: Week.where(id: week_ids_params)))
       query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: week_ids_params)))
     end
 
@@ -108,7 +109,7 @@ module Finders
           weekly_framed_scopes(:ignore_already_applied, {user: user})
         )
         query = query.merge(
-          weekly_framed_scopes(:ignore_max_candidates_reached)
+          weekly_framed_scopes(:uncompleted_with_max_candidates)
         )
         query = query.merge(
           weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
@@ -122,12 +123,16 @@ module Finders
     protected
 
     def weekly_framed_scopes(scope, args = nil)
+      # byebug
+      p scope
+      # p args
       if args.nil?
         InternshipOffers::WeeklyFramed.send(scope)
           .or(InternshipOffers::Api.send(scope))
       else
+        # byebug if scope == :by_weeks
         InternshipOffers::WeeklyFramed.send(scope, args)
-          .or(InternshipOffers::Api.send(scope, args))
+        .or(InternshipOffers::Api.send(scope, args))
       end
     end
   end

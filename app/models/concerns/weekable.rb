@@ -14,6 +14,7 @@ module Weekable
     }
 
     scope :by_weeks, lambda { |weeks:|
+      p 'weeakable avant que ca pete'
       where(week: weeks)
     }
 
