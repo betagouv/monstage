@@ -38,7 +38,6 @@ module InternshipApplications
 
     def at_most_one_application_per_student?
       return unless week.present?
-      
 
       if internship_offer
           .internship_applications

@@ -20,9 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -59,9 +56,12 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
 
+<<<<<<< HEAD
 COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
+=======
+>>>>>>> 809aaf3bbc47604121e41377c4086ad9c9f3c172
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
 --

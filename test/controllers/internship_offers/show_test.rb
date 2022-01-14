@@ -137,24 +137,46 @@ module InternshipOffers
     end
 
     test 'GET #show as Student only displays weeks that are not blocked' do
-      max_candidates = 2
+      max_candidates = 1
 
       internship_weeks = [Week.find_by(number: 1, year: 2020),
                           Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: internship_weeks)
-      blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                              week: internship_weeks[0])
-      available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-                                                                week: internship_weeks[1])
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
-                                                          internship_offer_weeks: [blocked_internship_week,
-                                                                                   available_internship_week])
+      blocked_internship_offer = create(:weekly_internship_offer, 
+                                        max_candidates: max_candidates, 
+                                        max_students_per_group: 1, 
+                                        weeks: internship_weeks)
+      # blocked_internship_week = build(:internship_offer_week, 
+      #                                 blocked_applications_count: max_candidates,
+      #                                 internship_offer: blocked_internship_offer,
+      #                                 week: internship_weeks[0])
+      internship_application = create(:internship_application, 
+        internship_offer: blocked_internship_offer, 
+        week: internship_weeks[0],
+        aasm_state: 'approved'
+      )
+      # internship_application_2 = create(:internship_application, 
+      #   internship_offer: blocked_internship_offer, 
+      #   week: internship_weeks[0],
+      #   aasm_state: 'approved'
+      # )
+      
+      # byebug
+
+      # available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
+      #                                                           week: internship_weeks[1])
+
+      # internship_offer = create(:weekly_internship_offer, 
+      #   max_candidates: max_candidates,
+      #   max_students_per_group: 1,
+      #   weeks: internship_weeks
+      # )
       travel_to(internship_weeks[0].week_date - 1.week) do
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
-        get internship_offer_path(internship_offer)
+        get internship_offer_path(blocked_internship_offer)
 
-        assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
-        assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
+        assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
+        assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
       end
     end
 

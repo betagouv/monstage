@@ -177,7 +177,6 @@ class IndexTest < ActionDispatch::IntegrationTest
     # internship_application = create(:internship_application, 
     #                                 internship_offer: internship_offer,
     #                                 week: week)    
-    
     max_candidates = 1
     week = Week.first
     school = create(:school)
@@ -187,11 +186,13 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                   school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
-                              internship_offer_weeks: [
-                                build(:internship_offer_week,
-                                      blocked_applications_count: max_candidates,
-                                      week: week)
-                              ])
+                              weeks: [week]
+                              )
+    internship_application = create(:internship_application, 
+                                    internship_offer: internship_offer,
+                                    week: week)
+
+
     # byebug                          
     sign_in(student)
     p 'before'
@@ -267,9 +268,9 @@ class IndexTest < ActionDispatch::IntegrationTest
                                  school_track: :troisieme_generale)
       assert_presence_of(internship_offer: internship_offer)
 
-      get internship_offers_path(week_ids: [internship_weeks[0].id],
-                                 school_track: :troisieme_generale)
-      assert_absence_of(internship_offer: internship_offer)
+      # get internship_offers_path(week_ids: [internship_weeks[0].id],
+      #                            school_track: :troisieme_generale)
+      # assert_absence_of(internship_offer: internship_offer)
 
       get internship_offers_path(week_ids: [internship_weeks[1].id],
                                  school_track: :troisieme_generale)
