@@ -34,27 +34,29 @@ module Services
       response = send_create_contact(user:user)
       return JSON.parse(response.body) if status?([201, 401], response)
 
-      raise "fail create_contact: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail create_contact: code[#{response.code}], #{response.body}"
     end
 
     def destroy_contact(email:)
-      mailjet_user_id = send_read_contact(email: email).dig("Data", 0, "ID")
+      mailjet_user_id = read_contact(email: email).dig("Data", 0, "ID")
       response = send_destroy_contact(mailjet_user_id: mailjet_user_id)
       return true if status?(200, response)
 
-      raise "fail destroy_contact: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail destroy_contact: code[#{response.code}], #{response.body}"
     end
 
-    def send_read_contact(email:)
+    def read_contact(email: )
       response = send_read_contact(email: email)
-      return JSON.parse(response.body) if status?(200, response)
+      parsed_response = JSON.parse(response.body)
 
-      raise "fail read_contact: code[#{response.code}], #{response.body}"
+      raise ArgumentError.new("unknown email : #{email} - contact destroy impossible") if parsed_response["StatusCode"].to_s == '404'
+
+      parsed_response
     end
 
     def contact_exists?(email:)
       response = send_read_contact(email: email)
-      return false unless status?(200, response)
+      return false unless send_read_contact(email: email)
       return true if JSON.parse(response.body).dig('Count')
     end
 
@@ -62,15 +64,17 @@ module Services
       response = send_index_contact_metadata
       return JSON.parse(response.body) if status?(200, response)
 
-      raise "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail to index_contact_metadata: code[#{response.code}], #{response.body}"
     end
 
     def update_contact_metadata(user:)
       response = send_update_contact_metadata(user: user)
       return JSON.parse(response.body) if status?(200, response)
 
-      raise "fail update_contact_metadata: code[#{response.code}], #{response.body}"
+      raise StandardError.new "fail update_contact_metadata: code[#{response.code}], #{response.body}"
     end
+
+
 
     private
 
@@ -89,6 +93,8 @@ module Services
     end
 
     # see: https://dev.mailjet.com/email/reference/contacts/contact#v3_send_read_contact_contact_ID
+
+
     def send_read_contact(email:)
       with_http_connection do |http|
         request = Net::HTTP::Get.new(ENDPOINTS.dig(:contact, :read) % email, default_headers)

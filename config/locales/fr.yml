@@ -353,7 +353,7 @@ fr:
             password:
               too_short: "Veuillez saisir un mot de passe d'au moins 6 caractères"
             password_confirmation:
-              confirmation: "La confirmation du mot de passe n'est pas identique a celle du mot de passe."
+              confirmation: "Les mots de passe saisis ne sont pas identiques."
             first_name:
               blank: Veuillez saisir un prénom
             last_name:

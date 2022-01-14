@@ -29,7 +29,10 @@ nav.navbar.navbar-light.py-0
         li.nav-item
           = link_to current_user.dashboard_name, current_user.custom_dashboard_path, class: "nav-link pl-1 pr-1 py-4  #{custom_dashboard_controller?(user: current_user) ? 'active' : ''}"
       li.nav-item
-        = link_to current_user.account_link_name, account_path, class: "nav-link pl-1 pr-1 py-4 #{account_controller?(user: current_user) ? 'active' : ''}", id: 'test-user-is-signed-up'
+        = link_to current_user.account_link_name,
+                  account_path,
+                  class: "nav-link pl-1 pr-1 py-4 #{account_controller?(user: current_user) ? 'active' : ''}",
+                  id: 'test-user-is-signed-up'
       - if cookies.signed[Rails.application.credentials.dig(:cookie_switch_back)].present?
           li.nav-item= link_to destroy_user_session_path, class: "nav-link pl-1 pr-1 py-4 ", method: :delete do
             .inline-block style="background-color: red; color: #fff; font-weight: bold; "

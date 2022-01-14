@@ -27,6 +27,9 @@ class ReportingDashboardTest < ApplicationSystemTestCase
                        zipcode: 60_000,
                        group: @group2)
       }
+      create(:weekly_internship_offer,
+                       zipcode: 60_000,
+                       group: @group1).discard!
       sign_in(@statistician)
       visit reporting_dashboards_path(department: @department, school_year: 2020)
 

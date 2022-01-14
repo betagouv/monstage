@@ -86,7 +86,7 @@ def populate_operators
                   target_count: 120,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   # this one is for test
   Operator.create(name: "JobIRL",
                   website: "",
@@ -94,14 +94,14 @@ def populate_operators
                   target_count: 32,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   Operator.create(name: "Le Réseau",
                   website: "",
                   logo: 'Logo-le-reseau.jpg',
                   target_count: 710,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   Operator.create(name: "Institut Télémaque",
                   website: "",
                   logo: 'Logo-telemaque.png',
@@ -113,28 +113,28 @@ def populate_operators
                   target_count: 1200,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   Operator.create(name: "Les entreprises pour la cité (LEPC)",
                   website: "",
                   logo: 'Logo-les-entreprises-pour-la-cite.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   Operator.create(name: "Tous en stage",
                   website: "",
                   logo: 'Logo-tous-en-stage.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
   Operator.create(name: "Viens voir mon taf",
                   website: "",
                   logo: 'Logo-viens-voir-mon-taf.jpg',
                   target_count: 1200,
                   airtable_reporting_enabled: true,
                   airtable_link: ENV['AIRTABLE_SHARE_LINK_TEST'],
-                  airtable_id: ENV['AIRTABLE_ID_TEST'])
+                  airtable_id: ENV['AIRTABLE_EMBEDDED_ID_TEST'])
 end
 
 def populate_sectors
@@ -514,6 +514,7 @@ def populate_applications
     aasm_state: :canceled_by_student,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
+    canceled_at: 1.day.ago,
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
@@ -524,6 +525,7 @@ def populate_applications
     aasm_state: :canceled_by_employer,
     submitted_at: 10.days.ago,
     approved_at: 3.days.ago,
+    canceled_at: 1.day.ago,
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
@@ -534,6 +536,7 @@ def populate_applications
     aasm_state: :rejected,
     submitted_at: 8.days.ago,
     approved_at: 3.days.ago,
+    rejected_at: 2.days.ago,
     student: trois_gene_studs.third,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
