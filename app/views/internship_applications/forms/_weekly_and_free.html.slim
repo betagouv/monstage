@@ -1,5 +1,6 @@
 
 - if @internship_offer.weekly?
+  / - applicable_weeks = current_user.school.has_weeks_on_current_year? ? @internship_offer.weeks.available_for_student(user: current_user) : @internship_offer.internship_offer_weeks
   - applicable_weeks = current_user.school.has_weeks_on_current_year? ? InternshipOfferWeek.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
 div data-internship-application-form-target="containerForm" class="#{@internship_application.new_record? ? 'd-none' : ''}"
   #internship-application-form
