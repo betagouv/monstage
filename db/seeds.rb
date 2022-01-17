@@ -494,7 +494,7 @@ def populate_applications
       student: trois_gene_studs.first,
       motivation: 'Au taquet',
       internship_offer: io_trois_gene,
-      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
+      week: io_trois_gene.internship_offer_weeks.sample.week
     )
   end
 
@@ -506,7 +506,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+    week: troisieme_generale_offers.first.internship_offer_weeks.sample.week
   )
 
   puts  "third 3e generale stud cancels his application to first offer"
@@ -518,7 +518,7 @@ def populate_applications
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.second.internship_offer_weeks.sample
+    week: troisieme_generale_offers.second.internship_offer_weeks.sample.week
   )
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -529,7 +529,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    week: troisieme_generale_offers.last.internship_offer_weeks.sample.week
   )
   puts  "third 3e generale stud is rejected of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -540,7 +540,7 @@ def populate_applications
     student: trois_gene_studs.third,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    week: troisieme_generale_offers.last.internship_offer_weeks.sample.week
   )
 end
 
