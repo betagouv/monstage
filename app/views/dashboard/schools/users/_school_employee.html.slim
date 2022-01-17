@@ -43,7 +43,7 @@ li.list-group-item.teachers-list
               | Supprimer
         p.text-right.mr-2.align-self-start.d-md-none
           = link_to dashboard_school_user_path(school_employee.school, school_employee),
-                    data: { confirm: "Êtes-vous sur ?"},
+                    data: { confirm: "En confirmant, l'utilisateur n'aura plus accès à la plateforme. Êtes-vous sur ?"},
                     method: :delete,
                     class: 'float-right text-center text-muted btn-link' do
             i class="fas fa-trash"
