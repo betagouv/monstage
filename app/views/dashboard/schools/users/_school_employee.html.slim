@@ -33,7 +33,7 @@ li.list-group-item.teachers-list
 
     .col-lg-4.col-3.d-flex.justify-content-end
       - if can?(:delete, school_employee)
-        - confirmation_text = "En confirmant, l'utilisateur n'aura plus accès à la plateforme. Êtes-vous sur ?"
+        - confirmation_text = "En confirmant, l'utilisateur n'aura plus accès à la plateforme. Êtes-vous sûr ?"
         p.text-right.mr-2.align-self-center.d-none.d-md-block
           = link_to dashboard_school_user_path(school_employee.school, school_employee),
                     data: { confirm: confirmation_text},
