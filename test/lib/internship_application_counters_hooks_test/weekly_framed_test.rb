@@ -5,8 +5,7 @@ module InternshipApplicationCountersHooks
   class WeeklyFramedTest < ActiveSupport::TestCase
     setup do
       @week = Week.find_by(number: 1, year: 2019)
-      @internship_offer_week = build(:internship_offer_week, week: @week)
-      @internship_offer = build(:weekly_internship_offer, internship_offer_weeks: [@internship_offer_week])
+      @internship_offer = create(:weekly_internship_offer, weeks: [@week])
       @internship_application = build(:weekly_internship_application, week: @week,
                                                                       internship_offer: @internship_offer)
     end
@@ -15,12 +14,18 @@ module InternshipApplicationCountersHooks
     # tracks internship_offer_weeks counters
     #
     test '.update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count' do
-      byebug
       @internship_application.aasm_state = :approved
       @internship_application.save!
-      assert_changes -> { @internship_offer_week.reload.blocked_applications_count },
-                     from: 0,
-                     to: 1 do
+      assert_equal 1, @internship_offer.internship_offer_weeks
+                                       .reload
+                                       .first
+                                       .blocked_applications_count
+      # @Maxime : On comprend donc ci-dessous que la signature d'une candidature libère la semaine 
+      # réservée jusque là dans internship_offer_week. C'est étrange mais
+      # c'est le sens de expire_application_on_week. Moi, ça me gêne
+      assert_changes -> { @internship_offer.internship_offer_weeks.reload.first.blocked_applications_count },
+                     from: 1,
+                     to: 0 do
         @internship_application.signed!
       end
     end
@@ -32,9 +37,13 @@ module InternshipApplicationCountersHooks
       @internship_application.aasm_state = :approved
       @internship_application.save!
 
+      assert_equal 1, @internship_offer.reload.blocked_weeks_count
+      # @Maxime : On comprend donc ci-dessous que la signature d'une candidature
+      #  libère une place réservée jusque là. C'est étrange mais
+      # c'est le sens de expire_application_on_week. Moi, ça me gêne
       assert_changes -> { @internship_offer.reload.blocked_weeks_count },
-                     from: 0,
-                     to: 1 do
+                     from: 1,
+                     to: 0 do
         @internship_application.signed!
       end
     end
@@ -51,7 +60,7 @@ module InternshipApplicationCountersHooks
 
     test '.update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count' do
       create(:weekly_internship_application, :drafted,
-             internship_offer_week: @internship_offer_week,
+             week: @internship_offer.weeks.first,
              internship_offer: @internship_offer)
 
       assert_equal 0, @internship_offer.reload.total_applications_count
@@ -161,7 +170,8 @@ module InternshipApplicationCountersHooks
         @internship_application.save!
       end
 
-      second_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
+      second_application = build(:weekly_internship_application, week: @internship_offer.weeks.first,
+                                                                 internship_offer: @internship_offer,
                                                                  student: create(:student, gender: 'f'))
       second_application.aasm_state = :submitted
 

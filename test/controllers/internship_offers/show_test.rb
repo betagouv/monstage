@@ -84,13 +84,13 @@ module InternshipOffers
       assert_select('.test-missing-school-weeks',
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
-      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine --
       assert_select '.btn-danger[disabled]',
                     { count: 0 },
                     'form should be submitable'
     end
 
-  
+
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
@@ -142,31 +142,31 @@ module InternshipOffers
       internship_weeks = [Week.find_by(number: 1, year: 2020),
                           Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: internship_weeks)
-      blocked_internship_offer = create(:weekly_internship_offer, 
-                                        max_candidates: max_candidates, 
-                                        max_students_per_group: 1, 
+      blocked_internship_offer = create(:weekly_internship_offer,
+                                        max_candidates: max_candidates,
+                                        max_students_per_group: 1,
                                         weeks: internship_weeks)
-      # blocked_internship_week = build(:internship_offer_week, 
+      # blocked_internship_week = build(:internship_offer_week,
       #                                 blocked_applications_count: max_candidates,
       #                                 internship_offer: blocked_internship_offer,
       #                                 week: internship_weeks[0])
-      internship_application = create(:internship_application, 
-        internship_offer: blocked_internship_offer, 
+      internship_application = create(:internship_application,
+        internship_offer: blocked_internship_offer,
         week: internship_weeks[0],
         aasm_state: 'approved'
       )
-      # internship_application_2 = create(:internship_application, 
-      #   internship_offer: blocked_internship_offer, 
+      # internship_application_2 = create(:internship_application,
+      #   internship_offer: blocked_internship_offer,
       #   week: internship_weeks[0],
       #   aasm_state: 'approved'
       # )
-      
+
       # byebug
 
       # available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
       #                                                           week: internship_weeks[1])
 
-      # internship_offer = create(:weekly_internship_offer, 
+      # internship_offer = create(:weekly_internship_offer,
       #   max_candidates: max_candidates,
       #   max_students_per_group: 1,
       #   weeks: internship_weeks
@@ -182,22 +182,24 @@ module InternshipOffers
 
     test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
-      school = create(:school, weeks: weeks)
-      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-      internship_offer_week = create(:internship_offer_week, week: weeks.last, internship_offer: internship_offer)
+      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
+      school                = create(:school, weeks: weeks)
+      student               = create(:student,
+                                     school: school,
+                                     class_room: create(:class_room, :troisieme_generale, school: school)
+                                    )
       internship_application = create(:weekly_internship_application,
                                       :drafted,
                                       motivation: 'au taquet',
                                       student: student,
                                       internship_offer: internship_offer,
-                                      week: internship_offer_week.week)
+                                      week: weeks.last)
+
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(student)
         get internship_offer_path(internship_offer)
         assert_response :success
         p 'internship_offer.internship_offer_weeks.last.week.id'
-        p internship_offer.internship_offer_weeks.last.week.id
         p internship_offer.internship_offer_weeks.last.week.id
         assert_select "option[value=#{internship_offer.internship_offer_weeks.first.week.id}]"
         assert_select "option[value=#{internship_offer.internship_offer_weeks.last.week.id}][selected]"
@@ -213,6 +215,7 @@ module InternshipOffers
         submitted: create(:weekly_internship_application, :submitted, student: student),
         # approved: create(:weekly_internship_application, :approved, student: student),
         # rejected: create(:weekly_internship_application, :rejected, student: student)
+        # @Maxime : ici je viens de constater qu'on ne peut pas retirer les commentaires :/
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
