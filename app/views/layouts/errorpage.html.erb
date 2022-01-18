@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr" >
+  <head>
+    <title>Erreur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= action_cable_meta_tag %>
+    <%= favicon_link_tag asset_pack_path('media/images/favicon.png') %>
+    <%= stylesheet_pack_tag 'application.css', 'data-turbolinks-track': 'reload', media: 'all' %>
+    <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
+  </head>
+
+  <body class='error-page'>
+    <div class="content d-flex justify-content-center align-items-center">
+      <%= yield %>
+    </div>
+  </body>
+</html>

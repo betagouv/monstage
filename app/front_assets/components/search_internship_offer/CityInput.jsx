@@ -17,7 +17,7 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
   const [cityOrZipcode, setCity] = useState(searchParams.get('city') || defaultCity || "");
   const [latitude, setLatitude] = useState(searchParams.get('latitude') || defaultLatitude || "");
   const [longitude, setLongitude] = useState(searchParams.get('longitude') || defaultLongitude || "");
-  const [radius, setRadius] = useState(searchParams.get('radius') || defaultRadius || 60000);
+  const [radius, setRadius] = useState(searchParams.get('radius') || defaultRadius || 10_000);
   const [searchResults, setSearchResults] = useState([]);
   const [cityDebounced] = useDebounce(cityOrZipcode, 100);
   const [focus, setFocus] = useState(null);

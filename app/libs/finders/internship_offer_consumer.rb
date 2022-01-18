@@ -19,7 +19,7 @@ module Finders
     private
 
     def kept_offers_query
-      InternshipOffer.kept
+      InternshipOffer.kept.includes(:employer)
     end
 
     def god_query
