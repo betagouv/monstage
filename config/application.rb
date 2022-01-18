@@ -31,6 +31,8 @@ module Monstage
     config.active_record.schema_format = :sql
 
     config.middleware.use Rack::Deflater
+
+    config.exceptions_app = self.routes
   end
 end
 
