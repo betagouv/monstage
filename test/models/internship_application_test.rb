@@ -43,12 +43,12 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_application = create(:weekly_internship_application, :submitted, student: student)
 
     freeze_time do
-      bitly_stub do 
+      bitly_stub do
         assert_changes -> { internship_application.reload.approved_at },
                       from: nil,
                       to: Time.now.utc do
           mock_mail_to_student = MiniTest::Mock.new
-          mock_mail_to_student.expect(:deliver_later, true, [{wait: 1.second}])
+          mock_mail_to_student.expect(:deliver_later, true, [{ wait: 1.second }])
           StudentMailer.stub :internship_application_approved_email, mock_mail_to_student do
             internship_application.save
             internship_application.approve!
@@ -60,7 +60,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   end
 
   test 'transition from submited to approved send approved email to main_teacher' do
-    bitly_stub do 
+    bitly_stub do
       internship_application = create(:weekly_internship_application, :submitted)
       student = internship_application.student
       create(:school_manager, school: student.school)
