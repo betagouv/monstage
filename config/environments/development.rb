@@ -85,6 +85,7 @@ Rails.application.configure do
     Bullet.enable = true
     Bullet.alert = false
     Bullet.bullet_logger = true
+    Bullet.sentry = true
     Bullet.console = true
     Bullet.rails_logger = true
   end
