@@ -206,16 +206,14 @@ module InternshipOffers
       end
     end
 
-    test 'GET #show as Student with existing submitted, approved, rejected application shows _state component' do
+    test 'GET #show as Student with existing submitted, rejected application shows _state component' do
       school = create(:school, weeks: weeks)
       student = create(:student,
                        class_room: create(:class_room, :troisieme_generale, school: school),
                        school: school)
       internship_applications = {
         submitted: create(:weekly_internship_application, :submitted, student: student),
-        # approved: create(:weekly_internship_application, :approved, student: student),
-        # rejected: create(:weekly_internship_application, :rejected, student: student)
-        # @Maxime : ici je viens de constater qu'on ne peut pas retirer les commentaires :/
+        rejected: create(:weekly_internship_application, :rejected, student: student)
       }
       sign_in(student)
       internship_applications.each do |aasm_state, internship_application|
@@ -224,6 +222,26 @@ module InternshipOffers
         assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
       end
     end
+
+    # @Maxime: J'ai commenté ce test car je pense qu'on ne montre pas le form à quelqu'un dont
+    # la candidature a déjà été acceptée. Autrement le fonctionnel et donc
+    # le test qui existait avant était très douteux
+
+    # test 'GET #show as Student with existing approved application shows _state component' do
+    #   school = create(:school, weeks: weeks)
+    #   student = create(:student,
+    #                    class_room: create(:class_room, :troisieme_generale, school: school),
+    #                    school: school)
+    #   internship_applications = {
+    #     approved: create(:weekly_internship_application, :approved, student: student)
+    #   }
+    #   sign_in(student)
+    #   internship_applications.each do |aasm_state, internship_application|
+    #     get internship_offer_path(internship_application.internship_offer)
+    #     assert_response :success
+    #     assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
+    #   end
+    # end
 
     test 'GET #show as Student displays weeks that matches school weeks' do
       week_not_matching = Week.find_by(number: 11, year: 2019)
