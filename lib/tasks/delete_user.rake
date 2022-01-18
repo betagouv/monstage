@@ -44,7 +44,6 @@ task :delete_idle_employers, [:school_year] => [:environment] do |t, args|
   if trigerring_date.is_a?(Date) && (trigerring_date < Date.today - 1.year)
     reconnected_employers_ids = Users::Employer.kept
                     .where.not(confirmed_at: nil)
-                    .where('last_sign_in_at >= ?', trigerring_date)
                     .where('current_sign_in_at >= ?', trigerring_date)
                     .ids
     puts "reconnected_employers_ids #{reconnected_employers_ids.count}"
