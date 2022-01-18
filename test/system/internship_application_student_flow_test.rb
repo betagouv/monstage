@@ -58,14 +58,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     week_label = Week.selectable_from_now_until_end_of_school_year
                      .first
                      .human_select_text_method
+
     select(week_label)
     # check for phone fields disabled
     page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
     # check for email fields
     page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
-    byebug #@Maxime : ... ca marche pas
-    # assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
+    assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
     page.find("input[type='submit'][value='Envoyer']").click
     page.find('h1', text: 'Mes candidatures')
     assert page.has_content?(internship_offer.title)

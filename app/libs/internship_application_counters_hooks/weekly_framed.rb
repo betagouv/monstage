@@ -27,7 +27,7 @@ module InternshipApplicationCountersHooks
 
       internship_offer_week.update(
         blocked_applications_count: week.internship_applications
-                                        .where(aasm_state: :approved) #@Maxime [:approved, :signed] serait plus logique à mes yeux
+                                        .where(aasm_state: :approved) 
                                         .count
       ) if internship_offer_week
     end

@@ -29,10 +29,7 @@ module InternshipApplications
     end
 
     def internship_offer_week_has_spots_left?
-      # p 'week spot left'
-      # p week
       return if internship_offer.internship_offer_weeks.where(week_id: week.id).first.try(:has_spots_left?)
-      # byebug
       errors.add(:week, :has_no_spots_left)
     end
 
