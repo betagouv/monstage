@@ -68,37 +68,5 @@ module InternshipApplications
                                        week: internship_offer.internship_offer_weeks.first.week)
       refute internship_application_2.valid?
     end
-
-    test 'transition via signed! cancel internship_application.student other applications on same week' do
-      # weeks = [weeks(:week_2019_1), weeks(:week_2019_2)]
-      # student = create(:student)
-      # student_2 = create(:student)
-      # internship_offer_1 = create(:weekly_internship_offer, weeks: weeks)
-      # byebug
-      # internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
-      # internship_application_to_be_canceled_by_employer = create(
-      #   :weekly_internship_application, :approved,
-      #   week: internship_offer_1.internship_offer_weeks.first.week,
-      #   student: student
-      # )
-      # internship_application_to_be_signed = create(:weekly_internship_application, :approved,
-      #                                              internship_offer: internship_offer_2,
-      #                                              week: internship_offer_2.internship_offer_weeks.first.week,
-      #                                              student: student)
-      # internship_application_ignored_by_week = create(:weekly_internship_application, :approved,
-      #                                                 internship_offer: internship_offer_1,
-      #                                                 week: internship_offer_1.internship_offer_weeks.last.week,
-      #                                                 student: student_2)
-      # internship_application_ignored_by_student = create(:weekly_internship_application, :approved,
-      #                                                    internship_offer: internship_offer_1,
-      #                                                    week: internship_offer_1.internship_offer_weeks.first.week)
-      # assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
-      #                from: 'approved',
-      #                to: 'expired' do
-      #   internship_application_to_be_signed.signed!
-      # end
-      # assert internship_application_ignored_by_week.reload.approved?
-      # assert internship_application_ignored_by_student.reload.approved?
-    end
   end
 end

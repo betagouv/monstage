@@ -8,15 +8,6 @@ module FindableWeek
       joins(:weeks).where(weeks: { id: weeks.ids })
     }
 
-    # p 'called également par api ? by weeks'
-    # p 'self.class'
-    # p self.class
-    # p 'before joins'
-    # # byebug
-    # p 'weeks'
-    # p weeks
-    # joins(:weeks).where(weeks: weeks)
-
     scope :older_than, lambda { |week:|
       joins(:weeks).where('weeks.year < :year OR (weeks.year = :year AND weeks.number >= :number)',
                           year: week.year, number: week.number)

@@ -123,14 +123,10 @@ module Finders
     protected
 
     def weekly_framed_scopes(scope, args = nil)
-      # byebug
-      p scope
-      # p args
       if args.nil?
         InternshipOffers::WeeklyFramed.send(scope)
           .or(InternshipOffers::Api.send(scope))
       else
-        # byebug if scope == :by_weeks
         InternshipOffers::WeeklyFramed.send(scope, args)
         .or(InternshipOffers::Api.send(scope, args))
       end

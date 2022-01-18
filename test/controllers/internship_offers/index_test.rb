@@ -163,18 +163,7 @@ class IndexTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET #index as student ignores internship_offers having ' \
-       'as much internship_application as max_candidates number' do
-    # internship_application = create(:internship_application, 
-    #                                 internship_offer: internship_offer,
-    #                                 week: week)   
-    #                                   week: week)
-    #                                 week: week)   
-
-    # internship_offer = create(:weekly_internship_offer,
-    #                           max_candidates: max_candidates,
-    #                           weeks: [week])
-
-        
+       'as much internship_application as max_candidates number' do    
     
     max_candidates = 1
     week = Week.first
@@ -192,13 +181,9 @@ class IndexTest < ActionDispatch::IntegrationTest
                                     week: week)
 
 
-    # byebug                          
     sign_in(student)
-    p 'before'
     InternshipOffer.stub :nearby, InternshipOffer.all do
-      p 'nearby'
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        p 'stub'
         get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer)
       end

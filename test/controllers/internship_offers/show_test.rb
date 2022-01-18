@@ -146,31 +146,13 @@ module InternshipOffers
                                         max_candidates: max_candidates,
                                         max_students_per_group: 1,
                                         weeks: internship_weeks)
-      # blocked_internship_week = build(:internship_offer_week,
-      #                                 blocked_applications_count: max_candidates,
-      #                                 internship_offer: blocked_internship_offer,
-      #                                 week: internship_weeks[0])
+      
       internship_application = create(:internship_application,
         internship_offer: blocked_internship_offer,
         week: internship_weeks[0],
         aasm_state: 'approved'
       )
-      # internship_application_2 = create(:internship_application,
-      #   internship_offer: blocked_internship_offer,
-      #   week: internship_weeks[0],
-      #   aasm_state: 'approved'
-      # )
-
-      # byebug
-
-      # available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-      #                                                           week: internship_weeks[1])
-
-      # internship_offer = create(:weekly_internship_offer,
-      #   max_candidates: max_candidates,
-      #   max_students_per_group: 1,
-      #   weeks: internship_weeks
-      # )
+      
       travel_to(internship_weeks[0].week_date - 1.week) do
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
         get internship_offer_path(blocked_internship_offer)
@@ -199,8 +181,6 @@ module InternshipOffers
         sign_in(student)
         get internship_offer_path(internship_offer)
         assert_response :success
-        p 'internship_offer.internship_offer_weeks.last.week.id'
-        p internship_offer.internship_offer_weeks.last.week.id
         assert_select "option[value=#{internship_offer.internship_offer_weeks.first.week.id}]"
         assert_select "option[value=#{internship_offer.internship_offer_weeks.last.week.id}][selected]"
       end
@@ -222,26 +202,6 @@ module InternshipOffers
         assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
       end
     end
-
-    # @Maxime: J'ai commenté ce test car je pense qu'on ne montre pas le form à quelqu'un dont
-    # la candidature a déjà été acceptée. Autrement le fonctionnel et donc
-    # le test qui existait avant était très douteux
-
-    # test 'GET #show as Student with existing approved application shows _state component' do
-    #   school = create(:school, weeks: weeks)
-    #   student = create(:student,
-    #                    class_room: create(:class_room, :troisieme_generale, school: school),
-    #                    school: school)
-    #   internship_applications = {
-    #     approved: create(:weekly_internship_application, :approved, student: student)
-    #   }
-    #   sign_in(student)
-    #   internship_applications.each do |aasm_state, internship_application|
-    #     get internship_offer_path(internship_application.internship_offer)
-    #     assert_response :success
-    #     assert_template "dashboard/students/internship_applications/states/_#{aasm_state}"
-    #   end
-    # end
 
     test 'GET #show as Student displays weeks that matches school weeks' do
       week_not_matching = Week.find_by(number: 11, year: 2019)

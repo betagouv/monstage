@@ -43,9 +43,6 @@ module InternshipApplications
           .count
           .positive?
       
-          # internship_offer.internship_applications.where(week_id: week.id).where(user_id: user_id).first.internship_offer.id
-
-        # byebug
         errors.add(:user_id, :duplicate)
       end
     end

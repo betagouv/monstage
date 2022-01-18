@@ -10,46 +10,6 @@ module InternshipApplicationCountersHooks
                                                                       internship_offer: @internship_offer)
     end
 
-    #
-    # tracks internship_offer_weeks counters
-    #
-    # SIGNED !
-    # test '.update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count' do
-    #   @internship_application.aasm_state = :approved
-    #   @internship_application.save!
-    #   assert_equal 1, @internship_offer.internship_offer_weeks
-    #                                    .reload
-    #                                    .first
-    #                                    .blocked_applications_count
-    #   # @Maxime : On comprend donc ci-dessous que la signature d'une candidature libère la semaine 
-    #   # réservée jusque là dans internship_offer_week. C'est étrange mais
-    #   # c'est le sens de expire_application_on_week. Moi, ça me gêne
-    #   assert_changes -> { @internship_offer.internship_offer_weeks.reload.first.blocked_applications_count },
-    #                  from: 1,
-    #                  to: 0 do
-    #     @internship_application.signed!
-    #   end
-    # end
-
-    #
-    # track internship_offer counters
-    #
-    # SIGNED !
-    # test '.update_internship_offer_counters tracks internship_offer.blocked_weeks_count' do
-    #   @internship_application.aasm_state = :approved
-    #   @internship_application.save!
-
-    #   assert_equal 1, @internship_offer.reload.blocked_weeks_count
-    #   # @Maxime : On comprend donc ci-dessous que la signature d'une candidature
-    #   #  libère une place réservée jusque là. C'est étrange mais
-    #   # c'est le sens de expire_application_on_week. Moi, ça me gêne
-    #   assert_changes -> { @internship_offer.reload.blocked_weeks_count },
-    #                  from: 1,
-    #                  to: 0 do
-    #     @internship_application.signed!
-    #   end
-    # end
-
     test '.update_internship_offer_counters tracks internship_offer.total_applications_count' do
       @internship_application.aasm_state = :submitted
       assert_changes -> { @internship_offer.total_applications_count },

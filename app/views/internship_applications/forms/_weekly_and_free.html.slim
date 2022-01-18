@@ -41,9 +41,6 @@ div data-internship-application-form-target="containerForm" class="#{@internship
             legend.h3 Ma Candidature
             - if @internship_offer.weekly?
               .form-group
-                = current_user.school.has_weeks_on_current_year?
-                = current_user.school.has_weeks_on_current_year?
-                = current_user.school.has_weeks_on_current_year?
                 = f.label :week_id, class: 'required' do
                   | Quelle semaine ?
                   = f.rg2a_required_content_tag
@@ -51,7 +48,6 @@ div data-internship-application-form-target="containerForm" class="#{@internship
                   = render partial: "internship_applications/forms/student_missing_school_weeks"
                 = f.select :week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
                   { prompt: '-- Choisir une semaine --'}, class: "form-control col-6", required: true
-
 
             div class="form-group"
               .label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
