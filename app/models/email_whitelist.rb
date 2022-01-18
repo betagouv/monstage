@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require "sti_preload"
+ 
 class EmailWhitelist < ApplicationRecord
+  include StiPreload
   validates :email,
             format: { with: Devise.email_regexp },
             on: :create
