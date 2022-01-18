@@ -17,5 +17,8 @@
 - else
   .row
     .col-12
-      = render partial: "dashboard/students/internship_applications/student_internship_application", collection: @internship_applications
-      = link_to "Rechercher un autre stage", user_presenter.default_internship_offers_path, class: 'btn btn-primary my-1 px-5'
+      = render partial: "dashboard/students/internship_applications/student_internship_application",
+               collection: @internship_applications
+      = link_to "Rechercher un autre stage",
+                user_presenter.default_internship_offers_path,
+                class: 'btn btn-primary my-1 px-5'

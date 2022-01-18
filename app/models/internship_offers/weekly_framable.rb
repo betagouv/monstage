@@ -47,9 +47,6 @@ module InternshipOffers
           .group(offers_ar[:id])
       }
 
-
-
-      # fdsf
       scope :without_max_candidates_reached, lambda {
         offer_weeks_ar = InternshipOfferWeek.arel_table
         offers_ar      = InternshipOffer.arel_table
