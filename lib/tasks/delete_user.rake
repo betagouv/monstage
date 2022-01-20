@@ -44,19 +44,18 @@ task :delete_idle_employers, [:school_year] => [:environment] do |t, args|
   if trigerring_date.is_a?(Date) && (trigerring_date < Date.today - 1.year)
     reconnected_employers_ids = Users::Employer.kept
                     .where.not(confirmed_at: nil)
-                    .where('last_sign_in_at >= ?', trigerring_date)
                     .where('current_sign_in_at >= ?', trigerring_date)
                     .ids
     puts "reconnected_employers_ids #{reconnected_employers_ids.count}"
     identified_exceptions_ids = Users::Operator.ids
     puts "identified_exceptions_ids #{identified_exceptions_ids.count}"
     in_white_list = reconnected_employers_ids + identified_exceptions_ids
-    employers = Users::Employer.where.not(id: in_white_list)
+    employers = Users::Employer.kept.where.not(id: in_white_list)
     puts "Ready to anonymize #{employers.count}"
     employers.each do |employer|
-      sleep 0.3
       puts "##{employer.id} | "
-      employer.anonymize(send_email: false)
+      sleep 0.3
+      RemoveIdleEmployersJob.new.perform(employer_id: employer.id)
     end
     if employers.size.zero?
       puts "nothing to do"

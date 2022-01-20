@@ -6,12 +6,11 @@
   "repository": "https://github.com/betagouv/monstage",
 
   "stack": "heroku-20",
-
-  "buildpacks": [
-    {
+  "buildpacks": [{
+      "url": "heroku/nodejs"
+    }, {
       "url": "heroku/ruby"
-    }
-  ],
+  }],
 
   "environments": {
 
@@ -33,7 +32,9 @@
         "RAILS_ENV": "review",
         "RAKE_ENV": "review",
         "RAILS_MAX_THREADS": 6,
-        "WEB_CONCURRENCY": 1
+        "WEB_CONCURRENCY": 1,
+        "CONVENTION_ENABLED": true,
+        "YARN_PRODUCTION": false
       },
       "addons": [
         {
@@ -42,9 +43,13 @@
             "version": "12"
           }
         },
-        { "plan": "papertrail:choklad" },
-        { "plan": "scheduler:standard" },
-        { "plan": "mailtrap:unpaid" }
+        {
+          "plan": "papertrail:choklad"
+        }, {
+          "plan": "scheduler:standard"
+        }, {
+          "plan": "mailtrap:unpaid"
+        }
       ]
     }
   }
