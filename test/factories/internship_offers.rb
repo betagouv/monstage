@@ -79,6 +79,10 @@ FactoryBot.define do
       discarded_at { Time.now }
     end
 
+    trait :unpublished do
+      after(:create) { |offer| offer.update(published_at: nil) }
+    end
+
     trait :with_private_employer_group do
       is_public { false }
       group { create(:group, is_public: false) }

@@ -76,6 +76,8 @@ def with_class_name_for_defaults(object)
   object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
+  object.current_sign_in_at = 2.days.ago
+  object.last_sign_in_at = 12.days.ago
   object
 end
 
@@ -552,6 +554,7 @@ def populate_applications
     aasm_state: :canceled_by_student,
     submitted_at: 10.days.ago,
     approved_at: 2.days.ago,
+    canceled_at: 1.day.ago,
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
@@ -562,6 +565,7 @@ def populate_applications
     aasm_state: :canceled_by_employer,
     submitted_at: 10.days.ago,
     approved_at: 3.days.ago,
+    canceled_at: 1.day.ago,
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
@@ -572,6 +576,7 @@ def populate_applications
     aasm_state: :rejected,
     submitted_at: 8.days.ago,
     approved_at: 3.days.ago,
+    rejected_at: 2.days.ago,
     student: trois_gene_studs.third,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "sti_preload"
 class InternshipOffer < ApplicationRecord
+  include StiPreload
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200

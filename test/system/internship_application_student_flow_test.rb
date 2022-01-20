@@ -158,6 +158,46 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     end
   end
 
+  test 'student with approved application can see employer\'s address' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(
+                       :class_room,
+                       :troisieme_generale,
+                       school: school
+                     )
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :approved,
+      student: student
+    )
+    sign_in(student)
+    visit '/'
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
+    assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+  end
+
+  test 'student with submittted application can not see employer\'s address' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(:class_room, :troisieme_generale, school: school)
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      student: student
+    )
+    sign_in(student)
+    # visit '/'
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
+    refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+  end
+
   test 'student in troisieme_generale can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: weeks)

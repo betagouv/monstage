@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 # application from student to internship_offer ; linked with weeks
+require 'sti_preload'
 class InternshipApplication < ApplicationRecord
+  include StiPreload
   include AASM
   PAGE_SIZE = 10
 
@@ -10,7 +12,6 @@ class InternshipApplication < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
   has_one :internship_agreement
-
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
