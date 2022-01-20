@@ -93,10 +93,10 @@ module Finders
     def nearby_query(query)
       query.merge(
         query.nearby(latitude: coordinate_params.latitude,
-                   longitude: coordinate_params.longitude,
-                   radius: radius_params)
-           .with_distance_from(latitude: coordinate_params.latitude,
-                               longitude: coordinate_params.longitude)
+                     longitude: coordinate_params.longitude,
+                     radius: radius_params)
+             .with_distance_from(latitude: coordinate_params.latitude,
+                                 longitude: coordinate_params.longitude)
       )
     end
 

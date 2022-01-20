@@ -7,6 +7,16 @@ class ReportingKpiTest < ActiveSupport::TestCase
     last_monday = last_week.week_date
     last_sunday = last_monday + 6.days
     school_manager = create(:school_manager, school: create(:school))
+
+    # internship_offer_unpublished should not be taken into account
+    create(
+      :weekly_internship_offer,
+      :with_private_employer_group,
+      :unpublished,
+      max_candidates: 3,
+      weeks: Week.selectable_from_now_until_end_of_school_year.first(3).to_a
+    )
+
     internship_offer = create(
       :weekly_internship_offer, #public by default
       max_candidates: 2,
@@ -18,6 +28,7 @@ class ReportingKpiTest < ActiveSupport::TestCase
       max_candidates: 3,
       weeks: Week.selectable_from_now_until_end_of_school_year.first(3).to_a
     )
+
     expected = {
       subscriptions: {},
       applications_count: 0,
