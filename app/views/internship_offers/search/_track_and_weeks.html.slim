@@ -26,8 +26,9 @@
                          class="rounded-6 bg-white #{render_as_partial ? 'd-none' : ''}"
                          data-search-popover-target="popover"]
 
-      #year_select.d-none [aria-label="Mois de l'année scolaire : #{list_months_range}"
-                           role="tabpanel" data-search-form-target="tabPane"]
+      #year_select.d-none [aria-label="Mois de l'année scolaire : #{years_from_list_months_search}"
+                           role="tabpanel"
+                           data-search-form-target="tabPane"]
         div role="tablist"
           - list_months_for_search.each_slice(2) do |(month_i_left, _), (month_i_right, _)|
             .row.mb-3

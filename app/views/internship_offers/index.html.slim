@@ -8,17 +8,25 @@
       .row
         .col-12
           .pt-3
-            = render partial: "internship_offers/search/form", locals: { render_as_partial: true, url: internship_offers_path, default_values: params, form_id: :desktop_internship_offers_index_search_form }
+            = render partial: "internship_offers/search/form",
+                              locals: { render_as_partial: true,
+                                        url: internship_offers_path,
+                                        default_values: params,
+                                        form_id: :desktop_internship_offers_index_search_form }
 
 .actions.d-flex.d-stick.d-md-none.p-2
-  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])), class: 'btn btn-danger rounded-sm', data: { :"test-id" => 'mobile-search-button' }
+  = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])),
+            class: 'btn btn-danger rounded-sm',
+            data: { :"test-id" => 'mobile-search-button' }
     = search_button_label
 
 
 .row
-  .col-12= render "internship_offers/title", internship_offers: @internship_offers
+  .col-12 = render "internship_offers/title",
+                   internship_offers: @internship_offers
 
-= render partial: "internship_offer", collection: @internship_offers
+= render partial: "internship_offer",
+                  collection: @internship_offers
 
 .row.d-flex
   - if !@internship_offers.blank?

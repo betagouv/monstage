@@ -27,6 +27,7 @@ class InternshipApplicationCountersHook
   def total_male_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .reject(&:drafted?)
                     .select(&:student_is_male?)
                     .count
@@ -35,6 +36,7 @@ class InternshipApplicationCountersHook
   def total_female_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .reject(&:drafted?)
                     .select(&:student_is_female?)
                     .count
@@ -49,6 +51,7 @@ class InternshipApplicationCountersHook
   def total_male_approved_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:approved?)
                     .select(&:student_is_male?)
                     .count
@@ -57,6 +60,7 @@ class InternshipApplicationCountersHook
   def total_female_approved_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:approved?)
                     .select(&:student_is_female?)
                     .count
@@ -65,6 +69,7 @@ class InternshipApplicationCountersHook
   def total_custom_track_approved_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:approved?)
                     .select(&:student_is_custom_track?)
                     .count
@@ -91,6 +96,7 @@ class InternshipApplicationCountersHook
   def total_male_convention_signed_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:convention_signed?)
                     .select(&:student_is_male?)
                     .count
@@ -99,6 +105,7 @@ class InternshipApplicationCountersHook
   def total_female_convention_signed_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:convention_signed?)
                     .select(&:student_is_female?)
                     .count
@@ -107,6 +114,7 @@ class InternshipApplicationCountersHook
   def total_custom_track_convention_signed_applications_count
     internship_offer.internship_applications
                     .joins(:student)
+                    .includes(:student)
                     .select(&:convention_signed?)
                     .select(&:student_is_custom_track?)
                     .size
