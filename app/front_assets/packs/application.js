@@ -15,6 +15,9 @@ import 'raf/polyfill';
 import 'core-js/es/map';
 import 'core-js/es/set';
 
+import '@gouvfr/dsfr/dist/dsfr/dsfr.css';
+import '@gouvfr/dsfr/dist/dsfr/dsfr.module.js';
+
 import '../stylesheets/screen.scss';
 import '../stylesheets/print.scss';
 
