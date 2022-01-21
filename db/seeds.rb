@@ -76,6 +76,8 @@ def with_class_name_for_defaults(object)
   object.last_name ||= object.class.name
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
+  object.current_sign_in_at = 2.days.ago
+  object.last_sign_in_at = 12.days.ago
   object
 end
 

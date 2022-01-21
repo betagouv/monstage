@@ -49,15 +49,15 @@ module Reporting
                           .group(:type)
                           .inject({}) { |hash, rec| hash[translator.human_types_and_roles(rec.type.to_sym)]= rec.count; hash}
       Users::SchoolManagement.select('role, count(role)')
-                              .where('created_at >= ? ', last_monday)
-                              .where('created_at <= ?', last_sunday)
-                              .group(:role)
-                              .inject(subscriptions) do |hash, rec|
-                                hash[translator.human_types_and_roles(rec.role.to_sym)]= rec.count; hash
-                              end
+                             .where('created_at >= ? ', last_monday)
+                             .where('created_at <= ?', last_sunday)
+                             .group(:role)
+                             .inject(subscriptions) do |hash, rec|
+                               hash[translator.human_types_and_roles(rec.role.to_sym)]= rec.count; hash
+                             end
     end
 
-    def recent_applications(last_monday: , last_sunday:)
+    def recent_applications(last_monday:, last_sunday:)
       applications = InternshipApplication.where('created_at >= ? ', last_monday)
                                           .where('created_at <= ?', last_sunday)
 
@@ -68,8 +68,8 @@ module Reporting
     end
 
     def internship_offers_count
-      offers = ::InternshipOffer.kept.in_the_future
-      public_offers = ::InternshipOffer.kept.in_the_future.where(is_public: true)
+      offers = ::InternshipOffer.kept.in_the_future.published
+      public_offers = offers.where(is_public: true)
       {
         offers_count: offers.count,
         public_offers_count: public_offers.count,

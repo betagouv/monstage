@@ -16,8 +16,17 @@ ul.nav.align-items-center.no-gutters.my-3.nav-link-icons-timeline
       br
       small= "Candidature envoyée"
   li.col-4.nav-item
-    = link_to "#tab-convention-detail", data: {action: "click->dashboard-students-internship-application#enableConventionDetail", turbolinks: "false", :"dashboard-students-internship-application-target" => 'linkConventionDetail'}, class: "nav-link nav-link-icon-with-label #{timeline_step_3_ready?(internship_application) ? 'nav-link-icon-with-label-success' : ''}" do
-      span.d-inline-flex.align-items-center.nav-link-icon
-        i.far.fa-2x.fa-flag
-      br
-      small= "Candidature acceptée"
+    - if timeline_step_3_ready?(internship_application)
+      = link_to "#tab-convention-detail",
+                data: {action: "click->dashboard-students-internship-application#enableConventionDetail", turbolinks: "false", :"dashboard-students-internship-application-target" => 'linkConventionDetail'},
+                class: "nav-link nav-link-icon-with-label nav-link-icon-with-label-success" do
+        span.d-inline-flex.align-items-center.nav-link-icon
+          i.far.fa-2x.fa-flag
+        br
+        small= "Candidature acceptée"
+    - else
+        .nav-link.nav-link-icon-with-label
+          span.d-inline-flex.align-items-center.nav-link-icon
+            i.far.fa-2x.fa-flag
+          br
+          small= "Candidature acceptée"
