@@ -192,7 +192,7 @@ module Dashboard
                                   id: 'internship_agreement_student_full_name')
         field_edit_is_allowed?(label: 'Classe :',
                                   id: 'internship_agreement_student_class_room')
-        # byebug
+        
         field_edit_is_not_allowed?(label: 'Établissement d’origine',
                                   id: 'internship_agreement_student_school')
         field_edit_is_not_allowed?(label: "Nom et qualité du responsable de l’accueil en milieu professionnel du tuteur",

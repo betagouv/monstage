@@ -20,7 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 -- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-
 --
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -591,7 +590,8 @@ CREATE TABLE public.internship_applications (
     type character varying DEFAULT 'InternshipApplications::WeeklyFramed'::character varying,
     internship_offer_id bigint NOT NULL,
     applicable_type character varying,
-    internship_offer_type character varying NOT NULL
+    internship_offer_type character varying NOT NULL,
+    week_id bigint
 );
 
 
@@ -822,10 +822,10 @@ CREATE TABLE public.internship_offers (
     siret character varying,
     daily_lunch_break jsonb DEFAULT '{}'::jsonb,
     weekly_lunch_break text,
-    max_students_per_group integer DEFAULT 1 NOT NULL,
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
-    total_female_approved_applications_count integer DEFAULT 0
+    total_female_approved_applications_count integer DEFAULT 0,
+    max_students_per_group integer DEFAULT 1 NOT NULL
 );
 
 
@@ -1657,6 +1657,13 @@ CREATE INDEX index_internship_applications_on_user_id ON public.internship_appli
 
 
 --
+-- Name: index_internship_applications_on_week_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internship_applications_on_week_id ON public.internship_applications USING btree (week_id);
+
+
+--
 -- Name: index_internship_offer_info_weeks_on_internship_offer_info_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1976,6 +1983,14 @@ CREATE TRIGGER sync_internship_offers_tsv BEFORE INSERT OR UPDATE ON public.inte
 --
 
 CREATE TRIGGER sync_schools_city_tsv BEFORE INSERT OR UPDATE ON public.schools FOR EACH ROW EXECUTE FUNCTION tsvector_update_trigger('city_tsv', 'public.fr', 'city', 'name');
+
+
+--
+-- Name: internship_applications fk_rails_064e6512b0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internship_applications
+    ADD CONSTRAINT fk_rails_064e6512b0 FOREIGN KEY (week_id) REFERENCES public.weeks(id);
 
 
 --
@@ -2402,6 +2417,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211020160439'),
 ('20211026200850'),
 ('20211027130402'),
-('20211110133150');
+('20211110133150'),
+('20211207163238');
 
 

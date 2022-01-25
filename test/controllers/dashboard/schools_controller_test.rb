@@ -24,18 +24,18 @@ module Dashboard
 
     test 'GET edit as School Manager works' do
       available_weeks = Week.selectable_on_school_year
-      school_weeks = Week.selectable_on_school_year[0..1]
+      school_weeks = Week.selectable_on_school_year[0..2]
       school = create(:school, weeks: school_weeks)
       sign_in(create(:school_manager, school: school))
-
       internship_offer = create(:weekly_internship_offer, weeks: school_weeks)
 
       class_room = create(:class_room, school: school)
       student = create(:student, school: school, class_room: class_room)
-
+      internship_offer.reload
       internship_application = create(:weekly_internship_application,
                                       student: student,
-                                      internship_offer_week: internship_offer.internship_offer_weeks.first)
+                                      internship_offer: internship_offer,
+                                      week: school_weeks.first)
 
 
       get edit_dashboard_school_path(school.to_param)
@@ -50,22 +50,13 @@ module Dashboard
                     {count: 0},
                     'rendering legend on select-weeks does not makes sense for school management')
       available_weeks.each do |week|
-        if week.id == internship_application.internship_offer_week.week.id
-          assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
-                        { count: 1 },
-                        "internship_application week should not be selectable")
-        assert_select("input#school_week_ids_#{week.id}_hidden",
-                        { count: 1 },
-                        "internship_application week should have an hidden field")
-        else
-          assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
-                        { count: 0 },
-                        "other week should not be not selectable")
+        assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
+                      { count: 0 },
+                      "other week should not be not selectable")
 
-          assert_select("input#school_week_ids_#{week.id}_checkbox",
-                        { count: 1 },
-                        "other week should be selectable")
-        end
+        assert_select("input#school_week_ids_#{week.id}_checkbox",
+                      { count: 1 },
+                      "other week should be selectable")  
       end
     end
     test 'GET class_rooms#index as SchoolManagement shows UX critical alert-info' do

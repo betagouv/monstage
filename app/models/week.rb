@@ -5,7 +5,8 @@ class Week < ApplicationRecord
   include FormatableWeek
   has_many :internship_offer_weeks, dependent: :destroy,
                                     foreign_key: :week_id
-  has_many :internship_applications, through: :internship_offer_weeks
+  has_many :internship_applications, dependent: :destroy,
+                                    foreign_key: :week_id
 
   has_many :internship_offers, through: :internship_offer_weeks
 
@@ -25,6 +26,10 @@ class Week < ApplicationRecord
 
   scope :by_year, lambda { |year:|
     where(year: year)
+  }
+
+  scope :from_now, lambda { 
+    where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year) 
   }
 
   scope :from_date_for_current_year, lambda { |from:|
@@ -68,6 +73,11 @@ class Week < ApplicationRecord
 
     where('number >= ?', first_week_of_september).where( year: school_year)
      .or(where('number <= ?', last_day_of_may_week).where( year: school_year + 1))
+  }
+
+  scope :available_for_student, lambda { |user:|
+    where(id: user.school.weeks)
+    # .where(id: internship_offer.weeks)
   }
 
   WEEK_DATE_FORMAT = '%d/%m/%Y'

@@ -84,13 +84,13 @@ module InternshipOffers
       assert_select('.test-missing-school-weeks',
                     { count: 1 },
                     'missing rendering of call_to_action/student_missing_school_weeks')
-      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine -- 
+      assert_select 'option', count: internship_offer.internship_offer_weeks.count + 1 # Option -- Choisir une semaine --
       assert_select '.btn-danger[disabled]',
                     { count: 0 },
                     'form should be submitable'
     end
 
-  
+
 
     test 'GET #show as Student who can apply shows an enabled button with candidate label' do
       weeks = [Week.find_by(number: 1, year: 2020)]
@@ -137,56 +137,62 @@ module InternshipOffers
     end
 
     test 'GET #show as Student only displays weeks that are not blocked' do
-      max_candidates = 2
+      max_candidates = 1
 
       internship_weeks = [Week.find_by(number: 1, year: 2020),
                           Week.find_by(number: 2, year: 2020)]
       school = create(:school, weeks: internship_weeks)
-      blocked_internship_week = build(:internship_offer_week, blocked_applications_count: max_candidates,
-                                                              week: internship_weeks[0])
-      available_internship_week = build(:internship_offer_week, blocked_applications_count: 0,
-                                                                week: internship_weeks[1])
-      internship_offer = create(:weekly_internship_offer, max_candidates: max_candidates,
-                                                          internship_offer_weeks: [blocked_internship_week,
-                                                                                   available_internship_week])
+      blocked_internship_offer = create(:weekly_internship_offer,
+                                        max_candidates: max_candidates,
+                                        max_students_per_group: 1,
+                                        weeks: internship_weeks)
+      
+      internship_application = create(:internship_application,
+        internship_offer: blocked_internship_offer,
+        week: internship_weeks[0],
+        aasm_state: 'approved'
+      )
+      
       travel_to(internship_weeks[0].week_date - 1.week) do
         sign_in(create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school)))
-        get internship_offer_path(internship_offer)
+        get internship_offer_path(blocked_internship_offer)
 
-        assert_select 'select option', text: blocked_internship_week.week.human_select_text_method, count: 0
-        assert_select 'select option', text: available_internship_week.week.human_select_text_method, count: 1
+        assert_select 'select option', text: internship_weeks[0].human_select_text_method, count: 0
+        assert_select 'select option', text: internship_weeks[1].human_select_text_method, count: 1
       end
     end
 
     test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-      internship_offer = create(:weekly_internship_offer, weeks: weeks)
-      school = create(:school, weeks: weeks)
-      student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-      internship_offer_week = create(:internship_offer_week, week: weeks.last, internship_offer: internship_offer)
+      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
+      school                = create(:school, weeks: weeks)
+      student               = create(:student,
+                                     school: school,
+                                     class_room: create(:class_room, :troisieme_generale, school: school)
+                                    )
       internship_application = create(:weekly_internship_application,
                                       :drafted,
                                       motivation: 'au taquet',
                                       student: student,
                                       internship_offer: internship_offer,
-                                      internship_offer_week: internship_offer_week)
+                                      week: weeks.last)
+
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(student)
         get internship_offer_path(internship_offer)
         assert_response :success
-        assert_select "option[value=#{internship_offer.internship_offer_weeks.first.id}]"
-        assert_select "option[value=#{internship_offer.internship_offer_weeks.last.id}][selected]"
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.first.week.id}]"
+        assert_select "option[value=#{internship_offer.internship_offer_weeks.last.week.id}][selected]"
       end
     end
 
-    test 'GET #show as Student with existing submitted, approved, rejected application shows _state component' do
+    test 'GET #show as Student with existing submitted, rejected application shows _state component' do
       school = create(:school, weeks: weeks)
       student = create(:student,
                        class_room: create(:class_room, :troisieme_generale, school: school),
                        school: school)
       internship_applications = {
         submitted: create(:weekly_internship_application, :submitted, student: student),
-        approved: create(:weekly_internship_application, :approved, student: student),
         rejected: create(:weekly_internship_application, :rejected, student: student)
       }
       sign_in(student)
@@ -235,8 +241,8 @@ module InternshipOffers
         get internship_offer_path(internship_offer)
 
         assert_response :success
-        assert_select 'select[name="internship_application[internship_offer_week_id]"] option',
-                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>`
+        assert_select 'select[name="internship_application[week_id]"] option',
+                      count: 1 # this is the default `<option value="">-- Choisir une semaine --</option>` + intern
       end
     end
 

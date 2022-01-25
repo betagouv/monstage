@@ -21,7 +21,7 @@ class AbilityTest < ActiveSupport::TestCase
     internship_application = create(:weekly_internship_application,
                                     student: student,
                                     internship_offer: internship_offer,
-                                    internship_offer_week: internship_offer.internship_offer_weeks.first)
+                                    week: internship_offer.internship_offer_weeks.first.week)
 
     assert(ability.can?(:look_for_offers, student), 'students should be able to look for offers')
     assert(ability.can?(:read, InternshipOffer.new),

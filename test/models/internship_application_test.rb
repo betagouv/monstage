@@ -206,13 +206,18 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     internship_offer_2 = create(:weekly_internship_offer, weeks: weeks)
     internship_application_to_be_canceled_by_employer = create(
       :weekly_internship_application, :approved,
-      internship_offer_week: internship_offer.internship_offer_weeks.first,
+      internship_offer: internship_offer,
+      week: internship_offer.internship_offer_weeks.first.week,
+      student: student
+    ) 
+    internship_application_to_be_signed = create(
+      :weekly_internship_application, :approved,
+      internship_offer: internship_offer_2,
+      week: internship_offer_2.internship_offer_weeks.first.week,
       student: student
     )
-    internship_application_to_be_signed = create(:weekly_internship_application, :approved,
-                                                 internship_offer: internship_offer_2,
-                                                 internship_offer_week: internship_offer_2.internship_offer_weeks.first,
-                                                 student: student)
+   
+    
     assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
                    from: 'approved',
                    to: 'expired' do

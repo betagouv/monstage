@@ -490,14 +490,25 @@ def populate_applications
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   puts "every 3e generale offers receives an application first 3e generale stud"
   troisieme_generale_offers.each do |io_trois_gene|
-    InternshipApplications::WeeklyFramed.create!(
-      aasm_state: :submitted,
-      submitted_at: 10.days.ago,
-      student: trois_gene_studs.first,
-      motivation: 'Au taquet',
-      internship_offer: io_trois_gene,
-      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
-    )
+    if io_trois_gene.id.to_i.even?
+      InternshipApplications::WeeklyFramed.create!(
+        aasm_state: :submitted,
+        submitted_at: 10.days.ago,
+        student: trois_gene_studs.first,
+        motivation: 'Au taquet',
+        internship_offer: io_trois_gene,
+        week: io_trois_gene.internship_offer_weeks.sample.week
+      )
+    else
+      InternshipApplications::WeeklyFramed.create!(
+        aasm_state: :drafted,
+        submitted_at: 10.days.ago,
+        student: trois_gene_studs.first,
+        motivation: 'Au taquet',
+        internship_offer: io_trois_gene,
+        week: io_trois_gene.internship_offer_weeks.sample.week
+      )
+    end
   end
 
   puts "second 3e generale offer receive an approval --> second 3e generale stud"
@@ -508,7 +519,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
+    week: troisieme_generale_offers.first.internship_offer_weeks.sample.week
   )
 
   puts  "third 3e generale stud cancels his application to first offer"
@@ -520,7 +531,7 @@ def populate_applications
     student: trois_gene_studs.third,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.second.internship_offer_weeks.sample
+    week: troisieme_generale_offers.second.internship_offer_weeks.sample.week
   )
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -531,7 +542,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    week: troisieme_generale_offers.last.internship_offer_weeks.sample.week
   )
   puts  "third 3e generale stud is rejected of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -542,7 +553,7 @@ def populate_applications
     student: trois_gene_studs.third,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
     internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    week: troisieme_generale_offers.last.internship_offer_weeks.sample.week
   )
 end
 
