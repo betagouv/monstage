@@ -13,6 +13,17 @@
 }
 .bg-cover-image-homepage {
   background-color: $blue;
+  border-radius: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Inter', sans-serif;
+}
+.to-regular {
+  font-family: 'Regular', sans-serif;
 }
 
 .wider-text {
@@ -64,7 +75,7 @@
 }
 
 .subtitle-hero {
-  font-weight: 700;
+  font-weight: 900;
   font-size: 1rem;
 }
 .btn-link {
