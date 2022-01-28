@@ -1,50 +1,37 @@
 script src="https://player.vimeo.com/api/player.js"
-.container-monstage data-controller='videos-carousel' data-videos-carousel-index-value='0'
-  .container
-    .row.mb-sm-5.my-4.no-gutters data-videos-carousel-target='slide'
-      .col-12.py-4.d-block.d-sm-none
-      .col-12.py-4.d-block.d-sm-none
-      .col-md-6.col-sm-12
-        .how-to-offers.text-center.videos
-          .big-blue-video-shadow.d-none.d-md-block
-          .home-video-frame.embed-responsive.embed-responsive-1by1.rounded-lg data-videos-carousel-target='player'
-            iframe.vimeo [ allow=("autoplay; fullscreen; picture-in-picture")
-                           allowfullscreen
-                             frameborder="0"
-                           title="Luca Biancheri, conducteur de travaux"
-                           src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1" ]
-      .col-md-6.col-sm-12.d-flex.align-items-center
-        .how-to-offers.text-center-left
-          .my-5.ml-lg-5.ml-md-5.ml-sm-0
-            .ml-lg-5.ml-md-4.ml-sm-3.ml-2
-              .h6.text-smaller Histoires de parcours
-              h3.h2.mb-2
-                |Luca Biancheri
-              h4.h5.text-muted.pb-2 CONDUCTEUR DE TRAVAUX
-              p.text-muted.mb-5.wider-text.px-2.px-sm-2.px-md-0.text-center-left
-                | Responsabilité, sens du détail et savoir-faire.... Luca nous raconte son passionnant métier dans le bâtiment.
-              - if can?(:welcome_students, current_user) || !user_signed_in?
-                p data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
-                          class: 'btn btn-danger rounded-sm px-4',
-                          data: { :"test-id" => 'mobile-search-button' }
-                  = "Trouver un stage"
+.container-monstage
+  .row.mb-sm-5.my-4
+    .col-12.py-4.d-block.d-sm-none
+    .col-12.py-4.d-block.d-sm-none
+.container-monstage
+  .row.mb-sm-5.my-4.align-items-center
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .how-to-offers.text-center-left
+        .fr-text--lg.text-blue-france HISTOIRES DE PARCOURS
+        h3.mb-2.text-blue-france
+          |Luca Biancheri
+        .fr-text--lg.pb-2 Conducteur de travaux
+        p.px-2.px-sm-2.px-md-0.text-center-left
+          | Lörem ipsum filodiktisk sogenat inte orade sara besade. Antin usk telesa, pont previs. Odat självoptimering. Befövis disade fastän nod. Spesk höhet ode.
+        p.px-2.px-sm-2.px-md-0.text-center-left
+          | Tipuck mäbussade nask. Utoskapet doderade i naliga i astrovipp har taskade. Sarisk sende sedan halogi.
+        - if can?(:welcome_students, current_user) || !user_signed_in?
+          link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
+                    class: '',
+                    data: { :"test-id" => 'mobile-search-button' }
+            .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-12v = "Trouver un stage"
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .d-md-none.space-for-player-iframe
+       | &nbsp;
+      .how-to-offers.text-center.videos
+        .big-blue-video-shadow.d-none.d-md-block
+        .home-video-frame.embed-responsive.embed-responsive-1by1 data-videos-carousel-target='player'
+          iframe.vimeo [ allow=("autoplay; fullscreen; picture-in-picture")
+                         allowfullscreen
+                         frameborder="0"
+                         title="Luca Biancheri, conducteur de travaux"
+                         src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1" ]
 
-    .slide-show-videos.d-none.d-md-block
-      .row.no-gutters.text-center
-        .col-md-6.col-sm-12.col-sm-11.circle-list
-            / button.navigation-pill.rounded-circle.mx-2.px-2  type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
-            / button.navigation-pill.rounded-circle.mx-2.px-2 type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
-            / button.navigation-pill.rounded-circle.mx-2.px-2  type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
-            / button.navigation-pill.rounded-circle.mx-2.px-2 type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
-            / button.navigation-pill.rounded-circle.mx-2.px-2  type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
-            / button.navigation-pill.rounded-circle.mx-2.px-2 type='button' title='navigation inter videos' data-videos-carousel-target='pill' data-action="videos-carousel#show"
-            /   = "&nbsp; ".html_safe
+  .row.py-4
 
 
-
-  p.py-4

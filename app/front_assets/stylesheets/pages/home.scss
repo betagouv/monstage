@@ -6,6 +6,10 @@
   overflow-x: hidden;
 }
 
+.light-grey-background {
+  background-color: $grey-975;
+}
+
 .container-monstage {
   max-width: 1200px;
   margin: auto;
@@ -13,6 +17,18 @@
 }
 .bg-cover-image-homepage {
   background-color: $blue;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Marianne',
+  'Arial',
+  sans-serif;
+}
+.to-regular {
+  font-family: 'Regular', sans-serif;
 }
 
 .wider-text {
@@ -25,6 +41,10 @@
 
 .shrinked-lines {
   line-height: 85%;
+}
+
+.space-for-player-iframe {
+  margin: 15rem 0;
 }
 
 .extended-lines {
@@ -64,7 +84,7 @@
 }
 
 .subtitle-hero {
-  font-weight: 700;
+  font-weight: 900;
   font-size: 1rem;
 }
 .btn-link {
@@ -82,7 +102,11 @@
 
 .search-form {
   position: relative;
-  top: -37px;
+  top: -42px;
+  }
+
+  .almost-fitting {
+    width: 90%
 }
 .fitting {
   object-fit: cover;
@@ -195,7 +219,7 @@
 }
 .home-video-frame {
   height: 450px;
-  border-radius: 1.25rem;
+  // border-radius: 1.25rem;
   width: 450px;
   position: absolute;
   margin: 10px;
@@ -206,7 +230,7 @@
 .big-blue-video-shadow {
   width: 450px;
   height:450px;
-  border-radius: 1.25rem;
+  // border-radius: 1.25rem;
   background-color: $blue_border;
 }
 
@@ -254,9 +278,12 @@ button.navigation-pill {
     .text-md-center-right {
       text-align: center;
     }
-    .h1-text-hero {
-      margin-right: -0rem;
-    }
+  .h1-text-hero {
+    margin-right: -0rem;
+  }
+  .text-center-left {
+    text-align: left;
+  }
 }
 
 @include media-breakpoint-up(sm) {
