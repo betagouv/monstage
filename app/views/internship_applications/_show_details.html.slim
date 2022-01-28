@@ -1,23 +1,22 @@
-.row.bg-dark-light
+.row.mt-3
   .col-12
-    h2.h5.my-2.gray-666 Ma motivation
+    h6.text-dark Motivation
     .reboot-trix-content= internship_application.motivation.to_s
 
-- unless is_resume_empty?(internship_application)
-  h2.h5.mt-4.gray-666 Mon CV
-  - if has_resume_educational_background?(internship_application)
-    h3.h5.gray-999.mb-1 Parcours scolaire
-    .reboot-trix-content= internship_application.student.resume_educational_background.to_s
+    - unless is_resume_empty?(internship_application)
+      - if has_resume_educational_background?(internship_application)
+        h6.text-dark.mt-4 Parcours scolaire
+        .reboot-trix-content= internship_application.student.resume_educational_background.to_s
 
-  - if has_resume_other?(internship_application)
-    h3.h5.gray-999.mb-1.mt-4 Activités extra-scolaires
-    .reboot-trix-content= internship_application.student.resume_other.to_s
+      - if has_resume_other?(internship_application)
+        h6.text-dark.mb-1.mt-4 Activités extra-scolaires
+        .reboot-trix-content= internship_application.student.resume_other.to_s
 
-  - if has_resume_languages?(internship_application)
-    h3.h5.gray-999.mb-1.mt-4 Langues
-    .reboot-trix-content= internship_application.student.resume_languages.to_s
+      - if has_resume_languages?(internship_application)
+        h6.text-dark.mb-1.mt-4 Langues vivantes
+        .reboot-trix-content= internship_application.student.resume_languages.to_s
 
-h3.h5.gray-999.mb-1.mt-2 Mon identité
+h6.mb-1.mt-2 Votre identité
 .row
   .col-12.mb-3
     = render partial: "users/resume_details", locals: {student: internship_application.student}

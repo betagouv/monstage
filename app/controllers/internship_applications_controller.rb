@@ -10,6 +10,14 @@ class InternshipApplicationsController < ApplicationController
     authorize! :index, InternshipApplication
   end
 
+  def new
+    @internship_application = InternshipApplication.new(
+      internship_offer_id: params[:internship_offer_id],
+      internship_offer_type: 'InternshipOffer',
+      student: current_user)
+    authorize! :apply, @internship_offer
+  end
+
   # alias for draft
   def show
     @internship_application = @internship_offer.internship_applications.find(params[:id])

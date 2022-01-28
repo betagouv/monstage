@@ -1,32 +1,23 @@
 - student_presenter = Presenters::Student.new(student)
-.row.mt-2
+.row.my-3.py-2
+  .col-md-6.col-xs-12
+    h6.text-dark Elève
+    .student-name= student_presenter.name
+  .col-md-6.col-xs-12
+    h6.text-dark Âge
+    .student-age= "#{student_presenter.age}"
+.row.my-3.py-2
+  .col-md-6.col-xs-12
+    h6.text-dark Email
+    .student-email= "#{student_presenter.email || 'Non communiqué'}"
+  .col-md-6.col-xs-12
+    h6.text-dark Téléphone
+    .student-phone= "#{student_presenter.phone || 'Non communiqué'}"
+.row.my-3.py-2
+  .col-md-6.col-xs-12
+    h6.text-dark Etablissement
+    .school-name= student_presenter.school_name
   .col-md-2.col-xs-12
-    | Elève
-  .col-md-10.col-xs-12.student-name
-    strong = student_presenter.name
-.row
-  .col-md-2.col-xs-12
-    | Âge
-  .col-md-10.col-xs-12.student-age
-    strong= "#{student_presenter.age}"
-.row
-  .col-md-2.col-xs-12
-    | Email
-  .col-md-10.col-xs-12.student-email
-    strong= "#{student_presenter.email || 'Non communiqué'}"
-.row
-  .col-md-2.col-xs-12
-    | Téléphone
-  .col-md-10.col-xs-12.student-phone
-    strong= "#{student_presenter.phone || 'Non communiqué'}"
-.row.mt-3
-  .col-md-2.col-xs-12
-    |Etablissement
-  .col-md-10.col-xs-12.school-name
-    strong = student_presenter.school_name
-.row
-  .col-md-2.col-xs-12
-    |Ville
-  .col-md-10.col-xs-12.school-city
-    strong = student_presenter.school_city
+    h6.text-dark Ville
+    .school-city= student_presenter.school_city
 

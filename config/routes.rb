@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
-    resources :internship_applications, only: %i[create index show update]
+    resources :internship_applications, only: %i[new create index show update]
   end
 
   namespace :api, path: 'api' do

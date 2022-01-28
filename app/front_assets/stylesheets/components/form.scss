@@ -203,3 +203,28 @@
     }
   }
 }
+
+trix-toolbar {
+  display: none;
+}
+
+trix-editor {
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  font-size: 1rem;
+}
+
+.fr-callout__text {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.fr-card__img {
+  .fr-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+  }
+}

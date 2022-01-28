@@ -1,0 +1,72 @@
+
+= render 'layouts/breadcrumb', links: [['/', 'Recherche de stage'], [internship_offer_path(@internship_offer), @internship_offer.title], ['', 'Je Postule']]
+
+.row.mt-3
+  .col-md-8
+    h6 Votre candidature
+
+    - if @internship_offer.weekly?
+      - applicable_weeks = current_user.school.has_weeks_on_current_year? ?  @internship_offer.internship_offer_weeks.applicable(user: current_user, internship_offer: @internship_offer) : @internship_offer.internship_offer_weeks
+    - is_creating = @internship_application.try(:new_record?)
+    
+    - unless false #current_user.school.has_weeks_on_current_year?
+      .fr-callout.my-3
+        p.fr-callout__text
+          | Votre chef d'établissement n'a pas encore renseigné les semaines de stage de votre établissement. Si vous avez connaissance de vos dates de stages, vous pouvez les renseigner ci dessous.
+      
+
+    = form_with({model: @internship_application,
+                 url: (is_creating ? internship_offer_internship_applications_path(@internship_offer) : internship_offer_internship_application_path(@internship_offer, @internship_application)),
+                 scope: :internship_application,
+                 html: {method: is_creating ? :post : :patch, id: 'new_internship_application'} }) do |f|
+      = render "layouts/form_errors",
+               resource: @internship_application,
+               resource_name: :internship_applications
+      - if @internship_offer.free_date? && current_user.student?
+        = f.hidden_field :user_id
+      = f.hidden_field :type
+      = f.hidden_field :internship_offer_id
+      = f.hidden_field :internship_offer_type
+      
+      fieldset.mb-4
+        
+        - if @internship_offer.weekly?
+          .fr-select-group
+            = f.label :internship_offer_week_id, class: 'required fr-label' do
+              | Quelle semaine ?
+              = f.rg2a_required_content_tag
+            - unless current_user.school.has_weeks_on_current_year?
+              = render partial: "internship_applications/forms/student_missing_school_weeks"
+            = f.select :internship_offer_week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.internship_offer_week_id),
+              { prompt: '-- Choisir une semaine --'}, class: "fr-select col-6", required: true
+        div class="form-group"
+          .label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
+            = "Pourquoi ce stage me motive"
+            small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
+          = f.rich_text_area :motivation, class: "fr-input col-12", required: true, rows: 5
+      
+        = f.fields_for :student do |resume_form|
+          = render partial: "users/resume_fields",
+                  locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
+        = f.fields_for :student do |identify_form|
+          = render partial: "internship_applications/forms/identity_fields",
+                  locals: { form: identify_form, phone_mail_disabled: true, disabled: true}
+        .actions.d-flex.justify-content-between.flex-row
+          .d-inline-flex= link_to "#internship-application-closeform", class: 'fr-btn fr-btn--secondary', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+            | Annuler
+          .d-inline-flex= f.submit "Valider", { class: 'fr-btn' }
+
+  
+  .col-md-3.offset-md-1
+    h6 Voici de quoi vous aider
+
+    .fr-card.mt-3
+      .fr-card__body
+        h4.fr-card__title
+          = link_to 'Comment rédiger un CV', '#', class: 'fr-card__link'
+        p.fr-card__desc.blue
+          | lorem ipsum
+        p.fr-card__detail
+          | Détail
+      .fr-card__img
+        = image_tag asset_pack_path("media/images/internship_offer_show/offer_default_img.jpg"), alt: '', class: 'fr-responsive-img'
