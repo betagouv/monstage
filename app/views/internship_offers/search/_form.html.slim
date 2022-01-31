@@ -1,25 +1,47 @@
-div.search-container data-controller='search-form search-popover search-school-track-select search-week-checkboxes'
-  = form_with url: url, method: :get, skip_enforcing_utf8: true, local: true, html: { class: "#{render_as_partial ? 'd-none d-md-block rounded-6' : ''}", id: form_id } do |form|
+div.search-container.py-2 data-controller='search-form search-popover search-school-track-select search-week-checkboxes'
+  = form_with url: url,
+              method: :get,
+              skip_enforcing_utf8: true,
+              local: true,
+              html: { class: "#{render_as_partial ? 'd-none d-md-block rounded-6' : ''}", id: form_id } do |form|
     / also used on dashboard_internship_offer, should support external filters
     - %i[direction filter order school_year].each do |dashboard_custom_filter|
       - if params.key?(dashboard_custom_filter)
-        = form.hidden_field dashboard_custom_filter, value: params[dashboard_custom_filter]
+        = form.hidden_field dashboard_custom_filter,
+                            value: params[dashboard_custom_filter]
 
-    .row.no-gutters
-      .form-group.mb-md-0.col-12.col-md
+    .row.no-gutters.align-items-end
+      .form-group.mb-md-0.col-12.col-md.px-2
         = react_component("KeywordInput", props: {keyword: default_values[:keyword]})
 
       .form-group.mb-md-0.col-12.col-md
-        = react_component("CityInput", props: { city: default_values[:city], latitude: default_values[:latitude], longitude: default_values[:longitude], radius: default_values[:radius] })
+        = react_component("CityInput",
+                          props: { city: default_values[:city],
+                                   latitude: default_values[:latitude],
+                                   longitude: default_values[:longitude],
+                                   radius: default_values[:radius] })
 
-      = render partial: "internship_offers/search/track_and_weeks", locals: {f: form, render_as_partial: render_as_partial, default_values: default_values}
+      = render partial: "internship_offers/search/track_and_weeks",
+               locals: {f: form,
+                        render_as_partial: render_as_partial,
+                        default_values: default_values}
 
       .pb-5
       - if render_as_partial
-        .col-auto-md.d-md-flex data-search-popover-target="searchSubmitContainer"
-          = form.submit 'Rechercher', class: 'btn btn-danger align-self-center mx-3', name: nil, id: 'test-desktop-submit-search'
+        .col-auto-md data-search-popover-target="searchSubmitContainer"
+          .mr-2
+            = form.button class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+                          name: nil,
+                          id: 'test-desktop-submit-search' do
+              span.mr-2 = 'Rechercher'
       - else render_as_partial
-        .actions.d-flex.d-stick.d-md-none.p-2= form.submit "Afficher les résultats", class: 'btn btn-danger rounded-sm', id: 'test-mobile-submit-search'
+        .actions.d-flex.d-stick.d-md-none.p-3
+          = form.button "Afficher les résultats",
+                        class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+                        id: 'test-mobile-submit-search' do
+            span.mr-2 = "Trouver un stage "
+    .row
+      .col.mb-2
 
   .mt-5.d-block.d-md-none
 

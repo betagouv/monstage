@@ -1,16 +1,19 @@
-.container-monstage.container-xl.homepage
+.container-monstage.homepage
+  = render 'pages/home/navbar_home'
+.mx-0.light-grey-background data-controller='modal-covid'
   = render 'pages/home/hero'
-  .row.no-gutters.py-4
   = render 'pages/home/everyone'
+.container-monstage.homepage
   .row.no-gutters.py-4
   .row.no-gutters.px-sm-0.px-2
     .col-12.text-center
-      h2.h3 monstagedetroisieme.fr vous permet de :
-.mx-2
-  = render 'pages/home/carousel'
-= render 'pages/home/videos_carousel'
-= render 'pages/home/resources'
-= render 'pages/home/sponsors'
-= render 'pages/home/partners'
-/ = render 'pages/home/newsletter'
-= render 'pages/home/elevator'
+      h2.fr-h1.h1.blue monstagedetroisieme.fr vous permet de :
+  = render 'pages/home/1_2_3'
+.mx-0.light-grey-background
+  = render 'pages/home/videos_carousel'
+  = render 'pages/home/resources'
+.container-monstage.homepage
+  = render 'pages/home/sponsors'
+  = render 'pages/home/partners'
+  / = render 'pages/home/newsletter'
+  = render 'pages/home/elevator'

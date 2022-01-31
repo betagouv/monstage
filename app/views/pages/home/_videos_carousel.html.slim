@@ -2,35 +2,33 @@ script src="https://player.vimeo.com/api/player.js"
 .container-monstage
   .row.mb-sm-5.my-4
     .col-12.py-4.d-block.d-sm-none
-    .col-12.py-4.d-block.d-sm-none
 .container-monstage
-  .row.mb-sm-5.my-4.align-items-center
+  .row.mb-sm-5.mb-4.align-items-center
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
-      .how-to-offers.text-center-left
-        .fr-text--lg.text-blue-france HISTOIRES DE PARCOURS
-        h3.mb-2.text-blue-france
-          |Luca Biancheri
-        .fr-text--lg.pb-2 Conducteur de travaux
-        p.px-2.px-sm-2.px-md-0.text-center-left
-          | Lörem ipsum filodiktisk sogenat inte orade sara besade. Antin usk telesa, pont previs. Odat självoptimering. Befövis disade fastän nod. Spesk höhet ode.
-        p.px-2.px-sm-2.px-md-0.text-center-left
-          | Tipuck mäbussade nask. Utoskapet doderade i naliga i astrovipp har taskade. Sarisk sende sedan halogi.
-        - if can?(:welcome_students, current_user) || !user_signed_in?
-          link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
-                    class: '',
-                    data: { :"test-id" => 'mobile-search-button' }
-            .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-12v = "Trouver un stage"
+      .mx-xl-0.mx-lg1-2.mx-md-2.mx-sm-2.mx-xs-1
+        .text-center-left.mb-4
+          .fr-text--lg.text-blue-france HISTOIRES DE PARCOURS
+          h3.mb-2.text-blue-france
+            |Luca Biancheri
+          .fr-text--lg.pb-2 Conducteur de travaux
+          p.px-2.px-sm-2.px-md-0.text-center-left
+            | Lörem ipsum filodiktisk sogenat inte orade sara besade. Antin usk telesa, pont previs. Odat självoptimering. Befövis disade fastän nod. Spesk höhet ode.
+          p.px-2.px-sm-2.px-md-0.text-center-left
+            | Tipuck mäbussade nask. Utoskapet doderade i naliga i astrovipp har taskade. Sarisk sende sedan halogi.
+          - if can?(:welcome_students, current_user) || !user_signed_in?
+            link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
+                      class: '',
+                      data: { :"test-id" => 'mobile-search-button' }
+              .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-12v = "Trouver un stage"
     .col-lg-6.col-md-6.col-sm-12.col-xs-12
-      .d-md-none.space-for-player-iframe
-       | &nbsp;
-      .how-to-offers.text-center.videos
-        .big-blue-video-shadow.d-none.d-md-block
-        .home-video-frame.embed-responsive.embed-responsive-1by1 data-videos-carousel-target='player'
-          iframe.vimeo [ allow=("autoplay; fullscreen; picture-in-picture")
-                         allowfullscreen
-                         frameborder="0"
-                         title="Luca Biancheri, conducteur de travaux"
-                         src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1" ]
+      .text-center
+        .video-wrapper
+          .video-responsive
+            iframe.video-responsive-item [ allow=("autoplay; fullscreen; picture-in-picture")
+                          allowfullscreen
+                          frameborder="0"
+                          title="Luca Biancheri, conducteur de travaux"
+                          src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1&responsive=true" ]
 
   .row.py-4
 

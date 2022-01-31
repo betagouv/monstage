@@ -6,9 +6,9 @@ body {
   display: flex;
   flex-direction: column;
 }
-.content {
-  flex: 1 0 auto;
-}
+// .content {
+//   flex: 1 0 auto;
+// }
 .footer-elevator {
   transform: translate(0, -15px);
   z-index: 1024;

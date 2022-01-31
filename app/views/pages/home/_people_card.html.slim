@@ -1,17 +1,23 @@
-.download-card.d-flex.flex-wrap.mb-5
-  = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
-              alt: alt_text,
-              height: '220px',
-              width: '250px',
-              class: 'rounded-adjust card-shadow mb-4'
-  p.align-self-start.bg-blue.extended-lines.wider-text
-    strong = strong_text
-    br
-    = subtitle
-  p.align-self-end.bg-blue
-    = link_to "#{root_url}/modes_d_emploi/#{file}",
-              title: link_title,
-              class: 'white text-decoration-none' do
-      i.fas.fa-download
-      span.ml-2.wider-text
-        strong ="Télécharger"
+.col-lg-3.col-md-6.col-sm-12.col-xs-12
+  .fr-card.fr-enlarge-link
+    .mx-3.fr_card__body.text-right
+      .mr-3.mb-3.d-none.d-sm-block
+        span.fr-fi-download-line.text-blue-france aria-hidden="true"
+      .mr-3.mb-3.d-xs-block.d-sm-none
+        span.fr-fi-arrow-right-line.text-blue-france aria-hidden="true"
+    .mx-3.fr-card:not(.fr-card--no-arrow)
+      h6.fr-card__title.pt-3.title-cards-in-a-row
+        = link_to "#{root_url}/modes_d_emploi/#{file}",
+                  title: link_title,
+                  class: 'fr-raw-link' do
+          .fr-card__link.text-decoration-none = strong_text
+      p.fr-card__desc.desc-cards-in-a-row = subtitle
+    .fr-card__img
+      = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
+                alt: alt_text,
+                width: '100%',
+                class: 'mb-4 fr-responsive-img fr-link p-0 rounded-0'
+      img.mx-3.fr-responsive-img width="100%" alt="#{alt_text}" src="../img/placeholder.16x9.png"
+  .mb-4
+
+

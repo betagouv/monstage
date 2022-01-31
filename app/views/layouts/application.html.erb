@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" >
+<html lang="fr" data-rf-theme='light'>
   <head>
     <% if content_for?(:canonical_url) %>
       <link rel='canonical' href='<%= yield(:canonical_url) %>' />
@@ -44,7 +44,7 @@
     </div>
     <footer role="contentinfo" >
       <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
-        <div class="container">
+        <div class="fr-container">
           <%= render 'layouts/footer' %>
         </div>
       </div>
