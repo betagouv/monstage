@@ -178,8 +178,8 @@ module Dashboard
         # prismic_root_path_stubbing do
         sign_in(main_teacher)
         visit root_path
-        within('header') do
-          find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher.dashboard_name).click
+        within('ul.fr-links-group') do
+          find("li a.fr-link", text: main_teacher.dashboard_name).click
         end
         visit new_dashboard_internship_agreement_path(internship_application_id: internship_application.id)
 
@@ -237,7 +237,7 @@ module Dashboard
                                         )
         sign_in(teacher)
         visit root_path
-        find("li.nav-item a.btn.btn-sm.btn-link.white", text: teacher.dashboard_name).click
+        find("li a.fr-link", text: teacher.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.cannot?(:create, InternshipAgreement)
         refute page.has_content?('Conventions à signer')
@@ -260,7 +260,8 @@ module Dashboard
                                         )
         sign_in(main_teacher_2)
         visit root_path
-        find("li.nav-item a.btn.btn-sm.btn-link.white", text: main_teacher_2.dashboard_name).click
+        puts main_teacher_2.dashboard_name
+        find("li a.fr-link", text: main_teacher_2.dashboard_name).click
         assert page.has_content?('Semaines')
         assert ability.can?(:create, InternshipAgreement)
         assert page.has_content?('Conventions à signer')

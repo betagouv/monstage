@@ -8,7 +8,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   include ::ApiTestHelpers
 
   def submit_form
-    find('input#test-desktop-submit-search').click
+    find('#test-desktop-submit-search').click
   end
 
   test 'search form is visible' do
@@ -109,7 +109,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
   test 'search by week works' do
 
-    travel_to(Date.new(2020,9,6)) do
+    travel_to(Date.new(2020, 9, 6)) do
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
 
