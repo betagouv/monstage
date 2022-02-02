@@ -1,176 +1,100 @@
-.row.footer-content.no-gutters.bg-light-blue
-  .col-md-5.col-sm-12.py-5
-    p.mt-1.print-footer.pl-5
-      | Un service fourni par l'incubateur des
-      br
-      |Territoires de l'ANCT
-      br
-      =link_to 'https://incubateur.anct.gouv.fr/', target: '_blank'
-        = image_tag asset_pack_path('media/images/homepage/sponsors/incubateur-anct.png'),
-                    alt: "Logo beta gouv",
-                    class: 'mt-3 d-print-none footer-logo-img',
-                    'aria-hidden': true,
-                    'width': '250px'
+footer#footer.fr-footer role="contentinfo" data-controller='footer'
+  .fr-footer__top
+    .fr-container
+      .fr-grid-row.fr-grid-row--start.fr-grid-row--gutters
+        .fr-col-12.fr-col-sm-4.fr-col-md-2
+          h3.fr-footer__top-cat Mon stage de 3ème
+          ul.fr-footer__top-list
+            li
+              = link_to "Qui sommes-nous&nbsp;?".html_safe,
+                    "https://incubateur.anct.gouv.fr/",
+                    class: 'rf-footer__top-link fr-text--xs',
+                    title: "Qui sommes-nous ? (nouvelle fenêtre)",
+                    target: '_blank',
+                    rel: "external noopener noreferrer"
+            li
+              = link_to "Conditions d'utilisation",
+                    conditions_d_utilisation_path,
+                    class: 'rf-footer__top-link fr-text--xs'
 
-  .col-md-7.col-sm-12.d-flex.align-items-center
-    .row.no-gutters.font-weight-bold-sm.d-print-none
-      .col-md-6.col-sm-12.pr-1.pl-5
-        ul.nav.flex-column
-          li.nav-item= link_to "Qui sommes-nous&nbsp;?".html_safe,
-                                "https://incubateur.anct.gouv.fr/",
-                                class: 'nav-link px-0 py-1',
-                                title: "Qui sommes-nous ? (nouvelle fenêtre)",
-                                target: '_blank',
-                                rel: "external noopener noreferrer"
+        .fr-col-12.fr-col-sm-4.fr-col-md-2
+          h3.fr-footer__top-cat Aide
+          ul.fr-footer__top-list
+            li
+              = link_to "Centre d'aide",
+                        helpdesk_url,
+                        class: 'rf-footer__top-link fr-text--xs',
+                        target: '_blank',
+                        rel: "external noopener noreferrer",
+                        title: "Consulter notre centre d'aide"
+            li
+              = link_to "Nous contacter",
+                        contact_path,
+                        class: 'rf-footer__top-link fr-text--xs',
+                        title: "Contacter le support de la plateforme monstagedetroisieme.fr"
 
-          li.nav-item= link_to "Mentions légales",
-                                mentions_legales_path,
-                                class: 'nav-link px-0 py-1'
+        .fr-col-12.fr-col-sm-4.fr-col-md-2
+          h3.fr-footer__top-cat En savoir plus
+          ul.fr-footer__top-list
+            li
+              = link_to "Statistiques",
+                        statistiques_path,
+                        class: 'rf-footer__top-link fr-text--xs',
+                        title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
+            li
+              = link_to "#{root_url}/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf",
+                    title: "Accéder au guide d'utilisation (nouvelle fenêtre)",
+                    class: 'rf-footer__top-link fr-text--xs',
+                    target: '_blank',
+                    rel: "external noopener noreferrer" do
 
-          li.nav-item= link_to "Conditions d'utilisation",
-                                conditions_d_utilisation_path,
-                                class: 'nav-link px-0 py-1'
+                = "Guide d'utilisation (PDF – 6.5MB)"
 
-          li.nav-item= link_to "Politique de confidentialité",
-                                politique_de_confidentialite_path,
-                                class: 'nav-link px-0 py-1'
+  .fr-container
+    .fr-footer__body
+      .fr-footer__brand.fr-enlarge-link
+        =link_to root_path, html_options: { title: "Retour à l’accueil"}
+        .fr-logo title=("république française")
+          | république
+          br
+          | française
+      .fr-footer__content
+        - link = link_to "Incubateur des Territoires de l'ANCT",'https://incubateur.anct.gouv.fr/',
+                        target: '_blank',
+                        class: 'fr-text--sm'
+        p.fr-footer__content-desc = "monstagedetroisieme.fr est un service fourni par l'#{link}".html_safe
+        ul.fr-footer__content-list
+          li.fr-footer__content-item
+            a.fr-footer__content-link href="https://legifrance.gouv.fr" legifrance.gouv.fr
+          li.fr-footer__content-item
+            a.fr-footer__content-link href="https://gouvernement.fr"  gouvernement.fr
+          li.fr-footer__content-item
+            a.fr-footer__content-link href="https://service-public.fr"  service-public.fr
+          li.fr-footer__content-item
+            a.fr-footer__content-link href="https://data.gouv.fr"  data.gouv.fr
+    .fr-footer__bottom
+      ul.fr-footer__bottom-list
 
-          li.nav-item= link_to "Accessibilité",
-                                accessibilite_path,
-                                class: 'nav-link px-0 py-1'
+        li.fr-footer__bottom-item
+          = link_to "Mentions légales",
+                    mentions_legales_path,
+                    class: 'rf-footer__top-link'
 
-      .col-md-6.col-sm-12.pr-1.pl-5
-        ul.nav.flex-column
-          li.nav-item= link_to "Centre d'aide",
-                                helpdesk_url,
-                                class: 'nav-link px-0 py-1',
-                                target: '_blank',
-                                rel: "external noopener noreferrer",
-                                title: "Consulter notre centre d'aide"
+        li.fr-footer__bottom-item
+          = link_to "Politique de confidentialité",
+                    politique_de_confidentialite_path,
+                    class: 'rf-footer__top-link'
 
-          li.nav-item= link_to "Nous contacter",
-                                contact_path,
-                                class: 'nav-link px-0 py-1',
-                                title: "Contacter le support de la plateforme monstagedetroisieme.fr"
-
-          li.nav-item= link_to "Statistiques", statistiques_path, class: 'nav-link px-0 py-1', title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
-
-          li.nav-item
-            = link_to "#{root_url}/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf",
-                      title: "Accéder au guide d'utilisation (nouvelle fenêtre)",
-                      class: 'nav-link px-0 py-1',
-                      target: '_blank',
-                      rel: "external noopener noreferrer" do
-
-               = "Guide d'utilisation (PDF – 6.5MB)"
-
-
-
-.row.d-print-none.bg-light-blue
-  .col-12 [
-    data-footer-target="placeholder"
-    data-action="resize@window->footer#resize"
-    ]
-
-.bg-light-blue.d-none.fixed-footer.d-print-none [
-  data-footer-target="fixedContent"
-]
-/! footer avec partenaires
-.fr-footer__body
-  .fr-footer__brand.fr-enlarge-link
-    a href="/" title=("Retour à l’accueil")
-    p.fr-logo title=("république française")
-      | république
-      br/
-      | française
-  .fr-footer__content
-    p.fr-footer__content-desc Lorem [...] elit ut.
-    ul.fr-footer__content-list
-      li.fr-footer__content-item
-        a.fr-footer__content-link href="https://legifrance.gouv.fr"  legifrance.gouv.fr
-      li.fr-footer__content-item
-        a.fr-footer__content-link href="https://gouvernement.fr"  gouvernement.fr
-      li.fr-footer__content-item
-        a.fr-footer__content-link href="https://service-public.fr"  service-public.fr
-      li.fr-footer__content-item
-        a.fr-footer__content-link href="https://data.gouv.fr"  data.gouv.fr
-.fr-footer__partners
-  h4.fr-footer__partners-title Nos partenaires
-  .fr-footer__partners-logos
-    .fr-footer__partners-main
-      a.footer__partners-link href="#"
-        img.fr-footer__logo alt=("[A MODIFIER | text alternatif de l’image]") src="/img/logo-partner-1.png" /
-    .fr-footer__partners-sub
-      ul
-        li
-          a.fr-footer__partners-link href="#"
-            img.fr-footer__logo alt=("[A MODIFIER | text alternatif de l’image]") src="/img/logo-partner-2.png" /
-        li
-          a.fr-footer__partners-link href="#"
-            img.fr-footer__logo alt=("[A MODIFIER | text alternatif de l’image]") src="/img/logo-partner-3.png" /
-        li
-          a.fr-footer__partners-link href="#"
-            img.fr-footer__logo alt=("[A MODIFIER | text alternatif de l’image]") src="/img/logo-partner-4.png" /
-.fr-footer__bottom
-  ul.fr-footer__bottom-list
-    li.fr-footer__bottom-item
-    li.fr-footer__bottom-item
-      = link_to "Qui sommes-nous&nbsp;?".html_safe,
-                "https://incubateur.anct.gouv.fr/",
-                class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill',
-                title: "Qui sommes-nous ? (nouvelle fenêtre)",
-                target: '_blank',
-                rel: "external noopener noreferrer"
-
-      li.fr-footer__bottom-item
-        = link_to "Mentions légales",
-                  mentions_legales_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill'
-
-      li.fr-footer__bottom-item
-        = link_to "Conditions d'utilisation",
-                  conditions_d_utilisation_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill'
-
-      li.fr-footer__bottom-item
-        = link_to "Politique de confidentialité",
-                  politique_de_confidentialite_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill'
-
-      li.fr-footer__bottom-item
-        = link_to "Accessibilité",
-                  accessibilite_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill'
-      li.fr-footer__bottom-item
-        = link_to "Centre d'aide",
-                  helpdesk_url,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill',
-                  target: '_blank',
-                  rel: "external noopener noreferrer",
-                  title: "Consulter notre centre d'aide"
-
-      li.fr-footer__bottom-item
-        = link_to "Nous contacter",
-                  contact_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill',
-                  title: "Contacter le support de la plateforme monstagedetroisieme.fr"
-
-      li.fr-footer__bottom-item
-        = link_to "Statistiques",
-                  statistiques_path,
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill',
-                  title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
-
-      li.fr-footer__bottom-item
-        = link_to "#{root_url}/modes_d_emploi/MS3_Mode-d-emploi-global-2021.pdf",
-                  title: "Accéder au guide d'utilisation (nouvelle fenêtre)",
-                  class: 'rf-footer__top-link rf-margin-right-2N ri-xl rf-mr-3v ri-twitter-fill',
-                  target: '_blank',
-                  rel: "external noopener noreferrer" do
-
-          = "Guide d'utilisation (PDF – 6.5MB)"
-
-  .fr-footer__bottom-copy
+        li.fr-footer__bottom-item
+          = link_to "Accessibilité",
+                    accessibilite_path,
+                    class: 'rf-footer__top-link'
+        li.fr-footer__bottom-item
+          = link_to "Statistiques",
+                    statistiques_path,
+                    class: 'rf-footer__top-link',
+                    title: "Statistiques d'utilisation du service monstagedetroisieme.fr"
     p
       | Sauf mention contraire, tous les contenus de ce site sont sous
       a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank"  licence etalab-2.0
+

@@ -19,8 +19,8 @@ header.bg-cover-image-homepage.container-xl
                                url: internship_offers_path,
                                default_values: user_presenter.default_search_options,
                                form_id: :home_search_form }
-    .actions.d-flex.d-stick.d-md-none.p-2
+    .actions.d-flex.d-stick.d-md-none.p-2.fitting
       = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'btn btn-danger rounded-sm',
+                class: 'btn rounded-0 btn-primary btn-block',
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage"

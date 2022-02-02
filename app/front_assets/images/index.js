@@ -44,6 +44,7 @@ import './homepage/back-to-top.svg';
 import './homepage/01.svg';
 import './homepage/02.svg';
 import './homepage/03.svg';
+import './homepage/fake.svg';
 
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';
@@ -97,13 +98,18 @@ import './homepage/partenaires/colored_logo/logo-tous-en-stage.png';
 import './homepage/partenaires/colored_logo/logo-un-stage-et-apres.png';
 import './homepage/partenaires/colored_logo/logo-viens-voir-mon-taf.png';
 
-import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
-import './homepage/sponsors/Logo-anct.jpg';
-import './homepage/sponsors/logo-anct.png';
+// import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.jpg';
+// import './homepage/sponsors/Logo-anct.jpg';
+// import './homepage/sponsors/logo-anct.png';
 import './homepage/sponsors/incubateur-anct.png';
-import './homepage/sponsors/logo-min-ville.png';
-import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg';
-import './homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg';
+import './homepage/sponsors/logo-anct.svg';
+import './homepage/sponsors/logo-ministere-education-nationale.svg';
+import './homepage/sponsors/logo-ministere-charge-de-la-ville.svg';
+import './homepage/sponsors/logo-ministere-cohesion-territoire.svg';
+// import './homepage/sponsors/logo-min-ville.png';
+// import './homepage/sponsors/Logo-ministere-de-la-cohesion-des-territoire-et-ministere-education-nationale.svg';
+// import './homepage/sponsors/Ministère-Éducation-Nationale-Jeunesse.svg';
+
 import './homepage/sponsors/Line9.png';
 
 import './documents_utiles/CarnetStagePro_USEA_WEB-2.jpg';

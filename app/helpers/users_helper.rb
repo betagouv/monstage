@@ -51,42 +51,42 @@ module UsersHelper
       {
         logo: 'logo-moi-dans-10-ans-my-future.png',
         url: 'https://moidans10ans.fr/',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-jobirl.png',
         url: 'https://www.jobirl.com',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-le-reseau.png',
         url: 'http://www.lereseau.asso.fr',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-entreprises-pour-la-cite.png',
         url: 'http://www.reseau-lepc.fr',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-tous-en-stage.png',
         url: 'https://tousenstage.com',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-un-stage-et-apres.png',
         url: 'https://www.unstageetapres.fr',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-viens-voir-mon-taf.png',
         url: 'https://www.viensvoirmontaf.fr',
-        height: 75
+        height: 80
       },
       {
         logo: 'logo-telemaque.png',
         url: 'https://www.institut-telemaque.org/',
-        height: 75
+        height: 80
       },
     ].shuffle
   end

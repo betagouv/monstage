@@ -19,7 +19,7 @@
 
   <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
-    <div class="content pt-0" data-controller='rg2a'>
+    <div class="content pt-0 border border-danger" data-controller='rg2a'>
       <header role="banner" class="custom-navbar <%= homepage? || statistics? || content_for?(:custom_header) ? '' : 'mb-4' %>">
         <div class="container">
           <div class="row">
@@ -42,18 +42,7 @@
         </div>
       <% end %>
     </div>
-    <footer role="contentinfo" >
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
-        <div class="fr-container">
-          <%= render 'layouts/footer' %>
-        </div>
-      </div>
-    </footer>
-    <% if Rails.env.development? %>
-      <script>
-        console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
-      </script>
-    <% end %>
+    <%= render 'layouts/footer' %>
     <%= render partial: "layouts/analytics" %>
   </body>
 </html>
