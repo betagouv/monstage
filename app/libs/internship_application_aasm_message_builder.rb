@@ -53,6 +53,10 @@ class InternshipApplicationAasmMessageBuilder
     rich_text_object
   end
 
+  def mail_body
+    send MAP_TARGET_TO_RICH_TEXT_INITIALIZER.fetch(aasm_target)
+  end
+
   private
 
   attr_reader :aasm_target, :internship_application

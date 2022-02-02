@@ -1,7 +1,9 @@
 class StudentMailerPreview < ActionMailer::Preview
   def internship_application_approved_email
-    internship_application = InternshipApplication.approved.first
-    internship_application.approved_message =  '<strong>Bravo ! Vraiment ! </strong><br/>Vous étiez nombreux à le vouloir, ce stage'
+    internship_application = InternshipApplications::WeeklyFramed.approved.first
+    message = internship_application.internship_application_aasm_message_builder(aasm_target: :approve!)
+                                    .mail_body
+    internship_application.approved_message = message
     StudentMailer.internship_application_approved_email(
       internship_application: internship_application
     )
@@ -9,7 +11,9 @@ class StudentMailerPreview < ActionMailer::Preview
 
   def internship_application_rejected_email
     internship_application = InternshipApplication.rejected.first
-    internship_application.rejected_message = '<strong>Tellement désolés ! Vraiment ! </strong><br/>Vous trouverez ailleurs tel que vous êtes, ne changez rien'
+    message = internship_application.internship_application_aasm_message_builder(aasm_target: :reject!)
+                                    .mail_body
+    internship_application.rejected_message = message
     StudentMailer.internship_application_rejected_email(
       internship_application: internship_application
     )
@@ -17,7 +21,9 @@ class StudentMailerPreview < ActionMailer::Preview
 
   def internship_application_canceled_by_employer_email
     internship_application = InternshipApplication.canceled_by_employer.first
-    internship_application.canceled_by_employer_message = '<strong>Nous ne comprenons pas ce qui s\'est passé ! </strong><br/>L`administration de notre société a décliné votre proposition de stage au prétexte d\'un casier judiciaire "particulièrement" lourd, mais une enquête interne vous tiendra informé des véritables raisons de ce rejet de candidature'
+    message = internship_application.internship_application_aasm_message_builder(aasm_target: :cancel_by_employer!)
+                                    .mail_body
+    internship_application.canceled_by_employer_message = message
     StudentMailer.internship_application_canceled_by_employer_email(
       internship_application: internship_application
     )
