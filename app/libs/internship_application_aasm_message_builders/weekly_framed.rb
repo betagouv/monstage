@@ -47,7 +47,7 @@ module InternshipApplicationAasmMessageBuilders
           <span class="emoticon" style="font-size:20px">&#x26a0;&#xfe0f;</span> 
         </p>
         <p>
-          <strong>Rappel des coordonnées de votre employeur/tuteur : </<strong>
+          <strong>Rappel des coordonnées de votre employeur/tuteur : <strong>
         </p>
           #{internship_offer.employer_name}
           <br/>

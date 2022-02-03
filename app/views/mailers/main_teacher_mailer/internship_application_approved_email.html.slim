@@ -9,6 +9,30 @@ p style=p_styles
   = " a été acceptée."
 
 p style=p_styles
-  = "Pour avancer sur la convention, retrouvez les contacts de l'entreprise dans votre espace."
+  = "Pour avancer sur la convention, retrouvez les contacts de " \
+    "l'entreprise ci-dessous ou dans votre espace."
+
+p style=p_styles
+  strong
+    | Coordonnées de votre employeur/tuteur :
+
+p style=p_styles
+  ul style="list-style-type:none"
+    li = @internship_application.internship_offer.employer_name
+    li = @internship_application.internship_offer.street
+    li = "#{@internship_application.internship_offer.zipcode} #{@internship_application.internship_offer.city}"
+
+p style=p_styles
+  strong
+    | Votre Contact du tuteur :
+  ul style="list-style-type:none"
+    li = @internship_application.internship_offer.tutor_name
+    li = @internship_application.internship_offer.tutor_email
+    li = Presenters::User.new(OpenStruct.new(phone: @internship_application.internship_offer.tutor_phone)).pretty_phone_number
 
 = render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Remplir la convention de stage"})
+
+p style=p_styles
+  | A très bientôt
+p style=p_styles
+  | L’équipe Mon Stage de 3e.
