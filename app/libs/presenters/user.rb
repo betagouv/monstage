@@ -32,6 +32,17 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
+    def pretty_phone_number
+      return '' unless user.phone
+
+      phone_number = user.phone.to_str
+      phone_number = phone_number.gsub('+33', '0') if phone_number.start_with?("+33")
+      phone_number.chars
+                  .in_groups_of(2)
+                  .map(&:join)
+                  .join(' ')
+    end
+
     private
 
     attr_reader :user
