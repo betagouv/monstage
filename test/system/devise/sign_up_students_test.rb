@@ -191,9 +191,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     click_link 'Je postule'
     # below : 'Pas encore de compte ? Inscrivez-vous'
-    within('.onboarding-card.onboarding-card-sm') do
-      click_link 'Me connecter'
-    end
+    # within('.onboarding-card.onboarding-card-sm') do
+    #   click_link 'Me connecter'
+    # end
+
     # sign_in as Student
     find('label', text: 'Email').click
     find("input[name='user[email]']").fill_in with: student.email
@@ -201,7 +202,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     click_on 'Connexion'
 
     # redirected page is a show of targeted internship_offer
-    assert_equal "/internship_offers/#{offer.id}", current_path
+    assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
     # targeted offer id at student's level is now empty
     assert_nil student.reload.targeted_offer_id,
                'targeted offer should have been reset'

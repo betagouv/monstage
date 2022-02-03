@@ -26,7 +26,8 @@ class CountryPhoneSelect extends React.Component {
           nc: 'Nouvelle Calédonie',
         }}
         masks={{ fr: '.. .. .. .. ..' }}
-        inputStyle={{ width: '100%', borderRadius: '3px' }}
+        inputStyle={{ width: '100%', borderRadius: '3px 3px 0 0', borderTop: 0, borderLeft: 0, borderRight: 0, backgroundColor: '#eeeeee' }}
+        inputClass="fr-input"
         inputProps={{
           name: this.props.name,
           id: 'phone-input',

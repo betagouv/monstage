@@ -127,11 +127,9 @@
       }
 
     button.btn-clear-city {
-      background-color: $bg-light-blue;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      border-left: 0px;
-      width: 3rem;
+      background-color: $grey-200;
+      color: $grey-200 !important;
+      border-color: $grey-200 !important;
     }
 
     label.chosen-name {
@@ -226,5 +224,21 @@ trix-editor {
     top: 10px;
     left: 10px;
     z-index: 100;
+  }
+}
+
+.fr-btn-danger {
+  background-color: $red-marianne-950 !important;
+}
+.fr-btn-danger:hover {
+  background-color: $red-marianne-950-active !important;
+  --blend-full-size: 0%;
+}
+
+.fr-callout-blue {
+  background-color: $blue-france;
+  color: #fff !important;
+  .fr-label {
+    color: #fff !important;
   }
 }

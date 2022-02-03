@@ -130,7 +130,16 @@ export default function SearchSchool({
           selectedItem,
         }) => (
           <div className="form-group custom-label-container">
+                    <label
+              {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
+            >
+              {label}
+              <abbr title="(obligatoire)" aria-hidden="true">
+                *
+              </abbr>
+            </label>
             <div className="input-group">
+           
               <input
                 {...getInputProps({
                   onChange: inputChange,
@@ -144,19 +153,13 @@ export default function SearchSchool({
                   required: required,
                 })}
               />
-              <label
-                {...getLabelProps({ className: 'label', htmlFor: `${resourceName}_school_city` })}
-              >
-                {label}
-                <abbr title="(obligatoire)" aria-hidden="true">
-                  *
-                </abbr>
-              </label>
+       
+              
               <div className="input-group-append">
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-outline-secondary btn-clear-city ${
+                    className={`fr-btn fr-btn--secondary btn-clear-city ml-1 ${
                       autocompleteNoResult ? '' : 'rounded-0'
                     }`}
                     onClick={onResetSearch}
@@ -168,7 +171,7 @@ export default function SearchSchool({
                 {currentRequest && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
+                    className="fr-btn fr-btn--secondary btn-clear-city"
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
@@ -177,6 +180,7 @@ export default function SearchSchool({
                 )}
               </div>
             </div>
+
             <div className="search-in-place bg-white shadow">
               <ul
                 {...getMenuProps({
@@ -206,7 +210,7 @@ export default function SearchSchool({
                         })}
                       >
                         <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-                        <span className="badge-secondary badge-pill small">
+                        <span className="fr-badge fr-badge--sm fr-badge--success fr-badge--no-icon">
                           {autocompleteCitySuggestions[currentCity].length} établissement
                           {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
                         </span>

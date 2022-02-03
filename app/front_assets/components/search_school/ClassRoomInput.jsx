@@ -55,7 +55,7 @@ function RenderClassRoomsInput({
           <input
             value=""
             disabled
-            className={`form-control ${classes || ''}`}
+            className={`fr-input ${classes || ''}`}
             type="text"
             id={`${resourceName}_class_room_id`}
           />
@@ -64,16 +64,16 @@ function RenderClassRoomsInput({
       )}
       {isAlreadySelected && (
         <>
+           <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <input
             disabled
             readOnly
-            className={`form-control ${classes || ''}`}
+            className={`fr-input ${classes || ''}`}
             type="text"
             value={existingClassRoom.name}
             name={`${resourceName}[class_room_name]`}
             id={`${resourceName}_class_room_name`}
           />
-          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <input
             value={existingClassRoom.id}
             type="hidden"
@@ -83,8 +83,9 @@ function RenderClassRoomsInput({
       )}
       {hasPendingSuggestion && (
         <>
+          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <select
-            className="form-control"
+            className="fr-input"
             name={`${resourceName}[class_room_id]`}
             id={`${resourceName}_class_room_id`}
           >
@@ -104,21 +105,21 @@ function RenderClassRoomsInput({
               (classRoomsSuggestions || []).map(renderClassRoomOption)}
             <option value="">Autre classe</option>
           </select>
-          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
+          
         </>
       )}
       {classRoomsSuggestions && classRoomsSuggestions.length === 0 && (
         <>
+          <label className='fr-label' htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <input
             placeholder="Aucune classe disponible"
             readOnly
             name={`${resourceName}[class_room_id]`}
             id={`${resourceName}_class_room_id`}
             value=""
-            className={`form-control ${classes || ''}`}
+            className={`fr-input ${classes || ''}`}
             type="text"
           />
-          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
         </>
       )}
     </div>

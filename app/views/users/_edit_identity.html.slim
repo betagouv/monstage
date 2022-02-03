@@ -1,71 +1,78 @@
-h1.h2.mb-3 Mon identité
+#identity-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+  h1.h2.mb-3 Mon identité
 
-= form_with model: current_user,
-            scope: :user,
-            url: account_path,
-            method: :patch,
-            data: {controller: "profile"} do |f|
-  = f.rg2a_explain_required_asterisk
-  = render 'layouts/form_errors', resource: current_user, resource_name: :user
+  = form_with model: current_user,
+              scope: :user,
+              url: account_path,
+              method: :patch,
+              data: {controller: "profile"} do |f|
+    = f.rg2a_explain_required_asterisk
+    = render 'layouts/form_errors', resource: current_user, resource_name: :user
+    
+    .row
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :first_name, class: 'fr-label' do
+            = 'Prénom'
+            = f.rg2a_required_content_tag
+          = f.text_field :first_name, class: 'fr-input',
+            required: true
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :last_name, class: 'fr-label' do
+            = 'Nom'
+            = f.rg2a_required_content_tag
+          = f.text_field :last_name, class: 'fr-input',
+            required: true
+    .row
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :email, class: 'fr-label' do
+            span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
+            = f.rg2a_required_content_tag
+          small.d-none data-profile-target="emailHint"
+          = f.text_field :email,
+                        {class: 'fr-input', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+      .col-md-6.col-xs-12
+        - if current_user.ministry_statistician?
+          .form-group
+            = f.label :ministry, class: 'fr-label' do
+              = "Administration centrale"
+            = f.text_field :ministry,
+                            value: current_user.ministry.name,
+                            class: "fr-input",
+                            disabled: true
+        - if can?(:change, :department) || can?(:view, :department)
+          .form-group
+            = f.label :department, class: 'fr-label' do
+              = "Département d'intervention"
+              small.form-text.text-muted Le département d'intervention permet de limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
+            = f.select :department,
+                      [['Pas de département', nil]] + Department.to_select,
+                      {  },
+                      { class: "fr-select" }.merge(can?(:change, :department) ? {} : {disabled: true})
 
-  .form-group
-    = f.label :first_name do
-      = 'Prénom'
-      = f.rg2a_required_content_tag
-    = f.text_field :first_name, class: 'form-control col-lg-6',
-      required: true
-  .form-group
-    = f.label :last_name do
-      = 'Nom'
-      = f.rg2a_required_content_tag
-    = f.text_field :last_name, class: 'form-control col-lg-6',
-      required: true
-  .form-group
-    = f.label :email do
-      span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
-      = f.rg2a_required_content_tag
-    = f.text_field :email,
-                   {class: 'form-control col-lg-6', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
-    small.d-none data-profile-target="emailHint"
+        - if can?(:change, :class_room)
+          .form-group
+            = f.label :class_room_id, class: 'fr-label' do
+              = 'Classe'
+              = f.rg2a_required_content_tag unless current_user.main_teacher?
+            = f.select :class_room_id,
+                      options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
+                      { prompt: class_rooms_options_for_default },
+                      class: "fr-select"
 
-  - if current_user.ministry_statistician?
-    .form-group
-      = f.label :ministry do
-        = "Administration centrale"
-      = f.text_field :ministry,
-                      value: current_user.ministry.name,
-                      class: "form-control col-lg-6",
-                      disabled: true
-  - if can?(:change, :department) || can?(:view, :department)
-    .form-group
-      = f.label :department do
-        = "Département d'intervention"
-        small.form-text.text-muted Le département d'intervention permet de limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
-      = f.select :department,
-                 [['Pas de département', nil]] + Department.to_select,
-                 {  },
-                 { class: "form-control col-lg-6" }.merge(can?(:change, :department) ? {} : {disabled: true})
+        - if can?(:choose_role, current_user)
+          .form-group
+            = f.label :role, class: 'fr-label' do
+              = 'Fonction'
+              = f.rg2a_required_content_tag
+            .d-block= f.select :role,
+                                options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
+                                { include_blank: false},
+                                { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
 
-  - if can?(:change, :class_room)
-    .form-group
-      = f.label :class_room_id do
-        = 'Classe'
-        = f.rg2a_required_content_tag unless current_user.main_teacher?
-      = f.select :class_room_id,
-                 options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
-                 { prompt: class_rooms_options_for_default },
-                 class: "form-control col-lg-6"
-
-  - if can?(:choose_role, current_user)
-    .form-group
-      = f.label :role do
-        = 'Fonction'
-        = f.rg2a_required_content_tag
-      .d-block= f.select :role,
-                          options_from_collection_for_select(user_roles_to_select, :value, :text, current_user.role),
-                          { include_blank: false},
-                          { class: 'custom-select col-lg-6', data: {action: 'change->profile#refreshEmailFieldLabel'} }
-
-
-  .actions.d-flex.d-sm-block
-    = f.submit 'Enregistrer', class: 'btn btn-primary'
+    .row 
+      .col-md-6.col-xs-12
+        .actions.d-flex.d-sm-block
+          = f.submit 'Enregistrer mes informations', class: 'fr-btn btn-block'
