@@ -31,6 +31,7 @@ module Finders
         kept_offers_query.in_the_future
                          .published
                          .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+                         .ignore_already_applied(user: user)
       end
     end
 
