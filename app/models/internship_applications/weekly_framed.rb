@@ -6,9 +6,9 @@ module InternshipApplications
 
     after_save :update_all_counters
 
-    # validates :week_id,
-    #           presence: true,
-    #           unless: :application_via_school_manager?
+    validates :week_id,
+              presence: true,
+              unless: :application_via_school_manager?
     validates :student, uniqueness: { scope: [:internship_offer_id, :week_id] }
 
     before_validation :at_most_one_application_per_student?, on: :create
