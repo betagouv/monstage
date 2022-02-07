@@ -29,7 +29,7 @@ module InternshipApplications
     end
 
     def internship_offer_week_has_spots_left?
-      return if internship_offer.internship_offer_weeks.where(week_id: week.id).first.try(:has_spots_left?)
+      return if internship_offer.internship_offer_weeks.find_by(week_id: week.id).try(:has_spots_left?)
       errors.add(:week, :has_no_spots_left)
     end
 
