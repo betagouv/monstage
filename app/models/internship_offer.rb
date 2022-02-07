@@ -95,6 +95,10 @@ class InternshipOffer < ApplicationRecord
     where(type: InternshipOffers::FreeDate.name)
   }
 
+  scope :ignore_already_applied, lambda { |user:|
+    where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
+  }
+
   has_many :internship_applications, as: :internship_offer,
                                      foreign_key: 'internship_offer_id'
 

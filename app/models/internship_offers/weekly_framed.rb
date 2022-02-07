@@ -41,17 +41,18 @@ module InternshipOffers
                                                           message: "Le nombre maximal d'élèves par groupe ne peut pas dépasser le nombre maximal d'élèves attendus dans l'année" }
     after_initialize :init
     before_create :reverse_academy_by_zipcode
-    
-    scope :fulfilled, lambda {
-      applications_ar = InternshipApplication.arel_table
-      offers_ar       = InternshipOffer.arel_table
 
-      joins(:internship_applications)
-        # .where(applications_ar[:aasm_state].in(%w[approved signed]))
-        .merge(InternshipApplication.approved)
-        .select([offers_ar[:id], applications_ar[:id].count.as('applications_count'), offers_ar[:max_candidates], offers_ar[:max_students_per_group]])
+    #---------------------
+    # fullfilled scope isolates those offers that have reached max_candidates
+    #---------------------
+    scope :fulfilled, lambda {
+      offers_ar      = InternshipOffer.arel_table
+      offer_weeks_ar = InternshipOfferWeek.arel_table
+
+      joins(:internship_offer_weeks)
+        .select([offer_weeks_ar[:blocked_applications_count].sum, offers_ar[:id],offers_ar[:max_candidates]])
         .group(offers_ar[:id])
-        .having(applications_ar[:id].count.gteq(offers_ar[:max_candidates]))
+        .having(offer_weeks_ar[:blocked_applications_count].sum.gteq(offers_ar[:max_candidates]))
     }
 
     scope :uncompleted_with_max_candidates, lambda {
@@ -61,38 +62,34 @@ module InternshipOffers
       where(offers_ar[:id].not_in(full_offers_ids))
     }
 
-
-    scope :with_spot_left_weeks, lambda {
-      offer_weeks_ar = InternshipOfferWeek.arel_table
-
-      joins(:internship_offer_weeks)
-        
-    }
-
     scope :ignore_max_candidates_reached, lambda {
       applications_ar = InternshipApplication.arel_table
       offers_ar       = InternshipOffer.arel_table
-      offer_weeks_ar = InternshipOfferWeek.arel_table
+      offer_weeks_ar  = InternshipOfferWeek.arel_table
 
       joins(:internship_offer_weeks, :internship_applications)
         .where(applications_ar[:aasm_state].in(%w[approved]))
         .select('internship_offers.*, count(internship_offers) as offers_count')
         .group(offers_ar[:id])
-        .having(offer_weeks_ar[:blocked_applications_count].sum.lteq(offers_ar[:max_candidates]))
+        .having(offer_weeks_ar[:blocked_applications_count].sum.lt(offers_ar[:max_candidates]))
     }
-    
+
     scope :by_weeks, lambda { |weeks:|
       joins(:weeks).where(weeks: { id: weeks.ids })
     }
-    
+
     scope :after_week, lambda { |week:|
       joins(:week).where('weeks.year > ? OR (weeks.year = ? AND weeks.number > ?)', week.year, week.year, week.number)
     }
-    
+
     scope :after_current_week, lambda {
       after_week(week: Week.current)
     }
-    
+
+    def approved_applications_count
+      internship_offer_weeks.pluck(:blocked_applications_count).sum
+    end
+
     def weeks_applicable(user:)
       weeks.from_now.available_for_student(user: user)
     end

@@ -15,6 +15,12 @@ require 'support/internship_offer_info_form_filler'
 require 'support/tutor_form_filler'
 require 'minitest/retry'
 require 'webmock/minitest'
+# these two lines should be withdrawn whenever the ChromeDriver is ok
+# https://stackoverflow.com/questions/70967207/selenium-chromedriver-cannot-construct-keyevent-from-non-typeable-key/70971698#70971698
+require 'webdrivers/chromedriver'
+Webdrivers::Chromedriver.required_version = '97.0.4692.71'
+
+Capybara.save_path = Rails.root.join('tmp/screenshots')
 
 Minitest::Retry.use!(
   retry_count: 3,
@@ -37,7 +43,6 @@ WebMock.disable_net_connect!(
   ]
 )
 
-Capybara.save_path = Rails.root.join('tmp/screenshots')
 
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
