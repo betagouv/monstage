@@ -79,7 +79,6 @@ module Finders
 
 
     def week_ids_query(query)
-      # query.merge(weekly_framed_scopes(:by_weeks, weeks: Week.where(id: week_ids_params)))
       query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: week_ids_params)))
     end
 
