@@ -116,6 +116,10 @@ class Week < ApplicationRecord
     end
   end
 
+  def consecutive_to?(other_week)
+    self.id.to_i == other_week.id.to_i + 1
+  end
+
   def self.airtablize(school_year = SchoolYear::Current.new)
     school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
     weeks = Week.selectable_for_school_year(school_year: school_year)
@@ -127,9 +131,5 @@ class Week < ApplicationRecord
         csv << [w.select_text_method, w.id, school_year_str]
       end
     end
-  end
-
-  def consecutive_to?(other_week)
-    id.to_i == other_week.id.to_i + 1
   end
 end

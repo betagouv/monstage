@@ -24,7 +24,11 @@ FactoryBot.define do
       aasm_state { :approved }
       submitted_at { 3.days.ago }
       approved_at { 2.days.ago }
+      after(:create) do |application|
+        create(:internship_agreement, internship_application: application)
+      end
     end
+
     trait :rejected do
       aasm_state { :rejected }
       submitted_at { 3.days.ago }
@@ -62,6 +66,7 @@ FactoryBot.define do
     trait :free_date do
       internship_offer { create(:free_date_internship_offer) }
     end
+
 
     factory :weekly_internship_application, traits: [:weekly],
                                             parent: :internship_application,

@@ -18,6 +18,7 @@ import 'core-js/es/set';
 import '../stylesheets/screen.scss';
 import '../stylesheets/print.scss';
 
+import '@popperjs/core';
 import Alert from 'bootstrap'
 import Dropdown from 'bootstrap'
 import Modal from 'bootstrap'

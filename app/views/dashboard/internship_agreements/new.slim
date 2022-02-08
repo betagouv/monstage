@@ -1,15 +1,14 @@
-= render partial: 'dashboard/internship_agreements/form_header',
-         locals: { internship_application: @internship_agreement.internship_application }
+- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
 
-.row.mx-5
-  .col-12
-
-    = form_with model: @internship_agreement,
-                url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
-                class: 'form-offset-header',
-                local: true,
-                html: {'data-controller': 'internship-agreement-form'} do |form|
-      = render "form",
-               form: form,
-               resource: @internship_agreement,
-               school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'
+= form_with model: @internship_agreement,
+              url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),
+              class: 'form-offset-header',
+              html: {'data-controller': 'internship-agreement-form'}, local: true do |form|
+  table.table-sticky-thead
+    = render partial: 'dashboard/internship_agreements/form_header',
+             locals: { internship_application: @internship_agreement.internship_application,
+                       internship_agreement: form.object }
+    = render "form",
+             form: form,
+             resource: @internship_agreement,
+             school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'

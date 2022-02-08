@@ -37,6 +37,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal '127.0.0.1', student.current_sign_in_ip
     assert_not_equal '127.0.0.1', student.last_sign_in_ip
     assert_not_equal '01/01/2000', student.birth_date
+
+    assert_equal 'm', student.gender
+    assert_equal class_room.id, student.class_room_id
     assert_not_equal 'Zer', student.resume_educational_background
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages

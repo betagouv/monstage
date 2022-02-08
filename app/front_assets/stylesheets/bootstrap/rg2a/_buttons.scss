@@ -11,6 +11,17 @@ a.btn {
   font-weight: bold;
   border-radius: 1rem * 1.5;
 }
+
+.disabled {
+  background: #F2F2F2 !important;
+  color: #3F3256 !important;
+  border: none !important;
+  opacity: 1 !important;
+  &:hover{
+    cursor: not-allowed !important;
+  }
+}
+
 .btn-outline-fat {
   font-weight: 800;
   border: 3px solid white;

@@ -19,6 +19,7 @@ import {
   faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faCircle as faCircleSolid,
   faComments,
   faDownload,
   faDesktop,
@@ -32,6 +33,7 @@ import {
   faHistory,
   faHourglassStart,
   faInfoCircle,
+  faInfo,
   faCopy,
   faLayerGroup,
   faMapMarker,
@@ -66,7 +68,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  faCircle,
+  faCircle as faCircleRegular,
   faEnvelope,
   faFlag,
   faHandshake,
@@ -96,7 +98,8 @@ library.add(
   faChevronDown,
   faChevronLeft,
   faChevronRight,
-  faCircle,
+  faCircleRegular,
+  faCircleSolid,
   faComments,
   faDownload,
   faDesktop,
@@ -113,6 +116,7 @@ library.add(
   faHistory,
   faHourglassStart,
   faInfoCircle,
+  faInfo,
   faCopy,
   faLayerGroup,
   faMapMarker,

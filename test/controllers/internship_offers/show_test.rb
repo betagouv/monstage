@@ -162,6 +162,21 @@ module InternshipOffers
       end
     end
 
+    test 'GET #show for employer displays school\'s available weeks only' do
+      current_time = SchoolYear::Floating.new_by_year(year: 2020)
+      coupled_weeks = Week.from_date_to_date(
+        from: current_time.end_of_period - 4.weeks,
+        to: current_time.end_of_period - 2.weeks
+      )
+      travel_to(current_time.beginning_of_period) do
+        create(:school, weeks: coupled_weeks)
+        internship_offer_week = create(:weekly_internship_offer, weeks: Week.selectable_from_now_until_end_of_school_year)
+        sign_in(internship_offer_week.employer)
+        get internship_offer_path(internship_offer_week)
+        assert_select "span", text: 'Disponible du  7 septembre 2020 au  6 juin 2021'
+      end
+    end
+
     test 'GET #show as Student with existing draft application shows the draft' do
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer      = create(:weekly_internship_offer, weeks: weeks)

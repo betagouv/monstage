@@ -5,13 +5,9 @@ module StepperProxy
     extend ActiveSupport::Concern
 
     included do
-      after_initialize :init
+      include SchoolTrackable
 
-      enum school_track: {
-        troisieme_generale: 'troisieme_generale',
-        troisieme_prepa_metiers: 'troisieme_prepa_metiers',
-        troisieme_segpa: 'troisieme_segpa'
-      }
+      after_initialize :init
 
       # Validations
       validates :title, presence: true, length: { maximum: InternshipOffer::TITLE_MAX_CHAR_COUNT }
