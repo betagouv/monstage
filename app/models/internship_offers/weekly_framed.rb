@@ -62,17 +62,17 @@ module InternshipOffers
       where(offers_ar[:id].not_in(full_offers_ids))
     }
 
-    scope :ignore_max_candidates_reached, lambda {
-      applications_ar = InternshipApplication.arel_table
-      offers_ar       = InternshipOffer.arel_table
-      offer_weeks_ar  = InternshipOfferWeek.arel_table
+    # scope :ignore_max_candidates_reached, lambda {
+    #   applications_ar = InternshipApplication.arel_table
+    #   offers_ar       = InternshipOffer.arel_table
+    #   offer_weeks_ar  = InternshipOfferWeek.arel_table
 
-      joins(:internship_offer_weeks, :internship_applications)
-        .where(applications_ar[:aasm_state].in(%w[approved]))
-        .select('internship_offers.*, count(internship_offers) as offers_count')
-        .group(offers_ar[:id])
-        .having(offer_weeks_ar[:blocked_applications_count].sum.lt(offers_ar[:max_candidates]))
-    }
+    #   joins(:internship_offer_weeks, :internship_applications)
+    #     .where(applications_ar[:aasm_state].in(%w[approved]))
+    #     .select('internship_offers.*, count(internship_offers) as offers_count')
+    #     .group(offers_ar[:id])
+    #     .having(offer_weeks_ar[:blocked_applications_count].sum.lt(offers_ar[:max_candidates]))
+    # }
 
     scope :by_weeks, lambda { |weeks:|
       joins(:weeks).where(weeks: { id: weeks.ids })

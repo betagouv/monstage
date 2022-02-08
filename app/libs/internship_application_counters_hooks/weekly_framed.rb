@@ -21,7 +21,7 @@ module InternshipApplicationCountersHooks
     #        sum(aasm_state == approved) as approved_count )
 
     # :approved is the top aasm_state that an application can reach.
-    # Convention states are decoupled
+    # Agreements states are decoupled
     #---------------------------------------
     # blocked_applications_count is a column of InternshipOfferWeek
     # it counts the applications approved for each internship offer week.
@@ -56,8 +56,8 @@ module InternshipApplicationCountersHooks
 
     #---------------------------------------
     # blocked_weeks_count
-    # counts the number of weeks with approved applications
-    # whatever the number of applications approved in each week
+    # counts the number of weeks with any positive number of approved applications
+    # in each week
     #---------------------------------------
     def blocked_weeks_count
       internship_offer.internship_offer_weeks
