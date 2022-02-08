@@ -15,6 +15,12 @@ require 'support/internship_offer_info_form_filler'
 require 'support/tutor_form_filler'
 require 'minitest/retry'
 require 'webmock/minitest'
+# these two lines should be withdrawn whenever the ChromeDriver is ok
+# https://stackoverflow.com/questions/70967207/selenium-chromedriver-cannot-construct-keyevent-from-non-typeable-key/70971698#70971698
+require 'webdrivers/chromedriver'
+# Webdrivers::Chromedriver.required_version = '98.0.4758.80' # not working locally because of @ char
+Webdrivers::Chromedriver.required_version = '97.0.4692.71' # works ok locally
+# Webdrivers::Chromedriver.required_version = '89.0.4389.114' # declared on CI but not working locally with that line
 
 Minitest::Retry.use!(
   retry_count: 3,
