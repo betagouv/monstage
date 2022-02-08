@@ -79,7 +79,6 @@ module Finders
 
 
     def week_ids_query(query)
-      # query.merge(weekly_framed_scopes(:by_weeks, weeks: Week.where(id: week_ids_params)))
       query.merge(weekly_framed_scopes(:by_weeks, weeks: OpenStruct.new(ids: week_ids_params)))
     end
 
@@ -110,9 +109,6 @@ module Finders
         )
         query = query.merge(
           weekly_framed_scopes(:uncompleted_with_max_candidates)
-        )
-        query = query.merge(
-          weekly_framed_scopes(:ignore_max_internship_offer_weeks_reached)
         )
       else
         query = query.merge(InternshipOffers::FreeDate.ignore_already_applied(user: user))

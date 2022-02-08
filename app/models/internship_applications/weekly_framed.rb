@@ -6,9 +6,9 @@ module InternshipApplications
 
     after_save :update_all_counters
 
-    # validates :week_id,
-    #           presence: true,
-    #           unless: :application_via_school_manager?
+    validates :week_id,
+              presence: true,
+              unless: :application_via_school_manager?
     validates :student, uniqueness: { scope: [:internship_offer_id, :week_id] }
 
     before_validation :at_most_one_application_per_student?, on: :create
@@ -29,7 +29,7 @@ module InternshipApplications
     end
 
     def internship_offer_week_has_spots_left?
-      return if internship_offer.internship_offer_weeks.where(week_id: week.id).first.try(:has_spots_left?)
+      return if internship_offer.internship_offer_weeks.find_by(week_id: week.id).try(:has_spots_left?)
       errors.add(:week, :has_no_spots_left)
     end
 

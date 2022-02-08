@@ -35,32 +35,23 @@ module InternshipOffers
         where(offers_ar[:id].not_in(full_offers_ids))
       }
 
-      scope :ignore_max_candidates_reached, lambda { # Retourner toutes les offres qui ont au moins une semaine de libre ???
+      # Retourner toutes les offres qui ont au moins une semaine de libre ???
+      scope :ignore_max_candidates_reached, lambda { 
         offer_weeks_ar = InternshipOfferWeek.arel_table
         offers_ar      = InternshipOffer.arel_table
 
         joins(:internship_offer_weeks)
-          .select('internship_offers.*, count(internship_offers.id)')
+          .select(offers_ar[Arel.star], offers_ar[:id].count)
           .left_joins(:internship_applications)
           .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_students_per_group]))
           .where(offers_ar[:id].not_in(InternshipOffers::WeeklyFramed.fulfilled.pluck(:id)))
           .group(offers_ar[:id])
       }
 
-      scope :without_max_candidates_reached, lambda {
-        offer_weeks_ar = InternshipOfferWeek.arel_table
-        offers_ar      = InternshipOffer.arel_table
-
-        joins(:internship_offer_weeks)
-          .select('internship_offers.*, count(internship_offers.id)')
-          .left_joins(:internship_applications)
-          .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_students_per_group]))
-          .group(offers_ar[:id])
-      }
-
-      scope :ignore_max_internship_offer_weeks_reached, lambda {
-        where('internship_offer_weeks_count > blocked_weeks_count')
-      }
+      
+      # scope :ignore_max_internship_offer_weeks_reached, lambda {
+      #   where('internship_offer_weeks_count > blocked_weeks_count')
+      # }
 
       scope :specific_school_year, lambda { |school_year:|
         week_ids = Week.weeks_of_school_year(school_year: school_year).pluck(:id)

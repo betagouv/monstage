@@ -62,15 +62,9 @@ module InternshipOffers
     validates :remote_id, uniqueness: { scope: :employer_id }
     validates :permalink, presence: true, format: { without: /.*(test|staging).*/i, message: "Le lien ne doit pas renvoyer vers un environnement de test." }
 
-    #scope :uncompleted_with_max_candidates, lambda {
-    #  applications_ar = InternshipApplication.arel_table
-    #  offers_ar       = InternshipOffer.arel_table
-    #  
-    #  left_joins(:internship_applications)
-    #    .select('internship_offers.*, COUNT(internship_applications)')
-    #    .group(offers_ar[:id])
-    #    .having("count(internship_applications.id) < internship_offers.max_candidates")
-    #}
+    scope :uncompleted_with_max_candidates, lambda {
+      where(true)
+    }
 
     scope :fulfilled, lambda {
       applications_ar = InternshipApplication.arel_table

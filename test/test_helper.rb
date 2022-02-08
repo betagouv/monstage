@@ -22,6 +22,8 @@ require 'webdrivers/chromedriver'
 Webdrivers::Chromedriver.required_version = '97.0.4692.71' # works ok locally
 # Webdrivers::Chromedriver.required_version = '89.0.4389.114' # declared on CI but not working locally with that line
 
+Capybara.save_path = Rails.root.join('tmp/screenshots')
+
 Minitest::Retry.use!(
   retry_count: 3,
   verbose: true,
@@ -42,9 +44,6 @@ WebMock.disable_net_connect!(
     /api-adresse.data.gouv.fr/
   ]
 )
-
-Capybara.save_path = Rails.root.join('tmp/screenshots')
-
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
