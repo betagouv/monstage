@@ -50,6 +50,8 @@ class IndexTest < ActionDispatch::IntegrationTest
     student = create(:student, school: school, class_room: class_room)
     internship_offer_with_application = create(
       :weekly_internship_offer,
+      max_candidates: 2,
+      max_students_per_group: 2,
       title: 'offer with_application',
       weeks: weeks)
 
@@ -67,7 +69,7 @@ class IndexTest < ActionDispatch::IntegrationTest
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_internship_offer_weeks_reached.count
+        assert_equal 2, InternshipOffers::WeeklyFramed.uncompleted_with_max_candidates.count
         get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer_with_application)
         assert_presence_of(internship_offer: internship_offer_without_application)
