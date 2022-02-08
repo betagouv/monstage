@@ -44,8 +44,6 @@ WebMock.disable_net_connect!(
     /api-adresse.data.gouv.fr/
   ]
 )
-
-
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
