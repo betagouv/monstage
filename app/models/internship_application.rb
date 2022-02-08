@@ -12,6 +12,7 @@ class InternshipApplication < ApplicationRecord
   belongs_to :student, class_name: 'Users::Student',
                        foreign_key: 'user_id'
   has_one :internship_agreement
+  # has_many :internship_applications
 
   delegate :update_all_counters, to: :internship_application_counter_hook
   delegate :name, to: :student, prefix: true
@@ -84,6 +85,8 @@ class InternshipApplication < ApplicationRecord
   scope :with_active_students, lambda{
     joins(:student).where('users.discarded_at is null')
   }
+
+  scope :not_drafted, ->{ where.not(aasm_state: 'drafted') }
 
   #
   # Other stuffs
@@ -206,8 +209,8 @@ class InternshipApplication < ApplicationRecord
     event :signed do
       transitions from: :approved, to: :convention_signed, after: proc { |*_args|
         update!(convention_signed_at: Time.now.utc)
-        if respond_to?(:internship_offer_week)
-          student.expire_application_on_week(week: internship_offer_week.week,
+        if respond_to?(:week)
+          student.expire_application_on_week(week: week,
                                              keep_internship_application_id: id)
         end
       }

@@ -75,9 +75,9 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  scope :ignore_max_internship_offer_weeks_reached, lambda {
-    all # TODO : specs for FreeDate required
-  }
+  # scope :ignore_max_internship_offer_weeks_reached, lambda {
+  #   all # TODO : specs for FreeDate required
+  # }
 
   scope :school_track, lambda { |school_track:|
     where(school_track: school_track)
@@ -93,6 +93,10 @@ class InternshipOffer < ApplicationRecord
 
   scope :free_date, lambda {
     where(type: InternshipOffers::FreeDate.name)
+  }
+
+  scope :ignore_already_applied, lambda { |user:|
+    where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
   has_many :internship_applications, as: :internship_offer,
