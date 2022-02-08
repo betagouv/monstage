@@ -48,17 +48,7 @@ module InternshipOffers
           .group(offers_ar[:id])
       }
 
-      scope :without_max_candidates_reached, lambda {
-        offer_weeks_ar = InternshipOfferWeek.arel_table
-        offers_ar      = InternshipOffer.arel_table
-
-        joins(:internship_offer_weeks)
-          .select('internship_offers.*, count(internship_offers.id)')
-          .left_joins(:internship_applications)
-          .where(offer_weeks_ar[:blocked_applications_count].lt(offers_ar[:max_students_per_group]))
-          .group(offers_ar[:id])
-      }
-
+      
       # scope :ignore_max_internship_offer_weeks_reached, lambda {
       #   where('internship_offer_weeks_count > blocked_weeks_count')
       # }
