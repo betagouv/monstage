@@ -50,10 +50,6 @@ module Dashboard
                     {count: 0},
                     'rendering legend on select-weeks does not makes sense for school management')
       available_weeks.each do |week|
-        assert_select("input#school_week_ids_#{week.id}_checkbox[disabled='disabled']",
-                      { count: 0 },
-                      "other week should not be not selectable")
-
         assert_select("input#school_week_ids_#{week.id}_checkbox",
                       { count: 1 },
                       "other week should be selectable")  
