@@ -4,16 +4,13 @@
 - unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
 - if unaffected_students.present?
   div data-controller='students'
-    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block') do
-      .row.mt-3
-        .col-8.text-danger.font-weight-bold
-          .row.pt-2
-            .col1.lead
-              i.fa.fa-exclamation-triangle
-            .col-11
-              small.font-weight-bold
-              | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
-        .col-4.text-right
+    = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
+      .row.align-items-center
+        .col-auto.text-primary
+          i.fas.fa-2x.fa-exclamation-triangle
+        .col.text-primary
+          | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
+        .col-12.col-sm-4.pt-3.pt-sm-0
           = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
 
       .row
@@ -45,7 +42,8 @@
 
 - Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
   .row.mt-5
-    h5.mb-0= tr_school_track(school_track)
+    .col-12
+      h5.mb-0= tr_school_track(school_track)
   .row
     table.table.table-hover.table-rg2a.table-sticky-thead
       - cols = ["Classe",

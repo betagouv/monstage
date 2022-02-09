@@ -50,14 +50,13 @@ fieldset.mt-4 data-controller='organisation-form'
           small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
         = form.url_field :employer_website, class: 'form-control', placeholder: "https://"
       - if submit_button
-        - if params[:internship_offer_info_id].present?
-          = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                    class: 'btn btn-primary' do
-            .mt-3
-              ="Suivant "
-              i.fas.fa-arrow-right
-        - else
-          .mt-3
+        .mt-3
+          - if params[:internship_offer_info_id].present?
+            = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+                      class: 'btn btn-primary' do
+                ="Suivant "
+                i.fas.fa-arrow-right
+          - else
             = button_tag :submit, class: 'btn btn-primary' do
               ="Suivant "
               i.fas.fa-arrow-right

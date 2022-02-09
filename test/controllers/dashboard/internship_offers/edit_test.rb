@@ -69,7 +69,7 @@ module Dashboard::InternshipOffers
       internship_application = create(:weekly_internship_application,
                                       :submitted,
                                       internship_offer: internship_offer,
-                                      internship_offer_week: internship_offer.internship_offer_weeks[0])
+                                      week: internship_offer.internship_offer_weeks[0].week)
 
       travel_to(weeks.first.week_date - 1.week) do
         get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
@@ -79,13 +79,6 @@ module Dashboard::InternshipOffers
         internship_offer.weeks.each do |week|
           assert_select 'label', text: week.select_text_method
         end
-
-        assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[0].week_id}_checkbox[disabled='disabled']",
-                      { count: 1 },
-                      "internship_application week should not be selectable")
-
-        assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[0].week_id}_hidden",
-                      { count: 1 })
 
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}[disabled='disabled']",
                       { count: 0 },

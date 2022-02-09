@@ -81,7 +81,7 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :type,
-            :internship_offer_week_id,
+            :week_id,
             :internship_offer_id,
             :internship_offer_type,
             :motivation,

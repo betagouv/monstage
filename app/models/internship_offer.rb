@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "sti_preload"
 class InternshipOffer < ApplicationRecord
+  include StiPreload
   PAGE_SIZE = 30
   EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT = 250
   MAX_CANDIDATES_HIGHEST = 200
@@ -73,9 +75,9 @@ class InternshipOffer < ApplicationRecord
     all # TODO : max_candidates specs for FreeDate required
   }
 
-  scope :ignore_max_internship_offer_weeks_reached, lambda {
-    all # TODO : specs for FreeDate required
-  }
+  # scope :ignore_max_internship_offer_weeks_reached, lambda {
+  #   all # TODO : specs for FreeDate required
+  # }
 
   scope :school_track, lambda { |school_track:|
     where(school_track: school_track)
@@ -91,6 +93,10 @@ class InternshipOffer < ApplicationRecord
 
   scope :free_date, lambda {
     where(type: InternshipOffers::FreeDate.name)
+  }
+
+  scope :ignore_already_applied, lambda { |user:|
+    where.not(id: InternshipApplication.where(user_id: user.id).map(&:internship_offer_id))
   }
 
   has_many :internship_applications, as: :internship_offer,
@@ -237,5 +243,9 @@ class InternshipOffer < ApplicationRecord
 
   def with_applications?
     self.internship_applications.count.positive?
+  end
+
+  def weekly_planning?
+    weekly_hours.any?(&:present?)
   end
 end

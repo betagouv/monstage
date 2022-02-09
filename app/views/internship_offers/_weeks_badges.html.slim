@@ -2,7 +2,7 @@
   - weeks = internship_offer.weeks.selectable_on_school_year.uniq
   - presenter = Presenters::WeekList.new(weeks: weeks)
   / - presenter = presenter.student_compatible_week_list(current_user) if current_user&.student?
-  
+
   - presenter.split_weeks_in_trunks.each do |presenter_week_list|
     .d-none.d-sm-block
       span.badge.badge-pill.badge-secondary.mr-2.mt-2

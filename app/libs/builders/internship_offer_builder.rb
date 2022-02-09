@@ -109,6 +109,8 @@ module Builders
         weekly_hours: internship_offer_info.weekly_hours,
         new_daily_hours: internship_offer_info.new_daily_hours,
         sector_id: internship_offer_info.sector_id,
+        daily_lunch_break: internship_offer_info.daily_lunch_break,
+        weekly_lunch_break: internship_offer_info.weekly_lunch_break,
         school_track: internship_offer_info.school_track,
         type: internship_offer_info.type.gsub('Info', ''),
       }

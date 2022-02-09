@@ -1,6 +1,5 @@
 - content_for(:page_title, "#{t(".page_title", name: @internship_offer.title)} | Monstage")
 - content_for(:canonical_url, internship_offer_url(@internship_offer))
-
 div data-controller="internship-application-form"
   .row.no-gutters [data-controller='list-navigation'
                    data-list-navigation-next-url-value=listable_internship_offer_path(@next_internship_offer)

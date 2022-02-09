@@ -250,7 +250,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offers_path
     click_link 'Postuler'
     # below : 'Pas encore de compte ? Inscrivez-vous'
-    find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
+    find(".text-danger.font-weight-bold.test-offer-id-#{offer.id}").click
 
     # signup as student
     assert_difference('Users::Student.count', 1) do

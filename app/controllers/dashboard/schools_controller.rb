@@ -72,7 +72,6 @@ module Dashboard
                                      :street,
                                      :name,
                                      :visible,
-                                     :agreement_conditions_rich_text,
                                      coordinates: {},
                                      week_ids: [])
     end

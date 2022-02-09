@@ -21,7 +21,7 @@ class AbilityTest < ActiveSupport::TestCase
     internship_application = create(:weekly_internship_application,
                                     student: student,
                                     internship_offer: internship_offer,
-                                    internship_offer_week: internship_offer.internship_offer_weeks.first)
+                                    week: internship_offer.internship_offer_weeks.first.week)
 
     assert(ability.can?(:look_for_offers, student), 'students should be able to look for offers')
     assert(ability.can?(:read, InternshipOffer.new),
@@ -64,7 +64,8 @@ class AbilityTest < ActiveSupport::TestCase
     alt_free_date_internship_offer = create(:free_date_internship_offer, employer: another_employer)
     alt_free_date_internship_offer.update_columns(first_date: Date.new(2020, 9 ,1), last_date: Date.new(2020, 9,2))
     internship_application = create(:weekly_internship_application, internship_offer: internship_offer)
-    internship_agreement = create(:internship_agreement, internship_application: internship_application)
+    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
     ability = Ability.new(employer)
 
     assert(ability.can?(:supply_offers, employer), 'employers are to be able to supply offers')
@@ -129,14 +130,15 @@ class AbilityTest < ActiveSupport::TestCase
     assert(ability.can?(:create_remote_internship_request, SupportTicket),
            'employers should be able to ask how ask for remote internships support')
     %i[
-       create
-       update
-       edit_weekly_hours
-       edit_organisation_representative_full_name
-       edit_tutor_full_name
-       edit_date_range
-       edit_activity_scope_rich_text
-       edit_activity_learnings_rich_text
+    create
+    update
+    edit_weekly_hours
+    edit_organisation_representative_full_name
+    edit_tutor_full_name
+    edit_date_range
+    edit_activity_scope_rich_text
+    edit_activity_learnings_rich_text
+    edit_complementary_terms_rich_text
     ].each do |meth|
       assert(ability.can?(meth, internship_agreement), "Employer fail: #{meth}")
     end
@@ -160,6 +162,7 @@ class AbilityTest < ActiveSupport::TestCase
     refute ability.can?(:apply, create(:weekly_internship_offer))
     refute ability.can?(:apply, create(:free_date_internship_offer))
     refute ability.can?(:apply, create(:api_internship_offer))
+    assert ability.can?(:new, InternshipAgreement)
     assert ability.can?(:see_reporting_dashboard, User)
     assert ability.can?(:see_reporting_internship_offers, User)
     assert ability.can?(:see_reporting_schools, User)
@@ -246,8 +249,9 @@ class AbilityTest < ActiveSupport::TestCase
     another_school = create(:school)
     school_manager = create(:school_manager, school: school)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement = create(:internship_agreement, internship_application: internship_application)
     invitation = create(:invitation, user_id: school_manager.id)
+    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                  internship_application: internship_application)
     ability = Ability.new(school_manager)
 
     assert(ability.can?(:create_invitation, Invitation))
@@ -287,13 +291,13 @@ class AbilityTest < ActiveSupport::TestCase
        update
        see_intro
        edit_school_representative_full_name
-       edit_terms_rich_text
+       edit_legal_terms_rich_text
        edit_student_full_name
        edit_student_school
-       edit_terms_rich_text
+       edit_legal_terms_rich_text
        edit_school_representative_full_name
        edit_student_school
-       edit_financial_conditions_rich_text].each do |meth|
+       edit_complementary_terms_rich_text].each do |meth|
       assert(ability.can?(meth, internship_agreement))
     end
   end
@@ -306,7 +310,8 @@ class AbilityTest < ActiveSupport::TestCase
     class_room = create(:class_room, school: school)
     main_teacher = create(:main_teacher, school: school, class_room: class_room)
     internship_application = create(:weekly_internship_application, student: student)
-    internship_agreement = create(:internship_agreement, internship_application: internship_application)
+    internship_agreement   = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                    internship_application: internship_application)
     ability = Ability.new(main_teacher)
 
     assert(ability.can?(:welcome_students, main_teacher),

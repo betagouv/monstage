@@ -53,14 +53,18 @@ Rails.application.routes.draw do
 
   namespace :dashboard, path: 'dashboard' do
     resources :support_tickets, only: %i[new create]
-    resources :internship_agreements,   except: %i[index]
+    resources :internship_agreements,  except: %i[destroy]
     resources :internship_applications, only: %i[index]
 
     resources :schools, only: %i[index edit update show] do
       resources :invitations, only: %i[new create index destroy], module: 'schools'
       get '/resend_invitation', to: 'schools/invitations#resend_invitation', module: 'schools'
       resources :users, only: %i[destroy update index], module: 'schools'
+
+
       resources :internship_applications, only: %i[index], module: 'schools'
+      resources :internship_agreement_presets, only: %i[edit update],  module: 'schools'
+
       resources :class_rooms, only: %i[index new create edit update show destroy], module: 'schools' do
         resources :students, only: %i[show update], module: 'class_rooms'
       end
@@ -121,4 +125,8 @@ Rails.application.routes.draw do
   get '/dashboard/internship_offers/:id', to: redirect('/internship_offers/%{id}', status: 302)
 
   root to: 'pages#home'
+
+  get '/404', to: 'errors#not_found'
+  get '/422', to: 'errors#unacceptable'
+  get '/500', to: 'errors#internal_error'
 end

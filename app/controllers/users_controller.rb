@@ -64,7 +64,8 @@ class UsersController < ApplicationController
                                  :resume_languages,
                                  :password,
                                  :password_confirmation,
-                                 :role)
+                                 :role,
+                                 banners: {})
   end
 
   def current_section

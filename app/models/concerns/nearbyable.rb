@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Nearbyable
-  DEFAULT_NEARBY_RADIUS_IN_METER = 60_000
+  DEFAULT_NEARBY_RADIUS_IN_METER = 10_000
   extend ActiveSupport::Concern
 
   included do
@@ -56,7 +56,7 @@ module Nearbyable
       [
         street,
         zipcode,
-        city
+        city.try(&:capitalize)
       ].compact.uniq.join(' ')
     end
 
