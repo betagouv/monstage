@@ -69,19 +69,7 @@
       <% end %>
 
       <% if can?(:choose_gender_and_birthday, resource) %>
-        <div class="form-group custom-label-container" data-controller="a11y-date-input">
-          <%= f.text_field :birth_date,
-                           value: resource.try(:birth_date).try(:strftime,'%d/%m/%Y'),
-                           class: 'form-control',
-                           required: true,
-                           placeholder: 'jj/mm/aaaa',
-                           data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' } %>
-          <%= f.label :birth_date do %>
-            Date de naissance
-            <%= f.rg2a_required_content_tag %>
-          <% end %>
-          <small class="form-text text-danger d-none" data-a11y-date-input-target="errorContainer"></small>
-        </div>
+        <%= render partial: "inputs/date_input", locals: { form: f, container_class_name: "form-group", attribute_name: :birth_date, attribute_label: 'Date de naissance' } %>
 
         <fieldset class="form-group">
           <legend class="label">

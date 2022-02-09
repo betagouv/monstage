@@ -1,4 +1,8 @@
 // border position solid
+.b-none{
+  border: none;
+}
+
 .bt-0{
   border-top: none;
 }
@@ -45,21 +49,24 @@
 .bc-light{
   border-color: $nav-tabs-border-color;
 }
+.rounded-circle-right-input{
+  border-top-right-radius: $input-border-radius!important;
+  border-bottom-right-radius:$input-border-radius!important;
+}
 .bc-stats{
   border-color: rgb(73,61,96);
 }
-
 .rounded-circle-right{
   border-top-left-radius:0;
   border-bottom-left-radius:0;
-  border-top-right-radius-radius:100%;
-  border-bottom-right-radius-radius:100%;
+  border-top-right-radius:100%;
+  border-bottom-right-radius:100%;
 }
 .rounded-circle-left{
   border-top-left-radius:100%;
   border-bottom-left-radius:100%;
-  border-top-right-radius-radius:0;
-  border-bottom-right-radius-radius:0;
+  border-top-right-radius:0;
+  border-bottom-right-radius:0;
 }
 
 .border-class-type{

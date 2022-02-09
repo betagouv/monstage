@@ -10,6 +10,20 @@ class SchoolTest < ActiveSupport::TestCase
     assert_not_empty school.errors[:zipcode]
   end
 
+  test 'nested objects on creation' do
+    assert create(:school).internship_agreement_preset.present?
+  end
+
+  test 'Agreement association' do
+    school = create(:school, :with_agreement_presets)
+    student = create(:student, :troisieme_generale, school: school)
+    internship_application = create(:weekly_internship_application, user_id: student.id)
+    internship_agreement = create(:troisieme_generale_internship_agreement, :created_by_system,
+                                  internship_application: internship_application)
+
+    assert school.internship_agreements.include?(internship_agreement)
+  end
+
   test 'Users associations' do
     school = create(:school)
 

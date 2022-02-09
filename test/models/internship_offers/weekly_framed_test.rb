@@ -74,24 +74,25 @@ module InternshipsOffers
       internship_offer = create(:weekly_internship_offer,
                                 max_candidates: 2,
                                 max_students_per_group: 1,
-                                weeks: [Week.first, Week.last])
+                                weeks: Week.first(3))
       assert_equal 0, InternshipOffers::WeeklyFramed.fulfilled.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
       second_io_week = internship_offer.internship_offer_weeks.second
+      third_io_week = internship_offer.internship_offer_weeks.last
       create(:weekly_internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
-             internship_offer_week: first_io_week)
+             week: first_io_week.week)
       assert_equal 0, InternshipOffers::WeeklyFramed.fulfilled.to_a.count
       create(:weekly_internship_application,
             :submitted,
             internship_offer: second_io_week.internship_offer,
-            internship_offer_week: second_io_week)
+            week: second_io_week.week)
       assert_equal 0, InternshipOffers::WeeklyFramed.fulfilled.to_a.count
       create(:weekly_internship_application,
             :approved,
             internship_offer: second_io_week.internship_offer,
-            internship_offer_week: second_io_week)
+            week: third_io_week.week)
       assert_equal 1, InternshipOffers::WeeklyFramed.fulfilled.to_a.count
     end
 
@@ -99,24 +100,25 @@ module InternshipsOffers
       internship_offer = create(:weekly_internship_offer,
                                 max_candidates: 2,
                                 max_students_per_group: 1,
-                                weeks: [Week.first, Week.last])
+                                weeks: Week.first(3))
       assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.count
       first_io_week = internship_offer.internship_offer_weeks.first
       second_io_week = internship_offer.internship_offer_weeks.second
+      third_io_week = internship_offer.internship_offer_weeks.last
       create(:weekly_internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
-             internship_offer_week: first_io_week)
+             week: first_io_week.week)
       assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.count
       create(:weekly_internship_application,
             :submitted,
             internship_offer: second_io_week.internship_offer,
-            internship_offer_week: second_io_week)
+            week: second_io_week.week)
       assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.count
       create(:weekly_internship_application,
             :approved,
             internship_offer: second_io_week.internship_offer,
-            internship_offer_week: second_io_week)
+            week: third_io_week.week)
       assert_equal 0, InternshipOffers::WeeklyFramed.uncompleted.count
     end
 
@@ -125,23 +127,28 @@ module InternshipsOffers
                                 max_candidates: 2,
                                 max_students_per_group: 2,
                                 weeks: [Week.first, Week.last])
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
+
+      assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
+      # assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
       create(:weekly_internship_application,
              :approved,
              internship_offer: first_io_week.internship_offer,
-             internship_offer_week: first_io_week)
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
+             week: first_io_week.week)
+      assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
       create(:weekly_internship_application,
             :submitted,
             internship_offer: first_io_week.internship_offer,
-            internship_offer_week: first_io_week)
-      assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
+            week: first_io_week.week)
+      assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
       create(:weekly_internship_application,
             :approved,
             internship_offer: first_io_week.internship_offer,
-            internship_offer_week: first_io_week)
-      assert_equal 0, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
+            week: first_io_week.week)
+      internship_offer.reload
+
+
+      assert_equal 0, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
     end
 
     test 'has spots left' do
@@ -150,10 +157,10 @@ module InternshipsOffers
       assert internship_offer.has_spots_left?
 
       internship_offer.internship_offer_weeks.each do |internship_offer_week|
-        internship_offer.max_candidates.times do
+        (internship_offer.max_candidates - 1).times do
           create(:weekly_internship_application, internship_offer: internship_offer_week.internship_offer,
-                                                 internship_offer_week: internship_offer_week,
-                                                 aasm_state: 'convention_signed')
+                                                 week: internship_offer_week.week,
+                                                 aasm_state: 'approved')
         end
       end
       internship_offer.reload

@@ -10,7 +10,6 @@ ruby '2.7.2'
 gem 'actionpack', ">= 6.1.3.2"
 gem "rails", "~> 6.1.4.4"
 gem 'puma'
-
 # db
 gem 'pg'
 # pg extension for geo queries
@@ -26,6 +25,7 @@ gem 'prawn-styled-text'
 gem 'uglifier'
 gem 'inline_svg'
 gem 'slim-rails'
+gem "view_component", require: "view_component/engine"
 gem 'turbolinks'
 gem "react_on_rails"
 gem 'webpacker'

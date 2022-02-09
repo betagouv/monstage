@@ -1,0 +1,70 @@
+- preselect_all = preselect_all_weeks?(form.object)
+
+div [data-controller="select-weeks"
+     data-internship-offer-infos-target='weeksContainer'
+     data-select-weeks-skip-validation-value="false"]
+  .form-group
+    - if label.present?
+      div.label
+        = label
+        = form.rg2a_required_content_tag
+
+    - if render_employer_components
+      - allow_select_all = !form.object.is_fully_editable?
+      .custom-control.custom-checkbox.mb-1
+        = check_box_tag 'all_year_long',
+                        false,
+                        preselect_all,
+                        { class: 'custom-control-input',
+                          disabled: allow_select_all,
+                          data: { "internship-offer-infos-target": "allYearLong",
+                                  action: "change->select-weeks#handleToggleWeeks"}}
+        = label_tag 'all_year_long', class: 'custom-control-label' do
+          | Toute l'année scolaire
+
+          = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
+
+    div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
+      .custom-control-checkbox-list
+        - current_weeks.map do |week|
+          .custom-control.custom-checkbox.position-relative.pr-3.my-2
+            - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
+            - has_applications = week.has_applications?(root: form.object)
+            - # keep reference of checkbox id for easier labelling
+            - checkbox_id = "#{form.object_name}_week_ids_#{week.id}_checkbox"
+            - # also add an id for hidden field for two reason, avoid conflict, testing
+            - hidden_id = "#{form.object_name}_week_ids_#{week.id}_hidden"
+
+            = form.check_box :week_ids, { multiple: true,
+                                          id: checkbox_id,
+                                          class: 'custom-control-input',
+                                          disabled: has_applications,
+                                          data: {:"select-weeks-target" => 'weekCheckboxes',
+                                                 action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
+                                          week.id,
+                                          false
+
+            - if has_applications
+              = form.hidden_field :week_ids,
+                                  value: week.id,
+                                  multiple: true,
+                                  id: hidden_id
+
+            = form.label :"week_id", for: checkbox_id, class: 'custom-control-label' do
+              = week.select_text_method
+
+            div.position-absolute.badge-week-density.rounded.d-none data-select-weeks-target='inputWeekLegend' data-week-id=week.id
+              | ?
+
+      - if render_employer_components
+        .custom-control-checkbox-legend data-select-weeks-target="legendContainer" data-test='select-week-legend'
+          .row.align-items-center
+            .col-6
+              p.mb-0.font-weight-bold Les établissements autour de vous ont tendance à choisir ces dates
+            .col-6
+              .row
+                .col-4 Faible
+                .col-4.badge-legend.rounded
+                .col-4 Forte
+
+    .form-text.text-primary.d-none data-select-weeks-target="hint" Veuillez saisir au moins une semaine de stage

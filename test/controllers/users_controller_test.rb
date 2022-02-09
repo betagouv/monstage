@@ -138,6 +138,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="user[email]"][readonly="readonly"]'
   end
 
+  test 'PATCH edit as employer, updates banners' do
+    employer = create(:employer, banners:{})
+    sign_in(employer)
+
+    assert_changes -> { employer.reload.banners.key?("background") } do
+      patch(account_path, params: { user: { banners: { background: true }}})
+      assert_response :found
+    end
+  end
+
   test 'PATCH edit as student, updates resume params' do
     student = create(:student)
     sign_in(student)

@@ -1,7 +1,7 @@
 fieldset.mt-4
-  legend.my-4 Informations complémentaires
-  .row.mt-3
-    .col-lg-6.col-md-12.order-lg-1.order-2
+  legend.my-4 Informations sur le tuteur
+  .row.mt-3.d-flex.flex-row-reverse
+    .col-12.col-md-6
       = form.rg2a_explain_required_asterisk
       p.small.text-muted Les coordonnées du tuteur seront uniquement transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire.
       .form-group
@@ -33,14 +33,13 @@ fieldset.mt-4
       - if submit_button
         .actions
           .row.mt-5
-            .col-6.text-left style="display: flex;align-items: center"
-              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                        title: 'Revenir à la modification de l\'offre' do
-                i.fa.fa-arrow-left
-                = " Précédent"
-            .col-6.text-right
+            .col-4.text-left
               = form.submit "Publier l'offre !", class: 'btn btn-primary' do
                 i.fas.fa-arrow-right
+
+            .col-8.text-left style="display: flex;align-items: center"
+              = link_to 'Précédent', edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]), title: 'Revenir à la modification de l\'offre'
+              
     - warning_block = true if warning_block.nil?
     - if warning_block
       .col-lg-6.col-md-12.order-md-2.order-1.employer

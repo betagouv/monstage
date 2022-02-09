@@ -39,7 +39,7 @@ class ReservedSchoolInput extends React.Component {
             <input
               type="checkbox"
               name="is_reserved"
-              id="is_reserved"
+              className="is_reserved"
               value="true"
               checked={checkedOrHasExistingSchool}
               onChange={this.handleChange}

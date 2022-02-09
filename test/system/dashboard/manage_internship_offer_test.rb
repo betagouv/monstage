@@ -219,7 +219,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       io.reload
 
       # 2020-21
-      create(:weekly_internship_application, :approved, internship_offer: target_offer)
+      application = create(:weekly_internship_application, :approved, internship_offer: target_offer)
 
       sign_in(employer)
       visit dashboard_internship_offers_path
@@ -238,14 +238,14 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find('.nav-link.active', text: "Dépubliées (0)")
 
       select('2019/2020')
-      find('.nav-link.active', text: "Dépubliées (1)")
-
-      if ENV['CONVENTION_ENABLED']
-        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-        click_link('Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      end
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
+      click_link('Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
     end
   end
 end

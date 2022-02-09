@@ -5,7 +5,8 @@ class Week < ApplicationRecord
   include FormatableWeek
   has_many :internship_offer_weeks, dependent: :destroy,
                                     foreign_key: :week_id
-  has_many :internship_applications, through: :internship_offer_weeks
+  has_many :internship_applications, dependent: :destroy,
+                                    foreign_key: :week_id
 
   has_many :internship_offers, through: :internship_offer_weeks
 
@@ -25,6 +26,14 @@ class Week < ApplicationRecord
 
   scope :by_year, lambda { |year:|
     where(year: year)
+  }
+
+  scope :from_now, lambda { 
+    where('number >= ?', Date.current.cweek).where('year >= ?', Date.current.year) 
+  }
+
+  scope :in_the_future, lambda { 
+    where('number > ?', Date.current.cweek).where('year >= ?', Date.current.year) 
   }
 
   scope :from_date_for_current_year, lambda { |from:|
@@ -74,6 +83,11 @@ class Week < ApplicationRecord
      .or(where('number <= ?', last_day_of_may_week).where( year: school_year + 1))
   }
 
+  scope :available_for_student, lambda { |user:|
+    where(id: user.school.weeks)
+    # .where(id: internship_offer.weeks)
+  }
+
   WEEK_DATE_FORMAT = '%d/%m/%Y'
 
   def self.current
@@ -106,6 +120,10 @@ class Week < ApplicationRecord
     end
   end
 
+  def consecutive_to?(other_week)
+    self.id.to_i == other_week.id.to_i + 1
+  end
+
   def self.airtablize(school_year = SchoolYear::Current.new)
     school_year_str = "#{school_year.beginning_of_period.year}-#{school_year.end_of_period.year}"
     weeks = Week.selectable_for_school_year(school_year: school_year)
@@ -117,9 +135,5 @@ class Week < ApplicationRecord
         csv << [w.select_text_method, w.id, school_year_str]
       end
     end
-  end
-
-  def consecutive_to?(other_week)
-    id.to_i == other_week.id.to_i + 1
   end
 end
