@@ -5,7 +5,7 @@
 
   "repository": "https://github.com/betagouv/monstage",
 
-  "stack": "heroku-18",
+  "stack": "heroku-20",
   "buildpacks": [{
       "url": "heroku/ruby"
   }],
@@ -52,6 +52,7 @@
     }
   },
   "engines": {
-    "yarn": "1.22.17"
+    "yarn": "1.22.17",
+    "node": "14.18.0"
   }
 }
