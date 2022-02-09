@@ -30,7 +30,12 @@ p style=p_styles
     li = @internship_application.internship_offer.tutor_email
     li = Presenters::User.new(OpenStruct.new(phone: @internship_application.internship_offer.tutor_phone)).pretty_phone_number
 
-= render(partial: "mailers/call_to_action", locals: {href: dashboard_students_internship_application_url(@internship_application.student, @internship_application), label: "Remplir la convention de stage"})
+- if @student.troisieme_generale?
+  p style=p_styles
+    = "La prochaine étape est administrative"
+  = render partial: "mailers/call_to_action",
+          locals: {href: @url,
+                    label: "Remplir la convention de stage"}
 
 p style=p_styles
   | A très bientôt

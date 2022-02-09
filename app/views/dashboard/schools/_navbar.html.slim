@@ -1,56 +1,64 @@
-- badge_counter = SchoolTabFinder.new(school: school) if current_user.school_manager?
-- badge_counter = MainTeacherTabFinder.new(main_teacher: current_user) if current_user.main_teacher?
-- badge_counter = NullTabFinder.new if badge_counter.nil?
+- badge_counter = Finders::TabSchoolManager.new(school: school) if current_user.school_manager?
+- badge_counter = Finders::TabMainTeacher.new(main_teacher: current_user) if current_user.main_teacher?
+- badge_counter = Finders::TabNull.new if badge_counter.nil?
 
 - if can? :create_remote_internship_request, SupportTicket
-    = render partial: 'dashboard/remote_internship_block'
+  .row= render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
 
 .row.mb-2
-  .d-flex style="align-items: baseline"
-    h1.h3.mr-3= school.name
-    a.ml-2.text-danger href="#{account_path(section: 'school')}" Modifier
+  .col-12
+    .d-flex style="align-items: baseline"
+      h1.h3.mr-3= school.name
+      a.ml-2.text-danger href="#{account_path(section: 'school')}" Modifier
 
--if defined?(render_ux_guidelines)
+- if defined?(render_ux_guidelines)
   = render partial: 'dashboard/schools/ux_classrooms_and_weeks_guidelines', locals: {school: school }
 
 .row
-  ul.nav.nav-tabs.test-dashboard-nav.mb-2
-    li.nav-item
-      = link_to dashboard_school_class_rooms_path(school),
-                class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
-        | Classes &nbsp;
-        - if badge_counter.student_without_class_room_count.size.positive?
-          span.badge-pill.badge-danger.small= badge_counter.student_without_class_room_count
+  .col-12
+    ul.nav.nav-tabs.test-dashboard-nav.mb-2.nav-xs-inline
+      li.nav-item
+        = link_to dashboard_school_class_rooms_path(school),
+                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
+          | Classes &nbsp;
+          - if badge_counter.student_without_class_room_count.size.positive?
+            span.badge-pill.badge-danger.small= badge_counter.student_without_class_room_count
 
-    - if can? :manage_school_users, school
-      li.nav-item
-        = link_to "Personnels", dashboard_school_users_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_users_path(school)) ? 'active' : ''}"
+      - if can? :manage_school_users, school
+        li.nav-item
+          = link_to "Personnels", dashboard_school_users_path(school),
+                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_users_path(school)) ? 'active' : ''}"
 
-    - if can? :edit, school
-      li.nav-item
-        = link_to "Semaines", edit_dashboard_school_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
+      - if can? :edit, school
+        li.nav-item
+          = link_to "Semaines", edit_dashboard_school_path(school),
+                    class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
 
-    - if ENV['CONVENTION_ENABLED'] && can?(:create, InternshipAgreement)
-      li.nav-item
-        = link_to dashboard_school_internship_applications_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_internship_applications_path(school)) ? 'active' : ''}" do
-          ' Conventions à signer &nbsp;
-          - if badge_counter.approved_application_count.positive?
-            span.badge-pill.badge-danger.small= badge_counter.approved_application_count
-    /Remove code after  February, 15th 2022 or uncomment
-    /- if can? :create_remote_internship_request, SupportTicket 
-      li.nav-item
-        = link_to new_dashboard_support_ticket_path,
-                  class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
-          | Stages à distance
+      - if can?(:edit, InternshipAgreement) && current_user.school.internship_agreement_open?
+        li.nav-item
+          = link_to dashboard_internship_agreements_path,
+                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
+            | Mes Conventions de stages &nbsp;
+            - if badge_counter.pending_agreements_count.positive?
+              span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
+      - if can?(:create_remote_internship_request, SupportTicket)
+        li.nav-item
+          = link_to new_dashboard_support_ticket_path,
+                    class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
+            | Stages à distance
 
-    - if ENV['CONVENTION_ENABLED'] && can?(:edit, School)
-      li.nav-item
-        = link_to dashboard_school_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_path(school))  ? 'active' : ''}" do
-          | Gérer mon établissement
+      /Remove code after  February, 15th 2022 or uncomment
+      /- if can? :create_remote_internship_request, SupportTicket 
+        li.nav-item
+          = link_to new_dashboard_support_ticket_path,
+                    class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
+            | Stages à distance
+
+      - if can?(:edit, School)
+        li.nav-item
+          = link_to dashboard_school_path(school),
+                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_path(school))  ? 'active' : ''}" do
+            | Gérer mon établissement
 
 
 

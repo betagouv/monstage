@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class ClassRoom < ApplicationRecord
-
-  enum school_track: {
-    troisieme_generale: 'troisieme_generale',
-    troisieme_prepa_metiers: 'troisieme_prepa_metiers',
-    troisieme_segpa: 'troisieme_segpa'
-  }
-
-  validates :school_track, presence: true
+  include SchoolTrackable
 
   belongs_to :school
   has_many :students, class_name: 'Users::Student',
@@ -50,6 +43,6 @@ class ClassRoom < ApplicationRecord
     )
   end
   alias archive anonymize
-  
+
   def anonymized? ; anonymized; end
 end

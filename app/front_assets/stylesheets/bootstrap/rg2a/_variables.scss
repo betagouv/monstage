@@ -62,7 +62,7 @@ $container-max-widths: (
 $line-height-base: 1.25;
 $input-bg: #fbfbfb;
 $input-border-color: #dddddd;
-$input-border-radius: 3px;
+$input-border-radius: 7px;
 $input-border-radius-lg: 0;
 $input-border-radius-sm: 0;
 
@@ -84,3 +84,5 @@ $pagination-active-bg: transparent;
 
 // pagination:hover
 $pagination-hover-bg: transparent;
+
+$table-hover-bg:  #F6F8FC;

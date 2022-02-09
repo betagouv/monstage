@@ -1,0 +1,36 @@
+- edit_enable = can?("edit_#{field}".to_sym, form.object)
+
+- hint = hint || ''
+- title = title || ''
+- content = content || ''
+.col-12.pt-3
+  .form-group.mb-0 data-controller="a11y-date-input"
+    = form.label field do
+      span.mb-2= text_label
+      = form.rg2a_required_content_tag
+
+    .input-group-custom data-controller="internship-agreement-field"
+      - if edit_enable
+        = form.text_field field,
+                          value: form.object.send(field).try(:strftime, '%d/%m/%Y'),
+                          class: 'form-control',
+                          required: true,
+                          placeholder: 'jj/mm/aaaa',
+                          data: { 'action': 'input->internship-agreement-field#checkRequiredField blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input'  }
+
+      - else
+        = form.text_field field,
+                          class: 'form-control',
+                          required: true,
+                          disabled: true
+        = form.hidden_field field, class: 'form-control', id: "#{sanitize_to_id(form.object_name)}_hidden"
+
+
+
+
+    - if hint.present?
+      small.text-muted= hint
+
+    small.form-text.text-danger.d-none data-a11y-date-input-target="errorContainer"
+
+

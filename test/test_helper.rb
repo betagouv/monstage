@@ -6,6 +6,7 @@ require 'minitest/reporters'
 require 'minitest/autorun'
 require 'rails/test_help'
 require 'capybara-screenshot/minitest'
+require "view_component/test_case"
 require 'support/api_test_helpers'
 require 'support/third_party_test_helpers'
 require 'support/search_internship_offer_helpers'
@@ -44,9 +45,6 @@ WebMock.disable_net_connect!(
     /api-adresse.data.gouv.fr/
   ]
 )
-
-Capybara.save_path = Rails.root.join('tmp/screenshots')
-
 class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 

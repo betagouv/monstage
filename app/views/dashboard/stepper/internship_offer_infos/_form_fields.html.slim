@@ -101,7 +101,13 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
                             disabled: !resource.is_fully_editable?,
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
-
+      // TODO A vérifier si utile
+      = react_component("ReservedSchoolInput", props: { label:"Ville ou nom de l'établissement auquel le stage est reservé",
+                                                  required: false,
+                                                  resourceName: form.object_name,
+                                                  selectClassRoom: false,
+                                                  existingSchool: resource.school.as_json})
+     
       .form-group
         = render partial: "weeks/checkbox_inputs",
                           locals: {current_weeks: @available_weeks,

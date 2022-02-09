@@ -1,0 +1,21 @@
+div.modal.sign-modal id="validation-modal" tabindex="-1" role="dialog" data-controller="internship-agreement-modal"
+  .modal-dialog role="document"
+
+    .modal-content
+      .modal-header.pb-0
+        button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          span aria-hidden="true" &times;
+      .text-center.justify-content-center.pb-3
+        h5.modal-title= title
+      .modal-body
+        p.content
+          = content
+        p.text-danger.error-message.d-none
+          | Merci de vérifier les champs du formulaire.
+
+      .modal-footer.actions         
+        = link_to 'Je vérifie mes informations', '#',  class: 'px-3', data: { 'dismiss': "modal" }  
+        = button_tag type: "button", data: { action: "click->internship-agreement-modal##{action}" }, class: 'btn btn-primary' do
+          = button
+        .error-message.d-none
+          = link_to 'Je vérifie mes informations', '#',  class: 'px-3 btn btn-danger', data: { 'dismiss': "modal" }  

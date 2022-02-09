@@ -42,6 +42,7 @@ class Ability
       internship_application.student.id == user.id
     end
 
+
     can %i[show
            update
            choose_school
@@ -78,6 +79,7 @@ class Ability
       user.school.students.where(id: internship_application.student.id).count.positive?
     end
     can %i[see_tutor], InternshipOffer
+
   end
 
   def school_manager_abilities(user:)
@@ -88,19 +90,25 @@ class Ability
       end
     end
     can %i[
-      create
       update
       see_intro
-      edit_student_full_name
       edit_school_representative_full_name
-      edit_student_class_room
+      edit_school_delegation_to_sign_delivered_at
       edit_student_school
+      edit_student_full_name
+      edit_student_class_room
       edit_main_teacher_full_name
-      edit_terms_rich_text
       edit_activity_rating_rich_text
       edit_financial_conditions_rich_text
+      edit_legal_terms_rich_text
+      edit_complementary_terms_rich_text
+      edit
+      create
     ], InternshipAgreement do |agreement|
       agreement.internship_application.student.school_id == user.school_id
+    end
+    can %i[edit update], InternshipAgreementPreset do |internship_agreement_preset|
+      internship_agreement_preset.school_id == user.school_id
     end
   end
 
@@ -113,7 +121,8 @@ class Ability
       edit_main_teacher_full_name
       edit_activity_rating_rich_text
       edit_activity_preparation_rich_text
-    ], InternshipAgreement do |agreement|
+      edit
+        ], InternshipAgreement do |agreement|
       is_student_in_school = agreement.internship_application.student.school_id == user.school_id
       is_student_in_class_room = agreement.internship_application.student.class_room_id == user.class_room_id
 
@@ -141,6 +150,7 @@ class Ability
     can %i[create], Organisation
     can %i[update edit], Organisation, employer_id: user.id
     can %i[create], Tutor
+    can %i[create], InternshipAgreement
 
     can %i[index update], InternshipApplication
     can %i[index], Acl::InternshipOfferDashboard, &:allowed?
@@ -155,6 +165,8 @@ class Ability
       edit_activity_scope_rich_text
       edit_activity_preparation_rich_text
       edit_activity_learnings_rich_text
+      edit_complementary_terms_rich_text
+      edit
     ], InternshipAgreement do |agreement|
       agreement.internship_application.internship_offer.employer == user
     end
@@ -212,6 +224,8 @@ class Ability
       true
     end
     can %i[index_and_filter], Reporting::InternshipOffer
+    can %i[new], InternshipAgreement
+    can :reset_cache, User
     can %i[ switch_user
             read
             update
