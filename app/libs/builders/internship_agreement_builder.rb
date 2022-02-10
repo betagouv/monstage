@@ -72,7 +72,7 @@ module Builders
         legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
         complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
       }
-      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.troisieme_generale?
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.try(:troisieme_generale?)
       params
     end
 
@@ -92,11 +92,11 @@ module Builders
     def preprocess_student_to_params(student)
       {
         student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
-        school_track: student.school_track,
+        school_track: student.school_track || 'troisieme_generale',
         school_representative_full_name: student.school_manager.name,
         student_full_name: student.name,
         student_class_room: student.class_room.try(:name),
-        main_teacher_full_name: student.class_room.school_managements.main_teachers.first.try(:name)
+        main_teacher_full_name: student.class_room ? student.class_room.school_managements.main_teachers.first.try(:name) : 'N/A'
       }
     end
 

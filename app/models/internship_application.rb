@@ -236,7 +236,7 @@ class InternshipApplication < ApplicationRecord
   end
 
   def create_agreement
-    return unless student.troisieme_generale?
+    return if internship_offer.school_track != 'troisieme_generale'
 
     agreement = Builders::InternshipAgreementBuilder.new(user: Users::God.new)
                                                     .new_from_application(self)
