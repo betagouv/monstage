@@ -499,7 +499,7 @@ def populate_applications
       internship_offer_week: io_trois_gene.internship_offer_weeks.sample
     )
   end
-
+  # 2nd student
   puts "second 3e generale offer receive an approval --> second 3e generale stud"
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -508,19 +508,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
-  )
-
-  puts  "third 3e generale stud cancels his application to first offer"
-  InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :canceled_by_student,
-    submitted_at: 10.days.ago,
-    approved_at: 2.days.ago,
-    canceled_at: 1.day.ago,
-    student: trois_gene_studs.third,
-    motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.second.internship_offer_weeks.sample
+    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -530,19 +518,39 @@ def populate_applications
     canceled_at: 1.day.ago,
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
-    internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    internship_offer: troisieme_generale_offers.second,
+    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
-  puts  "third 3e generale stud is rejected of last internship_offer"
+  #third student
   InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :rejected,
-    submitted_at: 8.days.ago,
-    approved_at: 3.days.ago,
-    rejected_at: 2.days.ago,
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
     student: trois_gene_studs.third,
-    motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
-    internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.third,
+    week: troisieme_generale_offers.first.internship_offer_weeks.second.week
+  )
+  puts  "third 3e generale stud cancels his application to first offer"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :canceled_by_student,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    canceled_at: 1.day.ago,
+    student: trois_gene_studs.third,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.first,
+    week: troisieme_generale_offers.second.internship_offer_weeks.second.week
+  )
+  # 4th student
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.fourth,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.fourth,
+    week: troisieme_generale_offers.first.internship_offer_weeks.third.week
   )
 end
 
