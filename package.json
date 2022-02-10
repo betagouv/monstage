@@ -50,8 +50,5 @@
     "vnu-jar": "^20.3.16",
     "webpack-dev-server": "3.11.0"
   },
-  "engines": {
-    "yarn": "1.22.17",
-    "node": "14.18.0"
-  }
+  "version": "1.22.4"
 }
