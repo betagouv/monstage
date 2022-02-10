@@ -557,7 +557,6 @@ def populate_applications
     student: trois_gene_studs.fourth,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.fourth,
-    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
     internship_offer: troisieme_generale_offers.first,
     week: troisieme_generale_offers.first.internship_offer_weeks.sample.week
   )
