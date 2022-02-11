@@ -83,7 +83,10 @@ As a public french service, we try to keep most data hosted by french service pr
 * [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
 * [api](https://github.com/betagouv/monstage/tree/master/doc)
 
+## Previews
 
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
 
 ## Dev
 

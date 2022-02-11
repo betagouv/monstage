@@ -29,6 +29,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     driver_opts.add_emulation(device_name: 'iPhone 6') if CAPYBARA_EMULATE_MOBILE
   end
 
+  include Devise::Test::IntegrationHelpers
+  include Html5Validator
+
   def setup
     stub_request(:any, /api-adresse.data.gouv.fr/)
         .to_return(status: 200, body: File.read(Rails.root.join(*%w[test

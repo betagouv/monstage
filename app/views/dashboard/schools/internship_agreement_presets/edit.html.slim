@@ -1,0 +1,22 @@
+- content_for :page_title, "#{t(".page_title", name: @school.name)} | Monstage"
+
+.row.mx-0.pt-3.pb-4.align-items-center.no-gutters
+  .col-12
+    div.h2 role="heading" aria-level="1" informations récurrentes à toutes vos conventions de stage 
+    
+.row.d-print-none
+  .col-12
+    p
+      = link_to dashboard_internship_agreements_path, {id: 'test-backlink', class: 'text-danger font-weight-bold'} do
+        i.fa.fa-arrow-left
+        |&nbsp;
+        = "Conventions de stage"
+
+.row
+  .col-12
+    ul.nav.nav-tabs.test-dashboard-nav.mb-2.nav-xs-inline
+      li.nav-item
+        = link_to "", class: "nav-link px-2 px-sm-3 active" do
+          | 3e Générale &nbsp;
+          
+= render partial: "dashboard/schools/internship_agreement_presets/form", locals: { school: @school, internship_agreement_preset: @school.internship_agreement_preset }

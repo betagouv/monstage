@@ -1,5 +1,4 @@
 = form_with model: @school, url: dashboard_school_path(@school), scope: :school do |f|
-  = f.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @school, resource_name: :school
 
   - if current_user.is_a?(Users::God)
@@ -33,7 +32,7 @@
   - else
     fieldset
       legend= "Semaines de stage"
-      = render partial: "weeks/checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: "Semaines de stage de l'établissement (uniquement valable pour les classes de 3e)", render_employer_components: false }
+      = render partial: "inputs/weeks_checkbox_inputs", locals: {current_weeks: @available_weeks, form: f, label: "Semaines de stage de l'établissement (uniquement valable pour les classes de 3e)", render_employer_components: false }
 
 
   .actions.d-flex.d-sm-block= f.submit 'Enregistrer les modifications', class: 'btn btn-primary'

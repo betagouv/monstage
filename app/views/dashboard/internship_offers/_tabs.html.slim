@@ -1,41 +1,45 @@
-- badge_counter = EmployerTabFinder.new(user: current_user)
+- badge_counter = Finders::TabEmployer.new(user: current_user)
 
 - if can? :create_remote_internship_request, SupportTicket
-  = render partial: 'dashboard/remote_internship_block'
+  = render(UserHideableComponent.new(partial_path: 'dashboard/remote_internship_block', user: current_user))
 
 ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
-  - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
-                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        = "En cours "
-        - if is_active
-          = " (#{internship_offers.total_count})"
+  - if current_user.is_a?(Users::Employer)
+    - is_active = controller_name == 'internship_offers' && params[:filter].blank?
+    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
+                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+        div.my-auto
+          = "En cours "
+          - if is_active
+            = " (#{internship_offers.total_count})"
 
-  - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
-  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
-                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        = "Dépubliées "
-        - if is_active
-          = " (#{internship_offers.total_count})"
+    - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
+    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
+                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+        div.my-auto
+          = "Dépubliées "
+          - if is_active
+            = " (#{internship_offers.total_count})"
 
-  - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
-  li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
-                       class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        = "Passées "
-        - if is_active
-          = " (#{internship_offers.total_count})"
-  - if ENV['CONVENTION_ENABLED'] && can?(:create, InternshipAgreement)
-    - is_active = current_page?(dashboard_internship_applications_path)
+    - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
+    li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
+                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+        div.my-auto
+          = "Passées "
+          - if is_active
+            = " (#{internship_offers.total_count})"
+  
+  - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
+  - is_active = current_page?(dashboard_internship_applications_path)
 
-    li.nav-item= link_to dashboard_internship_applications_path,
-                         class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
-      div.my-auto
-        = "Conventions à signer "
-        - if badge_counter.approved_application_count.positive?
-          span.red-notification-badge=> "#{badge_counter.approved_application_count}"
+  - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
+    li.nav-item
+      = link_to dashboard_internship_agreements_path,
+                class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
+        | Mes Conventions de stages &nbsp;
+        - if badge_counter.pending_agreements_count.positive?
+          span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
+ 
   /Remove code after  February, 15th 2022 or uncomment
   /- if can? :create_remote_internship_request, SupportTicket
     - is_active = current_page?(new_dashboard_support_ticket_path)
