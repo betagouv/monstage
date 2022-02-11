@@ -8,6 +8,12 @@ export default class extends Controller {
   saveAndQuit() {
     $('#internship_agreement_event').val('start_by_employer');
     $('#submit').click();
+  
+  }
+  
+  saveAndQuitBySchoolManager() {
+    $('#internship_agreement_event').val('start_by_school_manager');
+    $('#submit').click();
   }
 
   checkFormValidity() {
