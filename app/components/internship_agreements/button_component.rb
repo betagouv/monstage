@@ -21,6 +21,7 @@ module InternshipAgreements
       when 'draft' then 'En attente'
       when 'started_by_employer' then 'En attente'
       when 'completed_by_employer' then 'Vérifier ma convention'
+      when 'started_by_school_manager' then 'Vérifier ma convention'
       else 'Imprimer'
       end  
     end
@@ -30,6 +31,7 @@ module InternshipAgreements
       when 'draft' then 'Remplir ma convention'
       when 'started_by_employer' then 'Remplir ma convention'
       when 'completed_by_employer' then 'Voir ma convention'
+      when 'started_by_school_manager' then 'Voir ma convention'
       else 'Imprimer'
       end  
     end

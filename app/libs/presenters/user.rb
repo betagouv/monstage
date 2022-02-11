@@ -16,6 +16,10 @@ module Presenters
       "#{user.first_name} #{user.last_name}"
     end
 
+    def full_name_camel_case
+      "#{user.first_name} #{user.last_name}".upcase.gsub(' ', '_')
+    end
+
     def formal_name
       user.formal_name.to_s
     end
