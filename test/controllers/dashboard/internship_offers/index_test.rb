@@ -319,9 +319,15 @@ module Dashboard::InternshipOffers
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
       employer = create(:employer)
       discarded_internship_offer = create(:weekly_internship_offer,
-                                          :discarded, employer: employer)
+                                          :discarded, employer: employer, 
+                                          max_candidates: 10,
+                                          max_students_per_group: 5,
+                                          weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
       kept_internship_offer = create(:weekly_internship_offer,
-                                     employer: employer)
+                                     employer: employer,
+                                     max_candidates: 10,
+                                     max_students_per_group: 5,
+                                     weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
       create(:weekly_internship_application, :submitted,
              internship_offer: discarded_internship_offer)
       2.times do

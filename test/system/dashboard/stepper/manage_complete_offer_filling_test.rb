@@ -33,16 +33,16 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
                                          sector: sector,
                                          weeks: available_weeks)
 
-      click_on 'Suivant'
-      find('legend', text: 'Informations complémentaires')
-      click_on 'Précédent'
+      click_on "Suivant"
+      find('legend', text: 'Informations sur le tuteur')
+      click_on "Précédent"
       find('legend', text: 'Offre de stage')
       click_on 'Précédent'
       find('legend', text: 'Informations sur l\'entreprise')
       click_on 'Suivant'
       find('legend', text: 'Offre de stage')
-      click_on 'Suivant'
-      find('legend', text: 'Informations complémentaires')
+      click_on "Suivant"
+      find('legend', text: 'Informations sur le tuteur')
       click_link 'Précédent'
       find('legend', text: 'Offre de stage')
       click_on 'Suivant'

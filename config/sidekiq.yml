@@ -4,6 +4,6 @@ staging:
 production:
   :concurrency: 5
 :queues:
-  - batches
   - mailers
+  - batches
   - default

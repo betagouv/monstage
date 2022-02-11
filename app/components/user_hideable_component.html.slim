@@ -1,0 +1,21 @@
+- if !has_been_shown?
+  = form_with model: user,
+              url: account_path,
+              scope: :user,
+              class: 'user-hideable-component col-12',
+              method: :PATCH do |f|
+
+    - user.banners.map do |key, value|
+      - f.fields_for :banners do |user_hidden_banner|
+        = user_hidden_banner.hidden_field key, value: user.banners.fetch(key)
+
+    = f.fields_for :banners do |user_hideable_banner|
+      = user_hideable_banner.hidden_field partial_path, value: 1
+
+
+    button.btn-link.btn.close-hideable-component.text-white.text-center type='submit'
+      span.d-none Cacher
+      i.fa-lg.fas.fa-times
+
+    = render partial: partial_path, locals: partial_locals
+

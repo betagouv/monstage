@@ -20,7 +20,7 @@ h1.h2.mb-3 Mon identité
       = f.rg2a_required_content_tag
     = f.text_field :last_name, class: 'form-control col-lg-6',
       required: true
-  .form-group
+  .form-group data-signup-target='emailBloc'
     = f.label :email do
       span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
       = f.rg2a_required_content_tag

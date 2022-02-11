@@ -43,7 +43,7 @@
       <% end %>
     </div>
     <footer role="contentinfo" >
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
+      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3 <%= agreement_form? ? 'd-none' : '' %>"  data-controller='footer'>
         <div class="container">
           <%= render 'layouts/footer' %>
         </div>

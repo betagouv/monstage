@@ -34,11 +34,13 @@ module Presenters
       end
 
       test '.internship_location' do
-        internship_offer = build(:weekly_internship_offer, street: '7 rue du puits',
+        internship_offer = create(:weekly_internship_offer, street: '7 rue du puits',
                                                            city: 'Coye la foret',
                                                            zipcode: '60580')
-        create(:weekly_internship_application, :convention_signed, student: @student,
-                                                                   internship_offer: internship_offer)
+        create(:weekly_internship_application,
+               :convention_signed,
+               student: @student,
+               internship_offer: internship_offer)
         assert_equal [internship_offer.formatted_autocomplete_address],
                      @student_stats.internship_locations
       end
@@ -49,10 +51,18 @@ module Presenters
           tutor_phone: '0669696969',
           tutor_email: 'kikoolol@gmail.com'
         }
-        tutors = StudentStats::Tutor.new(**tutor_kwargs)
-        internship_offer = build(:weekly_internship_offer, **tutor_kwargs)
-        create(:weekly_internship_application, :convention_signed, student: @student,
-                                                                   internship_offer: internship_offer)
+        StudentStats::Tutor.new(**tutor_kwargs)
+        internship_offer = create(
+          :weekly_internship_offer,
+          **tutor_kwargs)
+        weekly_internship_application = create(
+          :weekly_internship_application,
+          :convention_signed,
+          student: @student,
+          internship_offer: internship_offer
+        )
+        weekly_internship_application.save
+
 
         tutor = @student_stats.internship_tutors.first
         assert_equal tutor.tutor_name, internship_offer.tutor_name

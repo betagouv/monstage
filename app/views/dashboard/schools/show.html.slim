@@ -2,7 +2,7 @@
 
 
 h1.h2.my-3 Les informations de mon établissement
-- if (can? :edit, @current_user.try(:school)) &&  ENV['CONVENTION_ENABLED']
+- if (can? :edit, @current_user.try(:school))
   = form_with(model: @current_user.school, url: dashboard_school_path(@current_user.school), method: :patch) do |f|
     .form-group.mt-3
       = f.label "Annexe par défault liée au financement du stage des élèves"

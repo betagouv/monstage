@@ -8,27 +8,35 @@
     padding: 10px;
   }
 }
-.internship-agreement-to-sign{
-  .actions .text-action {
-    white-space:nowrap;
-    display: inline;
-    transition: all 1s ease-out;
+
+
+.container-application-with-agreements{
+  position: relative;
+  .container-application-with-agreements-overlay{
     position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    transform:translate(0);
-  }
-  .actions:hover .text-action {
-    position: relative;
-    visibility: visible;
-    transform:translate(9999px);
-    opacity: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,.8);
+    z-index: 2;
   }
 }
 
+.shaddow-container{
+  overflow: hidden;
+  padding-bottom: 2em;
+  .shadow-element{
+    box-shadow: 5px 0px 10px rgba(0,0,0,.1);
+  }
+}
+
+$custom-grey: rgb(51,51,51);
+
 .tool-note {
   position: 'relative';
-  border: 2px solid $blue;
+  border: 2px solid $custom-grey;
+
   margin-top: 20px;
   padding: 15px 10px;
   border-radius: 5px;
@@ -44,19 +52,16 @@
   content: '';
   width: 10px;
   height: 10px;
-  border-left: 2px solid $blue;
-  border-top: 2px solid $blue;
   background-color: #fff;
   transform: rotate(-45deg);
   margin-top: 10px;
   margin-left: -17px;
   float: left;
   z-index: 10;
-} 
+}
 
 .tool-note.active {
-  border: 2px solid $green;
-  background-color: $green;
+  background-color: $custom-grey;
   color: #fff;
   .title {
     color: #fff;
@@ -64,13 +69,13 @@
 }
 
 .tool-note.active::before {
-  border-top: 2px solid $green;
-  border-left: 2px solid $green;
-  background-color: $green;
+  border-top: 2px solid $custom-grey;
+  border-left: 2px solid $custom-grey;
+  background-color: $custom-grey;
 
 }
 .tool-note.inactive {
-  border: 2px solid #9F98AA;
+  display: none;
   color: #9F98AA;
   .title {
     color: #9F98AA;
@@ -78,40 +83,51 @@
 }
 
 .tool-note.inactive:before {
-  border-top: 2px solid #9F98AA;
-  border-left: 2px solid #9F98AA;
+  // border-top: 2px solid #9F98AA;
+  // border-left: 2px solid #9F98AA;
 }
 
-.valid-form-field::before {
-  content: '';
+.tooltip-inner {
+  text-align: left !important;
+  font-size: 90%
+}
+
+.tool-tip {
+  color: #D1D5DB;
+}
+
+.custom-control {
+  z-index: 0;
+}
+
+$position-form-field-helper: 55px;
+.input-group-custom{
+  position: relative;
+}
+.input-helper{
+  display: flex;
+  position: absolute;
+  height: 40px;
+  width: 40px;
+  top: 4px;
+  right: -55px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.valid-form-field {
   background: url("../images/green_check.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
-.editable-form-field::before {
-  content: '';
+.editable-form-field {
   background: url("../images/blue_edit.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
-.required-form-field::before {
-  content: '';
+.delegated-form-field{
+  background: url("../images/delegated-to-another-one.svg") no-repeat top right;
+}
+.required-form-field {
   background: url("../images/yellow_sign.svg") no-repeat top right;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 35px;
-  left: -55px;
 }
-
 .trix-header-vanisher {
   trix-toolbar{
     display: none;
@@ -119,4 +135,52 @@
   trix-editor:read-only{
     background-color: $secondary;
   }
+}
+.dot {
+  display: inline-block;
+  &.dot-success{
+    color: $success;
+  }
+  &.dot-warning{
+    color: $warning;
+  }
+}
+
+.offset-absolute{
+  width: 100%;
+  position: absolute;
+  margin-top: 13px;
+  height: 0;
+
+  .gradient-to-white{
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
+    border-top: 2px solid $light-grey;
+    position: relative;
+    left: -2px;
+    box-shadow: 3px -10px white, -3px -10px white;
+  }
+}
+
+.internship-agreement {
+  .row {
+    margin: 0;
+  }
+  .offset-2 {
+    background-color: white;
+    border-left: 2px solid $light-grey;
+    border-right: 2px solid $light-grey;
+    
+  }
+  .end-form {
+    border-bottom: 2px solid $light-grey;
+    padding-top: 1rem;
+  }
+}
+
+.internship-agreement input:invalid {
+  border: 1px solid red;
+  background-color: rgb(255, 188, 188);
 }
