@@ -45,10 +45,14 @@
             small.form-text.text-muted.mb-1
               |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           - else
-            = form.email_field :unconfirmed_email, class: 'form-control col-lg-12', readonly: true, disabled: true
+            = form.email_field :unconfirmed_email,
+                               class: 'form-control col-lg-12',
+                               readonly: !current_user.phone.present?,
+                               disabled: !current_user.phone.present?
             small.form-text.mb-1
               |Cet email n'est pas encore confirmé : veuillez consulter vos emails
             = link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe,
-                      new_user_confirmation_path(current_user, email: current_user.unconfirmed_email),
+                      new_user_confirmation_path(current_user,
+                                                 email: current_user.unconfirmed_email),
                       class: "small"
 
