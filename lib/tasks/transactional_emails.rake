@@ -23,8 +23,10 @@ task employers_with_potential_agreeements: :environment do
   class_rooms = ClassRoom.arel_table
   offers      = InternshipOffer.arel_table
   departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').map(&:to_str)
-  offer_ids = InternshipApplications::WeeklyFramed.joins( student: {class_room: :school})
+  offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
                                                   .approved
+                                                  .where('weeks.number > ?', Date.current.cweek)
+                                                  .where('weeks.year >= ?', Date.current.year)
                                                   .where(combined_arel('schools.zipcode').in(departments))
                                                   .where(class_rooms[:school_track].eq('troisieme_generale'))
                                                   .includes(:internship_offer)
@@ -32,9 +34,11 @@ task employers_with_potential_agreeements: :environment do
                                                   .map(&:internship_offer)
                                                   .map(&:id)
                                                   .uniq
-  # La requête qui marche
-  # offer_ids = InternshipApplications::WeeklyFramed.joins( student: {class_room: :school} )
+  # Without Arel::Nodes::NamedFunctions
+  # offer_ids = InternshipApplications::WeeklyFramed.joins( :week, student: {class_room: :school} )
   #                                           .approved
+  #                                           .where('weeks.number > ?', Date.current.cweek)
+  #                                           .where('weeks.year >= ?', Date.current.year)
   #                                           .where(class_rooms[:school_track].eq('troisieme_generale'))
   #                                           .where("LEFT(CAST(schools.zipcode as varchar(255)),2) IN ('75','02','78')")
   #                                           .includes(:internship_offer)
@@ -46,10 +50,9 @@ task employers_with_potential_agreeements: :environment do
   if offer_ids.empty?
     puts "no count"
   else
-    emails = InternshipOffers::WeeklyFramed.in_the_future
-                                           .where(offers[:id].in(offer_ids))
-                                           .map(&:employer)
-                                           .map(&:email)
+    emails = InternshipOffers::WeeklyFramed.where(offers[:id].in(offer_ids))
+                                           .includes(:employer)
+                                           .map { |offer| offer.employer.email }
                                            .uniq
 
     puts "Results: #{emails}"
@@ -69,8 +72,3 @@ end
 def combined_arel(attr)
   first_chars(nr: 2, attribute: sql_to_string(attr))
 end
-
-# offer_ids = InternshipApplications::WeeklyFramed.joins( student: {class_room: :school}) .approved .where(Arel::Nodes::NamedFunction.new( 'LEFT', [Arel::Nodes::NamedFunction.new('CAST', [Arel.sql("'#{schools[:zipcode]}' as varchar(255)")]), 2 ]).in(['75','78','02'])).where(class_rooms[:school_track].eq('troisieme_generale')) .includes(:internship_offer) .to_a .map(&:internship_offer) .map(&:id) .uniq
-# InternshipApplications::WeeklyFramed.joins( student: {class_room: :school}) .approved.where(class_rooms[:school_track].eq('troisieme_generale')).where("LEFT(CAST(schools.zipcode as varchar(255)), 2) IN ('75','78','02')").includes(:internship _offer).to_a.map(&:internship_offer).map(&:id).uniq
-# offer_ids = [19588, 19422, 19347, 19172, 20190, 21082, 19361, 20613, 20806, 20188, 19047, 23886, 24250, 24339, 24324, 25073, 24263, 24266, 24297, 24897]
-# ["xavier.heurteur@interieur.gouv.fr", "pp-plan10000@interieur.gouv.fr", "lhenry@agirc-arrco.fr", "yves@macapflag.com", "sophie.marion@education.gouv.fr", "agaspardkponton@camaieu.com", "ddfip78.ppr.formationprofessionnelle@dgfip.finances.gouv.fr", "tdstage.drh@diplomatie.gouv.fr"]
