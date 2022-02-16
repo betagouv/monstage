@@ -57,10 +57,6 @@ module Users
     def resource_channel
       return current_user.channel unless current_user.nil?
       return :email unless params[:as] == 'Student'
-
-      ab_test(:subscription_channel_experiment) do |chan|
-        chan == 'phone' ? :phone : :email
-      end
     end
 
     # POST /resource
@@ -70,7 +66,6 @@ module Users
         clean_invitation(resource)
         resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
-        ab_finished(:subscription_channel_experiment)
       end
     end
 

@@ -59,6 +59,7 @@ class InternshipAgreement < ApplicationRecord
     state :draft, initial: true
     state :started_by_employer,
           :completed_by_employer,
+          :started_by_school_manager,
           :validated,
           :signed
 
@@ -70,8 +71,12 @@ class InternshipAgreement < ApplicationRecord
       transitions from: %i[draft started_by_employer], to: :completed_by_employer
     end
 
+    event :start_by_school_manager do
+      transitions from: :completed_by_employer, to: :started_by_school_manager
+    end
+
     event :validate do
-      transitions from: :completed_by_employer, to: :validated
+      transitions from: [:completed_by_employer, :started_by_school_manager], to: :validated
     end
   end
 

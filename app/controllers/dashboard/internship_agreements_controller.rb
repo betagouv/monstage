@@ -40,8 +40,7 @@ module Dashboard
         on.success do |updated_internship_agreement|
           updated_internship_agreement.send(params[:internship_agreement][:event]) if updated_internship_agreement.send("may_#{params[:internship_agreement][:event]}?")
           updated_internship_agreement.save
-          redirect_to dashboard_internship_agreements_path,
-                      flash: { success: 'La convention a été enregistrée.' }
+          redirect_to dashboard_internship_agreements_path, flash: { success: update_success_message(updated_internship_agreement) }
         end
         on.failure do |failed_internship_agreement|
           @internship_agreement = failed_internship_agreement || InternshipAgreement.find(params[:id])
@@ -59,7 +58,7 @@ module Dashboard
       respond_to do |format|
         format.html
         format.pdf do
-          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_#{@internship_agreement.id}.pdf", type: 'application/pdf',disposition: 'inline')
+          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_de_stage_#{Presenters::User.new(@internship_agreement.internship_application.student).full_name_camel_case}.pdf", type: 'application/pdf',disposition: 'inline')
         end
       end
     end
@@ -105,6 +104,17 @@ module Dashboard
 
     def internship_agreement_builder
       @builder ||= Builders::InternshipAgreementBuilder.new(user: current_user)
+    end
+
+    def update_success_message(internship_agreement)
+      case internship_agreement.aasm_state
+      when 'started_by_employer' then 'La convention a été enregistrée.'
+      when 'completed_by_employer' then "La convention a été envoyée au chef d'établissement."
+      when 'started_by_school_manager' then 'La convention a été enregistrée.'
+      when 'validated' then "La convention a été validée."
+      else 
+        'La convention a été enregistrée.'
+      end
     end
   end
 end
