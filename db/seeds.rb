@@ -539,7 +539,6 @@ def populate_applications
   trois_gene_studs = Users::Student.joins(:class_room)
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
-                                   .shuffle
                                    .first(4)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   puts "every 3e generale offers receives an application first 3e generale stud"
