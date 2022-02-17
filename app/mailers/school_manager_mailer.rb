@@ -9,4 +9,14 @@ class SchoolManagerMailer < ApplicationMailer
     mail(subject: "Nouveau #{@member_presenter.role_name}: #{@member_presenter.full_name}",
          to: school_manager.email)
   end
+
+  def agreement_creation_notice_email(internship_agreement: )
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = Presenters::User.new(student)
+    school_manager         = student.school.school_manager
+
+    mail(to: school_manager.email, subject: 'xxxxxxxxxxx')
+  end
 end

@@ -25,4 +25,16 @@ class EmployerMailerPreview < ActionMailer::Preview
       internship_application: internship_application
     )
   end
+
+  def agreement_creation_notice_email
+    EmployerMailer.agreement_creation_notice_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+  def school_manager_finished_notice_email
+    EmployerMailer.school_manager_finished_notice_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
 end

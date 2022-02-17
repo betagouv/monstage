@@ -25,4 +25,25 @@ class EmployerMailer < ApplicationMailer
     mail(to: @internship_application.internship_offer.employer.email,
          subject: 'Information – Annulation de candidature')
   end
+
+  def agreement_creation_notice_email(internship_agreement: )
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = Presenters::User.new(student)
+    @employer              = @internship_offer.employer
+
+    mail(to: @employer.email, subject: 'xxxxxxxxxxx')
+  end
+
+  def school_manager_finished_notice_email(internship_agreement: )
+    internship_application = internship_agreement.internship_application
+    @internship_offer      = internship_application.internship_offer
+    student                = internship_application.student
+    @prez_stud             = Presenters::User.new(student)
+    school_manager         = student.school.school_manager
+
+    mail(to: school_manager.email, subject: 'xxxxxxxxxxx')
+  end
+
 end
