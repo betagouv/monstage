@@ -325,18 +325,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       safe_submit
     end
 
-    # ensure failure reset form as expected
-    assert_equal school_1.city,
-                 find_field('Nom (ou ville) de mon établissement').value,
-                 're-select of city after failure fails'
-
-    # create student with phone
-    assert_difference('Users::Student.count', 1) do
-      find('label', text: 'SMS').click
-      execute_script("document.getElementById('phone-input').value = '+330637607796';")
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      safe_submit
-    end
+    # ensure failure drives user to login_page
+    find('span#alert-text', text: "Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié")
+    assert_equal '+33 06 00 11 00 11', find("input[name='user[phone]']").value
   end
 end
