@@ -61,8 +61,7 @@ module Users
 
     # POST /resource
     def create
-      fetch_user_by_phone
-      if @user
+      if params.dig(:user, :phone) && fetch_user_by_phone && @user
         redirect_to(
           new_user_session_path(phone: fetch_user_by_phone.phone),
           flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
