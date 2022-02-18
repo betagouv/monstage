@@ -319,7 +319,7 @@ class InternshipApplication < ApplicationRecord
       internship_agreement: internship_agreement
     ).deliver_later
     EmployerMailer.agreement_creation_notice_email(
-      internship_agreement: agreement
+      internship_agreement: internship_agreement
     ).deliver_now
   end
 end

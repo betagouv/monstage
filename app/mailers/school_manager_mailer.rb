@@ -17,6 +17,6 @@ class SchoolManagerMailer < ApplicationMailer
     @prez_stud             = Presenters::User.new(student)
     school_manager         = student.school.school_manager
 
-    mail(to: school_manager.email, subject: 'xxxxxxxxxxx')
+    mail(to: school_manager.email, subject: "x" * 35)
   end
 end

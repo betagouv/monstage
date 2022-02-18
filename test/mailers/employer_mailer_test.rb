@@ -28,4 +28,30 @@ class EmployerMailerTest < ActionMailer::TestCase
     assert_equal [internship_application.internship_offer.employer.email], email.to
     refute_email_spammyness(email)
   end
+
+  test '.agreement_creation_notice_email delivers as expected' do
+    internship_agreement = create(:internship_agreement)
+    employer = internship_agreement.internship_application.internship_offer.employer
+    email = EmployerMailer.agreement_creation_notice_email(
+      internship_agreement: internship_agreement
+    )
+    email.deliver_now
+    assert_emails 1
+    assert_includes email.to, employer.email
+    assert_equal "x" * 35, email.subject
+    refute_email_spammyness(email)
+  end
+
+  test '.school_manager_finished_notice_email delivers as expected' do
+    internship_agreement = create(:internship_agreement)
+    employer = internship_agreement.internship_application.internship_offer.employer
+    email = EmployerMailer.school_manager_finished_notice_email(
+      internship_agreement: internship_agreement
+    )
+    email.deliver_now
+    assert_emails 1
+    assert_includes email.to, employer.email
+    assert_equal "x" * 35, email.subject
+    refute_email_spammyness(email)
+  end
 end

@@ -33,7 +33,7 @@ class EmployerMailer < ApplicationMailer
     @prez_stud             = Presenters::User.new(student)
     @employer              = @internship_offer.employer
 
-    mail(to: @employer.email, subject: 'xxxxxxxxxxx')
+    mail(to: @employer.email, subject: "x"*35)
   end
 
   def school_manager_finished_notice_email(internship_agreement: )
@@ -41,9 +41,9 @@ class EmployerMailer < ApplicationMailer
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
     @prez_stud             = Presenters::User.new(student)
-    school_manager         = student.school.school_manager
+    @employer              = @internship_offer.employer
 
-    mail(to: school_manager.email, subject: 'xxxxxxxxxxx')
+    mail(to: @employer.email, subject: "x"*35)
   end
 
 end

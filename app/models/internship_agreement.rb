@@ -176,8 +176,6 @@ class InternshipAgreement < ApplicationRecord
 
   private
 
-
-
   def notify_employer_school_manager_completed(agreement)
     EmployerMailer.school_manager_finished_notice_email(
       internship_agreement: agreement
