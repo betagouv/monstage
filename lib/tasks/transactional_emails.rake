@@ -22,31 +22,17 @@ desc 'Evaluate employers count with approved application under conditions'
 task employers_with_potential_agreeements: :environment do
   class_rooms = ClassRoom.arel_table
   offers      = InternshipOffer.arel_table
-  departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').map(&:to_str)
   offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
                                                   .approved
+                                                  .merge(School.from_departments(department_str_array: School.experimented_school_departments))
                                                   .where('weeks.number > ?', Date.current.cweek)
                                                   .where('weeks.year >= ?', Date.current.year)
-                                                  .where(combined_arel('schools.zipcode').in(departments))
                                                   .where(class_rooms[:school_track].eq('troisieme_generale'))
                                                   .includes(:internship_offer)
                                                   .to_a
                                                   .map(&:internship_offer)
                                                   .map(&:id)
                                                   .uniq
-  # Without Arel::Nodes::NamedFunctions
-  # offer_ids = InternshipApplications::WeeklyFramed.joins( :week, student: {class_room: :school} )
-  #                                           .approved
-  #                                           .where('weeks.number > ?', Date.current.cweek)
-  #                                           .where('weeks.year >= ?', Date.current.year)
-  #                                           .where(class_rooms[:school_track].eq('troisieme_generale'))
-  #                                           .where("LEFT(CAST(schools.zipcode as varchar(255)),2) IN ('75','02','78')")
-  #                                           .includes(:internship_offer)
-  #                                           .to_a
-  #                                           .map(&:internship_offer)
-  #                                           .map(&:id)
-  #                                           .uniq
-
   if offer_ids.empty?
     puts "no count"
   else
@@ -57,18 +43,4 @@ task employers_with_potential_agreeements: :environment do
 
     puts "Results: #{emails}"
   end
-end
-
-def first_chars(nr:, attribute:)
-  Arel::Nodes::NamedFunction.new( 'LEFT', [attribute, nr] )
-end
-
-def sql_to_string(int_var)
-  Arel::Nodes::NamedFunction.new(
-    'CAST', [Arel.sql("#{int_var} as varchar(255)")]
-  )
-end
-
-def combined_arel(attr)
-  first_chars(nr: 2, attribute: sql_to_string(attr))
 end
