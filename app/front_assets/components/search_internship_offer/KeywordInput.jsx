@@ -53,7 +53,7 @@ function KeywordInput({ existingKeyword }) {
       }) => (
         <div>
           <label {...getLabelProps({ className: 'fr-label', htmlFor: "input-search-by-keyword" })}>
-            Métiers, mots-clés
+            Métiers, mots-clés, ...
           </label>
           <div
             id="test-input-keyword-container"

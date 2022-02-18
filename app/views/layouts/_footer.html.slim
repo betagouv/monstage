@@ -2,7 +2,7 @@ footer#footer.fr-footer role="contentinfo" data-controller='footer'
   .fr-footer__top
     .fr-container
       .fr-grid-row.fr-grid-row--start.fr-grid-row--gutters
-        .fr-col-12.fr-col-sm-4.fr-col-md-2
+        .fr-col-12.fr-col-sm-4
           h3.fr-footer__top-cat Mon stage de 3ème
           ul.fr-footer__top-list
             li
@@ -17,7 +17,7 @@ footer#footer.fr-footer role="contentinfo" data-controller='footer'
                     conditions_d_utilisation_path,
                     class: 'rf-footer__top-link fr-text--xs'
 
-        .fr-col-12.fr-col-sm-4.fr-col-md-2
+        .fr-col-12.fr-col-sm-4
           h3.fr-footer__top-cat Aide
           ul.fr-footer__top-list
             li
@@ -33,7 +33,7 @@ footer#footer.fr-footer role="contentinfo" data-controller='footer'
                         class: 'rf-footer__top-link fr-text--xs',
                         title: "Contacter le support de la plateforme monstagedetroisieme.fr"
 
-        .fr-col-12.fr-col-sm-4.fr-col-md-2
+        .fr-col-12.fr-col-sm-4
           h3.fr-footer__top-cat En savoir plus
           ul.fr-footer__top-list
             li
@@ -62,7 +62,7 @@ footer#footer.fr-footer role="contentinfo" data-controller='footer'
         - link = link_to "Incubateur des Territoires de l'ANCT",'https://incubateur.anct.gouv.fr/',
                         target: '_blank',
                         class: 'fr-text--sm'
-        p.fr-footer__content-desc = "monstagedetroisieme.fr est un service fourni par l'#{link}".html_safe
+        p.fr-footer__content-desc = "monstagedetroisieme.fr est un service fourni par <br/>l'#{link}".html_safe
         ul.fr-footer__content-list
           li.fr-footer__content-item
             a.fr-footer__content-link href="https://legifrance.gouv.fr" legifrance.gouv.fr
@@ -86,7 +86,7 @@ footer#footer.fr-footer role="contentinfo" data-controller='footer'
                     class: 'rf-footer__top-link'
 
         li.fr-footer__bottom-item
-          = link_to "Accessibilité",
+          = link_to "Accessibilité : non conforme",
                     accessibilite_path,
                     class: 'rf-footer__top-link'
         li.fr-footer__bottom-item

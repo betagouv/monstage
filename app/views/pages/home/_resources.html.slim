@@ -4,8 +4,10 @@
     .row
       .col-lg-8.col-md-8.col-sm-12.order-lg-1.order-md-1.order-sm-2.order-2
         h2.fr-h1.text-blue-france.pl-1.mb-0.pb-3
-          | Prenez en main la plateforme dès maintenant
-        p.pb-3
+          | Prenez en main la plateforme 
+          br
+          | dès maintenant
+        p.fr-pb-4w
           |
             Des questions ? Que vous soyez élève ou professionnel, membre
             d’une équipe pédagogique ou d’une administration centrale,
@@ -21,7 +23,7 @@
             span.fr-btn.fr-btn--secondary = "Voir les ressources"
 
         / .wrapper.pl-5.text-left
-    .row
+    .row.fr-pb-7w
       = render partial: "pages/home/people_card.html",
               locals: { strong_text: "Elèves, parents d'élèves",
                         subtitle: "Découvrez comment candidater à nos offres",

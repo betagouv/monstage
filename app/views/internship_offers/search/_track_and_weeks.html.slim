@@ -1,11 +1,11 @@
 .form-group.mb-md-0.col-12.col-md-2
   .almost-fitting
     = f.label :school_track, class: "fr-label", for: 'input-search-school-track' do
-      | Filtrer par filière
+      | Filières
     = f.select :school_track,
                 options_for_select(options_for_school_tracks, default_values[:school_track]),
-                { prompt: 'Filière' },
-                class: 'fr-input',
+                { prompt: '' },
+                class: 'fr-select',
                 'data-action': 'change->search-school-track-select#onSchoolTrackChange change->search-week-checkboxes#onSchoolTrackChange', 'data-search-school-track-select-target': 'schoolTrackInput', 'data-search-week-checkboxes-target': 'inputSelect', id: 'input-search-school-track'
 
 .form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"

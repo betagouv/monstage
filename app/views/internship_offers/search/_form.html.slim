@@ -11,7 +11,7 @@ div.search-container.py-2 data-controller='search-form search-popover search-sch
                             value: params[dashboard_custom_filter]
 
     .row.no-gutters.align-items-end
-      .form-group.mb-md-0.col-12.col-md.px-2
+      .form-group.mb-md-0.col-12.col-md.fr-ml-2w
         = react_component("KeywordInput", props: {keyword: default_values[:keyword]})
 
       .form-group.mb-md-0.col-12.col-md
@@ -28,12 +28,11 @@ div.search-container.py-2 data-controller='search-form search-popover search-sch
 
       .pb-5
       - if render_as_partial
-        .col-auto-md data-search-popover-target="searchSubmitContainer"
-          .mr-2
-            = form.button class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
-                          name: nil,
-                          id: 'test-desktop-submit-search' do
-              span.mr-2 = 'Rechercher'
+        .col-auto-md.fr-mr-2w data-search-popover-target="searchSubmitContainer"
+          = form.button class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+                        name: nil,
+                        id: 'test-desktop-submit-search' do
+            span.mr-2 = 'Rechercher'
       - else render_as_partial
         .actions.d-flex.d-stick.d-md-none.p-3
           = form.button "Afficher les résultats",
