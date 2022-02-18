@@ -25,8 +25,7 @@ task employers_with_potential_agreeements: :environment do
   offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
                                                   .approved
                                                   .merge(School.from_departments(department_str_array: School.experimented_school_departments))
-                                                  .where('weeks.number > ?', Date.current.cweek)
-                                                  .where('weeks.year >= ?', Date.current.year)
+                                                  .merge(Week.in_the_future)
                                                   .where(class_rooms[:school_track].eq('troisieme_generale'))
                                                   .includes(:internship_offer)
                                                   .to_a
