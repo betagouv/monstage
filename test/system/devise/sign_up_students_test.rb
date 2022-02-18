@@ -339,4 +339,41 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       safe_submit
     end
   end
+
+  test 'when creation with phone fails, return page shows both SMS button clicked and phone input with previous phone number' do
+    school_1 = create(:school, name: 'Etablissement Test 2',
+                               city: 'Saint-Parfait', zipcode: '51577')
+    phone_number = '+330600110011'
+    phone_number_pretty = '+33 06 00 11 00 11'
+    password = 'kikoololletest'
+    birth_date = 14.years.ago
+
+    # go to signup as student
+    visit new_user_registration_path(as: 'Student')
+
+    # fails to create student with existing email
+    assert_difference('Users::Student.count', 0) do
+      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
+      find('#downshift-0-item-0').click
+      find("label[for=\"select-school-#{school_1.id}\"]").click
+      fill_in 'Prénom', with: 'Martin'
+      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
+      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
+      find('label', text: 'Masculin').click
+      find('label', text: 'SMS').click
+      execute_script("document.getElementById('phone-input').value = '#{phone_number}';")
+      fill_in 'Créer un mot de passe', with: password
+      fill_in 'Ressaisir le mot de passe', with: password
+      safe_submit
+    end
+
+    # ensure failure reset form as expected
+    assert_equal school_1.city,
+                 find_field('Nom (ou ville) de mon établissement').value,
+                 're-select of city after failure fails'
+    assert_equal phone_number_pretty,
+                 find_field('Numéro de mobile').value,
+                 'phone number should be selected and filled'
+
+  end
 end

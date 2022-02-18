@@ -157,6 +157,10 @@ export default class extends Controller {
   }
 
   checkChannel() {
+    if (this.phoneInputTarget.value != '+33') {
+      this.checkPhone();
+      return;
+    }
     switch (this.channelValue) {
       case 'email':
         this.checkEmail();
