@@ -121,20 +121,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'transition from submited to approved does not create internship_agreemennt for student in bac_pro.class_room' do
-    internship_offer = create(:free_date_internship_offer)
-    school = create(:school, :with_school_manager)
-    class_room = create(:class_room, :bac_pro, school: school)
-    student = create(:student, class_room: class_room)
-    internship_application = create(:free_date_internship_application, :submitted, student: student)
-
-    assert_no_changes -> { InternshipAgreement.count } do
-      internship_application.save
-      internship_application.approve!
-    end
-  end
-
-
   test 'transition from submited to rejected send rejected email to student' do
     internship_application = create(:weekly_internship_application, :submitted)
     freeze_time do
