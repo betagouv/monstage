@@ -1,19 +1,18 @@
-La convention de stage d'un de vos élève sera bientôt prête...
+La convention de stage d'un de vos élèves sera bientôt prête...
   
   Bonjour,
 
   <%= "La candidature de #{@prez_stud.full_name}, pour l'offre de stage #{@internship_offer.title} au sein de #{@internship_offer.employer_name} a été acceptée." %>
 
 
-  Votre établissement fait partie des établissements éligibles à la convention
-  dématérialisée. Vous aurez donc la possibilité de remplir ce document en
-  ligne, sur notre plateforme une fois que l'offreur aura complété sa partie.
-  Vous pourrez également vérifier les informations saisies par l'offreur, imprimer
-  le document et le faire signer.
+  Votre établissement fait partie des établissements éligibles
+  à l'expérimentation de la convention de stage en ligne.
+  Vous aurez donc la possibilité de remplir ce document sur notre
+  plateforme une fois que l'offreur aura complété sa partie.
+  Vous pourrez également vérifier les informations saisies par l'offreur.
 
-  Pour y accéder, vous pouvez cliquer sur le bouton ci-dessous.
-
-  [cta w/ tracking url --> @adrianjoubert2 waiting for u]
+  Pour y remplir la convention, vous pouvez cliquer sur le lien ci-dessous.
+  <%= @url %>
 
   Vous pouvez également accéder à la liste de vos conventions dématérialisées
   via l’onglet “Mes conventions de stages”, dans la partie
