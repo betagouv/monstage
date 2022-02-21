@@ -58,6 +58,14 @@ $handleWidth: 60px;
   margin-left: -$handleWidth/2;
 }
 
+input#radius_slider {
+  border: none;
+  background-color: initial;
+  box-shadow: none;
+  opacity: 1;
+  appearance: revert;
+}
+
 
 @keyframes loading {
   100% {

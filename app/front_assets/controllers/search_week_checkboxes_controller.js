@@ -1,7 +1,7 @@
 import { Controller } from 'stimulus';
 import { enableInput, disableInput } from  '../utils/dom';
 
-const PLACEHOLDER_NO_WEEK_SELECTED_OR_NOT_TROISIEME_GENERALE = 'Dates de stage';
+const PLACEHOLDER_NO_WEEK_SELECTED_OR_NOT_TROISIEME_GENERALE = '';
 
 export default class extends Controller {
 

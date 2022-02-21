@@ -176,6 +176,11 @@
   border-right: 1px solid $input-border-color;
   border-bottom: 1px solid $input-border-color;
   border-top: 1px solid transparent;
+  input {
+    appearance: revert;
+    width: 15px;
+    height: 15px;
+  }
   &:first-child{
     border-top: 1px solid  $input-border-color;
     border-top-left-radius: 8px;
@@ -197,7 +202,8 @@
   &:hover, &:focus{
     cursor: pointer;
     background:$blue_50;
-    border-colro: $gray_200;
+    border-color: $gray_200;
+
   }
   &.disabled {
     background: $input-disabled-bg;
