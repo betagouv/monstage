@@ -9,23 +9,26 @@ p style=p_styles
 
 p style=p_styles
   |
-    Votre établissement fait partie des établissements éligibles à la convention
-    dématérialisée. Vous aurez donc la possibilité de remplir ce document en
-    ligne, sur notre plateforme une fois que l'offreur aura complété sa partie.
-    Vous pourrez également vérifier les informations saisies par l'offreur, imprimer
-    le document et le faire signer.
+    Votre établissement fait partie des établissements éligibles
+    à l'expérimentation de la convention de stage
+  span style=span_bold = ' en ligne. '
+  |
+    Vous aurez donc la possibilité de remplir ce document sur notre
+    plateforme une fois que l'offreur aura complété sa partie.
+    Vous pourrez également vérifier les informations saisies par l'offreur.
 
 p style=p_styles
   | Pour y accéder, vous pouvez cliquer sur le bouton ci-dessous.
 
-p style=p_styles
-  | [cta w/ tracking url --> @adrianjoubert2 waiting for u]
+= render partial: "mailers/call_to_action",
+        locals: { href: @url,
+                  label: "Remplir la convention de stage" }
 
 p style=p_styles
   |
-    Vous pouvez également accéder à la liste de vos conventions dématérialisées
-    via l’onglet “Mes conventions de stages”, dans la partie
-    "Votre établissement".
+    Vous pouvez également accéder à la liste de vos conventions
+    de stage via l’onglet “Mes conventions de stages”, dans
+    la partie "Votre établissement".
 
 p style=p_styles
   | Excellente journée,

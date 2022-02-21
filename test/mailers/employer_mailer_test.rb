@@ -38,7 +38,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
     assert_includes email.to, employer.email
-    assert_equal "Complétez la convention de stage.", email.subject
+    assert_equal 'Veuillez compléter la convention de stage.', email.subject
     refute_email_spammyness(email)
   end
 
@@ -51,7 +51,7 @@ class EmployerMailerTest < ActionMailer::TestCase
     email.deliver_now
     assert_emails 1
     assert_includes email.to, employer.email
-    assert_equal "Imprimez et signez la convention de stage.", email.subject
+    assert_equal 'Imprimez et signez la convention de stage.', email.subject
     refute_email_spammyness(email)
   end
 end

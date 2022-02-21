@@ -22,7 +22,7 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
       internship_agreement: internship_agreement
     )
     assert_includes email.to, school_manager.email
-    assert_equal "x"*35, email.subject
+    assert_equal 'Une convention de stage sera bientôt disponible.', email.subject
     refute_email_spammyness(email)
   end
 

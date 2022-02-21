@@ -32,8 +32,13 @@ class EmployerMailer < ApplicationMailer
     student                = internship_application.student
     @prez_stud             = Presenters::User.new(student)
     @employer              = @internship_offer.employer
+    @url = dashboard_internship_offer_internship_applications_url(
+      internship_offer_id: @internship_offer.id,
+      id: internship_application.id,
+      mtm_campaign: "Offreur - Convention Ready to Edit#internship-application-#{internship_application.id}"
+    ).html_safe
 
-    mail(to: @employer.email, subject: "Complétez la convention de stage.")
+    mail(to: @employer.email, subject: 'Veuillez compléter la convention de stage.')
   end
 
   def school_manager_finished_notice_email(internship_agreement: )
@@ -42,8 +47,12 @@ class EmployerMailer < ApplicationMailer
     student                = internship_application.student
     @prez_stud             = Presenters::User.new(student)
     @employer              = @internship_offer.employer
+    @url = dashboard_internship_agreements_url(
+      id: internship_agreement.id,
+      mtm_campaign: 'Offreur - Convention Ready to Print'
+    ).html_safe
 
-    mail(to: @employer.email, subject: "Imprimez et signez la convention de stage.")
+    mail(to: @employer.email, subject: 'Imprimez et signez la convention de stage.')
   end
 
 end
