@@ -5,14 +5,11 @@
 - parameters = parameters.merge(renewed: true) if can?(:renew, internship_offer)
 div
   .actions.d-flex.d-sm-block.d-xs-stick.text-center
-    p.mb-1.d-none.d-md-block.text-muted.small= sup_text
-    p.mb-0.w-100= link_to new_dashboard_internship_offer_path(parameters),
-                          class: 'btn btn-primary rounded-xs-0 w-100' do
-      i.fas.fa-copy
+    .mb-1.d-none.d-md-block.text-muted.small= sup_text
+    .mb-0.w-100= link_to new_dashboard_internship_offer_path(parameters), class: 'fr-btn fr-btn--icon-left fr-fi-file-fill btn-block' do
       small class="#{klass}"
-        =" #{cta_text}"
+        = "#{cta_text}"
     p.mt-1.w-100= link_to new_dashboard_internship_offer_path(parameters.merge(without_location: true)),
-                          class: 'btn btn-secondary rounded-xs-0 w-100' do
-      i.fas.fa-copy
+                          class: 'fr-btn fr-btn--secondary fr-btn--icon-left fr-fi-file-fill' do
       small.test-duplicate-without-location-button
         |  Publier la même offre pour un lieu de stage différent

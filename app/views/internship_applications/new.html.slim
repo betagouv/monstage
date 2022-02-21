@@ -48,7 +48,7 @@
           = render partial: "internship_applications/forms/identity_fields",
                   locals: { form: identify_form, phone_mail_disabled: true, disabled: true}
         .actions.d-flex.justify-content-between.flex-row
-          .d-inline-flex= link_to "#internship-application-closeform", class: 'fr-btn fr-btn--secondary', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+          .d-inline-flex= link_to internship_offer_path(@internship_offer), class: 'fr-btn fr-btn--secondary' do
             | Annuler
           .d-inline-flex= f.submit "Valider", { class: 'fr-btn' }
 

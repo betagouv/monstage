@@ -1,4 +1,11 @@
-a.btn {
+a.fr-btn {
+  text-decoration: none;
+}
+a.fr-btn:hover {
+  color: #fff;
+  text-decoration: none;
+}
+a, a:hover {
   text-decoration: none;
 }
 .btn-absolute{

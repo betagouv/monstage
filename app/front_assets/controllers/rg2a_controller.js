@@ -8,13 +8,13 @@ const TURBOLINK_IDEMPOTENT_CLASSNAME = 'rg2a-externnal';
 
 export default class extends Controller {
   connect() {
-    $('a[target="_blank"]').each((i, el) => {
-      const $el = el;
+    // $('a[target="_blank"]').each((i, el) => {
+    //   const $el = el;
 
-      if (!$(el).hasClass(TURBOLINK_IDEMPOTENT_CLASSNAME)) {
-        $(el).addClass(TURBOLINK_IDEMPOTENT_CLASSNAME);
-        $(el).prepend('<i class="fas fa-external-link-alt fa-fw fa-xs ml-1"></i> ');
-      }
-    });
+    //   if (!$(el).hasClass(TURBOLINK_IDEMPOTENT_CLASSNAME)) {
+    //     $(el).addClass(TURBOLINK_IDEMPOTENT_CLASSNAME);
+    //     $(el).prepend('<i class="fas fa-external-link-alt fa-fw fa-xs ml-1"></i> ');
+    //   }
+    // });
   }
 }
