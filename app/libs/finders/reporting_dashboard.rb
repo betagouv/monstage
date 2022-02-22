@@ -22,6 +22,16 @@ module Finders
                              .try(:[], "total_count")
     end
 
+    def operator_count_onsite
+      @operator_count_onsite ||= operator_base_query
+      @operator_count_onsite.onsite_or_workshop.map(&:nb_spot_used).sum
+    end
+
+    def operator_count_remote
+      @operator_count_remote ||= operator_base_query
+      @operator_count_remote.remote.map(&:nb_spot_used).sum
+    end
+
     def operator_count_by_private_sector_paqte
       @operator_count_by_private_sector_paqte ||= operator_base_query.by_paqte
                                                                      .entries
