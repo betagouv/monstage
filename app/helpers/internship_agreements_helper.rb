@@ -5,4 +5,10 @@ module InternshipAgreementsHelper
     return :employer_accept_terms if user.is_a?(Users::Employer)
     raise  ArgumentError, "#{user.type} does not support accept terms yet "
   end
+
+  def agreement_form?
+    return false unless controller.controller_name == 'internship_agreements'
+    return false unless ['new', 'edit', 'update'].include?(controller.action_name)
+    return true
+  end
 end

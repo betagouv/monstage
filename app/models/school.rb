@@ -10,8 +10,8 @@ class School < ApplicationRecord
   has_many :weeks, through: :school_internship_weeks
   has_many :internship_offers, dependent: :nullify
   has_many :internship_applications, through: :students
-
-  has_rich_text :agreement_conditions_rich_text
+  has_many :internship_agreements, through: :internship_applications
+  has_one :internship_agreement_preset
 
   validates :city, :name, :code_uai, presence: true
 
@@ -51,8 +51,15 @@ class School < ApplicationRecord
     weeks.selectable_on_school_year.exists?
   end
 
+  after_create :create_internship_agreement_preset!,
+               if: lambda { |s| s.internship_agreement_preset.blank? }
+
   def select_text_method
     "#{name} - #{city} - #{zipcode}"
+  end
+
+  def agreement_address
+    "Collège #{name} - #{city}, #{zipcode}"
   end
 
   def has_staff?
@@ -71,6 +78,12 @@ class School < ApplicationRecord
 
   def email_domain_name
     Academy.get_email_domain(Academy.lookup_by_zipcode(zipcode: zipcode))
+  end
+
+  def internship_agreement_open?
+    targeted_departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',')
+                                                              .map{|dept| dept.gsub(/\s+/, '') }
+    targeted_departments.include?(zipcode[0..2]) || targeted_departments.include?(zipcode[0..1])
   end
 
   rails_admin do

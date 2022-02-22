@@ -70,33 +70,26 @@ module Dashboard
         :weekly_internship_offer,
         weeks: [week_1, week_2],
         employer: @employer,
-        max_candidates: 2
-      )
-      internship_offer_week_1 = create(
-        :internship_offer_week,
-        week: week_1,
-        internship_offer: internship_offer
-      )
-      internship_offer_week_2 = create(
-        :internship_offer_week,
-        week: week_2,
-        internship_offer: internship_offer
+        max_candidates: 2,
+        max_students_per_group: 1
       )
 
       early_application_for_week_2 = create(
         :weekly_internship_application,
         aasm_state: :submitted,
         submitted_at: 3.days.ago,
-        internship_offer_week: internship_offer_week_2,
-        student: student_2
+        week: week_2,
+        student: student_2,
+        internship_offer: internship_offer
       )
 
       late_application_for_week_1 = create(
         :weekly_internship_application,
         aasm_state: :submitted,
         submitted_at: 2.days.ago,
-        internship_offer_week: internship_offer_week_1,
-        student: student_1
+        week: week_1,
+        student: student_1,
+        internship_offer: internship_offer
       )
       sign_in(@employer)
 
@@ -129,21 +122,15 @@ module Dashboard
       internship_offer = create(
         :weekly_internship_offer,
         weeks: week_1_ar,
-        employer: @employer,
-        max_candidates: 1
-      )
-
-      internship_offer_week_1 = create(
-        :internship_offer_week,
-        week: week_1_ar.first,
-        internship_offer: internship_offer
+        employer: @employer
       )
 
       application_for_week_1 = create(
         :weekly_internship_application,
         aasm_state: :submitted,
         submitted_at: 3.days.ago,
-        internship_offer_week: internship_offer_week_1,
+        week: internship_offer.weeks.first,
+        internship_offer: internship_offer,
         student: student_1
       )
 

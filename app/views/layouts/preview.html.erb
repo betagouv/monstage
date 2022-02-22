@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr" >
+  <head>
+    <%= stylesheet_pack_tag 'application.css', 'data-turbolinks-track': 'reload', media: 'all' %>
+    <%= javascript_pack_tag 'application.js', 'data-turbolinks-track': 'reload', defer: true  %>
+  </head>
+  <body class="<%= env_class_name %> <%= body_class_name %>">
+    <div class="container">
+      <div class="row my-3">
+        <div class="col-12">
+          <ul class="nav nav-tabs">
+            <li class="nav-item"><a class="nav-link"><%= render partial: 'layouts/extra_for_devs' %></a></li>
+            <li class="nav-item"><a class="nav-link" href="/">Accueil</a></li>
+            <li class="nav-item"><a class="nav-link" href="/rails/view_components">Previews</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <% ViewComponent::Preview.all.each do |preview| %>
+            <h5><%= preview.preview_name.titleize %></h5>
+            <ul>
+              <% preview.examples.each do |preview_example| %>
+                <li><%= link_to preview_example, preview_view_component_path("#{preview.preview_name}/#{preview_example}") %></li>
+              <% end %>
+            </ul>
+          <% end %>
+        </div>
+
+        <div class="col-8" role="main"><%= yield %></div>
+     </div>
+  </body>
+</html>
+

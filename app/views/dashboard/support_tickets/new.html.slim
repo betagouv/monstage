@@ -8,7 +8,11 @@
       à distance, et peuvent vous accompagner dans leur mise en place.
 /- if current_user.is_a?(Users::SchoolManagement)
   = render partial: 'dashboard/schools/navbar', locals: {school: current_user.school, render_ux_guidelines: true}
-  h2.h4.text-body.pt-3 Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
+
+  h2.h4.text-body.pt-3
+    |
+      Contactez-nous, nous vous mettrons en lien avec nos associations partenaires.
+
 
 = form_with({model: @support_ticket,
              url: dashboard_support_tickets_path,
@@ -24,8 +28,11 @@
     = f.rg2a_explain_required_asterisk
     .row.no-gutters
       .col-sm-12.col-md-8.col-lg-5
-        = render partial: "weeks/checkbox_inputs",
-                 locals: {current_weeks: @available_weeks, form: f, label: "Disponibilités", render_employer_components: false }
+        = render partial: "inputs/weeks_checkbox_inputs",
+                locals: {current_weeks: @available_weeks,
+                         form: f,
+                         label: "Disponibilités",
+                         render_employer_components: false }
 
         - if current_user.is_a?(Users::Employer)
           = render partial: 'dashboard/support_tickets/employer_specific_fields',

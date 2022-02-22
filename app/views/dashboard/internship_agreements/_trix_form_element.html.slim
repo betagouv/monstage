@@ -1,30 +1,28 @@
-- edit_enable = can?("edit_#{field}".to_sym, form.object)
+- edit_enable = can?("edit_#{field}".to_sym, form.object) && !disabled
 - class_label = class_label || ''
 
-.col-8
-  .form-group [data-controller='rich-text-label'
-                data-rich-text-label-for-value="internship_agreement_#{field}"
-                data-rich-text-label-enable-value="#{edit_enable}"]
+.col-12.pt-3
+  .form-group
 
+    div [class="label #{class_label}"
+          id="label_#{form.object_name}_#{field}"
+          data-controller='rich-text-label'
+          data-rich-text-label-for-value="#{form.object_name}_#{field}"
+          data-rich-text-label-enable-value="#{edit_enable}"]
+      = text_label
+      span.tool-tip.float-right data-toggle="tooltip" data-html='true' data-placement="top" title="<b>#{title}</b><p>#{content}</p>" data-controller='tooltip'
+        i.fa.fa-info-circle
+      = form.rg2a_required_content_tag
+    .input-group-custom data-controller="internship-agreement-field"
+      - if edit_enable && !disabled
+        div id="#{field}"
+          = form.rich_text_area field,
+                                class: 'form-control',
+                                required: true,
+                                data: { 'action': 'input->internship-agreement-field#checkRequiredTrixField',
+                                aria: {labelledby: "label_#{form.object_name}_#{field}"} }
+          
 
-    - if defined?(text_label)
-      = form.label field do
-        span class="#{class_label}"
-          = text_label
-          = form.rg2a_required_content_tag
-
-    - if edit_enable
-      div id="#{field}" class="required-form-field"
-        = form.rich_text_area field,
-                              class: 'form-control editable-form-field',
-                              required: true,
-                              data: { 'action': 'input->internship-agreement-form#checkRequiredTrixField' }
-    - else
-      div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
-        = form.rich_text_area field,
-                              class: 'form-control editable-form-field'
-- if title.present? && content.present?
-  .col-4
-    div class="tool-note #{edit_enable ? 'active' : 'inactive'}"
-      .title = title
-      span = content.html_safe
+      - else
+        div id="#{field}" class="text-muted mt-2 trix-header-vanisher"
+          = form.rich_text_area field, class: 'form-control', disabled: disabled
