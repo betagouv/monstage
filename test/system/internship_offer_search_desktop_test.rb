@@ -25,7 +25,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
                                           coordinates: Coordinates.bordeaux)
 
     visit internship_offers_path
-    fill_in_city_or_zipcode(with: 'Pari', expect: 'Paris')
+    fill_in_city_or_zipcode(with: 'Pari ', expect: 'Paris')
     submit_form
 
     assert_presence_of(internship_offer: internship_offer_at_paris)
