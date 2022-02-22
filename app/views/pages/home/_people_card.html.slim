@@ -10,8 +10,8 @@
         = link_to "#{root_url}/modes_d_emploi/#{file}",
                   title: link_title,
                   class: 'fr-raw-link' do
-          .fr-card__link.text-decoration-none = strong_text
-      p.fr-card__desc.desc-cards-in-a-row = subtitle
+          .fr-card__link.text-decoration-none.fr-text--lg  = strong_text
+      p.fr-card__desc.desc-cards-in-a-row.fr-text.home= subtitle
     .fr-card__img
       = image_tag asset_pack_path("media/images/homepage/#{image_file_name}"),
                 alt: alt_text,

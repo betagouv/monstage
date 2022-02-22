@@ -2,6 +2,27 @@
   border: 2px solid $blue;
 }
 
+.fr-raw-link:hover {
+  text-decoration: none;
+}
+
+.fr-btn:hover {
+  color: white
+}
+
+.fr-btn.fr-btn--secondary:hover {
+  color: $blue-france;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+}
+
+.d-hide-inline-sm {}
+
+.visible-smaller-md {}
+
 .homepage {
   overflow-x: hidden;
 }
@@ -34,6 +55,20 @@ h4 {
 .desc-cards-in-a-row {
   display: block;
   min-height: 4.5rem;
+}
+.fr-card__desc.fr-text.home {
+  font-size: 1rem;
+}
+
+img.covering {
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: contain;
+}
+
+.bg-white {
+  color: $blue-france;
+  background-color: white;
 }
 .bg-blue {
   color: white;
@@ -151,6 +186,9 @@ h4 {
   .video-responsive {
     box-shadow: 25px 25px 0px $blue-france;
   }
+  .visible-smaller-md {
+    display: none;
+  }
 }
 
 @include media-breakpoint-down(md) {
@@ -175,6 +213,10 @@ h4 {
     }
 }
 @include media-breakpoint-down(sm) {
+  .d-hide-inline-sm {
+    display: none;
+  }
+
   .text-center-left {
     text-align: center;
   }
