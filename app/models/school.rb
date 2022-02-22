@@ -82,6 +82,7 @@ class School < ApplicationRecord
 
   def internship_agreement_open?
     targeted_departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',')
+                                                              .map{|dept| dept.gsub(/\s+/, '') }
     return true if targeted_departments.include?(zipcode[0..2])
 
     targeted_departments.include?(zipcode[0..1])
