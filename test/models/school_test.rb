@@ -105,4 +105,21 @@ class SchoolTest < ActiveSupport::TestCase
       assert_equal 2, School.without_weeks_on_current_year.count
     end
   end
+
+  test 'targeted departments for internship_agreements' do
+    some_value_to_rember = ENV['OPEN_DEPARTEMENTS_CONVENTION']
+
+    ENV['OPEN_DEPARTEMENTS_CONVENTION'] = "02 ,974, 37"
+    in_reunion = create(:school, zipcode: '97400')
+    in_mayotte = create(:school, zipcode: '97600')
+    in_aisne = create(:school, zipcode: '02000')
+    in_paris = create(:school, zipcode: '75020')
+    assert in_reunion.internship_agreement_open?
+    assert in_aisne.internship_agreement_open?
+    refute in_paris.internship_agreement_open?
+    refute in_mayotte.internship_agreement_open?
+    
+    ENV['OPEN_DEPARTEMENTS_CONVENTION'] = some_value_to_rember
+  end
+
 end
