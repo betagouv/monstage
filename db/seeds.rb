@@ -56,8 +56,8 @@ end
 def populate_class_rooms
   school = find_default_school_during_test
 
-  ClassRoom.create(name: '3e A – troisieme', school_track: :troisieme_generale, school: school)
-  ClassRoom.create(name: '3e B – troisieme_prepa_metiers', school_track: :troisieme_prepa_metiers, school: school)
+  ClassRoom.create(name: '3e A – troisieme_generale', school_track: :troisieme_generale, school: school)
+  ClassRoom.create(name: '3e B – troisieme_prepa_metier', school_track: :troisieme_prepa_metiers, school: school)
   ClassRoom.create(name: '3e C – troisieme_segpa', school_track: :troisieme_segpa, school: school)
   create_a_discarded_class_room
 end
@@ -72,8 +72,8 @@ def create_a_discarded_class_room
 end
 
 def with_class_name_for_defaults(object)
-  object.first_name ||= "user"
-  object.last_name ||= object.class.name
+  object.first_name ||= "Utilisateur"
+  object.last_name ||= "(#{Presenters::UserManagementRole.new(user: object).role})"
   object.accept_terms = true
   object.confirmed_at = Time.now.utc
   object.current_sign_in_at = 2.days.ago
@@ -202,13 +202,13 @@ def populate_users
   with_class_name_for_defaults(Users::Employer.new(email: 'employer@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::God.new(email: 'god@ms3e.fr', password: 'review')).save!
   with_class_name_for_defaults(Users::Operator.new(email: 'operator@ms3e.fr', password: 'review', operator: Operator.first)).save!
-  Operator.reportable.map do |operator|
-    with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
-  end
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'school_manager', email: "ce.1234567X@#{find_default_school_during_test.email_domain_name}", password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_generale_class_room, email: 'main_teacher@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'main_teacher', class_room: troisieme_segpa_class_room, email: 'main_teacher_segpa@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
   with_class_name_for_defaults(Users::SchoolManagement.new(role: 'other', email: 'other@ms3e.fr', password: 'review', school: find_default_school_during_test)).save!
+  Operator.reportable.map do |operator|
+    with_class_name_for_defaults(Users::Operator.new(email: "#{operator.name.parameterize}@ms3e.fr", password: 'review', operator: operator)).save!
+  end
 
   statistician_email = 'statistician@ms3e.fr'
   ministry_statistician = 'ministry_statistician@ms3e.fr'
@@ -310,6 +310,26 @@ def populate_internship_offers
     city: 'paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: Group.is_public.last.name,
+    school_track: :troisieme_generale
+  )
+  InternshipOffers::WeeklyFramed.create!(
+    employer: Users::Employer.first,
+    weeks: Week.selectable_on_school_year,
+    sector: Sector.first,
+    group: Group.is_private.first,
+    is_public: false,
+    title: 'Stage assistant.e banque et assurance',
+    description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_website: 'http://www.dtpm.fr/',
+    tutor_name: 'Gilles Charles',
+    tutor_email: 'fourcade.m@gmail.com',
+    tutor_phone: '+33637607756',
+    street: '128 rue brancion',
+    zipcode: '75015',
+    city: 'paris',
+    coordinates: { latitude: 48.866667, longitude: 2.333333 },
+    employer_name: 'Du temps pour moi',
     school_track: :troisieme_generale
   )
 
@@ -486,20 +506,31 @@ def populate_applications
                                    .where('class_rooms.school_track = ?', :troisieme_generale)
                                    .to_a
                                    .shuffle
-                                   .first(3)
+                                   .first(4)
   troisieme_generale_offers = InternshipOffers::WeeklyFramed.where(school_track: :troisieme_generale)
   puts "every 3e generale offers receives an application first 3e generale stud"
   troisieme_generale_offers.each do |io_trois_gene|
-    InternshipApplications::WeeklyFramed.create!(
-      aasm_state: :submitted,
-      submitted_at: 10.days.ago,
-      student: trois_gene_studs.first,
-      motivation: 'Au taquet',
-      internship_offer: io_trois_gene,
-      internship_offer_week: io_trois_gene.internship_offer_weeks.sample
-    )
+    if io_trois_gene.id.to_i.even?
+      InternshipApplications::WeeklyFramed.create!(
+        aasm_state: :submitted,
+        submitted_at: 10.days.ago,
+        student: trois_gene_studs.first,
+        motivation: 'Au taquet',
+        internship_offer: io_trois_gene,
+        week: io_trois_gene.internship_offer_weeks.sample.week
+      )
+    else
+      InternshipApplications::WeeklyFramed.create!(
+        aasm_state: :drafted,
+        submitted_at: 10.days.ago,
+        student: trois_gene_studs.first,
+        motivation: 'Au taquet',
+        internship_offer: io_trois_gene,
+        week: io_trois_gene.internship_offer_weeks.sample.week
+      )
+    end
   end
-
+  # 2nd student
   puts "second 3e generale offer receive an approval --> second 3e generale stud"
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -508,19 +539,7 @@ def populate_applications
     student: trois_gene_studs.second,
     motivation: 'Au taquet',
     internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.first.internship_offer_weeks.sample
-  )
-
-  puts  "third 3e generale stud cancels his application to first offer"
-  InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :canceled_by_student,
-    submitted_at: 10.days.ago,
-    approved_at: 2.days.ago,
-    canceled_at: 1.day.ago,
-    student: trois_gene_studs.third,
-    motivation: 'Au taquet',
-    internship_offer: troisieme_generale_offers.first,
-    internship_offer_week: troisieme_generale_offers.second.internship_offer_weeks.sample
+    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
@@ -530,19 +549,39 @@ def populate_applications
     canceled_at: 1.day.ago,
     student: trois_gene_studs.second,
     motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
-    internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    internship_offer: troisieme_generale_offers.second,
+    week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
-  puts  "third 3e generale stud is rejected of last internship_offer"
+  #third student
   InternshipApplications::WeeklyFramed.create!(
-    aasm_state: :rejected,
-    submitted_at: 8.days.ago,
-    approved_at: 3.days.ago,
-    rejected_at: 2.days.ago,
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
     student: trois_gene_studs.third,
-    motivation: 'Parce que ma société n\'a pas d\'encadrant cette semaine là',
-    internship_offer: troisieme_generale_offers.last,
-    internship_offer_week: troisieme_generale_offers.last.internship_offer_weeks.sample
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.third,
+    week: troisieme_generale_offers.first.internship_offer_weeks.second.week
+  )
+  puts  "third 3e generale stud cancels his application to first offer"
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :canceled_by_student,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    canceled_at: 1.day.ago,
+    student: trois_gene_studs.third,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.first,
+    week: troisieme_generale_offers.second.internship_offer_weeks.second.week
+  )
+  # 4th student
+  InternshipApplications::WeeklyFramed.create!(
+    aasm_state: :approved,
+    submitted_at: 10.days.ago,
+    approved_at: 2.days.ago,
+    student: trois_gene_studs.fourth,
+    motivation: 'Au taquet',
+    internship_offer: troisieme_generale_offers.fourth,
+    week: troisieme_generale_offers.first.internship_offer_weeks.third.week
   )
 end
 
@@ -583,6 +622,27 @@ def populate_internship_weeks
   manager = Users::SchoolManagement.find_by(role: 'school_manager')
   school = manager.school
   school.week_ids = Week.selectable_on_school_year.pluck(:id)
+end
+
+def populate_agreements
+  troisieme_applications_offers = InternshipApplications::WeeklyFramed.approved.limit(3)
+  agreement_1 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[0].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[0])
+  agreement_1.school_manager_accept_terms = true
+  agreement_1.employer_accept_terms = false
+  agreement_1.save!
+
+  agreement_2 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[1].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[1])
+  agreement_2.school_manager_accept_terms = false
+  agreement_2.employer_accept_terms = true
+  agreement_2.save!
+
+  agreement_3 = Builders::InternshipAgreementBuilder.new(user: troisieme_applications_offers[2].internship_offer.employer)
+                                                    .new_from_application(troisieme_applications_offers[2])
+  agreement_3.school_manager_accept_terms = true
+  agreement_3.employer_accept_terms = true
+  agreement_3.save!
 end
 
 def populate_airtable_records
@@ -639,8 +699,13 @@ def call_method_with_metrics_tracking(methods)
   end
 end
 
+def prevent_sidekiq_to_run_job_after_seed_loaded
+  Sidekiq.redis do |redis_con|
+    redis_con.flushall
+  end
+end
+
 if Rails.env == 'review' || Rails.env.development?
-  require 'factory_bot_rails'
   call_method_with_metrics_tracking([
     :populate_month_reference,
     :populate_week_reference,
@@ -658,6 +723,7 @@ if Rails.env == 'review' || Rails.env.development?
     :populate_airtable_records
   ])
   School.update_all(updated_at: Time.now)
+  prevent_sidekiq_to_run_job_after_seed_loaded
   Services::CounterManager.reset_internship_offer_counters
   Services::CounterManager.reset_internship_offer_weeks_counter
 end

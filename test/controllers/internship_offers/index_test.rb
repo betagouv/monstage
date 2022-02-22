@@ -36,22 +36,40 @@ class IndexTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test 'GET #index as student ignores internship_offers with existing applicaiton' do
-    internship_offer_without_application = create(:weekly_internship_offer,
-                                                  title: 'ok')
-    school = create(:school, weeks: internship_offer_without_application.weeks)
-    student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer_with_application = create(:weekly_internship_offer,
-                                               title: 'o', weeks: internship_offer_without_application.weeks)
-    internship_application = create(:weekly_internship_application, {
-                                      student: student,
-                                      internship_offer_week: internship_offer_with_application.internship_offer_weeks.first
-                                    })
+  test 'GET #index as student ignores internship_offers with existing application' do
+    internship_offer_without_application = create(
+      :weekly_internship_offer,
+      title: 'offer without_application'
+    )
+
+    assert_equal 1, InternshipOffers::WeeklyFramed.count
+
+    weeks = internship_offer_without_application.weeks
+    school = create(:school, weeks: weeks)
+    class_room = create(:class_room, :troisieme_generale, school: school)
+    student = create(:student, school: school, class_room: class_room)
+    internship_offer_with_application = create(
+      :weekly_internship_offer,
+      max_candidates: 2,
+      max_students_per_group: 2,
+      title: 'offer with_application',
+      weeks: weeks)
+
+    assert_equal 2, InternshipOffers::WeeklyFramed.count
+
+    internship_application = create(
+      :internship_application,
+      internship_offer: internship_offer_with_application,
+      aasm_state: 'approved',
+      student: student,
+      week: weeks.first)
+
+    assert_equal 2, InternshipOffers::WeeklyFramed.count
 
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
+        assert_equal 2, InternshipOffers::WeeklyFramed.uncompleted_with_max_candidates.count
         get internship_offers_path(school_track: :troisieme_generale)
         assert_absence_of(internship_offer: internship_offer_with_application)
         assert_presence_of(internship_offer: internship_offer_without_application)
@@ -140,30 +158,10 @@ class IndexTest < ActionDispatch::IntegrationTest
     assert_presence_of(internship_offer: internship_offer_free)
   end
 
-  test 'GET #index as student. ignores internship offers with blocked_weeks_count > internship_offer_weeks_count' do
-    school = create(:school)
-    student = create(:student, school: school,
-                               class_room: create(:class_room, :troisieme_generale, school: school))
-    internship_offer_with_max_internship_offer_weeks_count_reached = create(
-      :weekly_internship_offer, weeks: [Week.first,
-                                        Week.last], blocked_weeks_count: 2
-    )
-    internship_offer_without_max_internship_offer_weeks_count_reached = create(
-      :weekly_internship_offer, weeks: [Week.first,
-                                        Week.last], blocked_weeks_count: 0
-    )
-    sign_in(student)
-    InternshipOffer.stub :nearby, InternshipOffer.all do
-      InternshipOffer.stub :by_weeks, InternshipOffer.all do
-        get internship_offers_path(school_track: :troisieme_generale)
-        assert_absence_of(internship_offer: internship_offer_with_max_internship_offer_weeks_count_reached)
-        assert_presence_of(internship_offer: internship_offer_without_max_internship_offer_weeks_count_reached)
-      end
-    end
-  end
 
   test 'GET #index as student ignores internship_offers having ' \
        'as much internship_application as max_candidates number' do
+
     max_candidates = 1
     week = Week.first
     school = create(:school)
@@ -173,11 +171,13 @@ class IndexTest < ActionDispatch::IntegrationTest
                                                   school: school))
     internship_offer = create(:weekly_internship_offer,
                               max_candidates: max_candidates,
-                              internship_offer_weeks: [
-                                build(:internship_offer_week,
-                                      blocked_applications_count: max_candidates,
-                                      week: week)
-                              ])
+                              weeks: [week]
+                              )
+    internship_application = create(:internship_application,
+                                    internship_offer: internship_offer,
+                                    week: week)
+
+
     sign_in(student)
     InternshipOffer.stub :nearby, InternshipOffer.all do
       InternshipOffer.stub :by_weeks, InternshipOffer.all do
@@ -249,9 +249,9 @@ class IndexTest < ActionDispatch::IntegrationTest
                                  school_track: :troisieme_generale)
       assert_presence_of(internship_offer: internship_offer)
 
-      get internship_offers_path(week_ids: [internship_weeks[0].id],
-                                 school_track: :troisieme_generale)
-      assert_absence_of(internship_offer: internship_offer)
+      # get internship_offers_path(week_ids: [internship_weeks[0].id],
+      #                            school_track: :troisieme_generale)
+      # assert_absence_of(internship_offer: internship_offer)
 
       get internship_offers_path(week_ids: [internship_weeks[1].id],
                                  school_track: :troisieme_generale)

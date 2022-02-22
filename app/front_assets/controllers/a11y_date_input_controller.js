@@ -24,7 +24,6 @@ const isValidYear = yearStr => {
     const minYear = 1950;
     const maxYear = new Date().getFullYear();
     const yearInt = parseInt(yearStr, 10);
-
     return yearInt >= minYear && yearInt <= maxYear;
   }
 };
@@ -37,7 +36,7 @@ export default class extends Controller {
     const $errorContainer = $(this.errorContainerTarget);
     const $input = $(this.inputTarget);
     const { value } = this.inputTarget;
-    const match = /(?<day>\d{1,2})(\/|-)?(?<month>\d{1,2})(\/|-)?(?<year>\d{2,4})/.exec(value);
+    const match = /(?<day>\d{1,2})(\/|-)?(?<month>\d{1,2})(\/|-)?(?<year>\d{1,4})/.exec(value);
     const { day, month, year } = (match || {}).groups || {};
 
     if (isValidYear(year) && isValidMonth(month) && isValidDay(day)) {
@@ -47,7 +46,7 @@ export default class extends Controller {
             .removeClass('is-invalid')
     } else if (value != ''){
       showElement($errorContainer);
-      $errorContainer.text('Veuillez saisir votre date de naissance au format jour/mois/année : jj/mm/aaaa');
+      $errorContainer.text('Veuillez saisir une date au format jour/mois/année : jj/mm/aaaa');
       $input.addClass('is-invalid')
     }
   }

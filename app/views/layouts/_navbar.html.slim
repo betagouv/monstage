@@ -42,11 +42,20 @@ nav.navbar.navbar-light.py-0
 
     - else
       li.nav-item.d-none.d-sm-block
-        = link_to 'Créer mon compte', new_user_registration_path, class: "btn btn-primary mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}", id: 'signup-header'
+        = link_to 'Créer mon compte',
+                  new_user_registration_path,
+                  class: "btn btn-primary mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}",
+                  id: 'signup-header'
       li.nav-item.d-none.d-sm-block
-        = link_to 'Me connecter', new_user_session_path, class: "btn btn-outline-primary ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
+        = link_to 'Me connecter',
+                  new_user_session_path,
+                  class: "btn btn-outline-primary ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
 
       li.nav-item.d-block.d-sm-none
-        = link_to 'Inscription', new_user_registration_path, class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:registrations) ? 'active' : ''}"
+        = link_to 'Inscription',
+                  new_user_registration_path,
+                  class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:registrations) ? 'active' : ''}"
       li.nav-item.d-block.d-sm-none
-        = link_to 'Connexion', new_user_session_path, class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:sessions) ? 'active' : ''}"
+        = link_to 'Connexion',
+                  new_user_session_path,
+                  class: "nav-link pl-1 pr-1 py-4 #{current_controller?(:sessions) ? 'active' : ''}"

@@ -6,11 +6,11 @@ module Presenters
     def to_range_as_str
       to_range do |is_first:, is_last:, week:|
         if is_first
-          week.beginning_of_week_with_year
+          week.beginning_of_week_with_year_long
         elsif is_last
-          week.end_of_week_with_years
+          week.end_of_week_with_years_long
         else
-          week.long_select_text_method
+          week.very_long_select_text_method
         end
       end
     end
@@ -80,5 +80,6 @@ module Presenters
       @weeks = weeks
       @first_week, @last_week = weeks.minmax_by(&:id)
     end
+
   end
 end

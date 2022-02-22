@@ -59,7 +59,7 @@ class UserUpdateTest < ApplicationSystemTestCase
     within('#alert-warning') do
       click_button('Fermer')
     end
-    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris')
+    find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris ')
     find('li#downshift-0-item-0').click
     find("label[for=\"select-school-#{school_new.id}\"]").click
     click_button('Enregistrer')

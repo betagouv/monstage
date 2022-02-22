@@ -36,7 +36,7 @@ module Finders
 
     def school_members_query
       @params = implicit_conditions(params: @params, user: user)
-      school_management_query
+      school_management_query.ignore_already_applied(user: user)
     end
 
     def statistician_query

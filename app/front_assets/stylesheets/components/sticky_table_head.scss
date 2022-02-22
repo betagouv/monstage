@@ -5,6 +5,7 @@
 
   position: relative;
   border-collapse: collapse;
+  width: 100%;
 
 
   thead, .thead {
@@ -12,7 +13,9 @@
       z-index: 1;
       position: sticky;
       border-top: none;
-      top:0
+      top:0;
+      left: -20px;
+      right: -20px;
     }
     tr:first-child:not(:last-child) th,
     .tr:first-child:not(:last-child) .th{
@@ -30,6 +33,11 @@
       box-shadow: 0 2px 0px rgba($blue,.5),;
       background-color: $white;
     }
+  }
+
+  tr.tr-white.row {
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .tr-blue{

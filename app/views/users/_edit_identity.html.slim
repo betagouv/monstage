@@ -61,6 +61,27 @@
                       options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
                       { prompt: class_rooms_options_for_default },
                       class: "fr-select"
+  
+  /  TO DO : Check if remove
+  / .form-group
+  /   = f.label :first_name do
+  /     = 'Prénom'
+  /     = f.rg2a_required_content_tag
+  /   = f.text_field :first_name, class: 'form-control col-lg-6',
+  /     required: true
+  / .form-group
+  /   = f.label :last_name do
+  /     = 'Nom'
+  /     = f.rg2a_required_content_tag
+  /   = f.text_field :last_name, class: 'form-control col-lg-6',
+  /     required: true
+  / .form-group data-signup-target='emailBloc'
+  /   = f.label :email do
+  /     span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
+  /     = f.rg2a_required_content_tag
+  /   = f.text_field :email,
+  /                  {class: 'form-control col-lg-6', required: true, data: {action: 'change->profile#onBlurEmailInput', :"profile-target" => 'emailInput'}}.merge(current_user.is_a?(Users::Statistician) ? { readonly: true } : {})
+  /   small.d-none data-profile-target="emailHint"
 
         - if can?(:choose_role, current_user)
           .form-group

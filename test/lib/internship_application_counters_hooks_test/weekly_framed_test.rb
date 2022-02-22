@@ -5,37 +5,9 @@ module InternshipApplicationCountersHooks
   class WeeklyFramedTest < ActiveSupport::TestCase
     setup do
       @week = Week.find_by(number: 1, year: 2019)
-      @internship_offer_week = build(:internship_offer_week, week: @week)
-      @internship_offer = build(:weekly_internship_offer, internship_offer_weeks: [@internship_offer_week])
-      @internship_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week,
+      @internship_offer = create(:weekly_internship_offer, weeks: [@week])
+      @internship_application = build(:weekly_internship_application, week: @week,
                                                                       internship_offer: @internship_offer)
-    end
-
-    #
-    # tracks internship_offer_weeks counters
-    #
-    test '.update_internship_offer_week_counters tracks internship_offer_weeks.blocked_applications_count' do
-      @internship_application.aasm_state = :approved
-      @internship_application.save!
-      assert_changes -> { @internship_offer_week.reload.blocked_applications_count },
-                     from: 0,
-                     to: 1 do
-        @internship_application.signed!
-      end
-    end
-
-    #
-    # track internship_offer counters
-    #
-    test '.update_internship_offer_counters tracks internship_offer.blocked_weeks_count' do
-      @internship_application.aasm_state = :approved
-      @internship_application.save!
-
-      assert_changes -> { @internship_offer.reload.blocked_weeks_count },
-                     from: 0,
-                     to: 1 do
-        @internship_application.signed!
-      end
     end
 
     test '.update_internship_offer_counters tracks internship_offer.total_applications_count' do
@@ -50,7 +22,7 @@ module InternshipApplicationCountersHooks
 
     test '.update_internship_offer_counters ignores drafted applications with internship_offer.total_applications_count' do
       create(:weekly_internship_application, :drafted,
-             internship_offer_week: @internship_offer_week,
+             week: @internship_offer.weeks.first,
              internship_offer: @internship_offer)
 
       assert_equal 0, @internship_offer.reload.total_applications_count
@@ -160,7 +132,8 @@ module InternshipApplicationCountersHooks
         @internship_application.save!
       end
 
-      second_application = build(:weekly_internship_application, internship_offer_week: @internship_offer_week, internship_offer: @internship_offer,
+      second_application = build(:weekly_internship_application, week: @internship_offer.weeks.first,
+                                                                 internship_offer: @internship_offer,
                                                                  student: create(:student, gender: 'f'))
       second_application.aasm_state = :submitted
 

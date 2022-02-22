@@ -1,0 +1,12 @@
+.user-hideable-component{
+  position: relative;
+}
+.close-hideable-component{
+  top: 0;
+  right: 1.3em;
+  position: absolute;
+}
+
+.close-hideable-component.btn:focus {
+  box-shadow: none;
+}
