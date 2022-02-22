@@ -9,14 +9,16 @@ header.fr-header role="banner"
                 | REPUBLIQUE
                 br
                 | FRANCAISE
-              = link_to root_path do
+              = link_to root_path, class: 'd-hide-inline-sm' do
                 = image_tag asset_pack_path("media/images/logo-mon-stage-3e.svg"),
                             alt: 'logo de monstagedetroisieme',
                             height: '54px',
-                            class: 'ml-5'
+                            class: 'ml-5 '
             .fr-header__navbar
               button#fr-btn-menu-mobile-3.fr-btn--menu.fr-btn aria-controls="modal-870" aria-haspopup="menu" data-fr-opened="false" title="Menu"
                 | Menu
+          .fr-header__service.visible-smaller-md
+            p.fr-header__service-title Mon stage de troisieme
 
         .fr-header__tools
           .fr-header__tools-links
