@@ -242,6 +242,8 @@ class InternshipApplication < ApplicationRecord
                                                     .new_from_application(self)
     agreement.skip_validations_for_system = true
     agreement.save!
+
+    notify_started_by_employer(internship_agreement: agreement)
   end
 
   scope :approved_or_signed, lambda {
@@ -308,5 +310,16 @@ class InternshipApplication < ApplicationRecord
                     Rails.configuration.action_mailer.default_url_options
                   )
     UrlShortener.short_url(target)
+  end
+
+  private
+
+  def notify_started_by_employer(internship_agreement: )
+    SchoolManagerMailer.agreement_creation_notice_email(
+      internship_agreement: internship_agreement
+    ).deliver_later
+    EmployerMailer.agreement_creation_notice_email(
+      internship_agreement: internship_agreement
+    ).deliver_now
   end
 end
