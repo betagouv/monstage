@@ -69,6 +69,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       visit internship_offers_path
       assert_presence_of(internship_offer: internship_offer)
       click_link("Voir l'annonce")
+
       find("a[href='#internship-application-form']").click
       page.has_no_content? student_wish_message
       page.has_no_content? student_message

@@ -9,10 +9,10 @@
             .th.bl-1.bc-light= Operator.model_name.human
             .th.bl-1.bc-light= Operator.human_attribute_name(:target_count)
             .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels, distanciels, hybrides, ateliers et conférences métier" data-controller='tooltip' Stages Pourvus
-            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels" data-controller='tooltip' dont présentiels
-            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages hybrides" data-controller='tooltip' dont hybrides
-            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages ateliers" data-controller='tooltip' dont ateliers
-            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages distanciels et conférences métier" data-controller='tooltip' dont à distance / conférences
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages présentiels" data-controller='tooltip' dont présentiels
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages hybrides" data-controller='tooltip' dont hybrides
+            .th.bl-1.bc-light.bg-blue-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des stages distanciels et conférences métier" data-controller='tooltip' dont à distance / conférences
+            .th.bl-1.bc-light data-toggle="tooltip" data-placement="top" title="Stages pourvus hors plateforme : somme des ateliers" data-controller='tooltip' Ateliers
             .th.bl-1.bc-light Dernière mise à jour
             .th.bl-1.bc-light
 
@@ -24,8 +24,8 @@
           .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.countable_in_grand_total.sum(:nb_spot_used)
           .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.onsite.sum(:nb_spot_used)
           .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.hybrid.sum(:nb_spot_used)
-          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.workshop.sum(:nb_spot_used)
           .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.remote.sum(:nb_spot_used)
+          .td.align-middle.bl-1.bc-light= AirTableRecord.current_year.workshop.sum(:nb_spot_used)
           .td.align-middle.bl-1.bc-light= AirTableRecord.last_modified_at.try(:strftime, '%d-%m-%Y') || '-'
           .td.align-middle.bl-1.bc-light
 
