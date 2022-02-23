@@ -24,7 +24,7 @@ module Finders
 
     def operator_count_onsite
       @operator_count_onsite ||= operator_base_query
-      @operator_count_onsite.onsite_or_workshop.map(&:nb_spot_used).compact.sum
+      @operator_count_onsite.onsite.map(&:nb_spot_used).compact.sum
     end
 
     def operator_count_remote
@@ -215,7 +215,7 @@ module Finders
     end
 
     def operator_base_query
-      query = AirTableRecord.all
+      query = AirTableRecord.all.without_workshop # /!\ Ateliers not counted
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_ministry(user: user) if user.ministry_statistician?
