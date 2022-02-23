@@ -45,23 +45,18 @@ class AirTableRecord < ApplicationRecord
       INTERNSHIP_OFFER_TYPE[:onsite_internship_offer],
       INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
       INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer],
-      INTERNSHIP_OFFER_TYPE[:conference],
-      INTERNSHIP_OFFER_TYPE[:workshop]
+      INTERNSHIP_OFFER_TYPE[:conference]
     ])
   }
 
   scope :onsite, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:onsite_internship_offer]) }
   scope :hybrid, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) }
   scope :workshop, -> { where(internship_offer_type: INTERNSHIP_OFFER_TYPE[:workshop]) }
+  scope :without_workshop, -> { where.not(internship_offer_type: INTERNSHIP_OFFER_TYPE[:workshop]) }
   scope :remote, -> { 
     where(internship_offer_type: [
       INTERNSHIP_OFFER_TYPE[:remote_internship_offer],
       INTERNSHIP_OFFER_TYPE[:conference]]) 
-  }
-  scope :onsite_or_workshop, -> { 
-    where(internship_offer_type: [
-      INTERNSHIP_OFFER_TYPE[:onsite_internship_offer],
-      INTERNSHIP_OFFER_TYPE[:workshop]])
   }
 
   # aggregates
