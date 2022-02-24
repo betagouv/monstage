@@ -15,7 +15,7 @@ header.fr-header role="banner"
                             height: '54px',
                             class: 'ml-5 '
             .fr-header__navbar
-              button#fr-btn-menu-mobile-3.fr-btn--menu.fr-btn aria-controls="modal-870" aria-haspopup="menu" data-fr-opened="false" title="Menu"
+              button#fr-btn-menu-mobile.fr-btn--menu.fr-btn  aria-haspopup="menu" data-fr-opened="false" title="Menu"
                 | Menu
           .fr-header__service.visible-smaller-md
             p.fr-header__service-title Mon stage de troisieme
@@ -85,10 +85,10 @@ header.fr-header role="banner"
                   = link_to 'Créer mon compte',
                         new_user_registration_path,
                         class: "fr-link fr-fi-user-line text-decoration-none href#{current_controller?(:registrations) ? 'active' : ''}"
-  #modal-870.fr-header__menu.fr-modal aria-labelledby="fr-btn-menu-mobile-3"
+  #modal-873.fr-header__menu.fr-modal aria-labelledby="fr-btn-menu-mobile"
     .fr-container
-      button.fr-link--close.fr-link aria-controls="modal-870"  Fermer
+      button.fr-link--close.fr-link aria-controls="modal-873"  Fermer
       .fr-header__menu-links
-      nav#navigation-869.fr-nav aria-label=("Menu principal") role="navigation"
+      nav.fr-nav aria-label=("Menu principal") role="navigation"
         ul.fr-nav__list
 

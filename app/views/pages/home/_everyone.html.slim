@@ -1,5 +1,5 @@
 .container-monstage.light-grey-background
-  .row.py-5
+  .row.no-gutters.py-5
     .col-md-6.col-sm-12.text-center
       = image_tag asset_pack_path('media/images/homepage/fake.svg'),
                     alt: "Illustration animée, prof élèves",
@@ -23,6 +23,6 @@
           expérience du stage possible.
       p.py-4.fr-px-2w.px-sm-2.px-md-0.text-center-left
         = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                  class: 'fr-btn fr-fi-search-line fr-btn--icon-right fr-raw-link',
+                  class: 'fr-btn fr-fi-search-line fr-btn--icon-right fr-raw-link fr-px-8w',
                   data: { :"test-id" => 'mobile-search-button-first' }
           = "Trouver un stage "
