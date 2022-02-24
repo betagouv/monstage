@@ -80,7 +80,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     assert_selector("#input-search-by-week[readonly]", count: 1)
 
     # reset search and submit
-    find('#input-search-school-track').select("Filière")
+    find('#input-search-school-track').select("")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
