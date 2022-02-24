@@ -6,12 +6,12 @@
       = "Convention à gérer hors plateforme"
 - elsif internship_agreement.try(:confirmed_by?, user: current_user)
   - if ready_to_print?
-    = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'btn btn-outline-primary ml-2 text-nowrap ', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
+    = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'fr-btn  ml-2 text-nowrap ', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
       | Imprimer
   - else
     span.btn.btn.btn-light.ml-2.text-nowrap data-test="inactive-internship-agreement-progress-#{internship_agreement.id}"
       | Imprimer
 - else
   = link_to internship_agreement ? edit_dashboard_internship_agreement_path(internship_agreement) : new_dashboard_internship_agreement_path(internship_application_id: internship_application.id),
-            class: 'btn btn-outline-primary ml-2 text-nowrap' do
+            class: 'fr-btn  ml-2 text-nowrap' do
     = label

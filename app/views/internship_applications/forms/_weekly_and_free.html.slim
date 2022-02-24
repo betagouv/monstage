@@ -42,16 +42,16 @@ div data-internship-application-form-target="containerForm" class="#{@internship
               legend.h3 Ma Candidature
               - if @internship_offer.weekly?
                 .form-group
-                  = f.label :week_id, class: 'required' do
+                  = f.label :week_id, class: 'required fr-label' do
                     | Quelle semaine ?
                     = f.rg2a_required_content_tag
                   - unless current_user.school.has_weeks_on_current_year?
                     = render partial: "internship_applications/forms/student_missing_school_weeks"
                   = f.select :week_id, options_from_collection_for_select(applicable_weeks, :id, :human_select_text_method, @internship_application.week_id),
-                    { prompt: '-- Choisir une semaine --'}, class: "form-control col-6", required: true
+                    { prompt: '-- Choisir une semaine --'}, class: "fr-select col-6", required: true
 
               div class="form-group"
-                .label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
+                .fr-label.required data-controller="rich-text-label" data-rich-text-label-for-value="internship_application_motivation" data-rich-text-label-enable-value=""
                   = "Pourquoi ce stage me motive"
                   small.form-text.text-muted Relisez-vous pour éviter les fautes d'orthographe et utilisez une formule de politesse pour conclure.
 
@@ -62,9 +62,9 @@ div data-internship-application-form-target="containerForm" class="#{@internship
                       locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
 
             .actions.d-flex.d-sm-block
-              = link_to "#internship-application-closeform", class: 'btn btn-outline-primary text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              = link_to "#internship-application-closeform", class: 'fr-btn  text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
                 i.fa.fa-chevron-left.mr-1
                 | Annuler
               span.mx-1= " "
-              = f.submit "Valider", { class: 'btn btn-danger' }
+              = f.submit "Valider", { class: 'fr-btn btn-danger' }
 

@@ -5,21 +5,21 @@ div [data-controller="select-weeks"
      data-select-weeks-skip-validation-value="false"]
   .form-group
     - if label.present?
-      div.label
+      div.fr-label
         = label
         = form.rg2a_required_content_tag
 
     - if render_employer_components
       - allow_select_all = !form.object.is_fully_editable?
-      .custom-control.custom-checkbox.mb-1
+      .fr-checkbox-group.fr-checkbox-group--sm.mb-1
         = check_box_tag 'all_year_long',
                         false,
                         preselect_all,
-                        { class: 'custom-control-input',
+                        { class: '',
                           disabled: allow_select_all,
                           data: { "internship-offer-infos-target": "allYearLong",
                                   action: "change->select-weeks#handleToggleWeeks"}}
-        = label_tag 'all_year_long', class: 'custom-control-label' do
+        = label_tag 'all_year_long', class: 'custom-control-label fr-label' do
           | Toute l'année scolaire
 
           = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
@@ -27,7 +27,7 @@ div [data-controller="select-weeks"
     div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
       .custom-control-checkbox-list
         - current_weeks.map do |week|
-          .custom-control.custom-checkbox.position-relative.pr-3.my-2
+          .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3.my-2
             - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
             - has_applications = week.has_applications?(root: form.object)
             - # keep reference of checkbox id for easier labelling
@@ -37,7 +37,7 @@ div [data-controller="select-weeks"
 
             = form.check_box :week_ids, { multiple: true,
                                           id: checkbox_id,
-                                          class: 'custom-control-input',
+                                          class: '',
                                           disabled: has_applications,
                                           data: {:"select-weeks-target" => 'weekCheckboxes',
                                                  action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
@@ -50,7 +50,7 @@ div [data-controller="select-weeks"
                                   multiple: true,
                                   id: hidden_id
 
-            = form.label :"week_id", for: checkbox_id, class: 'custom-control-label' do
+            = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
               = week.select_text_method
 
             div.position-absolute.badge-week-density.rounded.d-none data-select-weeks-target='inputWeekLegend' data-week-id=week.id

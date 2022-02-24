@@ -41,7 +41,7 @@
                             class: "fr-input",
                             required: true,
                             autofocus: params[:email].blank? ? false : true %>
-        <%= f.label :password do %>
+        <%= f.label :password, class: "fr-label" do %>
           Mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
@@ -50,13 +50,13 @@
         <% end %>
       </div>
 
-      <div class="form-group form-check">
-        <%= f.check_box :remember_me, class: "form-check-input" %>
-        <%= f.label :remember_me, class: "form-check-label" %>
+      <div class="fr-checkbox-group fr-checkbox-group--sm">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, class: "fr-label" %>
       </div>
 
       <div class="actions d-flex d-sm-block text-center">
-        <%= f.submit t(".sign_in"), class: "btn btn-primary" %>
+        <%= f.submit t(".sign_in"), class: "fr-btn" %>
       </div>
     <% end %>
   </div>

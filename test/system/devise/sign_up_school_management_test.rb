@@ -49,6 +49,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # fails to create teacher with existing email
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
+      # byebug
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-1').click
       find("label[for=\"select-school-#{school_2.id}\"]").click

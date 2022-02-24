@@ -13,7 +13,7 @@
       h6 Renseignez ces informations une fois pour toutes vos conventions de stage !
       p Afin de vous faire gagner du temps, vous avez la possibilité de renseigner certaines informations récurrentes à toutes vos conventions de stage.
     .col-4.offset-1.justify-content-center.align-self-center
-      = link_to "Renseigner les informations récurrentes", edit_dashboard_school_internship_agreement_preset_path(@school, @school.internship_agreement_preset), class: 'btn btn-primary'
+      = link_to "Renseigner les informations récurrentes", edit_dashboard_school_internship_agreement_preset_path(@school, @school.internship_agreement_preset), class: 'fr-btn'
 - else
   = render partial: "dashboard/schools/internship_agreement_presets/short_form", locals: { school: @school, internship_agreement_preset: @school.internship_agreement_preset }
 

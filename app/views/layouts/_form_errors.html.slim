@@ -7,7 +7,7 @@
       - errors.displayed_messages.each do |key, errors_message|
         - errors_message.each do |error_message|
           li
-            label.for-errors for="#{defined?(resource_name) ? resource_name : resource.class.name.downcase }_#{key}"
+            label.for-errors.fr-label for="#{defined?(resource_name) ? resource_name : resource.class.name.downcase }_#{key}"
               = error_message
 
 

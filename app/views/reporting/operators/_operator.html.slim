@@ -6,8 +6,13 @@
             height: 30 if operator.logo.present?
     span.ml-2= operator.name
   .td.align-middle.bl-1.bc-light.text-blue.font-weight-bold
-    = f.number_field :target_count, value: operator.target_count, class: 'form-control', id: "target_count_#{operator.id}"
+    = f.number_field :target_count,
+                      value: operator.target_count,
+                      pattern: "[0-9]*",
+                      inputmode: "numeric",
+                      class: 'fr-input',
+                      id: "target_count_#{operator.id}"
   .td.align-middle.bl-1.bc-light= operator.air_table_records.countable_in_grand_total.sum('nb_spot_used')
   .td.align-middle.bl-1.bc-light= operator.air_table_records.countable_in_grand_total.last_modified_at.try(:strftime, '%d-%m-%Y') || '-'
   .td.align-middle.bl-1.bc-light
-    = f.submit 'Mettre à jour', class: 'btn btn-primary btn-sm'
+    = f.submit 'Mettre à jour', class: 'fr-btn btn-sm'

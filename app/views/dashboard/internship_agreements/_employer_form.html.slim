@@ -5,11 +5,23 @@
   .row
     .col-12
       #nav-tab.nav.nav-tabs role="tablist"
-        = link_to 'Offreur', '#nav-employer', class: "nav-item nav-link active", id: 'nav-employer-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-employer", 'aria-selected': "true"
-        = link_to "Chef d'établissement", '#nav-school-management', class: "nav-item nav-link", id: 'nav-school-management-tab', data: { 'toggle': "tab" }, role: "tab", 'aria-controls': "nav-school-management", 'aria-selected': "false"
-      
+        = link_to 'Offreur', '#nav-employer',
+                  class: "nav-item nav-link active",
+                  id: 'nav-employer-tab',
+                  data: { 'toggle': "tab" },
+                  role: "tab",
+                  'aria-controls': "nav-employer",
+                  'aria-selected': "true"
+        = link_to "Chef d'établissement",
+                  '#nav-school-management',
+                  class: "nav-item nav-link",
+                  id: 'nav-school-management-tab',
+                  data: { 'toggle': "tab" },
+                  role: "tab",
+                  'aria-controls': "nav-school-management",
+                  'aria-selected': "false"
+
       #nav-tabContent.tab-content
-        
         #nav-employer.tab-pane.fade.active role="tabpanel" aria-labelledby="nav-employer-tab"
           table.table-sticky-thead
             = render partial: 'dashboard/internship_agreements/form_header',
@@ -20,7 +32,7 @@
                       resource: @internship_agreement,
                       school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
                       disabled: false
-        
+
         #nav-school-management.tab-pane.fade role="tabpanel" aria-labelledby="nav-school-management-tab"
           table.table-sticky-thead
             = render partial: 'dashboard/internship_agreements/form_header',

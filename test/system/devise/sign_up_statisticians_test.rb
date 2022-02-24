@@ -23,6 +23,7 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     email = 'kikoolol@gmail.com'
     create(:statistician_email_whitelist, email: email, zipcode: 60)
     assert_difference('Users::Statistician.count', 1) do
+      byebug
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Adresse électronique', with: email

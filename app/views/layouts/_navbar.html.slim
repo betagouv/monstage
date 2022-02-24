@@ -46,12 +46,12 @@ nav.navbar.navbar-light.py-0
       li.nav-item.d-none.d-sm-block
         = link_to 'Créer mon compte',
                   new_user_registration_path,
-                  class: "btn btn-primary mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}",
+                  class: "fr-btn mr-2 my-3 #{current_controller?(:registrations) ? 'active' : ''}",
                   id: 'signup-header'
       li.nav-item.d-none.d-sm-block
         = link_to 'Me connecter',
                   new_user_session_path,
-                  class: "btn btn-outline-primary ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
+                  class: "fr-btn  ml-2 my-3 #{current_controller?(:sessions) ? 'active' : ''}"
 
       li.nav-item.d-block.d-sm-none
         = link_to 'Inscription',

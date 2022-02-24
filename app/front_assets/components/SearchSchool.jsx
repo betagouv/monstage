@@ -135,7 +135,7 @@ export default function SearchSchool({
                 {...getInputProps({
                   onChange: inputChange,
                   value: currentCityString(),
-                  className: `form-control ${classes || ''} ${
+                  className: `fr-input ${classes || ''} ${
                     autocompleteNoResult ? '' : 'rounded-0'
                   }`,
                   id: `${resourceName}_school_city`,
@@ -145,7 +145,7 @@ export default function SearchSchool({
                 })}
               />
               <label
-                {...getLabelProps({ className: 'label', htmlFor: `${resourceName}_school_city` })}
+                {...getLabelProps({ className: 'fr-label', htmlFor: `${resourceName}_school_city` })}
               >
                 {label}
                 <abbr title="(obligatoire)" aria-hidden="true">
@@ -156,7 +156,7 @@ export default function SearchSchool({
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-outline-secondary btn-clear-city ${
+                    className={` fr-btn fr-btn--secondary btn-clear-city ${
                       autocompleteNoResult ? '' : 'rounded-0'
                     }`}
                     onClick={onResetSearch}
@@ -168,7 +168,7 @@ export default function SearchSchool({
                 {currentRequest && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
+                    className=" fr-btn fr-btn--secondary btn-clear-city"
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >

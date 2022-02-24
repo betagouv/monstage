@@ -10,11 +10,11 @@ form.row action=request.path method="GET"
       = select_tag :school_year,
                     options_for_select(options, params[:school_year]),
                     include_blank: 'Toutes',
-                    class: 'school_years form-control form-control-sm custom-select',
+                    class: 'school_years fr-select form-control-sm custom-select',
                     'data-action': "change->select-years#handleChange",
                     'data-select-years-target': "schoolYearField"
 
 
       .input-group-append
-        button.btn.btn-sm.btn-primary data-select-years-target="schoolYearSubmit" type='submit'
+        button.fr-btn.btn-sm data-select-years-target="schoolYearSubmit" type='submit'
           | Filtrer par années

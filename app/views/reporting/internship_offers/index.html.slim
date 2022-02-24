@@ -5,26 +5,31 @@
              locals: {view_tab: :internship_offers}
 
     fieldset
-      legend.h6 Grouper par
-      .custom-control.custom-radio.custom-control-inline
-        = radio_button_tag :dimension, 'sector', dimension_is?('sector', params[:dimension]), id: 'present-by-sector', class: 'custom-control-input', value: 'sector', data: { action: 'statistics#useDimension' }
-        = label_tag :dimension, for: 'present-by-sector', class: 'custom-control-label' do
-          = "Secteurs professionnels"
-      .custom-control.custom-radio.custom-control-inline
-        = radio_button_tag :dimension, 'group', dimension_is?('group', params[:dimension]), id: 'present-by-group', class: 'custom-control-input', value: 'group', data: { action: 'statistics#useDimension' }
-        = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label' do
-          = "Groupe ou institution de tutelle"
+      legend.fr-fieldset__legend.fr-text--regular Grouper par
+      .row
+        .col-lg-4 
+          .fr-fieldset__content
+            .fr-radio-group.fr-radio-group--sm.pl-5.custom-control-inline
+              = radio_button_tag :dimension, 'sector', dimension_is?('sector', params[:dimension]), id: 'present-by-sector', class: 'custom-control-input', value: 'sector', data: { action: 'statistics#useDimension' }
+              = label_tag :dimension, for: 'present-by-sector', class: 'custom-control-label fr-label' do
+                = "Secteurs professionnels"
+        .col-lg-5 
+          .fr-fieldset__content
+            .fr-radio-group.fr-radio-group--sm.pl-5.custom-control-inline
+              = radio_button_tag :dimension, 'group', dimension_is?('group', params[:dimension]), id: 'present-by-group', class: 'custom-control-input', value: 'group', data: { action: 'statistics#useDimension' }
+              = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label fr-label' do
+                = "Groupe ou institution de tutelle"
 
   .row.mt-3.mb-3
     .col-12
       = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
-                class: 'btn btn-danger',
+                class: 'fr-btn btn-danger',
                 data: {turbolinks: false} do
         i.fas.fa-download
         span =" Exporter les statistiques des offres"
       - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
         = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                  class: 'ml-3 btn btn-danger',
+                  class: 'ml-3 fr-btn btn-danger',
                   data: {turbolinks: false} do
           i.fas.fa-download
           span =" Exporter les offres"

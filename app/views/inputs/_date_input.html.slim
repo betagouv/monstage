@@ -1,7 +1,7 @@
 div class="custom-label-container #{container_class_name}" data-controller="a11y-date-input"
   = form.text_field attribute_name,
                  value: form.object.send(attribute_name).try(:strftime, '%d/%m/%Y'),
-                 class: 'form-control',
+                 class: 'fr-input',
                  required: true,
                  placeholder: 'jj/mm/aaaa',
                  data:{ action: 'blur->a11y-date-input#validate', :"a11y-date-input-target" => 'input' }
