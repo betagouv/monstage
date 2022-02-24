@@ -170,6 +170,13 @@ img.covering {
   border: 0;
 }
 @include media-breakpoint-up(md) {
+  .sticky-top-customed {
+    @supports (position: sticky) {
+      position: sticky;
+      top: 0;
+      z-index: $zindex-sticky;
+    }
+  }
   .text-center-left {
     text-align: left;
   }
