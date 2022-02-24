@@ -1,7 +1,7 @@
 header.header-account
   h1.h2.text-center.mb-0 Créer mon compte
-  p.text-center.mb-0= link_to "J'ai déjà un compte", new_user_session_path
-
+  p.text-center.mb-0
+    = link_to "J'ai déjà un compte", new_user_session_path
 .d-block.d-sm-none.actions
   .mt-3.d-flex.d-sm-block
     = link_to "Je suis élève de 3e", new_user_registration_path(as: 'Student'), class: 'btn btn-primary'
@@ -21,7 +21,10 @@ header.header-account
         h6.bold.mb-3= "(mon établissement est classé REP/REP+)"
         p
           | À l’invitation de votre professeur principal, accédez à de nombreuses offres de stages et postulez aux stages qui vous conviennent ou découvrez un métier, un domaine d’activité.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte élève", new_user_registration_path(as: 'Student'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block
+          = link_to new_user_registration_path(as: 'Student'), class: 'fr-raw-link' do
+            button.fr-btn.fr-btn--secondary
+              | Créer mon compte élève
 
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
@@ -30,7 +33,10 @@ header.header-account
         h2= "Je veux déposer une offre"
         p
           | Déposez vos offres de stages à l'aide de votre compte personnalisé. Il vous permettra à tout moment de modifier vos offres et de suivre leur avancement.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte offreur", new_user_registration_path(as: 'Employer'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block
+          = link_to new_user_registration_path(as: 'Employer'), class: 'fr-raw-link' do
+            button.fr-btn.fr-btn--secondary
+              | Créer mon compte offreur
 
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
@@ -38,7 +44,10 @@ header.header-account
         h2= "Je suis membre de l'équipe pédagogique"
         p
           | Vous souhaitez que vos élèves trouvent un stage de qualité. Cet outil vous permettra d'accéder à un tableau de suivi de vos élèves tout au long de leurs recherches de leur stage.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte Membre de l'équipe pédagogique", new_user_registration_path(as: 'SchoolManagement'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block
+          = link_to new_user_registration_path(as: 'SchoolManagement'),class: 'fr-raw-link' do
+            button.fr-btn.fr-btn--secondary
+              | Créer mon compte Membre de l'équipe pédagogique
 .row
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
@@ -46,7 +55,10 @@ header.header-account
         h2= "Je suis référent départemental"
         p
           | Vous êtes référent départemental et souhaitez accéder aux statistiques relatives aux offres de stage de votre département.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte référent départemental", new_user_registration_path(as: 'Statistician'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block
+          = link_to new_user_registration_path(as: 'Statistician'), class: 'fr-raw-link' do
+            button.fr-btn.fr-btn--secondary
+              | Créer mon compte référent départemental
 
   .d-none.d-sm-block.col-12.col-md-6.my-3
     .onboarding-col
@@ -54,4 +66,7 @@ header.header-account
         h2= "Je suis référent d'administration centrale"
         p
           | Vous êtes référent d'administration centrale et souhaitez accéder aux statistiques relatives aux offres de stage de votre administration.
-        .actions.d-flex.d-sm-block= link_to "Créer mon compte référent d'administration centrale", new_user_registration_path(as: 'MinistryStatistician'), class: 'btn btn-outline-primary'
+        .actions.d-flex.d-sm-block
+          = link_to new_user_registration_path(as: 'MinistryStatistician'), class: 'fr-raw-link' do
+            button.fr-btn.fr-btn--secondary
+              |Créer mon compte référent d'administration centrale

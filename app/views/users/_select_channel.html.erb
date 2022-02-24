@@ -46,7 +46,7 @@
       <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
     <% end %>
     <%= form.email_field :email,
-                         class: 'form-control',
+                         class: 'fr-input',
                          value: resource.email.blank? ? params[:email] : resource.email,
                          placeholder: "ex: nom@exemple.fr",
                          autofocus: params[:email].blank? ? true : false,

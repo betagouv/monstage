@@ -41,7 +41,7 @@
       <% end %>
 
       <div class="form-group custom-label-container">
-        <%= f.text_field :last_name, class: 'form-control', required: true %>
+        <%= f.text_field :last_name, class: "fr-input", required: true %>
         <%= f.label :last_name do %>
           Nom
           <%= f.rg2a_required_content_tag %>
@@ -49,7 +49,7 @@
       </div>
 
       <div class="form-group custom-label-container">
-        <%= f.text_field :first_name, class: 'form-control', required: true %>
+        <%= f.text_field :first_name, class: "fr-input", required: true %>
         <%= f.label :first_name do %>
           Prénom
           <%= f.rg2a_required_content_tag %>
@@ -60,7 +60,7 @@
         <%= f.select :role,
                       options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
                       { prompt: '-- Veuillez choisir une fonction --' },
-                      { class: 'custom-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} } %>
+                      { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} }   %>
         <%= f.label :role do %>
           Fonction
           <%= f.rg2a_required_content_tag %>

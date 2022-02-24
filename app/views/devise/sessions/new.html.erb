@@ -36,13 +36,17 @@
                  phone: "Téléphone" %>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password, autocomplete: "current-password", class: "form-control  ", required: true, autofocus: params[:email].blank? ? false : true %>
+        <%= f.password_field :password,
+                            autocomplete: "current-password",
+                            class: "fr-input",
+                            required: true,
+                            autofocus: params[:email].blank? ? false : true %>
         <%= f.label :password do %>
           Mot de passe
           <%= f.rg2a_required_content_tag %>
         <% end %>
         <% -if devise_mapping.recoverable? && controller_name != "passwords" && controller_name != "registrations" %>
-          <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: "form-text text-muted small" %>
+          <%= link_to t("devise.passwords.new.forgot_your_password"), new_password_path(resource_name), class: "form-text fr-raw-link text-muted small" %>
         <% end %>
       </div>
 
