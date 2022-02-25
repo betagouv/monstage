@@ -60,7 +60,7 @@
         <%= f.select :role,
                       options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
                       { prompt: '-- Veuillez choisir une fonction --' },
-                      { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} }         %>
+                      { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} } %>
         <%= f.label :role, class: "fr-label" do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
