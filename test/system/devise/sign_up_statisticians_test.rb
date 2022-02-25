@@ -20,20 +20,22 @@ class SignUpStatisticiansTest < ApplicationSystemTestCase
     end
 
     # create statistician
-    email = 'kikoolol@gmail.com'
-    create(:statistician_email_whitelist, email: email, zipcode: 60)
+    good_email = 'kikoolol@gmail.com'
+    create(:statistician_email_whitelist, email: good_email, zipcode: 60)
+    assert_equal good_email, EmailWhitelists::Statistician.first.email
+    assert_equal 0, Users::Statistician.count
     assert_difference('Users::Statistician.count', 1) do
       byebug
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
-      fill_in 'Adresse électronique', with: email
+      fill_in 'Adresse électronique', with: good_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
     # check created statistician has valid info
-    created_statistician = Users::Statistician.where(email: email).first
+    created_statistician = Users::Statistician.find_by(email: email)
     assert_equal 'Martin', created_statistician.first_name
     assert_equal 'Fourcade', created_statistician.last_name
   end

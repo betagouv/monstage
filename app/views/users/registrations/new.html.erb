@@ -60,7 +60,7 @@
         <%= f.select :role,
                       options_from_collection_for_select(user_roles_to_select, :value, :text, resource.role),
                       { prompt: '-- Veuillez choisir une fonction --' },
-                      { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} }               %>
+                      { class: 'fr-select', required: true, data: {action: 'change->signup#refreshEmailFieldLabel', :'signup-target' => 'roleInput'} }         %>
         <%= f.label :role, class: "fr-label" do %>
           Fonction
           <%= f.rg2a_required_content_tag %>
@@ -77,30 +77,19 @@
               <%= f.rg2a_required_content_tag %>
             </legend>
             <div class="fr-fieldset__content">
-              <div class="fr-radio-group pl-5 fr-radio-group--sm" >
-                <%= f.radio_button :gender,
-                                  "f",
-                                  id: "select-gender-girl",
-                                  required: true %>
-                <%= f.label :gender, "Féminin",
-                            class: "fr-label",
-                            for: "select-gender-girl" %>
-              </div>
-              <div class="fr-radio-group pl-5 fr-radio-group--sm" >
-                <%= f.radio_button :gender,
-                                  "m",
-                                  id: "select-gender-boy" %>
-                <%= f.label :gender, "Masculin",
-                            class: "fr-label",
-                            for: "select-gender-boy" %>
-              </div>
-              <div class="fr-radio-group pl-5 fr-radio-group--sm" >
-                <%= f.radio_button :gender,
-                                   "np",
-                                   id: "select-gender-unknown" %>
-                <%= f.label :gender, "Non précisé",
-                            class: "fr-label",
-                            for: "select-gender-unknown" %>
+              <div class='pl-5'>
+                <div class="fr-radio-group fr-radio-group--sm" >
+                  <%= f.radio_button :gender, "f", id: "select-gender-girl", class: "border", required: true %>
+                  <%= f.label :gender, "Féminin", class: "fr-label", for: "select-gender-girl" %>
+                </div>
+                <div class="fr-radio-group fr-radio-group--sm" >
+                  <%= f.radio_button :gender, "m", id: "select-gender-boy" %>
+                  <%= f.label :gender, "Masculin", class: "fr-label", for: "select-gender-boy" %>
+                </div>
+                <div class="fr-radio-group fr-radio-group--sm" >
+                  <%= f.radio_button :gender, "np", id: "select-gender-unknown" %>
+                  <%= f.label :gender, "Non précisé", class: "fr-label", for: "select-gender-unknown" %>
+                </div>
               </div>
             </div>
           </fieldset>

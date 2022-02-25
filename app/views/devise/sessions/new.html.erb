@@ -36,11 +36,7 @@
                  phone: "Téléphone" %>
 
       <div class="form-group custom-label-container">
-        <%= f.password_field :password,
-                            autocomplete: "current-password",
-                            class: "fr-input",
-                            required: true,
-                            autofocus: params[:email].blank? ? false : true %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "fr-input", required: true, autofocus: params[:email].blank? ? false : true %>
         <%= f.label :password, class: "fr-label" do %>
           Mot de passe
           <%= f.rg2a_required_content_tag %>
