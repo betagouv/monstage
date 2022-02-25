@@ -23,7 +23,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     sign_in(student)
-    visit internship_offer_path(internship_offer)
+    visit new_internship_offer_internship_application_path(internship_offer_id: internship_offer.id)
     # check application form opener and check form is hidden by default
     page.find '#internship-application-closeform', visible: false
     page.find('.test-missing-school-weeks', visible: false)
