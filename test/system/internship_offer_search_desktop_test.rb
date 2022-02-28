@@ -65,7 +65,6 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
     find('#input-search-school-track').select('3e')
     submit_form
-    byebug
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_absence_of(internship_offer: troisieme_segpa_internship_offer)
     # ensure selection of school track disable week placeholder input
