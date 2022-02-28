@@ -181,7 +181,7 @@
         <%= f.rg2a_required_content_tag %>
         <div class="fr-checkbox-group fr-checkbox-group--sm">
           <%= f.check_box :accept_terms %>
-          <%= f.label :accept_terms, class: "fr-label" do %>
+          <%= f.label :accept_terms, class: "fr-label", for: "user_accept_terms" do %>
             J'accepte les
             <%= link_to "conditions d'utilisation", conditions_d_utilisation_path, target: "_blank", title: "conditions d'utilisation (nouvelle fenêtre)", rel: "external noopener noreferrer", class: "font-weight-normal" %>.
             <p>

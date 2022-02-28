@@ -30,9 +30,11 @@ module Users
             foreign_key: :user_id,
             dependent: :destroy
 
-    validates :email_whitelist, presence: {message: 'none'}
-    validate :email_in_list
+    
+    validates :email_whitelist, presence: { message: 'none' }
     before_validation :assign_email_whitelist
+    # Beware : order matters here !
+    validate :email_in_list
 
     scope :active, -> { where(discarded_at: nil) }
 
@@ -79,14 +81,13 @@ module Users
     private
 
     # on create, make sure to assign existing email whitelist
+    # EmailWhitelists::Statistician holds the user_id foreign key
     def assign_email_whitelist
-      byebug
       self.email_whitelist = EmailWhitelists::Statistician.find_by(email: email)
     end
 
     def email_in_list
       unless EmailWhitelists::Statistician.exists?(email: email)
-        byebug
         errors.add(
           :email,
           'Votre adresse électronique n\'est pas reconnue, veuillez la ' \

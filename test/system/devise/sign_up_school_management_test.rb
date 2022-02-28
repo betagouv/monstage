@@ -32,17 +32,19 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
+      all('label[for="user_accept_terms"]').last.click
       click_on "Je m'inscris"
     end
   end
 
   test 'navigation & interaction works until teacher creation' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
-    school_manager = create(:school_manager, school: school_1)
+    create(:school_manager, school: school_1)
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '77555')
     class_room_1 = create(:class_room, name: '3e A', school: school_1)
     class_room_2 = create(:class_room, name: '3e B', school: school_2)
     existing_email = 'fourcade.m@gmail.com'
+    another_email = 'another@free.fr'
 
     # go to signup as teacher
     visit new_user_registration_path(as: 'SchoolManagement')
@@ -75,14 +77,15 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select(class_room_1.name, from: 'user_class_room_id')
-      fill_in 'Adresse électronique', with: 'another@email.com'
+      fill_in 'Adresse électronique', with: another_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
+      all('label[for="user_accept_terms"].fr-label').last.click
       click_on "Je m'inscris"
     end
 
     # check created teacher has valid info
-    created_teacher = Users::SchoolManagement.where(email: 'another@email.com').first
+    created_teacher = Users::SchoolManagement.where(email: another_email).first
     assert_equal school_1, created_teacher.school
     assert_equal class_room_1, created_teacher.class_room
     assert_equal 'Martin', created_teacher.first_name

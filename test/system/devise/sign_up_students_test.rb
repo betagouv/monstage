@@ -131,10 +131,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find('label', text: 'Email').click
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: password
+      # Error here
+      fill_in 'Ressaisir le mot de passe', with: "password"
 
-      fill_in 'Ressaisir le mot de passe', with: 'password'
-
-      accept_terms = find('label[for="user_accept_terms"].custom-control-label')
+      accept_terms = find('label[for="user_accept_terms"].fr-label')
       accept_terms.click
       click_on "Je m'inscris"
     end
@@ -151,9 +151,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       # fill_in 'Créer un mot de passe', with: ''
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
-      accept_terms = page.find('label[for="user_accept_terms"].custom-control-label')
-      sleep 0.4
-      accept_terms.click
       click_on "Je m'inscris"
     end
 
