@@ -258,7 +258,7 @@ def populate_internship_offers
     is_public: false,
     title: 'Stage assistant.e ressources humaines - Service des recrutements',
     description_rich_text: 'Vous assistez la responsable de secteur dans la gestion du recrutement des intervenant.e.s à domicile et la gestion des contrats de celles et ceux en contrat avec des particulier-employeurs.',
-    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile pour la garde de leurs enfants de 0 à 16 ans.",
+    employer_description_rich_text: "Du Temps pour moi est une agence mandataire de garde d'enfants à domicile. Notre activité consister à aider les familles de la métropole lilloise à trouver leur intervenant(e) à domicile.",
     employer_website: 'http://www.dtpm.fr/',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
@@ -277,8 +277,8 @@ def populate_internship_offers
       group: Group.is_paqte.first,
       is_public: false,
       title: 'Stage avec deux segments de date, bugfix',
-      description_rich_text: 'Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.'.truncate(249),
-      employer_description_rich_text: "Scanner metrology is a unique field where software engineers combine their talents in physics and programming expertise. Our scanner metrology software coordinates powerful mechatronic modules, providing the speed and precision to pattern silicon wafers with nanometer accuracy.".truncate(249),
+      description_rich_text: 'Scanner metrology est une entreprise unique en son genre'.truncate(249),
+      employer_description_rich_text: "Scanner metrology a été fondée par le laureat Recherche et Company 2016".truncate(249),
       employer_website: 'https://www.asml.com/en/careers',
       tutor_name: 'John smith',
       tutor_email: 'fourcade.m@gmail.com',
@@ -363,8 +363,8 @@ def populate_internship_offers
     is_public: false,
     title: "Observation du métier d'Administrateur de systèmes informatiques - IBM SERVICES CENTER",
     description: "Découvrez les machines mais aussi tous les interlocuteurs de notre société qui intéragissent avec nos services informatiques",
-    description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement de toutes leurs technologies informatique depuis nos locaux et comment ils arrivent, tous les jours, à gérer en équipe, des bases de données, de la virtualisation, des applications etc.",
-    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
+    description_rich_text: "Venez découvrir le métier d'administrateur systèmes ! Vous observerez comment nos administrateurs garantissent aux clients le bon fonctionnement etc.",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
@@ -385,8 +385,8 @@ def populate_internship_offers
     is_public: false,
     title: "Découverte des métiers administratifs de l'Education nationale",
     description: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) propose des stages d'observation",
-    description_rich_text: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) se compose de plusieurs services répartis sur 11 étages. Ses 240 agents exercent des métiers variés et complémentaires. Les activités et compétences à découvrir lors du stage sont diverses : secrétariat, accueil et logistique, ressources humaines, juridiques, financières, statistiques ...",
-    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique. C'est à dire que nous assurons à nos clients que leurs serveurs et leurs technologies variées fonctionnent en permanence.",
+    description_rich_text: "La Direction des Services de l'Education Nationale de Seine-et-Marne (DSDEN) se compose de plusieurs services répartis sur 11 étages. Ses 240 agents  ...",
+    employer_description_rich_text: "Le centre de service IBM de Lille délivre des services d'infrastructure informatique.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
@@ -403,7 +403,7 @@ def populate_internship_offers
   multiline_description = <<-MULTI_LINE
 - Présentation des services de la direction régionale de Valenciennes (service contentieux, pôle action économique).
 - Présentation de la recette interrégionale (service de perception).
-- Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises), d’un bureau de douane spécialisé dans les produits énergétiques et d’un bureau de douanes fiscalité et contributions indirectes.
+- Immersion au sein d’un bureau de douane (gestion des procédures, déclarations en douane, dédouanement, contrôles des déclarations et des marchandises).
 MULTI_LINE
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
@@ -417,9 +417,9 @@ MULTI_LINE
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
-    street: '128 rue brancion',
-    zipcode: '75015',
-    city: 'paris',
+    street: '2 rue jean moulin',
+    zipcode: '95160',
+    city: 'Montmorency',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
     employer_name: 'Douanes Assistance Corp.',
     school_track: :troisieme_prepa_metiers
