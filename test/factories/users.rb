@@ -113,8 +113,5 @@ FactoryBot.define do
     trait :troisieme_prepa_metiers do
       class_room { build(:class_room, :troisieme_prepa_metiers, school: school) }
     end
-    trait :bac_pro do
-      class_room { build(:class_room, :bac_pro, school: school) }
-    end
   end
 end
