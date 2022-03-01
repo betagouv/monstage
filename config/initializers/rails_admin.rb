@@ -9,6 +9,23 @@ class RailsAdmin::Config::Fields::Types::Daterange < RailsAdmin::Config::Fields:
   RailsAdmin::Config::Fields::Types::register(self)
 end
 
+# https://github.com/railsadminteam/rails_admin/issues/2502#issuecomment-504612818 lead to the following monkey-patch
+class RailsAdmin::Config::Fields::Types::Json
+  register_instance_option :formatted_value do
+    if value.is_a?(Hash) || value.is_a?(Array)
+      JSON.pretty_generate(value)
+    else
+      value
+    end
+  end
+
+  def parse_value(value)
+    value.present? ? JSON.parse(value) : nil
+  rescue JSON::ParserError
+    value
+  end
+end
+
 require Rails.root.join('lib', 'rails_admin', 'kpi.rb')
 require Rails.root.join('lib', 'rails_admin', 'switch_user.rb')
 
@@ -82,4 +99,6 @@ RailsAdmin.config do |config|
     "Zammad (Support)" => "https://monstage.zammad.com",
     "AB Testing" => "/split"
   }
+
+  
 end

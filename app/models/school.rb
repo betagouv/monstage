@@ -81,7 +81,9 @@ class School < ApplicationRecord
   end
 
   def internship_agreement_open?
-    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').include?(zipcode[0..1])
+    targeted_departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',')
+                                                              .map{|dept| dept.gsub(/\s+/, '') }
+    targeted_departments.include?(zipcode[0..2]) || targeted_departments.include?(zipcode[0..1])
   end
 
   rails_admin do

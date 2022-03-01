@@ -1,0 +1,34 @@
+p style=head_styles
+  | Complétez la convention de stage de votre futur.e stagiaire en ligne...
+
+p style=p_styles
+  | Bonjour,
+
+p style=p_styles
+  = "Vous venez d’accepter la candidature de #{@prez_stud.full_name}, pour " \
+    "votre offre de stage #{@internship_offer.title}."
+
+p style=p_styles
+  |
+    L’établissement de l’élève fait partie des établissements éligibles à
+    l'expérimentation de la convention de stage en ligne. Vous avez donc
+    la possibilité de remplir ce document sur notre plateforme, et
+    de le transmettre automatiquement au chef d’établissement.
+
+p style=p_styles
+  | Pour y accéder, vous pouvez cliquer sur le bouton ci-dessous.
+
+= render partial: "mailers/call_to_action",
+          locals: { href: @url,
+                    label: "Remplir la convention de stage" }
+
+p style=p_styles
+  |
+    Vous pouvez également accéder à la liste de vos conventions de stage
+    via l’onglet “Mes conventions de stages”, dans votre Tableau de bord.
+
+p style=p_styles
+  | Excellente journée,
+
+p style=p_styles
+  | L’équipe Monstagedetroisieme.fr

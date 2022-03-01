@@ -1,0 +1,32 @@
+p style=head_styles
+  | La convention de votre futur.e stagiaire est prête ...
+
+p style=p_styles
+  | Bonjour,
+
+p style=p_styles
+  = "La convention de stage de #{@prez_stud.full_name}, pour le stage " \
+    "#{@internship_offer.title} a été complétée et validée " \
+    "par le chef d’établissement."
+
+p style=p_styles
+  | Pour y accéder directement, vous pouvez cliquer sur le bouton ci-dessous.
+
+= render partial: "mailers/call_to_action",
+        locals: { href: @url,
+                  label: "Imprimer la convention de stage" }
+
+p style=p_styles
+  |
+    Vous pouvez désormais imprimer la convention, la signer et la transmettre
+    par email ou par courrier au chef d’établissement.
+
+p style=p_styles
+  |
+    Vous pouvez également accéder à la liste de vos conventions de stage
+    via l’onglet “Mes conventions de stages”, dans votre Tableau de bord.
+
+p style=p_styles
+  | Excellente journée,
+p style=p_styles
+  | L’équipe Monstagedetroisieme.fr

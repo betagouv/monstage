@@ -24,7 +24,6 @@ module Users
              :troisieme_generale?,
              :troisieme_prepa_metiers?,
              :troisieme_segpa?,
-             :bac_pro?,
              to: :class_room,
              allow_nil: true
     delegate :school_manager,
