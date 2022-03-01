@@ -51,7 +51,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # fails to create teacher with existing email
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
-      # byebug
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-1').click
       find("label[for=\"select-school-#{school_2.id}\"]").click
@@ -80,7 +79,6 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: another_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      all('label[for="user_accept_terms"].fr-label').last.click
       click_on "Je m'inscris"
     end
 
