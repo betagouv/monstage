@@ -83,10 +83,7 @@ As a public french service, we try to keep most data hosted by french service pr
 * [mailers](https://github.com/betagouv/monstage/tree/master/app/mailers)
 * [api](https://github.com/betagouv/monstage/tree/master/doc)
 
-## Previews
 
-* [mailers](http://localhost:3000/rails/mailers)
-* [view_components](http://localhost:3000/rails/view_components)
 
 ## Dev
 
@@ -232,9 +229,26 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 ## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
-* push on production can be done manually using ```infra/production/deploy.sh```
+* git checkout staging
+* git pull
+* git checkout master
+* git pull
+* git merge staging
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+
+
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
+### hotfix
+
+* git checkout master
+* git pull
+* git merge Hotfix-PR-branch
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+* git checkout staging
+* git merge Hotfix-PR-branch
 
 # disaster recovery plan
 

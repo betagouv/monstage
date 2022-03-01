@@ -59,21 +59,35 @@ class InternshipAgreement < ApplicationRecord
     state :draft, initial: true
     state :started_by_employer,
           :completed_by_employer,
+          :started_by_school_manager,
           :validated,
           :signed
 
     event :start_by_employer do
-      transitions from: :draft, to: :started_by_employer
+      transitions from: :draft,
+                  to: :started_by_employer
     end
 
     event :complete do
-      transitions from: %i[draft started_by_employer], to: :completed_by_employer
+      transitions from: %i[draft started_by_employer],
+                  to: :completed_by_employer
+    end
+
+    event :start_by_school_manager do
+      transitions from: :completed_by_employer,
+                  to: :started_by_school_manager
     end
 
     event :validate do
-      transitions from: :completed_by_employer, to: :validated
+      transitions from: [:completed_by_employer, :started_by_school_manager],
+                  to: :validated,
+                  after: proc { |*_args|
+        notify_employer_school_manager_completed(self)
+      }
     end
   end
+
+
 
   def at_least_one_validated_terms
     return true if skip_validations_for_system
@@ -120,14 +134,14 @@ class InternshipAgreement < ApplicationRecord
       errors.add(:activity_learnings_rich_text, "Veuillez compléter les compétences visées")
     end
   end
-  
+
   def valid_trix_school_manager_fields
     errors.add(:complementary_terms_rich_text, "Veuillez compléter les conditions complémentaires du stage (hebergement, transport, securité)...") if complementary_terms_rich_text.blank?
     if !troisieme_generale? && activity_rating_rich_text.blank?
       errors.add(:activity_rating_rich_text, "Veuillez compléter les modalités d’évaluation du stage")
     end
   end
-  
+
   def valid_trix_main_teacher_fields
     if !troisieme_generale? && activity_preparation_rich_text.blank?
       errors.add(:activity_preparation_rich_text, "Veuillez compléter les modalités de concertation")
@@ -157,6 +171,14 @@ class InternshipAgreement < ApplicationRecord
   end
 
   def valid_daily_planning?
-    new_daily_hours.except('samedi').values.all? { |v| !v.blank? } && daily_lunch_break.except('samedi').values.all? { |v| !v.blank? } 
+    new_daily_hours.except('samedi').values.all? { |v| !v.blank? } && daily_lunch_break.except('samedi').values.all? { |v| !v.blank? }
+  end
+
+  private
+
+  def notify_employer_school_manager_completed(agreement)
+    EmployerMailer.school_manager_finished_notice_email(
+      internship_agreement: agreement
+    ).deliver_later
   end
 end

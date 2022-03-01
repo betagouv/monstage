@@ -9,15 +9,22 @@ module Dashboard
     test 'success as employer' do
       employer = create(:employer)
 
-      internship_application_troisieme_generale = create(:weekly_internship_application, :approved,
-                                                         internship_offer: create(:weekly_internship_offer, employer: employer))
-      internship_application_troisieme_segpa = create(:free_date_internship_application, :approved,
-                                                         internship_offer: create(:free_date_internship_offer, employer: employer))
+      internship_application_troisieme_generale = create(
+        :weekly_internship_application,
+        :approved,
+        internship_offer: create(:weekly_internship_offer, employer: employer)
+      )
+      internship_application_troisieme_segpa = create(
+        :free_date_internship_application,
+        :approved,
+        internship_offer: create(:free_date_internship_offer, employer: employer)
+      )
       sign_in(employer)
       get dashboard_internship_applications_path
       assert_response :success
       assert_select ".student-application-#{internship_application_troisieme_generale.id}", count: 1
       assert_select ".student-application-#{internship_application_troisieme_segpa.id}", count: 0
+
     end
 
     test 'fails as operator' do

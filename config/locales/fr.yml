@@ -168,11 +168,13 @@ fr:
             draft: À remplir par les deux parties.
             started_by_employer: Votre convention est remplie mais pas envoyée au chef d'établissement.
             completed_by_employer: Votre convention est dans les mains du chef d'établissement.
+            started_by_school_manager: Votre convention est dans les mains du chef d'établissement.
             validated: Votre convention est prête. Imprimez la et renvoyez la signée au chef d'établissement.
           school_manager:
             draft: En attente de l'offreur.
             started_by_employer: En attente de l'offreur.
             completed_by_employer: Votre convention est remplie par l'offreur mais vous ne l'avez pas validée.
+            started_by_school_manager: Votre convention est remplie mais pas validée.
             validated: Votre convention est prête.
 
       internship_offer:
@@ -457,5 +459,6 @@ fr:
       troisieme_generale: '3e'
       troisieme_prepa_metiers: '3e prépa métiers'
       troisieme_segpa: '3e SEGPA'
+      bac_pro: 'Bac pro'
   date:
     day_names: [Dimanche, Lundi, Mardi, Mercredi, Jeudi, Vendredi, Samedi]
