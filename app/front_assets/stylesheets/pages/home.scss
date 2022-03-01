@@ -26,6 +26,9 @@ a:hover {
 .homepage {
   overflow-x: hidden;
 }
+h6.fr-card__title.title-cards-in-a-row.home {
+  min-height: 6rem;
+}
 
 .light-grey-background {
   background-color: $grey-975;
