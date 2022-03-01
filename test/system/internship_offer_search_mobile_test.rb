@@ -7,7 +7,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
   include ::SearchInternshipOfferHelpers
 
   def submit_form
-    find('input#test-mobile-submit-search').click
+    find('#test-mobile-submit-search').click
   end
 
   def edit_search

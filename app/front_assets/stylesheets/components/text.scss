@@ -5,10 +5,16 @@ html body{
   .text-blue-dark{
     color: $blue_dark;
   }
-  // darken colors based on a11y feed
-  .text-sky-blue{
-    // color: $blue_sky;
-    color: $blue;
+  .text-blue-france {
+    color: $blue-france;
+  }
+
+  .text-grey-50 {
+    color: $grey-50;
+  }
+
+  .text-grey-200 {
+    color: $grey-200;
   }
   .text-warning-custom{
     color: $warning_custom;

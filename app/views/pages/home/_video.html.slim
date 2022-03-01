@@ -1,0 +1,43 @@
+script src="https://player.vimeo.com/api/player.js"
+.container-monstage
+  .row.mb-sm-5.my-4
+    .col-12.py-4.d-block.d-sm-none
+.container-monstage
+  .row.mb-sm-5.mb-4.align-items-center
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .mx-xl-0.mx-lg1-2.mx-md-2.mx-sm-2.mx-xs-1
+        .mb-4
+          h3.mb-2.px-2.px-sm-2.px-md-0.text-blue-france
+            | Histoire de parcours
+          .px-2.px-sm-2.px-md-0.fr-text--lg.pb-2 Luca Biancheri, conducteur de travaux
+          p.px-2.px-sm-2.px-md-0
+            | Lörem ipsum filodiktisk sogenat inte orade sara besade. Antin usk telesa, pont previs. Odat självoptimering. Befövis disade fastän nod. Spesk höhet ode.
+          p.px-2.px-sm-2.px-md-0
+            | Tipuck mäbussade nask. Utoskapet doderade i naliga i astrovipp har taskade. Sarisk sende sedan halogi.
+          - if can?(:welcome_students, current_user) || !user_signed_in?
+            .d-md-none
+              link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
+                        class: '',
+                        data: { :"test-id" => 'mobile-search-button' }
+                .fr-col-12.blue-france-bg.text-center
+                  .fr-btn.fr-fi-search-line.fr-btn--icon-right.border.fr-px-13w
+                    = "Trouver un stage "
+            .d-none.d-md-block
+              link_to data-videos-carousel-target='inViewPort' = link_to internship_offers_path,
+                        class: '',
+                        data: { :"test-id" => 'mobile-search-button' }
+                .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-4w = "Trouver un stage"
+    .col-lg-6.col-md-6.col-sm-12.col-xs-12
+      .text-center
+        .video-wrapper
+          .video-responsive
+            iframe.video-responsive-item [ allow=("autoplay; fullscreen; picture-in-picture")
+                          allowfullscreen
+                          frameborder="0"
+                          title="Luca Biancheri, conducteur de travaux"
+                          src="https://player.vimeo.com/video/654158859?h=61d502097e&color=1E40AF&title=0&byline=0&portrait=0&loop=1&autoplay=1&autopause=0&muted=1&responsive=true" ]
+
+  .row.py-4
+  / .fr-btn.fr-fi-search-line.fr-btn--icon-right.fr-px-16v.d-none.d-md-block = "Trouver un stage"
+
+

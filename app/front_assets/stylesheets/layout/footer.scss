@@ -6,9 +6,9 @@ body {
   display: flex;
   flex-direction: column;
 }
-.content {
-  flex: 1 0 auto;
-}
+// .content {
+//   flex: 1 0 auto;
+// }
 .footer-elevator {
   transform: translate(0, -15px);
   z-index: 1024;
@@ -40,9 +40,9 @@ body {
   }
 
 @include media-breakpoint-down(xs) {
-  .content {
-    min-height: 100%;
-  }
+  // .content {
+  //   min-height: 100%;
+  // }
   .footer{
     font-size: 12px;
   }

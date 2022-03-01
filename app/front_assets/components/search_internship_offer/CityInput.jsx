@@ -129,7 +129,7 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
           openMenu,
         }) => (
           <div>
-            <label {...getLabelProps({className: ' d-inline-block d-md-none', htmlFor: "input-search-by-city-or-zipcode"})}>
+            <label {...getLabelProps({ className: ' fr-label almost-fitting', htmlFor: "input-search-by-city-or-zipcode" })}>
                    Ville ou code postal
             </label>
             <div
@@ -142,10 +142,10 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
                 {...getInputProps({
                   onChange: inputChange,
                   value: inputValue,
-                  className: 'form-control',
+                  className: 'fr-input almost-fitting',
                   name: 'city',
                   id: 'input-search-by-city-or-zipcode',
-                  placeholder: 'Ville ou code postal',
+                  placeholder: '',
                   "aria-label": "Autour de",
                   onFocus: (event) => {
                     openMenu(event);

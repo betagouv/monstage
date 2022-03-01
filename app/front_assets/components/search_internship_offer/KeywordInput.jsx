@@ -52,8 +52,8 @@ function KeywordInput({ existingKeyword }) {
         selectedItem,
       }) => (
         <div>
-          <label {...getLabelProps({className: 'd-inline-block d-md-none', htmlFor: "input-search-by-keyword"})}>
-             Rechercher une profession
+          <label {...getLabelProps({ className: 'fr-label', htmlFor: "input-search-by-keyword" })}>
+            Métiers, mots-clés, ...
           </label>
           <div
             id="test-input-keyword-container"
@@ -63,10 +63,10 @@ function KeywordInput({ existingKeyword }) {
               {...getInputProps({
                 onChange: inputChange,
                 value: inputValue,
-                className: 'form-control',
+                className: 'fr-input almost-fitting',
                 id: 'input-search-by-keyword',
                 name: 'keyword',
-                placeholder: 'Métiers, mots-clés...',
+                placeholder: '',
                 'aria-label': 'Rechercher par Profession',
               })}
             />

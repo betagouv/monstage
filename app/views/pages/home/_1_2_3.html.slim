@@ -1,0 +1,86 @@
+.row.py-5.align-items-center
+  .col-md-6.col-sm-12
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/01.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Trouver un stage
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
+          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
+          Lenera infrar guneliga operamani. Valig nåheten.
+      p.mt-4.text-center-left
+        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+          span.fr-btn.fr-btn--secondary = "Rechercher un stage"
+
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
+                    alt: "Illustration animée, prof élèves",
+                    width: '100%',
+                    class:'border'
+
+  / 2
+.row.py-5.align-items-center
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
+                    alt: "Illustration animée, prof élèves",
+                    width: '100%',
+                    class:'border'
+  .col-md-6.col-sm-12
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/02.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Accompagner vos élèves
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
+          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
+          Lenera infrar guneliga operamani. Valig nåheten.
+      p.mt-4.text-center-left
+        = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                  class: 'fr-raw-link',
+                  data: { :"test-id" => 'mobile-search-button-first' }
+          span.fr-btn.fr-btn--secondary= "Accompagner mes élèves"
+  / 3
+.row.py-5.align-items-center
+  .col-md-6.col-sm-12
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/03.svg'),
+                  alt: "Premièrement",
+                  height: '47px',
+                  'aria-hidden': "true"
+      h3.text-grey-50.my-4
+        | Accueillir un stagiaire
+
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3
+        |
+          Lörem ipsum milig hemida i exos guss, jikrorad. Nyhetsundvikare
+          prediling huruvida disånade, dir. Bötning pingen i ädösegisk tedivassade.
+          Lenera infrar guneliga operamani. Valig nåheten.
+      p.mt-4.text-center-left
+        - if !user_signed_in? || can?(:supply_offers, current_user)
+          - target_link = current_user&.custom_dashboard_path || new_user_registration_path
+          = link_to target_link,
+                    class: 'fr-raw-link',
+                    data: { :"test-id" => 'mobile-search-button-first' }
+            span.fr-btn.fr-btn--secondary = "Accueillir un stagiaire"
+
+  .col-md-6.col-sm-12.text-center.d-none.d-md-block
+    .px-2
+      = image_tag asset_pack_path('media/images/homepage/fake.svg'),
+                    alt: "Illustration animée, prof élèves",
+                    width: '100%',
+                    class:'border'
+.row.py-5
