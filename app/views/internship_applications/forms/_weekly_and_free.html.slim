@@ -62,7 +62,7 @@ div data-internship-application-form-target="containerForm" class="#{@internship
                       locals: { form: resume_form, phone_mail_disabled: true, disabled: false}
 
             .actions.d-flex.d-sm-block
-              = link_to "#internship-application-closeform", class: 'fr-btn  text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
+              = link_to "#internship-application-closeform", class: 'fr-btn text-center', data: {action: 'click->internship-application-form#hideForm', turbolinks: 'false'} do
                 i.fa.fa-chevron-left.mr-1
                 | Annuler
               span.mx-1= " "

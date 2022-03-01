@@ -39,7 +39,7 @@
                 locals: { internship_application: @internship_agreement.internship_application,
                           internship_agreement: form.object }
             = render 'school_management_form_fields',
-                            form: form,
-                            resource: @internship_agreement,
-                            school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
-                            disabled: true
+                      form: form,
+                      resource: @internship_agreement,
+                      school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale',
+                      disabled: true

@@ -1,8 +1,8 @@
 - edit_enable = can?("edit_#{field}".to_sym, form.object)
 
-- hint = hint || ''
-- title = title || ''
-- content = content || ''
+- hint ||= ''
+- title ||= ''
+- content ||= ''
 .col-12.pt-3
   .form-group.mb-0.form-group-tooltip
     = form.label field do

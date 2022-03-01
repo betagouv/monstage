@@ -17,7 +17,7 @@
                                 height: '54px',
                                 class: 'ml-5 '
                 .fr-header__navbar
-                  button#fr-btn-menu-mobile.fr-btn--menu.fr-btn  aria-haspopup="menu" data-fr-opened="false" title="Menu"
+                  button#fr-btn-menu-mobile.fr-btn--menu.fr-btn aria-haspopup="menu" data-fr-opened="false" title="Menu"
                     | Menu
               .fr-header__service.visible-smaller-md
                 p.fr-header__service-title Mon stage de troisieme
@@ -68,8 +68,7 @@
                     li
                       = link_to current_user.account_link_name,
                                 account_path,
-                                class: "fr-link text-decoration-none mr-4 #{account_controller?(user: current_user) ? 'active' : ''}",
-                                id: 'test-user-is-signed-up'
+                                class: "fr-link text-decoration-none mr-4 #{account_controller?(user: current_user) ? 'active' : ''}"
                     - if cookies.signed[Rails.application.credentials.dig(:cookie_switch_back)].present?
                       li
                         = link_to destroy_user_session_path,

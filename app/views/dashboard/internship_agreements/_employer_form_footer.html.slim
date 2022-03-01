@@ -8,16 +8,16 @@
     .sticky-footer.bg-light data-footer-target="fixedContent"
       .container.py-4
         .row
-        
+
           .col-12.d-flex.justify-content-between
-            = button_tag type: "button", data: { action: 'click->footer#saveAndQuit' }, class: 'fr-btn  mx-1' do
+            = button_tag type: "button", data: { action: 'click->footer#saveAndQuit' }, class: 'fr-btn mx-1', id:'save_and_quit' do
               | Enregistrer et quitter
 
-            = button_tag type: "button", data: { action: 'click->footer#checkFormValidity' }, class: 'fr-btn mx-1' do
+            = button_tag type: "button", data: { action: 'click->footer#checkFormValidity' }, class: 'fr-btn mx-1', id: 'send_agreement' do
               i.fas.fa-check
               |  Envoyer la convention
 
-  = render "dashboard/internship_agreements/validation_modal", title: 'Envoyer la convention', 
-                                                               action: 'completeByEmployer', 
+  = render "dashboard/internship_agreements/validation_modal", title: 'Envoyer la convention',
+                                                               action: 'completeByEmployer',
                                                                button: 'Envoyer la convention',
                                                                content: 'En envoyant votre convention, vous ne pourrez plus modifier les informations. La convention sera envoyée au chef d’établissement qui pourra valider définitivement la convention. Une fois validée, vous pourrez l’imprimer et la signer.'
