@@ -1,12 +1,12 @@
-.sticky-top
+.sticky-top-customed
   .homepage
     = render 'pages/home/navbar_home'
 .mx-0.light-grey-background data-controller='modal-covid'
   = render 'pages/home/hero'
   = render 'pages/home/everyone'
 .container-monstage.homepage
-  .row.no-gutters.py-4
-  .row.no-gutters.px-sm-0.px-2
+  .row.no-gutters.my-4
+  .row.no-gutters.px-sm-0.fr-px-2w
     .col-12.text-center
       h2.fr-h1.h1.blue monstagedetroisieme.fr vous permet de :
     =  render 'pages/home/1_2_3'
@@ -17,4 +17,5 @@
   = render 'pages/home/sponsors'
   = render 'pages/home/partners'
   / = render 'pages/home/newsletter'
-  = render 'pages/home/elevator'
+  .d-none.d-md-block
+    = render 'pages/home/elevator'

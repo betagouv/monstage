@@ -85,7 +85,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
     # reset search and submit
     edit_search
-    select("Filière")
+    select("")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)

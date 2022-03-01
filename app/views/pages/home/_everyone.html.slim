@@ -1,28 +1,28 @@
 .container-monstage.light-grey-background
-  .row.py-5
+  .row.no-gutters.py-5
     .col-md-6.col-sm-12.text-center
       = image_tag asset_pack_path('media/images/homepage/fake.svg'),
                     alt: "Illustration animée, prof élèves",
                     width:'100%',
                     class:'border'
     .col-md-6.col-sm-12
-      h2.fr-desktop-lg.px-2.px-sm-2.px-md-0
+      h2.fr-desktop-lg.fr-px-2w.px-sm-2.px-md-0
         | Des stages pour tous, une opportunité pour chacun.
-      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.px-2.px-sm-2.px-md-0
+      p.mt-3.fr-text.mb-lg-5.mb-md-5.mb-sm-4.mb-3.fr-px-2w.px-sm-2.px-md-0
         |
           Plus qu’un passage obligatoire, le stage de troisième est une
           opportunité unique d’explorer le monde du travail.
           L’expérience, forcément enrichissante, aide l’élève à ouvrir
           ses horizons professionnels et à dessiner son projet personnel.
 
-      p.fr-text.px-2.px-sm-2.px-md-0
+      p.fr-text.fr-px-2w.px-sm-2.px-md-0
         |
           Notre plateforme permet de mettre en relation des établissements
           scolaires éligibles et des entreprises engagées afin d’agir dans
           le meilleur intérêt des élèves en leur offrant la meilleure
           expérience du stage possible.
-      p.py-4.px-2.px-sm-2.px-md-0.text-center-left
+      p.py-4.fr-px-2w.px-sm-2.px-md-0.text-center-left
         = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                  class: 'fr-btn fr-fi-search-line fr-btn--icon-right',
+                  class: 'fr-btn fr-fi-search-line fr-btn--icon-right fr-raw-link fr-px-8w',
                   data: { :"test-id" => 'mobile-search-button-first' }
           = "Trouver un stage "
