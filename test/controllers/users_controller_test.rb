@@ -226,7 +226,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Jules', school_manager.first_name
     assert_equal 'Verne', school_manager.last_name
     follow_redirect!
-    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+    assert_select '#alert-success #alert-text', { text: 'Etablissement mis à jour avec succès.' }, 1
   end
 
   test 'PATCH edit as student can change class_room_id' do
