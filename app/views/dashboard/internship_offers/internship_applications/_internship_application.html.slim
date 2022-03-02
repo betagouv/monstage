@@ -28,7 +28,7 @@
           strong= "#{internship_application.week.short_select_text_method}"
     .row.no-gutters.ml-4
       .col-10
-          h3.h6.mt-4  Motivations
+          h3.h6.mt-4 Motivations
     .row.no-gutters.ml-4
       .col-10
         - if internship_application.submitted?
@@ -56,7 +56,7 @@
             h3.h6 Parcours Scolaire
             .reboot-trix-content= internship_application.student.resume_educational_background.to_s
             - if internship_application.student.resume_languages.present?
-              h3.h6.mt-3  Langues
+              h3.h6.mt-3 Langues
               .reboot-trix-content= internship_application.student.resume_languages.to_s
 
           .col-md-6.col-sm-12

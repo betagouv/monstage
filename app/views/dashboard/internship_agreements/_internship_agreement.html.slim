@@ -1,18 +1,20 @@
 tr class="d-sm-flex student-application-#{internship_agreement.id} internship-agreement-to-sign"
   td.pt-3.pb-0.py-sm-2.rg2a-width-100.col-sm-2.d-sm-flex.align-items-center data-head="Élève"
     .align-self-center= internship_agreement.internship_application.student.name
-  
+
   td.pt-0.pb-3.py-sm-2.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center data-head="#{internship_agreement.internship_application.internship_offer.title}"
-    = link_to '#', data: { toggle: 'modal', target: "##{show_application_modal_id(internship_agreement.internship_application)}", turbolinks: false } do
+    = link_to '#',
+              data: { toggle: 'modal', target: "##{show_application_modal_id(internship_agreement.internship_application)}", turbolinks: false },
+              class: 'fr-raw-link' do
       span= internship_agreement.internship_application.internship_offer.title
-  
+
   td.rg2a-width-50.col-sm-2.d-sm-flex.align-items-center data-head="Organisme d'accueil"
     = internship_agreement.internship_application.internship_offer.employer_name
 
   td.rg2a-width-50.col-sm-2.d-sm-flex.align-items-center.text-left data-head="Statut"
     .actions.d-flex.d-sm-block.mr-auto.ml-auto
       = I18n.t("activerecord.attributes.internship_agreement.aasm_state.#{current_user.role || 'employer'}.#{internship_agreement.aasm_state}")
-  
+
   td.rg2a-width-100.col-sm-3.d-sm-flex.align-items-center.text-center.actions
     = render(InternshipAgreements::ButtonComponent.new(internship_agreement: internship_agreement, current_user: current_user))
 

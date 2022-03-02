@@ -9,12 +9,12 @@ div
   .actions.d-flex.d-sm-block.d-xs-stick.text-center
     p.mb-1.d-none.d-md-block.text-muted.small= sup_text
     p.mb-0.w-100= link_to new_dashboard_internship_offer_path(parameters),
-                          class: 'btn btn-primary rounded-xs-0 w-100' do
+                          class: 'fr-btn rounded-xs-0 w-100' do
       i.fas.fa-copy
       small class="#{klass}"
         =" #{cta_text}"
     p.mt-1.w-100= link_to new_dashboard_internship_offer_path(parameters.merge(without_location: true)),
-                          class: 'btn btn-secondary rounded-xs-0 w-100' do
+                          class: 'fr-btn btn-secondary rounded-xs-0 w-100' do
       i.fas.fa-copy
       small.test-duplicate-without-location-button
         |  Publier la même offre pour un lieu de stage différent

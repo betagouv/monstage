@@ -7,8 +7,8 @@
         - btn_class = 'nav-link px-5 font-weight-bolder' #sd-flex align-items-center mb-2 text-smaller h5
         = link_to "Dates de candidature",
                   dashboard_internship_offer_internship_applications_path(order: 'applicationDate'),
-                  class: [nil, 'applicationDate'].include?(params[:order]) ? "#{btn_class} btn-primary" : "#{btn_class} primary border"
+                  class: [nil, 'applicationDate'].include?(params[:order]) ? "#{btn_class} fr-btn" : "#{btn_class} primary border"
         = link_to "Dates de stage",
                   dashboard_internship_offer_internship_applications_path(order: 'internshipDate'),
-                  class: (params[:order] == 'internshipDate' ? "#{btn_class} btn-primary" : "#{btn_class} border")
+                  class: (params[:order] == 'internshipDate' ? "#{btn_class} fr-btn" : "#{btn_class} border")
 

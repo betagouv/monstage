@@ -34,12 +34,12 @@ class ReservedSchoolInput extends React.Component {
     const checkedOrHasExistingSchool = checked === true || (checked === null && existingSchool);
     return (
       <>
-        <div className="form-group">
+        <div className="fr-checkbox-group fr-checkbox-group--sm">
           <label htmlFor="is_reserved">
             <input
               type="checkbox"
               name="is_reserved"
-              className="is_reserved"
+              className="fr-label"
               value="true"
               checked={checkedOrHasExistingSchool}
               onChange={this.handleChange}

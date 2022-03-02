@@ -106,7 +106,7 @@ module InternshipOffers
         assert_template 'internship_applications/forms/_weekly_and_free'
         assert_select 'option', text: weeks.first.human_select_text_method, count: 1
         assert_select 'a[href=?]', '#internship-application-form', count: 1
-        assert_select '.btn-primary', text: 'Je postule'
+        assert_select '.fr-btn', text: 'Je postule'
       end
     end
 

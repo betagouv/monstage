@@ -80,7 +80,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       visit dashboard_internship_offer_path(internship_offer)
       assert_changes -> { internship_offer.reload.discarded_at } do
         page.find('a[data-target="#discard-internship-offer-modal"]').click
-        page.find('#discard-internship-offer-modal .btn-primary').click
+        page.find('.fr-btn[data-method="delete"]').click
       end
     end
   end

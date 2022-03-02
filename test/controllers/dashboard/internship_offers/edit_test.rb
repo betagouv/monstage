@@ -70,7 +70,6 @@ module Dashboard::InternshipOffers
                                       :submitted,
                                       internship_offer: internship_offer,
                                       week: internship_offer.internship_offer_weeks[0].week)
-
       travel_to(weeks.first.week_date - 1.week) do
         get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
         assert_response :success

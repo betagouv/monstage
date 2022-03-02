@@ -13,17 +13,23 @@ header.bg-cover-image-homepage.container-xl
               Trouvez votre stage parmi une grande quantité d’offres
               de qualité, dédiées aux élèves scolarisés en
             span
-              strong REP/REP+.
-          .py-lg-4.py-md-3.py-sm-3.py-xs-2
+              strong = " REP/REP+."
+          .d-none.d-md-block
+            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2
+          .d-md-none
+            p.mt-4.py-lg-4.py-md-3.py-sm-3.py-xs-2.text-center
+              = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+                        class: 'fr-btn fr-fi-search-line fr-btn--icon-right bg-white fr-px-6w'  do
+                = "Rechercher un stage "
 .container-monstage.light-grey-background
-  .row.search-form.mt-1
+  .row.no-gutters.search-form.mt-1
     .col-12 = render partial: "internship_offers/search/form",
                      locals: { render_as_partial: true,
                                url: internship_offers_path,
                                default_values: user_presenter.default_search_options,
                                form_id: :home_search_form }
-    .actions.d-flex.d-stick.d-md-none.p-2.fitting
+    .actions.d-stick.d-md-none.p-2.fitting.text-center
       = link_to internship_offers_path(current_user_or_visitor.default_search_options),
-                class: 'btn rounded-0 btn-primary btn-block',
+                class: 'fr-btn fr-fi-search-line fr-btn--icon-right fr-px-11w',
                 data: { :"test-id" => 'mobile-search-button' }
-        = "Rechercher un stage"
+        = "Rechercher un stage "
