@@ -13,7 +13,6 @@ module Dashboard
       test 'GET class_rooms#edit as SchoolManagement render form' do
         school = create(:school, :with_school_manager)
         class_room = create(:class_room, school: school)
-
         [
           school.school_manager,
           create(:main_teacher, school: school),

@@ -117,7 +117,7 @@ export default function SearchSchool({
                 {!currentRequest && (
                   <button
                     type="button"
-                    className={`btn btn-clear-city  ${cityCurrentlyChosen ? 'text-danger' : 'text-primary'}`}
+                    className={`fr-btn btn-clear-city  ${cityCurrentlyChosen ? 'text-danger' : 'text-primary'}`}
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
@@ -127,7 +127,7 @@ export default function SearchSchool({
                 {currentRequest && (
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-clear-city"
+                    className=" fr-btn fr-btn--secondary btn-clear-city"
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >

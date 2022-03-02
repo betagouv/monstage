@@ -22,6 +22,16 @@ module Finders
                              .try(:[], "total_count")
     end
 
+    def operator_count_onsite
+      @operator_count_onsite ||= operator_base_query
+      @operator_count_onsite.onsite.map(&:nb_spot_used).compact.sum
+    end
+
+    def operator_count_remote
+      @operator_count_remote ||= operator_base_query
+      @operator_count_remote.remote.map(&:nb_spot_used).compact.sum
+    end
+
     def operator_count_by_private_sector_paqte
       @operator_count_by_private_sector_paqte ||= operator_base_query.by_paqte
                                                                      .entries
@@ -205,7 +215,7 @@ module Finders
     end
 
     def operator_base_query
-      query = AirTableRecord.all
+      query = AirTableRecord.all.without_workshop # /!\ Ateliers not counted
       query = query.during_year(school_year: school_year) if school_year_param?
       query = query.by_department(department: params[:department]) if department_param?
       query = query.by_ministry(user: user) if user.ministry_statistician?

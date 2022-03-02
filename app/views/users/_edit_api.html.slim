@@ -8,10 +8,10 @@ h1.h2.mb-3 Mes identifiants d'API
   = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
   .form-group
-    = f.label :api_token do
+    = f.label :api_token, class: 'fr-label' do
       = "Token d'identification"
       = f.rg2a_required_content_tag
-    = f.text_field :api_token, class: 'form-control col-lg-6',
+    = f.text_field :api_token, class: 'fr-input col-lg-6',
       required: true,  readonly: true
 
   .form-group

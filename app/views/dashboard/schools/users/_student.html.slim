@@ -57,4 +57,8 @@ tr class="d-flex test-student-#{student.id}"
   td.col-2.d-flex.align-items-center
     .row
       .col-12
-        = select_tag "student_#{student.id}", options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id), prompt: 'Cet élève ne fait pas partie de mon établissement' , class: "form-control", data: { action: 'change->students#selectStudentClassRoom' }
+        = select_tag "student_#{student.id}",
+                     options_from_collection_for_select(student.school.class_rooms, :id, :name, student.class_room_id),
+                     prompt: 'Cet élève ne fait pas partie de mon établissement' ,
+                     class: "fr-select",
+                     data: { action: 'change->students#selectStudentClassRoom' }

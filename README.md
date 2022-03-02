@@ -240,6 +240,15 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
+### hotfix
+
+* git checkout master
+* git pull
+* git merge Hotfix-PR-branch
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+* git checkout staging
+* git merge Hotfix-PR-branch
 
 # disaster recovery plan
 

@@ -7,4 +7,4 @@ p Le CV aide l'employeur à découvrir votre parcours, vos talents et compétenc
   = render "layouts/form_errors", resource: current_user, resource_name: :user
   = render partial: "users/resume_fields", locals: { form: f, disabled: false, phone_mail_disabled: false}
 
-  .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'btn btn-primary'
+  .actions.d-flex.d-sm-block= f.submit 'Enregistrer', class: 'fr-btn'

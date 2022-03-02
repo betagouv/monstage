@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     if password_change_allowed?
       current_user.update!(user_params)
       bypass_sign_in current_user
-      redirect_to  account_path(section: :password), flash: { success: current_flash_message }
+      redirect_to account_path(section: :password), flash: { success: current_flash_message }
     else
       redirect_to account_path(section: :password), flash: { warning: 'impossible de mettre à jour le mot de passe.' }
     end

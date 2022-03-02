@@ -47,7 +47,11 @@ module Dashboard
                       'missing link to manage school users'
         assert_select 'a.nav-link[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 2 },
+                      { count: 1 },
+                      'missing or extra link to manage school weeks'
+        assert_select 'li a.fr-link[href=?]',
+                      edit_dashboard_school_path(school),
+                      { count: 1 },
                       'missing or extra link to manage school weeks'
       end
 
@@ -79,7 +83,7 @@ module Dashboard
           assert_response :success
 
           # new link
-          assert_select 'a.btn-primary[href=?]',
+          assert_select 'a.fr-btn[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
