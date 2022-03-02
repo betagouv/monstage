@@ -20,11 +20,12 @@ end
 
 desc 'Evaluate employers count with approved application under conditions'
 task employers_with_potential_agreeements: :environment do
-  class_rooms = ClassRoom.arel_table
-  offers      = InternshipOffer.arel_table
+  class_rooms          = ClassRoom.arel_table
+  offers               = InternshipOffer.arel_table
+  department_str_array = School.experimented_school_departments
   offer_ids = InternshipApplications::WeeklyFramed.joins( :week , student: {class_room: :school})
                                                   .approved
-                                                  .merge(School.from_departments(department_str_array: School.experimented_school_departments))
+                                                  .merge(School.from_departments(department_str_array: department_str_array))
                                                   .merge(Week.in_the_future)
                                                   .where(class_rooms[:school_track].eq('troisieme_generale'))
                                                   .includes(:internship_offer)
@@ -32,7 +33,7 @@ task employers_with_potential_agreeements: :environment do
                                                   .map(&:internship_offer)
                                                   .map(&:id)
                                                   .uniq
-  if offer_ids.empty?
+    if offer_ids.empty?
     puts "no count"
   else
     emails = InternshipOffers::WeeklyFramed.where(offers[:id].in(offer_ids))
