@@ -9,7 +9,7 @@ module Product
 
     test 'USE_W3C, dashboard_internship_offers_path' do
       employer = create(:employer)
-      internship_offer = create(:weekly_internship_offer, employer: employer)
+      internship_offer = create(:weekly_internship_offer, employer: employer, max_candidates: 10, max_students_per_group: 10)
       %i[drafted submitted approved rejected convention_signed].map do |aasm_state|
         create(:weekly_internship_application, aasm_state: aasm_state, internship_offer: internship_offer)
       end

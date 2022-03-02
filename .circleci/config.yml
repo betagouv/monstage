@@ -102,9 +102,9 @@ jobs: # a collection of steps
           name: Run Desktop w3c System with headless_chrome
           command: PARALLEL_WORKERS=1 ~/project/infra/test/system_w3c.sh
 
-      - run:
-          name: a11y validation
-          command: ~/project/node_modules/.bin/pa11y-ci $(find ~/project/tmp/w3c/*.html -name '*.html')
+      # - run:
+      #     name: a11y validation
+      #     command: ~/project/node_modules/.bin/pa11y-ci $(find ~/project/tmp/w3c/*.html -name '*.html')
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
