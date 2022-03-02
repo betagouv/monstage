@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     if password_change_allowed?
       current_user.update!(user_params)
       bypass_sign_in current_user
-      redirect_to  account_path(section: :password), flash: { success: current_flash_message }
+      redirect_to account_path(section: :password), flash: { success: current_flash_message }
     else
       redirect_to account_path(section: :password), flash: { warning: 'impossible de mettre à jour le mot de passe.' }
     end
@@ -45,6 +45,7 @@ class UsersController < ApplicationController
               else 'Compte mis à jour avec succès.'
               end
     message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). Veuillez cliquer sur le lien contenu dans le courriel pour confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
+    message = 'Etablissement mis à jour avec succès.' if current_user.school_id_previously_changed?
     message
   end
 

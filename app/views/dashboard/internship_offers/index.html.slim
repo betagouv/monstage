@@ -4,7 +4,7 @@
   - if can?(:create, InternshipOffer)
     .col-6.text-right
       = link_to new_dashboard_stepper_organisation_path,
-                class: 'ml-auto rounded-xs-0 btn btn-primary px-4',
+                class: 'ml-auto rounded-xs-0 fr-btn px-4',
                 id: 'test-create-offer'
         i.fas.fa-plus
         span.px-3 Déposer une offre
@@ -24,7 +24,7 @@
       .col-12.mt-3
         .actions.d-flex.d-sm-block
           = link_to path_to_next_page(@internship_offers),
-                    class: 'btn btn-outline-primary' do
+                    class: 'fr-btn' do
             | Plus de resultats
 
   .row.d-none.d-sm-flex
@@ -37,6 +37,6 @@
       h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
       p.d-sm-block.d-none
         = link_to new_dashboard_stepper_organisation_path,
-                  class: 'btn btn-primary' do
+                  class: 'fr-btn' do
           = "Déposer une offre "
           i.fas.fa-plus

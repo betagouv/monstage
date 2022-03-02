@@ -55,7 +55,7 @@ class UserUpdateTest < ApplicationSystemTestCase
 
     visit internship_offers_path
     find('h1.h2', text: 'Mon établissement')
-    find('#alert-warning', text:'Veuillez choisir un établissement scolaire')
+    find('#alert-warning', text: 'Veuillez choisir un établissement scolaire')
     within('#alert-warning') do
       click_button('Fermer')
     end

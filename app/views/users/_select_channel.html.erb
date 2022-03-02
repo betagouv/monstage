@@ -10,7 +10,7 @@
     <div class='col-6 d-table form-group'>
       <%= form.label :channel,
                     "SMS",
-                    class: 'channel-radio-label  d-table-cell align-middle',
+                    class: 'channel-radio-label fr-label d-table-cell align-middle',
                     for: "select-channel-phone" do %>
         <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
         <br/>
@@ -25,7 +25,7 @@
     <div class='col-6 d-table form-group'>
       <%= form.label :channel,
                      "Email",
-                     class: 'channel-radio-label d-table-cell align-middle',
+                     class: 'channel-radio-label fr-label d-table-cell align-middle',
                      for: "select-channel-email" do %>
 
         <i class="fa fa-fw fa-4x far fa-envelope"></i>
@@ -41,12 +41,12 @@
   </div>
 
   <div data-signup-target="emailBloc" class="form-group email d-none">
-    <%= form.label :email do %>
+    <%= form.label :email, class: "fr-label" do %>
       <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
       <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
     <% end %>
     <%= form.email_field :email,
-                         class: 'form-control',
+                         class: 'fr-input',
                          value: resource.email.blank? ? params[:email] : resource.email,
                          placeholder: "ex: nom@exemple.fr",
                          autofocus: params[:email].blank? ? true : false,

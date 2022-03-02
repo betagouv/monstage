@@ -6,33 +6,33 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
     .col-lg-6.col-md-12.order-lg-1.order-2
       = form.rg2a_explain_required_asterisk
       .form-group
-        = form.label :school_track do
+        = form.label :school_track , class: 'fr-label'do
           = "Filière cible"
           = form.rg2a_required_content_tag
           small.form-text.text-muted Sélectionnez la filière scolaire souhaitée
         = form.select :school_track,
                       grouped_options_for_select( [ ['Voie générale', [[tr_school_track(:troisieme_generale), :troisieme_generale]]], ['Voie professionnelle', ClassRoom.school_tracks.keys.difference(['troisieme_generale']).collect {|tra| [tr_school_track(tra), tra]}] ], resource.school_track ),
                       { include_blank: '-- Veuillez choisir une filière --' },
-                      { class: "form-control", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
+                      { class: "fr-select", required: true,  data: {action: "change->internship-offer-infos#onInduceType", :"internship-offer-infos-target" => 'selectType'} }
         = form.hidden_field :type, data: { :"internship-offer-infos-target" => "type" }
 
       .form-group
-        = form.label :title do
+        = form.label :title, class: 'fr-label' do
           = "Intitulé du stage"
           = form.rg2a_required_content_tag
 
           small.form-text.text-muted
             | Indiquez clairement le métier à découvrir par l’élève
-        = form.text_field :title, class: "form-control", placeholder: "Animateur sportif, Métiers de l’hôtellerie…", required: true
+        = form.text_field :title, class: "fr-input", placeholder: "Animateur sportif, Métiers de l’hôtellerie…", required: true
 
       .form-group
-        = form.label :sector_id do
+        = form.label :sector_id , class: 'fr-label'do
           = "Secteur d'activité"
           = form.rg2a_required_content_tag
         = form.select :sector_id,
                       options_from_collection_for_select(Sector.all.order(:name), :id, :name, resource.sector_id),
                       { prompt: sectors_options_for_default },
-                      class: "form-control"
+                      class: "fr-select"
 
       .form-group data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::DESCRIPTION_MAX_CHAR_COUNT}"
         #label_internship_offer_info_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_description_rich_text" data-controller="rich-text-label"
@@ -43,22 +43,24 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
         small.form-text data-maxlength-input-target="trixElementCharCount"
 
       .form-group.form-group-select-max-candidates
-        = form.label :max_candidates do
+        = form.label :max_candidates, class: 'fr-label' do
           = "Nombre total d'élèves que vous souhaitez accueillir sur l'année scolaire"
           = form.rg2a_required_content_tag
 
           small.form-text.text-muted
             | Vous accueillerez ces élèves individuellement ou par groupes
         = form.number_field :max_candidates,
-                            class: "form-control",
+                            class: "fr-input",
                             placeholder: "Nombre d'élèves prévus pour cette offre",
                             disabled: !resource.is_fully_editable?,
                             required: true,
+                            pattern: "[0-9]*",
+                            inputmode: "numeric",
                             data: { :"internship-offer-infos-target" => 'maxCandidatesInput',
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
 
-      .form-group
-        div.label
+      .fr-form-group
+        div.fr-label
           = "Type de stage"
           = form.rg2a_required_content_tag
 
@@ -97,7 +99,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
                             min: 1,
                             max: InternshipOffer::MAX_CANDIDATES_HIGHEST,
                             step: 1,
-                            class: 'form-control col-lg-6',
+                            class: 'fr-input col-lg-6',
                             disabled: !resource.is_fully_editable?,
                             data: { :"internship-offer-infos-target" => "studentsMaxGroupInput",
                                     action: "change->internship-offer-infos#handleMaxCandidatesChanges"}
@@ -135,7 +137,7 @@ fieldset.mt-4 [data-controller='internship-offer-infos'
               i.fa.fa-arrow-left
               = " Précédent"
           .col-6.text-right
-            = button_tag :submit, class: 'btn btn-primary' do
+            = button_tag :submit, class: 'fr-btn' do
               = 'Suivant '
               i.fas.fa-arrow-right
     - warning_block = true if warning_block.nil?

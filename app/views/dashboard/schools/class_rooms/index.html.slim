@@ -11,7 +11,7 @@
         .col.text-primary
           | Certains de vos élèves ont besoin d'être affectés à une classe pour pouvoir postuler à des stages
         .col-12.col-sm-4.pt-3.pt-sm-0
-          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'btn-primary btn', data: { 'target': 'students.submitButton' }
+          = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn', data: { 'target': 'students.submitButton' }
 
       .row
         .col-12.px-0
@@ -29,7 +29,7 @@
                     = select_tag "student_#{student.id}",
                                   options_from_collection_for_select(student.school.class_rooms.current, :id, :name, student.class_room_id),
                                   prompt: 'Choisissez une classe' ,
-                                  class: "form-control",
+                                  class: "fr-select",
                                   data: { action: 'change->students#selectStudentClassRoom' }
                   td.col-1.text-sm-center data-head="Suppression d-none"
                     = link_to dashboard_school_user_path(id: student.id),
@@ -60,4 +60,4 @@
 - if can?(:create, ClassRoom)
   .row
     .col-12.my-3
-      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'btn-primary btn'
+      = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn'

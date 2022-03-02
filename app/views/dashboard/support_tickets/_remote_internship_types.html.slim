@@ -3,22 +3,22 @@ p Sélectionnez les types de stages qui vous intéressent.
 div.clearfix
   div.float-left
     .h6.my-3.remote-internship-mode.mr-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
-      = f.label :digital_week, class: 'form-check-label pl-2 pt-1 m-2' do
+      = f.label :digital_week, class: 'form-check-label fr-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/digital_week_2x.png'),
                     class: 'remote-illustration mb-4',
                     alt: "Semaine de stage digital",
-                    width: 170
+                    width: '170px'
         span.pr-5 Semaine de stage digital
         = f.check_box :digital_week,
                            class: 'form-check-input ml-0',
                            'data-checkbox-svg-icon-target': 'option',
                            'data-action': 'checkbox-svg-icon#onCheck'
     .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
-      = f.label :webinar, class: 'form-check-label pl-2 pt-1 m-2' do
+      = f.label :webinar, class: 'form-check-label fr-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/webinar_2x.png'),
                     class: 'remote-illustration mb-3',
                     alt: "Webinar",
-                    height: 110
+                    height: '110px'
         span.pr-5 Webinaire
         br
         span.pr-5 Live métier
@@ -27,11 +27,11 @@ div.clearfix
                              'data-checkbox-svg-icon-target': 'option',
                              'data-action': 'checkbox-svg-icon#onCheck'
     .h6.my-3.remote-internship-mode.mx-2 data-checkbox-svg-icon-target='border' data-controller='checkbox-svg-icon'
-      = f.label :face_to_face, class: 'form-check-label pl-2 pt-1 m-2' do
+      = f.label :face_to_face, class: 'form-check-label fr-label pl-2 pt-1 m-2' do
         = image_tag asset_pack_path('media/images/pages/remote_internships/face_to_face_2x.png'),
                     class: 'remote-illustration mb-3',
                     alt: "Un professionnel en établissement",
-                    height: 110
+                    height: '110px'
         span.pr-4 Un professionnel
         br
         span.pr-4 en établissement

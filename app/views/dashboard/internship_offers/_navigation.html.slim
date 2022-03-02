@@ -14,10 +14,12 @@
       - if can?(:read, @internship_offer) && can?(:index, InternshipApplication)
         - if current_page?(dashboard_internship_offer_internship_applications_path(@internship_offer))
           li.nav-item
-            .nav-link.px-0.px-lg-3= "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
+            .nav-link.px-0.px-lg-3
+              = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
         - else
           li.nav-item
-            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer), class: 'nav-link px-0 px-lg-3' do
+            = link_to dashboard_internship_offer_internship_applications_path(@internship_offer),
+                      class: 'nav-link px-0 px-lg-3 fr-raw-link' do
               = "#{@internship_offer.total_applications_count} #{'candidature'.pluralize(@internship_offer.total_applications_count)}"
 
       li.ml-auto.d-flex

@@ -19,17 +19,17 @@
 
   <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
-    <div class="content pt-0 border border-danger" data-controller='rg2a'>
+    <div class="content pt-0" data-controller='rg2a'>
       <header role="banner" class="custom-navbar <%= homepage? || statistics? || content_for?(:custom_header) ? '' : 'mb-4' %>">
-        <div class="container">
-          <div class="row">
-            <% if onboarding_flow? %>
+        <% if onboarding_flow? %>
+          <div class="container">
+            <div class="row">
               <div class="col px-0"><%= render 'layouts/navbar_auth' %></div>
-            <% else %>
-              <div class="col px-0"><%= render 'layouts/navbar' %></div>
-            <% end %>
+            </div>
           </div>
-        </div>
+        <% else %>
+          <div class="col px-0"><%= render "layouts/navbar" %></div>
+        <% end %>
       </header>
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>

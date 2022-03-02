@@ -28,7 +28,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
           = "Passées "
           - if is_active
             = " (#{internship_offers.total_count})"
-  
+
   - # TouDoux checker si ref dep, centraux et opérateurs ça fonctionne
   - is_active = current_page?(dashboard_internship_applications_path)
 
@@ -39,8 +39,8 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
         | Mes Conventions de stages &nbsp;
         - if badge_counter.pending_agreements_count.positive?
           span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
- 
-  /Remove code after  February, 15th 2022 or uncomment
+
+  /Remove code after February, 15th 2022 or uncomment
   /- if can? :create_remote_internship_request, SupportTicket
     - is_active = current_page?(new_dashboard_support_ticket_path)
 

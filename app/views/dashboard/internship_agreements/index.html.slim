@@ -1,4 +1,10 @@
 .row
+  - if current_user.is_a?(Users::SchoolManagement)
+    = render partial: 'dashboard/schools/navbar', locals: { school: current_user.school, render_ux_guidelines: true }
+  - else
+    = render partial: "dashboard/internship_offers/tabs", locals: { internship_offers: @internship_offers }
+
+.row
   .col-12
     h2.h3.title-with-button-line
       | Editer, imprimer et bientôt signer les conventions dématérialisées
@@ -12,12 +18,9 @@
         h6 Renseignez ces informations une fois pour toutes vos conventions de stage !
         p Afin de vous faire gagner du temps, vous avez la possibilité de renseigner certaines informations récurrentes à toutes vos conventions de stage.
       .col-4.offset-1.justify-content-center.align-self-center
-        = link_to "Renseigner les informations récurrentes", edit_dashboard_school_internship_agreement_preset_path(current_user.school, current_user.school.internship_agreement_preset), class: 'btn btn-primary'
+        = link_to "Renseigner les informations récurrentes", edit_dashboard_school_internship_agreement_preset_path(current_user.school, current_user.school.internship_agreement_preset), class: 'fr-btn'
   - else
     = render partial: "dashboard/schools/internship_agreement_presets/short_form", locals: { school: current_user.school, internship_agreement_preset: current_user.school.internship_agreement_preset }
-
-.row= render partial: "dashboard/internship_offers/tabs",
-          locals: { internship_offers: @internship_offers }
 
 table.mt-4.table.table-hover.table-sticky-thead.table-rg2a
   thead

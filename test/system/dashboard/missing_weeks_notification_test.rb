@@ -29,11 +29,10 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
 
     InternshipOffer.stub :nearby, InternshipOffer.all do
       sign_in(student)
-
       visit internship_offers_path
       click_link("Voir l'annonce")
       click_on 'Postuler'
-      find "label", text: "Quelle semaine ?"
+      find ".fr-label", text: "Quelle semaine ?"
       find "p.test-missing-school-weeks", text: explanation
       page.find "input[name='commit']", visible: true
       sign_out(student)
@@ -41,7 +40,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       # Back to interfaces
       sign_in(school_manager)
       visit edit_dashboard_school_path(school)
-      all(".custom-control.custom-checkbox label").first.click
+      all(".fr-checkbox-group.fr-checkbox-group--sm label").first.click
       find('input[type="submit"]').click
       find "#alert-text", text: school_message
       sign_out(school_manager)
@@ -76,7 +75,7 @@ class MissingWeeksNotificationTest < ApplicationSystemTestCase
       visit internship_offers_path
       click_link("Voir l'annonce")
       click_on 'Postuler'
-      find ".label", text: "Pourquoi ce stage me motive"
+      find ".fr-label", text: "Pourquoi ce stage me motive"
       page.find "input[name='commit']"
       sign_out(student)
     end

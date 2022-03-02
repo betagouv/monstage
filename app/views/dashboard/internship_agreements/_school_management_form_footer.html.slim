@@ -8,10 +8,16 @@ div data-controller="footer"
     .container.py-4
       .row
         .col-12.d-flex.justify-content-between
-          = button_tag type: "button", data: { action: 'click->footer#saveAndQuitBySchoolManager' }, class: 'btn btn-outline-primary mx-1' do
+          = button_tag type: "button",
+                       data: { action: 'click->footer#saveAndQuitBySchoolManager' },
+                       class: 'fr-btn mx-1',
+                       id: 'school_manager_saves_and_quit' do
             | Enregistrer et quitter
 
-          = button_tag type: "button", data: { toggle: 'modal', target: "#validation-modal", turbolinks: false }, class: 'btn btn-primary mx-1' do
+          = button_tag type: "button",
+                       data: { toggle: 'modal', target: "#validation-modal", turbolinks: false },
+                       class: 'fr-btn mx-1',
+                       id: 'validate_agreement' do
             i.fas.fa-check
             |  Valider la convention
 

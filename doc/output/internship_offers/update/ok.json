@@ -2,6 +2,7 @@
   "title": "hellow",
   "max_candidates": 2,
   "published_at": null,
+  "max_students_per_group": 1,
   "zipcode": "75001",
   "description": "Lorem ipsum dolor api",
   "employer_website": null,
@@ -9,7 +10,7 @@
   "city": "Paris",
   "employer_name": "Octo",
   "employer_description": "on envoie du parpaing",
-  "remote_id": "2",
+  "remote_id": "4",
   "permalink": "https://google.fr",
   "formatted_coordinates": {
     "latitude": 48.866667,
