@@ -22,7 +22,7 @@
       .row
         .col-md-6.col-xs-12
           .form-group
-            = f.label :operator, class: 'fr-label'
+            = f.label :operator, class: 'fr-label',for: 'user_operator_id'
               | Opérateur
               = f.rg2a_required_content_tag
             = f.select :operator_id, options_from_collection_for_select(Operator.all, :id, :name, current_user.operator), { prompt: operator_options_for_default }, class: "fr-select", disabled: true

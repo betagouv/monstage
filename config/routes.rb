@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: 'dashboard' do
-    resources :support_tickets, only: %i[new create]
+    # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
     resources :internship_agreements,  except: %i[destroy]
     resources :internship_applications, only: %i[index]
 

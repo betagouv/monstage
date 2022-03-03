@@ -11,7 +11,7 @@
     .row
       .col-md-6.col-xs-12
         .form-group
-          = f.label :api_token, class: 'fr-label' do
+          = f.label :api_token, class: 'fr-label', for: 'user_api_token' do
             = "Token d'identification"
             = f.rg2a_required_content_tag
           = f.text_field :api_token, class: 'fr-input', required: true, readonly: true
