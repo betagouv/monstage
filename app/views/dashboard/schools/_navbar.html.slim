@@ -19,7 +19,7 @@
     ul.nav.nav-tabs.test-dashboard-nav.mb-2.nav-xs-inline
       li.nav-item
         = link_to dashboard_school_class_rooms_path(school),
-                  class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
+                  class: "fr-link px-2 px-sm-3 #{current_page?(dashboard_school_class_rooms_path(school)) ? 'active' : ''}" do
           | Classes &nbsp;
           - if badge_counter.student_without_class_room_count.size.positive?
             span.badge-pill.badge-danger.small= badge_counter.student_without_class_room_count
@@ -27,17 +27,17 @@
       - if can? :manage_school_users, school
         li.nav-item
           = link_to "Personnels", dashboard_school_users_path(school),
-                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_users_path(school)) ? 'active' : ''}"
+                    class: "fr-link px-2 px-sm-3 #{current_page?(dashboard_school_users_path(school)) ? 'active' : ''}"
 
       - if can? :edit, school
         li.nav-item
           = link_to "Semaines", edit_dashboard_school_path(school),
-                    class: "nav-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
+                    class: "fr-link px-2 px-sm-3 #{current_page?(edit_dashboard_school_path(school)) ? 'active' : ''}"
 
       - if can?(:edit, InternshipAgreement) && current_user.school.internship_agreement_open?
         li.nav-item
           = link_to dashboard_internship_agreements_path,
-                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
+                    class: "fr-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
             | Mes Conventions de stages &nbsp;
             - if badge_counter.pending_agreements_count.positive?
               span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
@@ -45,20 +45,20 @@
       / - if can?(:create_remote_internship_request, SupportTicket)
         li.nav-item
           = link_to new_dashboard_support_ticket_path,
-                    class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
+                    class: "fr-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
             | Stages à distance
 
       /Remove code after  February, 15th 2022 or uncomment
       /- if can? :create_remote_internship_request, SupportTicket 
         li.nav-item
           = link_to new_dashboard_support_ticket_path,
-                    class: "nav-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
+                    class: "fr-link px-2 px-sm-3 #{current_page?(new_dashboard_support_ticket_path)  ? 'active' : ''}" do
             | Stages à distance
 
       - if can?(:edit, School)
         li.nav-item
           = link_to dashboard_school_path(school),
-                    class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_school_path(school))  ? 'active' : ''}" do
+                    class: "fr-link px-2 px-sm-3 #{current_page?(dashboard_school_path(school))  ? 'active' : ''}" do
             | Gérer mon établissement
 
 

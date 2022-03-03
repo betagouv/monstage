@@ -53,7 +53,9 @@ div [data-controller="select-weeks"
             = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
               = week.select_text_method
 
-            div.position-absolute.badge-week-density.rounded.d-none data-select-weeks-target='inputWeekLegend' data-week-id=week.id
+            div.position-absolute.badge-week-density.rounded.d-none [
+              data-select-weeks-target='inputWeekLegend'
+              data-week-id="#{week.id}"]
               | ?
 
       - if render_employer_components

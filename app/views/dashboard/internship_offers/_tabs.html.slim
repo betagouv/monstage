@@ -7,7 +7,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - if current_user.is_a?(Users::Employer)
     - is_active = controller_name == 'internship_offers' && params[:filter].blank?
     li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+                         class: "d-flex h-100 px-2 px-sm-3 fr-link #{is_active ? 'active' : ''}" do
         div.my-auto
           = "En cours "
           - if is_active
@@ -15,7 +15,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
 
     - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
     li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+                         class: "d-flex h-100 px-2 px-sm-3 fr-link #{is_active ? 'active' : ''}" do
         div.my-auto
           = "Dépubliées "
           - if is_active
@@ -23,7 +23,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
 
     - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
     li.nav-item= link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
-                        class: "d-flex h-100 px-2 px-sm-3 nav-link #{is_active ? 'active' : ''}" do
+                         class: "d-flex h-100 px-2 px-sm-3 fr-link #{is_active ? 'active' : ''}" do
         div.my-auto
           = "Passées "
           - if is_active
@@ -35,7 +35,7 @@ ul.nav.nav-tabs.test-dashboard-nav.bb-1.bc-light.col-12.nav-xs-inline
   - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
     li.nav-item
       = link_to dashboard_internship_agreements_path,
-                class: "nav-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
+                class: "fr-link px-2 px-sm-3 #{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
         | Mes Conventions de stages &nbsp;
         - if badge_counter.pending_agreements_count.positive?
           span.badge-pill.badge-danger.small= badge_counter.pending_agreements_count
