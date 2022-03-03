@@ -1,8 +1,6 @@
 - sup_text = can?(:renew, internship_offer) ? "Souhaitez-vous renouveler cette offre pour la nouvelle année scolaire ?" : ''
 - cta_text = can?(:renew, internship_offer) ? "Renouveler" : 'Dupliquer cette offre'
 - klass    = can?(:renew, internship_offer) ? "test-renew-button" : 'test-duplicate-button'
-- p can?(:renew, internship_offer)
-- p internship_offer
 - parameters = { duplicate_id: internship_offer.to_param }
 - parameters = parameters.merge(renewed: true) if can?(:renew, internship_offer)
 div
