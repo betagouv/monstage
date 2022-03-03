@@ -66,7 +66,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
 
     # default presence of fields
     assert_equal 1, all('#user_school_name').size, 'default school name missing'
-    assert_equal 2, all('#user_class_room_id').size, 'default class room missing'
+    assert_equal 1, all('#user_class_room_id').size, 'default class room missing'
 
     all('.btn-clear-city').first.click
     assert_equal 0, all('#user_school_name').size, 'reset school name fails'

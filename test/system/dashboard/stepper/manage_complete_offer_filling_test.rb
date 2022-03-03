@@ -20,7 +20,6 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
       # internship_offer_info = create(:weekly_internship_offer_info,  employer: employer)
       available_weeks = [Week.find_by(number: 10, year: 2019), Week.find_by(number: 11, year: 2019)]
       travel_to(Date.new(2019, 3, 1)) do
-        byebug
         sign_in(employer)
         visit employer.custom_dashboard_path
         find('#test-create-offer').click
