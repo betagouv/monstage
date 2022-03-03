@@ -138,6 +138,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
                                       week: weeks.last)
 
       travel_to(weeks[0].week_date - 1.week) do
+        byebug
         sign_in(student)
         visit internship_offer_path(internship_offer)
         within('select[name="internship_application[week_id]"]') do

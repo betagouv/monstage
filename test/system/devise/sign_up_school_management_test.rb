@@ -73,6 +73,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
 
     # create teacher
     assert_difference('Users::SchoolManagement.teacher.count', 1) do
+      byebug
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click

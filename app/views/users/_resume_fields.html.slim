@@ -1,19 +1,19 @@
 .row
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4" aria-labelledby="parcours_scolaire"
     / legend.h3 Mon Parcours
     .form-group
-      .fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_educational_background" data-controller="rich-text-label"
+      #parcours_scolaire.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_educational_background" data-controller="rich-text-label"
         = 'Parcours Scolaire'
         small.form-text.text-muted Classes suivies jusqu'à maintenant
 
       = form.rich_text_area :resume_educational_background, class: 'fr-input col-12', disabled: disabled,  rows: 5
 
-  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4"
+  fieldset class="#{disabled ? 'opacity-05' : ''} col-12 mb-4" aria-labelledby="activities"
     / legend.h3 Autre
     .row
       .col-12.col-md-12
         .form-group
-          .fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_other" data-controller="rich-text-label"
+          #activities.fr-label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{sanitize_to_id(form.object_name)}_resume_other" data-controller="rich-text-label"
             = 'Activités extra-scolaires'
             small.form-text.text-muted Sports, loisirs, engagements associatifs, etc.
           = form.rich_text_area :resume_other, class: 'fr-input col-12', disabled: disabled, rows: 3
@@ -26,7 +26,7 @@
           = form.rich_text_area :resume_languages, class: 'fr-input col-12', disabled: disabled, rows: 3
 
   - unless current_controller?(:internship_applications)
-    fieldset.col-12.mb-4
+    fieldset.col-12.mb-4 aria-label="Modalités de contact"
       legend.h3 Me contacter
       .row
         .col-12.col-md-6 class="#{phone_mail_disabled ? 'opacity-05' : ''}"
@@ -38,12 +38,12 @@
               | (+33 puis 06 11 22 33 44 par exemple)
         .col-12.col-md-6
           .form-group
-            = form.label :email, class: 'fr-label' do
+            = form.label :email, class: 'fr-label' for: 'user_id_1' do
               = 'Adresse électronique (ex : mon@exemple.fr)'
               = form.rg2a_required_content_tag
 
           - if current_user.unconfirmed_email.nil?
-            = form.email_field :email, class: 'fr-input col-lg-12', required: true
+            = form.email_field :email, class: 'fr-input col-lg-12', required: true, id: 'user_id_1'
             small.form-text.text-muted.mb-1
               |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           - else

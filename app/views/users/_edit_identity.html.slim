@@ -1,4 +1,4 @@
-#identity-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+#identity-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
   h1.h2.mb-3 Mon identité
 
   = form_with model: current_user,
@@ -8,18 +8,18 @@
               data: {controller: "profile"} do |f|
     = f.rg2a_explain_required_asterisk
     = render 'layouts/form_errors', resource: current_user, resource_name: :user
-    
+
     .row
       .col-md-6.col-xs-12
         .form-group
-          = f.label :first_name, class: 'fr-label' do
+          = f.label :first_name, class: 'fr-label', for: 'user_first_name' do
             = 'Prénom'
             = f.rg2a_required_content_tag
           = f.text_field :first_name, class: 'fr-input',
             required: true
       .col-md-6.col-xs-12
         .form-group
-          = f.label :last_name, class: 'fr-label' do
+          = f.label :last_name, class: 'fr-label', for: 'user_last_name' do
             = 'Nom'
             = f.rg2a_required_content_tag
           = f.text_field :last_name, class: 'fr-input',
@@ -27,7 +27,7 @@
     .row
       .col-md-6.col-xs-12
         .form-group
-          = f.label :email, class: 'fr-label' do
+          = f.label :email, class: 'fr-label' , for: 'user_email' do
             span data-profile-target="label"= current_user.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'
             = f.rg2a_required_content_tag
           small.d-none data-profile-target="emailHint"
@@ -36,7 +36,7 @@
       .col-md-6.col-xs-12
         - if current_user.ministry_statistician?
           .form-group
-            = f.label :ministry, class: 'fr-label' do
+            = f.label :ministry, class: 'fr-label', for: 'user_ministry' do
               = "Administration centrale"
             = f.text_field :ministry,
                             value: current_user.ministry.name,
@@ -44,7 +44,7 @@
                             disabled: true
         - if can?(:change, :department) || can?(:view, :department)
           .form-group
-            = f.label :department, class: 'fr-label' do
+            = f.label :department, class: 'fr-label', for: 'user_department' do
               = "Département d'intervention"
               small.form-text.text-muted Le département d'intervention permet de limiter l'accès aux données de la plateforme à une zone géographique (ex: je ne souhaite consulter que les offres du département du Nord).
             = f.select :department,
@@ -54,17 +54,18 @@
 
         - if can?(:change, :class_room) && current_user.school
           .form-group
-            = f.label :class_room_id, class: 'fr-label' do
+            = f.label :class_room_id, class: 'fr-label', for: 'user_class_room_id_1' do
               = 'Classe'
               = f.rg2a_required_content_tag unless current_user.main_teacher?
             = f.select :class_room_id,
-                      options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
-                      { prompt: class_rooms_options_for_default },
-                      class: "fr-select"
+                       options_from_collection_for_select(current_user.school.class_rooms, :id, :name, current_user.class_room_id),
+                       { prompt: class_rooms_options_for_default },
+                       id: 'user_class_room_id_1',
+                       class: "fr-select"
 
         - if can?(:choose_role, current_user)
           .form-group
-            = f.label :role, class: 'fr-label' do
+            = f.label :role, class: 'fr-label' , for: 'user_role' do
               = 'Fonction'
               = f.rg2a_required_content_tag
             .d-block= f.select :role,
@@ -72,7 +73,8 @@
                                 { include_blank: false},
                                 { class: 'fr-select', data: {action: 'change->profile#refreshEmailFieldLabel'} }
 
-    .row 
+    .row
       .col-md-6.col-xs-12
         .actions.d-flex.d-sm-block
-          = f.submit 'Enregistrer mes informations', class: 'fr-btn btn-block'
+          = f.submit 'Enregistrer mes informations',
+                      class: 'fr-btn btn-block'
