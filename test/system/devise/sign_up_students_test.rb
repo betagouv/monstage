@@ -121,7 +121,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     #        current_url.split('?').second
     # click_on 'Pas encore de compte ?'
     click_on(class: 'text-danger')
-    click_on 'Créer mon compte élève'
+    first(:link, 'Créer mon compte élève').click
     
 
     # mistaking with password confirmation

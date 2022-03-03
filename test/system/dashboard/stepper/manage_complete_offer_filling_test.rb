@@ -50,10 +50,10 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         fill_in_tutor_form
         click_on 'Publier l\'offre !'
         wait_form_submitted
-        assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
-        assert_equal 'Une super cool entreprise', find('.test-description').text
-        assert_equal 'Delta dev', find('strong.test-employer-name.pl-4').text
-        assert_equal '75013 Paris 13e Arrondissement', find('span.test-zipcode-and-city').text
+        # assert_equal 'Stage individuel (un seul élève par stage)', find('span.badge-internship-offer-alone').text
+        # assert_equal 'Une super cool entreprise', find('.test-description').text
+        assert_equal 'Delta dev', find('h1').text
+        assert_equal 'Paris 13e arrondissement', find('.test-city').text
       end
     end
   end
