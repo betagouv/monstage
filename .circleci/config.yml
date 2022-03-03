@@ -22,7 +22,7 @@ jobs: # a collection of steps
       - image: circleci/redis:6.0.15-alpine
         environment:
           REDIS_URL: localhost:6379
-          CHROME_VERSION: 96.0.4664.45
+          CHROME_VERSION: 96.0.4664.18
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
