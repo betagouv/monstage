@@ -255,7 +255,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # click_on(class: 'text-danger') /!\ do not work
     visit users_choose_profile_path
-    click_on 'Créer mon compte élève'
+    find('button.fr-btn', text: 'Créer mon compte élève').click
 
     # signup as student
     # assert_difference('Users::Student.count', 1) do
