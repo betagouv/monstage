@@ -39,10 +39,6 @@ jobs: # a collection of steps
             sudo apt install -y /tmp/chrome.deb
             sudo rm /tmp/chrome.deb
 
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-            sudo apt-get update -qqy
-            sudo apt-get -qqy install ${CHROME_VERSION:-google-chrome-stable}
-
       # Restore bundle cache
       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
       - restore_cache:
