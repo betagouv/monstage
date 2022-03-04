@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 class MainTeacherMailer < ApplicationMailer
+  # Reminder : when approving an application, every main_teacher receives an email
   def internship_application_approved_email(internship_application:, main_teacher:)
     @internship_application = internship_application
     @student = @internship_application.student
     @student_presenter = Presenters::User.new(@student)
-
-    school_manager_email = @student.school_manager&.email
-    main_teacher_email = @student.main_teacher&.email
+    main_teacher_email = main_teacher&.email
 
     if @student.troisieme_generale?
-      to = school_manager_email
+      to = @student.school_manager_email
       return if to.nil?
 
       subject = "Convention de stage à renseigner: #{@student_presenter.civil_name}"
@@ -22,7 +21,7 @@ class MainTeacherMailer < ApplicationMailer
       return if to.nil?
 
       subject = "Stage accepté pour #{@student_presenter.civil_name}"
-      cc = school_manager_email
+      cc = @student.school_manager_email
       @message = "Aucune convention n'est prévue sur ce site, bon stage à #{@student_presenter.civil_name} !"
     end
 

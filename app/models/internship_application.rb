@@ -227,10 +227,8 @@ class InternshipApplication < ApplicationRecord
   end
 
   def notify_school_management
-    return unless student.main_teacher.present?
     MainTeacherMailer.internship_application_approved_email(
       internship_application: self,
-      internship_agreement: internship_agreement,
       main_teacher: student.main_teacher
     ).deliver_later
   end
