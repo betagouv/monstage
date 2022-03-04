@@ -22,7 +22,7 @@ jobs: # a collection of steps
       - image: circleci/redis:6.0.15-alpine
         environment:
           REDIS_URL: localhost:6379
-          CHROME_VERSION: 97.0.4692.71-1
+          CHROME_VERSION: 97.0.4692.71
 
     steps: # a collection of executable commands
       - checkout # special step to check out source code to working directory
@@ -35,7 +35,7 @@ jobs: # a collection of steps
             wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update --allow-releaseinfo-change
 
-            sudo wget --no-check-certificate --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}_amd64.deb 
+            sudo wget --no-check-certificate --no-verbose -O /tmp/chrome.deb https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_97.0.4692.71-1_amd64.deb 
             sudo apt install -y /tmp/chrome.deb
             sudo rm /tmp/chrome.deb
 
