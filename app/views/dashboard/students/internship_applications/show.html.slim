@@ -44,7 +44,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
           = render "dashboard/internship_offers/internship_applications/action_modal",
               internship_application: @internship_application,
               aasm_target: :cancel_by_student!,
-              modal_opener_label: 'Annuler',
+              modal_opener_label_code: :cancel_code,
               modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
               fa_icon: "fa-ban"
 

@@ -2,6 +2,6 @@
   = render "dashboard/internship_offers/internship_applications/action_modal",
             internship_application:internship_application,
             aasm_target: :approve!,
-            modal_opener_label: 'Accepter',
+            modal_opener_label_code: :approve_code,
             modal_id: "approve-internship-application-#{internship_application.id}",
             fa_icon: "fa-check"

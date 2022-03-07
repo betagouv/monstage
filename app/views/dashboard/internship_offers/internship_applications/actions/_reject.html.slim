@@ -1,6 +1,6 @@
 = render "dashboard/internship_offers/internship_applications/action_modal",
           internship_application: internship_application,
           aasm_target: :reject!,
-          modal_opener_label: 'Refuser',
+          modal_opener_label_code: :reject_code,
           modal_id: "reject-internship-application-#{internship_application.id}",
           fa_icon: "fa-ban"

@@ -312,6 +312,10 @@ class InternshipApplication < ApplicationRecord
     UrlShortener.short_url(target)
   end
 
+  def presenter(code = nil)
+    Presenters::InternshipApplication.new(self, code)
+  end
+
   private
 
   def notify_started_by_employer(internship_agreement: )
