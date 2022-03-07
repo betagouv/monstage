@@ -31,7 +31,7 @@ class CustomDeviseMailerTest < ActionMailer::TestCase
     assert_equal [origin_email], email.to
     assert %r{(#{email.from.join('|')})}, email.from
     assert_equal "Confirmez votre changement d'adresse électronique", email.subject
-    assert email.html_part.body.include?(employer.formal_name)
+    assert email.html_part.body.include?(employer.presenter.formal_name)
     assert email.html_part.body.include?('nous venons de recevoir une demande de changement')
     refute_email_spammyness(email)
   end

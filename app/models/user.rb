@@ -50,10 +50,6 @@ class User < ApplicationRecord
 
   MAX_DAILY_PHONE_RESET = 3
 
-  def self.drh
-    Users::Employer.where(email: 'drh@betagouv.fr').first
-  end
-
   def channel
     return :phone if phone.present?
 
@@ -124,18 +120,6 @@ class User < ApplicationRecord
     [
       custom_dashboard_path
     ]
-  end
-
-  def gender_text
-    return '' if gender.blank? || gender.eql?('np')
-    return 'Madame' if gender.eql?('f')
-    return 'Monsieur' if gender.eql?('m')
-
-    ''
-  end
-
-  def formal_name
-    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
   end
 
   def email_domain_name
@@ -260,6 +244,10 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+
+  def presenter
+    Presenters::User.new(self)
+  end
 
 
   private

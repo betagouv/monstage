@@ -4,7 +4,7 @@ class MainTeacherMailer < ApplicationMailer
   def internship_application_approved_email(internship_application:, main_teacher:)
     @internship_application = internship_application
     @student = @internship_application.student
-    @student_presenter = Presenters::User.new(@student)
+    @student_presenter = @student.presenter
 
     if @student.troisieme_generale?
       to = @student.school_manager.email

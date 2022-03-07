@@ -77,7 +77,7 @@ module Users
       if targeted_offer_id.present?
         url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
       else
-        Presenters::User.new(self).default_internship_offers_path
+        presenter.default_internship_offers_path
       end
     end
 

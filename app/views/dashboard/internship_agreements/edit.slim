@@ -1,4 +1,4 @@
-- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
+- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.presenter.formal_name)} | Monstage")
 = render current_user.is_a?(Users::SchoolManagement) ? 'school_management_form' : 'employer_form'
 
                              
