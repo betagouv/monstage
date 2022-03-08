@@ -1,8 +1,5 @@
-<%= "Convention de stage à remplir." %>
+Un de vos élèves a été accepté à un stage
 
-<%= "La candidature de #{@student_presenter.formal_name} pour le stage \"#{@internship_application.internship_offer.title}\" a été acceptée." %>
-<% if @student.troisieme_generale? && @url.present? %>
-  <%= "Pour avancer sur la convention, retrouvez les contacts de l'entreprise dans votre espace en cliquant sur le lien suivant : #{dashboard_students_internship_application_url(@internship_application.student, @internship_application)}" %>
-<% end %>
+<%= "La candidature de #{@student_presenter.formal_name} pour le stage \"#{@internship_application.internship_offer.title}\"   a été acceptée. #{@message}" %>
 
 

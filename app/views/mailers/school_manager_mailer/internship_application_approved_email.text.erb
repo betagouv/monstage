@@ -3,8 +3,7 @@ Convention de stage à remplir.
 <%= "La candidature de #{@student_presenter.formal_name} pour le stage \"#{@internship_application.internship_offer.title}\" a été acceptée." %>
 <%= @message %>
 <% if @url.present? %>
-  La prochaine étape est administrative
+  La prochaine étape est administrative. Veuillez cliquer sur le lien suivant : 
+
+  <% @url %>
 <% end %>
-<%= render partial: "mailers/call_to_action",
-           locals: { href: @url,
-                     label: "Remplir la convention de stage" } if @url.present? %>

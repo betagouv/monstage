@@ -1,5 +1,5 @@
 p style=head_styles
-  = "Convention de stage à remplir."
+  = "Un de vos élèves a été accepté à un stage"
 
 p style=p_styles
   = "La candidature de "
@@ -7,9 +7,3 @@ p style=p_styles
   = " pour le stage "
   strong ="\"#{@internship_application.internship_offer.title}\""
   = " a été acceptée. #{@message}"
-- if @student.troisieme_generale? && @url.present?
-  p style=p_styles
-    = "La prochaine étape est administrative"
-  = render partial: "mailers/call_to_action",
-          locals: { href: @url,
-                    label: "Remplir la convention de stage"}
