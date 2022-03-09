@@ -17,7 +17,7 @@
     .modal-dialog.modal-lg role="document"
       .modal-content
         .modal-header.p-4
-          h5 class="modal-title"
+          .h5 class="modal-title"
             = "#{modal_opener_label} la candidature"
 
           button type="button" class="close" data-dismiss="modal" aria-label="Close"
@@ -26,6 +26,10 @@
         - unless message.blank?
           .px-4.py-0
             p= message
+
+        - unless subtitle.blank?
+          .px-4.pb-2.h6.text-dark
+            = subtitle
 
         - if rich_text
           .modal-body.px-4.py-0
