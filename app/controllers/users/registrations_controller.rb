@@ -57,6 +57,8 @@ module Users
     def resource_channel
       return current_user.channel unless current_user.nil?
       return :email unless params[:as] == 'Student'
+
+      :email
     end
 
     # POST /resource
