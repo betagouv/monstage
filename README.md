@@ -100,6 +100,11 @@ foreman start -f Procfile.dev
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
+### Previews
+
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
+
 ### Etapes de travail jusqu'au merge dans staging
 
 - (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
@@ -248,7 +253,7 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * git push
 * push on production can be done manually using ```./infra/production/deploy.sh```
 * git checkout staging
-* git merge Hotfix-PR-branch
+* git merge master
 
 # disaster recovery plan
 

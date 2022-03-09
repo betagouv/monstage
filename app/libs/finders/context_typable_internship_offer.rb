@@ -91,13 +91,12 @@ module Finders
     end
 
     def nearby_query(query)
-      query.merge(
-        query.nearby(latitude: coordinate_params.latitude,
-                     longitude: coordinate_params.longitude,
-                     radius: radius_params)
-             .with_distance_from(latitude: coordinate_params.latitude,
-                                 longitude: coordinate_params.longitude)
-      )
+      proximity_query = query.nearby(latitude: coordinate_params.latitude,
+                                     longitude: coordinate_params.longitude,
+                                     radius: radius_params)
+                             .with_distance_from(latitude: coordinate_params.latitude,
+                                                 longitude: coordinate_params.longitude)
+      query.merge(proximity_query)
     end
 
     def school_track_query(query)

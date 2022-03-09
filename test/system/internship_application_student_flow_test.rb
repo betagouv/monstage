@@ -139,7 +139,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'GET #show as Student with existing draft application shows the draft' do
-    if ENV.fetch('RUN_BRITTLE_TEST', true)
+    if ENV.fetch('RUN_BRITTLE_TEST')
       weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
       internship_offer      = create(:weekly_internship_offer, weeks: weeks)
       school                = create(:school, weeks: weeks)
