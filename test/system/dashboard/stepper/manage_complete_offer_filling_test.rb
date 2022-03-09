@@ -11,7 +11,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
   end
 
   test 'can create navigate back and forth while creating an offer' do
-    if ENV.fetch('RUN_BRITTLE_TEST', true)
+    if ENV.fetch('RUN_BRITTLE_TEST')
       2.times { create(:school) }
       employer              = create(:employer)
       group                 = create(:group, name: 'hello', is_public: true)
