@@ -63,6 +63,7 @@ module Nearbyable
     validate :coordinates_are_valid?
     def coordinates_are_valid?
       return true if [coordinates&.lat, coordinates&.lon].map(&:to_f).none?(&:zero?)
+
       errors.add(:coordinates, :blank)
     end
 
