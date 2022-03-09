@@ -1,8 +1,11 @@
 module EmailUtils
   def self.from
-    host_or_default = ENV.fetch('HOST') { 'https://test.example.com' }
-    domain_without_www = URI(host_or_default).host.gsub('www.', '')
+    domain_without_www = URI(env_host).host.gsub('www.', '')
     "support@#{domain_without_www}"
+  end
+
+  def self.env_host
+    ENV.fetch('HOST') { 'https://test.example.com' }
   end
 
   def self.display_name

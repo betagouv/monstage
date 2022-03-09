@@ -10,7 +10,7 @@ class StudentMailer < ApplicationMailer
 
   def internship_application_rejected_email(internship_application:)
     @internship_application = internship_application
-    @host = app.root_url
+    @host = EmailUtils.env_host
 
     mail(to: @internship_application.student.email,
          subject: "Une de vos candidatures a été refusée")
