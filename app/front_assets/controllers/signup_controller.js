@@ -27,6 +27,7 @@ export default class extends Controller {
 
   initialize() {
     // set default per specification
+    this.show(this.emailBlocTarget)
     this.checkEmail();
   }
 
