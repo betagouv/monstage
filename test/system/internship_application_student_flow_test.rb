@@ -125,28 +125,28 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   end
 
   test 'GET #show as Student with existing draft application shows the draft' do
-    if ENV.fetch('RUN_BRITTLE_TEST', true)
-      # weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
-      # internship_offer      = create(:weekly_internship_offer, weeks: weeks)
-      # school                = create(:school, weeks: weeks)
-      # student               = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
-      # internship_application = create(:weekly_internship_application,
-      #                                 :drafted,
-      #                                 motivation: 'au taquet',
-      #                                 student: student,
-      #                                 internship_offer: internship_offer,
-      #                                 week: weeks.last)
+    if ENV['RUN_BRITTLE_TEST']
+      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
+      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
+      school                = create(:school, weeks: weeks)
+      student               = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+      internship_application = create(:weekly_internship_application,
+                                      :drafted,
+                                      motivation: 'au taquet',
+                                      student: student,
+                                      internship_offer: internship_offer,
+                                      week: weeks.last)
 
-      # travel_to(weeks[0].week_date - 1.week) do
-      #   sign_in(student)
-      #   visit internship_offer_path(internship_offer)
-      #   within('select[name="internship_application[week_id]"]') do
-      #     assert page.find(:xpath, 'option[1]').selected?
-      #     refute page.find(:xpath, 'option[2]').selected?
-      #     assert_equal internship_offer.internship_offer_weeks.second.week.id.to_s, page.find(:xpath, 'option[1]').value
-      #     assert_equal internship_offer.internship_offer_weeks.first.week.id.to_s, page.find(:xpath, 'option[2]').value
-      #   end
-      # end
+      travel_to(weeks[0].week_date - 1.week) do
+        sign_in(student)
+        visit internship_offer_path(internship_offer)
+        within('select[name="internship_application[week_id]"]') do
+          assert page.find(:xpath, 'option[1]').selected?
+          refute page.find(:xpath, 'option[2]').selected?
+          assert_equal internship_offer.internship_offer_weeks.second.week.id.to_s, page.find(:xpath, 'option[1]').value
+          assert_equal internship_offer.internship_offer_weeks.first.week.id.to_s, page.find(:xpath, 'option[2]').value
+        end
+      end
     end
   end
 

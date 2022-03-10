@@ -38,6 +38,26 @@ class School < ApplicationRecord
     )
   }
 
+  scope :from_departments_with_len, lambda { |department_str_array:, string_size: |
+    zip_codes_as_str = Arel::Nodes::NamedFunction.new('CAST', [Arel.sql("schools.zipcode as varchar(255)")] )
+    first_chars = Arel::Nodes::NamedFunction.new('LEFT', [zip_codes_as_str, string_size] )
+    where(first_chars.in(department_str_array))
+  }
+
+  scope :from_departments, lambda { |department_str_array:|
+    from_departments_with_len(
+      department_str_array: department_str_array, string_size: 2
+    ).or(
+      from_departments_with_len(
+        department_str_array: department_str_array, string_size: 3
+      )
+    )
+  }
+
+  def self.experimented_school_departments
+    ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',').map(&:to_str)
+  end
+
   def default_search_options
     {
       city: city,
@@ -83,7 +103,7 @@ class School < ApplicationRecord
   def internship_agreement_open?
     targeted_departments = ENV['OPEN_DEPARTEMENTS_CONVENTION'].split(',')
                                                               .map{|dept| dept.gsub(/\s+/, '') }
-    targeted_departments.include?(zipcode[0..2]) || targeted_departments.include?(zipcode[0..1])
+    (targeted_departments & [zipcode[0..2], zipcode[0..1]]).size.positive?
   end
 
   rails_admin do
