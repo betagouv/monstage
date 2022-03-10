@@ -10,6 +10,20 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     execute_script("document.getElementById('new_user').submit()")
   end
 
+  test 'simple default radio button status' do
+    visit new_user_registration_path(as: 'Student')
+    fill_in 'Adresse électronique', with: 'email@free.fr'
+    assert find("#select-channel-email").selected?
+    refute find("#select-channel-phone").selected?
+
+    find('label', text: 'SMS').click
+
+    fill_in 'Numéro de mobile', with: '0623042525'
+    assert find("#select-channel-phone").selected?
+    refute find("#select-channel-email").selected?
+  end
+
+
   test 'navigation & interaction works until student creation' do
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin', zipcode: '77515')
     school_2 = create(:school, name: 'Etablissement Test 2', city: 'Saint-Parfait', zipcode: '51577')
