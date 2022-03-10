@@ -11,6 +11,9 @@ import './onboarding/student.svg';
 
 import './internship_offers_new/fast_time.svg';
 import './internship_offers_new/paper.svg';
+import './internship_offer_show/offer_default_img.jpg';
+import './internship_offer_show/people.png';
+import './internship_offer_show/user.png';
 
 import './pages/logo_onisep.jpg';
 import './pages/logo_cget_texte.png';

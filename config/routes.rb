@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
-    resources :internship_applications, only: %i[create index show update]
+    resources :internship_applications, only: %i[new create index show update]
   end
 
   namespace :api, path: 'api' do
@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   end
 
   namespace :dashboard, path: 'dashboard' do
-    resources :support_tickets, only: %i[new create]
+    # resources :support_tickets, only: %i[new create] not used anymore since remote internships are off
     resources :internship_agreements,  except: %i[destroy]
     resources :internship_applications, only: %i[index]
 

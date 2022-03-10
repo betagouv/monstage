@@ -142,8 +142,8 @@ module Dashboard
       find("div[data-test-id=\"internship-application-#{application_for_week_1.id}\"]  button", text: 'Accepter').click
       click_button('Confirmer')
       click_link('Tout afficher +')
-      find('.student-name > strong', text: "#{student_1.first_name} #{student_1.last_name}")
-      find('.student-email > strong', text: student_1.email)
+      find('.student-name', text: "#{student_1.first_name} #{student_1.last_name}")
+      find('.student-email', text: student_1.email)
 
     end
 

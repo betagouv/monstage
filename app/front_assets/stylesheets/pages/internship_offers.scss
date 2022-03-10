@@ -56,7 +56,14 @@
   left: 30px;
   border-radius: 0.4rem;
   margin-top: 20rem;
+}
+
+.table {
+  border-bottom: none !important;
+  thead th {
+    border-bottom: none !important;
   }
+}
 
 a.white {
   text-decoration: underline;

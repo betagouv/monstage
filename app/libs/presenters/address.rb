@@ -10,6 +10,14 @@ module Presenters
       ].compact.join("\n")
     end
 
+    def full_address
+      [
+        instance.street,
+        instance.zipcode,
+        instance.city
+      ].compact.join(" ")
+    end
+
     private
 
     attr_reader :instance

@@ -59,7 +59,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
   test 'visitor is lured into thinking he can submit an application' do
     create(:weekly_internship_offer)
     visit internship_offers_path
-    page.find_link('Postuler')
+    page.find_link('Je postule')
   end
 
   test 'student can see a school_track filter restricted to his own ' \

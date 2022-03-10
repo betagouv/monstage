@@ -1,18 +1,22 @@
-h1.h2.mb-3 Mes identifiants d'API
+#api-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-api" role="tabpanel" tabindex="0" 
+  h1.h2.mb-3 Mes identifiants d'API
 
-= form_with model: current_user,
-            scope: :user,
-            url: account_path,
-            method: :patch do |f|
+  = form_with model: current_user,
+              scope: :user,
+              url: account_path,
+              method: :patch do |f|
 
-  = render 'layouts/form_errors', resource: current_user, resource_name: :user
+    = render 'layouts/form_errors', resource: current_user, resource_name: :user
 
-  .form-group
-    = f.label :api_token, class: 'fr-label' do
-      = "Token d'identification"
-      = f.rg2a_required_content_tag
-    = f.text_field :api_token, class: 'fr-input col-lg-6',
-      required: true,  readonly: true
+    .row
+      .col-md-6.col-xs-12
+        .form-group
+          = f.label :api_token, class: 'fr-label', for: 'user_api_token' do
+            = "Token d'identification"
+            = f.rg2a_required_content_tag
+          = f.text_field :api_token, class: 'fr-input', required: true, readonly: true
 
-  .form-group
-    = f.submit "Mettre à jour", disabled: true
+    .row 
+      .col-md-6.col-xs-12
+        .actions.d-flex.d-sm-block
+          = f.submit "Mettre à jour", disabled: true, class: 'fr-btn btn-block'
