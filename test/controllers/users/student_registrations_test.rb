@@ -103,4 +103,33 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
         assert_response 200
     end
   end
+
+  test 'reusing the same phone number while registrating leads to new sessions page' do
+    phone = '+330611223344'
+    create(:student, email: nil, phone: phone)
+
+    birth_date = 14.years.ago
+    assert_difference('Users::Student.count', 0) do
+      post user_registration_path(
+        params: {
+          user: {
+            accept_terms: 1,
+            birth_date: birth_date,
+            phone: phone,
+            channel: 'phone',
+            email: '',
+            first_name: 'Jephthina',
+            gender: 'f',
+            handicap: nil,
+            handicap_present: 0,
+            last_name: "Théodore ",
+            password: "[Filtered]",
+            password_confirmation: "[Filtered]",
+            type: Users::Student.name
+          }
+        }
+      )
+      assert_redirected_to new_user_session_path(phone: phone)
+    end
+  end
 end

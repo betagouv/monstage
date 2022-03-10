@@ -3,7 +3,11 @@
 module Finders
   class ReportingInternshipOffer
 
-    DETAILED_TYPOLOGY_GROUPS = ['private_group','paqte_group','public_group']
+    DETAILED_TYPOLOGY_GROUPS = [
+      'private_group',
+      'paqte_group',
+      'public_group'
+    ]
     #
     # raw queries for widgets (reporting/dashboard)
     #
@@ -91,7 +95,7 @@ module Finders
     end
 
     def department_param?
-      params.key?(:department)
+      params.key?(:department) && !params[:department].nil?
     end
 
     def group_param?
