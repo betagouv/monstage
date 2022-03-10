@@ -46,7 +46,7 @@ class OperatorRegistrationsTest < ActionDispatch::IntegrationTest
                                                     last_name: 'Fourcade',
                                                     operator_id: operator.id,
                                                     accept_terms: '1' } })
-      assert_redirected_to users_registrations_standby_path(email: 'operator@vvmt.fr')
+      assert_redirected_to users_registrations_standby_path(id: Users::Operator.last.id)
     end
   end
 end

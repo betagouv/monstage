@@ -22,15 +22,16 @@ module Users
     # end
     def confirmation_standby
       flash.delete(:notice)
-      @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
+      @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
       @confirmable_user ||= nil
     end
+    alias confirmation_phone_standby confirmation_standby
 
-    def confirmation_phone_standby
-      flash.delete(:notice)
-      @confirmable_user = User.where(phone: params[:phone]).first if params[:phone].present?
-      @confirmable_user ||= nil
-    end
+    # def confirmation_phone_standby
+    #   flash.delete(:notice)
+    #   @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
+    #   @confirmable_user ||= nil
+    # end
 
     def resource_class
       UserManager.new.by_params(params: params)
@@ -116,6 +117,7 @@ module Users
       devise_parameter_sanitizer.permit(
         :sign_up,
         keys: %i[
+          id
           type
           first_name
           last_name
@@ -147,11 +149,11 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
-        options = { phone: resource.phone }
+        options = { id: resource.id }
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
       else
-        users_registrations_standby_path(email: resource.email)
+        users_registrations_standby_path(id: resource.id)
       end
     end
   end
