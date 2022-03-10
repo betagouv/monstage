@@ -40,7 +40,8 @@ def geo_point_factory_array(coordinates_as_array)
 end
 
 def populate_schools
-  CSV.foreach(Rails.root.join('db/data_imports/seed-schools.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
+  school_file_name = Rails.env == 'review' ? 'seed-schools-light.csv' : 'seed-schools.csv'
+  CSV.foreach(Rails.root.join("db/data_imports/#{school_file_name}"), headers: { col_sep: ',' }).each.with_index do |row, i|
     next if i.zero?
     school = School.find_or_create_by!(
       code_uai: row['Code UAI'],
