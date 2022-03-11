@@ -39,6 +39,6 @@ class EmailUpdateFlowTest < ApplicationSystemTestCase
     click_on('Renvoyer')
     user.confirm
     visit account_path
-    assert_equal alt_email, find('#user_email').value
+    assert_equal alt_email, find('#user_email_1').value
   end
 end

@@ -260,7 +260,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       click_on 'Afficher ma candidature'
       click_on 'Annuler'
       click_on 'Confirmer'
-      assert page.has_content?('Candidature annulée')
+      assert page.has_content?('Candidature annulée le 30 décembre')
       assert page.has_selector?('.nav-link-icon-with-label-success', count: 1)
       assert_equal 1, student.internship_applications
                              .where(aasm_state: :canceled_by_student)

@@ -224,16 +224,16 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       refute page.has_css?('.school_year')
       click_link('Passées')
-      find('.nav-link.active', text: "Passées (2)")
+      find('.fr-link.active', text: "Passées (2)")
 
       select('2019/2020')
-      find('.nav-link.active', text: "Passées (2)")
+      find('.fr-link.active', text: "Passées (2)")
 
       select('2020/2021')
-      find('.nav-link.active', text: "Passées (0)")
+      find('.fr-link.active', text: "Passées (0)")
 
       click_link('Dépubliées')
-      find('.nav-link.active', text: "Dépubliées (0)")
+      find('.fr-link.active', text: "Dépubliées (0)")
 
       select('2019/2020')
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
