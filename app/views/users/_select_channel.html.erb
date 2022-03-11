@@ -15,10 +15,10 @@
         <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
         <br/>
         <%= form.radio_button :channel,
-                        "phone",
-                        id: 'select-channel-phone',
-                        'data-action' => "change->signup#checkPhone",
-                        'data-signup-target' => 'phoneRadioButton'   %>
+                              "phone",
+                              id: 'select-channel-phone',
+                              'data-action' => "change->signup#checkPhone",
+                              'data-signup-target' => 'phoneRadioButton'     %>
           <%= phone %>
       <% end %>
     </div>

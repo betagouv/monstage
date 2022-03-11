@@ -8,8 +8,8 @@ class MainTeacherMailerTest < ActionMailer::TestCase
   test 'internship_application_approved_email within troisieme generale context' do
     school = create(:school, :with_school_manager, :with_weeks)
     student = create(:student_with_class_room_3e, school: school)
-    internship_offer = create(:weekly_internship_offer, weeks: school.weeks)
-    internship_application = create(:weekly_internship_application,
+    internship_offer = create(:free_date_internship_offer)
+    internship_application = create(:free_date_internship_application,
                                     :submitted,
                                     internship_offer: internship_offer,
                                     user_id: student.id)
@@ -20,8 +20,10 @@ class MainTeacherMailerTest < ActionMailer::TestCase
       internship_application: internship_application,
       main_teacher: main_teacher
     )
-    assert_includes email.to, school_manager.email
-    assert_includes email.cc, main_teacher.email
+    assert_includes email.to, main_teacher.email
+    assert_includes email.cc, school_manager.email
+    puts email.subject
     refute_email_spammyness(email)
   end
+
 end
