@@ -57,10 +57,18 @@ module Users
     def resource_channel
       return current_user.channel unless current_user.nil?
       return :email unless params[:as] == 'Student'
+
+      :email
     end
 
     # POST /resource
     def create
+      if params.dig(:user, :phone) && fetch_user_by_phone && @user
+        redirect_to(
+          new_user_session_path(phone: fetch_user_by_phone.phone),
+          flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
+        ) and return
+      end
       clean_phone_param
       super do |resource|
         resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)

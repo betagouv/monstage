@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/.clever.json
 
 # Ignore the default SQLite database.
 /db/*.sqlite3

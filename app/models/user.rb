@@ -6,6 +6,7 @@ class User < ApplicationRecord
   include StiPreload
   include Discard::Model
   include UserAdmin
+  include ActiveModel::Dirty
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,

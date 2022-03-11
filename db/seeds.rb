@@ -40,7 +40,8 @@ def geo_point_factory_array(coordinates_as_array)
 end
 
 def populate_schools
-  CSV.foreach(Rails.root.join('db/data_imports/seed-schools.csv'), headers: { col_sep: ',' }).each.with_index do |row, i|
+  school_file_name = Rails.env == 'review' ? 'seed-schools-light.csv' : 'seed-schools.csv'
+  CSV.foreach(Rails.root.join("db/data_imports/#{school_file_name}"), headers: { col_sep: ',' }).each.with_index do |row, i|
     next if i.zero?
     school = School.find_or_create_by!(
       code_uai: row['Code UAI'],
@@ -426,18 +427,18 @@ MULTI_LINE
   )
   # 3eme segpa multi-line
   multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des services de la succursale MetaBoutShop
 - Présentation des principes fondamentaux du métier.
-- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+- Immersion au sein d’une équipe de gestionnaire de la boutique. Proposition de gestion de portefeuille de boutiques et de stands fictifs en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Découverte du travail de trader en ligne',
+    title: 'Découverte du travail de gestionnaire en ligne',
     description_rich_text: multiline_description,
-    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    employer_description_rich_text: 'Le métier de gestionnaire consiste à optimiser les ressources de la MetaBoutShop en spéculant sur des valeurs mobilières',
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
@@ -445,7 +446,7 @@ MULTI_LINE
     zipcode: '75015',
     city: 'paris',
     coordinates: { latitude: Coordinates.verneuil[:latitude], longitude: Coordinates.verneuil[:longitude] },
-    employer_name: 'Oyonnax Corp.',
+    employer_name: 'MetaBoutShop',
     school_track: :troisieme_segpa
   )
   # 3eme segpa multi-line
@@ -459,7 +460,7 @@ MULTI_LINE
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Découverte du travail de gestionnaire de compte',
+    title: 'Découverte du travail de trader',
     description_rich_text: multiline_description,
     employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
     tutor_name: 'Martin Fourcade',
@@ -594,26 +595,26 @@ def populate_aggreements
   )
   # 3eme segpa multi-line
   multiline_description = <<-MULTI_LINE
-- Présentation des services de la direction régionale de la banque Oyonnax Corp. (service intelligence économique, pôle ingénierie financière).
+- Présentation des services de la direction régionale de Fender Corp. (service ingénierie musicale).
 - Présentation des principes fondamentaux du métier.
-- Immersion au sein d’une équipe de trader de la banque. Proposition de gestion de portefeuille fictif en fin de stage, avec les conseils du tuteur'.
+- Immersion au sein d’une équipe de réparateurs de guitares. Proposition de gestion de guimbardes en fin de stage, avec les conseils du tuteur'.
 MULTI_LINE
   InternshipOffers::FreeDate.create!(
     employer: Users::Employer.first,
     sector: Sector.first,
     group: Group.is_private.first,
     is_public: false,
-    title: 'Découverte du travail de trader en ligne',
+    title: 'Découverte du travail de luthier',
     description_rich_text: multiline_description,
-    employer_description_rich_text: 'Le métier de trader consiste à optimiser les ressources de la banque Oyonnax Corp. en spéculant sur des valeurs mobilières',
+    employer_description_rich_text: "Le métier de réparateur consiste à trouver le son juste et la musicalité de l'instrument d'origine.",
     tutor_name: 'Martin Fourcade',
     tutor_email: 'fourcade.m@gmail.com',
     tutor_phone: '+33637607756',
     street: '128 rue brancion',
     zipcode: '75015',
-    city: 'paris',
+    city: 'Paris',
     coordinates: { latitude: Coordinates.paris[:latitude], longitude: Coordinates.paris[:longitude] },
-    employer_name: 'Oyonnax Corp.',
+    employer_name: 'Fender Europe',
     school_track: :troisieme_segpa
   )
 end

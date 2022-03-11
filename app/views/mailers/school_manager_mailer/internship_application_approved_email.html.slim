@@ -1,0 +1,15 @@
+p style=head_styles
+  = "Convention de stage à remplir."
+
+p style=p_styles
+  = "La candidature de "
+  strong ="#{@student_presenter.formal_name}"
+  = " pour le stage "
+  strong ="\"#{@internship_application.internship_offer.title}\""
+  = " a été acceptée. #{@message}"
+- if @url.present?
+  p style=p_styles
+    = "La prochaine étape est administrative"
+= render(partial: "mailers/call_to_action",
+          locals: { href: @url,
+                  label: "Remplir la convention de stage"}) if @url.present?

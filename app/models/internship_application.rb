@@ -160,9 +160,7 @@ class InternshipApplication < ApplicationRecord
                           end
 
                           student.school.main_teachers.map do |main_teacher|
-                            MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                                                    main_teacher: main_teacher)
-                                             .deliver_later
+                            responsible_notify(internship_application: self, main_teacher: main_teacher)
                           end
                         }
     end
@@ -227,13 +225,26 @@ class InternshipApplication < ApplicationRecord
   end
 
   def notify_school_management
-    return unless student.main_teacher.present?
     MainTeacherMailer.internship_application_approved_email(
       internship_application: self,
-      internship_agreement: internship_agreement,
       main_teacher: student.main_teacher
     ).deliver_later
   end
+
+  def responsible_notify(internship_application:, main_teacher:)
+    if internship_application.student.troisieme_generale?
+      SchoolManagerMailer.internship_application_approved_email(internship_application: self,
+                                                                main_teacher: main_teacher)
+                         .deliver_later
+    else
+      MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                              main_teacher: main_teacher)
+                       .deliver_later
+
+    end
+  end
+
+
 
   def create_agreement
     return if internship_offer.school_track != 'troisieme_generale'
