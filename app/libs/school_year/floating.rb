@@ -16,7 +16,7 @@ module SchoolYear
       end
     end
 
-    def from_now_beginning_of_period
+    def updated_beginning_of_period
       floating_now = Date.new(current_year, Date.today.month, Date.today.day)
       [floating_now, beginning_of_period].sort.last
     end
