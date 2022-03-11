@@ -68,10 +68,10 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         assert_response :success
-        assert_select 'a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 1
-        assert_select 'li a.fr-link[href=?]', edit_dashboard_school_path(school), count: 1
+        assert_select 'li.nav-item a.fr-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select 'li.nav-item a.fr-link[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select 'li.nav-item a.fr-link[href=?]', edit_dashboard_school_path(school), count: 1
+        assert_select 'li.nav-item a.fr-link[href=?]', edit_dashboard_school_path(school), count: 1
         assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
 
