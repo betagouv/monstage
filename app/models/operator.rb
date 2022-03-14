@@ -16,6 +16,8 @@ class Operator < ApplicationRecord
   has_many :air_table_records
   scope :reportable, lambda { where(airtable_reporting_enabled: true) }
 
+  def operator? ; true end
+
   rails_admin do
     list do
       field :name

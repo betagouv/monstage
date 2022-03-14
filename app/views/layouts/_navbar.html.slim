@@ -28,7 +28,7 @@
                   li
                     = render partial: 'layouts/extra_for_devs'
                   - if user_signed_in?
-                    - if current_user.is_a?(Users::Employer)
+                    - if current_user.employer?
                       li
                         = link_to 'Accueil',
                                   root_path,
@@ -52,7 +52,7 @@
                                   dashboard_internship_offers_path,
                                   class: "fr-link text-decoration-none mr-4 #{current_page?(dashboard_internship_offers_path) || request.url.include?('origin=dashboard') ? 'active' : ''}"
                     - else
-                      - if current_user.is_a?(Users::Operator)
+                      - if current_user.operator?
                         li
                           = link_to 'Statistiques',
                                     reporting_schools_path(default_reporting_url_options(current_user)),

@@ -43,6 +43,6 @@
         li.nav-item= link_to "Entreprises",
                             reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group')),
                             class: "nav-link #{current_page?(reporting_employers_internship_offers_path) ? 'active' : ''}"
-      - if current_user.is_a?(Users::Operator) && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
+      - if current_user.operator? && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
         li.nav-item= link_to "Importer des données", reporting_import_data_path,
                             class: "nav-link #{current_page?(reporting_import_data_path) ? 'active' : ''}" if can?(:import_data, Acl::Reporting)
