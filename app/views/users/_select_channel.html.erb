@@ -1,5 +1,5 @@
-<fieldset class="select-channel">
-  <legend class="label">
+<fieldset class="select-channel fr-fieldset ">
+  <legend class="fr-label fr-fieldset__legend fr-text--regular">
    <%= label %>
    <% if block_given? %>
     <%= yield %>
@@ -8,42 +8,32 @@
 
   <div class='row' >
     <div class='col-6 d-table form-group'>
-      <%= form.label :channel,
-                    "SMS",
-                    class: 'channel-radio-label fr-label d-table-cell align-middle',
-                    for: "select-channel-phone" do %>
-        <i class="fa fa-fw fa-4x fas fa-<%= phone == 'SMS' ? 'sms' : 'mobile-alt' %>"></i>
+      <%= form.label :channel, "SMS", class: "channel-radio-label fr-label d-table-cell align-middle", for: "select-channel-phone" do %>
+        <i class="fa fa-fw fa-4x fas fa-<%= phone == "SMS" ? "sms" : "mobile-alt" %>"></i>
         <br/>
-        <%= form.radio_button :channel,
-                              "phone",
-                              id: 'select-channel-phone',
-                              'data-action' => "change->signup#checkPhone",
-                              'data-signup-target' => 'phoneRadioButton'     %>
+        <%= form.radio_button :channel, "phone", id: "select-channel-phone", "data-action" => "change->signup#checkPhone", "data-signup-target" => "phoneRadioButton" %>
           <%= phone %>
       <% end %>
     </div>
-    <div class='col-6 d-table form-group'>
-      <%= form.label :channel,
-                     "Email",
-                     class: 'channel-radio-label fr-label d-table-cell align-middle',
-                     for: "select-channel-email" do %>
+    <div class='col-6 d-table form-group '>
+      <%= form.label :channel, "Email", class: "channel-radio-label fr-label d-table-cell align-middle", for: "select-channel-email" do %>
 
         <i class="fa fa-fw fa-4x far fa-envelope"></i>
         <br />
-        <%= form.radio_button :channel,
-                              "email",
-                              id: 'select-channel-email',
-                              'data-action' => "change->signup#checkEmail",
-                              'data-signup-target' => 'emailRadioButton'   %>
+        <%= form.radio_button :channel, "email", id: "select-channel-email", "data-action" => "change->signup#checkEmail", "data-signup-target" => "emailRadioButton" %>
           Email
       <% end %>
     </div>
   </div>
 
-  <div data-signup-target="emailBloc" class="form-group email d-none">
+  <div data-signup-target="emailBloc" class="form-group email d-none registration">
     <%= form.label :email, class: "fr-label" do %>
-      <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-      <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
+      <span data-signup-target="label">
+        <%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %>
+      </span>
+      <small class="form-text text-muted" data-signup-target="emailExplanation">
+        Cette adresse sera utilisée pour communiquer avec vous
+      </small>
     <% end %>
     <%= form.email_field :email,
                          class: 'fr-input',

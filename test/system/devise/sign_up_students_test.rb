@@ -14,13 +14,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit new_user_registration_path(as: 'Student')
     fill_in 'Adresse électronique', with: 'email@free.fr'
     assert find("#select-channel-email").selected?
-    refute find("#select-channel-phone").selected?
+    find("#select-channel-phone", visible: false, count: 1)
 
     find('label', text: 'SMS').click
 
     fill_in 'Numéro de mobile', with: '0623042525'
     assert find("#select-channel-phone").selected?
-    refute find("#select-channel-email").selected?
+    find("#select-channel-email", visible: false, count: 1)
   end
 
 
@@ -214,9 +214,9 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # sign_in as Student
     find('label', text: 'Email').click
     find("input[name='user[email]']").fill_in with: student.email
+    find('label', text: 'Mot de passe').click
     find("input[name='user[password]']").fill_in with: password
-    click_on 'Connexion'
-
+    find("input[type='submit'][value='Connexion']").click
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
     # targeted offer id at student's level is now empty
@@ -245,7 +245,9 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
-    click_on 'Connexion'
+    puts current_path
+    find("input[type='submit'][value='Connexion']").click
+    puts current_path
     page.find('h1', text: 'Votre candidature')
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path

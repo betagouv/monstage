@@ -22,10 +22,15 @@
    ul {
     list-style-type: none;
    }
-   li:before { 
+   li:before {
     content:  url('../images/puce.svg');
-    position:relative; 
+    position:relative;
     left: -12px;
     top: 16px;
   }
+}
+
+fieldset.registration,
+body.registration {
+  margin: 0px 20px;
 }

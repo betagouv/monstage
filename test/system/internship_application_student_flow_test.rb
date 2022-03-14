@@ -40,7 +40,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     first(:link, 'Postuler').click
 
     # check application is now here, ensure feature is here
-    
+
     page.find('.test-missing-school-weeks', visible: true)
     week_label = Week.selectable_from_now_until_end_of_school_year
                      .first
@@ -140,13 +140,14 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       travel_to(weeks[0].week_date - 1.week) do
         sign_in(student)
         visit internship_offer_path(internship_offer)
-        within('select[name="internship_application[week_id]"]') do
-          assert page.find(:xpath, 'option[1]').selected?
-          refute page.find(:xpath, 'option[2]').selected?
-          assert_equal internship_offer.internship_offer_weeks.second.week.id.to_s, page.find(:xpath, 'option[1]').value
-          assert_equal internship_offer.internship_offer_weeks.first.week.id.to_s, page.find(:xpath, 'option[2]').value
-        end
+        find('.h1', text: internship_offer.title)
+        find('.h3', text: internship_offer.employer_name)
+        find('.h6', text: internship_offer.street)
+        find('.h4', text: 'Informations sur le stage')
+        find('.reboot-trix-content', text: internship_offer.description)
+        assert page.has_content? 'Stage individuel'
       end
+
     end
   end
 

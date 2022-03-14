@@ -16,7 +16,7 @@
       </div>
     </div>
   </header>
-  <div class="body">
+  <div class="body mb-3 registration">
     <%= form_with(model: resource,
                   scope: resource_name,
                   local: true,
@@ -94,38 +94,37 @@
             </div>
           </fieldset>
         <% end %>
-      </div>
 
-      <% if can?(:register_with_phone, resource) %>
-        <%= render "users/select_channel",
-                  label: "Comment vous contacter ?",
-                  form: f,
-                  resource: resource,
-                  chan: @resource_channel,
-                  phone: "SMS" do %>
-          <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
-        <% end %>
-      <% else %>
-        <% # <% following avoids javascript errors %>
-        <span data-signup-target="emailBloc"></span>
-        <span data-signup-target="emailRadioButton"></span>
-        <span data-signup-target="phoneInput"></span>
-        <span data-signup-target="phoneBloc"></span>
-        <div class="form-group custom-label-container">
-          <%= f.email_field :email,
-                            class: 'fr-input',
-                            value: resource.email.blank? ? params[:email] : resource.email,
-                            required: true,
-                            placeholder: "ex: nom@exemple.fr",
-                            data: {action: 'change->signup#onBlurEmailInput', :"signup-target" => 'emailInput'} %>
-          <%= f.label :email, class: "fr-label" do %>
-              <span data-signup-target="label"><%= resource.school_manager? ? 'Adresse électronique académique' : 'Adresse électronique (e-mail)'%></span>
-              <%= f.rg2a_required_content_tag %>
+        <% if can?(:register_with_phone, resource) %>
+          <%= render "users/select_channel",
+                     label: "Comment vous contacter ?",
+                     form: f,
+                     resource: resource,
+                     chan: @resource_channel,
+                     phone: "SMS" do %>
+            <small class="small form-text text-muted">Recevoir une réponse à une candidature, réinitialiser votre mot de passe, être contacté par un employeur…</small>
           <% end %>
-          <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
-          <small class="d-none" data-signup-target="emailHint"></small>
-        </div>
-      <% end %>
+        <% else %>
+          <% # <% following avoids javascript errors %>
+          <span data-signup-target="emailBloc"></span>
+          <span data-signup-target="emailRadioButton"></span>
+          <span data-signup-target="phoneInput"></span>
+          <span data-signup-target="phoneBloc"></span>
+          <div class="form-group custom-label-container">
+            <%= f.email_field :email,
+                              class: "fr-input",
+                              value: resource.email.blank? ? params[:email] : resource.email,
+                              required: true,
+                              placeholder: "ex: nom@exemple.fr",
+                              data: { action: "change->signup#onBlurEmailInput", :"signup-target" => "emailInput" } %>
+            <%= f.label :email, class: "fr-label" do %>
+                <span data-signup-target="label"><%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %></span>
+                <%= f.rg2a_required_content_tag %>
+            <% end %>
+            <small class="form-text text-muted" data-signup-target="emailExplanation">Cette adresse sera utilisée pour communiquer avec vous</small>
+            <small class="d-none" data-signup-target="emailHint"></small>
+          </div>
+        <% end %>
 
       <div class="form-group custom-label-container">
         <%= f.password_field :password, autocomplete: "new-password", class: "fr-input", required: true, data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" } %>
@@ -196,5 +195,6 @@
         <%= f.submit "Je m'inscris", class: "fr-btn", id: "test-create-user" %>
       </div>
     <% end %>
+  </div>
   </div>
 </div>
