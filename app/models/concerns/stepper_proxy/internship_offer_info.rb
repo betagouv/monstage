@@ -56,29 +56,32 @@ module StepperProxy
       end
 
       def enough_weeks
-        return unless self.type.in? ["InternshipOfferInfos::WeeklyFramed", "InternshipOffers::WeeklyFramed"]
+        weekly_framed_types = [
+          'InternshipOfferInfos::WeeklyFramed',
+          'InternshipOffers::WeeklyFramed'
+        ]
+        return unless type.in? weekly_framed_types
 
-        weeks = self.try(:internship_offer_weeks) || self.internship_offer_info_weeks
+        weeks = self.try(:internship_offer_weeks) || self&.internship_offer_info_weeks
         return if weeks.size.zero?
-        
-	if self.max_candidates / self.max_students_per_group - weeks.size > 0
-          error_message = "Le nombre maximal d'élèves est trop important par " \
-                          "rapport au nombre de semaines de stage choisi. Ajoutez des " \
-                          "semaines de stage ou augmentez la taille des groupes  " \
-                          "ou diminuez le nombre de " \
-                          "stagiaires prévus."
-          errors.add(:max_candidates, error_message)
-        end
+        return if (max_candidates / max_students_per_group - weeks.size) <= 0
+
+        error_message = 'Le nombre maximal d\'élèves est trop important par ' \
+                        'rapport au nombre de semaines de stage choisi. Ajoutez des ' \
+                        'semaines de stage ou augmentez la taille des groupes  ' \
+                        'ou diminuez le nombre de ' \
+                        'stagiaires prévus.'
+        errors.add(:max_candidates, error_message)
       end
 
       def available_weeks
         return Week.selectable_from_now_until_end_of_school_year unless respond_to?(:weeks)
         return Week.selectable_from_now_until_end_of_school_year unless persisted?
-        return Week.selectable_for_school_year(school_year: SchoolYear::Floating.new(date: Date.today)) if respond_to?(:weeks) && weeks.first.nil?
+        return Week.selectable_for_school_year(school_year: SchoolYear::Floating.new(date: Date.today)) if weeks&.first.nil?
 
-        school_year = SchoolYear::Floating.new(date: self.weeks.first.week_date)
+        school_year = SchoolYear::Floating.new(date: weeks.first.week_date)
 
-        Week.selectable_for_school_year(school_year: school_year)
+        Week.selectable_on_specific_school_year(school_year: school_year)
       end
     end
   end
