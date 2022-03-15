@@ -1,0 +1,55 @@
+- unaffected_students = Presenters::ClassRoom.students_without_class_room(@school)
+
+#classes-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+  - if unaffected_students.present?
+    div data-controller='students'
+      = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', class: 'd-block py-3') do
+        .row
+          .col-10
+            .row.align-items-center.p-3.bg-blue-950
+              .col-8.text-primary
+                | Les élèves ci-dessous ont besoin d'être affectés à une classe pour pouvoir postuler à des stages.
+              .col-4.col-sm-4.pt-3.pt-sm-0
+                = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn fr-btn--sm', data: { 'target': 'students.submitButton' }
+
+            .row
+              .col-12.px-0
+                ul.bg-blue-975.class-room.mt-0
+                  - unaffected_students.each do |student|
+                    li
+                      .row.p-2.d-flex data-test="student-not-in-class-room-#{student.id}"
+                        .col-7.d-flex.align-items-center.font-weight-bold.student-name= student.name
+                        .col-4
+                          = select_tag "student_#{student.id}",
+                                        options_from_collection_for_select(student.school.class_rooms.current, :id, :name, student.class_room_id),
+                                        prompt: 'Choisissez une classe' ,
+                                        class: "fr-select",
+                                        data: { action: 'change->students#selectStudentClassRoom' }
+                        .col-1.text-sm-center.d-flex.align-items-center
+                          = link_to dashboard_school_user_path(id: student.id, school_id: @school.id),
+                                    method: :delete,
+                                    class: 'fr-raw-link student-action',
+                                    data: {confirm: 'Cette action va supprimer un élève de votre établissement, confirmez-vous ?'} do
+                            span.fr-fi-close-line
+                   
+
+  - Presenters::ClassRoom.with_school_tracks(@school).each do |school_track, class_rooms|
+    .row.mt-5
+      .col-8
+        .h3.mb-0= tr_school_track(school_track)
+      .col-4.text-right.px-0
+        - if can?(:create, ClassRoom)
+          = link_to "Ajouter une classe", new_dashboard_school_class_room_path(@school), class: 'fr-btn fr-fi-add-line fr-btn--icon-left'
+    .row.fr-table
+      table
+        - cols = ["Classe",
+            "Compte actif",
+            "Sans candidature",
+            "Sans stage", ""]
+        thead
+          tr.tr-blue
+            - cols.map.with_index do |col, i|
+              th class="align-top #{i.zero? ? '' : 'text-center'}" style="width: 20%"
+                small= col
+        tbody= render partial: "class_rooms/class_room", collection: Array(class_rooms), locals: { school: @school, cols: cols }
+

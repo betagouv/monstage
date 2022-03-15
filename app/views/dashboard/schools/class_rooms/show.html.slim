@@ -1,29 +1,27 @@
 - content_for :page_title, "#{t(".page_title", name: @class_room.name)} | Monstage"
-= render partial: 'dashboard/schools/navbar', locals: { school: @school }
 
-.row.my-3.pl-0
+h1.h2.mb-4
+  .fr-raw-link= link_to account_path do 
+    = @school.name
+    span.fr-fi-edit-fill<
+
+.row.mt-3.pl-0
   .col-8
-    small
-      = link_to dashboard_school_class_rooms_path(@school), class: 'text-danger' do
-        i.fa.fa-chevron-left
-        |  Retour
+    = link_to dashboard_school_path(@school), class: 'text-danger fr-raw-link' do
+      span.fr-fi-arrow-left-line
+      |  Retour
+.mb-4
+  = form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', data: {controller: 'students'}) do
+    .row
+      .col-8
+        h2.h3.mb-0= "#{@class_room.name}"
+      
 
-= form_tag(dashboard_school_update_students_by_group_path(@school.id), method: 'put', data: {controller: 'students'}) do
-  .row
-    .col-8
-      h2.h5.mb-0= "#{@class_room.name}"
-      - unless @class_room.school_managements.main_teachers.size.zero?
-        p.text-muted.small
-          = "PP : "
-          = @class_room.school_managements.main_teachers.map { |main_teacher| Presenters::User.new(main_teacher).full_name }.join(", ")
-    .col-4.text-right
-      = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn', data: { 'target': 'students.submitButton' }
-
-  .row
-    .col-12
-        table.table.table-hover.table-rg2a.table-sticky-thead
+    .row
+      .col-12.fr-table
+        table.table-rg2a
           thead
-            tr.d-flex.tr-white
+            tr.tr-blue
               th.col-3.align-self-end
                 small.font-weight-bold Élève
               th.col-2.align-self-end
@@ -31,9 +29,13 @@
               th.col-2.align-self-end
                 small.font-weight-bold Cordée de réussite / Parcours d'excellence
               th.col-2.align-self-end
-                small.font-weight-bold Nombre de candidatures
+                small.font-weight-bold Candidatures
               th.col-1.text-center.align-self-end
                 small.font-weight-bold Réponses
               th.col-2
           tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.includes([:school, :internship_applications]).order(:last_name, :first_name), locals: {}
+    
+    .row
+      .col-12.text-right
+        = button_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn fr-fi-save-line fr-btn--icon-left', data: { 'target': 'students.submitButton' }
 

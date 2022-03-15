@@ -38,17 +38,17 @@ div [data-controller="select-weeks"
             = form.check_box :week_ids, { multiple: true,
                                           id: checkbox_id,
                                           class: '',
-                                          disabled: has_applications,
+                                           # disabled: has_applications,
                                           data: {:"select-weeks-target" => 'weekCheckboxes',
                                                  action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
                                           week.id,
                                           false
 
-            - if has_applications
-              = form.hidden_field :week_ids,
-                                  value: week.id,
-                                  multiple: true,
-                                  id: hidden_id
+            / - if has_applications
+            /   = form.hidden_field :week_ids,
+            /                       value: week.id,
+            /                       multiple: true,
+            /                       id: hidden_id
 
             = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
               = week.select_text_method
