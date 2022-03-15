@@ -38,9 +38,9 @@ class ManageInternshipOfferInfosTest < ApplicationSystemTestCase
 
     travel_to(Date.new(2019, 3, 1)) do
       visit new_dashboard_stepper_internship_offer_info_path(organisation_id: organisation.id)
-      find('label[for="all_year_long"]').click
-      find(".bg-success-20[data-week-id='#{week_with_school.id}']",count: 1)
-      find(".bg-dark-70[data-week-id='#{week_without_school.id}']",count: 1)
+      find('.fr-label[for="all_year_long"]').click
+      find(".badge-week-density.bg-success-20[data-week-id='#{week_with_school.id}']", count: 1)
+      find(".bg-dark-70[data-week-id='#{week_without_school.id}']", count: 1)
     end
   end
 

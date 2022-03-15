@@ -53,8 +53,6 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
-
-
     sign_in(employer)
     travel_to(Date.new(2019, 3, 1)) do
       week_with_school = Week.find_by(number: 10, year: Date.today.year)
@@ -124,8 +122,12 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
     execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
     click_button('Modifier l\'offre')
-    assert_equal 4, internship_offer.reload.max_candidates
-    assert_equal 2, internship_offer.max_students_per_group
+    assert_equal 4,
+                internship_offer.reload.max_candidates,
+                'faulty max_candidates'
+    assert_equal 2,
+                internship_offer.max_students_per_group,
+                'faulty max_students_per_group'
 
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
