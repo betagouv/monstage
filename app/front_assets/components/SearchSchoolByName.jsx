@@ -95,25 +95,26 @@ export default function SearchSchool({
           highlightedIndex,
           selectedItem,
         }) => (
-          <div className="name-search form-group custom-label-container">
-            <div className="input-group">
+          <div className="name-search custom-label-container smashed">
+            <div className="group">
+              <label
+                {...getLabelProps({ className: `fr-label ${cityCurrentlyChosen ? 'chosen-name' : 'not-chosen-name'}`, htmlFor: `${resourceName}_school_city` })}
+              >
+                {cityCurrentlyChosen ? chosenSchoolName : label}
+              </label>
               <input
                 {...getInputProps({
                   onChange: inputChange,
                   onFocus: inputFocus,
                   value: currentCityString(),
-                  className: `smashed form-control form-control-lg ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
+                  className: `fr-input ${classes || ''} ${autocompleteNoResult ? 'rounded-0' : ''}`,
                   id: `${resourceName}_school_name`,
                   name: `${resourceName}[school][name]`,
                   required: required,
                 })}
               />
-              <label
-                {...getLabelProps({ className: cityCurrentlyChosen ? 'chosen-name' : 'not-chosen-name', htmlFor: `${resourceName}_school_city` })}
-              >
-                {cityCurrentlyChosen ? chosenSchoolName : label}
-              </label>
-              <div className="input-group-append">
+              
+              {/* <div className="float-right">
                 {!currentRequest && (
                   <button
                     type="button"
@@ -134,7 +135,7 @@ export default function SearchSchool({
                     <i className="fas fa-spinner fa-spin" />
                   </button>
                 )}
-              </div>
+              </div> */}
             </div>
             <div className="search-in-place bg-white shadow">
               <ul

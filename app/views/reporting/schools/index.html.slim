@@ -1,29 +1,35 @@
-.container.mt-3
+.container.my-3
   = render partial: 'reporting/navigation'
-  div.rounded[data-controller='statistics']
-    = render partial: 'reporting/filters',
-             locals: {view_tab: :schools}
-
-  .row.mt-3
-    .col-lg-8.col-12.mb-2
-      = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
-                class: 'fr-btn btn-danger ml-auto ',
-                data: {turbolinks: false} do
-        i.fas.fa-download
-        span =" Exporter la liste des établissements"
-  .row.mt-3
+  .row
     .col-12
-      table.table.table-statistics.table-sticky-thead
-        thead
-          tr.tr-white
-            th.bc-light.font-weight-light.text-black-50= "Établissements"
-            th.bc-light.font-weight-light.text-black-50= "Semaines de stage"
-            th.bc-light.font-weight-light.text-black-50= "E-mails confirmés"
-            th.bc-light.font-weight-light.text-black-50= "Chef établissement"
-            th.bc-light.font-weight-light.text-black-50= "Professeurs principaux"
-        tbody
-          = render partial: 'reporting/schools/school', collection: @schools
+      .fr-tabs 
+        = render partial: 'reporting/tabs'
 
-  .row.mt-3
-    .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
+        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+
+          div.rounded[data-controller='statistics']
+            = render partial: 'reporting/filters',
+                    locals: {view_tab: :schools}
+
+          .row.mt-3
+            .col-lg-8.col-12.mb-2
+              = link_to reporting_schools_path(reporting_cross_view_params.merge(format: :xlsx)),
+                        class: 'ml-auto fr-btn btn-danger fr-fi-download-line fr-btn--icon-left',
+                        data: {turbolinks: false} do
+                | Exporter la liste des établissements
+          .row.mt-3
+            .col-12
+              table.fr-table
+                thead
+                  tr.tr-blue
+                    th= "Établissements"
+                    th= "Semaines de stage"
+                    th= "E-mails confirmés"
+                    th= "Chef établissement"
+                    th= "Professeurs principaux"
+                tbody
+                  = render partial: 'reporting/schools/school', collection: @schools
+
+          .row.mt-3
+            .col-12= paginate(@schools, params: params[:department] ? {department: params[:department]} : {})
 
