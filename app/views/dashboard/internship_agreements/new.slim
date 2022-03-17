@@ -1,4 +1,4 @@
-- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
+- content_for(:page_title, "#{t(".page_title")} | Monstage")
 
 = form_with model: @internship_agreement,
               url: (@internship_agreement.new_record? ? dashboard_internship_agreements_path(@internship_agreement) : edit_dashboard_internship_agreements_path(@internship_agreement)),

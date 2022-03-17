@@ -45,12 +45,15 @@ fr:
       internship_offers/api:
         one: Offre API
         other: Offres API
+      internship_application:
+        one: Candidature
+        other: Candidatures
       internship_applications/weekly_framed:
-        one: Candidature pour la 3eme
-        other: Candidatures pour la 3eme
+        one: Candidature
+        other: Candidatures
       internship_applications/free_date:
-        one: Candidature de la voie pro
-        other: Candidatures de la voie pro
+        one: Candidature
+        other: Candidatures
       operator:
         one: Association
         other: Associations

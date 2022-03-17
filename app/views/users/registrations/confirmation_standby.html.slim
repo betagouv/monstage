@@ -1,26 +1,28 @@
+- user = User.find_by(id: params[:id])
+- user ||= User.find_by(email: params[:email])
 .onboarding-card.onboarding-card-lg.mb-4
   header.header-account
 
   - if !@confirmable_user
     p.alert.alert-danger
-      = "Aucun compte n'est lié au mail: #{params[:email]}."
+      = "Aucun compte n'est lié au mail: #{user.email}."
       br
       = "Veuillez "
       = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
 
   - elsif @confirmable_user.confirmed_at
     p.alert.alert-success
-      = "Votre compte est déjà confirmé (#{params[:email]})."
+      = "Votre compte est déjà confirmé (#{user.email})."
       br
       = "Veuillez vous "
-      = link_to "connecter", new_user_session_path(email: params[:email]), class: 'text-white'
+      = link_to "connecter", new_user_session_path(email: user.email), class: 'text-white'
   
   - else
     h1.h3.text-blue.mt-4.mb-3.text-center.mb-0 Encore une petite étape...
 
     p.text-center
       span.confirmation-text= "Votre compte a bien été enregistré "
-      strong= "(#{params[:email]})"
+      strong= "(#{user.email})"
       = "."
       br
       | Vous venez de recevoir un mail afin de confirmer votre inscription.
