@@ -1,3 +1,10 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
+.row
+  - if current_user.is_a?(Users::SchoolManagement)
+    = render partial: 'dashboard/schools/navbar', locals: { school: current_user.school, render_ux_guidelines: true }
+  - else
+    = render partial: "dashboard/internship_offers/tabs", locals: { internship_offers: @internship_offers }
+
 .row
   .col-12
     h2.h3.title-with-button-line
@@ -15,9 +22,6 @@
         = link_to "Renseigner les informations récurrentes", edit_dashboard_school_internship_agreement_preset_path(current_user.school, current_user.school.internship_agreement_preset), class: 'btn btn-primary'
   - else
     = render partial: "dashboard/schools/internship_agreement_presets/short_form", locals: { school: current_user.school, internship_agreement_preset: current_user.school.internship_agreement_preset }
-
-.row= render partial: "dashboard/internship_offers/tabs",
-          locals: { internship_offers: @internship_offers }
 
 table.mt-4.table.table-hover.table-sticky-thead.table-rg2a
   thead
