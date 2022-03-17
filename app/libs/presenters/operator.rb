@@ -1,5 +1,7 @@
 module Presenters
   class Operator
+    include Humanable
+
     def profile_filters
       {
         dashboard: {
@@ -44,10 +46,10 @@ module Presenters
     end
 
     private
-    attr_reader :operator
+    attr_reader :user
 
     def initialize(operator)
-      @operator = operator
+      @user = operator
     end
   end
 end
