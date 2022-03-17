@@ -49,7 +49,8 @@ class TeacherRegistrationsTest < ActionDispatch::IntegrationTest
                                                     class_room_id: class_room.id,
                                                     accept_terms: '1',
                                                     role: :teacher } })
-      assert_redirected_to users_registrations_standby_path(email: 'teacher@acu.fr')
+      school_teacher_id = Users::SchoolManagement.where(role: 'teacher').last.id
+      assert_redirected_to users_registrations_standby_path(id: school_teacher_id)
     end
   end
 end

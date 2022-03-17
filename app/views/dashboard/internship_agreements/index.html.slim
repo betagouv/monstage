@@ -1,3 +1,4 @@
+- content_for :page_title, "#{t(".page_title")} | Monstage"
 .row
   - if current_user.is_a?(Users::SchoolManagement)
     = render partial: 'dashboard/schools/navbar', locals: { school: current_user.school, render_ux_guidelines: true }
