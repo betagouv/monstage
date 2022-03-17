@@ -15,6 +15,8 @@ module Phonable
   end
 
   def fetch_user_by_phone
+    return nil if safe_phone_param.blank?
+
     @user ||= User.where(phone: safe_phone_param).first
   end
 end
