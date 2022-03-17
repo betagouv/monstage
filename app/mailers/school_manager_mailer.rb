@@ -24,7 +24,7 @@ class SchoolManagerMailer < ApplicationMailer
     to = school_manager.email
     subject = 'Une convention de stage sera bientôt disponible.'
 
-    send_email({ to: to, subject: subject})
+    send_email(to: to, subject: subject)
   end
 
  
@@ -36,11 +36,11 @@ class SchoolManagerMailer < ApplicationMailer
     to = @student.school_manager_email
     return if to.nil?
 
-    subject = "Convention de stage à renseigner: #{@student_presenter.civil_name}"
+    subject = "Nouvelle convention de stage à renseigner"
     cc = main_teacher&.email
-    @url = edit_dashboard_internship_agreement_url(@internship_application.internship_agreement)
+    @url = edit_dashboard_internship_agreement_url(@internship_application.internship_agreement).html_safe
     @message = "La convention dématérialisée peut être renseignée dès maintenant par le chef d'établissement ou le professeur principal"
 
-    send_email({ to: to, subject: subject, cc: cc })
+    send_email(to: to, subject: subject, cc: cc)
   end
 end
