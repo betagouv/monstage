@@ -1,20 +1,23 @@
+- user = User.find_by(id: params[:id])
+- user ||= User.find_by(phone: params[:phone])
 .onboarding-card.onboarding-card-sm.mb-4
   - if !@confirmable_user
     header.header-account
       h1.h2.text-center Encore une petite étape...
 
     p.alert.alert-danger
-      = "Aucun compte n'est lié au téléphone: #{params[:phone]}."
+      = "Aucun compte n'est lié au téléphone: #{user.phone}."
       br
       = "Veuillez "
       = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
 
   - elsif @confirmable_user.confirmed_at
+    - user = User.find_by(id: params[:id])
     p.alert.alert-success
-      = "Votre compte est déjà confirmé (#{params[:phone]})."
+      = "Votre compte est déjà confirmé (#{user.phone})."
       br
       = "Veuillez vous "
-      = link_to "connecter", new_user_session_path(phone: params[:phone]), class: 'text-white'
+      = link_to "connecter", new_user_session_path(phone: user.phone), class: 'text-white'
 
   - else
     header.header-account
@@ -22,7 +25,7 @@
     .body
       p
         span.confirmation-text= "Votre compte a bien été enregistré "
-        strong= "(#{params[:phone]})"
+        strong= "(#{user.phone})"
         = "."
         br
         | Vous venez de recevoir un sms afin de confirmer votre inscription.
@@ -32,7 +35,7 @@
             = "Les champs avec "
             abbr class='text-danger' title='(obligatoire)' *
             = " sont obligatoires."
-        = hidden_field_tag :phone, params[:phone]
+        = hidden_field_tag :phone, user.phone
         .form-group.custom-label-container
           = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
           = label_tag :phone_token do

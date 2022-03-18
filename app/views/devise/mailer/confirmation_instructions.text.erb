@@ -1,6 +1,6 @@
 <%= "Plus qu'une étape..." %>
 
-<%= "Bienvenue #{@resource.formal_name}" %>
+<%= "Bienvenue #{@resource.presenter.formal_name}" %>
 Votre compte a bien été enregistré !
 <%= "Cliquez ou copier/coller sur le lien suivant pour activer votre compte : #{confirmation_url(@resource, confirmation_token: @token)}" %>
 

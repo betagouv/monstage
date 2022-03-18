@@ -127,7 +127,7 @@ module InternshipsOffers
                                 max_candidates: 2,
                                 max_students_per_group: 2,
                                 weeks: [Week.first, Week.last])
-                                
+
       assert_equal 1, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
       # assert_equal 1, InternshipOffers::WeeklyFramed.ignore_max_candidates_reached.to_a.count
       first_io_week = internship_offer.internship_offer_weeks.first
@@ -147,7 +147,7 @@ module InternshipsOffers
             week: first_io_week.week)
       internship_offer.reload
 
-      
+
       assert_equal 0, InternshipOffers::WeeklyFramed.uncompleted.to_a.count
     end
 

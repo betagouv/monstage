@@ -12,7 +12,7 @@ module Users
         where(type: InternshipApplications::WeeklyFramed.name)
       end
     end
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
@@ -77,7 +77,7 @@ module Users
       if targeted_offer_id.present?
         url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
       else
-        Presenters::User.new(self).default_internship_offers_path
+        presenter.default_internship_offers_path
       end
     end
 
@@ -91,6 +91,14 @@ module Users
 
     def default_account_section
       'resume'
+    end
+
+    def school_manager_email
+      school_manager&.email
+    end
+
+    def main_teacher_email
+      main_teacher&.email
     end
 
     def expire_application_on_week(week:, keep_internship_application_id:)

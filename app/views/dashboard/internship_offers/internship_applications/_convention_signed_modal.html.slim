@@ -10,7 +10,7 @@ div.modal.sign-modal id="#{sign_application_modal_id(internship_application)}" t
         p
           | Vous confirmez avoir reçu la convention signée par toutes les parties prenantes pour le stage de
           = " "
-          = Presenters::User.new(internship_application.student).full_name
+          = internship_application.student.presenter.full_name
           = " "
           = "\"#{internship_application.internship_offer.title}\""
           | L'élève sera prévenu(e) qu'il ou elle peut se rendre à son stage

@@ -93,6 +93,7 @@ fr:
       updated: Votre mot de passe a bien été modifié. Vous êtes maintenant connecté(e).
       updated_not_active: Votre mot de passe a bien été modifié.
     registrations:
+      reusing_phone_number: Un compte est déjà associé à ce numéro de téléphone, connectez-vous ou réinitialisez votre mot de passe si vous l'avez oublié
       destroyed: Au revoir ! Votre compte a bien été supprimé. Nous espérons vous revoir bientôt.
       edit:
         are_you_sure: Êtes-vous sûr ?
