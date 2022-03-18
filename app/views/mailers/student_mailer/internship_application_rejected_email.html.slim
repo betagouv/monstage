@@ -6,16 +6,16 @@ p style=(p_styles)
 p style=(p_styles)
   | Voici le motif du refus :
 
-p style=(p_styles)
+  br
   = @internship_application.rejected_message.to_s
 
 p style=(p_styles)
   |Vous souhaitant une bonne continuation dans vos recherches de stage sur la 
-  = link_to('plateforme', @host.html_safe)
+  = link_to('www.monstagedetroisieme.fr', @host.html_safe)
   | .
 
 p style=(p_styles)
   | A bientôt
-p style=(p_styles)
+  br
   | L'équipe Mon Stage de 3e.
 
