@@ -6,6 +6,6 @@
               class: 'float-right fr-btn fr-fi-delete-line fr-btn--icon-right' do
       small.d-block
         | Supprimer
-  = Presenters::User.new(school_employee).short_name
+  = school_employee.presenter.short_name
   br
-  = "#{Presenters::User.new(school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
+  = "#{school_employee.presenter.role_name} #{school_employee.try(:class_room).try(:name)}"

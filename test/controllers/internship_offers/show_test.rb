@@ -238,7 +238,7 @@ module InternshipOffers
       internship_offer.discard
 
       get internship_offer_path(internship_offer)
-      assert_redirected_to Presenters::User.new(student).default_internship_offers_path
+      assert_redirected_to student.presenter.default_internship_offers_path
     end
 
     test 'GET #show as Student shows next/previous navigation in list' do

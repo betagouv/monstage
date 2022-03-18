@@ -1,5 +1,6 @@
 module Presenters
   class MinistryStatistician
+    include Humanable
     def profile_filters
       {
         dashboard: {

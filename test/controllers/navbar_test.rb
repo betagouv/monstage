@@ -26,7 +26,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     get main_teacher.custom_dashboard_path
     assert_select(
       'li a.fr-link[href=?]',
-      Presenters::User.new(main_teacher).default_internship_offers_path
+      main_teacher.presenter.default_internship_offers_path
     )
     assert_select("li a.fr-link.text-decoration-none[href=\"#{root_path}\"]", count: 0, text: 'Accueil')
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
@@ -65,7 +65,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     get school_manager.custom_dashboard_path
     assert_select(
       'li a.fr-link[href=?]',
-      Presenters::User.new(school_manager).default_internship_offers_path
+      school_manager.presenter.default_internship_offers_path
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Mon établissement', count: 1)
@@ -77,7 +77,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     get student.custom_dashboard_path
     assert_select(
       'li a.fr-link[href=?]',
-      Presenters::User.new(student).default_internship_offers_path
+      student.presenter.default_internship_offers_path
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: student.dashboard_name, count: 1)
@@ -90,7 +90,7 @@ class NavbarTest < ActionDispatch::IntegrationTest
     get teacher.custom_dashboard_path
     assert_select(
       'li a.fr-link[href=?]',
-      Presenters::User.new(teacher).default_internship_offers_path
+      teacher.presenter.default_internship_offers_path
     )
     assert_select('li a.fr-link.text-decoration-none.active', count: 1)
     assert_select('li a.fr-link.text-decoration-none.active', text: 'Ma classe',

@@ -6,7 +6,7 @@ module Users
     test 'student.after_sign_in_path redirects to internship_offers_path' do
       student = create(:student)
       assert_equal(student.after_sign_in_path,
-                   Presenters::User.new(student).default_internship_offers_path,
+                   student.presenter.default_internship_offers_path,
                    'failed to use default_internship_offers_path for user without targeted_offer_id')
 
       student.targeted_offer_id= 1
