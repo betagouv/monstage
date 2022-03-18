@@ -42,5 +42,7 @@ module Users
 
       internship_offers.map(&:anonymize)
     end
+
+    def employer?; true end
   end
 end
