@@ -1,10 +1,21 @@
 .sort-links
   - if direction.to_s == 'desc' && order.to_s == params[:order].to_s
     = render partial: "dashboard/internship_offers/sort_column_head",
-             locals: { order: order, direction: "asc", sort_by_i18n: sort_by_i18n, current_sorting_indicator: true}
+             locals: { order: order,
+                       direction: "asc",
+                       sort_by_i18n: sort_by_i18n,
+                       current_sorting_indicator: true}
   - elsif direction.to_s == 'asc' && order.to_s == params[:order].to_s
     = render partial: "dashboard/internship_offers/sort_column_head",
-             locals: { order: order, direction: "desc", sort_by_i18n: sort_by_i18n, current_sorting_indicator: true}
+             locals: { order: order,
+                       direction: "desc",
+                       sort_by_i18n: sort_by_i18n,
+                       current_sorting_indicator: true}
   - else
     = render partial: "dashboard/internship_offers/sort_column_head",
-             locals: { order: order, direction: "desc", sort_by_i18n: sort_by_i18n, current_sorting_indicator: false}
+             locals: { order: order,
+                       direction: "desc",
+                       sort_by_i18n: sort_by_i18n,
+                       current_sorting_indicator: false}
+
+

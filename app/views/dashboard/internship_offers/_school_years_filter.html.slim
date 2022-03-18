@@ -3,8 +3,10 @@ form.row action=request.path method="GET"
   - request.params.except(:controller, :action, :school_year).map do |param_name, value|
     = hidden_field_tag param_name, value
   .align-items-center data-controller='select-years'
-    .input-group.fr-mx-2w
-      = label_tag :school_year, "Années scolaires", class: 'col-auto align-self-center mb-0 fr-label'
+    .fr-mx-2w
+      = label_tag :school_year,
+                  "Années scolaires",
+                  class: " #{on_home == 'true' ? 'fr-label' : 'font-weight-light'} "
       - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
       - options = years.map { |year| [ "#{year}/#{year+1}", year] }
       = select_tag :school_year,

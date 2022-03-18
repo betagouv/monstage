@@ -1,4 +1,5 @@
-div.search-container.py-2 data-controller='search-form search-popover search-school-track-select search-week-checkboxes'
+- is_home = current_page?(root_path) || current_page?(internship_offers_path)
+div class="#{is_home ? 'search-container py-2 test-search-container' : ' test-search-container'}" data-controller='search-form search-popover search-school-track-select search-week-checkboxes'
   = form_with url: url,
               method: :get,
               skip_enforcing_utf8: true,
@@ -12,19 +13,24 @@ div.search-container.py-2 data-controller='search-form search-popover search-sch
 
     .row.no-gutters.align-items-end
       .form-group.mb-md-0.col-12.col-md.fr-ml-2w
-        = react_component("KeywordInput", props: {keyword: default_values[:keyword]})
+        = react_component( "KeywordInput", props: {keyword: default_values[:keyword], on_home: is_home } )
 
       .form-group.mb-md-0.col-12.col-md
         = react_component("CityInput",
                           props: { city: default_values[:city],
                                    latitude: default_values[:latitude],
                                    longitude: default_values[:longitude],
-                                   radius: default_values[:radius] })
+                                   radius: default_values[:radius] },
+                                   on_home: is_home)
 
       = render partial: "internship_offers/search/track_and_weeks",
                locals: {f: form,
                         render_as_partial: render_as_partial,
-                        default_values: default_values}
+                        default_values: default_values,
+                        on_home: is_home}
+      - if params[:filter].in? ['past','unpublished']
+        = render partial: "dashboard/internship_offers/school_years_filter",
+                 locals: { on_home: is_home}
 
       .pb-5
       - if render_as_partial

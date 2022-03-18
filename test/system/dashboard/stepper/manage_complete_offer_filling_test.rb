@@ -26,6 +26,7 @@ class ManageCompleteOfferFillingTest < ApplicationSystemTestCase
         fill_in_organisation_form(is_public: true, group: group)
         click_on "Suivant"
         click_link "Précédent"
+        sleep 0.2
         find('legend', text: "Informations sur l'entreprise")
         click_on "Suivant"
         sleep 0.2

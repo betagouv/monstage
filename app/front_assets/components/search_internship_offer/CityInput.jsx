@@ -11,7 +11,7 @@ const COMPONENT_FOCUS_LABEL = 'location';
 // 'https://geo.api.gouv.fr/communes?codePostal=78000' --> code curl
 // 'https://geo.api.gouv.fr/communes?code=78646&fields=code,nom,codesPostaux,code
 
-function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: defaultLongitude, radius: defaultRadius}) {
+function CityInput({ city: defaultCity, latitude: defaultLatitude, longitude: defaultLongitude, radius: defaultRadius, on_home: onHome }) {
   const searchParams = new URLSearchParams(window.location.search);
 
   const [cityOrZipcode, setCity] = useState(searchParams.get('city') || defaultCity || "");
@@ -129,7 +129,7 @@ function CityInput({city: defaultCity, latitude: defaultLatitude, longitude: def
           openMenu,
         }) => (
           <div>
-            <label {...getLabelProps({ className: ' fr-label almost-fitting', htmlFor: "input-search-by-city-or-zipcode" })}>
+            <label {...getLabelProps({ className: `almost-fitting ${(onHome == true) ? 'fr-label' : 'font-weight-lighter'}`, htmlFor: "input-search-by-city-or-zipcode" })}>
                    Ville ou code postal
             </label>
             <div

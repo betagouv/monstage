@@ -32,6 +32,23 @@
   top: 58px;
 }
 
+tr.even-odd:nth-child(even) {
+  background-color: $grey-975;
+}
+
+a.heavy-blue-link {
+  font-weight: 800;
+  color: $blue-france;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.fr-tabs__panel.fr-tabs__panel--selected.internships {
+  min-height: 40rem;
+}
+
 .employer {
   position: sticky;
   top: 20px;
@@ -88,9 +105,20 @@ a.white {
   }
 }
 
-  .tutors .warning-bloc {
-    top: 25px;
-  }
+.tutors .warning-bloc {
+  top: 25px;
+}
+shrinked-line {
+  line-height: 0.7rem;
+}
+
+.table.employers {
+  width: 100%;
+}
+
+table.employer tbody tr td.title {
+  width: 40%;
+}
 
 
 // sorting headers for dashboard/internship_offers#index
@@ -103,7 +131,7 @@ $sortLinkOffset: 15px;
   margin-top: -11px;
   font-size: larger;
   .currently-sorting{
-    color: $blue !important;
+    color: yellow !important;
   }
 
   .sort-link{
@@ -127,6 +155,11 @@ $sortLinkOffset: 15px;
 // sort links container
 .min-width-20{
   width: 20px;
+  position: relative;
+  left: 5px;
+}
+.min-width-10 {
+  width: 10px;
   position: relative;
   left: 5px;
 }

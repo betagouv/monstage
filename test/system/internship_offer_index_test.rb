@@ -41,15 +41,15 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         assert_presence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
         # click on dépubliées
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(2)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(2)').find('a').click
         assert_absence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
         # click on passed
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(3)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(3)').find('a').click
         assert_absence_of(internship_offer: internship_offer)
         assert_presence_of(internship_offer: old_internship_offer)
         # click on en cours
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(1)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(1)').find('a').click
         assert_presence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
       end

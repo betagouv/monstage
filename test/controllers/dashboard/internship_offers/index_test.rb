@@ -52,7 +52,7 @@ module Dashboard::InternshipOffers
       }
       get dashboard_internship_offers_path(filters)
       assert_response :success
-      assert_select '.search-container'
+      assert_select '.test-search-container'
       filters.map do |input_name, input_value|
         assert_select "input[name=\"#{input_name}\"]"
       end
@@ -162,11 +162,11 @@ module Dashboard::InternshipOffers
         direction: 'desc'
       }
       get dashboard_internship_offers_path(forwarded_to_tabs_links)
-      assert_select 'li.nav-item a.fr-link[href=?]',
+      assert_select 'li[role="presentation"] a[href=?]',
                     dashboard_internship_offers_path({ filter: 'unpublished' }.merge(forwarded_to_tabs_links))
-      assert_select 'li.nav-item a.fr-link[href=?]',
+      assert_select 'li[role="presentation"] a[href=?]',
                     dashboard_internship_offers_path({ filter: 'past' }.merge(forwarded_to_tabs_links))
-      assert_select 'li.nav-item a.fr-link[href=?]',
+      assert_select 'li[role="presentation"] a[href=?]',
                     dashboard_internship_offers_path(forwarded_to_tabs_links)
     end
 
@@ -251,7 +251,7 @@ module Dashboard::InternshipOffers
                                                             employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.align-middle.text-warning.text-decoration-none[href=?]',
+      assert_select 'a.align-middle.fr-raw-link[href=?]',
                     dashboard_internship_offers_path(order: :view_count,
                                                      direction: :asc),
                     count: 1
@@ -319,7 +319,7 @@ module Dashboard::InternshipOffers
     test 'GET #index as Employer displays pending submitted applications for kept internship_offers only' do
       employer = create(:employer)
       discarded_internship_offer = create(:weekly_internship_offer,
-                                          :discarded, employer: employer, 
+                                          :discarded, employer: employer,
                                           max_candidates: 10,
                                           max_students_per_group: 5,
                                           weeks: Week.selectable_from_now_until_end_of_school_year.first(10))
@@ -342,7 +342,7 @@ module Dashboard::InternshipOffers
       sign_in(employer)
       get dashboard_internship_offers_path
 
-      assert_select '.fa-fw.red-notification-badge',
+      assert_select '.fr-tag',
                     text: '2',
                     count: 1
     end
@@ -357,12 +357,14 @@ module Dashboard::InternshipOffers
                     count: 1
     end
 
-    test 'GET #index as Operator works with geolocaton params' do
+    test 'GET #index as Operator works with geolocation params' do
       operator = create(:user_operator)
       internship_offer_at_paris = create(:weekly_internship_offer,
-                                         employer: operator, coordinates: Coordinates.paris)
+                                         employer: operator,
+                                         coordinates: Coordinates.paris)
       internship_offer_at_bordeaux = create(:weekly_internship_offer,
-                                            employer: operator, coordinates: Coordinates.bordeaux)
+                                            employer: operator,
+                                            coordinates: Coordinates.bordeaux)
       sign_in(operator)
 
       location_params_forwarded_to_sort_links = {
@@ -377,9 +379,10 @@ module Dashboard::InternshipOffers
       assert_absence_of(internship_offer: internship_offer_at_paris)
       assert_presence_of(internship_offer: internship_offer_at_bordeaux)
 
+      # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.align-middle.text-warning.text-decoration-none[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+      assert_select "a.align-middle.fr-raw-link[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
                     1,
                     'ordonencer links should contain geo filters'
     end
