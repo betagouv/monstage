@@ -6,7 +6,7 @@ form.row action=request.path method="GET"
     .fr-mx-2w
       = label_tag :school_year,
                   "Années scolaires",
-                  class: " #{on_home == 'true' ? 'fr-label' : 'font-weight-light'} "
+                  class: " #{white_bg == 'true' ? 'fr-label' : 'font-weight-light'} "
       - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
       - options = years.map { |year| [ "#{year}/#{year+1}", year] }
       = select_tag :school_year,

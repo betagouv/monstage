@@ -6,7 +6,7 @@ import { endpoints } from '../../utils/api';
 
 const COMPONENT_FOCUS_LABEL = 'keyword';
 
-function KeywordInput({ existingKeyword, on_home }) {
+function KeywordInput({ existingKeyword, whiteBg }) {
   const searchParams = new URLSearchParams(window.location.search);
 
   const [keyword, setKeyword] = useState(existingKeyword || searchParams.get('keyword') || '');
@@ -52,7 +52,7 @@ function KeywordInput({ existingKeyword, on_home }) {
         selectedItem,
       }) => (
         <div>
-          <label {...getLabelProps({ className: `${(on_home == true) ? 'fr-label' : 'font-weight-lighter'}`, htmlFor: "input-search-by-keyword" })}>
+          <label {...getLabelProps({ className: `${(whiteBg == true) ? 'fr-label' : 'font-weight-lighter'}`, htmlFor: "input-search-by-keyword" })}>
             Métiers, mots-clés, ...
           </label>
           <div
