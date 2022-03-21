@@ -17,7 +17,11 @@
                                 height: '54px',
                                 class: 'ml-5 '
                 .fr-header__navbar
-                  button#fr-btn-menu-mobile.fr-btn--menu.fr-btn aria-haspopup="menu" data-fr-opened="false" title="Menu" aria-controls="modal-833"
+                  button#fr-btn-menu-mobile.fr-btn--menu.fr-btn [
+                    aria-controls="modal-833"
+                    aria-haspopup="menu"
+                    data-fr-opened="false"
+                    title="Menu" ]
                     | Menu
               .fr-header__service.visible-smaller-md
                 p.fr-header__service-title Mon stage de troisieme
@@ -89,8 +93,8 @@
                             class: "fr-link fr-fi-user-line text-decoration-none href#{current_controller?(:registrations) ? 'active' : ''}"
       #modal-833.fr-header__menu.fr-modal aria-labelledby="fr-btn-menu-mobile"
         .fr-container
-          button.fr-link--close.fr-link aria-controls="modal-833"  Fermer
+          button.fr-btn--close.fr-btn aria-controls="modal-833"  Fermer
           .fr-header__menu-links
-          nav.fr-nav aria-label=("Menu principal") role="navigation"
+          nav#navigation-832.fr-nav aria-label="Menu principal" role="navigation"
             ul.fr-nav__list
 
