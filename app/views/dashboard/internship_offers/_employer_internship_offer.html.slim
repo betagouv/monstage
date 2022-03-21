@@ -18,14 +18,15 @@ tr class="test-internship-offer even-odd test-internship-offer-#{employer_intern
 
   td.align-middle data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     - if employer_internship_offer.submitted_applications_count.positive?
-      = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                class: 'fr-tag d-inline-block shrinked-line' do
-        .fr-text--lg.mb-1
-          span = employer_internship_offer.submitted_applications_count
-      = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                class: 'fr-raw-link btn-hoverable d-inline-block  fr-mt-2v' do
-          span.border.fr-fi-eye-line.fr-pl-1v aria-hidden="true"
-          small.border.align-self-center Répondre
+      .inline-next-to.d-inline-block
+        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                  class: 'fr-tag d-inline-block shrinked-line' do
+          .fr-text--lg.mb-1
+            span = employer_internship_offer.submitted_applications_count
+        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                  class: 'fr-raw-link btn-hoverable d-inline-block fr-mt-2v' do
+          .fr-fi-eye-line.fr-pl-1v.self-align-center aria-hidden="true"
+            small Répondre
     - else
       span.badge.mx-2
         = employer_internship_offer.submitted_applications_count
