@@ -1,4 +1,3 @@
-
 - if @internship_applications.empty?
   .row
     .col-1.col-sm-1
@@ -8,20 +7,26 @@
     .col-11.col-sm-3
 
 - else
+  .d-flex.justify-content-between.align-items-baseline
+    h1.h5.border
+      = link_to internship_offer_path(@internship_offer), class: 'icon-link' do
+        = @internship_offer.title
+    - if @internship_offer.weekly?
+      .fr-select-group [data-controller='select-and-go'
+                        class='border align-self-baseline'
+                        data-select-and-go-criterium-value='order'
+                        criteriumdata-select-and-go-url-value="#{dashboard_internship_offer_internship_applications_path}"]
+        label.fr-text--light for="select-order" Trier par
+        - selected = params[:order] || 'applicationDate'
+        = select_tag :select_order,
+                    options_for_select([['par ordre de candidatures','applicationDate' ], [ 'par ordre de stage', 'internshipDate']], selected),
+                    class:'fr-select',
+                    id: "select-order",
+                    data:{action: "change->select-and-go#handleChange",
+                          'select-and-go-target': "direction"}
   .row
-    .col-md-10.offset-md-1
-      .row.no-gutters
-        .col-1
-        .col-9
-          .d-flex.flex-row.align-items-baseline
-            h1.h5.mb-3.font-weight-light.mr-2= "Proposition de stage : "
-            h1.h5.mb-3
-              = link_to internship_offer_path(@internship_offer) , class: 'icon-link' do
-                = @internship_offer.title
-
-      - if @internship_offer.weekly?
-        = render partial: 'dashboard/internship_offers/internship_applications/filters'
+    .col-12
       = render partial: 'dashboard/internship_offers/internship_applications/internship_application',
-               collection: @internship_applications
+                collection: @internship_applications
 
     = paginate(@internship_applications)
