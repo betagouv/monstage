@@ -2,7 +2,8 @@
   - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: aasm_target)
 
   = button_tag type: "button",
-              data: { toggle: 'modal', target: "##{modal_id}" },
+              data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': "false" },
+              aria: { controls: "#{modal_id}" },
               class: "fr-btn btn-#{aasm_notifier.target_action_color} mx-1 px-5" do
     i class="fas #{fa_icon}"
     = " "
@@ -14,24 +15,27 @@
                 html: {method: 'patch', class:'modal', 'id': modal_id, tabindex: "-1", role: "dialog"} }) do |f|
     = hidden_field_tag :transition, aasm_target
 
-    .modal-dialog.modal-lg role="document"
-      .modal-content
-        .modal-header.p-4
-          h5 class="modal-title"
-            = "#{modal_opener_label} la candidature"
-
-          button type="button" class="close" data-dismiss="modal" aria-label="Close"
-            span aria-hidden="true" &times;
-
-        - unless message.blank?
-          .px-4.py-0
-            p= message
-
-        - if rich_text
-          .modal-body.px-4.py-0
-            = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
-
-        .modal-footer.actions
-
-          = f.submit class: 'fr-btn', value: "Confirmer"
-          button type="button" class="fr-btn" data-dismiss="modal" Annuler
+    dialog.fr-modal id="#{modal_id}" aria-labelledby="fr-modal-2-title" role="dialog"
+      .fr-container.fr-container--fluid.fr-container-md
+        .fr-grid-row.fr-grid-row--center
+          .fr-col-12.fr-col-md-8.fr-col-lg-6
+            .fr-modal__body
+              .fr-modal__header
+                button.fr-btn--close.fr-btn aria-controls="#{modal_id}"  Fermer
+              .fr-modal__content
+                h1#fr-modal-2-title.fr-modal__title
+                  span.fr-fi-arrow-right-line.fr-fi--lg aria-hidden="true"
+                  = "#{modal_opener_label} la candidature"
+                - unless message.blank?
+                  .px-4.py-0
+                    p= message
+                - if rich_text
+                  .modal-body.px-4.py-0
+                    = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
+              .fr-modal__footer
+                ul.fr-btns-group.fr-btns-group--right.fr-btns-group--inline-reverse.fr-btns-group--inline-lg.fr-btns-group--icon-left
+                  li
+                    = f.submit class: 'fr-btn fr-fi-checkbox-line', value: "Confirmer"
+                  li
+                    button.fr-btn.fr-fi-checkbox-line.fr-btn--secondary data-dismiss="modal"
+                      |Annuler
