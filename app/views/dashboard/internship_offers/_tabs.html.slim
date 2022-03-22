@@ -6,7 +6,7 @@
 ul.test-dashboard-nav.fr-tabs__list role="tablist" aria-label="[Onglets de navigation employeur]" data-fr-js-tabs-list="true"
   - if current_user.try(:employer?)
     - is_active = controller_name == 'internship_offers' && params[:filter].blank?
-    li role="presentation"
+    li
       = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
                 class: "#{is_active ? 'active' : ''}" do
         button#current_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left tabindex="0" role="tab" aria-selected="#{is_active}" aria-controls="tabpanel-404-panel"
@@ -16,7 +16,7 @@ ul.test-dashboard-nav.fr-tabs__list role="tablist" aria-label="[Onglets de navig
               = " (#{internship_offers.total_count})"
 
     - is_active = controller_name == 'internship_offers' && params[:filter] == 'unpublished'
-    li role="presentation"
+    li
       = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'unpublished'})),
                 class: "#{is_active ? 'active' : ''}" do
         button#unpublished_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left tabindex="0" role="tab" aria-selected="#{is_active}" aria-controls="tabpanel-404-panel"
@@ -26,7 +26,7 @@ ul.test-dashboard-nav.fr-tabs__list role="tablist" aria-label="[Onglets de navig
               = " (#{internship_offers.total_count})"
 
     - is_active = controller_name == 'internship_offers' && params[:filter] == 'past'
-    li role="presentation"
+    li
       = link_to dashboard_internship_offers_path(forwardable_params.merge({filter: 'past'})),
                 class: "#{is_active ? 'active' : ''}" do
         button#past_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left tabindex="0" role="tab" aria-selected="#{is_active}" aria-controls="tabpanel-404-panel"
@@ -39,7 +39,7 @@ ul.test-dashboard-nav.fr-tabs__list role="tablist" aria-label="[Onglets de navig
   - is_active = current_page?(dashboard_internship_agreements_path)
 
   - if can?(:edit, InternshipAgreement) && badge_counter.agreements_count.positive?
-    li role="presentation"
+    li
       = link_to dashboard_internship_agreements_path,
                 class: "#{current_page?(dashboard_internship_agreements_path) ? 'active' : ''}" do
         button#agreement_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left tabindex="0" role="tab" aria-selected="#{is_active}" aria-controls="tabpanel-404-panel"
