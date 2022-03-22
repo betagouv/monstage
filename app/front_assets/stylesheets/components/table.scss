@@ -61,3 +61,20 @@
     font-weight: normal;
   }
 }
+
+.table-scrollable {
+  display:block;
+  thead {
+    display: block;
+  }
+  tbody {
+    height: 480px;
+    display:  block;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  tbody td, thead th {
+    width: 20%;
+  }
+}

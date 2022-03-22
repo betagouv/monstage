@@ -1,9 +1,9 @@
-tr.test-school-count
-  td.align-middle.bc-light= render partial: 'reporting/schools/table/td/name',
+tr
+  td= render partial: 'reporting/schools/table/td/name',
                                    locals: { school: school }
-  td.align-middle.bc-light= render partial: 'reporting/schools/table/td/weeks',
+  td= render partial: 'reporting/schools/table/td/weeks',
                                    locals: { weeks: school.weeks }
-  td.align-middle.bc-light= school.total_student_with_confirmation_count
-  td.align-middle.bc-light= render partial: 'reporting/schools/table/td/school_manager',
+  td= school.total_student_with_confirmation_count
+  td= render partial: 'reporting/schools/table/td/school_manager',
                                    locals: { has_school_manager: school.school_manager? }
-  td.align-middle= school.total_main_teacher_count
+  td= school.total_main_teacher_count

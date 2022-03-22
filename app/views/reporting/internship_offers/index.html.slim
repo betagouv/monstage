@@ -25,19 +25,7 @@
                       = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label fr-label' do
                         = "Groupe ou institution de tutelle"
 
-          .row.my-3
-            .col-12
-              = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
-                        class: 'fr-btn btn-danger fr-fi-download-line fr-btn--icon-left',
-                        data: {turbolinks: false} do
-                | Exporter les statistiques des offres
-                
-              - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
-                = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                          class: 'ml-3 fr-btn btn-danger fr-fi-download-line fr-btn--icon-left',
-                          data: {turbolinks: false} do
-                  | Exporter les offres
-          .row.mt-4
+          .row.mt-3
             .col-12
               table.table.table-statistics.table-sticky-thead
                 thead
@@ -75,3 +63,21 @@
                               font_color_blue: true
 
 
+        div data-controller="footer"
+          div  [
+            data-footer-target="placeholder"
+            data-action="resize@window->footer#resize"
+            ]
+
+          .sticky-footer.bg-light data-footer-target="fixedContent"
+            .row.p-4
+              .col-12.d-flex.justify-content-start
+                = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
+                      class: 'fr-btn btn-danger fr-fi-download-line fr-btn--icon-left',
+                      data: {turbolinks: false} do
+                  | Exporter les statistiques des offres  
+                - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
+                  = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
+                            class: 'ml-3 fr-btn btn-danger fr-fi-download-line fr-btn--icon-left',
+                            data: {turbolinks: false} do
+                    | Exporter les offres
