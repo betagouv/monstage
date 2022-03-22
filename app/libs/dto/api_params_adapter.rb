@@ -4,10 +4,11 @@ module Dto
   # adapt api params to model
   class ApiParamsAdapter
     def sanitize
+      check_street
+      check_zipcode
       map_sector_uuid_to_sector
       map_week_slugs_to_weeks
       assign_offer_to_current_api_user
-      check_street
       params
     end
 
@@ -53,6 +54,13 @@ module Dto
     def check_street
       if params[:street].blank? && params[:coordinates].present?
         params[:street] = Geofinder.street(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
+      end
+      params
+    end
+
+    def check_zipcode
+      if params[:zipcode].blank? && params[:coordinates].present?
+        params[:zipcode] = Geofinder.zipcode(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
       end
       params
     end

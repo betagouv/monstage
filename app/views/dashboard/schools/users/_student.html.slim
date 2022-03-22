@@ -5,8 +5,8 @@ tr class="d-flex test-student-#{student.id}"
     .row.no-gutters
       .col-9.col-sm-12
         h3.h6.mb-0
-          .d-none.d-sm-block= link_to Presenters::User.new(student).short_name, dashboard_students_internship_applications_path(student), class: 'small'
-          .d-block.d-sm-none= Presenters::User.new(student).short_name
+          .d-none.d-sm-block= link_to student.presenter.short_name, dashboard_students_internship_applications_path(student), class: 'small'
+          .d-block.d-sm-none= student.presenter.short_name
       .col-3.d-sm-none.text-right= link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'small'
 
   td.col-2.d-flex.align-items-center data-head="Confirmé" class="student_confirmed"

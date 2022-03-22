@@ -36,7 +36,7 @@
         <div role="main"><%= yield %></div>
       <% else %>
         <% if content_for?(:custom_header) %> <%= content_for(:custom_header) %> <% end %>
-        <div class="container">
+        <div class="container-monstage">
           <%= render 'layouts/flash' %>
           <div role="main"><%= yield %></div>
         </div>

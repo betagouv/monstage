@@ -44,6 +44,6 @@ class RaceCondidationRegistrationTest < ActionDispatch::IntegrationTest
         }
       }
     )
-    assert_redirected_to users_registrations_standby_path(email: email)
+    assert_redirected_to users_registrations_standby_path(id: User.last.id)
   end
 end

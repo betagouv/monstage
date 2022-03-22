@@ -157,7 +157,7 @@ class GenerateInternshipAgreement < Prawn::Document
       @pdf.stroke do
         @pdf.horizontal_line 0, 540, at: @pdf.bounds.bottom - 25
       end
-      @pdf.text_box(@internship_agreement.internship_application.student.school.agreement_address,
+      @pdf.text_box(@internship_agreement.internship_application.student.school.presenter.agreement_address,
                     align: :center,
                     :at => [@pdf.bounds.left, @pdf.bounds.bottom - 35],
                     :height => 20,

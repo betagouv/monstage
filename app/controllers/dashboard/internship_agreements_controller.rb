@@ -58,7 +58,7 @@ module Dashboard
       respond_to do |format|
         format.html
         format.pdf do
-          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_de_stage_#{Presenters::User.new(@internship_agreement.internship_application.student).full_name_camel_case}.pdf", type: 'application/pdf',disposition: 'inline')
+          send_data(GenerateInternshipAgreement.new(@internship_agreement.id).call.render, filename: "Convention_de_stage_#{@internship_agreement.internship_application.student.presenter.full_name_camel_case}.pdf", type: 'application/pdf',disposition: 'inline')
         end
       end
     end
