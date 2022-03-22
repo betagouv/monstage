@@ -162,11 +162,11 @@ module Dashboard::InternshipOffers
         direction: 'desc'
       }
       get dashboard_internship_offers_path(forwarded_to_tabs_links)
-      assert_select 'li[role="presentation"] a[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'unpublished' }.merge(forwarded_to_tabs_links))
-      assert_select 'li[role="presentation"] a[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path({ filter: 'past' }.merge(forwarded_to_tabs_links))
-      assert_select 'li[role="presentation"] a[href=?]',
+      assert_select 'li a[href=?]',
                     dashboard_internship_offers_path(forwarded_to_tabs_links)
     end
 
