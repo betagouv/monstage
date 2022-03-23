@@ -49,8 +49,8 @@ module Dashboard
       visit dashboard_internship_offer_internship_applications_path(weekly_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{weekly_internship_application.id}\"]", count: 1
       find('a.btn-link', text: 'Tout afficher +', exact_text: true)
-      find('.d-block.btn-link').click
-      click_on 'Accepter'
+      find('button', text: 'Accepter').click
+      # click_on 'Accepter'
       assert_changes -> { weekly_internship_application.reload.approved? },
                      from: false,
                      to: true do
@@ -98,14 +98,14 @@ module Dashboard
       find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
 
-      click_link('Dates de stage')
+      select('par dates de stage')
       if week_1.id < week_2. id # normal case
         find "div[data-test-id=\"internship-application-#{late_application_for_week_1.id}\"]", count: 1
       else # might happen with fixture random order creation
         find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
       end
 
-      click_link('Dates de candidature')
+      select('par dates de candidatures')
       find "div[data-test-id=\"internship-application-#{early_application_for_week_2.id}\"]", count: 1
 
       click_link(internship_offer.title)
@@ -155,8 +155,7 @@ module Dashboard
 
       visit dashboard_internship_offer_internship_applications_path(free_date_internship_application.internship_offer)
       find "div[data-test-id=\"internship-application-#{free_date_internship_application.id}\"]", count: 1
-      find('.d-block.btn-link').click
-      click_on 'Refuser'
+      find('button.fr-fi-close-line').click
       assert_changes -> { free_date_internship_application.reload.rejected? },
                      from: false,
                      to: true do

@@ -7,19 +7,18 @@
     .col-11.col-sm-3
 
 - else
-  .d-flex.justify-content-between.align-items-baseline
-    h1.h5.border
-      = link_to internship_offer_path(@internship_offer), class: 'icon-link' do
-        = @internship_offer.title
+  .d-flex.justify-content-between.align-items-end
+    = link_to internship_offer_path(@internship_offer), class: 'fr-raw-link h3 blue-france' do
+       = @internship_offer.title
     - if @internship_offer.weekly?
       .fr-select-group [data-controller='select-and-go'
-                        class='border align-self-baseline'
+                        class='align-self-baseline'
                         data-select-and-go-criterium-value='order'
                         criteriumdata-select-and-go-url-value="#{dashboard_internship_offer_internship_applications_path}"]
         label.fr-text--light for="select-order" Trier par
         - selected = params[:order] || 'applicationDate'
         = select_tag :select_order,
-                    options_for_select([['par ordre de candidatures','applicationDate' ], [ 'par ordre de stage', 'internshipDate']], selected),
+                    options_for_select([['par dates de candidatures','applicationDate' ], [ 'par dates de stage', 'internshipDate']], selected),
                     class:'fr-select',
                     id: "select-order",
                     data:{action: "change->select-and-go#handleChange",
