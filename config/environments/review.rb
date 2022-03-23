@@ -89,19 +89,29 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: HOST }
 
-  response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
+  # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
 
-  first_inbox = JSON.parse(response)[0] # get first inbox
+  # first_inbox = JSON.parse(response)[0] # get first inbox
 
   ActionMailer::Base.delivery_method = :smtp
+  # ActionMailer::Base.smtp_settings = {
+  #                                      user_name: first_inbox['username'],
+  #                                      password: first_inbox['password'],
+  #                                      address: first_inbox['domain'],
+  #                                      domain: first_inbox['domain'],
+  #                                      port: 587,
+  #                                      authentication: :plain
+  #                                    }
+
   ActionMailer::Base.smtp_settings = {
-                                       user_name: first_inbox['username'],
-                                       password: first_inbox['password'],
-                                       address: first_inbox['domain'],
-                                       domain: first_inbox['domain'],
-                                       port: 587,
-                                       authentication: :plain
-                                     }
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    domain: ENV.fetch('HOST'),
+    address: ENV['SMTP_ADDRESS'],
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
