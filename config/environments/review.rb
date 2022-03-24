@@ -95,7 +95,7 @@ Rails.application.configure do
     password: ENV['SMTP_PASSWORD'],
     domain: HOST,
     address: ENV['SMTP_ADDRESS'],
-    port: 587,
+    port: 25,
     authentication: :plain,
     enable_starttls_auto: true
   }
