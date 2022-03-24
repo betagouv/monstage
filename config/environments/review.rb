@@ -42,7 +42,7 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   # config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
-  
+
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
@@ -86,14 +86,21 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   # config.action_mailer.preview_path  = "#{Rails.root}/whatever"
   config.action_mailer.show_previews = true
-
-  config.action_mailer.default_url_options = { host: ENV.fetch("HOST")  }
-
-  # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
-
-  # first_inbox = JSON.parse(response)[0] # get first inbox
+  config.action_mailer.default_url_options = { host: HOST }
 
   ActionMailer::Base.delivery_method = :smtp
+
+  ActionMailer::Base.smtp_settings = {
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    domain: HOST,
+    address: ENV['SMTP_ADDRESS'],
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+  # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
+  # first_inbox = JSON.parse(response)[0] # get first inbox
   # ActionMailer::Base.smtp_settings = {
   #                                      user_name: first_inbox['username'],
   #                                      password: first_inbox['password'],
@@ -102,16 +109,6 @@ Rails.application.configure do
   #                                      port: 587,
   #                                      authentication: :plain
   #                                    }
-
-  ActionMailer::Base.smtp_settings = {
-    user_name: ENV['SMTP_USERNAME'],
-    password: ENV['SMTP_PASSWORD'],
-    domain: ENV.fetch('HOST'),
-    address: ENV['SMTP_ADDRESS'],
-    port: 587,
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
