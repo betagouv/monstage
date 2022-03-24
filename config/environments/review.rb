@@ -87,7 +87,7 @@ Rails.application.configure do
   # config.action_mailer.preview_path  = "#{Rails.root}/whatever"
   config.action_mailer.show_previews = true
 
-  config.action_mailer.default_url_options = { host: HOST }
+  config.action_mailer.default_url_options = { host: ENV.fetch("HOST")  }
 
   # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
 
