@@ -14,8 +14,10 @@ module Users
 
     belongs_to :school, optional: true
     belongs_to :class_room, optional: true
-    has_many :students, through: :class_room
+    has_many :students, through: :school
     has_many :main_teachers, through: :school
+    has_many :internship_applications, through: :students
+    has_many :internship_agreements, through: :internship_applications 
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
@@ -49,10 +51,15 @@ module Users
     def dashboard_name
       return 'Ma classe' if school.present? && class_room.present?
       return 'Mon établissement' if school.present?
+      ""
     end
 
     def new_support_ticket(params: {})
       SupportTickets::SchoolManager.new(params.merge(school_id: self.school_id, user_id: self.id))
+    end
+
+    def custom_agreements_path
+      url_helpers.dashboard_school_internship_applications_path(school)
     end
 
     private
@@ -76,9 +83,9 @@ module Users
 
     def official_uai_email_address
       return if school_id.blank?
-      
+
       unless email =~ /\Ace\.\d{7}\S@#{school.email_domain_name}\z/
-        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement. ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr")
+        errors.add(:email, "L'adresse email utilisée doit être l'adresse officielle de l'établissement.<br>ex: ce.MON_CODE_UAI@ac-MON_ACADEMIE.fr".html_safe)
       end
     end
 

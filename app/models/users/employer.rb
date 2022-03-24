@@ -9,6 +9,7 @@ module Users
              class_name: 'InternshipOffer'
 
     has_many :internship_applications, through: :kept_internship_offers
+    has_many :internship_agreements, through: :internship_applications 
 
     has_many :organisations
     has_many :tutors
@@ -18,8 +19,12 @@ module Users
       url_helpers.dashboard_internship_offers_path
     end
 
+    def custom_agreements_path
+      url_helpers.dashboard_internship_applications_path
+    end
+
     def dashboard_name
-      'Mes offres'
+      'Mon tableau de bord'
     end
 
     def account_link_name

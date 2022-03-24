@@ -29,7 +29,7 @@
                 = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-warning-custom')
               .col
                 .row.no-gutters
-                  .col.align-self-center Offres proposées
+                  .col.align-self-center Places proposées
                   .col.align-self-center.text-right.h2.mb-0.text-warning-custom= dashboard_finder.platform_count_by_private_sector["total_count"] || "0"
                 .row.no-gutters.mt-3
                   .col.align-self-center Dont PaQte
@@ -58,7 +58,7 @@
             .row.h-100
               .col-auto.align-self-center
                 = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-blue-custom')
-              .col.align-self-center Offres proposées
+              .col.align-self-center Places proposées
               .col.align-self-center.text-right.h2.mb-0.text-blue-custom.test-administrations-proposed-offers= dashboard_finder.platform_count_by_public_sector["total_count"] || "0"
           .col-6
             .row.h-100
@@ -78,7 +78,7 @@
             .row.h-100
               .col-auto.align-self-center
                 = inline_svg_pack_tag('media/images/icons/noun_job_offer_1461730-1.svg', class: 'fill-red-custom')
-              .col.align-self-center Offres proposées
+              .col.align-self-center Places proposées
               .col.align-self-center.text-right.h2.mb-0.text-red-custom= dashboard_finder.platform_count_by_association["total_count"] || "0"
           .col-6
             .row.h-100
@@ -91,7 +91,7 @@
   // platform sum
   .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
     .col-12.col-md-3.text-center
-      h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.nowrap.ml-3 Total des offres proposées sur la plateforme
+      h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.nowrap.ml-3 Total des places proposées sur la plateforme
     .col-12.col-md-9
       .row.align-items-center
         .col-6.px-3.bc-stats
@@ -142,14 +142,14 @@
               .col-auto.align-self-center
                 = inline_svg_pack_tag('media/images/icons/noun_people_3139638.svg', class: 'fill-purple-custom')
               .col.align-self-center Présentiel
-              .col.align-self-center.text-right.h2.mb-0.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:onsite_internship_offer]) || "0"
+              .col.align-self-center.text-right.h2.mb-0.text-purple-custom= dashboard_finder.operator_count_onsite || "0"
           .col-6.bl-1.bc-light
             .row.h-100.pb-2
               .col-auto.align-self-center
                 = inline_svg_pack_tag('media/images/icons/noun_Computer_2646597.svg', class: 'fill-purple-custom')
               .col.align-self-center À distance
               .col.align-self-center.text-right.h2.mb-0.text-purple-custom
-                span.mr-3= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:remote_internship_offer]) || "0"
+                span.mr-3= dashboard_finder.operator_count_remote || "0"
         .row
           .col-12
             hr.separator.p-0.mt-0.mb-0.ml-0.mr-3

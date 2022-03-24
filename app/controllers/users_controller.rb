@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  skip_before_action :check_school_requested, only: [:edit, :update]
 
   def edit
     authorize! :update, current_user
@@ -44,6 +45,7 @@ class UsersController < ApplicationController
               else 'Compte mis à jour avec succès.'
               end
     message += " Un courriel a été envoyé à l'ancienne adresse électronique (e-mail). Veuillez cliquer sur le lien contenu dans le courriel pour confirmer votre nouvelle adresse électronique (e-mail)." if current_user.unconfirmed_email
+    message = 'Etablissement mis à jour avec succès.' if current_user.school_id_previously_changed?
     message
   end
 
@@ -61,7 +63,8 @@ class UsersController < ApplicationController
                                  :resume_languages,
                                  :password,
                                  :password_confirmation,
-                                 :role)
+                                 :role,
+                                 banners: {})
   end
 
   def current_section

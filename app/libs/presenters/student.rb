@@ -1,5 +1,7 @@
 module Presenters
   class Student
+    include Humanable
+
     def name
       return anonymized_message if student.anonymized?
       student.name
@@ -30,15 +32,31 @@ module Presenters
       student.phone
     end
 
+    def gender_text
+      return '' if student.gender.blank? || student.gender.eql?('np')
+      return 'Madame' if student.gender.eql?('f')
+      return 'Monsieur' if student.gender.eql?('m')
+
+      ''
+    end
+
+    def formal_name
+      "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
+    end
+
+    def student
+      user
+    end
+
     private
-    attr_reader :student
+    attr_reader :user
 
     def anonymized_message
       "Non communiqué (Donnée anonymisée)"
     end
 
     def initialize(student)
-      @student = student
+      @user = student
     end
   end
 end

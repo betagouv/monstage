@@ -8,4 +8,12 @@ class ApplicationMailer < ActionMailer::Base
   include Layoutable
 
   append_view_path 'app/views/mailers'
+
+  def send_email(to:, subject:, cc: nil)
+    return if to.nil?
+
+    params = { to: to, subject: subject }
+    params.merge!(cc: cc) unless cc.nil?
+    mail(params)
+  end
 end

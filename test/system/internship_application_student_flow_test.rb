@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'application_system_test_case'
-
+include ActiveJob::TestHelper
 class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   include ThirdPartyTestHelpers
@@ -33,13 +33,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     page.find '#internship-application-closeform', visible: true
     page.find('.test-missing-school-weeks', visible: true)
 
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
   end
 
   test 'student with no class_room can submit a 3e prepa métier application when school have not choosen week' do
@@ -61,14 +58,12 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     week_label = Week.selectable_from_now_until_end_of_school_year
                      .first
                      .human_select_text_method
+
     select(week_label)
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
     page.find("input[type='submit'][value='Envoyer']").click
@@ -112,13 +107,10 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
     click_on 'Je postule'
     # check application is now here, ensure feature is here
     page.find '#internship-application-closeform', visible: true
-    # check for phone and email fields disabled
-    disabled_input_selectors = %w[
-      internship_application[student_attributes][phone]
-      internship_application[student_attributes][email]
-    ].map do |disabled_selector|
-      page.find "input[name='#{disabled_selector}'][disabled]", visible: true
-    end
+    # check for phone fields disabled
+    page.find "input[name='internship_application[student_attributes][phone]'][disabled]", visible: true
+    # check for email fields
+    page.find "input[name='internship_application[student_attributes][email]']", visible: true
     page.find("input[type='submit'][value='Valider']").click
     assert page.has_selector?("a[href='/internship_offers/#{internship_offer.id}']", count: 1)
     page.find("input[type='submit'][value='Envoyer']").click
@@ -138,21 +130,110 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       canceled_by_student: create(:weekly_internship_application, :canceled_by_student, student: student)
     }
     sign_in(student)
-
-    prismic_root_path_stubbing do
-      visit '/'
+    visit '/'
+    click_on 'Candidatures'
+    internship_applications.each do |_aasm_state, internship_application|
+      click_on internship_application.internship_offer.title
       click_on 'Candidatures'
-      internship_applications.each do |_aasm_state, internship_application|
-        click_on internship_application.internship_offer.title
-        click_on 'Candidatures'
+    end
+  end
+
+  test 'GET #show as Student with existing draft application shows the draft' do
+    if ENV['RUN_BRITTLE_TEST']
+      weeks = [Week.find_by(number: 1, year: 2020), Week.find_by(number: 2, year: 2020)]
+      internship_offer      = create(:weekly_internship_offer, weeks: weeks)
+      school                = create(:school, weeks: weeks)
+      student               = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+      internship_application = create(:weekly_internship_application,
+                                      :drafted,
+                                      motivation: 'au taquet',
+                                      student: student,
+                                      internship_offer: internship_offer,
+                                      week: weeks.last)
+
+      travel_to(weeks[0].week_date - 1.week) do
+        sign_in(student)
+        visit internship_offer_path(internship_offer)
+        within('select[name="internship_application[week_id]"]') do
+          assert page.find(:xpath, 'option[1]').selected?
+          refute page.find(:xpath, 'option[2]').selected?
+          assert_equal internship_offer.internship_offer_weeks.second.week.id.to_s, page.find(:xpath, 'option[1]').value
+          assert_equal internship_offer.internship_offer_weeks.first.week.id.to_s, page.find(:xpath, 'option[2]').value
+        end
       end
     end
+  end
+
+  test 'student can receive a SMS when employer accepts her application' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(:class_room, :troisieme_generale, school: school),
+                     email: "",
+                     phone: '+330612345678'
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      student: student
+    )
+    sign_in(internship_application.internship_offer.employer)
+    bitly_stub do
+      visit dashboard_internship_offer_internship_applications_path(internship_application.internship_offer)
+      click_on 'Accepter'
+      click_on 'Confirmer'
+    end
+  end
+
+  test 'student with approved application can see employer\'s address' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(
+                       :class_room,
+                       :troisieme_generale,
+                       school: school
+                     )
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :approved,
+      student: student
+    )
+    sign_in(student)
+    visit '/'
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
+    assert page.has_selector?("a[href='#tab-convention-detail']", count: 1)
+  end
+
+  test 'student with submittted application can not see employer\'s address' do
+    school = create(:school)
+    student = create(:student,
+                     school: school,
+                     class_room: create(:class_room, :troisieme_generale, school: school)
+    )
+    internship_application = create(
+      :weekly_internship_application,
+      :submitted,
+      student: student
+    )
+    sign_in(student)
+    # visit '/'
+    visit dashboard_students_internship_applications_path(student, internship_application.internship_offer)
+    click_link(internship_application.internship_offer.title)
+    refute page.has_selector?("a[href='#tab-convention-detail']", count: 1)
   end
 
   test 'student in troisieme_generale can draft, submit, and cancel(by_student) internship_applications' do
     weeks = [Week.find_by(number: 1, year: 2020)]
     school = create(:school, weeks: weeks)
-    student = create(:student, school: school, class_room: create(:class_room, :troisieme_generale, school: school))
+    student = create(:student,
+                     school: school,
+                     class_room: create( :class_room,
+                                         :troisieme_generale,
+                                         school: school)
+                    )
     internship_offer = create(:weekly_internship_offer, weeks: weeks)
 
     travel_to(weeks.first.week_date) do
@@ -165,7 +246,7 @@ class InternshipApplicationStudentFlowTest < ApplicationSystemTestCase
       page.find '#internship-application-closeform', visible: true
 
       # fill in application form
-      select weeks.first.human_select_text_method, from: 'internship_application_internship_offer_week_id'
+      select weeks.first.human_select_text_method, from: 'internship_application_week_id'
       find('#internship_application_motivation').native.send_keys('Je suis au taquet')
       refute page.has_selector?('.nav-link-icon-with-label-success') # green element on screen
       assert_changes lambda {

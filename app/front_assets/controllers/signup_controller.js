@@ -8,6 +8,7 @@ export default class extends Controller {
     'emailHint',
     'emailExplanation',
     'emailInput',
+    'rolelInput',
     'phoneInput',
     'label',
     'emailBloc',
@@ -27,6 +28,7 @@ export default class extends Controller {
   initialize() {
     // set default per specification
     this.show(this.emailBlocTarget)
+    this.checkEmail();
   }
 
   // on change email address, ensure user is shown academia address requirement when neeeded
@@ -55,8 +57,13 @@ export default class extends Controller {
       this.validator.perform('validate', {
         email,
         uid: this.channelParams.uid,
+        role: $('#user_role').val(),
       });
     }
+  }
+
+  cleanLocalStorageWithSchoolManager() {
+    localStorage.removeItem('close_school_manager')
   }
 
   connect() {
@@ -64,6 +71,11 @@ export default class extends Controller {
     const emailInputElement = this.emailInputTarget;
     const $hint = $(emailHintElement);
     const $input = $(emailInputElement);
+    if (localStorage.getItem('channel') !== undefined) {
+      this.channelValue = localStorage.getItem('channel');
+    }
+
+    this.cleanLocalStorageWithSchoolManager();
 
     // setup wss to validate email (kind of history, tried to check email with smtp, not reliable)
     this.channelParams = {
@@ -106,6 +118,7 @@ export default class extends Controller {
 
   disconnect() {
     try {
+      localStorage.clear();
       this.wssClient.disconnect();
     } catch (e) {}
   }
@@ -176,6 +189,7 @@ export default class extends Controller {
     this.hide(fieldToHide)
     this.show(fieldToDisplay);
     this.channelValue = channel;
+    localStorage.setItem('channel', channel)
   }
   clean(fieldToClean) {
     $(fieldToClean).val('');

@@ -6,7 +6,10 @@ module Users
     def create
       if by_phone?
         if fetch_user_by_phone
-          SendSmsJob.perform_later(fetch_user_by_phone)
+          SendSmsJob.perform_later(
+            user: fetch_user_by_phone,
+            message: "Votre code de validation : #{fetch_user_by_phone.phone_token}"
+          )
           redirect_to users_registrations_phone_standby_path(phone: fetch_user_by_phone.phone)
         else
           self.resource = resource_class.new

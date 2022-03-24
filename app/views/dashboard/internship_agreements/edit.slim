@@ -1,16 +1,4 @@
-- content_for(:page_title, "#{t(".page_title", name: @internship_agreement.internship_application.student.formal_name)} | Monstage")
-= render partial: 'dashboard/internship_agreements/form_header',
-         locals: { internship_application: @internship_agreement.internship_application }
+- content_for(:page_title, "#{t('.page_title')} | Monstage")
+= render current_user.is_a?(Users::SchoolManagement) ? 'school_management_form' : 'employer_form'
 
-
-.row.mx-5
-  .col-12
-    h1.h2.mb-3 Signer la convention de stage
-
-    = form_with model: @internship_agreement,
-                url: edit_dashboard_internship_agreement_path(@internship_agreement),
-                local: true do |form|
-      = render "form",
-                form: form,
-                resource: @internship_agreement,
-                school_track: @internship_agreement.internship_application.student.class_room&.school_track || 'troisieme_generale'
+                             

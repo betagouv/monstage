@@ -1,0 +1,9 @@
+- if internship_agreement.validated?
+  = link_to dashboard_internship_agreement_path(internship_agreement, format: :pdf),  target: "_blank", class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm', data: { test: "active-internship-agreement-progress-#{internship_agreement.id}" } do
+    = label
+- elsif @current_user.is_a?(Users::Employer) || internship_agreement.completed_by_employer? || internship_agreement.started_by_school_manager?
+  = link_to edit_dashboard_internship_agreement_path(internship_agreement), class: 'btn btn-outline-primary ml-2 text-nowrap btn-sm' do
+    = label
+- else 
+  = link_to label, '', class: 'btn btn-outline-primary ml-2 text-nowrap disabled btn-block btn-sm'
+

@@ -16,7 +16,7 @@ module Reporting
           response.headers['Content-Disposition'] = %(attachment; filename="#{export_filename('offres')}.xlsx")
           if dimension_is?('offers', params[:dimension])
             SendExportOffersJob.perform_later(current_user, offers_hash)
-            redirect_back fallback_location: reporting_dashboards_path(department: params[:department], school_year: params[:school_year]),
+            redirect_back fallback_location: reporting_dashboards_path(offers_hash),
                           flash: { success: "Votre fichier a été envoyé à l'adresse email : #{current_user.email}"}
           else
             render :index_stats

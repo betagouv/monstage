@@ -38,7 +38,7 @@ fieldset.mt-4 data-controller='organisation-form'
                               currentLatitude: resource.coordinates.try(:lat).try(:to_f),
                               currentLongitude: resource.coordinates.try(:lon).try(:to_f),
                               currentFullAddress: resource.formatted_autocomplete_address})
-      .form-group data-controller='maxlength-input' data-maxlength-input-limit-value=InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT
+      .form-group data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
         #label_organisation_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
           | Description de l'entreprise (optionnel)
         = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}
@@ -50,14 +50,13 @@ fieldset.mt-4 data-controller='organisation-form'
           small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
         = form.url_field :employer_website, class: 'form-control', placeholder: "https://"
       - if submit_button
-        - if params[:internship_offer_info_id].present?
-          = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                    class: 'btn btn-primary' do
-            .mt-3
-              ="Suivant "
-              i.fas.fa-arrow-right
-        - else
-          .mt-3
+        .mt-3
+          - if params[:internship_offer_info_id].present?
+            = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+                      class: 'btn btn-primary' do
+                ="Suivant "
+                i.fas.fa-arrow-right
+          - else
             = button_tag :submit, class: 'btn btn-primary' do
               ="Suivant "
               i.fas.fa-arrow-right

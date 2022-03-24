@@ -12,45 +12,44 @@ module Finders
         Users::Student.name => :school_members_query,
         Users::Statistician.name => :statistician_query,
         Users::MinistryStatistician.name => :ministry_statistician_query,
-        Users::God.name => :god_query
+        Users::God.name => :visitor_query
       }
     end
 
     private
 
-    def kept_offers_query
+    def kept_published_future_offers_query
       InternshipOffer.kept
-    end
-
-    def god_query
-      common_filter { kept_offers_query.published }
+                     .includes(:employer, :school)
+                     .published
+                     .in_the_future
     end
 
     def school_management_query
       common_filter do
-        kept_offers_query.in_the_future
-                         .published
-                         .ignore_internship_restricted_to_other_schools(school_id: user.school_id)
+        kept_published_future_offers_query.ignore_internship_restricted_to_other_schools(
+          school_id: user.school_id
+        )
       end
     end
 
     def school_members_query
       @params = implicit_conditions(params: @params, user: user)
-      school_management_query
+      school_management_query.ignore_already_applied(user: user)
     end
 
     def statistician_query
-      god_query.tap do |query|
+      visitor_query.tap do |query|
         query.merge(query.limited_to_department(user: user)) if user.department
       end
     end
 
     def ministry_statistician_query
-      god_query.limited_to_ministry(user: user)
+      visitor_query.limited_to_ministry(user: user)
     end
 
     def visitor_query
-      common_filter { kept_offers_query.in_the_future.published }
+      common_filter { kept_published_future_offers_query}
     end
 
     def implicit_conditions(params: , user: )

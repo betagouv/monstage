@@ -4,10 +4,11 @@ module Dto
   # adapt api params to model
   class ApiParamsAdapter
     def sanitize
+      check_street
+      check_zipcode
       map_sector_uuid_to_sector
       map_week_slugs_to_weeks
       assign_offer_to_current_api_user
-      check_street
       params
     end
 
@@ -28,7 +29,8 @@ module Dto
     end
 
     def map_week_slugs_to_weeks
-      if params.key?(:weeks)
+      # if params[:weeks] is empty, validation error will be raised when persisting
+      if params.key?(:weeks) && params[:weeks].present?
         concatenated_query = nil
         Array(params.delete(:weeks)).map do |week_str|
           year, number = week_str.split('-W')
@@ -52,6 +54,13 @@ module Dto
     def check_street
       if params[:street].blank? && params[:coordinates].present?
         params[:street] = Geofinder.street(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
+      end
+      params
+    end
+
+    def check_zipcode
+      if params[:zipcode].blank? && params[:coordinates].present?
+        params[:zipcode] = Geofinder.zipcode(params[:coordinates]['latitude'], params[:coordinates]['longitude']) || 'N/A'
       end
       params
     end

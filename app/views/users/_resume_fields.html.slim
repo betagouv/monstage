@@ -24,28 +24,35 @@
             small.form-text.text-muted Langues étudiées et/ou parlées
           = form.rich_text_area :resume_languages, class: 'form-control col-12', disabled: disabled, rows: 3
 
-  fieldset class="#{phone_mail_disabled ? 'opacity-05' : ''} col-12 mb-4"
+  fieldset.col-12.mb-4
     legend.h3 Me contacter
     .row
-      .col-12.col-md-6
+      .col-12.col-md-6 class="#{phone_mail_disabled ? 'opacity-05' : ''}"
         .form-group
           = form.label :phone, for: 'phone-input', class: '' do
             = 'Numéro de mobile'
           = react_component("CountryPhoneSelect", props: { name: "#{form.object_name}[phone]", value: current_user.phone, disabled: phone_mail_disabled })
+          small.text-muted
+            | (+33 puis 06 11 22 33 44 par exemple)
       .col-12.col-md-6
         .form-group
           = form.label :email do
             = 'Adresse électronique (ex : mon@exemple.fr)'
+            = form.rg2a_required_content_tag
 
           - if current_user.unconfirmed_email.nil?
-            = form.email_field :email, class: 'form-control col-lg-12', required: !current_user.phone , readonly: phone_mail_disabled, disabled: phone_mail_disabled
+            = form.email_field :email, class: 'form-control col-lg-12', required: true
             small.form-text.text-muted.mb-1
               |Renseignez votre adresse électronique afin que l'employeur puisse vous recontacter
           - else
-            = form.email_field :unconfirmed_email, class: 'form-control col-lg-12', readonly: true, disabled: true
+            = form.email_field :unconfirmed_email,
+                               class: 'form-control col-lg-12',
+                               readonly: current_user.phone.blank?,
+                               disabled: current_user.phone.blank?
             small.form-text.mb-1
               |Cet email n'est pas encore confirmé : veuillez consulter vos emails
             = link_to "Vous n'avez pas reçu le message d'activation&nbsp;?".html_safe,
-                      new_user_confirmation_path(current_user, email: current_user.unconfirmed_email),
+                      new_user_confirmation_path(current_user,
+                                                 email: current_user.unconfirmed_email),
                       class: "small"
 

@@ -68,6 +68,7 @@ class InternshipApplicationsController < ApplicationController
           .permit(
             :motivation,
             student_attributes: %i[
+              email
               phone
               resume_educational_background
               resume_other
@@ -80,7 +81,7 @@ class InternshipApplicationsController < ApplicationController
     params.require(:internship_application)
           .permit(
             :type,
-            :internship_offer_week_id,
+            :week_id,
             :internship_offer_id,
             :internship_offer_type,
             :motivation,

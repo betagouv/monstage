@@ -23,7 +23,8 @@ module Dashboard::InternshipOffers
       employer = create(:employer)
       sign_in(employer)
       internship_offer = create(:weekly_internship_offer, employer: employer,
-                                                          max_candidates: 2)
+                                                          max_candidates: 2,
+                                                          max_students_per_group: 2)
       get edit_dashboard_internship_offer_path(internship_offer.to_param)
       assert_select "#internship_offer_max_candidates[value=#{internship_offer.max_candidates}]", count: 1
 
@@ -45,7 +46,8 @@ module Dashboard::InternshipOffers
         sign_in(employer)
         internship_offer = create(:weekly_internship_offer, weeks: [first_week],
                                                             employer: employer,
-                                                            max_candidates: 2)
+                                                            max_candidates: 2,
+                                                            max_students_per_group: 2)
         get edit_dashboard_internship_offer_path(internship_offer.to_param)
         assert_response :success
       end
@@ -67,7 +69,7 @@ module Dashboard::InternshipOffers
       internship_application = create(:weekly_internship_application,
                                       :submitted,
                                       internship_offer: internship_offer,
-                                      internship_offer_week: internship_offer.internship_offer_weeks[0])
+                                      week: internship_offer.internship_offer_weeks[0].week)
 
       travel_to(weeks.first.week_date - 1.week) do
         get edit_dashboard_internship_offer_path(internship_application.internship_offer.to_param)
@@ -78,15 +80,10 @@ module Dashboard::InternshipOffers
           assert_select 'label', text: week.select_text_method
         end
 
-        assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[0].week_id}_checkbox[disabled='disabled']",
-                      { count: 1 },
-                      "internship_application week should not be selectable")
-        assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[0].week_id}_hidden",
-                      { count: 1 })
-
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}[disabled='disabled']",
                       { count: 0 },
                       "other week should not be not selectable")
+
         assert_select("input#internship_offer_week_ids_#{internship_offer.internship_offer_weeks[1].week_id}_checkbox",
                       { count: 1 },
                       "other week should be selectable")

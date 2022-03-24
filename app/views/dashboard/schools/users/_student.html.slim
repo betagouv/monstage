@@ -5,8 +5,8 @@ tr class="d-flex test-student-#{student.id}"
     .row.no-gutters
       .col-9.col-sm-12
         h3.h6.mb-0
-          .d-none.d-sm-block= link_to Presenters::User.new(student).short_name, dashboard_students_internship_applications_path(student), class: 'small'
-          .d-block.d-sm-none= Presenters::User.new(student).short_name
+          .d-none.d-sm-block= link_to student.presenter.short_name, dashboard_students_internship_applications_path(student), class: 'small'
+          .d-block.d-sm-none= student.presenter.short_name
       .col-3.d-sm-none.text-right= link_to "Voir le détail", dashboard_students_internship_applications_path(student), class: 'small'
 
   td.col-2.d-flex.align-items-center data-head="Confirmé" class="student_confirmed"
@@ -20,7 +20,7 @@ tr class="d-flex test-student-#{student.id}"
         small
           i.far.fa-square.fa-stack-2x
 
-  td.col-2.align-items-center data-head="Cordée de réussite / Parcours d'excellenc" class="is_custom_track d-none d-flex"
+  td.col-2.align-items-center.is_custom_track.d-none.d-flex data-head="Cordée de réussite / Parcours d'excellence"
     - if can?(:update, student) && student.custom_track?
       = link_to dashboard_school_user_path(school_id: student.school.id, id: student.id, user: { custom_track: false }), method: :patch, class: 'mx-1' do
         span.fa-stack

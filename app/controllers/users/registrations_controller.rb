@@ -22,15 +22,16 @@ module Users
     # end
     def confirmation_standby
       flash.delete(:notice)
-      @confirmable_user = User.where(email: params[:email]).first if params[:email].present?
+      @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
       @confirmable_user ||= nil
     end
+    alias confirmation_phone_standby confirmation_standby
 
-    def confirmation_phone_standby
-      flash.delete(:notice)
-      @confirmable_user = User.where(phone: params[:phone]).first if params[:phone].present?
-      @confirmable_user ||= nil
-    end
+    # def confirmation_phone_standby
+    #   flash.delete(:notice)
+    #   @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
+    #   @confirmable_user ||= nil
+    # end
 
     def resource_class
       UserManager.new.by_params(params: params)
@@ -58,18 +59,21 @@ module Users
       return current_user.channel unless current_user.nil?
       return :email unless params[:as] == 'Student'
 
-      ab_test(:subscription_channel_experiment) do |chan|
-        chan == 'phone' ? :phone : :email
-      end
+      :email
     end
 
     # POST /resource
     def create
+      if params.dig(:user, :phone) && fetch_user_by_phone && @user
+        redirect_to(
+          new_user_session_path(phone: fetch_user_by_phone.phone),
+          flash: { danger: I18n.t('devise.registrations.reusing_phone_number')}
+        ) and return
+      end
       clean_phone_param
       super do |resource|
         resource.targeted_offer_id ||= params.dig(:user, :targeted_offer_id)
         @current_ability = Ability.new(resource)
-        ab_finished(:subscription_channel_experiment)
       end
     end
 
@@ -121,6 +125,7 @@ module Users
       devise_parameter_sanitizer.permit(
         :sign_up,
         keys: %i[
+          id
           type
           first_name
           last_name
@@ -152,11 +157,11 @@ module Users
     # The path used after sign up for inactive accounts.
     def after_inactive_sign_up_path_for(resource)
       if resource.phone.present?
-        options = { phone: resource.phone }
+        options = { id: resource.id }
         options = options.merge({ as: 'Student'}) if resource.student?
         users_registrations_phone_standby_path(options)
       else
-        users_registrations_standby_path(email: resource.email)
+        users_registrations_standby_path(id: resource.id)
       end
     end
   end

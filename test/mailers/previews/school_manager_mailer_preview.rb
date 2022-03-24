@@ -5,6 +5,14 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
                                    member: fetch_teacher)
   end
 
+  def agreement_creation_school_manager_notice_email
+    SchoolManagerMailer.agreement_creation_notice_email(
+      internship_agreement: InternshipAgreement.first
+    )
+  end
+
+
+
   private
 
   def school_manager

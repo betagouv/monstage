@@ -2,7 +2,7 @@
   header.bg-cover-image-homepage.container-xl
     .row.py-3.py-sm-3.px-md-5.px-sm-4.px-2
       .col.px-0
-        = render 'layouts/navbar_home'
+        = render 'pages/home/navbar_home'
 
     .row.no-gutters
       .col-lg-6.col-md-12
@@ -33,7 +33,7 @@
                               default_values: user_presenter.default_search_options,
                               form_id: :home_search_form }
     .actions.d-flex.d-stick.d-md-none.p-2
-      = link_to internship_offers_path(current_user_or_visitor.default_search_options),
+      = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])),
                 class: 'btn btn-danger rounded-sm',
                 data: { :"test-id" => 'mobile-search-button' }
         = "Rechercher un stage"

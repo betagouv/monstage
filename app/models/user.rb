@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require 'sti_preload'
 class User < ApplicationRecord
+
+  include StiPreload
   include Discard::Model
   include UserAdmin
+  include ActiveModel::Dirty
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
@@ -45,10 +49,6 @@ class User < ApplicationRecord
   delegate :url_helpers, to: :routes
 
   MAX_DAILY_PHONE_RESET = 3
-
-  def self.drh
-    Users::Employer.where(email: 'drh@betagouv.fr').first
-  end
 
   def channel
     return :phone if phone.present?
@@ -122,18 +122,6 @@ class User < ApplicationRecord
     ]
   end
 
-  def gender_text
-    return '' if gender.blank? || gender.eql?('np')
-    return 'Madame' if gender.eql?('f')
-    return 'Monsieur' if gender.eql?('m')
-
-    ''
-  end
-
-  def formal_name
-    "#{gender_text} #{first_name.try(:capitalize)} #{last_name.try(:capitalize)}"
-  end
-
   def email_domain_name
     self.email.split('@').last
   end
@@ -180,6 +168,8 @@ class User < ApplicationRecord
   end
 
   def formatted_phone
+    return if phone.blank?
+
     phone[0..4].gsub('0', '') + phone[5..]
   end
 
@@ -187,7 +177,8 @@ class User < ApplicationRecord
     return unless phone.present?
 
     create_phone_token
-    SendSmsJob.perform_later(self)
+    message = "Votre code de validation : #{self.phone_token}"
+    SendSmsJob.perform_later(user: self, message: message)
   end
 
   def create_phone_token
@@ -234,8 +225,7 @@ class User < ApplicationRecord
       generate_confirmation_token!
     end
     if add_email_to_phone_account?
-      devise_mailer.add_email_instructions(self)
-                   .deliver_later
+      self.confirm
     else
       unless @skip_confirmation_notification
         devise_mailer.update_email_instructions(self, @raw_confirmation_token, { to: unconfirmed_email })
@@ -254,6 +244,10 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+
+  def presenter
+    Presenters::User.new(self)
+  end
 
 
   private

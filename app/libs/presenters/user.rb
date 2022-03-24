@@ -17,7 +17,24 @@ module Presenters
     end
 
     def formal_name
-      user.formal_name.to_s
+      "#{gender_text} #{user.first_name.try(:capitalize)} #{user.last_name.try(:capitalize)}"
+    end
+
+    def full_name_camel_case
+      "#{user.first_name} #{user.last_name}".upcase.gsub(' ', '_')
+    end
+
+    def civil_name
+      name = user.last_name.downcase.capitalize
+      user.gender == "m" ? "Monsieur #{name}}" : "Madame #{name}}"
+    end
+
+    def gender_text
+      return '' if user.gender.blank? || user.gender.eql?('np')
+      return 'Madame' if user.gender.eql?('f')
+      return 'Monsieur' if user.gender.eql?('m')
+
+      ''
     end
 
     def role_name

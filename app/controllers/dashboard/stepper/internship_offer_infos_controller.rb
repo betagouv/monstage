@@ -71,9 +71,12 @@ module Dashboard::Stepper
               :employer_id,
               :description_rich_text,
               :max_candidates,
+              :max_students_per_group,
               :school_track,
+              :weekly_lunch_break,
               weekly_hours: [],
               new_daily_hours: {},
+              daily_lunch_break: {},
               week_ids: []
               )
     end

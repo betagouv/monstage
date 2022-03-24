@@ -15,6 +15,11 @@
   height:13rem;
   float: left;
 }
+.title-with-button-line {
+  line-height: 4rem;
+  display: inline-block;
+  vertical-align: middle;
+}
 
 .remote-internship-mode img {
     -webkit-filter: hue-rotate(30deg) grayscale(33%) contrast(150%);
@@ -39,10 +44,31 @@
   }
 }
 
+.table th {
+  border: none !important;
+}
+
 tr a.trash-user{
   display: none;
 }
 
 tr:hover a.trash-user{
     display: inline;
+}
+
+.dark-grey {
+  color: $dark-grey !important;
+}
+
+.dark-notice {
+  background: $bg-light-blue 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #0000001A;
+  border-radius: 14px;
+}
+
+.btn .disabled {
+  background: $input-disabled-bg;
+  &:hover{
+    cursor: not-allowed;
+  }
 }

@@ -30,9 +30,10 @@ module Airtable
     # main job, with some safe stuffs
     def pull_all
       ActiveRecord::Base.transaction do
-        operator.air_table_records.destroy_all
-        table.all(view: "Reporting").map do |record|
-          import_record(record)
+        school_year = SchoolYear::Floating.new_by_year(year: ENV['AIRTABLE_OPEN_YEAR'].split('-').first.to_i)
+        operator.air_table_records.during_year(school_year: school_year).destroy_all # only destroy current year records
+        table.all(view: "Reporting_template").map do |record|
+          import_record(record) if belongs_to_open_airtable_year?(record)
         end
       end
     end
@@ -98,6 +99,10 @@ module Airtable
 
     def cast_department_name(value)
       Department::MAP[value.try(:first)]
+    end
+
+    def belongs_to_open_airtable_year?(record)
+      record["année"].first == ENV['AIRTABLE_OPEN_YEAR']
     end
 
     private

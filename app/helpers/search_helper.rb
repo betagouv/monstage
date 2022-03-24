@@ -1,10 +1,11 @@
 module SearchHelper
-  def list_months_range
-     year_start = list_months_for_search.values
-                                        .flatten
-                                        .first
-                                        .year
-    "#{year_start} - #{year_start + 1}"
+  def years_from_list_months_search
+    return Date.today.year if list_months_for_search.blank?
+    
+    list_months = list_months_for_search.values.flatten
+    year_start  = list_months.first.year
+    year_end    = list_months.last.year
+    year_start == year_end ? year_start : "#{year_start} - #{year_start + 1}"
   end
 
   def search_first_month?(month_i)

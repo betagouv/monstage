@@ -12,6 +12,7 @@ module Users
         where(type: InternshipApplications::WeeklyFramed.name)
       end
     end
+    has_many :internship_agreements, through: :internship_applications
 
     scope :without_class_room, -> { where(class_room_id: nil, anonymized: false) }
 
@@ -19,7 +20,15 @@ module Users
     has_rich_text :resume_other
     has_rich_text :resume_languages
 
-    delegate :school_track, to: :class_room, allow_nil: true
+    delegate :school_track,
+             :troisieme_generale?,
+             :troisieme_prepa_metiers?,
+             :troisieme_segpa?,
+             to: :class_room,
+             allow_nil: true
+    delegate :school_manager,
+             to: :school
+
     validates :birth_date,
               :gender,
               presence: true
@@ -68,7 +77,7 @@ module Users
       if targeted_offer_id.present?
         url_helpers.internship_offer_path(id: canceled_targeted_offer_id)
       else
-        Presenters::User.new(self).default_internship_offers_path
+        presenter.default_internship_offers_path
       end
     end
 
@@ -84,6 +93,14 @@ module Users
       'resume'
     end
 
+    def school_manager_email
+      school_manager&.email
+    end
+
+    def main_teacher_email
+      main_teacher&.email
+    end
+
     def expire_application_on_week(week:, keep_internship_application_id:)
       internship_applications
         .where(aasm_state: %i[approved submitted drafted])
@@ -91,6 +108,14 @@ module Users
         .weekly_framed
         .select { |application| application.week.id == week.id }
         .map(&:expire!)
+    end
+
+    def main_teacher
+      return nil if try(:class_room).nil?
+
+      class_room.school_managements
+                &.main_teachers
+                &.first
     end
 
     def anonymize(send_email: true)

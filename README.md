@@ -70,10 +70,7 @@ As a public french service, we try to keep most data hosted by french service pr
 * API: Address autocomplete: [geo.api.gouv.fr/adresse](https://geo.api.gouv.fr/adresse)
 
 ### Tooling
-* Infra management with elatic stack
- * Bug monitoring solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/errors?rangeFrom=now-1M&rangeTo=now&environment=production)
- * Log management solution: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/logs/stream?flyoutOptions=(flyoutId:!n,flyoutVisibility:hidden,surroundingLogsId:!n)&logPosition=(end:now-1d,position:(tiebreaker:3412,time:1616757222970),start:%272021-03-26T10:13:42.970Z%27,streamLive:!f))
- * APM: [elastic stack](https://kibana-bznywn4anyloozkg0yqk-elasticsearch.services.clever-cloud.com/app/apm/services/Monstage/transactions?rangeFrom=now-24h&rangeTo=now&environment=production&transactionType=request)
+* Infra management
 * Mail: [mailjet](https://mailjet.com)
 * Monit [monit](monit.monstagedetroisieme.fr) : website up/down (pingdom like)
 
@@ -103,6 +100,11 @@ foreman start -f Procfile.dev
 * **ensure we are not commiting a broken circle ci config file** : ``` cp ./infra/dev/pre-commit ./.git/hooks/ ```
 * mail should be opened automatically by letter opener
 
+### Previews
+
+* [mailers](http://localhost:3000/rails/mailers)
+* [view_components](http://localhost:3000/rails/view_components)
+
 ### Etapes de travail jusqu'au merge dans staging
 
 - (staging) $ ```git checkout -b mabranche``` # donc creer sa feature branch
@@ -120,6 +122,13 @@ Ainsi, on peut faire des hotfixes à merger directement sur master
 Références:
 - https://git-scm.com/docs/git-rebase (git-rebase - Reapply commits on top of another base tip)
 - https://git-scm.com/docs/git-pull (donc ca combine fetch / git merge. avec le --rebase : fetch+rebase)
+
+#### Hotfixes, les étapes
+
+- Développer son fix sur une branche, merger sur master
+- déployer master avec `./infra/production/deploy.sh`
+- merger master sur staging une fois le fix constaté
+- pousser staging sur github
 
 ## test
 
@@ -225,9 +234,26 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 
 ## production app : [www.monstagedetroisieme.fr](https://www.monstagedetroisieme.fr)
 
-* push on production can be done manually using ```infra/production/deploy.sh```
+* git checkout staging
+* git pull
+* git checkout master
+* git pull
+* git merge staging
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+
+
 * see other tools in ```infra/production/*.sh``` (logs, console...)
 
+### hotfix
+
+* git checkout master
+* git pull
+* git merge Hotfix-PR-branch
+* git push
+* push on production can be done manually using ```./infra/production/deploy.sh```
+* git checkout staging
+* git merge master
 
 # disaster recovery plan
 

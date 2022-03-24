@@ -37,6 +37,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal '127.0.0.1', student.current_sign_in_ip
     assert_not_equal '127.0.0.1', student.last_sign_in_ip
     assert_not_equal '01/01/2000', student.birth_date
+
+    assert_equal 'm', student.gender
+    assert_equal class_room.id, student.class_room_id
     assert_not_equal 'Zer', student.resume_educational_background
     assert_not_equal 'chocolat', student.resume_other
     assert_not_equal 'chocolat', student.resume_languages
@@ -184,11 +187,21 @@ class UserTest < ActiveSupport::TestCase
 
   test 'user adds email' do
     student = create(:student, email: nil, phone: '+330611223344')
-    mock_mail = MiniTest::Mock.new
-    mock_mail.expect(:deliver_later, true)
-    CustomDeviseMailer.stub :add_email_instructions, mock_mail do
-      student.update(email: 'myemail@mail.com')
-    end
-    mock_mail.verify
+    student.update(email: 'myemail@mail.com')
+    assert true, student.confirmed?
+  end
+
+  test '#formatted_phone' do
+    user = build(:student)
+    phone = user[:phone]
+    assert_nil user.formatted_phone
+
+    user = build(:student, phone: '+330123654789')
+    phone = user[:phone]
+    assert_equal '+33123654789', user.formatted_phone
+
+    user = build(:student, phone: '')
+    phone = user[:phone]
+    assert_nil user.formatted_phone
   end
 end

@@ -9,11 +9,10 @@ module Builders
       internship_agreement = InternshipAgreement.new(
         {}.merge(preprocess_student_to_params(internship_application.student))
           .merge(preprocess_internship_offer_params(internship_application.internship_offer))
-          .merge(preprocess_internship_application_paramns(internship_application))
+          .merge(preprocess_internship_application_params(internship_application))
+          .merge(preprocess_internship_agreement_preset(internship_application))
       )
       internship_agreement.internship_application = internship_application
-      internship_agreement.terms_rich_text.body = "<div>#{InternshipAgreement::CONVENTION_LEGAL_TERMS}</div>"
-      internship_agreement.financial_conditions_rich_text.body = internship_application.student.school.agreement_conditions_rich_text.body || "<div>#{InternshipAgreement::CONVENTION_FINANCIAL_TERMS}</div>"
       internship_agreement
     end
 
@@ -55,33 +54,49 @@ module Builders
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
       return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
+      return { skip_validations_for_system: true } if user.is_a?(Users::God)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
 
-    def preprocess_internship_application_paramns(internship_application)
+    def preprocess_internship_application_params(internship_application)
       {
         date_range: internship_application.week.short_select_text_method
       }
     end
 
+    def preprocess_internship_agreement_preset(internship_application)
+      internship_agreement_preset = internship_application.student.school.internship_agreement_preset
+
+      params = {
+        school_delegation_to_sign_delivered_at: internship_agreement_preset.school_delegation_to_sign_delivered_at,
+        legal_terms_rich_text: internship_agreement_preset.legal_terms_rich_text.body,
+        complementary_terms_rich_text: internship_agreement_preset.complementary_terms_rich_text.body
+      }
+      params[:activity_rating_rich_text] = internship_agreement_preset.troisieme_generale_activity_rating_rich_text if internship_application.student.class_room.try(:troisieme_generale?)
+      params
+    end
+
     def preprocess_internship_offer_params(internship_offer)
       {
-        organisation_representative_full_name: internship_offer.employer_name,
+        organisation_representative_full_name: internship_offer.employer.presenter.full_name,
         tutor_full_name: internship_offer.tutor_name,
         activity_scope_rich_text: internship_offer.title,
         activity_preparation_rich_text: internship_offer.description_rich_text.body,
         new_daily_hours: internship_offer.new_daily_hours,
         weekly_hours: internship_offer.weekly_hours,
+        daily_lunch_break: internship_offer.daily_lunch_break,
+        weekly_lunch_break: internship_offer.weekly_lunch_break,
       }
     end
 
     def preprocess_student_to_params(student)
       {
         student_school: "#{student.school} à #{student.school.city} (Code UAI: #{student.school.code_uai})",
-        school_representative_full_name: student.school.school_manager.name,
+        school_track: student.school_track || 'troisieme_generale',
+        school_representative_full_name: student.school_manager.name,
         student_full_name: student.name,
         student_class_room: student.class_room.try(:name),
-        main_teacher_full_name: student.class_room.school_managements.main_teachers.first.try(:name)
+        main_teacher_full_name: student.class_room ? student.class_room.school_managements.main_teachers.first.try(:name) : 'N/A'
       }
     end
 

@@ -23,10 +23,15 @@
           button type="button" class="close" data-dismiss="modal" aria-label="Close"
             span aria-hidden="true" &times;
 
-        .modal-body.px-4.py-0
-          = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
+        - unless message.blank?
+          .px-4.py-0
+            p= message
+
+        - if rich_text
+          .modal-body.px-4.py-0
+            = f.rich_text_area aasm_notifier.assigned_rich_text_attribute
 
         .modal-footer.actions
 
-          = f.submit class: 'btn btn-primary', value: "Confirmer"
+          = f.submit "Confirmer", class: 'btn btn-primary'
           button type="button" class="btn btn-outline-primary" data-dismiss="modal" Annuler

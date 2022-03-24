@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :internship_offer, aliases: %i[with_public_group_internship_offer] do
     sequence(:title) { |n| "Stage de 3è - #{n}" }
     max_candidates { 1 }
+    max_students_per_group { 1 }
     blocked_weeks_count { 0 }
     sector { create(:sector) }
     tutor_name { 'Eric Dubois' }
@@ -76,6 +77,10 @@ FactoryBot.define do
 
     trait :discarded do
       discarded_at { Time.now }
+    end
+
+    trait :unpublished do
+      after(:create) { |offer| offer.update(published_at: nil) }
     end
 
     trait :with_private_employer_group do

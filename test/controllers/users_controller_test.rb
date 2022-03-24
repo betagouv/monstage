@@ -138,6 +138,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="user[email]"][readonly="readonly"]'
   end
 
+  test 'PATCH edit as employer, updates banners' do
+    employer = create(:employer, banners:{})
+    sign_in(employer)
+
+    assert_changes -> { employer.reload.banners.key?("background") } do
+      patch(account_path, params: { user: { banners: { background: true }}})
+      assert_response :found
+    end
+  end
+
   test 'PATCH edit as student, updates resume params' do
     student = create(:student)
     sign_in(student)
@@ -161,22 +171,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
   end
 
-  test 'sentry#1823543902 PATCH edit as student registered by phone, add an email' do
+  test 'PATCH edit as student registered by phone, add an email' do
     destination_email = 'origin@to.com'
     student = create(:student, email: nil, phone: '+330637607756')
     sign_in(student)
-    assert_enqueued_email_with(
-      CustomDeviseMailer,
-      :add_email_instructions,
-      args: [student]
-    ) do
-        patch(account_path, params: {
-              user: {
-                email: destination_email,
-              }
-            })
-        assert_redirected_to account_path
-    end
+    
+    patch(account_path, params: { user: { email: destination_email } })
+
+    assert_redirected_to account_path
+    student.reload
+    assert true, student.confirmed?
   end
 
   test 'PATCH edit as student cannot nullify his email' do
@@ -222,7 +226,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Jules', school_manager.first_name
     assert_equal 'Verne', school_manager.last_name
     follow_redirect!
-    assert_select '#alert-success #alert-text', { text: 'Compte mis à jour avec succès.' }, 1
+    assert_select '#alert-success #alert-text', { text: 'Etablissement mis à jour avec succès.' }, 1
   end
 
   test 'PATCH edit as student can change class_room_id' do

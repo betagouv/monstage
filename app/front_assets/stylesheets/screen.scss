@@ -31,6 +31,7 @@
 @import './components/search';
 @import './components/sticky_alert';
 @import './components/sticky_buttons';
+@import './components/sticky_footer';
 @import './components/sticky_table_head';
 @import './components/svg';
 @import './components/table';
@@ -45,7 +46,8 @@
 @import './pages/internship_agreements';
 @import './pages/dashboard';
 @import './pages/statistiques';
+@import './pages/error';
 
-
+@import 'app/components/user_hideable_component.scss';
 @import 'trix';
 

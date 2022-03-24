@@ -43,15 +43,12 @@
       <% end %>
     </div>
     <footer role="contentinfo" >
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3"  data-controller='footer'>
+      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3 <%= agreement_form? ? 'd-none' : '' %>"  data-controller='footer'>
         <div class="container">
           <%= render 'layouts/footer' %>
         </div>
       </div>
     </footer>
-    <% if user_signed_in? %>
-      <%= render partial: 'dashboard/schools/notice_school_manager', locals: { school: current_user.school } if current_user.is_a?(Users::SchoolManagement) && !current_user.school.has_weeks_on_current_year? %>
-    <% end %>
     <% if Rails.env.development? %>
       <script>
         console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")

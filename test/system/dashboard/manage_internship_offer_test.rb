@@ -13,7 +13,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     find(:xpath, "//trix-editor[@id='#{id}']").click.set(with)
   end
 
-  test 'can edit internship offer' do
+  test 'Employer can edit internship offer' do
     employer = create(:employer)
     internship_offer = create(:weekly_internship_offer, employer: employer)
     sign_in(employer)
@@ -25,7 +25,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert /NewCompany/.match?(internship_offer.reload.employer_name)
   end
 
-  test 'can edit school_track of an internship offer back and forth' do
+  test 'Employer can edit school_track of an internship offer back and forth' do
     employer = create(:employer)
     internship_offer = create(:troisieme_segpa_internship_offer, employer: employer)
     internship_offer_id = internship_offer.id
@@ -51,10 +51,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     assert_equal 'editok', internship_offer.title
   end
 
-  test 'employer can see which week is choosen by nearby schools on edit' do
+  test 'Employer can see which week is choosen by nearby schools on edit' do
     employer = create(:employer)
-
-
     sign_in(employer)
     travel_to(Date.new(2019, 3, 1)) do
       week_with_school = Week.find_by(number: 10, year: Date.today.year)
@@ -68,7 +66,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'can discard internship_offer' do
+  test 'Employer can discard internship_offer' do
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
@@ -85,7 +83,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     end
   end
 
-  test 'can publish/unpublish internship_offer' do
+  test 'Employer can publish/unpublish internship_offer' do
     employer = create(:employer)
     internship_offers = [
       create(:weekly_internship_offer, employer: employer),
@@ -111,7 +109,8 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
   test 'Employer can change max candidates parameter back and forth' do
     employer = create(:employer)
-    internship_offer = create(:weekly_internship_offer, employer: employer)
+    weeks = Week.selectable_from_now_until_end_of_school_year.last(4)
+    internship_offer = create(:weekly_internship_offer, employer: employer, weeks: weeks)
     assert_equal 1, internship_offer.max_candidates
     sign_in(employer)
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
@@ -119,17 +118,24 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
     click_link("Modifier")
     find('label[for="internship_type_false"]').click # max_candidates can be set to many now
     within('.form-group-select-max-candidates') do
-      fill_in('Nombre de stagiaires maximum par groupe', with: 20)
+      fill_in('Nombre total d\'élèves que vous souhaitez accueillir sur l\'année scolaire', with: 4)
     end
+    execute_script("document.getElementById('internship_offer_max_students_per_group').value = '2';")
     click_button('Modifier l\'offre')
-    assert_equal 20, internship_offer.reload.max_candidates
+    assert_equal 4,
+                internship_offer.reload.max_candidates,
+                'faulty max_candidates'
+    assert_equal 2,
+                internship_offer.max_students_per_group,
+                'faulty max_students_per_group'
 
     visit dashboard_internship_offers_path(internship_offer: internship_offer)
     page.find("a[data-test-id=\"#{internship_offer.id}\"]").click
     click_link("Modifier")
     find('label[for="internship_type_true"]').click
     click_button('Modifier l\'offre')
-    assert_equal 1, internship_offer.reload.max_candidates
+    assert_equal 4, internship_offer.reload.max_candidates
+    assert_equal 1, internship_offer.reload.max_students_per_group
   end
 
   test 'Employer cannot change type if applications are associated' do
@@ -213,7 +219,7 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       io.reload
 
       # 2020-21
-      create(:weekly_internship_application, :approved, internship_offer: target_offer)
+      application = create(:weekly_internship_application, :approved, internship_offer: target_offer)
 
       sign_in(employer)
       visit dashboard_internship_offers_path
@@ -232,15 +238,14 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       find('.nav-link.active', text: "Dépubliées (0)")
 
       select('2019/2020')
-      find('.nav-link.active', text: "Dépubliées (1)")
-
-      if ENV['CONVENTION_ENABLED']
-        page.find("a[href=\"/dashboard/internship_applications\"]", text: 'Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-        click_link('Conventions à signer')
-        page.find("a[href=\"/dashboard/internship_applications\"] > div.my-auto > span.red-notification-badge", text: '1')
-      end
+      assert page.has_css?('p.internship-item-title.mb-0', count: 1)
+      assert_text('2019/2020 unpublished')
+      select('2020/2021')
+      assert page.has_css?('p.internship-item-title.mb-0', count: 0)
+      page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
+      click_link('Conventions de stage')
+      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
     end
   end
-
 end
