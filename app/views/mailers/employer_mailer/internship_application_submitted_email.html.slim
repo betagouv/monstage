@@ -2,7 +2,7 @@ p style=head_styles
   = "Vous avez une nouvelle candidature !"
 
 p style=p_styles
-  = "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.formal_name} vous a adressé une candidature."
+  = "Nous avons le plaisir de vous signifier que l'élève #{@internship_application.student.presenter.formal_name} vous a adressé une candidature."
 
 - if @internship_application.student.handicap.present?
   p style=p_styles

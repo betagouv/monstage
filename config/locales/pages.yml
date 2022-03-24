@@ -67,10 +67,12 @@ fr:
       index:
         page_title: "Conventions de stage"
     internship_agreements:
+      index:
+        page_title: 'Mes conventions de stage'
       new:
         page_title: 'Nouvelle convention de stage'
       edit:
-        page_title: "Edition de la convention de stage pour %{name}"
+        page_title: "Edition de la convention de stage"
     support_tickets:
       new:
         page_title: "Demande de stage à distance"
@@ -118,9 +120,12 @@ fr:
     internship_offers:
       index:
         page_title: "Statistiques des offres"
+      employers_offers:
+        page_title: Statistiques par catégories d'entreprises
     schools:
       index:
         page_title: "Statistiques sur les établissements"
+    
   users:
     confirmations:
       new:

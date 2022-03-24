@@ -1,5 +1,7 @@
 module Presenters
   class Statistician
+    include Humanable
+
     def profile_filters
       {
         dashboard: {
@@ -48,10 +50,10 @@ module Presenters
     end
 
     private
-    attr_reader :statistician
+    attr_reader :user
 
     def initialize(statistician)
-      @statistician = statistician
+      @user = statistician
     end
   end
 end

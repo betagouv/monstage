@@ -3,8 +3,8 @@
 module Acl
   class InternshipOfferDashboard
     def allowed?
-      return true if user.is_a?(Users::Employer)
-      return true if user.is_a?(Users::Operator)
+      return true if user.employer?
+      return true if user.operator?
 
       false
     end

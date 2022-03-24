@@ -1,6 +1,6 @@
 .form-group.mb-md-0.col-12.col-md-2
   .almost-fitting
-    = f.label :school_track, class: "fr-label", for: 'input-search-school-track' do
+    = f.label :school_track, class: "#{white_bg ? 'fr-label' : 'font-weight-light'}", for: 'input-search-school-track' do
       | Filières
     = f.select :school_track,
                 options_for_select(options_for_school_tracks, default_values[:school_track]),
@@ -10,7 +10,7 @@
 
 .form-group.mb-md-0.col-12.col-md [data-search-popover-target="searchByDateContainer"
                                   data-search-school-track-select-target="searchByDateContainer"]
-  label.fr-label Dates de stage
+  label class="#{white_bg ? 'fr-label' : 'font-weight-light'}" Dates de stage
 
   input.fr-input.almost-fitting.label.my-0 [data-search-school-track-select-target='inputPlaceholder'
     data-action='focus->search-popover#show'

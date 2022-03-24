@@ -19,6 +19,8 @@ module Users
       end
     end
 
+    def operator? ; true end
+
     def custom_dashboard_path
       url_helpers.dashboard_internship_offers_path
     rescue ActionController::UrlGenerationError
@@ -28,6 +30,8 @@ module Users
     def dashboard_name
       'Mes offres'
     end
+
+    def operator? ; true end
 
     def presenter
       Presenters::Operator.new(self)

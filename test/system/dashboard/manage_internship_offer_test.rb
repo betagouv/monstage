@@ -226,16 +226,16 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
 
       refute page.has_css?('.school_year')
       click_link('Passées')
-      find('.fr-link.active', text: "Passées (2)")
+      find('.active', text: "Passées (2)")
 
       select('2019/2020')
-      find('.fr-link.active', text: "Passées (2)")
+      find('.active', text: "Passées (2)")
 
       select('2020/2021')
-      find('.fr-link.active', text: "Passées (0)")
+      find('.active', text: "Passées (0)")
 
       click_link('Dépubliées')
-      find('.fr-link.active', text: "Dépubliées (0)")
+      find('.active', text: "Dépubliées (0)")
 
       select('2019/2020')
       assert page.has_css?('p.internship-item-title.mb-0', count: 1)
@@ -243,9 +243,9 @@ class ManageInternshipOffersTest < ApplicationSystemTestCase
       select('2020/2021')
       assert page.has_css?('p.internship-item-title.mb-0', count: 0)
       page.find("a[href=\"/dashboard/internship_agreements\"]", text: 'Mes Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
+      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
       click_link('Conventions de stage')
-      page.find("a[href=\"/dashboard/internship_agreements\"] > span.badge-danger", text: '1')
+      page.find("a[href=\"/dashboard/internship_agreements\"] ", text: '1')
     end
   end
 end

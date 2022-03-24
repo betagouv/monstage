@@ -1,5 +1,7 @@
 module Presenters
   class God
+    include Humanable
+
     def profile_filters
       {
         dashboard: {
@@ -44,10 +46,10 @@ module Presenters
     end
 
     private
-    attr_reader :god
+    attr_reader :user
 
     def initialize(god)
-      @god = god
+      @user = god
     end
   end
 end

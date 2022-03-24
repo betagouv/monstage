@@ -1,5 +1,5 @@
 Ajout de votre adresse électronique (e-mail).
 
-<%= "Bonjour #{@resource.formal_name}, nous venons de recevoir une demande d'ajout d'adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr." %>
+<%= "Bonjour #{@resource.presenter.formal_name}, nous venons de recevoir une demande d'ajout d'adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr." %>
 
 Pour qu'elle soit prise en compte, veuillez cliquer sur le lien suivant : <%= confirmation_url(@resource, confirmation_token: @token) %>
