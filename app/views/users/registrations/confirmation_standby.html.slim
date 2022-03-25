@@ -3,7 +3,7 @@
 .onboarding-card.onboarding-card-lg.mb-4
   header.header-account
 
-  - if !@confirmable_user
+  - if !@confirmable_user && user&.email.present?
     p.alert.alert-danger
       = "Aucun compte n'est lié au mail: #{user.email}."
       br
