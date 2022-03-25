@@ -1,6 +1,6 @@
 module EmailUtils
   def self.from
-    return "support@herokuapp.com" if Rails.env.review?
+    return "support@monstagedetroisieme.fr" if Rails.env.review?
 
     host_or_default = ENV.fetch('HOST') { 'https://test.example.com' }
     domain_without_www = URI(host_or_default).host.gsub('www.', '')
