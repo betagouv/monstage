@@ -1,7 +1,7 @@
-.row.my-3 [data-controller="internship-application-index"
+.row.my-3.no-gutters [data-controller="internship-application-index"
            data-test-id="internship-application-#{internship_application.id}"]
-  .col.bg-light.pb-3.ml-3.pl-5.py-3
-    .row.internship_application.bg-light
+  .col.pl-5.fr-py-5w.fr-px-3w.bg-light-grey
+    .row.internship_application
       .col-sm-8.col-xs-12.text-left.d-flex.align-items-center
         a [class="d-block fr-raw-link fr-mr-1w fr-ml-n1w"
            href="#internship-application-#{internship_application.id}"
@@ -41,8 +41,8 @@
 
     .row.no-gutters
       .col-10
-        a class="btn-link #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
-          | Tout afficher +
+        a class="btn-link fr-raw-link #{internship_application.submitted? ? 'd-none' : ''}" href="#internship-application-#{internship_application.id}" data-action="click->internship-application-index#toggle" data-internship-application-index-target="linkTextShowMore" data-turbolinks="false" title="Afficher le détail de la candidature de #{internship_application.student.name}"
+          | + Tout afficher
 
     .row.no-gutters.mt-2
       .col-10.collapsible data-internship-application-index-target="collapsible"

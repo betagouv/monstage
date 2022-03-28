@@ -1,8 +1,12 @@
 .bg-dark-light{
   background-color: #f8f8f8;
 }
-.fr-red-backgroud-btn {
-  background: $error-425;
+.fr-btn.fr-red-background-btn {
+  background: var(--background-action-high-red-marianne);
+
+  &:hover {
+    background-color: var(--background-action-high-red-marianne-hover);
+  }
 }
 
 .bg-light-warning{

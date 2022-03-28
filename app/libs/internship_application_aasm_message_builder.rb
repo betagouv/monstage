@@ -15,9 +15,9 @@ class InternshipApplicationAasmMessageBuilder
 
   MAP_TARGET_TO_BUTTON_COLOR = {
     approve!: '',
-    cancel_by_employer!: 'fr-red-backgroud-btn',
-    cancel_by_student!: 'fr-red-backgroud-btn',
-    reject!: 'fr-red-backgroud-btn'
+    cancel_by_employer!: 'fr-red-background-btn',
+    cancel_by_student!: 'fr-red-background-btn',
+    reject!: 'fr-red-background-btn'
   }.freeze
 
   def target_action_color

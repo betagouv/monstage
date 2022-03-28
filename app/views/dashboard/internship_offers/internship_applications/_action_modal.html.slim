@@ -1,9 +1,9 @@
 - aasm_notifier = internship_application.internship_application_aasm_message_builder(aasm_target: aasm_target)
 
 = button_tag type: "button",
-            data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': "false" },
-            aria: { controls: "#{modal_id}" },
-            class: "#{fa_icon} fr-btn mx-1 fr-btn--icon-left #{aasm_notifier.target_action_color}"
+             data: { toggle: 'modal', target: "##{modal_id}", 'fr-opened': "false" },
+             aria: { controls: "#{modal_id}" },
+             class: "#{fa_icon} fr-btn mx-1 fr-btn--icon-left #{aasm_notifier.target_action_color}"
   = modal_opener_label
 
 = form_with({ model: internship_application,
