@@ -91,15 +91,19 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: HOST }
 
+  # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/
   config.action_mailer.smtp_settings = {
     user_name: ENV['SMTP_USERNAME'],
     password: ENV['SMTP_PASSWORD'],
     domain: 'monstagedetroisieme.fr',
     address: ENV['SMTP_ADDRESS'],
-    port: 25,
+    port: 465,
     authentication: :plain,
     enable_starttls_auto: true
   }
+  
+  # remove following after may 1st 2022
+
   # response = RestClient.get "https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}"
   # first_inbox = JSON.parse(response)[0] # get first inbox
   # ActionMailer::Base.smtp_settings = {
@@ -114,7 +118,7 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-
+ # ----------------------------
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
