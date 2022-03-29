@@ -3,63 +3,72 @@ fieldset.mt-4 data-controller='organisation-form'
   .row.mt-3
     .col-12.col-md-6.order-md-1.order-2
       = form.rg2a_explain_required_asterisk
+      = form.hidden_field :manual_enter, value: false
 
       - if current_user.ministry_statistician?
         = render partial: "dashboard/stepper/organisations/form_ministry_statistician_specifics", locals: { form: form }
       - else
         = react_component("SirenInput", props: { resourceName: form.object_name, currentSiren: resource.siret })
+        #manual-input.bloc-tooggle.d-none
+          .form-group
+            = form.label :employer_name do
+              = "Nom de l’entreprise proposant l’offre"
+              = form.rg2a_required_content_tag
+
+            = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété', required: true, data: { "organisation-form-target": "organisationName" }
+          .form-group
+            = form.label :siret do
+              = "SIRET de l'entreprise"
+              = form.rg2a_required_content_tag
+
+            = form.text_field :siret, class: 'form-control', placeholder: 'Mon code SIRET', required: true, data: { "organisation-form-target": "organisationSiret" }
+          .form-group
+            .label
+              | Secteur
+              = form.rg2a_required_content_tag
+            .row
+              .col-8
+                .toggle-radio
+                  = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
+                  = form.label :is_public_true, 'Public', class: ''
+                  = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
+                  = form.label :is_public_false, 'Privé', class: ''
+
+          div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
+            = form.label :group_id, "Groupe ou Institution de tutelle", data: {:"organisation-form-target" => 'groupLabel'}
+            = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => 'selectGroupName'}
+
+      .bloc-tooggle.d-none
+        = react_component("AddressInput", props: { resourceName: form.object_name,
+                                currentStreet: resource.street,
+                                currentCity: resource.city,
+                                currentZipcode: resource.zipcode,
+                                currentLatitude: resource.coordinates.try(:lat).try(:to_f),
+                                currentLongitude: resource.coordinates.try(:lon).try(:to_f),
+                                currentFullAddress: resource.formatted_autocomplete_address})
         
+        .form-group data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
+          #label_organisation_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
+            | Description de l'entreprise (optionnel)
+          = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}
+          small.form-text data-maxlength-input-target="trixElementCharCount"
+
         .form-group
-          = form.label :employer_name do
-            = "Nom de l’entreprise proposant l’offre"
-            = form.rg2a_required_content_tag
-
-          = form.text_field :employer_name, class: 'form-control', placeholder: 'MaSociété', required: true, data: { "organisation-form-target": "organisationName" }
-        .form-group
-          .label
-            | Secteur
-            = form.rg2a_required_content_tag
-          .row
-            .col-8
-              .toggle-radio
-                = form.radio_button :is_public, true, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
-                = form.label :is_public_true, 'Public', class: ''
-                = form.radio_button :is_public, false, class: '', required: true, data: { action: 'change->organisation-form#handleClickIsPublic' }
-                = form.label :is_public_false, 'Privé', class: ''
-
-        div class="form-group form-group-select-group #{resource.is_public.nil? ? 'd-none' : ''}" data-organisation-form-target="groupBlock"
-          = form.label :group_id, "Groupe ou Institution de tutelle", data: {:"organisation-form-target" => 'groupLabel'}
-          = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => 'selectGroupName'}
-
-      = react_component("AddressInput", props: { resourceName: form.object_name,
-                              currentStreet: resource.street,
-                              currentCity: resource.city,
-                              currentZipcode: resource.zipcode,
-                              currentLatitude: resource.coordinates.try(:lat).try(:to_f),
-                              currentLongitude: resource.coordinates.try(:lon).try(:to_f),
-                              currentFullAddress: resource.formatted_autocomplete_address})
-      .form-group data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
-        #label_organisation_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
-          | Description de l'entreprise (optionnel)
-        = form.rich_text_area :employer_description_rich_text, class: "form-control col-lg-12", required: true, data: { :"maxlength-input-target" => 'trixElement' }, aria: {labelledby: 'label_organisation_description_rich_text'}
-        small.form-text data-maxlength-input-target="trixElementCharCount"
-
-      .form-group
-        = form.label :employer_website do
-          = 'Site web (optionnel)'
-          small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
-        = form.url_field :employer_website, class: 'form-control', placeholder: "https://"
-      - if submit_button
-        .mt-3
-          - if params[:internship_offer_info_id].present?
-            = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
-                      class: 'btn btn-primary' do
+          = form.label :employer_website do
+            = 'Site web (optionnel)'
+            small.form-text.text-muted Afin que l’élève puisse en apprendre plus sur son futur stage
+          = form.url_field :employer_website, class: 'form-control', placeholder: "https://"
+        - if submit_button
+          .mt-3
+            - if params[:internship_offer_info_id].present?
+              = link_to edit_dashboard_stepper_internship_offer_info_path(id: params[:internship_offer_info_id], internship_offer_info_id: params[:internship_offer_info_id], organisation_id: params[:organisation_id]),
+                        class: 'btn btn-primary' do
+                  ="Suivant "
+                  i.fas.fa-arrow-right
+            - else
+              = button_tag :submit, class: 'btn btn-primary' do
                 ="Suivant "
                 i.fas.fa-arrow-right
-          - else
-            = button_tag :submit, class: 'btn btn-primary' do
-              ="Suivant "
-              i.fas.fa-arrow-right
     - warning_block = true if warning_block.nil?
     - if warning_block
       .col-lg-6.col-md-12.order-md-2.order-1.employer 

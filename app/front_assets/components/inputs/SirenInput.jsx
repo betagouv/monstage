@@ -29,6 +29,18 @@ export default function SirenInput({
       });
   };
 
+  const searchCompanyByName = (name) => {
+    fetch(endpoints.searchCompanyByName({ name }))
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.etablissements !== undefined) {
+          setSearchResults(json.etablissements);
+        } else {
+          setSearchResults([])
+        }
+      });
+  };
+
   const searchCoordinatesByAddress = (fullAddress) => {
     fetch(endpoints.apiSearchAddress({ fullAddress }))
       .then((response) => response.json())
@@ -39,12 +51,32 @@ export default function SirenInput({
       });
   };
 
+  const openTooggle = (event) => {
+    event.preventDefault();
+    const blocs = document.querySelectorAll('.bloc-tooggle');
+    blocs.forEach(bloc => {
+      bloc.classList.remove('d-none');
+    });
+    document.getElementById('organisation_city').removeAttribute("readonly");
+    document.getElementById('organisation_zipcode').removeAttribute("readonly");
+    document.getElementById("organisation_manual_enter").value = true;
+  }
+
   useEffect(() => {
-    const cleanSiret = siret.replace(/\s/g, '');
-    if (cleanSiret.length === 14) {
-      searchCompanyBySiret(cleanSiret);
+    //  a number ?
+    if (/^(?=.*\d)[\d ]+$/.test(siret)) {
+      const cleanSiret = siret.replace(/\s/g, '');
+
+      if (cleanSiret.length === 14) {
+        searchCompanyBySiret(cleanSiret);
+      } else {
+        setSearchResults([]);
+      }
+    // a text 
     } else {
-      setSearchResults([]);
+      if (siret.length > 2) {
+        searchCompanyByName(siret);
+      }
     }
   }, [siret]);
 
@@ -54,6 +86,10 @@ export default function SirenInput({
       <div className="container-downshift">
         <Downshift
           onChange={selection => {
+            const blocs = document.querySelectorAll('.bloc-tooggle');
+              blocs.forEach(bloc => {
+                bloc.classList.remove('d-none');
+              });
             document.getElementById("organisation_employer_name").value = selection.uniteLegale.denominationUniteLegale;
             const zipcode = selection.adresseEtablissement.codePostalEtablissement;
             const city = selection.adresseEtablissement.libelleCommuneEtablissement;
@@ -63,11 +99,13 @@ export default function SirenInput({
             document.getElementById("organisation_street").value = street;
             document.getElementById("organisation_city").value = city;
             document.getElementById("organisation_zipcode").value = zipcode;
+            document.getElementById("organisation_siret").value = selection.siret;
             searchCoordinatesByAddress(fullAddress);
             }
           }
           itemToString={item => (item ? item.value : '')}
         >
+          
           {({
             getInputProps,
             getItemProps,
@@ -86,7 +124,7 @@ export default function SirenInput({
                   htmlFor: `${resourceName}_siret`,
                 })}
               >
-                Indiquez votre numéro Siret pour faciliter la saisie
+                Rechercher votre société dans l’Annuaire des Entreprises
               </label>
 
               <div className="form-group custom-label-container">
@@ -96,11 +134,15 @@ export default function SirenInput({
                       onChange: inputChange,
                       value: currentSiret,
                       className: 'form-control rounded-0',
-                      id: `${resourceName}_siret`,
-                      placeholder: '123 456 789 00000',
-                      name: `${resourceName}[siret]`
+                      id: `${resourceName}_siren`,
+                      placeholder: 'Rechercher un nom ou un SIRET',
+                      name: `${resourceName}[siren]`
                     })}
                   />
+                </div>
+                <div class='mt-2 d-flex'>
+                  <small class='text-muted'>Société introuvable ?</small>
+                  <a href='#manual-input' class='pl-2 small' onClick={openTooggle}>Ajouter une société manuellement</a>
                 </div>
               </div>
               <div>
@@ -126,7 +168,7 @@ export default function SirenInput({
                             >
                               {item.uniteLegale.denominationUniteLegale} - {item.adresseEtablissement.libelleCommuneEtablissement}
                             </li>
-                          ))
+                      ))
                       : null}
                   </ul>
                 </div>
