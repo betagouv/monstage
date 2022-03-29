@@ -91,15 +91,18 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: HOST }
 
-  # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/
+  # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/ 
+  # and https://stackoverflow.com/questions/26166032/rails-4-netreadtimeout-when-calling-actionmailer
   config.action_mailer.smtp_settings = {
     user_name: ENV['SMTP_USERNAME'],
     password: ENV['SMTP_PASSWORD'],
     domain: 'monstagedetroisieme.fr',
     address: ENV['SMTP_ADDRESS'],
-    port: 465,
+    port: '465',
     authentication: :plain,
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    tls: true,
+    ssl: true
   }
   
   # remove following after may 1st 2022
