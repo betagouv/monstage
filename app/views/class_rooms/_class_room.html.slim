@@ -23,12 +23,12 @@ tr class="test-class-room-#{class_room.id}"
   td.align-middle.text-sm-center data-head="#{cols[4]}"
     - if can?(:edit, ClassRoom)
       = link_to edit_dashboard_school_class_room_path(school, class_room),
-                class: 'float-right fr-raw-link fr-text--sm',
+                class: 'float-right fr-raw-link fr-text--sm  ml-4 blue-france',
                 aria: {label: "Modifier la classe de #{class_room.name}"} do
         span.fr-fi-edit-fill<
         | Éditer
     - if can?(:destroy, ClassRoom) && class_room.students.count.zero?
-      = link_to dashboard_school_class_room_path(school, class_room), class: 'float-right fr-raw-link mr-1 fr-text--sm', method: :delete, data: {confirm: 'Etes vous sur ?' }, aria: { label: "Supprimer la classe de #{class_room.name}" } do
+      = link_to dashboard_school_class_room_path(school, class_room), class: 'float-right fr-raw-link fr-text--sm blue-france', method: :delete, data: {confirm: 'Etes vous sur ?' }, aria: { label: "Supprimer la classe de #{class_room.name}" } do
         span.fr-fi-delete-line<
         | Supprimer
 

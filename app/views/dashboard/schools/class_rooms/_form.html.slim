@@ -1,5 +1,5 @@
 - url = @class_room.persisted? ? dashboard_school_class_room_path(@school, @class_room, id: @class_room) : dashboard_school_class_rooms_path(@school, @class_room)
-= form_with model: @class_room,
+.my-3= form_with model: @class_room,
             scope: :class_room,
             url: url,
             method: (@class_room.new_record? ? 'POST' : 'PATCH' ),
@@ -25,7 +25,7 @@
     = form.select :school_track,
                     options_for_select(options_for_school_tracks, @class_room.school_track),
                     { prompt: school_track_options_for_default },
-                    { class: "fr-select", required: true }
+                    { class: "fr-select col-lg-6", required: true }
 
   .actions
     = form.submit 'Enregistrer', class: 'fr-btn'

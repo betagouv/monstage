@@ -44,20 +44,20 @@ h1.h2.mb-4
           
 
         .row
-          .col-12.fr-table
-            table.table-rg2a
+          .col-12.fr-table.fr-table--beige-gris-galet
+            table
               thead
                 tr.tr-blue
                   th.col-3.align-self-end
-                    small.font-weight-bold Élève
+                    small Élève
                   th.col-2.align-self-end
-                    small.font-weight-bold Confirmé
+                    small Confirmé
                   th.col-2.align-self-end
-                    small.font-weight-bold Cordée de réussite / Parcours d'excellence
+                    small Cordée de réussite / Parcours d'excellence
                   th.col-2.align-self-end
-                    small.font-weight-bold Candidatures
+                    small Candidatures
                   th.col-1.text-center.align-self-end
-                    small.font-weight-bold Réponses
+                    small Réponses
                   th.col-2
               tbody= render partial: "dashboard/schools/users/student", collection: @class_room.students.includes([:school, :internship_applications]).order(:last_name, :first_name), locals: {}
         
