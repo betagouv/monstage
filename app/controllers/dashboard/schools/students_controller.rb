@@ -8,7 +8,7 @@ module Dashboard
       def update_by_group
         authorize! :update, @school
 
-        students = params.select { |k, v| k.to_s.match(/\Astudent_\d+/) }
+        students = params.select { |k, v| k.to_s.match(/\Astudent_\d+/) && !v.blank? }
         students.each do |k,v|
           student = @school.students.find(k.split('_').last.to_i)
           if v.blank?
@@ -19,7 +19,7 @@ module Dashboard
             # noop, keep student in current class_room
           end
         end
-        redirect_to(dashboard_school_class_rooms_path(@school),
+        redirect_to(dashboard_school_path(@school),
                     flash: { success: "#{students.to_enum.count} élève(s) mis à jour" })
       end
 

@@ -5,10 +5,9 @@
             method: (@class_room.new_record? ? 'POST' : 'PATCH' ),
             local: true do |form|
 
-  = form.rg2a_explain_required_asterisk
   = render "layouts/form_errors", resource: @class_room, resource_name: :class_room
 
-  .form-group
+  .form-group.mt-4
     = form.label :name, class: 'fr-label'  do
       | Nom de la classe
       = form.rg2a_required_content_tag
@@ -27,7 +26,7 @@
                     { prompt: school_track_options_for_default },
                     { class: "fr-select col-lg-6", required: true }
 
-  .actions
+  .actions.my-5.fr-mb-15w
     = form.submit 'Enregistrer', class: 'fr-btn'
     = link_to 'Annuler',
               dashboard_school_class_rooms_path(@school),

@@ -23,7 +23,7 @@ tr class="test-class-room-#{class_room.id}"
   td.align-middle.text-sm-center data-head="#{cols[4]}"
     - if can?(:edit, ClassRoom)
       = link_to edit_dashboard_school_class_room_path(school, class_room),
-                class: 'float-right fr-raw-link fr-text--sm  ml-4 blue-france',
+                class: 'float-right fr-raw-link fr-text--sm  fr-ml-2w blue-france',
                 aria: {label: "Modifier la classe de #{class_room.name}"} do
         span.fr-fi-edit-fill<
         | Éditer
