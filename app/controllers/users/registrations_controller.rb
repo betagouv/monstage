@@ -21,8 +21,9 @@ module Users
     #
     # end
     def confirmation_standby
+      # puts 'XXXXXXXXXXXX'  if ::User.find_by(id: params[:id]).nil? || @user.find_by(id: params[:id]).email.nil?
       flash.delete(:notice)
-      @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
+      @confirmable_user = ::User.find_by(id: params[:id]) if params[:id].present?
       @confirmable_user ||= nil
     end
     alias confirmation_phone_standby confirmation_standby
