@@ -62,3 +62,16 @@
     font-weight: normal;
   }
 }
+
+.fr-table--white {
+  tr:nth-child(even) {
+    td {
+      background: #F9F8F6
+    }
+  }
+  tr:nth-child(odd) {
+    td {
+      background: white
+    }
+  }
+}

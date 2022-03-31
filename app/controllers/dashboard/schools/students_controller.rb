@@ -8,11 +8,11 @@ module Dashboard
       def update_by_group
         authorize! :update, @school
 
-        students = params.select { |k, v| k.to_s.match(/\Astudent_\d+/) && !v.blank? }
+        students = params.select { |k, v| k.to_s.match(/\Astudent_\d+/) }
         students.each do |k,v|
           student = @school.students.find(k.split('_').last.to_i)
           if v.blank?
-            student.update!(school_id: nil, class_room_id: nil)
+            student.update!(class_room_id: nil)
           elsif student.class_room_id.to_i != v.to_i
             student.update!(class_room_id: v.to_i)
           else
