@@ -120,16 +120,18 @@ table.employer tbody tr td.title {
   width: 40%;
 }
 
-
+.col-label-sorting{
+  display: block;
+  height: 25px;
+}
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 15px;
+  $sort-arrow-height: 10px;
   display: inline-block;
   position: absolute;
-  top: 50%;
-  margin-top: -11px;
-  font-size: larger;
+  top: 35%;
+  margin-top: -$sort-arrow-height;
   .currently-sorting{
     color: yellow !important;
   }
@@ -163,11 +165,11 @@ $sortLinkOffset: 15px;
   position: relative;
   left: 5px;
 }
-.breakable-word{
-  font-weight: bold;
-  font-size: 70%;
-  word-wrap: break-word;
-}
+// .breakable-word{
+//   font-weight: bold;
+//   font-size: 70%;
+//   word-wrap: break-word;
+// }
 
 // navigation arrows on internship_offers#index
 .list-item{

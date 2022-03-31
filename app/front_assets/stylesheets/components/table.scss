@@ -1,6 +1,9 @@
-.table-caption-top{
-  caption { caption-side: top };
+.table-caption-top {
+  caption {
+    caption-side: top;
+  }
 }
+
 .table-caption-bottom {
   caption {
     caption-side: bottom;
@@ -8,18 +11,23 @@
     padding-left: 1em;
   }
 }
+
 @include media-breakpoint-up(sm) {
-  .hoverable-row-with-btn{
-    .btn-hoverable{
+  .hoverable-row-with-btn {
+    .btn-hoverable {
       transition: opacity .4s ease;
       opacity: 0;
       display: block;
       position: absolute;
     }
-    &:hover{
-      background-color: $blue_light;
-      .btn-hoverable{
-      opacity: 1;
+
+    &:hover {
+      .btn-hoverable {
+        opacity: 1;
+      }
+
+      p.internship-item-title {
+        text-decoration: underline;
       }
     }
   }
@@ -27,27 +35,63 @@
 
 
 .table {
-    display:table;
+  display: table;
 }
+
 .tr {
-    display:table-row;
+  display: table-row;
 }
-.td, .th {
-    display:table-cell;
-    padding: $table-cell-padding;
-    vertical-align: top;
-    border-top: $table-border-width solid $table-border-color;
+
+.td,
+.th {
+  display: table-cell;
+  padding: $table-cell-padding;
+  vertical-align: top;
+  border-top: $table-border-width solid $table-border-color;
 }
+
 .thead {
   display: table-header-group;
-  .th{
+
+  .th {
     vertical-align: bottom;
     border-bottom: (2 * $table-border-width) solid $table-border-color;
   }
 }
-.tbody{
+
+.tbody {
   display: table-row-group;
 }
-.tfoot{
+
+.tfoot {
   display: table-footer-group;
 }
+
+a.fr-tag-rounded  {
+  display: inline-block;
+  line-height: 2.5rem;
+  vertical-align: middle;
+  padding-top: 0.29rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  color: var(--text-action-high-blue-france);
+  &:hover{color: var(--text-action-high-blue-france);}
+  &:active{color: var(--background-action-low-blue-france-active)};
+
+  text-decoration: none;
+
+  background-color: $blue-france;
+  color: white;
+  &:hover{
+    --hover-tint: var(--hover);
+    --hover: var(--background-action-low-blue-france-hover);
+  }
+  &:active{background-color: var(--background-action-low-blue-france-active); }
+}
+
+table.fr-table{
+  tr.hoverable-row-with-btn:nth-child(2n) {
+    background-color: #fff;
+  }
+} 

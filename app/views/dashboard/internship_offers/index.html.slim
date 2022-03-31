@@ -1,14 +1,13 @@
-.row
+.row.no-gutters
   .col-6
     h1.h3.fr-mb-8w Mes offres de stages
   - if can?(:create, InternshipOffer)
     .col-6.text-right
       = link_to new_dashboard_stepper_organisation_path,
-                class: 'ml-auto rounded-xs-0 fr-btn px-4',
-                id: 'test-create-offer'
-        i.fas.fa-plus
-        span.px-3 Déposer une offre
-  .fr-tabs.fr-mb-9w
+                class: 'ml-auto',
+                id: 'test-create-offer' do
+        button.fr-fi-add-line.fr-btn.fr-btn--icon-left Déposer une offre
+  .fr-tabs.fr-mb-9w.w-100
     .row
       = render partial: "dashboard/internship_offers/tabs",
                locals: { internship_offers: @internship_offers,

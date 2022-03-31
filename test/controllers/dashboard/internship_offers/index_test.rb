@@ -251,7 +251,7 @@ module Dashboard::InternshipOffers
                                                             employer: employer)
       sign_in(employer)
       get dashboard_internship_offers_path(order: :view_count, direction: :desc)
-      assert_select 'a.align-middle.fr-raw-link[href=?]',
+      assert_select 'a.fr-raw-link[href=?]',
                     dashboard_internship_offers_path(order: :view_count,
                                                      direction: :asc),
                     count: 1
@@ -311,8 +311,6 @@ module Dashboard::InternshipOffers
       assert_select 'a[href=?]',
                     dashboard_internship_offer_internship_applications_path(void_internship_offer), text: 'Afficher', count: 0
       assert_select 'a[href=?]',
-                    dashboard_internship_offer_internship_applications_path(internship_offer_with_pending_response), text: 'Répondre'
-      assert_select 'a[href=?]',
                     dashboard_internship_offer_internship_applications_path(internship_offer_with_application)
     end
 
@@ -342,7 +340,7 @@ module Dashboard::InternshipOffers
       sign_in(employer)
       get dashboard_internship_offers_path
 
-      assert_select '.fr-tag',
+      assert_select '.fr-tag-rounded',
                     text: '2',
                     count: 1
     end
@@ -382,7 +380,7 @@ module Dashboard::InternshipOffers
       # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.align-middle.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
+      assert_select "a.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
                     1,
                     'ordonencer links should contain geo filters'
     end
