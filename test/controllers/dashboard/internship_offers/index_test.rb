@@ -382,7 +382,7 @@ module Dashboard::InternshipOffers
       # Check sorting links on column header, like ... on title column
       sort_params = { order: :title, direction: :desc }
       ordonencer_params = sort_params.merge(location_params_forwarded_to_sort_links)
-      assert_select "a.align-middle.fr-raw-link[href=\"#{dashboard_internship_offers_path(ordonencer_params)}\"]",
+      assert_select "a.align-middle.fr-raw-link[href='#{dashboard_internship_offers_path(ordonencer_params)}']",
                     1,
                     'ordonencer links should contain geo filters'
     end
