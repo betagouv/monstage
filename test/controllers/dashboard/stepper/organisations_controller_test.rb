@@ -28,6 +28,7 @@ module Dashboard::Stepper
           params: {
             organisation: {
               employer_name: 'BigCorp',
+              siret: '12345678901234',
               street: '12 rue des bois',
               zipcode: '75001',
               city: 'Paris',
@@ -35,13 +36,15 @@ module Dashboard::Stepper
               employer_description_rich_text: '<div><b>Activités de découverte</b></div>',
               is_public: group.is_public,
               group_id: group.id,
-              employer_website: 'www.website.com'
+              employer_website: 'www.website.com',
+              manual_enter: true
             }
           })
       end
 
       created_organisation = Organisation.last
       assert_equal 'BigCorp', created_organisation.employer_name
+      assert_equal '12345678901234', created_organisation.siret
       assert_equal '12 rue des bois', created_organisation.street
       assert_equal '75001', created_organisation.zipcode
       assert_equal 'Paris', created_organisation.city
@@ -49,6 +52,7 @@ module Dashboard::Stepper
       assert_equal 'www.website.com', created_organisation.employer_website
       assert_equal employer.id, created_organisation.employer_id
       assert_equal true, created_organisation.is_public
+      assert_equal true, created_organisation.manual_enter
 
       assert_redirected_to new_dashboard_stepper_internship_offer_info_path(organisation_id: created_organisation.id)
     end
@@ -111,6 +115,7 @@ module Dashboard::Stepper
       assert_equal 'www.website.com', created_organisation.employer_website
       assert_equal statistician.id, created_organisation.employer_id
       assert_equal true, created_organisation.is_public
+      assert_equal false, created_organisation.manual_enter
 
       assert_redirected_to new_dashboard_stepper_internship_offer_info_path(organisation_id: created_organisation.id)
     end
