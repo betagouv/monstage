@@ -1,7 +1,7 @@
   p style=head_styles
     | Ajout de votre adresse électronique (e-mail)
   p style=p_styles
-    = "Bonjour #{@resource.formal_name}, nous venons de recevoir une demande d'ajout d'adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr."
+    = "Bonjour #{@resource.presenter.formal_name}, nous venons de recevoir une demande d'ajout d'adresse électronique (e-mail) pour votre compte monstagedetroisieme.fr."
   p style=p_styles
     = "Pour qu'elle soit prise en compte, veuillez cliquer sur le lien ci-dessous."
   = render(partial: "mailers/call_to_action", locals: {href: confirmation_url(@resource, confirmation_token: @token), label:"Confirmer"})

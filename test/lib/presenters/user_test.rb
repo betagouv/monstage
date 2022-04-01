@@ -14,14 +14,14 @@ module Presenters
 
     test '.default_internship_offers_path with employer user returns to all offers' do
       employer = create(:employer)
-      assert_equal url_helpers.internship_offers_path, Presenters::User.new(employer).default_internship_offers_path
+      assert_equal url_helpers.internship_offers_path, employer.presenter.default_internship_offers_path
     end
 
     test '.default_internship_offers_path with main_teacher having no school returns to all offers' do
       school_manager = create(:school_manager)
       main_teacher = create(:main_teacher, school: school_manager.school)
       main_teacher.update!(school_id: nil, class_room_id: nil)
-      assert_equal url_helpers.internship_offers_path, Presenters::User.new(main_teacher).default_internship_offers_path
+      assert_equal url_helpers.internship_offers_path, main_teacher.presenter.default_internship_offers_path
     end
 
     test '.default_internship_offers_path with main_teacher having a school returns to offers prefiltered for his school' do
@@ -29,7 +29,7 @@ module Presenters
       main_teacher = create(:main_teacher, school: school_manager.school)
 
       assert_equal url_helpers.internship_offers_path(school_manager.default_search_options),
-                   Presenters::User.new(main_teacher).default_internship_offers_path
+                   main_teacher.presenter.default_internship_offers_path
     end
 
     test '.default_internship_offers_path with student having a school/school_track also include school_track param' do
@@ -38,7 +38,7 @@ module Presenters
       student = create(:student, school: school_manager.school, class_room: class_room)
 
       assert_equal url_helpers.internship_offers_path(student.default_search_options),
-                   Presenters::User.new(student).default_internship_offers_path
+                   student.presenter.default_internship_offers_path
     end
 
    test '.default_internship_offers_path with school_manager having a school with weeks does not prefilter by weeks' do
@@ -57,7 +57,7 @@ module Presenters
       school_manager = create(:school_manager, school: school)
       class_room = create(:class_room, :troisieme_generale, school: school)
       student = create(:student, school: school, class_room: class_room)
-      path = Presenters::User.new(student).default_internship_offers_path
+      path = student.presenter.default_internship_offers_path
       params = CGI.parse(URI.parse(path).query)
       assert_equal [school.city], params["city"]
       assert_equal [school.coordinates.lat.to_s], params["latitude"]
