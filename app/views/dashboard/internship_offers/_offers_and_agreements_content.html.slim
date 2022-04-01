@@ -11,6 +11,7 @@
                          default_values: params,
                          form_id: :dashboard_internship_offers_index_search_form }
 
-  .row.bc-light.bb-1
-    .col-12.px-0
-      = render partial: 'dashboard/internship_offers/table'
+  - if @internship_offers.present?
+    .row.bc-light.bb-1
+      .col-12.px-0
+        = render partial: 'dashboard/internship_offers/table'

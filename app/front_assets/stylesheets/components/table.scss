@@ -90,8 +90,28 @@ a.fr-tag-rounded  {
   &:active{background-color: var(--background-action-low-blue-france-active); }
 }
 
-table.fr-table{
+.fr-table table{
   tr.hoverable-row-with-btn:nth-child(2n) {
     background-color: #fff;
   }
-} 
+}
+.employer .fr-table {
+  td.title {
+    min-width: 11rem;
+  }
+  td.views {
+    min-width: 5rem;
+  }
+  td.applications_rejected {
+    min-width: 11rem;
+  }
+  td.accepted-offers {
+    min-width: 12rem;
+  }
+  td.expected_answers {
+    min-width: 11rem;
+  }
+  td.applications {
+    min-width: 8rem;
+  }
+}

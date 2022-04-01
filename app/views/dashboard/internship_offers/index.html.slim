@@ -1,4 +1,4 @@
-.row.no-gutters
+.row.no-gutters.employer
   .col-6
     h1.h3.fr-mb-8w Mes offres de stages
   - if can?(:create, InternshipOffer)
@@ -12,9 +12,10 @@
       = render partial: "dashboard/internship_offers/tabs",
                locals: { internship_offers: @internship_offers,
                          all_states_counter: @all_states_counter }
+
     .fr-tabs__panel.fr-tabs__panel--selected.internships
       = render partial: 'dashboard/internship_offers/offers_and_agreements_content',
-               locals: { params: params }
+              locals: { params: params }
 
     - if @internship_offers.total_pages > @internship_offers.current_page
       .row.d-flex.d-sm-none
@@ -28,11 +29,6 @@
       .col-12.mt-3= paginate(@internship_offers)
 
   - if @internship_offers.empty?
-    .row
+    .row.fr-mb-2w
       .col-12
         h1.h2.mt-4 Aucune offre n'a été publiée selon ces critères
-        p.d-sm-block.d-none
-          = link_to new_dashboard_stepper_organisation_path,
-                    class: 'fr-btn' do
-            = "Déposer une offre "
-            i.fas.fa-plus

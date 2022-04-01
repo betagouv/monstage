@@ -9,6 +9,7 @@ ul.test-dashboard-nav.fr-tabs__list.fr-text--xs [role="tablist"
   - if current_user.try(:employer?)
     - is_active = controller_name == 'internship_offers' && params[:filter].blank?
     li
+      div.set-height-100
       = link_to dashboard_internship_offers_path(forwardable_params.except(:filter)),
                 class: "#{is_active ? 'active' : ''}" do
         button#current_button.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [tabindex="0"

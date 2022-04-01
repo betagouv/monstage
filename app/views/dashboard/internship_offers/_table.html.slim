@@ -5,10 +5,10 @@
            submitted_applications_count: "Réponses à donner",
            total_applications_count: "Candidatures",
          }
-
-table.fr-table.table-rg2a.employer.mb-0
-  thead= render partial: "dashboard/internship_offers/table_header",
-                locals: {cols: cols}
-  tbody= render partial: "employer_internship_offer",
-                collection: @internship_offers,
-                locals: {cols: cols}
+.fr-table
+  table.employer.mb-0
+    thead= render partial: "dashboard/internship_offers/table_header",
+                  locals: {cols: cols}
+    tbody= render partial: "employer_internship_offer",
+                  collection: @internship_offers,
+                  locals: {cols: cols}
