@@ -14,13 +14,16 @@
             = render partial: 'reporting/filters',
                               locals: {view_tab: :employers_internship_offers}
           .row.mt-3
-            .col-12
-              table.fr-table.table-sticky-thead
+            .col-12.fr-table
+              table.fr-table--white
                 thead
                   tr.tr-blue
-                    th.bl-1.bc-light= InternshipOffer.human_attribute_name(:employer_name)
-                    th.bl-1.bc-light Type d'entreprise
-                    th.bl-1.bc-light Nbre d'offres publiées
+                    th
+                      small= InternshipOffer.human_attribute_name(:employer_name)
+                    th 
+                      small Type d'entreprise
+                    th 
+                      small Nbre d'offres publiées
                 tbody= render partial: 'reporting/internship_offers/employer_offer',
                               collection: @offers.map(&presenter_for_dimension.method(:new))
 

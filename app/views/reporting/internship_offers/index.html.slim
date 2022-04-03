@@ -9,7 +9,7 @@
           .rounded.p-3[data-controller='statistics']
             = render partial: 'reporting/filters', locals: {view_tab: :internship_offers}
 
-            fieldset
+            fieldset.d-none [data-statistics-target="groups"]
               legend.h6.fr-fieldset__legend.text-body Grouper par
               .row.fr-form-group
                 .col-lg-4 
@@ -26,19 +26,22 @@
                         = "Groupe ou institution de tutelle"
 
           .row.mt-3
-            .col-12
-              table.table.table-statistics.table-sticky-thead
+            .col-12.fr-table
+              table.table-statistics.ftable-sticky-thead.fr-table--white
                 thead
                   tr.tr-blue
                     th.bl-1.bc-light
-                      = dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
-                    th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
-                    th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:total_applications_count)
-                    th.bl-1.bc-light colspan="5"= InternshipOffer.human_attribute_name(:approved_applications_count)
-                  tr.tr-white
+                      small= dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
                     th.bl-1.bc-light
-                    th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
-                    th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
+                      small= InternshipOffer.human_attribute_name(:total_report_count)
+                    th.bl-1.bc-light colspan="4"
+                      small= InternshipOffer.human_attribute_name(:total_applications_count)
+                    th.bl-1.bc-light colspan="5"
+                      small= InternshipOffer.human_attribute_name(:approved_applications_count)
+                  tr.tr-blue-light
+                    th
+                    th= InternshipOffer.human_attribute_name(:total)
+                    th= InternshipOffer.human_attribute_name(:total)
 
                     th= InternshipOffer.human_attribute_name(:total_male_applications_count)
                     th= InternshipOffer.human_attribute_name(:total_female_applications_count)

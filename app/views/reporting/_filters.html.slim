@@ -1,6 +1,6 @@
 - filters = current_user.presenter.profile_filters
 fieldset
-  legend.h6.text-body.mb-3 Filtrer par
+  legend.fr-text--lg.fr-text--bold.mb-3 Filtrer par
   - if can?(:index_and_filter, Reporting::InternshipOffer)
     .row
       - if filters.dig(view_tab, :by_school_name)
@@ -8,7 +8,7 @@ fieldset
       - if filters.dig(view_tab, :by_school_year)
         - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
         - options = years.map { |year| [ "#{year}/#{year+1}", year] }
-        .col-3
+        .col-md-3.col-12
           .form-group
             = label_tag :school_year, 'Année Scolaire', class: 'fr-label'
             = select_tag :school_year,
@@ -28,5 +28,8 @@ fieldset
         = render partial: "reporting/filters/detailed_typology", locals: {params: params}
       - if filters.dig(view_tab, :by_school_track)
         = render partial: "reporting/filters/school_track", locals: {params: params}
+      - if view_tab == :internship_offers
+        .col-md-3.col-12
+          = link_to 'Plus de filtres', '', data: {action: "click->statistics#showMoreFilters", turbolinks: false}, class: 'fr-btn fr-btn--secondary fr-btn-bordered fr-fi-equalizer-fill fr-btn--icon-left fr-mt-4w'
 
     

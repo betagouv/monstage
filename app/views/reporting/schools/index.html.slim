@@ -1,4 +1,4 @@
-.container.my-3
+.container-monstage.my-3
   = render partial: 'reporting/navigation'
   .row
     .col-12
@@ -12,15 +12,20 @@
                     locals: {view_tab: :schools}
               
           .row.mt-3
-            .col-12
-              table.fr-table.table-scrollable
+            .col-12.fr-table.fr-table--white.wrapper-scroll-y.my-custom-scrollbar
+              table.table-scrollabler
                 thead
                   tr.tr-blue
-                    th= "Établissements"
-                    th= "Semaines de stage"
-                    th= "E-mails confirmés"
-                    th= "Chef établissement"
-                    th= "Professeurs principaux"
+                    th
+                      small= "Établissements"
+                    th
+                      small= "Semaines de stage"
+                    th
+                      small= "E-mails confirmés"
+                    th
+                      small= "Chef établissement"
+                    th
+                      small= "Professeurs principaux"
                 tbody
                   = render partial: 'reporting/schools/school', collection: @schools
 
