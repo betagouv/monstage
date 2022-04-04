@@ -67,27 +67,20 @@
   display: table-footer-group;
 }
 
-a.fr-tag-rounded  {
-  display: inline-block;
+a .fr-tag-rounded  {
+  padding-top: 0.4rem;
   line-height: 2.5rem;
   vertical-align: middle;
-  padding-top: 0.29rem;
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
-  color: var(--text-action-high-blue-france);
-  &:hover{color: var(--text-action-high-blue-france);}
-  &:active{color: var(--background-action-low-blue-france-active)};
-
-  text-decoration: none;
-
-  background-color: $blue-france;
   color: white;
+  background-color: $blue-france;
   &:hover{
-    --hover-tint: var(--hover);
-    --hover: var(--background-action-low-blue-france-hover);
+    color: var(--text-action-high-blue-france);
+    background-color: var(--background-action-low-blue-france-active);
   }
-  &:active{background-color: var(--background-action-low-blue-france-active); }
+  &:active{color: $blue-france;};
 }
 
 .fr-table table{
