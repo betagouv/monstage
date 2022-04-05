@@ -94,12 +94,14 @@ Rails.application.configure do
   first_inbox = JSON.parse(response)[0] # get first inbox
 
   ActionMailer::Base.delivery_method = :smtp
+
+  # To choose port read https://help.heroku.com/IR3S6I5X/problem-in-sending-e-mails-through-smtp and then https://fr.mailjet.com/blog/news/port-smtp/
   ActionMailer::Base.smtp_settings = {
                                        user_name: first_inbox['username'],
                                        password: first_inbox['password'],
                                        address: first_inbox['domain'],
                                        domain: first_inbox['domain'],
-                                       port: 587,
+                                       port: 465,
                                        authentication: :plain
                                      }
 
