@@ -24,7 +24,8 @@ class SchoolManagerRegistrationsTest < ActionDispatch::IntegrationTest
                                                     type: 'Users::SchoolManagement',
                                                     accept_terms: '1',
                                                     role: :school_manager } })
-      assert_redirected_to users_registrations_standby_path(email: "ce.1234567x@#{school.email_domain_name}")
+      school_manager_id = Users::SchoolManagement.where(role: 'school_manager').last.id
+      assert_redirected_to users_registrations_standby_path(id: school_manager_id)
     end
   end
 

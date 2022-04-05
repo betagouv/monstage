@@ -15,7 +15,7 @@
       - unless @class_room.school_managements.main_teachers.size.zero?
         p.text-muted.small
           = "PP : "
-          = @class_room.school_managements.main_teachers.map { |main_teacher| Presenters::User.new(main_teacher).full_name }.join(", ")
+          = @class_room.school_managements.main_teachers.map { |main_teacher| main_teacher.presenter.full_name }.join(", ")
     .col-4.text-right
       = submit_tag 'Enregistrer les modifications', disabled: true, class: 'fr-btn', data: { 'target': 'students.submitButton' }
 

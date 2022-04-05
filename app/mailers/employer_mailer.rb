@@ -30,7 +30,7 @@ class EmployerMailer < ApplicationMailer
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
-    @prez_stud             = Presenters::User.new(student)
+    @prez_stud             = student.presenter
     @employer              = @internship_offer.employer
     @url = dashboard_internship_offer_internship_applications_url(
       internship_offer_id: @internship_offer.id,
@@ -45,7 +45,7 @@ class EmployerMailer < ApplicationMailer
     internship_application = internship_agreement.internship_application
     @internship_offer      = internship_application.internship_offer
     student                = internship_application.student
-    @prez_stud             = Presenters::User.new(student)
+    @prez_stud             = student.presenter
     @employer              = @internship_offer.employer
     @url = dashboard_internship_agreements_url(
       id: internship_agreement.id,

@@ -53,7 +53,7 @@ module Builders
     def preprocess_terms
       return { enforce_school_manager_validations: true } if user.school_manager?
       return { enforce_main_teacher_validations: true } if user.main_teacher?
-      return { enforce_employer_validations: true } if user.is_a?(Users::Employer)
+      return { enforce_employer_validations: true } if user.employer?
       return { skip_validations_for_system: true } if user.is_a?(Users::God)
       raise ArgumentError, "#{user.type} can not create agreement yet"
     end
@@ -78,7 +78,7 @@ module Builders
 
     def preprocess_internship_offer_params(internship_offer)
       {
-        organisation_representative_full_name: Presenters::User.new(internship_offer.employer).full_name,
+        organisation_representative_full_name: internship_offer.employer.presenter.full_name,
         tutor_full_name: internship_offer.tutor_name,
         activity_scope_rich_text: internship_offer.title,
         activity_preparation_rich_text: internship_offer.description_rich_text.body,

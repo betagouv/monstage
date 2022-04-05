@@ -1,36 +1,44 @@
-tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn"
-  td data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+tr class="test-internship-offer even-odd test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn"
+  td.text-left.title data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
-              class: '' do
+              class: 'heavy-blue-link' do
       p.internship-item-title.mb-0= employer_internship_offer.title
     p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city
 
-  td.align-middle.d-none.d-md-table-cell data-head=cols[:view_count]
+  td.text-center.align-middle.d-none.d-md-table-cell data-head=cols[:view_count]
     span.badge.badge-view-count= employer_internship_offer.view_count
 
-  td.align-middle data-head="#{cols[:rejected_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.text-center.align-middle data-head="#{cols[:rejected_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     span.badge= employer_internship_offer.rejected_applications_count
 
-  td.align-middle data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    .row.justify-content-between.px-3
-      span.px-3.badge= employer_internship_offer.approved_applications_count
+  td.text-center.align-middle data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+    span.px-3.badge= employer_internship_offer.approved_applications_count
 
 
   td.align-middle data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
-    span class="fa-fw #{employer_internship_offer.submitted_applications_count.positive? ? 'red-notification-badge' : 'badge'}"
-      = employer_internship_offer.submitted_applications_count
     - if employer_internship_offer.submitted_applications_count.positive?
-      = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable small' do
-        i.fa-fw.far.fa-envelope
-        = " "
-        | Répondre
+      .inline-next-to.d-inline-block
+        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                  class: 'fr-tag d-inline-block shrinked-line' do
+          .fr-text--lg.mb-1
+            span = employer_internship_offer.submitted_applications_count
+        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                  class: 'fr-raw-link btn-hoverable d-inline-block fr-mt-2v' do
+          .fr-fi-eye-line.fr-pl-1v.self-align-center aria-hidden="true"
+            small Répondre
+    - else
+      span.badge.mx-2
+        = employer_internship_offer.submitted_applications_count
+
 
   td.align-middle data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     .d-flex.justify-content-start
       span.fa-fw.badge
         strong = employer_internship_offer.total_applications_count
       - if employer_internship_offer.total_applications_count.positive?
-        span.pl-2.pt-1
-          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer), class: 'btn-hoverable d-inline-block', aria: { label: "Voir l'offre" } do
-            i.fa.fa-eye
+        span.pl-2
+          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                    class: 'btn-hoverable d-inline-block fr-raw-link',
+                    aria: { label: "Voir l'offre" } do
+            span.fr-fi-eye-line aria-hidden="true"
