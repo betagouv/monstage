@@ -49,7 +49,7 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
-    private
+    protected
 
     attr_reader :user
     def initialize(user)
