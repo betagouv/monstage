@@ -1,3 +1,12 @@
-<%= "Candidature au stage \"#{@internship_application.internship_offer.title}\" refusée..." %>
+Bonjour,
+
+<%= "Votre candidature au stage \"#{@internship_application.internship_offer.title}\" a été refusée par l'employeur." %>
+
+Voici le motif du refus :
 
 <%= @internship_application.rejected_message.to_plain_text %>
+
+Vous souhaitant une bonne continuation dans vos recherches de stage sur la plateforme <%= @host %>
+
+A bientôt,
+L'équipe Mon Stage de 3e.
