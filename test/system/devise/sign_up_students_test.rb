@@ -46,7 +46,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
-      find('label', text: 'Email').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -63,7 +63,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # create student
     assert_difference('Users::Student.count', 1) do
-      find('label', text: 'Email').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -134,9 +134,9 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}",
     #        current_url.split('?').second
     # click_on 'Pas encore de compte ?'
-    click_on(class: 'text-danger')
+    find('a.fr-raw-link', text: "Vous n'avez pas encore de compte ?").click
     first(:link, 'Créer mon compte élève').click
-    
+
 
     # mistaking with password confirmation
     assert_difference('Users::Student.count', 0) do
@@ -147,7 +147,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find('label', text: school_1.name).click
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Féminin').click
-      find('label', text: 'Email').click
+      find('label', text: 'Par email').click
       fill_in 'Adresse électronique', with: email
       fill_in 'Créer un mot de passe', with: password
       # Error here
@@ -166,10 +166,10 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label[for="select-gender-boy"]', text: 'Masculin').click
       find('label[for="select-gender-girl"]', text: 'Féminin').click
-
       # fill_in 'Créer un mot de passe', with: ''
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
+      sleep 0.2
       click_on "Je m'inscris"
     end
 
@@ -183,7 +183,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # visit login mail from confirmation mail
     visit new_user_session_path
-    find('label', text: 'Email').click
+    find('label', text: 'Par email').click
     find("input[name='user[email]']").fill_in with: created_student.email
     find("input[name='user[password]']").fill_in with: password
     click_on 'Connexion'
@@ -212,7 +212,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # end
 
     # sign_in as Student
-    find('label', text: 'Email').click
+    find('label', text: 'Par email').click
     find("input[name='user[email]']").fill_in with: student.email
     find('label', text: 'Mot de passe').click
     find("input[name='user[password]']").fill_in with: password
@@ -242,7 +242,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     #   click_link 'Me connecter'
     # end
     # sign_in as Student
-    find('label', text: 'Téléphone').click
+    find('label', text: 'Par téléphone').click
     execute_script("document.getElementById('phone-input').value = '#{student.phone}';")
     find("input[name='user[password]']").fill_in with: password
     puts current_path
@@ -267,7 +267,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     visit internship_offers_path
     click_on 'Je postule'
-    
+
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # click_on(class: 'text-danger') /!\ do not work
     visit users_choose_profile_path
