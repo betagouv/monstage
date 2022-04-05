@@ -45,10 +45,10 @@ module Presenters
     end
 
     private
-    attr_reader :ministry_statistician
+    attr_reader :user
 
     def initialize(ministry_statistician)
-      @ministry_statistician = ministry_statistician
+      @user = ministry_statistician
     end
   end
 end
