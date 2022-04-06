@@ -6,10 +6,11 @@
   text-decoration: none;
 }
 
-.fr-btn:hover {
+.container-homepage .fr-btn:hover {
   color: white
 }
 
+.fr-follow__social .fr-btn:hover,
 .fr-btn.fr-btn--secondary:hover {
   color: $blue-france;
 }
