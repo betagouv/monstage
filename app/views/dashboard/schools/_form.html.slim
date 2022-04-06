@@ -31,11 +31,11 @@
 
   - else
     fieldset
-      legend= "Semaines de stage"
+      legend.h3.dark.mb-1= "Semaines de stage"
       = render partial: "inputs/weeks_checkbox_inputs",
                locals: {current_weeks: @available_weeks,
                         form: f,
-                        label: "Semaines de stage de l'établissement (uniquement valable pour les classes de 3e)",
+                        label: "uniquement valable pour les classes de 3e",
                         render_employer_components: false }
 
 

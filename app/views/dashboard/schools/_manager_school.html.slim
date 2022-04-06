@@ -1,0 +1,8 @@
+h1.h2.my-3 Les informations de mon établissement
+- if (can? :edit, @current_user.try(:school))
+  = form_with(model: @current_user.school, url: dashboard_school_path(@current_user.school), method: :patch) do |f|
+    .form-group.mt-3
+      = f.label "Annexe par défault liée au financement du stage des élèves", class: 'fr-label'
+      = f.rich_text_area :agreement_conditions_rich_text, class: 'form-control'
+    .actions.d-flex.d-sm-block
+      = f.submit 'Enregistrer', class: 'fr-btn'

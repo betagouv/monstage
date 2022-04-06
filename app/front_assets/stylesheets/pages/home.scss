@@ -1,4 +1,4 @@
-:focus {
+.container-homepage :focus {
   border: 2px solid $blue;
 }
 
@@ -6,7 +6,7 @@
   text-decoration: none;
 }
 
-.fr-btn:hover {
+.container-homepage .fr-btn:hover {
   color: white
 }
 
