@@ -31,7 +31,8 @@ export default function AddressInput({
     setFullAddress(event.target.value);
   };
 
-  const toggleHelpVisible = () => {
+  const toggleHelpVisible = (event) => {
+    event.stopPropagation();
     setHelpVisible(!helpVisible);
   };
   const searchCityByAddress = () => {
