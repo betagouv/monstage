@@ -49,8 +49,6 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
-    protected
-
     attr_reader :user
     def initialize(user)
       @user = user
