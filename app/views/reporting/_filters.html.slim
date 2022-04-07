@@ -29,7 +29,5 @@ fieldset
       - if filters.dig(view_tab, :by_school_track)
         = render partial: "reporting/filters/school_track", locals: {params: params}
       - if view_tab == :internship_offers
-        .col-md-3.col-12
-          = link_to 'Plus de filtres', '', data: {action: "click->statistics#showMoreFilters", turbolinks: false}, class: 'fr-btn fr-btn--secondary fr-btn-bordered fr-fi-equalizer-fill fr-btn--icon-left fr-mt-4w'
-
+        = render partial: "reporting/filters/group_by", locals: {params: params}
     
