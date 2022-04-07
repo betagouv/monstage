@@ -33,8 +33,6 @@ class SchoolManagerMailer < ApplicationMailer
     @student_presenter = Presenters::User.new(@student)
 
     to = @student.school_manager_email
-    return if to.nil?
-
     subject = "Nouvelle convention de stage à renseigner"
     cc = main_teacher&.email
     @url = edit_dashboard_internship_agreement_url(id: @internship_application.internship_agreement.id).html_safe
