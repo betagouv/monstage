@@ -12,14 +12,14 @@ module Dashboard
         students.each do |k,v|
           student = @school.students.find(k.split('_').last.to_i)
           if v.blank?
-            student.update!(school_id: nil, class_room_id: nil)
+            student.update!(class_room_id: nil)
           elsif student.class_room_id.to_i != v.to_i
             student.update!(class_room_id: v.to_i)
           else
             # noop, keep student in current class_room
           end
         end
-        redirect_to(dashboard_school_class_rooms_path(@school),
+        redirect_to(dashboard_school_path(@school),
                     flash: { success: "#{students.to_enum.count} élève(s) mis à jour" })
       end
 

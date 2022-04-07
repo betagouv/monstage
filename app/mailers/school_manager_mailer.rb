@@ -27,7 +27,6 @@ class SchoolManagerMailer < ApplicationMailer
     send_email(to: to, subject: subject)
   end
 
- 
   def internship_application_approved_email(internship_application: , main_teacher: nil)
     @internship_application = internship_application
     @student = @internship_application.student
@@ -38,7 +37,7 @@ class SchoolManagerMailer < ApplicationMailer
 
     subject = "Nouvelle convention de stage à renseigner"
     cc = main_teacher&.email
-    @url = edit_dashboard_internship_agreement_url(@internship_application.internship_agreement).html_safe
+    @url = edit_dashboard_internship_agreement_url(id: @internship_application.internship_agreement.id).html_safe
     @message = "La convention dématérialisée peut être renseignée dès maintenant par le chef d'établissement ou le professeur principal"
 
     send_email(to: to, subject: subject, cc: cc)

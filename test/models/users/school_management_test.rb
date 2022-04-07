@@ -63,7 +63,7 @@ module Users
     test 'school_manager.after_sign_in_path with school and weeks redirects to dashboard_school_path' do
       school = create(:school, weeks: [Week.find_by(number: 1, year: 2019)])
       school_manager = create(:school_manager, school: school)
-      redirect_to = @url_helpers.dashboard_school_class_rooms_path(school_manager.school)
+      redirect_to = @url_helpers.dashboard_school_path(school_manager.school)
       assert_equal(redirect_to, school_manager.after_sign_in_path)
     end
 
