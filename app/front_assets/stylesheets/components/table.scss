@@ -18,10 +18,13 @@
       transition: opacity .4s ease;
       opacity: 0;
       display: block;
-      position: absolute;
     }
-
     &:hover {
+      .btn-hoverable-none{
+        transition: opacity .4s ease;
+        color: var(--text-action-high-blue-france);
+        background-color: var(--background-action-low-blue-france-active);
+      }
       .btn-hoverable {
         opacity: 1;
       }
@@ -32,7 +35,6 @@
     }
   }
 }
-
 
 .table {
   display: table;
@@ -67,7 +69,7 @@
   display: table-footer-group;
 }
 
-a .fr-tag-rounded  {
+.fr-tag-rounded  {
   padding-top: 0.4rem;
   line-height: 2.5rem;
   vertical-align: middle;
@@ -76,10 +78,7 @@ a .fr-tag-rounded  {
   border-radius: 50%;
   color: white;
   background-color: $blue-france;
-  &:hover{
-    color: var(--text-action-high-blue-france);
-    background-color: var(--background-action-low-blue-france-active);
-  }
+
   &:active{color: $blue-france;};
 }
 
