@@ -158,10 +158,7 @@ class InternshipApplication < ApplicationRecord
                                    "student ##{student.id}"
                             Rails.logger.error(mesg)
                           end
-
-                          student.school.main_teachers.map do |main_teacher|
-                            responsible_notify(internship_application: self, main_teacher: main_teacher)
-                          end
+                          responsible_notify(internship_application: self) if internship_agreement.present?
                         }
     end
 
@@ -230,21 +227,6 @@ class InternshipApplication < ApplicationRecord
       main_teacher: student.main_teacher
     ).deliver_later
   end
-
-  def responsible_notify(internship_application:, main_teacher:)
-    if internship_application.student.troisieme_generale?
-      SchoolManagerMailer.internship_application_approved_email(internship_application: self,
-                                                                main_teacher: main_teacher)
-                         .deliver_later
-    else
-      MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                              main_teacher: main_teacher)
-                       .deliver_later
-
-    end
-  end
-
-
 
   def create_agreement
     return if internship_offer.school_track != 'troisieme_generale'
@@ -324,6 +306,22 @@ class InternshipApplication < ApplicationRecord
   end
 
   private
+
+  def responsible_notify(internship_application:)
+    student = internship_application.reload.student
+    main_teachers = student.school.main_teachers.to_a
+    if student.troisieme_generale?
+      SchoolManagerMailer.internship_application_approved_email(internship_application: self,
+                                                                main_teachers: main_teachers)
+                         .deliver_later
+    else
+      main_teachers.each do |main_teacher|
+        MainTeacherMailer.internship_application_approved_email(internship_application: self,
+                                                                main_teacher: main_teacher)
+                         .deliver_later
+      end
+    end
+  end
 
   def notify_started_by_employer(internship_agreement: )
     SchoolManagerMailer.agreement_creation_notice_email(
