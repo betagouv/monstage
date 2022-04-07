@@ -128,14 +128,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     visit internship_offer_path(offer)
     # click_link '
     first(:link, 'Je postule').click
-    # below : 'Pas encore de compte ? Inscrivez-vous'
-    # find("a[class='text-danger font-weight-bold test-offer-id-#{offer.id}']").click
-
-    # assert "as=Student&user%5Btargeted_offer_id%5D=#{offer.id}",
-    #        current_url.split('?').second
-    # click_on 'Pas encore de compte ?'
     find('a.fr-raw-link', text: "Vous n'avez pas encore de compte ?").click
-    first(:link, 'Créer mon compte élève').click
+    first(:link, 'Je suis élève de 3e').click
 
 
     # mistaking with password confirmation
@@ -157,9 +151,6 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       accept_terms.click
       click_on "Je m'inscris"
     end
-
-    # hidden_input = find('input[name="user[targeted_offer_id]"]', visible: false)
-    # assert_equal offer.id.to_s, hidden_input.value
 
     # real signup as student
     assert_difference('Users::Student.count', 1) do
