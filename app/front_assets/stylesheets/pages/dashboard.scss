@@ -72,3 +72,25 @@ tr:hover a.trash-user{
     cursor: not-allowed;
   }
 }
+
+.bg-blue-950 {
+  background-color: $blue-france-950;
+}
+
+.bg-blue-975 {
+  background-color: $blue-france-975;
+}
+
+ul.class-room {
+  list-style-type: none;
+  height:200px;
+  overflow:hidden;
+  overflow-y:scroll;
+  .student-action {
+    color: $grey-925
+  }
+  li:hover, li:hover .student-action  {
+    color: $blue-france !important;
+    cursor: pointer;
+  }
+}

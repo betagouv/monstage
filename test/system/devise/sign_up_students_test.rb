@@ -186,7 +186,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     find('label', text: 'Par email').click
     find("input[name='user[email]']").fill_in with: created_student.email
     find("input[name='user[password]']").fill_in with: password
-    click_on 'Connexion'
+    find("input[name='commit']").click
     # redirected page is a show of targeted internship_offer
     assert_equal "/internship_offers/#{offer.id}/internship_applications/new", current_path
     # targeted offer id at student's level is now empty
@@ -271,7 +271,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     # below : 'Pas encore de compte ? Inscrivez-vous'
     # click_on(class: 'text-danger') /!\ do not work
     visit users_choose_profile_path
-    find('button.fr-btn', text: 'Créer mon compte élève').click
+    find('a.fr-card__link', text: 'Je suis élève de 3e').click
 
     # signup as student
     # assert_difference('Users::Student.count', 1) do
