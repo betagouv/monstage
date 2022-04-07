@@ -137,7 +137,7 @@ export default function SearchSchool({
                 )}
               </div> */}
             </div>
-            <div className="search-in-place bg-white shadow">
+            <div className="search-in-place bg-white">
               <ul
                 {...getMenuProps({
                   className: `${classes || ''

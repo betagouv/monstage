@@ -45,7 +45,7 @@
     border-bottom: (2 * $table-border-width) solid $table-border-color;
   }
 }
-.my-custom-scrollbar {
+.table-scrollbar {
   position: relative;
   height: 550px;
   overflow: auto;
@@ -53,6 +53,10 @@
 
 .table-wrapper-scroll-y {
   display: block;
+}
+
+table.table-scrollable {
+  display: table;
 }
 
 .fr-table thead {
