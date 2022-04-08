@@ -1,11 +1,19 @@
 module Presenters
   class School
     def select_text_method
-      "#{name} - #{city} - #{zipcode}"
+      "#{school.name} - #{school.city} - #{school.zipcode}"
     end
 
     def agreement_address
-      "Collège #{name} - #{city}, #{zipcode}"
+      "Collège #{school.name} - #{school.city}, #{school.zipcode}"
+    end
+
+    private
+
+    attr_accessor :school
+
+    def initialize(school)
+      @school = school
     end
   end
 end
