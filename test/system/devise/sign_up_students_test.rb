@@ -160,8 +160,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       # fill_in 'Créer un mot de passe', with: ''
       fill_in 'Créer un mot de passe', with: password
       fill_in 'Ressaisir le mot de passe', with: password
-      sleep 0.2
-      click_on "Je m'inscris"
+      sleep 0.3
+      find('input[type="submit"][name="commit"]').click # click_on "Je m'inscris"
     end
 
     created_student = Users::Student.find_by(email: email)
