@@ -132,4 +132,51 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
       assert_redirected_to new_user_session_path(phone: phone)
     end
   end
+
+  test 'POST create Student with entity responds with success' do
+    identity = create(:identity_student_with_class_room_3e)
+    email = 'ines@gmail.com'
+    assert_difference('Users::Student.count') do
+      post user_registration_path(
+        params: {
+          user: {
+            type: 'Users::Student',
+            identity_id: identity.id,
+            email: email,
+            password: 'okokok',
+            password_confirmation: 'okokok',
+            accept_terms: '1'
+          }
+        }
+      )
+      assert_redirected_to users_registrations_standby_path(id: User.last.id)
+    end
+    created_student = Users::Student.first
+    assert_equal identity.school_id, created_student.school.id
+    assert_equal identity.class_room_id, created_student.class_room.id
+    assert_equal identity.first_name, created_student.first_name
+    assert_equal identity.last_name, created_student.last_name
+    assert_equal identity.birth_date.year, created_student.birth_date.year
+    assert_equal identity.birth_date.month, created_student.birth_date.month
+    assert_equal identity.birth_date.day, created_student.birth_date.day
+    assert_equal identity.gender, created_student.gender
+    assert_equal email, created_student.email
+  end
+
+  test 'POST create Student w/o entity fails' do
+    email = 'ines@gmail.com'
+    assert_difference('Users::Student.count', 0) do
+      post user_registration_path(
+        params: {
+          user: {
+            type: 'Users::Student',
+            email: email,
+            password: 'okokok',
+            password_confirmation: 'okokok',
+            accept_terms: '1'
+          }
+        }
+      )
+    end
+  end
 end

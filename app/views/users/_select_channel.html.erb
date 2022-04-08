@@ -8,20 +8,15 @@
 
   <div class='row' >
     <div class='col-6 d-table form-group'>
-      <%= form.label :channel, "SMS", class: "channel-radio-label fr-label d-table-cell align-middle", for: "select-channel-phone" do %>
-        <i class="fa fa-fw fa-4x fas fa-<%= phone == "SMS" ? "sms" : "mobile-alt" %>"></i>
-        <br/>
+      <%= form.label :channel, "SMS", class: "channel-radio-label fr-label d-table-cell align-middle fr-pl-3w", for: "select-channel-phone" do %>
         <%= form.radio_button :channel, "phone", id: "select-channel-phone", "data-action" => "change->signup#checkPhone", "data-signup-target" => "phoneRadioButton" %>
           <%= phone %>
       <% end %>
     </div>
     <div class='col-6 d-table form-group '>
-      <%= form.label :channel, "Email", class: "channel-radio-label fr-label d-table-cell align-middle", for: "select-channel-email" do %>
-
-        <i class="fa fa-fw fa-4x far fa-envelope"></i>
-        <br />
+      <%= form.label :channel, "Email", class: "channel-radio-label fr-label d-table-cell align-middle fr-pl-3w", for: "select-channel-email" do %>
         <%= form.radio_button :channel, "email", id: "select-channel-email", "data-action" => "change->signup#checkEmail", "data-signup-target" => "emailRadioButton" %>
-          Email
+          Par e-mail
       <% end %>
     </div>
   </div>
@@ -45,8 +40,8 @@
   </div>
   <div data-signup-target="phoneBloc" class="form-group phone d-none">
     <%= form.label :phone, 'data-action' => "click->signup#focusPhone", for: 'phone-input' do %>
-      <span>Numéro de mobile</span>
-      <small class="form-text text-muted">Ce numéro sera utilisé pour communiquer avec vous</small>
+      <span>Numéro de téléphone</span>
+      <small class="form-text text-muted">Ce numéro sera utilisé uniquement pour communiquer avec vous</small>
     <% end %>
     <%= react_component("CountryPhoneSelect",
       props: {

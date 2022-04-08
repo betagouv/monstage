@@ -18,7 +18,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     find('label', text: 'SMS').click
 
-    fill_in 'Numéro de mobile', with: '0623042525'
+    fill_in 'Numéro de téléphone', with: '0623042525'
     assert find("#select-channel-phone").selected?
     find("#select-channel-email", visible: false, count: 1)
   end
