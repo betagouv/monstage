@@ -23,7 +23,7 @@ tr class="test-internship-offer test-internship-offer-#{employer_internship_offe
             = employer_internship_offer.submitted_applications_count
           = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
                     class: 'fr-raw-link' do
-            .fr-fi-eye-line.fr-pl-2v.fr-pt-2v.btn-hoverable aria-hidden="true"
+            span.fr-fi-eye-line.fr-pl-2v.fr-pt-2v.btn-hoverable aria-hidden="true"
     - else
       span.badge.mx-2
         = employer_internship_offer.submitted_applications_count
