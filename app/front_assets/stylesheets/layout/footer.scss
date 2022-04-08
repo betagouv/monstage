@@ -51,8 +51,7 @@ body {
   a .hover-blue{
     text-decoration: none;
     &:hover{
-      background-color: #d3dffc;
-      outline: 2px solid #4C9AFF;
+      opacity: 75%;
     }
   }
 }
