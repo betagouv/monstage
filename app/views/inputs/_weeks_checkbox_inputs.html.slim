@@ -5,9 +5,8 @@ div [data-controller="select-weeks"
      data-select-weeks-skip-validation-value="false"]
   .form-group
     - if label.present?
-      div.fr-label
+      div.fr-label.my-3
         = label
-        = form.rg2a_required_content_tag
 
     - if render_employer_components
       - allow_select_all = !form.object.is_fully_editable?
@@ -25,38 +24,40 @@ div [data-controller="select-weeks"
           = " #{current_weeks.first.year}-#{current_weeks.first.year + 1}"
 
     div data-select-weeks-target="checkboxesContainer" class="#{preselect_all ? 'd-none' : ''}"
-      .custom-control-checkbox-list
-        - current_weeks.map do |week|
-          .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3.my-2
-            - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
-            - has_applications = week.has_applications?(root: form.object)
-            - # keep reference of checkbox id for easier labelling
-            - checkbox_id = "#{form.object_name}_week_ids_#{week.id}_checkbox"
-            - # also add an id for hidden field for two reason, avoid conflict, testing
-            - hidden_id = "#{form.object_name}_week_ids_#{week.id}_hidden"
+      .row
+        .col-lg-6
+          .custom-control-checkbox-list.p-4
+            - current_weeks.map do |week|
+              .fr-checkbox-group.fr-checkbox-group--sm.position-relative.pr-3
+                - # prevent removing weeks with application by showing a disable checkbox (not submitted to server)
+                - has_applications = week.has_applications?(root: form.object)
+                - # keep reference of checkbox id for easier labelling
+                - checkbox_id = "#{form.object_name}_week_ids_#{week.id}_checkbox"
+                - # also add an id for hidden field for two reason, avoid conflict, testing
+                - hidden_id = "#{form.object_name}_week_ids_#{week.id}_hidden"
 
-            = form.check_box :week_ids, { multiple: true,
-                                          id: checkbox_id,
-                                          class: '',
-                                          disabled: has_applications,
-                                          data: {:"select-weeks-target" => 'weekCheckboxes',
-                                                 action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
-                                          week.id,
-                                          false
+                = form.check_box :week_ids, { multiple: true,
+                                              id: checkbox_id,
+                                              class: '',
+                                              # disabled: has_applications,
+                                              data: {:"select-weeks-target" => 'weekCheckboxes',
+                                                    action: 'change->select-weeks#handleCheckboxesChanges'} }.merge(preselect_all ? {checked: true} : {}),
+                                              week.id,
+                                              false
 
-            - if has_applications
-              = form.hidden_field :week_ids,
-                                  value: week.id,
-                                  multiple: true,
-                                  id: hidden_id
+                / - if has_applications
+                /   = form.hidden_field :week_ids,
+                /                       value: week.id,
+                /                       multiple: true,
+                /                       id: hidden_id
 
-            = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
-              = week.select_text_method
+                = form.label :"week_id", for: checkbox_id, class: 'custom-control-label fr-label' do
+                  = week.select_text_method
 
-            div.position-absolute.badge-week-density.rounded.d-none [
-              data-select-weeks-target='inputWeekLegend'
-              data-week-id="#{week.id}"]
-              | ?
+                div.position-absolute.badge-week-density.rounded.d-none [
+                  data-select-weeks-target='inputWeekLegend'
+                  data-week-id="#{week.id}"]
+                  | ?
 
       - if render_employer_components
         .custom-control-checkbox-legend data-select-weeks-target="legendContainer" data-test='select-week-legend'

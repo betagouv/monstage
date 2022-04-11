@@ -78,7 +78,7 @@ module Dashboard
         roles.map do |user|
           sign_in(user)
           role = user.type
-          get dashboard_school_class_rooms_path(school)
+          get dashboard_school_path(school)
           assert_response :success
 
           # new link
@@ -88,7 +88,7 @@ module Dashboard
                         "missing link to add class_room for #{role}"
 
           # destroy links
-          assert_select 'form[action=?]',
+          assert_select 'a.float-right[href=?]',
                         dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to destroy class_room for #{role}"

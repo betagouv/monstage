@@ -1,0 +1,21 @@
+
+#users-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0"
+  - if @school.has_staff?
+    .row
+      .col-12
+        small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
+
+    .row
+      = render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
+
+  - else
+    .row
+      .col-12
+        .alert.alert-info.alert-outlined.mb-2
+          .row.align-items-center.no-gutters
+            .col-1.col-sm-auto.text-center.mr-2
+              i.fa.fa-info-circle.fa-2x
+            .col
+              p.mb-0
+                span.test-presence-of-ux-guideline-invitation
+                  | Invitez les enseignants à s'inscrire, en leur communiquant simplement l'adresse du site.

@@ -8,7 +8,7 @@ class StudentMailerPreview < ActionMailer::Preview
   end
 
   def internship_application_rejected_email
-    internship_application = InternshipApplication.rejected.first
+    internship_application = InternshipApplication.canceled_by_student.first
     internship_application.rejected_message = '<strong>Tellement désolés ! Vraiment ! </strong><br/>Vous trouverez ailleurs tel que vous êtes, ne changez rien'
     StudentMailer.internship_application_rejected_email(
       internship_application: internship_application

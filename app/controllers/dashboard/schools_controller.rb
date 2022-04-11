@@ -40,6 +40,7 @@ module Dashboard
 
     def show
       authorize! :edit, School
+      @available_weeks = Week.selectable_on_school_year
     end
 
     private
