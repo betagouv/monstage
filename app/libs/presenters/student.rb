@@ -1,6 +1,5 @@
 module Presenters
-  class Student
-    include Humanable
+  class Student < User
 
     def name
       return anonymized_message if student.anonymized?
@@ -49,14 +48,9 @@ module Presenters
     end
 
     private
-    attr_reader :user
 
     def anonymized_message
       "Non communiqué (Donnée anonymisée)"
-    end
-
-    def initialize(student)
-      @user = student
     end
   end
 end

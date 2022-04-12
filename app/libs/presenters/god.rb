@@ -1,6 +1,5 @@
 module Presenters
-  class God
-    include Humanable
+  class God < User
 
     def profile_filters
       {
@@ -43,13 +42,6 @@ module Presenters
           by_school_track: false
         }
       }
-    end
-
-    private
-    attr_reader :user
-
-    def initialize(god)
-      @user = god
     end
   end
 end
