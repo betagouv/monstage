@@ -59,6 +59,10 @@ table.table-scrollable {
   display: table;
 }
 
+.table-display table {
+  display: table
+}
+
 .fr-table thead {
   background-color: $blue-france;
 }
