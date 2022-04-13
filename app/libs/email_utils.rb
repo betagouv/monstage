@@ -4,7 +4,7 @@ module EmailUtils
   end
 
   def self.from
-    "support@#{URI(env_host).host}"
+    "support@#{URI(env_host).host.gsub(/^www\./, '')}"
   end
 
   def self.display_name
