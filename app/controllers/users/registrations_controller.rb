@@ -27,12 +27,6 @@ module Users
     end
     alias confirmation_phone_standby confirmation_standby
 
-    # def confirmation_phone_standby
-    #   flash.delete(:notice)
-    #   @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
-    #   @confirmable_user ||= nil
-    # end
-
     def resource_class
       UserManager.new.by_params(params: params)
     rescue KeyError
