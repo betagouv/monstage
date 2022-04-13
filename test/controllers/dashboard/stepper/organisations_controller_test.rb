@@ -30,6 +30,7 @@ module Dashboard::Stepper
               employer_name: 'BigCorp',
               siret: '12345678901234',
               street: '12 rue des bois',
+              street_complement: 'Batiment 1',
               zipcode: '75001',
               city: 'Paris',
               coordinates: { latitude: 1, longitude: 1 },
@@ -45,7 +46,7 @@ module Dashboard::Stepper
       created_organisation = Organisation.last
       assert_equal 'BigCorp', created_organisation.employer_name
       assert_equal '12345678901234', created_organisation.siret
-      assert_equal '12 rue des bois', created_organisation.street
+      assert_equal '12 rue des bois - Batiment 1', created_organisation.street
       assert_equal '75001', created_organisation.zipcode
       assert_equal 'Paris', created_organisation.city
       assert_equal 'Activités de découverte', created_organisation.employer_description_rich_text.to_plain_text.to_s

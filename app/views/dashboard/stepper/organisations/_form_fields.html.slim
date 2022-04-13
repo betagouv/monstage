@@ -39,14 +39,14 @@ fieldset.mt-4 data-controller='organisation-form'
             = form.select :group_id, options_for_select(options_for_groups, resource.group.try(:id)), {prompt: '-- Indépendant --'}, class: "form-control", data: {:"organisation-form-target" => 'selectGroupName'}
 
       .bloc-tooggle class=('d-none' if request.fullpath.include?('organisations/new'))
-        = react_component("AddressInput", props: { resourceName: form.object_name,
+        = react_component("FullAddressInput", props: { resourceName: form.object_name,
                                 currentStreet: resource.street,
                                 currentCity: resource.city,
                                 currentZipcode: resource.zipcode,
                                 currentLatitude: resource.coordinates.try(:lat).try(:to_f),
                                 currentLongitude: resource.coordinates.try(:lon).try(:to_f),
                                 currentFullAddress: resource.formatted_autocomplete_address})
-        
+       
         .form-group data-controller='maxlength-input' data-maxlength-input-limit-value="#{InternshipOffer::EMPLOYER_DESCRIPTION_MAX_CHAR_COUNT}"
           #label_organisation_description_rich_text.label data-rich-text-label-enable-value=true data-rich-text-label-for-value="#{form.object_name}_employer_description_rich_text" data-controller="rich-text-label"
             | Description de l'entreprise (optionnel)

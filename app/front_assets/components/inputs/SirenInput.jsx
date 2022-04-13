@@ -99,7 +99,7 @@ export default function SirenInput({
             const city = selection.adresseEtablissement.libelleCommuneEtablissement;
             const street = `${selection.adresseEtablissement.numeroVoieEtablissement} ${selection.adresseEtablissement.typeVoieEtablissement} ${selection.adresseEtablissement.libelleVoieEtablissement} `;
             const fullAddress = `${street} ${zipcode} ${city}`;
-            document.getElementById("organisation_autocomplete").value = street;
+            document.getElementById("organisation_autocomplete").value = fullAddress;
             document.getElementById("organisation_street").value = street;
             document.getElementById("organisation_city").value = city;
             document.getElementById("organisation_zipcode").value = zipcode;
@@ -144,11 +144,11 @@ export default function SirenInput({
                     })}
                   />
                 </div>
-                <div class='mt-2 d-flex'>
-                  <small class='text-muted'>Société introuvable ?</small>
-                  <a href='#manual-input' class='pl-2 small' onClick={openTooggle}>Ajouter une société manuellement</a>
+                <div className='mt-2 d-flex'>
+                  <small className="text-muted">Société introuvable ?</small>
+                  <a href='#manual-input' className='pl-2 small' onClick={openTooggle}>Ajouter une société manuellement</a>
                 </div>
-                <div class="alerte alert-danger siren-error p-2 mt-2 d-none" id='siren-error' role="alert">
+                <div className="alerte alert-danger siren-error p-2 mt-2 d-none" id='siren-error' role="alert">
                   <small>Aucune réponse trouvée, essayez avec le SIRET.</small>
                 </div>
               </div>

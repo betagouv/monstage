@@ -4,6 +4,7 @@ module Dashboard::Stepper
   # Step 1 of internship offer creation: fill in company info
   class OrganisationsController < ApplicationController
     before_action :authenticate_user!
+    before_action :clean_params, only: [:create, :update]
 
     # render step 1
     def new
@@ -14,10 +15,11 @@ module Dashboard::Stepper
 
     # process step 1
     def create
-      authorize! :create, Organisation
+      authorize! :create, Organisation      
 
       @organisation = Organisation.find_by(siret: organisation_params[:siret])
       @organisation ||= Organisation.new(organisation_params)
+
       if @organisation.save
         redirect_to new_dashboard_stepper_internship_offer_info_path(organisation_id: @organisation.id)
       else
@@ -59,9 +61,13 @@ module Dashboard::Stepper
               :employer_website,
               :is_public,
               :group_id,
-              :organisation_autocomplete,
+              :autocomplete,
               coordinates: {})
             .merge(employer_id: current_user.id)
+    end
+
+    def clean_params
+      params[:organisation][:street] = [params[:organisation][:street], params[:organisation][:street_complement]].compact_blank.join(' - ')
     end
   end
 end
