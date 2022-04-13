@@ -7,12 +7,10 @@
   border-radius: 5px;
 }
 .custom-control-checkbox-list{
-  height: 180px;
+  height: 380px;
   overflow: scroll;
+  background-color: $blue-france-975;
 
-  border: 1px solid $input-border-color;
-  border-top-left-radius: $input-border-radius;
-  border-top-right-radius: $input-border-radius;
   padding: ($input-btn-padding-x/2) $input-btn-padding-y;
   &.is-invalid{
     box-shadow: 0 0 2px rgba(255,0,0,.5);

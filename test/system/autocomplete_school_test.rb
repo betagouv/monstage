@@ -63,6 +63,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
     within(".fr-tabs") do
       click_on 'Mon établissement'
     end
+    
     if ENV['RUN_BRITTLE_TEST']
       # default presence of fields
       assert_equal 1, all('#user_school_name').size, 'default school name missing'

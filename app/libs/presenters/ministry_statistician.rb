@@ -1,5 +1,5 @@
 module Presenters
-  class MinistryStatistician
+  class MinistryStatistician < User
     include Humanable
     def profile_filters
       {
@@ -42,13 +42,6 @@ module Presenters
           by_school_track: false
         }
       }
-    end
-
-    private
-    attr_reader :ministry_statistician
-
-    def initialize(ministry_statistician)
-      @ministry_statistician = ministry_statistician
     end
   end
 end
