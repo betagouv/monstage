@@ -17,7 +17,7 @@ end
 
 desc ' april 13 2022 incident counterparts - users'
 task users_retrofit: :environment do
-  created_ones = User.where('created_at > ?', Date.new(2022,4,5)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(confirmed_at: nil)
+  created_ones = User.where('created_at > ?', Date.new(2022,4,5)).where('created_at <= ?', DateTime.new(2022,4,13,13,0,0)).where(confirmed_at: nil).where(phone_token: nil)
   created_ones.each do |user|
     user.send_confirmation_instructions
   end
