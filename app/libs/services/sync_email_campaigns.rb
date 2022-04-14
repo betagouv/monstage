@@ -11,10 +11,50 @@ module Services
       list:{
         add: { url_part: '/lists', method: :post },
         read: { url_part: '/lists', method: :get }
+      },
+      contact:{
+        add: { url_part: '/lists/%s/contacts', method: :post },
+        search: { url_part: '/lists/%s/contacts', method: :get },
+        delete: { url_part: '/lists/%s/contacts', method: :delete }
       }
     }.freeze
 
     # public API
+    def add_contact(user:, list_name: 'newsletter')
+      list_id = fetch_list_id(list_name: list_name)
+      return if list_id.nil?
+
+      search_result = search_contact_by_email(email: user.email, list_name: 'newsletter')
+      return :previously_existing_user unless search_result.nil?
+
+      response = add_contact_to_list(list_id: list_id, user: user)
+      return JSON.parse(response.body) if status?(200, response)
+
+      raise StandardError.new "Fail to add_contact ##{user.id} in #{list_name}"
+    end
+
+    def remove_contact(email:, list_name: 'newsletter')
+      list_id = fetch_list_id(list_name: list_name)
+      return if list_id.nil?
+
+      search_result = search_contact_by_email(email: email, list_name: 'newsletter')
+      return :inexistant_user if search_result.nil?
+
+      response = delete_contact_from_list(list_id: list_id, email: email)
+      return true if status?(200, response)
+
+      raise StandardError.new "fail to remove contact #{email} from #{list_name}: code[#{response.code}], #{response.body}"
+    end
+
+    def list_contacts(list_name: 'newsletter')
+      list_id = fetch_list_id(list_name: list_name)
+      return if list_id.nil?
+
+      response = fetch_contacts(list_id: list_id)
+      return JSON.parse(response.body) if status?(200, response)
+
+      raise StandardError.new "fail to list contacts #{list_name} list: code[#{response.code}], #{response.body}"
+    end
 
     def read_lists
       response = fetch_lists
@@ -23,37 +63,88 @@ module Services
       raise StandardError.new "fail to list metadata: code[#{response.code}], #{response.body}"
     end
 
-    private
+    # Browser methods
 
-    def uri_extension(url_parts:[], parameter: nil)
-      return SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part] if parameter.nil?
+    def search_contact_by_email(email:, list_name: 'newsletter')
+      contacts = list_contacts
+      return if contacts.empty?
 
-      SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part] % parameter
+      contacts.each do |contact|
+        return contact if contact['email'] == email
+      end
+      nil
     end
 
-    def do_request(url_parts:[], default_header: default_headers, parameter: nil)
-      uri_str = uri_extension(url_parts: url_parts, parameter: parameter)
-      full_endpoint = "#{SARBACANE_HOST}/#{uri_str}"
-      method = SARBACANE_ENDPOINTS.dig(*url_parts)[:method]
-      case method
-      when :get
-        Net::HTTP::Get.new(full_endpoint, default_header)
-      when :post
-        Net::HTTP::Post.new(full_endpoint, default_header)
-      when :put
-        Net::HTTP::Put.new(full_endpoint, default_header)
-      when :delete
-        Net::HTTP::Delete.new(full_endpoint, default_header)
-      else
-        Net::HTTP::Get.new(full_endpoint, default_header)
+
+    def fetch_list_id(list_name: 'newsletter')
+      read_lists.each do |list|
+        return list['id'] if list['name'] == list_name
       end
     end
+
+
+    private
 
     def fetch_lists
       with_http_connection do |http|
         http.request(
-          do_request(url_parts: [:list, :read])
+          do_request(url_parts: %i[list read])
         )
+      end
+    end
+
+    def add_contact_to_list(list_id: , user:)
+      with_http_connection do |http|
+        body = { email: user.email, phone: user.phone }.to_json
+        http.request(
+          do_request(url_parts: %i[contact add], parameter: list_id, body: body)
+        )
+      end
+    end
+
+    def fetch_contacts(list_id:)
+      with_http_connection do |http|
+        http.request(
+          do_request(url_parts: %i[contact search], parameter: list_id)
+        )
+      end
+    end
+
+    def delete_contact_from_list(list_id: , email:)
+      with_http_connection do |http|
+        params = { email: email }
+        http.request(
+          do_request(url_parts: %i[contact delete], parameter: list_id, params: params)
+        )
+      end
+    end
+
+    def full_endpoint(url_parts:, parameter: , params: )
+      url = SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part]
+      url = SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part] % parameter if parameter.present?
+      url = "#{SARBACANE_HOST}/#{url}"
+      return url if params.blank?
+
+      "#{url}?#{params.to_query}"
+    end
+
+    def do_request(url_parts:[], default_header: default_headers, parameter: nil, body: nil, params:{})
+      full_endpoint = full_endpoint(url_parts: url_parts, parameter: parameter, params: params)
+      case SARBACANE_ENDPOINTS.dig(*url_parts)[:method]
+      when :get
+        Net::HTTP::Get.new(full_endpoint, default_header)
+      when :post
+        Net::HTTP::Post.new(full_endpoint, default_header).tap do |request|
+          request.body = body if body.present?
+        end
+      when :put
+        # Net::HTTP::Put.new(full_endpoint, default_header)
+      when :delete
+        Net::HTTP::Delete.new(full_endpoint, default_header).tap do |request|
+          request.body = body if body.present?
+        end
+      else
+        Net::HTTP::Get.new(full_endpoint, default_header)
       end
     end
 
@@ -80,7 +171,6 @@ module Services
 
       auth = ActionController::HttpAuthentication::Basic.encode_credentials(user, pass)
 
-      # { 'Authorization' => auth }
       { 'Authorization' => auth, 'Content-Type' => 'application/json' }
     end
   end
