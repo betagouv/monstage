@@ -18,8 +18,9 @@ class EmailUtilsTest < ActiveSupport::TestCase
   test '.domain' do
     local_host = ENV.fetch('HOST')
 
-    # This test is supposed to be ran on test env
-    assert_equal  "localhost", EmailUtils.domain
+    if Rails.env.development?
+      assert_equal  "localhost", EmailUtils.domain
+    end
 
     ENV['HOST'] = "https://v2-test.monstagedetroiseme.fr"
     assert_equal  "monstagedetroiseme.fr", EmailUtils.domain
