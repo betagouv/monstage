@@ -3,8 +3,12 @@ module EmailUtils
     ENV.fetch('HOST') { 'https://test.example.com' }
   end
 
+  def self.domain
+    URI(env_host).host.split('.').last(2).join('.')
+  end
+
   def self.from
-    "support@#{URI(env_host).host.gsub(/^www\./, '')}"
+    "support@#{domain}"
   end
 
   def self.display_name
