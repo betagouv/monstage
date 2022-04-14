@@ -25,7 +25,7 @@ module Services
       return if list_id.nil?
 
       search_result = search_contact_by_email(email: user.email, list_name: 'newsletter')
-      return :previously_existing_user unless search_result.nil?
+      return :previously_existing_email unless search_result.nil?
 
       response = add_contact_to_list(list_id: list_id, user: user)
       return JSON.parse(response.body) if status?(200, response)
@@ -80,6 +80,7 @@ module Services
       read_lists.each do |list|
         return list['id'] if list['name'] == list_name
       end
+      nil
     end
 
 
@@ -119,6 +120,10 @@ module Services
       end
     end
 
+    #
+    # utils
+    #
+
     def full_endpoint(url_parts:, parameter: , params: )
       url = SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part]
       url = SARBACANE_ENDPOINTS.dig(*url_parts)[:url_part] % parameter if parameter.present?
@@ -128,7 +133,7 @@ module Services
       "#{url}?#{params.to_query}"
     end
 
-    def do_request(url_parts:[], default_header: default_headers, parameter: nil, body: nil, params:{})
+    def do_request(url_parts: , default_header: default_headers, parameter: nil, body: nil, params:{})
       full_endpoint = full_endpoint(url_parts: url_parts, parameter: parameter, params: params)
       case SARBACANE_ENDPOINTS.dig(*url_parts)[:method]
       when :get
@@ -155,9 +160,6 @@ module Services
       Array(expected).include?(actual)
     end
 
-    #
-    # utils
-    #
     def with_http_connection(&block)
       uri = URI(SARBACANE_HOST)
       Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |https|
