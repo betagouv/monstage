@@ -59,7 +59,7 @@
                       - if current_user.try(:operator?)
                         li
                           = link_to 'Statistiques',
-                                    reporting_schools_path(default_reporting_url_options(current_user)),
+                                    reporting_internship_offers_path(default_reporting_url_options(current_user)),
                                     class: "fr-link text-decoration-none mr-4 #{request.path =~ /^\/reporting\// ? 'active' : ''}"
                       li
                         = link_to 'Recherche',
