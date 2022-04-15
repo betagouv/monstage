@@ -1,6 +1,9 @@
-.table-caption-top{
-  caption { caption-side: top };
+.table-caption-top {
+  caption {
+    caption-side: top;
+  }
 }
+
 .table-caption-bottom {
   caption {
     caption-side: bottom;
@@ -8,48 +11,122 @@
     padding-left: 1em;
   }
 }
+
 @include media-breakpoint-up(sm) {
-  .hoverable-row-with-btn{
-    .btn-hoverable{
+  .hoverable-row-with-btn {
+    .btn-hoverable {
       transition: opacity .4s ease;
       opacity: 0;
       display: block;
-      position: absolute;
     }
-    &:hover{
-      background-color: $blue_light;
-      .btn-hoverable{
-      opacity: 1;
+    &:hover {
+      .btn-hoverable-none{
+        transition: opacity .4s ease;
+        color: var(--text-action-high-blue-france);
+        background-color: var(--background-action-low-blue-france-active);
+      }
+      .btn-hoverable {
+        opacity: 1;
+      }
+
+      p.internship-item-title {
+        text-decoration: underline;
       }
     }
   }
 }
 
-
 .table {
-    display:table;
+  display: table;
 }
+
 .tr {
-    display:table-row;
+  display: table-row;
 }
-.td, .th {
-    display:table-cell;
-    padding: $table-cell-padding;
-    vertical-align: top;
-    border-top: $table-border-width solid $table-border-color;
+
+.td,
+.th {
+  display: table-cell;
+  padding: $table-cell-padding;
+  vertical-align: top;
+  border-top: $table-border-width solid $table-border-color;
 }
+
 .thead {
   display: table-header-group;
-  .th{
+
+  .th {
     vertical-align: bottom;
     border-bottom: (2 * $table-border-width) solid $table-border-color;
   }
 }
-.tbody{
+.table-scrollbar {
+  position: relative;
+  height: 550px;
+  overflow: auto;
+}
+
+.table-wrapper-scroll-y {
+  display: block;
+}
+
+table.table-scrollable {
+  display: table;
+}
+
+.table-display table {
+  display: table
+}
+
+.fr-table thead {
+  background-color: $blue-france;
+}
+
+.tbody {
   display: table-row-group;
 }
-.tfoot{
+
+.tfoot {
   display: table-footer-group;
+}
+
+.fr-tag-rounded  {
+  padding-top: 0.4rem;
+  line-height: 2.5rem;
+  vertical-align: middle;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  color: white;
+  background-color: $blue-france;
+
+  &:active{color: $blue-france;};
+}
+
+.fr-table table{
+  tr.hoverable-row-with-btn:nth-child(2n) {
+    background-color: #fff;
+  }
+}
+.employer .fr-table {
+  td.title {
+    min-width: 11rem;
+  }
+  td.views {
+    min-width: 5rem;
+  }
+  td.applications_rejected {
+    min-width: 11rem;
+  }
+  td.accepted-offers {
+    min-width: 12rem;
+  }
+  td.expected_answers {
+    min-width: 11rem;
+  }
+  td.applications {
+    min-width: 8rem;
+  }
 }
 
 .tr-blue{
@@ -63,6 +140,15 @@
   }
 }
 
+.tr-blue-light{
+  // box-shadow: 0 2px 0px rgb(97,161,201);
+  th, .th{
+    // box-shadow: 0 2px 0px rgb(97,161,201);
+    background-color: $blue-france-light;
+    // font-size: 1.1rem;
+    font-weight: normal;
+  }
+}
 .fr-table--white {
   tr:nth-child(even) {
     td {

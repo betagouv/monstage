@@ -1,73 +1,70 @@
-.container.mt-3
+.container-monstage.my-3
   = render partial: 'reporting/navigation'
-  div.bg-stats-filter.rounded.p-3[data-controller='statistics']
-    = render partial: 'reporting/filters',
-             locals: {view_tab: :internship_offers}
-
-    fieldset
-      legend.fr-fieldset__legend.fr-text--regular Grouper par
-      .row
-        .col-lg-4 
-          .fr-fieldset__content
-            .fr-radio-group.fr-radio-group--sm.pl-5.custom-control-inline
-              = radio_button_tag :dimension, 'sector', dimension_is?('sector', params[:dimension]), id: 'present-by-sector', class: 'custom-control-input', value: 'sector', data: { action: 'statistics#useDimension' }
-              = label_tag :dimension, for: 'present-by-sector', class: 'custom-control-label fr-label' do
-                = "Secteurs professionnels"
-        .col-lg-5 
-          .fr-fieldset__content
-            .fr-radio-group.fr-radio-group--sm.pl-5.custom-control-inline
-              = radio_button_tag :dimension, 'group', dimension_is?('group', params[:dimension]), id: 'present-by-group', class: 'custom-control-input', value: 'group', data: { action: 'statistics#useDimension' }
-              = label_tag :dimension, for: 'present-by-group', class: 'custom-control-label fr-label' do
-                = "Groupe ou institution de tutelle"
-
-  .row.mt-3.mb-3
+  .row
     .col-12
-      = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
-                class: 'fr-btn btn-danger',
-                data: {turbolinks: false} do
-        i.fas.fa-download
-        span =" Exporter les statistiques des offres"
-      - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
-        = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
-                  class: 'ml-3 fr-btn btn-danger',
-                  data: {turbolinks: false} do
-          i.fas.fa-download
-          span =" Exporter les offres"
-  .row.mt-3
-    .col-12
-      table.table.table-statistics.table-sticky-thead
-        thead
-          tr.tr-blue
-            th.bl-1.bc-light
-              = dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total_report_count)
-            th.bl-1.bc-light colspan="4"= InternshipOffer.human_attribute_name(:total_applications_count)
-            th.bl-1.bc-light colspan="5"= InternshipOffer.human_attribute_name(:approved_applications_count)
-          tr.tr-white
-            th.bl-1.bc-light
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
+      .fr-tabs 
+        = render partial: 'reporting/tabs'
 
-            th= InternshipOffer.human_attribute_name(:total_male_applications_count)
-            th= InternshipOffer.human_attribute_name(:total_female_applications_count)
-            th= InternshipOffer.human_attribute_name(:total_no_gender_applications_count)
-            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
-            th
-              accr title="Cordée de la réussite, parcours d'excellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
-            th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
-            th= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
-            th.border-right= InternshipOffer.human_attribute_name(:total_no_gender_approved_applications_count)
+        #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
+          .rounded.p-3[data-controller='statistics']
+            = render partial: 'reporting/filters', locals: {view_tab: :internship_offers}
 
-        tbody
-          - if dimension_is?('group', params[:dimension])
-            = render partial: 'reporting/internship_offers/internship_no_offer',
-                     locals: {groups: @no_offers}
-          = render partial: 'reporting/internship_offers/internship_offer',
-                   collection: @offers.map(&presenter_for_dimension.method(:new))
+          .row.mt-3
+            .col-12.fr-table.table-display
+              table.table-statistics.ftable-sticky-thead.fr-table--white
+                thead
+                  tr.tr-blue
+                    th.bl-1.bc-light
+                      small= dimension_is?('group', params[:dimension]) ? "Groupe ou institution de tutelle" : InternshipOffer.human_attribute_name(:sector_id)
+                    th.bl-1.bc-light
+                      small= InternshipOffer.human_attribute_name(:total_report_count)
+                    th.bl-1.bc-light colspan="4"
+                      small= InternshipOffer.human_attribute_name(:total_applications_count)
+                    th.bl-1.bc-light colspan="5"
+                      small= InternshipOffer.human_attribute_name(:approved_applications_count)
+                  tr.tr-blue-light
+                    th
+                    th= InternshipOffer.human_attribute_name(:total)
+                    th= InternshipOffer.human_attribute_name(:total)
 
-        tfoot= render 'reporting/internship_offers/internship_offer',
-                      internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
-                      font_weight_bold: true,
-                      font_color_blue: true
+                    th= InternshipOffer.human_attribute_name(:total_male_applications_count)
+                    th= InternshipOffer.human_attribute_name(:total_female_applications_count)
+                    th= InternshipOffer.human_attribute_name(:total_no_gender_applications_count)
+                    th.bl-1.bc-light= InternshipOffer.human_attribute_name(:total)
+                    th
+                      accr title="Cordée de la réussite, parcours d'excellence"= InternshipOffer.human_attribute_name(:total_custom_track_approved_applications_count)
+                    th= InternshipOffer.human_attribute_name(:total_male_approved_applications_count)
+                    th= InternshipOffer.human_attribute_name(:total_female_approved_applications_count)
+                    th.border-right= InternshipOffer.human_attribute_name(:total_no_gender_approved_applications_count)
+
+                tbody
+                  - if dimension_is?('group', params[:dimension])
+                    = render partial: 'reporting/internship_offers/internship_no_offer',
+                            locals: {groups: @no_offers}
+                  = render partial: 'reporting/internship_offers/internship_offer',
+                          collection: @offers.map(&presenter_for_dimension.method(:new))
+
+                tfoot= render 'reporting/internship_offers/internship_offer',
+                              internship_offer: Presenters::Reporting::StatsTotal.new(offers: @offers),
+                              font_weight_bold: true,
+                              font_color_blue: true
 
 
+        div data-controller="footer"
+          div  [
+            data-footer-target="placeholder"
+            data-action="resize@window->footer#resize"
+            ]
+
+          .sticky-footer.bg-light data-footer-target="fixedContent"
+            .row.p-4
+              .col-12.d-flex.justify-content-start
+                = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx)),
+                      class: 'fr-btn fr-btn-danger fr-fi-mail-line fr-btn--icon-left',
+                      data: {turbolinks: false} do
+                  | Exporter les statistiques des offres  
+                - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
+                  = link_to reporting_internship_offers_path(reporting_cross_view_params.merge(format: :xlsx, dimension: :offers)),
+                            class: 'ml-3 fr-btn fr-btn-danger fr-fi-mail-line fr-btn--icon-left',
+                            data: {turbolinks: false} do
+                    | Exporter les offres

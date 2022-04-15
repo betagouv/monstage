@@ -1,6 +1,6 @@
 .row
   .col-12
-    .wrapper-breadcrumb.bg-light.d-inline-block.px-3.py-2.rounded
+    .d-inline-block.px-3.py-2.rounded
       = link_to 'Accueil', root_path
       span.mx-1 >
       - if params[:department].present? || params[:group].present?
@@ -19,30 +19,6 @@
         span.font-weight-bold Statistiques nationales
 .row
   .col-8
-     h1.h2.py-3 Statistiques
-.row
-  .col-12
-    ul.nav.nav-tabs.mb-3
-      - if can?(:see_reporting_dashboard, current_user)
-        li.nav-item= link_to "Tableau de bord",
-                             reporting_dashboards_path(default_reporting_url_options(current_user)),
-                             class: "nav-link #{current_page?(reporting_dashboards_path) ? 'active' : ''}"
-      - if can?(:see_reporting_internship_offers, current_user)
-        li.nav-item= link_to "Offres",
-                             reporting_internship_offers_path(default_reporting_url_options(current_user)),
-                             class: "nav-link #{current_page?(reporting_internship_offers_path) ? 'active' : ''}"
-      - if can?(:see_reporting_schools, current_user)
-        li.nav-item= link_to "Établissements",
-                             reporting_schools_path(default_reporting_url_options(current_user)),
-                             class: "nav-link #{current_page?(reporting_schools_path) ? 'active' : ''}"
-      - if can?(:see_reporting_associations, current_user)
-        li.nav-item= link_to "Associations",
-                            reporting_operators_path(),
-                            class: "nav-link #{current_page?(reporting_operators_path) ? 'active' : ''}"
-      - if can?(:see_reporting_enterprises, current_user)
-        li.nav-item= link_to "Entreprises",
-                            reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group')),
-                            class: "nav-link #{current_page?(reporting_employers_internship_offers_path) ? 'active' : ''}"
-      - if current_user.operator? && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
-        li.nav-item= link_to "Importer des données", reporting_import_data_path,
-                            class: "nav-link #{current_page?(reporting_import_data_path) ? 'active' : ''}" if can?(:import_data, Acl::Reporting)
+     h1.h3.py-3 Statistiques
+      
+

@@ -1,7 +1,7 @@
-.col-3
+.col-md-3.col-12
   .form-group.smashed.custom-label-container
+    = label_tag :is_public, "Public / Privé", class: 'fr-label'
     = select_tag :is_public,
                   options_for_select([["Tous", ""], ["Secteur Public", "true"], ["Secteur Privé", "false"]], selected: params[:is_public]),
-                  class: 'form-control custom-select',
+                  class: 'fr-select',
                   data: { action: 'statistics#filterByPublicy' }
-    = label_tag :is_public, "Public / Privé", class: 'font-weight-light fr-label'

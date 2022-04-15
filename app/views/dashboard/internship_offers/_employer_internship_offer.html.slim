@@ -1,38 +1,37 @@
-tr class="test-internship-offer even-odd test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn"
+tr class="test-internship-offer test-internship-offer-#{employer_internship_offer.id} hoverable-row-with-btn internship-offer"
   td.text-left.title data-head="#{cols[:title].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     = link_to internship_offer_path(employer_internship_offer, origin: 'dashboard'),
               data: { "test-id": "#{employer_internship_offer.id}" },
               class: 'heavy-blue-link' do
       p.internship-item-title.mb-0= employer_internship_offer.title
-    p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city
+    p.text-muted.internship-item-city.small.mb-0= employer_internship_offer.city.capitalize
 
-  td.text-center.align-middle.d-none.d-md-table-cell data-head=cols[:view_count]
+  td.text-center.align-middle.d-none.d-md-table-cell.views data-head=cols[:view_count]
     span.badge.badge-view-count= employer_internship_offer.view_count
 
-  td.text-center.align-middle data-head="#{cols[:rejected_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.text-center.align-middle.applications_rejected data-head="#{cols[:rejected_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     span.badge= employer_internship_offer.rejected_applications_count
 
-  td.text-center.align-middle data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.text-center.align-middle.accepted-offers data-head="#{cols[:approved_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     span.px-3.badge= employer_internship_offer.approved_applications_count
 
 
-  td.align-middle data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.align-middle.expected_answers data-head="#{cols[:submitted_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     - if employer_internship_offer.submitted_applications_count.positive?
-      .inline-next-to.d-inline-block
-        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                  class: 'fr-tag d-inline-block shrinked-line' do
-          .fr-text--lg.mb-1
-            span = employer_internship_offer.submitted_applications_count
-        = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
-                  class: 'fr-raw-link btn-hoverable d-inline-block fr-mt-2v' do
-          .fr-fi-eye-line.fr-pl-1v.self-align-center aria-hidden="true"
-            small Répondre
+        .d-inline-flex
+          .fr-text--lg.mb-1.text-center.fr-tag-rounded.btn-hoverable-none
+            = employer_internship_offer.submitted_applications_count
+          = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
+                    title: "Répondre aux candidatures",
+                    class: 'fr-raw-link' do
+            span#eye1.fr-fi-eye-line.fr-pl-2v.fr-pt-2v.btn-hoverable aria-hidden="true"
+            span.sr-only | Répondre aux candidatures
     - else
       span.badge.mx-2
         = employer_internship_offer.submitted_applications_count
 
 
-  td.align-middle data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
+  td.align-middle.applications data-head="#{cols[:total_applications_count].gsub('&nbsp;', ' ').gsub('<br />', ' ')}"
     .d-flex.justify-content-start
       span.fa-fw.badge
         strong = employer_internship_offer.total_applications_count
@@ -40,5 +39,7 @@ tr class="test-internship-offer even-odd test-internship-offer-#{employer_intern
         span.pl-2
           = link_to dashboard_internship_offer_internship_applications_path(employer_internship_offer),
                     class: 'btn-hoverable d-inline-block fr-raw-link',
+                    title: "Voir les candidatures",
                     aria: { label: "Voir l'offre" } do
-            span.fr-fi-eye-line aria-hidden="true"
+            span#eye2.fr-fi-eye-line aria-hidden="true" 
+            span.sr-only | Voir les candidatures

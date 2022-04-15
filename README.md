@@ -252,8 +252,10 @@ cat infra/dev/ssh/config >> ~/.ssh/config
 * git merge Hotfix-PR-branch
 * git push
 * push on production can be done manually using ```./infra/production/deploy.sh```
+
 * git checkout staging
 * git merge master
+* git push
 
 # disaster recovery plan
 
