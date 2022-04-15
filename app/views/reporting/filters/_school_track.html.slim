@@ -1,8 +1,8 @@
-.col-3
+.col-md-3.col-12
   .form-group.smashed.custom-label-container
+    = label_tag :school_track, 'Filière', class: 'fr-label'
     = select_tag :school_track,
                   grouped_options_for_select(Presenters::ClassRoom.school_tracks_options, selected: params[:school_track]),
-                  class: 'form-control custom-select',
+                  class: 'fr-select',
                   prompt: 'Toutes',
                   data: { action: 'statistics#filterBySchoolTrack' }
-    = label_tag :school_track, "Filière", class: 'font-weight-light fr-label'
