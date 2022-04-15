@@ -39,8 +39,8 @@ export default class extends Controller {
     );
     $(this.emailExplanationTarget).text(
       event.target.value == "school_manager" ?
-      'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' : 
-      'Cette adresse sera utilisée pour communiquer avec vous.'
+        'Merci de saisir une adresse au format : ce.UAI@ac-academie.fr. Cette adresse sera utilisée pour communiquer avec vous. ' :
+        ''
     )
   }
 

@@ -7,6 +7,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     existing_email = 'ce.0750655E@ac-paris.fr'
     school_1 = create(:school, name: 'Etablissement Test 1', city: 'Saint-Martin')
     create(:student, email: existing_email)
+    password = 'kikoololtest'
     # go to signup as school_manager
     visit new_user_registration_path(as: 'SchoolManagement')
 
@@ -16,23 +17,24 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
       find('#downshift-0-item-0').click
       find("label[for=\"select-school-#{school_1.id}\"]").click
       select "Chef d'établissement", from: 'user_role'
-      fill_in 'Adresse électronique académique', with: 'ce.0750655E@ac-paris.fr'
-      fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
-      fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
+      fill_in 'Adresse électronique académique', with: existing_email # error
+      fill_in 'Créer un mot de passe', with: password
+      fill_in 'Ressaisir le mot de passe', with: password
       find('label[for="user_accept_terms"]').click
       click_on "Je m'inscris"
     end
-    if ENV['RUN_BRITTLE_TEST'] 
+    if ENV['RUN_BRITTLE_TEST']
       # create school_manager
+      school_nr = ((rand * 0.9 + 0.1) * 10_000_000).to_i
       assert_difference('Users::SchoolManagement.school_manager.count', 1) do
-        fill_in 'Adresse électronique académique', with: 'ce.1234567E@ac-paris.fr'
-        fill_in 'Créer un mot de passe', with: 'kikoololletest'
-        fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
+        fill_in 'Adresse électronique académique', with: "ce.#{school_nr}E@ac-paris.fr"
+        fill_in 'Créer un mot de passe', with: password
+        fill_in 'Ressaisir le mot de passe', with: password
         fill_in 'Prénom', with: 'Martin'
         find("input[name='user[last_name]']").fill_in with: 'Fourcade'
-        find("input[type='submit']").click
+        click_on "Je m'inscris"
       end
     end
   end
