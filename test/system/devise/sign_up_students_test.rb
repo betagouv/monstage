@@ -134,6 +134,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
     # mistaking with password confirmation
     assert_difference('Users::Student.count', 0) do
+      sleep 0.3
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
       fill_in 'Prénom', with: 'Martine'
