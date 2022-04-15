@@ -28,8 +28,31 @@
   box-shadow: 0px 15px 20px -20px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
 }
-.employer .info-covid {
-  top: 58px;
+.employer {
+  .fr-tabs{
+    min-height: 3.1rem;
+  }
+
+  .info-covid {
+    top: 58px;
+  }
+}
+
+tr.even-odd:nth-child(even) {
+  background-color: $grey-975;
+}
+
+a.heavy-blue-link {
+  font-weight: 800;
+  color: $blue-france;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.fr-tabs__panel.fr-tabs__panel--selected.internships {
+  min-height: 10rem;
 }
 
 .employer {
@@ -56,7 +79,14 @@
   left: 30px;
   border-radius: 0.4rem;
   margin-top: 20rem;
+}
+
+.table {
+  border-bottom: none !important;
+  thead th {
+    border-bottom: none !important;
   }
+}
 
 a.white {
   text-decoration: underline;
@@ -81,22 +111,35 @@ a.white {
   }
 }
 
-  .tutors .warning-bloc {
-    top: 25px;
-  }
+.tutors .warning-bloc {
+  top: 25px;
+}
+shrinked-line {
+  line-height: 0.7rem;
+}
 
+.table.employers {
+  width: 100%;
+}
 
+table.employer tbody tr td.title {
+  width: 33%;
+}
+
+.col-label-sorting{
+  display: block;
+  height: 25px;
+}
 // sorting headers for dashboard/internship_offers#index
 $sortLinkOffset: 15px;
 .sort-links{
-  $sort-arrow-height: 15px;
+  $sort-arrow-height: 10px;
   display: inline-block;
   position: absolute;
-  top: 50%;
-  margin-top: -11px;
-  font-size: larger;
+  top: 35%;
+  margin-top: -$sort-arrow-height;
   .currently-sorting{
-    color: $blue !important;
+    color: yellow !important;
   }
 
   .sort-link{
@@ -123,11 +166,16 @@ $sortLinkOffset: 15px;
   position: relative;
   left: 5px;
 }
-.breakable-word{
-  font-weight: bold;
-  font-size: 70%;
-  word-wrap: break-word;
+.min-width-10 {
+  width: 10px;
+  position: relative;
+  left: 5px;
 }
+// .breakable-word{
+//   font-weight: bold;
+//   font-size: 70%;
+//   word-wrap: break-word;
+// }
 
 // navigation arrows on internship_offers#index
 .list-item{

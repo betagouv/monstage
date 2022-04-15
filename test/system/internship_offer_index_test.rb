@@ -41,15 +41,15 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
         assert_presence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
         # click on dépubliées
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(2)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(2)').find('a').click
         assert_absence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
         # click on passed
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(3)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(3)').find('a').click
         assert_absence_of(internship_offer: internship_offer)
         assert_presence_of(internship_offer: old_internship_offer)
         # click on en cours
-        find('ul.test-dashboard-nav').find('.nav-item:nth-child(1)').click
+        find('ul.test-dashboard-nav').find('li:nth-child(1)').find('a').click
         assert_presence_of(internship_offer: internship_offer)
         assert_absence_of(internship_offer: old_internship_offer)
       end
@@ -59,7 +59,7 @@ class InternshipOfferIndexTest < ApplicationSystemTestCase
   test 'visitor is lured into thinking he can submit an application' do
     create(:weekly_internship_offer)
     visit internship_offers_path
-    page.find_link('Postuler')
+    page.find_link('Je postule')
   end
 
   test 'student can see a school_track filter restricted to his own ' \

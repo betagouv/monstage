@@ -1,0 +1,29 @@
+.row.py-3.mt-3 style="border-bottom: 1px solid #eee"
+  .col-12
+    .row
+      .col-12.my-4
+        h2.h4.text-dark Informations sur l'entreprise 
+    .row
+      .col-12 
+        .h4= internship_offer.employer_name
+    
+    .row
+      .col-12
+        - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
+          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+    
+    .row 
+      .col-12.my-4
+         - if internship_offer.employer_website.present? 
+            = link_to internship_offer.employer_website,
+                      internship_offer.employer_website,
+                      target: "_blank",
+                      class: 'test-employer-website',
+                      title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
+                      rel: "external noopener noreferrer"
+
+    .row 
+      .col-12.my-4
+        = Presenters::Address.new(instance: internship_offer).full_address
+
+

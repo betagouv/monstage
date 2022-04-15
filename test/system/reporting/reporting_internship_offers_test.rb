@@ -29,12 +29,12 @@ class ReportingInternshipOffersTest < ApplicationSystemTestCase
     sign_in(@statistician)
 
     visit reporting_internship_offers_path(department: @department)
-    page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "11")
+    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "11")
 
     select '3e'
-    page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "1")
+    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "1")
 
     select '3e SEGPA'
-    page.first('td.align-middle.bl-1.bc-light.text-blue.text-bigger.font-weight-bold.test-total-report', text: "10")
+    page.first('td.align-middle.bl-1.text-blue.text-bigger.font-weight-bold.test-total-report', text: "10")
   end
 end

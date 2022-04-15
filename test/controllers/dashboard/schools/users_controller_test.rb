@@ -73,8 +73,8 @@ module Dashboard
         get dashboard_school_users_path(school)
         assert_response :success
         assert_select 'title', "Professeurs du #{school.name} | Monstage"
-        assert_select '.test-dashboard-nav a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select '.test-dashboard-nav a.active[href=?]', dashboard_school_users_path(school), count: 1
+        assert_select '.test-dashboard-nav a.fr-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
+        assert_select '.test-dashboard-nav a.fr-link.active[href=?]', dashboard_school_users_path(school), count: 1
       end
 
       test 'GET users#index as SchoolManagement contains UX guidelines when no staff' do

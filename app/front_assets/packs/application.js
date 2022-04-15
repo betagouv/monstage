@@ -15,8 +15,13 @@ import 'raf/polyfill';
 import 'core-js/es/map';
 import 'core-js/es/set';
 
+import '@gouvfr/dsfr/dist/dsfr/dsfr.css';
+import '@gouvfr/dsfr/dist/dsfr/dsfr.module.js';
+
 import '../stylesheets/screen.scss';
 import '../stylesheets/print.scss';
+import '../../../node_modules/@gouvfr/dsfr/dist/dsfr/dsfr.css';
+import '../../../node_modules/@gouvfr/dsfr/dist/core/core.css';
 
 import '@popperjs/core';
 import Alert from 'bootstrap'

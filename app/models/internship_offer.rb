@@ -159,6 +159,10 @@ class InternshipOffer < ApplicationRecord
     self.max_candidates ||= 1
   end
 
+  def already_applied_by_student?(student)
+    !!internship_applications.where(user_id: student.id).first
+  end
+
   def total_no_gender_applications_count
     total_applications_count - total_male_applications_count - total_female_applications_count
   end

@@ -48,49 +48,49 @@ module UsersHelper
   end
   def partners_map_of_colored_logo_url
     [
-      { 
+      {
         logo: 'logo-moi-dans-10-ans-my-future.png',
         url: 'https://moidans10ans.fr/',
-        height: 60
+        height: 80
       },
       {
-        logo: 'logo-job-irl.png',
+        logo: 'logo-jobirl.png',
         url: 'https://www.jobirl.com',
-        height: 60
+        height: 80
       },
       {
         logo: 'logo-le-reseau.png',
         url: 'http://www.lereseau.asso.fr',
-        height: 60
+        height: 80
       },
       {
-        logo: 'logo-epc.png',
+        logo: 'logo-entreprises-pour-la-cite.png',
         url: 'http://www.reseau-lepc.fr',
-        height: 60
+        height: 80
       },
       {
         logo: 'logo-tous-en-stage.png',
         url: 'https://tousenstage.com',
-        height: 60
+        height: 80
       },
       {
         logo: 'logo-un-stage-et-apres.png',
         url: 'https://www.unstageetapres.fr',
-        height: 60
+        height: 80
       },
       {
         logo: 'logo-viens-voir-mon-taf.png',
         url: 'https://www.viensvoirmontaf.fr',
-        height: 60
+        height: 80
       },
       {
         logo: 'logo-telemaque.png',
         url: 'https://www.institut-telemaque.org/',
-        height: 60
+        height: 80
       },
     ].shuffle
   end
-      
+
 
   def user_roles_to_select
     Users::SchoolManagement.roles.map do |ruby_role, _pg_role|

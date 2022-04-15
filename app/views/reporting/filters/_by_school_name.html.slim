@@ -1,9 +1,6 @@
-.row
-  .col-5
-    .form-group.smashed
-      = react_component("SearchSchoolByName", props: { classes: 'col-12',
-                                                label: "Etablissement",
-                                                required: true,
-                                                chosenSchoolName: schools&.first&.name || '',
-                                                resourceName: :user})
-      = label_tag :reporting_searched_school, '', class: 'font-weight-light'
+.col-md-6.col-12
+  = react_component("SearchSchoolByName", props: { classes: 'col-12',
+                                              label: "Etablissement",
+                                              required: true,
+                                              chosenSchoolName: schools&.first&.name || '',
+                                              resourceName: :user})

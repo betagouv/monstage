@@ -1,5 +1,5 @@
 /Remove code after  February, 15th 2022 or uncomment
-/- if current_user.is_a?(Users::Employer)
+/- if current_user.employer?
   = render partial: 'dashboard/internship_offers/tabs'
   h1.h4.text-body.pt-3 Vous souhaitez participer à la mise en place de stages à distance ?
   p
@@ -34,7 +34,7 @@
                          label: "Disponibilités",
                          render_employer_components: false }
 
-        - if current_user.is_a?(Users::Employer)
+        - if current_user.employer?
           = render partial: 'dashboard/support_tickets/employer_specific_fields',
                    locals: {f: f}
         - if current_user.is_a?(Users::SchoolManagement)
@@ -44,13 +44,13 @@
   .row.no-gutters.mt-4
     .col-sm-12.col-md-10.col-lg-7
       .form-group
-        = f.label :message do
+        = f.label :message, class: 'fr-label' do
           |Besoins spécifiques
         = f.text_area :message,
                       class: "form-control mt-2",
                       rows: 7,
                       cols: 80,
                       placeholder: "Votre message ici ..."
-  = f.submit "Envoyer la demande", class: 'btn btn-primary lg px-4 my-4'
+  = f.submit "Envoyer la demande", class: 'fr-btn lg px-4 my-4'
   p style="margin-bottom: 100px"
 

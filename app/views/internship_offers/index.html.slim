@@ -16,10 +16,10 @@
 
 .actions.d-flex.d-stick.d-md-none.p-2
   = link_to search_internship_offers_path(params.permit(:city, :latitude, :longitude, :radius, :keyword, :school_track, week_ids: [])),
-            class: 'btn btn-danger rounded-sm',
+            class: 'fr-btn',
+            title: "Lancer la recherche",
             data: { :"test-id" => 'mobile-search-button' }
     = search_button_label
-
 
 .row
   .col-12 = render "internship_offers/title",

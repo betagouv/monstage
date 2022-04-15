@@ -8,6 +8,8 @@ module Presenters
     delegate :internship_offers_path, to: :url_helpers
     delegate :default_search_options, to: :user
 
+    include Humanable
+
     def short_name
       "#{user.first_name[0].capitalize}. #{user.last_name}"
     end
@@ -49,7 +51,7 @@ module Presenters
       internship_offers_path(default_search_options)
     end
 
-    private
+    protected
 
     attr_reader :user
     def initialize(user)

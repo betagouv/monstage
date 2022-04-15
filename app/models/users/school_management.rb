@@ -17,7 +17,7 @@ module Users
     has_many :students, through: :school
     has_many :main_teachers, through: :school
     has_many :internship_applications, through: :students
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
@@ -35,7 +35,7 @@ module Users
     def custom_dashboard_path
       return url_helpers.edit_dashboard_school_path(school) if school.present? && school.weeks.size.zero?
       return url_helpers.dashboard_school_class_room_path(school, class_room) if school.present? && class_room.present?
-      return url_helpers.dashboard_school_class_rooms_path(school) if school.present?
+      return url_helpers.dashboard_school_path(school) if school.present?
 
       url_helpers.account_path
     end
@@ -51,6 +51,7 @@ module Users
     def dashboard_name
       return 'Ma classe' if school.present? && class_room.present?
       return 'Mon établissement' if school.present?
+
       ""
     end
 

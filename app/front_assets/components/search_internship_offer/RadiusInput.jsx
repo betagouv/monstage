@@ -12,7 +12,7 @@ function RadiusInput({ radius,
     setRadius(parseInt(event.target.value, 10));
   };
   return (
-    <div className="p-3">
+    <div className="p-3 form-group">
       <label className="font-weight-bold" htmlFor="radius">
         Dans un rayon de
       </label>

@@ -7,12 +7,12 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
   include ::SearchInternshipOfferHelpers
 
   def submit_form
-    find('input#test-mobile-submit-search').click
+    find('#test-mobile-submit-search').click
   end
 
   def edit_search
     find('a[data-test-id="mobile-search-button"]').click
-    find('.search-container')
+    find('.test-search-container')
   end
 
   test 'USE_IPHONE_EMULATION, search form is hidden, only shows cta to navigate to extracted form in a simple view' do
@@ -85,7 +85,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
 
     # reset search and submit
     edit_search
-    select("Filière")
+    select("")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
@@ -182,5 +182,16 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     assert_absence_of(internship_offer: not_found_by_keyword)
     assert_absence_of(internship_offer: not_found_by_week)
     assert_absence_of(internship_offer: not_found_by_school_track)
+  end
+
+  test 'USE_IPHONE_EMULATION, burger button opens a small menu' do
+    employer = create(:employer)
+    sign_in(employer)
+    visit root_path
+
+    find('#fr-btn-menu-mobile').click
+    find('ul li a.fr-link.text-decoration-none.active.mr-4', text: 'Accueil')
+    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon tableau de bord')
+    find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon compte')
   end
 end

@@ -27,12 +27,6 @@ module Users
     end
     alias confirmation_phone_standby confirmation_standby
 
-    # def confirmation_phone_standby
-    #   flash.delete(:notice)
-    #   @confirmable_user = User.where(id: params[:id]).first if params[:id].present?
-    #   @confirmable_user ||= nil
-    # end
-
     def resource_class
       UserManager.new.by_params(params: params)
     rescue KeyError
@@ -125,21 +119,21 @@ module Users
       devise_parameter_sanitizer.permit(
         :sign_up,
         keys: %i[
-          id
-          type
-          first_name
-          last_name
-          birth_date
-          gender
-          school_id
-          class_room_id
-          operator_id
-          handicap
           accept_terms
-          role
-          phone
+          birth_date
+          class_room_id
           email
+          first_name
+          gender
+          handicap
+          id
+          last_name
+          operator_id
+          phone
+          role
+          school_id
           targeted_offer_id
+          type
         ]
       )
     end

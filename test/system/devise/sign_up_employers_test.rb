@@ -25,13 +25,14 @@ class SignUpEmployersTest < ApplicationSystemTestCase
     assert_difference('Users::Employer.count', 1) do
       fill_in 'Prénom', with: 'Madame'
       find("input[name='user[last_name]']").fill_in with: 'Accor'
-      fill_in 'Adresse électronique', with: 'another@email.com'
+      fill_in 'Adresse électronique', with: 'another@gmail.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
 
     # check created employer has valid info
-    created_employer = Users::Employer.where(email: 'another@email.com').first
+    created_employer = Users::Employer.find_by(email: 'another@gmail.com')
+    refute created_employer.nil?
   end
 end

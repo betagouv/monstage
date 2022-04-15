@@ -31,7 +31,7 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
       = render "internship_applications/show_details", internship_application: @internship_application
       - if @internship_application.drafted?
         .actions.d-flex.d-sm-block.d-xs-stick
-          = link_to internship_offer_path(@internship_application.internship_offer), class: 'btn btn-outline-primary' do
+          = link_to internship_offer_path(@internship_application.internship_offer), class: 'fr-btn' do
             i.fas.fa-chevron-left
 
             = " Modifier"

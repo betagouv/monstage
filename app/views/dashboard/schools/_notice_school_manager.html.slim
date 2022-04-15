@@ -12,5 +12,5 @@
             = image_tag asset_pack_path("media/images/homepage/explications.svg"), alt: 'horloge', height: '150px'
           .col-6
             p Veuillez renseigner vos dates de stage afin que vos élèves puissent commencer à postuler.
-            = link_to "Renseigner maintenant", edit_dashboard_school_path(school.id), class: "btn btn-primary", style: "border-radius: 0.5rem", data: { "action": "click->dashboard-schools-modal#closeNotice" }
+            = link_to "Renseigner maintenant", edit_dashboard_school_path(school.id), class: "fr-btn", style: "border-radius: 0.5rem", data: { "action": "click->dashboard-schools-modal#closeNotice" }
       .modal-footer.actions

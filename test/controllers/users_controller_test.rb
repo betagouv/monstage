@@ -23,14 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     operator = create(:user_operator)
     sign_in(operator)
     get account_path
-    assert_select 'a[href=?]', account_path(section: 'api')
-  end
-
-  test 'GET account_path(section: api) as Operator' do
-    operator = create(:user_operator)
-    sign_in(operator)
-    get account_path(section: 'api')
-    assert_select "a[href='#{account_path(section: 'api')}']"
+    assert_select '#api-panel', 1
     assert_select 'input[name="user[api_token]"]'
     assert_select "input[value=\"#{operator.api_token}\"]"
   end
@@ -38,8 +31,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'GET account_path(section: identity) as Operator' do
     operator = create(:user_operator)
     sign_in(operator)
-    get account_path(section: 'identity')
-    assert_select "a[href='#{account_path(section: 'api')}']"
+    get account_path
+    assert_select '#api-panel', 1
     assert_select 'select[name="user[department]"]'
   end
 

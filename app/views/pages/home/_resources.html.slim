@@ -1,62 +1,54 @@
-.container-fluid.bg-blue.px-0
-  .container-monstage
-    .row.no-gutters.text-center-left
-      .col-12.mb-3
-        .row.no-gutters
-          .col-12
-            h5.pl-sm-5.pl-0.pt-5.white RESSOURCES
-        .row.no-gutters
-          .col-lg-8.col-md-12
-            h2.h1.pl-sm-5.pl-1.h1-text-hero.white.mb-0.shrinked-lines.pb-3
-              | Prenez en main la plateforme dès maintenant
+.container-monstage
+  .fr-mx-2w
+    .row.pt-3
+    .row.fr-mb-3w
+      .col-lg-8.col-md-8.col-sm-12
+        h2.fr-h1.text-blue-france.pl-1.mb-0.pb-3
+          | Prenez en main la plateforme 
+          br
+          | dès maintenant
+        p.fr-pb-2w
+          |
+            Des questions ? Que vous soyez élève ou professionnel, membre
+            d’une équipe pédagogique ou d’une administration centrale,
+            vous trouverez forcément la réponse dans nos modes d’emploi,
+            pensés pour vous accompagner quel que soit votre usage de
+            la plateforme.
 
-          .col-lg-4.col-md-12.text-md-center-right.mb-3.d-none.d-md-block
-              = link_to "/documents-utiles",
-                        title: 'Documents utiles',
-                        class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 px-5 py-3 mr-md-5 mr-sm-0" do
-                | Voir les ressources
-        .row.no-gutters
-          .col-md-10.col-sm-12
-            p.px-5.pb-3.extended-lines.wider-text
-              |
-                Des questions ? Que vous soyez élève ou professionnel, membre
-                d’une équipe pédagogique ou d’une administration centrale,
-                vous trouverez forcément la réponse dans nos modes d’emploi,
-                pensés pour vous accompagner quel que soit votre usage de
-                la plateforme.
+      .col-lg-4.col-md-4.col-sm-12.mb-3
+        .text-center-right
+          = link_to "/documents-utiles",
+                    title: 'Documents utiles',
+                    class: "fr-raw-link" do
+            span.fr-btn.fr-btn--secondary.fr-px-10w = "Voir les ressources"
 
-
-    .wrapper.pl-5.text-left
+        / .wrapper.pl-5.text-left
+    .row.fr-pb-7w
       = render partial: "pages/home/people_card.html",
-              locals: { strong_text: "Elèves, parents d'élèves,",
-                        subtitle: "découvrez comment candidater à nos offres",
-                        image_file_name: 'eleves-parents-eleves.png',
+              locals: { strong_text: "Elèves, parents d'élèves",
+                        subtitle: "Découvrez comment candidater à nos offres",
+                        image_file_name: 'eleves-parents-eleves-16-9.svg',
                         alt_text: "Illustration trouver un stage",
                         link_title: "Accéder au mode d'emploi élève",
                         file: "MS3_Mode-d-emploi-eleves.pdf" }
       = render partial: "pages/home/people_card.html",
-              locals: { strong_text: "Professionnels,",
-                        subtitle: "offrez des stages et un accueil de qualité aux élèves",
-                        image_file_name: 'professionnels.png',
+              locals: { strong_text: "Professionnels",
+                        subtitle: "Offrez des stages et un accueil de qualité aux élèves",
+                        image_file_name: 'professionnels-16-9.svg',
                         alt_text: "Illustration fournir un stage",
                         link_title: "Accéder au mode d'emploi entreprise",
                         file: "MS3_Mode-d-emploi-entreprises.pdf" }
       = render partial: "pages/home/people_card.html",
-              locals: { image_file_name: 'etablissements-scolaires.png',
+              locals: { image_file_name: 'etablissements-scolaires-16-9.svg',
                         alt_text: "Aider à trouver un stage",
-                        strong_text: "Etablissements scolaires,",
-                        subtitle: "suivez vos élèves dans leur parcours autour du stage de troisième",
+                        strong_text: "Etablissements scolaires",
+                        subtitle: "Suivez vos élèves dans leur parcours autour du stage de troisième",
                         link_title: 'Accéder au mode des établissements scolaires',
                         file: "MS3_Mode-d-emploi-membres-pedagogique.pdf"}
       = render partial: "pages/home/people_card.html",
-              locals: { image_file_name: 'referents-centraux.png',
+              locals: { image_file_name: 'referents-16-9.svg',
                         alt_text: "Fournir un stage, superviser",
-                        strong_text: "Référents centraux ou départements,",
-                        subtitle: "accédez à un suivi pertinent",
+                        strong_text: "Référents centraux ou départements",
+                        subtitle: "Accédez à un suivi pertinent",
                         link_title: 'mode d\'emploi pour les administrations et référents',
                         file: "MS3_Mode-d-emploi-referents-departementaux.pdf"}
-    .col-12.text-center.mb-3.d-block.d-md-none.pb-4
-      = link_to "/documents-utiles",
-                title: 'Documents utiles',
-                class: " btn btn-outline-primary font-weight-bold btn-outline-fat ml-2 my-3 px-5 py-3" do
-        | Voir les ressources

@@ -244,6 +244,8 @@ class User < ApplicationRecord
   def statistician? ; false end
   def ministry_statistician? ; false end
   def student? ; false end
+  def employer? ; false end
+  def operator? ; false end
 
   def presenter
     Presenters::User.new(self)

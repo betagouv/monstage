@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" >
+<html lang="fr" data-rf-theme='light'>
   <head>
     <% if content_for?(:canonical_url) %>
       <link rel='canonical' href='<%= yield(:canonical_url) %>' />
@@ -20,40 +20,21 @@
   <body class="<%= env_class_name %> <%= body_class_name %>">
     <a name="top" id="top"></a>
     <div class="content pt-0" data-controller='rg2a'>
-      <header role="banner" class="custom-navbar <%= homepage? || statistics? || content_for?(:custom_header) ? '' : 'mb-4' %>">
-        <div class="container">
-          <div class="row">
-            <% if onboarding_flow? %>
-              <div class="col px-0"><%= render 'layouts/navbar_auth' %></div>
-            <% else %>
-              <div class="col px-0"><%= render 'layouts/navbar' %></div>
-            <% end %>
-          </div>
-        </div>
+      <header role="banner" class="custom-navbar <%= homepage? || statistics? || content_for?(:custom_header) ? "" : "mb-4" %>">
+        <div class="col px-0"><%= render "layouts/navbar" %></div>
       </header>
       <% if homepage? || statistics? %>
         <%= render 'layouts/flash' %>
         <div role="main"><%= yield %></div>
       <% else %>
         <% if content_for?(:custom_header) %> <%= content_for(:custom_header) %> <% end %>
-        <div class="container">
+        <div class="container-monstage">
           <%= render 'layouts/flash' %>
           <div role="main"><%= yield %></div>
         </div>
       <% end %>
     </div>
-    <footer role="contentinfo" >
-      <div class="footer <%= homepage? ? '' : 'mt-3' %> pb-3 <%= agreement_form? ? 'd-none' : '' %>"  data-controller='footer'>
-        <div class="container">
-          <%= render 'layouts/footer' %>
-        </div>
-      </div>
-    </footer>
-    <% if Rails.env.development? %>
-      <script>
-        console.log('', "<%= current_user&.to_s || 'logged in as visitor' %>")
-      </script>
-    <% end %>
+    <%= render 'layouts/footer' %>
     <%= render partial: "layouts/analytics" %>
   </body>
 </html>

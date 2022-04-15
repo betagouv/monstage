@@ -40,14 +40,17 @@ module Dashboard
 
         sign_in(school_manager)
         get dashboard_school_class_rooms_path(school)
-
-        assert_select 'a.nav-link[href=?]',
+        assert_select 'li.nav-item a.fr-link[href=?]',
                       dashboard_school_users_path(school),
                       { count: 1 },
                       'missing link to manage school users'
-        assert_select 'a.nav-link[href=?]',
+        assert_select 'li.nav-item a.fr-link[href=?]',
                       edit_dashboard_school_path(school),
-                      { count: 2 },
+                      { count: 1 },
+                      'missing or extra link to manage school weeks'
+        assert_select 'li.nav-item a.fr-link[href=?]',
+                      edit_dashboard_school_path(school),
+                      { count: 1 },
                       'missing or extra link to manage school weeks'
       end
 
@@ -75,17 +78,17 @@ module Dashboard
         roles.map do |user|
           sign_in(user)
           role = user.type
-          get dashboard_school_class_rooms_path(school)
+          get dashboard_school_path(school)
           assert_response :success
 
           # new link
-          assert_select 'a.btn-primary[href=?]',
+          assert_select 'a.fr-btn[href=?]',
                         new_dashboard_school_class_room_path(school),
                         { count: 1 },
                         "missing link to add class_room for #{role}"
 
           # destroy links
-          assert_select 'form[action=?]',
+          assert_select 'a.float-right[href=?]',
                         dashboard_school_class_room_path(school, class_room_without_student),
                         { count: 1 },
                         "missing link to destroy class_room for #{role}"

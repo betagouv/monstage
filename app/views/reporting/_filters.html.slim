@@ -1,10 +1,21 @@
 - filters = current_user.presenter.profile_filters
 fieldset
-  legend.h6.text-body.mb-3 Filtrer par
+  legend.fr-text--lg.fr-text--bold.mb-3 Filtrer par
   - if can?(:index_and_filter, Reporting::InternshipOffer)
-    - if filters.dig(view_tab, :by_school_name)
-      = render partial: "reporting/filters/by_school_name", locals: { schools: @schools}
     .row
+      - if filters.dig(view_tab, :by_school_name)
+        = render partial: "reporting/filters/by_school_name", locals: { schools: @schools}
+      - if filters.dig(view_tab, :by_school_year)
+        - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
+        - options = years.map { |year| [ "#{year}/#{year+1}", year] }
+        .col-md-3.col-12
+          .form-group
+            = label_tag :school_year, 'Année Scolaire', class: 'fr-label'
+            = select_tag :school_year,
+                          options_for_select(options, params[:school_year]),
+                          include_blank: 'Toutes',
+                          data: { action: 'statistics#filterBySchoolYear' },
+                          class: 'fr-select'
       - if filters.dig(view_tab, :by_academy)
         = render partial: "reporting/filters/academy", locals: {params: params}
       - if filters.dig(view_tab, :by_department)
@@ -17,17 +28,6 @@ fieldset
         = render partial: "reporting/filters/detailed_typology", locals: {params: params}
       - if filters.dig(view_tab, :by_school_track)
         = render partial: "reporting/filters/school_track", locals: {params: params}
-
-    - if filters.dig(view_tab, :by_school_year)
-      .row
-        - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
-        - options = years.map { |year| [ "#{year}/#{year+1}", year] }
-        .col-4
-          .form-group
-            = label_tag :school_year, 'Année Scolaire', class: 'text-uppercase'
-
-            = select_tag :school_year,
-                          options_for_select(options, params[:school_year]),
-                          include_blank: 'Toutes',
-                          data: { action: 'statistics#filterBySchoolYear' },
-                          class: 'form-control'
+      - if view_tab == :internship_offers
+        = render partial: "reporting/filters/group_by", locals: {params: params}
+    

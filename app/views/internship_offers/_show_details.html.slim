@@ -1,83 +1,48 @@
-.row.mt-3
-  .col-12
+.row.my-3 style="border-bottom: 1px solid #eee"
+  .col-12.py-2
     .reboot-trix-content= internship_offer.description_rich_text.to_s.present? ? internship_offer.description_rich_text.to_s : internship_offer.description
 
-.row.bg-light-blue.py-3.mt-3
-  .col-12.mb-3
-    h2.h4 Informations sur le stage
+.row.py-3.mt-3 style="border-bottom: 1px solid #eee"
+  .col-12.my-4
+    h2.h4.text-dark Informations sur le stage
+  .col-12.my-4
+    .row
+      .col-4
+        .fr-tile
+          .fr-tile__body
+            h4.fr-tile__title
+              .text-dark= internship_offer.is_individual? ? 'Stage individuel' : 'Stage collectif'
+          .fr-tile__img
+            = image_tag asset_pack_path("media/images/internship_offer_show/#{internship_offer.is_individual? ? 'user' : 'people'}.png"), alt: '', class: 'fr-responsive-img'
+
+
+   
+.row.py-3.mt-3 style="border-bottom: 1px solid #eee"
   .col-12
     .row
-      .col-12
-        h3.h6
-          - if internship_offer.is_individual?
-            i.fa-fw.fas.fa-user
-          - else
-            i.fa-fw.fas.fa-users
-          - if internship_offer.reserved_to_school?
-            i.fa-fw.fas.fa-school
-
-          span.ml-1 De quel type de stage s'agit-il ?
-        = render partial: "internship_offers/show_kind", locals: {internship_offer: internship_offer}
-
-  .col-12
+      .col-12.my-4
+        h2.h4.text-dark Informations sur l'entreprise 
+    .row
+      .col-12 
+        .h4= internship_offer.employer_name
+    
     .row
       .col-12
-        h3.h6
-          i.fa-fw.fas.fa-calendar-alt
-          span.ml-1 Quand ce stage est-il proposé ?
-        = render partial: "internship_offers/weeks_badges", locals: {internship_offer: internship_offer}
+        - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
+          .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
+    
+    .row 
+      .col-12.my-4
+         - if internship_offer.employer_website.present? 
+            = link_to internship_offer.employer_website,
+                      internship_offer.employer_website,
+                      target: "_blank",
+                      class: 'test-employer-website',
+                      title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
+                      rel: "external noopener noreferrer"
 
-    - if can?(:see_tutor, InternshipOffer) && !internship_offer.from_api?
-      .row.mt-3
-        .col-12
-          .row
-            .col-12
-              h3.h6
-                i.fas.fa-user-tie
-                span.ml-2 Tuteur
-
-              p Le tuteur ou la tutrice est la personne référente sur ce stage. Le tuteur ou la tutrice de stage demeure la personne référente à contacter en cas d'urgence. À ce titre, ses coordonnées seront transmises aux accompagnants de l'élève et à l'équipe éducative de son établissement scolaire."
-
-              ul.list-unstyled.pl-4
-                li
-                  strong.tutor_name = internship_offer.tutor_name
-                li.mt-1.tutor_phone = "Portable : #{internship_offer.tutor_phone}"
-                li.mt-1 = mail_to internship_offer.tutor_email,
-                                  internship_offer.tutor_email,
-                                  class: 'tutor_email'
-    .row.mt-2
-      .col-12
-        .row
-          .col-12
-            h3.h6.mb-2
-              i.fa-fw.fa.fa-info-circle
-              span.ml-1= "Dans quelle entreprise ?"
-            strong.pl-4.test-employer-name= internship_offer.employer_name
-            - if internship_offer.employer_description_rich_text.present? || internship_offer.employer_description.present?
-              .reboot-trix-content.mt-2.test-description= internship_offer.employer_description_rich_text.to_s.present? ? internship_offer.employer_description_rich_text.to_s : internship_offer.employer_description
-            - if internship_offer.employer_website.present?
-              p
-                = link_to internship_offer.employer_website,
-                          internship_offer.employer_website,
-                          target: "_blank",
-                          class: 'test-employer-website',
-                          title: "#{internship_offer.employer_website} (nouvelle fenêtre)",
-                          rel: "external noopener noreferrer"
-
-          .col-12
-            h3.h6
-              i.fa-fw.fa.fa-map-marker-alt
-              span.ml-1 Où se déroule ce stage ?
-            p
-              span.test-street = internship_offer.street
-              br
-              span.test-zipcode-and-city= "#{internship_offer.zipcode} #{internship_offer.city}"
-              .d-print-none.mt-3
-                = link_to "Voir sur une carte",
-                          internship_offer.osm_url,
-                          target: "_blank",
-                          title: "Afficher sur une carte (nouvelle fenêtre)",
-                          rel: "external noopener noreferrer",
-                          class: 'text-danger font-weight-bold'
+    .row 
+      .col-12.my-4
+        = Presenters::Address.new(instance: internship_offer).full_address
 
 

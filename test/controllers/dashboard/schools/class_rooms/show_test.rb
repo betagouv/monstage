@@ -53,10 +53,8 @@ module Dashboard
           end
 
           student_stats = Presenters::Dashboard::StudentStats.new(student: student)
-          assert_select ".test-student-#{student.id} span.applications_count",
-                        text: student_stats.applications_count.to_s
-          assert_select ".test-student-#{student.id} span.applications_approved_count",
-                        text: student_stats.applications_approved_count.to_s
+          assert_select ".fr-badge--error", text: student_stats.applications_count.to_s
+          assert_select ".fr-badge--success", text: student_stats.applications_approved_count.to_s
         end
       end
 
@@ -68,11 +66,11 @@ module Dashboard
 
         get dashboard_school_class_room_path(school, class_room)
         assert_response :success
-        assert_select 'a.nav-link[href=?]', dashboard_school_class_rooms_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', dashboard_school_users_path(school), count: 1
-        assert_select 'a.nav-link[href=?]', edit_dashboard_school_path(school), count: 2
-
-        assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
+        assert_select 'a.fr-raw-link[href=?]', dashboard_school_path(school), count: 1
+        # assert_select 'li.nav-item a.fr-link[href=?]', dashboard_school_users_path(school), count: 1
+        # assert_select 'li.nav-item a.fr-link[href=?]', edit_dashboard_school_path(school), count: 1
+        # assert_select 'li.nav-item a.fr-link[href=?]', edit_dashboard_school_path(school), count: 1
+        # assert_select 'a.btn[href=?]', new_dashboard_school_class_room_path(school), count: 0
       end
 
       test 'GET class_rooms#show as SchoolManagement can remove student from school' do

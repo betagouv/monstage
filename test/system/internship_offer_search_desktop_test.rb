@@ -8,7 +8,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
   include ::ApiTestHelpers
 
   def submit_form
-    find('input#test-desktop-submit-search').click
+    find('#test-desktop-submit-search').click
   end
 
   test 'search form is visible' do
@@ -80,7 +80,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
     assert_selector("#input-search-by-week[readonly]", count: 1)
 
     # reset search and submit
-    find('#input-search-school-track').select("Filière")
+    find('#input-search-school-track').select("")
     submit_form
     assert_presence_of(internship_offer: weekly_internship_offer)
     assert_presence_of(internship_offer: troisieme_segpa_internship_offer)
@@ -109,7 +109,7 @@ class InternshipOfferSearchDesktopTest < ApplicationSystemTestCase
 
   test 'search by week works' do
 
-    travel_to(Date.new(2020,9,6)) do
+    travel_to(Date.new(2020, 9, 6)) do
       searched_week = Week.selectable_from_now_until_end_of_school_year.first
       not_searched_week = Week.selectable_from_now_until_end_of_school_year.last
 

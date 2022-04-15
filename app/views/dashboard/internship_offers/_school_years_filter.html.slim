@@ -3,18 +3,20 @@ form.row action=request.path method="GET"
   - request.params.except(:controller, :action, :school_year).map do |param_name, value|
     = hidden_field_tag param_name, value
   .align-items-center data-controller='select-years'
-    .input-group
-      = label_tag :school_year, "Années scolaires", class: 'col-auto align-self-center mb-0'
+    .fr-mx-2w
+      = label_tag :school_year,
+                  "Années scolaires",
+                  class: " #{white_bg == 'true' ? 'fr-label' : 'font-weight-light'} "
       - years = (SchoolYear::Base::YEAR_START..SchoolYear::Current.new.beginning_of_period.year).to_a
       - options = years.map { |year| [ "#{year}/#{year+1}", year] }
       = select_tag :school_year,
                     options_for_select(options, params[:school_year]),
                     include_blank: 'Toutes',
-                    class: 'school_years form-control form-control-sm custom-select',
+                    class: 'fr-select',
                     'data-action': "change->select-years#handleChange",
                     'data-select-years-target': "schoolYearField"
 
 
       .input-group-append
-        button.btn.btn-sm.btn-primary data-select-years-target="schoolYearSubmit" type='submit'
+        button.fr-btn.btn-sm data-select-years-target="schoolYearSubmit" type='submit'
           | Filtrer par années

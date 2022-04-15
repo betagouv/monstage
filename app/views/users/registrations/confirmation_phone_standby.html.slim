@@ -37,11 +37,11 @@
             = " sont obligatoires."
         = hidden_field_tag :phone, user.phone
         .form-group.custom-label-container
-          = text_field_tag :phone_token, '', class: 'form-control', required: true, placeholder: "ex: 1234"
-          = label_tag :phone_token do
+          = text_field_tag :phone_token, '', class: 'fr-input', required: true, placeholder: "ex: 1234"
+          = label_tag :phone_token, class: 'fr-label' do
             = 'Code de confirmation'
             = content_tag(:abbr, '*', title: '(obligatoire)',
                                       aria: { hidden: 'true' })
 
         .actions.d-flex.d-sm-block.text-center
-          = submit_tag 'Valider', class: 'btn btn-primary'
+          = submit_tag 'Valider', class: 'fr-btn'
