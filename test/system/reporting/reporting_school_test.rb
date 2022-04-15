@@ -71,7 +71,7 @@ class ReportingSchoolTest < ApplicationSystemTestCase
     assert page.has_content?('oise subscribing school')
     assert_equal "all", find('select#subscribed_school').value
     assert_equal "", find('select#department').value
-    find(".btn-clear-city").click
+    # find(".btn-clear-city").click
     assert_equal "all", find('select#subscribed_school').value
     assert_equal "", find('select#department').value
     assert_equal "", find('input#user_school_name').value

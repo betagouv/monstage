@@ -1,8 +1,4 @@
 - if has_school_manager
-  = image_tag asset_pack_path('media/images/pages/statistics/green_check.svg'),
-              alt: "Etablissement inscrit",
-              class: 'align-top',
-              height: 22
+  span.fr-icon-success-line.fr-valid-text
 - else
-  span.badge.badge-danger.red-x-badge
-    i.fas.fa-times
+  span.fr-icon-error-line.fr-error-text

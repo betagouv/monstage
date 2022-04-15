@@ -188,7 +188,7 @@ class InternshipOfferSearchMobileTest < ApplicationSystemTestCase
     employer = create(:employer)
     sign_in(employer)
     visit root_path
-    # byebug
+
     find('#fr-btn-menu-mobile').click
     find('ul li a.fr-link.text-decoration-none.active.mr-4', text: 'Accueil')
     find('ul li a.fr-link.text-decoration-none.mr-4', text: 'Mon tableau de bord')
