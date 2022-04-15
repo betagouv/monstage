@@ -18,8 +18,6 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  require_relative '../../app/libs/email_utils'
-  config.mailer_sender = EmailUtils.formatted_email
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'CustomDeviseMailer'
