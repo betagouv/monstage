@@ -38,7 +38,7 @@ module Services
       return if list_id.nil?
 
       search_result = search_contact_by_email(email: email, list_name: 'newsletter')
-      return :inexistant_user if search_result.nil?
+      return :unexisting_user if search_result.nil?
 
       response = delete_contact_from_list(list_id: list_id, email: email)
       return true if status?(200, response)

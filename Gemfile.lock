@@ -239,6 +239,7 @@ GEM
       ruby-progressbar
     minitest-retry (0.2.2)
       minitest (>= 5.0)
+    minitest-stub_any_instance (1.0.3)
     msgpack (1.4.4)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -517,6 +518,7 @@ DEPENDENCIES
   lograge
   minitest-reporters
   minitest-retry
+  minitest-stub_any_instance
   ovh-rest
   pg
   pg_search (= 2.3.2)
