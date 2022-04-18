@@ -20,10 +20,6 @@ class NewsletterController < ApplicationController
 
   private
 
-  # def service
-  #   Services::SyncEmailCampaigns.new
-  # end
-
   def email_param
     params.permit(:newsletter_email)
   end
