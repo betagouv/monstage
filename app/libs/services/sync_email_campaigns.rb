@@ -22,9 +22,9 @@ module Services
     # public API
     def add_contact(user:, list_name: 'newsletter')
       list_id = fetch_list_id(list_name: list_name)
-      return if list_id.nil?
+      return :unexisting_list if list_id.blank?
 
-      search_result = search_contact_by_email(email: user.email, list_name: 'newsletter')
+      search_result = search_contact_by_email(email: user.email, list_id: list_id)
       return :previously_existing_email unless search_result.nil?
 
       response = add_contact_to_list(list_id: list_id, user: user)
@@ -35,10 +35,10 @@ module Services
 
     def remove_contact(email:, list_name: 'newsletter')
       list_id = fetch_list_id(list_name: list_name)
-      return if list_id.nil?
+      return :unexisting_list if list_id.blank?
 
-      search_result = search_contact_by_email(email: email, list_name: 'newsletter')
-      return :unexisting_user if search_result.nil?
+      search_result = search_contact_by_email(email: email, list_id: list_id)
+      return :unexisting_email if search_result.nil?
 
       response = delete_contact_from_list(list_id: list_id, email: email)
       return true if status?(200, response)
@@ -46,10 +46,10 @@ module Services
       raise StandardError.new "fail to remove contact #{email} from #{list_name}: code[#{response.code}], #{response.body}"
     end
 
-    def list_contacts(list_name: 'newsletter')
-      list_id = fetch_list_id(list_name: list_name)
-      return if list_id.nil?
 
+    private
+
+    def list_contacts(list_id:)
       response = fetch_contacts(list_id: list_id)
       return JSON.parse(response.body) if status?(200, response)
 
@@ -65,8 +65,18 @@ module Services
 
     # Browser methods
 
-    def search_contact_by_email(email:, list_name: 'newsletter')
-      contacts = list_contacts
+    def fetch_list_id(list_name: )
+      campaign_lists = read_lists
+
+      campaign_lists.each do |list|
+        return list['id'] if list['name'] == list_name
+      end
+      ""
+    end
+
+
+    def search_contact_by_email(email:, list_id:)
+      contacts = list_contacts(list_id: list_id)
       return if contacts.empty?
 
       contacts.each do |contact|
@@ -75,16 +85,9 @@ module Services
       nil
     end
 
-
-    def fetch_list_id(list_name: 'newsletter')
-      read_lists.each do |list|
-        return list['id'] if list['name'] == list_name
-      end
-      nil
-    end
-
-
-    private
+    #
+    #Requests
+    #
 
     def fetch_lists
       with_http_connection do |http|
