@@ -13,7 +13,7 @@ class GodMailer < ApplicationMailer
       last_monday: @last_monday,
       last_sunday: @last_sunday
     )
-    @human_date = Date.today.strftime('%d %B %Y')
+    @human_date = I18n.l Date.today, format: '%d %B %Y'
 
     mail(
       to: ENV['TEAM_EMAIL'],
