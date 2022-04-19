@@ -16,4 +16,8 @@ class MainTeacherMailer < ApplicationMailer
 
     send_email({ to: to, subject: subject, cc: cc })
   end
+
+  def internship_application_with_no_agreement_email(internship_application:, main_teacher:)
+    "tested ok"
+  end
 end

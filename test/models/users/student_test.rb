@@ -45,5 +45,23 @@ module Users
       assert_not_nil user.phone_token_validity
       assert_equal true, user.phone_token_validity.between?(59.minutes.from_now, 61.minutes.from_now)
     end
+
+    test "#main_teacher" do
+      school                     = create(:school)
+      school_with_school_manager = create(:school, :with_school_manager)
+
+      student_no_class_room = build(:student, class_room: nil)
+      assert_nil student_no_class_room.class_room
+      assert_nil student_no_class_room.main_teacher
+
+      class_room = create(:class_room, school: school)
+      student_with_class_room = build(:student, class_room: class_room)
+      assert_nil student_with_class_room.main_teacher
+
+      main_teacher   = create(:main_teacher, class_room: class_room, school: school_with_school_manager)
+      main_teacher_2 = create(:main_teacher, class_room: class_room, school: school_with_school_manager)
+      student        = create(:student, class_room: class_room, school: school_with_school_manager)
+      assert_equal main_teacher.id, student.main_teacher.id
+    end
   end
 end
