@@ -32,11 +32,7 @@ module InternshipApplicationAasmMessageBuilders
     end
 
     def on_canceled_by_student_message
-      <<~HTML.strip
-        <p>#{internship_offer.employer.presenter.formal_name},</p>
-        <p>Je ne suis pas en mesure d'accepter votre offre de stage
-        "#{internship_offer.title}", car : </p>
-      HTML
+      ""
     end
   end
 end
