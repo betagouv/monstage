@@ -10,6 +10,7 @@ class ApplicationMailer < ActionMailer::Base
   append_view_path 'app/views/mailers'
 
   def send_email(to:, subject:, cc: nil)
+    @site_url = root_url.html_safe
     return if to.nil?
 
     params = { to: to, subject: subject }

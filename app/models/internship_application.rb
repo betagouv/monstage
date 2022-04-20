@@ -141,6 +141,7 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                           update!("approved_at": Time.now.utc)
                           main_teacher = student.main_teacher
+                          arg_hash = {internship_application: self, main_teacher: main_teacher}
                           # StudentMailer.internship_application_approved_email
                           accepted_student_notify
                           # since class_room and school_track might be anavailable
@@ -150,14 +151,14 @@ class InternshipApplication < ApplicationRecord
                             create_agreement
 
                             if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_email(internship_application: self, main_teacher: main_teacher)
+                              MainTeacherMailer.internship_application_approved_email(arg_hash)
                                                .deliver_later
                             end
                           else
-                            SchoolManagerMailer.internship_application_approved_email(internship_application: self, main_teacher: main_teacher)
+                            SchoolManagerMailer.internship_application_approved_with_no_agreement_email(arg_hash)
                                                .deliver_later
                             if main_teacher.present?
-                              MainTeacherMailer.internship_application_with_no_agreement_email(internship_application: self, main_teacher: main_teacher)
+                              MainTeacherMailer.internship_application_approved_with_no_agreement_email(arg_hash)
                                                .deliver_later
                             end
                           end
@@ -170,8 +171,8 @@ class InternshipApplication < ApplicationRecord
                   after: proc { |*_args|
                            update!("rejected_at": Time.now.utc)
                            if student.email.present?
-                              deliver_later_with_additional_delay do
-                                StudentMailer.internship_application_rejected_email(internship_application: self)
+                             deliver_later_with_additional_delay do
+                               StudentMailer.internship_application_rejected_email(internship_application: self)
                              end
                            end
                          }
