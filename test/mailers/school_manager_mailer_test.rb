@@ -15,10 +15,10 @@ class SchoolManagerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test 'agreement_creation_notice_email' do
+  test 'internship_approved_with_agreement_email' do
     internship_agreement = create(:internship_agreement)
     school_manager = internship_agreement.internship_application.student.school.school_manager
-    email = SchoolManagerMailer.agreement_creation_notice_email(
+    email = SchoolManagerMailer.internship_approved_with_agreement_email(
       internship_agreement: internship_agreement
     )
     assert_includes email.to, school_manager.email

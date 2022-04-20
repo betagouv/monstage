@@ -122,7 +122,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
       School.stub_any_instance(:internship_agreement_open?, true) do
-        SchoolManagerMailer.stub(:agreement_creation_notice_email,
+        SchoolManagerMailer.stub(:internship_approved_with_agreement_email,
                                  mock_mail_to_school_manager) do
           internship_application.save
           internship_application.approve!
@@ -145,7 +145,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
       School.stub_any_instance(:internship_agreement_open?, true) do
-        EmployerMailer.stub(:agreement_creation_notice_email,
+        EmployerMailer.stub(:internship_approved_with_agreement_email,
                                  mock_mail_to_employer) do
           internship_application.save
           internship_application.approve!

@@ -6,7 +6,7 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
   end
 
   def agreement_creation_school_manager_notice_email
-    SchoolManagerMailer.agreement_creation_notice_email(
+    SchoolManagerMailer.internship_approved_with_agreement_email(
       internship_agreement: InternshipAgreement.first
     )
   end

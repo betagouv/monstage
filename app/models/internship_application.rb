@@ -142,14 +142,9 @@ class InternshipApplication < ApplicationRecord
                           update!("approved_at": Time.now.utc)
                           main_teacher = student.main_teacher
                           arg_hash = {internship_application: self, main_teacher: main_teacher}
-                          # StudentMailer.internship_application_approved_email
                           accepted_student_notify
-                          # since class_room and school_track might be anavailable
                           if student.school.internship_agreement_open? && type == "InternshipApplications::WeeklyFramed"
-                            # SchoolManagerMailer.agreement_creation_notice_email
-                            # EmployerMailer.agreement_creation_notice_email
                             create_agreement
-
                             if main_teacher.present?
                               MainTeacherMailer.internship_application_approved_email(arg_hash)
                                                .deliver_later
@@ -245,10 +240,10 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.agreement_creation_notice_email(
+    SchoolManagerMailer.internship_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
-    EmployerMailer.agreement_creation_notice_email(
+    EmployerMailer.internship_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_now
   end
