@@ -103,7 +103,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
             internship_application.save
             internship_application.approve!
           end
-          assert_raises MockExpectationError { mock_mail_to_main_teacher.verify }
+          assert_raises(MockExpectationError) { mock_mail_to_main_teacher.verify }
         end
       end
     end
@@ -408,7 +408,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
   test "#accepted_student_notify when student registered by email" do
     student = create(:student)
     internship_application = create(:weekly_internship_application, student: student)
-    StudentMailer.stub_any_instance(:perform, "email_sent") do
+    InternshipApplication.stub_any_instance(:deliver_later_with_additional_delay, 'email_sent') do
       assert_equal "email_sent", internship_application.accepted_student_notify
     end
   end
