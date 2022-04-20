@@ -231,6 +231,7 @@ class InternshipApplication < ApplicationRecord
               " no message has been sent to the " \
               "student ##{student.id}"
       Rails.logger.error(mesg)
+      raise StandardError.new "student without email nor phone ##{student.id}"
     end
   end
 

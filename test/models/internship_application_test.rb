@@ -396,4 +396,20 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     assert_not_equal 'amazing', internship_application.motivation
   end
+
+  test "#accepted_student_notify when student registered by phone" do
+    student = create(:student,:registered_with_phone)
+    internship_application = create(:weekly_internship_application, student: student)
+    InternshipApplication.stub_any_instance(:short_target_url, "http://bitly/short") do
+      assert internship_application.accepted_student_notify.is_a?(SendSmsJob)
+    end
+  end
+
+  test "#accepted_student_notify when student registered by email" do
+    student = create(:student)
+    internship_application = create(:weekly_internship_application, student: student)
+    StudentMailer.stub_any_instance(:perform, "email_sent") do
+      assert_equal "email_sent", internship_application.accepted_student_notify
+    end
+  end
 end
