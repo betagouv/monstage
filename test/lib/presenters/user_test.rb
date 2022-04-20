@@ -66,5 +66,16 @@ module Presenters
       assert_equal school.week_ids.map(&:to_s), params["week_ids[]"]
       assert_equal [student.school_track], params["school_track"]
     end
+
+    test '#civil_name' do
+      student = build(:student, gender: nil)
+      assert_equal student.last_name, student.presenter.civil_name
+      student = build(:student, gender: 'np')
+      assert_equal student.last_name, student.presenter.civil_name
+      student = build(:student, gender: 'm')
+      assert_equal "Monsieur #{student.last_name}", student.presenter.civil_name
+      student = build(:student, gender: 'f')
+      assert_equal "Madame #{student.last_name}", student.presenter.civil_name
+    end
   end
 end
