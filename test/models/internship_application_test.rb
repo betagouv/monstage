@@ -103,9 +103,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
             internship_application.save
             internship_application.approve!
           end
-          assert_raises MockExpectationError do
-            mock_mail_to_main_teacher.verify
-          end
+          assert_raises MockExpectationError { mock_mail_to_main_teacher.verify }
         end
       end
     end
@@ -310,7 +308,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
             internship_application.approve!
           end
           assert_raises(MockExpectationError) { mock_mail.verify }
-          end
+        end
       end
     end
   end
@@ -384,8 +382,6 @@ class InternshipApplicationTest < ActiveSupport::TestCase
       week: internship_offer_2.internship_offer_weeks.first.week,
       student: student
     )
-
-
     assert_changes -> { internship_application_to_be_canceled_by_employer.reload.aasm_state },
                    from: 'approved',
                    to: 'expired' do
