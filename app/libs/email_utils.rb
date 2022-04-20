@@ -4,7 +4,9 @@ module EmailUtils
   end
 
   def self.from
-    "support@#{URI(env_host).host}"
+    return 'support@monstagedetroisieme.fr' if Rails.env.review?
+
+    "support@#{URI(env_host).host.gsub(/^www\./, '')}"
   end
 
   def self.display_name

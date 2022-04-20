@@ -20,6 +20,6 @@ class StudentMailer < ApplicationMailer
     @internship_application = internship_application
 
     mail(to: @internship_application.student.email,
-         subject: "Une de vos candidatures été annulée")
+         subject: "Une de vos candidatures a été annulée")
   end
 end
