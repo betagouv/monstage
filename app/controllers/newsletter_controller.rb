@@ -9,9 +9,9 @@ class NewsletterController < ApplicationController
     redirect_to root_path,
                 notice: "Votre email a bien été enregistrée" and return if success?(result)
 
-    double_message = 'Votre email était déjà enregistrée. :-) .'
+    duplicate_message = 'Votre email était déjà enregistré. :-) .'
     redirect_to root_path,
-                flash: { warning: double_message } and return if result == :previously_existing_email
+                flash: { warning: duplicate_message } and return if result == :previously_existing_email
 
     err_message = "Une erreur s'est produite et nous n'avons pas " \
                   "pu enregistrer votre email"
