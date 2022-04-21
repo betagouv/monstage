@@ -11,12 +11,13 @@ class SignUpStudentsTest < ApplicationSystemTestCase
   end
 
   test 'simple default radio button status' do
-    visit new_user_registration_path(as: 'Student')
+    identity = create(:identity)
+    visit new_user_registration_path(as: 'Student', identity_id: identity.id)
     fill_in 'Adresse électronique', with: 'email@free.fr'
     assert find("#select-channel-email").selected?
     find("#select-channel-phone", visible: false, count: 1)
 
-    find('label', text: 'SMS').click
+    find('label', text: 'Par téléphone (SMS)').click
 
     fill_in 'Numéro de téléphone', with: '0623042525'
     assert find("#select-channel-phone").selected?
@@ -32,21 +33,14 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
     birth_date = 14.years.ago
     student = create(:student, email: existing_email)
+    identity = create(:identity)
 
     # go to signup as student
-    visit new_user_registration_path(as: 'Student')
+    visit new_user_registration_path(as: 'Student', identity_id: identity.id)
 
     # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do
-      find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-      find('#downshift-0-item-0').click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
-      select(class_room_1.name, from: 'user_class_room_id')
-      fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
-      fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
-      find('label', text: 'Masculin').click
-      find('label', text: 'Email').click
+      find('label', text: 'Par e-mail').click
       fill_in 'Adresse électronique', with: existing_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
@@ -56,30 +50,14 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       assert_equal existing_email, find('#user_email').value
     end
 
-    # ensure failure reset form as expected
-    assert_equal school_1.city,
-                 find_field('Nom (ou ville) de mon établissement').value,
-                 're-select of city after failure fails'
-
     # create student
     assert_difference('Users::Student.count', 1) do
-      find('label', text: 'Email').click
+      find('label', text: 'Par e-mail').click
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       click_on "Je m'inscris"
     end
-
-    # check created student has valid info
-    created_student = Users::Student.where(email: 'another@email.com').first
-    assert_equal school_1, created_student.school
-    assert_equal class_room_1, created_student.class_room
-    assert_equal 'Martin', created_student.first_name
-    assert_equal 'Fourcade', created_student.last_name
-    assert_equal birth_date.year, created_student.birth_date.year
-    assert_equal birth_date.month, created_student.birth_date.month
-    assert_equal birth_date.day, created_student.birth_date.day
-    assert_equal 'm', created_student.gender
   end
 
   test 'class room is filters archived clas_rooms' do
