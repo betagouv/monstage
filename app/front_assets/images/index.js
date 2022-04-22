@@ -44,6 +44,10 @@ import './homepage/chacun-left.png';
 import './homepage/chacun-right.png';
 import './homepage/back-to-top.svg';
 
+import './homepage/social_networks/insta.svg';
+import './homepage/social_networks/twitter.svg';
+import './homepage/social_networks/linked_in.svg';
+
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';
 // import './homepage/carousel/prof.svg';
