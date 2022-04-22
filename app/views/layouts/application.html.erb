@@ -34,7 +34,8 @@
         </div>
       <% end %>
     </div>
-    <%= render 'layouts/footer' %>
+    <div class="<%= agreement_form? ? "d-none" : "" %>"  data-controller='footer'>
+      <%= render 'layouts/footer' %>
     <%= render partial: "layouts/analytics" %>
   </body>
 </html>

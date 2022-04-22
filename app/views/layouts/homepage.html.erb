@@ -26,7 +26,9 @@
         <%= yield %>
       </div>
     </div>
-    <%= render 'layouts/footer' %>
-    <%= render partial: "layouts/analytics" %>
+    <div data-controller='footer'>
+      <%= render 'layouts/footer' %>
+      <%= render partial: "layouts/analytics" %>
+    </div>
   </body>
 </html>

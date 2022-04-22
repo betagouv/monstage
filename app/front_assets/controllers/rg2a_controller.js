@@ -4,7 +4,7 @@ import { Controller } from 'stimulus';
 // see: https://github.com/turbolinks/turbolinks#making-transformations-idempotent
 // since we add a FA icon by hand,
 // avoid re-adding the icon on back-button hit which re-use a snapshot version of turbolink
-const TURBOLINK_IDEMPOTENT_CLASSNAME = 'rg2a-externnal';
+const TURBOLINK_IDEMPOTENT_CLASSNAME = 'rg2a-external';
 
 export default class extends Controller {
   connect() {

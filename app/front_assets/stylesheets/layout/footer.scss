@@ -46,6 +46,20 @@ body {
   }
 
   background-color: $bg-light-blue;
+  .social_network{
+    $height: 64px;
+    display: inline-block;
+    height: $height;
+    line-height: $height;
+    vertical-align: middle;
+    color: $blue;
+  }
+  a .hover-blue{
+    text-decoration: none;
+    &:hover{
+      opacity: 0.75;
+    }
+  }
 }
 
 @include media-breakpoint-down(xs) {

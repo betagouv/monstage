@@ -2,6 +2,12 @@
   border: 2px solid $blue;
 }
 
+.no-visible-focus{
+  &:focus-visible{
+    border: none;
+  }
+}
+
 .fr-raw-link:hover {
   text-decoration: none;
 }
