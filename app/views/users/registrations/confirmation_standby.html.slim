@@ -1,11 +1,11 @@
 - user = User.find_by(id: params[:id])
 - user ||= User.find_by(email: params[:email])
-.onboarding-card.onboarding-card-lg.mb-4
+.onboarding-card-lg.mb-4.p-2
   header.header-account
 
   - if !@confirmable_user && user&.email.present?
     p.alert.alert-danger
-      = "Aucun compte n'est lié au mail: #{user.email}."
+      = "Aucun compte n'est lié à cet identifiant : #{params[:id]}."
       br
       = "Veuillez "
       = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
@@ -16,17 +16,27 @@
       br
       = "Veuillez vous "
       = link_to "connecter", new_user_session_path(email: user.email), class: 'text-white'
-  
+
   - else
-    h1.h3.text-blue.mt-4.mb-3.text-center.mb-0 Encore une petite étape...
+    .room-for-explanation.py-4.px-3
+      .row
+        .col-lg-5.col-md-12.d-none.d-lg-block
+          .both-desktop-and-mobile.px-2
+            .confirm-desktop = image_tag asset_pack_path("media/images/onboarding/confirm-desktop-2.svg"), alt: 'Activer par mail sur ordinateur', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
+            .confirm-mobile  = image_tag asset_pack_path("media/images/onboarding/confirm-mobile-2.svg"), alt: 'Activer par mail sur mobile', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
+        .col-lg-7.col-md-12.on-boarding-text
+          p.h2.mt-5 1 . Activez votre compte !
+          p.text-dark
+            span = user.presenter.full_name
+            |, nous venons de vous envoyer un email sur&nbsp;
+            span = user.email
+            |&nbsp;afin d'activer votre compte. Consultez-le pour commencer à
+            |&nbsp;utiliser monstagedetroisieme.fr
+          p.h2.mt-3 2 . Connectez-vous !
+          p.text-dark
+            |Une fois votre compte validé, connectez-vous avec le bouton ci-dessous pour trouver un stage et y postuler
+          p.mt-3
+            = link_to new_user_session_path(check_confirmation: true, id: user.id),
+                      class: 'btn btn-primary' do
+              | Se connecter et trouver un stage !
 
-    p.text-center
-      span.confirmation-text= "Votre compte a bien été enregistré "
-      strong= "(#{user.email})"
-      = "."
-      br
-      | Vous venez de recevoir un mail afin de confirmer votre inscription.
-
-    p.mb-1.test-student-guidelines
-      = image_tag asset_pack_path("media/images/onboarding/confirm-desktop.svg"), alt: 'Activer par mail sur ordinateur', class: 'd-none d-md-block', style: "height: auto; width: 100%;"
-      = image_tag asset_pack_path("media/images/onboarding/confirm-mobile.svg"), alt: 'Activer par mail sur ordinateur', style: "height: auto; width: 100%;", class: 'd-block d-md-none'

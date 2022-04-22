@@ -33,5 +33,6 @@ class SignUpEmployersTest < ApplicationSystemTestCase
 
     # check created employer has valid info
     created_employer = Users::Employer.where(email: 'another@email.com').first
+    # find('p.h2', text:'1 . Activez votre compte !')
   end
 end

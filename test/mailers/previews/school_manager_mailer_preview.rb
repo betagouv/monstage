@@ -13,7 +13,7 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
 
   def internship_application_approved_email
     SchoolManagerMailer.internship_application_approved_email(
-      internship_application: InternshipApplications::WeeklyFramed.first
+      internship_application: InternshipAgreement.first.internship_application
     )
   end
 

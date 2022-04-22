@@ -5,8 +5,8 @@ import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
 
-import './onboarding/confirm-desktop.svg';
-import './onboarding/confirm-mobile.svg';
+import './onboarding/confirm-desktop-2.svg';
+import './onboarding/confirm-mobile-2.svg';
 import './onboarding/student.svg';
 
 import './internship_offers_new/fast_time.svg';
