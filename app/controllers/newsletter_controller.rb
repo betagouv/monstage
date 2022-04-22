@@ -7,7 +7,7 @@ class NewsletterController < ApplicationController
     user = User.new(email: email_param[:newsletter_email])
     result = Services::SyncEmailCampaigns.new.add_contact(user: user)
     redirect_to root_path,
-                notice: "Votre email a bien été enregistrée" and return if success?(result)
+                notice: "Votre email a bien été enregistré" and return if success?(result)
 
     duplicate_message = 'Votre email était déjà enregistré. :-) .'
     redirect_to root_path,

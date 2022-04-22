@@ -16,7 +16,7 @@ class NewsletterControllerTest < ActionDispatch::IntegrationTest
     Services::SyncEmailCampaigns.stub_any_instance(:add_contact, expected_result) do
       post newsletter_path, params: {newsletter_email: test_email}
       assert_redirected_to root_path
-      assert_equal 'Votre email a bien été enregistrée', flash[:notice]
+      assert_equal 'Votre email a bien été enregistré', flash[:notice]
     end
   end
   
@@ -27,7 +27,7 @@ class NewsletterControllerTest < ActionDispatch::IntegrationTest
     Services::SyncEmailCampaigns.stub_any_instance(:add_contact, expected_result) do
       post newsletter_path, params: {newsletter_email: test_email}
       assert_redirected_to root_path
-      assert_equal 'Votre email était déjà enregistrée. :-) .', flash[:warning]
+      assert_equal 'Votre email était déjà enregistré. :-) .', flash[:warning]
     end
   end
 
