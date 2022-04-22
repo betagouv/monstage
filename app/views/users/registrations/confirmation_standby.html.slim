@@ -3,14 +3,14 @@
 .onboarding-card-lg.mb-4.p-2
   header.header-account
 
-  - if !@confirmable_user && user&.email.present?
+  - if !@confirmable_user || user.nil?
     p.alert.alert-danger
       = "Aucun compte n'est lié à cet identifiant : #{params[:id]}."
       br
       = "Veuillez "
       = link_to "créer un compte", users_choose_profile_path, class: 'text-white'
 
-  - elsif @confirmable_user.confirmed_at
+  - elsif @confirmable_user&.confirmed_at
     p.alert.alert-success
       = "Votre compte est déjà confirmé (#{user.email})."
       br
