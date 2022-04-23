@@ -23,6 +23,14 @@ export const visitURLWithOneParam = (param, paramValue) => {
   turboVisitsWithSearchParams(searchParams);
 }
 
+export const searchParamsFromHash = (hash) => {
+  const searchParams = clearAllParams();
+  Object.keys(hash).forEach((key) => {
+    searchParams.set(key, hash[key]);
+  });
+  return searchParams;
+}
+
 export const clearSearch = () => {
   turboVisitsWithSearchParams(clearAllParams());
 }
