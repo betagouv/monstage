@@ -2,7 +2,7 @@
 
 class MainTeacherMailer < ApplicationMailer
   # Reminder : when approving an application, every main_teacher receives an email
-  def internship_application_approved_email(internship_application:, main_teacher:)
+  def internship_application_approved_with_agreement_email(internship_application:, main_teacher:)
     @internship_application = internship_application
     @internship_offer= internship_application.internship_offer
     @student = @internship_application.student

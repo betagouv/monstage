@@ -146,7 +146,7 @@ class InternshipApplication < ApplicationRecord
                           if student.school.internship_agreement_open? && type == "InternshipApplications::WeeklyFramed"
                             create_agreement
                             if main_teacher.present?
-                              MainTeacherMailer.internship_application_approved_email(arg_hash)
+                              MainTeacherMailer.internship_application_approved_with_agreement_email(arg_hash)
                                                .deliver_later
                             end
                           else
@@ -240,7 +240,7 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    SchoolManagerMailer.internship_approved_with_agreement_email(
+    SchoolManagerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
     EmployerMailer.internship_approved_with_agreement_email(
