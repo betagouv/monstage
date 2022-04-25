@@ -55,6 +55,16 @@ export const endpoints = {
     endpoint.search = searchParams.toString();
     return endpoint;
   },
+
+  // @get
+  searchCompanyByName: ({ name }) => {
+    const endpoint = new URL(`${host}/api_entreprise_proxy/search`);
+    const searchParams = new URLSearchParams();
+
+    searchParams.append('name', name);
+    endpoint.search = searchParams.toString();
+    return endpoint;
+  },
   
   // @post
   apiSearchSchool: () => {
