@@ -29,10 +29,10 @@ class EmployerMailerTest < ActionMailer::TestCase
     refute_email_spammyness(email)
   end
 
-  test '.internship_approved_with_agreement_email delivers as expected' do
+  test '.internship_application_approved_with_agreement_email delivers as expected' do
     internship_agreement = create(:internship_agreement)
     employer = internship_agreement.internship_application.internship_offer.employer
-    email = EmployerMailer.internship_approved_with_agreement_email(
+    email = EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     )
     email.deliver_now

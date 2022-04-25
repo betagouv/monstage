@@ -243,7 +243,7 @@ class InternshipApplication < ApplicationRecord
     SchoolManagerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_later
-    EmployerMailer.internship_approved_with_agreement_email(
+    EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: internship_agreement
     ).deliver_now
   end

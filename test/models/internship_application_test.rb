@@ -145,7 +145,7 @@ class InternshipApplicationTest < ActiveSupport::TestCase
 
     InternshipApplication.stub_any_instance(:accepted_student_notify, nil) do
       School.stub_any_instance(:internship_agreement_open?, true) do
-        EmployerMailer.stub(:internship_approved_with_agreement_email,
+        EmployerMailer.stub(:internship_application_approved_with_agreement_email,
                                  mock_mail_to_employer) do
           internship_application.save
           internship_application.approve!
