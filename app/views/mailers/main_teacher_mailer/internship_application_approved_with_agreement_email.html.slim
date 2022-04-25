@@ -8,10 +8,10 @@ p style=p_styles
   strong ="\"#{@internship_offer.title}\""
   = " a été acceptée."
 p style=p_styles
-  | Pour afficher le détails de la candidature, vous pouvez cliquer sur le bouton ci-dessous.
+  | Pour afficher le détails de l'offre, vous pouvez cliquer sur le bouton ci-dessous.
   = render partial: "mailers/call_to_action",
          locals: { href: @url,
-                   label: "Voir la candidature" }
+                   label: "Afficher l'offre de stage" }
 p style=p_styles
   |
     Nous vous informons que votre établissement fait partie des établissements

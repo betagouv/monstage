@@ -34,10 +34,9 @@ class SchoolManagerMailer < ApplicationMailer
     @student_presenter = Presenters::User.new(@student)
 
     to = @student.school_manager_email
-    @url = dashboard_students_internship_application_url(
-      student_id: @student.id,
-      id: internship_application.id,
-      mtm_campaign: 'application-details-no-agreement',
+    @url = internship_offer_url(
+      id: @internship_offer.id,
+      mtm_campaign: 'application-details-with-no-agreement',
       mtm_kwd: 'email'
     ).html_safe
 
