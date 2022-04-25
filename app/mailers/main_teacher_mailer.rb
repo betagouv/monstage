@@ -22,9 +22,8 @@ class MainTeacherMailer < ApplicationMailer
     @internship_offer = internship_application.internship_offer
     @student = internship_application.student
     @student_presenter = @student.presenter
-    @url = dashboard_students_internship_application_url(
-      student_id: @student.id,
-      id: internship_application.id,
+    @url = internship_offer_url(
+      id: @internship_offer.id,
       mtm_campaign: 'application-details-no-agreement',
       mtm_kwd: 'email'
     ).html_safe
