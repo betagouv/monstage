@@ -3,11 +3,24 @@
   - if @school.has_staff?
     .row
       .col-12
-        small.text-muted Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
+        .fr-alert.fr-alert--info
+          p.fr-alert__title Information
+          p Assurez-vous que chacun fait partie de l'etablissement. Sinon supprimez leur compte.
 
-    .row
-      = render partial: "dashboard/schools/users/school_employee", collection: @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
-
+    .row.row-fluid
+      .col-12.fr-table.fr-table--white
+          table.fr-mt-2w
+            caption.fr-mt-2w Personnels employés
+            thead.white
+              tr
+                th.fr-col-4 scope="col" Utilisateur
+                th.fr-col-4 scope="col" Email
+                th.fr-col-4 scope="col" Fonction
+                th.fr-col-4 scope="col" Action
+            tbody
+              - collection = @school.main_teachers.kept + @school.teachers.kept + @school.others.kept
+              = render partial: "dashboard/schools/users/school_employee",
+                      collection: collection
   - else
     .row
       .col-12
