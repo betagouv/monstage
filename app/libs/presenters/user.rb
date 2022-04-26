@@ -2,6 +2,8 @@
 
 module Presenters
   class User
+    include Humanable
+
     delegate :application, to: Rails
     delegate :routes, to: :application
     delegate :url_helpers, to: :routes
@@ -26,7 +28,14 @@ module Presenters
 
     def civil_name
       name = user.last_name.downcase.capitalize
-      user.gender == "m" ? "Monsieur #{name}}" : "Madame #{name}}"
+      case user.gender
+      when 'm'
+        "Monsieur #{name}"
+      when 'f'
+        "Madame #{name}"
+      else
+        name
+      end
     end
 
     def gender_text

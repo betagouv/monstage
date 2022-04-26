@@ -1,6 +1,5 @@
 module Presenters
-  class God
-    include Humanable
+  class God < User
 
     def profile_filters
       {

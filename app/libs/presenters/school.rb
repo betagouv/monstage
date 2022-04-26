@@ -5,7 +5,9 @@ module Presenters
     end
 
     def agreement_address
-      "Collège #{school.name} - #{school.city}, #{school.zipcode}"
+      return select_text_method if select_text_method.match(/^\s*Collège.*/)
+
+      "Collège #{select_text_method}"
     end
 
     private

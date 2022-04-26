@@ -1,5 +1,35 @@
+.row.no-gutters.pt-4
+  .col-md-6.col-sm-12
+    h2.h5.pt-3.pl-5.text-dark Suivez-nous sur les réseaux sociaux
+  .col-md-6.col-sm-12.text-right
+    .social_network
+      = link_to "https://twitter.com/monstagede3eme",
+              class: 'rg2a-external',
+              target: '_blank',
+              aria: {label: "Twitter parle de nous"} do
+        = image_tag asset_pack_path('media/images/homepage/social_networks/twitter.svg'),
+                    alt: "Mon stage de troisieme sur Twitter",
+                    width: 33,
+                    class: 'mx-3 hover-blue'
+      = link_to "https://www.linkedin.com/company/mon-stage-de-3e",
+              class: 'rg2a-external',
+              target: '_blank',
+              aria: {label: "LinkedIn parle de nous"} do
+        = image_tag asset_pack_path('media/images/homepage/social_networks/linked_in.svg'),
+                    alt: "Mon stage de troisieme sur LinkedIn",
+                    width: 33,
+                    class: 'mx-3 hover-blue'
+      = link_to "https://www.instagram.com/monstagede3eme/",
+              class: 'rg2a-external',
+              target: '_blank',
+              aria: {label: "Instagram parle de nous"} do
+        = image_tag asset_pack_path('media/images/homepage/social_networks/insta.svg'),
+                    alt: "Mon stage de troisieme sur Instagram",
+                    width: 33,
+                    class: 'ml-3 hover-blue'
+
 .row.footer-content.no-gutters.bg-light-blue
-  .col-md-5.col-sm-12.py-5
+  .col-md-5.col-sm-12.pb-5.pt-4
     p.mt-1.print-footer.pl-5
       | Un service fourni par l'incubateur des
       br

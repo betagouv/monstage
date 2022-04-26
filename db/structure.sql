@@ -813,7 +813,8 @@ CREATE TABLE public.internship_offers (
     total_female_applications_count integer DEFAULT 0 NOT NULL,
     total_female_convention_signed_applications_count integer DEFAULT 0 NOT NULL,
     total_female_approved_applications_count integer DEFAULT 0,
-    max_students_per_group integer DEFAULT 1 NOT NULL
+    max_students_per_group integer DEFAULT 1 NOT NULL,
+    employer_manual_enter boolean DEFAULT false
 );
 
 
@@ -907,7 +908,8 @@ CREATE TABLE public.organisations (
     employer_id integer,
     siren character varying,
     siret character varying,
-    is_paqte boolean
+    is_paqte boolean,
+    manual_enter boolean DEFAULT false
 );
 
 
@@ -2406,6 +2408,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211026200850'),
 ('20211027130402'),
 ('20211110133150'),
-('20211207163238');
+('20211207163238'),
+('20220329131926');
 
 
