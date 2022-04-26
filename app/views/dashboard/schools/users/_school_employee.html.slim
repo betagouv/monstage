@@ -1,15 +1,14 @@
-.col-12.pt-1.pb-2.listview-item
-  .row
-    .col-8
-      = Presenters::User.new(school_employee).short_name
-      br
-      = "#{Presenters::User.new(school_employee).role_name} #{school_employee.try(:class_room).try(:name)}"
-    .col-4.d-flex.justify-content-end.align-items-centfer
-      - if can?(:delete, school_employee)
-        = link_to dashboard_school_user_path(school_employee.school, school_employee),
-                  data: { confirm: "Êtes-vous sur ?" },
-                  method: :delete,
-                  class: 'pt-2 fr-raw-link fr-text--sm' do
-          span.fr-fi-delete-line<
-          | Supprimer
-  
+tr
+  td
+    = school_employee.presenter.short_name
+  td
+    = school_employee.email
+  td
+    = school_employee.role_presenter.role
+  td
+    = link_to dashboard_school_user_path(school_employee.school, school_employee),
+               data: { confirm: "Êtes-vous sur ?" },
+                       method: :delete,
+                       class: 'pt-2 fr-raw-link fr-text--sm red-delete' do
+      | Supprimer
+

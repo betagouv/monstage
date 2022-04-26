@@ -63,6 +63,10 @@ module Users
       url_helpers.dashboard_school_internship_applications_path(school)
     end
 
+    def role_presenter
+      Presenters::UserManagementRole.new(user: self)
+    end
+
     private
 
     # validators
