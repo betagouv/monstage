@@ -1,0 +1,45 @@
+ul.fr-tabs__list aria-label=("school-tab") role="tablist"
+  li role="presentation"
+    button#classes.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+      aria-controls="classes-panel"
+      aria-selected="true"
+      role="tab"
+      tabindex="0"]
+      | Classes
+      - if badge_counter.student_without_class_room_count.size.positive?
+        = " (#{badge_counter.student_without_class_room_count})"
+
+  li role="presentation"
+    button#users.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+      aria-controls="users-panel"
+      aria-selected="false"
+      role="tab"
+      tabindex="1"]
+      | Personnels
+
+  li role="presentation"
+    button#weeks.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+      aria-controls="weeks-panel"
+      aria-selected="false"
+      role="tab"
+      tabindex="2"]
+        | Semaines
+
+  - if current_user.school.internship_agreement_open?
+    li role="presentation"
+      / =link_to() 
+        button#internship-agreements.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+          aria-controls="internship-agreements-panel"
+          aria-selected="false"
+          role="tab"
+          tabindex="3"]
+          | Mes conventions de stage
+
+    li role="presentation"
+      button#manage-school.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left [
+        aria-controls="manage-school-panel"
+        aria-selected="false"
+        role="tab"
+        tabindex="4"]
+        | Gérer mon établissement
+
