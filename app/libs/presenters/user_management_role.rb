@@ -1,5 +1,5 @@
 module Presenters
-  class UserManagementRole
+  class UserManagementRole < User
     TYPE_TRANSLATOR = {
       'Users::Student': 'Elève',
       'Users::Employer': 'Offreur',

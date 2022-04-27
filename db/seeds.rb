@@ -531,7 +531,9 @@ def populate_applications
       )
     end
   end
-  # 2nd student
+  #-----------------
+  # 2nd student [1 approved, 1 canceled_by_employer]
+  #-----------------
   puts "second 3e generale offer receive an approval --> second 3e generale stud"
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
@@ -542,6 +544,7 @@ def populate_applications
     internship_offer: troisieme_generale_offers.first,
     week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
+  
   puts  "second 3e generale stud is canceled by employer of last internship_offer"
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :canceled_by_employer,
@@ -553,7 +556,9 @@ def populate_applications
     internship_offer: troisieme_generale_offers.second,
     week: troisieme_generale_offers.first.internship_offer_weeks.first.week
   )
-  #third student
+  #-----------------
+  # third student [1 approved, 1 canceled_by_student]
+  #-----------------
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 10.days.ago,
@@ -574,7 +579,9 @@ def populate_applications
     internship_offer: troisieme_generale_offers.first,
     week: troisieme_generale_offers.second.internship_offer_weeks.second.week
   )
-  # 4th student
+  #-----------------
+  # 4th student [1 approved]
+  #-----------------
   InternshipApplications::WeeklyFramed.create!(
     aasm_state: :approved,
     submitted_at: 10.days.ago,

@@ -14,6 +14,6 @@ class MainTeacherMailer < ApplicationMailer
     cc = @student.school_manager_email
     @message = "Aucune convention n'est prévue sur ce site, bon stage à #{@student_presenter.civil_name} !"
 
-    send_email({ to: to, subject: subject, cc: cc })
+    send_email( to: to, subject: subject, cc: cc )
   end
 end

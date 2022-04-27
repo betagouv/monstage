@@ -188,7 +188,7 @@ class InternshipOffer < ApplicationRecord
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name street zipcode city department region academy
                     is_public group school_id coordinates first_date last_date
-                    school_track
+                    school_track siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 
@@ -199,7 +199,7 @@ class InternshipOffer < ApplicationRecord
     white_list_without_location = %w[type title sector_id max_candidates
                     tutor_name tutor_phone tutor_email employer_website
                     employer_name is_public group school_id coordinates 
-                    first_date last_date school_track
+                    first_date last_date school_track siret employer_manual_enter
                     internship_offer_info_id organisation_id tutor_id
                     weekly_hours new_daily_hours]
 

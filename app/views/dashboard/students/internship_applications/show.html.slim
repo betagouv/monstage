@@ -45,8 +45,9 @@ div data-controller="dashboard-students-internship-application" data-dashboard-s
               internship_application: @internship_application,
               aasm_target: :cancel_by_student!,
               modal_opener_label: 'Annuler',
-              message: '',
-              rich_text: false,
+              subtitle: "Motif de l'annulation",
+              message: "Une fois la candidature annulée, un email de notification va être envoyé à l'employeur avec le motif de l'annulation",
+              rich_text: true,
               modal_id: "cancel-by-student-internship-application-#{@internship_application.id}",
               fa_icon: "fa-ban"
 

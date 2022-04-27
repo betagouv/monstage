@@ -28,6 +28,7 @@ export default function AddressInput({
   const [fullAddressDebounced] = useDebounce(fullAddress, 100);
 
   const inputChange = (event) => {
+    document.getElementById("organisation_street_complement").value = '';
     setFullAddress(event.target.value);
   };
 
@@ -182,7 +183,7 @@ export default function AddressInput({
         <div className="col-sm-12">
           <div className="form-group">
             <label htmlFor={`${resourceName}_street`}>
-              Rue ou compléments d'adresse
+              Rue
               <abbr title="(obligatoire)" aria-hidden="true">
                 *
               </abbr>
@@ -194,6 +195,21 @@ export default function AddressInput({
               type="text"
               name={`${resourceName}[street]`}
               id={`${resourceName}_street`}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="col-sm-12">
+          <div className="form-group">
+            <label htmlFor={`${resourceName}_street_complement`}>
+              Complément d'adresse
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              name={`${resourceName}[street_complement]`}
+              id={`${resourceName}_street_complement`}
             />
           </div>
         </div>

@@ -6,11 +6,11 @@ class SignUpMinistryStatisticiansTest < ApplicationSystemTestCase
   test 'navigation & interaction works until ministry statistician creation' do
     # go to signup as statistician
     email = 'kikoolol_levrai@gmail.com'
-    ministry_statistician_email_whitelist = create(:ministry_statistician_email_whitelist, email: email)
+    create(:ministry_statistician_email_whitelist, email: email)
     bad_email = 'lol@lol.fr'
 
     visit new_user_registration_path(as: 'MinistryStatistician')
-    
+
     # fails to create ministry_statistician with unexisting email
     assert_difference('Users::MinistryStatistician.count', 0) do
       fill_in 'Prénom', with: 'Martin'

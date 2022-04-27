@@ -1,15 +1,17 @@
-p style=head_styles
-  | Information annulation
 p style=p_styles
-  = "#{@internship_application.internship_offer.employer.formal_name}, "
-p style=p_styles
-  | L'élève de 3e du "
-  => @internship_application.student.school.name
-  |", 
-  => @internship_application.student.formal_name
-  | vous informe qu'il décline votre proposition de stage : "
-  = @internship_application.internship_offer.title
-  |". Il vous en donne les raisons ici :
-  hr
-  = @internship_application.canceled_by_student_message.to_s
+  | Bonjour,
+  br
+  => @internship_application.student.presenter.formal_name
+  | a annulé sa candidature pour le stage
+  => @internship_application.internship_offer.title
+  |.
 
+p style=p_styles
+  | Voici le motif de l’annulation :
+  br
+  => @internship_application.canceled_by_student_message.to_s
+
+p style=p_styles
+  | À bientôt,
+  br
+  | L'équipe Mon Stage de 3e.

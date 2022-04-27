@@ -11,6 +11,11 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
     )
   end
 
+  def internship_application_approved_email
+    SchoolManagerMailer.internship_application_approved_email(
+      internship_application: InternshipAgreement.first.internship_application
+    )
+  end
 
 
   private

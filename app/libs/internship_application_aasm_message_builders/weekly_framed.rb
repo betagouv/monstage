@@ -19,10 +19,7 @@ module InternshipApplicationAasmMessageBuilders
     end
 
     def on_rejected_message
-      <<~HTML.strip
-        <p>Bonjour #{student.presenter.formal_name},</p>
-        <p>Votre candidature pour le stage "#{internship_offer.title}" est refusée pour la semaine #{week.short_select_text_method}.</p>
-      HTML
+      ""
     end
 
     def on_canceled_by_employer_message
@@ -33,12 +30,7 @@ module InternshipApplicationAasmMessageBuilders
     end
 
     def on_canceled_by_student_message
-      <<~HTML.strip
-        <p>#{internship_offer.employer.presenter.formal_name},</p>
-        <p>Je ne suis pas en mesure d'accepter votre offre de stage
-        "#{internship_offer.title}" prévu pour la semaine
-        #{week.short_select_text_method}, car : </p>
-      HTML
+      ""
     end
   end
 end
