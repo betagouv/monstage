@@ -25,12 +25,8 @@ function RenderSchoolSelectInput({
   );
 
   const selectSchool = (school_id) => {
-    console.log(school_id);
-    console.log(schoolsInCitySuggestions);
     const school = schoolsInCitySuggestions.filter(obj => {
       return obj.id == school_id })[0];
-    console.log(school);
-    console.log(school);
     setSelectedSchool(school);
     setClassRoomsSuggestions(school.class_rooms);
   };

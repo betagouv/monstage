@@ -486,14 +486,14 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 CREATE TABLE public.identities (
     id bigint NOT NULL,
     user_id bigint,
-    email character varying,
     first_name character varying,
     last_name character varying,
     school_id bigint,
     class_room_id bigint,
     birth_date date,
     gender character varying DEFAULT 'np'::character varying,
-    anonymized boolean,
+    token character varying,
+    anonymized boolean DEFAULT false,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

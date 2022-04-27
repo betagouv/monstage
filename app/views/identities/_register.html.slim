@@ -4,7 +4,7 @@
       .col-12.align-self-end.h-100
         .row
           .col-6.fr-pl-0
-            = link_to "Revenir à l'étape précédente", register_path, class: 'blue-france fr-raw-link fr-fi-arrow-left-line fr-link--icon-left'
+            = link_to "Revenir à l'étape précédente", edit_identity_path(params[:identity_token]), class: 'blue-france fr-raw-link fr-fi-arrow-left-line fr-link--icon-left'
           .col-6.text-right
             p.fr-tag Etape 2 sur 2
         .row.fr-mt-1w
@@ -18,7 +18,7 @@
     = render "layouts/form_errors", resource: resource, resource_name: :user
     = f.hidden_field :type
     = f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id)
-    = f.hidden_field :identity_id, value: params[:identity_id]
+    = f.hidden_field :identity_token, value: params[:identity_token]
     - if can?(:choose_school, resource)
       = render "users/select_channel",
                       label: "Comment souhaitez-vous être contacté(e) ?",

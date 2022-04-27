@@ -12,7 +12,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
 
   test 'simple default radio button status' do
     identity = create(:identity)
-    visit new_user_registration_path(as: 'Student', identity_id: identity.id)
+    visit new_user_registration_path(as: 'Student', identity_token: identity.token)
     fill_in 'Adresse électronique', with: 'email@free.fr'
     assert find("#select-channel-email").selected?
     find("#select-channel-phone", visible: false, count: 1)
@@ -36,7 +36,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     identity = create(:identity)
 
     # go to signup as student
-    visit new_user_registration_path(as: 'Student', identity_id: identity.id)
+    visit new_user_registration_path(as: 'Student', identity_token: identity.token)
 
     # fails to create student with existing email and display email channel
     assert_difference('Users::Student.count', 0) do

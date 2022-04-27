@@ -1,4 +1,4 @@
-<% if params[:identity_id] %>
+<% if params[:identity_token] %>
   <%= render 'identities/register' %>
 <% else %>
   <div class='onboarding-card onboarding-card-sm mb-4' data-controller="signup" data-signup-channel-value="<%= @resource_channel %>">

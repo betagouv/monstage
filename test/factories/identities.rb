@@ -6,6 +6,7 @@ FactoryBot.define do
     gender { 'm' }
     birth_date { 14.years.ago }
     school { create(:school, :with_school_manager) }
+    token { 'abcdef' }
     
     trait :male do
       gender { 'm' }

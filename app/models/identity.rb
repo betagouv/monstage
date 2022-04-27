@@ -5,20 +5,15 @@ class Identity < ApplicationRecord
   belongs_to :class_room, optional: true
 
   # Validations
-  validates :first_name, :last_name, :birth_date,
+  validates :first_name, :last_name, :birth_date, :token,
             presence: true
 
-  # validates :email, uniqueness: { allow_blank: true },
-  #                   format: { with: Devise.email_regexp },
-  #                   allow_blank: true
-
-  # validate :email_user_uniqueness
+  before_validation :generate_token, unless: :token
 
   private
 
-  # def email_uniqueness
-  #   # TO DO check in user
-  #   return unless email && User.find_by_email(email)
-  #   errors.add(email: 'Cette adresse email est déjà associée à un compte.')
-  # end
+  def generate_token
+    self.token = SecureRandom.hex(12)
+  end
+  
 end

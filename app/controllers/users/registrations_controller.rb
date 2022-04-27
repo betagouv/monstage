@@ -64,7 +64,7 @@ module Users
 
     # POST /resource
     def create
-      if params.dig(:user, :identity_id)
+      if params.dig(:user, :identity_token)
         params[:user] = merge_identity(params)
       end
       if params.dig(:user, :phone) && fetch_user_by_phone && @user
@@ -169,7 +169,7 @@ module Users
     end
 
     def merge_identity(params)
-      identity = Identity.find(params[:user][:identity_id])
+      identity = Identity.find_by_token(params[:user][:identity_token])
 
       params[:user].merge({
         first_name: identity.first_name,

@@ -141,7 +141,7 @@ class StudentRegistrationsTest < ActionDispatch::IntegrationTest
         params: {
           user: {
             type: 'Users::Student',
-            identity_id: identity.id,
+            identity_token: identity.token,
             email: email,
             password: 'okokok',
             password_confirmation: 'okokok',
