@@ -140,27 +140,26 @@ class InternshipApplication < ApplicationRecord
                   to: :approved,
                   after: proc { |*_args|
                           update!("approved_at": Time.now.utc)
-                          create_agreement if student.school.internship_agreement_open?
-                          if student.email.present?
-                            deliver_later_with_additional_delay do
-                              StudentMailer.internship_application_approved_email(internship_application: self)
-                            end
-                          elsif student.phone.present?
-                            sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
-                                          "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
-                            SendSmsJob.perform_later(
-                              user: student,
-                              message: sms_message
-                            ) unless Rails.env.development?
-                          else
-                            mesg = "while internship ##{id} has been accepted," \
-                                   " no message has been sent to the " \
-                                   "student ##{student.id}"
-                            Rails.logger.error(mesg)
-                          end
+                          main_teacher = student.main_teacher
+                          # StudentMailer.internship_application_approved_email
+                          accepted_student_notify
+                          # since class_room and school_track might be anavailable
+                          if student.school.internship_agreement_open? && type == "InternshipApplications::WeeklyFramed"
+                            # SchoolManagerMailer.agreement_creation_notice_email
+                            # EmployerMailer.agreement_creation_notice_email
+                            create_agreement
 
-                          student.school.main_teachers.map do |main_teacher|
-                            responsible_notify(internship_application: self, main_teacher: main_teacher)
+                            if main_teacher.present?
+                              MainTeacherMailer.internship_application_approved_email(internship_application: self, main_teacher: main_teacher)
+                                               .deliver_later
+                            end
+                          else
+                            SchoolManagerMailer.internship_application_approved_email(internship_application: self, main_teacher: main_teacher)
+                                               .deliver_later
+                            if main_teacher.present?
+                              MainTeacherMailer.internship_application_with_no_agreement_email(internship_application: self, main_teacher: main_teacher)
+                                               .deliver_later
+                            end
                           end
                         }
     end
@@ -215,35 +214,26 @@ class InternshipApplication < ApplicationRecord
     end
   end
 
-  def notify_student
-    return unless student.email.present?
-    deliver_later_with_additional_delay do
-      StudentMailer.internship_application_approved_email(
-        internship_application: self
-      )
-    end
-  end
-
-  def notify_school_management
-    MainTeacherMailer.internship_application_approved_email(
-      internship_application: self,
-      main_teacher: student.main_teacher
-    ).deliver_later
-  end
-
-  def responsible_notify(internship_application:, main_teacher:)
-    if internship_application.student.troisieme_generale?
-      SchoolManagerMailer.internship_application_approved_email(internship_application: self,
-                                                                main_teacher: main_teacher)
-                         .deliver_later
+  def accepted_student_notify
+    if student.email.present?
+      deliver_later_with_additional_delay do
+        StudentMailer.internship_application_approved_email(internship_application: self)
+      end
+    elsif student.phone.present?
+      sms_message = "Monstagedetroisieme.fr : Votre candidature a " \
+                    "été acceptée ! Consultez-la ici : #{short_target_url(self)}"
+      SendSmsJob.perform_later(
+        user: student,
+        message: sms_message
+      ) unless Rails.env.development?
     else
-      MainTeacherMailer.internship_application_approved_email(internship_application: self,
-                                                              main_teacher: main_teacher)
-                       .deliver_later
-
+      mesg = "while internship ##{id} has been accepted," \
+              " no message has been sent to the " \
+              "student ##{student.id}"
+      Rails.logger.error(mesg)
+      raise StandardError.new "student without email nor phone ##{student.id}"
     end
   end
-
 
 
   def create_agreement
@@ -254,7 +244,12 @@ class InternshipApplication < ApplicationRecord
     agreement.skip_validations_for_system = true
     agreement.save!
 
-    notify_started_by_employer(internship_agreement: agreement)
+    SchoolManagerMailer.agreement_creation_notice_email(
+      internship_agreement: internship_agreement
+    ).deliver_later
+    EmployerMailer.agreement_creation_notice_email(
+      internship_agreement: internship_agreement
+    ).deliver_now
   end
 
   scope :approved_or_signed, lambda {
@@ -321,16 +316,5 @@ class InternshipApplication < ApplicationRecord
                     Rails.configuration.action_mailer.default_url_options
                   )
     UrlShortener.short_url(target)
-  end
-
-  private
-
-  def notify_started_by_employer(internship_agreement: )
-    SchoolManagerMailer.agreement_creation_notice_email(
-      internship_agreement: internship_agreement
-    ).deliver_later
-    EmployerMailer.agreement_creation_notice_email(
-      internship_agreement: internship_agreement
-    ).deliver_now
   end
 end

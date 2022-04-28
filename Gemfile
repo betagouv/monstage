@@ -100,6 +100,7 @@ group :test do
   gem 'webdrivers'
   gem 'rails-controller-testing'
   gem 'capybara-screenshot'
+gem "minitest-stub_any_instance"
 end
 
 group :review do
