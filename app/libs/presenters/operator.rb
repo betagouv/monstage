@@ -1,6 +1,5 @@
 module Presenters
-  class Operator
-    include Humanable
+  class Operator < User
 
     def profile_filters
       {

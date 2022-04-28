@@ -18,7 +18,7 @@ class MainTeacherMailer < ApplicationMailer
     subject = "La candidature d'un de vos élèves a été acceptée"
     cc = @student.school_manager_email
 
-    send_email({ to: to, subject: subject, cc: cc })
+    send_email( to: to, subject: subject, cc: cc )
   end
 
   def internship_application_approved_with_no_agreement_email(internship_application:, main_teacher:)
