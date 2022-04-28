@@ -43,6 +43,11 @@ module Dashboard
       @available_weeks = Week.selectable_on_school_year
     end
 
+    def information
+      @school = School.find(params.require(:school_id))
+    end
+
+
     private
 
     def set_school
