@@ -1,7 +1,7 @@
 fieldset.mt-4 data-controller='organisation-form'
-  legend.my-4 Informations sur l'entreprise
-  .row.mt-3
+  .row
     .col-md-6.order-md-1.order-2
+      legend Informations sur l'entreprise
       = form.rg2a_explain_required_asterisk
       = form.hidden_field :manual_enter, value: false
 
@@ -71,5 +71,5 @@ fieldset.mt-4 data-controller='organisation-form'
                 i.fas.fa-arrow-right
     - warning_block = true if warning_block.nil?
     - if warning_block
-      .col-md-6.order-md-2.order-1.employer
+      .col-md-6.order-md-2.order-1
         = render partial: 'dashboard/stepper/warning_block'

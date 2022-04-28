@@ -28,16 +28,6 @@
   box-shadow: 0px 15px 20px -20px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
 }
-.employer .info-covid {
-  top: 58px;
-}
-
-.employer {
-  position: sticky;
-  top: 20px;
-  z-index: 3;
-  background-color: white;
-}
 
 .white-mask {
   position: absolute;
@@ -64,8 +54,6 @@ a.white {
 }
 
 .warning-bloc {
-  position: relative;
-  top: 70px;
   background-color: $bg-light-blue;
   padding: 30px;
   margin-bottom: 10px;
@@ -154,11 +142,7 @@ $sortLinkOffset: 15px;
   background-repeat: no-repeat;
   background-size: cover;
 }
-@include media-breakpoint-down(md) {
-  .info-covid {
-    position: static;
-  }
-}
+
 // custom dimension table for dashboard/internship_offers#index
 @include media-breakpoint-up(sm) {
   .table-dashboard-internship-offers {
