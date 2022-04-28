@@ -11,9 +11,10 @@ class SchoolManagerMailerPreview < ActionMailer::Preview
     )
   end
 
-  def internship_application_approved_email
-    SchoolManagerMailer.internship_application_approved_email(
-      internship_application: InternshipAgreement.first.internship_application
+  def internship_application_approved_with_no_agreement_email
+    SchoolManagerMailer.internship_application_approved_with_no_agreement_email(
+      internship_application: InternshipApplication.approved.first
+
     )
   end
 

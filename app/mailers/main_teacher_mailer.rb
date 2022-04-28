@@ -21,7 +21,7 @@ class MainTeacherMailer < ApplicationMailer
     send_email( to: to, subject: subject, cc: cc )
   end
 
-  def internship_application_with_no_agreement_email(internship_application:, main_teacher:)
+  def internship_application_approved_with_no_agreement_email(internship_application:, main_teacher:)
     @main_teacher = main_teacher
     @internship_offer = internship_application.internship_offer
     @student = internship_application.student
