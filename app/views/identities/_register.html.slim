@@ -13,7 +13,7 @@
   = form_with(model: resource,
                     scope: resource_name,
                     local: true,
-                    url: registration_path(resource_name, as: resource.type.demodulize),
+                    url: registration_path(resource_name, as: resource.type.demodulize, identity_token: params[:identity_token]),
                     id: 'new_user') do |f|
     = render "layouts/form_errors", resource: resource, resource_name: :user
     = f.hidden_field :type
@@ -34,7 +34,7 @@
          = f.password_field :password, class: 'fr-input', required: true, autocomplete: "new-password", data: { action: "change->signup#checkPassword", :"signup-target" => "passwordInput" }
      .col-md-6.col-xs-12
        .form-group
-         = f.label 'Ressaisir le mot de passe', class: 'fr-label', for: 'user_confirmation_password'
+         = f.label 'Ressaisir le mot de passe', class: 'fr-label', for: 'user_password_confirmation'
          = f.password_field :password_confirmation, class: 'fr-input', required: true
     .row
       .col-md-12.col-xs-12

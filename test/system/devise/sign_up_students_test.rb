@@ -35,7 +35,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     student = create(:student, email: existing_email)
     identity = create(:identity)
 
-    # go to signup as student
+    # go to signup as student STEP 2
     visit new_user_registration_path(as: 'Student', identity_token: identity.token)
 
     # fails to create student with existing email and display email channel
@@ -45,7 +45,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
       find('label[for="user_accept_terms"]').click
-      click_on "Je m'inscris"
+      click_on "Valider mon inscription"
       find('label', text: 'Un compte est déjà associé à cet email')
       assert_equal existing_email, find('#user_email').value
     end
@@ -56,7 +56,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       fill_in 'Adresse électronique', with: 'another@email.com'
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
       fill_in 'Ressaisir le mot de passe', with: 'kikoololletest'
-      click_on "Je m'inscris"
+      click_on "Valider mon inscription"
     end
   end
 
@@ -67,14 +67,14 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
     student = create(:student, email: existing_email)
 
-    # go to signup as student
-    visit new_user_registration_path(as: 'Student')
+    # go to signup as student Step 1
+    visit new_identity_path(as: 'Student')
 
     # fails to find a class_room though there's an anonymized one
     find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
     find('#downshift-0-item-0').click
-    find("label[for=\"select-school-#{school_1.id}\"]").click
-    page.find("input[name='user[class_room_id]'][placeholder='Aucune classe disponible']")
+    select school_1.name, from: "identity_school_id"
+    page.find("input[name='identity[class_room_id]'][placeholder='Aucune classe disponible']")
   end
 
   test 'select other class room' do
@@ -83,14 +83,15 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     existing_email = 'fourcade.m@gmail.com'
     student = create(:student, email: existing_email)
 
-    # go to signup as student
-    visit new_user_registration_path(as: 'Student')
+    # go to signup as student Step 1
+    visit new_identity_path(as: 'Student')
 
     # fails to find a class_room though there's an anonymized one
     find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
-    # find('#downshift-0-item-0').click
+    find('#downshift-0-item-0').click
     # find("label[for=\"select-school-#{school_1.id}\"]").click
-    # select("Autre classe", from: 'user_class_room_id')
+    select school_1.name, from: "identity_school_id"
+    select("Autre classe", from: 'user_class_room_id')
   end
 
   test 'Student with mail subscription with former internship_offer ' \
@@ -116,8 +117,8 @@ class SignUpStudentsTest < ApplicationSystemTestCase
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
       fill_in 'Prénom', with: 'Martine'
-      find("input[name='user[last_name]']").fill_in with: 'Fourcadex'
-      find('label', text: school_1.name).click
+      fill_in 'Nom', with: 'Fourcadex'
+      select school_1.name, from: "identity_school_id"
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Féminin').click
       find('label', text: 'Par email').click
@@ -299,17 +300,17 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     birth_date = 14.years.ago
     student = create(:student, phone: existing_phone)
 
-    # go to signup as student
-    visit new_user_registration_path(as: 'Student')
+    # go to signup as student STEP 1
+    visit new_identity_path(as: 'Student')
 
     # fails to create student with existing email
     assert_difference('Users::Student.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
-      select(class_room_1.name, from: 'user_class_room_id')
+      select school_1.name, from: "identity_school_id"
+      select(class_room_1.name, from: 'identity_class_room_id')
       fill_in 'Prénom', with: 'Martin'
-      find("input[name='user[last_name]']").fill_in with: 'Fourcade'
+      fill_in 'Nom', with: 'Fourcade'
       fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
       find('label', text: 'Masculin').click
       find('label', text: 'SMS').click
