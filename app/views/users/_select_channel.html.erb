@@ -1,6 +1,8 @@
 <fieldset class="select-channel fr-fieldset ">
-  <legend class="fr-label fr-fieldset__legend fr-text--regular">
-   <%= label %>
+  <legend class="fr-fieldset__legend fr-text--regular">
+   <div class="label">
+    <%= label %>
+   </div>
    <% if block_given? %>
     <%= yield %>
    <% end %>
@@ -22,13 +24,12 @@
   </div>
 
   <div data-signup-target="emailBloc" class="form-group email d-none registration">
+    <%= form.rg2a_explain_required_asterisk(p_class_name: "mb-0") %>
     <%= form.label :email, class: "fr-label" do %>
       <span data-signup-target="label">
         <%= resource.school_manager? ? "Adresse électronique académique" : "Adresse électronique (e-mail)" %>
       </span>
-      <small class="form-text text-muted" data-signup-target="emailExplanation">
-        Cette adresse sera utilisée pour communiquer avec vous
-      </small>
+      <small class="form-text text-muted" data-signup-target="emailExplanation"> </small>
     <% end %>
     <%= form.email_field :email,
                          class: 'fr-input',

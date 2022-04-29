@@ -1,0 +1,25 @@
+ul.fr-tabs__list aria-label=("stats-tab") role="tablist" 
+  - if can?(:see_reporting_dashboard, current_user)
+    = link_to reporting_dashboards_path(default_reporting_url_options(current_user)) do
+      li role="presentation"
+        button#dashboard.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="offers-panel" aria-selected="#{current_page?(reporting_dashboards_path)}" role="tab" tabindex="0" Tableau de bord                  
+  - if can?(:see_reporting_internship_offers, current_user)
+    = link_to reporting_internship_offers_path(default_reporting_url_options(current_user)) do
+      li role="presentation"
+        button#offers.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="offers-panel" aria-selected="#{current_page?(reporting_internship_offers_path)}" role="tab" tabindex="0" Offres
+  - if can?(:see_reporting_schools, current_user)
+    = link_to reporting_schools_path(default_reporting_url_options(current_user)) do
+      li role="presentation"
+        button#schools.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="schools-panel" aria-selected="#{current_page?(reporting_schools_path)}" role="tab" tabindex="0" Établissements
+  - if can?(:see_reporting_associations, current_user)
+    = link_to reporting_operators_path() do
+      li role="presentation"
+        button#operators.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="operators-panel" aria-selected="#{current_page?(reporting_operators_path)}" role="tab" tabindex="0" Associations
+  - if can?(:see_reporting_enterprises, current_user)
+    = link_to reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group')) do
+      li role="presentation"
+        button#employers.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="employers-panel" aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" role="tab" tabindex="0" Entreprises
+  - if current_user.is_a?(Users::Operator) && can?(:import_data, Acl::Reporting) && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
+    = link_to reporting_import_data_path do
+      li role="presentation"
+        button#import.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="import-panel" aria-selected="#{current_page?(reporting_import_data_path)}" role="tab" tabindex="0" Importer des données

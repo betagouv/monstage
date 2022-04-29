@@ -17,7 +17,7 @@ h1.h2.mb-4
         - if badge_counter.student_without_class_room_count.size.positive?
           = " (#{badge_counter.student_without_class_room_count})"
     li role="presentation" 
-      button#users.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="users-panel" aria-selected="false" role="tab" tabindex="1"  Personnel
+      button#users.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="users-panel" aria-selected="false" role="tab" tabindex="1"  Personnels
     li role="presentation" 
       button#weeks.fr-tabs__tab.fr-fi-checkbox-line.fr-tabs__tab--icon-left aria-controls="weeks-panel" aria-selected="false" role="tab" tabindex="2"  Semaines
     - if current_user.school.internship_agreement_open?

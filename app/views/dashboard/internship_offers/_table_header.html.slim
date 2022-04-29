@@ -3,7 +3,8 @@ tr
     th class="align-middle bg-blue sortable-th #{sort_column == :view_count ? 'd-none d-md-table-cell' : ''}"
       .row.no-gutters
         .col-auto
-          small.breakable-word.pl-1= i18n.html_safe
+          .col-label-sorting
+            .fr-text--xs.pl-1 = i18n.html_safe
         .col
           = render partial: "dashboard/internship_offers/sort_links",
                    locals: { order: sort_column,

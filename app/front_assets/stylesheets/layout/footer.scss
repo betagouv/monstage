@@ -1,4 +1,5 @@
-html, body{
+html,
+body {
   height: 100%;
 }
 
@@ -6,20 +7,25 @@ body {
   display: flex;
   flex-direction: column;
 }
-// .content {
-//   flex: 1 0 auto;
-// }
+
+.content {
+  padding-bottom: 1.5rem;
+}
+.homepage .content {
+  padding-bottom: 0rem;
+}
+
 .footer-elevator {
   transform: translate(0, -15px);
   z-index: 1024;
   position: fixed;
   bottom: 50px;
-  left:91%
-  }
+  left: 91%
+}
 
-  .back-to-top {
-    border: 2px white solid;
-    border-radius: 50%;
+.back-to-top {
+  border: 2px white solid;
+  border-radius: 50%;
 }
 
 .footer {
@@ -29,29 +35,49 @@ body {
   text-align: left;
   letter-spacing: 0px;
   flex-shrink: 0;
-  .footer-content{
+
+  .footer-content {
     color: $gray-900;
-    a{
+
+    a {
       text-decoration: none;
       color: $gray-900;
     }
   }
+
   background-color: $bg-light-blue;
+  .social_network{
+    $height: 64px;
+    display: inline-block;
+    height: $height;
+    line-height: $height;
+    vertical-align: middle;
+    color: $blue;
   }
+  a .hover-blue{
+    text-decoration: none;
+    &:hover{
+      opacity: 0.75;
+    }
+  }
+}
 
 @include media-breakpoint-down(xs) {
+
   // .content {
   //   min-height: 100%;
   // }
-  .footer{
+  .footer {
     font-size: 12px;
   }
-  .font-weight-bold-sm{
+
+  .font-weight-bold-sm {
     font-weight: bold;
   }
 }
+
 @include media-breakpoint-up(sm) {
- .sticky-footer-illustration{
+  .sticky-footer-illustration {
     background-image: url('../images/homepage/explications.svg');
     background-position: top right;
     background-color: transparent;
@@ -59,24 +85,26 @@ body {
     background-size: contain;
   }
 }
-.fixed-footer{
-  box-shadow: 0 2px 20px rgba(0,0,0,.2);
+
+.fixed-footer {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, .2);
   position: fixed;
   height: auto;
-  bottom:0;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 1;
 }
+
 // footer customisation
 @include media-breakpoint-down(sm) {
-  .h3-bis-home{
+  .h3-bis-home {
     font-size: 1rem;
     line-height: 1.1rem;
   }
 }
 
-.close-top-right{
+.close-top-right {
   position: absolute;
   top: 5px;
   right: 5px;

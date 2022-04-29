@@ -163,7 +163,7 @@ module Dashboard
                     :zipcode, :city, :department, :region, :academy, :renewed,
                     :is_public, :group_id, :published_at, :type,
                     :employer_id, :employer_type, :school_id,
-                    :employer_description_rich_text,
+                    :employer_description_rich_text, :siret, :employer_manual_enter,
                     :school_track, :weekly_lunch_break, coordinates: {}, week_ids: [],
                     new_daily_hours: {}, daily_lunch_break: {}, weekly_hours:[])
     end

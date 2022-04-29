@@ -5,8 +5,8 @@ import './beta-gouv-logo.png';
 import './danger_sign_blue.svg';
 import './notice_people.svg';
 
-import './onboarding/confirm-desktop.svg';
-import './onboarding/confirm-mobile.svg';
+import './onboarding/confirm-desktop-2.svg';
+import './onboarding/confirm-mobile-2.svg';
 import './onboarding/student.svg';
 
 import './internship_offers_new/fast_time.svg';
@@ -50,6 +50,10 @@ import './homepage/01.svg';
 import './homepage/02.svg';
 import './homepage/03.svg';
 import './homepage/fake.svg';
+
+import './homepage/social_networks/insta.svg';
+import './homepage/social_networks/twitter.svg';
+import './homepage/social_networks/linked_in.svg';
 
 import './homepage/carousel/eleve.svg';
 import './homepage/carousel/entreprise.svg';

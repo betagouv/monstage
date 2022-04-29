@@ -6,18 +6,18 @@
           div
             h5.fr-h5.fr-follow__title Améliorations, fonctionnalités, outils ... Restez informés !
             p.fr-text--sm.fr-follow__desc
-              |Pour ne manquer aucune actualité autour de
+              |Pour ne manquer aucune actualité autour de&nbsp;
               span.font-weight-bold mon stage de troisieme,
               br
               |abonnez-vous dès maintenant à notre lettre d'informations.
           div
-            form action=""
-              label.fr-label for="newsletter-email"
+            = form_with url: newsletter_url, method: 'post' do
+              label.fr-label for="newsletter_email"
                 | Votre adresse électronique (ex. : nom@operateur.fr)
               .fr-input-wrap.fr-input-wrap--addon
-                input#newsletter-email.fr-input [aria-describedby="newsletter-email-hint-text"
+                input#newsletter_email.fr-input [aria-describedby="newsletter-email-hint-text"
                                                  autocomplete="email"
-                                                 name="newsletter-email"
+                                                 name="newsletter_email"
                                                  placeholder=("Votre adresse électronique (ex. : nom@operateur.fr)")
                                                  title=("Votre adresse électronique (ex. : nom@operateur.fr)") type="email"]
                 button#newsletter-button.fr-btn title=("S‘abonner à notre lettre d’information") type="submit"

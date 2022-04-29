@@ -17,7 +17,7 @@ module Users
     has_many :students, through: :school
     has_many :main_teachers, through: :school
     has_many :internship_applications, through: :students
-    has_many :internship_agreements, through: :internship_applications 
+    has_many :internship_agreements, through: :internship_applications
 
     validates :school, presence: true, on: :create
     validate :only_join_managed_school, on: :create, unless: :school_manager?
@@ -51,6 +51,7 @@ module Users
     def dashboard_name
       return 'Ma classe' if school.present? && class_room.present?
       return 'Mon établissement' if school.present?
+
       ""
     end
 
@@ -60,6 +61,10 @@ module Users
 
     def custom_agreements_path
       url_helpers.dashboard_school_internship_applications_path(school)
+    end
+
+    def role_presenter
+      Presenters::UserManagementRole.new(user: self)
     end
 
     private

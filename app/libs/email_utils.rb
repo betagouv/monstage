@@ -1,10 +1,16 @@
 module EmailUtils
   def self.env_host
-    ENV.fetch('HOST') { 'https://test.example.com' }
+    ENV.fetch('HOST') { 'https://www.monstagedetroisieme.fr' }
+  end
+
+  def self.domain
+    URI(env_host).host.split('.').last(2).join('.')
   end
 
   def self.from
-    "support@#{URI(env_host).host}"
+    return 'support@monstagedetroisieme.fr' if Rails.env.review?
+
+    "support@#{URI(env_host).host.gsub(/^www\./, '')}"
   end
 
   def self.display_name

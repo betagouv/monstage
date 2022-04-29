@@ -1,7 +1,7 @@
-.col-3
+.col-md-3.col-12
   .form-group.smashed.custom-label-container
+    = label_tag :subscribed_school, 'Inscrits', class: 'fr-label'
     = select_tag :subscribed_school,
                   options_for_select([["Tous", "all"], ["Inscrits", "true"], ["Non inscrits", "false"]], selected: params[:subscribed_school]),
-                  class: 'form-control custom-select',
+                  class: 'fr-select',
                   data: { action: 'statistics#filterBySubscribedSchool' }
-    = label_tag :subscribed_school, "Inscrits", class: 'font-weight-light fr-label'
