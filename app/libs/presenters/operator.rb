@@ -44,11 +44,5 @@ module Presenters
       }
     end
 
-    private
-    attr_reader :user
-
-    def initialize(operator)
-      @user = operator
-    end
   end
 end
