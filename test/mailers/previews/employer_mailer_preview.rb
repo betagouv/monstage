@@ -26,8 +26,8 @@ class EmployerMailerPreview < ActionMailer::Preview
     )
   end
 
-  def agreement_creation_notice_email
-    EmployerMailer.agreement_creation_notice_email(
+  def internship_application_approved_with_agreement_email
+    EmployerMailer.internship_application_approved_with_agreement_email(
       internship_agreement: InternshipAgreement.first
     )
   end
