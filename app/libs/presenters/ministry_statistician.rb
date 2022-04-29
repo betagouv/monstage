@@ -43,12 +43,5 @@ module Presenters
       }
     end
 
-    private
-
-    attr_reader :user
-
-    def initialize(ministry_statistician)
-      @user = ministry_statistician
-    end
   end
 end

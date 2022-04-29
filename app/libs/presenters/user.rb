@@ -2,8 +2,6 @@
 
 module Presenters
   class User
-    include Humanable
-
     delegate :application, to: Rails
     delegate :routes, to: :application
     delegate :url_helpers, to: :routes
@@ -57,8 +55,6 @@ module Presenters
 
       internship_offers_path(default_search_options)
     end
-
-    private
 
     attr_reader :user
     def initialize(user)

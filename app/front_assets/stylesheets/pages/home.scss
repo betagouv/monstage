@@ -290,6 +290,15 @@ button.navigation-pill {
     }
 }
 @include media-breakpoint-down(sm) {
+  .right-flying-email {
+    position: absolute;
+    width: 125px;
+    top: -55px;
+    z-index: 1;
+
+    background: url("../images/homepage/courrier.png");
+    transform: rotate(15deg);
+}
   .text-center-left {
     text-align: center;
   }

@@ -6,21 +6,35 @@ Things you may want to cover:
 
 * Ruby version: 2.7.2
 * Database postgresql 12
+  - On Linux :
+    - sudo apt-get install postgresql-12 libpq-dev
  - Initialize with : `initdb /usr/local/var/postgres -E utf8`
  - Create local db : `createdb monstage`
  - Start with : `pg_ctl -D /usr/local/var/postgres start`
  - Stop with : `pg_ctl -D /usr/local/var/postgres stop`
 * Install html5validator : `pip install html5validator`
 * Install postgis :
-  - If you are using Postgres.app, Postgis is already here
-  - If you installed postgres with Homebrew, run : `brew install postgis`
-  - Setup Postgis : `rake db:gis:setup`
+  - On Mac :
+    - If you are using Postgres.app, Postgis is already here
+    - If you installed postgres with Homebrew, run : `brew install postgis`
+  - On Linux :
+    sudo apt install postgis postgresql-12-postgis-3
+* Setup Postgis : `rake db:gis:setup`
+* Install Redis
+  - On Linux : sudo apt install redis-server
 * avoid rebuilding api doc : `./infra/dev/update-doc-output-files.sh`
 
 * setup db:
    * `./infra/dev/db.sh` (require a pg export)
    * `./infra/test/db.sh`
+
+* Install yarn & webpack
+  - On Linux
+    sudo apt install npm
+    npm install --global yarn
+    npm install webpack-dev-server -g
 * create rails master.key : `touch config/master.key` (then copy paste the entrey rails master key from monstage.kdbx)
+* Ask for a .env file from another developer
 
 # Architecture
 
