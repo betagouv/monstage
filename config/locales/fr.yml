@@ -187,7 +187,8 @@ fr:
 
         id: Identifiant unique de l'offre
         human_is_public: Public/Privé
-        human_max_candidates: Stage individuel/collectif
+        human_max_candidates: Nombre max d'élèves accueillis sur l'année
+        human_max_students_per_group: Stage individuel / collectif
         employer: Employeur
         internship_offer_weeks_count: Nombre de semaines
         created_at: "Crée le"
