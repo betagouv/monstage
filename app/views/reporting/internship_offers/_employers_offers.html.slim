@@ -1,0 +1,15 @@
+#offers-panel.fr-tabs__panel.fr-tabs__panel--selected role="tabpanel" aria-labelledby="entreprises" tabindex="0"
+  .bg-stats-filter.rounded.p-3 [data-controller='statistics']
+    = render partial: 'reporting/filters',
+                      locals: {view_tab: :employers_internship_offers}
+  .row.mt-3
+    .col-12
+      table.table.table-statistics.table-sticky-thead
+        thead
+          tr.tr-blue
+            th.bl-1.bc-light= InternshipOffer.human_attribute_name(:employer_name)
+            th.bl-1.bc-light Type d'entreprise
+            th.bl-1.bc-light Nbre d'offres publiées
+        tbody= render partial: 'reporting/internship_offers/employer_offer',
+                      collection: @offers.map(&presenter_for_dimension.method(:new))
+
