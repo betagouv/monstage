@@ -62,7 +62,7 @@ class UserUpdateTest < ApplicationSystemTestCase
     click_on 'Mon établissement'
     find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris ')
     find('li#downshift-0-item-0').click
-    find("label[for=\"select-school-#{school_new.id}\"]").click
+    select school_new.name, from: "user_school_id"
     click_button('Enregistrer')
 
     visit internship_offers_path

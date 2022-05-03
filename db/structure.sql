@@ -20,7 +20,6 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 -- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: -
 --
 
-
 --
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -32,8 +31,6 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
 --
 
-
-
 --
 -- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
 --
@@ -44,7 +41,6 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 --
 -- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
 --
-
 
 --
 -- Name: class_room_school_track; Type: TYPE; Schema: public; Owner: -
@@ -472,6 +468,45 @@ CREATE SEQUENCE public.groups_id_seq
 --
 
 ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
+
+
+--
+-- Name: identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.identities (
+    id bigint NOT NULL,
+    user_id bigint,
+    first_name character varying,
+    last_name character varying,
+    school_id bigint,
+    class_room_id bigint,
+    birth_date date,
+    gender character varying DEFAULT 'np'::character varying,
+    token character varying,
+    anonymized boolean DEFAULT false,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.identities_id_seq OWNED BY public.identities.id;
 
 
 --
@@ -1230,6 +1265,13 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities ALTER COLUMN id SET DEFAULT nextval('public.identities_id_seq'::regclass);
+
+
+--
 -- Name: internship_agreement_presets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1403,6 +1445,14 @@ ALTER TABLE ONLY public.email_whitelists
 
 ALTER TABLE ONLY public.groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -1602,6 +1652,27 @@ CREATE INDEX index_class_rooms_on_school_id ON public.class_rooms USING btree (s
 --
 
 CREATE INDEX index_email_whitelists_on_user_id ON public.email_whitelists USING btree (user_id);
+
+
+--
+-- Name: index_identities_on_class_room_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_class_room_id ON public.identities USING btree (class_room_id);
+
+
+--
+-- Name: index_identities_on_school_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_school_id ON public.identities USING btree (school_id);
+
+
+--
+-- Name: index_identities_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_id);
 
 
 --
@@ -2032,6 +2103,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: identities fk_rails_5373344100; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.identities
+    ADD CONSTRAINT fk_rails_5373344100 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: internship_offer_weeks fk_rails_5b8648c95e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2409,6 +2488,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211027130402'),
 ('20211110133150'),
 ('20211207163238'),
-('20220329131926');
+('20220329131926'),
+('20220408084653');
 
 

@@ -6,7 +6,7 @@ header.header-account.subscription
   .d-block.d-sm-none.actions
     .mt-3.d-flex.d-sm-block
       = link_to "Je suis élève de 3e",
-                new_user_registration_path(as: 'Student'),
+                new_identity_path(as: 'Student'),
                 class: 'fr-btn'
     .mt-3.d-flex.d-sm-block
       = link_to "Je veux déposer une offre",
@@ -29,7 +29,7 @@ header.header-account.subscription
       .fr-card.fr-card--horizontal.fr-enlarge-link
         .fr-card__body
           h4.fr-card__title
-            = link_to new_user_registration_path(as: 'Student'),
+            = link_to new_identity_path(as: 'Student'),
                       class: 'fr-card__link' do
               | Je suis élève de 3e
           p.fr-card__desc

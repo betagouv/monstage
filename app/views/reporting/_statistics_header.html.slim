@@ -1,0 +1,58 @@
+- options = @dashboard_finder.nil? ? {} : {dashboard_finder: @dashboard_finder}
+.container-monstage.mt-3
+  .row
+    .col-12
+      .wrapper-breadcrumb.bg-light.d-inline-block.px-3.py-2.rounded
+        = link_to 'Accueil', root_path
+        span.mx-1 >
+        - if params[:department].present? || params[:group].present?
+          = link_to 'Statistiques', reporting_internship_offers_path(default_reporting_url_options(current_user))
+          span.mx-1 >
+          - if params[:department].present?
+            - if params[:group].present?
+              = link_to params[:department], reporting_internship_offers_path(department: params[:department])
+              span.mx-1 >
+              = params[:group]
+            - else
+              = params[:department]
+          - elsif params[:group].present?
+            = params[:group]
+        - else
+          span.font-weight-bold Statistiques nationales
+  .row
+    .col-8
+      h1.h2.py-3 Statistiques
+  .row
+    .col-12
+      .fr-tabs
+        ul.mb-3.fr-tabs__list role="tablist" aria-label="[Navigation sur différentes vues | Reporting]"
+          - if can?(:see_reporting_dashboard, current_user)
+            li
+              = link_to reporting_dashboards_path(default_reporting_url_options(current_user))
+                button#dashboard.fr-tabs__tab  aria-selected="#{current_page?(reporting_dashboards_path)}" Tableau de bord
+
+          - if can?(:see_reporting_internship_offers, current_user)
+            li
+              = link_to reporting_internship_offers_path(default_reporting_url_options(current_user))
+                button#offers.fr-tabs__tab aria-selected="#{current_page?(reporting_internship_offers_path)}" Offres
+
+          - if can?(:see_reporting_schools, current_user)
+            li
+              = link_to reporting_schools_path(default_reporting_url_options(current_user))
+                button#schools.fr-tabs__tab aria-selected="#{current_page?(reporting_schools_path)}" Établissements
+
+          - if can?(:see_reporting_associations, current_user)
+            li
+              = link_to reporting_operators_path()
+                button#associations.fr-tabs__tab aria-selected="#{current_page?(reporting_operators_path)}" Associations
+
+          - if can?(:see_reporting_enterprises, current_user)
+            li
+              = link_to reporting_employers_internship_offers_path(default_reporting_url_options(current_user, dimension: 'group'))
+                button#entreprises.fr-tabs__tab aria-selected="#{current_page?(reporting_employers_internship_offers_path)}" Entreprises
+
+          - if can?(:import_data, Acl::Reporting) && current_user.operator? && current_user.operator.airtable_reporting_enabled && current_user.operator.airtable_link
+            li
+              = link_to reporting_import_data_path
+                button#import.fr-tabs__tab aria-selected="#{current_page?(reporting_import_data_path)}" Importer des données
+        = render partial: "reporting/#{path}", locals: options

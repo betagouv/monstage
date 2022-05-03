@@ -15,7 +15,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     assert_difference('Users::SchoolManagement.school_manager.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
+      select school_1.name, from: "user_school_id"
       select "Chef d'établissement", from: 'user_role'
       fill_in 'Prénom', with: 'Martin'
       find("input[name='user[last_name]']").fill_in with: 'Fourcade'
@@ -55,7 +55,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     assert_difference('Users::SchoolManagement.teacher.count', 0) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-1').click
-      find("label[for=\"select-school-#{school_2.id}\"]").click
+      select school_2.name, from: "user_school_id"
       select 'Professeur', from: 'user_role'
       select(class_room_2.name, from: 'user_class_room_id')
       fill_in 'Prénom', with: 'Martin'
@@ -76,7 +76,7 @@ class SignUpSchoolManagersTest < ApplicationSystemTestCase
     assert_difference('Users::SchoolManagement.teacher.count', 1) do
       find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Saint')
       find('#downshift-0-item-0').click
-      find("label[for=\"select-school-#{school_1.id}\"]").click
+      select school_1.name, from: "user_school_id"
       select(class_room_1.name, from: 'user_class_room_id')
       fill_in 'Adresse électronique', with: another_email
       fill_in 'Créer un mot de passe', with: 'kikoololletest'
