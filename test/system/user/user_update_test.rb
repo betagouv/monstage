@@ -62,7 +62,7 @@ class UserUpdateTest < ApplicationSystemTestCase
     click_on 'Mon établissement'
     find_field('Nom (ou ville) de mon établissement').fill_in(with: 'Paris ')
     find('li#downshift-0-item-0').click
-    select "Camille Claudel", from: "user_school_id"
+    select school_new.name, from: "user_school_id"
     click_button('Enregistrer')
 
     visit internship_offers_path

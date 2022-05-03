@@ -17,7 +17,7 @@
                     id: 'new_user') do |f|
     = render "layouts/form_errors", resource: resource, resource_name: :user
     = f.hidden_field :type
-    = f.hidden_field :targeted_offer_id, value: params.dig(:user, :targeted_offer_id)
+    = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
     = f.hidden_field :identity_token, value: params[:identity_token]
     - if can?(:choose_school, resource)
       = render "users/select_channel",

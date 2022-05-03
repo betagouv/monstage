@@ -11,7 +11,7 @@
             = link_to "Vous avez déjà un compte ?", new_user_session_path, class: 'blue-france fr-raw-link'
   = form_for @identity, id: 'new_user' do |f|
     = render "layouts/form_errors", resource: @identity, resource_name: :identity
-    = f.hidden_field :targeted_offer_id, value: params.dig(:identity, :targeted_offer_id)
+    = f.hidden_field :targeted_offer_id, value: params[:targeted_offer_id]
     
     = react_component("SearchSchool", props: { classes: 'col-12 fr-input',
                                                 label:"Nom (ou ville) de mon établissement",
@@ -33,7 +33,7 @@
     .row
       .col-md-6.col-xs-12
         .fr-input-group
-          = f.label 'Date de naissance', class: 'fr-label', for: 'identity_birthdate'
+          = f.label 'Date de naissance', class: 'fr-label', for: 'identity_birth_date'
           .fr-input-wrap.fr-fi-calendar-line
             = f.date_field :birth_date, class: 'fr-input', required: true
       .col-md-6.col-xs-12
@@ -54,4 +54,4 @@
     .row
       .col-12
         .actions.d-flex.d-sm-block.mt-2
-          = f.submit "Valider mes information", class: "fr-btn btn-block", id: "test-create-identity"
+          = f.submit "Valider mes informations", class: "fr-btn btn-block", id: "test-create-identity"
