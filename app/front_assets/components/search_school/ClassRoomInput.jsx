@@ -52,6 +52,7 @@ function RenderClassRoomsInput({
     >
       {isWaitingSchoolSelection && (
         <>
+          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
           <input
             value=""
             disabled
@@ -59,7 +60,6 @@ function RenderClassRoomsInput({
             type="text"
             id={`${resourceName}_class_room_id`}
           />
-          <label htmlFor={`${resourceName}_class_room_id`}>Classe</label>
         </>
       )}
       {isAlreadySelected && (

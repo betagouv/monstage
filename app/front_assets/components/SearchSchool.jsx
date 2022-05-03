@@ -4,7 +4,7 @@ import $ from 'jquery';
 import { useDebounce } from 'use-debounce';
 import Downshift from 'downshift';
 import SchoolPropType from '../prop_types/school';
-import RadioListSchoolInput from './search_school/RadioListSchoolInput';
+import SchoolSelectInput from './search_school/SchoolSelectInput';
 import ClassRoomInput from './search_school/ClassRoomInput';
 import { endpoints } from '../utils/api';
 
@@ -138,7 +138,7 @@ export default function SearchSchool({
                 *
               </abbr>
             </label>
-            <div className="input-group">
+            <div className="input-group-append">
            
               <input
                 {...getInputProps({
@@ -155,7 +155,7 @@ export default function SearchSchool({
               />
        
               
-              <div className="input-group-append">
+              
                 {!currentRequest && (
                   <button
                     type="button"
@@ -175,10 +175,10 @@ export default function SearchSchool({
                     onClick={onResetSearch}
                     aria-label="Réinitialiser la recherche"
                   >
-                    <i className="fas fa-spinner fa-spin" />
+                    <span className="fr-fi-close-line"></span>
                   </button>
                 )}
-              </div>
+              
             </div>
 
             <div className="search-in-place bg-white shadow">
@@ -209,8 +209,8 @@ export default function SearchSchool({
                           key: `city-${currentCity}`,
                         })}
                       >
-                        <span dangerouslySetInnerHTML={{ __html: currentCity }} />
-                        <span className="fr-badge fr-badge--sm fr-badge--success fr-badge--no-icon">
+                        <span  className="fr-mx-1w" dangerouslySetInnerHTML={{ __html: currentCity }} />
+                        <span className="fr-badge fr-badge--sm fr-badge--success fr-badge--no-icon fr-ml-1w">
                           {autocompleteCitySuggestions[currentCity].length} établissement
                           {autocompleteCitySuggestions[currentCity].length > 1 ? 's' : ''}
                         </span>
@@ -291,7 +291,7 @@ export default function SearchSchool({
       {city !== null && (
         <>
           {
-            <RadioListSchoolInput
+            <SchoolSelectInput
               setClassRoomsSuggestions={setClassRoomsSuggestions}
               selectedSchool={selectedSchool}
               setSelectedSchool={setSelectedSchool}

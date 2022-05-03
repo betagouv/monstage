@@ -51,7 +51,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
                    @next_school_city,
                    "can't find next school.city"
 
-      find("label[for=\"select-school-#{@next_school.id}\"]").click
+      select @next_school.name, from: "user_school_id"
       click_on 'Enregistrer'
     end
   end
@@ -93,7 +93,7 @@ class AutocompleteSchoolTest < ApplicationSystemTestCase
 
     fill_in('Nom (ou ville) de mon établissement', with: @next_school_city[0..3])
     all('.autocomplete-school-results .list-group-item-action').first.click
-    find("label[for=\"select-school-#{@next_school.id}\"]").click
+    select @next_school.name, from: "user_school_id"
     select(next_class_room.name, from: 'user_class_room_id')
     click_on 'Enregistrer'
 
