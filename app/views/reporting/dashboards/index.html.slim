@@ -6,7 +6,7 @@
         = render partial: 'reporting/tabs'
 
         #offers-panel.fr-tabs__panel.fr-tabs__panel--selected aria-labelledby="tabpanel-404" role="tabpanel" tabindex="0" 
-          div.bg-stats-filter.rounded.p-3[data-controller='statistics']
+          div.p-3[data-controller='statistics']
             = render partial: 'reporting/filters',
                     locals: { view_tab: :dashboard }
           - if params[:department] || can?(:export_reporting_dashboard_data, current_user)
@@ -22,7 +22,7 @@
               h2.text-body Stages sur la plateforme
 
           - if can?(:see_dashboard_enterprises_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-warning-custom Entreprises
               .col-12.col-md-9
@@ -53,7 +53,7 @@
                             span.mr-3= dashboard_finder.platform_count_by_private_sector_paqte["approved_applications_count"] || "0"
 
           - if can?(:see_dashboard_administrations_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-blue-custom Administrations
               .col-12.col-md-9
@@ -73,7 +73,7 @@
                         span.mr-3.test-administrations-approved-offers= dashboard_finder.platform_count_by_public_sector["approved_applications_count"] || "0"
 
           - if can?(:see_dashboard_associations_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-red-custom Associations
               .col-12.col-md-9
@@ -93,7 +93,7 @@
                         span.mr-3 -
 
           // platform sum
-          .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
+          .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.py-4
             .col-12.col-md-3.text-center
               h3.m-0.d-inline-block.text-counter-stats.text-counter-stats-size.nowrap.ml-3 Total des places proposées sur la plateforme
             .col-12.col-md-9
@@ -136,7 +136,7 @@
                     p.text-right.text-muted.small= "Dernière mise à jour il y a  #{time_ago_in_words(dashboard_finder.operator_last_synchro)}"
 
           - if can?(:see_dashboard_administrations_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-purple-custom Type de stage
               .col-12.col-md-9
@@ -166,7 +166,7 @@
                         span.h2.mb-0.mx-3.text-purple-custom= dashboard_finder.operator_count_by_type(AirTableRecord::INTERNSHIP_OFFER_TYPE[:hybrid_internship_offer]) || "0"
 
           - if can?(:see_dashboard_enterprises_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-light-blue.py-4
               .col-12.col-md-3.text-center
                 h3.m-0.d-inline-block.text-cyan-custom Secteur
               .col-12.col-md-9
@@ -193,7 +193,7 @@
                             span.mr-3= dashboard_finder.operator_count_by_private_sector(is_public: true) || "0"
 
           - if can?(:see_dashboard_enterprises_summary, current_user) && can?(:see_dashboard_administrations_summary, current_user) && can?(:see_dashboard_associations_summary, current_user)
-            .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.rounded-lg.py-4
+            .row.mt-3.align-items-center.no-gutters.bg-less-light-blue.py-4
               .col-12.col-md-3
                 h3.m-0.d-inline-block.text-counter-stats.nowrap.ml-3.font-weight-normal
                   | Total des stages pourvus
@@ -206,7 +206,7 @@
                       .offset-8.col-4.align-self-center.text-right.h2.mb-0.text-counter-stats
                         span.text-counter-stats.mr-3= dashboard_finder.operator_total || '0'
 
-            .row.mt-3.align-items-center.no-gutters.rounded-lg.py-4.b-4.bc-blue-stats-total.mb-5
+            .row.mt-3.align-items-center.no-gutters.py-4.b-4.bc-blue-stats-total.mb-5
               .col-12.col-md-3
                 h3.m-0.d-inline-block.text-blue-stats-total.nowrap.ml-3
                   | Grand total des stages pourvus

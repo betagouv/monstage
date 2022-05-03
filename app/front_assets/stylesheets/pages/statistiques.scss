@@ -148,7 +148,7 @@ p.hero {
   }
 
 .table-statistics .bg-blue-light {
-  background-color: #3f57a7 !important;
+  background-color: $blue-france-light !important;
 }
 
 .table-results {
@@ -163,7 +163,7 @@ p.hero {
     }
 
     tr:last-child {
-      background-color: $bg-less-light-blue;
+      background-color: $blue-france-light;
 
       td:first-child {
         border-bottom-left-radius: 10px;
@@ -179,7 +179,7 @@ p.hero {
   }
 
   .bg-light-blue{
-    background-color: $bg-light-blue;
+    background-color: $blue-france-975;
   }
 
 .fr-btn-bordered {
