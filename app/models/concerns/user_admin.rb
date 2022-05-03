@@ -9,26 +9,15 @@ module UserAdmin
     rails_admin do
       list do
         fields(*BASE_FIELDS)
-        field :school do
+        field :type do
           pretty_value do
-            object = bindings[:object]
-            if object.respond_to?(:school) && object.school.is_a?(School)
-              school = bindings[:object].school
-              path = bindings[:view].show_path(model_name: school.class.name, id: school.id)
-              bindings[:view].content_tag(:a, school.name, href: path)
-            end
-          end
-        end
-        field :class_room do
-          pretty_value do
-            object = bindings[:object]
-            if object.respond_to?(:class_room) && object.class_room.is_a?(ClassRoom)
-              class_room = bindings[:object].class_room
-              bindings[:view].content_tag(:div, class_room.name)
-            end
+            value.constantize.model_name.human
           end
         end
         field :confirmed_at
+        field :sign_in_count
+
+        scopes [:kept]
       end
 
       edit do

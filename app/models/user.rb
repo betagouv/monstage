@@ -205,12 +205,6 @@ class User < ApplicationRecord
     super
   end
 
-  rails_admin do
-    list do
-      scopes [:kept]
-    end
-  end
-
   def email_required?
     false
   end
