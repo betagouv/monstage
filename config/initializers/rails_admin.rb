@@ -45,7 +45,7 @@ RailsAdmin.config do |config|
 
   config.parent_controller = 'AdminController'
   config.model 'User' do
-    navigation_icon 'icon-user'
+    navigation_icon 'fas fa-user'
   end
 
   ## == PaperTrail ==
