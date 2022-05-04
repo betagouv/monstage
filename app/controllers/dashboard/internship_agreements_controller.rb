@@ -65,7 +65,7 @@ module Dashboard
 
     def index
       authorize! :create, InternshipAgreement
-      @internship_agreements = current_user.internship_agreements
+      @internship_agreements = current_user.internship_agreements.includes([:internship_application])
     end
 
     private
