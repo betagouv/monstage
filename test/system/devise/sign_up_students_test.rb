@@ -126,7 +126,7 @@ class SignUpStudentsTest < ApplicationSystemTestCase
     end
 
     # real signup as student
-    if ENV['RUN_BRITTLE_TEST']
+    if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
       assert_difference('Users::Student.count', 1) do
         fill_in 'Date de naissance', with: birth_date.strftime('%d/%m/%Y')
         find('label[for="select-gender-boy"]', text: 'Masculin').click

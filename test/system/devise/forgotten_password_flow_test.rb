@@ -1,7 +1,7 @@
 require 'application_system_test_case'
 
 class ForgottenPasswordFlowTest < ApplicationSystemTestCase
-  if ENV['RUN_BRITTLE_TEST']
+  if ENV['RUN_BRITTLE_TEST'] && ENV['RUN_BRITTLE_TEST'] == 'true'
     test 'ask password change with wrong email raises an alert' do
       visit new_user_password_path
       find('label[for=select-channel-email]').click
