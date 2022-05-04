@@ -75,6 +75,8 @@ RailsAdmin.config do |config|
     export
   end
 
+  config.default_items_per_page = 50
+
   config.included_models = %w[EmailWhitelists::Statistician
                               EmailWhitelists::Ministry
                               School
